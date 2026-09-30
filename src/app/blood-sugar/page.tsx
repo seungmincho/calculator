@@ -89,7 +89,7 @@ export default function BloodSugarPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <BloodSugar />
@@ -104,17 +104,17 @@ export default function BloodSugarPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             혈당 기록기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             혈당 기록기는 공복·식전·식후·취침 전 혈당 수치를 측정 시점별로 기록하고, 7일·30일 평균 통계와 추이를 분석하는 무료 온라인 당뇨 관리 도구입니다. ADA(미국당뇨병협회) 기준에 따라 정상·당뇨전단계·당뇨·저혈당을 자동으로 분류하며, 기록한 데이터는 CSV로 내보내어 의사에게 제출하거나 보관할 수 있습니다. 모든 데이터는 브라우저 로컬에만 저장되어 개인정보가 안전하게 보호됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             혈당 관리 및 기록 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>측정 시점 구분:</strong> 공복(아침 식전), 식전(점심·저녁 전), 식후 2시간, 취침 전으로 나누어 기록해야 혈당 변동 패턴을 정확히 파악할 수 있습니다.</li>
             <li><strong>정상 범위 기억:</strong> 공복 혈당 70~99 mg/dL, 식후 2시간 혈당 140 mg/dL 미만이 정상이며, 이 범위를 초과하면 당뇨 전단계를 의심해야 합니다.</li>
             <li><strong>연속 측정의 중요성:</strong> 하루 한 번보다 하루 4회 이상 측정하면 혈당 스파이크와 저혈당 위험을 조기에 발견할 수 있습니다.</li>

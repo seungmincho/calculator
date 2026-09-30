@@ -89,7 +89,7 @@ export default function SleepCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SleepCalculator />
@@ -104,17 +104,17 @@ export default function SleepCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             수면 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             수면 계산기는 90분 단위의 수면 주기(렘수면·깊은수면 사이클)를 기반으로 최적의 취침 시간과 기상 시간을 계산해 주는 건강 도구입니다. 수면 주기 중간에 깨면 피로와 수면 관성이 심해지므로, 주기가 끝나는 시점에 맞춰 기상하면 성인 기준 7~9시간 권장 수면을 더 개운하게 채울 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             수면 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>잠들기까지 시간 반영:</strong> 잠자리에 눕고 실제로 잠드는 데 평균 15~20분이 걸리므로, 계산기에서 이 시간을 설정하면 더 정확한 기상 시각을 얻을 수 있습니다.</li>
             <li><strong>수면 주기 5~6회 목표:</strong> 성인에게 권장되는 7.5~9시간 수면은 수면 주기 5~6회에 해당합니다. 최소 4주기(6시간)는 확보하는 것이 좋습니다.</li>
             <li><strong>일관된 기상 시간 유지:</strong> 주말에도 평일과 같은 시간에 일어나면 일주기 리듬(서카디언 리듬)이 안정되어 취침 시간에 자연스럽게 졸음이 옵니다.</li>

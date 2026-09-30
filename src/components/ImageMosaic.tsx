@@ -431,8 +431,8 @@ export default function ImageMosaic() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -443,17 +443,17 @@ export default function ImageMosaic() {
             {/* Upload */}
             {!image && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('upload')}
                 </label>
                 <div
-                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                  className="border-2 border-dashed border-line-strong rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('dragDrop')}</p>
+                  <p className="text-sm text-sub">{t('dragDrop')}</p>
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -472,7 +472,7 @@ export default function ImageMosaic() {
             {!!image && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('mode')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -481,7 +481,7 @@ export default function ImageMosaic() {
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === 'rectangle'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       <Square className="w-4 h-4" />
@@ -492,7 +492,7 @@ export default function ImageMosaic() {
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === 'brush'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       <Paintbrush className="w-4 h-4" />
@@ -503,7 +503,7 @@ export default function ImageMosaic() {
 
                 {/* Effect Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('effectType')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -512,7 +512,7 @@ export default function ImageMosaic() {
                       className={`px-4 py-3 rounded-lg font-medium transition-colors ${
                         effectType === 'mosaic'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       {t('mosaic')}
@@ -522,7 +522,7 @@ export default function ImageMosaic() {
                       className={`px-4 py-3 rounded-lg font-medium transition-colors ${
                         effectType === 'blur'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       {t('blur')}
@@ -532,7 +532,7 @@ export default function ImageMosaic() {
 
                 {/* Intensity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('intensity')}: {intensity}
                   </label>
                   <input
@@ -548,7 +548,7 @@ export default function ImageMosaic() {
                 {/* Brush Size */}
                 {mode === 'brush' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('brushSize')}: {brushSize}
                     </label>
                     <input
@@ -567,7 +567,7 @@ export default function ImageMosaic() {
                   <button
                     onClick={handleUndo}
                     disabled={history.length <= 1}
-                    className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <Undo className="w-4 h-4" />
                     {t('undo')}
@@ -575,7 +575,7 @@ export default function ImageMosaic() {
                   <button
                     onClick={handleReset}
                     disabled={history.length <= 1}
-                    className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <RotateCcw className="w-4 h-4" />
                     {t('reset')}
@@ -583,9 +583,9 @@ export default function ImageMosaic() {
                 </div>
 
                 {/* Download Settings */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
+                <div className="border-t border-line pt-4 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('format')}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -594,7 +594,7 @@ export default function ImageMosaic() {
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           downloadFormat === 'png'
                             ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                            : 'bg-soft text-body'
                         }`}
                       >
                         {t('png')}
@@ -604,7 +604,7 @@ export default function ImageMosaic() {
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           downloadFormat === 'jpeg'
                             ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                            : 'bg-soft text-body'
                         }`}
                       >
                         {t('jpeg')}
@@ -614,7 +614,7 @@ export default function ImageMosaic() {
 
                   {downloadFormat === 'jpeg' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('quality')}: {Math.round(jpegQuality * 100)}%
                       </label>
                       <input
@@ -653,7 +653,7 @@ export default function ImageMosaic() {
             ) : (
               <div className="space-y-4">
                 {mode === 'rectangle' && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  <p className="text-sm text-sub text-center">
                     {t('selectArea')}
                   </p>
                 )}
@@ -667,7 +667,7 @@ export default function ImageMosaic() {
                     onTouchStart={handleMouseDown}
                     onTouchMove={handleMouseMove}
                     onTouchEnd={handleMouseUp}
-                    className="border border-gray-200 dark:border-gray-700 rounded-lg cursor-crosshair mx-auto"
+                    className="border border-line rounded-lg cursor-crosshair mx-auto"
                     style={{ touchAction: 'none' }}
                   />
                 </div>
@@ -679,17 +679,17 @@ export default function ImageMosaic() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <ImageIcon className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
@@ -700,10 +700,10 @@ export default function ImageMosaic() {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>

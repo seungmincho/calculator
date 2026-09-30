@@ -77,17 +77,17 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className={`w-full flex items-center gap-2 px-3 py-2 border rounded-xl bg-white dark:bg-gray-700 text-left text-sm transition-all
-          ${open ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400' : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'}`}
+        className={`w-full flex items-center gap-2 px-3 py-2 border rounded-xl bg-field text-left text-sm transition-all
+          ${open ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400' : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'}`}
       >
         <Clock className="w-4 h-4 text-blue-500 flex-shrink-0" />
-        <span className="text-gray-900 dark:text-white font-medium">
+        <span className="text-fg font-medium">
           {formatDisplay(hour, minute)}
         </span>
       </button>
 
       {open && (
-        <div className={`absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow-2xl p-4 w-56
+        <div className={`absolute z-50 bg-surface border border-line rounded-2xl shadow-2xl p-4 w-56
           ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}
         >
           <p className="text-xs text-gray-400 text-center mb-3 font-medium">시간 선택</p>
@@ -96,7 +96,7 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
             {/* 시 */}
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">시</span>
+                <span className="text-xs text-muted font-medium">시</span>
                 <div className="flex gap-1">
                   <button onClick={() => adjustHour(-1)} className="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                     <ChevronUp className="w-3 h-3 text-gray-400" />
@@ -123,7 +123,7 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
                       className={`w-full px-2 py-1.5 rounded-lg text-xs transition-colors text-left ${
                         selected
                           ? 'bg-blue-600 text-white font-semibold'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          : 'text-body hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
                       <span className="font-mono">{String(h).padStart(2, '0')}:00</span>
@@ -137,7 +137,7 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
             {/* 분 */}
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">분</span>
+                <span className="text-xs text-muted font-medium">분</span>
                 <div className="flex gap-1">
                   <button onClick={() => adjustMinute(-1)} className="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                     <ChevronUp className="w-3 h-3 text-gray-400" />
@@ -155,7 +155,7 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
                     className={`w-full px-2 py-1.5 rounded-lg text-xs font-mono transition-colors ${
                       m === minute
                         ? 'bg-blue-600 text-white font-semibold'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        : 'text-body hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
                     :{String(m).padStart(2, '0')}
@@ -166,7 +166,7 @@ export default function CustomTimePicker({ value, onChange, className = '' }: Pr
           </div>
 
           {/* 현재 선택 표시 + 확인 */}
-          <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+          <div className="mt-3 pt-3 border-t border-line flex items-center justify-between">
             <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
               {formatDisplay(hour, minute)}
             </span>

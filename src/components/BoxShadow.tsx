@@ -328,10 +328,10 @@ export default function BoxShadow() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -339,13 +339,13 @@ export default function BoxShadow() {
       {/* Preview Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <Eye className="w-5 h-5" />
             {t('preview')}
           </h2>
           <button
             onClick={exportPng}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           >
             <Download className="w-4 h-4" />
             {t('exportPng')}
@@ -372,7 +372,7 @@ export default function BoxShadow() {
       {/* CSS Code Output */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {t('cssCode')}
           </h2>
           <button
@@ -387,15 +387,15 @@ export default function BoxShadow() {
             {copiedId === 'css-main' ? t('copied') : t('copy')}
           </button>
         </div>
-        <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all">
+        <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
           {fullCssRule}
         </pre>
 
         {/* Vendor prefix toggle */}
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+        <div className="border-t border-line pt-3">
           <button
             onClick={() => setShowVendorPrefix((v) => !v)}
-            className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+            className="flex items-center gap-2 text-sm text-sub hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
           >
             {showVendorPrefix ? (
               <ChevronUp className="w-4 h-4" />
@@ -406,17 +406,17 @@ export default function BoxShadow() {
           </button>
           {showVendorPrefix && (
             <div className="mt-2 relative">
-              <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all pr-12">
+              <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                 {vendorPrefixCss}
               </pre>
               <button
                 onClick={() => copyToClipboard(vendorPrefixCss, 'css-vendor')}
-                className="absolute top-2 right-2 p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
+                className="absolute top-2 right-2 p-1.5 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
               >
                 {copiedId === 'css-vendor' ? (
                   <Check className="w-3.5 h-3.5 text-green-600" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
+                  <Copy className="w-3.5 h-3.5 text-sub" />
                 )}
               </button>
             </div>
@@ -425,10 +425,10 @@ export default function BoxShadow() {
 
         {/* Tailwind hint toggle */}
         {tailwindHint && (
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+          <div className="border-t border-line pt-3">
             <button
               onClick={() => setShowTailwind((v) => !v)}
-              className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+              className="flex items-center gap-2 text-sm text-sub hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
             >
               {showTailwind ? (
                 <ChevronUp className="w-4 h-4" />
@@ -439,17 +439,17 @@ export default function BoxShadow() {
             </button>
             {showTailwind && (
               <div className="mt-2 relative">
-                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                   {tailwindHint}
                 </pre>
                 <button
                   onClick={() => copyToClipboard(tailwindHint, 'tailwind')}
-                  className="absolute top-2 right-2 p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
+                  className="absolute top-2 right-2 p-1.5 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
                 >
                   {copiedId === 'tailwind' ? (
                     <Check className="w-3.5 h-3.5 text-green-600" />
                   ) : (
-                    <Copy className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
+                    <Copy className="w-3.5 h-3.5 text-sub" />
                   )}
                 </button>
               </div>
@@ -464,13 +464,13 @@ export default function BoxShadow() {
         <div className="lg:col-span-1 space-y-6">
           {/* Preview element settings */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-fg">
               {t('previewSettings')}
             </h3>
 
             {/* Background color */}
             <div className="space-y-1.5">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
+              <label className="text-sm text-sub">
                 {t('bgColor')}
               </label>
               <div className="flex items-center gap-2">
@@ -478,7 +478,7 @@ export default function BoxShadow() {
                   type="color"
                   value={previewBg}
                   onChange={(e) => setPreviewBg(e.target.value)}
-                  className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer flex-shrink-0 p-0"
+                  className="w-10 h-10 rounded-lg border border-line-strong cursor-pointer flex-shrink-0 p-0"
                 />
                 <input
                   type="text"
@@ -497,7 +497,7 @@ export default function BoxShadow() {
 
             {/* Element color */}
             <div className="space-y-1.5">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
+              <label className="text-sm text-sub">
                 {t('elementColor')}
               </label>
               <div className="flex items-center gap-2">
@@ -505,7 +505,7 @@ export default function BoxShadow() {
                   type="color"
                   value={elementBg}
                   onChange={(e) => setElementBg(e.target.value)}
-                  className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer flex-shrink-0 p-0"
+                  className="w-10 h-10 rounded-lg border border-line-strong cursor-pointer flex-shrink-0 p-0"
                 />
                 <input
                   type="text"
@@ -525,10 +525,10 @@ export default function BoxShadow() {
             {/* Element width */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm text-gray-600 dark:text-gray-400">
+                <label className="text-sm text-sub">
                   {t('elementWidth')}
                 </label>
-                <span className="text-sm font-mono text-gray-900 dark:text-white">
+                <span className="text-sm font-mono text-fg">
                   {elementWidth}px
                 </span>
               </div>
@@ -545,10 +545,10 @@ export default function BoxShadow() {
             {/* Element height */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm text-gray-600 dark:text-gray-400">
+                <label className="text-sm text-sub">
                   {t('elementHeight')}
                 </label>
-                <span className="text-sm font-mono text-gray-900 dark:text-white">
+                <span className="text-sm font-mono text-fg">
                   {elementHeight}px
                 </span>
               </div>
@@ -565,10 +565,10 @@ export default function BoxShadow() {
             {/* Border radius */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm text-gray-600 dark:text-gray-400">
+                <label className="text-sm text-sub">
                   {t('borderRadius')}
                 </label>
-                <span className="text-sm font-mono text-gray-900 dark:text-white">
+                <span className="text-sm font-mono text-fg">
                   {borderRadius}px
                 </span>
               </div>
@@ -585,20 +585,20 @@ export default function BoxShadow() {
 
           {/* Tools */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-fg">
               {t('tools')}
             </h3>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleRandom}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <Shuffle className="w-4 h-4" />
                 {t('random')}
               </button>
               <button
                 onClick={handleReset}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -611,10 +611,10 @@ export default function BoxShadow() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
                 <Layers className="w-4 h-4" />
                 {t('layers')}
-                <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">
+                <span className="text-xs text-muted font-normal">
                   ({layers.length}/{MAX_LAYERS})
                 </span>
               </h3>
@@ -645,7 +645,7 @@ export default function BoxShadow() {
                     className={`rounded-lg border transition-colors ${
                       isExpanded
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900'
+                        : 'border-line bg-gray-50 dark:bg-gray-900'
                     }`}
                   >
                     {/* Layer header */}
@@ -655,15 +655,15 @@ export default function BoxShadow() {
                     >
                       {/* Color swatch */}
                       <div
-                        className="w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 flex-shrink-0"
+                        className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
                         style={{ backgroundColor: hexToRgba(layer.color, layer.opacity) }}
                       />
                       {/* Layer label */}
-                      <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">
+                      <span className="text-sm font-medium text-fg flex-shrink-0">
                         {t('layerLabel', { n: index + 1 })}
                       </span>
                       {/* Layer summary */}
-                      <span className="text-xs text-gray-500 dark:text-gray-400 truncate flex-1 font-mono">
+                      <span className="text-xs text-muted truncate flex-1 font-mono">
                         {layer.inset ? 'inset ' : ''}{layer.x}px {layer.y}px {layer.blur}px {layer.spread}px
                       </span>
                       {/* Inset badge */}
@@ -685,25 +685,25 @@ export default function BoxShadow() {
                           <Trash2 className="w-4 h-4" />
                         </button>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <ChevronUp className="w-4 h-4 text-faint" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <ChevronDown className="w-4 h-4 text-faint" />
                         )}
                       </div>
                     </div>
 
                     {/* Expanded controls */}
                     {isExpanded && (
-                      <div className="px-3 pb-4 space-y-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+                      <div className="px-3 pb-4 space-y-4 border-t border-line pt-3">
                         {/* X & Y offset */}
                         <div className="grid grid-cols-2 gap-4">
                           {/* X Offset */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">
+                              <label className="text-xs text-sub">
                                 {t('xOffset')}
                               </label>
-                              <span className="text-xs font-mono text-gray-900 dark:text-white">
+                              <span className="text-xs font-mono text-fg">
                                 {layer.x}px
                               </span>
                             </div>
@@ -719,10 +719,10 @@ export default function BoxShadow() {
                           {/* Y Offset */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">
+                              <label className="text-xs text-sub">
                                 {t('yOffset')}
                               </label>
-                              <span className="text-xs font-mono text-gray-900 dark:text-white">
+                              <span className="text-xs font-mono text-fg">
                                 {layer.y}px
                               </span>
                             </div>
@@ -742,10 +742,10 @@ export default function BoxShadow() {
                           {/* Blur */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">
+                              <label className="text-xs text-sub">
                                 {t('blur')}
                               </label>
-                              <span className="text-xs font-mono text-gray-900 dark:text-white">
+                              <span className="text-xs font-mono text-fg">
                                 {layer.blur}px
                               </span>
                             </div>
@@ -761,10 +761,10 @@ export default function BoxShadow() {
                           {/* Spread */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">
+                              <label className="text-xs text-sub">
                                 {t('spread')}
                               </label>
-                              <span className="text-xs font-mono text-gray-900 dark:text-white">
+                              <span className="text-xs font-mono text-fg">
                                 {layer.spread}px
                               </span>
                             </div>
@@ -783,7 +783,7 @@ export default function BoxShadow() {
                         <div className="grid grid-cols-2 gap-4">
                           {/* Color */}
                           <div className="space-y-1.5">
-                            <label className="text-xs text-gray-600 dark:text-gray-400">
+                            <label className="text-xs text-sub">
                               {t('color')}
                             </label>
                             <div className="flex items-center gap-2">
@@ -791,7 +791,7 @@ export default function BoxShadow() {
                                 type="color"
                                 value={layer.color}
                                 onChange={(e) => updateLayer(layer.id, 'color', e.target.value)}
-                                className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer flex-shrink-0 p-0"
+                                className="w-10 h-10 rounded-lg border border-line-strong cursor-pointer flex-shrink-0 p-0"
                               />
                               <input
                                 type="text"
@@ -810,10 +810,10 @@ export default function BoxShadow() {
                           {/* Opacity */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">
+                              <label className="text-xs text-sub">
                                 {t('opacity')}
                               </label>
-                              <span className="text-xs font-mono text-gray-900 dark:text-white">
+                              <span className="text-xs font-mono text-fg">
                                 {layer.opacity}%
                               </span>
                             </div>
@@ -836,7 +836,7 @@ export default function BoxShadow() {
                             onChange={(e) => updateLayer(layer.id, 'inset', e.target.checked)}
                             className="w-4 h-4 accent-blue-600 rounded"
                           />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                          <span className="text-sm text-body">
                             {t('inset')}
                           </span>
                         </label>
@@ -852,7 +852,7 @@ export default function BoxShadow() {
 
       {/* Presets Section */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <h2 className="text-lg font-semibold text-fg">
           {t('presets')}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -867,13 +867,13 @@ export default function BoxShadow() {
               <button
                 key={preset.name}
                 onClick={() => applyPreset(preset)}
-                className="group relative h-24 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-2 border-transparent hover:border-blue-500 transition-all"
+                className="group relative h-24 rounded-lg bg-soft flex items-center justify-center border-2 border-transparent hover:border-blue-500 transition-all"
               >
                 <div
                   className="w-12 h-12 rounded-md bg-white dark:bg-gray-200"
                   style={{ boxShadow: previewShadow }}
                 />
-                <span className="absolute bottom-1.5 left-0 right-0 text-center text-xs font-medium text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <span className="absolute bottom-1.5 left-0 right-0 text-center text-xs font-medium text-sub group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {t(`preset.${preset.name}`)}
                 </span>
               </button>
@@ -884,20 +884,20 @@ export default function BoxShadow() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-base font-semibold text-fg mb-3">
             {t('guide.basics.title')}
           </h3>
           <ul className="space-y-2">
             {(t.raw('guide.basics.items') as string[]).map((item, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                className="flex items-start gap-2 text-sm text-sub"
               >
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                 {item}
@@ -907,14 +907,14 @@ export default function BoxShadow() {
         </div>
 
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-base font-semibold text-fg mb-3">
             {t('guide.tips.title')}
           </h3>
           <ul className="space-y-2">
             {(t.raw('guide.tips.items') as string[]).map((item, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                className="flex items-start gap-2 text-sm text-sub"
               >
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                 {item}

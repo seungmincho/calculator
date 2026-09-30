@@ -43,7 +43,7 @@ export default function TetrisPageClient() {
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all text-sm ${
               mode === 'solo'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             <Gamepad2 className="w-4 h-4" />
@@ -54,7 +54,7 @@ export default function TetrisPageClient() {
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all text-sm ${
               mode === 'multi'
                 ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             <Users className="w-4 h-4" />

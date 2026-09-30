@@ -157,7 +157,7 @@ export default function MilitaryDischarge() {
   }, [result])
 
   const ddayColor = useMemo(() => {
-    if (!result) return 'text-gray-600 dark:text-gray-300'
+    if (!result) return 'text-sub'
     if (result.isAlreadyDischarged) return 'text-blue-600 dark:text-blue-400'
     if (result.remainingDays > 365) return 'text-red-600 dark:text-red-400'
     if (result.remainingDays > 180) return 'text-orange-500 dark:text-orange-400'
@@ -207,12 +207,12 @@ export default function MilitaryDischarge() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           title="링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -238,7 +238,7 @@ export default function MilitaryDischarge() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Enlistment Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('enlistmentDate')}
               </label>
               <input
@@ -251,7 +251,7 @@ export default function MilitaryDischarge() {
 
             {/* Branch */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('branch')}
               </label>
               <select
@@ -269,7 +269,7 @@ export default function MilitaryDischarge() {
 
             {/* Early days */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('earlyDays')}
               </label>
               <input
@@ -286,7 +286,7 @@ export default function MilitaryDischarge() {
             {/* Reset button */}
             <button
               onClick={handleReset}
-              className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+              className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
             >
               {t('reset')}
             </button>
@@ -304,30 +304,30 @@ export default function MilitaryDischarge() {
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-500 dark:text-gray-400">{t('dischargeDate')}</span>
+                      <span className="text-sm text-muted">{t('dischargeDate')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-2xl font-bold text-fg">
                       {formatDate(result.dischargeDate)}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-sm text-muted mt-0.5">
                       {dayNames[result.dischargeDate.getDay()]}
                     </p>
                   </div>
 
                   {/* D-Day */}
                   <div className="text-center sm:text-right">
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('dday')}</p>
+                    <p className="text-sm text-muted mb-1">{t('dday')}</p>
                     {result.isAlreadyDischarged ? (
                       <>
                         <p className={`text-4xl font-black ${ddayColor}`}>{t('alreadyDischarged')}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-muted mt-1">
                           {t('daysSince')} {result.daysSince}{t('daysUnit')}
                         </p>
                       </>
                     ) : (
                       <>
                         <p className={`text-5xl font-black ${ddayColor}`}>D-{result.remainingDays}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('ddayLabel')}</p>
+                        <p className="text-sm text-muted mt-1">{t('ddayLabel')}</p>
                       </>
                     )}
                   </div>
@@ -336,10 +336,10 @@ export default function MilitaryDischarge() {
                 {/* Progress bar */}
                 <div className="mt-6">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('progressBar')}</span>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{result.progressPct.toFixed(1)}%</span>
+                    <span className="text-sm text-sub">{t('progressBar')}</span>
+                    <span className="text-sm font-semibold text-fg">{result.progressPct.toFixed(1)}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                  <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                     <div
                       className="h-4 rounded-full transition-all duration-700 bg-gradient-to-r from-green-400 to-emerald-600"
                       style={{ width: `${result.progressPct}%` }}
@@ -351,7 +351,7 @@ export default function MilitaryDischarge() {
                 <div className="mt-4 flex justify-end">
                   <button
                     onClick={handleCopyResult}
-                    className="flex items-center gap-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 transition-colors"
+                    className="flex items-center gap-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'result' ? t('copied') : t('copyResult')}
@@ -367,9 +367,9 @@ export default function MilitaryDischarge() {
                   { label: t('remainingDays'), value: result.remainingDays, unit: t('daysUnit') },
                   { label: t('progress'), value: result.progressPct.toFixed(1), unit: '%' },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{stat.label}</p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">
+                  <div key={i} className="bg-surface rounded-xl shadow p-4 text-center">
+                    <p className="text-xs text-muted mb-1">{stat.label}</p>
+                    <p className="text-xl font-bold text-fg">
                       {stat.value}<span className="text-sm font-normal ml-0.5">{stat.unit}</span>
                     </p>
                   </div>
@@ -381,7 +381,7 @@ export default function MilitaryDischarge() {
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center gap-2 mb-4">
                     <Star className="w-4 h-4 text-yellow-500" />
-                    <h2 className="font-semibold text-gray-900 dark:text-white">{t('milestones')}</h2>
+                    <h2 className="font-semibold text-fg">{t('milestones')}</h2>
                     <span className="text-xs text-gray-400">({t('milestonesNote')})</span>
                   </div>
                   <div className="space-y-3">
@@ -390,7 +390,7 @@ export default function MilitaryDischarge() {
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
                           m.isPast
                             ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-400'
+                            : 'bg-soft text-gray-400'
                         }`}>
                           {i + 1}
                         </div>
@@ -401,7 +401,7 @@ export default function MilitaryDischarge() {
                                 ? 'text-blue-600 dark:text-blue-400'
                                 : m.isPast
                                 ? 'text-green-700 dark:text-green-300'
-                                : 'text-gray-700 dark:text-gray-300'
+                                : 'text-body'
                             }`}>
                               {t(m.rank)}
                             </span>
@@ -416,17 +416,17 @@ export default function MilitaryDischarge() {
                               </span>
                             )}
                             {!m.isPast && (
-                              <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded-full">
+                              <span className="text-xs bg-soft text-muted px-1.5 py-0.5 rounded-full">
                                 {t('upcoming')}
                               </span>
                             )}
                           </div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(m.date)}</p>
+                          <p className="text-xs text-muted">{formatDate(m.date)}</p>
                         </div>
                         <div className={`w-4 h-4 rounded-full flex-shrink-0 border-2 ${
                           m.isPast
                             ? 'bg-green-500 border-green-500'
-                            : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                            : 'bg-surface border-line-strong'
                         }`} />
                       </div>
                     ))}
@@ -439,16 +439,16 @@ export default function MilitaryDischarge() {
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center gap-2 mb-4">
                     <TrendingUp className="w-4 h-4 text-indigo-500" />
-                    <h2 className="font-semibold text-gray-900 dark:text-white">{t('funFacts')}</h2>
+                    <h2 className="font-semibold text-fg">{t('funFacts')}</h2>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <p className="text-sm text-body">
                       {t('meals').replace('{count}', funFacts.meals.toLocaleString())}
                     </p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <p className="text-sm text-body">
                       {t('pxVisits').replace('{count}', funFacts.px.toLocaleString())}
                     </p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <p className="text-sm text-body">
                       {t('sleeps').replace('{count}', funFacts.sleeps.toLocaleString())}
                     </p>
                   </div>
@@ -458,7 +458,7 @@ export default function MilitaryDischarge() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Calendar className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('description')}</p>
+              <p className="text-muted">{t('description')}</p>
             </div>
           )}
         </div>
@@ -468,13 +468,13 @@ export default function MilitaryDischarge() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-4">
           <Info className="w-4 h-4 text-blue-500" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('guideTitle')}</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           <div>
             <ul className="space-y-1">
               {(t.raw('guideItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                <li key={i} className="text-sm text-body flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">•</span>
                   {item}
                 </li>
@@ -482,10 +482,10 @@ export default function MilitaryDischarge() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guideCautionTitle')}</h3>
+            <h3 className="font-medium text-fg mb-2">{t('guideCautionTitle')}</h3>
             <ul className="space-y-1">
               {(t.raw('guideCautionItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-500 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-muted flex items-start gap-2">
                   <span className="text-yellow-500 mt-0.5">!</span>
                   {item}
                 </li>

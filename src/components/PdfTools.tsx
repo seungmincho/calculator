@@ -412,8 +412,8 @@ export default function PdfTools() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Tabs */}
@@ -428,7 +428,7 @@ export default function PdfTools() {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               activeTab === tab.id
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {tab.icon}
@@ -467,11 +467,11 @@ export default function PdfTools() {
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
               mergeDragging
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+                : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
             }`}
           >
             <FileUp className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 dark:text-gray-300 font-medium">{t('merge.dropzone')}</p>
+            <p className="text-sub font-medium">{t('merge.dropzone')}</p>
             <p className="text-xs text-gray-400 mt-1">{t('common.pdfOnly')}</p>
             <input
               ref={mergeInputRef}
@@ -486,7 +486,7 @@ export default function PdfTools() {
           {/* File list */}
           {mergeFiles.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{t('merge.reorderHint')}</p>
+              <p className="text-sm text-muted mb-3">{t('merge.reorderHint')}</p>
               {mergeFiles.map((pf, index) => (
                 <div
                   key={pf.id}
@@ -497,15 +497,15 @@ export default function PdfTools() {
                   className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
                     dragOverIndex === index
                       ? 'border-blue-400 bg-blue-50 dark:bg-blue-950'
-                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900'
+                      : 'border-line bg-gray-50 dark:bg-gray-900'
                   }`}
                 >
                   <GripVertical className="w-4 h-4 text-gray-400 cursor-grab shrink-0" />
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-6 shrink-0">
+                  <span className="text-sm font-medium text-muted w-6 shrink-0">
                     {index + 1}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{pf.name}</p>
+                    <p className="text-sm font-medium text-fg truncate">{pf.name}</p>
                     <p className="text-xs text-gray-400">
                       {formatFileSize(pf.size)}
                       {pf.pageCount !== undefined && ` · ${pf.pageCount}${t('common.pages')}`}
@@ -544,10 +544,10 @@ export default function PdfTools() {
           {/* Upload */}
           <div
             onClick={() => splitInputRef.current?.click()}
-            className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+            className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer border-line-strong hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
           >
             <FileUp className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 dark:text-gray-300 font-medium">{t('split.dropzone')}</p>
+            <p className="text-sub font-medium">{t('split.dropzone')}</p>
             <p className="text-xs text-gray-400 mt-1">{t('common.pdfOnly')}</p>
             <input
               ref={splitInputRef}
@@ -562,7 +562,7 @@ export default function PdfTools() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white truncate">{splitFile.name}</p>
+                  <p className="font-medium text-fg truncate">{splitFile.name}</p>
                   <p className="text-xs text-gray-400">
                     {formatFileSize(splitFile.size)} · {splitFile.pageCount}{t('common.pages')}
                   </p>
@@ -582,7 +582,7 @@ export default function PdfTools() {
                   className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                     splitMode === 'extract'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft text-body'
                   }`}
                 >
                   {t('split.modeExtract')}
@@ -592,7 +592,7 @@ export default function PdfTools() {
                   className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                     splitMode === 'range'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft text-body'
                   }`}
                 >
                   {t('split.modeRange')}
@@ -601,7 +601,7 @@ export default function PdfTools() {
 
               {splitMode === 'extract' ? (
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('split.selectHint')}</p>
+                  <p className="text-sm text-muted mb-2">{t('split.selectHint')}</p>
                   <div className="flex flex-wrap gap-2">
                     {splitPages.map((p) => (
                       <button
@@ -610,7 +610,7 @@ export default function PdfTools() {
                         className={`w-12 h-12 rounded-lg text-sm font-medium border transition-colors ${
                           p.selected
                             ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-400'
+                            : 'bg-gray-50 dark:bg-gray-900 text-body border-line hover:border-blue-400'
                         }`}
                       >
                         {p.index + 1}
@@ -620,7 +620,7 @@ export default function PdfTools() {
                 </div>
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('split.rangeLabel')}
                   </label>
                   <input
@@ -656,10 +656,10 @@ export default function PdfTools() {
         <div className="space-y-4">
           <div
             onClick={() => rotateInputRef.current?.click()}
-            className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+            className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer border-line-strong hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
           >
             <FileUp className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 dark:text-gray-300 font-medium">{t('rotate.dropzone')}</p>
+            <p className="text-sub font-medium">{t('rotate.dropzone')}</p>
             <p className="text-xs text-gray-400 mt-1">{t('common.pdfOnly')}</p>
             <input
               ref={rotateInputRef}
@@ -674,7 +674,7 @@ export default function PdfTools() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white truncate">{rotateFile.name}</p>
+                  <p className="font-medium text-fg truncate">{rotateFile.name}</p>
                   <p className="text-xs text-gray-400">
                     {formatFileSize(rotateFile.size)} · {rotateFile.pageCount}{t('common.pages')}
                   </p>
@@ -689,12 +689,12 @@ export default function PdfTools() {
 
               {/* Bulk rotate */}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">{t('rotate.allPages')}</span>
+                <span className="text-sm text-sub font-medium">{t('rotate.allPages')}</span>
                 {[90, 180, 270].map((deg) => (
                   <button
                     key={deg}
                     onClick={() => rotateAll(deg)}
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600"
                   >
                     <RotateCw className="w-3 h-3" />
                     {deg}°
@@ -707,7 +707,7 @@ export default function PdfTools() {
                 {rotatePages.map((p) => (
                   <div key={p.index} className="flex flex-col items-center gap-1">
                     <div
-                      className="w-16 h-20 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center relative transition-transform"
+                      className="w-16 h-20 border-2 border-line rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center relative transition-transform"
                       style={{ transform: `rotate(${p.rotation}deg)` }}
                     >
                       <span className="text-xs text-gray-400">{p.index + 1}</span>
@@ -718,7 +718,7 @@ export default function PdfTools() {
                           key={deg}
                           onClick={() => rotatePage(p.index, deg)}
                           title={`${deg > 0 ? '+' : ''}${deg}°`}
-                          className="p-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-blue-900"
+                          className="p-1 rounded bg-soft text-sub hover:bg-blue-100 dark:hover:bg-blue-900"
                         >
                           <RotateCw className={`w-3 h-3 ${deg < 0 ? 'scale-x-[-1]' : ''}`} />
                         </button>
@@ -759,11 +759,11 @@ export default function PdfTools() {
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
               imageDragging
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+                : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
             }`}
           >
             <Image className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 dark:text-gray-300 font-medium">{t('imageToPdf.dropzone')}</p>
+            <p className="text-sub font-medium">{t('imageToPdf.dropzone')}</p>
             <p className="text-xs text-gray-400 mt-1">{t('imageToPdf.formats')}</p>
             <input
               ref={imageInputRef}
@@ -779,7 +779,7 @@ export default function PdfTools() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               {/* Page size */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('imageToPdf.pageSize')}
                 </label>
                 <div className="flex gap-2 flex-wrap">
@@ -790,7 +790,7 @@ export default function PdfTools() {
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                         pageSize === size
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {size === 'custom' ? t('imageToPdf.custom') : size}
@@ -819,7 +819,7 @@ export default function PdfTools() {
 
               {/* Image list */}
               <div className="space-y-2">
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('imageToPdf.imagesAdded', { count: imageFiles.length })}</p>
+                <p className="text-sm text-muted">{t('imageToPdf.imagesAdded', { count: imageFiles.length })}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                   {imageFiles.map((img, index) => (
                     <div key={img.id} className="relative group">
@@ -827,7 +827,7 @@ export default function PdfTools() {
                       <img
                         src={img.url}
                         alt={img.file.name}
-                        className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                        className="w-full h-24 object-cover rounded-lg border border-line"
                       />
                       <div className="absolute top-1 left-1 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
                         {index + 1}
@@ -839,7 +839,7 @@ export default function PdfTools() {
                       >
                         <Trash2 className="w-3 h-3" />
                       </button>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">{img.file.name}</p>
+                      <p className="text-xs text-muted truncate mt-1">{img.file.name}</p>
                     </div>
                   ))}
                 </div>
@@ -864,17 +864,17 @@ export default function PdfTools() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(['merge', 'split', 'rotate', 'imageToPdf'] as const).map((section) => (
             <div key={section} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t(`guide.${section}.title`)}</h3>
+              <h3 className="font-medium text-fg mb-2">{t(`guide.${section}.title`)}</h3>
               <ul className="space-y-1">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5 shrink-0">•</span>
                     {item}
                   </li>

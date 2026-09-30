@@ -401,17 +401,17 @@ export default function GanttChart() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <GanttChartSquare className="w-7 h-7 text-blue-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Task Input Form */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {editingId ? t('actions.editTask') : t('actions.addTask')}
           </h2>
           <button
@@ -426,7 +426,7 @@ export default function GanttChart() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Task name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('task.name')}
             </label>
             <input
@@ -441,7 +441,7 @@ export default function GanttChart() {
 
           {/* Start date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('task.startDate')}
             </label>
             <input
@@ -454,7 +454,7 @@ export default function GanttChart() {
 
           {/* End date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('task.endDate')}
             </label>
             <input
@@ -467,7 +467,7 @@ export default function GanttChart() {
 
           {/* Progress */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('task.progress')}: {progress}%
             </label>
             <input
@@ -483,7 +483,7 @@ export default function GanttChart() {
 
           {/* Category with autocomplete */}
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('task.category')}
             </label>
             <input
@@ -500,7 +500,7 @@ export default function GanttChart() {
               onKeyDown={e => { if (e.key === 'Enter') addOrUpdateTask() }}
             />
             {showCategoryDropdown && filteredCategories.length > 0 && (
-              <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-32 overflow-y-auto">
+              <div className="absolute z-10 mt-1 w-full bg-field border border-line-strong rounded-lg shadow-lg max-h-32 overflow-y-auto">
                 {filteredCategories.map(cat => (
                   <button
                     key={cat}
@@ -510,7 +510,7 @@ export default function GanttChart() {
                       setCategory(cat)
                       setShowCategoryDropdown(false)
                     }}
-                    className="w-full text-left px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-2"
+                    className="w-full text-left px-3 py-1.5 text-sm text-body hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-2"
                   >
                     <span
                       className="w-3 h-3 rounded-full inline-block flex-shrink-0"
@@ -539,7 +539,7 @@ export default function GanttChart() {
             {editingId && (
               <button
                 onClick={cancelEditing}
-                className="flex items-center justify-center gap-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm"
+                className="flex items-center justify-center gap-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm"
               >
                 <X className="w-4 h-4" />
                 {t('actions.cancel')}
@@ -553,10 +553,10 @@ export default function GanttChart() {
       {tasks.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-fg">
               {t('stats.overallProgress')}: {overallProgress}%
             </h3>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-muted">
               {t('stats.totalTasks', { count: tasks.length })}
             </span>
           </div>
@@ -568,11 +568,11 @@ export default function GanttChart() {
           </div>
           <div className="flex flex-wrap gap-3">
             {Object.entries(categoryStats).map(([cat, stat]) => (
-              <div key={cat} className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400">
+              <div key={cat} className="flex items-center gap-1.5 text-xs text-sub">
                 <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: stat.color }} />
                 <span>{cat}</span>
-                <span className="text-gray-400 dark:text-gray-500">({stat.count})</span>
-                <span className="text-gray-400 dark:text-gray-500">{stat.avgProgress}%</span>
+                <span className="text-faint">({stat.count})</span>
+                <span className="text-faint">{stat.avgProgress}%</span>
               </div>
             ))}
           </div>
@@ -584,12 +584,12 @@ export default function GanttChart() {
         {/* Task List */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('taskList.title')}
             </h2>
 
             {tasks.length === 0 ? (
-              <div className="text-center py-8 text-gray-400 dark:text-gray-500">
+              <div className="text-center py-8 text-faint">
                 <GanttChartSquare className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p className="text-sm">{t('taskList.empty')}</p>
               </div>
@@ -598,10 +598,10 @@ export default function GanttChart() {
                 {tasks.map((task, idx) => (
                   <div
                     key={task.id}
-                    className={`bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border transition-colors ${
+                    className={`bg-subtle rounded-lg p-3 border transition-colors ${
                       editingId === task.id
                         ? 'border-blue-400 dark:border-blue-500 ring-1 ring-blue-200 dark:ring-blue-800'
-                        : 'border-gray-200 dark:border-gray-600'
+                        : 'border-line'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -611,14 +611,14 @@ export default function GanttChart() {
                             className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                             style={{ backgroundColor: task.color }}
                           />
-                          <span className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                          <span className="text-sm font-medium text-fg truncate">
                             {idx + 1}. {task.name}
                           </span>
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-4">
+                        <div className="text-xs text-muted mt-1 ml-4">
                           {task.startDate} ~ {task.endDate}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 ml-4">
+                        <div className="text-xs text-muted ml-4">
                           {task.category}
                         </div>
                       </div>
@@ -648,7 +648,7 @@ export default function GanttChart() {
                             style={{ width: `${task.progress}%`, backgroundColor: task.color }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400 w-8 text-right">
+                        <span className="text-xs font-medium text-sub w-8 text-right">
                           {task.progress}%
                         </span>
                       </div>
@@ -663,7 +663,7 @@ export default function GanttChart() {
         {/* Gantt Chart */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('chart.title')}
             </h2>
 
@@ -677,31 +677,31 @@ export default function GanttChart() {
                 />
 
                 {/* Export buttons */}
-                <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-line">
                   <button
                     onClick={exportPNG}
-                    className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm"
+                    className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm"
                   >
                     <Image className="w-4 h-4" />
                     {t('export.png')}
                   </button>
                   <button
                     onClick={downloadCSV}
-                    className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm"
+                    className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm"
                   >
                     <Download className="w-4 h-4" />
                     {t('export.downloadCsv')}
                   </button>
                   <button
                     onClick={exportCSV}
-                    className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm"
+                    className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm"
                   >
                     {copiedId === 'csv' ? <Check className="w-4 h-4 text-green-500" /> : <FileSpreadsheet className="w-4 h-4" />}
                     {copiedId === 'csv' ? t('export.copied') : t('export.csv')}
                   </button>
                   <button
                     onClick={exportJSON}
-                    className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm"
+                    className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm"
                   >
                     {copiedId === 'json' ? <Check className="w-4 h-4 text-green-500" /> : <FileJson className="w-4 h-4" />}
                     {copiedId === 'json' ? t('export.copied') : t('export.json')}
@@ -709,7 +709,7 @@ export default function GanttChart() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
+              <div className="flex flex-col items-center justify-center py-16 text-faint">
                 <GanttChartSquare className="w-16 h-16 mb-3 opacity-40" />
                 <p className="text-sm">{t('chart.empty')}</p>
                 <button
@@ -726,7 +726,7 @@ export default function GanttChart() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
@@ -734,12 +734,12 @@ export default function GanttChart() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* How to use */}
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToUse.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 font-bold mt-0.5">{i + 1}.</span>
                   <span>{item}</span>
                 </li>
@@ -749,12 +749,12 @@ export default function GanttChart() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <Copy className="w-3.5 h-3.5 text-indigo-400 mt-0.5 flex-shrink-0" />
                   <span>{item}</span>
                 </li>

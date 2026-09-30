@@ -192,10 +192,10 @@ export default function MobileBottomNav() {
           className="fixed bottom-16 left-0 right-0 z-40 md:hidden pb-[env(safe-area-inset-bottom)]"
           style={{ animation: 'slideUp 0.2s ease-out' }}
         >
-          <div className="bg-white dark:bg-gray-800 rounded-t-2xl shadow-2xl max-h-[60vh] flex flex-col">
+          <div className="bg-surface rounded-t-2xl shadow-2xl max-h-[60vh] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-line flex-shrink-0">
+              <h3 className="text-base font-semibold text-fg">
                 {title}
               </h3>
               <button
@@ -209,7 +209,7 @@ export default function MobileBottomNav() {
             {/* Content */}
             <div className="overflow-y-auto flex-1 overscroll-contain">
               {items.length === 0 ? (
-                <div className="px-4 py-12 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <div className="px-4 py-12 text-center text-muted text-sm">
                   {emptyMessage}
                 </div>
               ) : (
@@ -223,7 +223,7 @@ export default function MobileBottomNav() {
                       <span className="text-xl flex-shrink-0 w-8 text-center">
                         {item.icon}
                       </span>
-                      <span className="text-sm text-gray-900 dark:text-white truncate">
+                      <span className="text-sm text-fg truncate">
                         {item.label}
                       </span>
                     </button>
@@ -242,7 +242,7 @@ export default function MobileBottomNav() {
       {renderPanel()}
       <nav
         ref={navRef}
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 pb-[env(safe-area-inset-bottom)]"
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-gray-900 border-t border-line pb-[env(safe-area-inset-bottom)]"
         aria-label={t('mobileNav.label')}
       >
         <div className="flex items-stretch h-16">
@@ -253,7 +253,7 @@ export default function MobileBottomNav() {
               className={`flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[44px] min-w-[44px] transition-colors ${
                 isActive
                   ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-500 dark:text-gray-400 active:text-gray-700 dark:active:text-gray-300'
+                  : 'text-muted active:text-gray-700 dark:active:text-gray-300'
               }`}
               aria-label={t(labelKey)}
               aria-current={key === 'home' && isHome ? 'page' : undefined}

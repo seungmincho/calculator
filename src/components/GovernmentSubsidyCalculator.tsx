@@ -684,8 +684,8 @@ export default function GovernmentSubsidyCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -693,14 +693,14 @@ export default function GovernmentSubsidyCalculator() {
         {/* Left: Input Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4 sticky top-24`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-500" />
               {t('input.title')}
             </h2>
 
             {/* 가구원수 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.householdSize')}
               </label>
               <select
@@ -716,7 +716,7 @@ export default function GovernmentSubsidyCalculator() {
 
             {/* 월 가구소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.monthlyIncome')}
               </label>
               <div className="relative">
@@ -726,13 +726,13 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('monthlyIncome', parseNumberInput(e.target.value))}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
               </div>
             </div>
 
             {/* 총 재산 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.totalAssets')}
               </label>
               <div className="relative">
@@ -742,13 +742,13 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('totalAssets', parseNumberInput(e.target.value))}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
               </div>
             </div>
 
             {/* 나이 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.age')}
               </label>
               <div className="relative">
@@ -760,13 +760,13 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('age', parseInt(e.target.value) || 0)}
                   className={`w-full px-3 py-2 pr-10 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.years')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.years')}</span>
               </div>
             </div>
 
             {/* 주거 형태 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.housingType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -777,7 +777,7 @@ export default function GovernmentSubsidyCalculator() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       input.housingType === type
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`input.housing.${type}`)}
@@ -790,7 +790,7 @@ export default function GovernmentSubsidyCalculator() {
             {input.housingType === 'monthly' && (
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('input.monthlyRent')}
                   </label>
                   <div className="relative">
@@ -800,11 +800,11 @@ export default function GovernmentSubsidyCalculator() {
                       onChange={e => updateInput('monthlyRent', parseNumberInput(e.target.value))}
                       className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('input.deposit')}
                   </label>
                   <div className="relative">
@@ -814,7 +814,7 @@ export default function GovernmentSubsidyCalculator() {
                       onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
                       className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
                   </div>
                 </div>
               </div>
@@ -822,7 +822,7 @@ export default function GovernmentSubsidyCalculator() {
 
             {input.housingType === 'jeonse' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('input.deposit')}
                 </label>
                 <div className="relative">
@@ -832,14 +832,14 @@ export default function GovernmentSubsidyCalculator() {
                     onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
                     className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
                 </div>
               </div>
             )}
 
             {/* Toggle checkboxes */}
-            <div className="space-y-3 pt-2 border-t border-gray-200 dark:border-gray-700">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="space-y-3 pt-2 border-t border-line">
+              <label className="block text-sm font-medium text-body">
                 {t('input.specialConditions')}
               </label>
 
@@ -854,12 +854,12 @@ export default function GovernmentSubsidyCalculator() {
                   }}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('input.hasMinorChildren')}</span>
+                <span className="text-sm text-body">{t('input.hasMinorChildren')}</span>
               </label>
 
               {input.hasMinorChildren && (
                 <div className="ml-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('input.childrenCount')}
                   </label>
                   <input
@@ -880,7 +880,7 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('isSingleParent', e.target.checked)}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('input.isSingleParent')}</span>
+                <span className="text-sm text-body">{t('input.isSingleParent')}</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -890,7 +890,7 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('isDisabled', e.target.checked)}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('input.isDisabled')}</span>
+                <span className="text-sm text-body">{t('input.isDisabled')}</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -900,7 +900,7 @@ export default function GovernmentSubsidyCalculator() {
                   onChange={e => updateInput('isOver65', e.target.checked)}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('input.isOver65')}</span>
+                <span className="text-sm text-body">{t('input.isOver65')}</span>
               </label>
             </div>
 
@@ -915,7 +915,7 @@ export default function GovernmentSubsidyCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-colors"
                 title={t('input.reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -930,7 +930,7 @@ export default function GovernmentSubsidyCalculator() {
           {summary && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-fg">
                   {t('result.summaryTitle')}
                 </h2>
                 <button
@@ -968,19 +968,19 @@ export default function GovernmentSubsidyCalculator() {
           {/* Median Income Visualization */}
           {results && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-medium text-body mb-3">
                 {t('result.medianComparison')}
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('result.yourIncome')}: {formatNumber(input.monthlyIncome)}{t('input.manwon')}
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-fg">
                     {t('result.medianPercent', { percent: Math.round(incomeRatio * 100) })}
                   </span>
                 </div>
-                <div className="relative h-8 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div className="relative h-8 bg-track rounded-full overflow-hidden">
                   {/* Threshold markers */}
                   {[32, 40, 48, 50, 60, 100].map(pct => (
                     <div
@@ -988,7 +988,7 @@ export default function GovernmentSubsidyCalculator() {
                       className="absolute top-0 bottom-0 w-px bg-gray-400 dark:bg-gray-500"
                       style={{ left: `${Math.min(pct, 100)}%` }}
                     >
-                      <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                      <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-muted whitespace-nowrap">
                         {pct}%
                       </span>
                     </div>
@@ -999,7 +999,7 @@ export default function GovernmentSubsidyCalculator() {
                     style={{ width: `${Math.min(incomeRatio * 100, 100)}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] text-gray-400 dark:text-gray-500">
+                <div className="flex justify-between text-[10px] text-faint">
                   <span>{t('result.thresholdLabels.livelihood')}</span>
                   <span>{t('result.thresholdLabels.medical')}</span>
                   <span>{t('result.thresholdLabels.housing')}</span>
@@ -1034,7 +1034,7 @@ export default function GovernmentSubsidyCalculator() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-medium text-gray-900 dark:text-white text-sm">
+                          <span className="font-medium text-fg text-sm">
                             {t(`programs.${result.id}.name`)}
                           </span>
                           <StatusBadge status={result.status} />
@@ -1051,23 +1051,23 @@ export default function GovernmentSubsidyCalculator() {
                     </button>
 
                     {isExpanded && (
-                      <div className="px-6 pb-4 border-t border-gray-100 dark:border-gray-700 pt-3 space-y-3">
+                      <div className="px-6 pb-4 border-t border-line pt-3 space-y-3">
                         {/* Requirements */}
                         <div>
-                          <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">
+                          <h4 className="text-xs font-medium text-muted uppercase mb-1">
                             {t('result.requirements')}
                           </h4>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                          <p className="text-sm text-body">
                             {t(`programs.${result.id}.requirements`)}
                           </p>
                         </div>
 
                         {/* Benefit details */}
                         <div>
-                          <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">
+                          <h4 className="text-xs font-medium text-muted uppercase mb-1">
                             {t('result.benefitDetail')}
                           </h4>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                          <p className="text-sm text-body">
                             {t(`programs.${result.id}.benefit`)}
                           </p>
                         </div>
@@ -1088,10 +1088,10 @@ export default function GovernmentSubsidyCalculator() {
 
                         {/* How to apply */}
                         <div>
-                          <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">
+                          <h4 className="text-xs font-medium text-muted uppercase mb-1">
                             {t('result.howToApply')}
                           </h4>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                          <p className="text-sm text-body">
                             {t(`programs.${result.id}.apply`)}
                           </p>
                         </div>
@@ -1107,10 +1107,10 @@ export default function GovernmentSubsidyCalculator() {
           {!results && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400 mb-2">
+              <h3 className="text-lg font-medium text-muted mb-2">
                 {t('result.emptyTitle')}
               </h3>
-              <p className="text-sm text-gray-400 dark:text-gray-500">
+              <p className="text-sm text-faint">
                 {t('result.emptyDescription')}
               </p>
             </div>

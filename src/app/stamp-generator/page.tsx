@@ -83,7 +83,7 @@ export default function StampGeneratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <StampGenerator />
@@ -98,17 +98,17 @@ export default function StampGeneratorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             인감 도장 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             인감 도장 생성기는 한국어 이름(1~4글자)을 입력해 원형·사각·타원 모양의 도장 이미지를 무료로 만들 수 있는 온라인 도구입니다. 전통 붉은 인감부터 현대적인 파란색·검정 스타일, 명조·고딕·붓글씨 글꼴 3종을 선택할 수 있으며, 투명 배경 PNG로 다운로드하여 문서·이미지에 바로 활용할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             도장 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>투명 배경 PNG 활용:</strong> 배경이 투명한 PNG로 저장하면 어떤 색상의 문서에도 자연스럽게 삽입되며, Word·한글·PPT에서 바로 붙여넣기 가능합니다.</li>
             <li><strong>글꼴 선택 기준:</strong> 공식 문서엔 명조체, 현대적인 디자인엔 고딕체, 전통적인 느낌엔 붓글씨체를 선택하면 더 어울리는 도장을 만들 수 있습니다.</li>
             <li><strong>크기 및 테두리 조절:</strong> 문서 내 삽입할 위치에 맞게 도장 크기와 테두리 굵기를 조절하여 보기 좋은 비율로 설정하세요.</li>

@@ -182,8 +182,8 @@ export default function LlmTokenCalculator() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -191,7 +191,7 @@ export default function LlmTokenCalculator() {
         <div className="lg:col-span-1 space-y-6">
           {/* 모델 선택 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-body">
               {t('selectedModel')}
             </label>
             <select
@@ -209,7 +209,7 @@ export default function LlmTokenCalculator() {
             </select>
 
             {/* 모델 정보 */}
-            <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+            <div className="text-xs text-muted space-y-1">
               <div className="flex justify-between">
                 <span>{t('contextWindow')}</span>
                 <span className="font-mono">{formatContext(selectedModel.contextWindow)}</span>
@@ -228,7 +228,7 @@ export default function LlmTokenCalculator() {
           {/* 출력 토큰 + 환율 설정 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('outputTokensLabel')}
               </label>
               <input
@@ -240,7 +240,7 @@ export default function LlmTokenCalculator() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('exchangeRate')} (USD → KRW)
               </label>
               <input
@@ -255,7 +255,7 @@ export default function LlmTokenCalculator() {
           {/* 결과 카드 */}
           {text.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('estimatedCost')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('estimatedCost')}</h2>
 
               {/* 토큰 수 */}
               <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
@@ -263,30 +263,30 @@ export default function LlmTokenCalculator() {
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {formatNumber(inputTokens)}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{t('inputTokens')}</div>
+                  <div className="text-sm text-muted">{t('inputTokens')}</div>
                 </div>
               </div>
 
               {/* 텍스트 통계 */}
               <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
-                  <div className="font-bold text-gray-900 dark:text-white">{formatNumber(textAnalysis.charCount)}</div>
-                  <div className="text-gray-500 dark:text-gray-400">{t('charCount')}</div>
+                <div className="bg-subtle rounded-lg p-2">
+                  <div className="font-bold text-fg">{formatNumber(textAnalysis.charCount)}</div>
+                  <div className="text-muted">{t('charCount')}</div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
-                  <div className="font-bold text-gray-900 dark:text-white">{formatNumber(textAnalysis.words)}</div>
-                  <div className="text-gray-500 dark:text-gray-400">{t('wordCount')}</div>
+                <div className="bg-subtle rounded-lg p-2">
+                  <div className="font-bold text-fg">{formatNumber(textAnalysis.words)}</div>
+                  <div className="text-muted">{t('wordCount')}</div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
-                  <div className="font-bold text-gray-900 dark:text-white">{formatNumber(textAnalysis.lines)}</div>
-                  <div className="text-gray-500 dark:text-gray-400">{t('lineCount')}</div>
+                <div className="bg-subtle rounded-lg p-2">
+                  <div className="font-bold text-fg">{formatNumber(textAnalysis.lines)}</div>
+                  <div className="text-muted">{t('lineCount')}</div>
                 </div>
               </div>
 
               {/* 한국어 비율 */}
               {textAnalysis.koreanRatio > 0 && (
                 <div className="text-xs">
-                  <div className="flex justify-between mb-1 text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-between mb-1 text-sub">
                     <span>한국어 {(textAnalysis.koreanRatio * 100).toFixed(1)}%</span>
                     <span>English {((1 - textAnalysis.koreanRatio) * 100).toFixed(1)}%</span>
                   </div>
@@ -296,21 +296,21 @@ export default function LlmTokenCalculator() {
                       style={{ width: `${textAnalysis.koreanRatio * 100}%` }}
                     />
                   </div>
-                  <p className="text-gray-500 dark:text-gray-400 mt-1 text-xs">{t('koreanNote')}</p>
+                  <p className="text-muted mt-1 text-xs">{t('koreanNote')}</p>
                 </div>
               )}
 
               {/* 비용 */}
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-sub">
                   <span>{t('inputCost')}</span>
                   <span>{formatUSD(cost.inputCostUSD)} ({formatKRW(cost.inputCostUSD, exchangeRate)})</span>
                 </div>
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-sub">
                   <span>{t('outputCost')}</span>
                   <span>{formatUSD(cost.outputCostUSD)} ({formatKRW(cost.outputCostUSD, exchangeRate)})</span>
                 </div>
-                <div className="flex justify-between font-bold text-gray-900 dark:text-white border-t border-gray-200 dark:border-gray-600 pt-2">
+                <div className="flex justify-between font-bold text-fg border-t border-line pt-2">
                   <span>{t('totalCost')}</span>
                   <span>{formatUSD(cost.totalCostUSD)} ({formatKRW(cost.totalCostUSD, exchangeRate)})</span>
                 </div>
@@ -322,7 +322,7 @@ export default function LlmTokenCalculator() {
                   `${selectedModel.name}: ${formatNumber(inputTokens)} tokens, ${formatUSD(cost.totalCostUSD)}`,
                   'result'
                 )}
-                className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm transition-colors"
               >
                 {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {copiedId === 'result' ? t('copied') : t('copy')}
@@ -336,13 +336,13 @@ export default function LlmTokenCalculator() {
           {/* 텍스트 입력 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="text-sm font-medium text-body">
                 {t('inputLabel')}
               </label>
               <div className="flex gap-2">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg px-3 py-1.5 transition-colors"
+                  className="flex items-center gap-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg px-3 py-1.5 transition-colors"
                 >
                   <Upload className="w-3 h-3" />
                   {t('fileUpload')}
@@ -382,7 +382,7 @@ export default function LlmTokenCalculator() {
               />
               {!text && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="text-center text-gray-400 dark:text-gray-500">
+                  <div className="text-center text-faint">
                     <Upload className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p className="text-xs">{t('fileUploadDesc')}</p>
                   </div>
@@ -390,21 +390,21 @@ export default function LlmTokenCalculator() {
               )}
             </div>
             {!text && (
-              <p className="text-sm text-gray-400 dark:text-gray-500 text-center">{t('noText')}</p>
+              <p className="text-sm text-faint text-center">{t('noText')}</p>
             )}
           </div>
 
           {/* 모델 비교 테이블 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('modelComparison')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('modelComparison')}</h2>
               <div className="flex gap-1">
                 <button
                   onClick={() => setFilterProvider('all')}
                   className={`px-3 py-1 text-xs rounded-full transition-colors ${
                     filterProvider === 'all'
                       ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('allModels')}
@@ -416,7 +416,7 @@ export default function LlmTokenCalculator() {
                     className={`px-3 py-1 text-xs rounded-full transition-colors ${
                       filterProvider === p
                         ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {p}
@@ -427,7 +427,7 @@ export default function LlmTokenCalculator() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 text-xs">
+                  <tr className="border-b border-line text-muted text-xs">
                     <th className="text-left py-2 pr-2">{t('modelName')}</th>
                     <th className="text-left py-2 pr-2">{t('provider')}</th>
                     <th className="text-right py-2 pr-2">{t('contextWindow')}</th>
@@ -442,11 +442,11 @@ export default function LlmTokenCalculator() {
                     <tr
                       key={m.id}
                       onClick={() => setSelectedModelId(m.id)}
-                      className={`border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-750 ${
+                      className={`border-b border-line cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-750 ${
                         m.id === selectedModelId ? 'bg-blue-50 dark:bg-blue-950' : ''
                       }`}
                     >
-                      <td className="py-2 pr-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                      <td className="py-2 pr-2 font-medium text-fg whitespace-nowrap">
                         {m.name}
                       </td>
                       <td className="py-2 pr-2">
@@ -454,13 +454,13 @@ export default function LlmTokenCalculator() {
                           {m.provider}
                         </span>
                       </td>
-                      <td className="py-2 pr-2 text-right font-mono text-gray-600 dark:text-gray-400">
+                      <td className="py-2 pr-2 text-right font-mono text-sub">
                         {formatContext(m.contextWindow)}
                       </td>
-                      <td className="py-2 pr-2 text-right font-mono text-gray-600 dark:text-gray-400">
+                      <td className="py-2 pr-2 text-right font-mono text-sub">
                         ${m.inputPricePer1M.toFixed(2)}
                       </td>
-                      <td className="py-2 pr-2 text-right font-mono text-gray-600 dark:text-gray-400">
+                      <td className="py-2 pr-2 text-right font-mono text-sub">
                         ${m.outputPricePer1M.toFixed(2)}
                       </td>
                       {text && (
@@ -469,7 +469,7 @@ export default function LlmTokenCalculator() {
                         </td>
                       )}
                       {text && (
-                        <td className="py-2 text-right font-mono text-gray-900 dark:text-white whitespace-nowrap">
+                        <td className="py-2 text-right font-mono text-fg whitespace-nowrap">
                           {formatUSD(c.totalCostUSD)}
                           <span className="text-xs text-gray-400 ml-1">({formatKRW(c.totalCostUSD, exchangeRate)})</span>
                         </td>
@@ -489,7 +489,7 @@ export default function LlmTokenCalculator() {
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center justify-between w-full text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
@@ -499,13 +499,13 @@ export default function LlmTokenCalculator() {
         {showGuide && (
           <div className="mt-6 grid md:grid-cols-3 gap-6">
             {(['whatIsToken', 'koreanTokens', 'costTips'] as const).map((section) => (
-              <div key={section} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+              <div key={section} className="bg-subtle rounded-xl p-4">
+                <h3 className="font-semibold text-fg mb-3">
                   {t(`guide.${section}.title`)}
                 </h3>
                 <ul className="space-y-2">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <li key={i} className="flex items-start gap-2 text-sm text-sub">
                       <span className="text-blue-500 mt-0.5 shrink-0">•</span>
                       {item}
                     </li>

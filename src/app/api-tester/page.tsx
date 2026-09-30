@@ -77,7 +77,7 @@ export default function ApiTesterPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ApiTester />
@@ -92,17 +92,17 @@ export default function ApiTesterPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             API 테스터란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             API 테스터는 Postman, Insomnia 같은 별도 설치 없이 브라우저에서 바로 REST API를 테스트할 수 있는 무료 온라인 개발 도구입니다. GET, POST, PUT, DELETE 등 모든 HTTP 메서드를 지원하며, 요청 헤더 편집, JSON 본문 작성, Bearer Token 및 Basic Auth 인증까지 설정할 수 있습니다. 응답 시간, 상태 코드, 응답 본문 분석은 물론 cURL, fetch, axios 코드를 자동 생성하여 개발 워크플로를 가속화합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             API 테스터 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>환경 변수 활용:</strong> {`{{baseUrl}}`}, {`{{token}}`} 같은 변수를 설정하면 공통 URL이나 인증 토큰을 한 번만 입력하고 재사용할 수 있습니다.</li>
             <li><strong>코드 자동 생성:</strong> 요청을 구성한 뒤 cURL 또는 fetch 코드 생성 버튼을 누르면 바로 코드에 붙여넣을 수 있는 스니펫이 만들어집니다.</li>
             <li><strong>히스토리 활용:</strong> 최근 20건의 요청이 자동 저장되므로 반복 테스트 시 이전 요청을 불러와 수정하면 시간을 절약할 수 있습니다.</li>

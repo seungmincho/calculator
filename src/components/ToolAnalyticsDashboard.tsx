@@ -156,7 +156,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
       <div
@@ -167,16 +167,16 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-line shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 id="analytics-title" className="text-lg font-bold text-gray-900 dark:text-white">
+              <h2 id="analytics-title" className="text-lg font-bold text-fg">
                 {t('analyticsDashboard.title')}
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted">
                 {t('analyticsDashboard.subtitle')}
               </p>
             </div>
@@ -192,7 +192,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         </div>
 
         {/* Summary Cards */}
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+        <div className="px-6 py-4 border-b border-line shrink-0">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{totalClicks.toLocaleString()}</div>
@@ -216,14 +216,14 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         </div>
 
         {/* Category Tabs */}
-        <div className="px-6 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
+        <div className="px-6 py-3 border-b border-line shrink-0">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveCategory('all')}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 activeCategory === 'all'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  : 'bg-gray-100 dark:bg-gray-800 text-sub hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {t('header.all')} ({allTools.length})
@@ -235,7 +235,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   activeCategory === key
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 dark:bg-gray-800 text-sub hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
               >
                 {categoryEmoji[key]} {t(menuConfig[key].titleKey)} ({categoryStats[key]?.clicks.toLocaleString() ?? 0})
@@ -250,17 +250,17 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
             <div className="space-y-3">
               {[...Array(10)].map((_, i) => (
                 <div key={i} className="flex items-center gap-4 p-3 rounded-xl animate-pulse">
-                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                  <div className="w-8 h-8 bg-track rounded-lg" />
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-2" />
-                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-4 bg-track rounded w-1/3 mb-2" />
+                    <div className="h-2 bg-track rounded w-full" />
                   </div>
-                  <div className="w-16 h-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                  <div className="w-16 h-4 bg-track rounded" />
                 </div>
               ))}
             </div>
           ) : filteredTools.length === 0 ? (
-            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-12 text-muted">
               <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p>{t('analyticsDashboard.noData')}</p>
             </div>
@@ -282,7 +282,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 ${
                       isTop3
                         ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-sm'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                        : 'bg-gray-100 dark:bg-gray-800 text-muted'
                     }`}>
                       {isTop3 ? <Trophy className="w-4 h-4" /> : globalRank}
                     </div>
@@ -295,7 +295,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+                        <span className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
                           {t(tool.labelKey)}
                         </span>
                         <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium shrink-0 ${categoryColors[tool.categoryKey]}`}>
@@ -317,12 +317,12 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
 
                     {/* Count */}
                     <div className="text-right shrink-0 ml-2">
-                      <div className="flex items-center gap-1 text-sm font-semibold text-gray-900 dark:text-white tabular-nums">
+                      <div className="flex items-center gap-1 text-sm font-semibold text-fg tabular-nums">
                         <Eye className="w-3.5 h-3.5 text-gray-400" />
                         {tool.clickCount.toLocaleString()}
                       </div>
                       {totalClicks > 0 && tool.clickCount > 0 && (
-                        <div className="text-[10px] text-gray-400 dark:text-gray-500 tabular-nums">
+                        <div className="text-[10px] text-faint tabular-nums">
                           {((tool.clickCount / totalClicks) * 100).toFixed(1)}%
                         </div>
                       )}
@@ -335,8 +335,8 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-700 shrink-0">
-          <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
+        <div className="px-6 py-3 border-t border-line shrink-0">
+          <p className="text-xs text-faint text-center">
             {t('analyticsDashboard.footer')}
           </p>
         </div>

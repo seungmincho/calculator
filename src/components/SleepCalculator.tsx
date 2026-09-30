@@ -196,15 +196,15 @@ export default function SleepCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Moon className="text-indigo-500" size={28} />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check size={16} className="text-green-500" /> : <Link size={16} />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -213,7 +213,7 @@ export default function SleepCalculator() {
 
       {/* Current Time Display */}
       <div className={`${glassCard} ${glassInset} p-6 text-center`}>
-        <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-center gap-1.5">
+        <div className="text-sm text-muted mb-2 flex items-center justify-center gap-1.5">
           <Clock size={14} />
           {t('currentTime')}
         </div>
@@ -225,7 +225,7 @@ export default function SleepCalculator() {
             {String(currentTime.getSeconds()).padStart(2, '0')}
           </span>
         </div>
-        <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+        <div className="text-xs text-faint mt-1">
           {currentTime.toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: 'long',
@@ -237,7 +237,7 @@ export default function SleepCalculator() {
 
       {/* Mode Toggle */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        <div className="flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1">
+        <div className="flex rounded-lg bg-soft p-1">
           <button
             onClick={() => {
               setMode('sleepNow')
@@ -246,7 +246,7 @@ export default function SleepCalculator() {
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-colors ${
               mode === 'sleepNow'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
             }`}
           >
             <Moon size={16} />
@@ -260,7 +260,7 @@ export default function SleepCalculator() {
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-colors ${
               mode === 'wakeAt'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
             }`}
           >
             <AlarmClock size={16} />
@@ -270,7 +270,7 @@ export default function SleepCalculator() {
 
         {/* Fall asleep time setting */}
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="text-sm font-medium text-body">
             {t('fallAsleepTime')}
           </label>
           <div className="flex items-center gap-2">
@@ -285,7 +285,7 @@ export default function SleepCalculator() {
               }}
               className={`${glassInput} w-20 px-3 py-2 text-center`}
             />
-            <span className="text-sm text-gray-500 dark:text-gray-400">{t('minutes')}</span>
+            <span className="text-sm text-muted">{t('minutes')}</span>
           </div>
         </div>
 
@@ -293,7 +293,7 @@ export default function SleepCalculator() {
         {mode === 'wakeAt' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <label className="text-sm font-medium text-body flex items-center gap-1.5">
                 <AlarmClock size={16} className="text-indigo-500" />
                 {t('wakeUpAt')}
               </label>
@@ -318,7 +318,7 @@ export default function SleepCalculator() {
       {/* Results */}
       {showResults && options.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             {mode === 'sleepNow' ? <Sun size={20} className="text-amber-500" /> : <Moon size={20} className="text-indigo-500" />}
             {mode === 'sleepNow' ? t('resultTitleWakeUp') : t('resultTitleBedTime')}
           </h2>
@@ -343,15 +343,15 @@ export default function SleepCalculator() {
                   </div>
 
                   {/* Time */}
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white font-mono tabular-nums">
+                  <div className="text-2xl font-bold text-fg font-mono tabular-nums">
                     {formatTime(opt.time)}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 font-mono mt-0.5">
+                  <div className="text-xs text-muted font-mono mt-0.5">
                     ({formatTime24(opt.time)})
                   </div>
 
                   {/* Total sleep */}
-                  <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                  <div className="mt-2 text-sm text-sub flex items-center gap-1">
                     <Clock size={13} />
                     {t('totalSleep')}: {formatHoursMinutes(opt.totalMinutes)}
                   </div>
@@ -372,18 +372,18 @@ export default function SleepCalculator() {
 
       {/* Age Group Sleep Recommendations */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <AlarmClock size={20} className="text-indigo-500" />
           {t('ageGroupTitle')}
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left py-2 px-3 font-medium text-gray-600 dark:text-gray-400">
+              <tr className="border-b border-line">
+                <th className="text-left py-2 px-3 font-medium text-sub">
                   {t('ageGroupLabel')}
                 </th>
-                <th className="text-right py-2 px-3 font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-right py-2 px-3 font-medium text-sub">
                   {t('recommendedHours')}
                 </th>
               </tr>
@@ -398,8 +398,8 @@ export default function SleepCalculator() {
                       : ''
                   }`}
                 >
-                  <td className="py-2 px-3 text-gray-800 dark:text-gray-200">{row.age}</td>
-                  <td className="py-2 px-3 text-right text-gray-600 dark:text-gray-400">
+                  <td className="py-2 px-3 text-body">{row.age}</td>
+                  <td className="py-2 px-3 text-right text-sub">
                     {row.hours} {t('hoursLabel')}
                   </td>
                 </tr>
@@ -407,19 +407,19 @@ export default function SleepCalculator() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('ageGroupSource')}</p>
+        <p className="text-xs text-faint mt-3">{t('ageGroupSource')}</p>
       </div>
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen size={20} className="text-indigo-500" />
           {t('guideTitle')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {/* Healthy Habits */}
           <div>
-            <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-1.5">
+            <h3 className="font-medium text-body mb-3 flex items-center gap-1.5">
               <Moon size={16} className="text-indigo-500" />
               {t('guideHabitsTitle')}
             </h3>
@@ -427,7 +427,7 @@ export default function SleepCalculator() {
               {(t.raw('guideHabitsItems') as string[]).map((item, i) => (
                 <li
                   key={i}
-                  className="flex gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex gap-2 text-sm text-sub"
                 >
                   <span className="flex-shrink-0 text-indigo-500 mt-0.5">•</span>
                   {item}
@@ -438,7 +438,7 @@ export default function SleepCalculator() {
 
           {/* Sleep Science */}
           <div>
-            <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-1.5">
+            <h3 className="font-medium text-body mb-3 flex items-center gap-1.5">
               <Sun size={16} className="text-amber-500" />
               {t('guideScienceTitle')}
             </h3>
@@ -446,7 +446,7 @@ export default function SleepCalculator() {
               {(t.raw('guideScienceItems') as string[]).map((item, i) => (
                 <li
                   key={i}
-                  className="flex gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex gap-2 text-sm text-sub"
                 >
                   <span className="flex-shrink-0 text-amber-500 mt-0.5">•</span>
                   {item}
@@ -457,7 +457,7 @@ export default function SleepCalculator() {
 
           {/* Tips */}
           <div>
-            <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-1.5">
+            <h3 className="font-medium text-body mb-3 flex items-center gap-1.5">
               <Clock size={16} className="text-emerald-500" />
               {t('guideTipsTitle')}
             </h3>
@@ -465,7 +465,7 @@ export default function SleepCalculator() {
               {(t.raw('guideTipsItems') as string[]).map((item, i) => (
                 <li
                   key={i}
-                  className="flex gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex gap-2 text-sm text-sub"
                 >
                   <span className="flex-shrink-0 text-emerald-500 mt-0.5">•</span>
                   {item}

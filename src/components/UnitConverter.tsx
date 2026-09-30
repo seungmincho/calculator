@@ -131,11 +131,11 @@ export default function UnitConverter() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Ruler className="w-7 h-7 text-cyan-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -149,7 +149,7 @@ export default function UnitConverter() {
             className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
               category === cat
                 ? 'bg-cyan-500 text-white shadow-md'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {t(`categories.${cat}`)}
@@ -158,11 +158,11 @@ export default function UnitConverter() {
       </div>
 
       {/* Converter */}
-      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
+      <div className={`${glassCard} ${glassInset} border border-line p-6 mb-6`}>
         <div className="grid md:grid-cols-[1fr,auto,1fr] gap-4 items-end">
           {/* From */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('from')}
             </label>
             <div className="flex gap-2">
@@ -170,13 +170,13 @@ export default function UnitConverter() {
                 type="number"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-lg font-mono"
+                className="flex-1 px-4 py-3 rounded-lg border border-line bg-field text-fg text-lg font-mono"
                 placeholder="0"
               />
               <select
                 value={fromUnit}
                 onChange={(e) => setFromUnit(e.target.value)}
-                className="px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium"
+                className="px-4 py-3 rounded-lg border border-line bg-field text-fg font-medium"
               >
                 {Object.entries(currentUnits).map(([key, unit]) => (
                   <option key={key} value={key}>{unit.name}</option>
@@ -188,7 +188,7 @@ export default function UnitConverter() {
           {/* Swap Button */}
           <button
             onClick={handleSwap}
-            className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all self-end mb-1"
+            className="p-3 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-all self-end mb-1"
             title={t('swap')}
           >
             <ArrowRightLeft className="w-5 h-5" />
@@ -196,17 +196,17 @@ export default function UnitConverter() {
 
           {/* To */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('to')}
             </label>
             <div className="flex gap-2">
-              <div className="flex-1 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white text-lg font-mono">
+              <div className="flex-1 px-4 py-3 rounded-lg border border-line bg-subtle text-fg text-lg font-mono">
                 {result || '0'}
               </div>
               <select
                 value={toUnit}
                 onChange={(e) => setToUnit(e.target.value)}
-                className="px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium"
+                className="px-4 py-3 rounded-lg border border-line bg-field text-fg font-medium"
               >
                 {Object.entries(currentUnits).map(([key, unit]) => (
                   <option key={key} value={key}>{unit.name}</option>
@@ -231,8 +231,8 @@ export default function UnitConverter() {
 
       {/* Quick Conversions */}
       {inputValue && !isNaN(parseFloat(inputValue)) && (
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
+        <div className={`${glassCard} ${glassInset} border border-line p-6 mb-6`}>
+          <h3 className="text-sm font-medium text-body mb-4">
             {t('quickConversions')}
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -245,9 +245,9 @@ export default function UnitConverter() {
                 ? converted.toExponential(4)
                 : converted.toLocaleString(undefined, { maximumFractionDigits: 6 })
               return (
-                <div key={key} className="px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{unit.name}</span>
-                  <p className="font-mono text-gray-900 dark:text-white truncate">{displayValue}</p>
+                <div key={key} className="px-3 py-2 rounded-lg bg-subtle">
+                  <span className="text-xs text-muted">{unit.name}</span>
+                  <p className="font-mono text-fg truncate">{displayValue}</p>
                 </div>
               )
             })}
@@ -256,13 +256,13 @@ export default function UnitConverter() {
       )}
 
       {/* Guide */}
-      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`${glassCard} ${glassInset} border border-line p-6`}>
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-400">
+        <div className="grid md:grid-cols-2 gap-6 text-sm text-sub">
           <div>
-            <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">{t('guide.supported.title')}</h3>
+            <h3 className="font-medium text-body mb-2">{t('guide.supported.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.supported.items') as string[]).map((item, idx) => (
                 <li key={idx}>• {item}</li>
@@ -270,7 +270,7 @@ export default function UnitConverter() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">{t('guide.tips.title')}</h3>
+            <h3 className="font-medium text-body mb-2">{t('guide.tips.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx}>• {item}</li>

@@ -327,12 +327,12 @@ export default function NameCompatibility() {
 
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center justify-center gap-2">
           <Heart className="w-6 h-6 text-pink-500" />
           {t('title')}
           <Heart className="w-6 h-6 text-pink-500" />
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Card */}
@@ -344,7 +344,7 @@ export default function NameCompatibility() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('name1')}
                   </label>
                   <input
@@ -357,7 +357,7 @@ export default function NameCompatibility() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('name2')}
                   </label>
                   <input
@@ -391,11 +391,11 @@ export default function NameCompatibility() {
             <div className="space-y-6">
               {/* Names display */}
               <div className="text-center">
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                <span className="text-xl font-bold text-fg">
                   {name1.trim()}
                 </span>
                 <span className="text-xl text-pink-500 mx-2">{t('and')}</span>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                <span className="text-xl font-bold text-fg">
                   {name2.trim()}
                 </span>
               </div>
@@ -403,7 +403,7 @@ export default function NameCompatibility() {
               {/* Step 1: Interleaved characters */}
               {animStep >= 0 && (
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('step1')}</h3>
+                  <h3 className="text-sm font-medium text-muted">{t('step1')}</h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {interleaved.map((char, i) => (
                       <div
@@ -411,7 +411,7 @@ export default function NameCompatibility() {
                         className="flex flex-col items-center p-2 bg-pink-50 dark:bg-pink-950 rounded-lg transition-all duration-300"
                         style={{ animationDelay: `${i * 80}ms` }}
                       >
-                        <span className="text-lg font-bold text-gray-900 dark:text-white">{char}</span>
+                        <span className="text-lg font-bold text-fg">{char}</span>
                         {animStep >= 1 && (
                           <div className="flex gap-0.5 mt-1">
                             {renderJamoBreakdown(char)}
@@ -426,7 +426,7 @@ export default function NameCompatibility() {
               {/* Step 2: Stroke numbers */}
               {animStep >= 1 && (
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('step2')}</h3>
+                  <h3 className="text-sm font-medium text-muted">{t('step2')}</h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {strokeNumbers.map((num, i) => (
                       <div
@@ -443,7 +443,7 @@ export default function NameCompatibility() {
               {/* Step 3: Reduction rows */}
               {animStep >= 2 && (
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('step3')}</h3>
+                  <h3 className="text-sm font-medium text-muted">{t('step3')}</h3>
                   <div className="space-y-1">
                     {reductionRows.map((row, rowIdx) => (
                       rowIdx > 0 && rowIdx <= visibleRows && (
@@ -470,7 +470,7 @@ export default function NameCompatibility() {
               {/* Calculating indicator */}
               {phase === 'calculating' && (
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                  <p className="text-sm text-muted animate-pulse">
                     {t('calculating')}
                   </p>
                 </div>
@@ -480,7 +480,7 @@ export default function NameCompatibility() {
               {showResult && (
                 <div ref={resultCardRef} className="space-y-4">
                   <div className="text-center space-y-3">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('resultTitle')}</h2>
+                    <h2 className="text-lg font-semibold text-fg">{t('resultTitle')}</h2>
 
                     {/* Score circle */}
                     <div className="relative inline-flex items-center justify-center">
@@ -535,7 +535,7 @@ export default function NameCompatibility() {
                   {/* Retry */}
                   <button
                     onClick={reset}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
                   >
                     <RefreshCw className="w-4 h-4" />
                     {t('retryButton')}
@@ -556,7 +556,7 @@ export default function NameCompatibility() {
           >
             <div className="flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-pink-500" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('guide.title')}</h2>
             </div>
             <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${guideOpen ? 'rotate-180' : ''}`} />
           </button>
@@ -565,24 +565,24 @@ export default function NameCompatibility() {
             <div className="px-6 pb-6 space-y-4">
               {/* How it works */}
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-sm font-semibold text-fg mb-2">
                   {t('guide.howItWorks.title')}
                 </h3>
                 <ol className="list-decimal list-inside space-y-1">
                   {(t.raw('guide.howItWorks.items') as string[]).map((item, i) => (
-                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400">{item}</li>
+                    <li key={i} className="text-sm text-sub">{item}</li>
                   ))}
                 </ol>
               </div>
 
               {/* Tips */}
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-sm font-semibold text-fg mb-2">
                   {t('guide.tips.title')}
                 </h3>
                 <ul className="list-disc list-inside space-y-1">
                   {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400">{item}</li>
+                    <li key={i} className="text-sm text-sub">{item}</li>
                   ))}
                 </ul>
               </div>

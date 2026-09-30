@@ -469,8 +469,8 @@ const SavingsCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">적금 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">적금 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             다양한 적금 상품을 비교하고 목표 금액 달성을 위한 최적의 저축 계획을 세워보세요
           </p>
         </div>
@@ -486,13 +486,13 @@ const SavingsCalculatorContent = () => {
 
       {/* Tab Navigation */}
       <div className="flex justify-center mb-8">
-        <div className="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+        <div className="bg-soft p-1 rounded-lg">
           <button
             onClick={() => setActiveTab('calculator')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'calculator'
-                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-                : 'text-gray-600 dark:text-gray-400'
+                ? 'bg-surface text-fg shadow'
+                : 'text-sub'
             }`}
           >
             <Calculator className="w-4 h-4 inline mr-2" />
@@ -502,8 +502,8 @@ const SavingsCalculatorContent = () => {
             onClick={() => setActiveTab('goal')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'goal'
-                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-                : 'text-gray-600 dark:text-gray-400'
+                ? 'bg-surface text-fg shadow'
+                : 'text-sub'
             }`}
           >
             <Target className="w-4 h-4 inline mr-2" />
@@ -513,8 +513,8 @@ const SavingsCalculatorContent = () => {
             onClick={() => setActiveTab('comparison')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'comparison'
-                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-                : 'text-gray-600 dark:text-gray-400'
+                ? 'bg-surface text-fg shadow'
+                : 'text-sub'
             }`}
           >
             <BarChart3 className="w-4 h-4 inline mr-2" />
@@ -527,11 +527,11 @@ const SavingsCalculatorContent = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className={`${glassCard} ${glassInset} p-8`}>
-            <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">적금 정보 입력</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-fg">적금 정보 입력</h2>
             
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   월 납입금액
                 </label>
                 <div className="relative">
@@ -540,14 +540,14 @@ const SavingsCalculatorContent = () => {
                     value={monthlyAmount}
                     onChange={handleMonthlyAmountChange}
                     placeholder="500,000"
-                    className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   />
-                  <span className="absolute right-4 top-4 text-gray-600 dark:text-gray-400 font-medium">원</span>
+                  <span className="absolute right-4 top-4 text-sub font-medium">원</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   연 이자율
                 </label>
                 <div className="relative">
@@ -556,14 +556,14 @@ const SavingsCalculatorContent = () => {
                     value={interestRate}
                     onChange={handleInterestRateChange}
                     placeholder="4.5"
-                    className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   />
-                  <span className="absolute right-4 top-4 text-gray-600 dark:text-gray-400 font-medium">%</span>
+                  <span className="absolute right-4 top-4 text-sub font-medium">%</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   저축기간
                 </label>
                 <div className="flex space-x-2">
@@ -573,10 +573,10 @@ const SavingsCalculatorContent = () => {
                       value={savingsPeriod}
                       onChange={handlePeriodChange}
                       placeholder={periodUnit === 'year' ? '3' : '36'}
-                      className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                      className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                     />
                   </div>
-                  <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+                  <div className="flex bg-soft rounded-xl p-1">
                     <button
                       type="button"
                       onClick={() => {
@@ -585,8 +585,8 @@ const SavingsCalculatorContent = () => {
                       }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'year'
-                          ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                          : 'text-gray-600 dark:text-gray-400'
+                          ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                          : 'text-sub'
                       }`}
                     >
                       년
@@ -599,8 +599,8 @@ const SavingsCalculatorContent = () => {
                       }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'month'
-                          ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                          : 'text-gray-600 dark:text-gray-400'
+                          ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                          : 'text-sub'
                       }`}
                     >
                       개월
@@ -610,7 +610,7 @@ const SavingsCalculatorContent = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   목표금액 (목표적금용)
                 </label>
                 <div className="relative">
@@ -619,14 +619,14 @@ const SavingsCalculatorContent = () => {
                     value={targetAmount}
                     onChange={handleTargetAmountChange}
                     placeholder="20,000,000"
-                    className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   />
-                  <span className="absolute right-4 top-4 text-gray-600 dark:text-gray-400 font-medium">원</span>
+                  <span className="absolute right-4 top-4 text-sub font-medium">원</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-body mb-3">
                   적금 유형 선택
                 </label>
                 <div className="space-y-2">
@@ -638,7 +638,7 @@ const SavingsCalculatorContent = () => {
                         onChange={() => handleTypeToggle(type as SavingsType)}
                         className="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
-                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{name}</span>
+                      <span className="ml-2 text-sm text-body">{name}</span>
                     </label>
                   ))}
                 </div>
@@ -652,13 +652,13 @@ const SavingsCalculatorContent = () => {
               results.map((result) => (
                 <div key={result.type} className={`${glassCard} ${glassInset} p-8`}>
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-semibold text-fg">
                       {savingsTypes[result.type]}
                     </h3>
                     <div className="flex space-x-2">
                       <button
                         onClick={handleShare}
-                        className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                        className="inline-flex items-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-body transition-colors"
                       >
                         {isCopied ? (
                           <>
@@ -722,23 +722,23 @@ const SavingsCalculatorContent = () => {
 
                   {/* 적금 스케줄 미리보기 */}
                   <div className="mt-6">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-3">적금 스케줄 (첫 6개월)</h4>
+                    <h4 className="font-medium text-fg mb-3">적금 스케줄 (첫 6개월)</h4>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="border-b border-gray-200 dark:border-gray-700">
-                            <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">월차</th>
-                            <th className="text-right py-2 font-medium text-gray-700 dark:text-gray-300">월납입</th>
-                            <th className="text-right py-2 font-medium text-gray-700 dark:text-gray-300">누적원금</th>
-                            <th className="text-right py-2 font-medium text-gray-700 dark:text-gray-300">누적이자</th>
-                            <th className="text-right py-2 font-medium text-gray-700 dark:text-gray-300">잔액</th>
+                          <tr className="border-b border-line">
+                            <th className="text-left py-2 font-medium text-body">월차</th>
+                            <th className="text-right py-2 font-medium text-body">월납입</th>
+                            <th className="text-right py-2 font-medium text-body">누적원금</th>
+                            <th className="text-right py-2 font-medium text-body">누적이자</th>
+                            <th className="text-right py-2 font-medium text-body">잔액</th>
                           </tr>
                         </thead>
                         <tbody>
                           {result.schedule.slice(0, 6).map((row) => (
-                            <tr key={row.month} className="border-b border-gray-100 dark:border-gray-700">
-                              <td className="py-2 text-gray-900 dark:text-white">{row.month}개월</td>
-                              <td className="py-2 text-right text-gray-900 dark:text-white">
+                            <tr key={row.month} className="border-b border-line">
+                              <td className="py-2 text-fg">{row.month}개월</td>
+                              <td className="py-2 text-right text-fg">
                                 {formatNumber(row.monthlyDeposit)}원
                               </td>
                               <td className="py-2 text-right text-blue-600 dark:text-blue-400">
@@ -760,7 +760,7 @@ const SavingsCalculatorContent = () => {
               ))
             ) : (
               <div className={`${glassCard} ${glassInset} p-8`}>
-                <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
+                <div className="flex flex-col items-center justify-center h-64 text-faint">
                   <Calculator className="w-16 h-16 mb-4" />
                   <p>적금 정보와 상품 유형을 선택하시면 계산 결과가 나타납니다</p>
                 </div>
@@ -773,7 +773,7 @@ const SavingsCalculatorContent = () => {
       {activeTab === 'goal' && (
         <div className="max-w-4xl mx-auto">
           <div className={`${glassCard} ${glassInset} p-8`}>
-            <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
+            <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
               <Target className="w-6 h-6 mr-2" />
               목표 금액 달성 계획
             </h2>
@@ -820,7 +820,7 @@ const SavingsCalculatorContent = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
+              <div className="flex flex-col items-center justify-center h-64 text-faint">
                 <Target className="w-16 h-16 mb-4" />
                 <p>목표 금액과 저축 기간을 입력하고 '목표적금'을 선택하세요</p>
               </div>
@@ -834,21 +834,21 @@ const SavingsCalculatorContent = () => {
           {results.length > 1 ? (
             <>
               <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
+                <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
                   <BarChart3 className="w-6 h-6 mr-2" />
                   적금 상품 비교
                 </h2>
                 
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
-                    <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-4">만기 수령액 비교</h3>
+                    <h3 className="font-medium text-body mb-4">만기 수령액 비교</h3>
                     <div className="space-y-3">
                       {results.map((result) => (
                         <div key={`final-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="text-sm text-sub">
                             {savingsTypes[result.type]}
                           </span>
-                          <span className="font-medium text-gray-900 dark:text-white">
+                          <span className="font-medium text-fg">
                             {formatNumber(result.finalAmount)}원
                           </span>
                         </div>
@@ -857,11 +857,11 @@ const SavingsCalculatorContent = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-4">총 이자 비교</h3>
+                    <h3 className="font-medium text-body mb-4">총 이자 비교</h3>
                     <div className="space-y-3">
                       {results.map((result) => (
                         <div key={`interest-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="text-sm text-sub">
                             {savingsTypes[result.type]}
                           </span>
                           <span className="font-medium text-green-600 dark:text-green-400">
@@ -873,11 +873,11 @@ const SavingsCalculatorContent = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-4">실질 수익률 비교</h3>
+                    <h3 className="font-medium text-body mb-4">실질 수익률 비교</h3>
                     <div className="space-y-3">
                       {results.map((result) => (
                         <div key={`rate-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="text-sm text-sub">
                             {savingsTypes[result.type]}
                           </span>
                           <span className="font-medium text-purple-600 dark:text-purple-400">
@@ -891,7 +891,7 @@ const SavingsCalculatorContent = () => {
               </div>
 
               <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 상품별 특징</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-fg">💡 상품별 특징</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
                     <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
@@ -914,7 +914,7 @@ const SavingsCalculatorContent = () => {
             </>
           ) : (
             <div className={`${glassCard} ${glassInset} p-8`}>
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
+              <div className="flex flex-col items-center justify-center h-64 text-faint">
                 <BarChart3 className="w-16 h-16 mb-4" />
                 <p>2개 이상의 적금 상품을 선택하시면 비교 분석을 제공합니다</p>
               </div>
@@ -925,32 +925,32 @@ const SavingsCalculatorContent = () => {
 
       {/* 적금 상품 설명 */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">📚 적금 상품 안내</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">📚 적금 상품 안내</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="border-l-4 border-blue-500 pl-4">
-              <h3 className="font-semibold text-gray-900 dark:text-white">정기적금</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-semibold text-fg">정기적금</h3>
+              <p className="text-sm text-sub">
                 매월 일정한 금액을 납입하는 가장 기본적인 적금 상품
               </p>
             </div>
             <div className="border-l-4 border-green-500 pl-4">
-              <h3 className="font-semibold text-gray-900 dark:text-white">자유적금</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-semibold text-fg">자유적금</h3>
+              <p className="text-sm text-sub">
                 납입금액과 횟수를 자유롭게 조절할 수 있는 유연한 적금 상품
               </p>
             </div>
           </div>
           <div className="space-y-4">
             <div className="border-l-4 border-purple-500 pl-4">
-              <h3 className="font-semibold text-gray-900 dark:text-white">목표적금</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-semibold text-fg">목표적금</h3>
+              <p className="text-sm text-sub">
                 목표 금액을 설정하고 이를 달성하기 위한 월 납입액을 계산
               </p>
             </div>
             <div className="border-l-4 border-orange-500 pl-4">
-              <h3 className="font-semibold text-gray-900 dark:text-white">복리적금</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-semibold text-fg">복리적금</h3>
+              <p className="text-sm text-sub">
                 매월 이자가 원금에 더해져 복리 효과를 누리는 적금 상품
               </p>
             </div>
@@ -960,7 +960,7 @@ const SavingsCalculatorContent = () => {
 
       {/* 저축 팁 */}
       <div className={`mt-8 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 오늘의 저축 팁</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 오늘의 저축 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-6">
             <h3 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-2">적금 선택 요령</h3>

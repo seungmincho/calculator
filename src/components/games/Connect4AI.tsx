@@ -161,19 +161,19 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
           {tHub('backToHub')}
         </button>
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-muted">
           <span>{tHub('vsComputer')}</span>
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+          <span className="px-2 py-1 bg-soft rounded">
             {getDifficultyLabel(difficulty)}
           </span>
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="p-2 text-muted hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
             title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
           >
             {soundEnabled ? '🔊' : '🔇'}
@@ -182,22 +182,22 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       </div>
 
       {/* Score Board */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+      <div className="bg-surface rounded-2xl shadow-lg p-4">
         <div className="flex items-center justify-between">
           {/* Player */}
           <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
             gameState.currentTurn === playerColor && !gameState.winner
               ? 'bg-red-500 text-white'
-              : 'bg-gray-100 dark:bg-gray-700'
+              : 'bg-soft'
           }`}>
             <div className="w-10 h-10 bg-red-500 rounded-full border-2 border-red-700 shadow-md flex items-center justify-center">
               <span className="text-white font-bold">{winCount.player}</span>
             </div>
             <div>
-              <p className={`font-medium ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+              <p className={`font-medium ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-white' : 'text-fg'}`}>
                 {tHub('you')}
               </p>
-              <p className={`text-xs ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-red-200' : 'text-gray-500 dark:text-gray-400'}`}>
+              <p className={`text-xs ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-red-200' : 'text-muted'}`}>
                 {t('red') || 'Red'}
               </p>
             </div>
@@ -209,16 +209,16 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
             gameState.currentTurn === aiColor && !gameState.winner
               ? 'bg-yellow-400 text-gray-900'
-              : 'bg-gray-100 dark:bg-gray-700'
+              : 'bg-soft'
           }`}>
             <div className="w-10 h-10 bg-yellow-400 rounded-full border-2 border-yellow-600 shadow-md flex items-center justify-center">
               <span className="text-gray-900 font-bold">{winCount.ai}</span>
             </div>
             <div>
-              <p className={`font-medium ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-900' : 'text-gray-900 dark:text-white'}`}>
+              <p className={`font-medium ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-900' : 'text-fg'}`}>
                 AI
               </p>
-              <p className={`text-xs ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-700' : 'text-gray-500 dark:text-gray-400'}`}>
+              <p className={`text-xs ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-700' : 'text-muted'}`}>
                 {t('yellow') || 'Yellow'}
               </p>
             </div>
@@ -231,7 +231,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         <div className={`text-center py-2 px-4 rounded-xl ${
           isPlayerTurn
             ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+            : 'bg-soft text-sub'
         }`}>
           {isThinking ? (
             <span className="flex items-center justify-center gap-2">
@@ -251,7 +251,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : gameState.winner === 'draw'
             ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
-            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            : 'bg-track text-body'
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
           <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
@@ -261,7 +261,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
 
       {/* Game Board */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+      <div className="bg-surface rounded-2xl shadow-lg p-4">
         <Connect4BoardComponent
           gameState={gameState}
           myColor={playerColor}
@@ -272,9 +272,9 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       </div>
 
       {/* Move Info */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+      <div className="bg-surface rounded-2xl shadow-lg p-4">
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-sub">
             {t('moves') || 'Moves'}: {gameState.moveHistory.length}
           </div>
           {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
@@ -308,7 +308,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           />
           <button
             onClick={onBack}
-            className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
+            className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl"
           >
             {tHub('backToHub')}
           </button>
@@ -316,10 +316,10 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       )}
 
       {/* Stats */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowStats(!showStats)}
-          className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+          className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
@@ -332,29 +332,29 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-xl">
                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalWins}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
               </div>
               <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-xl">
                 <p className="text-2xl font-bold text-red-600 dark:text-red-400">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
               </div>
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.totalGames}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('totalGames') || 'Total'}</p>
+              <div className="p-3 bg-subtle rounded-xl">
+                <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
+                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🟢 {tHub('easy')}</span>
                 <span>{stats.easy.wins}W / {stats.easy.losses}L / {stats.easy.draws}D</span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🟡 {tHub('normal')}</span>
                 <span>{stats.normal.wins}W / {stats.normal.losses}L / {stats.normal.draws}D</span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🔴 {tHub('hard')}</span>
                 <span>{stats.hard.wins}W / {stats.hard.losses}L / {stats.hard.draws}D</span>
               </div>
@@ -370,10 +370,10 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       />
 
       {/* Rules */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowRules(!showRules)}
-          className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+          className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
@@ -382,7 +382,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           <span>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
-          <div className="mt-4 text-gray-600 dark:text-gray-400 space-y-2">
+          <div className="mt-4 text-sub space-y-2">
             <p>1. {t('rules.rule1') || 'Players take turns dropping colored discs into a 7-column, 6-row grid.'}</p>
             <p>2. {t('rules.rule2') || 'Discs fall to the lowest available space in the column.'}</p>
             <p>3. {t('rules.rule3') || 'First player to connect 4 discs in a row (horizontally, vertically, or diagonally) wins!'}</p>

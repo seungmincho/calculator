@@ -90,7 +90,7 @@ export default function ColorBlindnessSimulatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ColorBlindnessSimulator />
@@ -101,17 +101,17 @@ export default function ColorBlindnessSimulatorPage() {
         </div>
       </div>
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             색맹 시뮬레이터란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             색맹 시뮬레이터는 <strong>이미지에 색각이상(CVD) 필터를 적용하여 색맹·색약을 가진 사람들이 세상을 어떻게 보는지 체험</strong>할 수 있는 도구입니다. 적색맹(Protanopia), 녹색맹(Deuteranopia), 청황색맹(Tritanopia), 전색맹(Achromatopsia) 등 7가지 색각이상 유형을 지원하며, 디자이너·개발자의 접근성 검토에 폭넓게 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             색맹 시뮬레이터 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>접근성 디자인 검토:</strong> UI 스크린샷을 업로드해 색각이상자 시점에서 정보 전달이 되는지 확인하세요.</li>
             <li><strong>슬라이더 비교:</strong> 드래그 슬라이더로 원본과 필터 이미지를 실시간으로 비교할 수 있습니다.</li>
             <li><strong>샘플 이미지 활용:</strong> 색상환·이시하라 패턴·신호등 이미지로 각 색각이상의 차이를 즉시 확인해보세요.</li>

@@ -356,8 +356,8 @@ export default function ImageCompressor() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -369,7 +369,7 @@ export default function ImageCompressor() {
               className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
                 isDragging
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+                  : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
               }`}
               onClick={() => fileInputRef.current?.click()}
               onDrop={handleDrop}
@@ -385,10 +385,10 @@ export default function ImageCompressor() {
               }}
               aria-label={t('dropzone')}
             >
-              <Upload className="mx-auto mb-3 text-gray-400 dark:text-gray-500" size={40} />
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('dropzone')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('dropzoneHint')}</p>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('maxFileSize')}</p>
+              <Upload className="mx-auto mb-3 text-faint" size={40} />
+              <p className="text-sm font-medium text-body">{t('dropzone')}</p>
+              <p className="text-xs text-muted mt-1">{t('dropzoneHint')}</p>
+              <p className="text-xs text-faint mt-1">{t('maxFileSize')}</p>
             </div>
             <input
               ref={fileInputRef}
@@ -402,14 +402,14 @@ export default function ImageCompressor() {
 
           {/* Compression settings */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Settings size={18} />
               {t('settings')}
             </h2>
 
             {/* Quality slider */}
             <div>
-              <label className="flex items-center justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="flex items-center justify-between text-sm font-medium text-body mb-2">
                 <span>{t('quality')}</span>
                 <span className="text-blue-600 dark:text-blue-400 font-semibold">{settings.quality}%</span>
               </label>
@@ -421,7 +421,7 @@ export default function ImageCompressor() {
                 onChange={(e) => setSettings((s) => ({ ...s, quality: Number(e.target.value) }))}
                 className="w-full accent-blue-600"
               />
-              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-faint mt-1">
                 <span>{t('qualityLow')}</span>
                 <span>{t('qualityHigh')}</span>
               </div>
@@ -429,13 +429,13 @@ export default function ImageCompressor() {
 
             {/* Output format */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('format')}
               </label>
               <select
                 value={settings.outputFormat}
                 onChange={(e) => setSettings((s) => ({ ...s, outputFormat: e.target.value as OutputFormat }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
               >
                 <option value="original">{t('formatOriginal')}</option>
                 <option value="jpeg">JPEG</option>
@@ -446,7 +446,7 @@ export default function ImageCompressor() {
 
             {/* Max width */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('maxWidth')}
               </label>
               <input
@@ -455,13 +455,13 @@ export default function ImageCompressor() {
                 value={settings.maxWidth || ''}
                 placeholder="0 = no limit"
                 onChange={(e) => setSettings((s) => ({ ...s, maxWidth: Number(e.target.value) || 0 }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             {/* Max height */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('maxHeight')}
               </label>
               <input
@@ -470,7 +470,7 @@ export default function ImageCompressor() {
                 value={settings.maxHeight || ''}
                 placeholder="0 = no limit"
                 onChange={(e) => setSettings((s) => ({ ...s, maxHeight: Number(e.target.value) || 0 }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -508,13 +508,13 @@ export default function ImageCompressor() {
                 <div className="flex gap-2">
                   <button
                     onClick={removeAll}
-                    className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+                    className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm font-medium transition-colors"
                   >
                     {t('removeAll')}
                   </button>
                   <button
                     onClick={resetAll}
-                    className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm font-medium transition-colors flex items-center justify-center gap-1"
+                    className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm font-medium transition-colors flex items-center justify-center gap-1"
                   >
                     <RefreshCw size={14} />
                     {t('reset')}
@@ -527,24 +527,24 @@ export default function ImageCompressor() {
           {/* Summary stats */}
           {images.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('summary')}</h3>
+              <h3 className="text-sm font-semibold text-fg">{t('summary')}</h3>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('totalImages')}</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">{images.length}</p>
+                <div className="bg-subtle rounded-lg p-3">
+                  <p className="text-xs text-muted">{t('totalImages')}</p>
+                  <p className="text-lg font-bold text-fg">{images.length}</p>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('originalSize')}</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">{formatFileSize(totalOriginal)}</p>
+                <div className="bg-subtle rounded-lg p-3">
+                  <p className="text-xs text-muted">{t('originalSize')}</p>
+                  <p className="text-lg font-bold text-fg">{formatFileSize(totalOriginal)}</p>
                 </div>
                 {doneCount > 0 && (
                   <>
                     <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('compressedSize')}</p>
+                      <p className="text-xs text-muted">{t('compressedSize')}</p>
                       <p className="text-lg font-bold text-green-600 dark:text-green-400">{formatFileSize(totalCompressed)}</p>
                     </div>
                     <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('savings')}</p>
+                      <p className="text-xs text-muted">{t('savings')}</p>
                       <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                         {totalOriginal > 0 ? `${Math.round(((totalOriginal - totalCompressed) / totalOriginal) * 100)}%` : '0%'}
                       </p>
@@ -562,7 +562,7 @@ export default function ImageCompressor() {
             {images.length === 0 ? (
               <div className="text-center py-16">
                 <ImageIcon className="mx-auto mb-4 text-gray-300 dark:text-gray-600" size={64} />
-                <p className="text-gray-500 dark:text-gray-400">{t('noImages')}</p>
+                <p className="text-muted">{t('noImages')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -578,12 +578,12 @@ export default function ImageCompressor() {
                 {images.map((image) => (
                   <div
                     key={image.id}
-                    className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+                    className="border border-line rounded-xl p-4 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
                   >
                     <div className="flex flex-col sm:flex-row gap-4">
                       {/* Thumbnail */}
                       <div className="shrink-0">
-                        <div className="w-full sm:w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+                        <div className="w-full sm:w-24 h-24 bg-soft rounded-lg overflow-hidden flex items-center justify-center">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={image.compressedPreviewUrl || image.previewUrl}
@@ -597,10 +597,10 @@ export default function ImageCompressor() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                            <p className="text-sm font-medium text-fg truncate">
                               {image.file.name}
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-xs text-muted mt-1">
                               {t('formatLabel')}: {image.file.type.split('/')[1]?.toUpperCase() || 'N/A'}
                             </p>
                           </div>
@@ -640,23 +640,23 @@ export default function ImageCompressor() {
 
                         {/* Size comparison */}
                         <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-                          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
-                            <p className="text-gray-500 dark:text-gray-400">{t('originalSize')}</p>
-                            <p className="font-semibold text-gray-900 dark:text-white">{formatFileSize(image.originalSize)}</p>
+                          <div className="bg-subtle rounded-lg p-2">
+                            <p className="text-muted">{t('originalSize')}</p>
+                            <p className="font-semibold text-fg">{formatFileSize(image.originalSize)}</p>
                           </div>
                           <div
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
                                 ? 'bg-green-50 dark:bg-green-950'
-                                : 'bg-gray-50 dark:bg-gray-700'
+                                : 'bg-subtle'
                             }`}
                           >
-                            <p className="text-gray-500 dark:text-gray-400">{t('compressedSize')}</p>
+                            <p className="text-muted">{t('compressedSize')}</p>
                             <p
                               className={`font-semibold ${
                                 image.status === 'done'
                                   ? 'text-green-600 dark:text-green-400'
-                                  : 'text-gray-400 dark:text-gray-500'
+                                  : 'text-faint'
                               }`}
                             >
                               {image.status === 'done' ? formatFileSize(image.compressedSize) : '-'}
@@ -666,15 +666,15 @@ export default function ImageCompressor() {
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
                                 ? 'bg-blue-50 dark:bg-blue-950'
-                                : 'bg-gray-50 dark:bg-gray-700'
+                                : 'bg-subtle'
                             }`}
                           >
-                            <p className="text-gray-500 dark:text-gray-400">{t('compressionRatio')}</p>
+                            <p className="text-muted">{t('compressionRatio')}</p>
                             <p
                               className={`font-semibold ${
                                 image.status === 'done'
                                   ? 'text-blue-600 dark:text-blue-400'
-                                  : 'text-gray-400 dark:text-gray-500'
+                                  : 'text-faint'
                               }`}
                             >
                               {image.status === 'done' && image.originalSize > 0 ? (
@@ -713,16 +713,16 @@ export default function ImageCompressor() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.features.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.features.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.features.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5 shrink-0">*</span>
                   {item}
                 </li>
@@ -730,10 +730,10 @@ export default function ImageCompressor() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.formats.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.formats.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.formats.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-purple-500 mt-0.5 shrink-0">*</span>
                   {item}
                 </li>
@@ -741,10 +741,10 @@ export default function ImageCompressor() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-green-500 mt-0.5 shrink-0">*</span>
                   {item}
                 </li>

@@ -651,10 +651,10 @@ export default function CodeScreenshot() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -667,7 +667,7 @@ export default function CodeScreenshot() {
           <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Palette className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('theme')}
               </h2>
             </div>
@@ -684,10 +684,10 @@ export default function CodeScreenshot() {
                   }`}
                 >
                   <div
-                    className="w-5 h-5 rounded-sm flex-shrink-0 border border-gray-200 dark:border-gray-600"
+                    className="w-5 h-5 rounded-sm flex-shrink-0 border border-line"
                     style={{ backgroundColor: colors.bg }}
                   />
-                  <span className="text-gray-700 dark:text-gray-300 truncate">
+                  <span className="text-body truncate">
                     {THEME_DISPLAY_NAMES[key]}
                   </span>
                 </button>
@@ -699,7 +699,7 @@ export default function CodeScreenshot() {
           <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <ImageIcon className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('background')}
               </h2>
             </div>
@@ -711,7 +711,7 @@ export default function CodeScreenshot() {
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   bgType === 'gradient'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {t('bgGradient')}
@@ -721,7 +721,7 @@ export default function CodeScreenshot() {
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   bgType === 'solid'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {t('bgSolid')}
@@ -754,7 +754,7 @@ export default function CodeScreenshot() {
                   type="color"
                   value={bgSolid}
                   onChange={(e) => setBgSolid(e.target.value)}
-                  className="w-12 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  className="w-12 h-10 rounded border border-line-strong cursor-pointer"
                 />
                 <input
                   type="text"
@@ -767,7 +767,7 @@ export default function CodeScreenshot() {
 
             {/* Padding slider */}
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('padding')}: <span className="text-blue-600 font-bold">{padding}px</span>
               </label>
               <input
@@ -787,7 +787,7 @@ export default function CodeScreenshot() {
 
             {/* Border radius */}
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('borderRadius')}: <span className="text-blue-600 font-bold">{borderRadius}px</span>
               </label>
               <input
@@ -806,14 +806,14 @@ export default function CodeScreenshot() {
           <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Settings className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('settings')}
               </h2>
             </div>
 
             {/* Language */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <div className="flex items-center gap-2">
                   <Code className="w-4 h-4" />
                   {t('language')}
@@ -837,7 +837,7 @@ export default function CodeScreenshot() {
 
             {/* Font Size */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <div className="flex items-center gap-2">
                   <Type className="w-4 h-4" />
                   {t('fontSize')}: <span className="text-blue-600 font-bold">{fontSize}px</span>
@@ -859,7 +859,7 @@ export default function CodeScreenshot() {
 
             {/* Line Height */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('lineHeight')}: <span className="text-blue-600 font-bold">{lineHeight.toFixed(1)}</span>
               </label>
               <input
@@ -879,7 +879,7 @@ export default function CodeScreenshot() {
 
             {/* Window Title */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('windowTitle')}
               </label>
               <input
@@ -893,7 +893,7 @@ export default function CodeScreenshot() {
 
             {/* Watermark */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('watermark')}
               </label>
               <input
@@ -914,7 +914,7 @@ export default function CodeScreenshot() {
                   onChange={(e) => setShowLineNumbers(e.target.checked)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <span className="text-sm text-body flex items-center gap-2">
                   <Hash className="w-4 h-4" />
                   {t('lineNumbers')}
                 </span>
@@ -927,7 +927,7 @@ export default function CodeScreenshot() {
                   onChange={(e) => setShowWindowChrome(e.target.checked)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-sm text-body">
                   {t('windowChrome')}
                 </span>
               </label>
@@ -939,7 +939,7 @@ export default function CodeScreenshot() {
                   onChange={(e) => setShowShadow(e.target.checked)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-sm text-body">
                   {t('shadow')}
                 </span>
               </label>
@@ -953,7 +953,7 @@ export default function CodeScreenshot() {
           <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-3">
               <Code className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('codeInput')}
               </h2>
             </div>
@@ -963,7 +963,7 @@ export default function CodeScreenshot() {
               placeholder={t('codePlaceholder')}
               rows={10}
               spellCheck={false}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm leading-relaxed resize-y"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg focus:ring-2 focus:ring-blue-500 font-mono text-sm leading-relaxed resize-y"
             />
           </div>
 
@@ -972,7 +972,7 @@ export default function CodeScreenshot() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-fg">
                   {t('preview')}
                 </h2>
               </div>
@@ -982,7 +982,7 @@ export default function CodeScreenshot() {
             </div>
             <div
               ref={previewContainerRef}
-              className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900"
+              className="overflow-auto rounded-lg border border-line bg-gray-100 dark:bg-gray-900"
               style={{ maxHeight: '600px' }}
             >
               <canvas
@@ -997,7 +997,7 @@ export default function CodeScreenshot() {
           <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Download className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('exportTitle')}
               </h2>
             </div>
@@ -1033,14 +1033,14 @@ export default function CodeScreenshot() {
               {/* Download SVG */}
               <button
                 onClick={downloadSVG}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {t('exportSvg')}
               </button>
             </div>
 
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
+            <p className="text-xs text-faint mt-3">
               {t('exportNote')}
             </p>
           </div>
@@ -1054,7 +1054,7 @@ export default function CodeScreenshot() {
           className="flex items-center gap-2 w-full text-left"
         >
           <BookOpen className="w-5 h-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
           <span className={`ml-auto text-gray-400 transition-transform ${showGuide ? 'rotate-180' : ''}`}>
@@ -1066,12 +1066,12 @@ export default function CodeScreenshot() {
           <div className="mt-6 space-y-6">
             {/* Section 1 */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-medium text-fg mb-3">
                 {t('guide.usage.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.usage.items') as string[]).map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={idx} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">&#8226;</span>
                     {item}
                   </li>
@@ -1081,12 +1081,12 @@ export default function CodeScreenshot() {
 
             {/* Section 2 */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-medium text-fg mb-3">
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={idx} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-green-500 mt-0.5">&#10003;</span>
                     {item}
                   </li>

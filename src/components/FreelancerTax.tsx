@@ -225,15 +225,15 @@ export default function FreelancerTax() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           title="링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -245,12 +245,12 @@ export default function FreelancerTax() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('inputTitle')}</h2>
 
             <NumInput label={t('annualRevenue')} value={annualRevenue} onChange={setAnnualRevenue} placeholder="50,000,000" />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('industry')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('industry')}</label>
               <select
                 value={industry}
                 onChange={e => setIndustry(e.target.value as IndustryCode)}
@@ -267,7 +267,7 @@ export default function FreelancerTax() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('expenseMethod')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('expenseMethod')}</label>
               <div className="space-y-2">
                 {(['simple', 'standard', 'actual'] as const).map(method => (
                   <label key={method} className="flex items-center gap-2 cursor-pointer">
@@ -279,7 +279,7 @@ export default function FreelancerTax() {
                       onChange={() => setExpenseMethod(method)}
                       className="accent-blue-600"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t(`methods.${method}`)}</span>
+                    <span className="text-sm text-body">{t(`methods.${method}`)}</span>
                   </label>
                 ))}
               </div>
@@ -289,12 +289,12 @@ export default function FreelancerTax() {
               <NumInput label={t('actualExpense')} value={actualExpenses} onChange={setActualExpenses} placeholder="20,000,000" />
             )}
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">{t('deductions')}</h3>
+            <div className="border-t border-line pt-4">
+              <h3 className="text-sm font-medium text-fg mb-3">{t('deductions')}</h3>
 
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('dependentCount')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">{t('dependentCount')}</label>
                   <select
                     value={dependents}
                     onChange={e => setDependents(e.target.value)}
@@ -315,22 +315,22 @@ export default function FreelancerTax() {
 
           {/* 업종별 경비율 참고표 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rateReference')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('rateReference')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs" aria-label={t('rateReference')}>
                 <thead>
-                  <tr className="bg-gray-50 dark:bg-gray-700/50">
-                    <th className="px-2 py-1.5 text-left text-gray-500 dark:text-gray-400">{t('industryCol')}</th>
-                    <th className="px-2 py-1.5 text-right text-gray-500 dark:text-gray-400">{t('simpleCol')}</th>
-                    <th className="px-2 py-1.5 text-right text-gray-500 dark:text-gray-400">{t('standardCol')}</th>
+                  <tr className="bg-subtle">
+                    <th className="px-2 py-1.5 text-left text-muted">{t('industryCol')}</th>
+                    <th className="px-2 py-1.5 text-right text-muted">{t('simpleCol')}</th>
+                    <th className="px-2 py-1.5 text-right text-muted">{t('standardCol')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {(Object.entries(INDUSTRY_RATES) as [IndustryCode, ExpenseRates][]).map(([code, rates]) => (
                     <tr key={code} className={industry === code ? 'bg-blue-50 dark:bg-blue-950/30' : ''}>
-                      <td className="px-2 py-1.5 text-gray-700 dark:text-gray-300">{t(`industries.${code}`)}</td>
-                      <td className="px-2 py-1.5 text-right text-gray-900 dark:text-white">{rates.simple}%</td>
-                      <td className="px-2 py-1.5 text-right text-gray-900 dark:text-white">{rates.standard}%</td>
+                      <td className="px-2 py-1.5 text-body">{t(`industries.${code}`)}</td>
+                      <td className="px-2 py-1.5 text-right text-fg">{rates.simple}%</td>
+                      <td className="px-2 py-1.5 text-right text-fg">{rates.standard}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -346,10 +346,10 @@ export default function FreelancerTax() {
               {/* 핵심 결과 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('result')}</h2>
                   <button
                     onClick={() => copyToClipboard(buildSummary(), 'result')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'result' ? t('copied') : t('copyResult')}
@@ -367,7 +367,7 @@ export default function FreelancerTax() {
                   <p className={`text-3xl font-bold ${result.refund >= 0 ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}>
                     {result.refund >= 0 ? '+' : '-'}{formatWon(Math.abs(result.refund))}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {t('withheldVsActual', { withheld: formatWon(result.withheld), actual: formatWon(result.totalTax) })}
                   </p>
                 </div>
@@ -380,17 +380,17 @@ export default function FreelancerTax() {
                 </div>
 
                 {/* 상세 내역 */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('breakdown')}</h3>
+                <div className="border-t border-line pt-4">
+                  <h3 className="text-sm font-medium text-muted mb-3">{t('breakdown')}</h3>
                   <div className="space-y-2 text-sm">
                     <Row label={t('annualRevenue')} value={formatWon(result.revenue)} bold />
                     <Row label={`${t('withholdingTax')} (3.3%)`} value={`-${formatWon(result.withheld)}`} sub />
 
-                    <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                    <div className="border-t border-line my-2" />
                     <Row label={result.expenseLabel} value={`-${formatWon(result.expenses)}`} />
                     <Row label={t('incomeAmount')} value={formatWon(result.income)} bold />
 
-                    <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                    <div className="border-t border-line my-2" />
                     <Row label={`${t('personalDeduction')} (${dependents}${t('person')} × 150${t('manwon')})`} value={`-${formatWon(result.personalDeduction)}`} sub />
                     {result.pensionDeduction > 0 && (
                       <Row label={t('nationalPension')} value={`-${formatWon(result.pensionDeduction)}`} sub />
@@ -401,13 +401,13 @@ export default function FreelancerTax() {
                     <Row label={t('standardDeduction')} value={`-${formatWon(result.standardDeduction)}`} sub />
                     <Row label={t('totalDeductions')} value={`-${formatWon(result.totalDeduction)}`} accent />
 
-                    <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                    <div className="border-t border-line my-2" />
                     <Row label={t('taxableAmount')} value={formatWon(result.taxable)} bold />
                     <Row label={t('incomeTax')} value={formatWon(result.incomeTax)} sub />
                     <Row label={t('localTax')} value={formatWon(result.localTax)} sub />
                     <Row label={t('totalActualTax')} value={formatWon(result.totalTax)} highlight />
 
-                    <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                    <div className="border-t border-line my-2" />
                     <Row
                       label={result.refund >= 0 ? t('expectedRefund') : t('additionalPayment')}
                       value={`${result.refund >= 0 ? '+' : '-'}${formatWon(Math.abs(result.refund))}`}
@@ -420,14 +420,14 @@ export default function FreelancerTax() {
 
               {/* 세율표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rateTable')}</h3>
+                <h3 className="text-sm font-semibold text-fg mb-3">{t('rateTable')}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm" aria-label={t('rateTable')}>
                     <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-700/50">
-                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">{t('bracketCol')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400">{t('rateCol')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400">{t('progressiveDeduction')}</th>
+                      <tr className="bg-subtle">
+                        <th className="px-3 py-2 text-left text-xs font-medium text-muted">{t('bracketCol')}</th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('rateCol')}</th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('progressiveDeduction')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -435,14 +435,14 @@ export default function FreelancerTax() {
                         const prev = i > 0 ? INCOME_BRACKETS[i - 1].upTo : 0
                         return (
                           <tr key={i} className={result.bracketIdx === i ? 'bg-blue-50 dark:bg-blue-950/30' : ''}>
-                            <td className="px-3 py-2 text-gray-900 dark:text-white">
+                            <td className="px-3 py-2 text-fg">
                               {b.upTo === Infinity
                                 ? `${formatNumber(prev)}원 초과`
                                 : `${i === 0 ? '0' : formatNumber(prev)}원 ~ ${formatNumber(b.upTo)}원`
                               }
                             </td>
-                            <td className="px-3 py-2 text-right font-medium text-gray-900 dark:text-white">{b.rate * 100}%</td>
-                            <td className="px-3 py-2 text-right text-gray-600 dark:text-gray-400">{formatWon(b.deduction)}</td>
+                            <td className="px-3 py-2 text-right font-medium text-fg">{b.rate * 100}%</td>
+                            <td className="px-3 py-2 text-right text-sub">{formatWon(b.deduction)}</td>
                           </tr>
                         )
                       })}
@@ -452,7 +452,7 @@ export default function FreelancerTax() {
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
               <Calculator className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('inputPrompt')}</p>
             </div>
@@ -467,16 +467,16 @@ export default function FreelancerTax() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.withholding.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.withholding.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.withholding.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -484,7 +484,7 @@ export default function FreelancerTax() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.expenseRates.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.expenseRates.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.expenseRates.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -492,7 +492,7 @@ export default function FreelancerTax() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -519,7 +519,7 @@ function NumInput({ label, value, onChange, placeholder, hint }: {
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-body mb-1">{label}</label>
       <div className="relative">
         <input
           type="text"
@@ -542,7 +542,7 @@ function StatCard({ label, value, color }: { label: string; value: string; color
     red: 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400',
     green: 'bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400',
     purple: 'bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400',
-    gray: 'bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400',
+    gray: 'bg-subtle text-sub',
   }
   return (
     <div className={`rounded-xl p-3 text-center ${colorMap[color]}`}>
@@ -562,9 +562,9 @@ function Row({ label, value, bold, sub, accent, highlight, positive }: {
     : 'bg-blue-50 dark:bg-blue-950/30 font-bold text-blue-700 dark:text-blue-400'
 
   return (
-    <div className={`flex justify-between items-center ${sub ? 'pl-4 text-xs text-gray-500 dark:text-gray-400' : ''} ${bold ? 'font-medium' : ''} ${highlight ? `-mx-2 px-2 py-1.5 rounded-lg ${highlightColor}` : ''}`}>
-      <span className={accent ? 'text-blue-600 dark:text-blue-400 font-medium' : highlight ? '' : 'text-gray-700 dark:text-gray-300'}>{label}</span>
-      <span className={`${bold && !highlight ? 'text-gray-900 dark:text-white' : ''} ${accent ? 'text-blue-600 dark:text-blue-400 font-medium' : ''}`}>{value}</span>
+    <div className={`flex justify-between items-center ${sub ? 'pl-4 text-xs text-muted' : ''} ${bold ? 'font-medium' : ''} ${highlight ? `-mx-2 px-2 py-1.5 rounded-lg ${highlightColor}` : ''}`}>
+      <span className={accent ? 'text-blue-600 dark:text-blue-400 font-medium' : highlight ? '' : 'text-body'}>{label}</span>
+      <span className={`${bold && !highlight ? 'text-fg' : ''} ${accent ? 'text-blue-600 dark:text-blue-400 font-medium' : ''}`}>{value}</span>
     </div>
   )
 }

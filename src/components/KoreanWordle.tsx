@@ -1167,7 +1167,7 @@ export default function KoreanWordle() {
       case 'absent':
         return isText ? 'text-white' : 'bg-gray-500 dark:bg-gray-600'
       default:
-        return isText ? 'text-gray-900 dark:text-white' : 'bg-white dark:bg-gray-700'
+        return isText ? 'text-fg' : 'bg-field'
     }
   }
 
@@ -1176,7 +1176,7 @@ export default function KoreanWordle() {
       case 'correct': return 'border-green-500 dark:border-green-600'
       case 'present': return 'border-yellow-500 dark:border-yellow-600'
       case 'absent': return 'border-gray-500 dark:border-gray-600'
-      default: return 'border-gray-300 dark:border-gray-600'
+      default: return 'border-line-strong'
     }
   }
 
@@ -1186,7 +1186,7 @@ export default function KoreanWordle() {
       case 'correct': return 'bg-green-500 dark:bg-green-600 text-white border-green-500'
       case 'present': return 'bg-yellow-500 dark:bg-yellow-600 text-white border-yellow-500'
       case 'absent': return 'bg-gray-400 dark:bg-gray-700 text-white border-gray-400 dark:border-gray-700'
-      default: return 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white border-gray-300 dark:border-gray-500'
+      default: return 'bg-gray-200 dark:bg-gray-600 text-fg border-gray-300 dark:border-gray-500'
     }
   }
 
@@ -1197,9 +1197,9 @@ export default function KoreanWordle() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className="bg-surface rounded-xl shadow-lg p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl sm:text-2xl font-bold text-fg">
             {t('title')}
           </h1>
           <div className="flex items-center gap-2">
@@ -1218,25 +1218,25 @@ export default function KoreanWordle() {
                 className="accent-blue-600 w-4 h-4"
                 disabled={guesses.length > 0 && !hardMode}
               />
-              <span className="text-gray-600 dark:text-gray-400">{t('hardMode')}</span>
+              <span className="text-sub">{t('hardMode')}</span>
             </label>
             <button
               onClick={() => setShowHelp(true)}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               aria-label={t('howToPlay')}
             >
-              <HelpCircle className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <HelpCircle className="w-5 h-5 text-sub" />
             </button>
             <button
               onClick={() => setShowStats(true)}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               aria-label={t('statistics')}
             >
-              <BarChart3 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <BarChart3 className="w-5 h-5 text-sub" />
             </button>
           </div>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
 
         {/* Word Length Mode Selector */}
         <div className="flex gap-2 mt-3">
@@ -1248,7 +1248,7 @@ export default function KoreanWordle() {
                 flex-1 py-2 rounded-lg text-sm font-bold transition-all
                 ${wordLength === len
                   ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                 }
               `}
             >
@@ -1268,7 +1268,7 @@ export default function KoreanWordle() {
       )}
 
       {/* Game Board */}
-      <div ref={boardRef} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+      <div ref={boardRef} className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
         <div className="flex flex-col items-center gap-2">
           {displayRows.map((row, rowIdx) => {
             const isRevealing = revealingRow === rowIdx
@@ -1304,7 +1304,7 @@ export default function KoreanWordle() {
                           ${hasContent && !isGuessed && !isIncompleteJamo ? 'border-gray-500 dark:border-gray-400 scale-105' : ''}
                           ${isGuessed && row.revealed
                             ? `${getStatusColor(overallStatus)} ${getStatusBorder(overallStatus)} text-white`
-                            : `${hasContent ? (isIncompleteJamo ? 'border-amber-400 dark:border-amber-500' : 'border-gray-400 dark:border-gray-500') : 'border-gray-200 dark:border-gray-700'} text-gray-900 dark:text-white`
+                            : `${hasContent ? (isIncompleteJamo ? 'border-amber-400 dark:border-amber-500' : 'border-gray-400 dark:border-gray-500') : 'border-line'} text-fg`
                           }
                           ${isRevealing ? 'animate-flip-cell' : ''}
                         `}
@@ -1337,7 +1337,7 @@ export default function KoreanWordle() {
                           {syll.jamos.map((jamoCell, ji) => (
                             <div
                               key={ji}
-                              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded text-[10px] sm:text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded text-[10px] sm:text-xs font-medium bg-soft text-muted"
                             >
                               {jamoCell.jamo}
                             </div>
@@ -1362,26 +1362,26 @@ export default function KoreanWordle() {
 
       {/* Result Card — shown when game ends */}
       {gameStatus !== 'playing' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 sm:p-6 space-y-4">
+        <div className="bg-surface rounded-xl shadow-lg p-5 sm:p-6 space-y-4">
           {/* Header row: result label + guess count */}
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-fg">
               {gameStatus === 'won' ? t('resultWon') : t('resultLost')}
             </h2>
-            <span className="text-2xl font-bold text-gray-500 dark:text-gray-400">
+            <span className="text-2xl font-bold text-muted">
               {gameStatus === 'won' ? guesses.length : 'X'}/{MAX_GUESSES}
             </span>
           </div>
 
           {/* Emoji grid */}
-          <div className="font-mono text-base leading-relaxed whitespace-pre bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
+          <div className="font-mono text-base leading-relaxed whitespace-pre bg-subtle rounded-lg p-3 text-center">
             {buildEmojiGrid()}
           </div>
 
           {/* Answer reveal on loss */}
           {gameStatus === 'lost' && (
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-              {t('answerWas')} <span className="font-bold text-gray-900 dark:text-white text-base">{answer}</span>
+            <p className="text-center text-sm text-sub">
+              {t('answerWas')} <span className="font-bold text-fg text-base">{answer}</span>
             </p>
           )}
 
@@ -1402,7 +1402,7 @@ export default function KoreanWordle() {
             {/* Copy to clipboard */}
             <button
               onClick={copyShare}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body text-sm font-medium transition-colors"
             >
               {copiedShare ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
               {copiedShare ? t('shared') : t('copyResult')}
@@ -1441,7 +1441,7 @@ export default function KoreanWordle() {
       )}
 
       {/* Virtual Keyboard */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-4">
+      <div className="bg-surface rounded-xl shadow-lg p-3 sm:p-4">
         <div className="flex flex-col items-center gap-1.5">
           {/* Row 1 */}
           <div className="flex gap-1 sm:gap-1.5">
@@ -1506,7 +1506,7 @@ export default function KoreanWordle() {
             ))}
             <button
               onClick={() => handleKeyPress('Backspace')}
-              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-sm font-bold bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-500 active:scale-95 transition-transform"
+              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-sm font-bold bg-gray-200 dark:bg-gray-600 text-fg border border-gray-300 dark:border-gray-500 active:scale-95 transition-transform"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
@@ -1518,7 +1518,7 @@ export default function KoreanWordle() {
 
           {/* Shift keys row (doubled consonants) */}
           <div className="flex gap-1 sm:gap-1.5 mt-1">
-            <span className="text-[10px] text-gray-400 dark:text-gray-500 flex items-center mr-1">Shift</span>
+            <span className="text-[10px] text-faint flex items-center mr-1">Shift</span>
             {Object.entries(SHIFT_MAP).map(([base, shifted]) => (
               <button
                 key={shifted}
@@ -1542,19 +1542,19 @@ export default function KoreanWordle() {
       {/* Help Modal */}
       {showHelp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowHelp(false)}>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
+          <div className="bg-surface rounded-xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('helpTitle')}</h2>
+              <h2 className="text-xl font-bold text-fg">{t('helpTitle')}</h2>
               <button onClick={() => setShowHelp(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <X className="w-5 h-5 text-sub" />
               </button>
             </div>
 
-            <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+            <div className="space-y-4 text-sm text-body">
               <p>{t('helpDesc')}</p>
 
               <div className="space-y-3">
-                <h3 className="font-semibold text-gray-900 dark:text-white">{t('helpExampleTitle')}</h3>
+                <h3 className="font-semibold text-fg">{t('helpExampleTitle')}</h3>
 
                 {/* Example: correct */}
                 <div className="flex items-center gap-2">
@@ -1594,7 +1594,7 @@ export default function KoreanWordle() {
                 <p className="text-blue-700 dark:text-blue-400">{t('helpJamo')}</p>
               </div>
 
-              <p className="text-gray-500 dark:text-gray-400 text-xs">{t('helpKeyboard')}</p>
+              <p className="text-muted text-xs">{t('helpKeyboard')}</p>
             </div>
           </div>
         </div>
@@ -1603,40 +1603,40 @@ export default function KoreanWordle() {
       {/* Stats Modal */}
       {showStats && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowStats(false)}>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+          <div className="bg-surface rounded-xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('statistics')}</h2>
+              <h2 className="text-xl font-bold text-fg">{t('statistics')}</h2>
               <button onClick={() => setShowStats(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <X className="w-5 h-5 text-sub" />
               </button>
             </div>
 
             {/* Stats grid */}
             <div className="grid grid-cols-4 gap-3 mb-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.gamesPlayed}</div>
-                <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('played')}</div>
+                <div className="text-2xl font-bold text-fg">{stats.gamesPlayed}</div>
+                <div className="text-[10px] text-muted">{t('played')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{winRate}</div>
-                <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('winRate')}</div>
+                <div className="text-2xl font-bold text-fg">{winRate}</div>
+                <div className="text-[10px] text-muted">{t('winRate')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.currentStreak}</div>
-                <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('currentStreak')}</div>
+                <div className="text-2xl font-bold text-fg">{stats.currentStreak}</div>
+                <div className="text-[10px] text-muted">{t('currentStreak')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.maxStreak}</div>
-                <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('maxStreak')}</div>
+                <div className="text-2xl font-bold text-fg">{stats.maxStreak}</div>
+                <div className="text-[10px] text-muted">{t('maxStreak')}</div>
               </div>
             </div>
 
             {/* Guess distribution */}
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guessDistribution')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guessDistribution')}</h3>
             <div className="space-y-1 mb-6">
               {stats.guessDistribution.map((count, idx) => (
                 <div key={idx} className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-gray-600 dark:text-gray-400 w-3">{idx + 1}</span>
+                  <span className="text-xs font-mono text-sub w-3">{idx + 1}</span>
                   <div className="flex-1 flex items-center">
                     <div
                       className={`h-5 rounded-sm flex items-center justify-end px-1.5 text-xs font-bold text-white ${
@@ -1685,15 +1685,15 @@ export default function KoreanWordle() {
       />
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-4 flex items-center gap-2">
           <HelpCircle className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.rules.title')}</h3>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+          <div className="bg-subtle rounded-lg p-4">
+            <h3 className="font-semibold text-fg mb-2">{t('guide.rules.title')}</h3>
+            <ul className="space-y-1 text-sm text-sub">
               {(t.raw('guide.rules.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-blue-500 shrink-0">{'>'}</span>
@@ -1702,9 +1702,9 @@ export default function KoreanWordle() {
               ))}
             </ul>
           </div>
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+          <div className="bg-subtle rounded-lg p-4">
+            <h3 className="font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
+            <ul className="space-y-1 text-sm text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-green-500 shrink-0">{'>'}</span>

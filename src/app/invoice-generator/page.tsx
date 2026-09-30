@@ -42,7 +42,7 @@ export default function InvoiceGeneratorPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <InvoiceGenerator />
@@ -57,17 +57,17 @@ export default function InvoiceGeneratorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             견적서·세금계산서 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             견적서·세금계산서 생성기는 프리랜서, 소상공인, 개인사업자가 거래처에 발행하는 견적서와 세금계산서를 손쉽게 작성하고 PDF로 출력할 수 있는 도구입니다. 공급가액과 부가세(10%)를 자동으로 계산하며, 거래처 정보와 품목 내역을 입력하면 전문적인 양식의 문서를 즉시 생성합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             견적서·세금계산서 작성 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>견적서와 세금계산서 차이:</strong> 견적서는 거래 전 금액을 안내하는 문서이고, 세금계산서는 거래 완료 후 부가세를 포함한 공식 세금 증빙 서류입니다.</li>
             <li><strong>부가세 별도 표기:</strong> 공급가액과 부가세(10%)를 반드시 분리하여 표기해야 세금계산서로서 효력이 있습니다.</li>
             <li><strong>사업자등록번호 확인:</strong> 거래처 사업자등록번호를 정확히 입력해야 세금 공제 신청 시 문제가 없습니다.</li>

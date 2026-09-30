@@ -361,8 +361,8 @@ export default function AStarVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
               {tHub('categories.search')}
@@ -378,8 +378,8 @@ export default function AStarVisualizer() {
               onClick={() => { setAlgoMode(mode); handleReset() }}
               className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
                 algoMode === mode
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm font-medium'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'bg-field text-fg shadow-sm font-medium'
+                  : 'text-muted'
               }`}
             >
               {t(`mode.${mode}`)}
@@ -392,7 +392,7 @@ export default function AStarVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         {/* Left: visualization */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* Heuristic + options row */}
             <div className="flex flex-wrap items-center gap-3">
               {/* Heuristic selector */}
@@ -404,8 +404,8 @@ export default function AStarVisualizer() {
                     disabled={isRunning}
                     className={`px-3 py-1 text-xs rounded-md transition-colors disabled:opacity-40 ${
                       heuristic === h.type
-                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm font-medium'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-field text-fg shadow-sm font-medium'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {h.label}
@@ -421,7 +421,7 @@ export default function AStarVisualizer() {
                   disabled={isRunning}
                   className="accent-blue-600 disabled:opacity-40"
                 />
-                <span className="text-xs text-gray-600 dark:text-gray-400">{t('controls.diagonal')}</span>
+                <span className="text-xs text-sub">{t('controls.diagonal')}</span>
               </label>
               {/* Show costs toggle */}
               <label className="flex items-center gap-1.5 cursor-pointer select-none">
@@ -431,7 +431,7 @@ export default function AStarVisualizer() {
                   onChange={e => setShowCosts(e.target.checked)}
                   className="accent-blue-600"
                 />
-                <span className="text-xs text-gray-600 dark:text-gray-400">{t('controls.showCosts')}</span>
+                <span className="text-xs text-sub">{t('controls.showCosts')}</span>
               </label>
             </div>
 
@@ -481,7 +481,7 @@ export default function AStarVisualizer() {
                       height={canvasHeight}
                     />
                   </div>
-                  <div className="flex justify-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-center gap-3 text-xs text-sub">
                     <span>{t('stats.visited')}: <strong className="text-blue-600 dark:text-blue-400">{astarVisual.visitedCount}</strong></span>
                     {astarResult && astarVisual.foundPath && (
                       <span>{t('stats.totalCost')}: <strong className="text-emerald-600 dark:text-emerald-400">{astarResult.totalCost.toFixed(1)}</strong></span>
@@ -520,7 +520,7 @@ export default function AStarVisualizer() {
                       height={canvasHeight}
                     />
                   </div>
-                  <div className="flex justify-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-center gap-3 text-xs text-sub">
                     <span>{t('stats.visited')}: <strong className="text-purple-600 dark:text-purple-400">{bfsCompareVisual.visitedCount}</strong></span>
                     {bfsResult && bfsCompareVisual.foundPath && (
                       <span>{t('stats.pathLength')}: <strong className="text-emerald-600 dark:text-emerald-400">{bfsCompareVisual.pathLength}</strong></span>
@@ -551,10 +551,10 @@ export default function AStarVisualizer() {
                 </div>
                 {/* Stats bar */}
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.visited')}: <strong className="text-blue-600 dark:text-blue-400">{astarVisual.visitedCount}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.openSet')}: <strong className="text-yellow-600 dark:text-yellow-400">{astarVisual.openSetSize}</strong>
                   </span>
                   {astarResult && currentStepIndex >= astarResult.steps.length - 1 && (
@@ -563,7 +563,7 @@ export default function AStarVisualizer() {
                         <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
                           {t('stats.found')} ({t('stats.pathLength')}: {astarResult.pathLength})
                         </span>
-                        <span className="text-gray-600 dark:text-gray-400 text-xs">
+                        <span className="text-sub text-xs">
                           {t('stats.totalCost')}: <strong className="text-orange-600 dark:text-orange-400">{astarResult.totalCost.toFixed(1)}</strong>
                         </span>
                       </>
@@ -579,7 +579,7 @@ export default function AStarVisualizer() {
           </div>
 
           {/* Tool buttons */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             {/* Draw mode buttons */}
             <div className="flex flex-wrap gap-2">
               {drawModes.map(dm => (
@@ -590,7 +590,7 @@ export default function AStarVisualizer() {
                   className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
                     drawMode === dm.mode
                       ? 'bg-blue-500 text-white shadow-sm'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   } disabled:opacity-40`}
                 >
                   {dm.icon} {dm.label}
@@ -600,7 +600,7 @@ export default function AStarVisualizer() {
               <button
                 onClick={handleClearWalls}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
               >
                 {t('controls.clearWalls')}
               </button>
@@ -615,7 +615,7 @@ export default function AStarVisualizer() {
 
             {/* Grid size slider */}
             <div className="flex items-center gap-3">
-              <span className="text-xs text-gray-500 dark:text-gray-400">{t('controls.gridSize')}</span>
+              <span className="text-xs text-muted">{t('controls.gridSize')}</span>
               <input
                 type="range"
                 min={8}
@@ -625,13 +625,13 @@ export default function AStarVisualizer() {
                 disabled={isRunning}
                 className="flex-1 accent-blue-600 disabled:opacity-40"
               />
-              <span className="text-xs text-gray-600 dark:text-gray-400 w-16 text-center tabular-nums">
+              <span className="text-xs text-sub w-16 text-center tabular-nums">
                 {gridSize} x {Math.round(gridSize * (DEFAULT_COLS / DEFAULT_ROWS))}
               </span>
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t('grid.start')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-red-500" /> {t('grid.goal')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-gray-700 dark:bg-gray-400" /> {t('grid.wall')}</span>
@@ -645,9 +645,9 @@ export default function AStarVisualizer() {
         {/* Right: explanation panel (sticky) */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
               {/* Tabs */}
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -655,7 +655,7 @@ export default function AStarVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -666,12 +666,12 @@ export default function AStarVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-sub mb-3">
                       {t('stepsGuide.description')}
                     </p>
 
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+                      <p className="text-sm text-faint italic">
                         {t('stepsGuide.exploring')}
                       </p>
                     ) : (
@@ -771,7 +771,7 @@ function AStarStepsList({
                       ? 'border-orange-300/50 bg-orange-50/30 dark:bg-orange-900/10 dark:border-orange-700/30'
                       : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
                     : isActive
-                      ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                      ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                       : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
@@ -784,19 +784,19 @@ function AStarStepsList({
                     ? 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400'
                     : isActive
                       ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+                      : 'bg-track text-gray-500'
               }`}>
                 {isPath ? '→' : isUpdate ? '↑' : step.closedSetSize}
               </span>
               <div className="flex-1 min-w-0">
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {isPath
                     ? `${t('grid.path')}: (${step.row}, ${step.col})`
                     : `(${step.row}, ${step.col})`
                   }
                 </span>
                 {!isPath && isActive && (
-                  <div className="flex gap-2 mt-0.5 text-[10px] text-gray-400 dark:text-gray-500">
+                  <div className="flex gap-2 mt-0.5 text-[10px] text-faint">
                     <span>{t('stepsGuide.fCost')}: <strong className="text-purple-600 dark:text-purple-400">{step.f.toFixed(1)}</strong></span>
                     <span>{t('stepsGuide.gCost')}: <strong className="text-blue-600 dark:text-blue-400">{step.g.toFixed(1)}</strong></span>
                     <span>{t('stepsGuide.hCost')}: <strong className="text-orange-600 dark:text-orange-400">{step.h.toFixed(1)}</strong></span>

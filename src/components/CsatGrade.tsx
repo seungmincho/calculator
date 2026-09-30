@@ -187,7 +187,7 @@ function getGradeColor(grade: number): string {
     case 1:
       return 'bg-yellow-100 dark:bg-yellow-900/40 border-yellow-400 dark:border-yellow-600 text-yellow-800 dark:text-yellow-200'
     case 2:
-      return 'bg-gray-100 dark:bg-gray-700 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200'
+      return 'bg-soft border-gray-400 dark:border-gray-500 text-body'
     case 3:
       return 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 dark:border-orange-600 text-orange-800 dark:text-orange-200'
     case 4:
@@ -363,10 +363,10 @@ export default function CsatGrade() {
           <GraduationCap className="w-6 h-6" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -376,7 +376,7 @@ export default function CsatGrade() {
         {/* Input Section */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Award className="w-5 h-5 text-blue-600" />
               {t('subject')}
             </h2>
@@ -389,7 +389,7 @@ export default function CsatGrade() {
 
             {/* Subject select */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('subject')}
               </label>
               <select
@@ -409,7 +409,7 @@ export default function CsatGrade() {
 
             {/* Raw score input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('rawScore')} ({t('maxScore')}: {subject.maxScore})
               </label>
               <input
@@ -450,7 +450,7 @@ export default function CsatGrade() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 title={t('reset')}
               >
                 <RefreshCw className="w-5 h-5" />
@@ -460,7 +460,7 @@ export default function CsatGrade() {
             {/* Copy link */}
             <button
               onClick={copyLink}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
             >
               {copiedLink ? (
                 <>
@@ -483,7 +483,7 @@ export default function CsatGrade() {
             <>
               {/* Grade result card */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-6 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-600" />
                   {t('result')}
                 </h2>
@@ -519,23 +519,23 @@ export default function CsatGrade() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="bg-subtle rounded-lg p-3">
+                        <div className="text-xs text-muted">
                           {t('yourScore')}
                         </div>
-                        <div className="text-xl font-bold text-gray-900 dark:text-white">
+                        <div className="text-xl font-bold text-fg">
                           {result.score}
-                          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                          <span className="text-sm font-normal text-muted">
                             {' '}
                             / {result.subject.maxScore}
                           </span>
                         </div>
                       </div>
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="bg-subtle rounded-lg p-3">
+                        <div className="text-xs text-muted">
                           {t('cutoff')}
                         </div>
-                        <div className="text-xl font-bold text-gray-900 dark:text-white">
+                        <div className="text-xl font-bold text-fg">
                           {matchedCutoff?.rawCutoff ?? 0}
                         </div>
                       </div>
@@ -579,7 +579,7 @@ export default function CsatGrade() {
 
                 {/* Score bar visualization */}
                 <div className="mt-8">
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <div className="text-sm font-medium text-body mb-2">
                     {t('gradeRange')}
                   </div>
                   <div className="relative w-full h-8 rounded-lg overflow-hidden flex">
@@ -624,7 +624,7 @@ export default function CsatGrade() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <GraduationCap className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 {t('description')}
               </p>
             </div>
@@ -636,7 +636,7 @@ export default function CsatGrade() {
               onClick={() => setShowTable(!showTable)}
               className="w-full flex items-center justify-between p-6 text-left"
             >
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <GraduationCap className="w-5 h-5 text-blue-600" />
                 {t('gradeTable')} — {t(subject.detailKey)}
               </h2>
@@ -652,25 +652,25 @@ export default function CsatGrade() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">
+                      <tr className="border-b border-line">
+                        <th className="py-2 px-3 text-left text-sub font-medium">
                           {t('grade')}
                         </th>
-                        <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">
+                        <th className="py-2 px-3 text-left text-sub font-medium">
                           {t('cutoff')}
                         </th>
                         {!subject.isAbsolute &&
                           subject.cutoffs[0]?.standardScore != null && (
                             <>
-                              <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">
+                              <th className="py-2 px-3 text-left text-sub font-medium">
                                 {t('standardScore')}
                               </th>
-                              <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">
+                              <th className="py-2 px-3 text-left text-sub font-medium">
                                 {t('percentile')}
                               </th>
                             </>
                           )}
-                        <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">
+                        <th className="py-2 px-3 text-left text-sub font-medium">
                           {t('gradeRange')}
                         </th>
                       </tr>
@@ -686,7 +686,7 @@ export default function CsatGrade() {
                         return (
                           <tr
                             key={c.grade}
-                            className={`border-b border-gray-100 dark:border-gray-700 transition-colors ${
+                            className={`border-b border-line transition-colors ${
                               isHighlighted
                                 ? getRowHighlight(c.grade)
                                 : ''
@@ -701,23 +701,23 @@ export default function CsatGrade() {
                                 {c.grade}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 font-medium text-gray-900 dark:text-white">
+                            <td className="py-2.5 px-3 font-medium text-fg">
                               {c.rawCutoff}
                             </td>
                             {!subject.isAbsolute &&
                               subject.cutoffs[0]?.standardScore != null && (
                                 <>
-                                  <td className="py-2.5 px-3 text-gray-700 dark:text-gray-300">
+                                  <td className="py-2.5 px-3 text-body">
                                     {c.standardScore ?? '-'}
                                   </td>
-                                  <td className="py-2.5 px-3 text-gray-700 dark:text-gray-300">
+                                  <td className="py-2.5 px-3 text-body">
                                     {c.percentile != null
                                       ? `${c.percentile}%`
                                       : '-'}
                                   </td>
                                 </>
                               )}
-                            <td className="py-2.5 px-3 text-gray-600 dark:text-gray-400">
+                            <td className="py-2.5 px-3 text-sub">
                               {c.rawCutoff} ~ {upper}
                             </td>
                           </tr>
@@ -731,7 +731,7 @@ export default function CsatGrade() {
           </div>
 
           {/* Disclaimer */}
-          <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
+          <p className="text-xs text-faint text-center">
             {t('disclaimer')}
           </p>
         </div>
@@ -743,7 +743,7 @@ export default function CsatGrade() {
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6 text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600" />
             {t('guide.title')}
           </h2>
@@ -758,7 +758,7 @@ export default function CsatGrade() {
           <div className="px-6 pb-6 space-y-6">
             {/* Grading system */}
             <div>
-              <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              <h3 className="text-md font-semibold text-body mb-3">
                 {t('guide.grading.title')}
               </h3>
               <ul className="space-y-2">
@@ -766,7 +766,7 @@ export default function CsatGrade() {
                   (item, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                      className="flex items-start gap-2 text-sm text-sub"
                     >
                       <span className="text-blue-500 mt-0.5">•</span>
                       {item}
@@ -778,14 +778,14 @@ export default function CsatGrade() {
 
             {/* Tips */}
             <div>
-              <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              <h3 className="text-md font-semibold text-body mb-3">
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                   <li
                     key={idx}
-                    className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                    className="flex items-start gap-2 text-sm text-sub"
                   >
                     <span className="text-indigo-500 mt-0.5">•</span>
                     {item}

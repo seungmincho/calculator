@@ -333,8 +333,8 @@ export default function QuadTreeVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
               {tHub('categories.dataStructure')}
@@ -351,8 +351,8 @@ export default function QuadTreeVisualizer() {
               onClick={() => handleModeChange(m)}
               className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
                 mode === m
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm font-medium'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'bg-field text-fg shadow-sm font-medium'
+                  : 'text-muted'
               }`}
             >
               {t(`mode.${m}`)}
@@ -365,7 +365,7 @@ export default function QuadTreeVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         {/* Left: visualization (3/5) */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* Playback controls */}
             <div className="flex justify-center">
               <VisualizerControls
@@ -406,32 +406,32 @@ export default function QuadTreeVisualizer() {
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               {mode === 'build' && buildResult && (
                 <>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.totalNodes')}: <strong className="text-emerald-600 dark:text-emerald-400">{buildResult.totalNodes}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.totalPoints')}: <strong className="text-blue-600 dark:text-blue-400">{buildResult.totalPoints}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.maxDepth')}: <strong className="text-purple-600 dark:text-purple-400">{buildResult.maxDepth}</strong>
                   </span>
                 </>
               )}
               {mode === 'search' && searchResult && currentStepIndex >= 0 && (
                 <>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.found')}: <strong className="text-emerald-600 dark:text-emerald-400">{searchResult.foundPoints.length}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.checked')}: <strong className="text-blue-600 dark:text-blue-400">{searchResult.nodesChecked}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
-                    {t('stats.skipped')}: <strong className="text-gray-500 dark:text-gray-400">{searchResult.nodesSkipped}</strong>
+                  <span className="text-sub">
+                    {t('stats.skipped')}: <strong className="text-muted">{searchResult.nodesSkipped}</strong>
                   </span>
                 </>
               )}
               {mode === 'build' && !buildResult && (
-                <span className="text-gray-400 dark:text-gray-500 text-xs italic">
+                <span className="text-faint text-xs italic">
                   {t('stats.totalPoints')}: {points.length}
                 </span>
               )}
@@ -439,7 +439,7 @@ export default function QuadTreeVisualizer() {
           </div>
 
           {/* Tool buttons */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             {/* Generate buttons */}
             <div className="flex flex-wrap gap-2">
               <button
@@ -459,7 +459,7 @@ export default function QuadTreeVisualizer() {
               <button
                 onClick={handleClear}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
               >
                 🗑️ {t('controls.clear')}
               </button>
@@ -476,7 +476,7 @@ export default function QuadTreeVisualizer() {
             {/* Sliders */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">{t('controls.pointCount')}</span>
+                <span className="text-xs text-muted w-20 shrink-0">{t('controls.pointCount')}</span>
                 <input
                   type="range"
                   min={10}
@@ -486,10 +486,10 @@ export default function QuadTreeVisualizer() {
                   disabled={isRunning}
                   className="flex-1 accent-blue-600 disabled:opacity-40"
                 />
-                <span className="text-xs text-gray-600 dark:text-gray-400 w-8 text-right tabular-nums">{pointCount}</span>
+                <span className="text-xs text-sub w-8 text-right tabular-nums">{pointCount}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">{t('controls.capacity')}</span>
+                <span className="text-xs text-muted w-20 shrink-0">{t('controls.capacity')}</span>
                 <input
                   type="range"
                   min={1}
@@ -499,12 +499,12 @@ export default function QuadTreeVisualizer() {
                   disabled={isRunning}
                   className="flex-1 accent-emerald-600 disabled:opacity-40"
                 />
-                <span className="text-xs text-gray-600 dark:text-gray-400 w-8 text-right tabular-nums">{capacity}</span>
+                <span className="text-xs text-sub w-8 text-right tabular-nums">{capacity}</span>
               </div>
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1">
                 <span className="w-3 h-3 rounded-sm border border-emerald-500/50 bg-transparent" />
                 {t('grid.boundary')}
@@ -540,9 +540,9 @@ export default function QuadTreeVisualizer() {
         {/* Right: explanation panel (2/5, sticky) */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
               {/* Tabs */}
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -550,7 +550,7 @@ export default function QuadTreeVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -561,12 +561,12 @@ export default function QuadTreeVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-sub mb-3">
                       {t('stepsGuide.description')}
                     </p>
 
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+                      <p className="text-sm text-faint italic">
                         {mode === 'build' ? t('stepsGuide.insert') : t('stepsGuide.searchCheck')}
                       </p>
                     ) : (
@@ -690,9 +690,9 @@ function QuadTreeStepsList({
       case 'search-found':
         return { dot: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400', border: 'border-emerald-200/50 dark:border-emerald-700/30', bg: '' }
       case 'search-skip':
-        return { dot: 'bg-gray-100 dark:bg-gray-700 text-gray-500', border: 'border-gray-200/30 dark:border-gray-700/30', bg: '' }
+        return { dot: 'bg-soft text-gray-500', border: 'border-gray-200/30 dark:border-gray-700/30', bg: '' }
       default:
-        return { dot: 'bg-gray-200 dark:bg-gray-700 text-gray-500', border: 'border-gray-200/30', bg: '' }
+        return { dot: 'bg-track text-gray-500', border: 'border-gray-200/30', bg: '' }
     }
   }
 
@@ -729,10 +729,10 @@ function QuadTreeStepsList({
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${colors.dot}`}>
                 {icon}
               </span>
-              <span className="text-gray-700 dark:text-gray-300">
+              <span className="text-body">
                 {actionLabel(step)}
               </span>
-              <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 tabular-nums">
+              <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-soft text-muted tabular-nums">
                 d{step.depth}
               </span>
             </div>

@@ -314,7 +314,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
               className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                 state.specific.includes(i)
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {lbl}
@@ -334,7 +334,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
               className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                 state.specific.includes(i + 1)
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {lbl}
@@ -358,7 +358,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
             className={`w-7 h-7 rounded text-xs font-medium transition-colors ${
               state.specific.includes(val)
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {val}
@@ -371,7 +371,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
   return (
     <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
       <div className="flex items-center justify-between">
-        <span className="font-semibold text-gray-900 dark:text-white text-sm">{label}</span>
+        <span className="font-semibold text-fg text-sm">{label}</span>
         <span className="text-xs font-mono bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
           {buildField(state)}
         </span>
@@ -386,7 +386,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
             className={`flex-1 py-1 rounded text-xs font-medium transition-colors ${
               state.mode === m.key
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {m.label}
@@ -396,7 +396,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
 
       {/* Mode content */}
       {state.mode === 'every' && (
-        <p className="text-xs text-gray-500 dark:text-gray-400">모든 값에 실행 (*)</p>
+        <p className="text-xs text-muted">모든 값에 실행 (*)</p>
       )}
 
       {state.mode === 'specific' && renderSpecificGrid()}
@@ -409,32 +409,32 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
             max={max}
             value={state.rangeFrom}
             onChange={e => onChange(fieldKey, { ...state, rangeFrom: Math.max(min, Math.min(max, parseInt(e.target.value) || min)) })}
-            className="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-16 px-2 py-1 border border-line-strong rounded text-sm bg-field text-fg"
           />
-          <span className="text-gray-500 dark:text-gray-400 text-xs">~</span>
+          <span className="text-muted text-xs">~</span>
           <input
             type="number"
             min={min}
             max={max}
             value={state.rangeTo}
             onChange={e => onChange(fieldKey, { ...state, rangeTo: Math.max(min, Math.min(max, parseInt(e.target.value) || max)) })}
-            className="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-16 px-2 py-1 border border-line-strong rounded text-sm bg-field text-fg"
           />
         </div>
       )}
 
       {state.mode === 'interval' && (
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">*/</span>
+          <span className="text-xs text-muted">*/</span>
           <input
             type="number"
             min={1}
             max={max}
             value={state.interval}
             onChange={e => onChange(fieldKey, { ...state, interval: Math.max(1, parseInt(e.target.value) || 1) })}
-            className="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-16 px-2 py-1 border border-line-strong rounded text-sm bg-field text-fg"
           />
-          <span className="text-xs text-gray-500 dark:text-gray-400">단위마다</span>
+          <span className="text-xs text-muted">단위마다</span>
         </div>
       )}
     </div>
@@ -485,8 +485,8 @@ export default function CrontabGenerator() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Crontab 생성기</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-fg">Crontab 생성기</h1>
+        <p className="text-sm text-muted mt-1">
           비주얼 UI로 크론 표현식을 생성하세요
         </p>
       </div>
@@ -505,8 +505,8 @@ export default function CrontabGenerator() {
             {copied ? '복사됨!' : '복사'}
           </button>
         </div>
-        <p className="mt-3 text-gray-700 dark:text-gray-300 font-medium">{description}</p>
-        <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+        <p className="mt-3 text-body font-medium">{description}</p>
+        <p className="mt-1 text-xs text-faint">
           형식: 분 시 일 월 요일 (0=일요일, 1=월요일 … 6=토요일)
         </p>
       </div>
@@ -530,7 +530,7 @@ export default function CrontabGenerator() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Presets */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">프리셋</h2>
+          <h2 className="text-base font-semibold text-fg mb-4">프리셋</h2>
           <div className="grid grid-cols-2 gap-2">
             {PRESETS.map(p => (
               <button
@@ -539,7 +539,7 @@ export default function CrontabGenerator() {
                 className={`text-left px-3 py-2 rounded-lg text-sm transition-colors border ${
                   expression === p.expr
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-                    : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950'
+                    : 'border-line bg-subtle text-body hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950'
                 }`}
               >
                 <span className="block font-medium">{p.label}</span>
@@ -551,7 +551,7 @@ export default function CrontabGenerator() {
 
         {/* Next execution times */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h2 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4" />
             다음 5회 실행 시간
           </h2>
@@ -562,12 +562,12 @@ export default function CrontabGenerator() {
                   <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold flex items-center justify-center shrink-0">
                     {i + 1}
                   </span>
-                  <span className="font-mono text-sm text-gray-700 dark:text-gray-300">{formatDate(d)}</span>
+                  <span className="font-mono text-sm text-body">{formatDate(d)}</span>
                 </li>
               ))}
             </ol>
           ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400">실행 시간을 계산할 수 없습니다.</p>
+            <p className="text-sm text-muted">실행 시간을 계산할 수 없습니다.</p>
           )}
         </div>
       </div>

@@ -458,8 +458,8 @@ const SqlFormatter = () => {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">SQL 포맷터</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">SQL 포맷터</h1>
+          <p className="text-sm text-muted mt-1">
             SQL 쿼리를 예쁘게 포맷팅하고 압축하세요.
           </p>
         </div>
@@ -470,8 +470,8 @@ const SqlFormatter = () => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* 모드 선택 */}
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">모드:</span>
-            <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+            <span className="text-sm font-medium text-body">모드:</span>
+            <div className="flex bg-soft rounded-lg p-1">
               {[
                 { key: 'format', label: '포맷팅', icon: Code },
                 { key: 'minify', label: '압축', icon: Zap },
@@ -482,8 +482,8 @@ const SqlFormatter = () => {
                   onClick={() => setMode(key as 'format' | 'minify' | 'analyze')}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     mode === key
-                      ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                      : 'text-sub hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -497,7 +497,7 @@ const SqlFormatter = () => {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
-              className="flex items-center space-x-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
+              className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               {isFullscreen ? <Shrink className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
               <span>{isFullscreen ? '창모드' : '전체화면'}</span>
@@ -505,7 +505,7 @@ const SqlFormatter = () => {
 
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="flex items-center space-x-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
+              className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               <Settings className="w-4 h-4" />
               <span>설정</span>
@@ -528,7 +528,7 @@ const SqlFormatter = () => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center space-x-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
+              className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               <Upload className="w-4 h-4" />
               <span>업로드</span>
@@ -558,10 +558,10 @@ const SqlFormatter = () => {
 
         {/* 설정 패널 */}
         {showSettings && (
-          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+          <div className="mt-4 pt-4 border-t border-line">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   들여쓰기 크기
                 </label>
                 <select
@@ -576,7 +576,7 @@ const SqlFormatter = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   SQL 방언
                 </label>
                 <select
@@ -600,7 +600,7 @@ const SqlFormatter = () => {
                     onChange={(e) => setUppercaseKeywords(e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">키워드 대문자</span>
+                  <span className="text-sm text-body">키워드 대문자</span>
                 </label>
               </div>
             </div>
@@ -611,8 +611,8 @@ const SqlFormatter = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 영역 */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">SQL 입력</h2>
+          <div className="bg-subtle px-6 py-4 border-b border-line">
+            <h2 className="text-lg font-semibold text-fg">SQL 입력</h2>
           </div>
           
           <div className="p-6">
@@ -640,8 +640,8 @@ const SqlFormatter = () => {
 
         {/* 출력 영역 */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <div className="bg-subtle px-6 py-4 border-b border-line">
+            <h2 className="text-lg font-semibold text-fg">
               {mode === 'format' ? '포맷팅 결과' : mode === 'minify' ? '압축 결과' : '분석 결과'}
             </h2>
           </div>
@@ -651,7 +651,7 @@ const SqlFormatter = () => {
               <div className="space-y-6">
                 {/* SQL 출력 */}
                 <div>
-                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">포맷팅된 쿼리</h3>
+                  <h3 className="text-sm font-medium text-body mb-2">포맷팅된 쿼리</h3>
                   <textarea
                     ref={outputRef}
                     value={output}

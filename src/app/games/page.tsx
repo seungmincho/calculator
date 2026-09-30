@@ -66,7 +66,7 @@ export default function GamesPage() {
         <GamesPageContent />
         {/* 전체 게임 링크 — GameHub는 ssr:false라 HTML에 링크가 없음 (크롤 발견용) */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">전체 게임 목록</h2>
+          <h2 className="text-xl font-bold text-fg mb-6">전체 게임 목록</h2>
           <CategoryHub category="games" />
         </section>
         <div className="mt-8">

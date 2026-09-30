@@ -59,13 +59,13 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
         className={`block px-3 py-2 rounded-lg font-medium transition-colors ${
           pathname === '/algorithm' || pathname === '/algorithm/'
             ? 'bg-blue-50/80 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-l-2 border-blue-500'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+            : 'text-body hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
         }`}
       >
         🏠 {t('title')}
       </Link>
 
-      <div className="border-t border-gray-200/50 dark:border-gray-700/50 my-2" />
+      <div className="border-t border-line my-2" />
 
       {/* Category accordion */}
       {(Object.entries(categories) as [AlgorithmCategory, typeof algorithms][]).map(([cat, algos]) => {
@@ -103,7 +103,7 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
                           className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
                             isActive
                               ? 'bg-blue-50/80 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-l-2 border-blue-500 font-medium'
-                              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                              : 'text-sub hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
                           }`}
                         >
                           <span>{algo.icon}</span>
@@ -121,8 +121,8 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
       })}
 
       {/* Learning tip */}
-      <div className="border-t border-gray-200/50 dark:border-gray-700/50 my-3" />
-      <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-500">
+      <div className="border-t border-line my-3" />
+      <div className="px-3 py-2 text-xs text-muted">
         💡 {t('sidebar.tip')}
       </div>
     </nav>

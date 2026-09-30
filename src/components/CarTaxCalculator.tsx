@@ -378,10 +378,10 @@ export default function CarTaxCalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -419,7 +419,7 @@ export default function CarTaxCalculator() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-green-600" />
             차량 정보 입력
           </h2>
@@ -427,7 +427,7 @@ export default function CarTaxCalculator() {
           <div className="space-y-6">
             {/* 차량 가격 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Car className="w-4 h-4 inline mr-1" />
                 차량 가격 (원)
               </label>
@@ -439,7 +439,7 @@ export default function CarTaxCalculator() {
                   setCarPrice(value)
                 }}
                 placeholder="30000000"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
               {carPrice && (
                 <p className="text-sm text-gray-500 mt-1">
@@ -450,13 +450,13 @@ export default function CarTaxCalculator() {
 
             {/* 차종 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 차종
               </label>
               <select
                 value={carType}
                 onChange={(e) => setCarType(e.target.value as CarType)}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               >
                 <option value="compact">경차</option>
                 <option value="passenger">승용차</option>
@@ -468,7 +468,7 @@ export default function CarTaxCalculator() {
 
             {/* 용도 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 용도
               </label>
               <div className="flex space-x-4">
@@ -496,7 +496,7 @@ export default function CarTaxCalculator() {
             {/* 승합차 인승수 */}
             {carType === 'van' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   승합차 인승
                 </label>
                 <div className="flex space-x-4">
@@ -525,7 +525,7 @@ export default function CarTaxCalculator() {
             {/* 이륜차 크기 */}
             {carType === 'motorcycle' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   이륜차 크기
                 </label>
                 <div className="flex space-x-4">
@@ -553,13 +553,13 @@ export default function CarTaxCalculator() {
 
             {/* 연료 타입 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 연료 타입
               </label>
               <select
                 value={fuelType}
                 onChange={(e) => setFuelType(e.target.value as FuelType)}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               >
                 <option value="gasoline">휘발유</option>
                 <option value="diesel">경유</option>
@@ -572,7 +572,7 @@ export default function CarTaxCalculator() {
             {/* 배기량 */}
             {carType !== 'electric' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   배기량 (cc)
                 </label>
                 <input
@@ -580,14 +580,14 @@ export default function CarTaxCalculator() {
                   value={displacement}
                   onChange={(e) => setDisplacement(e.target.value)}
                   placeholder="2000"
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                  className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
                 />
               </div>
             )}
 
             {/* 신차/중고차 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 차량 상태
               </label>
               <div className="flex space-x-4">
@@ -614,13 +614,13 @@ export default function CarTaxCalculator() {
 
             {/* 지역 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 등록 지역
               </label>
               <select
                 value={region}
                 onChange={(e) => setRegion(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               >
                 <option value="seoul">서울특별시</option>
                 <option value="busan">부산광역시</option>
@@ -632,7 +632,7 @@ export default function CarTaxCalculator() {
 
             {/* 감면 혜택 */}
             <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 💰 감면 혜택 (해당사항 선택)
               </h3>
               
@@ -697,7 +697,7 @@ export default function CarTaxCalculator() {
                 </label>
               </div>
 
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <div className="text-xs text-muted mt-2">
                 ⚠️ 전기차 혜택과 다자녀 혜택은 중복 적용되지 않습니다
               </div>
             </div>
@@ -810,31 +810,31 @@ export default function CarTaxCalculator() {
 
               {/* 차량 정보 요약 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h4 className="text-lg font-bold text-fg mb-4">
                   차량 정보 요약
                 </h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">차량 가격</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">차량 가격</span>
+                    <p className="font-semibold text-fg">
                       {formatCurrency(parseFloat(carPrice))}원
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">차종</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">차종</span>
+                    <p className="font-semibold text-fg">
                       {getCarTypeLabel(carType)}
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">연료</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">연료</span>
+                    <p className="font-semibold text-fg">
                       {getFuelTypeLabel(fuelType)}
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">상태</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">상태</span>
+                    <p className="font-semibold text-fg">
                       {isNew ? '신차' : '중고차'}
                     </p>
                   </div>
@@ -861,7 +861,7 @@ export default function CarTaxCalculator() {
           {!result && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
               <Receipt className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 차량 정보를 입력하면<br />
                 취등록세 계산 결과가 표시됩니다
               </p>
@@ -873,16 +873,16 @@ export default function CarTaxCalculator() {
 
       {/* 취등록세 가이드 */}
       <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           💡 취등록세 안내
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               주요 세금 종류
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• <strong>취득세</strong>: 모든 차량 2%</li>
               <li>• <strong>등록세</strong>: 비영업용 승용차 5%, 화물차 3% 등</li>
               <li>• <strong>도시철도채권</strong>: 서울시 6% (실제 부담 약 30%)</li>
@@ -891,10 +891,10 @@ export default function CarTaxCalculator() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               절세 혜택 (2026년 기준)
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• <strong>경차</strong>: 취득세 최대 75만원 감면</li>
               <li>• <strong>전기차</strong>: 취득세 최대 140만원 감면</li>
               <li>• <strong>하이브리드</strong>: ❌ 2024.12.31부로 감면 종료</li>

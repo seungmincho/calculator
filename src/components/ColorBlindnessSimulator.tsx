@@ -466,8 +466,8 @@ export default function ColorBlindnessSimulator() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Upload Zone + Sample Buttons */}
@@ -476,22 +476,22 @@ export default function ColorBlindnessSimulator() {
           className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors ${
             isDraggingFile
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-              : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 bg-white dark:bg-gray-800'
+              : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500 bg-surface'
           }`}
           onClick={() => fileInputRef.current?.click()}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
-          <Upload className="w-10 h-10 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
-          <p className="text-gray-700 dark:text-gray-300 font-medium">{t('uploadPrompt')}</p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('uploadSubPrompt')}</p>
+          <Upload className="w-10 h-10 text-faint mx-auto mb-3" />
+          <p className="text-body font-medium">{t('uploadPrompt')}</p>
+          <p className="text-xs text-faint mt-1">{t('uploadSubPrompt')}</p>
 
           <div className="flex flex-wrap justify-center gap-2 mt-6">
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); cameraInputRef.current?.click() }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
             >
               <Camera className="w-4 h-4" />
               {t('cameraButton')}
@@ -502,12 +502,12 @@ export default function ColorBlindnessSimulator() {
 
       {/* Sample Images */}
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('sampleImages')}:</span>
+        <span className="text-sm text-muted font-medium">{t('sampleImages')}:</span>
         {(['colorWheel', 'ishihara', 'trafficLight'] as SampleKey[]).map((key) => (
           <button
             key={key}
             onClick={() => loadSample(key)}
-            className="px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 rounded-lg text-sm text-gray-700 dark:text-gray-300 transition-colors"
+            className="px-3 py-1.5 bg-surface border border-line-strong hover:border-blue-400 dark:hover:border-blue-500 rounded-lg text-sm text-body transition-colors"
           >
             {t(`sample${key.charAt(0).toUpperCase() + key.slice(1)}` as `sampleColorWheel` | `sampleIshihara` | `sampleTrafficLight`)}
           </button>
@@ -515,7 +515,7 @@ export default function ColorBlindnessSimulator() {
         {hasImage && (
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-blue-400 rounded-lg text-sm text-gray-700 dark:text-gray-300 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-line-strong hover:border-blue-400 rounded-lg text-sm text-body transition-colors"
           >
             <Upload className="w-3.5 h-3.5" />
             {t('uploadPrompt').split(' ')[0]}
@@ -525,7 +525,7 @@ export default function ColorBlindnessSimulator() {
 
       {/* Type Selector */}
       <div className={`${glassCard} ${glassInset} p-4`}>
-        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('typeSelector')}</p>
+        <p className="text-sm font-semibold text-body mb-3">{t('typeSelector')}</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {CVD_TYPES.map((type) => {
             const typeName = t(`types.${type}.name`)
@@ -538,11 +538,11 @@ export default function ColorBlindnessSimulator() {
                 className={`text-left p-2.5 rounded-lg border-2 transition-all ${
                   selectedType === type
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 bg-white dark:bg-gray-800'
+                    : 'border-line hover:border-blue-300 dark:hover:border-blue-700 bg-surface'
                 }`}
               >
-                <div className="text-xs font-semibold text-gray-900 dark:text-white leading-tight">{typeName}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">{typeDesc}</div>
+                <div className="text-xs font-semibold text-fg leading-tight">{typeName}</div>
+                <div className="text-xs text-muted mt-0.5 leading-tight">{typeDesc}</div>
                 {prevalence && (
                   <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">{prevalence}</div>
                 )}
@@ -556,7 +556,7 @@ export default function ColorBlindnessSimulator() {
       {hasImage && (
         <div className="space-y-4">
           {processing && (
-            <div className="text-center text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+            <div className="text-center text-sm text-muted animate-pulse">
               {t('processing')}
             </div>
           )}
@@ -564,7 +564,7 @@ export default function ColorBlindnessSimulator() {
           {/* Side-by-side on mobile, slider on desktop */}
           <div className="space-y-4 lg:hidden">
             <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="px-4 py-2 bg-gray-50 dark:bg-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
+              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-sub border-b border-line">
                 {t('original')}
               </div>
               <canvas
@@ -638,7 +638,7 @@ export default function ColorBlindnessSimulator() {
                 {t('simulated')}
               </div>
             </div>
-            <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1">{t('sliderHint')}</p>
+            <p className="text-center text-xs text-faint mt-1">{t('sliderHint')}</p>
           </div>
 
           {/* Download */}
@@ -655,7 +655,7 @@ export default function ColorBlindnessSimulator() {
       )}
 
       {!hasImage && (
-        <div className="text-center text-gray-400 dark:text-gray-500 py-4 text-sm">{t('noImage')}</div>
+        <div className="text-center text-faint py-4 text-sm">{t('noImage')}</div>
       )}
 
       {/* Info Panel */}
@@ -664,7 +664,7 @@ export default function ColorBlindnessSimulator() {
           onClick={() => setShowInfo(!showInfo)}
           className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <div className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 font-semibold text-fg">
             <Info className="w-4 h-4 text-blue-500" />
             {t('infoPanel.title')}
           </div>
@@ -672,17 +672,17 @@ export default function ColorBlindnessSimulator() {
         </button>
 
         {showInfo && (
-          <div className="px-5 pb-5 space-y-4 border-t border-gray-100 dark:border-gray-700 pt-4">
+          <div className="px-5 pb-5 space-y-4 border-t border-line pt-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('infoPanel.whatIs')}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('infoPanel.whatIsText')}</p>
+              <h3 className="text-sm font-semibold text-fg mb-2">{t('infoPanel.whatIs')}</h3>
+              <p className="text-sm text-sub leading-relaxed">{t('infoPanel.whatIsText')}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('infoPanel.designTip')}</h3>
+              <h3 className="text-sm font-semibold text-fg mb-2">{t('infoPanel.designTip')}</h3>
               <ul className="space-y-1.5">
                 {(t.raw('infoPanel.designTipItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
                     <span>{item}</span>
                   </li>
@@ -692,26 +692,26 @@ export default function ColorBlindnessSimulator() {
 
             {/* CVD type table */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('typeSelector')}</h3>
+              <h3 className="text-sm font-semibold text-fg mb-2">{t('typeSelector')}</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border-collapse">
                   <thead>
-                    <tr className="bg-gray-50 dark:bg-gray-700">
-                      <th className="text-left px-3 py-2 text-gray-700 dark:text-gray-300 font-medium border border-gray-200 dark:border-gray-600">유형</th>
-                      <th className="text-left px-3 py-2 text-gray-700 dark:text-gray-300 font-medium border border-gray-200 dark:border-gray-600">설명</th>
-                      <th className="text-left px-3 py-2 text-gray-700 dark:text-gray-300 font-medium border border-gray-200 dark:border-gray-600">{t('prevalence')}</th>
+                    <tr className="bg-subtle">
+                      <th className="text-left px-3 py-2 text-body font-medium border border-line">유형</th>
+                      <th className="text-left px-3 py-2 text-body font-medium border border-line">설명</th>
+                      <th className="text-left px-3 py-2 text-body font-medium border border-line">{t('prevalence')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {CVD_TYPES.filter(t2 => t2 !== 'normal').map((type) => (
                       <tr key={type} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-3 py-2 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white font-medium whitespace-nowrap">
+                        <td className="px-3 py-2 border border-line text-fg font-medium whitespace-nowrap">
                           {t(`types.${type}.name`)}
                         </td>
-                        <td className="px-3 py-2 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400">
+                        <td className="px-3 py-2 border border-line text-sub">
                           {t(`types.${type}.description`)}
                         </td>
-                        <td className="px-3 py-2 border border-gray-200 dark:border-gray-600 text-blue-600 dark:text-blue-400 whitespace-nowrap">
+                        <td className="px-3 py-2 border border-line text-blue-600 dark:text-blue-400 whitespace-nowrap">
                           {t(`types.${type}.prevalence` as `types.protanopia.prevalence`)}
                         </td>
                       </tr>
@@ -723,12 +723,12 @@ export default function ColorBlindnessSimulator() {
 
             {/* FAQ */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">FAQ</h3>
+              <h3 className="text-sm font-semibold text-fg mb-2">FAQ</h3>
               <div className="space-y-3">
                 {(['q1', 'q2', 'q3', 'q4'] as const).map((key) => (
-                  <div key={key} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">Q. {t(`faq.${key}.q`)}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">A. {t(`faq.${key}.a`)}</p>
+                  <div key={key} className="bg-subtle rounded-lg p-3">
+                    <p className="text-sm font-medium text-fg mb-1">Q. {t(`faq.${key}.q`)}</p>
+                    <p className="text-sm text-sub leading-relaxed">A. {t(`faq.${key}.a`)}</p>
                   </div>
                 ))}
               </div>

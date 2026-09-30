@@ -185,8 +185,8 @@ export default function KMPVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400">
               {tHub('categories.string')}
@@ -198,7 +198,7 @@ export default function KMPVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying} onPlay={handlePlay} onPause={() => setIsPlaying(false)}
@@ -222,28 +222,28 @@ export default function KMPVisualizer() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.matches')}: <strong className="text-pink-600 dark:text-pink-400">{result?.matches.length ?? '-'}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.phase')}: <strong className="text-blue-600 dark:text-blue-400">{phase === 'failure' ? t('stats.failurePhase') : t('stats.searchPhase')}</strong>
               </span>
               {result && result.matches.length > 0 && (
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-sub">
                   {t('stats.positions')}: <strong className="text-emerald-600 dark:text-emerald-400">{result.matches.join(', ')}</strong>
                 </span>
               )}
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.preset')}</p>
+              <p className="text-xs font-medium text-muted mb-2">{t('controls.preset')}</p>
               <div className="flex flex-wrap gap-2">
                 {KMP_PRESETS.map((p, i) => (
                   <button key={i} onClick={() => selectPreset(i)}
                     className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
-                      presetIdx === i ? 'bg-pink-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      presetIdx === i ? 'bg-pink-500 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}>{p.name}</button>
                 ))}
               </div>
@@ -251,16 +251,16 @@ export default function KMPVisualizer() {
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('controls.text')}</label>
+                <label className="text-xs font-medium text-muted mb-1 block">{t('controls.text')}</label>
                 <input type="text" value={text} maxLength={20}
                   onChange={e => { setText(e.target.value.toUpperCase()); handleReset() }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:outline-none font-mono text-sm" />
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-pink-500 focus:outline-none font-mono text-sm" />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('controls.pattern')}</label>
+                <label className="text-xs font-medium text-muted mb-1 block">{t('controls.pattern')}</label>
                 <input type="text" value={pattern} maxLength={10}
                   onChange={e => { setPattern(e.target.value.toUpperCase()); handleReset() }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:outline-none font-mono text-sm" />
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-pink-500 focus:outline-none font-mono text-sm" />
               </div>
             </div>
 
@@ -273,22 +273,22 @@ export default function KMPVisualizer() {
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-500 bg-pink-50/50 dark:bg-pink-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>{tab.icon} {tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.hint')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.hint')}</p>
                     ) : (
                       <StepsList steps={result?.steps} currentIndex={currentStepIndex}
                         onStepClick={setCurrentStepIndex} actionStyle={ACTION_STYLE} actionBadge={ACTION_BADGE} />
@@ -326,12 +326,12 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const idx = ws + wi; const isCur = idx === currentIndex; const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${actionBadge[step.action] || ''}`}>
                 {step.action.replace('build-failure-', 'F:').replace('search-', 'S:')}
               </span>
-              <span className="text-gray-600 dark:text-gray-300 truncate">{step.description}</span>
+              <span className="text-sub truncate">{step.description}</span>
             </div>
           </div>
         )

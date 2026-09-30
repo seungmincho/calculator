@@ -134,8 +134,8 @@ export default function NQueensVisualizer() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
           <span className="px-2 py-0.5 text-xs rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400">
             {tHub('categories.backtracking')}
@@ -146,7 +146,7 @@ export default function NQueensVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying}
@@ -175,10 +175,10 @@ export default function NQueensVisualizer() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.solutions')}: <strong className="text-emerald-600 dark:text-emerald-400">{solutionCount}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.attempts')}: <strong className="text-yellow-600 dark:text-yellow-400">{attempts}</strong>
               </span>
               {isDone && (
@@ -189,16 +189,16 @@ export default function NQueensVisualizer() {
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3">
-              <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">{t('controls.boardSize')}</span>
+              <span className="text-xs text-muted flex-shrink-0">{t('controls.boardSize')}</span>
               <input type="range" min={4} max={12} value={n}
                 onChange={e => handleNChange(Number(e.target.value))}
                 disabled={isRunning} className="flex-1 accent-rose-600 disabled:opacity-40" />
-              <span className="text-xs text-gray-600 dark:text-gray-400 w-12 text-center tabular-nums">{n} x {n}</span>
+              <span className="text-xs text-sub w-12 text-center tabular-nums">{n} x {n}</span>
             </div>
 
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-purple-500" />{t('grid.queen')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-red-400/50" />{t('grid.attacked')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-yellow-400/50" />{t('grid.current')}</span>
@@ -209,14 +209,14 @@ export default function NQueensVisualizer() {
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-rose-600 dark:text-rose-400 border-b-2 border-rose-500 bg-rose-50/50 dark:bg-rose-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
                     {tab.icon} {tab.label}
                   </button>
@@ -226,9 +226,9 @@ export default function NQueensVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.description')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.description')}</p>
                     ) : (
                       <NQueensStepsList steps={result?.steps} currentIndex={currentStepIndex} onStepClick={setCurrentStepIndex} t={t} />
                     )}
@@ -302,14 +302,14 @@ function NQueensStepsList({ steps, currentIndex, onStepClick, t }: {
           <div key={i} data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-rose-500/50 bg-rose-50/50 dark:bg-rose-900/20'
-              : isActive ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+              : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
               : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`} onClick={() => onStepClick(step.originalIndex)}>
             <div className="flex items-center gap-2">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${colorClasses[step.action] || ''}`}>
                 {icons[step.action] || '•'}
               </span>
-              <span className="text-gray-700 dark:text-gray-300 flex-1 min-w-0 truncate">{step.description}</span>
+              <span className="text-body flex-1 min-w-0 truncate">{step.description}</span>
             </div>
           </div>
         )

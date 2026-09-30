@@ -29,32 +29,32 @@ export default function ChessPageContent() {
     <div className="max-w-lg mx-auto space-y-5">
       {/* Game header */}
       <div className="text-center">
-        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3">
+        <div className="w-16 h-16 bg-soft rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3">
           ♟️
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">체스 (Chess)</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AI와 대전하는 클래식 체스 게임</p>
+        <h1 className="text-2xl font-bold text-fg">체스 (Chess)</h1>
+        <p className="text-sm text-muted mt-1">AI와 대전하는 클래식 체스 게임</p>
       </div>
 
       {/* Mode selection - AI only */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700">
-          <h2 className="font-bold text-gray-900 dark:text-white">{t('selectPlayMode') || '플레이 방식 선택'}</h2>
+      <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden">
+        <div className="px-5 py-4 border-b border-line">
+          <h2 className="font-bold text-fg">{t('selectPlayMode') || '플레이 방식 선택'}</h2>
         </div>
         <div className="p-4 space-y-3">
-          <div className="rounded-xl border-2 border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div className="rounded-xl border-2 border-line overflow-hidden">
             <div className="flex items-center gap-3 p-4">
               <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Monitor className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-gray-900 dark:text-white">{t('vsComputer') || '컴퓨터 대전'}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('vsComputerDesc') || 'AI와 1인 플레이 · 인터넷 불필요'}</p>
+                <p className="font-bold text-fg">{t('vsComputer') || '컴퓨터 대전'}</p>
+                <p className="text-xs text-muted">{t('vsComputerDesc') || 'AI와 1인 플레이 · 인터넷 불필요'}</p>
               </div>
             </div>
 
             <div className="px-4 pb-3 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1.5 text-xs text-muted">
                 <Zap className="w-3.5 h-3.5" />
                 <span>{t('difficulty') || '난이도'}</span>
               </div>
@@ -89,7 +89,7 @@ export default function ChessPageContent() {
       <div className="text-center">
         <Link
           href="/games"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <Gamepad2 className="w-4 h-4" />
           {t('moreGames') || '게임 센터에서 더 많은 게임 보기'}

@@ -604,26 +604,26 @@ const ImageEditor = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`min-h-screen ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-fg">
                 이미지 편집기
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-muted mt-1">
                 브라우저에서 바로 이미지를 편집하세요. 크롭, 회전, 필터, 텍스트 추가 등.
               </p>
             </div>
             {!isFullscreen && (
               <button
                 onClick={() => setIsFullscreen(true)}
-                className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 title="전체화면"
               >
-                <Maximize className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <Maximize className="w-5 h-5 text-sub" />
               </button>
             )}
           </div>
@@ -633,7 +633,7 @@ const ImageEditor = () => {
           {/* Upload Section */}
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold mb-4 text-fg">
                 <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
               </h2>
@@ -646,15 +646,15 @@ const ImageEditor = () => {
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
                     dragOver
                       ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                      : 'border-gray-300 dark:border-gray-600 hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300 mb-2">
+                  <p className="text-sub mb-2">
                     클릭하거나 이미지를 드래그하세요
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-muted">
                     JPG, PNG, WebP 파일 지원
                   </p>
                   <input
@@ -671,7 +671,7 @@ const ImageEditor = () => {
                     <img
                       src={originalImage.src}
                       alt="Original"
-                      className="w-full h-32 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      className="w-full h-32 object-contain bg-soft rounded-lg"
                     />
                     <button
                       onClick={resetImage}
@@ -681,9 +681,9 @@ const ImageEditor = () => {
                     </button>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2">원본 정보</h3>
-                    <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <h3 className="font-medium text-fg mb-2">원본 정보</h3>
+                    <div className="text-sm text-sub space-y-1">
                       <p>파일명: {fileName}</p>
                       <p>크기: {originalImage.width} × {originalImage.height}px</p>
                     </div>
@@ -695,7 +695,7 @@ const ImageEditor = () => {
             {/* Tools */}
             {originalImage && (
               <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold mb-4 text-fg">
                   편집 도구
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -704,7 +704,7 @@ const ImageEditor = () => {
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'crop'
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                        : 'border-line hover:border-purple-300'
                     }`}
                   >
                     <Square className="w-5 h-5 mx-auto mb-1" />
@@ -715,7 +715,7 @@ const ImageEditor = () => {
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'rotate'
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                        : 'border-line hover:border-purple-300'
                     }`}
                   >
                     <RotateCw className="w-5 h-5 mx-auto mb-1" />
@@ -726,7 +726,7 @@ const ImageEditor = () => {
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'text'
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                        : 'border-line hover:border-purple-300'
                     }`}
                   >
                     <Type className="w-5 h-5 mx-auto mb-1" />
@@ -737,7 +737,7 @@ const ImageEditor = () => {
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'filter'
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                        : 'border-line hover:border-purple-300'
                     }`}
                   >
                     <Sliders className="w-5 h-5 mx-auto mb-1" />
@@ -749,17 +749,17 @@ const ImageEditor = () => {
                 <div className="mt-6 space-y-4">
                   {currentTool === 'rotate' && (
                     <div>
-                      <h4 className="font-medium mb-2 text-gray-900 dark:text-white">회전</h4>
+                      <h4 className="font-medium mb-2 text-fg">회전</h4>
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleRotate(-90)}
-                          className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                          className="flex-1 p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                         >
                           <RotateCcw className="w-4 h-4 mx-auto" />
                         </button>
                         <button
                           onClick={() => handleRotate(90)}
-                          className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                          className="flex-1 p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                         >
                           <RotateCw className="w-4 h-4 mx-auto" />
                         </button>
@@ -769,20 +769,20 @@ const ImageEditor = () => {
 
                   {currentTool === 'text' && (
                     <div className="space-y-3">
-                      <h4 className="font-medium mb-2 text-gray-900 dark:text-white">텍스트 추가</h4>
+                      <h4 className="font-medium mb-2 text-fg">텍스트 추가</h4>
                       <input
                         type="text"
                         value={currentText}
                         onChange={(e) => setCurrentText(e.target.value)}
                         placeholder="텍스트 입력"
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
                       />
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           type="color"
                           value={textColor}
                           onChange={(e) => setTextColor(e.target.value)}
-                          className="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg"
+                          className="w-full h-10 border border-line-strong rounded-lg"
                         />
                         <input
                           type="range"
@@ -796,7 +796,7 @@ const ImageEditor = () => {
                       <select
                         value={fontFamily}
                         onChange={(e) => setFontFamily(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
                       >
                         {fonts.map((font) => (
                           <option key={font} value={font}>{font}</option>
@@ -819,13 +819,13 @@ const ImageEditor = () => {
 
                   {currentTool === 'crop' && (
                     <div>
-                      <h4 className="font-medium mb-2 text-gray-900 dark:text-white">크롭</h4>
+                      <h4 className="font-medium mb-2 text-fg">크롭</h4>
                       <button
                         onClick={() => setIsCropping(!isCropping)}
                         className={`w-full p-2 rounded-lg transition-colors ${
                           isCropping
                             ? 'bg-purple-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                            : 'bg-soft text-fg'
                         }`}
                       >
                         {isCropping ? '크롭 완료' : '크롭 시작'}
@@ -842,28 +842,28 @@ const ImageEditor = () => {
             {originalImage && (
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-xl font-semibold text-fg">
                     편집 미리보기
                   </h2>
                   <div className="flex space-x-2">
                     <button
                       onClick={undo}
                       disabled={historyIndex <= 0}
-                      className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50"
+                      className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50"
                     >
                       <Undo className="w-4 h-4" />
                     </button>
                     <button
                       onClick={redo}
                       disabled={historyIndex >= history.length - 1}
-                      className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50"
+                      className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50"
                     >
                       <Redo className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
-                <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                <div className="relative bg-soft rounded-lg p-4">
                   <canvas
                     ref={previewCanvasRef}
                     onMouseDown={handleCanvasMouseDown}
@@ -898,13 +898,13 @@ const ImageEditor = () => {
           <div className="lg:col-span-1">
             {originalImage && currentTool === 'filter' && (
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold mb-4 text-fg">
                   필터 설정
                 </h2>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       밝기: {filters.brightness}%
                     </label>
                     <input
@@ -919,7 +919,7 @@ const ImageEditor = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       대비: {filters.contrast}%
                     </label>
                     <input
@@ -934,7 +934,7 @@ const ImageEditor = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       채도: {filters.saturation}%
                     </label>
                     <input
@@ -949,7 +949,7 @@ const ImageEditor = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       블러: {filters.blur}px
                     </label>
                     <input
@@ -964,7 +964,7 @@ const ImageEditor = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       세피아: {filters.sepia}%
                     </label>
                     <input
@@ -979,7 +979,7 @@ const ImageEditor = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    <label className="block text-sm text-sub mb-1">
                       색조 회전: {filters.hueRotate}°
                     </label>
                     <input
@@ -1005,7 +1005,7 @@ const ImageEditor = () => {
                       });
                       saveToHistory();
                     }}
-                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="w-full p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                   >
                     초기화
                   </button>
@@ -1016,7 +1016,7 @@ const ImageEditor = () => {
             {/* Result */}
             {editedImageUrl && (
               <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold mb-4 text-fg">
                   편집 결과
                 </h2>
 
@@ -1025,7 +1025,7 @@ const ImageEditor = () => {
                     <img
                       src={editedImageUrl}
                       alt="Edited"
-                      className="w-full h-32 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      className="w-full h-32 object-contain bg-soft rounded-lg"
                     />
                   </div>
 
@@ -1044,7 +1044,7 @@ const ImageEditor = () => {
 
         {/* Info Section */}
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">이미지 편집기 사용법</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 편집기 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
               <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">✅ 주요 기능</h3>

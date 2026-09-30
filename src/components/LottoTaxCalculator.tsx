@@ -226,14 +226,14 @@ export default function LottoTaxCalculator() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -246,7 +246,7 @@ export default function LottoTaxCalculator() {
           {/* Prize Input */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('prizeAmount')}
               </label>
               <div className="relative">
@@ -261,7 +261,7 @@ export default function LottoTaxCalculator() {
                   placeholder={t('prizeAmountPlaceholder')}
                   className={`${glassInput} px-4 py-3 pr-12 text-lg font-bold`}
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-faint text-sm">
                   {t('won')}
                 </span>
               </div>
@@ -274,7 +274,7 @@ export default function LottoTaxCalculator() {
 
             {/* Quick amounts */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+              <label className="block text-xs font-medium text-muted mb-2">
                 {t('quickAmounts')}
               </label>
               <div className="grid grid-cols-4 gap-1.5">
@@ -282,7 +282,7 @@ export default function LottoTaxCalculator() {
                   <button
                     key={value}
                     onClick={() => handleQuickAmount(value)}
-                    className="px-2 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-700 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg transition-colors"
+                    className="px-2 py-1.5 text-xs font-medium bg-soft hover:bg-blue-100 dark:hover:bg-blue-900 text-body hover:text-blue-700 dark:hover:text-blue-300 rounded-lg transition-colors"
                   >
                     {label}
                   </button>
@@ -302,7 +302,7 @@ export default function LottoTaxCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-5 h-5" />
               </button>
@@ -311,7 +311,7 @@ export default function LottoTaxCalculator() {
 
           {/* Rank presets */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-body mb-3 flex items-center gap-1.5">
               <Trophy className="w-4 h-4 text-yellow-500" />
               {t('rankPresets')}
             </h3>
@@ -320,12 +320,12 @@ export default function LottoTaxCalculator() {
                 <button
                   key={rank}
                   onClick={() => handleQuickAmount(avgPrize)}
-                  className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-lg transition-colors group"
+                  className="w-full flex items-center justify-between px-3 py-2 bg-subtle hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-lg transition-colors group"
                 >
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-yellow-700 dark:group-hover:text-yellow-300">
+                  <span className="text-sm font-medium text-body group-hover:text-yellow-700 dark:group-hover:text-yellow-300">
                     {t(rank)}
                   </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-muted">
                     ~{formatKRW(avgPrize)}{t('won')}
                   </span>
                 </button>
@@ -337,7 +337,7 @@ export default function LottoTaxCalculator() {
         {/* Right: Result Panel */}
         <div className="lg:col-span-2 space-y-4">
           {!result ? (
-            <div className={`${glassCard} ${glassInset} p-16 text-center text-gray-400 dark:text-gray-500`}>
+            <div className={`${glassCard} ${glassInset} p-16 text-center text-faint`}>
               <Banknote className="w-16 h-16 mx-auto mb-4 opacity-30" />
               <p>{t('prizeAmountPlaceholder')}</p>
             </div>
@@ -351,7 +351,7 @@ export default function LottoTaxCalculator() {
                 <div className="p-6 space-y-6">
                   {/* Net prize highlight */}
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('netPrize')}</p>
+                    <p className="text-sm text-muted mb-1">{t('netPrize')}</p>
                     <div className="flex items-center justify-center gap-2">
                       <p className="text-4xl sm:text-5xl font-black text-green-600 dark:text-green-400">
                         {formatKRW(result.netPrize)}
@@ -363,7 +363,7 @@ export default function LottoTaxCalculator() {
                         {copiedId === 'net' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                       </button>
                     </div>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+                    <p className="text-lg text-sub mt-1">
                       {result.netPrize.toLocaleString()}{t('won')}
                     </p>
                   </div>
@@ -376,30 +376,30 @@ export default function LottoTaxCalculator() {
                     <>
                       {/* Tax breakdown */}
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-3">
+                        <div className="bg-subtle rounded-xl p-4 space-y-3">
                           <div className="flex items-center justify-between">
-                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('totalPrize')}</p>
-                            <p className="text-sm font-bold text-gray-900 dark:text-white">{formatKRW(result.totalPrize)}{t('won')}</p>
+                            <p className="text-sm font-medium text-body">{t('totalPrize')}</p>
+                            <p className="text-sm font-bold text-fg">{formatKRW(result.totalPrize)}{t('won')}</p>
                           </div>
                           <div className="flex items-center justify-between">
                             <p className="text-sm font-medium text-red-600 dark:text-red-400">{t('totalTax')}</p>
                             <p className="text-sm font-bold text-red-600 dark:text-red-400">-{formatKRW(result.totalTax)}{t('won')}</p>
                           </div>
-                          <div className="border-t border-gray-200 dark:border-gray-600 pt-2">
+                          <div className="border-t border-line pt-2">
                             <div className="flex items-center justify-between">
                               <p className="text-sm font-medium text-green-600 dark:text-green-400">{t('netPrize')}</p>
                               <p className="text-sm font-bold text-green-600 dark:text-green-400">{formatKRW(result.netPrize)}{t('won')}</p>
                             </div>
                           </div>
                           <div className="flex items-center justify-between pt-1">
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{t('effectiveRate')}</p>
-                            <p className="text-xs font-bold text-gray-600 dark:text-gray-300">{result.effectiveRate.toFixed(1)}%</p>
+                            <p className="text-xs text-muted">{t('effectiveRate')}</p>
+                            <p className="text-xs font-bold text-sub">{result.effectiveRate.toFixed(1)}%</p>
                           </div>
                         </div>
 
                         {/* Pie chart */}
-                        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 text-center">{t('chartTitle')}</p>
+                        <div className="bg-subtle rounded-xl p-4">
+                          <p className="text-xs font-medium text-muted mb-2 text-center">{t('chartTitle')}</p>
                           <ResponsiveContainer width="100%" height={160}>
                             <PieChart>
                               <Pie
@@ -419,11 +419,11 @@ export default function LottoTaxCalculator() {
                             </PieChart>
                           </ResponsiveContainer>
                           <div className="flex justify-center gap-4 mt-1">
-                            <span className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300">
+                            <span className="flex items-center gap-1 text-xs text-sub">
                               <span className="w-3 h-3 rounded-full bg-green-500 inline-block" />
                               {t('chartNetPrize')} ({(100 - result.effectiveRate).toFixed(1)}%)
                             </span>
-                            <span className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300">
+                            <span className="flex items-center gap-1 text-xs text-sub">
                               <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
                               {t('chartTax')} ({result.effectiveRate.toFixed(1)}%)
                             </span>
@@ -439,16 +439,16 @@ export default function LottoTaxCalculator() {
                               {t('belowThreshold')} — {t('taxRate22')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-xs">
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('incomeTax')} (20%)</p>
-                                <p className="font-bold text-gray-900 dark:text-white">{result.incomeTaxBelow.toLocaleString()}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('incomeTax')} (20%)</p>
+                                <p className="font-bold text-fg">{result.incomeTaxBelow.toLocaleString()}</p>
                               </div>
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('localTax')} (2%)</p>
-                                <p className="font-bold text-gray-900 dark:text-white">{result.localTaxBelow.toLocaleString()}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('localTax')} (2%)</p>
+                                <p className="font-bold text-fg">{result.localTaxBelow.toLocaleString()}</p>
                               </div>
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('taxBelow300m')}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('taxBelow300m')}</p>
                                 <p className="font-bold text-red-600 dark:text-red-400">{result.taxBelow300m.toLocaleString()}</p>
                               </div>
                             </div>
@@ -460,16 +460,16 @@ export default function LottoTaxCalculator() {
                               {t('aboveThreshold')} — {t('taxRate33')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-xs">
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('incomeTax')} (30%)</p>
-                                <p className="font-bold text-gray-900 dark:text-white">{result.incomeTaxAbove.toLocaleString()}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('incomeTax')} (30%)</p>
+                                <p className="font-bold text-fg">{result.incomeTaxAbove.toLocaleString()}</p>
                               </div>
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('localTax')} (3%)</p>
-                                <p className="font-bold text-gray-900 dark:text-white">{result.localTaxAbove.toLocaleString()}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('localTax')} (3%)</p>
+                                <p className="font-bold text-fg">{result.localTaxAbove.toLocaleString()}</p>
                               </div>
-                              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 text-center">
-                                <p className="text-gray-500 dark:text-gray-400">{t('taxAbove300m')}</p>
+                              <div className="bg-surface rounded-lg p-2 text-center">
+                                <p className="text-muted">{t('taxAbove300m')}</p>
                                 <p className="font-bold text-red-600 dark:text-red-400">{result.taxAbove300m.toLocaleString()}</p>
                               </div>
                             </div>
@@ -489,7 +489,7 @@ export default function LottoTaxCalculator() {
               onClick={() => setShowComparison(!showComparison)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              <span className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
+              <span className="flex items-center gap-2 font-semibold text-fg">
                 <TrendingUp className="w-5 h-5 text-blue-500" />
                 {t('comparisonTitle')}
               </span>
@@ -497,7 +497,7 @@ export default function LottoTaxCalculator() {
             </button>
             {showComparison && (
               <div className="px-4 pb-4 space-y-4">
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('comparisonDesc')}</p>
+                <p className="text-sm text-muted">{t('comparisonDesc')}</p>
 
                 {/* Bar chart */}
                 <div className="h-64">
@@ -517,11 +517,11 @@ export default function LottoTaxCalculator() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400">{t('totalPrize')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('totalTax')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('netPrize')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('effectiveRate')}</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 px-2 text-muted">{t('totalPrize')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('totalTax')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('netPrize')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('effectiveRate')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -529,12 +529,12 @@ export default function LottoTaxCalculator() {
                         <tr
                           key={row.amount}
                           onClick={() => handleQuickAmount(row.amount)}
-                          className="border-b border-gray-100 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer transition-colors"
+                          className="border-b border-line hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer transition-colors"
                         >
-                          <td className="py-2 px-2 font-medium text-gray-900 dark:text-white">{row.label}{t('won')}</td>
+                          <td className="py-2 px-2 font-medium text-fg">{row.label}{t('won')}</td>
                           <td className="py-2 px-2 text-right text-red-600 dark:text-red-400">{formatKRW(row.tax)}</td>
                           <td className="py-2 px-2 text-right text-green-600 dark:text-green-400 font-bold">{formatKRW(row.net)}</td>
-                          <td className="py-2 px-2 text-right text-gray-600 dark:text-gray-300">{row.rate.toFixed(1)}%</td>
+                          <td className="py-2 px-2 text-right text-sub">{row.rate.toFixed(1)}%</td>
                         </tr>
                       ))}
                     </tbody>
@@ -553,7 +553,7 @@ export default function LottoTaxCalculator() {
           className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           aria-expanded={showGuide}
         >
-          <span className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
+          <span className="flex items-center gap-2 font-semibold text-fg">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </span>
@@ -563,12 +563,12 @@ export default function LottoTaxCalculator() {
           <div className="px-4 pb-4 space-y-4">
             {(['taxStructure', 'claimProcess', 'tips'] as const).map(section => (
               <div key={section}>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <h3 className="font-semibold text-body mb-2">
                   {t(`guide.${section}.title`)}
                 </h3>
                 <ul className="space-y-1">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                    <li key={i} className="text-sm text-sub flex items-start gap-2">
                       <span className="text-blue-500 mt-0.5">•</span>
                       <span>{item}</span>
                     </li>
@@ -582,14 +582,14 @@ export default function LottoTaxCalculator() {
 
       {/* FAQ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('faqTitle')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('faqTitle')}</h2>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <details key={i} className="group">
-              <summary className="cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <summary className="cursor-pointer font-medium text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 {t(`faq.q${i}.question`)}
               </summary>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 pl-4 border-l-2 border-blue-300 dark:border-blue-700">
+              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-blue-300 dark:border-blue-700">
                 {t(`faq.q${i}.answer`)}
               </p>
             </details>

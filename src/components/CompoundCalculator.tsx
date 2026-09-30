@@ -122,7 +122,7 @@ function GrowthChart({ yearlyBreakdown, maxBalance }: { yearlyBreakdown: YearlyD
   return (
     <div className="space-y-2">
       {/* Legend */}
-      <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mb-3">
+      <div className="flex gap-4 text-xs text-muted mb-3">
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 rounded-sm bg-blue-500" />
           원금+납입
@@ -139,12 +139,12 @@ function GrowthChart({ yearlyBreakdown, maxBalance }: { yearlyBreakdown: YearlyD
         return (
           <div key={data.year} className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-gray-600 dark:text-gray-300 w-10 shrink-0">{data.year}년</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
+              <span className="text-sub w-10 shrink-0">{data.year}년</span>
+              <span className="font-semibold text-fg">
                 ₩{data.balance.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+            <div className="w-full bg-track rounded-full h-4 overflow-hidden">
               <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${totalPct}%` }}>
                 <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${depositPct}%` }} />
                 <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${interestPct}%` }} />
@@ -276,13 +276,13 @@ export default function CompoundCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {/* Copy Link button */}
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           title="현재 계산 결과 링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -296,7 +296,7 @@ export default function CompoundCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <Calculator className="w-5 h-5" />
                 설정
               </h2>
@@ -311,7 +311,7 @@ export default function CompoundCalculator() {
 
             {/* Principal */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('principal')}
               </label>
               <input
@@ -325,7 +325,7 @@ export default function CompoundCalculator() {
 
             {/* Annual Rate */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('rate')}
               </label>
               <div className="flex items-center gap-2">
@@ -337,13 +337,13 @@ export default function CompoundCalculator() {
                   min="0"
                   step="0.1"
                 />
-                <span className="text-gray-700 dark:text-gray-300">%</span>
+                <span className="text-body">%</span>
               </div>
             </div>
 
             {/* Period */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('period')}
               </label>
               <div className="flex gap-2">
@@ -367,7 +367,7 @@ export default function CompoundCalculator() {
 
             {/* Compound Frequency */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('compoundFrequency')}
               </label>
               <select
@@ -385,7 +385,7 @@ export default function CompoundCalculator() {
 
             {/* Monthly Deposit */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('monthlyDeposit')}
               </label>
               <input
@@ -395,7 +395,7 @@ export default function CompoundCalculator() {
                 className={`${glassInput} px-3 py-2`}
                 min="0"
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {t('monthlyDepositDesc')}
               </p>
             </div>
@@ -403,13 +403,13 @@ export default function CompoundCalculator() {
 
           {/* Guide Section */}
           <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               {t('guide.title')}
             </h2>
-            <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+            <div className="space-y-4 text-sm text-sub">
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="font-semibold text-fg mb-2">
                   {t('guide.howToUse.title')}
                 </h3>
                 <ul className="space-y-1 list-disc list-inside">
@@ -419,7 +419,7 @@ export default function CompoundCalculator() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="font-semibold text-fg mb-2">
                   {t('guide.tips.title')}
                 </h3>
                 <ul className="space-y-1 list-disc list-inside">
@@ -499,25 +499,25 @@ export default function CompoundCalculator() {
 
           {/* Simple vs Compound Comparison */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               {t('comparison.title')}
             </h2>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-300">{t('comparison.simple')}</span>
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="text-sub">{t('comparison.simple')}</span>
+                <span className="font-semibold text-fg">
                   ₩{results.simpleInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-300">{t('comparison.compound')}</span>
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="text-sub">{t('comparison.compound')}</span>
+                <span className="font-semibold text-fg">
                   ₩{results.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
                 </span>
               </div>
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-300 font-medium">{t('comparison.difference')}</span>
+              <div className="border-t border-line pt-3 flex justify-between items-center">
+                <span className="text-sub font-medium">{t('comparison.difference')}</span>
                 <span className="font-bold text-green-600 dark:text-green-400 text-lg">
                   +₩{results.compoundAdvantage.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
                 </span>
@@ -528,7 +528,7 @@ export default function CompoundCalculator() {
           {/* Growth Chart — stacked bars */}
           {results.yearlyBreakdown.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('result.growthChart')}
               </h2>
               <GrowthChart yearlyBreakdown={results.yearlyBreakdown} maxBalance={maxBalance} />
@@ -538,13 +538,13 @@ export default function CompoundCalculator() {
           {/* Scenario Comparison */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <GitCompare className="w-5 h-5" />
                 금리 시나리오 비교
               </h2>
               <button
                 onClick={() => setShowScenarios(v => !v)}
-                className="text-sm px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="text-sm px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 {showScenarios ? '접기' : '펼치기'}
               </button>
@@ -563,13 +563,13 @@ export default function CompoundCalculator() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">
                         <span className={`inline-block w-3 h-3 rounded-sm ${color.bg}`} />
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">{s.rate}%</span>
+                        <span className="text-body font-medium">{s.rate}%</span>
                       </div>
                       <span className={`font-bold ${color.text}`}>
                         ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-5 overflow-hidden">
+                    <div className="w-full bg-track rounded-full h-5 overflow-hidden">
                       <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${pct}%` }}>
                         <div className="h-full bg-blue-200 dark:bg-blue-900 transition-all duration-300" style={{ width: `${depositPct}%` }} />
                         <div className={`h-full ${color.bar} transition-all duration-300`} style={{ width: `${100 - depositPct}%` }} />
@@ -589,7 +589,7 @@ export default function CompoundCalculator() {
                     const color = SCENARIO_COLORS[idx % SCENARIO_COLORS.length]
                     return (
                       <div key={s.id} className={`${color.light} rounded-lg p-3`}>
-                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">
+                        <label className="block text-xs font-medium text-sub mb-1">
                           시나리오 {s.id} 금리
                         </label>
                         <div className="flex items-center gap-1">
@@ -597,7 +597,7 @@ export default function CompoundCalculator() {
                             type="number"
                             value={s.rate}
                             onChange={e => updateScenarioRate(s.id, Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-2 py-1.5 text-sm border border-line-strong rounded bg-field text-fg focus:ring-2 focus:ring-blue-500"
                             min="0"
                             step="0.5"
                           />
@@ -611,8 +611,8 @@ export default function CompoundCalculator() {
                 {/* Detail comparison table */}
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead className="border-b border-gray-200 dark:border-gray-700">
-                      <tr className="text-gray-600 dark:text-gray-300">
+                    <thead className="border-b border-line">
+                      <tr className="text-sub">
                         <th className="text-left py-2 px-2">항목</th>
                         {scenarioResults.map((s, idx) => (
                           <th key={s.id} className={`text-right py-2 px-2 ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
@@ -623,15 +623,15 @@ export default function CompoundCalculator() {
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                       <tr>
-                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">최종 금액</td>
+                        <td className="py-2 px-2 text-sub">최종 금액</td>
                         {scenarioResults.map(s => (
-                          <td key={s.id} className="text-right py-2 px-2 font-semibold text-gray-900 dark:text-white">
+                          <td key={s.id} className="text-right py-2 px-2 font-semibold text-fg">
                             ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
                           </td>
                         ))}
                       </tr>
                       <tr>
-                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">총 이자</td>
+                        <td className="py-2 px-2 text-sub">총 이자</td>
                         {scenarioResults.map((s, idx) => (
                           <td key={s.id} className={`text-right py-2 px-2 font-medium ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
                             ₩{s.result.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
@@ -639,15 +639,15 @@ export default function CompoundCalculator() {
                         ))}
                       </tr>
                       <tr>
-                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">실질 수익률</td>
+                        <td className="py-2 px-2 text-sub">실질 수익률</td>
                         {scenarioResults.map(s => (
-                          <td key={s.id} className="text-right py-2 px-2 text-gray-900 dark:text-white">
+                          <td key={s.id} className="text-right py-2 px-2 text-fg">
                             {s.result.effectiveRate.toFixed(2)}%
                           </td>
                         ))}
                       </tr>
                       <tr>
-                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">복리 우위</td>
+                        <td className="py-2 px-2 text-sub">복리 우위</td>
                         {scenarioResults.map(s => (
                           <td key={s.id} className="text-right py-2 px-2 text-green-600 dark:text-green-400">
                             +₩{s.result.compoundAdvantage.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
@@ -664,12 +664,12 @@ export default function CompoundCalculator() {
           {/* Yearly Breakdown Table */}
           {results.yearlyBreakdown.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('result.yearlyBreakdown')}
               </h2>
               <table className="w-full text-sm">
-                <thead className="border-b border-gray-200 dark:border-gray-700">
-                  <tr className="text-gray-600 dark:text-gray-300">
+                <thead className="border-b border-line">
+                  <tr className="text-sub">
                     <th className="text-left py-3 px-2">{t('result.year')}</th>
                     <th className="text-right py-3 px-2">{t('result.deposit')}</th>
                     <th className="text-right py-3 px-2">{t('result.interest')}</th>
@@ -678,7 +678,7 @@ export default function CompoundCalculator() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {results.yearlyBreakdown.map((data) => (
-                    <tr key={data.year} className="text-gray-900 dark:text-white">
+                    <tr key={data.year} className="text-fg">
                       <td className="py-3 px-2">{data.year}</td>
                       <td className="text-right py-3 px-2">
                         ₩{data.deposit.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}

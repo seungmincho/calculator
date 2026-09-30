@@ -169,16 +169,16 @@ export default function ChmodCalculator() {
     <div className="space-y-8 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Shield className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Presets */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h2 className="text-base font-semibold text-fg mb-3 flex items-center gap-2">
           <Zap className="w-4 h-4 text-yellow-500" />
           {t('presets')}
         </h2>
@@ -190,7 +190,7 @@ export default function ChmodCalculator() {
               className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-colors ${
                 octal === preset.value
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-blue-50 dark:hover:bg-gray-600'
               }`}
             >
               <span className="font-bold">{preset.value}</span>
@@ -204,26 +204,26 @@ export default function ChmodCalculator() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Permission Grid */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('permGrid')}</h2>
+          <h2 className="text-base font-semibold text-fg mb-4">{t('permGrid')}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr>
-                  <th className="text-left pb-3 text-gray-500 dark:text-gray-400 font-medium w-24"></th>
+                  <th className="text-left pb-3 text-muted font-medium w-24"></th>
                   {bits.map(bit => (
-                    <th key={bit.key} className="text-center pb-3 text-gray-500 dark:text-gray-400 font-medium">
+                    <th key={bit.key} className="text-center pb-3 text-muted font-medium">
                       <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">{bit.symbol}</span>
                       <br />
                       <span className="text-xs">{bit.label}</span>
                     </th>
                   ))}
-                  <th className="text-center pb-3 text-gray-500 dark:text-gray-400 font-medium text-xs">{t('octalDigit')}</th>
+                  <th className="text-center pb-3 text-muted font-medium text-xs">{t('octalDigit')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {entities.map(entity => (
                   <tr key={entity.key}>
-                    <td className="py-3 font-medium text-gray-700 dark:text-gray-200 text-sm">{entity.label}</td>
+                    <td className="py-3 font-medium text-body text-sm">{entity.label}</td>
                     {bits.map(bit => (
                       <td key={bit.key} className="py-3 text-center">
                         <button
@@ -232,7 +232,7 @@ export default function ChmodCalculator() {
                           className={`w-9 h-9 rounded-lg border-2 font-mono font-bold transition-all duration-150 text-sm ${
                             perms[entity.key][bit.key]
                               ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                              : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500 hover:border-blue-400'
+                              : 'bg-field border-line-strong text-faint hover:border-blue-400'
                           }`}
                         >
                           {perms[entity.key][bit.key] ? bit.symbol : '-'}
@@ -240,7 +240,7 @@ export default function ChmodCalculator() {
                       </td>
                     ))}
                     <td className="py-3 text-center">
-                      <span className="inline-block w-8 h-8 leading-8 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono font-bold text-center">
+                      <span className="inline-block w-8 h-8 leading-8 rounded-md bg-soft text-body font-mono font-bold text-center">
                         {permSetToOctal(perms[entity.key])}
                       </span>
                     </td>
@@ -255,18 +255,18 @@ export default function ChmodCalculator() {
         <div className="space-y-4">
           {/* Octal Display */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('octal')}</h2>
+            <h2 className="text-base font-semibold text-fg mb-3">{t('octal')}</h2>
             <div className="flex items-center gap-3">
               <input
                 type="text"
                 value={octalInput}
                 onChange={e => applyOctal(e.target.value)}
                 maxLength={3}
-                className="w-28 text-center text-4xl font-mono font-bold border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2"
+                className="w-28 text-center text-4xl font-mono font-bold border-2 border-line-strong rounded-xl bg-field text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2"
                 aria-label={t('octalInput')}
               />
               <div className="flex-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('octalHint')}</p>
+                <p className="text-xs text-muted">{t('octalHint')}</p>
                 {!/^[0-7]{3}$/.test(octalInput) && (
                   <p className="text-xs text-red-500 mt-1">{t('octalError')}</p>
                 )}
@@ -275,7 +275,7 @@ export default function ChmodCalculator() {
 
             {/* Symbolic string */}
             <div className="mt-4">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('symbolic')}</p>
+              <p className="text-xs text-muted mb-1">{t('symbolic')}</p>
               <div className="flex gap-0.5 font-mono text-lg font-bold">
                 {symbolic.split('').map((ch, i) => (
                   <span
@@ -283,7 +283,7 @@ export default function ChmodCalculator() {
                     className={`w-7 h-7 flex items-center justify-center rounded text-sm ${
                       ch !== '-'
                         ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+                        : 'bg-soft text-faint'
                     }`}
                   >
                     {ch}
@@ -303,7 +303,7 @@ export default function ChmodCalculator() {
 
       {/* Filename input */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <label className="block text-base font-semibold text-gray-900 dark:text-white mb-3">
+        <label className="block text-base font-semibold text-fg mb-3">
           {t('filenameLabel')}
         </label>
         <input
@@ -317,21 +317,21 @@ export default function ChmodCalculator() {
 
       {/* Commands */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <h2 className="text-base font-semibold text-fg flex items-center gap-2">
           <Terminal className="w-4 h-4 text-green-500" />
           {t('commands')}
         </h2>
 
         {/* Octal command */}
         <div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('octalCommand')}</p>
+          <p className="text-xs text-muted mb-1">{t('octalCommand')}</p>
           <div className="flex items-center gap-2">
             <code className="flex-1 bg-gray-900 dark:bg-gray-950 text-green-400 rounded-lg px-4 py-3 text-sm font-mono overflow-x-auto">
               {chmodCmd}
             </code>
             <button
               onClick={() => copyToClipboard(chmodCmd, 'octal')}
-              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors text-sm"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-3 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors text-sm"
               aria-label={t('copyCommand')}
             >
               {copiedId === 'octal' ? (
@@ -346,14 +346,14 @@ export default function ChmodCalculator() {
 
         {/* Symbolic command */}
         <div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('symbolicCommand')}</p>
+          <p className="text-xs text-muted mb-1">{t('symbolicCommand')}</p>
           <div className="flex items-center gap-2">
             <code className="flex-1 bg-gray-900 dark:bg-gray-950 text-green-400 rounded-lg px-4 py-3 text-sm font-mono overflow-x-auto">
               {chmodSymCmd}
             </code>
             <button
               onClick={() => copyToClipboard(chmodSymCmd, 'symbolic')}
-              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors text-sm"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-3 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors text-sm"
               aria-label={t('copyCommand')}
             >
               {copiedId === 'symbolic' ? (
@@ -369,14 +369,14 @@ export default function ChmodCalculator() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('guide.basics.title')}</h3>
-            <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+            <h3 className="font-semibold text-body mb-2">{t('guide.basics.title')}</h3>
+            <ul className="space-y-1.5 text-sm text-sub">
               {(t.raw('guide.basics.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-blue-500 mt-0.5">•</span>
@@ -386,8 +386,8 @@ export default function ChmodCalculator() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('guide.common.title')}</h3>
-            <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+            <h3 className="font-semibold text-body mb-2">{t('guide.common.title')}</h3>
+            <ul className="space-y-1.5 text-sm text-sub">
               {(t.raw('guide.common.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-green-500 mt-0.5">•</span>
@@ -397,8 +397,8 @@ export default function ChmodCalculator() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('guide.security.title')}</h3>
-            <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+            <h3 className="font-semibold text-body mb-2">{t('guide.security.title')}</h3>
+            <ul className="space-y-1.5 text-sm text-sub">
               {(t.raw('guide.security.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-red-500 mt-0.5">•</span>
@@ -408,8 +408,8 @@ export default function ChmodCalculator() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('guide.tips.title')}</h3>
-            <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+            <h3 className="font-semibold text-body mb-2">{t('guide.tips.title')}</h3>
+            <ul className="space-y-1.5 text-sm text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2">
                   <span className="text-yellow-500 mt-0.5">•</span>

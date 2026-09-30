@@ -279,16 +279,16 @@ export default function CsQuiz() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <BookOpen className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         {/* Category Selection */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('selectCategory')}</h2>
+        <div className="bg-surface rounded-xl shadow-lg p-6">
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('selectCategory')}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {CATEGORIES.map(cat => {
               const isAll = cat === 'all'
@@ -303,17 +303,17 @@ export default function CsQuiz() {
                   className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                     selected
                       ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 bg-white dark:bg-gray-800'
+                      : 'border-line hover:border-blue-300 dark:hover:border-blue-600 bg-surface'
                   }`}
                 >
                   <span className="text-2xl">{CATEGORY_ICONS[cat]}</span>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  <span className="text-sm font-medium text-fg">
                     {isAll ? t('categories.all') : t(`categories.${cat}`)}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                  <span className="text-xs text-muted text-center">
                     {isAll ? t('categories.allDesc') : t(`categories.${cat}Desc`)}
                   </span>
-                  <span className="absolute top-2 right-2 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full px-2 py-0.5">
+                  <span className="absolute top-2 right-2 text-xs bg-soft text-sub rounded-full px-2 py-0.5">
                     {count}
                   </span>
                 </button>
@@ -323,8 +323,8 @@ export default function CsQuiz() {
         </div>
 
         {/* Difficulty Selection */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('selectDifficulty')}</h2>
+        <div className="bg-surface rounded-xl shadow-lg p-6">
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('selectDifficulty')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {DIFFICULTIES.map(diff => {
               const selected = selectedDifficulty === diff
@@ -342,17 +342,17 @@ export default function CsQuiz() {
                   className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                     selected
                       ? `border-transparent ${colors.ring} ring-2 ${colors.bg}`
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800'
+                      : 'border-line hover:border-gray-300 dark:hover:border-gray-600 bg-surface'
                   }`}
                 >
                   <span className={`text-base font-semibold ${colors.text}`}>
                     {t(`difficulties.${diff}`)}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                  <span className="text-xs text-muted text-center">
                     {t(`difficulties.${diff}Desc`)}
                   </span>
                   {selectedCategory && (
-                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                    <span className="text-xs text-faint">
                       {count} {t('questionsUnit')}
                     </span>
                   )}
@@ -391,22 +391,22 @@ export default function CsQuiz() {
     return (
       <div className="space-y-6">
         {/* Top Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className="bg-surface rounded-xl shadow-lg p-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm text-sub">
               <Clock className="w-4 h-4" />
               <span>{formatTime(elapsed)}</span>
             </div>
-            <div className="text-sm font-medium text-gray-900 dark:text-white">
+            <div className="text-sm font-medium text-fg">
               {currentIndex + 1} / {questions.length}
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm text-sub">
               <Target className="w-4 h-4" />
               <span>{correctCount}/{answers.filter(a => a.selected !== null).length}</span>
             </div>
           </div>
           {/* Progress bar */}
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-track rounded-full h-2">
             <div
               className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${((answers.filter(a => a.selected !== null).length) / questions.length) * 100}%` }}
@@ -415,25 +415,25 @@ export default function CsQuiz() {
         </div>
 
         {/* Question Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6">
           <div className="mb-6">
             <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
               {t('questionLabel')} {currentIndex + 1}
             </span>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white mt-2">{q.question}</p>
+            <p className="text-lg font-semibold text-fg mt-2">{q.question}</p>
           </div>
 
           {/* Options */}
           <div className="space-y-3">
             {q.options.map((option, i) => {
-              let cls = 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-600'
+              let cls = 'border-line bg-surface hover:border-blue-300 dark:hover:border-blue-600'
               if (answered) {
                 if (i === q.correctIndex) {
                   cls = 'border-green-500 bg-green-50 dark:bg-green-900/30'
                 } else if (i === ans.selected && !ans.correct) {
                   cls = 'border-red-500 bg-red-50 dark:bg-red-900/30'
                 } else {
-                  cls = 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 opacity-60'
+                  cls = 'border-line bg-gray-50 dark:bg-gray-800 opacity-60'
                 }
               } else if (ans.selected === i) {
                 cls = 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/30'
@@ -451,11 +451,11 @@ export default function CsQuiz() {
                       ? 'bg-green-500 text-white'
                       : answered && i === ans.selected && !ans.correct
                         ? 'bg-red-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft text-body'
                   }`}>
                     {answered && i === q.correctIndex ? <Check className="w-4 h-4" /> : answered && i === ans.selected && !ans.correct ? <X className="w-4 h-4" /> : prefixes[i]}
                   </span>
-                  <span className="text-gray-900 dark:text-white text-sm">{option}</span>
+                  <span className="text-fg text-sm">{option}</span>
                 </button>
               )
             })}
@@ -480,7 +480,7 @@ export default function CsQuiz() {
         </div>
 
         {/* Bottom Navigation */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className="bg-surface rounded-xl shadow-lg p-4">
           {/* Dot indicators */}
           <div className="flex flex-wrap gap-1.5 justify-center mb-4">
             {questions.map((_, i) => {
@@ -504,7 +504,7 @@ export default function CsQuiz() {
             <button
               onClick={goPrev}
               disabled={currentIndex === 0}
-              className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed px-3 py-2"
+              className="flex items-center gap-1 text-sm text-sub hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed px-3 py-2"
             >
               <ChevronLeft className="w-4 h-4" />
               {t('prevQuestion')}
@@ -558,40 +558,40 @@ export default function CsQuiz() {
         </div>
 
         {/* Stats Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">{t('correctLabel')}</span>
+                <span className="text-sm text-sub">{t('correctLabel')}</span>
               </div>
               <span className="text-2xl font-bold text-green-600 dark:text-green-400">{correctCount}</span>
             </div>
             <div>
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="w-3 h-3 rounded-full bg-red-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">{t('incorrectLabel')}</span>
+                <span className="text-sm text-sub">{t('incorrectLabel')}</span>
               </div>
               <span className="text-2xl font-bold text-red-600 dark:text-red-400">{incorrectCount}</span>
             </div>
             <div>
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="w-3 h-3 rounded-full bg-gray-400" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">{t('unansweredLabel')}</span>
+                <span className="text-sm text-sub">{t('unansweredLabel')}</span>
               </div>
-              <span className="text-2xl font-bold text-gray-600 dark:text-gray-400">{unansweredCount}</span>
+              <span className="text-2xl font-bold text-sub">{unansweredCount}</span>
             </div>
           </div>
         </div>
 
         {/* Wrong Answer Review */}
         {wrongAnswers.length > 0 ? (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-6">
             <button
               onClick={() => setWrongReviewOpen(!wrongReviewOpen)}
               className="flex items-center justify-between w-full text-left"
             >
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('wrongReview')} ({wrongAnswers.length})
               </h2>
               <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${wrongReviewOpen ? 'rotate-90' : ''}`} />
@@ -599,8 +599,8 @@ export default function CsQuiz() {
             {wrongReviewOpen && (
               <div className="mt-4 space-y-4">
                 {wrongAnswers.map(({ question: wq, answer: wa }) => (
-                  <div key={wq.id} className="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-3">{wq.question}</p>
+                  <div key={wq.id} className="border border-line rounded-xl p-4">
+                    <p className="text-sm font-medium text-fg mb-3">{wq.question}</p>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-start gap-2">
                         <X className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
@@ -649,7 +649,7 @@ export default function CsQuiz() {
           </button>
           <button
             onClick={backToSelect}
-            className="flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl px-4 py-3 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+            className="flex items-center justify-center gap-2 bg-soft text-body rounded-xl px-4 py-3 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
             <BookOpen className="w-4 h-4" />
             {t('otherCategory')}

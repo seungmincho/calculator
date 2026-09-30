@@ -141,8 +141,8 @@ export default function TeamDivider() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -150,13 +150,13 @@ export default function TeamDivider() {
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('presets.label')}</p>
+            <p className="text-xs font-semibold text-muted uppercase mb-2">{t('presets.label')}</p>
             <div className="flex flex-wrap gap-2">
               {presets.map(preset => (
                 <button
                   key={preset.key}
                   onClick={() => handlePreset(preset)}
-                  className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="px-3 py-1 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   {t(`presets.${preset.key}.label`)}
                 </button>
@@ -167,7 +167,7 @@ export default function TeamDivider() {
           {/* Participant list */}
           <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <p className="text-sm font-semibold text-body">
                 <Users className="inline w-4 h-4 mr-1" />
                 {t('participants')} ({validNames.length})
               </p>
@@ -215,8 +215,8 @@ export default function TeamDivider() {
 
             <ul className="space-y-1 max-h-48 overflow-y-auto">
               {names.map((name, i) => (
-                <li key={i} className="flex items-center justify-between px-2 py-1 rounded bg-gray-50 dark:bg-gray-700">
-                  <span className="text-sm text-gray-800 dark:text-gray-200 truncate">{name}</span>
+                <li key={i} className="flex items-center justify-between px-2 py-1 rounded bg-subtle">
+                  <span className="text-sm text-body truncate">{name}</span>
                   <button
                     onClick={() => setNames(prev => prev.filter((_, idx) => idx !== i))}
                     className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
@@ -231,7 +231,7 @@ export default function TeamDivider() {
           {/* Settings */}
           <div className={`${glassCard} ${glassInset} p-4 space-y-4`}>
             <div>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('teamCount')}</p>
+              <p className="text-sm font-semibold text-body mb-2">{t('teamCount')}</p>
               <div className="flex gap-2 flex-wrap">
                 {[2, 3, 4, 5, 6, 7, 8].map(n => (
                   <button
@@ -240,7 +240,7 @@ export default function TeamDivider() {
                     className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
                       teamCount === n
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {n}
@@ -250,7 +250,7 @@ export default function TeamDivider() {
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('mode.label')}</p>
+              <p className="text-sm font-semibold text-body mb-2">{t('mode.label')}</p>
               <div className="space-y-1.5">
                 {(['random', 'balanced', 'captain'] as Mode[]).map(m => (
                   <label key={m} className="flex items-center gap-2 cursor-pointer">
@@ -262,7 +262,7 @@ export default function TeamDivider() {
                       onChange={() => setMode(m)}
                       className="accent-blue-600"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t(`mode.${m}`)}</span>
+                    <span className="text-sm text-body">{t(`mode.${m}`)}</span>
                   </label>
                 ))}
               </div>
@@ -290,7 +290,7 @@ export default function TeamDivider() {
           {/* Captain draft pool */}
           {isDrafting && (
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <p className="text-sm font-semibold text-body mb-3">
                 {t('draftTurn', { team: currentCaptainTeam + 1 })}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -321,7 +321,7 @@ export default function TeamDivider() {
                     />
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-3">
-                        <p className="font-bold text-gray-900 dark:text-white text-sm">
+                        <p className="font-bold text-fg text-sm">
                           {t('teamLabel')} {i + 1}
                         </p>
                         <span
@@ -333,7 +333,7 @@ export default function TeamDivider() {
                       </div>
                       <ul className="space-y-1">
                         {team.map((member, j) => (
-                          <li key={j} className="text-sm text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
+                          <li key={j} className="text-sm text-body flex items-center gap-1.5">
                             {j === 0 && mode === 'captain' && (
                               <span className="text-yellow-500 text-xs">★</span>
                             )}
@@ -350,14 +350,14 @@ export default function TeamDivider() {
                 <button
                   onClick={handleDivide}
                   disabled={isDividing}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                 >
                   <Shuffle className="w-4 h-4" />
                   {t('redivide')}
                 </button>
                 <button
                   onClick={copyResult}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                   {copied ? t('copied') : t('copy')}
@@ -367,7 +367,7 @@ export default function TeamDivider() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('empty')}</p>
+              <p className="text-muted">{t('empty')}</p>
             </div>
           )}
         </div>

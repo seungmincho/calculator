@@ -46,7 +46,7 @@ export default function TaxiFarePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><TaxiFare />  <div className="mt-8">
     <RelatedTools />
@@ -56,26 +56,26 @@ export default function TaxiFarePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             택시 요금 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             택시 요금 계산기는 지역, 이동 거리와 예상 소요 시간, 탑승 시각을 입력하면 전국 17개 시·도별 요금 체계에 따라 일반·모범·대형 택시의 예상 요금을 계산해 주는 온라인 도구입니다. 지역마다 다른 기본요금과 심야 할증(시간대별 20~40%), 시계외 할증까지 자동으로 반영하여, 택시를 호출하기 전에 요금을 미리 파악하고 교통수단을 합리적으로 선택하는 데 도움을 드립니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             2026년 지역별 택시 요금 요점 (9월 기준)
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 mb-6">
+          <ul className="list-disc list-inside space-y-2 text-body mb-6">
             <li><strong>기본요금:</strong> 서울·경기·인천 4,800원(1.6km), 부산 4,800원(2km), 대구·경북 4,500원(1.7km), 대전·광주·울산·전남·제주 4,300원, 그 외 지역 약 4,000원. <em>전남 22개 시군은 2026년 11~12월 4,800원(1.7km) 인상 추진 중, 대구는 2027년 초 5,200~5,600원 인상안 검토.</em></li>
             <li><strong>심야할증(서울·인천):</strong> 22~04시 적용, 23~02시 40%, 그 외 20%. 경기 30%, 부산 20~30%로 지역별 상이.</li>
             <li><strong>시외(시계외) 할증:</strong> 시·군 경계를 벗어나면 20~30% 가산, 심야와 중복 시 최대 60%.</li>
             <li><strong>모범·대형택시:</strong> 기본 7,000원(3km), 151m당 200원. 모범은 심야할증이 없습니다.</li>
           </ul>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             택시 요금 절약 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>심야 40% 구간 피하기:</strong> 서울·인천은 23시~새벽 2시가 40% 할증 구간입니다. 가능하면 22시 이전 또는 22~23시대에 탑승하면 20%로 낮출 수 있습니다.</li>
             <li><strong>시외 경계 확인:</strong> 시 경계를 넘는 경로는 시외할증이 붙습니다. 경계 안에서 내리거나 지하철·버스와 환승하면 절약됩니다.</li>
             <li><strong>택시 종류 선택:</strong> 근거리는 일반택시, 3~4인 단체는 대형택시가 유리합니다. 모범택시는 심야할증이 없어 심야 장거리에서 오히려 저렴할 수 있습니다.</li>

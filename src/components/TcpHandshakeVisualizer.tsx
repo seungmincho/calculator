@@ -482,10 +482,10 @@ export default function TcpHandshakeVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           TCP 핸드셰이크 시각화
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           TCP 3-way Handshake, 데이터 전송, 4-way Termination 과정을 단계별로 학습하세요
         </p>
       </div>
@@ -499,7 +499,7 @@ export default function TcpHandshakeVisualizer() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               scenario === s.key
                 ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
+                : 'bg-field text-body hover:bg-gray-100 dark:hover:bg-gray-600 border border-line'
             }`}
           >
             <span className="font-semibold">{s.label}</span>
@@ -533,21 +533,21 @@ export default function TcpHandshakeVisualizer() {
               <button
                 onClick={handleNext}
                 disabled={currentStep >= totalSteps}
-                className="flex items-center gap-1.5 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <SkipForward className="w-4 h-4" />
                 다음 단계
               </button>
               <button
                 onClick={handleReset}
-                className="flex items-center gap-1.5 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 초기화
               </button>
 
               <div className="flex items-center gap-2 ml-auto">
-                <span className="text-xs text-gray-500 dark:text-gray-400">속도</span>
+                <span className="text-xs text-muted">속도</span>
                 <input
                   type="range"
                   min={0.5}
@@ -557,19 +557,19 @@ export default function TcpHandshakeVisualizer() {
                   onChange={e => setSpeed(Number(e.target.value))}
                   className="w-20 accent-blue-600"
                 />
-                <span className="text-xs text-gray-600 dark:text-gray-300 w-8">{speed}x</span>
+                <span className="text-xs text-sub w-8">{speed}x</span>
               </div>
             </div>
 
             {/* Progress */}
             <div className="mt-3 flex items-center gap-2">
-              <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+              <div className="flex-1 bg-track rounded-full h-1.5">
                 <div
                   className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${totalSteps > 0 ? (currentStep / totalSteps) * 100 : 0}%` }}
                 />
               </div>
-              <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+              <span className="text-xs text-muted whitespace-nowrap">
                 {currentStep}/{totalSteps}
               </span>
             </div>
@@ -580,13 +580,13 @@ export default function TcpHandshakeVisualizer() {
         <div className="lg:col-span-1 space-y-4">
           {/* Current Step Description */}
           <div className={`${glassCard} ${glassInset} p-5`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-sm font-semibold text-fg mb-3">
               현재 단계
             </h3>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="text-xs font-medium">
-                  <span className="text-gray-500 dark:text-gray-400">Client: </span>
+                  <span className="text-muted">Client: </span>
                   <span
                     className="font-bold"
                     style={{ color: stateColor(currentStepData.clientState, false) }}
@@ -595,7 +595,7 @@ export default function TcpHandshakeVisualizer() {
                   </span>
                 </div>
                 <div className="text-xs font-medium">
-                  <span className="text-gray-500 dark:text-gray-400">Server: </span>
+                  <span className="text-muted">Server: </span>
                   <span
                     className="font-bold"
                     style={{ color: stateColor(currentStepData.serverState, false) }}
@@ -611,7 +611,7 @@ export default function TcpHandshakeVisualizer() {
                   </code>
                 </div>
               )}
-              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-sm text-sub leading-relaxed">
                 {currentStepData.description}
               </p>
             </div>
@@ -619,7 +619,7 @@ export default function TcpHandshakeVisualizer() {
 
           {/* Packet Legend */}
           <div className={`${glassCard} ${glassInset} p-5`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-sm font-semibold text-fg mb-3">
               패킷 유형
             </h3>
             <div className="grid grid-cols-2 gap-2">
@@ -629,7 +629,7 @@ export default function TcpHandshakeVisualizer() {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: PACKET_COLORS[type].light }}
                   />
-                  <span className="text-xs text-gray-700 dark:text-gray-300 font-mono">{type}</span>
+                  <span className="text-xs text-body font-mono">{type}</span>
                 </div>
               ))}
             </div>
@@ -637,7 +637,7 @@ export default function TcpHandshakeVisualizer() {
 
           {/* State Table */}
           <div className={`${glassCard} ${glassInset} p-5`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-sm font-semibold text-fg mb-3">
               연결 상태 표
             </h3>
             <div className="space-y-1.5 max-h-64 overflow-y-auto">
@@ -658,7 +658,7 @@ export default function TcpHandshakeVisualizer() {
                     >
                       {state}
                     </span>
-                    <span className="text-gray-600 dark:text-gray-400">{desc}</span>
+                    <span className="text-sub">{desc}</span>
                   </div>
                 )
               })}
@@ -675,7 +675,7 @@ export default function TcpHandshakeVisualizer() {
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">가이드</h2>
+            <h2 className="text-lg font-semibold text-fg">가이드</h2>
           </div>
           {guideOpen ? (
             <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -685,10 +685,10 @@ export default function TcpHandshakeVisualizer() {
         </button>
 
         {guideOpen && (
-          <div className="mt-6 space-y-8 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-6 space-y-8 text-sm text-body">
             {/* What is TCP */}
             <section>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">TCP란?</h3>
+              <h3 className="text-base font-semibold text-fg mb-2">TCP란?</h3>
               <p className="leading-relaxed">
                 TCP(Transmission Control Protocol)는 인터넷에서 데이터를 안정적으로 전송하기 위한 연결 지향 프로토콜입니다.
                 데이터가 손실되거나 순서가 바뀌는 것을 방지하며, 흐름 제어와 혼잡 제어를 통해 네트워크 안정성을 보장합니다.
@@ -698,25 +698,25 @@ export default function TcpHandshakeVisualizer() {
 
             {/* 3-way vs 4-way */}
             <section>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-base font-semibold text-fg mb-2">
                 3-way Handshake vs 4-way Termination
               </h3>
               <div className="space-y-3">
                 <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
                   <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-1">3-way Handshake (연결 수립)</h4>
                   <ol className="list-decimal list-inside space-y-1">
-                    <li>Client → Server: <code className="bg-white dark:bg-gray-800 px-1 rounded">SYN</code> (연결 요청, 초기 seq 번호 전달)</li>
-                    <li>Server → Client: <code className="bg-white dark:bg-gray-800 px-1 rounded">SYN-ACK</code> (요청 수락, 서버 seq + 클라이언트 seq 확인)</li>
-                    <li>Client → Server: <code className="bg-white dark:bg-gray-800 px-1 rounded">ACK</code> (연결 확정, 서버 seq 확인)</li>
+                    <li>Client → Server: <code className="bg-surface px-1 rounded">SYN</code> (연결 요청, 초기 seq 번호 전달)</li>
+                    <li>Server → Client: <code className="bg-surface px-1 rounded">SYN-ACK</code> (요청 수락, 서버 seq + 클라이언트 seq 확인)</li>
+                    <li>Client → Server: <code className="bg-surface px-1 rounded">ACK</code> (연결 확정, 서버 seq 확인)</li>
                   </ol>
                 </div>
                 <div className="bg-red-50 dark:bg-red-950 rounded-lg p-4">
                   <h4 className="font-semibold text-red-800 dark:text-red-200 mb-1">4-way Termination (연결 종료)</h4>
                   <ol className="list-decimal list-inside space-y-1">
-                    <li>Active → Passive: <code className="bg-white dark:bg-gray-800 px-1 rounded">FIN</code> (종료 요청)</li>
-                    <li>Passive → Active: <code className="bg-white dark:bg-gray-800 px-1 rounded">ACK</code> (FIN 수신 확인)</li>
-                    <li>Passive → Active: <code className="bg-white dark:bg-gray-800 px-1 rounded">FIN</code> (자신도 종료)</li>
-                    <li>Active → Passive: <code className="bg-white dark:bg-gray-800 px-1 rounded">ACK</code> (최종 확인)</li>
+                    <li>Active → Passive: <code className="bg-surface px-1 rounded">FIN</code> (종료 요청)</li>
+                    <li>Passive → Active: <code className="bg-surface px-1 rounded">ACK</code> (FIN 수신 확인)</li>
+                    <li>Passive → Active: <code className="bg-surface px-1 rounded">FIN</code> (자신도 종료)</li>
+                    <li>Active → Passive: <code className="bg-surface px-1 rounded">ACK</code> (최종 확인)</li>
                   </ol>
                 </div>
               </div>
@@ -724,7 +724,7 @@ export default function TcpHandshakeVisualizer() {
 
             {/* Sequence Numbers */}
             <section>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">시퀀스 번호와 ACK 번호</h3>
+              <h3 className="text-base font-semibold text-fg mb-2">시퀀스 번호와 ACK 번호</h3>
               <ul className="list-disc list-inside space-y-1.5">
                 <li><strong>시퀀스 번호(SEQ)</strong>: 송신 데이터의 첫 바이트 위치. 초기값은 랜덤(ISN)으로 보안성 확보</li>
                 <li><strong>확인응답 번호(ACK)</strong>: 수신 측이 다음에 기대하는 바이트 번호 (= 받은 SEQ + 데이터 길이)</li>
@@ -735,7 +735,7 @@ export default function TcpHandshakeVisualizer() {
 
             {/* Why 3-way */}
             <section>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">왜 3-way인가?</h3>
+              <h3 className="text-base font-semibold text-fg mb-2">왜 3-way인가?</h3>
               <p className="leading-relaxed mb-2">
                 2-way로 충분하지 않은 이유는 양쪽 모두 상대방이 자신의 메시지를 받았는지 확인해야 하기 때문입니다.
               </p>
@@ -749,10 +749,10 @@ export default function TcpHandshakeVisualizer() {
 
             {/* FAQ */}
             <section>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">자주 묻는 질문</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">자주 묻는 질문</h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200">
+                  <h4 className="font-semibold text-body">
                     Q: TIME_WAIT 상태는 왜 필요한가요?
                   </h4>
                   <p className="mt-1">
@@ -762,7 +762,7 @@ export default function TcpHandshakeVisualizer() {
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200">
+                  <h4 className="font-semibold text-body">
                     Q: TCP와 UDP의 차이점은?
                   </h4>
                   <p className="mt-1">
@@ -772,7 +772,7 @@ export default function TcpHandshakeVisualizer() {
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200">
+                  <h4 className="font-semibold text-body">
                     Q: SYN Flood 공격이란?
                   </h4>
                   <p className="mt-1">

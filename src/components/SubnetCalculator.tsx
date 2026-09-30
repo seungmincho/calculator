@@ -286,11 +286,11 @@ export default function SubnetCalculator() {
     <div className="space-y-6">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 탭 네비게이션 */}
@@ -301,8 +301,8 @@ export default function SubnetCalculator() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.id
-                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
             }`}
           >
             {tab.icon}
@@ -317,10 +317,10 @@ export default function SubnetCalculator() {
           {/* 입력 패널 */}
           <div className="lg:col-span-1 space-y-4">
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('inputTitle')}</h2>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('ipAddress')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('ipAddress')}</label>
                 <input
                   type="text"
                   value={ipInput}
@@ -339,14 +339,14 @@ export default function SubnetCalculator() {
                     }
                   }}
                   placeholder="192.168.1.100 또는 10.0.0.0/24"
-                  className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
-                    ipError ? 'border-red-400 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  className={`w-full px-3 py-2 border rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
+                    ipError ? 'border-red-400 dark:border-red-500' : 'border-line-strong'
                   }`}
                 />
                 {ipError && <p className="text-xs text-red-500 mt-1">{ipError}</p>}
               </div>
 
-              <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
+              <div className="flex bg-soft rounded-lg p-0.5">
                 <button
                   onClick={() => {
                     if (inputMode === 'mask') {
@@ -357,7 +357,7 @@ export default function SubnetCalculator() {
                     }
                     setInputMode('cidr')
                   }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'cidr' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'cidr' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
                 >
                   CIDR (/24)
                 </button>
@@ -371,7 +371,7 @@ export default function SubnetCalculator() {
                     }
                     setInputMode('mask')
                   }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'mask' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'mask' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
                 >
                   {t('subnetMask')}
                 </button>
@@ -379,7 +379,7 @@ export default function SubnetCalculator() {
 
               {inputMode === 'cidr' ? (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CIDR {t('prefix')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">CIDR {t('prefix')}</label>
                   <div className="flex items-center gap-2">
                     <span className="text-gray-400 font-mono">/</span>
                     <input
@@ -402,14 +402,14 @@ export default function SubnetCalculator() {
                 </div>
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('subnetMask')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">{t('subnetMask')}</label>
                   <input
                     type="text"
                     value={maskInput}
                     onChange={e => setMaskInput(e.target.value)}
                     placeholder="255.255.255.0"
-                    className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
-                      maskError ? 'border-red-400 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    className={`w-full px-3 py-2 border rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
+                      maskError ? 'border-red-400 dark:border-red-500' : 'border-line-strong'
                     }`}
                   />
                   {maskError && <p className="text-xs text-red-500 mt-1">{maskError}</p>}
@@ -419,14 +419,14 @@ export default function SubnetCalculator() {
 
             {/* CIDR 참고표 */}
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('cidrReference')}</h3>
+              <h3 className="text-sm font-semibold text-fg mb-3">{t('cidrReference')}</h3>
               <div className="overflow-x-auto max-h-64 overflow-y-auto">
                 <table className="w-full text-xs" aria-label={t('cidrReference')}>
-                  <thead className="sticky top-0 bg-gray-50 dark:bg-gray-700/50">
+                  <thead className="sticky top-0 bg-subtle">
                     <tr>
-                      <th className="px-2 py-1.5 text-left text-gray-500 dark:text-gray-400">CIDR</th>
-                      <th className="px-2 py-1.5 text-left text-gray-500 dark:text-gray-400">{t('mask')}</th>
-                      <th className="px-2 py-1.5 text-right text-gray-500 dark:text-gray-400">{t('hosts')}</th>
+                      <th className="px-2 py-1.5 text-left text-muted">CIDR</th>
+                      <th className="px-2 py-1.5 text-left text-muted">{t('mask')}</th>
+                      <th className="px-2 py-1.5 text-right text-muted">{t('hosts')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -439,9 +439,9 @@ export default function SubnetCalculator() {
                         }}
                         className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-blue-50 dark:bg-blue-950/30 font-semibold' : ''}`}
                       >
-                        <td className="px-2 py-1 font-mono text-gray-900 dark:text-white">/{row.cidr}</td>
-                        <td className="px-2 py-1 font-mono text-gray-600 dark:text-gray-400">{row.mask}</td>
-                        <td className="px-2 py-1 text-right text-gray-900 dark:text-white">{row.hosts.toLocaleString()}</td>
+                        <td className="px-2 py-1 font-mono text-fg">/{row.cidr}</td>
+                        <td className="px-2 py-1 font-mono text-sub">{row.mask}</td>
+                        <td className="px-2 py-1 text-right text-fg">{row.hosts.toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -456,17 +456,17 @@ export default function SubnetCalculator() {
               <>
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
+                    <h2 className="text-lg font-semibold text-fg">{t('result')}</h2>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setShowBinary(!showBinary)}
-                        className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                        className="px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                       >
                         {showBinary ? t('hideBinary') : t('showBinary')}
                       </button>
                       <button
                         onClick={() => copyToClipboard(buildSummary(), 'result')}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                       >
                         {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                         {copiedId === 'result' ? t('copied') : t('copy')}
@@ -505,11 +505,11 @@ export default function SubnetCalculator() {
 
                 {showBinary && (
                   <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('binaryRepresentation')}</h3>
+                    <h3 className="text-sm font-semibold text-fg mb-3">{t('binaryRepresentation')}</h3>
                     <div className="space-y-2 font-mono text-xs">
                       <BinaryRow label={t('ipAddress')} binary={result.binaryIp} />
                       <BinaryRow label={t('subnetMask')} binary={result.binaryMask} />
-                      <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+                      <div className="border-t border-line my-1" />
                       <BinaryRow label={t('networkAddress')} binary={result.binaryNetwork} />
                       <BinaryRow label={t('broadcastAddress')} binary={result.binaryBroadcast} />
                     </div>
@@ -517,7 +517,7 @@ export default function SubnetCalculator() {
                 )}
               </>
             ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+              <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
                 <Globe className="w-12 h-12 mx-auto mb-3 opacity-30" />
                 <p>{ipError || maskError || t('inputPrompt')}</p>
               </div>
@@ -532,7 +532,7 @@ export default function SubnetCalculator() {
           {/* 입력 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('overlapTitle')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('overlapTitle')}</h2>
               <button
                 onClick={() => setOverlapCidrs(prev => [...prev, ''])}
                 className="flex items-center gap-1 text-xs bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
@@ -541,7 +541,7 @@ export default function SubnetCalculator() {
                 {t('addCidr')}
               </button>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{t('overlapDesc')}</p>
+            <p className="text-xs text-muted">{t('overlapDesc')}</p>
 
             <div className="space-y-2">
               {overlapCidrs.map((cidrVal, idx) => {
@@ -559,8 +559,8 @@ export default function SubnetCalculator() {
                         setOverlapCidrs(next)
                       }}
                       placeholder="10.0.0.0/8"
-                      className={`flex-1 px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
-                        hasError ? 'border-red-400 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                      className={`flex-1 px-3 py-2 border rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
+                        hasError ? 'border-red-400 dark:border-red-500' : 'border-line-strong'
                       }`}
                     />
                     {overlapCidrs.length > 2 && (
@@ -579,17 +579,17 @@ export default function SubnetCalculator() {
 
           {/* 결과 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('overlapResult')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('overlapResult')}</h2>
 
             {/* 유효한 대역 목록 */}
             {overlapResults.ranges.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('parsedRanges')}</h3>
+                <h3 className="text-sm font-medium text-body">{t('parsedRanges')}</h3>
                 <div className="space-y-1">
                   {overlapResults.ranges.map((r, i) => (
-                    <div key={i} className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm">
-                      <span className="font-mono text-gray-900 dark:text-white">{numToIp(r.networkNum)}/{r.cidr}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <div key={i} className="flex items-center justify-between px-3 py-2 bg-subtle rounded-lg text-sm">
+                      <span className="font-mono text-fg">{numToIp(r.networkNum)}/{r.cidr}</span>
+                      <span className="text-xs text-muted">
                         {numToIp(r.networkNum)} ~ {numToIp(r.broadcastNum)}
                       </span>
                     </div>
@@ -621,7 +621,7 @@ export default function SubnetCalculator() {
                 <p className="text-sm text-green-700 dark:text-green-300">{t('noOverlap')}</p>
               </div>
             ) : (
-              <div className="text-center text-gray-400 dark:text-gray-500 py-8">
+              <div className="text-center text-faint py-8">
                 <Layers className="w-10 h-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm">{t('overlapPrompt')}</p>
               </div>
@@ -638,7 +638,7 @@ export default function SubnetCalculator() {
             {/* CIDR 대역 목록 */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupCidrTitle')}</h2>
+                <h2 className="text-lg font-semibold text-fg">{t('lookupCidrTitle')}</h2>
                 <button
                   onClick={() => setLookupCidrs(prev => [...prev, ''])}
                   className="flex items-center gap-1 text-xs bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
@@ -676,8 +676,8 @@ export default function SubnetCalculator() {
 
             {/* IP 목록 입력 */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupIpTitle')}</h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('lookupIpDesc')}</p>
+              <h2 className="text-lg font-semibold text-fg">{t('lookupIpTitle')}</h2>
+              <p className="text-xs text-muted">{t('lookupIpDesc')}</p>
               <textarea
                 value={lookupIps}
                 onChange={e => setLookupIps(e.target.value)}
@@ -691,7 +691,7 @@ export default function SubnetCalculator() {
           {/* 결과 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupResult')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('lookupResult')}</h2>
               {lookupResults.length > 0 && (
                 <button
                   onClick={() => {
@@ -700,7 +700,7 @@ export default function SubnetCalculator() {
                     ).join('\n')
                     copyToClipboard(text, 'lookup')
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   {copiedId === 'lookup' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                   {copiedId === 'lookup' ? t('copied') : t('copy')}
@@ -718,10 +718,10 @@ export default function SubnetCalculator() {
                         ? 'bg-red-50 dark:bg-red-950/20'
                         : r.matches.length > 0
                           ? 'bg-green-50 dark:bg-green-950/20'
-                          : 'bg-gray-50 dark:bg-gray-700'
+                          : 'bg-subtle'
                     }`}
                   >
-                    <span className={`font-mono ${!r.validIp ? 'text-red-500' : 'text-gray-900 dark:text-white'}`}>
+                    <span className={`font-mono ${!r.validIp ? 'text-red-500' : 'text-fg'}`}>
                       {r.ip}
                     </span>
                     <div className="flex items-center gap-1 flex-wrap justify-end">
@@ -741,7 +741,7 @@ export default function SubnetCalculator() {
                 ))}
               </div>
             ) : (
-              <div className="text-center text-gray-400 dark:text-gray-500 py-8">
+              <div className="text-center text-faint py-8">
                 <Search className="w-10 h-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm">{t('lookupPrompt')}</p>
               </div>
@@ -757,16 +757,16 @@ export default function SubnetCalculator() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.basics.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.basics.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.basics.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -774,7 +774,7 @@ export default function SubnetCalculator() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.cidr.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.cidr.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.cidr.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -782,7 +782,7 @@ export default function SubnetCalculator() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.classes.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.classes.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.classes.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -809,9 +809,9 @@ function InfoRow({ label, value, id, onCopy, copiedId }: {
 }) {
   return (
     <div className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-      <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
+      <span className="text-sm text-sub">{label}</span>
       <div className="flex items-center gap-2">
-        <span className="text-sm font-mono font-medium text-gray-900 dark:text-white">{value}</span>
+        <span className="text-sm font-mono font-medium text-fg">{value}</span>
         <button
           onClick={() => onCopy(value, id)}
           className="opacity-0 group-hover:opacity-100 p-1 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-opacity"
@@ -827,8 +827,8 @@ function InfoRow({ label, value, id, onCopy, copiedId }: {
 function BinaryRow({ label, binary }: { label: string; binary: string }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-1">
-      <span className="text-gray-500 dark:text-gray-400 w-28 shrink-0 text-xs">{label}</span>
-      <span className="text-gray-900 dark:text-white tracking-wider">{binary}</span>
+      <span className="text-muted w-28 shrink-0 text-xs">{label}</span>
+      <span className="text-fg tracking-wider">{binary}</span>
     </div>
   )
 }

@@ -27,7 +27,7 @@ export default function ResidentNumberPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ResidentNumber />  <div className="mt-8">
     <RelatedTools />
@@ -37,17 +37,17 @@ export default function ResidentNumberPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             주민등록번호 검증기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             주민등록번호 검증기는 입력한 번호의 체계적인 유효성을 검사하고, 생년월일·성별·출생 세기 등의 기본 정보를 추출해 주는 온라인 도구입니다. 웹 개발 시 폼 유효성 검증 로직 테스트, 데이터베이스 정제, 개인정보 처리 시스템 개발에 활용되며, 모든 처리는 브라우저 내에서만 이루어져 번호가 외부로 전송되지 않습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             주민등록번호 검증기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>개발 테스트용 활용:</strong> 실제 주민등록번호 대신 유효한 형식의 테스트용 번호를 생성·검증하면 개인정보 침해 없이 시스템을 개발하고 테스트할 수 있습니다.</li>
             <li><strong>검증 알고리즘 이해:</strong> 검증번호 계산 원리(가중치 곱의 합계 mod 11)를 이해하면 자체 유효성 검사 코드를 직접 구현하는 데 도움이 됩니다.</li>
             <li><strong>성별 및 연령 정보 추출:</strong> 뒷자리 첫 번째 숫자로 성별과 출생 세기를 파악해 사용자 정보를 자동으로 채울 수 있는 폼 자동완성 기능 구현에 참고하세요.</li>

@@ -752,10 +752,10 @@ function YearEndTaxCalculatorContent() {
     label: string; desc?: string; value: string; onChange: (v: string) => void; placeholder?: string
   }) => (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+      <label className="block text-sm font-medium text-body mb-1">
         {label}
       </label>
-      {desc && <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{desc}</p>}
+      {desc && <p className="text-xs text-muted mb-1">{desc}</p>}
       <div className="relative">
         <input
           type="text"
@@ -785,10 +785,10 @@ function YearEndTaxCalculatorContent() {
     const colorClass = highlight === 'blue' ? 'text-blue-600 dark:text-blue-400'
       : highlight === 'red' ? 'text-red-600 dark:text-red-400'
       : highlight === 'green' ? 'text-green-600 dark:text-green-400'
-      : 'text-gray-900 dark:text-white'
+      : 'text-fg'
     return (
-      <div className={`flex justify-between items-center py-2 ${bold ? 'font-bold border-t border-gray-200 dark:border-gray-600 pt-3 mt-1' : ''}`}>
-        <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
+      <div className={`flex justify-between items-center py-2 ${bold ? 'font-bold border-t border-line pt-3 mt-1' : ''}`}>
+        <span className="text-sm text-sub">{label}</span>
         <span className={`text-sm ${bold ? 'text-base' : ''} ${colorClass}`}>
           {value < 0 ? '-' : ''}{fmtNum(Math.abs(value))}{t('won')}
         </span>
@@ -800,11 +800,11 @@ function YearEndTaxCalculatorContent() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Disclaimer */}
@@ -822,8 +822,8 @@ function YearEndTaxCalculatorContent() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+                  : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
               }`}
             >
               <span className="text-xs text-gray-400">{idx + 1}</span>
@@ -847,7 +847,7 @@ function YearEndTaxCalculatorContent() {
             />
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">{t('nonTaxableIncome')}</h3>
+              <h3 className="text-sm font-semibold text-body mb-3">{t('nonTaxableIncome')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <MoneyInput label={t('mealAllowance')} desc={t('mealAllowanceDesc')} value={mealAllowance} onChange={setMealAllowance} />
                 <MoneyInput label={t('drivingAllowance')} desc={t('drivingAllowanceDesc')} value={drivingAllowance} onChange={setDrivingAllowance} />
@@ -857,10 +857,10 @@ function YearEndTaxCalculatorContent() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('dependentCount')}
                 </label>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('dependentCountDesc')}</p>
+                <p className="text-xs text-muted mb-1">{t('dependentCountDesc')}</p>
                 <input
                   type="number"
                   min="1"
@@ -878,7 +878,7 @@ function YearEndTaxCalculatorContent() {
         {/* ── Income deduction tab ── */}
         {activeTab === 'incomeDeduction' && (
           <div className="space-y-5">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('tab.incomeDeduction')}</h3>
+            <h3 className="text-sm font-semibold text-body">{t('tab.incomeDeduction')}</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MoneyInput label={t('nationalPension')} desc={t('nationalPensionDesc')} value={nationalPension} onChange={setNationalPension} />
@@ -889,8 +889,8 @@ function YearEndTaxCalculatorContent() {
             <MoneyInput label={t('housingSubscription')} desc={t('housingSubscriptionDesc')} value={housingSubscription} onChange={setHousingSubscription} />
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1">{t('creditCard')}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{t('cardDeductionInfo')}</p>
+              <h3 className="text-sm font-semibold text-body mb-1">{t('creditCard')}</h3>
+              <p className="text-xs text-muted mb-3">{t('cardDeductionInfo')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <MoneyInput label={t('creditCard')} desc={t('creditCardDesc')} value={creditCard} onChange={setCreditCard} />
                 <MoneyInput label={t('debitCard')} desc={t('debitCardDesc')} value={debitCard} onChange={setDebitCard} />
@@ -905,14 +905,14 @@ function YearEndTaxCalculatorContent() {
         {/* ── Tax credit tab ── */}
         {activeTab === 'taxCredit' && (
           <div className="space-y-5">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('tab.taxCredit')}</h3>
+            <h3 className="text-sm font-semibold text-body">{t('tab.taxCredit')}</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('childCount')}
                 </label>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('childCountDesc')}</p>
+                <p className="text-xs text-muted mb-1">{t('childCountDesc')}</p>
                 <input
                   type="number"
                   min="0"
@@ -925,8 +925,8 @@ function YearEndTaxCalculatorContent() {
             </div>
 
             <div>
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('pensionSavings')}</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('pensionSavingsDesc')}</p>
+              <h4 className="text-sm font-medium text-body mb-3">{t('pensionSavings')}</h4>
+              <p className="text-xs text-muted mb-2">{t('pensionSavingsDesc')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <MoneyInput label={t('pensionSavings')} value={pensionSavings} onChange={setPensionSavings} />
                 <MoneyInput label={t('irp')} desc={t('irpDesc')} value={irp} onChange={setIrp} />
@@ -936,8 +936,8 @@ function YearEndTaxCalculatorContent() {
             <MoneyInput label={t('insurancePremium')} desc={t('insurancePremiumDesc')} value={insurancePremium} onChange={setInsurancePremium} />
 
             <div>
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('medicalExpense')}</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('medicalExpenseDesc')}</p>
+              <h4 className="text-sm font-medium text-body mb-3">{t('medicalExpense')}</h4>
+              <p className="text-xs text-muted mb-2">{t('medicalExpenseDesc')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <MoneyInput label={t('medicalExpenseSelf')} value={medicalExpenseSelf} onChange={setMedicalExpenseSelf} />
                 <MoneyInput label={t('medicalExpenseElderly')} value={medicalExpenseElderly} onChange={setMedicalExpenseElderly} />
@@ -946,14 +946,14 @@ function YearEndTaxCalculatorContent() {
             </div>
 
             <div>
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('educationExpense')}</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('educationExpenseDesc')}</p>
+              <h4 className="text-sm font-medium text-body mb-3">{t('educationExpense')}</h4>
+              <p className="text-xs text-muted mb-2">{t('educationExpenseDesc')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <MoneyInput label={t('educationSelf')} value={educationSelf} onChange={setEducationSelf} />
                 <div>
                   <MoneyInput label={t('educationChild')} value={educationChild} onChange={setEducationChild} />
                   <div className="mt-2">
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('educationChildLevel')}</label>
+                    <label className="block text-xs text-muted mb-1">{t('educationChildLevel')}</label>
                     <select
                       value={educationChildLevel}
                       onChange={(e) => setEducationChildLevel(e.target.value as 'elementary' | 'university')}
@@ -979,10 +979,10 @@ function YearEndTaxCalculatorContent() {
                 className="w-4 h-4 accent-blue-600 rounded"
               />
               <div>
-                <label htmlFor="marriageTaxCredit" className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+                <label htmlFor="marriageTaxCredit" className="text-sm font-medium text-body cursor-pointer">
                   {t('marriageTaxCredit')}
                 </label>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('marriageTaxCreditDesc')}</p>
+                <p className="text-xs text-muted">{t('marriageTaxCreditDesc')}</p>
               </div>
             </div>
           </div>
@@ -997,9 +997,9 @@ function YearEndTaxCalculatorContent() {
                 ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800'
                 : result.refundAmount < 0
                   ? 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
-                  : 'bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                  : 'bg-subtle border border-line'
             }`}>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+              <p className="text-sm text-sub mb-1">
                 {result.refundAmount > 0 ? t('result.refund') : result.refundAmount < 0 ? t('result.additionalPayment') : t('result.breakeven')}
               </p>
               <p className={`text-3xl font-bold ${
@@ -1007,7 +1007,7 @@ function YearEndTaxCalculatorContent() {
                   ? 'text-blue-600 dark:text-blue-400'
                   : result.refundAmount < 0
                     ? 'text-red-600 dark:text-red-400'
-                    : 'text-gray-900 dark:text-white'
+                    : 'text-fg'
               }`}>
                 {result.refundAmount < 0 ? '-' : '+'}{fmtNum(Math.abs(result.refundAmount))}{t('won')}
               </p>
@@ -1015,7 +1015,7 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 1 */}
             <details open className="group/s1">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s1:rotate-90" />
                 {t('step1.title')}
               </summary>
@@ -1028,7 +1028,7 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 2 */}
             <details open className="group/s2">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s2:rotate-90" />
                 {t('step2.title')}
               </summary>
@@ -1040,7 +1040,7 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 3 */}
             <details open className="group/s3">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s3:rotate-90" />
                 {t('step3.title')}
               </summary>
@@ -1054,26 +1054,26 @@ function YearEndTaxCalculatorContent() {
                 {result.cardDeduction > 0 && (
                   <details className="ml-4 mt-1 mb-2">
                     <summary className="cursor-pointer text-xs text-blue-600 dark:text-blue-400">{t('detailToggle')}</summary>
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mt-1 space-y-1 text-xs">
+                    <div className="bg-subtle rounded-lg p-3 mt-1 space-y-1 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('creditCard')} (15%)</span>
-                        <span className="text-gray-700 dark:text-gray-300">{fmtNum(result.cardDeductionDetail.creditUsed)}{t('won')}</span>
+                        <span className="text-muted">{t('creditCard')} (15%)</span>
+                        <span className="text-body">{fmtNum(result.cardDeductionDetail.creditUsed)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('debitCard')} (30%)</span>
-                        <span className="text-gray-700 dark:text-gray-300">{fmtNum(result.cardDeductionDetail.debitUsed)}{t('won')}</span>
+                        <span className="text-muted">{t('debitCard')} (30%)</span>
+                        <span className="text-body">{fmtNum(result.cardDeductionDetail.debitUsed)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('cashReceipt')} (30%)</span>
-                        <span className="text-gray-700 dark:text-gray-300">{fmtNum(result.cardDeductionDetail.cashUsed)}{t('won')}</span>
+                        <span className="text-muted">{t('cashReceipt')} (30%)</span>
+                        <span className="text-body">{fmtNum(result.cardDeductionDetail.cashUsed)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('traditionalMarket')} (40%)</span>
-                        <span className="text-gray-700 dark:text-gray-300">{fmtNum(result.cardDeductionDetail.marketUsed)}{t('won')}</span>
+                        <span className="text-muted">{t('traditionalMarket')} (40%)</span>
+                        <span className="text-body">{fmtNum(result.cardDeductionDetail.marketUsed)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('publicTransport')} (80%)</span>
-                        <span className="text-gray-700 dark:text-gray-300">{fmtNum(result.cardDeductionDetail.transportUsed)}{t('won')}</span>
+                        <span className="text-muted">{t('publicTransport')} (80%)</span>
+                        <span className="text-body">{fmtNum(result.cardDeductionDetail.transportUsed)}{t('won')}</span>
                       </div>
                     </div>
                   </details>
@@ -1086,14 +1086,14 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 4 */}
             <details open className="group/s4">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s4:rotate-90" />
                 {t('step4.title')}
               </summary>
               <div className="ml-6 mt-2 space-y-0">
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('step4.taxRate')}</span>
-                  <span className="text-sm text-gray-900 dark:text-white">{result.taxRate}</span>
+                  <span className="text-sm text-sub">{t('step4.taxRate')}</span>
+                  <span className="text-sm text-fg">{result.taxRate}</span>
                 </div>
                 <StepRow label={t('step4.calculatedTax')} value={result.calculatedTax} bold highlight="blue" />
               </div>
@@ -1101,7 +1101,7 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 5 */}
             <details open className="group/s5">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s5:rotate-90" />
                 {t('step5.title')}
               </summary>
@@ -1121,7 +1121,7 @@ function YearEndTaxCalculatorContent() {
 
             {/* Step 6 */}
             <details open className="group/s6">
-              <summary className="cursor-pointer text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 py-2">
+              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
                 <ChevronRight className="w-4 h-4 transition-transform group-open/s6:rotate-90" />
                 {t('step6.title')}
               </summary>
@@ -1144,7 +1144,7 @@ function YearEndTaxCalculatorContent() {
         {activeTab === 'result' && !result && (
           <div className="text-center py-12">
             <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400">{t('tab.basic')}</p>
+            <p className="text-muted">{t('tab.basic')}</p>
           </div>
         )}
       </div>
@@ -1161,7 +1161,7 @@ function YearEndTaxCalculatorContent() {
         </button>
         <button
           onClick={handleReset}
-          className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
+          className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
         >
           <RotateCcw className="w-4 h-4" />
           {t('reset')}
@@ -1169,7 +1169,7 @@ function YearEndTaxCalculatorContent() {
         {result && (
           <button
             onClick={handleShare}
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
+            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
           >
             {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
             {isCopied ? t('copied') : t('share')}

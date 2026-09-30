@@ -41,7 +41,7 @@ export default function GpaCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><GpaCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -51,17 +51,17 @@ export default function GpaCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             대학교 학점 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             대학교 학점 계산기는 과목별 학점(이수학점)과 성적(A+·A0·B+ 등)을 입력하면 학기별 평점과 누적 GPA를 자동으로 계산합니다. 국내 대학에서 가장 많이 사용하는 4.5 만점제와 미국식 4.3 만점제를 모두 지원하며, 취업·대학원 지원 시 필요한 GPA 목표 달성 여부를 쉽게 파악할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             학점 관리 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>누적 평점 목표 설정:</strong> 현재 누적 평점과 남은 학기를 입력하면 목표 GPA 달성에 필요한 이번 학기 성적을 역산할 수 있습니다.</li>
             <li><strong>고학점 과목 전략:</strong> 이수학점이 많은 과목에서 높은 성적을 받아야 평점에 더 큰 영향을 미칩니다. 전공 필수 과목 학점 관리가 특히 중요합니다.</li>
             <li><strong>취업 커트라인 확인:</strong> 대기업 서류 기준 3.3~3.5/4.5, 공기업 기준 3.0/4.5 이상인지 계산기로 확인하세요.</li>

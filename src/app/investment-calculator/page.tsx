@@ -86,7 +86,7 @@ export default function InvestmentCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <InvestmentCalculator />
@@ -101,17 +101,17 @@ export default function InvestmentCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             투자 수익률 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             투자 수익률 계산기는 주식, 펀드, 부동산, 예금 등 다양한 투자의 CAGR(연평균 복리 수익률), 적립식·거치식 투자 결과, 인플레이션 보정 실질 수익률을 계산해주는 도구입니다. 복리의 마법을 시각적으로 확인하고, 투자 전략별 결과를 비교하여 재무 목표에 맞는 투자 계획을 수립하는 데 도움이 됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             투자 수익률 계산 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>복리의 힘:</strong> 연 7% 수익률로 10년 투자 시 원금이 약 2배 되는 복리 효과를 계산기로 직접 확인해보세요.</li>
             <li><strong>적립식 vs 거치식 비교:</strong> 목돈이 있다면 거치식이, 매달 여유 자금이 생긴다면 적립식이 현실적입니다. 두 방식의 결과를 비교해보세요.</li>
             <li><strong>인플레이션 보정 필수:</strong> 명목 수익률만 보지 말고 인플레이션(보통 2~3%)을 차감한 실질 수익률로 자산 증가를 평가하세요.</li>

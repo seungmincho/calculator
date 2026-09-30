@@ -662,18 +662,18 @@ export default function GitVisualizer() {
           <div className="p-2 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
             <GitBranch className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             Git 시각화
           </h1>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-sub">
           branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 직접 실행하며 이해하세요
         </p>
       </div>
 
       {/* Preset buttons */}
       <div className="flex flex-wrap gap-2">
-        <span className="text-sm text-gray-500 dark:text-gray-400 self-center mr-1">시나리오:</span>
+        <span className="text-sm text-muted self-center mr-1">시나리오:</span>
         {[
           { key: 'basic', label: '기본' },
           { key: 'conflict', label: '브랜치 분기' },
@@ -683,7 +683,7 @@ export default function GitVisualizer() {
           <button
             key={p.key}
             onClick={() => loadPreset(p.key)}
-            className="px-3 py-1.5 text-sm rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+            className="px-3 py-1.5 text-sm rounded-lg bg-field border border-line text-body hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
           >
             {p.label}
           </button>
@@ -701,10 +701,10 @@ export default function GitVisualizer() {
         {/* Canvas area (2/3) */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-4 overflow-x-auto`}>
-            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+            <h2 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
               <GitCommit className="w-4 h-4" /> 커밋 그래프
             </h2>
-            <div className="min-h-[200px] border border-gray-100 dark:border-gray-700 rounded-lg overflow-auto">
+            <div className="min-h-[200px] border border-line rounded-lg overflow-auto">
               <canvas ref={canvasRef} />
             </div>
           </div>
@@ -714,7 +714,7 @@ export default function GitVisualizer() {
         <div className="space-y-4">
           {/* Command input */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
               <Terminal className="w-4 h-4" /> 명령어 입력
             </h3>
             <div className="flex gap-2 mb-3">
@@ -744,7 +744,7 @@ export default function GitVisualizer() {
                       executeCommand(qc.cmd)
                     }
                   }}
-                  className="px-2 py-1 text-xs rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors font-mono"
+                  className="px-2 py-1 text-xs rounded bg-soft text-sub hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors font-mono"
                 >
                   {qc.label}
                 </button>
@@ -754,7 +754,7 @@ export default function GitVisualizer() {
 
           {/* Branch list */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
               <GitBranch className="w-4 h-4" /> 브랜치 ({branchList.length})
             </h3>
             <div className="space-y-1.5">
@@ -765,7 +765,7 @@ export default function GitVisualizer() {
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm flex items-center justify-between transition-colors ${
                     name === repo.head
                       ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-semibold'
-                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                   }`}
                 >
                   <span className="flex items-center gap-1.5">
@@ -780,7 +780,7 @@ export default function GitVisualizer() {
 
           {/* Operation log */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
               <GitMerge className="w-4 h-4" /> 실행 로그
             </h3>
             <div className="max-h-48 overflow-y-auto space-y-2 text-sm">
@@ -790,7 +790,7 @@ export default function GitVisualizer() {
                   log.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-900/20' :
                   'bg-blue-50 dark:bg-blue-900/20'
                 }`}>
-                  <div className="font-mono text-xs text-gray-500 dark:text-gray-400">$ {log.command}</div>
+                  <div className="font-mono text-xs text-muted">$ {log.command}</div>
                   <div className={`text-xs mt-0.5 ${
                     log.type === 'error' ? 'text-red-600 dark:text-red-400' :
                     log.type === 'success' ? 'text-emerald-700 dark:text-emerald-300' :
@@ -806,7 +806,7 @@ export default function GitVisualizer() {
 
           {/* Commit log */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
+            <h3 className="text-sm font-semibold text-muted mb-2">
               커밋 목록 ({commitList.length})
             </h3>
             <div className="max-h-40 overflow-y-auto space-y-1">
@@ -817,7 +817,7 @@ export default function GitVisualizer() {
                   className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${
                     highlightCommit === c.id
                       ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
-                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                   }`}
                 >
                   <span className="font-mono text-gray-400 mr-1.5">{c.id.slice(0, 7)}</span>
@@ -836,7 +836,7 @@ export default function GitVisualizer() {
           onClick={() => setShowGuide(g => !g)}
           className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             Git 가이드
           </h2>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -846,8 +846,8 @@ export default function GitVisualizer() {
           <div className="px-6 pb-6 space-y-8">
             {/* Git이란? */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">Git이란?</h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <h3 className="text-base font-bold text-fg mb-2">Git이란?</h3>
+              <p className="text-sm text-body leading-relaxed">
                 Git은 소스 코드의 변경 이력을 추적하고 관리하는 분산 버전 관리 시스템(DVCS)입니다.
                 Linus Torvalds가 Linux 커널 개발을 위해 2005년에 만들었으며, 현재 세계에서 가장 널리 쓰이는 VCS입니다.
                 각 개발자가 전체 히스토리의 복사본을 로컬에 가지고 있어 오프라인에서도 작업할 수 있고,
@@ -857,17 +857,17 @@ export default function GitVisualizer() {
 
             {/* 명령어 참조 */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3">주요 명령어</h3>
+              <h3 className="text-base font-bold text-fg mb-3">주요 명령어</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">명령어</th>
-                      <th className="text-left py-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">사용법</th>
-                      <th className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">설명</th>
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 pr-4 text-muted font-medium">명령어</th>
+                      <th className="text-left py-2 pr-4 text-muted font-medium">사용법</th>
+                      <th className="text-left py-2 text-muted font-medium">설명</th>
                     </tr>
                   </thead>
-                  <tbody className="text-gray-700 dark:text-gray-300">
+                  <tbody className="text-body">
                     {[
                       ['commit', 'commit [메시지]', '현재 브랜치에 새 커밋을 생성합니다'],
                       ['branch', 'branch <이름>', 'HEAD 위치에 새 브랜치를 생성합니다'],
@@ -890,11 +890,11 @@ export default function GitVisualizer() {
 
             {/* merge vs rebase */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3">merge vs rebase</h3>
+              <h3 className="text-base font-bold text-fg mb-3">merge vs rebase</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">merge</h4>
-                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1.5">
+                  <ul className="text-sm text-body space-y-1.5">
                     <li>- 병합 커밋을 생성 (부모 2개)</li>
                     <li>- 히스토리를 있는 그대로 보존</li>
                     <li>- 브랜치가 분기/합류한 과정이 보임</li>
@@ -904,7 +904,7 @@ export default function GitVisualizer() {
                 </div>
                 <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                   <h4 className="font-semibold text-purple-700 dark:text-purple-300 mb-2">rebase</h4>
-                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1.5">
+                  <ul className="text-sm text-body space-y-1.5">
                     <li>- 커밋을 새 위치에 재생성</li>
                     <li>- 깔끔한 직선 히스토리</li>
                     <li>- 불필요한 병합 커밋 없음</li>
@@ -917,7 +917,7 @@ export default function GitVisualizer() {
 
             {/* FAQ */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3">자주 묻는 질문</h3>
+              <h3 className="text-base font-bold text-fg mb-3">자주 묻는 질문</h3>
               <div className="space-y-3">
                 {[
                   {
@@ -934,8 +934,8 @@ export default function GitVisualizer() {
                   },
                 ].map((faq, i) => (
                   <div key={i} className="border-l-4 border-emerald-400 dark:border-emerald-600 pl-4">
-                    <p className="font-semibold text-gray-900 dark:text-white text-sm mb-1">Q. {faq.q}</p>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{faq.a}</p>
+                    <p className="font-semibold text-fg text-sm mb-1">Q. {faq.q}</p>
+                    <p className="text-body text-sm leading-relaxed">{faq.a}</p>
                   </div>
                 ))}
               </div>

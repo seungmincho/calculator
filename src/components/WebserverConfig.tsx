@@ -756,11 +756,11 @@ export default function WebserverConfig() {
     <div className="space-y-6">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Server className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 모드 토글: 생성 / 분석 */}
@@ -769,8 +769,8 @@ export default function WebserverConfig() {
           onClick={() => setViewMode('generate')}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
             viewMode === 'generate'
-              ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
           <Server className="w-4 h-4" />
@@ -780,8 +780,8 @@ export default function WebserverConfig() {
           onClick={() => setViewMode('analyze')}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
             viewMode === 'analyze'
-              ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
           <FileSearch className="w-4 h-4" />
@@ -795,7 +795,7 @@ export default function WebserverConfig() {
           {/* 입력 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('analyzeTitle')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('analyzeTitle')}</h2>
               {analysisResult && (
                 <button
                   onClick={() => {
@@ -810,7 +810,7 @@ export default function WebserverConfig() {
                 </button>
               )}
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{t('analyzeDesc')}</p>
+            <p className="text-xs text-muted">{t('analyzeDesc')}</p>
             <textarea
               value={analyzeInput}
               onChange={e => {
@@ -829,40 +829,40 @@ export default function WebserverConfig() {
 
           {/* 분석 결과 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('analyzeResult')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('analyzeResult')}</h2>
 
             {analysisResult ? (
               <div className="space-y-4">
                 {/* 감지된 정보 */}
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-1">
+                <div className="bg-subtle rounded-lg p-4 space-y-1">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500 dark:text-gray-400">{t('serverType')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="text-muted">{t('serverType')}</span>
+                    <span className="font-medium text-fg">
                       {analysisResult.options.serverType === 'nginx' ? 'Nginx' : 'Caddy'}
                     </span>
                   </div>
                   {analysisResult.options.domain && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">{t('domain')}</span>
-                      <span className="font-mono text-gray-900 dark:text-white">{analysisResult.options.domain}</span>
+                      <span className="text-muted">{t('domain')}</span>
+                      <span className="font-mono text-fg">{analysisResult.options.domain}</span>
                     </div>
                   )}
                   {analysisResult.options.scenario && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">{t('scenario')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{t(`scenarios.${analysisResult.options.scenario}`)}</span>
+                      <span className="text-muted">{t('scenario')}</span>
+                      <span className="font-medium text-fg">{t(`scenarios.${analysisResult.options.scenario}`)}</span>
                     </div>
                   )}
                   {analysisResult.options.backendHost && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">{t('backendHost')}</span>
-                      <span className="font-mono text-gray-900 dark:text-white">{analysisResult.options.backendHost}</span>
+                      <span className="text-muted">{t('backendHost')}</span>
+                      <span className="font-mono text-fg">{analysisResult.options.backendHost}</span>
                     </div>
                   )}
                 </div>
 
                 {/* 보안/성능 분석 */}
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('analyzeChecklist')}</h3>
+                <h3 className="text-sm font-semibold text-fg">{t('analyzeChecklist')}</h3>
                 <div className="space-y-1">
                   {analysisResult.analysis.map((item, i) => (
                     <div
@@ -872,21 +872,21 @@ export default function WebserverConfig() {
                           ? 'bg-green-50 dark:bg-green-950/20'
                           : item.status === 'warn'
                             ? 'bg-yellow-50 dark:bg-yellow-950/20'
-                            : 'bg-gray-50 dark:bg-gray-700/50'
+                            : 'bg-subtle'
                       }`}
                     >
                       <span className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full shrink-0 ${
                           item.status === 'good' ? 'bg-green-500' : item.status === 'warn' ? 'bg-yellow-500' : 'bg-blue-400'
                         }`} />
-                        <span className="text-gray-700 dark:text-gray-300">{t(`analysis.${item.label}`)}</span>
+                        <span className="text-body">{t(`analysis.${item.label}`)}</span>
                       </span>
                       <span className={`font-mono text-xs ${
                         item.status === 'good'
                           ? 'text-green-700 dark:text-green-400'
                           : item.status === 'warn'
                             ? 'text-yellow-700 dark:text-yellow-400'
-                            : 'text-gray-600 dark:text-gray-400'
+                            : 'text-sub'
                       }`}>
                         {item.value}
                       </span>
@@ -910,7 +910,7 @@ export default function WebserverConfig() {
                 )}
               </div>
             ) : (
-              <div className="text-center text-gray-400 dark:text-gray-500 py-12">
+              <div className="text-center text-faint py-12">
                 <FileSearch className="w-12 h-12 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">{t('analyzePrompt')}</p>
               </div>
@@ -927,17 +927,17 @@ export default function WebserverConfig() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 서버 타입 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('serverType')}</label>
-              <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
+              <label className="block text-sm font-medium text-body mb-2">{t('serverType')}</label>
+              <div className="flex bg-soft rounded-lg p-0.5">
                 <button
                   onClick={() => updateOption('serverType', 'nginx')}
-                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'nginx' ? 'bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'nginx' ? 'bg-surface text-green-600 dark:text-green-400 shadow' : 'text-sub'}`}
                 >
                   Nginx
                 </button>
                 <button
                   onClick={() => updateOption('serverType', 'caddy')}
-                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'caddy' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'caddy' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
                 >
                   Caddy
                 </button>
@@ -946,7 +946,7 @@ export default function WebserverConfig() {
 
             {/* 시나리오 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('scenario')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('scenario')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {scenarios.map(s => (
                   <button
@@ -955,11 +955,11 @@ export default function WebserverConfig() {
                     className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                       options.scenario === s.id
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300'
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'border-line hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                     }`}
                   >
                     <div className="font-medium">{t(s.labelKey)}</div>
-                    <div className="text-gray-500 dark:text-gray-400 mt-0.5">{t(s.descKey)}</div>
+                    <div className="text-muted mt-0.5">{t(s.descKey)}</div>
                   </button>
                 ))}
               </div>
@@ -967,7 +967,7 @@ export default function WebserverConfig() {
 
             {/* 도메인 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('domain')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('domain')}</label>
               <input
                 type="text"
                 value={options.domain}
@@ -980,7 +980,7 @@ export default function WebserverConfig() {
             {/* 백엔드 호스트 */}
             {needsBackend && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('backendHost')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('backendHost')}</label>
                 <input
                   type="text"
                   value={options.backendHost}
@@ -994,7 +994,7 @@ export default function WebserverConfig() {
             {/* 정적 파일 경로 */}
             {needsStaticRoot && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('staticRoot')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('staticRoot')}</label>
                 <input
                   type="text"
                   value={options.staticRoot}
@@ -1008,7 +1008,7 @@ export default function WebserverConfig() {
             {/* 로드밸런서 업스트림 */}
             {needsUpstream && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upstream Servers</label>
+                <label className="block text-sm font-medium text-body mb-1">Upstream Servers</label>
                 {options.upstreamServers.map((s, i) => (
                   <div key={i} className="flex gap-2 mb-1">
                     <input
@@ -1053,7 +1053,7 @@ export default function WebserverConfig() {
                   value={options.cacheDuration}
                   onChange={e => updateOption('cacheDuration', e.target.value)}
                   placeholder={t('cacheDurationPlaceholder')}
-                  className="w-32 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs font-mono"
+                  className="w-32 px-2 py-1 border border-line-strong rounded bg-field text-fg text-xs font-mono"
                 />
               </div>
             )}
@@ -1065,7 +1065,7 @@ export default function WebserverConfig() {
                   value={options.corsOrigin}
                   onChange={e => updateOption('corsOrigin', e.target.value)}
                   placeholder={t('corsOriginPlaceholder')}
-                  className="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs font-mono"
+                  className="w-full px-2 py-1 border border-line-strong rounded bg-field text-fg text-xs font-mono"
                 />
               </div>
             )}
@@ -1077,14 +1077,14 @@ export default function WebserverConfig() {
                   value={options.rateLimitValue}
                   onChange={e => updateOption('rateLimitValue', e.target.value)}
                   placeholder={t('rateLimitPlaceholder')}
-                  className="w-32 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs font-mono"
+                  className="w-32 px-2 py-1 border border-line-strong rounded bg-field text-fg text-xs font-mono"
                 />
               </div>
             )}
 
             {/* 커스텀 설정 */}
-            <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('customDirective')}</label>
+            <div className="pt-2 border-t border-line">
+              <label className="block text-sm font-medium text-body mb-1">{t('customDirective')}</label>
               <textarea
                 value={options.customDirective}
                 onChange={e => updateOption('customDirective', e.target.value)}
@@ -1097,7 +1097,7 @@ export default function WebserverConfig() {
 
           {/* 베스트 프리셋 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
               <Zap className="w-4 h-4 text-yellow-500" />
               {t('presetLabel')}
             </h3>
@@ -1106,10 +1106,10 @@ export default function WebserverConfig() {
                 <button
                   key={p.id}
                   onClick={() => applyPreset(p.id)}
-                  className="text-left px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-yellow-400 dark:hover:border-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-950/20 transition-colors"
+                  className="text-left px-3 py-2 rounded-lg border border-line hover:border-yellow-400 dark:hover:border-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-950/20 transition-colors"
                 >
-                  <div className="text-xs font-medium text-gray-900 dark:text-white">{t(p.labelKey)}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t(p.descKey)}</div>
+                  <div className="text-xs font-medium text-fg">{t(p.labelKey)}</div>
+                  <div className="text-xs text-muted mt-0.5">{t(p.descKey)}</div>
                 </button>
               ))}
             </div>
@@ -1120,20 +1120,20 @@ export default function WebserverConfig() {
         <div className="lg:col-span-3">
           <div className={`${glassCard} ${glassInset} p-6 sticky top-4`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('generatedConfig')} — {options.serverType === 'nginx' ? 'Nginx' : 'Caddy'}
               </h2>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setOptions({ ...DEFAULT_OPTIONS })}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors"
                 >
                   <RotateCcw className="w-3 h-3" />
                   {t('reset')}
                 </button>
                 <button
                   onClick={downloadConfig}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors"
                 >
                   <Download className="w-3 h-3" />
                   {t('download')}
@@ -1161,7 +1161,7 @@ export default function WebserverConfig() {
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center justify-between w-full text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
@@ -1171,13 +1171,13 @@ export default function WebserverConfig() {
         {showGuide && (
           <div className="mt-6 grid md:grid-cols-3 gap-6">
             {(['nginx', 'caddy', 'security'] as const).map(section => (
-              <div key={section} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+              <div key={section} className="bg-subtle rounded-xl p-4">
+                <h3 className="font-semibold text-fg mb-3">
                   {t(`guide.${section}.title`)}
                 </h3>
                 <ul className="space-y-2">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <li key={i} className="flex items-start gap-2 text-sm text-sub">
                       <span className="text-blue-500 mt-0.5 shrink-0">•</span>
                       {item}
                     </li>
@@ -1197,7 +1197,7 @@ export default function WebserverConfig() {
 function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center justify-between cursor-pointer group">
-      <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{label}</span>
+      <span className="text-sm text-body group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{label}</span>
       <div className="relative">
         <input
           type="checkbox"

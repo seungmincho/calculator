@@ -295,8 +295,8 @@ export default function CollageMaker() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Upload zone */}
@@ -309,13 +309,13 @@ export default function CollageMaker() {
           border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors
           ${isDragging
             ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-            : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/30'
+            : 'border-line-strong hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/30'
           }
         `}
       >
-        <Upload className="mx-auto h-10 w-10 text-gray-400 dark:text-gray-500 mb-3" />
-        <p className="text-gray-600 dark:text-gray-300 font-medium">{t('dragDrop')}</p>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('addImages')}</p>
+        <Upload className="mx-auto h-10 w-10 text-faint mb-3" />
+        <p className="text-sub font-medium">{t('dragDrop')}</p>
+        <p className="text-sm text-faint mt-1">{t('addImages')}</p>
         <input
           ref={fileInputRef}
           type="file"
@@ -335,13 +335,13 @@ export default function CollageMaker() {
           {/* Uploaded images */}
           {images.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-5`}>
-              <h2 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <h2 className="font-semibold text-fg mb-3 flex items-center gap-2">
                 <ImageIcon className="h-4 w-4" />
                 {t('uploadImages')} ({images.length})
               </h2>
               <div className="grid grid-cols-3 gap-2">
                 {images.map(img => (
-                  <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                  <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden bg-soft">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={img.src}
@@ -363,7 +363,7 @@ export default function CollageMaker() {
 
           {/* Layout selection */}
           <div className={`${glassCard} ${glassInset} p-5`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-3">{t('layout')}</h2>
+            <h2 className="font-semibold text-fg mb-3">{t('layout')}</h2>
             <div className="grid grid-cols-3 gap-2">
               {layoutIds.map(id => (
                 <button
@@ -375,14 +375,14 @@ export default function CollageMaker() {
                     flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all
                     ${layout === id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-line hover:border-blue-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }
                   `}
                 >
                   <div className="w-14 h-10">
                     <LayoutPreview cells={LAYOUTS[id]} />
                   </div>
-                  <span className="text-xs text-gray-600 dark:text-gray-300">{t(layoutLabelKeys[id])}</span>
+                  <span className="text-xs text-sub">{t(layoutLabelKeys[id])}</span>
                 </button>
               ))}
             </div>
@@ -393,7 +393,7 @@ export default function CollageMaker() {
 
             {/* Spacing */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('spacing')}: <span className="font-mono text-blue-600 dark:text-blue-400">{spacing}px</span>
               </label>
               <input
@@ -408,7 +408,7 @@ export default function CollageMaker() {
 
             {/* Border radius */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('borderRadius')}: <span className="font-mono text-blue-600 dark:text-blue-400">{borderRadius}px</span>
               </label>
               <input
@@ -423,7 +423,7 @@ export default function CollageMaker() {
 
             {/* Background color */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('backgroundColor')}
               </label>
               <div className="flex items-center gap-2">
@@ -431,15 +431,15 @@ export default function CollageMaker() {
                   type="color"
                   value={bgColor}
                   onChange={e => setBgColor(e.target.value)}
-                  className="h-9 w-16 rounded border border-gray-300 dark:border-gray-600 cursor-pointer bg-transparent p-0.5"
+                  className="h-9 w-16 rounded border border-line-strong cursor-pointer bg-transparent p-0.5"
                 />
-                <span className="font-mono text-sm text-gray-600 dark:text-gray-300">{bgColor}</span>
+                <span className="font-mono text-sm text-sub">{bgColor}</span>
               </div>
             </div>
 
             {/* Output size */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('outputSize')}
               </label>
               <div className="grid grid-cols-1 gap-1">
@@ -452,7 +452,7 @@ export default function CollageMaker() {
                       text-left text-sm px-3 py-2 rounded-lg border transition-all
                       ${outputSizeIdx === i
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-                        : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-300'
+                        : 'border-line text-body hover:border-blue-300'
                       }
                     `}
                   >
@@ -475,7 +475,7 @@ export default function CollageMaker() {
             </button>
             <button
               onClick={reset}
-              className="flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-all"
+              className="flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-all"
             >
               <RefreshCw className="h-4 w-4" />
               {t('reset')}
@@ -487,14 +487,14 @@ export default function CollageMaker() {
         <div className="lg:col-span-3">
           <div className={`${glassCard} ${glassInset} p-5 sticky top-4`}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-gray-900 dark:text-white">{t('preview')}</h2>
+              <h2 className="font-semibold text-fg">{t('preview')}</h2>
               {isRendering && (
                 <span className="text-xs text-blue-500 animate-pulse">{t('generating')}</span>
               )}
             </div>
 
             {images.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500 gap-3">
+              <div className="flex flex-col items-center justify-center h-64 text-faint gap-3">
                 <ImageIcon className="h-12 w-12" />
                 <p className="text-sm">{t('noImages')}</p>
               </div>
@@ -513,14 +513,14 @@ export default function CollageMaker() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div>
-          <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2">{t('guide.howTo.title')}</h3>
+          <h3 className="font-medium text-body mb-2">{t('guide.howTo.title')}</h3>
           <ol className="list-decimal list-inside space-y-1">
             {(t.raw('guide.howTo.items') as string[]).map((item, i) => (
-              <li key={i} className="text-sm text-gray-600 dark:text-gray-400">{item}</li>
+              <li key={i} className="text-sm text-sub">{item}</li>
             ))}
           </ol>
         </div>

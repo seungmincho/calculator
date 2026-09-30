@@ -272,14 +272,14 @@ export default function BloodSugar() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <span>🩸</span> {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? '복사됨' : '링크 복사'}
@@ -296,11 +296,11 @@ export default function BloodSugar() {
         {/* Input Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('addRecord')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('addRecord')}</h2>
 
             {/* Value */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('value')}
               </label>
               <input
@@ -318,7 +318,7 @@ export default function BloodSugar() {
 
             {/* Timing */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('timing')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -329,7 +329,7 @@ export default function BloodSugar() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       timing === t_
                         ? 'bg-red-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(timingKey(t_) as Parameters<typeof t>[0])}
@@ -341,7 +341,7 @@ export default function BloodSugar() {
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('date')}
                 </label>
                 <input
@@ -352,7 +352,7 @@ export default function BloodSugar() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('time')}
                 </label>
                 <input
@@ -366,7 +366,7 @@ export default function BloodSugar() {
 
             {/* Note */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('note')}
               </label>
               <input
@@ -395,7 +395,7 @@ export default function BloodSugar() {
               <button
                 onClick={handleReset}
                 title={t('reset')}
-                className="p-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="p-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-5 h-5" />
               </button>
@@ -405,17 +405,17 @@ export default function BloodSugar() {
           {/* Statistics Panel */}
           <div className={`${glassCard} ${glassInset} p-6 mt-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-red-500" />
                 {t('statistics')}
               </h2>
-              <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 text-sm">
+              <div className="flex rounded-lg overflow-hidden border border-line text-sm">
                 <button
                   onClick={() => setStatsPeriod(7)}
                   className={`px-3 py-1 transition-colors ${
                     statsPeriod === 7
                       ? 'bg-red-600 text-white'
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                      : 'bg-field text-sub hover:bg-gray-50 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('statsPeriod7')}
@@ -425,7 +425,7 @@ export default function BloodSugar() {
                   className={`px-3 py-1 transition-colors ${
                     statsPeriod === 30
                       ? 'bg-red-600 text-white'
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                      : 'bg-field text-sub hover:bg-gray-50 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('statsPeriod30')}
@@ -441,7 +441,7 @@ export default function BloodSugar() {
                 <StatCard label={t('statsMax')} value={`${stats.max}`} unit="mg/dL" color="text-red-600 dark:text-red-400" />
               </div>
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">{t('statsNoData')}</p>
+              <p className="text-sm text-muted text-center py-4">{t('statsNoData')}</p>
             )}
           </div>
         </div>
@@ -450,7 +450,7 @@ export default function BloodSugar() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('history')}</h2>
               <div className="flex gap-2">
                 {records.length > 0 && (
                   <>
@@ -474,17 +474,17 @@ export default function BloodSugar() {
             </div>
 
             {records.length === 0 ? (
-              <p className="text-center text-gray-500 dark:text-gray-400 py-12">{t('historyEmpty')}</p>
+              <p className="text-center text-muted py-12">{t('historyEmpty')}</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 pr-3 font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('colDate')}</th>
-                      <th className="text-right py-2 pr-3 font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('colValue')}</th>
-                      <th className="text-left py-2 pr-3 font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('colTiming')}</th>
-                      <th className="text-left py-2 pr-3 font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('colStatus')}</th>
-                      <th className="text-left py-2 pr-3 font-medium text-gray-600 dark:text-gray-400">{t('colNote')}</th>
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 pr-3 font-medium text-sub whitespace-nowrap">{t('colDate')}</th>
+                      <th className="text-right py-2 pr-3 font-medium text-sub whitespace-nowrap">{t('colValue')}</th>
+                      <th className="text-left py-2 pr-3 font-medium text-sub whitespace-nowrap">{t('colTiming')}</th>
+                      <th className="text-left py-2 pr-3 font-medium text-sub whitespace-nowrap">{t('colStatus')}</th>
+                      <th className="text-left py-2 pr-3 font-medium text-sub">{t('colNote')}</th>
                       <th className="py-2" />
                     </tr>
                   </thead>
@@ -496,14 +496,14 @@ export default function BloodSugar() {
                           key={record.id}
                           className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
                         >
-                          <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                          <td className="py-2.5 pr-3 text-sub whitespace-nowrap">
                             {record.date}<br />
-                            <span className="text-xs text-gray-400 dark:text-gray-500">{record.time}</span>
+                            <span className="text-xs text-faint">{record.time}</span>
                           </td>
-                          <td className="py-2.5 pr-3 text-right font-bold text-gray-900 dark:text-white whitespace-nowrap">
+                          <td className="py-2.5 pr-3 text-right font-bold text-fg whitespace-nowrap">
                             {record.value}
                           </td>
-                          <td className="py-2.5 pr-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                          <td className="py-2.5 pr-3 text-body whitespace-nowrap">
                             {t(timingKey(record.timing) as Parameters<typeof t>[0])}
                           </td>
                           <td className="py-2.5 pr-3 whitespace-nowrap">
@@ -511,7 +511,7 @@ export default function BloodSugar() {
                               {t(cls.labelKey as Parameters<typeof t>[0])}
                             </span>
                           </td>
-                          <td className="py-2.5 pr-3 text-gray-500 dark:text-gray-400 max-w-[120px] truncate">
+                          <td className="py-2.5 pr-3 text-muted max-w-[120px] truncate">
                             {record.note || '—'}
                           </td>
                           <td className="py-2.5">
@@ -536,14 +536,14 @@ export default function BloodSugar() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guideTitle')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {/* Fasting guide */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200">{t('guideFastingTitle')}</h3>
+            <h3 className="font-semibold text-body">{t('guideFastingTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideFastingItems') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${i === 0 ? 'bg-green-500' : i === 1 ? 'bg-yellow-500' : i === 2 ? 'bg-red-500' : 'bg-red-700'}`} />
                   {item}
                 </li>
@@ -553,10 +553,10 @@ export default function BloodSugar() {
 
           {/* After-meal guide */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200">{t('guideAfterMealTitle')}</h3>
+            <h3 className="font-semibold text-body">{t('guideAfterMealTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideAfterMealItems') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${i === 0 ? 'bg-green-500' : i === 1 ? 'bg-yellow-500' : 'bg-red-500'}`} />
                   {item}
                 </li>
@@ -566,10 +566,10 @@ export default function BloodSugar() {
 
           {/* Tips */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200">{t('guideTipsTitle')}</h3>
+            <h3 className="font-semibold text-body">{t('guideTipsTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideTipsItems') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
                   {item}
                 </li>
@@ -579,7 +579,7 @@ export default function BloodSugar() {
         </div>
 
         {/* Color legend */}
-        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-6 pt-6 border-t border-line">
           <div className="flex flex-wrap gap-3 text-sm">
             <LegendBadge label={t('classLow')} color="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400" />
             <LegendBadge label={t('classNormalFasting') + ' / ' + t('classNormalAfterMeal')} color="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" />
@@ -604,10 +604,10 @@ function StatCard({
   color: string
 }) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</p>
+    <div className="bg-subtle rounded-lg p-3 text-center">
+      <p className="text-xs text-muted mb-1">{label}</p>
       <p className={`text-xl font-bold ${color}`}>{value}</p>
-      <p className="text-xs text-gray-400 dark:text-gray-500">{unit}</p>
+      <p className="text-xs text-faint">{unit}</p>
     </div>
   )
 }

@@ -187,7 +187,7 @@ export default function MenuRoulettePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <MenuRouletteClient />
@@ -203,15 +203,15 @@ export default function MenuRoulettePage() {
         <div className="space-y-8">
 
           {/* 메뉴 추천 룰렛이란? */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+            <h2 className="text-xl font-bold text-fg">
               메뉴 추천 룰렛이란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-body leading-relaxed">
               메뉴 추천 룰렛은 점심·저녁 메뉴를 고를 때 빠르고 공정하게 결정을 도와주는 온라인 룰렛 도구입니다.
               원하는 음식 목록을 입력하고 룰렛을 돌리면 무작위로 오늘의 메뉴가 선택됩니다.
             </p>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-body leading-relaxed">
               "오늘 뭐 먹지?"라는 질문으로 시작되는 오랜 고민을 단 몇 초 만에 해결해 드립니다.
               짜장면·짬뽕·냉면·비빔밥·삼겹살 등 기본 프리셋을 제공하며, 자주 가는 식당이나 좋아하는 메뉴를 직접 추가해
               나만의 맞춤 룰렛을 만들 수 있습니다.
@@ -219,11 +219,11 @@ export default function MenuRoulettePage() {
           </div>
 
           {/* 이런 때 사용하세요 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+            <h2 className="text-xl font-bold text-fg">
               이런 때 사용하세요
             </h2>
-            <ul className="space-y-3 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-3 text-body">
               <li className="flex gap-3">
                 <span className="text-orange-500 font-bold shrink-0">직장인 점심</span>
                 <span>팀원들과 점심 메뉴를 정할 때 의견 충돌 없이 룰렛으로 공정하게 결정하세요.</span>
@@ -248,14 +248,14 @@ export default function MenuRoulettePage() {
           </div>
 
           {/* 인기 카테고리별 메뉴 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+            <h2 className="text-xl font-bold text-fg">
               인기 카테고리별 메뉴
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍚 한식</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>비빔밥, 김치찌개, 된장찌개</li>
                   <li>불고기, 삼겹살, 냉면</li>
                   <li>순두부찌개, 갈비탕, 설렁탕</li>
@@ -263,7 +263,7 @@ export default function MenuRoulettePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🥡 중식</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>짜장면, 짬뽕, 탕수육</li>
                   <li>볶음밥, 마파두부, 깐풍기</li>
                   <li>짬뽕밥, 유린기, 해물요리</li>
@@ -271,7 +271,7 @@ export default function MenuRoulettePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍱 일식</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>초밥, 라멘, 우동</li>
                   <li>돈카츠, 규동, 오야코동</li>
                   <li>텐동, 나베, 야키토리</li>
@@ -279,7 +279,7 @@ export default function MenuRoulettePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍕 양식</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>피자, 파스타, 스테이크</li>
                   <li>버거, 리조또, 샐러드</li>
                   <li>샌드위치, 수프, 브런치</li>
@@ -287,7 +287,7 @@ export default function MenuRoulettePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍜 분식</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>떡볶이, 순대, 튀김</li>
                   <li>라면, 김밥, 어묵</li>
                   <li>만두, 핫도그, 닭강정</li>
@@ -295,7 +295,7 @@ export default function MenuRoulettePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🌮 기타</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>태국음식, 베트남쌀국수</li>
                   <li>인도카레, 멕시칸, 케밥</li>
                   <li>치킨, 곱창, 족발·보쌈</li>
@@ -305,61 +305,61 @@ export default function MenuRoulettePage() {
           </div>
 
           {/* 사용 방법 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+            <h2 className="text-xl font-bold text-fg">
               사용 방법
             </h2>
-            <ol className="space-y-3 text-gray-700 dark:text-gray-300">
+            <ol className="space-y-3 text-body">
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                <span><strong className="text-gray-900 dark:text-white">메뉴 목록 확인:</strong> 기본 제공되는 점심메뉴 프리셋(짜장면, 짬뽕, 냉면 등)을 확인하거나, 원하는 메뉴를 직접 입력해 추가하세요.</span>
+                <span><strong className="text-fg">메뉴 목록 확인:</strong> 기본 제공되는 점심메뉴 프리셋(짜장면, 짬뽕, 냉면 등)을 확인하거나, 원하는 메뉴를 직접 입력해 추가하세요.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                <span><strong className="text-gray-900 dark:text-white">메뉴 커스터마이즈:</strong> 먹고 싶지 않은 메뉴는 삭제하고, 새 메뉴를 추가해 나만의 룰렛을 완성하세요. 최대 12개까지 등록 가능합니다.</span>
+                <span><strong className="text-fg">메뉴 커스터마이즈:</strong> 먹고 싶지 않은 메뉴는 삭제하고, 새 메뉴를 추가해 나만의 룰렛을 완성하세요. 최대 12개까지 등록 가능합니다.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                <span><strong className="text-gray-900 dark:text-white">룰렛 돌리기:</strong> 화면 중앙의 룰렛 또는 "돌리기" 버튼을 클릭하면 룰렛이 회전하기 시작합니다.</span>
+                <span><strong className="text-fg">룰렛 돌리기:</strong> 화면 중앙의 룰렛 또는 "돌리기" 버튼을 클릭하면 룰렛이 회전하기 시작합니다.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                <span><strong className="text-gray-900 dark:text-white">결과 확인:</strong> 룰렛이 멈추면 오늘의 메뉴가 결정됩니다! 결과 화면에 선택된 메뉴가 크게 표시됩니다.</span>
+                <span><strong className="text-fg">결과 확인:</strong> 룰렛이 멈추면 오늘의 메뉴가 결정됩니다! 결과 화면에 선택된 메뉴가 크게 표시됩니다.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                <span><strong className="text-gray-900 dark:text-white">결과 공유:</strong> 팀원에게 공유하려면 링크 복사 버튼을 눌러 현재 메뉴 목록이 담긴 URL을 공유하세요.</span>
+                <span><strong className="text-fg">결과 공유:</strong> 팀원에게 공유하려면 링크 복사 버튼을 눌러 현재 메뉴 목록이 담긴 URL을 공유하세요.</span>
               </li>
             </ol>
           </div>
 
           {/* 자주 묻는 질문 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+            <h2 className="text-xl font-bold text-fg">
               자주 묻는 질문
             </h2>
             <div className="space-y-5">
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="font-semibold text-fg mb-1">
                   메뉴 추천 룰렛은 무료인가요?
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                <p className="text-sub text-sm leading-relaxed">
                   네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="font-semibold text-fg mb-1">
                   룰렛에 메뉴를 몇 개까지 추가할 수 있나요?
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                <p className="text-sub text-sm leading-relaxed">
                   최대 12개까지 추가할 수 있습니다. 메뉴 이름을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 언제든 삭제할 수 있어요.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="font-semibold text-fg mb-1">
                   룰렛 결과를 친구에게 공유할 수 있나요?
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                <p className="text-sub text-sm leading-relaxed">
                   네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요.
                 </p>
               </div>

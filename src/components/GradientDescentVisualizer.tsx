@@ -447,15 +447,15 @@ export default function GradientDescentVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">경사하강법 시각화</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-fg">경사하강법 시각화</h1>
+        <p className="text-sm text-muted mt-1">
           2D 손실 함수 위에서 최적점을 찾아가는 경사하강법을 인터랙티브하게 학습하세요
         </p>
       </div>
 
       {/* Presets */}
       <div className="flex flex-wrap gap-2">
-        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 self-center">프리셋:</span>
+        <span className="text-xs font-medium text-muted self-center">프리셋:</span>
         <button onClick={() => applyPreset(0, [4, 3], 0.05, true)} className="px-3 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 transition">
           간단한 볼록 함수 비교
         </button>
@@ -474,19 +474,19 @@ export default function GradientDescentVisualizer() {
         {/* Controls */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-sm">설정</h2>
+            <h2 className="font-semibold text-fg text-sm">설정</h2>
 
             {/* Loss function */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">손실 함수</label>
+              <label className="block text-xs font-medium text-sub mb-1">손실 함수</label>
               <select
                 value={lossFnIdx}
                 onChange={e => { setLossFnIdx(Number(e.target.value)); setRunning(false) }}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-2 py-1.5 text-sm border border-line-strong rounded-lg bg-field text-fg"
               >
                 {LOSS_FUNCTIONS.map((f, i) => <option key={i} value={i}>{f.name}</option>)}
               </select>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{lossDef.desc}</p>
+              <p className="text-xs text-faint mt-1">{lossDef.desc}</p>
             </div>
 
             {/* Comparison toggle */}
@@ -496,17 +496,17 @@ export default function GradientDescentVisualizer() {
                 onChange={e => { setComparison(e.target.checked); setRunning(false) }}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">비교 모드 (전체 옵티마이저)</span>
+              <span className="text-sm text-body">비교 모드 (전체 옵티마이저)</span>
             </label>
 
             {/* Optimizer (single mode) */}
             {!comparison && (
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">옵티마이저</label>
+                <label className="block text-xs font-medium text-sub mb-1">옵티마이저</label>
                 <select
                   value={optimizerIdx}
                   onChange={e => { setOptimizerIdx(Number(e.target.value)); setRunning(false) }}
-                  className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-2 py-1.5 text-sm border border-line-strong rounded-lg bg-field text-fg"
                 >
                   {OPTIMIZERS.map((o, i) => <option key={i} value={i}>{o.name}</option>)}
                 </select>
@@ -515,7 +515,7 @@ export default function GradientDescentVisualizer() {
 
             {/* Learning rate */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label className="block text-xs font-medium text-sub mb-1">
                 학습률: <span className="font-mono text-blue-600 dark:text-blue-400">{realLr.toFixed(4)}</span>
               </label>
               <input
@@ -530,7 +530,7 @@ export default function GradientDescentVisualizer() {
 
             {/* Speed */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label className="block text-xs font-medium text-sub mb-1">
                 속도: {speed}x
               </label>
               <input
@@ -550,13 +550,13 @@ export default function GradientDescentVisualizer() {
               </button>
               <button
                 onClick={initStates}
-                className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition"
+                className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition"
               >
                 <RotateCcw size={14} />
               </button>
             </div>
 
-            <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
+            <div className="flex items-center gap-1.5 text-xs text-faint">
               <MousePointer size={12} />
               캔버스를 클릭하여 시작점 지정
             </div>
@@ -565,7 +565,7 @@ export default function GradientDescentVisualizer() {
           {/* Legend (comparison mode) */}
           {comparison && (
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <h3 className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">범례</h3>
+              <h3 className="text-xs font-semibold text-sub mb-2">범례</h3>
               <div className="space-y-1.5">
                 {OPTIMIZERS.map(o => {
                   const st = states.get(o.key)
@@ -573,9 +573,9 @@ export default function GradientDescentVisualizer() {
                     <div key={o.key} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-1.5">
                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: o.color }} />
-                        <span className="text-gray-700 dark:text-gray-300">{o.name}</span>
+                        <span className="text-body">{o.name}</span>
                       </div>
-                      <span className="font-mono text-gray-500 dark:text-gray-400">
+                      <span className="font-mono text-muted">
                         {st ? `${st.t}회` : '-'}
                         {st?.converged && ' ✓'}
                       </span>
@@ -602,28 +602,28 @@ export default function GradientDescentVisualizer() {
         {/* Stats */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-sm">통계</h2>
+            <h2 className="font-semibold text-fg text-sm">통계</h2>
             {primaryState && (
               <>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">위치 (x, y)</div>
-                    <div className="text-sm font-mono text-gray-900 dark:text-white">
+                    <div className="text-[10px] text-faint">위치 (x, y)</div>
+                    <div className="text-sm font-mono text-fg">
                       ({primaryState.x.toFixed(3)}, {primaryState.y.toFixed(3)})
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">손실값</div>
+                    <div className="text-[10px] text-faint">손실값</div>
                     <div className="text-sm font-mono text-blue-600 dark:text-blue-400 font-semibold">
                       {primaryState.losses[primaryState.losses.length - 1]?.toFixed(6)}
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">반복 횟수</div>
-                    <div className="text-sm font-mono text-gray-900 dark:text-white">{primaryState.t}</div>
+                    <div className="text-[10px] text-faint">반복 횟수</div>
+                    <div className="text-sm font-mono text-fg">{primaryState.t}</div>
                   </div>
                   <div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">상태</div>
+                    <div className="text-[10px] text-faint">상태</div>
                     <div className={`text-sm font-medium ${primaryState.converged ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>
                       {primaryState.converged ? '수렴 완료' : running ? '최적화 중...' : '대기'}
                     </div>
@@ -632,7 +632,7 @@ export default function GradientDescentVisualizer() {
 
                 {/* Mini loss chart */}
                 <div>
-                  <div className="text-[10px] text-gray-400 dark:text-gray-500 mb-1">손실 히스토리 (최근 100회)</div>
+                  <div className="text-[10px] text-faint mb-1">손실 히스토리 (최근 100회)</div>
                   <div className="h-20 bg-gray-50 dark:bg-gray-900 rounded-lg p-1 relative overflow-hidden">
                     {lossChartData.length > 1 && (
                       <svg viewBox={`0 0 ${lossChartData.length - 1} 100`} className="w-full h-full" preserveAspectRatio="none">
@@ -658,7 +658,7 @@ export default function GradientDescentVisualizer() {
             {/* Comparison stats table */}
             {comparison && (
               <div>
-                <div className="text-[10px] text-gray-400 dark:text-gray-500 mb-1">수렴 비교</div>
+                <div className="text-[10px] text-faint mb-1">수렴 비교</div>
                 <div className="space-y-1">
                   {OPTIMIZERS.map(o => {
                     const st = states.get(o.key)
@@ -667,8 +667,8 @@ export default function GradientDescentVisualizer() {
                     return (
                       <div key={o.key} className="flex items-center gap-2 text-[11px]">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: o.color }} />
-                        <span className="text-gray-600 dark:text-gray-400 w-16 truncate">{o.key}</span>
-                        <span className="font-mono text-gray-800 dark:text-gray-200 flex-1 text-right">
+                        <span className="text-sub w-16 truncate">{o.key}</span>
+                        <span className="font-mono text-body flex-1 text-right">
                           {lastLoss?.toFixed(4)}
                         </span>
                         <span className="font-mono text-gray-500 w-10 text-right">{st.t}회</span>
@@ -682,14 +682,14 @@ export default function GradientDescentVisualizer() {
 
           {/* Start point display */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">시작점</div>
+            <div className="text-xs font-medium text-sub mb-2">시작점</div>
             <div className="flex gap-2">
               <div className="flex-1">
                 <label className="text-[10px] text-gray-400">x</label>
                 <input
                   type="number" step="0.5" value={startPt[0]}
                   onChange={e => { setStartPt([Number(e.target.value), startPt[1]]); setRunning(false) }}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-2 py-1 text-sm border border-line-strong rounded bg-field text-fg"
                 />
               </div>
               <div className="flex-1">
@@ -697,7 +697,7 @@ export default function GradientDescentVisualizer() {
                 <input
                   type="number" step="0.5" value={startPt[1]}
                   onChange={e => { setStartPt([startPt[0], Number(e.target.value)]); setRunning(false) }}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-2 py-1 text-sm border border-line-strong rounded bg-field text-fg"
                 />
               </div>
             </div>
@@ -713,7 +713,7 @@ export default function GradientDescentVisualizer() {
         >
           <div className="flex items-center gap-2">
             <BookOpen size={18} className="text-blue-600 dark:text-blue-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">경사하강법 가이드</h2>
+            <h2 className="text-lg font-semibold text-fg">경사하강법 가이드</h2>
           </div>
           {guideOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
         </button>
@@ -722,8 +722,8 @@ export default function GradientDescentVisualizer() {
           <div className="mt-6 space-y-6">
             {/* What is */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">경사하강법이란?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              <h3 className="text-base font-semibold text-fg mb-2">경사하강법이란?</h3>
+              <p className="text-sm text-sub leading-relaxed">
                 경사하강법(Gradient Descent)은 함수의 최솟값을 찾기 위해 기울기(gradient)의 반대 방향으로 조금씩 이동하는 최적화 알고리즘입니다.
                 산 위에서 공이 가장 낮은 곳을 향해 굴러가는 것과 같은 원리입니다.
                 머신러닝에서는 손실 함수(loss function)를 최소화하여 모델의 파라미터를 학습하는 데 핵심적으로 사용됩니다.
@@ -732,31 +732,31 @@ export default function GradientDescentVisualizer() {
 
             {/* Optimizer comparison */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">최적화 알고리즘 비교</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">최적화 알고리즘 비교</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 px-2 text-gray-600 dark:text-gray-400 font-medium">알고리즘</th>
-                      <th className="text-left py-2 px-2 text-gray-600 dark:text-gray-400 font-medium">원리</th>
-                      <th className="text-left py-2 px-2 text-gray-600 dark:text-gray-400 font-medium">장점</th>
-                      <th className="text-left py-2 px-2 text-gray-600 dark:text-gray-400 font-medium">단점</th>
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 px-2 text-sub font-medium">알고리즘</th>
+                      <th className="text-left py-2 px-2 text-sub font-medium">원리</th>
+                      <th className="text-left py-2 px-2 text-sub font-medium">장점</th>
+                      <th className="text-left py-2 px-2 text-sub font-medium">단점</th>
                     </tr>
                   </thead>
-                  <tbody className="text-gray-700 dark:text-gray-300">
-                    <tr className="border-b border-gray-100 dark:border-gray-700">
+                  <tbody className="text-body">
+                    <tr className="border-b border-line">
                       <td className="py-2 px-2 font-medium">SGD</td>
                       <td className="py-2 px-2">기울기 × 학습률만큼 이동</td>
                       <td className="py-2 px-2">단순, 메모리 효율적</td>
                       <td className="py-2 px-2">느린 수렴, 진동</td>
                     </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-700">
+                    <tr className="border-b border-line">
                       <td className="py-2 px-2 font-medium">Momentum</td>
                       <td className="py-2 px-2">이전 이동 방향의 관성 유지</td>
                       <td className="py-2 px-2">빠른 수렴, 진동 감소</td>
                       <td className="py-2 px-2">하이퍼파라미터 1개 추가</td>
                     </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-700">
+                    <tr className="border-b border-line">
                       <td className="py-2 px-2 font-medium">RMSProp</td>
                       <td className="py-2 px-2">기울기 크기에 따라 학습률 조절</td>
                       <td className="py-2 px-2">방향별 적응형 학습률</td>
@@ -775,7 +775,7 @@ export default function GradientDescentVisualizer() {
 
             {/* Learning rate */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">학습률의 중요성</h3>
+              <h3 className="text-base font-semibold text-fg mb-2">학습률의 중요성</h3>
               <div className="grid sm:grid-cols-3 gap-3">
                 <div className="bg-red-50 dark:bg-red-950 rounded-lg p-3">
                   <div className="text-sm font-medium text-red-700 dark:text-red-400 mb-1">너무 크면</div>
@@ -794,16 +794,16 @@ export default function GradientDescentVisualizer() {
 
             {/* FAQ */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">자주 묻는 질문</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">자주 묻는 질문</h3>
               <div className="space-y-3">
                 {[
                   { q: '경사하강법은 항상 최솟값을 찾나요?', a: '볼록(convex) 함수에서는 전역 최솟값을 찾지만, 비볼록 함수에서는 지역 최솟값이나 안장점에 갇힐 수 있습니다. "진동 함수" 프리셋에서 확인해보세요.' },
                   { q: 'Adam이 항상 가장 좋은 옵티마이저인가요?', a: '실무에서 Adam은 안정적인 기본 선택이지만, 일부 연구에서는 잘 튜닝된 SGD+Momentum이 더 좋은 일반화 성능을 보입니다. 문제에 따라 달라집니다.' },
                   { q: '모멘텀은 왜 빠른가요?', a: '이전 이동 방향의 관성을 유지하므로, 좁은 골짜기에서 진동이 줄어들고 일관된 방향으로 더 빠르게 이동합니다. "긴 타원" 프리셋에서 SGD와 비교해보세요.' },
                 ].map((item, i) => (
-                  <div key={i} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white mb-1">Q. {item.q}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">{item.a}</div>
+                  <div key={i} className="bg-subtle rounded-lg p-3">
+                    <div className="text-sm font-medium text-fg mb-1">Q. {item.q}</div>
+                    <div className="text-xs text-sub">{item.a}</div>
                   </div>
                 ))}
               </div>

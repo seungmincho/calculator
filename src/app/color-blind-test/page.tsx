@@ -32,7 +32,7 @@ export default function ColorBlindTestPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ColorBlindTest />  <div className="mt-8">
     <RelatedTools />
@@ -42,17 +42,17 @@ export default function ColorBlindTestPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               색약 테스트란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               색약 테스트는 <strong>이시하라(Ishihara) 색각 검사를 통해 적록 색약·청황 색약 등 색각 이상 여부를 간편하게 확인</strong>하는 도구입니다. 점들로 이루어진 원판 속에 숨겨진 숫자나 선을 얼마나 잘 인식하는지 테스트하며, 결과를 통해 색각 유형을 분류합니다. 운전면허 취득, 특수 직업 지원, 디자인·그래픽 작업 전 색각 상태를 확인하는 데 활용할 수 있습니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               색약 테스트 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>정확한 환경:</strong> 밝은 자연광 또는 적절한 조명 아래서 테스트해야 가장 정확한 결과를 얻습니다.</li>
               <li><strong>화면 밝기:</strong> 모니터 밝기를 적정 수준(50~70%)으로 설정하고 테스트하세요.</li>
               <li><strong>스크리닝 용도:</strong> 이 테스트는 참고용이며 정확한 진단은 안과 전문의에게 받아야 합니다.</li>

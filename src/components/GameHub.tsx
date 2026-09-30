@@ -325,7 +325,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             {globalNickname.trim() ? t('myNickname') || '내 닉네임 (온라인 대전용)' : t('setNicknameFirst') || '온라인 대전을 위해 닉네임을 설정하세요'}
           </span>
           {globalNickname.trim() && (
-            <span className="ml-2 font-bold text-gray-900 dark:text-white text-sm">{globalNickname}</span>
+            <span className="ml-2 font-bold text-fg text-sm">{globalNickname}</span>
           )}
         </div>
         {isEditingNickname ? (
@@ -338,12 +338,12 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
               maxLength={20}
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && handleSaveNickname()}
-              className="w-32 px-3 py-1 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white"
+              className="w-32 px-3 py-1 text-sm bg-field border border-line-strong rounded-lg focus:outline-none focus:border-blue-500 text-fg"
             />
             <button onClick={handleSaveNickname} className="p-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
               <Check className="w-4 h-4" />
             </button>
-            <button onClick={() => setIsEditingNickname(false)} className="p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 rounded-lg transition-colors">
+            <button onClick={() => setIsEditingNickname(false)} className="p-1.5 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors">
               ✕
             </button>
           </div>
@@ -352,7 +352,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             onClick={handleStartEditNickname}
             className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
               globalNickname.trim()
-                ? 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600'
+                ? 'bg-surface hover:bg-gray-100 dark:hover:bg-gray-700 text-body border border-line'
                 : 'bg-amber-500 hover:bg-amber-600 text-white'
             }`}
           >
@@ -375,21 +375,21 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             aria-pressed={modeFilter === key}
             className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
               modeFilter === key
-                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
             }`}
           >
             <span>{label}</span>
             <span className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${
-              modeFilter === key ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+              modeFilter === key ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'bg-track text-gray-500'
             }`}>{count}</span>
-            {sub && <span className="block text-xs text-gray-400 dark:text-gray-500 mt-0.5">{sub}</span>}
+            {sub && <span className="block text-xs text-faint mt-0.5">{sub}</span>}
           </button>
         ))}
       </div>
 
       {/* 게임 그리드 + 모드 선택 패널 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+      <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
         {/* 게임 카드 그리드 */}
         <div className="p-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5">
@@ -412,7 +412,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   className={`relative p-3 rounded-xl text-left transition-all border group ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
-                      : 'border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm bg-white dark:bg-gray-800/50'
+                      : 'border-line hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm bg-white dark:bg-gray-800/50'
                   }`}
                 >
                   {/* 대기방 배지 */}
@@ -426,9 +426,9 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     {game.icon}
                   </div>
                   {/* 게임명 */}
-                  <p className="font-semibold text-gray-900 dark:text-white text-xs leading-tight mb-1.5 line-clamp-1">{name}</p>
+                  <p className="font-semibold text-fg text-xs leading-tight mb-1.5 line-clamp-1">{name}</p>
                   {/* 설명 (hover 시 표시) */}
-                  <p className="text-gray-400 dark:text-gray-500 text-xs line-clamp-1 mb-1.5 hidden sm:block">{desc}</p>
+                  <p className="text-faint text-xs line-clamp-1 mb-1.5 hidden sm:block">{desc}</p>
                   {/* 모드 배지 */}
                   <div className="flex gap-1 flex-wrap">
                     {game.modes?.includes('ai') && (
@@ -455,14 +455,14 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
 
         {/* 보드게임 모드 선택 패널 (인라인) */}
         {selectedGame && selectedGameInfo && (
-          <div id="mode-panel" className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4">
+          <div id="mode-panel" className="border-t border-line bg-gray-50 dark:bg-gray-900/50 p-4">
             <div className="max-w-2xl mx-auto space-y-4">
               {/* 선택된 게임 표시 */}
               <div className="flex items-center gap-3">
                 <div className={`w-8 h-8 ${getGameColor(selectedGameInfo, 0)} rounded-lg flex items-center justify-center text-lg`}>
                   {selectedGameInfo.icon}
                 </div>
-                <h3 className="font-bold text-gray-900 dark:text-white">{getGameName(selectedGameInfo)}</h3>
+                <h3 className="font-bold text-fg">{getGameName(selectedGameInfo)}</h3>
                 <span className="text-sm text-gray-400">· {t('playMode')}</span>
                 <button
                   onClick={() => setSelectedGame(null)}
@@ -479,12 +479,12 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   className={`p-3 rounded-xl border-2 transition-all text-left ${
                     playMode === 'computer'
                       ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300'
+                      : 'border-line hover:border-indigo-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <Monitor className={`w-4 h-4 ${playMode === 'computer' ? 'text-indigo-600' : 'text-gray-400'}`} />
-                    <span className={`font-bold text-sm ${playMode === 'computer' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                    <span className={`font-bold text-sm ${playMode === 'computer' ? 'text-indigo-600 dark:text-indigo-400' : 'text-body'}`}>
                       {t('vsComputer')}
                     </span>
                   </div>
@@ -495,12 +495,12 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   className={`p-3 rounded-xl border-2 transition-all text-left ${
                     playMode === 'online'
                       ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-emerald-300'
+                      : 'border-line hover:border-emerald-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <Users className={`w-4 h-4 ${playMode === 'online' ? 'text-emerald-600' : 'text-gray-400'}`} />
-                    <span className={`font-bold text-sm ${playMode === 'online' ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                    <span className={`font-bold text-sm ${playMode === 'online' ? 'text-emerald-600 dark:text-emerald-400' : 'text-body'}`}>
                       {t('vsOnline')}
                     </span>
                   </div>
@@ -513,7 +513,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('difficulty')}</span>
+                    <span className="text-sm font-semibold text-body">{t('difficulty')}</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {(['easy', 'normal', 'hard'] as const).map(diff => {
@@ -554,18 +554,18 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                       onChange={(e) => setRoomTitle(e.target.value)}
                       placeholder={t('roomTitlePlaceholder') || '방 제목 (선택)'}
                       maxLength={30}
-                      className="flex-1 px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                      className="flex-1 px-3 py-1.5 text-sm rounded-lg border border-line bg-field text-fg focus:outline-none focus:border-emerald-500"
                     />
                     <button
                       onClick={() => setIsPrivateRoom(false)}
-                      className={`p-1.5 rounded-lg border transition-all ${!isPrivateRoom ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'border-gray-200 dark:border-gray-700 text-gray-400'}`}
+                      className={`p-1.5 rounded-lg border transition-all ${!isPrivateRoom ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'border-line text-gray-400'}`}
                       title="공개 방"
                     >
                       <Globe className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setIsPrivateRoom(true)}
-                      className={`p-1.5 rounded-lg border transition-all ${isPrivateRoom ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-600' : 'border-gray-200 dark:border-gray-700 text-gray-400'}`}
+                      className={`p-1.5 rounded-lg border transition-all ${isPrivateRoom ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-600' : 'border-line text-gray-400'}`}
                       title="비공개 방"
                     >
                       <Lock className="w-4 h-4" />
@@ -603,7 +603,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 하단: 대기방 + 통계 */}
       <div className="grid lg:grid-cols-3 gap-4">
         {/* 대기방 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
           <div className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 bg-white/30 rounded-full flex items-center justify-center text-xs font-bold">{allWaitingRooms.length}</span>
@@ -617,7 +617,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             {allWaitingRooms.length === 0 ? (
               <div className="text-center py-6">
                 <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                <p className="text-gray-400 dark:text-gray-500 text-sm">{t('noWaitingRooms')}</p>
+                <p className="text-faint text-sm">{t('noWaitingRooms')}</p>
               </div>
             ) : (
               <div className="space-y-2 max-h-[260px] overflow-y-auto">
@@ -626,12 +626,12 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   const gameName = gameInfo ? getGameName(gameInfo) : room.gameType
                   const displayTitle = room.room_title || `${room.host_name}의 ${gameName} 방`
                   return (
-                    <div key={room.id} className="p-2.5 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-blue-300 transition-all flex items-center gap-2.5">
+                    <div key={room.id} className="p-2.5 rounded-lg border border-line hover:border-blue-300 transition-all flex items-center gap-2.5">
                       <div className={`w-8 h-8 ${gameInfo ? getGameColor(gameInfo, 0) : 'bg-gray-400'} rounded-lg flex items-center justify-center text-base flex-shrink-0`}>
                         {gameInfo?.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 dark:text-white text-sm truncate">{displayTitle}</p>
+                        <p className="font-semibold text-fg text-sm truncate">{displayTitle}</p>
                         <p className="text-xs text-gray-400 truncate">{room.host_name} · {gameName}</p>
                       </div>
                       <button
@@ -649,10 +649,10 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
         </div>
 
         {/* 나의 전적 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
+        <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
+          <div className="px-4 py-3 border-b border-line flex items-center gap-2">
             <User className="w-4 h-4 text-violet-600" />
-            <span className="font-semibold text-gray-900 dark:text-white text-sm">{t('myStats') || '나의 전적'}</span>
+            <span className="font-semibold text-fg text-sm">{t('myStats') || '나의 전적'}</span>
           </div>
           <div className="p-3">
             {isLoadingAIStats ? (
@@ -668,8 +668,8 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     <p className="text-xl font-bold text-red-600">{myTotalLosses}</p>
                     <p className="text-xs text-gray-500">{t('losses')}</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
-                    <p className="text-xl font-bold text-gray-600 dark:text-gray-300">{myTotalGames}</p>
+                  <div className="bg-subtle rounded-lg p-2">
+                    <p className="text-xl font-bold text-sub">{myTotalGames}</p>
                     <p className="text-xs text-gray-500">{t('totalGames')}</p>
                   </div>
                 </div>
@@ -678,7 +678,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     <span className="text-xs text-gray-500">{t('winRate') || '승률'}</span>
                     <span className={`text-sm font-bold ${winRate >= 50 ? 'text-green-600' : 'text-red-500'}`}>{winRate}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                  <div className="w-full bg-track rounded-full h-1.5">
                     <div className={`h-1.5 rounded-full transition-all ${winRate >= 50 ? 'bg-green-500' : 'bg-red-500'}`} style={{ width: `${winRate}%` }} />
                   </div>
                 </div>
@@ -689,7 +689,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     return (
                       <div key={stat.game_type} className="flex items-center gap-2 p-1.5 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                         <span className="text-base">{game?.icon}</span>
-                        <span className="flex-1 text-xs text-gray-700 dark:text-gray-300 truncate">{game ? getGameName(game) : stat.game_type}</span>
+                        <span className="flex-1 text-xs text-body truncate">{game ? getGameName(game) : stat.game_type}</span>
                         <span className="text-xs text-green-600">{stat.totalWins}W</span>
                         <span className="text-xs text-gray-400">-</span>
                         <span className="text-xs text-red-500">{stat.easy.losses + stat.normal.losses + stat.hard.losses}L</span>
@@ -709,10 +709,10 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
         </div>
 
         {/* 전체 통계 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
+        <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
+          <div className="px-4 py-3 border-b border-line flex items-center gap-2">
             <Globe className="w-4 h-4 text-amber-600" />
-            <span className="font-semibold text-gray-900 dark:text-white text-sm">{t('globalStats') || '전체 통계'}</span>
+            <span className="font-semibold text-fg text-sm">{t('globalStats') || '전체 통계'}</span>
           </div>
           <div className="p-3">
             {isLoadingAIStats ? (
@@ -722,22 +722,22 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                 <div className="grid grid-cols-2 gap-2">
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-2 text-center">
                     <Trophy className="w-4 h-4 mx-auto mb-1 text-amber-600" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{globalStats.totalGames.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-fg">{globalStats.totalGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('totalGamesPlayed') || '총 게임'}</p>
                   </div>
                   <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-2 text-center">
                     <Monitor className="w-4 h-4 mx-auto mb-1 text-indigo-600" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{globalStats.totalAIGames.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-fg">{globalStats.totalAIGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('aiGames') || 'AI 대전'}</p>
                   </div>
                   <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-2 text-center">
                     <Users className="w-4 h-4 mx-auto mb-1 text-emerald-600" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{globalStats.totalOnlineGames.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-fg">{globalStats.totalOnlineGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('onlineGames') || '온라인'}</p>
                   </div>
                   <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2 text-center">
                     <Gamepad2 className="w-4 h-4 mx-auto mb-1 text-blue-600" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{globalStats.uniquePlayers.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-fg">{globalStats.uniquePlayers.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('uniquePlayers') || '참여자'}</p>
                   </div>
                 </div>
@@ -762,7 +762,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                             <span className="text-sm flex-shrink-0">{item.game.icon}</span>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-0.5">
-                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{getGameName(item.game)}</span>
+                                <span className="text-xs font-medium text-body truncate">{getGameName(item.game)}</span>
                                 <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
                                   <span className="text-indigo-500">{item.aiGames}</span>/<span className="text-emerald-500">{item.onlineGames}</span>
                                 </span>
@@ -798,13 +798,13 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 방 입장 모달 */}
       {joiningRoom && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
           role="dialog"
           aria-modal="true"
           aria-labelledby="join-modal-title"
           onKeyDown={(e) => e.key === 'Escape' && handleCloseJoinModal()}
         >
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+          <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5 text-white flex items-center gap-4">
               <div className="text-3xl">{BOARD_GAMES.find(g => hrefToGameId(g.href) === joiningRoom.gameType)?.icon}</div>
               <div>
@@ -819,11 +819,11 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
               </div>
             </div>
             <div className="p-5 space-y-4">
-              <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <div className="flex items-center gap-3 p-3 bg-subtle rounded-xl">
                 <User className="w-4 h-4 text-blue-500" />
                 <div>
                   <p className="text-xs text-gray-500">{t('myNickname') || '내 닉네임'}</p>
-                  <p className="font-medium text-gray-900 dark:text-white text-sm">{globalNickname}</p>
+                  <p className="font-medium text-fg text-sm">{globalNickname}</p>
                 </div>
               </div>
               {joinError && <p className="text-sm text-red-500">{joinError}</p>}
@@ -831,7 +831,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                 <button
                   onClick={handleCloseJoinModal}
                   disabled={isJoining}
-                  className="flex-1 py-2.5 px-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all disabled:opacity-50 text-sm"
+                  className="flex-1 py-2.5 px-4 rounded-xl border-2 border-line text-body font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all disabled:opacity-50 text-sm"
                 >
                   {t('cancel') || '취소'}
                 </button>

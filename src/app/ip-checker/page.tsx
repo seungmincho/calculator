@@ -32,7 +32,7 @@ export default function IpCheckerPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><IpChecker />  <div className="mt-8">
     <RelatedTools />
@@ -42,17 +42,17 @@ export default function IpCheckerPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             내 IP 주소 확인이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             내 IP 주소 확인 도구는 현재 사용 중인 공인 IP 주소, 접속 위치(국가·도시), 인터넷 서비스 제공업체(ISP), 네트워크 정보를 한눈에 확인할 수 있는 서비스입니다. VPN 연결 여부 확인, 서버 방화벽 설정, 원격 접속 허용 등 다양한 상황에서 자신의 IP를 파악해야 할 때 유용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             IP 주소 확인 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>VPN 작동 확인:</strong> VPN 연결 전후의 IP를 비교하여 VPN이 실제로 IP를 변경했는지 확인하세요.</li>
             <li><strong>서버 화이트리스트 등록:</strong> 클라우드 서버(AWS, GCP 등)에 접속하려면 자신의 공인 IP를 방화벽 허용 목록에 추가해야 합니다.</li>
             <li><strong>공인 IP와 사설 IP 구분:</strong> 공인 IP는 인터넷에서 보이는 IP이고, 공유기 내부의 192.168.x.x는 사설 IP로 외부에서 보이지 않습니다.</li>

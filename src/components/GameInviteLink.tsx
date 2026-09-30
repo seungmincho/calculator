@@ -55,7 +55,7 @@ export default function GameInviteLink({ peerId, gameSlug, gameTitle }: GameInvi
         {t('inviteLink')}
       </p>
       <div className="flex items-center gap-2">
-        <p className="flex-1 font-mono text-xs sm:text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 rounded-lg px-3 py-2 break-all select-all border border-gray-200 dark:border-gray-700">
+        <p className="flex-1 font-mono text-xs sm:text-sm text-body bg-surface rounded-lg px-3 py-2 break-all select-all border border-line">
           {peerId ? getShareUrl() : 'Loading...'}
         </p>
         <button

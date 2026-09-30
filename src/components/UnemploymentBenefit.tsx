@@ -238,15 +238,15 @@ export default function UnemploymentBenefit() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Calculator className="w-7 h-7 text-blue-600" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={() => copyToClipboard(window.location.href, 'link')}
-          className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap flex-shrink-0 mt-1"
+          className="flex items-center gap-1.5 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap flex-shrink-0 mt-1"
           title="링크 복사"
         >
           {copiedId === 'link' ? (
@@ -271,11 +271,11 @@ export default function UnemploymentBenefit() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('form.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('form.title')}</h2>
 
             {/* 이직사유 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('form.separationReason')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -286,7 +286,7 @@ export default function UnemploymentBenefit() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       separationReason === r
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`form.reason.${r}`)}
@@ -297,7 +297,7 @@ export default function UnemploymentBenefit() {
 
             {/* 나이 그룹 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('form.ageGroup')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -308,7 +308,7 @@ export default function UnemploymentBenefit() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       ageGroup === a
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`form.age.${a}`)}
@@ -319,7 +319,7 @@ export default function UnemploymentBenefit() {
 
             {/* 고용보험 가입기간 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('form.insurancePeriod')}
               </label>
               <select
@@ -337,10 +337,10 @@ export default function UnemploymentBenefit() {
 
             {/* 평균임금 (일) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('form.avgDailyWage')}
               </label>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('form.avgDailyWageHint')}</p>
+              <p className="text-xs text-muted mb-2">{t('form.avgDailyWageHint')}</p>
               <div className="relative">
                 <input
                   type="text"
@@ -350,7 +350,7 @@ export default function UnemploymentBenefit() {
                   placeholder={t('form.wagePlaceholder')}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">
                   {t('form.wonUnit')}
                 </span>
               </div>
@@ -367,7 +367,7 @@ export default function UnemploymentBenefit() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
               >
                 {t('form.reset')}
               </button>
@@ -391,10 +391,10 @@ export default function UnemploymentBenefit() {
 
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
                   <button
                     onClick={() => copyToClipboard(resultText, 'result')}
-                    className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-1.5 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
                     {copiedId === 'result' ? (
                       <Check className="w-4 h-4 text-green-500" />
@@ -435,7 +435,7 @@ export default function UnemploymentBenefit() {
 
                 {/* 도넛 차트 */}
                 <div>
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('chart.title')}</p>
+                  <p className="text-sm font-medium text-body mb-3">{t('chart.title')}</p>
                   <ReactECharts
                     option={chartOption}
                     style={{ height: 260 }}
@@ -447,7 +447,7 @@ export default function UnemploymentBenefit() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-6 flex flex-col items-center justify-center min-h-64 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
+              <p className="text-muted text-sm">
                 {isVoluntary ? t('voluntaryBlocked') : t('placeholder')}
               </p>
             </div>
@@ -457,16 +457,16 @@ export default function UnemploymentBenefit() {
 
       {/* 지급 기간 표 */}
       <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('table.title')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('table.title')}</h2>
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-700">
-              <th className="px-4 py-2 text-left text-gray-600 dark:text-gray-300 font-medium">{t('table.ageGroup')}</th>
-              <th className="px-4 py-2 text-center text-gray-600 dark:text-gray-300 font-medium">{t('table.under1')}</th>
-              <th className="px-4 py-2 text-center text-gray-600 dark:text-gray-300 font-medium">{t('table.1to3')}</th>
-              <th className="px-4 py-2 text-center text-gray-600 dark:text-gray-300 font-medium">{t('table.3to5')}</th>
-              <th className="px-4 py-2 text-center text-gray-600 dark:text-gray-300 font-medium">{t('table.5to10')}</th>
-              <th className="px-4 py-2 text-center text-gray-600 dark:text-gray-300 font-medium">{t('table.over10')}</th>
+            <tr className="bg-subtle">
+              <th className="px-4 py-2 text-left text-sub font-medium">{t('table.ageGroup')}</th>
+              <th className="px-4 py-2 text-center text-sub font-medium">{t('table.under1')}</th>
+              <th className="px-4 py-2 text-center text-sub font-medium">{t('table.1to3')}</th>
+              <th className="px-4 py-2 text-center text-sub font-medium">{t('table.3to5')}</th>
+              <th className="px-4 py-2 text-center text-sub font-medium">{t('table.5to10')}</th>
+              <th className="px-4 py-2 text-center text-sub font-medium">{t('table.over10')}</th>
             </tr>
           </thead>
           <tbody>
@@ -476,10 +476,10 @@ export default function UnemploymentBenefit() {
                 { key: 'over50', label: t('table.ageOver50'), days: BENEFIT_DAYS[1] },
               ] as const
             ).map(({ key, label, days }) => (
-              <tr key={key} className="border-t border-gray-100 dark:border-gray-700">
-                <td className="px-4 py-3 text-gray-700 dark:text-gray-300 font-medium">{label}</td>
+              <tr key={key} className="border-t border-line">
+                <td className="px-4 py-3 text-body font-medium">{label}</td>
                 {days.map((d, i) => (
-                  <td key={i} className="px-4 py-3 text-center text-gray-900 dark:text-white font-semibold">
+                  <td key={i} className="px-4 py-3 text-center text-fg font-semibold">
                     {d}{t('result.days')}
                   </td>
                 ))}
@@ -491,7 +491,7 @@ export default function UnemploymentBenefit() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>

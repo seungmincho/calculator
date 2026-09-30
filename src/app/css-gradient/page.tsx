@@ -40,7 +40,7 @@ export default function CssGradientPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><CssGradient />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function CssGradientPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             CSS 그라디언트 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             CSS 그라디언트 생성기는 선형(linear), 방사형(radial), 원뿔형(conic) 그라데이션 CSS 코드를 직관적인 UI로 만들어주는 웹 디자인 도구입니다. 색상 조합과 방향을 마우스로 조정하면 실시간으로 미리보기와 완성된 CSS 코드가 생성되어, 복잡한 그라디언트 문법을 직접 외울 필요 없이 원하는 배경 효과를 즉시 구현할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             CSS 그라디언트 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>프리셋 활용:</strong> 인기 있는 그라디언트 조합을 프리셋으로 제공합니다. 시작점으로 프리셋을 선택한 뒤 색상을 미세 조정하면 빠르게 원하는 결과를 얻을 수 있습니다.</li>
             <li><strong>이미지 위 오버레이:</strong> 반투명 그라디언트(rgba 사용)와 배경 이미지를 콤마로 연결하면 히어로 섹션에서 텍스트 가독성을 높이는 오버레이 효과를 만들 수 있습니다.</li>
             <li><strong>원뿔형 그라디언트:</strong> conic-gradient는 파이 차트, 색상환, 로딩 스피너 등 각도 기반 디자인에 유용합니다. 순수 CSS로 도형을 그릴 때 활용해보세요.</li>

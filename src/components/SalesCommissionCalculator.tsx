@@ -204,11 +204,11 @@ export default function SalesCommissionCalculator() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -217,7 +217,7 @@ export default function SalesCommissionCalculator() {
       <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
         {/* 판매가 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label className="block text-sm font-medium text-body mb-1.5">
             <ShoppingCart className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.sellingPrice')}
           </label>
@@ -230,7 +230,7 @@ export default function SalesCommissionCalculator() {
               placeholder={t('input.sellingPricePlaceholder')}
               className={`${glassInput} px-3 py-2 pr-10`}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 dark:text-gray-500">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint">
               {t('input.unit')}
             </span>
           </div>
@@ -238,7 +238,7 @@ export default function SalesCommissionCalculator() {
 
         {/* 배송비 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label className="block text-sm font-medium text-body mb-1.5">
             <Truck className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.shippingCost')}
           </label>
@@ -251,7 +251,7 @@ export default function SalesCommissionCalculator() {
               placeholder={t('input.shippingCostPlaceholder')}
               className={`${glassInput} px-3 py-2 pr-10`}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 dark:text-gray-500">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint">
               {t('input.unit')}
             </span>
           </div>
@@ -259,7 +259,7 @@ export default function SalesCommissionCalculator() {
 
         {/* 카테고리 선택 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label className="block text-sm font-medium text-body mb-1.5">
             <Tag className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.category')}
           </label>
@@ -308,7 +308,7 @@ export default function SalesCommissionCalculator() {
                 <div className="space-y-3">
                   {/* 수수료율 */}
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-muted">
                       {t('result.commissionRate')}
                     </span>
                     <span className={`text-sm font-semibold ${colors.text}`}>
@@ -318,7 +318,7 @@ export default function SalesCommissionCalculator() {
 
                   {/* 수수료 금액 */}
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-muted">
                       {t('result.commissionAmount')}
                     </span>
                     <span className="text-sm font-semibold text-red-600 dark:text-red-400">
@@ -328,14 +328,14 @@ export default function SalesCommissionCalculator() {
                   </div>
 
                   {/* 구분선 */}
-                  <hr className="border-gray-200 dark:border-gray-700" />
+                  <hr className="border-line" />
 
                   {/* 정산 예상액 */}
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('result.settlementAmount')}
                     </span>
-                    <span className="text-lg font-bold text-gray-900 dark:text-white">
+                    <span className="text-lg font-bold text-fg">
                       {formatNumber(r.settlement)}{t('input.unit')}
                     </span>
                   </div>
@@ -347,21 +347,21 @@ export default function SalesCommissionCalculator() {
       ) : (
         <div className={`${glassCard} ${glassInset} p-8 text-center`}>
           <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-gray-400">{t('result.noInput')}</p>
+          <p className="text-muted">{t('result.noInput')}</p>
         </div>
       )}
 
       {/* 전체 카테고리 비교 테이블 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <ShoppingCart className="w-5 h-5 text-blue-600" />
           {t('compare.title')}
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">
+              <tr className="border-b border-line">
+                <th className="text-left py-3 px-2 text-muted font-medium">
                   {t('compare.categoryHeader')}
                 </th>
                 {PLATFORM_KEYS.map((pk) => (
@@ -396,7 +396,7 @@ export default function SalesCommissionCalculator() {
                       ck === category ? 'bg-blue-50 dark:bg-blue-950' : ''
                     }`}
                   >
-                    <td className="py-2.5 px-2 text-gray-900 dark:text-white font-medium">
+                    <td className="py-2.5 px-2 text-fg font-medium">
                       {t(`category.${ck}`)}
                     </td>
                     {PLATFORM_KEYS.map((pk) => {
@@ -408,7 +408,7 @@ export default function SalesCommissionCalculator() {
                           className={`text-center py-2.5 px-2 ${
                             isLowest
                               ? 'text-blue-600 dark:text-blue-400 font-bold'
-                              : 'text-gray-600 dark:text-gray-400'
+                              : 'text-sub'
                           }`}
                         >
                           {rate}%
@@ -446,7 +446,7 @@ export default function SalesCommissionCalculator() {
 
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
@@ -454,14 +454,14 @@ export default function SalesCommissionCalculator() {
         <div className="space-y-6">
           {(['commission', 'settlement', 'tips'] as const).map((section) => (
             <div key={section}>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="text-base font-semibold text-body mb-2">
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, idx) => (
                   <li
                     key={idx}
-                    className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2"
+                    className="text-sm text-sub flex items-start gap-2"
                   >
                     <span className="mt-0.5 shrink-0">&#8226;</span>
                     <span>{item}</span>

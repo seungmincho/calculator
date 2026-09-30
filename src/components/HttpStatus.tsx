@@ -400,7 +400,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     text: 'text-blue-600 dark:text-blue-400',
     bg: 'bg-blue-50 dark:bg-blue-950',
     border: 'border-blue-200 dark:border-blue-800',
-    tab: 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700',
+    tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-blue-600 text-white border border-blue-600',
   },
   '2xx': {
@@ -408,7 +408,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     text: 'text-green-600 dark:text-green-400',
     bg: 'bg-green-50 dark:bg-green-950',
     border: 'border-green-200 dark:border-green-800',
-    tab: 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700',
+    tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-green-600 text-white border border-green-600',
   },
   '3xx': {
@@ -416,7 +416,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     text: 'text-yellow-600 dark:text-yellow-400',
     bg: 'bg-yellow-50 dark:bg-yellow-950',
     border: 'border-yellow-200 dark:border-yellow-800',
-    tab: 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700',
+    tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-yellow-500 text-white border border-yellow-500',
   },
   '4xx': {
@@ -424,7 +424,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     text: 'text-orange-600 dark:text-orange-400',
     bg: 'bg-orange-50 dark:bg-orange-950',
     border: 'border-orange-200 dark:border-orange-800',
-    tab: 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700',
+    tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-orange-500 text-white border border-orange-500',
   },
   '5xx': {
@@ -432,7 +432,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     text: 'text-red-600 dark:text-red-400',
     bg: 'bg-red-50 dark:bg-red-950',
     border: 'border-red-200 dark:border-red-800',
-    tab: 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700',
+    tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-red-600 text-white border border-red-600',
   },
 }
@@ -502,8 +502,8 @@ export default function HttpStatus() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Search bar */}
@@ -514,7 +514,7 @@ export default function HttpStatus() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+          className="w-full pl-10 pr-4 py-3 border border-line-strong rounded-xl bg-surface text-fg placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
         />
       </div>
 
@@ -530,7 +530,7 @@ export default function HttpStatus() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 border border-gray-800 dark:border-gray-200'
-                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    : 'bg-surface text-sub border border-line hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 {cat.label}
@@ -553,13 +553,13 @@ export default function HttpStatus() {
       </div>
 
       {/* Result count */}
-      <p className="text-sm text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-muted">
         {t('resultCount', { count: filtered.length })}
       </p>
 
       {/* Status code cards */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 text-gray-400 dark:text-gray-500">
+        <div className="text-center py-16 text-faint">
           <Search className="w-12 h-12 mx-auto mb-3 opacity-40" />
           <p className="text-lg">{t('noResults')}</p>
         </div>
@@ -588,11 +588,11 @@ export default function HttpStatus() {
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${colors.badge}`}>
                         {getCategoryFromCode(status.code)}
                       </span>
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                      <span className="text-sm font-semibold text-fg">
                         {status.name}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                    <p className="text-sm text-sub mt-1 leading-relaxed">
                       {status.description}
                     </p>
                   </div>
@@ -628,7 +628,7 @@ export default function HttpStatus() {
                 {isExpanded && (
                   <div className={`border-t ${colors.border} ${colors.bg} px-4 py-4 space-y-4`}>
                     {/* Detail text */}
-                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p className="text-sm text-body leading-relaxed">
                       {status.detail}
                     </p>
 
@@ -640,7 +640,7 @@ export default function HttpStatus() {
                         </h4>
                         <ul className="space-y-1">
                           {status.useCases.map((uc, i) => (
-                            <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex gap-1.5">
+                            <li key={i} className="text-xs text-sub flex gap-1.5">
                               <span className={`mt-0.5 flex-shrink-0 ${colors.text}`}>•</span>
                               {uc}
                             </li>
@@ -655,7 +655,7 @@ export default function HttpStatus() {
                         </h4>
                         <ul className="space-y-1">
                           {status.causes.map((c, i) => (
-                            <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex gap-1.5">
+                            <li key={i} className="text-xs text-sub flex gap-1.5">
                               <span className={`mt-0.5 flex-shrink-0 ${colors.text}`}>•</span>
                               {c}
                             </li>
@@ -670,7 +670,7 @@ export default function HttpStatus() {
                         </h4>
                         <ul className="space-y-1">
                           {status.fixes.map((f, i) => (
-                            <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex gap-1.5">
+                            <li key={i} className="text-xs text-sub flex gap-1.5">
                               <span className={`mt-0.5 flex-shrink-0 ${colors.text}`}>•</span>
                               {f}
                             </li>
@@ -688,7 +688,7 @@ export default function HttpStatus() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6 mt-8`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}
         </h2>
@@ -696,42 +696,42 @@ export default function HttpStatus() {
           {/* 1xx */}
           <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
             <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">1xx — 정보 응답</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               요청을 받았으며 작업을 계속 진행 중임을 알립니다. 주로 WebSocket 업그레이드(101)나 사전 확인(100)에 사용됩니다.
             </p>
           </div>
           {/* 2xx */}
           <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 border border-green-200 dark:border-green-800">
             <h3 className="font-semibold text-green-700 dark:text-green-300 mb-2">2xx — 성공</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               요청이 성공적으로 처리되었습니다. GET 성공은 200, 리소스 생성은 201, 삭제 성공은 204를 사용하세요.
             </p>
           </div>
           {/* 3xx */}
           <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4 border border-yellow-200 dark:border-yellow-800">
             <h3 className="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">3xx — 리다이렉트</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               요청 완료를 위해 추가 동작이 필요합니다. 영구 이동은 301, 임시 이동은 302, 캐시 검증은 304를 사용합니다.
             </p>
           </div>
           {/* 4xx */}
           <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
             <h3 className="font-semibold text-orange-700 dark:text-orange-300 mb-2">4xx — 클라이언트 오류</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               클라이언트 요청에 문제가 있습니다. 인증 없음(401), 권한 없음(403), 리소스 없음(404), 잘못된 요청(400)을 구분하세요.
             </p>
           </div>
           {/* 5xx */}
           <div className="bg-red-50 dark:bg-red-950 rounded-xl p-4 border border-red-200 dark:border-red-800">
             <h3 className="font-semibold text-red-700 dark:text-red-300 mb-2">5xx — 서버 오류</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               서버가 요청을 처리하지 못했습니다. 서버 내부 오류(500), 게이트웨이 오류(502/504), 서비스 불가(503)를 빠르게 대응하세요.
             </p>
           </div>
           {/* Tips */}
           <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
             <h3 className="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">REST API 설계 팁</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               GET→200, POST→201, DELETE→204, 인증→401, 권한→403, 없음→404, 유효성→422, Rate Limit→429, 서버 오류→500을 정확히 구분하세요.
             </p>
           </div>

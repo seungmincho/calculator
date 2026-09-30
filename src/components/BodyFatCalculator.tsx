@@ -333,7 +333,7 @@ export default function BodyFatCalculator() {
       case 'average': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
       case 'overweight': return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
       case 'obese': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      default: return 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+      default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
     }
   }
 
@@ -349,10 +349,10 @@ export default function BodyFatCalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -388,7 +388,7 @@ export default function BodyFatCalculator() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-purple-600" />
             {t('input.title')}
           </h2>
@@ -397,7 +397,7 @@ export default function BodyFatCalculator() {
             {/* 기본 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.height')}
                 </label>
                 <input
@@ -406,12 +406,12 @@ export default function BodyFatCalculator() {
                   onChange={(e) => setHeight(e.target.value)}
                   placeholder={t('input.heightPlaceholder')}
                   step="0.1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.weight')}
                 </label>
                 <input
@@ -420,12 +420,12 @@ export default function BodyFatCalculator() {
                   onChange={(e) => setWeight(e.target.value)}
                   placeholder={t('input.weightPlaceholder')}
                   step="0.1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.age')}
                 </label>
                 <input
@@ -433,14 +433,14 @@ export default function BodyFatCalculator() {
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   placeholder={t('input.agePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* 성별 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.gender')}
               </label>
               <div className="flex space-x-4">
@@ -467,13 +467,13 @@ export default function BodyFatCalculator() {
 
             {/* 계산 공식 선택 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.formula')}
               </label>
               <select
                 value={formula}
                 onChange={(e) => setFormula(e.target.value as Formula)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               >
                 <option value="navy">{t('input.formulas.navy')}</option>
                 <option value="ymca">{t('input.formulas.ymca')}</option>
@@ -481,14 +481,14 @@ export default function BodyFatCalculator() {
             </div>
 
             {/* 둘레 측정값 */}
-            <div className="border-t border-gray-200 dark:border-gray-600 pt-6">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+            <div className="border-t border-line pt-6">
+              <h3 className="text-lg font-medium text-fg mb-4">
                 {t('input.measurements')}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.waist')}
                   </label>
                   <input
@@ -497,7 +497,7 @@ export default function BodyFatCalculator() {
                     onChange={(e) => setWaist(e.target.value)}
                     placeholder={t('input.waistPlaceholder')}
                     step="0.1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     {t('input.waistNote')}
@@ -505,7 +505,7 @@ export default function BodyFatCalculator() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.neck')}
                   </label>
                   <input
@@ -514,7 +514,7 @@ export default function BodyFatCalculator() {
                     onChange={(e) => setNeck(e.target.value)}
                     placeholder={t('input.neckPlaceholder')}
                     step="0.1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     {t('input.neckNote')}
@@ -525,7 +525,7 @@ export default function BodyFatCalculator() {
               {/* 여성의 경우 엉덩이 둘레 추가 */}
               {gender === 'female' && (
                 <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.hip')}
                   </label>
                   <input
@@ -534,7 +534,7 @@ export default function BodyFatCalculator() {
                     onChange={(e) => setHip(e.target.value)}
                     placeholder={t('input.hipPlaceholder')}
                     step="0.1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     {t('input.hipNote')}
@@ -551,7 +551,7 @@ export default function BodyFatCalculator() {
             <>
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getCategoryBgColor(result.category)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
                   <Target className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
@@ -564,36 +564,36 @@ export default function BodyFatCalculator() {
                     <div className={`text-lg font-semibold mt-2 ${getCategoryColor(result.category)}`}>
                       {t(`categories.${result.category}`)}
                     </div>
-                    <div className="text-sm text-gray-700 dark:text-gray-300 mt-1">
+                    <div className="text-sm text-body mt-1">
                       {result.healthRisk}
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-lg">
+                    <div className="text-center p-4 bg-field rounded-lg">
                       <div className="text-xl font-bold text-red-500">
                         {formatNumber(result.fatMass, 1)}kg
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">{t('result.fatMass')}</div>
+                      <div className="text-sm text-sub">{t('result.fatMass')}</div>
                     </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-lg">
+                    <div className="text-center p-4 bg-field rounded-lg">
                       <div className="text-xl font-bold text-blue-500">
                         {formatNumber(result.leanMass, 1)}kg
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">{t('result.leanMass')}</div>
+                      <div className="text-sm text-sub">{t('result.leanMass')}</div>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-300 dark:border-gray-600 pt-4">
+                  <div className="border-t border-line-strong pt-4">
                     <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-800 dark:text-gray-200">{t('result.idealRange')}</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
+                      <span className="text-body">{t('result.idealRange')}</span>
+                      <span className="font-semibold text-fg">
                         {formatNumber(result.idealRange.min, 0)} - {formatNumber(result.idealRange.max, 0)}%
                       </span>
                     </div>
                     
                     <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-800 dark:text-gray-200">{t('result.visceralFat')}</span>
+                      <span className="text-body">{t('result.visceralFat')}</span>
                       <span className={`font-semibold ${getVisceralFatColor(result.visceralFatLevel)}`}>
                         {formatNumber(result.visceralFatLevel, 0)} {t('result.visceralFatUnit')}
                       </span>
@@ -634,7 +634,7 @@ export default function BodyFatCalculator() {
 
               {/* 체지방률 분류표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h4 className="text-lg font-bold text-fg mb-4">
                   {t('classification.title')}
                 </h4>
                 <div className="space-y-3 text-sm">
@@ -645,7 +645,7 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '< 6%' : '< 10%'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.essential')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.essential')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
@@ -654,7 +654,7 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '6-13%' : '14-20%'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.athletic')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.athletic')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
@@ -663,7 +663,7 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '14-17%' : '21-24%'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.fitness')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.fitness')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
@@ -672,7 +672,7 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '18-24%' : '25-31%'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.average')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.average')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
@@ -681,7 +681,7 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '25-29%' : '32-37%'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.overweight')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.overweight')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
@@ -690,9 +690,9 @@ export default function BodyFatCalculator() {
                         ({gender === 'male' ? '30%+' : '38%+'})
                       </span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">{t('categoryLabels.obese')}</span>
+                    <span className="text-body font-medium">{t('categoryLabels.obese')}</span>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
+                  <p className="text-xs text-sub mt-3 pt-2 border-t border-line">
                     {t('classification.note')}
                   </p>
                 </div>
@@ -703,7 +703,7 @@ export default function BodyFatCalculator() {
           {!result && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
               <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 {t('placeholder')}
               </p>
             </div>
@@ -713,16 +713,16 @@ export default function BodyFatCalculator() {
 
       {/* 체지방률 가이드 */}
       <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.measurementTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.measurement.0')}</li>
               <li>• {t('guide.measurement.1')}</li>
               <li>• {t('guide.measurement.2')}</li>
@@ -731,10 +731,10 @@ export default function BodyFatCalculator() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.managementTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.management.0')}</li>
               <li>• {t('guide.management.1')}</li>
               <li>• {t('guide.management.2')}</li>
@@ -746,14 +746,14 @@ export default function BodyFatCalculator() {
 
       {/* 측정 방법 가이드 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
           <Activity className="w-6 h-6 mr-2 text-green-600" />
           {t('measurementGuide.title')}
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('measurementGuide.waist')}</h4>
-            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.waist')}</h4>
+            <div className="space-y-2 text-sm text-body">
               <p>• {t('measurementGuide.waistTips.0')}</p>
               <p>• {t('measurementGuide.waistTips.1')}</p>
               <p>• {t('measurementGuide.waistTips.2')}</p>
@@ -762,8 +762,8 @@ export default function BodyFatCalculator() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('measurementGuide.neck')}</h4>
-            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.neck')}</h4>
+            <div className="space-y-2 text-sm text-body">
               <p>• {t('measurementGuide.neckTips.0')}</p>
               <p>• {t('measurementGuide.neckTips.1')}</p>
               <p>• {t('measurementGuide.neckTips.2')}</p>
@@ -772,8 +772,8 @@ export default function BodyFatCalculator() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('measurementGuide.hip')}</h4>
-            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.hip')}</h4>
+            <div className="space-y-2 text-sm text-body">
               <p>• {t('measurementGuide.hipTips.0')}</p>
               <p>• {t('measurementGuide.hipTips.1')}</p>
               <p>• {t('measurementGuide.hipTips.2')}</p>

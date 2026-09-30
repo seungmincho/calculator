@@ -306,15 +306,15 @@ const DdayCalculator = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Calendar className="w-7 h-7 text-blue-600" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
         >
           {copied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
           {copied ? t('result.dday') === 'D-Day!' ? 'Copied!' : '복사됨!' : t('share')}
@@ -330,7 +330,7 @@ const DdayCalculator = () => {
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${
               mode === key
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             <Icon className="w-4 h-4" />
@@ -344,7 +344,7 @@ const DdayCalculator = () => {
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-600" />
               {mode === 'dday' && t('modes.dday')}
               {mode === 'diff' && t('modes.diff')}
@@ -355,7 +355,7 @@ const DdayCalculator = () => {
             {mode === 'dday' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('dday.targetDate')}
                   </label>
                   <input
@@ -366,7 +366,7 @@ const DdayCalculator = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('dday.eventName')}
                   </label>
                   <input
@@ -379,7 +379,7 @@ const DdayCalculator = () => {
                 </div>
                 <button
                   onClick={() => setTargetDate(getTodayStr())}
-                  className="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                  className="w-full px-3 py-2 text-sm bg-soft rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
                 >
                   {t('dday.setToday')}
                 </button>
@@ -390,7 +390,7 @@ const DdayCalculator = () => {
             {mode === 'diff' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('diff.startDate')}
                   </label>
                   <input
@@ -402,13 +402,13 @@ const DdayCalculator = () => {
                 </div>
                 <button
                   onClick={handleSwapDates}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-soft rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
                 >
                   <ArrowRightLeft className="w-4 h-4" />
                   {t('diff.swap')}
                 </button>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('diff.endDate')}
                   </label>
                   <input
@@ -425,7 +425,7 @@ const DdayCalculator = () => {
             {mode === 'add' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('add.baseDate')}
                   </label>
                   <input
@@ -441,7 +441,7 @@ const DdayCalculator = () => {
                     className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       addDirection === 'add'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft text-body'
                     }`}
                   >
                     <Plus className="w-4 h-4" />
@@ -452,7 +452,7 @@ const DdayCalculator = () => {
                     className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       addDirection === 'subtract'
                         ? 'bg-red-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft text-body'
                     }`}
                   >
                     <Minus className="w-4 h-4" />
@@ -460,7 +460,7 @@ const DdayCalculator = () => {
                   </button>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('add.value')}
                   </label>
                   <input
@@ -472,7 +472,7 @@ const DdayCalculator = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('add.unit')}
                   </label>
                   <select
@@ -493,7 +493,7 @@ const DdayCalculator = () => {
                       onChange={(e) => setBusinessDaysOnly(e.target.checked)}
                       className="w-4 h-4 accent-blue-600 rounded"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('add.businessDaysOnly')}</span>
+                    <span className="text-sm text-body">{t('add.businessDaysOnly')}</span>
                   </label>
                 )}
               </>
@@ -513,12 +513,12 @@ const DdayCalculator = () => {
                   <button
                     key={preset.key}
                     onClick={() => handlePreset(preset.date)}
-                    className="flex flex-col items-start px-3 py-2 bg-white dark:bg-gray-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors text-left"
+                    className="flex flex-col items-start px-3 py-2 bg-surface rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors text-left"
                   >
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-sm font-medium text-fg">
                       {t(`presets.${preset.key}`)}
                     </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-muted">
                       D-{daysLeft}
                     </span>
                   </button>
@@ -533,24 +533,24 @@ const DdayCalculator = () => {
           {/* D-Day / Diff Result */}
           {(mode === 'dday' || mode === 'diff') && ddayResult && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
 
               {/* Big D-Day Display */}
               {mode === 'dday' && (
                 <div className="text-center py-6">
                   {eventName && (
-                    <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">{eventName}</p>
+                    <p className="text-lg text-sub mb-2">{eventName}</p>
                   )}
                   <div className={`text-6xl font-bold mb-2 ${
                     ddayResult.ddayString === 'D-Day!'
                       ? 'text-red-600 dark:text-red-400'
                       : ddayResult.isFuture
                         ? 'text-blue-600 dark:text-blue-400'
-                        : 'text-gray-600 dark:text-gray-400'
+                        : 'text-sub'
                   }`}>
                     {ddayResult.ddayString}
                   </div>
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className="text-muted">
                     {formatDisplayDate(targetDate)}
                   </p>
                 </div>
@@ -602,7 +602,7 @@ const DdayCalculator = () => {
               {/* Holidays in Range */}
               {ddayResult.holidaysInRange.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-body mb-2 flex items-center gap-2">
                     <Flag className="w-4 h-4 text-red-500" />
                     {t('result.holidaysInRange')} ({ddayResult.holidaysInRange.length})
                   </h3>
@@ -615,8 +615,8 @@ const DdayCalculator = () => {
                           key={`${h.date}-${i}`}
                           className="flex items-center justify-between px-3 py-2 bg-red-50 dark:bg-red-950 rounded-lg"
                         >
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{h.name}</span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-sm font-medium text-fg">{h.name}</span>
+                          <span className="text-xs text-muted">
                             {d.getMonth() + 1}/{d.getDate()} ({dayNames[d.getDay()]})
                           </span>
                         </div>
@@ -631,17 +631,17 @@ const DdayCalculator = () => {
           {/* Add Mode Result */}
           {mode === 'add' && addResult && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('add.resultDate')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('add.resultDate')}</h2>
 
               <div className="text-center py-6">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <p className="text-sm text-muted mb-2">
                   {formatDisplayDate(baseDate)} {addDirection === 'add' ? '+' : '-'} {addValue} {t(`add.units.${addUnit}`)}
                   {businessDaysOnly ? ` (${t('add.businessDaysOnly')})` : ''}
                 </p>
                 <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                   {formatDisplayDate(addResult)}
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted">
                   {addResult}
                 </p>
               </div>
@@ -677,7 +677,7 @@ const DdayCalculator = () => {
             (mode === 'add' && !addResult)) && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 {mode === 'dday' && t('dday.targetDate')}
                 {mode === 'diff' && `${t('diff.startDate')} / ${t('diff.endDate')}`}
                 {mode === 'add' && t('add.value')}
@@ -689,16 +689,16 @@ const DdayCalculator = () => {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.usage.title')}</h3>
+            <h3 className="font-medium text-fg mb-3">{t('guide.usage.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.usage.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -706,8 +706,8 @@ const DdayCalculator = () => {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.businessDays.title')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            <h3 className="font-medium text-fg mb-3">{t('guide.businessDays.title')}</h3>
+            <p className="text-sm text-sub leading-relaxed">
               {t('guide.businessDays.description')}
             </p>
           </div>
@@ -720,14 +720,14 @@ const DdayCalculator = () => {
 // Stat Card Sub-component
 function StatCard({ label, value, suffix, icon }: { label: string; value: string; suffix: string; icon: React.ReactNode }) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+    <div className="bg-subtle rounded-lg p-4">
       <div className="flex items-center gap-2 mb-1">
         {icon}
-        <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="text-xs text-muted">{label}</span>
       </div>
       <div className="flex items-baseline gap-1">
-        <span className="text-2xl font-bold text-gray-900 dark:text-white">{value}</span>
-        <span className="text-sm text-gray-500 dark:text-gray-400">{suffix}</span>
+        <span className="text-2xl font-bold text-fg">{value}</span>
+        <span className="text-sm text-muted">{suffix}</span>
       </div>
     </div>
   )

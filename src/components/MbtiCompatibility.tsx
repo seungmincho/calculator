@@ -150,8 +150,8 @@ export default function MbtiCompatibility() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-3xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-muted mt-1">{t('description')}</p>
       </div>
 
       {view === 'selection' && (
@@ -161,7 +161,7 @@ export default function MbtiCompatibility() {
             <div className="grid sm:grid-cols-2 gap-6">
               {/* Type 1 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('myType')}
                 </label>
                 <div className="relative">
@@ -185,15 +185,15 @@ export default function MbtiCompatibility() {
                 <div className="mt-3 flex items-center gap-2">
                   <span className="text-2xl">{profile1.emoji}</span>
                   <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">{type1} - {profile1.nickname}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{profile1.shortDesc}</div>
+                    <div className="font-semibold text-fg">{type1} - {profile1.nickname}</div>
+                    <div className="text-xs text-muted">{profile1.shortDesc}</div>
                   </div>
                 </div>
               </div>
 
               {/* Type 2 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('partnerType')}
                 </label>
                 <div className="relative">
@@ -217,19 +217,19 @@ export default function MbtiCompatibility() {
                 <div className="mt-3 flex items-center gap-2">
                   <span className="text-2xl">{profile2.emoji}</span>
                   <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">{type2} - {profile2.nickname}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{profile2.shortDesc}</div>
+                    <div className="font-semibold text-fg">{type2} - {profile2.nickname}</div>
+                    <div className="text-xs text-muted">{profile2.shortDesc}</div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Quick rating preview */}
-            <div className="mt-6 flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div className="mt-6 flex items-center justify-between p-4 bg-subtle rounded-lg">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{getCompatibilityEmoji(rating)}</span>
                 <div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{t('rating')}</div>
+                  <div className="text-sm text-muted">{t('rating')}</div>
                   <div className="flex items-center gap-2">
                     <StarRating rating={rating} />
                     <span className={`text-sm font-semibold px-2 py-0.5 rounded-full ${getRatingBgLightClass(rating)}`}>
@@ -251,14 +251,14 @@ export default function MbtiCompatibility() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('matrix')}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t('matrixDesc')}</p>
+                <h2 className="text-xl font-semibold text-fg">{t('matrix')}</h2>
+                <p className="text-sm text-muted mt-0.5">{t('matrixDesc')}</p>
               </div>
             </div>
 
             {/* Legend */}
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400 mr-1">{t('legend')}:</span>
+              <span className="text-sm text-muted mr-1">{t('legend')}:</span>
               {([5, 4, 3, 2, 1] as CompatibilityRating[]).map(r => (
                 <span key={r} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white ${getRatingBgClass(r)}`}>
                   {getCompatibilityEmoji(r)} {getCompatibilityRatingLabel(r)}
@@ -277,7 +277,7 @@ export default function MbtiCompatibility() {
                     return (
                       <div key={col} className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
                         <span className="text-xs">{p.emoji}</span>
-                        <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-300 leading-tight">{col}</span>
+                        <span className="text-[10px] font-semibold text-body leading-tight">{col}</span>
                       </div>
                     )
                   })}
@@ -291,7 +291,7 @@ export default function MbtiCompatibility() {
                       {/* Row header */}
                       <div className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
                         <span className="text-xs">{rp.emoji}</span>
-                        <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-300">{row}</span>
+                        <span className="text-[10px] font-semibold text-body">{row}</span>
                       </div>
                       {/* Cells */}
                       {MBTI_TYPES.map(col => {
@@ -340,14 +340,14 @@ export default function MbtiCompatibility() {
             <div className="flex items-start justify-between mb-4">
               <button
                 onClick={handleBack}
-                className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                className="flex items-center gap-2 text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span className="text-sm">{t('backToMatrix')}</span>
               </button>
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm transition-colors"
               >
                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
                 {copied ? 'Copied!' : 'Share'}
@@ -358,8 +358,8 @@ export default function MbtiCompatibility() {
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <div className="flex flex-col items-center">
                 <span className="text-5xl mb-1">{profile1.emoji}</span>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">{type1}</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{profile1.nickname}</span>
+                <span className="text-xl font-bold text-fg">{type1}</span>
+                <span className="text-sm text-muted">{profile1.nickname}</span>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl">❤️</span>
@@ -372,28 +372,28 @@ export default function MbtiCompatibility() {
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-5xl mb-1">{profile2.emoji}</span>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">{type2}</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{profile2.nickname}</span>
+                <span className="text-xl font-bold text-fg">{type2}</span>
+                <span className="text-sm text-muted">{profile2.nickname}</span>
               </div>
             </div>
 
             {/* Summary quote */}
             <div className="mt-4 text-center">
-              <p className="text-gray-600 dark:text-gray-300 italic text-base">"{detail.summary}"</p>
+              <p className="text-sub italic text-base">"{detail.summary}"</p>
             </div>
           </div>
 
           {/* Perspective tabs */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('perspective')}:</span>
-              <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+              <span className="text-sm font-medium text-body">{t('perspective')}:</span>
+              <div className="flex rounded-lg overflow-hidden border border-line">
                 <button
                   onClick={() => setPerspective('male')}
                   className={`px-4 py-2 text-sm font-medium transition-colors ${
                     perspective === 'male'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   👨 {t('perspectiveMale')}
@@ -403,7 +403,7 @@ export default function MbtiCompatibility() {
                   className={`px-4 py-2 text-sm font-medium transition-colors ${
                     perspective === 'female'
                       ? 'bg-pink-600 text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   👩 {t('perspectiveFemale')}
@@ -417,9 +417,9 @@ export default function MbtiCompatibility() {
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💫</span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('firstImpression')}</h3>
+                  <h3 className="font-semibold text-fg text-sm">{t('firstImpression')}</h3>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm text-body leading-relaxed">
                   {perspective === 'male' ? detail.firstImpression.male : detail.firstImpression.female}
                 </p>
               </div>
@@ -428,9 +428,9 @@ export default function MbtiCompatibility() {
               <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💕</span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('datingStrengths')}</h3>
+                  <h3 className="font-semibold text-fg text-sm">{t('datingStrengths')}</h3>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm text-body leading-relaxed">
                   {perspective === 'male' ? detail.datingStrengths.male : detail.datingStrengths.female}
                 </p>
               </div>
@@ -439,9 +439,9 @@ export default function MbtiCompatibility() {
               <div className="bg-amber-50 dark:bg-amber-950 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">⚡</span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('conflictPoints')}</h3>
+                  <h3 className="font-semibold text-fg text-sm">{t('conflictPoints')}</h3>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm text-body leading-relaxed">
                   {perspective === 'male' ? detail.conflictPoints.male : detail.conflictPoints.female}
                 </p>
               </div>
@@ -450,9 +450,9 @@ export default function MbtiCompatibility() {
               <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💡</span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('advice')}</h3>
+                  <h3 className="font-semibold text-fg text-sm">{t('advice')}</h3>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm text-body leading-relaxed">
                   {perspective === 'male' ? detail.advice.male : detail.advice.female}
                 </p>
               </div>
@@ -466,24 +466,24 @@ export default function MbtiCompatibility() {
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl">{profile.emoji}</span>
                   <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">{type} - {profile.nickname}</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{profile.shortDesc}</p>
+                    <h3 className="font-bold text-fg">{type} - {profile.nickname}</h3>
+                    <p className="text-xs text-muted">{profile.shortDesc}</p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">{t('typeProfile')}</div>
+                    <div className="text-xs font-medium text-muted mb-1.5">{t('typeProfile')}</div>
                     <div className="flex flex-wrap gap-1">
                       {profile.traits.map(trait => (
-                        <span key={trait} className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
+                        <span key={trait} className="text-xs px-2 py-0.5 bg-soft text-body rounded-full">
                           {trait}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">연애 스타일</div>
-                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{profile.loveStyle}</p>
+                    <div className="text-xs font-medium text-muted mb-1">연애 스타일</div>
+                    <p className="text-xs text-body leading-relaxed">{profile.loveStyle}</p>
                   </div>
                 </div>
               </div>
@@ -493,7 +493,7 @@ export default function MbtiCompatibility() {
           {/* Mini matrix for context + back to full matrix */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('matrix')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('matrix')}</h2>
               <button
                 onClick={handleBack}
                 className="text-sm text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1"
@@ -502,11 +502,11 @@ export default function MbtiCompatibility() {
                 {t('backToMatrix')}
               </button>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('matrixDesc')}</p>
+            <p className="text-sm text-muted mb-4">{t('matrixDesc')}</p>
 
             {/* Legend */}
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400 mr-1">{t('legend')}:</span>
+              <span className="text-sm text-muted mr-1">{t('legend')}:</span>
               {([5, 4, 3, 2, 1] as CompatibilityRating[]).map(r => (
                 <span key={r} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white ${getRatingBgClass(r)}`}>
                   {getCompatibilityEmoji(r)} {getCompatibilityRatingLabel(r)}
@@ -524,7 +524,7 @@ export default function MbtiCompatibility() {
                     return (
                       <div key={col} className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
                         <span className="text-xs">{p.emoji}</span>
-                        <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-300 leading-tight">{col}</span>
+                        <span className="text-[10px] font-semibold text-body leading-tight">{col}</span>
                       </div>
                     )
                   })}
@@ -535,7 +535,7 @@ export default function MbtiCompatibility() {
                     <div key={row} className="flex items-center">
                       <div className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
                         <span className="text-xs">{rp.emoji}</span>
-                        <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-300">{row}</span>
+                        <span className="text-[10px] font-semibold text-body">{row}</span>
                       </div>
                       {MBTI_TYPES.map(col => {
                         const cellRating = compatibilityMatrix[row][col]
@@ -571,14 +571,14 @@ export default function MbtiCompatibility() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guide.title')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid sm:grid-cols-2 gap-6">
           {/* Rating levels */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.rating.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.rating.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.rating.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={i} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-pink-500 mt-0.5 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -587,10 +587,10 @@ export default function MbtiCompatibility() {
           </div>
           {/* Usage tips */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={i} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-purple-500 mt-0.5 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>

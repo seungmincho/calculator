@@ -93,8 +93,8 @@ export default function CoinFlip() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Coin + Flip Button */}
@@ -112,15 +112,15 @@ export default function CoinFlip() {
         </div>
 
         {result && !isFlipping && (
-          <p className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <p className="text-xl font-semibold text-body">
             {result === 'heads' ? t('headsLabel') : t('tailsLabel')}
           </p>
         )}
         {isFlipping && (
-          <p className="text-xl font-semibold text-gray-500 dark:text-gray-400">{t('flipping')}</p>
+          <p className="text-xl font-semibold text-muted">{t('flipping')}</p>
         )}
         {!result && !isFlipping && (
-          <p className="text-sm text-gray-400 dark:text-gray-500">{t('tapToFlip')}</p>
+          <p className="text-sm text-faint">{t('tapToFlip')}</p>
         )}
 
         <button
@@ -135,7 +135,7 @@ export default function CoinFlip() {
       {/* Best-of-N Mode */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <span className="font-semibold text-gray-900 dark:text-white">{t('bestOfMode')}</span>
+          <span className="font-semibold text-fg">{t('bestOfMode')}</span>
           <button
             onClick={() => { setBestOfMode(m => !m); reset() }}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${bestOfMode ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
@@ -149,12 +149,12 @@ export default function CoinFlip() {
         {bestOfMode && (
           <>
             <div className="flex gap-2 items-center flex-wrap">
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('rounds')}:</span>
+              <span className="text-sm text-sub">{t('rounds')}:</span>
               {[3, 5, 7].map(n => (
                 <button
                   key={n}
                   onClick={() => { setBestOfRounds(n); reset() }}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${bestOfRounds === n ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${bestOfRounds === n ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
                 >
                   {t('bestOf')} {n}
                 </button>
@@ -163,13 +163,13 @@ export default function CoinFlip() {
 
             <div className="grid grid-cols-2 gap-4 mt-2">
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('player1')} ({t('headsLabel')})</p>
+                <p className="text-xs text-muted">{t('player1')} ({t('headsLabel')})</p>
                 <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">{p1Wins}</p>
                 <p className="text-xs text-gray-400">{t('winsLabel')}</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/40 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('player2')} ({t('tailsLabel')})</p>
-                <p className="text-3xl font-bold text-gray-600 dark:text-gray-300">{p2Wins}</p>
+                <p className="text-xs text-muted">{t('player2')} ({t('tailsLabel')})</p>
+                <p className="text-3xl font-bold text-sub">{p2Wins}</p>
                 <p className="text-xs text-gray-400">{t('winsLabel')}</p>
               </div>
             </div>
@@ -191,29 +191,29 @@ export default function CoinFlip() {
       {/* Statistics */}
       {total > 0 && (
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="font-semibold text-gray-900 dark:text-white">{t('stats')}</h2>
+          <h2 className="font-semibold text-fg">{t('stats')}</h2>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{total}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('total')}</p>
+              <p className="text-2xl font-bold text-fg">{total}</p>
+              <p className="text-xs text-muted">{t('total')}</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-amber-500">{heads}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('headsLabel')}</p>
+              <p className="text-xs text-muted">{t('headsLabel')}</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-500">{tails}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('tailsLabel')}</p>
+              <p className="text-xs text-muted">{t('tailsLabel')}</p>
             </div>
           </div>
 
           {/* Ratio bar */}
           <div>
-            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex justify-between text-xs text-muted mb-1">
               <span>{t('headsLabel')} {headsRatio.toFixed(1)}%</span>
               <span>{(100 - headsRatio).toFixed(1)}% {t('tailsLabel')}</span>
             </div>
-            <div className="h-3 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <div className="h-3 rounded-full bg-track overflow-hidden">
               <div
                 className="h-full rounded-full bg-amber-400 transition-all duration-300"
                 style={{ width: `${headsRatio}%` }}
@@ -222,7 +222,7 @@ export default function CoinFlip() {
           </div>
 
           {streak.count >= 2 && (
-            <p className="text-sm text-center text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-center text-sub">
               {streak.side === 'heads' ? t('headsLabel') : t('tailsLabel')} {t('streak')} {streak.count}{t('streakUnit')}
             </p>
           )}
@@ -232,7 +232,7 @@ export default function CoinFlip() {
       {/* History */}
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-          <h2 className="font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
+          <h2 className="font-semibold text-fg">{t('history')}</h2>
           <div className="flex flex-wrap gap-2">
             {[...history].reverse().map((h, i) => (
               <span
@@ -253,7 +253,7 @@ export default function CoinFlip() {
         <div className="flex justify-end">
           <button
             onClick={reset}
-            className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm transition-colors"
+            className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm transition-colors"
           >
             <RotateCcw size={14} />
             {t('reset')}

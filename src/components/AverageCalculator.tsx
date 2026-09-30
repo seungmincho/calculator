@@ -247,11 +247,11 @@ export default function AverageCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -266,14 +266,14 @@ export default function AverageCalculator() {
                 onChange={e => setIsWeightedMode(e.target.checked)}
                 className="w-4 h-4 accent-blue-600 rounded"
               />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-body">
                 {t('weightedMode')}
               </span>
             </label>
 
             {!isWeightedMode ? (
               <>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {t('inputLabel')}
                 </label>
                 <textarea
@@ -283,11 +283,11 @@ export default function AverageCalculator() {
                   placeholder={t('inputPlaceholder')}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-y text-sm font-mono`}
                 />
-                <p className="text-xs text-gray-400 dark:text-gray-500">{t('inputHelp')}</p>
+                <p className="text-xs text-faint">{t('inputHelp')}</p>
               </>
             ) : (
               <div className="space-y-3">
-                <div className="grid grid-cols-[1fr_1fr_32px] gap-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+                <div className="grid grid-cols-[1fr_1fr_32px] gap-2 text-xs font-medium text-muted">
                   <span>{t('weightedValue')}</span>
                   <span>{t('weightedWeight')}</span>
                   <span />
@@ -332,7 +332,7 @@ export default function AverageCalculator() {
 
             <button
               onClick={handleClear}
-              className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+              className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm font-medium transition-colors"
             >
               {t('clearAll')}
             </button>
@@ -349,7 +349,7 @@ export default function AverageCalculator() {
                 className={`${glassCard} ${glassInset} p-5 space-y-2`}
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  <h3 className="text-sm font-semibold text-body">
                     {card.label}
                   </h3>
                   {card.value != null && (
@@ -366,7 +366,7 @@ export default function AverageCalculator() {
                     </button>
                   )}
                 </div>
-                <p className="text-xs text-gray-400 dark:text-gray-500">{card.desc}</p>
+                <p className="text-xs text-faint">{card.desc}</p>
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {card.error ? (
                     <span className="text-sm text-red-500 dark:text-red-400 font-normal">{card.error}</span>
@@ -383,7 +383,7 @@ export default function AverageCalculator() {
           {/* Statistics table */}
           {stats && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-indigo-500" />
                 {t('statsTitle')}
               </h2>
@@ -391,11 +391,11 @@ export default function AverageCalculator() {
                 {statRows.map(row => (
                   <div
                     key={row.key}
-                    className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                    className="flex items-center justify-between py-2 border-b border-line last:border-b-0"
                   >
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t(row.key)}</span>
+                    <span className="text-sm text-sub">{t(row.key)}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">
+                      <span className="text-sm font-medium text-fg font-mono">
                         {row.value}
                       </span>
                       <button
@@ -420,7 +420,7 @@ export default function AverageCalculator() {
           {!hasData && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-400 dark:text-gray-500 text-sm">{t('inputHelp')}</p>
+              <p className="text-faint text-sm">{t('inputHelp')}</p>
             </div>
           )}
         </div>
@@ -428,19 +428,19 @@ export default function AverageCalculator() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-6">
           {(['arithmetic', 'weighted', 'geometric', 'harmonic'] as const).map(section => (
             <div key={section} className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+              <h3 className="text-sm font-semibold text-body">
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-1">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                  <li key={i} className="text-xs text-sub flex items-start gap-1.5">
                     <span className="text-blue-400 mt-0.5">&#8226;</span>
                     {item}
                   </li>

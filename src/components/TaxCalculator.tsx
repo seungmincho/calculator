@@ -474,7 +474,7 @@ const TaxCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 연간 소득
               </label>
               <div className="relative">
@@ -485,12 +485,12 @@ const TaxCalculatorContent = () => {
                   placeholder="예: 50,000,000"
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 부양가족 수
               </label>
               <select
@@ -509,7 +509,7 @@ const TaxCalculatorContent = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   의료비
                 </label>
                 <div className="relative">
@@ -520,12 +520,12 @@ const TaxCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   교육비
                 </label>
                 <div className="relative">
@@ -536,7 +536,7 @@ const TaxCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
             </div>
@@ -547,7 +547,7 @@ const TaxCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 공급가액
               </label>
               <div className="relative">
@@ -558,12 +558,12 @@ const TaxCalculatorContent = () => {
                   placeholder="예: 10,000,000"
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 부가세율
               </label>
               <select
@@ -586,7 +586,7 @@ const TaxCalculatorContent = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   양도가액
                 </label>
                 <div className="relative">
@@ -597,12 +597,12 @@ const TaxCalculatorContent = () => {
                     placeholder="예: 800,000,000"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   취득가액
                 </label>
                 <div className="relative">
@@ -613,14 +613,14 @@ const TaxCalculatorContent = () => {
                     placeholder="예: 500,000,000"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   보유기간
                 </label>
                 <div className="relative">
@@ -637,12 +637,12 @@ const TaxCalculatorContent = () => {
                     placeholder="5"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
+                  <span className="absolute right-3 top-3 text-muted">년</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   부동산 유형
                 </label>
                 <select
@@ -672,8 +672,8 @@ const TaxCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">세금 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">세금 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             소득세, 부가가치세, 양도소득세를 정확하게 계산하세요
           </p>
         </div>
@@ -698,8 +698,8 @@ const TaxCalculatorContent = () => {
             }}
             className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === key
-                ? 'bg-white dark:bg-gray-700 text-green-600 shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-green-600'
+                ? 'bg-field text-green-600 shadow-sm'
+                : 'text-sub hover:text-green-600'
             }`}
           >
             {label}
@@ -710,7 +710,7 @@ const TaxCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-semibold mb-6 text-fg">
             {taxTypes[activeTab]} 정보 입력
           </h2>
           
@@ -749,7 +749,7 @@ const TaxCalculatorContent = () => {
 
         {/* 결과 섹션 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
             <div className="space-y-6">
@@ -793,11 +793,11 @@ const TaxCalculatorContent = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">
                     {activeTab === 'vat' ? '공급가액' : '총 소득/양도가액'}
                   </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                  <span className="font-semibold text-fg">
                     {activeTab === 'vat' 
                       ? formatNumber(result.netAmount)
                       : activeTab === 'income'
@@ -810,25 +810,25 @@ const TaxCalculatorContent = () => {
                   {activeTab === 'income' && result.breakdown && (
                     <>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">소득세</span>
+                        <span className="text-sub">소득세</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.incomeTax || 0)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
+                        <span className="text-sub">지방소득세</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.localIncomeTax || 0)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">국민연금</span>
+                        <span className="text-sub">국민연금</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.nationalPension || 0)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">건강보험</span>
+                        <span className="text-sub">건강보험</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.healthInsurance || 0)}원
                         </span>
@@ -838,7 +838,7 @@ const TaxCalculatorContent = () => {
                   
                   {activeTab === 'vat' && result.breakdown && (
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">부가가치세</span>
+                      <span className="text-sub">부가가치세</span>
                       <span className="text-blue-600 dark:text-blue-400">
                         +{formatNumber(result.breakdown.vatAmount || 0)}원
                       </span>
@@ -848,13 +848,13 @@ const TaxCalculatorContent = () => {
                   {activeTab === 'capital-gains' && result.breakdown && (
                     <>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">양도소득세</span>
+                        <span className="text-sub">양도소득세</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.capitalGainsTax || 0)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
+                        <span className="text-sub">지방소득세</span>
                         <span className="text-red-600 dark:text-red-400">
                           -{formatNumber(result.breakdown.localTax || 0)}원
                         </span>
@@ -863,8 +863,8 @@ const TaxCalculatorContent = () => {
                   )}
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-t border-gray-200 dark:border-gray-600 font-semibold">
-                  <span className="text-gray-900 dark:text-white">총 세금</span>
+                <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
+                  <span className="text-fg">총 세금</span>
                   <span className="text-red-600 dark:text-red-400">
                     {formatNumber(result.totalTax)}원
                   </span>
@@ -900,8 +900,8 @@ const TaxCalculatorContent = () => {
 
               {/* 세금 구성 도넛 차트 */}
               {Object.keys(taxChartOption).length > 0 && (
-                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                <div className="bg-subtle rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-fg mb-2">
                     {activeTab === 'income' ? '공제 항목별 비중' : activeTab === 'vat' ? '공급가액 vs 부가세' : '양도세 구성'}
                   </h3>
                   <ReactECharts option={taxChartOption} style={{ height: '280px' }} />
@@ -911,7 +911,7 @@ const TaxCalculatorContent = () => {
           ) : (
             <div className="text-center py-12">
               <Building2 className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 필요한 정보를 입력하면<br />
                 세금을 계산해드립니다.
               </p>

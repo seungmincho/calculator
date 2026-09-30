@@ -84,7 +84,7 @@ export default function UuidGeneratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <UuidGenerator />
@@ -100,17 +100,17 @@ export default function UuidGeneratorPage() {
 
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             UUID 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             UUID 생성기는 중앙 서버 없이도 전 세계적으로 고유한 식별자(Universally Unique Identifier)를 즉시 생성하는 개발자 도구입니다. v1(타임스탬프 기반), v4(완전 랜덤), v7(타임스탬프+랜덤 조합), Nil UUID를 지원하며 단일 또는 대량 생성이 가능합니다. 데이터베이스 기본키, 세션 ID, API 요청 추적 ID, 파일명 충돌 방지 등 다양한 개발 상황에서 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             UUID 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>데이터베이스 키:</strong> 자동 증가(auto-increment) 정수 대신 UUID v4나 v7을 기본키로 사용하면 분산 시스템에서 중복 없이 레코드를 생성할 수 있습니다.</li>
             <li><strong>v7 권장:</strong> 새 프로젝트에는 UUID v7을 권장합니다. v4의 랜덤성과 v1의 시간 순서 정렬 가능성을 모두 갖춰 데이터베이스 인덱스 성능이 우수합니다.</li>
             <li><strong>대량 생성:</strong> 테스트 데이터 삽입, 마이그레이션 스크립트 작성 시 한 번에 수십 개의 UUID를 생성하고 파일로 다운로드할 수 있습니다.</li>

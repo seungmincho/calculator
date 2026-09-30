@@ -90,7 +90,7 @@ export default function ScreenComparePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ScreenCompare />
@@ -101,17 +101,17 @@ export default function ScreenComparePage() {
         </div>
       </div>
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             화면 크기 비교 도구란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             화면 크기 비교 도구는 스마트폰, 태블릿, 노트북, 모니터 등 다양한 전자기기의 화면 크기를 실제 비율에 맞게 시각적으로 비교할 수 있는 무료 온라인 도구입니다. PPI(인치당 픽셀), 해상도, 화면 넓이, 화면 비율 등 상세 스펙을 한눈에 비교하고, 최대 4개 디바이스를 동시에 비교할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             화면 크기 비교 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>스마트폰 구매:</strong> iPhone과 Galaxy 모델을 직접 비교해 실제 크기 차이를 확인하세요.</li>
             <li><strong>모니터 선택:</strong> 24인치 FHD와 27인치 QHD의 실제 크기 및 PPI 차이를 비교해보세요.</li>
             <li><strong>태블릿 비교:</strong> iPad와 Galaxy Tab의 화면 크기와 비율 차이를 시각적으로 확인하세요.</li>

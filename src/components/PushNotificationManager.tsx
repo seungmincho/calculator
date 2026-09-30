@@ -130,16 +130,16 @@ export default function PushNotificationManager() {
   if (showBanner && !subscription) {
     return (
       <div className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 animate-in slide-in-from-bottom-4">
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-4`}>
+        <div className={`${glassCard} ${glassInset} border border-line p-4`}>
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
               <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 dark:text-white">
+              <p className="text-sm font-medium text-fg">
                 {t('pushNotification.title', { defaultValue: '새 도구 알림 받기' })}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {t('pushNotification.description', { defaultValue: '새로운 도구가 추가되면 알림으로 알려드려요' })}
               </p>
               <div className="flex gap-2 mt-3">
@@ -151,7 +151,7 @@ export default function PushNotificationManager() {
                 </button>
                 <button
                   onClick={dismissBanner}
-                  className="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-1.5 transition-colors"
+                  className="text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-1.5 transition-colors"
                 >
                   {t('pushNotification.later', { defaultValue: '나중에' })}
                 </button>

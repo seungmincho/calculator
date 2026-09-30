@@ -316,15 +316,15 @@ export default function ScreenRecorder() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className={`${glassCard} ${glassInset} p-8 text-center`}>
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-xl font-semibold text-fg mb-2">
             {t('notSupported')}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400">{t('notSupportedDesc')}</p>
+          <p className="text-muted">{t('notSupportedDesc')}</p>
         </div>
       </div>
     )
@@ -340,8 +340,8 @@ export default function ScreenRecorder() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Error banner */}
@@ -361,14 +361,14 @@ export default function ScreenRecorder() {
         {/* Settings panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Settings className="w-5 h-5" />
               {t('settings')}
             </h2>
 
             {/* Quality */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('quality')}
               </label>
               <select
@@ -387,7 +387,7 @@ export default function ScreenRecorder() {
 
             {/* Frame rate */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('frameRate')}
               </label>
               <select
@@ -408,7 +408,7 @@ export default function ScreenRecorder() {
 
             {/* Audio */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 <span className="flex items-center gap-1.5">
                   {config.audio !== 'none' ? (
                     <Mic className="w-4 h-4" />
@@ -438,17 +438,17 @@ export default function ScreenRecorder() {
 
             {/* Status info while recording */}
             {isActive && (
-              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 space-y-2">
+              <div className="bg-subtle rounded-lg p-4 space-y-2">
                 <div className="flex items-center gap-2">
-                  <Monitor className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <Monitor className="w-4 h-4 text-muted" />
+                  <span className="text-sm text-sub">
                     {QUALITY_MAP[config.quality].width}x{QUALITY_MAP[config.quality].height} @ {config.fps}fps
                   </span>
                 </div>
                 {config.audio !== 'none' && (
                   <div className="flex items-center gap-2">
-                    <Mic className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                    <span className="text-sm text-gray-600 dark:text-gray-300">
+                    <Mic className="w-4 h-4 text-muted" />
+                    <span className="text-sm text-sub">
                       {config.audio === 'system' && t('audioSystem')}
                       {config.audio === 'mic' && t('audioMic')}
                       {config.audio === 'both' && t('audioBoth')}
@@ -470,10 +470,10 @@ export default function ScreenRecorder() {
                   <Video className="w-12 h-12 text-red-600 dark:text-red-400" />
                 </div>
                 <div className="text-center">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  <h2 className="text-xl font-semibold text-fg mb-2">
                     {t('readyToRecord')}
                   </h2>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md">
+                  <p className="text-muted text-sm max-w-md">
                     {t('readyToRecordDesc')}
                   </p>
                 </div>
@@ -484,7 +484,7 @@ export default function ScreenRecorder() {
                 >
                   <div className="w-8 h-8 bg-white rounded-sm group-hover:scale-90 transition-transform" />
                 </button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-muted">
                   {t('startRecording')}
                 </span>
               </div>
@@ -506,13 +506,13 @@ export default function ScreenRecorder() {
                       <span className="relative inline-flex rounded-full h-4 w-4 bg-yellow-500" />
                     </span>
                   )}
-                  <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <span className="text-lg font-semibold text-fg">
                     {isRecording ? t('recording') : t('paused')}
                   </span>
                 </div>
 
                 {/* Timer */}
-                <div className="text-5xl font-mono font-bold text-gray-900 dark:text-white tracking-wider">
+                <div className="text-5xl font-mono font-bold text-fg tracking-wider">
                   {formatTime(elapsedSeconds)}
                 </div>
 
@@ -550,7 +550,7 @@ export default function ScreenRecorder() {
                   </button>
                 </div>
 
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted">
                   {isRecording ? t('pauseRecording') : t('resumeRecording')} | {t('stopRecording')}
                 </p>
               </div>
@@ -560,11 +560,11 @@ export default function ScreenRecorder() {
             {isStopped && recordedUrl && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                     <Video className="w-5 h-5" />
                     {t('preview')}
                   </h2>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-muted">
                     {t('fileSize')}: {formatFileSize(fileSize)}
                   </span>
                 </div>
@@ -580,7 +580,7 @@ export default function ScreenRecorder() {
                 </div>
 
                 {/* Duration & info */}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-sub">
                   <span>{t('recordingTime')}: {formatTime(elapsedSeconds)}</span>
                   <span>WebM (VP9)</span>
                   <span>{QUALITY_MAP[config.quality].width}x{QUALITY_MAP[config.quality].height}</span>
@@ -598,7 +598,7 @@ export default function ScreenRecorder() {
                   </button>
                   <button
                     onClick={newRecording}
-                    className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all duration-200 flex items-center gap-2"
+                    className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-all duration-200 flex items-center gap-2"
                   >
                     <RefreshCw className="w-5 h-5" />
                     {t('newRecording')}
@@ -617,11 +617,11 @@ export default function ScreenRecorder() {
           className="w-full flex items-center justify-between text-left"
           aria-expanded={guideOpen}
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
-          <span className="text-gray-400 dark:text-gray-500 text-xl">
+          <span className="text-faint text-xl">
             {guideOpen ? '−' : '+'}
           </span>
         </button>
@@ -630,7 +630,7 @@ export default function ScreenRecorder() {
           <div className="mt-6 grid md:grid-cols-3 gap-6">
             {/* How to use */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="font-semibold text-fg flex items-center gap-2">
                 <Video className="w-4 h-4 text-blue-500" />
                 {t('guide.howto.title')}
               </h3>
@@ -638,7 +638,7 @@ export default function ScreenRecorder() {
                 {(t.raw('guide.howto.items') as string[]).map((item, i) => (
                   <li
                     key={i}
-                    className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2"
+                    className="text-sm text-sub flex items-start gap-2"
                   >
                     <span className="text-blue-500 font-bold mt-0.5">{i + 1}.</span>
                     {item}
@@ -649,7 +649,7 @@ export default function ScreenRecorder() {
 
             {/* Formats */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="font-semibold text-fg flex items-center gap-2">
                 <Monitor className="w-4 h-4 text-green-500" />
                 {t('guide.formats.title')}
               </h3>
@@ -657,7 +657,7 @@ export default function ScreenRecorder() {
                 {(t.raw('guide.formats.items') as string[]).map((item, i) => (
                   <li
                     key={i}
-                    className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2"
+                    className="text-sm text-sub flex items-start gap-2"
                   >
                     <span className="text-green-500 mt-1">&#8226;</span>
                     {item}
@@ -668,7 +668,7 @@ export default function ScreenRecorder() {
 
             {/* Tips */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="font-semibold text-fg flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
                 {t('guide.tips.title')}
               </h3>
@@ -676,7 +676,7 @@ export default function ScreenRecorder() {
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li
                     key={i}
-                    className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2"
+                    className="text-sm text-sub flex items-start gap-2"
                   >
                     <span className="text-amber-500 mt-1">&#8226;</span>
                     {item}

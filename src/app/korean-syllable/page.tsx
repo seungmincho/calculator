@@ -32,7 +32,7 @@ export default function KoreanSyllablePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><KoreanSyllable />  <div className="mt-8">
     <RelatedTools />
@@ -42,17 +42,17 @@ export default function KoreanSyllablePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             한글 초성 추출기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             한글 초성 추출기는 한글 텍스트의 초성(첫소리), 중성(홀소리), 종성(받침)을 분리하거나 초성만 추출하는 도구입니다. '안녕하세요'를 입력하면 'ㅇㄴㅎㅅㅇ'와 같이 초성만 추출하거나, 자모를 완전히 분리할 수 있습니다. 초성 검색 기능 구현, 한글 정렬 알고리즘 개발, 언어학 연구 등에 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             한글 초성 추출기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>초성 검색 구현:</strong> 앱·웹에서 'ㄱㄴ'으로 '강남'을 찾는 초성 검색 기능 개발 시 초성 추출 로직을 참고하세요.</li>
             <li><strong>한글 정렬:</strong> 이름 목록을 가나다순으로 정렬할 때 초성 기준 정렬 알고리즘에 이 도구의 분리 원리를 적용할 수 있습니다.</li>
             <li><strong>자모 합치기:</strong> 분리된 자모(ㅎ, ㅏ, ㄴ)를 다시 합쳐 완성형 한글 '한'으로 조합하는 기능도 제공합니다.</li>

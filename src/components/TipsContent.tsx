@@ -86,10 +86,10 @@ export default function TipsContent() {
               <TrendingUp className="w-12 h-12 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('title')}
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-sub mb-8 max-w-3xl mx-auto">
             {t('subtitle')}{' '}
             {t('tipCount', { count: tips.length })}
           </p>
@@ -102,7 +102,7 @@ export default function TipsContent() {
               placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full pl-10 pr-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-surface text-fg"
             />
           </div>
         </div>
@@ -110,8 +110,8 @@ export default function TipsContent() {
         {/* Category Filter */}
         <div className="mb-8">
           <div className="flex items-center mb-4">
-            <Tag className="w-5 h-5 text-gray-600 dark:text-gray-400 mr-2" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('categoryFilter')}</h2>
+            <Tag className="w-5 h-5 text-sub mr-2" />
+            <h2 className="text-lg font-semibold text-fg">{t('categoryFilter')}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -119,7 +119,7 @@ export default function TipsContent() {
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === 'all'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
+                  : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line-strong'
               }`}
             >
               {t('allCategories')} ({getCategoryCount('all')})
@@ -131,7 +131,7 @@ export default function TipsContent() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category
                     ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
+                    : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line-strong'
                 }`}
               >
                 {getCategoryIcon(category)} {category} ({getCategoryCount(category)})
@@ -156,7 +156,7 @@ export default function TipsContent() {
                       <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                         #{tip.id}
                       </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-muted">
                         {tip.category}
                       </span>
                     </div>
@@ -164,7 +164,7 @@ export default function TipsContent() {
                   <Calendar className="w-4 h-4 text-gray-400" />
                 </div>
 
-                <p className="text-gray-800 dark:text-gray-200 line-clamp-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <p className="text-body line-clamp-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {tip.tip}
                 </p>
 
@@ -182,10 +182,10 @@ export default function TipsContent() {
             <div className="bg-gray-100 dark:bg-gray-800 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
               <Search className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-fg mb-2">
               {t('noResults')}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sub">
               {t('noResultsHint')}
             </p>
           </div>
@@ -193,10 +193,10 @@ export default function TipsContent() {
 
         {/* CTA Section */}
         <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl font-bold text-fg mb-4">
             {t('ctaTitle')}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
+          <p className="text-sub mb-6">
             {t('ctaDescription')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -208,13 +208,13 @@ export default function TipsContent() {
             </Link>
             <Link
               href="/loan-calculator"
-              className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-medium border border-gray-300 dark:border-gray-600 transition-colors"
+              className="bg-surface hover:bg-gray-50 dark:hover:bg-gray-700 text-fg px-6 py-3 rounded-lg font-medium border border-line-strong transition-colors"
             >
               {t('loanCalculator')}
             </Link>
             <Link
               href="/savings-calculator"
-              className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-medium border border-gray-300 dark:border-gray-600 transition-colors"
+              className="bg-surface hover:bg-gray-50 dark:hover:bg-gray-700 text-fg px-6 py-3 rounded-lg font-medium border border-line-strong transition-colors"
             >
               {t('savingsCalculator')}
             </Link>

@@ -136,7 +136,7 @@ const COST_COLORS: Record<string, string> = {
 }
 
 const COST_TEXT_COLORS: Record<string, string> = {
-  cost: 'text-gray-600 dark:text-gray-400',
+  cost: 'text-sub',
   commission: 'text-purple-600 dark:text-purple-400',
   shipping: 'text-blue-600 dark:text-blue-400',
   packaging: 'text-yellow-600 dark:text-yellow-400',
@@ -393,11 +393,11 @@ export default function MarginCalculator() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -405,13 +405,13 @@ export default function MarginCalculator() {
         <div className="lg:col-span-1 space-y-4">
           {/* 모드 토글 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+            <div className="flex rounded-lg overflow-hidden border border-line">
               <button
                 onClick={() => setMode('calculate')}
                 className={`flex-1 py-2.5 text-sm font-medium transition-colors ${
                   mode === 'calculate'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t('mode.calculate')}
@@ -421,7 +421,7 @@ export default function MarginCalculator() {
                 className={`flex-1 py-2.5 text-sm font-medium transition-colors ${
                   mode === 'reverse'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t('mode.reverse')}
@@ -461,7 +461,7 @@ export default function MarginCalculator() {
 
             {/* 플랫폼 선택 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('input.platform')}
               </label>
               <select
@@ -517,7 +517,7 @@ export default function MarginCalculator() {
 
             {/* 과세 유형 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('input.taxType')}
               </label>
               <select
@@ -585,7 +585,7 @@ export default function MarginCalculator() {
 
               {/* 비용 구성 분석 (스택 바) */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('costBreakdown.title')}
                 </h2>
                 {/* 스택 바 */}
@@ -617,16 +617,16 @@ export default function MarginCalculator() {
 
               {/* 상세 내역 테이블 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('detail.title')}
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">{t('detail.item')}</th>
-                        <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('detail.amount')}</th>
-                        <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('detail.ratio')}</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 text-muted font-medium">{t('detail.item')}</th>
+                        <th className="text-right py-2 text-muted font-medium">{t('detail.amount')}</th>
+                        <th className="text-right py-2 text-muted font-medium">{t('detail.ratio')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -679,17 +679,17 @@ export default function MarginCalculator() {
                         unit={t('input.unit')}
                         color={COST_TEXT_COLORS.tax}
                       />
-                      <tr className="border-t border-gray-200 dark:border-gray-700">
-                        <td className="py-2 font-medium text-gray-700 dark:text-gray-300">{t('detail.totalCost')}</td>
-                        <td className="py-2 text-right font-medium text-gray-900 dark:text-white">
+                      <tr className="border-t border-line">
+                        <td className="py-2 font-medium text-body">{t('detail.totalCost')}</td>
+                        <td className="py-2 text-right font-medium text-fg">
                           {formatNumber(result.totalCost)}{t('input.unit')}
                         </td>
-                        <td className="py-2 text-right font-medium text-gray-500 dark:text-gray-400">
+                        <td className="py-2 text-right font-medium text-muted">
                           {result.sellingPrice > 0 ? ((result.totalCost / result.sellingPrice) * 100).toFixed(1) : '0.0'}%
                         </td>
                       </tr>
-                      <tr className="border-t-2 border-gray-300 dark:border-gray-600">
-                        <td className="py-2 font-bold text-gray-900 dark:text-white">{t('result.netProfit')}</td>
+                      <tr className="border-t-2 border-line-strong">
+                        <td className="py-2 font-bold text-fg">{t('result.netProfit')}</td>
                         <td className={`py-2 text-right font-bold ${result.netProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
                           {formatNumber(result.netProfit)}{t('input.unit')}
                           {result.netProfit < 0 && ` (${t('result.deficit')})`}
@@ -705,7 +705,7 @@ export default function MarginCalculator() {
 
               {/* 월간 시뮬레이션 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('monthly.title')}
                 </h2>
                 <div className="mb-4">
@@ -719,20 +719,20 @@ export default function MarginCalculator() {
                 </div>
                 {monthlySimulation && (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('monthly.revenue')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">
+                    <div className="bg-subtle rounded-lg p-4 text-center">
+                      <p className="text-xs text-muted mb-1">{t('monthly.revenue')}</p>
+                      <p className="text-lg font-bold text-fg">
                         {formatNumber(monthlySimulation.revenue)}{t('input.unit')}
                       </p>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('monthly.totalCost')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">
+                    <div className="bg-subtle rounded-lg p-4 text-center">
+                      <p className="text-xs text-muted mb-1">{t('monthly.totalCost')}</p>
+                      <p className="text-lg font-bold text-fg">
                         {formatNumber(monthlySimulation.totalCost)}{t('input.unit')}
                       </p>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('monthly.netProfit')}</p>
+                    <div className="bg-subtle rounded-lg p-4 text-center">
+                      <p className="text-xs text-muted mb-1">{t('monthly.netProfit')}</p>
                       <p className={`text-lg font-bold ${monthlySimulation.netProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
                         {formatNumber(monthlySimulation.netProfit)}{t('input.unit')}
                       </p>
@@ -744,7 +744,7 @@ export default function MarginCalculator() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-400 dark:text-gray-500">
+              <p className="text-faint">
                 {mode === 'calculate' ? t('input.sellingPrice') : t('input.costPrice')}
                 {' & '}
                 {t('input.costPrice')}
@@ -756,7 +756,7 @@ export default function MarginCalculator() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
@@ -784,8 +784,8 @@ interface InputFieldProps {
 function InputField({ label, value, onChange, unit, icon }: InputFieldProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
-        {icon && <span className="text-gray-400 dark:text-gray-500">{icon}</span>}
+      <label className="block text-sm font-medium text-body mb-1.5 flex items-center gap-1.5">
+        {icon && <span className="text-faint">{icon}</span>}
         {label}
       </label>
       <div className="relative">
@@ -797,7 +797,7 @@ function InputField({ label, value, onChange, unit, icon }: InputFieldProps) {
           placeholder="0"
           className={`${glassInput} px-3 py-2 pr-10 text-sm text-right`}
         />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-faint">
           {unit}
         </span>
       </div>
@@ -816,7 +816,7 @@ interface MetricCardProps {
 
 function MetricCard({ icon, label, value, sublabel, positive, neutral }: MetricCardProps) {
   const colorClass = neutral
-    ? 'text-gray-900 dark:text-white'
+    ? 'text-fg'
     : positive
       ? 'text-green-600 dark:text-green-400'
       : 'text-red-500 dark:text-red-400'
@@ -824,14 +824,14 @@ function MetricCard({ icon, label, value, sublabel, positive, neutral }: MetricC
   return (
     <div className={`${glassCard} ${glassInset} p-4`}>
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-gray-400 dark:text-gray-500">{icon}</span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="text-faint">{icon}</span>
+        <span className="text-xs text-muted">{label}</span>
       </div>
       <p className={`text-lg font-bold ${colorClass}`}>
         {value}
       </p>
       {sublabel && (
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{sublabel}</p>
+        <p className="text-xs text-faint mt-0.5">{sublabel}</p>
       )}
     </div>
   )
@@ -848,14 +848,14 @@ interface DetailRowProps {
 
 function DetailRow({ label, amount, ratio, unit, bold, color }: DetailRowProps) {
   return (
-    <tr className="border-b border-gray-100 dark:border-gray-700">
-      <td className={`py-2 ${bold ? 'font-bold text-gray-900 dark:text-white' : color || 'text-gray-700 dark:text-gray-300'}`}>
+    <tr className="border-b border-line">
+      <td className={`py-2 ${bold ? 'font-bold text-fg' : color || 'text-body'}`}>
         {label}
       </td>
-      <td className={`py-2 text-right ${bold ? 'font-bold text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>
+      <td className={`py-2 text-right ${bold ? 'font-bold text-fg' : 'text-fg'}`}>
         {formatNumber(amount)}{unit}
       </td>
-      <td className={`py-2 text-right ${bold ? 'font-bold' : ''} text-gray-500 dark:text-gray-400`}>
+      <td className={`py-2 text-right ${bold ? 'font-bold' : ''} text-muted`}>
         {ratio.toFixed(1)}%
       </td>
     </tr>
@@ -870,10 +870,10 @@ interface GuideSectionProps {
 function GuideSection({ title, items }: GuideSectionProps) {
   return (
     <div>
-      <h3 className="font-medium text-gray-900 dark:text-white mb-2">{title}</h3>
+      <h3 className="font-medium text-fg mb-2">{title}</h3>
       <ul className="space-y-1.5">
         {items.map((item, i) => (
-          <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+          <li key={i} className="text-sm text-sub flex items-start gap-2">
             <span className="text-blue-500 mt-0.5">&#8226;</span>
             {item}
           </li>

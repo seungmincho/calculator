@@ -140,8 +140,8 @@ export default function VoronoiVisualizer() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
           <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
             {tHub('categories.geometry')}
@@ -152,7 +152,7 @@ export default function VoronoiVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying}
@@ -182,10 +182,10 @@ export default function VoronoiVisualizer() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.sites')}: <strong className="text-indigo-600 dark:text-indigo-400">{sites.length}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.sweepProgress')}: <strong className="text-yellow-600 dark:text-yellow-400">
                   {isRunning ? `${Math.round((visualRevealedRows / CANVAS_H) * 100)}%` : '100%'}
                 </strong>
@@ -198,7 +198,7 @@ export default function VoronoiVisualizer() {
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-2">
               <button onClick={handleRandom} disabled={isRunning}
                 className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40">
@@ -211,29 +211,29 @@ export default function VoronoiVisualizer() {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">{t('controls.siteCount')}</span>
+              <span className="text-xs text-muted flex-shrink-0">{t('controls.siteCount')}</span>
               <input type="range" min={3} max={30} value={siteCount}
                 onChange={e => handleSiteCountChange(Number(e.target.value))}
                 disabled={isRunning} className="flex-1 accent-indigo-600 disabled:opacity-40" />
-              <span className="text-xs text-gray-600 dark:text-gray-400 w-8 text-center tabular-nums">{siteCount}</span>
+              <span className="text-xs text-sub w-8 text-center tabular-nums">{siteCount}</span>
             </div>
 
             {!isRunning && (
-              <p className="text-xs text-gray-400 dark:text-gray-500 italic">{t('controls.clickToAdd')}</p>
+              <p className="text-xs text-faint italic">{t('controls.clickToAdd')}</p>
             )}
           </div>
         </div>
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
                     {tab.icon} {tab.label}
                   </button>
@@ -243,16 +243,16 @@ export default function VoronoiVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStep ? (
                       <div className="p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200/50 dark:border-indigo-700/30">
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{currentStep.description}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-body">{currentStep.description}</p>
+                        <p className="text-xs text-muted mt-1">
                           {t('stepsGuide.sweepAt', { y: String(currentStep.sweepY) })}
                         </p>
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.description')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.description')}</p>
                     )}
                   </div>
                 )}

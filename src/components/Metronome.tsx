@@ -196,7 +196,7 @@ export default function Metronome() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           {hasVibration && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full">
               <Smartphone className="w-3 h-3" />
@@ -204,17 +204,17 @@ export default function Metronome() {
             </span>
           )}
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main display */}
       <div className={`${glassCard} ${glassInset} p-8`}>
         {/* BPM display */}
         <div className="text-center mb-6">
-          <p className="text-7xl sm:text-8xl font-bold text-gray-900 dark:text-white tabular-nums">
+          <p className="text-7xl sm:text-8xl font-bold text-fg tabular-nums">
             {bpm}
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             BPM · {getTempoName(bpm)}
           </p>
         </div>
@@ -239,14 +239,14 @@ export default function Metronome() {
         <div className="flex items-center justify-center gap-4 mb-6">
           <button
             onClick={() => adjustBpm(-5)}
-            className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+            className="w-12 h-12 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
             aria-label="-5 BPM"
           >
             <Minus className="w-5 h-5" />
           </button>
           <button
             onClick={() => adjustBpm(-1)}
-            className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 text-sm transition-colors"
+            className="w-10 h-10 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body text-sm transition-colors"
             aria-label="-1 BPM"
           >
             -1
@@ -266,14 +266,14 @@ export default function Metronome() {
 
           <button
             onClick={() => adjustBpm(1)}
-            className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 text-sm transition-colors"
+            className="w-10 h-10 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body text-sm transition-colors"
             aria-label="+1 BPM"
           >
             +1
           </button>
           <button
             onClick={() => adjustBpm(5)}
-            className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+            className="w-12 h-12 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
             aria-label="+5 BPM"
           >
             <Plus className="w-5 h-5" />
@@ -288,7 +288,7 @@ export default function Metronome() {
             max={300}
             value={bpm}
             onChange={e => setBpm(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            className="w-full h-2 bg-track rounded-lg appearance-none cursor-pointer accent-blue-600"
           />
           <div className="flex justify-between text-xs text-gray-400 mt-1">
             <span>20</span>
@@ -302,7 +302,7 @@ export default function Metronome() {
         <div className="flex justify-center mb-6">
           <button
             onClick={handleTapTempo}
-            className="px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-colors"
+            className="px-6 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-xl font-medium transition-colors"
           >
             {t('tapTempo')} {tapBpm !== null && `(${tapBpm})`}
           </button>
@@ -311,11 +311,11 @@ export default function Metronome() {
 
       {/* Settings */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('settings')}</h3>
+        <h3 className="text-sm font-semibold text-fg">{t('settings')}</h3>
 
         {/* Time signature */}
         <div>
-          <label className="text-xs text-gray-500 dark:text-gray-400 block mb-2">{t('timeSignature')}</label>
+          <label className="text-xs text-muted block mb-2">{t('timeSignature')}</label>
           <div className="flex gap-2">
             {TIME_SIGNATURES.map(ts => (
               <button
@@ -324,7 +324,7 @@ export default function Metronome() {
                 className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                   beatsPerMeasure === ts.beats
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {ts.label}
@@ -335,7 +335,7 @@ export default function Metronome() {
 
         {/* Accent toggle */}
         <div className="flex items-center justify-between">
-          <label className="text-sm text-gray-700 dark:text-gray-300">{t('accentFirst')}</label>
+          <label className="text-sm text-body">{t('accentFirst')}</label>
           <button
             onClick={() => setAccentEnabled(!accentEnabled)}
             className={`w-11 h-6 rounded-full transition-colors relative ${
@@ -353,7 +353,7 @@ export default function Metronome() {
         {/* Vibration toggle (mobile only) */}
         {hasVibration && (
           <div className="flex items-center justify-between">
-            <label className="text-sm text-gray-700 dark:text-gray-300">{t('vibration')}</label>
+            <label className="text-sm text-body">{t('vibration')}</label>
             <button
               onClick={() => setVibrationEnabled(!vibrationEnabled)}
               className={`w-11 h-6 rounded-full transition-colors relative ${
@@ -372,7 +372,7 @@ export default function Metronome() {
 
       {/* Tempo presets */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('presets')}</h3>
+        <h3 className="text-sm font-semibold text-fg mb-3">{t('presets')}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {TEMPO_PRESETS.map(preset => (
             <button
@@ -381,7 +381,7 @@ export default function Metronome() {
               className={`py-2 px-3 rounded-lg text-sm transition-colors ${
                 bpm === preset.bpm
                   ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 ring-1 ring-blue-300 dark:ring-blue-600'
-                  : 'bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                  : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
             >
               <span className="font-medium">{t(`tempos.${preset.key}`)}</span>
@@ -398,16 +398,16 @@ export default function Metronome() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.how.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.how.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.how.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -415,7 +415,7 @@ export default function Metronome() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tempos.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tempos.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tempos.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

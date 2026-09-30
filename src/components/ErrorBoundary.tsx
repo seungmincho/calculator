@@ -28,10 +28,10 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
         <div className="min-h-[50vh] flex items-center justify-center">
           <div className={`text-center p-8 ${glassCard} ${glassInset} max-w-md`}>
             <div className="text-4xl mb-4">⚠️</div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-xl font-bold text-fg mb-2">
               문제가 발생했습니다
             </h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-muted mb-4">
               페이지를 새로고침하거나 다른 도구를 이용해 주세요.
             </p>
             <button

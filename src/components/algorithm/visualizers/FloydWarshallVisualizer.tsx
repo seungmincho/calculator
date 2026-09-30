@@ -149,8 +149,8 @@ export default function FloydWarshallVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400">
               {tHub('categories.graph')}
@@ -162,7 +162,7 @@ export default function FloydWarshallVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying}
@@ -195,7 +195,7 @@ export default function FloydWarshallVisualizer() {
 
             {/* Stats */}
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('intermediateNode')}: <strong className="text-amber-600 dark:text-amber-400">
                   {currentStep && currentStep.k >= 0 ? nodes[currentStep.k]?.label ?? '-' : '-'}
                 </strong> ({currentStep?.k ?? -1} / {Math.max(0, nodes.length - 1)})
@@ -223,16 +223,16 @@ export default function FloydWarshallVisualizer() {
                 <table className="w-full text-xs border-collapse">
                   <thead>
                     <tr>
-                      <th className="px-2 py-1 text-gray-500 dark:text-gray-400">{t('distanceMatrix')}</th>
+                      <th className="px-2 py-1 text-muted">{t('distanceMatrix')}</th>
                       {nodes.map(n => (
-                        <th key={n.id} className="px-2 py-1 text-gray-600 dark:text-gray-400 font-mono">{n.label}</th>
+                        <th key={n.id} className="px-2 py-1 text-sub font-mono">{n.label}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {nodes.map((ni, i) => (
                       <tr key={ni.id}>
-                        <td className="px-2 py-1 text-gray-600 dark:text-gray-400 font-mono font-bold">{ni.label}</td>
+                        <td className="px-2 py-1 text-sub font-mono font-bold">{ni.label}</td>
                         {nodes.map((nj, j) => {
                           const val = currentStep.dist[i][j]
                           const isUpdated = currentStep.updatedCell && currentStep.updatedCell[0] === i && currentStep.updatedCell[1] === j
@@ -248,7 +248,7 @@ export default function FloydWarshallVisualizer() {
                                 isSelected ? 'bg-blue-200 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-bold' :
                                 isKRow ? 'bg-amber-50 dark:bg-amber-900/20' :
                                 i === j ? 'bg-gray-100 dark:bg-gray-700/30' : ''
-                              } ${val === Infinity ? 'text-gray-400' : 'text-gray-700 dark:text-gray-300'}`}
+                              } ${val === Infinity ? 'text-gray-400' : 'text-body'}`}
                             >
                               {val === Infinity ? '\u221E' : val}
                             </td>
@@ -267,7 +267,7 @@ export default function FloydWarshallVisualizer() {
             )}
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={handleNewGraph}
@@ -279,7 +279,7 @@ export default function FloydWarshallVisualizer() {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs text-sub cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={allowNegative}
@@ -291,7 +291,7 @@ export default function FloydWarshallVisualizer() {
               </label>
             </div>
 
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-amber-500" /> {t('legend.k')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t('legend.updated')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-blue-500" /> {t('legend.path')}</span>
@@ -303,8 +303,8 @@ export default function FloydWarshallVisualizer() {
         {/* Right panel */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -312,7 +312,7 @@ export default function FloydWarshallVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -323,9 +323,9 @@ export default function FloydWarshallVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.description')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.description')}</p>
                     ) : (
                       <FWStepsList steps={result?.steps} currentIndex={currentStepIndex} onStepClick={setCurrentStepIndex} t={t} nodes={nodes} />
                     )}
@@ -412,12 +412,12 @@ function FWStepsList({ steps, currentIndex, onStepClick, t, nodes }: {
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
-                : isActive ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                 : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >
-            <span className="text-gray-700 dark:text-gray-300">{icon} {label}</span>
+            <span className="text-body">{icon} {label}</span>
           </div>
         )
       })}

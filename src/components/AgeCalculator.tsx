@@ -321,15 +321,15 @@ export default function AgeCalculator() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Cake className="w-5 h-5 text-pink-500" />
               {t('birthDate')}
             </h2>
@@ -337,11 +337,11 @@ export default function AgeCalculator() {
             {/* 생년월일 입력 */}
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('year')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('year')}</label>
                 <select
                   value={birthYear}
                   onChange={(e) => handleSetBirthYear(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">-- {t('year')} --</option>
                   {yearOptions.map((y) => (
@@ -351,11 +351,11 @@ export default function AgeCalculator() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('month')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">{t('month')}</label>
                   <select
                     value={birthMonth}
                     onChange={(e) => handleSetBirthMonth(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">-- {t('month')} --</option>
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
@@ -364,11 +364,11 @@ export default function AgeCalculator() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('day')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">{t('day')}</label>
                   <select
                     value={birthDay}
                     onChange={(e) => handleSetBirthDay(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">-- {t('day')} --</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
@@ -381,7 +381,7 @@ export default function AgeCalculator() {
 
             {/* 기준 날짜 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
+              <label className="block text-sm font-medium text-body mb-1 flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 {t('baseDate')}
               </label>
@@ -389,7 +389,7 @@ export default function AgeCalculator() {
                 type="date"
                 value={baseDate}
                 onChange={(e) => handleSetBaseDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <button
                 onClick={() => handleSetBaseDate(formatDateInput(new Date()))}
@@ -402,7 +402,7 @@ export default function AgeCalculator() {
             <div className="flex gap-2">
               <button
                 onClick={handleReset}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -410,7 +410,7 @@ export default function AgeCalculator() {
               <button
                 onClick={copyLink}
                 title="링크 복사"
-                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
               >
                 {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
               </button>
@@ -477,7 +477,7 @@ export default function AgeCalculator() {
 
               {/* 상세 정보 그리드 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-500" />
                   {t('result.title')}
                 </h2>
@@ -554,7 +554,7 @@ export default function AgeCalculator() {
 
               {/* 다음 생일 D-day */}
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-6 border border-amber-200 dark:border-amber-800">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
                   <Cake className="w-5 h-5 text-amber-500" />
                   {t('birthday.title')}
                 </h2>
@@ -563,21 +563,21 @@ export default function AgeCalculator() {
                     <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
                       {t('result.birthdayToday')}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <p className="text-sm text-sub mt-2">
                       {t('birthday.turningAge', { age: result.intAge })}
                     </p>
                   </div>
                 ) : (
                   <div className="flex items-center gap-6 flex-wrap">
                     <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('birthday.daysLeft')}</p>
+                      <p className="text-sm text-muted">{t('birthday.daysLeft')}</p>
                       <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
                         D-{result.daysUntilBirthday}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('birthday.nextAge')}</p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      <p className="text-sm text-muted">{t('birthday.nextAge')}</p>
+                      <p className="text-2xl font-bold text-fg">
                         {t('birthday.willTurn', { age: result.nextBirthdayAge })}
                       </p>
                     </div>
@@ -587,20 +587,20 @@ export default function AgeCalculator() {
 
               {/* 학년 정보 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-indigo-500" />
                   {t('school.title')}
                 </h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-indigo-50 dark:bg-indigo-950/30 rounded-lg p-4">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('school.entryYear')}</p>
+                      <p className="text-xs text-muted">{t('school.entryYear')}</p>
                       <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-1">
                         {result.schoolInfo.elementaryEntryYear}{t('school.yearSuffix')}
                       </p>
                     </div>
                     <div className="bg-indigo-50 dark:bg-indigo-950/30 rounded-lg p-4">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('school.currentStatus')}</p>
+                      <p className="text-xs text-muted">{t('school.currentStatus')}</p>
                       <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-1">
                         {result.schoolInfo.status === 'preschool' && t('school.status.preschool')}
                         {result.schoolInfo.status === 'elementary' && t('school.status.elementaryGrade', { grade: result.schoolInfo.grade })}
@@ -613,17 +613,17 @@ export default function AgeCalculator() {
                   </div>
 
                   {/* 같은 학년 또래 */}
-                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1.5 mb-2">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <p className="text-sm font-medium text-body flex items-center gap-1.5 mb-2">
                       <Users className="w-4 h-4" />
                       {t('school.sameGrade')}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-2 text-sm">
-                      <span className="bg-white dark:bg-gray-800 rounded px-3 py-1.5 text-gray-700 dark:text-gray-300">
+                      <span className="bg-surface rounded px-3 py-1.5 text-body">
                         {result.schoolInfo.sameGradeLateBirth}{t('school.yearSuffix')} 3~12{t('school.monthBorn')}
                       </span>
                       <span className="text-gray-400 self-center">+</span>
-                      <span className="bg-white dark:bg-gray-800 rounded px-3 py-1.5 text-gray-700 dark:text-gray-300">
+                      <span className="bg-surface rounded px-3 py-1.5 text-body">
                         {result.schoolInfo.sameGradeEarlyBirth}{t('school.yearSuffix')} 1~2{t('school.monthBorn')}{' '}
                         <span className="text-xs text-orange-500 dark:text-orange-400">({t('school.earlyBirthday')})</span>
                       </span>
@@ -640,7 +640,7 @@ export default function AgeCalculator() {
               {/* 인생 타임라인 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-emerald-500" />
                     {t('milestone.title')}
                   </h2>
@@ -658,7 +658,7 @@ export default function AgeCalculator() {
                     </button>
                     <button
                       onClick={() => setShowTimeline(!showTimeline)}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
                     >
                       {showTimeline ? t('milestone.hideTimeline') : t('milestone.showTimeline')}
                       {showTimeline ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -669,7 +669,7 @@ export default function AgeCalculator() {
                 {showTimeline && (
                   <div className="relative">
                     {/* Timeline vertical line */}
-                    <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+                    <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-track" />
 
                     <div className="space-y-0">
                       {result.milestones.map((milestone, idx) => (
@@ -689,23 +689,23 @@ export default function AgeCalculator() {
                               ? 'bg-blue-500 border-blue-500 ring-4 ring-blue-100 dark:ring-blue-900'
                               : milestone.isPast
                                 ? 'bg-green-500 border-green-500'
-                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                                : 'bg-surface border-line-strong'
                           }`} />
 
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3 flex-wrap">
-                              <span className="text-sm font-bold text-gray-900 dark:text-white">
+                              <span className="text-sm font-bold text-fg">
                                 {milestone.year}{t('school.yearSuffix')}
                               </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                              <span className="text-xs text-muted">
                                 ({t('milestone.intAgeLabel', { age: milestone.intAge })})
                               </span>
                               <span className={`text-sm font-medium ${
                                 milestone.isCurrent
                                   ? 'text-blue-700 dark:text-blue-300'
                                   : milestone.isPast
-                                    ? 'text-gray-500 dark:text-gray-400'
-                                    : 'text-gray-700 dark:text-gray-300'
+                                    ? 'text-muted'
+                                    : 'text-body'
                               }`}>
                                 {t(`milestone.${milestone.event}`)}
                               </span>
@@ -727,7 +727,7 @@ export default function AgeCalculator() {
 
                 {!showTimeline && (
                   <div className="text-center py-4">
-                    <p className="text-sm text-gray-400 dark:text-gray-500">{t('milestone.clickToShow')}</p>
+                    <p className="text-sm text-faint">{t('milestone.clickToShow')}</p>
                   </div>
                 )}
               </div>
@@ -741,10 +741,10 @@ export default function AgeCalculator() {
                 <div className="space-y-3">
                   {(['international', 'korean', 'year'] as const).map((type) => (
                     <div key={type} className="bg-white/60 dark:bg-gray-800/50 rounded-lg p-3">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-fg">
                         {t(`ageExplanation.${type}.title`)}
                       </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-sub mt-1">
                         {t(`ageExplanation.${type}.description`)}
                       </p>
                     </div>
@@ -756,7 +756,7 @@ export default function AgeCalculator() {
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="text-center py-16">
                 <Cake className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                <p className="text-gray-400 dark:text-gray-500 text-sm">
+                <p className="text-faint text-sm">
                   {t('placeholder')}
                 </p>
               </div>
@@ -767,19 +767,19 @@ export default function AgeCalculator() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(['howToUse', 'features'] as const).map((section) => (
             <div key={section} className="space-y-3">
-              <h3 className="font-medium text-gray-900 dark:text-white">
+              <h3 className="font-medium text-fg">
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                     <span>{item}</span>
                   </li>
@@ -814,12 +814,12 @@ function InfoCard({
     <div className={`rounded-lg p-3 group ${
       highlight
         ? 'bg-yellow-50 dark:bg-yellow-950/30 ring-1 ring-yellow-300 dark:ring-yellow-700'
-        : 'bg-gray-50 dark:bg-gray-700/50'
+        : 'bg-subtle'
     }`}>
-      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-xs text-muted">{label}</p>
       <div className="flex items-center justify-between mt-1">
         <p className={`text-sm font-semibold ${
-          highlight ? 'text-yellow-700 dark:text-yellow-400' : 'text-gray-900 dark:text-white'
+          highlight ? 'text-yellow-700 dark:text-yellow-400' : 'text-fg'
         }`}>
           {value} {suffix && <span className="text-xs font-normal text-gray-400">{suffix}</span>}
         </p>

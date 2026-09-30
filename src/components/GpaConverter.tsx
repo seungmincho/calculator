@@ -214,8 +214,8 @@ export default function GpaConverter() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -224,14 +224,14 @@ export default function GpaConverter() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* 만점 기준 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('scaleLabel')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('scaleLabel')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {scales.map((s) => (
                   <button
                     key={s}
                     onClick={() => setScale(s)}
                     className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                      scale === s ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      scale === s ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`scales.${scaleKey(s)}`)}
@@ -242,7 +242,7 @@ export default function GpaConverter() {
 
             {/* 입력값 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('input.label')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('input.label')}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -254,9 +254,9 @@ export default function GpaConverter() {
                   placeholder={t('input.placeholder')}
                   className={`${glassInput} px-3 py-2`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
+                <span className="text-sm text-muted whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('input.help')}</p>
+              <p className="text-xs text-faint mt-1">{t('input.help')}</p>
             </div>
 
             {/* 액션 */}
@@ -270,7 +270,7 @@ export default function GpaConverter() {
               <button
                 onClick={saveAsImage}
                 disabled={!result || result === 'invalid'}
-                className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
               </button>
@@ -282,10 +282,10 @@ export default function GpaConverter() {
         <div className="lg:col-span-2 space-y-6">
           {/* 변환 결과 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('result.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('result.title')}</h2>
 
             {!inputValue || !result ? (
-              <p className="text-gray-400 dark:text-gray-500 text-sm">{t('result.empty')}</p>
+              <p className="text-faint text-sm">{t('result.empty')}</p>
             ) : result === 'invalid' ? (
               <p className="text-red-500 text-sm">{t('result.invalidRange')}</p>
             ) : (
@@ -301,7 +301,7 @@ export default function GpaConverter() {
                       key={tile.key}
                       className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-blue-50 dark:bg-blue-950'}`}
                     >
-                      <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}>{tile.label}</p>
+                      <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-muted'}`}>{tile.label}</p>
                       <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-blue-700 dark:text-blue-300'}`}>{tile.val}</p>
                     </div>
                   ))}
@@ -309,42 +309,42 @@ export default function GpaConverter() {
 
                 <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.grade')}</span>
+                    <span className="text-sm text-sub">{t('result.grade')}</span>
                     <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-lg font-bold">{result.grade}</span>
                   </div>
                   <button
                     onClick={() => copyToClipboard(resultText, 'result')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-field border border-line rounded-lg text-sub hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                     {copiedId === 'result' ? t('copied') : t('copyResult')}
                   </button>
                 </div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('note40')}</p>
+                <p className="text-xs text-faint mt-3">{t('note40')}</p>
               </>
             )}
           </div>
 
           {/* 등급 참고표 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('table.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('table.title')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 px-3 font-medium text-gray-600 dark:text-gray-400">{t('table.grade')}</th>
-                    <th className="text-center py-2 px-3 font-medium text-gray-600 dark:text-gray-400">{t('table.gpa45')}</th>
-                    <th className="text-center py-2 px-3 font-medium text-gray-600 dark:text-gray-400">{t('table.gpa43')}</th>
-                    <th className="text-center py-2 px-3 font-medium text-gray-600 dark:text-gray-400">{t('table.percent')}</th>
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 px-3 font-medium text-sub">{t('table.grade')}</th>
+                    <th className="text-center py-2 px-3 font-medium text-sub">{t('table.gpa45')}</th>
+                    <th className="text-center py-2 px-3 font-medium text-sub">{t('table.gpa43')}</th>
+                    <th className="text-center py-2 px-3 font-medium text-sub">{t('table.percent')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {grades.map((row, idx) => (
-                    <tr key={idx} className="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                      <td className="py-2 px-3 font-semibold text-gray-900 dark:text-white">{row.grade}</td>
-                      <td className="py-2 px-3 text-center text-gray-700 dark:text-gray-300">{row.gpa45}</td>
-                      <td className="py-2 px-3 text-center text-gray-700 dark:text-gray-300">{row.gpa43}</td>
-                      <td className="py-2 px-3 text-center text-gray-700 dark:text-gray-300">{row.percent}</td>
+                    <tr key={idx} className="border-b border-line last:border-0">
+                      <td className="py-2 px-3 font-semibold text-fg">{row.grade}</td>
+                      <td className="py-2 px-3 text-center text-body">{row.gpa45}</td>
+                      <td className="py-2 px-3 text-center text-body">{row.gpa43}</td>
+                      <td className="py-2 px-3 text-center text-body">{row.percent}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -354,20 +354,20 @@ export default function GpaConverter() {
 
           {/* 관련 도구 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('crossLinks.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('crossLinks.title')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               <NextLink href="/gpa-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                 <span>
-                  <span className="block font-medium text-gray-900 dark:text-white">{t('crossLinks.calc.label')}</span>
-                  <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('crossLinks.calc.desc')}</span>
+                  <span className="block font-medium text-fg">{t('crossLinks.calc.label')}</span>
+                  <span className="block text-xs text-muted mt-0.5">{t('crossLinks.calc.desc')}</span>
                 </span>
               </NextLink>
               <NextLink href="/grade-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
                 <span>
-                  <span className="block font-medium text-gray-900 dark:text-white">{t('crossLinks.grade.label')}</span>
-                  <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('crossLinks.grade.desc')}</span>
+                  <span className="block font-medium text-fg">{t('crossLinks.grade.label')}</span>
+                  <span className="block text-xs text-muted mt-0.5">{t('crossLinks.grade.desc')}</span>
                 </span>
               </NextLink>
             </div>
@@ -377,20 +377,20 @@ export default function GpaConverter() {
 
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {guideSections.map((section, idx) => (
             <div key={idx}>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+              <h3 className="font-medium text-fg mb-2 flex items-center gap-2">
                 <GraduationCap className="w-4 h-4 text-blue-500" />
                 {section.title}
               </h3>
               <ul className="space-y-1">
                 {section.items.map((item, jdx) => (
-                  <li key={jdx} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={jdx} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>

@@ -625,15 +625,15 @@ export default function Crossword() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Controls bar */}
       <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex flex-wrap items-center gap-3">
           {/* Timer */}
-          <div className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300">
+          <div className="flex items-center gap-1.5 text-body">
             <Clock className="w-4 h-4" />
             <span className="font-mono text-sm">{formatTime(time)}</span>
           </div>
@@ -675,7 +675,7 @@ export default function Crossword() {
           {/* Reset */}
           <button
             onClick={handleReset}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('reset')}
@@ -793,11 +793,11 @@ export default function Crossword() {
                     <div
                       key={`${r}-${c}`}
                       className={`
-                        ${cellSize} relative border border-gray-300 dark:border-gray-600 cursor-pointer select-none
+                        ${cellSize} relative border border-line-strong cursor-pointer select-none
                         ${isBlack ? 'bg-gray-800 dark:bg-gray-950 cursor-default' : ''}
                         ${!isBlack && isSelected ? 'ring-2 ring-blue-500 ring-inset z-10 bg-blue-100 dark:bg-blue-800' : ''}
                         ${!isBlack && !isSelected && isInWord ? 'bg-blue-50 dark:bg-blue-900/40' : ''}
-                        ${!isBlack && !isSelected && !isInWord ? 'bg-white dark:bg-gray-800' : ''}
+                        ${!isBlack && !isSelected && !isInWord ? 'bg-surface' : ''}
                         ${isWrong ? 'bg-red-100 dark:bg-red-900/50' : ''}
                         ${isRevealed && !isSelected ? 'bg-green-50 dark:bg-green-900/30' : ''}
                       `}
@@ -807,7 +807,7 @@ export default function Crossword() {
                     >
                       {/* Cell number */}
                       {cellNum && !isBlack && (
-                        <span className="absolute top-0 left-0.5 text-[8px] sm:text-[10px] font-bold text-gray-600 dark:text-gray-400 leading-none">
+                        <span className="absolute top-0 left-0.5 text-[8px] sm:text-[10px] font-bold text-sub leading-none">
                           {cellNum}
                         </span>
                       )}
@@ -816,7 +816,7 @@ export default function Crossword() {
                         <span className={`
                           absolute inset-0 flex items-center justify-center font-semibold
                           ${fontSize}
-                          ${isWrong ? 'text-red-600 dark:text-red-400' : isRevealed ? 'text-green-700 dark:text-green-400' : 'text-gray-900 dark:text-white'}
+                          ${isWrong ? 'text-red-600 dark:text-red-400' : isRevealed ? 'text-green-700 dark:text-green-400' : 'text-fg'}
                         `}>
                           {value}
                         </span>
@@ -827,7 +827,7 @@ export default function Crossword() {
               )}
             </div>
 
-            <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            <p className="mt-3 text-xs text-muted">
               {t('hint')}
             </p>
           </div>
@@ -837,7 +837,7 @@ export default function Crossword() {
         <div className="lg:col-span-2 space-y-4">
           {/* Across clues */}
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
               <ChevronRight className="w-5 h-5" />
               {t('across')}
             </h2>
@@ -857,7 +857,7 @@ export default function Crossword() {
                       w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
                       ${isActive
                         ? 'bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                       }
                     `}
                   >
@@ -872,7 +872,7 @@ export default function Crossword() {
           {/* Down clues */}
           {puzzle.clues.down.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
                 <ChevronRight className="w-5 h-5 rotate-90" />
                 {t('down')}
               </h2>
@@ -892,7 +892,7 @@ export default function Crossword() {
                         w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
                         ${isActive
                           ? 'bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100'
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                         }
                       `}
                     >
@@ -914,11 +914,11 @@ export default function Crossword() {
 
           {/* Guide */}
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               {t('guide.title')}
             </h2>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-sm text-body">
               {(t.raw('guide.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>

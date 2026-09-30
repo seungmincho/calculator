@@ -91,7 +91,7 @@ export default function DdayCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <DdayCalculator />
@@ -106,17 +106,17 @@ export default function DdayCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             디데이(D-Day) 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             디데이 계산기는 특정 날짜까지 남은 일수를 카운트다운하거나, 두 날짜 사이의 정확한 차이를 계산하는 날짜 계산 도구입니다. 수능·시험·결혼·군전역·기념일 등 중요한 날까지의 D-Day를 확인하고, 한국 공휴일과 주말을 제외한 영업일 계산도 지원합니다. URL 공유 기능으로 계산 결과를 다른 사람과 손쉽게 나눌 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             디데이 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>수능·시험 D-Day:</strong> 시험 날짜를 입력하면 오늘부터 남은 일수를 자동으로 계산합니다. 프리셋으로 수능·토익·공무원 시험을 빠르게 등록할 수 있습니다.</li>
             <li><strong>영업일 계산:</strong> 계약서 체결 후 '10영업일 이내 지급' 같은 조건을 계산할 때 주말과 법정 공휴일이 자동으로 제외됩니다.</li>
             <li><strong>날짜 더하기/빼기:</strong> 기준일에서 일·주·월·년을 더하거나 빼서 계약 만료일, 보증 기간 종료일 등을 계산할 수 있습니다.</li>

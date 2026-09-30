@@ -526,8 +526,8 @@ export default function CpuSchedulingVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CPU 스케줄링 시각화</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-fg">CPU 스케줄링 시각화</h1>
+        <p className="text-sm text-muted mt-1">
           FCFS, SJF, SRTF, Round Robin, Priority 스케줄링 알고리즘을 간트 차트로 비교하세요
         </p>
       </div>
@@ -537,7 +537,7 @@ export default function CpuSchedulingVisualizer() {
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">프리셋</h3>
+            <h3 className="text-sm font-semibold text-body mb-2">프리셋</h3>
             <div className="grid grid-cols-2 gap-2">
               {PRESETS.map((pr, i) => (
                 <button key={i} onClick={() => loadPreset(i)}
@@ -551,7 +551,7 @@ export default function CpuSchedulingVisualizer() {
           {/* Process Table */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">프로세스</h3>
+              <h3 className="text-sm font-semibold text-body">프로세스</h3>
               <button onClick={addProcess} disabled={processes.length >= 8}
                 className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                 <Plus size={12} /> 추가
@@ -561,7 +561,7 @@ export default function CpuSchedulingVisualizer() {
               {processes.map(p => (
                 <div key={p.id} className="flex items-center gap-1.5 text-xs">
                   <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: p.color }} />
-                  <span className="w-7 font-medium text-gray-700 dark:text-gray-300 shrink-0">{p.name}</span>
+                  <span className="w-7 font-medium text-body shrink-0">{p.name}</span>
                   <div className="flex-1 grid grid-cols-3 gap-1">
                     <div>
                       <label className="text-gray-400 text-[10px]">도착</label>
@@ -597,14 +597,14 @@ export default function CpuSchedulingVisualizer() {
               <input type="checkbox" checked={compareMode}
                 onChange={e => setCompareMode(e.target.checked)}
                 className="accent-violet-600" />
-              <span className="text-gray-700 dark:text-gray-300 font-medium">비교 모드</span>
+              <span className="text-body font-medium">비교 모드</span>
             </label>
 
             {compareMode ? (
               <div className="space-y-1">
                 <p className="text-xs text-gray-500">비교할 알고리즘 선택:</p>
                 {(Object.keys(ALGO_LABELS) as Algorithm[]).map(a => (
-                  <label key={a} className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+                  <label key={a} className="flex items-center gap-2 text-xs text-body">
                     <input type="checkbox" checked={compareAlgos.includes(a)}
                       onChange={() => toggleCompareAlgo(a)}
                       className="accent-violet-600" />
@@ -645,7 +645,7 @@ export default function CpuSchedulingVisualizer() {
           {/* Gantt Chart */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">간트 차트</h3>
+              <h3 className="text-sm font-semibold text-body">간트 차트</h3>
               {results.length > 0 && (
                 <div className="flex items-center gap-2">
                   <button onClick={togglePlay}
@@ -654,17 +654,17 @@ export default function CpuSchedulingVisualizer() {
                     {isPlaying ? '일시정지' : '재생'}
                   </button>
                   <button onClick={resetAnim}
-                    className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                     <RotateCcw size={12} /> 초기화
                   </button>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                  <span className="text-xs text-muted ml-1">
                     t = {currentTime} / {maxEnd}
                   </span>
                 </div>
               )}
             </div>
             {results.length === 0 ? (
-              <div className="flex items-center justify-center h-48 text-gray-400 dark:text-gray-500 text-sm">
+              <div className="flex items-center justify-center h-48 text-faint text-sm">
                 프로세스를 설정하고 &quot;실행&quot; 버튼을 클릭하세요
               </div>
             ) : (
@@ -681,11 +681,11 @@ export default function CpuSchedulingVisualizer() {
           {/* Statistics */}
           {results.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">통계</h3>
+              <h3 className="text-sm font-semibold text-body mb-3">통계</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <tr className="border-b border-line">
                       {results.length > 1 && <th className="text-left py-2 px-2 text-gray-500">알고리즘</th>}
                       <th className="text-left py-2 px-2 text-gray-500">프로세스</th>
                       <th className="text-right py-2 px-2 text-gray-500">대기 시간</th>
@@ -699,17 +699,17 @@ export default function CpuSchedulingVisualizer() {
                         {r.stats.map((s, si) => (
                           <tr key={`${ri}-${si}`} className="border-b border-gray-100 dark:border-gray-700/50">
                             {results.length > 1 && si === 0 && (
-                              <td rowSpan={r.stats.length + 1} className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium align-top">
+                              <td rowSpan={r.stats.length + 1} className="py-1.5 px-2 text-body font-medium align-top">
                                 {r.algorithm}
                               </td>
                             )}
-                            <td className="py-1.5 px-2 text-gray-700 dark:text-gray-300">{s.name}</td>
-                            <td className="py-1.5 px-2 text-right text-gray-700 dark:text-gray-300">{s.waitingTime}</td>
-                            <td className="py-1.5 px-2 text-right text-gray-700 dark:text-gray-300">{s.turnaroundTime}</td>
-                            <td className="py-1.5 px-2 text-right text-gray-700 dark:text-gray-300">{s.responseTime}</td>
+                            <td className="py-1.5 px-2 text-body">{s.name}</td>
+                            <td className="py-1.5 px-2 text-right text-body">{s.waitingTime}</td>
+                            <td className="py-1.5 px-2 text-right text-body">{s.turnaroundTime}</td>
+                            <td className="py-1.5 px-2 text-right text-body">{s.responseTime}</td>
                           </tr>
                         ))}
-                        <tr className="border-b-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+                        <tr className="border-b-2 border-line-strong bg-subtle">
                           <td className="py-1.5 px-2 font-semibold text-violet-700 dark:text-violet-300">평균</td>
                           <td className="py-1.5 px-2 text-right font-semibold text-violet-700 dark:text-violet-300">{r.avgWaiting.toFixed(1)}</td>
                           <td className="py-1.5 px-2 text-right font-semibold text-violet-700 dark:text-violet-300">{r.avgTurnaround.toFixed(1)}</td>
@@ -729,15 +729,15 @@ export default function CpuSchedulingVisualizer() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <button onClick={() => setGuideOpen(!guideOpen)}
           className="flex items-center justify-between w-full text-left">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">CPU 스케줄링 가이드</h2>
+          <h2 className="text-lg font-semibold text-fg">CPU 스케줄링 가이드</h2>
           {guideOpen ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
         </button>
 
         {guideOpen && (
-          <div className="mt-4 space-y-6 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-6 text-sm text-body">
             {/* What is */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">CPU 스케줄링이란?</h3>
+              <h3 className="font-semibold text-fg mb-2">CPU 스케줄링이란?</h3>
               <p className="leading-relaxed">
                 CPU 스케줄링은 운영체제가 여러 프로세스 중 어떤 프로세스에 CPU를 할당할지 결정하는 핵심 기능입니다.
                 멀티프로그래밍 환경에서 CPU 이용률을 극대화하고 응답 시간을 최소화하기 위해 다양한 알고리즘이 사용됩니다.
@@ -746,16 +746,16 @@ export default function CpuSchedulingVisualizer() {
 
             {/* Algorithm Comparison */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">알고리즘 비교</h3>
+              <h3 className="font-semibold text-fg mb-2">알고리즘 비교</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs border-collapse">
                   <thead>
                     <tr className="bg-violet-50 dark:bg-violet-900/30">
-                      <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left">알고리즘</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left">선점</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left">기준</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left">장점</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left">단점</th>
+                      <th className="border border-line px-3 py-2 text-left">알고리즘</th>
+                      <th className="border border-line px-3 py-2 text-left">선점</th>
+                      <th className="border border-line px-3 py-2 text-left">기준</th>
+                      <th className="border border-line px-3 py-2 text-left">장점</th>
+                      <th className="border border-line px-3 py-2 text-left">단점</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -767,11 +767,11 @@ export default function CpuSchedulingVisualizer() {
                       ['Priority', '비선점', '우선순위', '중요 작업 우선 처리', '기아 발생 (에이징으로 해결)'],
                     ].map(([algo, preempt, criteria, pros, cons], i) => (
                       <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                        <td className="border border-gray-200 dark:border-gray-600 px-3 py-1.5 font-medium">{algo}</td>
-                        <td className="border border-gray-200 dark:border-gray-600 px-3 py-1.5">{preempt}</td>
-                        <td className="border border-gray-200 dark:border-gray-600 px-3 py-1.5">{criteria}</td>
-                        <td className="border border-gray-200 dark:border-gray-600 px-3 py-1.5">{pros}</td>
-                        <td className="border border-gray-200 dark:border-gray-600 px-3 py-1.5">{cons}</td>
+                        <td className="border border-line px-3 py-1.5 font-medium">{algo}</td>
+                        <td className="border border-line px-3 py-1.5">{preempt}</td>
+                        <td className="border border-line px-3 py-1.5">{criteria}</td>
+                        <td className="border border-line px-3 py-1.5">{pros}</td>
+                        <td className="border border-line px-3 py-1.5">{cons}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -781,30 +781,30 @@ export default function CpuSchedulingVisualizer() {
 
             {/* Key Terms */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">핵심 용어</h3>
+              <h3 className="font-semibold text-fg mb-2">핵심 용어</h3>
               <dl className="space-y-2">
                 <div>
                   <dt className="font-medium text-violet-700 dark:text-violet-300">대기 시간 (Waiting Time)</dt>
-                  <dd className="ml-4 text-gray-600 dark:text-gray-400">프로세스가 준비 큐에서 CPU를 기다린 총 시간. 반환 시간 - 실행 시간.</dd>
+                  <dd className="ml-4 text-sub">프로세스가 준비 큐에서 CPU를 기다린 총 시간. 반환 시간 - 실행 시간.</dd>
                 </div>
                 <div>
                   <dt className="font-medium text-violet-700 dark:text-violet-300">반환 시간 (Turnaround Time)</dt>
-                  <dd className="ml-4 text-gray-600 dark:text-gray-400">프로세스 제출부터 완료까지의 총 시간. 대기 시간 + 실행 시간.</dd>
+                  <dd className="ml-4 text-sub">프로세스 제출부터 완료까지의 총 시간. 대기 시간 + 실행 시간.</dd>
                 </div>
                 <div>
                   <dt className="font-medium text-violet-700 dark:text-violet-300">응답 시간 (Response Time)</dt>
-                  <dd className="ml-4 text-gray-600 dark:text-gray-400">프로세스 제출 후 최초로 CPU를 할당받기까지의 시간. 대화형 시스템에서 중요.</dd>
+                  <dd className="ml-4 text-sub">프로세스 제출 후 최초로 CPU를 할당받기까지의 시간. 대화형 시스템에서 중요.</dd>
                 </div>
                 <div>
                   <dt className="font-medium text-violet-700 dark:text-violet-300">문맥 교환 (Context Switch)</dt>
-                  <dd className="ml-4 text-gray-600 dark:text-gray-400">CPU가 다른 프로세스로 전환할 때 현재 상태를 저장하고 복원하는 과정. 오버헤드 발생.</dd>
+                  <dd className="ml-4 text-sub">CPU가 다른 프로세스로 전환할 때 현재 상태를 저장하고 복원하는 과정. 오버헤드 발생.</dd>
                 </div>
               </dl>
             </div>
 
             {/* FAQ */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">자주 묻는 질문</h3>
+              <h3 className="font-semibold text-fg mb-2">자주 묻는 질문</h3>
               <div className="space-y-3">
                 {[
                   { q: 'SJF가 최적인데 왜 실무에서 잘 안 쓰나요?', a: 'SJF는 프로세스의 실행 시간을 미리 알아야 하는데, 실제로는 예측이 어렵습니다. 과거 실행 이력을 기반으로 추정(지수 평균)하는 방법이 있지만 정확하지 않아, 실무에서는 Round Robin이나 멀티레벨 큐를 주로 사용합니다.' },
@@ -813,7 +813,7 @@ export default function CpuSchedulingVisualizer() {
                 ].map(({ q, a }, i) => (
                   <div key={i} className="bg-violet-50 dark:bg-violet-900/20 rounded-lg p-3">
                     <p className="font-medium text-violet-800 dark:text-violet-200 mb-1">Q. {q}</p>
-                    <p className="text-gray-600 dark:text-gray-400">{a}</p>
+                    <p className="text-sub">{a}</p>
                   </div>
                 ))}
               </div>

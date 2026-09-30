@@ -363,10 +363,10 @@ const QrGenerator = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -379,14 +379,14 @@ const QrGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <QrCode className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('input.title')}
               </h2>
             </div>
 
             {/* Data Type Selection */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('input.dataType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -411,7 +411,7 @@ const QrGenerator = () => {
             <div className="space-y-3 mt-4">
               {qrData.type === 'text' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.text')}
                   </label>
                   <textarea
@@ -426,7 +426,7 @@ const QrGenerator = () => {
 
               {qrData.type === 'url' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.url')}
                   </label>
                   <input
@@ -441,7 +441,7 @@ const QrGenerator = () => {
 
               {qrData.type === 'email' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.email')}
                   </label>
                   <input
@@ -456,7 +456,7 @@ const QrGenerator = () => {
 
               {qrData.type === 'phone' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('input.phone')}
                   </label>
                   <input
@@ -472,7 +472,7 @@ const QrGenerator = () => {
               {qrData.type === 'sms' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.smsPhone')}
                     </label>
                     <input
@@ -484,7 +484,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.smsMessage')} ({t('input.optional')})
                     </label>
                     <textarea
@@ -501,7 +501,7 @@ const QrGenerator = () => {
               {qrData.type === 'wifi' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.wifiSsid')}
                     </label>
                     <input
@@ -517,7 +517,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.wifiPassword')}
                     </label>
                     <input
@@ -533,7 +533,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.wifiSecurity')}
                     </label>
                     <select
@@ -562,7 +562,7 @@ const QrGenerator = () => {
                       })}
                       className="mr-2"
                     />
-                    <label htmlFor="wifiHidden" className="text-sm text-gray-700 dark:text-gray-300">
+                    <label htmlFor="wifiHidden" className="text-sm text-body">
                       {t('input.wifiHidden')}
                     </label>
                   </div>
@@ -572,7 +572,7 @@ const QrGenerator = () => {
               {qrData.type === 'vcard' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.vcardName')}
                     </label>
                     <input
@@ -588,7 +588,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.vcardPhone')} ({t('input.optional')})
                     </label>
                     <input
@@ -604,7 +604,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.vcardEmail')} ({t('input.optional')})
                     </label>
                     <input
@@ -620,7 +620,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.vcardOrganization')} ({t('input.optional')})
                     </label>
                     <input
@@ -636,7 +636,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('input.vcardUrl')} ({t('input.optional')})
                     </label>
                     <input
@@ -660,7 +660,7 @@ const QrGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <ImageIcon className="w-5 h-5 text-purple-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('logo.title')}
               </h2>
             </div>
@@ -683,13 +683,13 @@ const QrGenerator = () => {
               ) : (
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                  className="border-2 border-dashed border-line-strong rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
                 >
                   <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-sub">
                     {t('logo.upload')}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {t('logo.supportedFormats')}
                   </p>
                 </div>
@@ -706,7 +706,7 @@ const QrGenerator = () => {
               {logoPreview && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('logo.size')}: {settings.logoSize}%
                     </label>
                     <input
@@ -719,7 +719,7 @@ const QrGenerator = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('logo.opacity')}: {settings.logoOpacity}%
                     </label>
                     <input
@@ -740,7 +740,7 @@ const QrGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Palette className="w-5 h-5 text-green-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('style.title')}
               </h2>
             </div>
@@ -748,7 +748,7 @@ const QrGenerator = () => {
             <div className="space-y-4">
               {/* Size */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('style.size')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -771,32 +771,32 @@ const QrGenerator = () => {
               {/* Colors */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('style.foregroundColor')}
                   </label>
                   <input
                     type="color"
                     value={settings.foregroundColor}
                     onChange={(e) => setSettings({ ...settings, foregroundColor: e.target.value })}
-                    className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                    className="w-full h-10 rounded border border-line-strong"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('style.backgroundColor')}
                   </label>
                   <input
                     type="color"
                     value={settings.backgroundColor}
                     onChange={(e) => setSettings({ ...settings, backgroundColor: e.target.value })}
-                    className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                    className="w-full h-10 rounded border border-line-strong"
                   />
                 </div>
               </div>
 
               {/* Error Correction Level */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('style.errorCorrection')}
                 </label>
                 <select
@@ -809,7 +809,7 @@ const QrGenerator = () => {
                   <option value="Q">{t('style.errorLevels.high')} (Q)</option>
                   <option value="H">{t('style.errorLevels.highest')} (H)</option>
                 </select>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {t('style.errorCorrectionHint')}
                 </p>
               </div>
@@ -821,7 +821,7 @@ const QrGenerator = () => {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result.title')}
               </h2>
               {qrCode && (
@@ -861,14 +861,14 @@ const QrGenerator = () => {
                     className="mx-auto shadow-lg rounded-lg"
                     style={{ maxWidth: `${settings.size}px` }}
                   />
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+                  <p className="text-sm text-sub mt-4">
                     {t('result.scanHint')}
                   </p>
                 </div>
               ) : (
                 <div className="text-center py-12">
                   <QrCode className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className="text-muted">
                     {t('placeholder')}
                   </p>
                 </div>

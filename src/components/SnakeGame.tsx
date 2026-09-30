@@ -740,24 +740,24 @@ export default function SnakeGame() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Gamepad2 className="w-7 h-7" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Left panel: Settings / Score */}
         <div className="lg:col-span-1 space-y-4">
           {/* Score panel */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
+          <div className="bg-surface rounded-xl shadow-lg p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('score')}</span>
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">{score}</span>
+              <span className="text-sm font-medium text-sub">{t('score')}</span>
+              <span className="text-2xl font-bold text-fg">{score}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
+              <span className="text-sm font-medium text-sub flex items-center gap-1">
                 <Trophy className="w-4 h-4 text-yellow-500" />
                 {t('highScore')}
               </span>
@@ -765,8 +765,8 @@ export default function SnakeGame() {
             </div>
             {gameState === 'playing' && (
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('speed')}</span>
-                <span className="text-sm font-mono text-gray-900 dark:text-white">{getSpeedLabel()}</span>
+                <span className="text-sm font-medium text-sub">{t('speed')}</span>
+                <span className="text-sm font-mono text-fg">{getSpeedLabel()}</span>
               </div>
             )}
           </div>
@@ -775,8 +775,8 @@ export default function SnakeGame() {
           {gameState === 'menu' && (
             <>
               {/* Mode */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('mode')}</h3>
+              <div className="bg-surface rounded-xl shadow-lg p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-body">{t('mode')}</h3>
                 {(['classic', 'infinite', 'obstacles'] as GameMode[]).map(m => (
                   <button
                     key={m}
@@ -784,7 +784,7 @@ export default function SnakeGame() {
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                       mode === m
                         ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 font-semibold'
-                        : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                        : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                     }`}
                   >
                     <div className="font-medium">{t(`modes.${m}`)}</div>
@@ -794,8 +794,8 @@ export default function SnakeGame() {
               </div>
 
               {/* Difficulty */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('difficulty')}</h3>
+              <div className="bg-surface rounded-xl shadow-lg p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-body">{t('difficulty')}</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {(['slow', 'normal', 'fast', 'accelerating'] as Difficulty[]).map(d => (
                     <button
@@ -804,7 +804,7 @@ export default function SnakeGame() {
                       className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         difficulty === d
                           ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
-                          : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                          : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >
                       {t(`difficulties.${d}`)}
@@ -814,8 +814,8 @@ export default function SnakeGame() {
               </div>
 
               {/* Skin */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('skin')}</h3>
+              <div className="bg-surface rounded-xl shadow-lg p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-body">{t('skin')}</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {(['green', 'blue', 'purple', 'rainbow'] as SnakeSkin[]).map(s => (
                     <button
@@ -824,7 +824,7 @@ export default function SnakeGame() {
                       className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         skin === s
                           ? 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
-                          : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                          : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >
                       <span
@@ -844,7 +844,7 @@ export default function SnakeGame() {
             <div className="flex gap-2">
               <button
                 onClick={togglePause}
-                className="flex-1 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm font-medium transition-colors"
               >
                 {gameState === 'paused' ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 {gameState === 'paused' ? t('resume') : t('pause')}
@@ -856,7 +856,7 @@ export default function SnakeGame() {
                   setGameState('menu')
                   gameStateRef.current = 'menu'
                 }}
-                className="flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm transition-colors"
+                className="flex items-center justify-center bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
@@ -865,9 +865,9 @@ export default function SnakeGame() {
 
           {/* Food legend */}
           {gameState !== 'menu' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-2">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">{t('foods.title')}</h3>
-              <div className="space-y-1.5 text-xs text-gray-600 dark:text-gray-400">
+            <div className="bg-surface rounded-xl shadow-lg p-4 space-y-2">
+              <h3 className="text-xs font-semibold text-muted uppercase">{t('foods.title')}</h3>
+              <div className="space-y-1.5 text-xs text-sub">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full" style={{ background: FOOD_COLORS.normal }} />
                   {t('foods.normal')} (+1)
@@ -889,7 +889,7 @@ export default function SnakeGame() {
         <div className="lg:col-span-3">
           <div
             ref={containerRef}
-            className="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-4"
+            className="relative bg-surface rounded-xl shadow-lg p-3 sm:p-4"
           >
             {/* Canvas */}
             <div className="flex justify-center">
@@ -898,7 +898,7 @@ export default function SnakeGame() {
                 className={`rounded-lg border-2 ${
                   deathFlash
                     ? 'border-red-500'
-                    : 'border-gray-200 dark:border-gray-700'
+                    : 'border-line'
                 } transition-colors touch-none`}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
@@ -907,7 +907,7 @@ export default function SnakeGame() {
 
             {/* Menu overlay */}
             {gameState === 'menu' && (
-              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/30 backdrop-blur-sm">
+              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/30">
                 <div className="text-center space-y-4">
                   <div className="text-4xl sm:text-5xl">&#x1F40D;</div>
                   <h2 className="text-2xl font-bold text-white">{t('title')}</h2>
@@ -924,7 +924,7 @@ export default function SnakeGame() {
 
             {/* Paused overlay */}
             {gameState === 'paused' && (
-              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 backdrop-blur-sm">
+              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40">
                 <div className="text-center space-y-3">
                   <Pause className="w-16 h-16 text-white mx-auto" />
                   <h2 className="text-2xl font-bold text-white">{t('paused')}</h2>
@@ -940,8 +940,8 @@ export default function SnakeGame() {
 
             {/* Game Over overlay */}
             {gameState === 'gameover' && (
-              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/50 backdrop-blur-sm">
-                <div className="text-center space-y-4 bg-white/10 backdrop-blur-md rounded-2xl p-8">
+              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/50">
+                <div className="text-center space-y-4 bg-white/10 rounded-2xl p-8">
                   <h2 className="text-3xl font-bold text-white">{t('gameOver')}</h2>
                   <div className="space-y-1">
                     <p className="text-lg text-gray-200">{t('score')}: <span className="font-bold text-white text-2xl">{score}</span></p>
@@ -984,35 +984,35 @@ export default function SnakeGame() {
                 <div />
                 <button
                   onTouchStart={(e) => { e.preventDefault(); handleDpad('up') }}
-                  className="bg-gray-200 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
+                  className="bg-track active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
                 >
-                  <ChevronUp className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                  <ChevronUp className="w-6 h-6 text-body" />
                 </button>
                 <div />
                 <button
                   onTouchStart={(e) => { e.preventDefault(); handleDpad('left') }}
-                  className="bg-gray-200 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
+                  className="bg-track active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
                 >
-                  <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                  <ChevronLeft className="w-6 h-6 text-body" />
                 </button>
                 <button
                   onTouchStart={(e) => { e.preventDefault(); togglePause() }}
-                  className="bg-gray-200 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-2 flex items-center justify-center touch-none"
+                  className="bg-track active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-2 flex items-center justify-center touch-none"
                 >
-                  {gameState === 'paused' ? <Play className="w-5 h-5 text-gray-700 dark:text-gray-300" /> : <Pause className="w-5 h-5 text-gray-700 dark:text-gray-300" />}
+                  {gameState === 'paused' ? <Play className="w-5 h-5 text-body" /> : <Pause className="w-5 h-5 text-body" />}
                 </button>
                 <button
                   onTouchStart={(e) => { e.preventDefault(); handleDpad('right') }}
-                  className="bg-gray-200 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
+                  className="bg-track active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
                 >
-                  <ChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                  <ChevronRight className="w-6 h-6 text-body" />
                 </button>
                 <div />
                 <button
                   onTouchStart={(e) => { e.preventDefault(); handleDpad('down') }}
-                  className="bg-gray-200 dark:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
+                  className="bg-track active:bg-gray-300 dark:active:bg-gray-600 rounded-xl p-3 flex items-center justify-center touch-none"
                 >
-                  <ChevronDown className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                  <ChevronDown className="w-6 h-6 text-body" />
                 </button>
                 <div />
               </div>
@@ -1033,18 +1033,18 @@ export default function SnakeGame() {
       />
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Keyboard controls */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('guide.keyboard.title')}</h3>
+            <h3 className="text-sm font-semibold text-body">{t('guide.keyboard.title')}</h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.keyboard.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-green-500 mt-0.5">&#x2022;</span>
                   {item}
                 </li>
@@ -1054,10 +1054,10 @@ export default function SnakeGame() {
 
           {/* Touch controls */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('guide.touch.title')}</h3>
+            <h3 className="text-sm font-semibold text-body">{t('guide.touch.title')}</h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.touch.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-blue-500 mt-0.5">&#x2022;</span>
                   {item}
                 </li>
@@ -1067,10 +1067,10 @@ export default function SnakeGame() {
 
           {/* Scoring */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('guide.scoring.title')}</h3>
+            <h3 className="text-sm font-semibold text-body">{t('guide.scoring.title')}</h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.scoring.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-yellow-500 mt-0.5">&#x2022;</span>
                   {item}
                 </li>

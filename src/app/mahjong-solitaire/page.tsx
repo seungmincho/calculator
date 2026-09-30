@@ -69,7 +69,7 @@ export default function MahjongSolitairePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <MahjongSolitaire />
@@ -81,19 +81,19 @@ export default function MahjongSolitairePage() {
       </div>
       {/* SEO */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             마작 솔리테어(상하이)란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             마작 솔리테어(Mahjong Solitaire, 상하이)는 피라미드 형태로 쌓인 144개의 마작 타일에서 같은 무늬의 패 2개씩 짝을 맞춰 모두 제거하는 1인용 퍼즐 게임입니다.
             1981년 Brodie Lockard가 개발한 이래 전 세계적으로 사랑받는 클래식 퍼즐로, 관찰력과 전략적 사고력을 키우는 데 효과적입니다.
             만수(萬), 통수(筒), 삭수(索) 각 1~9, 바람패(東南西北), 삼원패(中發白), 꽃패와 계절패로 구성된 타일을 사용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             마작 솔리테어 공략 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>높은 층 우선:</strong> 위쪽 타일을 먼저 제거하면 아래층이 빨리 열려 선택지가 많아집니다.</li>
             <li><strong>좌우 균형:</strong> 한쪽만 집중 제거하면 반대편이 막힐 수 있으니 균형 있게 진행하세요.</li>
             <li><strong>같은 패 4장 관리:</strong> 4장 중 2장이 서로를 막고 있으면 다른 2장을 먼저 매칭해야 합니다.</li>

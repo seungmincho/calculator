@@ -473,8 +473,8 @@ export default function GifMaker() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Upload drop zone */}
@@ -482,7 +482,7 @@ export default function GifMaker() {
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
           isDraggingOver
             ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-            : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-blue-400 dark:hover:border-blue-500'
+            : 'border-line-strong bg-surface hover:border-blue-400 dark:hover:border-blue-500'
         }`}
         onDragOver={(e) => { e.preventDefault(); setIsDraggingOver(true) }}
         onDragLeave={() => setIsDraggingOver(false)}
@@ -494,8 +494,8 @@ export default function GifMaker() {
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') fileInputRef.current?.click() }}
       >
         <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-        <p className="text-gray-700 dark:text-gray-300 font-medium">{t('dragDrop')}</p>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">JPG, PNG, WebP, GIF</p>
+        <p className="text-body font-medium">{t('dragDrop')}</p>
+        <p className="text-sm text-faint mt-1">JPG, PNG, WebP, GIF</p>
         <input
           ref={fileInputRef}
           type="file"
@@ -511,7 +511,7 @@ export default function GifMaker() {
       {frames.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <h2 className="text-sm font-semibold text-body">
               {t('frames')} ({frames.length})
             </h2>
             <button
@@ -532,7 +532,7 @@ export default function GifMaker() {
                 className={`flex-shrink-0 relative group rounded-lg overflow-hidden border-2 transition-colors cursor-grab active:cursor-grabbing ${
                   dragReorderIdx === idx
                     ? 'border-blue-500 opacity-60'
-                    : 'border-gray-200 dark:border-gray-600'
+                    : 'border-line'
                 }`}
                 style={{ width: 96 }}
               >
@@ -585,7 +585,7 @@ export default function GifMaker() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Frame delay */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('frameDelay')}: <span className="font-bold text-blue-600">{frameDelay}ms</span>
               </label>
               <input
@@ -605,7 +605,7 @@ export default function GifMaker() {
 
             {/* Width */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('width')} (px)
               </label>
               <input
@@ -620,36 +620,36 @@ export default function GifMaker() {
 
             {/* Height (auto) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('height')} (px)
               </label>
-              <div className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">
+              <div className="px-3 py-2 border border-line rounded-lg bg-subtle text-muted text-sm">
                 {frames.length > 0 ? canvasHeight : '—'} (auto)
               </div>
             </div>
 
             {/* Loop */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('loop')}
               </label>
-              <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+              <div className="flex rounded-lg overflow-hidden border border-line-strong">
                 <button
                   onClick={() => { setLoopInfinite(true); setDownloadUrl(null) }}
                   className={`flex-1 py-2 text-sm font-medium transition-colors ${
                     loopInfinite
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                      : 'bg-field text-body hover:bg-gray-50 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('infinite')}
                 </button>
                 <button
                   onClick={() => { setLoopInfinite(false); setDownloadUrl(null) }}
-                  className={`flex-1 py-2 text-sm font-medium transition-colors border-l border-gray-300 dark:border-gray-600 ${
+                  className={`flex-1 py-2 text-sm font-medium transition-colors border-l border-line-strong ${
                     !loopInfinite
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                      : 'bg-field text-body hover:bg-gray-50 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('once')}
@@ -671,10 +671,10 @@ export default function GifMaker() {
       {frames.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('preview')}</h2>
+            <h2 className="text-sm font-semibold text-body">{t('preview')}</h2>
             <button
               onClick={togglePreview}
-              className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
             >
               {isPreviewing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {isPreviewing ? 'Stop' : 'Play'}
@@ -683,7 +683,7 @@ export default function GifMaker() {
           <div className="flex justify-center">
             <canvas
               ref={canvasRef}
-              className="rounded-lg border border-gray-200 dark:border-gray-700 max-w-full"
+              className="rounded-lg border border-line max-w-full"
               style={{ maxWidth: outputWidth, imageRendering: 'pixelated' }}
             />
           </div>
@@ -729,7 +729,7 @@ export default function GifMaker() {
 
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-xl font-medium transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             {t('reset')}
@@ -739,7 +739,7 @@ export default function GifMaker() {
 
       {/* Empty state */}
       {frames.length === 0 && (
-        <div className="text-center py-8 text-gray-400 dark:text-gray-500">
+        <div className="text-center py-8 text-faint">
           <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-40" />
           <p>{t('noImages')}</p>
         </div>
@@ -747,16 +747,16 @@ export default function GifMaker() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div>
-          <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
+          <h3 className="font-medium text-body mb-2">
             {t('guide.howTo.title')}
           </h3>
           <ol className="list-decimal list-inside space-y-1">
             {(t.raw('guide.howTo.items') as string[]).map((item, i) => (
-              <li key={i} className="text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="text-sm text-sub">
                 {item}
               </li>
             ))}

@@ -27,7 +27,7 @@ const PRESETS = [
 ] as const
 
 const WEEKDAY_LABELS = ['월', '화', '수', '목', '금', '토', '일']
-const WEEKDAY_COLORS = ['text-gray-700 dark:text-gray-200', 'text-gray-700 dark:text-gray-200', 'text-gray-700 dark:text-gray-200', 'text-gray-700 dark:text-gray-200', 'text-gray-700 dark:text-gray-200', 'text-blue-600 dark:text-blue-400', 'text-red-500']
+const WEEKDAY_COLORS = ['text-body', 'text-body', 'text-body', 'text-body', 'text-body', 'text-blue-600 dark:text-blue-400', 'text-red-500']
 
 // ─── 타입 ─────────────────────────────────────────────
 interface WorkHoursResult {
@@ -327,11 +327,11 @@ export default function WorkHoursCalculator() {
     'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-200',
     'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200',
     'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200',
-    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200',
+    'bg-soft text-body hover:bg-gray-200',
   ]
-  const glassCard = 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
+  const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
   const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
-  const glassSoft = 'bg-white/44 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08]'
+  const glassSoft = 'bg-surface border border-line'
 
   // ─── 결과 패널 ─────────────────────────────────────────
   const ResultPanel = () => result ? (
@@ -369,33 +369,33 @@ export default function WorkHoursCalculator() {
       </div>
 
       <div className={`${glassCard} ${glassInset} p-5`}>
-        <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3">{t('result.breakdown')}</h4>
+        <h4 className="text-sm font-bold text-fg mb-3">{t('result.breakdown')}</h4>
         <div className="divide-y divide-gray-100 dark:divide-gray-700">
           <div className="flex justify-between py-2">
-            <span className="text-sm text-gray-600 dark:text-gray-300">{t('result.basicPay')}</span>
+            <span className="text-sm text-sub">{t('result.basicPay')}</span>
             <span className="font-semibold text-sm">{fmt(result.basicPay)}원</span>
           </div>
           {result.overtimePay > 0 && (
             <div className="flex justify-between py-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">{t('result.overtimePay')} <span className="text-xs text-orange-500">({fmtH(result.overtimeHours)}{t('result.hours')})</span></span>
+              <span className="text-sm text-sub">{t('result.overtimePay')} <span className="text-xs text-orange-500">({fmtH(result.overtimeHours)}{t('result.hours')})</span></span>
               <span className="font-semibold text-sm text-orange-600">+{fmt(result.overtimePay)}원</span>
             </div>
           )}
           {result.nightPay > 0 && (
             <div className="flex justify-between py-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">{t('result.nightPay')} <span className="text-xs text-purple-500">({fmtH(result.nightHours)}{t('result.hours')})</span></span>
+              <span className="text-sm text-sub">{t('result.nightPay')} <span className="text-xs text-purple-500">({fmtH(result.nightHours)}{t('result.hours')})</span></span>
               <span className="font-semibold text-sm text-purple-600">+{fmt(result.nightPay)}원</span>
             </div>
           )}
           {result.holidayPay > 0 && (
             <div className="flex justify-between py-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">{t('result.holidayPay')} <span className="text-xs text-red-500">({fmtH(result.holidayHours)}{t('result.hours')})</span></span>
+              <span className="text-sm text-sub">{t('result.holidayPay')} <span className="text-xs text-red-500">({fmtH(result.holidayHours)}{t('result.hours')})</span></span>
               <span className="font-semibold text-sm text-red-600">+{fmt(result.holidayPay)}원</span>
             </div>
           )}
           {result.weeklyHolidayPay > 0 && (
             <div className="flex justify-between py-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
+              <span className="text-sm text-sub">
                 <span className="inline-flex items-center gap-1">
                   {t('result.weeklyHolidayPay')}
                   <span className="relative group">
@@ -415,7 +415,7 @@ export default function WorkHoursCalculator() {
   ) : (
     <div className={`${glassSoft} rounded-2xl p-10 text-center flex flex-col items-center gap-3`}>
       <Clock className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-      <p className="text-sm text-gray-500 dark:text-gray-400">{t('placeholder')}</p>
+      <p className="text-sm text-muted">{t('placeholder')}</p>
     </div>
   )
 
@@ -424,8 +424,8 @@ export default function WorkHoursCalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <CalculationHistory
           histories={histories} isLoading={false}
@@ -443,10 +443,10 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* 탭 */}
-      <div className="flex gap-1 bg-white/45 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08] rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-surface border border-line rounded-xl p-1 w-fit">
         {(['daily', 'conversion'] as TabType[]).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-sub hover:text-gray-900 dark:hover:text-white'}`}
           >
             {t(`tabs.${tab}`)}
           </button>
@@ -460,21 +460,21 @@ export default function WorkHoursCalculator() {
             {/* 시급 + 소정근로시간 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">{t('input.hourlyWage')}</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>
                 <div className="relative">
                   <input type="number" value={hourlyWage} onChange={e => setHourlyWage(e.target.value)}
-                    className="w-full pl-3 pr-8 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
+                    className="w-full pl-3 pr-8 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
                 </div>
                 <p className="text-[10px] text-gray-400 mt-1">{t('input.hourlyWageNote')}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">{t('input.weeklyHours')}</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">{t('input.weeklyHours')}</label>
                 <div className="flex gap-1">
                   {[40, 35, 30, 20].map(h => (
                     <button key={h} onClick={() => setWeeklyHours(String(h))}
-                      className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-colors border ${weeklyHours === String(h) ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-blue-400'}`}
+                      className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-colors border ${weeklyHours === String(h) ? 'bg-blue-600 text-white border-blue-600' : 'border-line-strong text-sub hover:border-blue-400'}`}
                     >{h}</button>
                   ))}
                 </div>
@@ -482,14 +482,14 @@ export default function WorkHoursCalculator() {
             </div>
 
             {/* 입력 방식 전환 */}
-            <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+            <div className="flex gap-1 bg-soft rounded-xl p-1">
               <button onClick={() => setInputMode('period')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'period' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'period' ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-muted hover:text-gray-700'}`}
               >
                 <CalendarRange className="w-3.5 h-3.5" />{t('input.periodMode')}
               </button>
               <button onClick={() => setInputMode('individual')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'individual' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'individual' ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-muted hover:text-gray-700'}`}
               >
                 <CalendarDays className="w-3.5 h-3.5" />{t('input.individualMode')}
               </button>
@@ -515,7 +515,7 @@ export default function WorkHoursCalculator() {
             {inputMode === 'period' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('input.startDate')} ~ {t('input.endDate')}</label>
+                  <label className="block text-xs font-medium text-muted mb-2">{t('input.startDate')} ~ {t('input.endDate')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     <CustomDatePicker value={periodStart} onChange={setPeriodStart} placeholder={t('input.startDate')} />
                     <CustomDatePicker value={periodEnd} onChange={setPeriodEnd} placeholder={t('input.endDate')} />
@@ -528,18 +528,18 @@ export default function WorkHoursCalculator() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('input.workDays')}</label>
+                  <label className="block text-xs font-medium text-muted mb-2">{t('input.workDays')}</label>
                   <div className="flex gap-1">
                     {WEEKDAY_LABELS.map((d, i) => (
                       <button key={d} onClick={() => toggleWeekday(i)}
-                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? (i === 5 ? 'bg-blue-600 text-white' : i === 6 ? 'bg-red-500 text-white' : 'bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900') : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'}`}
+                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? (i === 5 ? 'bg-blue-600 text-white' : i === 6 ? 'bg-red-500 text-white' : 'bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900') : 'bg-soft text-faint'}`}
                       >{d}</button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('input.workTime')}</label>
+                  <label className="block text-xs font-medium text-muted mb-2">{t('input.workTime')}</label>
                   <div className="grid grid-cols-2 gap-2 mb-2">
                     <div>
                       <p className="text-[10px] text-gray-400 mb-1">{t('input.startTime')}</p>
@@ -555,7 +555,7 @@ export default function WorkHoursCalculator() {
                     <div className="flex gap-1">
                       {[0, 30, 60, 90].map(m => (
                         <button key={m} onClick={() => setPeriodBreakTime(m)}
-                          className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${periodBreakTime === m ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200'}`}
+                          className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${periodBreakTime === m ? 'bg-blue-600 text-white' : 'bg-soft text-sub hover:bg-gray-200'}`}
                         >{m}분</button>
                       ))}
                     </div>
@@ -568,14 +568,14 @@ export default function WorkHoursCalculator() {
             {inputMode === 'individual' && (
               <div>
                 <div className="flex justify-between items-center mb-3">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400">{t('input.workSchedule')}</label>
+                  <label className="text-xs font-medium text-muted">{t('input.workSchedule')}</label>
                   <button onClick={addWorkDay} className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition-colors">
                     {t('input.addDay')}
                   </button>
                 </div>
                 <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
                   {dailyWork.map((day, idx) => (
-                    <div key={idx} className="p-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700">
+                    <div key={idx} className="p-3 border border-line rounded-xl bg-subtle">
                       <div className="mb-2">
                         <p className="text-[10px] text-gray-400 mb-1">{t('input.date')}</p>
                         <CustomDatePicker value={day.date} onChange={v => updateWorkDay(idx, 'date', v)} placeholder={t('input.date')} />
@@ -596,14 +596,14 @@ export default function WorkHoursCalculator() {
                           <div className="flex gap-1">
                             {[0, 30, 60].map(m => (
                               <button key={m} onClick={() => updateWorkDay(idx, 'breakTime', m)}
-                                className={`px-2 py-0.5 rounded text-[10px] transition-colors ${day.breakTime === m ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'}`}
+                                className={`px-2 py-0.5 rounded text-[10px] transition-colors ${day.breakTime === m ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-sub'}`}
                               >{m}분</button>
                             ))}
                           </div>
                         </div>
                         <label className="flex items-center gap-1 cursor-pointer ml-auto">
                           <input type="checkbox" checked={day.isHoliday} onChange={e => updateWorkDay(idx, 'isHoliday', e.target.checked)} className="accent-red-500 w-3 h-3" />
-                          <span className="text-[10px] text-gray-600 dark:text-gray-300">{t('input.holiday')}</span>
+                          <span className="text-[10px] text-sub">{t('input.holiday')}</span>
                         </label>
                         {dailyWork.length > 1 && (
                           <button onClick={() => removeWorkDay(idx)} className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-500 rounded text-[10px] hover:bg-red-200 transition-colors">
@@ -627,23 +627,23 @@ export default function WorkHoursCalculator() {
       {activeTab === 'conversion' && (
         <div className="grid lg:grid-cols-2 gap-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-bold text-fg flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-green-600" />{t('conversion.title')}
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{t('conversion.description')}</p>
+            <p className="text-xs text-muted">{t('conversion.description')}</p>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('conversion.hourlyWage')}</label>
+              <label className="block text-xs font-medium text-muted mb-2">{t('conversion.hourlyWage')}</label>
               <div className="relative mb-2">
                 <input type="number" value={convWage} onChange={e => setConvWage(e.target.value)}
-                  className="w-full pl-3 pr-8 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full pl-3 pr-8 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
               </div>
               <div className="flex gap-2 flex-wrap">
                 {[MIN_WAGE_2026, 12000, 15000, 20000].map(w => (
                   <button key={w} onClick={() => setConvWage(String(w))}
-                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${convWage === String(w) ? 'bg-green-600 text-white border-green-600' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-green-500'}`}
+                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${convWage === String(w) ? 'bg-green-600 text-white border-green-600' : 'border-line-strong text-sub hover:border-green-500'}`}
                   >{fmt(w)}원</button>
                 ))}
               </div>
@@ -651,17 +651,17 @@ export default function WorkHoursCalculator() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('conversion.weeklyWorkHours')}</label>
+                <label className="block text-xs font-medium text-muted mb-2">{t('conversion.weeklyWorkHours')}</label>
                 <input type="number" value={convWeeklyHours} onChange={e => setConvWeeklyHours(e.target.value)} min="1" max="68"
-                  className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('conversion.workDaysPerWeek')}</label>
+                <label className="block text-xs font-medium text-muted mb-2">{t('conversion.workDaysPerWeek')}</label>
                 <div className="flex gap-1">
                   {[3, 4, 5, 6].map(d => (
                     <button key={d} onClick={() => setConvDaysPerWeek(String(d))}
-                      className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${convDaysPerWeek === String(d) ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200'}`}
+                      className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${convDaysPerWeek === String(d) ? 'bg-green-600 text-white' : 'bg-soft text-sub hover:bg-gray-200'}`}
                     >{d}일</button>
                   ))}
                 </div>
@@ -669,7 +669,7 @@ export default function WorkHoursCalculator() {
             </div>
 
             {convResult && (
-              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-gray-50 dark:bg-gray-700 text-gray-500'}`}>
+              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-subtle text-gray-500'}`}>
                 {convResult.isEligibleWeeklyHoliday
                   ? `✅ ${t('conversion.eligibleWeeklyHoliday')} — 주휴수당 ${fmt(convResult.weeklyHolidayPay)}원/주`
                   : '❌ 주 15시간 미만 — 주휴수당 미발생'}
@@ -680,7 +680,7 @@ export default function WorkHoursCalculator() {
           {convResult && (
             <div className="space-y-4">
               <div className={`${glassCard} ${glassInset} p-5`}>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-green-600" />{t('conversion.wageTable')}
                 </h3>
                 <div className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -692,15 +692,15 @@ export default function WorkHoursCalculator() {
                     { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: convResult.yearlyWithHoliday, color: 'text-green-600 font-bold text-base', big: true },
                   ].filter(Boolean).map((row, i) => row && (
                     <div key={i} className={`flex justify-between items-center py-3 ${row.big ? 'bg-green-50 dark:bg-green-950 px-3 rounded-lg mt-1' : ''}`}>
-                      <span className="text-sm text-gray-600 dark:text-gray-300">{row.label}</span>
-                      <span className={`font-semibold text-sm text-gray-900 dark:text-white ${row.color}`}>{fmt(row.value)}원</span>
+                      <span className="text-sm text-sub">{row.label}</span>
+                      <span className={`font-semibold text-sm text-fg ${row.color}`}>{fmt(row.value)}원</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className={`${glassCard} ${glassInset} p-5`}>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
                   <Shield className="w-4 h-4 text-blue-600" />{t('conversion.insuranceTitle')}
                 </h3>
                 <div className="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
@@ -711,18 +711,18 @@ export default function WorkHoursCalculator() {
                     { label: t('conversion.employmentInsurance'), value: convResult.deductions.employmentInsurance, c: 'text-orange-600' },
                   ].map((r, i) => (
                     <div key={i} className="flex justify-between py-2">
-                      <span className="text-gray-600 dark:text-gray-300">{r.label}</span>
+                      <span className="text-sub">{r.label}</span>
                       <span className={`font-medium ${r.c}`}>-{fmt(r.value)}원</span>
                     </div>
                   ))}
                   <div className="flex justify-between py-2 font-semibold">
-                    <span className="text-gray-700 dark:text-gray-200">{t('conversion.totalDeduction')}</span>
+                    <span className="text-body">{t('conversion.totalDeduction')}</span>
                     <span className="text-red-600">-{fmt(convResult.deductions.total)}원</span>
                   </div>
                   <div className="flex justify-between items-center py-3 bg-blue-50 dark:bg-blue-950 px-3 rounded-lg mt-1">
                     <div>
-                      <span className="font-bold text-gray-900 dark:text-white">{t('conversion.netMonthly')}</span>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">(4대보험 공제 후 예상액)</div>
+                      <span className="font-bold text-fg">{t('conversion.netMonthly')}</span>
+                      <div className="text-xs text-muted">(4대보험 공제 후 예상액)</div>
                     </div>
                     <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{fmt(convResult.netMonthly)}원</span>
                   </div>
@@ -736,7 +736,7 @@ export default function WorkHoursCalculator() {
 
       {/* ═══ 2026 최저임금 ═══ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
+        <h3 className="text-lg font-bold text-fg mb-5 flex items-center gap-2">
           <Users className="w-5 h-5 text-green-600" />{t('minimumWage.title')}
         </h3>
         <div className="grid grid-cols-3 gap-4">
@@ -755,18 +755,18 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* ═══ 근로기준법 가이드 ═══ */}
-      <div className="bg-gradient-to-br from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl p-6 shadow-[0_18px_50px_rgba(99,102,241,0.10)]">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5">💼 {t('guide.title')}</h3>
+      <div className="bg-gradient-to-br from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] border border-line rounded-2xl p-6 shadow-[0_18px_50px_rgba(99,102,241,0.10)]">
+        <h3 className="text-lg font-bold text-fg mb-5">💼 {t('guide.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.overtimeTitle')}</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-semibold text-fg mb-3">{t('guide.overtimeTitle')}</h4>
+            <ul className="space-y-2 text-sm text-body">
               {[0,1,2,3].map(i => <li key={i}>• {t(`guide.overtime.${i}`)}</li>)}
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.allowanceTitle')}</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-semibold text-fg mb-3">{t('guide.allowanceTitle')}</h4>
+            <ul className="space-y-2 text-sm text-body">
               {[0,1,2,3].map(i => <li key={i}>• {t(`guide.allowance.${i}`)}</li>)}
             </ul>
           </div>
@@ -775,17 +775,17 @@ export default function WorkHoursCalculator() {
 
       {/* ═══ 근로자 권리 ═══ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5">⚖️ {t('rights.title')}</h3>
+        <h3 className="text-lg font-bold text-fg mb-5">⚖️ {t('rights.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rights.basicTitle')}</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-semibold text-fg mb-3">{t('rights.basicTitle')}</h4>
+            <ul className="space-y-2 text-sm text-body">
               {[0,1,2,3].map(i => <li key={i}>• {t(`rights.basic.${i}`)}</li>)}
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rights.protectionTitle')}</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-semibold text-fg mb-3">{t('rights.protectionTitle')}</h4>
+            <ul className="space-y-2 text-sm text-body">
               {[0,1,2,3].map(i => <li key={i}>• {t(`rights.protection.${i}`)}</li>)}
             </ul>
           </div>

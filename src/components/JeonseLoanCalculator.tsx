@@ -384,11 +384,11 @@ function JeonseLoanCalculatorContent() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 메인 그리드 */}
@@ -397,7 +397,7 @@ function JeonseLoanCalculatorContent() {
         <div className="space-y-6">
           {/* 대출 유형 선택 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('loanType.title')}
             </h2>
             <div className="grid grid-cols-2 gap-3">
@@ -408,18 +408,18 @@ function JeonseLoanCalculatorContent() {
                   className={`p-4 rounded-xl border-2 transition-all text-left ${
                     loanType === key
                       ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50 dark:bg-blue-950'
-                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-line bg-surface hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={loanType === key ? 'text-blue-600' : 'text-gray-500 dark:text-gray-400'}>
+                    <span className={loanType === key ? 'text-blue-600' : 'text-muted'}>
                       {icon}
                     </span>
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm">
+                    <span className="font-semibold text-fg text-sm">
                       {t(`loanType.${key}.label`)}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted">
                     {t(`loanType.${key}.sub`)}
                   </p>
                   <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">
@@ -434,7 +434,7 @@ function JeonseLoanCalculatorContent() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 전세보증금 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.deposit')}
               </label>
               <div className="relative">
@@ -444,14 +444,14 @@ function JeonseLoanCalculatorContent() {
                   value={deposit}
                   onChange={(e) => handleNumberInput(e.target.value, setDeposit)}
                   placeholder={t('input.depositPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                   {t('unit.won')}
                 </span>
               </div>
               {deposit && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   = {formatCurrency(parseNumber(deposit))}
                 </p>
               )}
@@ -459,7 +459,7 @@ function JeonseLoanCalculatorContent() {
 
             {/* 희망 대출금액 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.loanAmount')}
               </label>
               <div className="relative">
@@ -469,14 +469,14 @@ function JeonseLoanCalculatorContent() {
                   value={loanAmount}
                   onChange={(e) => handleNumberInput(e.target.value, setLoanAmount)}
                   placeholder={t('input.loanAmountPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                   {t('unit.won')}
                 </span>
               </div>
               {loanAmount && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   = {formatCurrency(parseNumber(loanAmount))}
                 </p>
               )}
@@ -484,7 +484,7 @@ function JeonseLoanCalculatorContent() {
 
             {/* 소재지 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.location')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -495,7 +495,7 @@ function JeonseLoanCalculatorContent() {
                     className={`py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
                       location === loc
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`input.location${loc === 'capital' ? 'Capital' : 'Local'}`)}
@@ -506,7 +506,7 @@ function JeonseLoanCalculatorContent() {
 
             {/* 연소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.income')}
               </label>
               <div className="relative">
@@ -516,14 +516,14 @@ function JeonseLoanCalculatorContent() {
                   value={income}
                   onChange={(e) => handleNumberInput(e.target.value, setIncome)}
                   placeholder={t('input.incomePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                   {t('unit.won')}
                 </span>
               </div>
               {income && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   = {formatCurrency(parseNumber(income))}
                 </p>
               )}
@@ -539,7 +539,7 @@ function JeonseLoanCalculatorContent() {
                   onChange={(e) => setSmeWorker(e.target.checked)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <label htmlFor="smeWorker" className="text-sm text-gray-700 dark:text-gray-300">
+                <label htmlFor="smeWorker" className="text-sm text-body">
                   {t('input.smeWorker')}
                 </label>
               </div>
@@ -547,13 +547,13 @@ function JeonseLoanCalculatorContent() {
 
             {loanType === 'newlywed' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('input.children')}
                 </label>
                 <select
                   value={children}
                   onChange={(e) => setChildren(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="0">{t('input.children0')}</option>
                   <option value="1">{t('input.children1')}</option>
@@ -565,7 +565,7 @@ function JeonseLoanCalculatorContent() {
 
             {loanType === 'bank' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('input.bankRate')}
                 </label>
                 <div className="relative">
@@ -577,7 +577,7 @@ function JeonseLoanCalculatorContent() {
                     value={bankRate}
                     onChange={(e) => setBankRate(e.target.value)}
                     placeholder={t('input.bankRatePlaceholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 pr-10"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                     {t('unit.percent')}
@@ -589,7 +589,7 @@ function JeonseLoanCalculatorContent() {
 
           {/* 상환 방식 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('repayment.title')}
             </h2>
 
@@ -601,7 +601,7 @@ function JeonseLoanCalculatorContent() {
                   className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                     repayment === rType
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t(`repayment.${rType}`)}
@@ -610,7 +610,7 @@ function JeonseLoanCalculatorContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('repayment.period')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -621,7 +621,7 @@ function JeonseLoanCalculatorContent() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       period === p
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {p}{t('repayment.years')}
@@ -638,13 +638,13 @@ function JeonseLoanCalculatorContent() {
             <>
               {/* 적용 금리 */}
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                <h3 className="text-sm font-medium text-muted mb-1">
                   {t('result.appliedRate')}
                 </h3>
                 <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
                   {result.appliedRate.toFixed(2)}<span className="text-lg ml-1">%</span>
                 </p>
-                <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                <div className="mt-2 text-xs text-muted space-y-1">
                   <p>{t('result.baseRate')}: {result.baseRate.toFixed(2)}%</p>
                   {result.discounts.length > 0 && (
                     <div>
@@ -660,34 +660,34 @@ function JeonseLoanCalculatorContent() {
 
               {/* 월 상환액 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                <h3 className="text-sm font-medium text-muted mb-1">
                   {repayment === 'bullet' ? t('result.monthlyInterest') : t('result.monthlyPayment')}
                 </h3>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                <p className="text-3xl font-bold text-fg">
                   {formatNumber(result.monthlyPayment)}<span className="text-base ml-1 text-gray-500">{t('unit.won')}</span>
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted mt-1">
                   = {formatCurrency(result.monthlyPayment)} / {t('unit.month')}
                 </p>
               </div>
 
               {/* 대출 한도 */}
               <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-fg">
                   {t('result.loanLimit')}
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">{t('result.maxLoanByLTV')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(result.maxLoanByLTV)}</span>
+                    <span className="text-muted">{t('result.maxLoanByLTV')}</span>
+                    <span className="font-medium text-fg">{formatCurrency(result.maxLoanByLTV)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">{t('result.maxLoanByType')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(result.maxLoanByType)}</span>
+                    <span className="text-muted">{t('result.maxLoanByType')}</span>
+                    <span className="font-medium text-fg">{formatCurrency(result.maxLoanByType)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">{t('result.ltvRatio')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="text-muted">{t('result.ltvRatio')}</span>
+                    <span className="font-medium text-fg">
                       {(LOAN_LIMITS[loanType].ltv * 100).toFixed(0)}%
                     </span>
                   </div>
@@ -706,17 +706,17 @@ function JeonseLoanCalculatorContent() {
               {/* 총 이자 + 보증료 */}
               <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('result.totalInterest')}</span>
-                  <span className="text-lg font-bold text-gray-900 dark:text-white">
+                  <span className="text-sm text-muted">{t('result.totalInterest')}</span>
+                  <span className="text-lg font-bold text-fg">
                     {formatCurrency(result.totalInterest)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('result.guaranteeFee')}</span>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{t('result.guaranteeFeeDesc')}</p>
+                    <span className="text-sm text-muted">{t('result.guaranteeFee')}</span>
+                    <p className="text-xs text-faint">{t('result.guaranteeFeeDesc')}</p>
                   </div>
-                  <span className="text-lg font-bold text-gray-900 dark:text-white">
+                  <span className="text-lg font-bold text-fg">
                     {formatCurrency(result.guaranteeFee)}
                   </span>
                 </div>
@@ -724,7 +724,7 @@ function JeonseLoanCalculatorContent() {
 
               {/* 자격 요건 체크 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-fg mb-4">
                   {t('result.eligibility')}
                 </h3>
                 <div className="space-y-3">
@@ -777,14 +777,14 @@ function JeonseLoanCalculatorContent() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('result.noResult')}</p>
-              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('result.calculate')}</p>
+              <p className="text-muted">{t('result.noResult')}</p>
+              <p className="text-sm text-faint mt-1">{t('result.calculate')}</p>
             </div>
           )}
 
           {/* 면책 문구 */}
           <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
-            <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+            <p className="text-xs text-faint leading-relaxed">
               {t('disclaimer')}
             </p>
           </div>
@@ -793,19 +793,19 @@ function JeonseLoanCalculatorContent() {
 
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {(['overview', 'rates', 'tips'] as const).map((section) => (
             <div key={section}>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="font-semibold text-fg mb-3">
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-2">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">{'•'}</span>
                     {item}
                   </li>

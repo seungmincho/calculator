@@ -101,14 +101,14 @@ export default function GameResultShare({
       {/* 공유 모달 */}
       {showShare && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
           role="dialog"
           aria-modal="true"
           onKeyDown={(e) => e.key === 'Escape' && setShowShare(false)}
         >
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6 space-y-4">
+          <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('shareTitle')}</h3>
+              <h3 className="text-lg font-bold text-fg">{t('shareTitle')}</h3>
               <button
                 onClick={() => setShowShare(false)}
                 className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg"
@@ -118,7 +118,7 @@ export default function GameResultShare({
             </div>
 
             {/* 미리보기 */}
-            <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line font-mono">
+            <div className="bg-subtle rounded-xl p-4 text-sm text-body whitespace-pre-line font-mono">
               {shareText}
             </div>
 
@@ -126,7 +126,7 @@ export default function GameResultShare({
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={handleCopy}
-                className="flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-all text-sm font-medium"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-xl transition-all text-sm font-medium"
               >
                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 {copied ? t('copied') : t('copy')}

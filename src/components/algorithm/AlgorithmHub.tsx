@@ -81,13 +81,13 @@ export default function AlgorithmHub() {
 
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-fg">
           🧠 {t('title')}
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto">
+        <p className="text-muted mt-2 max-w-2xl mx-auto">
           {t('description')}
         </p>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+        <p className="text-sm text-faint mt-1">
           {t('totalCount', { count: algorithms.length })}
         </p>
       </div>
@@ -100,7 +100,7 @@ export default function AlgorithmHub() {
             className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
               activeFilter === 'all'
                 ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                : 'bg-white/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                : 'bg-surface text-sub border-line hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             {t('filter.all')}
@@ -116,7 +116,7 @@ export default function AlgorithmHub() {
                 className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
                   isActive
                     ? filterColorClasses[color] || filterColorClasses.blue
-                    : 'bg-white/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'bg-surface text-sub border-line hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
                 {t(categoryLabels[cat])} ({count})
@@ -125,7 +125,7 @@ export default function AlgorithmHub() {
           })}
         </div>
         {/* View toggle */}
-        <div className="flex items-center bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-0.5">
+        <div className="flex items-center bg-surface rounded-lg border border-line p-0.5">
           <button
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
@@ -163,10 +163,10 @@ export default function AlgorithmHub() {
                   <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${chipColorClasses[color] || chipColorClasses.blue}`}>
                     {t(categoryLabels[cat])}
                   </span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">{algos.length}개</span>
+                  <span className="text-xs text-faint">{algos.length}개</span>
                 </div>
                 {/* Algorithm rows */}
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+                <div className="bg-white/80 dark:bg-gray-800/80">
                   {algos.map((algo, i) => (
                     <Link
                       key={algo.id}
@@ -177,14 +177,14 @@ export default function AlgorithmHub() {
                     >
                       <span className="text-lg w-7 text-center flex-shrink-0">{algo.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <span className="font-medium text-gray-900 dark:text-white text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <span className="font-medium text-fg text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {t(`algorithms.${algo.labelKey}.title`)}
                         </span>
-                        <span className="hidden sm:inline text-gray-400 dark:text-gray-500 text-xs ml-2">
+                        <span className="hidden sm:inline text-faint text-xs ml-2">
                           {t(`algorithms.${algo.labelKey}.description`)}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+                      <span className="text-xs text-faint flex-shrink-0">
                         {difficultyLabels[algo.difficulty]}
                       </span>
                       <span className="text-xs text-blue-500 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
@@ -210,7 +210,7 @@ export default function AlgorithmHub() {
 
       {/* Coming soon note */}
       {filteredAlgorithms.some(a => a.status === 'coming-soon') && (
-        <p className="text-center text-sm text-gray-400 dark:text-gray-500">
+        <p className="text-center text-sm text-faint">
           {t('comingSoon')}
         </p>
       )}

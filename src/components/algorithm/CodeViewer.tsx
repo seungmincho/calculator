@@ -38,21 +38,21 @@ export default function CodeViewer({ code, language = 'typescript', highlightLin
   const lines = code.split('\n')
 
   return (
-    <div className="rounded-xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50">
+    <div className="rounded-xl overflow-hidden border border-line">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-700/50">
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-100/80 dark:bg-gray-800/80 border-b border-line">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-red-400" />
             <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <div className="w-3 h-3 rounded-full bg-green-400" />
           </div>
-          {title && <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{title}</span>}
-          <span className="text-xs text-gray-400 dark:text-gray-500 uppercase">{language}</span>
+          {title && <span className="text-xs text-muted ml-2">{title}</span>}
+          <span className="text-xs text-faint uppercase">{language}</span>
         </div>
         <button
           onClick={copyCode}
-          className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 dark:text-gray-400 hover:bg-gray-200/50 dark:hover:bg-gray-700/50 rounded transition-colors"
+          className="flex items-center gap-1 px-2 py-1 text-xs text-muted hover:bg-gray-200/50 dark:hover:bg-gray-700/50 rounded transition-colors"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
           {copied ? t('code.copied') : t('code.copy')}
@@ -78,7 +78,7 @@ export default function CodeViewer({ code, language = 'typescript', highlightLin
                 <span className="select-none w-12 text-right pr-4 text-xs text-gray-400 dark:text-gray-600 py-0.5 flex-shrink-0">
                   {lineNum}
                 </span>
-                <code className="text-gray-800 dark:text-gray-200 py-0.5 pr-4 whitespace-pre">
+                <code className="text-body py-0.5 pr-4 whitespace-pre">
                   {line}
                 </code>
               </div>

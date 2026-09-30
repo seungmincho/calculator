@@ -300,11 +300,11 @@ export default function EvSubsidyCalculator() {
           <div className="p-2 bg-green-100 dark:bg-green-900 rounded-xl">
             <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-fg">
             {t('title')}
           </h1>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+        <p className="text-sm text-muted">{t('description')}</p>
       </div>
 
       {/* Main grid */}
@@ -312,14 +312,14 @@ export default function EvSubsidyCalculator() {
         {/* Left: Inputs */}
         <div className="lg:col-span-1 space-y-5">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-base font-semibold text-fg flex items-center gap-2">
               <Car className="w-4 h-4 text-green-500" />
               {t('vehicleInfo')}
             </h2>
 
             {/* Vehicle type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('vehicleType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -330,7 +330,7 @@ export default function EvSubsidyCalculator() {
                     className={`py-2 px-3 rounded-lg text-sm font-medium transition border ${
                       vehicleType === vt.value
                         ? 'bg-green-600 border-green-600 text-white'
-                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400'
+                        : 'bg-field border-line-strong text-body hover:border-green-400'
                     }`}
                   >
                     {t(vt.labelKey)}
@@ -341,7 +341,7 @@ export default function EvSubsidyCalculator() {
 
             {/* Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('vehiclePrice')}
               </label>
               <div className="relative">
@@ -381,7 +381,7 @@ export default function EvSubsidyCalculator() {
 
             {/* Range */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('drivingRange')}
               </label>
               <div className="relative">
@@ -401,7 +401,7 @@ export default function EvSubsidyCalculator() {
 
             {/* Battery */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('batteryCapacity')}
               </label>
               <div className="relative">
@@ -422,7 +422,7 @@ export default function EvSubsidyCalculator() {
 
             {/* Region */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
+              <label className="block text-sm font-medium text-body mb-1 flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5" />
                 {t('region')}
               </label>
@@ -450,7 +450,7 @@ export default function EvSubsidyCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-3 transition"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-3 transition"
                 title={t('reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -460,7 +460,7 @@ export default function EvSubsidyCalculator() {
 
           {/* Popular models quick-fill */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-base font-semibold text-fg mb-3">
               {t('popularModels')}
             </h2>
             <div className="grid grid-cols-2 gap-2">
@@ -468,12 +468,12 @@ export default function EvSubsidyCalculator() {
                 <button
                   key={model.nameKey}
                   onClick={() => handleModelFill(model)}
-                  className="text-left px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-950 transition"
+                  className="text-left px-3 py-2 rounded-lg border border-line hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-950 transition"
                 >
-                  <div className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">
+                  <div className="text-xs font-medium text-body truncate">
                     {t(`model_${model.nameKey}`)}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <div className="text-xs text-muted mt-0.5">
                     {model.price.toLocaleString()}만 · {model.range}km
                   </div>
                 </button>
@@ -516,13 +516,13 @@ export default function EvSubsidyCalculator() {
 
               {/* Performance breakdown */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-base font-semibold text-fg mb-4">
                   {t('performanceBreakdown')}
                 </h2>
 
                 {/* Price gate */}
-                <div className="mb-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">{t('priceGate')}</span>
+                <div className="mb-4 p-3 rounded-lg bg-subtle flex items-center justify-between">
+                  <span className="text-sm text-sub">{t('priceGate')}</span>
                   <span
                     className={`font-semibold text-sm px-3 py-1 rounded-full ${
                       result.priceGateRatio === 100
@@ -544,8 +544,8 @@ export default function EvSubsidyCalculator() {
                 ].map((item) => (
                   <div key={item.labelKey} className="mb-3">
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-600 dark:text-gray-300">{t(item.labelKey)}</span>
-                      <span className="font-medium text-gray-800 dark:text-gray-200">{item.value}점</span>
+                      <span className="text-sub">{t(item.labelKey)}</span>
+                      <span className="font-medium text-body">{item.value}점</span>
                     </div>
                     <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                       <div
@@ -556,8 +556,8 @@ export default function EvSubsidyCalculator() {
                   </div>
                 ))}
 
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600 flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <div className="mt-4 pt-4 border-t border-line flex items-center justify-between">
+                  <span className="text-sm font-medium text-body">
                     {t('overallPerformance')}
                   </span>
                   <span className="text-base font-bold text-green-600 dark:text-green-400">
@@ -569,7 +569,7 @@ export default function EvSubsidyCalculator() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center min-h-48`}>
               <Zap className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-gray-400 dark:text-gray-500 text-sm">{t('resultPlaceholder')}</p>
+              <p className="text-faint text-sm">{t('resultPlaceholder')}</p>
             </div>
           )}
 
@@ -579,7 +579,7 @@ export default function EvSubsidyCalculator() {
               onClick={() => setShowRegionTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
             >
-              <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-base font-semibold text-fg flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-green-500" />
                 {t('regionComparisonTitle')}
               </h2>
@@ -592,13 +592,13 @@ export default function EvSubsidyCalculator() {
             {showRegionTable && regionComparison.length > 0 && (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                  <thead className="bg-subtle">
                     <tr>
-                      <th className="px-4 py-2.5 text-left text-gray-500 dark:text-gray-400 font-medium">{t('region')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('nationalSubsidy')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('localSubsidy')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('totalSubsidy')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('finalPrice')}</th>
+                      <th className="px-4 py-2.5 text-left text-muted font-medium">{t('region')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('nationalSubsidy')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('localSubsidy')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('totalSubsidy')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('finalPrice')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -609,11 +609,11 @@ export default function EvSubsidyCalculator() {
                           row.region === region
                             ? 'bg-green-50 dark:bg-green-950'
                             : idx % 2 === 0
-                            ? 'bg-white dark:bg-gray-800'
+                            ? 'bg-surface'
                             : 'bg-gray-50 dark:bg-gray-750'
                         }`}
                       >
-                        <td className="px-4 py-2.5 text-gray-800 dark:text-gray-200 font-medium">
+                        <td className="px-4 py-2.5 text-body font-medium">
                           {idx === 0 && <span className="mr-1 text-yellow-500">1</span>}
                           {t(`region${row.region.charAt(0).toUpperCase() + row.region.slice(1)}`)}
                           {row.region === region && (
@@ -622,16 +622,16 @@ export default function EvSubsidyCalculator() {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-2.5 text-right text-gray-700 dark:text-gray-300">
+                        <td className="px-4 py-2.5 text-right text-body">
                           {row.nationalSubsidy.toLocaleString()}만
                         </td>
-                        <td className="px-4 py-2.5 text-right text-gray-700 dark:text-gray-300">
+                        <td className="px-4 py-2.5 text-right text-body">
                           {row.localSubsidy.toLocaleString()}만
                         </td>
                         <td className="px-4 py-2.5 text-right font-semibold text-green-600 dark:text-green-400">
                           {row.totalSubsidy.toLocaleString()}만
                         </td>
-                        <td className="px-4 py-2.5 text-right text-gray-700 dark:text-gray-300">
+                        <td className="px-4 py-2.5 text-right text-body">
                           {row.finalPrice.toLocaleString()}만
                         </td>
                       </tr>
@@ -641,7 +641,7 @@ export default function EvSubsidyCalculator() {
               </div>
             )}
             {showRegionTable && regionComparison.length === 0 && (
-              <p className="p-5 text-sm text-gray-400 dark:text-gray-500 text-center">{t('enterInfoFirst')}</p>
+              <p className="p-5 text-sm text-faint text-center">{t('enterInfoFirst')}</p>
             )}
           </div>
 
@@ -651,7 +651,7 @@ export default function EvSubsidyCalculator() {
               onClick={() => setShowModelsTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
             >
-              <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-base font-semibold text-fg flex items-center gap-2">
                 <Car className="w-4 h-4 text-green-500" />
                 {t('modelsComparisonTitle')}
                 <span className="text-xs font-normal text-gray-400">({t('regionLabel')}: {t(`region${region.charAt(0).toUpperCase() + region.slice(1)}`)})</span>
@@ -665,35 +665,35 @@ export default function EvSubsidyCalculator() {
             {showModelsTable && (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                  <thead className="bg-subtle">
                     <tr>
-                      <th className="px-4 py-2.5 text-left text-gray-500 dark:text-gray-400 font-medium">{t('model')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('price')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('totalSubsidy')}</th>
-                      <th className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 font-medium">{t('finalPrice')}</th>
+                      <th className="px-4 py-2.5 text-left text-muted font-medium">{t('model')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('price')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('totalSubsidy')}</th>
+                      <th className="px-4 py-2.5 text-right text-muted font-medium">{t('finalPrice')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                     {modelsComparison.map((row, idx) => (
                       <tr
                         key={row.nameKey}
-                        className={idx % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-750'}
+                        className={idx % 2 === 0 ? 'bg-surface' : 'bg-gray-50 dark:bg-gray-750'}
                       >
                         <td className="px-4 py-2.5">
-                          <div className="text-gray-800 dark:text-gray-200 font-medium">
+                          <div className="text-body font-medium">
                             {t(`model_${row.nameKey}`)}
                           </div>
                           <div className="text-xs text-gray-400">
                             {t(row.type === 'passenger' ? 'typePassenger' : row.type === 'suv' ? 'typeSuv' : 'typeTruck')} · {row.range}km · {row.battery}kWh
                           </div>
                         </td>
-                        <td className="px-4 py-2.5 text-right text-gray-700 dark:text-gray-300">
+                        <td className="px-4 py-2.5 text-right text-body">
                           {row.price.toLocaleString()}만
                         </td>
                         <td className="px-4 py-2.5 text-right font-semibold text-green-600 dark:text-green-400">
                           {row.totalSubsidy.toLocaleString()}만
                         </td>
-                        <td className="px-4 py-2.5 text-right text-gray-700 dark:text-gray-300">
+                        <td className="px-4 py-2.5 text-right text-body">
                           {row.finalPrice.toLocaleString()}만
                         </td>
                       </tr>

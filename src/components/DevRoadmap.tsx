@@ -211,9 +211,9 @@ export default function DevRoadmap() {
       <div>
         <div className="flex items-center gap-3 mb-2">
           <Map className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+        <p className="text-sm text-muted">{t('description')}</p>
       </div>
 
       {/* Track Selector */}
@@ -231,20 +231,20 @@ export default function DevRoadmap() {
               className={`relative text-left p-4 rounded-xl border-2 transition-all ${
                 isSelected
                   ? `${tc.border} ${tc.bgLight} shadow-lg`
-                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
+                  : 'border-line bg-surface hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
               <div className="flex items-center gap-2 mb-2">
-                <Icon className={`w-5 h-5 ${isSelected ? tc.text : 'text-gray-500 dark:text-gray-400'}`} />
-                <span className={`font-semibold ${isSelected ? tc.text : 'text-gray-900 dark:text-white'}`}>
+                <Icon className={`w-5 h-5 ${isSelected ? tc.text : 'text-muted'}`} />
+                <span className={`font-semibold ${isSelected ? tc.text : 'text-fg'}`}>
                   {track.title}
                 </span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">
+              <p className="text-xs text-muted line-clamp-2 mb-3">
                 {track.description}
               </p>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-400 dark:text-gray-500">{trackTotal} {t('stats.total')}</span>
+                <span className="text-faint">{trackTotal} {t('stats.total')}</span>
                 {trackStudied > 0 && (
                   <span className={tc.badgeText + ' font-medium'}>
                     {trackStudied}/{trackTotal}
@@ -266,19 +266,19 @@ export default function DevRoadmap() {
       </div>
 
       {/* Stats + Filter Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className="bg-surface rounded-xl shadow-lg p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
               <Zap className={`w-4 h-4 ${colors.text}`} />
-              <span className="text-gray-700 dark:text-gray-300">
+              <span className="text-body">
                 {t('stats.progress')}: <strong className={colors.text}>{studiedCount}</strong> / {totalSkills}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Star className="w-4 h-4 text-yellow-500" />
-              <span className="text-gray-700 dark:text-gray-300">
+              <span className="text-body">
                 {t('stats.essentialProgress')}: <strong className="text-yellow-600 dark:text-yellow-400">{essentialStudied}</strong> / {totalEssential}
               </span>
             </div>
@@ -303,7 +303,7 @@ export default function DevRoadmap() {
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                   filter === f
                     ? `${colors.bg} text-white`
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {f === 'all' ? t('filter.all')
@@ -327,7 +327,7 @@ export default function DevRoadmap() {
       </div>
 
       {/* Level Legend */}
-      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+      <div className="flex flex-wrap items-center gap-4 text-xs text-muted">
         {(['beginner', 'intermediate', 'advanced'] as SkillLevel[]).map(level => (
           <div key={level} className="flex items-center gap-1.5">
             <span className={`w-2.5 h-2.5 rounded-full ${LEVEL_CONFIG[level].dot}`} />
@@ -340,7 +340,7 @@ export default function DevRoadmap() {
           <span>{t('legend.essential')}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 border border-gray-300 dark:border-gray-600 rounded" />
+          <span className="w-3 h-3 border border-line-strong rounded" />
           <span>{t('legend.optional')}</span>
         </div>
       </div>
@@ -360,7 +360,7 @@ export default function DevRoadmap() {
                 <div className={`absolute left-5 top-14 bottom-0 w-0.5 ${colors.progressBg}`} />
               )}
 
-              <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 ${colors.border} overflow-hidden`}>
+              <div className={`bg-surface rounded-xl shadow-lg border-l-4 ${colors.border} overflow-hidden`}>
                 {/* Section header */}
                 <button
                   onClick={() => toggleSection(section.id)}
@@ -369,7 +369,7 @@ export default function DevRoadmap() {
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{section.icon}</span>
                     <div className="text-left">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
+                      <h3 className="font-semibold text-fg">
                         {section.title}
                         <span className="ml-2 text-xs font-normal text-gray-400">
                           {section.titleEn}
@@ -408,7 +408,7 @@ export default function DevRoadmap() {
                           <div
                             className={`flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer ${
                               isStudied
-                                ? 'bg-gray-50 dark:bg-gray-700'
+                                ? 'bg-subtle'
                                 : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                             }`}
                             onClick={() => setExpandedSkill(isDetailOpen ? null : skill.id)}
@@ -419,7 +419,7 @@ export default function DevRoadmap() {
                               className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
                                 isStudied
                                   ? `${colors.bg} ${colors.border} text-white`
-                                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                                  : 'border-line-strong hover:border-gray-400 dark:hover:border-gray-500'
                               }`}
                               aria-label={isStudied ? t('skill.studied') : t('skill.notStudied')}
                             >
@@ -434,8 +434,8 @@ export default function DevRoadmap() {
                               <div className="flex items-center gap-2">
                                 <span className={`font-medium text-sm ${
                                   isStudied
-                                    ? 'text-gray-400 dark:text-gray-500 line-through'
-                                    : 'text-gray-900 dark:text-white'
+                                    ? 'text-faint line-through'
+                                    : 'text-fg'
                                 }`}>
                                   {skill.name}
                                 </span>
@@ -451,8 +451,8 @@ export default function DevRoadmap() {
 
                           {/* Expanded detail */}
                           {isDetailOpen && (
-                            <div className="ml-12 mr-3 mt-1 mb-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 text-sm space-y-2">
-                              <p className="text-gray-600 dark:text-gray-300">{skill.description}</p>
+                            <div className="ml-12 mr-3 mt-1 mb-2 p-3 rounded-lg bg-subtle text-sm space-y-2">
+                              <p className="text-sub">{skill.description}</p>
                               {skill.resources && skill.resources.length > 0 && (
                                 <div className="flex items-center gap-2 flex-wrap">
                                   <BookOpen className="w-3.5 h-3.5 text-gray-400" />
@@ -498,7 +498,7 @@ export default function DevRoadmap() {
           <h3 className={`text-xl font-bold ${colors.text} mb-2`}>
             {currentTrack.title} {t('stats.total')} {t('stats.studied')}!
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-muted">
             {totalSkills}개 스킬을 모두 학습했습니다. 다른 트랙도 도전해 보세요!
           </p>
         </div>

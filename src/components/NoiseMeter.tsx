@@ -167,7 +167,7 @@ export default function NoiseMeter() {
       {/* 헤더 */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Mic className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
@@ -176,7 +176,7 @@ export default function NoiseMeter() {
             {t('mobileFriendly')}
           </span>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 메인 측정 영역 */}
@@ -187,7 +187,7 @@ export default function NoiseMeter() {
             <p className={`text-8xl sm:text-9xl font-bold tabular-nums ${isRecording ? level.color : 'text-gray-300 dark:text-gray-600'}`}>
               {isRecording ? currentDb : '--'}
             </p>
-            <p className="text-xl text-gray-500 dark:text-gray-400 -mt-2">dB</p>
+            <p className="text-xl text-muted -mt-2">dB</p>
           </div>
           {isRecording && (
             <p className={`text-sm font-medium mt-2 ${level.color}`}>{t(level.labelKey)}</p>
@@ -196,7 +196,7 @@ export default function NoiseMeter() {
 
         {/* 게이지 바 */}
         <div className="mb-6">
-          <div className="h-4 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden relative">
+          <div className="h-4 bg-soft rounded-full overflow-hidden relative">
             <div
               className="h-full transition-all duration-150 ease-out rounded-full"
               style={{
@@ -245,7 +245,7 @@ export default function NoiseMeter() {
               </button>
               <button
                 onClick={resetStats}
-                className="flex items-center gap-2 px-4 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-colors"
+                className="flex items-center gap-2 px-4 py-3 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body rounded-xl transition-colors"
                 aria-label={t('reset')}
               >
                 <RotateCcw className="w-5 h-5" />
@@ -265,17 +265,17 @@ export default function NoiseMeter() {
       {isRecording && (
         <div className="grid grid-cols-3 gap-4">
           <div className={`${glassCard} ${glassInset} p-4 text-center`}>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('maxDb')}</p>
+            <p className="text-xs text-muted mb-1">{t('maxDb')}</p>
             <p className="text-2xl font-bold text-red-600 dark:text-red-400">{maxDb}</p>
             <p className="text-xs text-gray-400">dB</p>
           </div>
           <div className={`${glassCard} ${glassInset} p-4 text-center`}>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('avgDb')}</p>
+            <p className="text-xs text-muted mb-1">{t('avgDb')}</p>
             <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{avgDb}</p>
             <p className="text-xs text-gray-400">dB</p>
           </div>
           <div className={`${glassCard} ${glassInset} p-4 text-center`}>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('minDb')}</p>
+            <p className="text-xs text-muted mb-1">{t('minDb')}</p>
             <p className="text-2xl font-bold text-green-600 dark:text-green-400">{minDb > 900 ? 0 : minDb}</p>
             <p className="text-xs text-gray-400">dB</p>
           </div>
@@ -285,7 +285,7 @@ export default function NoiseMeter() {
       {/* 히스토리 그래프 (CSS only) */}
       {history.length > 1 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('historyGraph')}</h3>
+          <h3 className="text-sm font-semibold text-fg mb-3">{t('historyGraph')}</h3>
           <div className="flex items-end gap-px h-24">
             {history.map((db, i) => {
               const height = Math.max(2, (db / 130) * 100)
@@ -309,12 +309,12 @@ export default function NoiseMeter() {
 
       {/* 소음 수준 참고표 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('referenceTable')}</h3>
+        <h3 className="text-sm font-semibold text-fg mb-3">{t('referenceTable')}</h3>
         <div className="space-y-2">
           {NOISE_LEVELS.map((lvl, i) => (
             <div
               key={i}
-              className={`flex items-center gap-3 py-2 px-3 rounded-lg ${isRecording && currentDb >= lvl.min && currentDb < lvl.max ? 'bg-gray-50 dark:bg-gray-700/50 ring-1 ring-blue-300 dark:ring-blue-600' : ''}`}
+              className={`flex items-center gap-3 py-2 px-3 rounded-lg ${isRecording && currentDb >= lvl.min && currentDb < lvl.max ? 'bg-subtle ring-1 ring-blue-300 dark:ring-blue-600' : ''}`}
             >
               <div className={`w-3 h-3 rounded-full ${lvl.bgColor} shrink-0`} />
               <div className="flex-1 min-w-0">
@@ -322,7 +322,7 @@ export default function NoiseMeter() {
                   <span className={`text-sm font-medium ${lvl.color}`}>{t(lvl.labelKey)}</span>
                   <span className="text-xs text-gray-400 ml-2">{lvl.min}-{lvl.max === 200 ? '130+' : lvl.max} dB</span>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{t(lvl.examples)}</p>
+                <p className="text-xs text-muted truncate">{t(lvl.examples)}</p>
               </div>
             </div>
           ))}
@@ -336,16 +336,16 @@ export default function NoiseMeter() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.how.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.how.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.how.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -353,7 +353,7 @@ export default function NoiseMeter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

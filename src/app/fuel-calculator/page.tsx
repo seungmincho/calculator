@@ -91,9 +91,7 @@ export default function FuelCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_24%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_22%),linear-gradient(135deg,rgba(236,253,245,0.96),rgba(239,246,255,0.92),rgba(240,249,255,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_22%),linear-gradient(135deg,rgba(3,7,18,0.98),rgba(15,23,42,0.96),rgba(6,78,59,0.92))] py-8 overflow-hidden">
-        <div className="fixed top-20 left-10 w-72 h-72 bg-emerald-300/18 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="fixed bottom-20 right-10 w-80 h-80 bg-sky-300/18 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="min-h-screen py-8 overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <I18nWrapper>
               <FuelCalculator />
@@ -108,17 +106,17 @@ export default function FuelCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             유류비 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             유류비 계산기는 회사 업무용 차량의 연료비와 감가상각비를 차종별 연비·주행거리·유가 기준으로 자동 계산하는 온라인 도구입니다. 법인차·개인사업자 차량의 출장비·교통비 정산, 경비 처리 근거 산출, 차량 운행일지 작성 지원 등 업무용 차량 비용 관리에 활용할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             유류비 절감 및 경비 처리 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>차량운행일지 필수:</strong> 업무용 차량 유류비를 경비로 인정받으려면 출발지·목적지·주행거리를 기록한 차량운행일지가 필요합니다.</li>
             <li><strong>감가상각 한도 확인:</strong> 업무용 승용차의 연간 감가상각 경비 인정 한도는 800만원이므로, 고가 차량은 미리 한도를 확인하세요.</li>
             <li><strong>유종별 비용 비교:</strong> 휘발유·경유·LPG·전기 등 유종별 연료비를 비교하면 장기적으로 유지비가 낮은 차종을 선택하는 데 도움이 됩니다.</li>

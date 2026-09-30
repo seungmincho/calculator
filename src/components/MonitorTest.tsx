@@ -760,8 +760,8 @@ export default function MonitorTest() {
 
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 탭 메뉴 */}
@@ -774,7 +774,7 @@ export default function MonitorTest() {
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                 activeTest === test.id
                   ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow'
+                  : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 shadow'
               }`}
             >
               {test.icon}
@@ -793,15 +793,15 @@ export default function MonitorTest() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center gap-2">
                 {tests[selectedTestIdx].icon}
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-fg">
                   {testNames[selectedTestIdx]}
                 </h2>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-sub">
                 {t(`${testDescKeys[selectedTestIdx]}.description`)}
               </p>
-              <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-                <p className="font-medium text-gray-700 dark:text-gray-300">{t('howToUse')}</p>
+              <div className="text-sm text-muted space-y-1">
+                <p className="font-medium text-body">{t('howToUse')}</p>
                 {(t.raw(`${testDescKeys[selectedTestIdx]}.steps`) as string[]).map((s, i) => (
                   <p key={i} className="flex items-start gap-2">
                     <span className="text-blue-500 font-bold">{i + 1}.</span>
@@ -813,7 +813,7 @@ export default function MonitorTest() {
               {/* 이미지 업로드 (이미지표현 테스트) */}
               {activeTest === 12 && (
                 <div>
-                  <label className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-gray-700 dark:text-gray-300">
+                  <label className="flex items-center gap-2 px-4 py-2 bg-soft rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-body">
                     <Upload size={16} />
                     {t('tests.imageQuality.upload')}
                     <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
@@ -837,9 +837,9 @@ export default function MonitorTest() {
           {/* 미리보기 */}
           <div className="lg:col-span-2">
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('preview')}</h3>
+              <h3 className="text-sm font-medium text-muted mb-3">{t('preview')}</h3>
               <div
-                className="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer relative"
+                className="w-full rounded-lg overflow-hidden border border-line cursor-pointer relative"
                 style={{ aspectRatio: '16/9' }}
                 onClick={() => startTest(activeTest)}
               >
@@ -857,18 +857,18 @@ export default function MonitorTest() {
                 <button
                   onClick={() => setStep(s => Math.max(0, s - 1))}
                   disabled={step === 0}
-                  className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1 text-sm text-muted hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft size={16} />
                   {t('prev')}
                 </button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-muted">
                   {step + 1} / {tests[selectedTestIdx].steps}
                 </span>
                 <button
                   onClick={() => setStep(s => Math.min(tests[selectedTestIdx].steps - 1, s + 1))}
                   disabled={step >= tests[selectedTestIdx].steps - 1}
-                  className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1 text-sm text-muted hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {t('next')}
                   <ChevronRight size={16} />
@@ -892,11 +892,11 @@ export default function MonitorTest() {
                 <div className="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-200 dark:group-hover:bg-blue-900 transition-colors">
                   {test.icon}
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
+                <h3 className="font-semibold text-fg text-sm">
                   {idx + 1}. {testNames[idx]}
                 </h3>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+              <p className="text-xs text-muted line-clamp-2">
                 {t(`${testDescKeys[idx]}.shortDesc`)}
               </p>
             </button>
@@ -906,18 +906,18 @@ export default function MonitorTest() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.preparation.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.preparation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <li key={index} className="flex items-start gap-2 text-sub text-sm">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>
@@ -925,12 +925,12 @@ export default function MonitorTest() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <li key={index} className="flex items-start gap-2 text-sub text-sm">
                   <span className="text-green-600 dark:text-green-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>

@@ -52,7 +52,7 @@ function generateFingerprint(): string {
 function getCharCountClass(current: number, max: number): string {
   return current / max > 0.9
     ? 'text-red-500 dark:text-red-400'
-    : 'text-gray-400 dark:text-gray-500'
+    : 'text-faint'
 }
 
 /** URL from param → menuConfig에서 도구명 + 아이콘 찾기 */
@@ -167,8 +167,8 @@ export default function InquiryForm() {
         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 animate-bounce">
           <CheckCircle className="w-9 h-9 text-green-600 dark:text-green-400" />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('success.title')}</h2>
-        <p className="text-gray-500 dark:text-gray-400 text-center">{t('success.message')}</p>
+        <h2 className="text-xl font-bold text-fg">{t('success.title')}</h2>
+        <p className="text-muted text-center">{t('success.message')}</p>
         <button
           onClick={() => {
             setSuccess(false)
@@ -188,11 +188,11 @@ export default function InquiryForm() {
   return (
     <div className={`${glassCard} ${glassInset} p-6`}>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-xl font-bold text-fg flex items-center gap-2">
           <MessageSquare className="w-5 h-5 text-blue-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 연결된 페이지 표시 */}
@@ -215,7 +215,7 @@ export default function InquiryForm() {
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+          <label className="block text-sm font-medium text-fg mb-2">
             {t('category.label')}
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -226,7 +226,7 @@ export default function InquiryForm() {
                   ${
                     category === cat
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-700'
+                      : 'border-line-strong bg-field text-body hover:border-blue-300 dark:hover:border-blue-700'
                   }`}
               >
                 <input
@@ -247,7 +247,7 @@ export default function InquiryForm() {
         {/* Title */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-fg">
               {t('form.title')}
             </label>
             <span className={`text-xs ${getCharCountClass(title.length, TITLE_MAX)}`}>
@@ -260,14 +260,14 @@ export default function InquiryForm() {
             onChange={(e) => setTitle(e.target.value.slice(0, TITLE_MAX))}
             placeholder={t('form.titlePlaceholder')}
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
         </div>
 
         {/* Message */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-fg">
               {t('form.message')}
             </label>
             <span className={`text-xs ${getCharCountClass(message.length, MESSAGE_MAX)}`}>
@@ -280,13 +280,13 @@ export default function InquiryForm() {
             placeholder={t('form.messagePlaceholder')}
             required
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
           />
         </div>
 
         {/* Contact (optional) */}
         <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+          <label className="block text-sm font-medium text-fg mb-1">
             {t('form.contact')}
           </label>
           <input
@@ -294,12 +294,12 @@ export default function InquiryForm() {
             value={contact}
             onChange={(e) => setContact(e.target.value.slice(0, CONTACT_MAX))}
             placeholder={t('form.contactPlaceholder')}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
         </div>
 
         {/* Rate limit notice */}
-        <p className="text-xs text-gray-400 dark:text-gray-500">{t('rateLimit')}</p>
+        <p className="text-xs text-faint">{t('rateLimit')}</p>
 
         {/* Error */}
         {error && (

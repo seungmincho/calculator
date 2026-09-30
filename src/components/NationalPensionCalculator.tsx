@@ -250,14 +250,14 @@ export default function NationalPensionCalculator() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -270,7 +270,7 @@ export default function NationalPensionCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 출생연도 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('birthYear')}
               </label>
               <select
@@ -286,7 +286,7 @@ export default function NationalPensionCalculator() {
 
             {/* 가입기간 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('contributionYears')}
               </label>
               <div className="relative">
@@ -299,7 +299,7 @@ export default function NationalPensionCalculator() {
                   onKeyDown={handleKeyDown}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm">
                   {t('yearUnit')}
                 </span>
               </div>
@@ -313,7 +313,7 @@ export default function NationalPensionCalculator() {
 
             {/* 월 평균 소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('monthlyIncome')}
               </label>
               <div className="relative">
@@ -328,11 +328,11 @@ export default function NationalPensionCalculator() {
                   placeholder="3,000,000"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm">
                   {t('won')}
                 </span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <p className="text-xs text-faint mt-1">
                 {t('incomeMin')}: {formatNumber(MIN_INCOME)}{t('won')} ~ {t('incomeMax')}: {formatNumber(MAX_INCOME)}{t('won')}
               </p>
             </div>
@@ -340,14 +340,14 @@ export default function NationalPensionCalculator() {
             {/* 수급개시연령 (auto) */}
             <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-body">
                   {t('pensionStartAge')}
                 </span>
                 <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   {pensionStartAge}{t('age')}
                 </span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+              <p className="text-xs text-faint mt-0.5">
                 {t('autoCalculated')}
               </p>
             </div>
@@ -364,7 +364,7 @@ export default function NationalPensionCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="flex items-center justify-center gap-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center justify-center gap-1 px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -378,7 +378,7 @@ export default function NationalPensionCalculator() {
           {!result && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <TrendingUp className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 dark:text-gray-500 text-lg">{t('enterToCalculate')}</p>
+              <p className="text-faint text-lg">{t('enterToCalculate')}</p>
             </div>
           )}
 
@@ -397,22 +397,22 @@ export default function NationalPensionCalculator() {
                   </div>
                   <div className="p-4 space-y-3">
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">{result.earlyStartAge}{t('age')}</p>
+                      <p className="text-xs text-muted">{t('startAge')}</p>
+                      <p className="text-lg font-bold text-fg">{result.earlyStartAge}{t('age')}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('monthlyAmount')}</p>
+                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
                       <p className="text-xl font-bold text-amber-600 dark:text-amber-400">
                         {formatNumber(result.earlyMonthly)}{t('won')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
+                      <p className="text-sm font-medium text-body">
                         {formatKRW(result.earlyMonthly * 12)}{t('won')}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                    <div className="pt-2 border-t border-line">
                       <p className="text-xs text-red-500 dark:text-red-400">
                         {t('earlyReduction')}: -{Math.round(result.earlyReductionRate * 100)}%
                       </p>
@@ -432,22 +432,22 @@ export default function NationalPensionCalculator() {
                   </div>
                   <div className="p-4 space-y-3">
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">{result.normalStartAge}{t('age')}</p>
+                      <p className="text-xs text-muted">{t('startAge')}</p>
+                      <p className="text-lg font-bold text-fg">{result.normalStartAge}{t('age')}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('monthlyAmount')}</p>
+                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
                       <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                         {formatNumber(result.normalMonthly)}{t('won')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
+                      <p className="text-sm font-medium text-body">
                         {formatKRW(result.normalMonthly * 12)}{t('won')}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                    <div className="pt-2 border-t border-line">
                       <p className="text-xs text-blue-500 dark:text-blue-400">
                         {t('standardAmount')}
                       </p>
@@ -466,22 +466,22 @@ export default function NationalPensionCalculator() {
                   </div>
                   <div className="p-4 space-y-3">
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">{result.deferredStartAge}{t('age')}</p>
+                      <p className="text-xs text-muted">{t('startAge')}</p>
+                      <p className="text-lg font-bold text-fg">{result.deferredStartAge}{t('age')}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('monthlyAmount')}</p>
+                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
                       <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
                         {formatNumber(result.deferredMonthly)}{t('won')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
+                      <p className="text-sm font-medium text-body">
                         {formatKRW(result.deferredMonthly * 12)}{t('won')}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                    <div className="pt-2 border-t border-line">
                       <p className="text-xs text-emerald-500 dark:text-emerald-400">
                         {t('deferredIncrease')}: +{Math.round(result.deferredIncreaseRate * 100)}%
                       </p>
@@ -492,10 +492,10 @@ export default function NationalPensionCalculator() {
 
               {/* 총 수령액 비교 (BarChart) */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                <h2 className="text-lg font-bold text-fg mb-1">
                   {t('totalComparison')}
                 </h2>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
+                <p className="text-xs text-faint mb-4">
                   {t('totalBy80')} / {t('totalBy85')} / {t('totalBy90')}
                 </p>
                 <div className="h-72">
@@ -527,10 +527,10 @@ export default function NationalPensionCalculator() {
 
               {/* 누적 수령액 시뮬레이션 (LineChart) */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                <h2 className="text-lg font-bold text-fg mb-1">
                   {t('cumulativeChart')}
                 </h2>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
+                <p className="text-xs text-faint mb-4">
                   {t('cumulativeDesc')}
                 </p>
                 <div className="h-80">
@@ -588,36 +588,36 @@ export default function NationalPensionCalculator() {
 
               {/* 계산 상세 정보 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-bold text-fg mb-4">
                   {t('calculationDetails')}
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('aValue')}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <p className="text-xs text-muted mb-1">{t('aValue')}</p>
+                    <p className="text-sm font-bold text-fg">
                       {formatNumber(A_VALUE)}{t('won')}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('aValueDesc')}</p>
+                    <p className="text-xs text-faint mt-0.5">{t('aValueDesc')}</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('bValue')}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <p className="text-xs text-muted mb-1">{t('bValue')}</p>
+                    <p className="text-sm font-bold text-fg">
                       {formatNumber(result.bValue)}{t('won')}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('bValueDesc')}</p>
+                    <p className="text-xs text-faint mt-0.5">{t('bValueDesc')}</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('replacementRate')}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <p className="text-xs text-muted mb-1">{t('replacementRate')}</p>
+                    <p className="text-sm font-bold text-fg">
                       {REPLACEMENT_RATE * 100}% ({t('year2025')})
                     </p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('extraYears')}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <p className="text-xs text-muted mb-1">{t('extraYears')}</p>
+                    <p className="text-sm font-bold text-fg">
                       {Math.max(0, contributionYears - 20)}{t('yearUnit')} (n)
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('extraYearsDesc')}</p>
+                    <p className="text-xs text-faint mt-0.5">{t('extraYearsDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -634,7 +634,7 @@ export default function NationalPensionCalculator() {
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+            <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
           </div>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
         </button>
@@ -642,12 +642,12 @@ export default function NationalPensionCalculator() {
           <div className="px-6 pb-6 space-y-6">
             {/* 계산 공식 */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-fg mb-3">
                 {t('guide.formula.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.formula.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
@@ -657,12 +657,12 @@ export default function NationalPensionCalculator() {
 
             {/* 조기 vs 연기 */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-fg mb-3">
                 {t('guide.earlyVsDeferred.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.earlyVsDeferred.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
@@ -672,12 +672,12 @@ export default function NationalPensionCalculator() {
 
             {/* 수급 자격 */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-fg mb-3">
                 {t('guide.requirements.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.requirements.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
@@ -694,17 +694,17 @@ export default function NationalPensionCalculator() {
           onClick={() => setShowFaq(!showFaq)}
           className="w-full flex items-center justify-between p-6"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('faqTitle')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('faqTitle')}</h2>
           {showFaq ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
         </button>
         {showFaq && (
           <div className="px-6 pb-6 space-y-4">
             {[1, 2, 3].map(n => (
-              <div key={n} className="border-b border-gray-100 dark:border-gray-700 pb-4 last:border-0 last:pb-0">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+              <div key={n} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                <h3 className="font-semibold text-fg mb-2">
                   Q. {t(`faq.q${n}.question`)}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm text-sub leading-relaxed">
                   {t(`faq.q${n}.answer`)}
                 </p>
               </div>

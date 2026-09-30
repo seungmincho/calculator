@@ -40,7 +40,7 @@ export default function KeyboardConverterPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><KeyboardConverter />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function KeyboardConverterPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             한영 타자 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             한영 타자 변환기는 한글/영문 입력 모드를 잘못 선택하고 타이핑한 텍스트를 올바른 언어로 변환해주는 도구입니다. 예를 들어 영문 모드에서 '안녕하세요'를 치면 'dkssudgktpdy'가 되는데, 이를 다시 한글로 복원합니다. 반대로 한글 모드에서 영문을 잘못 입력한 경우도 변환할 수 있어 문서 작성 시 오타를 빠르게 수정할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             한영 타자 변환기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>긴 문서 오타 수정:</strong> 한영 전환을 잊고 긴 문장을 입력했을 때, 전체를 지우지 않고 변환기에 붙여넣어 즉시 수정하세요.</li>
             <li><strong>인터넷 검색어 오타:</strong> 검색창에 영타로 잘못 입력된 한글 검색어(예: 'gksmf' → '나는')를 변환하여 올바른 검색어를 찾을 수 있습니다.</li>
             <li><strong>두벌식 자판 기반:</strong> 이 도구는 한국 표준 두벌식 자판을 기준으로 변환합니다. 세벌식 사용자는 결과가 다를 수 있습니다.</li>

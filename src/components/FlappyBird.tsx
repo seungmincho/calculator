@@ -555,21 +555,21 @@ export default function FlappyBird() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Game Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
         {/* Score bar */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-yellow-500" />
-            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-semibold text-body">
               {t('best')}: <span className="text-yellow-600 dark:text-yellow-400">{bestScore}</span>
             </span>
           </div>
-          <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <div className="text-sm font-semibold text-body">
             {t('score')}: <span className="text-blue-600 dark:text-blue-400">{score}</span>
           </div>
         </div>
@@ -617,7 +617,7 @@ export default function FlappyBird() {
 
         {/* Hint text */}
         {gameState !== 'gameover' && (
-          <p className="mt-3 text-center text-xs text-gray-400 dark:text-gray-500">
+          <p className="mt-3 text-center text-xs text-faint">
             {t('tap')}
           </p>
         )}
@@ -631,17 +631,17 @@ export default function FlappyBird() {
       />
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div>
-          <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
+          <h3 className="font-medium text-body mb-2">
             {t('guide.rules.title')}
           </h3>
           <ul className="space-y-1">
             {(t.raw('guide.rules.items') as string[]).map((item: string, i: number) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="flex items-start gap-2 text-sm text-sub">
                 <span className="mt-0.5 text-blue-500 font-bold">•</span>
                 <span>{item}</span>
               </li>

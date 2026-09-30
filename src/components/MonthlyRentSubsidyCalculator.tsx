@@ -324,10 +324,10 @@ const MonthlyRentSubsidyCalculatorContent = () => {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             LH 월세지원금 계산기
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             청년, 신혼부부, 일반 가구의 월세지원금을 정확하게 계산해보세요.
           </p>
         </div>
@@ -337,7 +337,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
         {/* 입력 폼 */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-8`}>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
               <Calculator className="w-6 h-6 mr-2" />
               지원금 계산하기
             </h2>
@@ -345,7 +345,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
             <div className="space-y-6">
               {/* 신청 유형 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-body mb-3">
                   신청 유형
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -354,7 +354,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'youth'
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                        : 'border-gray-300 dark:border-gray-600'
+                        : 'border-line-strong'
                     }`}
                   >
                     <Heart className="w-5 h-5 mx-auto mb-1 text-pink-500" />
@@ -365,7 +365,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'newlywed'
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                        : 'border-gray-300 dark:border-gray-600'
+                        : 'border-line-strong'
                     }`}
                   >
                     <Users className="w-5 h-5 mx-auto mb-1 text-red-500" />
@@ -376,7 +376,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'general'
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                        : 'border-gray-300 dark:border-gray-600'
+                        : 'border-line-strong'
                     }`}
                   >
                     <Home className="w-5 h-5 mx-auto mb-1 text-blue-500" />
@@ -388,7 +388,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
               {/* 가구 정보 */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     월평균소득 (가구원 전체)
                   </label>
                   <div className="relative">
@@ -397,20 +397,20 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                       value={householdIncome}
                       onChange={handleIncomeChange}
                       placeholder="2,500,000"
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                      className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                     />
-                    <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                    <span className="absolute right-3 top-3 text-muted">원</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     가구원수
                   </label>
                   <select
                     value={householdMembers}
                     onChange={(e) => setHouseholdMembers(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                   >
                     {[1, 2, 3, 4, 5].map(num => (
                       <option key={num} value={num}>{num}인</option>
@@ -422,7 +422,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
               {/* 주거 정보 */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     월세
                   </label>
                   <div className="relative">
@@ -431,14 +431,14 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                       value={rent}
                       onChange={handleRentChange}
                       placeholder="500,000"
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                      className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                     />
-                    <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                    <span className="absolute right-3 top-3 text-muted">원</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     보증금
                   </label>
                   <div className="relative">
@@ -447,22 +447,22 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                       value={deposit}
                       onChange={handleDepositChange}
                       placeholder="10,000,000"
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                      className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                     />
-                    <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                    <span className="absolute right-3 top-3 text-muted">원</span>
                   </div>
                 </div>
               </div>
 
               {/* 지역 선택 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   거주지역
                 </label>
                 <select
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                 >
                   <option value="seoul">서울특별시</option>
                   <option value="gyeonggi">경기도/인천광역시</option>
@@ -479,7 +479,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
           {/* 계산 결과 */}
           {result && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+              <h3 className="text-xl font-bold text-fg mb-4 flex items-center">
                 {result.eligible ? (
                   <CheckCircle className="w-6 h-6 mr-2 text-green-500" />
                 ) : (
@@ -499,16 +499,16 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                   
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <div className="text-gray-600 dark:text-gray-400">지원율</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{result.supportRate}%</div>
+                      <div className="text-sub">지원율</div>
+                      <div className="font-semibold text-fg">{result.supportRate}%</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 dark:text-gray-400">소득기준</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">통과</div>
+                      <div className="text-sub">소득기준</div>
+                      <div className="font-semibold text-fg">통과</div>
                     </div>
                   </div>
 
-                  <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-xs text-muted bg-subtle rounded-lg p-3">
                     <Info className="w-4 h-4 inline mr-1" />
                     실제 지원금은 LH 심사를 통해 최종 결정됩니다.
                   </div>
@@ -526,12 +526,12 @@ const MonthlyRentSubsidyCalculatorContent = () => {
 
                   <div className="text-sm space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">소득기준 (월)</span>
+                      <span className="text-sub">소득기준 (월)</span>
                       <span className="font-medium">{formatNumber(result.incomeLimit)}원</span>
                     </div>
                     {result.maxSubsidy > 0 && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">월세 상한</span>
+                        <span className="text-sub">월세 상한</span>
                         <span className="font-medium">{formatNumber(result.maxSubsidy)}원</span>
                       </div>
                     )}
@@ -589,10 +589,10 @@ const MonthlyRentSubsidyCalculatorContent = () => {
 
       {/* 안내사항 */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl p-8">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-xl font-bold text-fg mb-4">
           📋 LH 월세지원 안내
         </h3>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-700 dark:text-gray-300">
+        <div className="grid md:grid-cols-2 gap-6 text-sm text-body">
           <div>
             <h4 className="font-semibold mb-2">✅ 지원 대상</h4>
             <ul className="space-y-1 text-xs">
@@ -639,8 +639,8 @@ export default function MonthlyRentSubsidyCalculator() {
     <Suspense fallback={
       <div className="max-w-4xl mx-auto p-8">
         <div className="animate-pulse space-y-8">
-          <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
-          <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="h-32 bg-track rounded"></div>
+          <div className="h-96 bg-track rounded"></div>
         </div>
       </div>
     }>

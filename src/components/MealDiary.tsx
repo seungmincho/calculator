@@ -359,11 +359,11 @@ export default function MealDiary() {
     const pct = Math.min((value / max) * 100, 100)
     return (
       <div className="space-y-1">
-        <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+        <div className="flex justify-between text-xs text-sub">
           <span>{label}</span>
           <span>{Math.round(value)} / {max}{label.includes('kcal') ? '' : 'g'}</span>
         </div>
-        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-2 bg-track rounded-full overflow-hidden">
           <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
         </div>
       </div>
@@ -382,11 +382,11 @@ export default function MealDiary() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <UtensilsCrossed className="w-7 h-7 text-green-600" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button onClick={copyLink} className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline whitespace-nowrap">
           {linkCopied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
@@ -398,7 +398,7 @@ export default function MealDiary() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <button onClick={() => navigateDate(-1)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-            <ChevronLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            <ChevronLeft className="w-5 h-5 text-body" />
           </button>
           <div className="flex items-center gap-3">
             <Calendar className="w-5 h-5 text-gray-500" />
@@ -406,7 +406,7 @@ export default function MealDiary() {
               type="date"
               value={selectedDate}
               onChange={e => setSelectedDate(e.target.value)}
-              className="text-lg font-semibold bg-transparent text-gray-900 dark:text-white border-none focus:ring-0 cursor-pointer"
+              className="text-lg font-semibold bg-transparent text-fg border-none focus:ring-0 cursor-pointer"
             />
             {selectedDate !== today() && (
               <button onClick={goToday} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
@@ -415,7 +415,7 @@ export default function MealDiary() {
             )}
           </div>
           <button onClick={() => navigateDate(1)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-            <ChevronRight className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            <ChevronRight className="w-5 h-5 text-body" />
           </button>
         </div>
 
@@ -423,20 +423,20 @@ export default function MealDiary() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 text-center">
             <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{Math.round(dayTotals.cal)}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">kcal / {DRI.cal}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('totalCalories')}</div>
+            <div className="text-xs text-muted">kcal / {DRI.cal}</div>
+            <div className="text-xs text-muted">{t('totalCalories')}</div>
           </div>
           <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round(dayTotals.protein)}g</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('protein')} / {DRI.protein}g</div>
+            <div className="text-xs text-muted">{t('protein')} / {DRI.protein}g</div>
           </div>
           <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{Math.round(dayTotals.fat)}g</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('fat')} / {DRI.fat}g</div>
+            <div className="text-xs text-muted">{t('fat')} / {DRI.fat}g</div>
           </div>
           <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{Math.round(dayTotals.carbs)}g</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('carbs')} / {DRI.carbs}g</div>
+            <div className="text-xs text-muted">{t('carbs')} / {DRI.carbs}g</div>
           </div>
         </div>
 
@@ -460,7 +460,7 @@ export default function MealDiary() {
               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                 activeMeal === mt
                   ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t(mt)}
@@ -492,10 +492,10 @@ export default function MealDiary() {
             <button
               key={food.id}
               onClick={() => addFoodToMeal(food)}
-              className="flex items-center justify-between p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 border border-gray-200 dark:border-gray-700 text-sm transition-colors"
+              className="flex items-center justify-between p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 border border-line text-sm transition-colors"
             >
-              <span className="text-gray-900 dark:text-white truncate">{t(`foods.${food.id}`)}</span>
-              <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400 whitespace-nowrap ml-2">
+              <span className="text-fg truncate">{t(`foods.${food.id}`)}</span>
+              <span className="flex items-center gap-1 text-muted whitespace-nowrap ml-2">
                 {food.cal}{t('cal')}
                 <Plus className="w-3 h-3 text-green-600" />
               </span>
@@ -513,7 +513,7 @@ export default function MealDiary() {
             {t('addManual')}
           </button>
           {showManual && (
-            <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg space-y-3">
+            <div className="mt-3 p-4 bg-subtle rounded-lg space-y-3">
               <input
                 type="text"
                 value={manualName}
@@ -531,7 +531,7 @@ export default function MealDiary() {
                 <button onClick={addManualEntry} className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-700 hover:to-emerald-700">
                   {t('addFood')}
                 </button>
-                <button onClick={() => setShowManual(false)} className="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm">
+                <button onClick={() => setShowManual(false)} className="bg-gray-200 dark:bg-gray-600 text-body px-4 py-2 rounded-lg text-sm">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -542,24 +542,24 @@ export default function MealDiary() {
         {/* Meal entries list */}
         <div className="space-y-2">
           {mealsForTab.length === 0 ? (
-            <div className="text-center py-8 text-gray-400 dark:text-gray-500">
+            <div className="text-center py-8 text-faint">
               <UtensilsCrossed className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p className="text-sm">{t('noMeals')}</p>
               <p className="text-xs mt-1">{t('addFirst')}</p>
             </div>
           ) : (
             mealsForTab.map(m => (
-              <div key={m.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div key={m.id} className="flex items-center gap-3 p-3 bg-subtle rounded-lg">
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-gray-900 dark:text-white text-sm truncate">{foodName(m)}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                  <div className="font-medium text-fg text-sm truncate">{foodName(m)}</div>
+                  <div className="text-xs text-muted">
                     {Math.round(m.cal * m.portion)}{t('cal')} · P{Math.round(m.protein * m.portion)}g · F{Math.round(m.fat * m.portion)}g · C{Math.round(m.carbs * m.portion)}g
                   </div>
                 </div>
                 <select
                   value={m.portion}
                   onChange={e => updatePortion(m.id, parseFloat(e.target.value))}
-                  className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-white text-sm"
+                  className="px-2 py-1 border border-line-strong rounded bg-white dark:bg-gray-600 text-fg text-sm"
                 >
                   {PORTIONS.map(p => (
                     <option key={p} value={p}>{p}x</option>
@@ -588,17 +588,17 @@ export default function MealDiary() {
       {/* Trend charts */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('trendTitle')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('trendTitle')}</h2>
           <div className="flex gap-2">
             <button
               onClick={() => setTrendRange(7)}
-              className={`px-3 py-1 rounded-lg text-sm ${trendRange === 7 ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+              className={`px-3 py-1 rounded-lg text-sm ${trendRange === 7 ? 'bg-green-600 text-white' : 'bg-soft text-body'}`}
             >
               {t('trend7d')}
             </button>
             <button
               onClick={() => setTrendRange(30)}
-              className={`px-3 py-1 rounded-lg text-sm ${trendRange === 30 ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+              className={`px-3 py-1 rounded-lg text-sm ${trendRange === 30 ? 'bg-green-600 text-white' : 'bg-soft text-body'}`}
             >
               {t('trend30d')}
             </button>
@@ -607,7 +607,7 @@ export default function MealDiary() {
 
         {/* Calorie line chart */}
         <div className="mb-8">
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('dailyCalories')}</h3>
+          <h3 className="text-sm font-medium text-body mb-3">{t('dailyCalories')}</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -627,7 +627,7 @@ export default function MealDiary() {
 
         {/* Macro stacked area chart */}
         <div>
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('macroTrend')}</h3>
+          <h3 className="text-sm font-medium text-body mb-3">{t('macroTrend')}</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -651,11 +651,11 @@ export default function MealDiary() {
       {/* CSV Import/Export + Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex flex-wrap gap-3 mb-4">
-          <button onClick={exportCsv} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm">
+          <button onClick={exportCsv} className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm">
             <Download className="w-4 h-4" />
             {t('exportCsv')}
           </button>
-          <button onClick={() => fileRef.current?.click()} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm">
+          <button onClick={() => fileRef.current?.click()} className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm">
             <Upload className="w-4 h-4" />
             {t('importCsv')}
           </button>
@@ -668,7 +668,7 @@ export default function MealDiary() {
         {/* Guide */}
         <button
           onClick={() => setShowGuide(!showGuide)}
-          className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium"
+          className="flex items-center gap-2 text-body hover:text-gray-900 dark:hover:text-white text-sm font-medium"
         >
           <BookOpen className="w-4 h-4" />
           {t('guide.title')}
@@ -676,16 +676,16 @@ export default function MealDiary() {
         {showGuide && (
           <div className="mt-4 space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('guide.howToUse.title')}</h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="text-sm font-semibold text-fg mb-2">{t('guide.howToUse.title')}</h3>
+              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
                 {(t.raw('guide.howToUse.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="text-sm font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
+              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}

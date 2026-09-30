@@ -69,36 +69,36 @@ export default function BoardGamePage({ gameKey, icon, name, description }: Boar
     <div className="max-w-lg mx-auto space-y-5">
       {/* 게임 헤더 */}
       <div className="text-center">
-        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3">
+        <div className="w-16 h-16 bg-soft rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3">
           {icon}
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{name}</h1>
+        <h1 className="text-2xl font-bold text-fg">{name}</h1>
         {description && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+          <p className="text-sm text-muted mt-1">{description}</p>
         )}
       </div>
 
       {/* 모드 선택 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700">
-          <h2 className="font-bold text-gray-900 dark:text-white">{t('selectPlayMode') || '플레이 방식 선택'}</h2>
+      <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden">
+        <div className="px-5 py-4 border-b border-line">
+          <h2 className="font-bold text-fg">{t('selectPlayMode') || '플레이 방식 선택'}</h2>
         </div>
         <div className="p-4 space-y-3">
           {/* 컴퓨터 대전 */}
-          <div className="rounded-xl border-2 border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div className="rounded-xl border-2 border-line overflow-hidden">
             <div className="flex items-center gap-3 p-4">
               <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Monitor className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-gray-900 dark:text-white">{t('vsComputer') || '컴퓨터 대전'}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('vsComputerDesc') || 'AI와 1인 플레이 · 인터넷 불필요'}</p>
+                <p className="font-bold text-fg">{t('vsComputer') || '컴퓨터 대전'}</p>
+                <p className="text-xs text-muted">{t('vsComputerDesc') || 'AI와 1인 플레이 · 인터넷 불필요'}</p>
               </div>
             </div>
 
             {/* 난이도 선택 */}
             <div className="px-4 pb-3 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1.5 text-xs text-muted">
                 <Zap className="w-3.5 h-3.5" />
                 <span>{t('difficulty') || '난이도'}</span>
               </div>
@@ -130,14 +130,14 @@ export default function BoardGamePage({ gameKey, icon, name, description }: Boar
           {/* 온라인 대전 */}
           <button
             onClick={() => setMode('online')}
-            className="w-full flex items-center gap-3 p-4 rounded-xl border-2 border-gray-100 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all group text-left"
+            className="w-full flex items-center gap-3 p-4 rounded-xl border-2 border-line hover:border-emerald-400 dark:hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all group text-left"
           >
             <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-900/60 transition-colors">
               <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="flex-1">
-              <p className="font-bold text-gray-900 dark:text-white">{t('vsOnline') || '온라인 대전'}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('vsOnlineDesc') || '친구와 실시간 P2P 대전 · 방 생성/참가'}</p>
+              <p className="font-bold text-fg">{t('vsOnline') || '온라인 대전'}</p>
+              <p className="text-xs text-muted">{t('vsOnlineDesc') || '친구와 실시간 P2P 대전 · 방 생성/참가'}</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors" />
           </button>
@@ -148,7 +148,7 @@ export default function BoardGamePage({ gameKey, icon, name, description }: Boar
       <div className="text-center">
         <Link
           href="/games"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <Gamepad2 className="w-4 h-4" />
           {t('moreGames') || '게임 센터에서 더 많은 게임 보기'}

@@ -293,10 +293,10 @@ const BarcodeGenerator = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -306,7 +306,7 @@ const BarcodeGenerator = () => {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Smartphone className="w-5 h-5 text-purple-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('presets.title')}
           </h2>
         </div>
@@ -315,12 +315,12 @@ const BarcodeGenerator = () => {
             <button
               key={key}
               onClick={() => loadPreset(key)}
-              className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:border-purple-500 dark:hover:border-purple-400 transition-colors text-left"
+              className="p-4 border border-line rounded-lg hover:border-purple-500 dark:hover:border-purple-400 transition-colors text-left"
             >
-              <div className="font-medium text-gray-900 dark:text-white mb-1">
+              <div className="font-medium text-fg mb-1">
                 {preset.name}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-sub">
                 {preset.description}
               </div>
             </button>
@@ -335,14 +335,14 @@ const BarcodeGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <BarChart3 className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('input.title')}
               </h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.data')}
                 </label>
                 <input
@@ -355,7 +355,7 @@ const BarcodeGenerator = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.format')}
                 </label>
                 <select
@@ -399,14 +399,14 @@ const BarcodeGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Settings className="w-5 h-5 text-green-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 바코드 옵션
               </h2>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.width')}
                 </label>
                 <input
@@ -422,7 +422,7 @@ const BarcodeGenerator = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.height')}
                 </label>
                 <input
@@ -438,31 +438,31 @@ const BarcodeGenerator = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.background')}
                 </label>
                 <input
                   type="color"
                   value={options.background}
                   onChange={(e) => setOptions(prev => ({ ...prev, background: e.target.value }))}
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-line-strong"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.lineColor')}
                 </label>
                 <input
                   type="color"
                   value={options.lineColor}
                   onChange={(e) => setOptions(prev => ({ ...prev, lineColor: e.target.value }))}
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-line-strong"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.barcodeAlign')}
                 </label>
                 <select
@@ -477,7 +477,7 @@ const BarcodeGenerator = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.textAlign')}
                 </label>
                 <select
@@ -499,7 +499,7 @@ const BarcodeGenerator = () => {
                     onChange={(e) => setOptions(prev => ({ ...prev, displayValue: e.target.checked }))}
                     className="rounded"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-body">
                     {t('input.displayValue')}
                   </span>
                 </label>
@@ -513,7 +513,7 @@ const BarcodeGenerator = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
               <BarChart3 className="w-5 h-5 text-purple-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result.title')}
               </h2>
             </div>
@@ -538,7 +538,7 @@ const BarcodeGenerator = () => {
           </div>
 
           {/* Barcode Preview */}
-          <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+          <div className="border-2 border-dashed border-line-strong rounded-lg p-8 text-center">
             {barcodeUrl ? (
               <div className="space-y-4">
                 <img 
@@ -546,14 +546,14 @@ const BarcodeGenerator = () => {
                   alt={`Barcode: ${barcodeData}`}
                   className="mx-auto max-w-full"
                 />
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-sub">
                   {t('result.preview')}: {options.format}
                 </p>
               </div>
             ) : (
               <div className="py-12">
                 <BarChart3 className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-muted">
                   바코드 데이터를 입력하면 미리보기가 표시됩니다
                 </p>
               </div>
@@ -568,29 +568,29 @@ const BarcodeGenerator = () => {
       {/* Features Guide */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl font-bold text-fg mb-4">
             {t('features.title')}
           </h2>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+          <div className="bg-surface rounded-xl p-6 shadow-lg">
             <div className="flex items-center space-x-3 mb-4">
               <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
                 <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-fg">
                 {t('features.multiFormat.title')}
               </h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('features.multiFormat.description')}
             </p>
             <ul className="space-y-2">
               {[0, 1, 2, 3].map((index) => (
                 <li key={index} className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-body">
                     {t(`features.multiFormat.details.${index}`)}
                   </span>
                 </li>
@@ -598,23 +598,23 @@ const BarcodeGenerator = () => {
             </ul>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+          <div className="bg-surface rounded-xl p-6 shadow-lg">
             <div className="flex items-center space-x-3 mb-4">
               <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
                 <Palette className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-fg">
                 {t('features.customization.title')}
               </h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('features.customization.description')}
             </p>
             <ul className="space-y-2">
               {[0, 1, 2, 3].map((index) => (
                 <li key={index} className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-body">
                     {t(`features.customization.details.${index}`)}
                   </span>
                 </li>
@@ -622,23 +622,23 @@ const BarcodeGenerator = () => {
             </ul>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+          <div className="bg-surface rounded-xl p-6 shadow-lg">
             <div className="flex items-center space-x-3 mb-4">
               <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-fg">
                 {t('features.validation.title')}
               </h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('features.validation.description')}
             </p>
             <ul className="space-y-2">
               {[0, 1, 2, 3].map((index) => (
                 <li key={index} className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-body">
                     {t(`features.validation.details.${index}`)}
                   </span>
                 </li>
@@ -653,29 +653,29 @@ const BarcodeGenerator = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <FileText className="w-8 h-8 text-indigo-600" />
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold text-fg">
               {t('guide.title')}
             </h2>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+          <p className="text-lg text-sub">
             {t('guide.description')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-subtle rounded-xl p-6">
+            <h3 className="text-xl font-semibold text-fg mb-4">
               {t('guide.formats.code128.title')}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('guide.formats.code128.description')}
             </p>
             <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">활용 분야:</div>
+              <div className="text-sm font-medium text-body">활용 분야:</div>
               {[0, 1, 2, 3].map((index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-sub">
                     {t(`guide.formats.code128.useCases.${index}`)}
                   </span>
                 </div>
@@ -683,19 +683,19 @@ const BarcodeGenerator = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-subtle rounded-xl p-6">
+            <h3 className="text-xl font-semibold text-fg mb-4">
               {t('guide.formats.ean.title')}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('guide.formats.ean.description')}
             </p>
             <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">활용 분야:</div>
+              <div className="text-sm font-medium text-body">활용 분야:</div>
               {[0, 1, 2, 3].map((index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-sub">
                     {t(`guide.formats.ean.useCases.${index}`)}
                   </span>
                 </div>
@@ -703,19 +703,19 @@ const BarcodeGenerator = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-subtle rounded-xl p-6">
+            <h3 className="text-xl font-semibold text-fg mb-4">
               {t('guide.formats.upc.title')}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
+            <p className="text-sub mb-4">
               {t('guide.formats.upc.description')}
             </p>
             <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">활용 분야:</div>
+              <div className="text-sm font-medium text-body">활용 분야:</div>
               {[0, 1, 2, 3].map((index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-sub">
                     {t(`guide.formats.upc.useCases.${index}`)}
                   </span>
                 </div>

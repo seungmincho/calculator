@@ -138,8 +138,8 @@ export default function RomanNumeral() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -149,7 +149,7 @@ export default function RomanNumeral() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Tabs */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 변환 모드
               </label>
               <div className="flex gap-2">
@@ -158,7 +158,7 @@ export default function RomanNumeral() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'toRoman'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -173,7 +173,7 @@ export default function RomanNumeral() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'toArabic'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -188,7 +188,7 @@ export default function RomanNumeral() {
 
             {/* Input Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {mode === 'toRoman' ? t('inputNumber') : t('inputRoman')}
               </label>
               <div className="relative">
@@ -205,7 +205,7 @@ export default function RomanNumeral() {
                     className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
                     title={t('reset')}
                   >
-                    <RotateCcw className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <RotateCcw className="w-4 h-4 text-muted" />
                   </button>
                 )}
               </div>
@@ -213,7 +213,7 @@ export default function RomanNumeral() {
 
             {/* Quick Number Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('quickNumbers')}
               </label>
               <div className="grid grid-cols-4 gap-2">
@@ -221,7 +221,7 @@ export default function RomanNumeral() {
                   <button
                     key={num}
                     onClick={() => handleQuickNumber(num)}
-                    className="px-2 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="px-2 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {num}
                   </button>
@@ -231,7 +231,7 @@ export default function RomanNumeral() {
 
             {/* Reference Table */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('referenceTable')}
               </label>
               <div className="grid grid-cols-7 gap-2">
@@ -243,7 +243,7 @@ export default function RomanNumeral() {
                     <div className="font-serif text-lg font-bold text-blue-600 dark:text-blue-400">
                       {roman}
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    <div className="text-xs text-sub mt-1">
                       {arabic}
                     </div>
                   </div>
@@ -256,12 +256,12 @@ export default function RomanNumeral() {
         {/* Right Panel: Results */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('result')}
             </h2>
 
             {!conversionResult && (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted">
                 숫자나 로마 숫자를 입력하세요
               </div>
             )}
@@ -334,7 +334,7 @@ export default function RomanNumeral() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -342,12 +342,12 @@ export default function RomanNumeral() {
         <div className="space-y-6">
           {/* Basic Rules */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.rules.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.rules.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -357,14 +357,14 @@ export default function RomanNumeral() {
 
           {/* Examples */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.examples.title')}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               {(t.raw('guide.examples.items') as string[]).map((example, index) => (
                 <div
                   key={index}
-                  className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-700 dark:text-gray-300"
+                  className="bg-subtle rounded-lg p-3 font-mono text-sm text-body"
                 >
                   {example}
                 </div>

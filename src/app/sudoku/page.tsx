@@ -64,7 +64,7 @@ export default function SudokuPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><Sudoku />  <div className="mt-8">
     <RelatedTools />
@@ -74,17 +74,17 @@ export default function SudokuPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             스도쿠란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             스도쿠는 9×9 격자에 1~9 숫자를 논리적 추론만으로 채우는 세계적으로 인기 있는 숫자 퍼즐 게임입니다. 쉬움, 보통, 어려움, 전문가 4단계 난이도를 제공하며, 메모 모드, 힌트, 오류 검사, 타이머, 되돌리기 기능을 갖춘 완성도 높은 온라인 버전을 설치 없이 무료로 즐길 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             스도쿠 풀이 전략 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>메모 기능 활용:</strong> 각 빈 칸에 가능한 후보 숫자를 메모로 기록하면 논리적 제거 과정이 훨씬 쉬워집니다. 어려운 퍼즐일수록 필수적인 기법입니다.</li>
             <li><strong>나체 싱글 찾기:</strong> 후보가 하나뿐인 칸을 먼저 채우는 기법입니다. 행·열·박스에서 다른 숫자들을 제거하면 남는 숫자가 정답입니다.</li>
             <li><strong>숨은 싱글 탐색:</strong> 한 행·열·3×3 박스에서 특정 숫자가 들어갈 수 있는 칸이 하나뿐이라면 그 칸이 정답입니다.</li>

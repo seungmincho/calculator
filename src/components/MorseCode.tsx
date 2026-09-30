@@ -198,8 +198,8 @@ export default function MorseCode() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -209,7 +209,7 @@ export default function MorseCode() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Mode Selection */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 <Radio className="inline w-4 h-4 mr-1" />
                 {t('mode.textToMorse')}
               </label>
@@ -219,7 +219,7 @@ export default function MorseCode() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'textToMorse'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('mode.textToMorse')}
@@ -229,7 +229,7 @@ export default function MorseCode() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'morseToText'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('mode.morseToText')}
@@ -240,7 +240,7 @@ export default function MorseCode() {
             {/* Input Area */}
             {mode === 'textToMorse' ? (
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {t('textInput')}
                 </label>
                 <textarea
@@ -252,7 +252,7 @@ export default function MorseCode() {
               </div>
             ) : (
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {t('morseInput')}
                 </label>
                 <textarea
@@ -266,7 +266,7 @@ export default function MorseCode() {
 
             {/* Speed Control */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('speed')}
               </label>
               <div className="flex gap-2">
@@ -277,7 +277,7 @@ export default function MorseCode() {
                     className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       speed === s
                         ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(s)}
@@ -290,7 +290,7 @@ export default function MorseCode() {
             <div className="flex gap-2">
               <button
                 onClick={handleClear}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
               >
                 <Trash2 className="w-4 h-4" />
                 {t('clear')}
@@ -303,7 +303,7 @@ export default function MorseCode() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('result')}
               </h2>
               <div className="flex gap-2">
@@ -344,7 +344,7 @@ export default function MorseCode() {
               </div>
             </div>
             <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 min-h-[200px]">
-              <pre className="text-gray-900 dark:text-white font-mono text-lg whitespace-pre-wrap break-words">
+              <pre className="text-fg font-mono text-lg whitespace-pre-wrap break-words">
                 {result || (mode === 'textToMorse' ? t('textPlaceholder') : t('morsePlaceholder'))}
               </pre>
             </div>
@@ -352,12 +352,12 @@ export default function MorseCode() {
 
           {/* Reference Table */}
           <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('referenceTable')}
             </h2>
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-sm font-medium text-body mb-2">
                   {t('letters')}
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -366,14 +366,14 @@ export default function MorseCode() {
                       key={letter}
                       className="bg-gray-50 dark:bg-gray-900 rounded-lg px-3 py-2 flex items-center justify-between"
                     >
-                      <span className="font-bold text-gray-900 dark:text-white">{letter}</span>
+                      <span className="font-bold text-fg">{letter}</span>
                       <span className="font-mono text-blue-600 dark:text-blue-400">{morse}</span>
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-sm font-medium text-body mb-2">
                   {t('numbers')}
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -382,7 +382,7 @@ export default function MorseCode() {
                       key={number}
                       className="bg-gray-50 dark:bg-gray-900 rounded-lg px-3 py-2 flex items-center justify-between"
                     >
-                      <span className="font-bold text-gray-900 dark:text-white">{number}</span>
+                      <span className="font-bold text-fg">{number}</span>
                       <span className="font-mono text-blue-600 dark:text-blue-400">{morse}</span>
                     </div>
                   ))}
@@ -395,18 +395,18 @@ export default function MorseCode() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.basics.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.basics.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -414,12 +414,12 @@ export default function MorseCode() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

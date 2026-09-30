@@ -244,11 +244,11 @@ export default function ChildBenefitCalculator() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Baby className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 히어로 통계 카드 3개 */}
@@ -275,13 +275,13 @@ export default function ChildBenefitCalculator() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
+            <h2 className="font-semibold text-fg">{t('inputTitle')}</h2>
 
             <div className="space-y-4">
               {children.map((child, idx) => (
-                <div key={child.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+                <div key={child.id} className="border border-line rounded-lg p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('childLabel', { n: idx + 1 })}
                     </span>
                     {children.length > 1 && (
@@ -297,7 +297,7 @@ export default function ChildBenefitCalculator() {
 
                   {/* 생년월 선택 */}
                   <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('birthDate')}</label>
+                    <label className="block text-xs text-muted mb-1">{t('birthDate')}</label>
                     <div className="flex gap-2">
                       <select
                         value={child.birthYear}
@@ -324,7 +324,7 @@ export default function ChildBenefitCalculator() {
 
                   {/* 어린이집 이용 여부 */}
                   <div className="flex items-center justify-between">
-                    <label className="text-sm text-gray-700 dark:text-gray-300">{t('usesDaycare')}</label>
+                    <label className="text-sm text-body">{t('usesDaycare')}</label>
                     <button
                       onClick={() => updateChild(child.id, 'usesDaycare', !child.usesDaycare)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${
@@ -367,7 +367,7 @@ export default function ChildBenefitCalculator() {
               </button>
               <button
                 onClick={reset}
-                className="px-3 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-3 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 aria-label={t('reset')}
               >
                 <RefreshCw className="w-4 h-4" />
@@ -382,7 +382,7 @@ export default function ChildBenefitCalculator() {
             <>
               {/* 월/연 합계 요약 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('summaryTitle')}</h2>
+                <h2 className="font-semibold text-fg mb-4">{t('summaryTitle')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('monthlyTotal')}</div>
@@ -403,12 +403,12 @@ export default function ChildBenefitCalculator() {
 
               {/* 자녀별 상세 카드 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('detailTitle')}</h2>
+                <h2 className="font-semibold text-fg mb-4">{t('detailTitle')}</h2>
                 <div className="space-y-4">
                   {results.map((r, i) => (
-                    <div key={i} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <div key={i} className="border border-line rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-fg">
                           {t('childLabel', { n: i + 1 })} — {r.ageLabel}
                         </span>
                         <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
@@ -417,26 +417,26 @@ export default function ChildBenefitCalculator() {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div className="text-center">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('parentPayLabel')}</div>
+                          <div className="text-xs text-muted">{t('parentPayLabel')}</div>
                           <div className="font-semibold text-indigo-600 dark:text-indigo-400">
                             {r.parentPay > 0 ? formatKRW(r.parentPay) : '-'}
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('childAllowanceLabel')}</div>
+                          <div className="text-xs text-muted">{t('childAllowanceLabel')}</div>
                           <div className="font-semibold text-green-600 dark:text-green-400">
                             {r.childAllowance > 0 ? formatKRW(r.childAllowance) : '-'}
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('childcareAllowanceLabel')}</div>
+                          <div className="text-xs text-muted">{t('childcareAllowanceLabel')}</div>
                           <div className="font-semibold text-amber-600 dark:text-amber-400">
                             {r.childcareAllowance > 0 ? formatKRW(r.childcareAllowance) : '-'}
                           </div>
                         </div>
                       </div>
                       {children[i]?.usesDaycare && r.daycareSubsidy > 0 && (
-                        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded px-3 py-1.5">
+                        <div className="mt-2 text-xs text-muted bg-subtle rounded px-3 py-1.5">
                           {t('daycareNote', { amount: formatKRW(r.daycareSubsidy) })}
                         </div>
                       )}
@@ -451,7 +451,7 @@ export default function ChildBenefitCalculator() {
                   onClick={() => setShowApply(v => !v)}
                   className="w-full flex items-center justify-between text-left"
                 >
-                  <h2 className="font-semibold text-gray-900 dark:text-white">{t('applyTitle')}</h2>
+                  <h2 className="font-semibold text-fg">{t('applyTitle')}</h2>
                   {showApply ? (
                     <ChevronUp className="w-5 h-5 text-gray-400" />
                   ) : (
@@ -461,7 +461,7 @@ export default function ChildBenefitCalculator() {
                 {showApply && applyMethods.length > 0 && (
                   <ul className="mt-4 space-y-2">
                     {applyMethods.map((method, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <li key={i} className="flex items-start gap-2 text-sm text-body">
                         <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">
                           {i + 1}
                         </span>
@@ -473,7 +473,7 @@ export default function ChildBenefitCalculator() {
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500 min-h-48`}>
+            <div className={`${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center text-faint min-h-48`}>
               <Baby className="w-12 h-12 mb-3 opacity-40" />
               <p className="text-sm">{t('placeholder')}</p>
             </div>
@@ -481,21 +481,21 @@ export default function ChildBenefitCalculator() {
 
           {/* 연령별 타임라인 차트 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{t('timelineTitle')}</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('timelineSub')}</p>
+            <h2 className="font-semibold text-fg mb-1">{t('timelineTitle')}</h2>
+            <p className="text-xs text-muted mb-4">{t('timelineSub')}</p>
             <ResponsiveContainer width="100%" height={280}>
               <ComposedChart data={timelineData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
                 <XAxis
                   dataKey="age"
                   tick={{ fontSize: 12, fill: 'currentColor' }}
-                  className="text-gray-600 dark:text-gray-400"
+                  className="text-sub"
                 />
                 <YAxis
                   yAxisId="left"
                   tickFormatter={v => `${(v / 10000).toFixed(0)}만`}
                   tick={{ fontSize: 11, fill: 'currentColor' }}
-                  className="text-gray-600 dark:text-gray-400"
+                  className="text-sub"
                 />
                 <Tooltip
                   formatter={(value) => [formatKRW(Number(value)), '']}

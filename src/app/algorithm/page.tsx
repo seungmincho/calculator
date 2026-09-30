@@ -47,7 +47,7 @@ export default function AlgorithmPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <AlgorithmHub />

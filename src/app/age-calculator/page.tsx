@@ -68,7 +68,7 @@ export default function AgeCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <AgeCalculator />
@@ -83,17 +83,17 @@ export default function AgeCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             나이 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             나이 계산기는 생년월일을 입력하면 만 나이, 한국 나이(세는 나이), 연 나이를 한 번에 확인할 수 있는 무료 온라인 도구입니다. 2023년 6월부터 한국도 법적으로 만 나이를 기준으로 통일했으며, 이 계산기는 세 가지 나이 방식을 모두 제공합니다. 학년 정보, 같은 학년 또래 찾기, 다음 생일 D-Day, 인생 타임라인까지 확인할 수 있어 더욱 유용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             나이 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>만 나이 기준 확인:</strong> 법적/의료적 서류에는 만 나이를 사용해야 하며, 생일이 지났는지 여부에 따라 1살 차이가 납니다.</li>
             <li><strong>연 나이 활용:</strong> 병역법, 청소년보호법 등 일부 법령에서는 연 나이(현재 연도 - 출생 연도)를 기준으로 적용합니다.</li>
             <li><strong>학년 정보:</strong> 빠른생일(1~2월생) 여부에 따라 같은 학년 또래가 달라지며, 초등학교 입학 연도와 현재 학년을 확인할 수 있습니다.</li>

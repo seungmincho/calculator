@@ -606,16 +606,16 @@ export default function EmailTemplate() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Mail className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Category selector */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('categoryTitle')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-3">{t('categoryTitle')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {CATEGORIES.map(cat => (
             <button
@@ -624,11 +624,11 @@ export default function EmailTemplate() {
               className={`text-left transition-all ${
                 category === cat
                   ? 'border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4'
-                  : 'border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 cursor-pointer hover:border-blue-300'
+                  : 'border-2 border-line rounded-xl p-4 cursor-pointer hover:border-blue-300'
               }`}
             >
               <div className="text-2xl mb-1">{CATEGORY_CONFIGS[cat].icon}</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">
+              <div className="text-sm font-medium text-fg">
                 {t(`categories.${cat}`)}
               </div>
             </button>
@@ -642,11 +642,11 @@ export default function EmailTemplate() {
         <div className="lg:col-span-1 space-y-6">
           {/* Tone & Language */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('settings')}</h3>
+            <h3 className="text-base font-semibold text-fg">{t('settings')}</h3>
 
             {/* Tone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('toneLabel')}
               </label>
               <div className="flex gap-2">
@@ -657,7 +657,7 @@ export default function EmailTemplate() {
                     className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                       tone === t_tone
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
                     {t(`tones.${t_tone}`)}
@@ -668,7 +668,7 @@ export default function EmailTemplate() {
 
             {/* Language */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('languageLabel')}
               </label>
               <div className="flex gap-2">
@@ -677,7 +677,7 @@ export default function EmailTemplate() {
                   className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                     emailLang === 'ko'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t('languages.ko')}
@@ -687,7 +687,7 @@ export default function EmailTemplate() {
                   className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                     emailLang === 'en'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t('languages.en')}
@@ -699,10 +699,10 @@ export default function EmailTemplate() {
           {/* Input fields */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('fieldsTitle')}</h3>
+              <h3 className="text-base font-semibold text-fg">{t('fieldsTitle')}</h3>
               <button
                 onClick={resetFields}
-                className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                className="flex items-center gap-1 text-sm text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
                 aria-label={t('reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -712,7 +712,7 @@ export default function EmailTemplate() {
 
             {activeFields.map(fieldKey => (
               <div key={fieldKey}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t(`fields.${fieldKey}`)}
                 </label>
                 {fieldKey === 'complaintDetail' ||
@@ -743,11 +743,11 @@ export default function EmailTemplate() {
         <div className="lg:col-span-2 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-base font-semibold text-fg flex items-center gap-2">
                 <FileText className="w-5 h-5 text-blue-600" />
                 {t('preview')}
               </h3>
-              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-xs text-muted">
                 <Hash className="w-4 h-4" />
                 <span>{t('stats.chars', { count: wordCount.chars })}</span>
                 <span className="mx-1">|</span>
@@ -758,13 +758,13 @@ export default function EmailTemplate() {
             </div>
 
             {/* Email preview */}
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+            <div className="bg-white dark:bg-gray-900 border border-line rounded-lg p-6">
               {/* Subject */}
-              <div className="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-4">
+              <div className="text-lg font-bold text-fg border-b border-line pb-3 mb-4">
                 {generated.subject}
               </div>
               {/* Body */}
-              <div className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap leading-relaxed text-sm">
+              <div className="text-body whitespace-pre-wrap leading-relaxed text-sm">
                 {generated.body}
               </div>
             </div>
@@ -784,7 +784,7 @@ export default function EmailTemplate() {
               </button>
               <button
                 onClick={() => copyToClipboard(generated.subject, 'subject')}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium transition-colors text-sm"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium transition-colors text-sm"
               >
                 {copiedId === 'subject' ? (
                   <Check className="w-4 h-4" />
@@ -795,7 +795,7 @@ export default function EmailTemplate() {
               </button>
               <button
                 onClick={() => copyToClipboard(generated.body, 'body')}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium transition-colors text-sm"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium transition-colors text-sm"
               >
                 {copiedId === 'body' ? (
                   <Check className="w-4 h-4" />
@@ -811,18 +811,18 @@ export default function EmailTemplate() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tipsTitle')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips') as string[]).map((tip, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                   <span>{tip}</span>
                 </li>
@@ -830,12 +830,12 @@ export default function EmailTemplate() {
             </ul>
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.etiquetteTitle')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.etiquette') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                   <span>{item}</span>
                 </li>

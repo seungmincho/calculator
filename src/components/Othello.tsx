@@ -552,16 +552,16 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
         />
 
         {/* 직접 입장 옵션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="bg-surface rounded-2xl shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-fg mb-4">
             {t('directConnect') || 'Direct Connect'}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-sm text-sub mb-4">
             {t('directConnectDesc') || 'Enter the Peer ID shared by the host to join directly.'}
           </p>
           <button
             onClick={handleDirectJoin}
-            className="w-full py-3 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+            className="w-full py-3 px-6 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
             {t('enterPeerIdButton') || 'Enter Peer ID to Join'}
           </button>
@@ -574,24 +574,24 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
   if (gamePhase === 'waiting' && isHostRef.current && !isConnected) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className="bg-surface rounded-2xl shadow-lg p-8">
           <div className="animate-pulse mb-6">
             <Users className="w-16 h-16 mx-auto text-green-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-fg mb-2">
             {t('waitingForOpponent')}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-sub mb-6">
             {t('shareLinkDesc') || '초대 링크를 상대에게 공유하세요!'}
           </p>
 
           <GameInviteLink peerId={peerId} gameSlug="othello" gameTitle={t('title')} />
-          <details className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
-            <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+          <details className="bg-soft rounded-xl p-4 mb-6">
+            <summary className="text-sm text-muted cursor-pointer select-none">
               Peer ID ({t('directConnect') || 'Direct Connect'})
             </summary>
             <div className="flex items-center justify-center gap-2 mt-2">
-              <p className="font-mono text-sm text-gray-900 dark:text-white break-all">{peerId || 'Loading...'}</p>
+              <p className="font-mono text-sm text-fg break-all">{peerId || 'Loading...'}</p>
               <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all" title="Copy">
                 {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
               </button>
@@ -600,7 +600,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
 
           <button
             onClick={handleBackToLobby}
-            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+            className="px-6 py-3 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
             {t('cancelAndBack')}
           </button>
@@ -613,19 +613,19 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
   if (gamePhase === 'waiting' && !isHostRef.current && !isConnected) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className="bg-surface rounded-2xl shadow-lg p-8">
           <div className="animate-spin mb-6">
             <RefreshCw className="w-16 h-16 mx-auto text-green-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-fg mb-2">
             {t('connecting') || 'Connecting...'}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-sub mb-6">
             {t('connectingDesc') || 'Establishing connection with the host...'}
           </p>
           <button
             onClick={handleBackToLobby}
-            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+            className="px-6 py-3 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
             {t('cancelAndBack')}
           </button>
@@ -644,7 +644,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           <div className="flex items-center justify-between">
             <button
               onClick={handleBackToLobby}
-              className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               {t('backToLobby')}
@@ -681,13 +681,13 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           </div>
 
           {/* 점수판 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
             <div className="flex items-center justify-between">
               {/* 흑돌 플레이어 */}
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'black' && !gameState.winner
                   ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700'
+                  : 'bg-soft'
               }`}>
                 <div className="relative">
                   <div className="w-10 h-10 bg-gray-900 rounded-full border-2 border-gray-600 shadow-md flex items-center justify-center">
@@ -702,14 +702,14 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                   <p className={`font-medium ${
                     gameState.currentTurn === 'black' && !gameState.winner
                       ? 'text-white'
-                      : 'text-gray-900 dark:text-white'
+                      : 'text-fg'
                   }`}>
                     {myColor === 'black' ? playerName : opponentName}
                   </p>
                   <p className={`text-xs ${
                     gameState.currentTurn === 'black' && !gameState.winner
                       ? 'text-gray-300'
-                      : 'text-gray-500 dark:text-gray-400'
+                      : 'text-muted'
                   }`}>
                     {myColor === 'black' ? t('you') : t('opponent')}
                   </p>
@@ -719,7 +719,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               {/* VS 및 전적 */}
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-400">VS</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted mt-1">
                   {winCount.black} : {winCount.white}
                 </div>
               </div>
@@ -728,7 +728,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'white' && !gameState.winner
                   ? 'bg-white border-2 border-gray-300 shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-700'
+                  : 'bg-soft'
               }`}>
                 <div className="relative">
                   <div className="w-10 h-10 bg-white rounded-full border-2 border-gray-300 shadow-md flex items-center justify-center">
@@ -740,10 +740,10 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className="font-medium text-fg">
                     {myColor === 'white' ? playerName : opponentName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted">
                     {myColor === 'white' ? t('you') : t('opponent')}
                   </p>
                 </div>
@@ -756,7 +756,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myColor
                 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}
               {gameState.validMoves.length > 0 && gameState.currentTurn === myColor && (
@@ -774,7 +774,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
                 : gameState.winner === 'draw'
                 ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
               <p className="text-xl font-bold">{getWinnerMessage()}</p>
@@ -785,7 +785,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           )}
 
           {/* 오셀로판 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
             <OthelloBoard
               gameState={gameState}
               myColor={myColor}
@@ -796,8 +796,8 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           </div>
 
           {/* 수순 정보 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
+            <div className="flex items-center justify-between text-sm text-sub">
               <span>{t('moves') || 'Moves'}: {gameState.moveHistory.length}</span>
               <span>{t('total') || 'Total'}: {gameState.blackCount + gameState.whiteCount} / 64</span>
             </div>
@@ -815,7 +815,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               </button>
               <button
                 onClick={handleBackToLobby}
-                className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+                className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
               >
                 {t('backToLobby')}
               </button>
@@ -826,10 +826,10 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
         {/* 오른쪽: 채팅 영역 */}
         {showChat && (
           <div className="w-80 flex-shrink-0 sticky top-4">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-[500px] flex flex-col">
+            <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
               {/* 채팅 헤더 */}
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <div className="p-4 border-b border-line">
+                <h3 className="font-semibold text-fg flex items-center gap-2">
                   <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
@@ -841,7 +841,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                 className="flex-1 overflow-y-auto p-4 space-y-3"
               >
                 {chatMessages.length === 0 ? (
-                  <p className="text-center text-gray-400 dark:text-gray-500 text-sm py-8">
+                  <p className="text-center text-faint text-sm py-8">
                     {t('noChatMessages') || 'No messages yet'}
                   </p>
                 ) : (
@@ -851,11 +851,11 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                       className={`${
                         msg.isMe
                           ? 'ml-auto bg-green-500 text-white'
-                          : 'mr-auto bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                          : 'mr-auto bg-soft text-fg'
                       } rounded-xl px-3 py-2 max-w-[80%]`}
                     >
                       <p className={`text-xs mb-1 ${
-                        msg.isMe ? 'text-green-200' : 'text-gray-500 dark:text-gray-400'
+                        msg.isMe ? 'text-green-200' : 'text-muted'
                       }`}>
                         {msg.sender}
                       </p>
@@ -866,7 +866,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               </div>
 
               {/* 채팅 입력 */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="p-4 border-t border-line">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -879,7 +879,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                       }
                     }}
                     placeholder={t('typeMessage') || 'Type a message...'}
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     maxLength={200}
                   />
                   <button

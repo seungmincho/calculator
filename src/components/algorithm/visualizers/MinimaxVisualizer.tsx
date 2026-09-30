@@ -334,8 +334,8 @@ export default function MinimaxVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
               {tHub('categories.gameAi')}
@@ -350,7 +350,7 @@ export default function MinimaxVisualizer() {
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             useAlphaBeta
               ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-400/30'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border border-gray-300/30 dark:border-gray-600/30'
+              : 'bg-soft text-sub border border-gray-300/30 dark:border-gray-600/30'
           }`}
         >
           <span className={`w-2 h-2 rounded-full ${useAlphaBeta ? 'bg-emerald-500' : 'bg-gray-400'}`} />
@@ -363,7 +363,7 @@ export default function MinimaxVisualizer() {
         {/* ── Left column ── */}
         <div className="xl:col-span-3 space-y-4">
           {/* Tree canvas */}
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* Controls */}
             <div className="flex justify-center">
               <VisualizerControls
@@ -402,19 +402,19 @@ export default function MinimaxVisualizer() {
             {result && (
               <div className="space-y-2">
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.totalNodes')}: <strong className="text-blue-600 dark:text-blue-400">{totalNodes}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.prunedNodes')}: <strong className="text-red-500 dark:text-red-400">{prunedCount}</strong>
                   </span>
                   {rootScore !== undefined && (
-                    <span className="text-gray-600 dark:text-gray-400">
-                      {t('stats.rootScore')}: <strong className={rootScore > 0 ? 'text-blue-600 dark:text-blue-400' : rootScore < 0 ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'}>{rootScore}</strong>
+                    <span className="text-sub">
+                      {t('stats.rootScore')}: <strong className={rootScore > 0 ? 'text-blue-600 dark:text-blue-400' : rootScore < 0 ? 'text-red-500 dark:text-red-400' : 'text-sub'}>{rootScore}</strong>
                     </span>
                   )}
                   {bestMove >= 0 && (
-                    <span className="text-gray-600 dark:text-gray-400">
+                    <span className="text-sub">
                       {t('stats.bestMove')}: <strong className="text-emerald-600 dark:text-emerald-400">{bestMove + 1}번</strong>
                     </span>
                   )}
@@ -436,11 +436,11 @@ export default function MinimaxVisualizer() {
           </div>
 
           {/* Board + controls panel */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
             <div className="flex flex-wrap gap-6 items-start">
               {/* Mini Tic-Tac-Toe board */}
               <div className="space-y-2">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-medium text-muted">
                   {isRunning ? t('board.playerTurn') : t('board.clickToPlace')}
                 </p>
                 <div
@@ -466,8 +466,8 @@ export default function MinimaxVisualizer() {
                               : cell === 'O'
                                 ? 'border-red-400 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                                 : canClick
-                                  ? 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer'
-                                  : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-default opacity-60'
+                                  ? 'border-line bg-field hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer'
+                                  : 'border-line bg-gray-50 dark:bg-gray-800 cursor-default opacity-60'
                           }
                         `}
                       >
@@ -478,7 +478,7 @@ export default function MinimaxVisualizer() {
                 </div>
                 {/* Next player indicator (only when interactive) */}
                 {!isRunning && !checkWinner(board).winner && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                  <div className="text-xs text-muted">
                     다음:
                     <span className={`ml-1 font-bold ${nextPlayer(board) === 'X' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
                       {nextPlayer(board)}
@@ -494,26 +494,26 @@ export default function MinimaxVisualizer() {
 
               {/* Preset & clear buttons */}
               <div className="space-y-2 flex-1 min-w-0">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">프리셋 보드</p>
+                <p className="text-xs font-medium text-muted">프리셋 보드</p>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => handlePreset(PRESET_EMPTY)}
                     disabled={isRunning}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
+                    className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
                   >
                     {t('controls.preset.empty')}
                   </button>
                   <button
                     onClick={() => handlePreset(PRESET_MIDGAME)}
                     disabled={isRunning}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
+                    className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
                   >
                     {t('controls.preset.midGame')}
                   </button>
                   <button
                     onClick={() => handlePreset(PRESET_NEAR_END)}
                     disabled={isRunning}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
+                    className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
                   >
                     {t('controls.preset.nearEnd')}
                   </button>
@@ -527,7 +527,7 @@ export default function MinimaxVisualizer() {
                 </div>
 
                 {/* Legend */}
-                <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400 pt-1">
+                <div className="flex flex-wrap gap-3 text-xs text-muted pt-1">
                   <span className="flex items-center gap-1">
                     <span className="w-3 h-3 rounded-full bg-blue-500/80" />
                     {t('grid.maximizing')}
@@ -569,23 +569,23 @@ export default function MinimaxVisualizer() {
               <div className="flex items-start gap-3">
                 <span className="text-2xl flex-shrink-0 mt-0.5">{explanation.emoji}</span>
                 <div className="min-w-0">
-                  <div className="font-bold text-gray-900 dark:text-white text-base">
+                  <div className="font-bold text-fg text-base">
                     {explanation.title}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                  <p className="text-sm text-sub mt-1 leading-relaxed">
                     {explanation.desc}
                   </p>
                   {currentStep && currentStep.score !== null && currentStep.action === 'backpropagate' && (
-                    <div className="mt-2 text-xs font-mono text-gray-500 dark:text-gray-400 bg-white/60 dark:bg-gray-800/60 rounded-lg px-2.5 py-1.5">
+                    <div className="mt-2 text-xs font-mono text-muted bg-white/60 dark:bg-gray-800/60 rounded-lg px-2.5 py-1.5">
                       α={currentStep.alpha === -Infinity ? '-∞' : currentStep.alpha}{' '}
                       β={currentStep.beta === Infinity ? '+∞' : currentStep.beta}{' '}
                       {t('explain.scoreLabel')}: {currentStep.score}
                     </div>
                   )}
                   {isRunning && (
-                    <div className="mt-2 flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+                    <div className="mt-2 flex items-center gap-2 text-xs text-faint">
                       <span>{t('explain.step')} {currentStepIndex + 1} / {totalSteps}</span>
-                      <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="flex-1 h-1 bg-track rounded-full overflow-hidden">
                         <div
                           className="h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all"
                           style={{ width: `${((currentStepIndex + 1) / totalSteps) * 100}%` }}
@@ -598,9 +598,9 @@ export default function MinimaxVisualizer() {
             </div>
 
             {/* ── Tabs panel ── */}
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
               {/* Tabs */}
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -608,7 +608,7 @@ export default function MinimaxVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -637,7 +637,7 @@ export default function MinimaxVisualizer() {
                     </div>
 
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+                      <p className="text-sm text-faint italic">
                         {t('stepsGuide.description')}
                       </p>
                     ) : (
@@ -737,7 +737,7 @@ function MinimaxStepsList({
   return (
     <div ref={listRef} className="space-y-1">
       {windowStart > 0 && (
-        <div className="text-xs text-gray-400 dark:text-gray-500 text-center py-1">
+        <div className="text-xs text-faint text-center py-1">
           ... 이전 {windowStart}개 단계 ...
         </div>
       )}
@@ -756,7 +756,7 @@ function MinimaxStepsList({
               isCurrent
                 ? ACTION_STYLES[step.action]
                 : isActive
-                  ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                  ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                   : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}
           >
@@ -764,7 +764,7 @@ function MinimaxStepsList({
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action]}`}>
                 {ACTION_LABELS[step.action]}
               </span>
-              <span className="text-gray-600 dark:text-gray-300 truncate">
+              <span className="text-sub truncate">
                 {node?.move !== null && node?.move !== undefined
                   ? `${isMaximizing ? 'X' : 'O'} → ${node.move + 1}번칸`
                   : step.depth === 0
@@ -786,7 +786,7 @@ function MinimaxStepsList({
         )
       })}
       {windowEnd < displaySteps.length - 1 && (
-        <div className="text-xs text-gray-400 dark:text-gray-500 text-center py-1">
+        <div className="text-xs text-faint text-center py-1">
           ... 이후 {displaySteps.length - 1 - windowEnd}개 단계 ...
         </div>
       )}

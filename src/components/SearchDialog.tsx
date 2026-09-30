@@ -191,15 +191,15 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
       aria-label={t('common.search')}
     >
       {/* Backdrop — 헤더(h-16) 아래부터 어둡게 */}
-      <div className="fixed inset-0 top-16 bg-black/50 backdrop-blur-sm" />
+      <div className="fixed inset-0 top-16 bg-black/50" />
 
       {/* Dialog */}
       <div
-        className="relative w-full max-w-xl mx-4 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-xl mx-4 bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}
-        <div className="flex items-center px-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center px-4 border-b border-line">
           <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
           <input
             ref={inputRef}
@@ -209,7 +209,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={t('searchDialog.placeholder')}
-            className="flex-1 px-3 py-4 text-base bg-transparent text-gray-900 dark:text-white placeholder-gray-400 outline-none"
+            className="flex-1 px-3 py-4 text-base bg-transparent text-fg placeholder-gray-400 outline-none"
             aria-label={t('common.search')}
             aria-expanded={true}
             aria-controls="search-listbox"
@@ -229,7 +229,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               <X className="w-4 h-4" />
             </button>
           )}
-          <kbd className="hidden sm:inline-flex ml-2 px-2 py-1 text-xs font-mono text-gray-400 bg-gray-100 dark:bg-gray-700 rounded">
+          <kbd className="hidden sm:inline-flex ml-2 px-2 py-1 text-xs font-mono text-gray-400 bg-soft rounded">
             ESC
           </kbd>
         </div>
@@ -246,7 +246,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               {/* Recent tools */}
               {suggestedItems.recentItems.length > 0 && (
                 <div>
-                  <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
                     <Clock className="w-3 h-3" />
                     {t('header.recent')}
                   </div>
@@ -262,13 +262,13 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                       className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                         i === selectedIndex
                           ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                          : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                          : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                       }`}
                     >
                       <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium truncate">{item.label}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</div>
+                        <div className="text-xs text-muted truncate">{item.description}</div>
                       </div>
                     </a>
                   ))}
@@ -277,7 +277,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               {/* Popular tools */}
               {suggestedItems.popularItems.length > 0 && (
                 <div>
-                  <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
                     <TrendingUp className="w-3 h-3" />
                     {t('searchDialog.popular')}
                   </div>
@@ -295,13 +295,13 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                         className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                           idx === selectedIndex
                             ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                            : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                            : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                         }`}
                       >
                         <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium truncate">{item.label}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</div>
+                          <div className="text-xs text-muted truncate">{item.description}</div>
                         </div>
                       </a>
                     )
@@ -310,7 +310,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               )}
             </>
           ) : filteredItems.length === 0 ? (
-            <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+            <div className="px-4 py-8 text-center text-muted">
               <p className="text-sm">{t('searchDialog.noResults')}</p>
             </div>
           ) : (
@@ -323,7 +323,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
                 return (
                   <div key={catKey}>
-                    <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0">
+                    <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0">
                       {catItems[0].categoryLabel} ({catItems.length})
                     </div>
                     {catItems.map((item) => {
@@ -346,7 +346,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                           className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                             isSelected
                               ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                              : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                           }`}
                         >
                           <span className="text-xl flex-shrink-0 w-8 text-center">
@@ -356,7 +356,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                             <div className="text-sm font-medium truncate">
                               {item.label}
                             </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            <div className="text-xs text-muted truncate">
                               {item.description}
                             </div>
                           </div>
@@ -374,14 +374,14 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
         </div>
 
         {/* Footer hint */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-xs text-gray-400">
+        <div className="flex items-center justify-between px-4 py-2 border-t border-line bg-gray-50 dark:bg-gray-900/50 text-xs text-gray-400">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 font-mono bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↑↓</kbd>
+              <kbd className="px-1.5 py-0.5 font-mono bg-track rounded text-[10px]">↑↓</kbd>
               {t('searchDialog.navigate')}
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 font-mono bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↵</kbd>
+              <kbd className="px-1.5 py-0.5 font-mono bg-track rounded text-[10px]">↵</kbd>
               {t('searchDialog.open')}
             </span>
           </div>

@@ -707,11 +707,11 @@ export default function DnsLookupVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Globe className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
           DNS 조회 과정 시각화
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           도메인 이름이 IP 주소로 변환되는 과정을 단계별로 시각화합니다
         </p>
       </div>
@@ -722,12 +722,12 @@ export default function DnsLookupVisualizer() {
         <div className="lg:col-span-1 space-y-4">
           {/* Domain input */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="font-semibold text-fg flex items-center gap-2">
               <Server className="w-4 h-4" /> 조회 설정
             </h2>
 
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label className="block text-xs font-medium text-sub mb-1">
                 도메인
               </label>
               <input
@@ -740,7 +740,7 @@ export default function DnsLookupVisualizer() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label className="block text-xs font-medium text-sub mb-1">
                 레코드 타입
               </label>
               <div className="grid grid-cols-4 gap-1">
@@ -751,7 +751,7 @@ export default function DnsLookupVisualizer() {
                     className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                       recordType === rt
                         ? 'bg-indigo-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {rt}
@@ -761,7 +761,7 @@ export default function DnsLookupVisualizer() {
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label className="text-xs font-medium text-sub">
                 캐시 활성화
               </label>
               <button
@@ -780,7 +780,7 @@ export default function DnsLookupVisualizer() {
 
             {cacheEnabled && (
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   캐시 히트 위치
                 </label>
                 <select
@@ -806,17 +806,17 @@ export default function DnsLookupVisualizer() {
 
           {/* Presets */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-sm">프리셋</h2>
+            <h2 className="font-semibold text-fg text-sm">프리셋</h2>
             {PRESETS.map((preset) => (
               <button
                 key={preset.name}
                 onClick={() => applyPreset(preset)}
-                className="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors"
+                className="w-full text-left p-3 rounded-lg border border-line hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors"
               >
-                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="text-sm font-medium text-fg">
                   {preset.name}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                <div className="text-xs text-muted mt-0.5">
                   {preset.description}
                 </div>
               </button>
@@ -826,7 +826,7 @@ export default function DnsLookupVisualizer() {
           {/* Stats */}
           {isStarted && (
             <div className={`${glassCard} ${glassInset} p-5`}>
-              <h2 className="font-semibold text-gray-900 dark:text-white text-sm mb-3 flex items-center gap-2">
+              <h2 className="font-semibold text-fg text-sm mb-3 flex items-center gap-2">
                 <Database className="w-4 h-4" /> 통계
               </h2>
               <div className="grid grid-cols-3 gap-3 text-center">
@@ -834,19 +834,19 @@ export default function DnsLookupVisualizer() {
                   <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
                     {totalQueries}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">총 쿼리</div>
+                  <div className="text-xs text-muted">총 쿼리</div>
                 </div>
                 <div>
                   <div className="text-lg font-bold text-amber-600 dark:text-amber-400">
                     {cacheHits}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">캐시 히트</div>
+                  <div className="text-xs text-muted">캐시 히트</div>
                 </div>
                 <div>
                   <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                     ~{totalTimeMs}ms
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">총 소요</div>
+                  <div className="text-xs text-muted">총 소요</div>
                 </div>
               </div>
             </div>
@@ -858,10 +858,10 @@ export default function DnsLookupVisualizer() {
           {/* Canvas */}
           <div className={`${glassCard} ${glassInset} p-4 overflow-hidden`}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-gray-900 dark:text-white text-sm">
+              <h2 className="font-semibold text-fg text-sm">
                 DNS 조회 흐름
               </h2>
-              <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-3 text-xs text-muted">
                 <span className="flex items-center gap-1">
                   <span className="w-3 h-0.5 bg-blue-500 inline-block" style={{ borderTop: '2px dashed #3b82f6' }} /> 쿼리
                 </span>
@@ -881,9 +881,9 @@ export default function DnsLookupVisualizer() {
                 <button
                   onClick={goPrev}
                   disabled={currentStep <= 0}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 transition-colors"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 transition-colors"
                 >
-                  <SkipBack className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  <SkipBack className="w-4 h-4 text-body" />
                 </button>
                 <button
                   onClick={() => setIsPlaying((v) => !v)}
@@ -894,17 +894,17 @@ export default function DnsLookupVisualizer() {
                 <button
                   onClick={goNext}
                   disabled={currentStep >= steps.length - 1}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 transition-colors"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 transition-colors"
                 >
-                  <SkipForward className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  <SkipForward className="w-4 h-4 text-body" />
                 </button>
                 <button
                   onClick={reset}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
-                  <RotateCcw className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  <RotateCcw className="w-4 h-4 text-body" />
                 </button>
-                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                <span className="text-xs text-muted ml-2">
                   {currentStep + 1} / {steps.length}
                 </span>
               </div>
@@ -928,11 +928,11 @@ export default function DnsLookupVisualizer() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sm font-semibold text-fg">
                       {SERVER_MAP.get(currentStepData.from)?.name}
                     </span>
                     <span className="text-gray-400">→</span>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sm font-semibold text-fg">
                       {SERVER_MAP.get(currentStepData.to)?.name}
                     </span>
                     <span
@@ -951,7 +951,7 @@ export default function DnsLookupVisualizer() {
                           : '응답'}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
+                  <p className="text-sm text-sub mt-2 leading-relaxed">
                     {currentStepData.detail}
                   </p>
                   {currentStepData.recordInfo && (
@@ -959,7 +959,7 @@ export default function DnsLookupVisualizer() {
                       {currentStepData.recordInfo}
                     </div>
                   )}
-                  <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  <div className="text-xs text-faint mt-1">
                     ~{currentStepData.timeMs}ms
                   </div>
                 </div>
@@ -970,7 +970,7 @@ export default function DnsLookupVisualizer() {
           {/* Step timeline */}
           {isStarted && steps.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-5`}>
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-3">
+              <h3 className="font-semibold text-fg text-sm mb-3">
                 전체 단계
               </h3>
               <div className="space-y-1 max-h-48 overflow-y-auto">
@@ -986,8 +986,8 @@ export default function DnsLookupVisualizer() {
                       i === currentStep
                         ? 'bg-indigo-50 dark:bg-indigo-950 border border-indigo-300 dark:border-indigo-700'
                         : i < currentStep
-                          ? 'bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400'
-                          : 'text-gray-400 dark:text-gray-500'
+                          ? 'bg-gray-50 dark:bg-gray-900 text-muted'
+                          : 'text-faint'
                     }`}
                   >
                     <span
@@ -1013,7 +1013,7 @@ export default function DnsLookupVisualizer() {
 
       {/* DNS Record Types reference */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <Info className="w-5 h-5 text-indigo-500" />
           DNS 레코드 타입
         </h2>
@@ -1046,7 +1046,7 @@ export default function DnsLookupVisualizer() {
           ].map((rec) => (
             <div
               key={rec.type}
-              className="p-4 rounded-lg border border-gray-200 dark:border-gray-700"
+              className="p-4 rounded-lg border border-line"
             >
               <div
                 className={`text-sm font-bold ${
@@ -1061,8 +1061,8 @@ export default function DnsLookupVisualizer() {
               >
                 {rec.type} 레코드
               </div>
-              <div className="text-sm text-gray-700 dark:text-gray-300 mt-1">{rec.desc}</div>
-              <div className="text-xs font-mono text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-sm text-body mt-1">{rec.desc}</div>
+              <div className="text-xs font-mono text-muted mt-1">
                 {rec.example}
               </div>
             </div>
@@ -1076,7 +1076,7 @@ export default function DnsLookupVisualizer() {
           onClick={() => setGuideOpen((v) => !v)}
           className="w-full px-6 py-4 flex items-center justify-between text-left"
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-indigo-500" />
             DNS 학습 가이드
           </h2>
@@ -1090,8 +1090,8 @@ export default function DnsLookupVisualizer() {
           <div className="px-6 pb-6 space-y-6">
             {/* What is DNS */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">DNS란?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="font-semibold text-fg mb-2">DNS란?</h3>
+              <p className="text-sm text-sub leading-relaxed">
                 DNS(Domain Name System)는 인터넷의 전화번호부입니다. 사람이 기억하기 쉬운 도메인
                 이름(예: www.google.com)을 컴퓨터가 통신에 사용하는 IP 주소(예: 142.250.196.68)로
                 변환합니다. 1983년 Paul Mockapetris가 설계했으며, 전 세계 수십억 건의 DNS 조회가
@@ -1101,7 +1101,7 @@ export default function DnsLookupVisualizer() {
 
             {/* Recursive vs Iterative */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="font-semibold text-fg mb-2">
                 재귀 조회 vs 반복 조회
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -1109,7 +1109,7 @@ export default function DnsLookupVisualizer() {
                   <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">
                     재귀 조회 (Recursive)
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-sub">
                     클라이언트가 리졸버에게 &quot;최종 답을 달라&quot;고 요청합니다. 리졸버가 다른
                     서버들을 대신 조회하여 완전한 답을 돌려줍니다. 일반 사용자가 주로 사용하는
                     방식입니다.
@@ -1119,7 +1119,7 @@ export default function DnsLookupVisualizer() {
                   <div className="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">
                     반복 조회 (Iterative)
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-sub">
                     리졸버가 각 네임서버에게 &quot;다음에 누구한테 물어봐야 하나요?&quot;라고
                     질의합니다. 각 서버는 가능한 최선의 참조(referral)를 응답하고, 리졸버가 직접
                     다음 서버에 질의합니다.
@@ -1130,7 +1130,7 @@ export default function DnsLookupVisualizer() {
 
             {/* DNS Hierarchy */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">DNS 계층 구조</h3>
+              <h3 className="font-semibold text-fg mb-2">DNS 계층 구조</h3>
               <div className="space-y-2">
                 {[
                   {
@@ -1152,10 +1152,10 @@ export default function DnsLookupVisualizer() {
                   >
                     <div className="shrink-0 w-1.5 rounded bg-indigo-500" />
                     <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium text-fg">
                         {item.level}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</div>
+                      <div className="text-xs text-muted">{item.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -1164,8 +1164,8 @@ export default function DnsLookupVisualizer() {
 
             {/* Caching */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">DNS 캐싱</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="font-semibold text-fg mb-2">DNS 캐싱</h3>
+              <p className="text-sm text-sub leading-relaxed">
                 DNS 응답에는 TTL(Time To Live) 값이 포함됩니다. 이 시간 동안 캐시에 저장되어 같은
                 도메인을 다시 조회할 때 전체 과정을 생략합니다. 캐시는 브라우저(Chrome: 최대
                 1분), OS(systemd-resolved 등), 재귀 리졸버 등 여러 계층에 존재합니다. TTL이
@@ -1175,7 +1175,7 @@ export default function DnsLookupVisualizer() {
 
             {/* FAQ */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">자주 묻는 질문</h3>
+              <h3 className="font-semibold text-fg mb-2">자주 묻는 질문</h3>
               <div className="space-y-3">
                 {[
                   {
@@ -1192,10 +1192,10 @@ export default function DnsLookupVisualizer() {
                   },
                 ].map((faq) => (
                   <div key={faq.q} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-900">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="text-sm font-medium text-fg">
                       Q: {faq.q}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="text-xs text-muted mt-1">
                       A: {faq.a}
                     </div>
                   </div>

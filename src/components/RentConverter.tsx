@@ -152,8 +152,8 @@ export default function RentConverter() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -163,7 +163,7 @@ export default function RentConverter() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Home className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-fg">
                   설정
                 </h2>
               </div>
@@ -196,7 +196,7 @@ export default function RentConverter() {
                 className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                   mode === 'jeonseToWolse'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t('mode.jeonseToWolse')}
@@ -206,7 +206,7 @@ export default function RentConverter() {
                 className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                   mode === 'wolseToJeonse'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t('mode.wolseToJeonse')}
@@ -217,11 +217,11 @@ export default function RentConverter() {
               <>
                 {/* Jeonse Deposit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('jeonseDeposit')}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
                       ₩
                     </span>
                     <input
@@ -233,18 +233,18 @@ export default function RentConverter() {
                       step="10000000"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {formatWonUnit(jeonseDeposit)}원
                   </p>
                 </div>
 
                 {/* Wolse Deposit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('wolseDeposit')}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
                       ₩
                     </span>
                     <input
@@ -256,14 +256,14 @@ export default function RentConverter() {
                       step="10000000"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {formatWonUnit(wolseDeposit)}원
                   </p>
                 </div>
 
                 {/* Conversion Rate */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('conversionRate')}
                   </label>
                   <input
@@ -275,7 +275,7 @@ export default function RentConverter() {
                     max="20"
                     step="0.1"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     연율: {conversionRate}%
                   </p>
                 </div>
@@ -284,11 +284,11 @@ export default function RentConverter() {
               <>
                 {/* Reverse Wolse Deposit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('wolseDeposit')}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
                       ₩
                     </span>
                     <input
@@ -300,18 +300,18 @@ export default function RentConverter() {
                       step="10000000"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {formatWonUnit(reverseWolseDeposit)}원
                   </p>
                 </div>
 
                 {/* Monthly Rent */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('monthlyRent')}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
                       ₩
                     </span>
                     <input
@@ -323,14 +323,14 @@ export default function RentConverter() {
                       step="10000"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {formatWonUnit(monthlyRent)}원
                   </p>
                 </div>
 
                 {/* Reverse Conversion Rate */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('conversionRate')}
                   </label>
                   <input
@@ -342,7 +342,7 @@ export default function RentConverter() {
                     max="20"
                     step="0.1"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     연율: {reverseConversionRate}%
                   </p>
                 </div>
@@ -351,7 +351,7 @@ export default function RentConverter() {
 
             {/* Quick Rates */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('quickRates')}
               </label>
               <div className="grid grid-cols-4 gap-2">
@@ -368,7 +368,7 @@ export default function RentConverter() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       currentRate === rate
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {rate}%
@@ -379,7 +379,7 @@ export default function RentConverter() {
 
             {/* Quick Deposits */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('quickDeposits')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -393,7 +393,7 @@ export default function RentConverter() {
                         setReverseWolseDeposit(deposit)
                       }
                     }}
-                    className="px-3 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    className="px-3 py-2 rounded-lg text-sm font-medium bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   >
                     {formatWonUnit(deposit)}
                   </button>
@@ -502,18 +502,18 @@ export default function RentConverter() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center gap-2 mb-4">
               <ArrowLeftRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-fg">
                 계산 공식
               </h3>
             </div>
             <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-              <p className="text-sm font-mono text-gray-700 dark:text-gray-300">
+              <p className="text-sm font-mono text-body">
                 {mode === 'jeonseToWolse'
                   ? '월세 = (전세금 - 월세보증금) × 전환율 ÷ 12'
                   : '전세금 = 월세보증금 + (월세 × 12 ÷ 전환율)'}
               </p>
-              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+              <div className="mt-3 pt-3 border-t border-line">
+                <p className="text-xs text-sub">
                   {mode === 'jeonseToWolse' ? (
                     <>
                       ({formatWonUnit(jeonseDeposit)} - {formatWonUnit(wolseDeposit)}) × {conversionRate}% ÷ 12 = {formatWonUnit(jeonseToWolseResult.monthlyRent)}원
@@ -530,22 +530,22 @@ export default function RentConverter() {
 
           {/* Conversion Rate Comparison Table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('rateComparisonTable.title')}
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 pr-4 font-medium text-gray-500 dark:text-gray-400">
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 pr-4 font-medium text-muted">
                       {t('rateComparisonTable.rate')}
                     </th>
-                    <th className="text-right py-2 px-4 font-medium text-gray-500 dark:text-gray-400">
+                    <th className="text-right py-2 px-4 font-medium text-muted">
                       {mode === 'jeonseToWolse'
                         ? t('rateComparisonTable.monthlyRent')
                         : t('rateComparisonTable.jeonseDeposit')}
                     </th>
-                    <th className="text-right py-2 pl-4 font-medium text-gray-500 dark:text-gray-400">
+                    <th className="text-right py-2 pl-4 font-medium text-muted">
                       {t('rateComparisonTable.yearlyTotal')}
                     </th>
                   </tr>
@@ -567,7 +567,7 @@ export default function RentConverter() {
                     return (
                       <tr
                         key={rate}
-                        className={`border-b border-gray-100 dark:border-gray-700 transition-colors ${
+                        className={`border-b border-line transition-colors ${
                           isActive
                             ? 'bg-blue-50 dark:bg-blue-950'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -578,7 +578,7 @@ export default function RentConverter() {
                             className={`font-semibold ${
                               isActive
                                 ? 'text-blue-700 dark:text-blue-300'
-                                : 'text-gray-700 dark:text-gray-300'
+                                : 'text-body'
                             }`}
                           >
                             {rate}%
@@ -589,12 +589,12 @@ export default function RentConverter() {
                             )}
                           </span>
                         </td>
-                        <td className="text-right py-2 px-4 font-medium text-gray-900 dark:text-white">
+                        <td className="text-right py-2 px-4 font-medium text-fg">
                           {mode === 'jeonseToWolse'
                             ? `${formatWon(mainValue)}원`
                             : `${formatWonUnit(mainValue)}원`}
                         </td>
-                        <td className="text-right py-2 pl-4 text-gray-600 dark:text-gray-400">
+                        <td className="text-right py-2 pl-4 text-sub">
                           {formatWonUnit(yearly)}원
                         </td>
                       </tr>
@@ -607,20 +607,20 @@ export default function RentConverter() {
 
           {/* Comparison Section */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               전세 vs 월세 비교
             </h3>
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-body">
                     전세 기회비용 (연간)
                   </span>
                   <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
                     {formatWon(currentResult.jeonseOpportunityCost)}원
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                <div className="w-full bg-track rounded-full h-4">
                   <div
                     className="bg-gradient-to-r from-blue-500 to-blue-600 h-4 rounded-full transition-all duration-300"
                     style={{
@@ -642,14 +642,14 @@ export default function RentConverter() {
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-body">
                     연간 월세 총액
                   </span>
                   <span className="text-sm font-bold text-green-600 dark:text-green-400">
                     {formatWon(currentResult.yearlyTotal)}원
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                <div className="w-full bg-track rounded-full h-4">
                   <div
                     className="bg-gradient-to-r from-green-500 to-green-600 h-4 rounded-full transition-all duration-300"
                     style={{
@@ -685,35 +685,35 @@ export default function RentConverter() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.what.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.what.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                  <span className="text-body">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.example.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.example.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-green-600 dark:text-green-400 mt-1">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                  <span className="text-body">{item}</span>
                 </li>
               ))}
             </ul>

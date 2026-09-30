@@ -289,8 +289,8 @@ export default function TypingTest() {
       <div className="flex items-center gap-3">
         <Keyboard className="w-8 h-8 text-blue-600 dark:text-blue-400" />
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
       </div>
 
@@ -299,7 +299,7 @@ export default function TypingTest() {
         <div className="space-y-4">
           {/* Language Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               언어
             </label>
             <div className="flex gap-2">
@@ -311,7 +311,7 @@ export default function TypingTest() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   language === 'korean'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
                 disabled={isRunning}
               >
@@ -325,7 +325,7 @@ export default function TypingTest() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   language === 'english'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
                 disabled={isRunning}
               >
@@ -336,7 +336,7 @@ export default function TypingTest() {
 
           {/* Difficulty Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('difficulty.title')}
             </label>
             <div className="flex gap-2">
@@ -350,7 +350,7 @@ export default function TypingTest() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     difficulty === level
                       ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   disabled={isRunning}
                 >
@@ -362,7 +362,7 @@ export default function TypingTest() {
 
           {/* Duration Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('duration.title')}
             </label>
             <div className="flex gap-2">
@@ -378,7 +378,7 @@ export default function TypingTest() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     duration === dur
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   disabled={isRunning}
                 >
@@ -409,7 +409,7 @@ export default function TypingTest() {
             )}
             <button
               onClick={restartTest}
-              className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all"
+              className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-all"
             >
               <RotateCcw className="w-5 h-5" />
               {t('restart')}
@@ -421,24 +421,24 @@ export default function TypingTest() {
       {/* Typing Area */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         {/* Timer and Live Stats */}
-        <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-6 pb-6 border-b border-line">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+              <span className="text-2xl font-bold text-fg">
                 {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
               </span>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400">{t('wpm')}</div>
+              <div className="text-sm text-muted">{t('wpm')}</div>
               <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{liveStats.wpm}</div>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400">{t('cpm')}</div>
+              <div className="text-sm text-muted">{t('cpm')}</div>
               <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">{liveStats.cpm}</div>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400">{t('accuracy')}</div>
+              <div className="text-sm text-muted">{t('accuracy')}</div>
               <div className="text-xl font-bold text-green-600 dark:text-green-400">{liveStats.accuracy}%</div>
             </div>
           </div>
@@ -491,7 +491,7 @@ export default function TypingTest() {
         <div className="relative rounded-xl shadow-lg p-8 border-2 border-blue-300 dark:border-blue-700">
           <div className="text-center mb-6">
             <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold text-fg mb-2">
               {t('result')}
             </h2>
             <div className="inline-block mt-2">
@@ -502,24 +502,24 @@ export default function TypingTest() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('wpm')}</div>
+            <div className="bg-surface rounded-lg p-4 text-center">
+              <div className="text-sm text-muted mb-1">{t('wpm')}</div>
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{results.wpm}</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('cpm')}</div>
+            <div className="bg-surface rounded-lg p-4 text-center">
+              <div className="text-sm text-muted mb-1">{t('cpm')}</div>
               <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{results.cpm}</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('accuracy')}</div>
+            <div className="bg-surface rounded-lg p-4 text-center">
+              <div className="text-sm text-muted mb-1">{t('accuracy')}</div>
               <div className="text-3xl font-bold text-green-600 dark:text-green-400">{results.accuracy}%</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">총 입력</div>
-              <div className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-surface rounded-lg p-4 text-center">
+              <div className="text-sm text-muted mb-1">총 입력</div>
+              <div className="text-xl font-bold text-fg">
                 {results.correct} / {results.total}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted">
                 정확 / 총
               </div>
             </div>
@@ -538,7 +538,7 @@ export default function TypingTest() {
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('history')}
             </h2>
             <button
@@ -572,31 +572,31 @@ export default function TypingTest() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     날짜
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     언어
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     난이도
                   </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
                     {t('wpm')}
                   </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
                     {t('cpm')}
                   </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
                     {t('accuracy')}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {history.map((entry) => (
-                  <tr key={entry.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                  <tr key={entry.id} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td className="py-3 px-4 text-sm text-fg">
                       {new Date(entry.date).toLocaleDateString('ko-KR', {
                         year: 'numeric',
                         month: '2-digit',
@@ -605,10 +605,10 @@ export default function TypingTest() {
                         minute: '2-digit'
                       })}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-sm text-fg">
                       {t(`language.${entry.language}`)}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-sm text-fg">
                       {t(`difficulty.${entry.difficulty}`)}
                     </td>
                     <td className="py-3 px-4 text-sm text-right font-semibold text-blue-600 dark:text-blue-400">
@@ -630,19 +630,19 @@ export default function TypingTest() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.howTo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={idx} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -651,12 +651,12 @@ export default function TypingTest() {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.speed.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.speed.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={idx} className="flex items-start gap-2 text-body">
                   <span className="text-green-600 dark:text-green-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

@@ -179,8 +179,8 @@ const StockCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">주식 수익률 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">주식 수익률 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             매수가격과 현재가격을 입력하여 주식 투자 수익률을 계산하세요
           </p>
         </div>
@@ -197,12 +197,12 @@ const StockCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">투자 정보 입력</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">투자 정보 입력</h2>
           
           <div className="space-y-6">
             {/* 매수가격 입력 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 매수가격 (주당)
               </label>
               <div className="relative">
@@ -211,7 +211,7 @@ const StockCalculatorContent = () => {
                   value={purchasePrice}
                   onChange={(e) => handlePriceChange(e.target.value, setPurchasePrice, 'purchase')}
                   placeholder="10,000"
-                  className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 />
                 <span className="absolute right-4 top-4 text-gray-600 font-medium">원</span>
               </div>
@@ -219,7 +219,7 @@ const StockCalculatorContent = () => {
 
             {/* 현재가격 입력 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 현재가격 (주당)
               </label>
               <div className="relative">
@@ -228,7 +228,7 @@ const StockCalculatorContent = () => {
                   value={currentPrice}
                   onChange={(e) => handlePriceChange(e.target.value, setCurrentPrice, 'current')}
                   placeholder="12,000"
-                  className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 />
                 <span className="absolute right-4 top-4 text-gray-600 font-medium">원</span>
               </div>
@@ -236,7 +236,7 @@ const StockCalculatorContent = () => {
 
             {/* 보유 주식 수 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 보유 주식 수
               </label>
               <div className="relative">
@@ -247,7 +247,7 @@ const StockCalculatorContent = () => {
                   placeholder="100"
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">주</span>
+                <span className="absolute right-3 top-3 text-muted">주</span>
               </div>
             </div>
 
@@ -265,7 +265,7 @@ const StockCalculatorContent = () => {
 
         {/* Result Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
             <div className="space-y-6">
@@ -316,30 +316,30 @@ const StockCalculatorContent = () => {
 
               {/* Detailed Breakdown */}
               <div className="space-y-3">
-                <h3 className="font-semibold text-gray-900 dark:text-white">투자 내역</h3>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm">
+                <h3 className="font-semibold text-fg">투자 내역</h3>
+                <div className="bg-subtle rounded-lg p-4 space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">매수 단가</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.purchasePrice)}원</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">현재 단가</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.currentPrice)}원</span>
+                    <span className="text-sub">매수 단가</span>
+                    <span className="font-medium text-fg">{formatNumber(result.purchasePrice)}원</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">보유 주식 수</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.shares)}주</span>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-200 dark:border-gray-600 pt-2">
-                    <span className="text-gray-600 dark:text-gray-400">총 매수금액</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.totalPurchaseAmount)}원</span>
+                    <span className="text-sub">현재 단가</span>
+                    <span className="font-medium text-fg">{formatNumber(result.currentPrice)}원</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">현재 평가금액</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.totalCurrentAmount)}원</span>
+                    <span className="text-sub">보유 주식 수</span>
+                    <span className="font-medium text-fg">{formatNumber(result.shares)}주</span>
                   </div>
-                  <div className="flex justify-between border-t-2 border-gray-200 dark:border-gray-600 pt-2 font-bold">
-                    <span className="text-gray-900 dark:text-white">{result.isProfit ? '총 수익금' : '총 손실금'}</span>
+                  <div className="flex justify-between border-t border-line pt-2">
+                    <span className="text-sub">총 매수금액</span>
+                    <span className="font-medium text-fg">{formatNumber(result.totalPurchaseAmount)}원</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sub">현재 평가금액</span>
+                    <span className="font-medium text-fg">{formatNumber(result.totalCurrentAmount)}원</span>
+                  </div>
+                  <div className="flex justify-between border-t-2 border-line pt-2 font-bold">
+                    <span className="text-fg">{result.isProfit ? '총 수익금' : '총 손실금'}</span>
                     <span className={`font-bold ${result.isProfit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                       {result.isProfit ? '+' : ''}{formatNumber(result.totalProfit)}원
                     </span>
@@ -348,7 +348,7 @@ const StockCalculatorContent = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
+            <div className="flex flex-col items-center justify-center h-64 text-faint">
               <BarChart3 className="w-16 h-16 mb-4" />
               <p>매수가격과 현재가격을 입력해주세요</p>
             </div>
@@ -358,7 +358,7 @@ const StockCalculatorContent = () => {
 
       {/* Tips Section */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 주식 투자 팁</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 주식 투자 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
             <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">📈 수익률 이해</h3>

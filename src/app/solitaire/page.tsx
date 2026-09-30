@@ -72,7 +72,7 @@ export default function SolitairePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Solitaire />
@@ -87,17 +87,17 @@ export default function SolitairePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             카드 솔리테어란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             솔리테어(클론다이크)는 52장의 카드를 이용해 혼자 즐기는 클래식 1인 카드 게임입니다. 드래그 앤 드롭, 되돌리기(Undo), 힌트, 자동완성 기능을 갖춘 브라우저 버전으로, 설치 없이 PC와 모바일 모두에서 무료로 즐길 수 있습니다. 통계적으로 약 80%의 게임이 이론상 승리 가능하여 전략적 사고력을 키우는 데도 좋습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             솔리테어 승리 전략 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>뒤집힌 카드 먼저 공략:</strong> 앞면이 가장 많이 보이지 않는 열을 먼저 공략해 뒤집힌 카드를 빨리 열어야 선택지가 넓어집니다.</li>
             <li><strong>A·2 즉시 파운데이션 이동:</strong> A와 2는 발견 즉시 파운데이션으로 옮겨 공간을 확보하세요.</li>
             <li><strong>빈 열을 K 용도로 보존:</strong> 빈 열이 생기면 가능하면 K가 나올 때까지 비워두면 큰 그룹의 카드를 이동할 수 있습니다.</li>

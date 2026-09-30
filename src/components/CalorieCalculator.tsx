@@ -313,10 +313,10 @@ export default function CalorieCalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -349,7 +349,7 @@ export default function CalorieCalculator() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-orange-600" />
             {t('input.title')}
           </h2>
@@ -358,7 +358,7 @@ export default function CalorieCalculator() {
             {/* 기본 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.height')}
                 </label>
                 <input
@@ -367,12 +367,12 @@ export default function CalorieCalculator() {
                   onChange={(e) => setHeight(e.target.value)}
                   placeholder={t('input.heightPlaceholder')}
                   step="0.1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.weight')}
                 </label>
                 <input
@@ -381,12 +381,12 @@ export default function CalorieCalculator() {
                   onChange={(e) => setWeight(e.target.value)}
                   placeholder={t('input.weightPlaceholder')}
                   step="0.1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.age')}
                 </label>
                 <input
@@ -394,14 +394,14 @@ export default function CalorieCalculator() {
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   placeholder={t('input.agePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* 성별 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.gender')}
               </label>
               <div className="flex space-x-4">
@@ -428,13 +428,13 @@ export default function CalorieCalculator() {
 
             {/* 활동 수준 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.activityLevel')}
               </label>
               <select
                 value={activityLevel}
                 onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               >
                 <option value="sedentary">{t('input.activities.sedentary')}</option>
                 <option value="light">{t('input.activities.light')}</option>
@@ -446,13 +446,13 @@ export default function CalorieCalculator() {
 
             {/* 목표 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.goal')}
               </label>
               <select
                 value={goal}
                 onChange={(e) => setGoal(e.target.value as Goal)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               >
                 <option value="loseFast">{t('input.goals.loseFast')}</option>
                 <option value="loseModerate">{t('input.goals.loseModerate')}</option>
@@ -466,7 +466,7 @@ export default function CalorieCalculator() {
 
             {/* 목표 체중 (선택사항) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.targetWeight')}
               </label>
               <input
@@ -475,7 +475,7 @@ export default function CalorieCalculator() {
                 onChange={(e) => setTargetWeight(e.target.value)}
                 placeholder={t('input.targetWeightPlaceholder')}
                 step="0.1"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
               <p className="text-xs text-gray-500 mt-1">
                 {t('input.targetWeightNote')}
@@ -484,7 +484,7 @@ export default function CalorieCalculator() {
 
             {/* BMR 공식 선택 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.bmrFormula')}
               </label>
               <div className="flex space-x-4">
@@ -517,51 +517,51 @@ export default function CalorieCalculator() {
             <>
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getGoalBgColor(goal)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
                   <Target className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
                 
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-lg">
+                    <div className="text-center p-4 bg-field rounded-lg">
                       <div className="text-2xl font-bold text-orange-600">
                         {formatNumber(result.bmr, 0)}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">{t('result.bmr')}</div>
+                      <div className="text-sm text-sub">{t('result.bmr')}</div>
                     </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-lg">
+                    <div className="text-center p-4 bg-field rounded-lg">
                       <div className="text-2xl font-bold text-blue-600">
                         {formatNumber(result.tdee, 0)}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">{t('result.tdee')}</div>
+                      <div className="text-sm text-sub">{t('result.tdee')}</div>
                     </div>
                   </div>
                   
-                  <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-lg">
+                  <div className="text-center p-6 bg-field rounded-lg">
                     <div className={`text-3xl font-bold ${getGoalColor(goal)}`}>
                       {formatNumber(result.goalCalories, 0)}
                     </div>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white mt-2">
+                    <div className="text-lg font-semibold text-fg mt-2">
                       {t('result.goalCalories')}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                    <div className="text-sm text-sub mt-1">
                       {t(`input.goals.${goal}`)}
                     </div>
                   </div>
 
                   {result.timeToGoal > 0 && targetWeight && (
-                    <div className="border-t border-gray-300 dark:border-gray-600 pt-4">
+                    <div className="border-t border-line-strong pt-4">
                       <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-800 dark:text-gray-200">{t('result.weightChangePerWeek')}</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">
+                        <span className="text-body">{t('result.weightChangePerWeek')}</span>
+                        <span className="font-semibold text-fg">
                           {formatNumber(result.weightChangePerWeek, 1)}kg
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-800 dark:text-gray-200">{t('result.timeToGoal')}</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">
+                        <span className="text-body">{t('result.timeToGoal')}</span>
+                        <span className="font-semibold text-fg">
                           {formatNumber(result.timeToGoal, 0)}주
                         </span>
                       </div>
@@ -602,25 +602,25 @@ export default function CalorieCalculator() {
 
               {/* 상세 정보 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h4 className="text-lg font-bold text-fg mb-4">
                   {t('result.details')}
                 </h4>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300">{t('result.bmrFormula')}</span>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                    <span className="text-body">{t('result.bmrFormula')}</span>
+                    <span className="text-body font-medium">
                       {t(`input.formulas.${bmrFormula}`)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300">{t('result.activityMultiplier')}</span>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                    <span className="text-body">{t('result.activityMultiplier')}</span>
+                    <span className="text-body font-medium">
                       {t(`input.activities.${activityLevel}`)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300">{t('result.calorieAdjustment')}</span>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                    <span className="text-body">{t('result.calorieAdjustment')}</span>
+                    <span className="text-body font-medium">
                       {goal.includes('lose') ? '-' : goal === 'maintain' ? '±' : '+'}{Math.abs(result.goalCalories - result.tdee)} kcal/일
                     </span>
                   </div>
@@ -630,7 +630,7 @@ export default function CalorieCalculator() {
               {/* 영양소 비율 도넛 차트 */}
               {macroChartOption && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <h4 className="text-lg font-bold text-fg mb-4 flex items-center">
                     <Zap className="w-5 h-5 mr-2 text-yellow-500" />
                     {t('result.macroChartTitle')}
                   </h4>
@@ -647,7 +647,7 @@ export default function CalorieCalculator() {
           {!result && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
               <Utensils className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 {t('placeholder')}
               </p>
             </div>
@@ -657,16 +657,16 @@ export default function CalorieCalculator() {
 
       {/* 칼로리 가이드 */}
       <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.bmrTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.bmr.0')}</li>
               <li>• {t('guide.bmr.1')}</li>
               <li>• {t('guide.bmr.2')}</li>
@@ -675,10 +675,10 @@ export default function CalorieCalculator() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.calorieTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.calorie.0')}</li>
               <li>• {t('guide.calorie.1')}</li>
               <li>• {t('guide.calorie.2')}</li>
@@ -690,13 +690,13 @@ export default function CalorieCalculator() {
 
       {/* 음식 칼로리 참고표 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
           <Utensils className="w-6 h-6 mr-2 text-green-600" />
           {t('foodCalories.title')}
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('foodCalories.staples')}</h4>
+            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.staples')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t('foodCalories.items.rice')}</span>
@@ -718,7 +718,7 @@ export default function CalorieCalculator() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('foodCalories.proteins')}</h4>
+            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.proteins')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t('foodCalories.items.chicken')}</span>
@@ -740,7 +740,7 @@ export default function CalorieCalculator() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('foodCalories.snacks')}</h4>
+            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.snacks')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t('foodCalories.items.apple')}</span>
@@ -765,13 +765,13 @@ export default function CalorieCalculator() {
 
       {/* 운동 칼로리 소모표 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
           <Activity className="w-6 h-6 mr-2 text-red-500" />
           {t('exerciseCalories.title')}
         </h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('exerciseCalories.cardio')}</h4>
+            <h4 className="font-semibold text-fg mb-3">{t('exerciseCalories.cardio')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t('exerciseCalories.items.walking')}</span>
@@ -793,7 +793,7 @@ export default function CalorieCalculator() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('exerciseCalories.strength')}</h4>
+            <h4 className="font-semibold text-fg mb-3">{t('exerciseCalories.strength')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t('exerciseCalories.items.weight')}</span>
@@ -814,7 +814,7 @@ export default function CalorieCalculator() {
             </div>
           </div>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-xs text-muted mt-4">
           {t('exerciseCalories.note')}
         </p>
       </div>

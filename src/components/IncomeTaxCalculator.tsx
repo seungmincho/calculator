@@ -446,7 +446,7 @@ function IncomeTaxContent() {
   ]
 
   const inputClass = `${glassInput} px-3 py-2`
-  const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+  const labelClass = 'block text-sm font-medium text-body mb-1'
   const cardClass = `${glassCard} ${glassInset} p-6`
   const selectClass = `${glassInput} px-3 py-2`
 
@@ -454,11 +454,11 @@ function IncomeTaxContent() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Disclaimer */}
@@ -468,7 +468,7 @@ function IncomeTaxContent() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700">
+      <div className="flex border-b border-line">
         {tabs.map(tab => (
           <button
             key={tab.key}
@@ -476,7 +476,7 @@ function IncomeTaxContent() {
             className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
                 ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
             }`}
           >
             {tab.icon}
@@ -502,7 +502,7 @@ function IncomeTaxContent() {
                       onChange={() => setIncomeType(type)}
                       className="accent-blue-600"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <span className="text-sm text-body">
                       {t(type === 'business' ? 'incomeTypeBusiness' : 'incomeTypeOther')}
                     </span>
                   </label>
@@ -546,7 +546,7 @@ function IncomeTaxContent() {
                 {selectedOccupation === 'custom' && (
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs text-gray-500 dark:text-gray-400">{t('simpleExpenseRate')}</label>
+                      <label className="text-xs text-muted">{t('simpleExpenseRate')}</label>
                       <div className="relative">
                         <input
                           type="number"
@@ -559,7 +559,7 @@ function IncomeTaxContent() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 dark:text-gray-400">{t('standardExpenseRate')}</label>
+                      <label className="text-xs text-muted">{t('standardExpenseRate')}</label>
                       <div className="relative">
                         <input
                           type="number"
@@ -588,7 +588,7 @@ function IncomeTaxContent() {
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                         expenseMethod === method
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {t(method === 'simple' ? 'expenseSimple' : method === 'standard' ? 'expenseStandard' : 'expenseDirect')}
@@ -608,13 +608,13 @@ function IncomeTaxContent() {
                 {/* Standard: major expenses */}
                 {expenseMethod === 'standard' && (
                   <div className="mt-3 space-y-3">
-                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                    <p className="text-sm text-muted flex items-center gap-1">
                       <Info className="w-4 h-4" />
                       {t('majorExpenses')}
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('majorExpensesPurchase')}</label>
+                        <label className="text-xs text-muted">{t('majorExpensesPurchase')}</label>
                         <input
                           type="text"
                           inputMode="numeric"
@@ -624,7 +624,7 @@ function IncomeTaxContent() {
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('majorExpensesRent')}</label>
+                        <label className="text-xs text-muted">{t('majorExpensesRent')}</label>
                         <input
                           type="text"
                           inputMode="numeric"
@@ -634,7 +634,7 @@ function IncomeTaxContent() {
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('majorExpensesLabor')}</label>
+                        <label className="text-xs text-muted">{t('majorExpensesLabor')}</label>
                         <input
                           type="text"
                           inputMode="numeric"
@@ -655,7 +655,7 @@ function IncomeTaxContent() {
                 {/* Direct expense */}
                 {expenseMethod === 'direct' && (
                   <div className="mt-3">
-                    <label className="text-xs text-gray-500 dark:text-gray-400">{t('directExpenseAmount')}</label>
+                    <label className="text-xs text-muted">{t('directExpenseAmount')}</label>
                     <div className="relative">
                       <input
                         type="text"
@@ -686,7 +686,7 @@ function IncomeTaxContent() {
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('otherIncomeDesc')}</p>
+              <p className="text-xs text-faint mt-1">{t('otherIncomeDesc')}</p>
             </div>
 
             {/* Withholding tax */}
@@ -701,7 +701,7 @@ function IncomeTaxContent() {
                     onChange={() => setWithholdingMode('auto')}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('withholdingTaxAuto')}</span>
+                  <span className="text-sm text-body">{t('withholdingTaxAuto')}</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -711,11 +711,11 @@ function IncomeTaxContent() {
                     onChange={() => setWithholdingMode('manual')}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('withholdingTaxManual')}</span>
+                  <span className="text-sm text-body">{t('withholdingTaxManual')}</span>
                 </label>
               </div>
               {withholdingMode === 'auto' && revenue && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted">
                   {t('withholdingTaxDesc')}: {formatWon(parseNum(revenue) * 0.033)}{t('won')} (3.3%)
                 </p>
               )}
@@ -751,11 +751,11 @@ function IncomeTaxContent() {
             {/* Personal deduction */}
             <div>
               <label className={labelClass}>{t('personalDeduction')}</label>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">{t('personalDeductionDesc')}</p>
+              <p className="text-xs text-faint mb-3">{t('personalDeductionDesc')}</p>
               <div className="space-y-3">
                 {/* Self - always checked */}
-                <div className="flex items-center justify-between py-2 px-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('personalDeductionSelf')}</span>
+                <div className="flex items-center justify-between py-2 px-3 bg-subtle rounded-lg">
+                  <span className="text-sm text-body">{t('personalDeductionSelf')}</span>
                   <span className="text-sm font-medium text-blue-600 dark:text-blue-400">150{t('won')}</span>
                 </div>
 
@@ -768,19 +768,19 @@ function IncomeTaxContent() {
                       onChange={e => setHasSpouse(e.target.checked)}
                       className="accent-blue-600 w-4 h-4"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('personalDeductionSpouse')}</span>
+                    <span className="text-sm text-body">{t('personalDeductionSpouse')}</span>
                   </label>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">150{t('won')}</span>
+                  <span className="text-sm text-muted">150{t('won')}</span>
                 </div>
 
                 {/* Parents */}
                 <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('personalDeductionParents')}</span>
+                  <span className="text-sm text-body">{t('personalDeductionParents')}</span>
                   <div className="flex items-center gap-2">
                     <select
                       value={parentCount}
                       onChange={e => setParentCount(e.target.value)}
-                      className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white"
+                      className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
                     >
                       {[0, 1, 2, 3, 4].map(n => (
                         <option key={n} value={n}>{n}{t('persons')}</option>
@@ -791,11 +791,11 @@ function IncomeTaxContent() {
 
                 {/* Children */}
                 <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('personalDeductionChildren')}</span>
+                  <span className="text-sm text-body">{t('personalDeductionChildren')}</span>
                   <select
                     value={childrenCount}
                     onChange={e => setChildrenCount(e.target.value)}
-                    className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white"
+                    className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
                   >
                     {[0, 1, 2, 3, 4, 5].map(n => (
                       <option key={n} value={n}>{n}{t('persons')}</option>
@@ -805,11 +805,11 @@ function IncomeTaxContent() {
 
                 {/* Other dependents */}
                 <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('personalDeductionDependents')}</span>
+                  <span className="text-sm text-body">{t('personalDeductionDependents')}</span>
                   <select
                     value={dependentCount}
                     onChange={e => setDependentCount(e.target.value)}
-                    className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white"
+                    className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
                   >
                     {[0, 1, 2, 3, 4, 5].map(n => (
                       <option key={n} value={n}>{n}{t('persons')}</option>
@@ -833,7 +833,7 @@ function IncomeTaxContent() {
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('nationalPensionDesc')}</p>
+              <p className="text-xs text-faint mt-1">{t('nationalPensionDesc')}</p>
             </div>
 
             {/* Health insurance */}
@@ -850,7 +850,7 @@ function IncomeTaxContent() {
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('healthInsuranceDesc')}</p>
+              <p className="text-xs text-faint mt-1">{t('healthInsuranceDesc')}</p>
             </div>
 
             {/* Pension savings / IRP */}
@@ -867,7 +867,7 @@ function IncomeTaxContent() {
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('pensionSavingsDesc')}</p>
+              <p className="text-xs text-faint mt-1">{t('pensionSavingsDesc')}</p>
               <p className="text-xs text-blue-600 dark:text-blue-400 mt-0.5">{t('pensionSavingsLimit')}</p>
             </div>
 
@@ -883,14 +883,14 @@ function IncomeTaxContent() {
                   <option key={n} value={n}>{n}{t('childCount')}</option>
                 ))}
               </select>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('childTaxCreditDesc')}</p>
+              <p className="text-xs text-faint mt-1">{t('childTaxCreditDesc')}</p>
             </div>
 
             {/* Nav buttons */}
             <div className="flex gap-3">
               <button
                 onClick={() => setActiveTab('income')}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 ← {t('tabIncome')}
               </button>
@@ -910,7 +910,7 @@ function IncomeTaxContent() {
         <div className="space-y-6">
           {!result ? (
             <div className={cardClass}>
-              <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+              <p className="text-center text-muted py-8">
                 {t('totalRevenuePlaceholder')}
               </p>
             </div>
@@ -918,8 +918,8 @@ function IncomeTaxContent() {
             <>
               {/* Summary card */}
               <div className={`${cardClass} ${result.finalAmount < 0 ? 'ring-2 ring-blue-500' : result.finalAmount > 0 ? 'ring-2 ring-red-500' : ''}`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('resultSummary')}</h2>
-                <div className={`text-3xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                <h2 className="text-lg font-semibold text-fg mb-2">{t('resultSummary')}</h2>
+                <div className={`text-3xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
                   {result.finalAmount < 0 ? (
                     <>{t('refund')} {formatWon(Math.abs(result.finalAmount))}{t('won')}</>
                   ) : result.finalAmount > 0 ? (
@@ -932,7 +932,7 @@ function IncomeTaxContent() {
 
               {/* Waterfall breakdown */}
               <div className={cardClass}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('resultTitle')}</h2>
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('resultTitle')}</h2>
                 <div className="space-y-0">
                   {/* Step 1: Revenue */}
                   <WaterfallRow label={t('stepRevenue')} value={result.revenue} step={1} />
@@ -948,7 +948,7 @@ function IncomeTaxContent() {
                   <WaterfallRow label={t('stepBusinessIncome')} value={result.businessIncome} step={3} isSubtotal />
 
                   {/* Deductions detail */}
-                  <div className="ml-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4 py-2 space-y-1">
+                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
                     <DetailRow label={t('personalDeductionAmount')} value={result.personalDeduction} />
                     {result.pensionDeduction > 0 && (
                       <DetailRow label={t('nationalPensionDeduction')} value={result.pensionDeduction} />
@@ -963,7 +963,7 @@ function IncomeTaxContent() {
                   <WaterfallRow label={t('stepTaxBase')} value={result.taxBase} step={4} isSubtotal />
 
                   {/* Tax rate info */}
-                  <div className="ml-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4 py-2 space-y-1">
+                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
                     <DetailRow label={t('taxRate')} value={`${(result.taxRate * 100).toFixed(0)}%`} isText />
                     <DetailRow label={t('progressiveDeduction')} value={result.progressiveDeduction} />
                   </div>
@@ -972,8 +972,8 @@ function IncomeTaxContent() {
                   <WaterfallRow label={t('stepCalculatedTax')} value={result.calculatedTax} step={5} isSubtotal />
 
                   {/* Tax credits detail */}
-                  <div className="ml-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4 py-2 space-y-1">
-                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('taxCredits')}</p>
+                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
+                    <p className="text-xs font-medium text-muted mb-1">{t('taxCredits')}</p>
                     <DetailRow label={t('standardTaxCredit')} value={result.standardCredit} />
                     {result.childCredit > 0 && (
                       <DetailRow label={t('childTaxCreditAmount')} value={result.childCredit} />
@@ -988,42 +988,42 @@ function IncomeTaxContent() {
                   <WaterfallRow label={t('stepFinalTax')} value={result.determinedTax} step={6} isSubtotal />
 
                   {/* Local + totals */}
-                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                  <div className="mt-3 pt-3 border-t border-line space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('determinedTax')}</span>
-                      <span className="text-gray-900 dark:text-white font-medium">{formatWon(result.determinedTax)}{t('won')}</span>
+                      <span className="text-sub">{t('determinedTax')}</span>
+                      <span className="text-fg font-medium">{formatWon(result.determinedTax)}{t('won')}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('localIncomeTax')} (10%)</span>
-                      <span className="text-gray-900 dark:text-white font-medium">{formatWon(result.localTax)}{t('won')}</span>
+                      <span className="text-sub">{t('localIncomeTax')} (10%)</span>
+                      <span className="text-fg font-medium">{formatWon(result.localTax)}{t('won')}</span>
                     </div>
-                    <div className="flex justify-between text-sm font-semibold border-t border-gray-200 dark:border-gray-700 pt-2">
-                      <span className="text-gray-900 dark:text-white">{t('totalTaxDue')}</span>
-                      <span className="text-gray-900 dark:text-white">{formatWon(result.totalTaxDue)}{t('won')}</span>
+                    <div className="flex justify-between text-sm font-semibold border-t border-line pt-2">
+                      <span className="text-fg">{t('totalTaxDue')}</span>
+                      <span className="text-fg">{formatWon(result.totalTaxDue)}{t('won')}</span>
                     </div>
                   </div>
 
                   {/* Prepaid */}
-                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                  <div className="mt-3 pt-3 border-t border-line space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('prepaidIncomeTax')}</span>
-                      <span className="text-gray-900 dark:text-white">-{formatWon(result.prepaidIncome)}{t('won')}</span>
+                      <span className="text-sub">{t('prepaidIncomeTax')}</span>
+                      <span className="text-fg">-{formatWon(result.prepaidIncome)}{t('won')}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('prepaidLocalTax')}</span>
-                      <span className="text-gray-900 dark:text-white">-{formatWon(result.prepaidLocal)}{t('won')}</span>
+                      <span className="text-sub">{t('prepaidLocalTax')}</span>
+                      <span className="text-fg">-{formatWon(result.prepaidLocal)}{t('won')}</span>
                     </div>
                     <div className="flex justify-between text-sm font-semibold">
-                      <span className="text-gray-600 dark:text-gray-400">{t('prepaidTotal')}</span>
-                      <span className="text-gray-900 dark:text-white">-{formatWon(result.prepaidTotal)}{t('won')}</span>
+                      <span className="text-sub">{t('prepaidTotal')}</span>
+                      <span className="text-fg">-{formatWon(result.prepaidTotal)}{t('won')}</span>
                     </div>
                   </div>
 
                   {/* Final result */}
                   <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-blue-50 dark:bg-blue-950' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-gray-50 dark:bg-gray-900'}`}>
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold text-gray-900 dark:text-white">{t('finalResult')}</span>
-                      <span className={`text-xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                      <span className="font-semibold text-fg">{t('finalResult')}</span>
+                      <span className={`text-xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
                         {result.finalAmount < 0
                           ? `${t('refund')} ${formatWon(Math.abs(result.finalAmount))}${t('won')}`
                           : result.finalAmount > 0
@@ -1038,44 +1038,44 @@ function IncomeTaxContent() {
 
               {/* Comparison: Simple vs Standard */}
               <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl shadow-lg p-6">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('comparisonTitle')}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('comparisonDesc')}</p>
+                <h2 className="text-lg font-semibold text-fg mb-2">{t('comparisonTitle')}</h2>
+                <p className="text-sm text-muted mb-4">{t('comparisonDesc')}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('comparisonSimple')}</h3>
+                  <div className="bg-surface rounded-lg p-4">
+                    <h3 className="text-sm font-medium text-body mb-3">{t('comparisonSimple')}</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500 dark:text-gray-400">{t('comparisonExpense')}</span>
-                        <span className="text-gray-900 dark:text-white">{formatWon(result.compSimpleExpense)}{t('won')}</span>
+                        <span className="text-muted">{t('comparisonExpense')}</span>
+                        <span className="text-fg">{formatWon(result.compSimpleExpense)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between text-sm font-semibold">
-                        <span className="text-gray-700 dark:text-gray-300">{t('comparisonTax')}</span>
-                        <span className="text-gray-900 dark:text-white">{formatWon(result.compSimpleTax)}{t('won')}</span>
+                        <span className="text-body">{t('comparisonTax')}</span>
+                        <span className="text-fg">{formatWon(result.compSimpleTax)}{t('won')}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('comparisonStandard')}</h3>
+                  <div className="bg-surface rounded-lg p-4">
+                    <h3 className="text-sm font-medium text-body mb-3">{t('comparisonStandard')}</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500 dark:text-gray-400">{t('comparisonExpense')}</span>
-                        <span className="text-gray-900 dark:text-white">{formatWon(result.compStandardExpense)}{t('won')}</span>
+                        <span className="text-muted">{t('comparisonExpense')}</span>
+                        <span className="text-fg">{formatWon(result.compStandardExpense)}{t('won')}</span>
                       </div>
                       <div className="flex justify-between text-sm font-semibold">
-                        <span className="text-gray-700 dark:text-gray-300">{t('comparisonTax')}</span>
-                        <span className="text-gray-900 dark:text-white">{formatWon(result.compStandardTax)}{t('won')}</span>
+                        <span className="text-body">{t('comparisonTax')}</span>
+                        <span className="text-fg">{formatWon(result.compStandardTax)}{t('won')}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 {result.compSimpleTax !== result.compStandardTax && (
-                  <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg p-3">
+                  <div className="mt-4 bg-surface rounded-lg p-3">
                     <p className="text-sm font-medium text-center">
-                      <span className="text-gray-600 dark:text-gray-400">{t('comparisonDiff')}: </span>
+                      <span className="text-sub">{t('comparisonDiff')}: </span>
                       <span className="text-blue-600 dark:text-blue-400 font-bold">
                         {formatWon(Math.abs(result.compSimpleTax - result.compStandardTax))}{t('won')}
                       </span>
-                      <span className="text-gray-500 dark:text-gray-400 ml-1">
+                      <span className="text-muted ml-1">
                         ({t('comparisonBetter')}: {result.compSimpleTax <= result.compStandardTax ? t('comparisonSimple') : t('comparisonStandard')})
                       </span>
                     </p>
@@ -1086,7 +1086,7 @@ function IncomeTaxContent() {
               {/* Back to income */}
               <button
                 onClick={() => setActiveTab('income')}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 ← {t('tabIncome')}
               </button>
@@ -1101,7 +1101,7 @@ function IncomeTaxContent() {
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('guideTitle')}</h2>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
         </button>
         {showGuide && (
@@ -1126,12 +1126,12 @@ function WaterfallRow({ label, value, step, isSubtotal }: {
   isSubtotal?: boolean
 }) {
   return (
-    <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg ${isSubtotal ? 'bg-gray-50 dark:bg-gray-700 font-semibold' : ''}`}>
+    <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg ${isSubtotal ? 'bg-subtle font-semibold' : ''}`}>
       <div className="flex items-center gap-2">
         <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs flex items-center justify-center font-bold">{step}</span>
-        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+        <span className="text-sm text-body">{label}</span>
       </div>
-      <span className={`text-sm ${value < 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'} ${isSubtotal ? 'font-semibold' : ''}`}>
+      <span className={`text-sm ${value < 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'} ${isSubtotal ? 'font-semibold' : ''}`}>
         {value < 0 ? '-' : ''}{formatWon(Math.abs(value))}
       </span>
     </div>
@@ -1146,8 +1146,8 @@ function DetailRow({ label, value, isBold, isText }: {
 }) {
   return (
     <div className={`flex justify-between text-xs ${isBold ? 'font-semibold' : ''}`}>
-      <span className="text-gray-500 dark:text-gray-400">{label}</span>
-      <span className="text-gray-700 dark:text-gray-300">
+      <span className="text-muted">{label}</span>
+      <span className="text-body">
         {isText ? value : `${formatWon(value as number)}`}
       </span>
     </div>
@@ -1164,10 +1164,10 @@ function GuideSection({ t, titleKey, itemsKey }: GuideSectionProps) {
   const items = t.raw(itemsKey) as string[]
   return (
     <div>
-      <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">{t(titleKey)}</h3>
+      <h3 className="text-base font-semibold text-fg mb-2">{t(titleKey)}</h3>
       <ul className="space-y-1.5">
         {items.map((item, i) => (
-          <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+          <li key={i} className="text-sm text-sub flex items-start gap-2">
             <span className="text-blue-500 mt-0.5">&#8226;</span>
             {item}
           </li>

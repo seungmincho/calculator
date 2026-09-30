@@ -631,7 +631,7 @@ export default function ImageScraper() {
         </div>
       )}
 
-      <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+      <div className="aspect-square bg-soft flex items-center justify-center overflow-hidden">
         {!img.loaded ? (
           <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
         ) : img.error ? (
@@ -653,7 +653,7 @@ export default function ImageScraper() {
       </div>
 
       <div className="p-2">
-        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+        <div className="text-xs text-muted truncate">
           {img.loaded && !img.error && img.width > 0
             ? `${img.width} × ${img.height}`
             : img.error
@@ -661,7 +661,7 @@ export default function ImageScraper() {
               : t('unknownSize')
           }
           {img.type !== 'other' && (
-            <span className="ml-1 px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs uppercase">
+            <span className="ml-1 px-1 py-0.5 bg-soft rounded text-xs uppercase">
               {img.type}
             </span>
           )}
@@ -670,21 +670,21 @@ export default function ImageScraper() {
         <div className="flex gap-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={e => { e.stopPropagation(); copyToClipboard(img.src, img.src) }}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted"
             title={t('copyUrl')}
           >
             {copiedId === img.src ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
           <button
             onClick={e => { e.stopPropagation(); window.open(img.src, '_blank') }}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted"
             title={t('openOriginal')}
           >
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={e => { e.stopPropagation(); handleDownloadSingle(img) }}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted"
             title={t('downloadSingle')}
           >
             <Download className="w-3.5 h-3.5" />
@@ -697,8 +697,8 @@ export default function ImageScraper() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* URL Input */}
@@ -714,7 +714,7 @@ export default function ImageScraper() {
               onFocus={() => recentUrls.length > 0 && setShowRecent(true)}
               onBlur={() => setTimeout(() => setShowRecent(false), 200)}
               placeholder={t('urlPlaceholder')}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 pr-10"
             />
             {url && (
               <button
@@ -725,9 +725,9 @@ export default function ImageScraper() {
               </button>
             )}
             {showRecent && recentUrls.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{t('recentUrls')}</span>
+              <div className="absolute top-full left-0 right-0 mt-1 bg-field border border-line rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                <div className="flex items-center justify-between px-3 py-2 border-b border-line">
+                  <span className="text-xs text-muted">{t('recentUrls')}</span>
                   <button
                     onClick={() => {
                       localStorage.removeItem(RECENT_URLS_KEY)
@@ -742,7 +742,7 @@ export default function ImageScraper() {
                   <button
                     key={u}
                     onMouseDown={() => { setUrl(u); setShowRecent(false) }}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 truncate"
+                    className="w-full text-left px-3 py-2 text-sm text-body hover:bg-gray-100 dark:hover:bg-gray-600 truncate"
                   >
                     {u}
                   </button>
@@ -777,7 +777,7 @@ export default function ImageScraper() {
           <div className={`${glassCard} ${glassInset} p-4 space-y-4`}>
             {/* Row 1: Count, Select, Dedup toggle */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-body">
                 {t('foundImages', { count: processedImages.length })}
                 {dedupStats && (
                   <span className="ml-1 text-xs text-green-600 dark:text-green-400">
@@ -791,7 +791,7 @@ export default function ImageScraper() {
               >
                 {allSelected ? t('deselectAll') : t('selectAll')}
               </button>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-muted">
                 {t('selected', { count: selectedImages.length })}
               </span>
 
@@ -802,7 +802,7 @@ export default function ImageScraper() {
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                   dedup
                     ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                    : 'bg-soft text-muted'
                 }`}
               >
                 {dedup ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
@@ -814,7 +814,7 @@ export default function ImageScraper() {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-1">
                 <Zap className="w-4 h-4 text-amber-500" />
-                <span className="text-xs text-gray-500 dark:text-gray-400 mr-1">{t('quickSelect')}:</span>
+                <span className="text-xs text-muted mr-1">{t('quickSelect')}:</span>
                 {[
                   { label: t('sizeXL'), min: 800 },
                   { label: t('sizeLG'), min: 500 },
@@ -823,7 +823,7 @@ export default function ImageScraper() {
                   <button
                     key={min}
                     onClick={() => quickSelectBySize(min)}
-                    className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-700 dark:text-gray-300 rounded transition-colors"
+                    className="px-2 py-1 text-xs bg-soft hover:bg-blue-100 dark:hover:bg-blue-900 text-body rounded transition-colors"
                   >
                     {label}
                   </button>
@@ -837,7 +837,7 @@ export default function ImageScraper() {
                 <select
                   value={sortMode}
                   onChange={e => setSortMode(e.target.value as SortMode)}
-                  className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg"
                 >
                   <option value="size-desc">{t('sortSizeDesc')}</option>
                   <option value="size-asc">{t('sortSizeAsc')}</option>
@@ -852,13 +852,13 @@ export default function ImageScraper() {
                   type="number"
                   value={filterMinSize}
                   onChange={e => setFilterMinSize(Number(e.target.value))}
-                  className="w-16 px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-16 px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg"
                   title={t('filterMinSize')}
                 />
                 <select
                   value={filterType}
                   onChange={e => setFilterType(e.target.value)}
-                  className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg"
                 >
                   {imageTypes.map(type => (
                     <option key={type} value={type}>
@@ -871,7 +871,7 @@ export default function ImageScraper() {
 
             {/* Row 3: Hint + Action Buttons */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs text-gray-400 dark:text-gray-500">
+              <span className="text-xs text-faint">
                 {t('shiftClickHint')}
               </span>
 
@@ -907,32 +907,32 @@ export default function ImageScraper() {
                 </div>
 
                 {showMergeOptions && (
-                  <div className="absolute top-full right-0 mt-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg p-4 z-10 min-w-64">
+                  <div className="absolute top-full right-0 mt-2 bg-field border border-line rounded-lg shadow-lg p-4 z-10 min-w-64">
                     <div className="space-y-3">
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('mergeWidth')} (px)</label>
+                        <label className="text-xs text-muted">{t('mergeWidth')} (px)</label>
                         <input
                           type="number"
                           value={mergeWidth}
                           onChange={e => setMergeWidth(Number(e.target.value))}
                           min={200}
                           max={4000}
-                          className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                          className="w-full mt-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm"
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('mergeGap')} (px)</label>
+                        <label className="text-xs text-muted">{t('mergeGap')} (px)</label>
                         <input
                           type="number"
                           value={mergeGap}
                           onChange={e => setMergeGap(Number(e.target.value))}
                           min={0}
                           max={100}
-                          className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                          className="w-full mt-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm"
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 dark:text-gray-400">{t('mergeBackground')}</label>
+                        <label className="text-xs text-muted">{t('mergeBackground')}</label>
                         <div className="flex items-center gap-2 mt-1">
                           <input
                             type="color"
@@ -944,7 +944,7 @@ export default function ImageScraper() {
                             type="text"
                             value={mergeBg}
                             onChange={e => setMergeBg(e.target.value)}
-                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                            className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm"
                           />
                         </div>
                       </div>
@@ -959,28 +959,28 @@ export default function ImageScraper() {
           {showMergePanel && mergeOrder.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
                   <Layers className="w-4 h-4 text-purple-500" />
                   {t('mergeOrderTitle')} ({mergeOrder.length})
                 </h3>
                 <div className="flex items-center gap-2">
                   {/* Merge Options inline */}
                   <div className="flex items-center gap-2 text-xs">
-                    <label className="text-gray-500 dark:text-gray-400">{t('mergeWidth')}</label>
+                    <label className="text-muted">{t('mergeWidth')}</label>
                     <input
                       type="number"
                       value={mergeWidth}
                       onChange={e => setMergeWidth(Number(e.target.value))}
                       min={200} max={4000}
-                      className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs"
+                      className="w-20 px-2 py-1 border border-line-strong rounded bg-field text-fg text-xs"
                     />
-                    <label className="text-gray-500 dark:text-gray-400">{t('mergeGap')}</label>
+                    <label className="text-muted">{t('mergeGap')}</label>
                     <input
                       type="number"
                       value={mergeGap}
                       onChange={e => setMergeGap(Number(e.target.value))}
                       min={0} max={100}
-                      className="w-14 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs"
+                      className="w-14 px-2 py-1 border border-line-strong rounded bg-field text-fg text-xs"
                     />
                     <input
                       type="color"
@@ -1006,7 +1006,7 @@ export default function ImageScraper() {
                   </button>
                 </div>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{t('mergeOrderHint')}</p>
+              <p className="text-xs text-faint mb-2">{t('mergeOrderHint')}</p>
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {mergeOrder.map((src, idx) => {
                   const img = images.find(i => i.src === src)
@@ -1018,7 +1018,7 @@ export default function ImageScraper() {
                       onDragStart={() => handleDragStart(idx)}
                       onDragOver={e => handleDragOver(e, idx)}
                       onDragEnd={handleDragEnd}
-                      className={`relative flex-shrink-0 w-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 cursor-grab active:cursor-grabbing transition-all ${
+                      className={`relative flex-shrink-0 w-20 bg-soft rounded-lg overflow-hidden border-2 cursor-grab active:cursor-grabbing transition-all ${
                         dragIdx === idx ? 'border-purple-500 opacity-50' : 'border-transparent'
                       }`}
                     >

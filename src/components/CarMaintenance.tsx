@@ -323,11 +323,11 @@ export default function CarMaintenance() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Car className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -335,14 +335,14 @@ export default function CarMaintenance() {
         <div className="lg:col-span-1 space-y-6">
           {/* Vehicle Info */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Car className="w-5 h-5 text-blue-500" />
               {t('vehicleInfo')}
             </h2>
 
             {/* Vehicle Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('vehicleType')}
               </label>
               <select
@@ -362,7 +362,7 @@ export default function CarMaintenance() {
             {/* Displacement */}
             {fuelType !== 'electric' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('displacement')}
                 </label>
                 <div className="relative">
@@ -382,7 +382,7 @@ export default function CarMaintenance() {
 
             {/* Model Year */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('modelYear')}
               </label>
               <select
@@ -398,7 +398,7 @@ export default function CarMaintenance() {
 
             {/* Fuel Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('fuelType')}
               </label>
               <select
@@ -417,10 +417,10 @@ export default function CarMaintenance() {
             {/* Fuel Efficiency */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {t('fuelEfficiency')}
                 </label>
-                <label className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer">
+                <label className="flex items-center gap-1 text-xs text-muted cursor-pointer">
                   <input
                     type="checkbox"
                     checked={useCustomEfficiency}
@@ -455,14 +455,14 @@ export default function CarMaintenance() {
 
           {/* Driving & Costs */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Fuel className="w-5 h-5 text-amber-500" />
               {t('drivingCosts')}
             </h2>
 
             {/* Annual Driving Distance */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('annualDistance')}
               </label>
               <div className="relative">
@@ -484,7 +484,7 @@ export default function CarMaintenance() {
                     className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                       annualKm === km
                         ? 'bg-blue-100 dark:bg-blue-900 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-300'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        : 'border-line-strong text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
                     {formatNumber(km)}km
@@ -495,7 +495,7 @@ export default function CarMaintenance() {
 
             {/* Fuel Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('fuelPrice')} ({fuelType === 'electric' ? t('wonPerKwh') : t('wonPerLiter')})
               </label>
               <div className="relative">
@@ -512,7 +512,7 @@ export default function CarMaintenance() {
 
             {/* Monthly Parking */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('monthlyParking')}
               </label>
               <div className="relative">
@@ -531,7 +531,7 @@ export default function CarMaintenance() {
             {/* Car Wash */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('carWashFrequency')}
                 </label>
                 <div className="relative">
@@ -547,7 +547,7 @@ export default function CarMaintenance() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('carWashCost')}
                 </label>
                 <div className="relative">
@@ -565,7 +565,7 @@ export default function CarMaintenance() {
 
             {/* Monthly Toll */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('monthlyToll')}
               </label>
               <div className="relative">
@@ -593,7 +593,7 @@ export default function CarMaintenance() {
             </button>
             <button
               onClick={handleReset}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 transition-colors"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-colors"
               title={t('reset')}
             >
               <RotateCcw className="w-5 h-5" />
@@ -623,7 +623,7 @@ export default function CarMaintenance() {
 
               {/* Cost Breakdown + Pie Chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('costBreakdown')}</h3>
+                <h3 className="text-lg font-semibold text-fg mb-4">{t('costBreakdown')}</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Pie Chart */}
                   <div className="flex flex-col items-center">
@@ -631,9 +631,9 @@ export default function CarMaintenance() {
                       className="w-48 h-48 rounded-full relative"
                       style={{ background: conicGradient }}
                     >
-                      <div className="absolute inset-6 bg-white dark:bg-gray-800 rounded-full flex flex-col items-center justify-center">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{t('annualTotal')}</span>
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">{formatWon(annualTotal)}</span>
+                      <div className="absolute inset-6 bg-surface rounded-full flex flex-col items-center justify-center">
+                        <span className="text-xs text-muted">{t('annualTotal')}</span>
+                        <span className="text-sm font-bold text-fg">{formatWon(annualTotal)}</span>
                       </div>
                     </div>
                     {/* Legend */}
@@ -641,7 +641,7 @@ export default function CarMaintenance() {
                       {pieData.map(d => (
                         <div key={d.key} className="flex items-center gap-1.5">
                           <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
-                          <span className="text-gray-600 dark:text-gray-400">
+                          <span className="text-sub">
                             {t(`categories.${d.key}`)} ({Math.round(d.percent)}%)
                           </span>
                         </div>
@@ -664,20 +664,20 @@ export default function CarMaintenance() {
                       const Icon = item.icon
                       const monthly = Math.round(item.value / 12)
                       return (
-                        <div key={item.key} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                        <div key={item.key} className="flex items-center justify-between py-2 border-b border-line last:border-0">
                           <div className="flex items-center gap-2">
                             <Icon className={`w-4 h-4 ${item.color}`} />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{t(`categories.${item.key}`)}</span>
+                            <span className="text-sm text-body">{t(`categories.${item.key}`)}</span>
                           </div>
                           <div className="text-right">
-                            <span className="text-sm font-semibold text-gray-900 dark:text-white">{formatWon(item.value)}</span>
-                            <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">({t('monthly')} {formatWon(monthly)})</span>
+                            <span className="text-sm font-semibold text-fg">{formatWon(item.value)}</span>
+                            <span className="text-xs text-faint ml-1">({t('monthly')} {formatWon(monthly)})</span>
                           </div>
                         </div>
                       )
                     })}
-                    <div className="flex items-center justify-between pt-3 border-t-2 border-gray-300 dark:border-gray-600">
-                      <span className="text-sm font-bold text-gray-900 dark:text-white">{t('total')}</span>
+                    <div className="flex items-center justify-between pt-3 border-t-2 border-line-strong">
+                      <span className="text-sm font-bold text-fg">{t('total')}</span>
                       <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatWon(annualTotal)}</span>
                     </div>
                   </div>
@@ -686,15 +686,15 @@ export default function CarMaintenance() {
 
               {/* Monthly Breakdown */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('monthlyBreakdown')}</h3>
+                <h3 className="text-lg font-semibold text-fg mb-4">{t('monthlyBreakdown')}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">{t('category')}</th>
-                        <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('monthlyAmount')}</th>
-                        <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('annualAmount')}</th>
-                        <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('percentage')}</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 text-muted font-medium">{t('category')}</th>
+                        <th className="text-right py-2 text-muted font-medium">{t('monthlyAmount')}</th>
+                        <th className="text-right py-2 text-muted font-medium">{t('annualAmount')}</th>
+                        <th className="text-right py-2 text-muted font-medium">{t('percentage')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -709,16 +709,16 @@ export default function CarMaintenance() {
                         { key: 'depreciation', value: costBreakdown.depreciation },
                       ].map(item => (
                         <tr key={item.key} className="border-b border-gray-100 dark:border-gray-700/50">
-                          <td className="py-2 text-gray-700 dark:text-gray-300">{t(`categories.${item.key}`)}</td>
-                          <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(Math.round(item.value / 12))}{t('won')}</td>
-                          <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(item.value)}{t('won')}</td>
-                          <td className="py-2 text-right text-gray-500 dark:text-gray-400">
+                          <td className="py-2 text-body">{t(`categories.${item.key}`)}</td>
+                          <td className="py-2 text-right text-fg">{formatNumber(Math.round(item.value / 12))}{t('won')}</td>
+                          <td className="py-2 text-right text-fg">{formatNumber(item.value)}{t('won')}</td>
+                          <td className="py-2 text-right text-muted">
                             {annualTotal > 0 ? Math.round((item.value / annualTotal) * 100) : 0}%
                           </td>
                         </tr>
                       ))}
-                      <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold">
-                        <td className="py-2 text-gray-900 dark:text-white">{t('total')}</td>
+                      <tr className="border-t-2 border-line-strong font-bold">
+                        <td className="py-2 text-fg">{t('total')}</td>
                         <td className="py-2 text-right text-blue-600 dark:text-blue-400">{formatNumber(monthlyTotal)}{t('won')}</td>
                         <td className="py-2 text-right text-blue-600 dark:text-blue-400">{formatNumber(annualTotal)}{t('won')}</td>
                         <td className="py-2 text-right text-blue-600 dark:text-blue-400">100%</td>
@@ -730,24 +730,24 @@ export default function CarMaintenance() {
 
               {/* Public Transport Comparison */}
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
                   <Bus className="w-5 h-5 text-blue-500" />
                   {t('transitComparison')}
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('carAnnualCost')}</p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{formatWon(annualTotal)}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{t('monthly')} {formatWon(monthlyTotal)}</p>
+                  <div className="bg-surface rounded-lg p-4">
+                    <p className="text-sm text-muted">{t('carAnnualCost')}</p>
+                    <p className="text-xl font-bold text-fg mt-1">{formatWon(annualTotal)}</p>
+                    <p className="text-xs text-faint">{t('monthly')} {formatWon(monthlyTotal)}</p>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('transitAnnualCost')}</p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{formatWon(annualPublicTransport)}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{t('monthly')} {formatWon(monthlyPublicTransport)}</p>
+                  <div className="bg-surface rounded-lg p-4">
+                    <p className="text-sm text-muted">{t('transitAnnualCost')}</p>
+                    <p className="text-xl font-bold text-fg mt-1">{formatWon(annualPublicTransport)}</p>
+                    <p className="text-xs text-faint">{t('monthly')} {formatWon(monthlyPublicTransport)}</p>
                   </div>
                 </div>
-                <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                <div className="mt-4 bg-surface rounded-lg p-4">
+                  <p className="text-sm text-sub">
                     {t('transitComparisonResult', { ratio: carVsTransitRatio.toFixed(1) })}
                   </p>
                 </div>
@@ -757,7 +757,7 @@ export default function CarMaintenance() {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <button
                   onClick={() => setShowSchedule(!showSchedule)}
-                  className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+                  className="w-full flex items-center justify-between text-lg font-semibold text-fg"
                 >
                   <span className="flex items-center gap-2">
                     <Wrench className="w-5 h-5 text-red-500" />
@@ -769,22 +769,22 @@ export default function CarMaintenance() {
                   <div className="mt-4 overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                          <th className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">{t('scheduleItem')}</th>
-                          <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('scheduleInterval')}</th>
-                          <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('scheduleUnitCost')}</th>
-                          <th className="text-right py-2 text-gray-500 dark:text-gray-400 font-medium">{t('scheduleAnnualCost')}</th>
+                        <tr className="border-b border-line">
+                          <th className="text-left py-2 text-muted font-medium">{t('scheduleItem')}</th>
+                          <th className="text-right py-2 text-muted font-medium">{t('scheduleInterval')}</th>
+                          <th className="text-right py-2 text-muted font-medium">{t('scheduleUnitCost')}</th>
+                          <th className="text-right py-2 text-muted font-medium">{t('scheduleAnnualCost')}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {scheduleItems.map(item => (
                           <tr key={item.nameKey} className="border-b border-gray-100 dark:border-gray-700/50">
-                            <td className="py-2 text-gray-700 dark:text-gray-300">{t(`maintenanceItems.${item.nameKey}`)}</td>
-                            <td className="py-2 text-right text-gray-500 dark:text-gray-400 text-xs">
+                            <td className="py-2 text-body">{t(`maintenanceItems.${item.nameKey}`)}</td>
+                            <td className="py-2 text-right text-muted text-xs">
                               {formatNumber(item.intervalKm)}km / {item.intervalMonths}{t('months')}
                             </td>
-                            <td className="py-2 text-right text-gray-900 dark:text-white">{formatWon(item.estimatedCost)}</td>
-                            <td className="py-2 text-right text-gray-900 dark:text-white font-medium">{formatWon(item.annualCost)}</td>
+                            <td className="py-2 text-right text-fg">{formatWon(item.estimatedCost)}</td>
+                            <td className="py-2 text-right text-fg font-medium">{formatWon(item.annualCost)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -797,8 +797,8 @@ export default function CarMaintenance() {
             /* Placeholder before calculation */
             <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center min-h-[400px]`}>
               <Car className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-2">{t('placeholderTitle')}</h3>
-              <p className="text-sm text-gray-400 dark:text-gray-500 max-w-sm">{t('placeholderDescription')}</p>
+              <h3 className="text-lg font-semibold text-muted mb-2">{t('placeholderTitle')}</h3>
+              <p className="text-sm text-faint max-w-sm">{t('placeholderDescription')}</p>
             </div>
           )}
         </div>
@@ -806,16 +806,16 @@ export default function CarMaintenance() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.taxSection.title')}</h3>
+            <h3 className="font-medium text-fg mb-2">{t('guide.taxSection.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.taxSection.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-blue-500 mt-0.5">-</span>
                   {item}
                 </li>
@@ -823,10 +823,10 @@ export default function CarMaintenance() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.savingsSection.title')}</h3>
+            <h3 className="font-medium text-fg mb-2">{t('guide.savingsSection.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.savingsSection.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-green-500 mt-0.5">-</span>
                   {item}
                 </li>
@@ -834,10 +834,10 @@ export default function CarMaintenance() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.maintenanceSection.title')}</h3>
+            <h3 className="font-medium text-fg mb-2">{t('guide.maintenanceSection.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.maintenanceSection.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-red-500 mt-0.5">-</span>
                   {item}
                 </li>
@@ -845,10 +845,10 @@ export default function CarMaintenance() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.depreciationSection.title')}</h3>
+            <h3 className="font-medium text-fg mb-2">{t('guide.depreciationSection.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.depreciationSection.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <span className="text-pink-500 mt-0.5">-</span>
                   {item}
                 </li>

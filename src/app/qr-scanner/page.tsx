@@ -40,7 +40,7 @@ export default function QrScannerPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><QrScanner />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function QrScannerPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             QR코드 스캐너란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             QR코드 스캐너는 카메라 또는 이미지 파일을 이용해 QR코드를 인식하고, 담긴 URL, 텍스트, Wi-Fi 비밀번호, 연락처 등 다양한 정보를 즉시 추출하는 무료 온라인 도구입니다. 별도 앱 설치 없이 브라우저에서 바로 사용할 수 있으며, 촬영한 이미지나 스크린샷 파일을 업로드하는 방식으로도 QR코드를 읽을 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             QR코드 스캐너 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>이미지 파일 업로드:</strong> 스마트폰으로 찍은 QR코드 사진이나 스크린샷을 업로드하면 카메라 없이도 내용을 확인할 수 있습니다. 오래된 QR코드나 인쇄물 속 QR코드를 해석할 때 유용합니다.</li>
             <li><strong>카메라 스캔 모드:</strong> 웹캠이나 스마트폰 카메라를 연결해 실시간으로 QR코드를 스캔하세요. 충분한 조명과 안정적인 화면 고정이 인식 성공률을 높입니다.</li>
             <li><strong>스캔 기록 활용:</strong> 여러 QR코드를 연속으로 스캔할 때 이전 스캔 기록을 보관하면 정보를 비교하거나 나중에 참고하기 편리합니다.</li>

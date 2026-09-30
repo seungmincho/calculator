@@ -298,15 +298,15 @@ export default function CapitalGainsTax() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Calculator className="w-7 h-7 text-blue-600" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          className="shrink-0 flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border border-line-strong bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           title="링크 복사"
         >
           {linkCopied
@@ -321,11 +321,11 @@ export default function CapitalGainsTax() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('inputTitle')}</h2>
 
             {/* 양도가액 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('salePrice')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
               </label>
               <input
@@ -340,7 +340,7 @@ export default function CapitalGainsTax() {
 
             {/* 취득가액 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('acqPrice')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
               </label>
               <input
@@ -355,7 +355,7 @@ export default function CapitalGainsTax() {
 
             {/* 필요경비 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('expenses')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
               </label>
               <input
@@ -366,13 +366,13 @@ export default function CapitalGainsTax() {
                 placeholder={t('expensesPlaceholder')}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('expensesHint')}</p>
+              <p className="text-xs text-faint mt-1">{t('expensesHint')}</p>
             </div>
 
             {/* 취득일 / 양도일 */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('acqDate')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('acqDate')}</label>
                 <input
                   type="date"
                   value={acqDate}
@@ -381,7 +381,7 @@ export default function CapitalGainsTax() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('saleDate')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('saleDate')}</label>
                 <input
                   type="date"
                   value={saleDate}
@@ -399,7 +399,7 @@ export default function CapitalGainsTax() {
 
             {/* 부동산 유형 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('propertyType')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('propertyType')}</label>
               <div className="flex gap-4">
                 {(['general', 'house'] as const).map(type => (
                   <label key={type} className="flex items-center gap-2 cursor-pointer">
@@ -410,7 +410,7 @@ export default function CapitalGainsTax() {
                       onChange={() => setPropertyType(type)}
                       className="accent-blue-600"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <span className="text-sm text-body">
                       {type === 'general' ? t('propertyGeneral') : t('propertyHouse')}
                     </span>
                   </label>
@@ -421,7 +421,7 @@ export default function CapitalGainsTax() {
             {/* 주택 수 */}
             {propertyType === 'house' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('houseCount')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('houseCount')}</label>
                 <select
                   value={houseCount}
                   onChange={e => setHouseCount(e.target.value as '1' | '2' | '3plus')}
@@ -442,13 +442,13 @@ export default function CapitalGainsTax() {
                 onChange={e => setIsAdjusted(e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">{t('isAdjusted')}</span>
+              <span className="text-sm text-body">{t('isAdjusted')}</span>
             </label>
 
             {/* 거주기간 (1주택 비과세용) */}
             {propertyType === 'house' && houseCount === '1' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('residenceYears')} <span className="text-gray-400 text-xs">({t('yearsUnit')})</span>
                 </label>
                 <input
@@ -477,7 +477,7 @@ export default function CapitalGainsTax() {
                     onChange={e => setApplySurcharge(e.target.checked)}
                     className="accent-amber-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('applySurcharge')}</span>
+                  <span className="text-sm text-body">{t('applySurcharge')}</span>
                 </label>
               </div>
             )}
@@ -530,7 +530,7 @@ export default function CapitalGainsTax() {
 
               {/* 단계별 계산 상세 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('breakdownTitle')}</h3>
+                <h3 className="text-base font-semibold text-fg mb-4">{t('breakdownTitle')}</h3>
                 <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-700">
                   {[
                     { label: t('salePrice'), value: salePriceNum, highlight: false },
@@ -544,10 +544,10 @@ export default function CapitalGainsTax() {
                     { label: t('taxBaseLabel'), value: result.taxBase, highlight: true },
                   ].map((row, i) => (
                     <div key={i} className={`flex justify-between items-center py-2.5 ${row.highlight ? 'font-semibold' : ''}`}>
-                      <span className={`text-sm ${row.highlight ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className={`text-sm ${row.highlight ? 'text-fg' : 'text-sub'}`}>
                         {row.label}
                       </span>
-                      <span className={`text-sm tabular-nums ${row.highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <span className={`text-sm tabular-nums ${row.highlight ? 'text-blue-600 dark:text-blue-400' : 'text-body'}`}>
                         {formatWon(row.value)}{t('wonUnit')}
                       </span>
                     </div>
@@ -556,10 +556,10 @@ export default function CapitalGainsTax() {
                   {/* 세율 행 */}
                   <div className="py-2.5">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-sub">
                         {t('taxRateLabel')}
                       </span>
-                      <span className="text-sm text-gray-700 dark:text-gray-300 tabular-nums">
+                      <span className="text-sm text-body tabular-nums">
                         {(result.baseRate * 100).toFixed(0)}%
                         {result.surchargeRate > 0 && (
                           <span className="text-amber-600 dark:text-amber-400 ml-1">
@@ -569,27 +569,27 @@ export default function CapitalGainsTax() {
                       </span>
                     </div>
                     <div className="flex justify-between items-center mt-1">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">(-)  {t('progressiveDeductionLabel')}</span>
-                      <span className="text-sm text-gray-700 dark:text-gray-300 tabular-nums">
+                      <span className="text-sm text-sub">(-)  {t('progressiveDeductionLabel')}</span>
+                      <span className="text-sm text-body tabular-nums">
                         {formatWon(result.progressiveDeduction)}{t('wonUnit')}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center py-2.5 font-semibold">
-                    <span className="text-sm text-gray-900 dark:text-white">{t('calculatedTaxLabel')}</span>
+                    <span className="text-sm text-fg">{t('calculatedTaxLabel')}</span>
                     <span className="text-sm text-blue-600 dark:text-blue-400 tabular-nums">
                       {formatWon(result.calculatedTax)}{t('wonUnit')}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">(+)  {t('localTaxLabel')} (10%)</span>
-                    <span className="text-sm text-gray-700 dark:text-gray-300 tabular-nums">
+                    <span className="text-sm text-sub">(+)  {t('localTaxLabel')} (10%)</span>
+                    <span className="text-sm text-body tabular-nums">
                       {formatWon(result.localIncomeTax)}{t('wonUnit')}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-3 font-bold bg-blue-50 dark:bg-blue-950 rounded-lg px-2 mt-1">
-                    <span className="text-base text-gray-900 dark:text-white">{t('totalTaxLabel')}</span>
+                    <span className="text-base text-fg">{t('totalTaxLabel')}</span>
                     <span className="text-base text-blue-700 dark:text-blue-300 tabular-nums">
                       {formatWon(result.totalTax)}{t('wonUnit')}
                     </span>
@@ -600,9 +600,9 @@ export default function CapitalGainsTax() {
               {/* 장기보유특별공제 시각화 */}
               {result.lthdRate > 0 && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('lthdVisualTitle')}</h3>
+                  <h3 className="text-base font-semibold text-fg mb-3">{t('lthdVisualTitle')}</h3>
                   <div className="flex items-center gap-3">
-                    <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                    <div className="flex-1 bg-track rounded-full h-4 overflow-hidden">
                       <div
                         className="h-4 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
                         style={{ width: `${(result.lthdRate * 100).toFixed(0)}%` }}
@@ -612,11 +612,11 @@ export default function CapitalGainsTax() {
                       {(result.lthdRate * 100).toFixed(0)}%
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  <p className="text-xs text-muted mt-2">
                     {t('lthdVisualDesc')} {formatWon(result.lthdAmount)}{t('wonUnit')} {t('lthdVisualDeducted')}
                   </p>
                   {result.holdingYears > 0 && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       {t('holdingPeriod')}: {result.holdingYears.toFixed(1)}{t('yearsUnit')}
                       {result.residenceYears > 0 && ` / ${t('residenceYears')}: ${result.residenceYears}${t('yearsUnit')}`}
                     </p>
@@ -643,7 +643,7 @@ export default function CapitalGainsTax() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('emptyState')}</p>
+              <p className="text-muted">{t('emptyState')}</p>
             </div>
           )}
         </div>
@@ -651,7 +651,7 @@ export default function CapitalGainsTax() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <Info className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}
         </h2>

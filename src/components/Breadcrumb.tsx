@@ -65,7 +65,7 @@ export default function Breadcrumb() {
         aria-label="Breadcrumb"
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2"
       >
-        <ol className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
+        <ol className="flex items-center gap-1 text-sm text-muted flex-wrap">
           <li>
             <Link
               href="/"
@@ -81,7 +81,7 @@ export default function Breadcrumb() {
           <li>
             <Link
               href={categoryHubs[categoryKey]}
-              className="text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-faint hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {categoryLabel}
             </Link>
@@ -91,7 +91,7 @@ export default function Breadcrumb() {
           </li>
           <li>
             <span
-              className="font-medium text-gray-700 dark:text-gray-200"
+              className="font-medium text-body"
               aria-current="page"
             >
               {currentTool.label}

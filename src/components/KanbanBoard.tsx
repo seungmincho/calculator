@@ -206,8 +206,8 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
         className={`${glassCard} ${glassInset} w-full max-w-md`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between p-5 border-b border-line">
+          <h3 className="text-lg font-semibold text-fg">
             {initial?.title ? t('editCard') : t('addCard')}
           </h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
@@ -216,7 +216,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
         </div>
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('cardTitle')}</label>
+            <label className="block text-sm font-medium text-body mb-1">{t('cardTitle')}</label>
             <input
               type="text"
               className={inputCls}
@@ -228,7 +228,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('cardDescription')}
             </label>
             <textarea
@@ -241,7 +241,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('priority')}
               </label>
               <select
@@ -255,7 +255,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('dueDate')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('dueDate')}</label>
               <input
                 type="date"
                 className={inputCls}
@@ -265,7 +265,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('colorLabel')}
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -292,7 +292,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium transition-all"
+              className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium transition-all"
             >
               {t('cancel')}
             </button>
@@ -328,8 +328,8 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
         className={`${glassCard} ${glassInset} w-full max-w-sm`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between p-5 border-b border-line">
+          <h3 className="text-lg font-semibold text-fg">
             {initial ? t('renameColumn') : t('addColumn')}
           </h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
@@ -356,7 +356,7 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium transition-all"
+              className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium transition-all"
             >
               {t('cancel')}
             </button>
@@ -404,7 +404,7 @@ function CardItem({ t, card, colId, onEdit, onDelete, onDragStart, onTouchDragSt
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
-      className="bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 p-3 cursor-grab active:cursor-grabbing group hover:shadow-md transition-all touch-manipulation"
+      className="bg-field rounded-lg shadow-sm border border-line p-3 cursor-grab active:cursor-grabbing group hover:shadow-md transition-all touch-manipulation"
     >
       <div className="flex items-start gap-2">
         {/* Color label strip */}
@@ -412,7 +412,7 @@ function CardItem({ t, card, colId, onEdit, onDelete, onDragStart, onTouchDragSt
         <div className="flex-1 min-w-0">
           {/* Title row */}
           <div className="flex items-start justify-between gap-1">
-            <p className="text-sm font-medium text-gray-900 dark:text-white leading-snug break-words">
+            <p className="text-sm font-medium text-fg leading-snug break-words">
               {card.title}
             </p>
             <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
@@ -438,7 +438,7 @@ function CardItem({ t, card, colId, onEdit, onDelete, onDragStart, onTouchDragSt
 
           {/* Description */}
           {card.description && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{card.description}</p>
+            <p className="text-xs text-muted mt-1 line-clamp-2">{card.description}</p>
           )}
 
           {/* Footer */}
@@ -449,7 +449,7 @@ function CardItem({ t, card, colId, onEdit, onDelete, onDragStart, onTouchDragSt
             {card.dueDate && (
               <span
                 className={`flex items-center gap-0.5 text-xs ${
-                  isOverdue ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500'
+                  isOverdue ? 'text-red-500 dark:text-red-400' : 'text-faint'
                 }`}
               >
                 <Calendar size={11} />
@@ -725,22 +725,22 @@ export default function KanbanBoard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-0.5">
             {t('subtitle', { count: totalCards, cols: columns.length })}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={exportBoard}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-all"
           >
             <Download size={15} />
             {t('export')}
           </button>
           <button
             onClick={() => importRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-all"
           >
             <Upload size={15} />
             {t('import')}
@@ -778,13 +778,13 @@ export default function KanbanBoard() {
             <ChevronDown size={14} />
           </button>
           {showFilterMenu && (
-            <div className="absolute right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-20 w-36 py-1">
+            <div className="absolute right-0 mt-1 bg-surface border border-line rounded-lg shadow-lg z-20 w-36 py-1">
               {(['all', 'high', 'medium', 'low'] as const).map((p) => (
                 <button
                   key={p}
                   onClick={() => { setFilterPriority(p); setShowFilterMenu(false) }}
                   className={`w-full text-left px-3 py-1.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${
-                    filterPriority === p ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-700 dark:text-gray-300'
+                    filterPriority === p ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-body'
                   }`}
                 >
                   {p === 'all' ? t('allPriorities') : t(`priority${p.charAt(0).toUpperCase() + p.slice(1)}` as 'priorityHigh' | 'priorityMedium' | 'priorityLow')}
@@ -819,11 +819,11 @@ export default function KanbanBoard() {
               onDragEnd={handleDragEnd}
             >
               {/* Column header */}
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-t-xl px-3 py-2.5 flex items-center justify-between">
+              <div className="bg-soft rounded-t-xl px-3 py-2.5 flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">
-                  <Tag size={14} className="text-gray-500 dark:text-gray-400 flex-shrink-0" />
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{col.title}</span>
-                  <span className="text-xs bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-full px-1.5 py-0.5 flex-shrink-0">
+                  <Tag size={14} className="text-muted flex-shrink-0" />
+                  <span className="text-sm font-semibold text-body truncate">{col.title}</span>
+                  <span className="text-xs bg-gray-300 dark:bg-gray-600 text-sub rounded-full px-1.5 py-0.5 flex-shrink-0">
                     {col.cards.length}
                   </span>
                 </div>
@@ -874,7 +874,7 @@ export default function KanbanBoard() {
 
                 {/* Drop zone when column is empty */}
                 {col.cards.length === 0 && (
-                  <div className="flex items-center justify-center h-16 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-400 dark:text-gray-600">
+                  <div className="flex items-center justify-center h-16 border-2 border-dashed border-line rounded-lg text-xs text-gray-400 dark:text-gray-600">
                     {t('dropHere')}
                   </div>
                 )}
@@ -882,7 +882,7 @@ export default function KanbanBoard() {
                 {/* Add card button */}
                 <button
                   onClick={() => setCardModal({ colId: col.id })}
-                  className="w-full flex items-center gap-1.5 px-2 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
+                  className="w-full flex items-center gap-1.5 px-2 py-1.5 text-xs text-muted hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
                 >
                   <Plus size={13} />
                   {t('addCard')}
@@ -895,7 +895,7 @@ export default function KanbanBoard() {
         {/* Ghost add-column button */}
         <button
           onClick={() => setColModal({})}
-          className="flex-shrink-0 w-72 lg:w-64 xl:w-72 flex items-center justify-center gap-2 h-16 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-gray-400 dark:text-gray-500 hover:border-blue-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all text-sm"
+          className="flex-shrink-0 w-72 lg:w-64 xl:w-72 flex items-center justify-center gap-2 h-16 border-2 border-dashed border-line-strong rounded-xl text-faint hover:border-blue-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all text-sm"
         >
           <Plus size={16} />
           {t('addColumn')}
@@ -904,18 +904,18 @@ export default function KanbanBoard() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen size={20} className="text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100 mb-3">
+            <h3 className="text-base font-semibold text-body mb-3">
               {t('guide.howTo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 text-xs flex items-center justify-center font-bold">
                     {i + 1}
                   </span>
@@ -925,12 +925,12 @@ export default function KanbanBoard() {
             </ul>
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100 mb-3">
+            <h3 className="text-base font-semibold text-body mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="text-blue-500 flex-shrink-0">•</span>
                   {item}
                 </li>

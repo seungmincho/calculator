@@ -249,13 +249,13 @@ export default function MbtiTest() {
         {/* Header */}
         <div className="text-center">
           <div className="text-5xl mb-3">🧠</div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('title')}</h1>
-          <p className="text-gray-500 dark:text-gray-400">{t('description')}</p>
+          <h1 className="text-3xl font-bold text-fg mb-2">{t('title')}</h1>
+          <p className="text-muted">{t('description')}</p>
         </div>
 
         {/* Guide sections */}
         <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
 
           <div className="grid sm:grid-cols-3 gap-5">
             {/* What is MBTI */}
@@ -323,22 +323,22 @@ export default function MbtiTest() {
         {/* Progress header */}
         <div className={`${glassCard} ${glassInset} p-5`}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <span className="text-sm font-medium text-muted">
               {t('question')} {currentQ + 1}{t('of')}{totalQuestions}
             </span>
             <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
               {t('progress')} {progress}%
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-track rounded-full h-2">
             <div
               className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
           <div className="flex items-center justify-between mt-2">
-            <span className="text-xs text-gray-400 dark:text-gray-500">{axisLabels[currentQuestion.axis]}</span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-faint">{axisLabels[currentQuestion.axis]}</span>
+            <span className="text-xs text-faint">
               {Object.keys(answers).length} / {totalQuestions}
             </span>
           </div>
@@ -355,7 +355,7 @@ export default function MbtiTest() {
           }`}
           style={{ transform: isAnimating ? undefined : 'translateX(0)', transition: 'opacity 0.18s, transform 0.18s' }}
         >
-          <p className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-8 text-center leading-relaxed">
+          <p className="text-lg sm:text-xl font-semibold text-fg mb-8 text-center leading-relaxed">
             {currentQuestion.question}
           </p>
 
@@ -366,7 +366,7 @@ export default function MbtiTest() {
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionA.value
                   ? 'border-purple-500 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-200'
-                  : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900'
+                  : 'border-line bg-field text-body hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900'
               }`}
             >
               <span className="inline-flex items-center gap-3">
@@ -386,7 +386,7 @@ export default function MbtiTest() {
             {/* Divider */}
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
-              <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">VS</span>
+              <span className="text-xs text-faint font-medium">VS</span>
               <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
             </div>
 
@@ -396,7 +396,7 @@ export default function MbtiTest() {
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionB.value
                   ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-200'
-                  : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900'
+                  : 'border-line bg-field text-body hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900'
               }`}
             >
               <span className="inline-flex items-center gap-3">
@@ -420,7 +420,7 @@ export default function MbtiTest() {
           <button
             onClick={handlePrev}
             disabled={currentQ === 0}
-            className="flex items-center gap-1 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1 px-4 py-3 rounded-xl bg-soft text-body font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
             {t('prev')}
@@ -439,7 +439,7 @@ export default function MbtiTest() {
             <button
               onClick={handleNext}
               disabled={currentQ === totalQuestions - 1}
-              className="flex items-center gap-1 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-1 px-4 py-3 rounded-xl bg-soft text-body font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {t('next')}
               <ChevronRight className="w-4 h-4" />
@@ -462,7 +462,7 @@ export default function MbtiTest() {
                     ? 'bg-purple-600 text-white scale-110'
                     : answers[q.id]
                     ? 'bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200'
-                    : 'bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
+                    : 'bg-gray-200 dark:bg-gray-600 text-muted'
                 }`}
                 title={`Q${i + 1}`}
               >
@@ -500,26 +500,26 @@ export default function MbtiTest() {
           <div className="text-5xl font-bold tracking-wider mb-2">{result.type}</div>
           <div className="text-xl font-semibold opacity-90 mb-1">{profile.nickname} · {profile.nicknameEn}</div>
           <div className="text-sm opacity-75">{profile.shortDesc}</div>
-          <div className="mt-4 inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-1 text-sm">
+          <div className="mt-4 inline-block bg-white/20 rounded-full px-4 py-1 text-sm">
             {t('koreanPopulation')}: {profile.koreanPercent}%
           </div>
         </div>
 
         {/* Axis distribution */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">{t('typeDistribution')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-5">{t('typeDistribution')}</h2>
           <div className="space-y-4">
             {axes.map(({ axis, left, right, leftPct, rightPct, dominant }) => (
               <div key={axis}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className={`text-sm font-semibold ${dominant === left ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400 dark:text-gray-500'}`}>
+                  <span className={`text-sm font-semibold ${dominant === left ? 'text-purple-600 dark:text-purple-400' : 'text-faint'}`}>
                     {left} {dominant === left && `${leftPct}%`}
                   </span>
-                  <span className={`text-sm font-semibold ${dominant === right ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'}`}>
+                  <span className={`text-sm font-semibold ${dominant === right ? 'text-indigo-600 dark:text-indigo-400' : 'text-faint'}`}>
                     {dominant === right && `${rightPct}%`} {right}
                   </span>
                 </div>
-                <div className="flex h-3 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+                <div className="flex h-3 rounded-full overflow-hidden bg-soft">
                   <div
                     className="h-full rounded-l-full transition-all duration-700"
                     style={{
@@ -541,7 +541,7 @@ export default function MbtiTest() {
         <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
           {/* Traits */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('personality')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-3">{t('personality')}</h2>
             <div className="flex flex-wrap gap-2">
               {profile.traits.map(trait => (
                 <span
@@ -585,23 +585,23 @@ export default function MbtiTest() {
         {/* Communication & love style */}
         <div className="grid sm:grid-cols-2 gap-5">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('communicationStyle')}</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{profile.communicationStyle}</p>
+            <h2 className="text-base font-semibold text-fg mb-3">{t('communicationStyle')}</h2>
+            <p className="text-sm text-sub leading-relaxed">{profile.communicationStyle}</p>
           </div>
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('loveStyle')}</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{profile.loveStyle}</p>
+            <h2 className="text-base font-semibold text-fg mb-3">{t('loveStyle')}</h2>
+            <p className="text-sm text-sub leading-relaxed">{profile.loveStyle}</p>
           </div>
         </div>
 
         {/* Careers */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('careers')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-3">{t('careers')}</h2>
           <div className="flex flex-wrap gap-2">
             {profile.careers.map(career => (
               <span
                 key={career}
-                className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium"
+                className="px-3 py-1.5 bg-soft text-body rounded-lg text-sm font-medium"
               >
                 {career}
               </span>
@@ -611,10 +611,10 @@ export default function MbtiTest() {
 
         {/* Famous people */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('famousPeople')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('famousPeople')}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">한국인</h3>
+              <h3 className="text-sm font-medium text-muted mb-2">한국인</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousKoreans.map(p => (
                   <span key={p} className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg text-sm">
@@ -624,7 +624,7 @@ export default function MbtiTest() {
               </div>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">해외</h3>
+              <h3 className="text-sm font-medium text-muted mb-2">해외</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousInternational.map(p => (
                   <span key={p} className="px-2.5 py-1 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 rounded-lg text-sm">
@@ -638,12 +638,12 @@ export default function MbtiTest() {
 
         {/* Share section */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('shareResult')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('shareResult')}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {/* Copy link */}
             <button
               onClick={() => copyToClipboard(shareUrl, 'link')}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-colors text-sm"
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium transition-colors text-sm"
             >
               {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
               {copiedId === 'link' ? t('copied') : t('copyLink')}
@@ -678,7 +678,7 @@ export default function MbtiTest() {
           <p className="font-semibold mb-4 text-lg">나의 유형과 궁합이 맞는 유형은?</p>
           <a
             href={`/mbti-compatibility?type=${result.type}`}
-            className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl px-6 py-3 font-semibold transition-all text-sm"
+            className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 rounded-xl px-6 py-3 font-semibold transition-all text-sm"
           >
             <ExternalLink className="w-4 h-4" />
             {t('checkCompatibility')}
@@ -689,13 +689,13 @@ export default function MbtiTest() {
         <div className="space-y-4">
           <button
             onClick={handleRetake}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('retake')}
           </button>
 
-          <p className="text-center text-xs text-gray-400 dark:text-gray-500 px-4">{t('disclaimer')}</p>
+          <p className="text-center text-xs text-faint px-4">{t('disclaimer')}</p>
         </div>
 
         {/* Hidden canvas for download */}

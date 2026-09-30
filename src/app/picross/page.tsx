@@ -69,7 +69,7 @@ export default function PicrossPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Picross />
@@ -81,17 +81,17 @@ export default function PicrossPage() {
       </div>
       {/* SEO */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             네모로직(노노그램)이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             네모로직(노노그램, 피크로스, Nonogram, Picross)은 격자의 행과 열에 주어진 숫자 힌트를 이용해 칸을 칠하거나 비워서 숨겨진 그림을 완성하는 논리 퍼즐 게임입니다. 1987년 일본에서 처음 고안되어 전 세계적으로 인기를 얻었으며, 스도쿠와 함께 대표적인 논리 퍼즐로 사랑받고 있습니다. 5x5 초급부터 15x15 고급까지 3단계 난이도를 제공하며, 매일 새로운 오늘의 퍼즐도 즐길 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             네모로직 풀이 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>큰 힌트 우선:</strong> 행이나 열의 크기에 가까운 큰 숫자 힌트부터 처리하면 확정 칸을 쉽게 찾을 수 있습니다.</li>
             <li><strong>겹침 기법:</strong> 힌트 블록을 좌측 끝과 우측 끝에 배치했을 때 겹치는 영역은 반드시 칠해지는 칸입니다.</li>
             <li><strong>X 표시 활용:</strong> 확실히 비어야 하는 칸에 X 표시를 하면 나머지 칸의 추론이 쉬워집니다.</li>

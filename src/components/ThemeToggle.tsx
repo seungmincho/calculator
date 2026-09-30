@@ -43,7 +43,7 @@ const ThemeToggle = () => {
   if (!mounted) {
     return (
       <button
-        className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+        className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-sub"
         aria-label="테마 전환"
       >
         <Sun className="w-5 h-5" />
@@ -54,7 +54,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-sub hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
       title={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
     >

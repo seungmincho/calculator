@@ -147,17 +147,17 @@ export default function SystemDesign() {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">{SYSTEM_DESIGN_QUESTIONS.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.total')}</div>
+        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
+          <div className="text-2xl font-bold text-fg">{SYSTEM_DESIGN_QUESTIONS.length}</div>
+          <div className="text-xs text-muted">{t('stats.total')}</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
+        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
           <div className="text-2xl font-bold text-green-600 dark:text-green-400">{completed.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.completed')}</div>
+          <div className="text-xs text-muted">{t('stats.completed')}</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
+        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
           <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{bookmarks.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.bookmarked')}</div>
+          <div className="text-xs text-muted">{t('stats.bookmarked')}</div>
         </div>
       </div>
 
@@ -169,7 +169,7 @@ export default function SystemDesign() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               categoryFilter === 'all'
                 ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('filter.all')}
@@ -183,7 +183,7 @@ export default function SystemDesign() {
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   categoryFilter === cat
                     ? `${CATEGORY_COLORS[cat].bg} ${CATEGORY_COLORS[cat].text} ring-2 ${CATEGORY_COLORS[cat].border}`
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {catInfo.icon} {catInfo.nameKo}
@@ -199,7 +199,7 @@ export default function SystemDesign() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               difficultyFilter === 'all'
                 ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('filter.all')}
@@ -211,7 +211,7 @@ export default function SystemDesign() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 difficultyFilter === diff
                   ? `${DIFFICULTY_COLORS[diff].bg} ${DIFFICULTY_COLORS[diff].text}`
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t(`difficulty.${diff}`)}
@@ -229,7 +229,7 @@ export default function SystemDesign() {
             <div
               key={q.id}
               onClick={() => openDetail(q.id)}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-0.5 relative group"
+              className="bg-surface rounded-xl shadow-lg p-5 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-0.5 relative group"
             >
               {/* Bookmark star */}
               <button
@@ -258,14 +258,14 @@ export default function SystemDesign() {
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 pr-12">{q.title}</h3>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{q.titleEn}</p>
+              <h3 className="text-lg font-bold text-fg mb-1 pr-12">{q.title}</h3>
+              <p className="text-xs text-faint mb-2">{q.titleEn}</p>
 
               {/* Description */}
-              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{q.description}</p>
+              <p className="text-sm text-sub line-clamp-2">{q.description}</p>
 
               {/* Components count */}
-              <div className="flex items-center gap-3 mt-3 text-xs text-gray-400 dark:text-gray-500">
+              <div className="flex items-center gap-3 mt-3 text-xs text-faint">
                 <span className="flex items-center gap-1"><Layers className="w-3 h-3" /> {q.architecture.components.length} {t('section.components')}</span>
                 <span className="flex items-center gap-1"><Zap className="w-3 h-3" /> {q.deepDive.length} {t('tab.deepDive')}</span>
               </div>
@@ -275,7 +275,7 @@ export default function SystemDesign() {
       </div>
 
       {filteredQuestions.length === 0 && (
-        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-12 text-muted">
           {t('filter.noResults')}
         </div>
       )}
@@ -300,7 +300,7 @@ export default function SystemDesign() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <button
             onClick={backToOverview}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sub hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium">{t('back')}</span>
@@ -326,7 +326,7 @@ export default function SystemDesign() {
             ) : (
               <button
                 onClick={resetPractice}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="flex items-center gap-2 bg-soft text-body rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 {t('practice.reset')}
               </button>
@@ -335,7 +335,7 @@ export default function SystemDesign() {
         </div>
 
         {/* Title card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6">
           <div className="flex items-center gap-2 mb-3">
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[q.category].bg} ${CATEGORY_COLORS[q.category].text}`}>
               {DESIGN_CATEGORIES[q.category].icon} {DESIGN_CATEGORIES[q.category].nameKo}
@@ -344,9 +344,9 @@ export default function SystemDesign() {
               {t(`difficulty.${q.difficulty}`)}
             </span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{q.title}</h2>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{q.titleEn}</p>
-          <p className="text-gray-600 dark:text-gray-300 mt-3">{q.description}</p>
+          <h2 className="text-2xl font-bold text-fg">{q.title}</h2>
+          <p className="text-sm text-faint mt-1">{q.titleEn}</p>
+          <p className="text-sub mt-3">{q.description}</p>
 
           {/* Practice progress */}
           {practicing && (
@@ -378,7 +378,7 @@ export default function SystemDesign() {
         </div>
 
         {/* Tabs */}
-        <div className="flex overflow-x-auto gap-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-1.5">
+        <div className="flex overflow-x-auto gap-1 bg-surface rounded-xl shadow-lg p-1.5">
           {TABS.map((tab, idx) => {
             const visible = shouldShowTab(idx)
             if (!visible) return null
@@ -396,7 +396,7 @@ export default function SystemDesign() {
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   activeTab === tab
                     ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
                 {icons[tab]}
@@ -407,7 +407,7 @@ export default function SystemDesign() {
         </div>
 
         {/* Tab content */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6">
           {activeTab === 'requirements' && renderRequirements(q)}
           {activeTab === 'estimation' && renderEstimation(q)}
           {activeTab === 'architecture' && renderArchitecture(q)}
@@ -421,13 +421,13 @@ export default function SystemDesign() {
   const renderRequirements = (q: SystemDesignQuestion) => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <Target className="w-5 h-5 text-blue-500" />
           {t('section.functional')}
         </h3>
         <ol className="space-y-2">
           {q.requirements.functional.map((item, i) => (
-            <li key={i} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
+            <li key={i} className="flex gap-3 text-sm text-body">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 flex items-center justify-center text-xs font-bold">{i + 1}</span>
               {item}
             </li>
@@ -435,13 +435,13 @@ export default function SystemDesign() {
         </ol>
       </div>
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <Zap className="w-5 h-5 text-amber-500" />
           {t('section.nonFunctional')}
         </h3>
         <ol className="space-y-2">
           {q.requirements.nonFunctional.map((item, i) => (
-            <li key={i} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
+            <li key={i} className="flex gap-3 text-sm text-body">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center text-xs font-bold">{i + 1}</span>
               {item}
             </li>
@@ -453,13 +453,13 @@ export default function SystemDesign() {
 
   const renderEstimation = (q: SystemDesignQuestion) => (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
         <BookMarked className="w-5 h-5 text-purple-500" />
         {q.estimations.title}
       </h3>
-      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 space-y-2">
+      <div className="bg-subtle rounded-lg p-4 space-y-2">
         {q.estimations.items.map((item, i) => (
-          <div key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300 font-mono">
+          <div key={i} className="flex items-start gap-2 text-sm text-body font-mono">
             <span className="text-purple-500 flex-shrink-0">{'>'}</span>
             {item}
           </div>
@@ -472,8 +472,8 @@ export default function SystemDesign() {
     <div className="space-y-6">
       {/* Overview */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('tab.architecture')}</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300">{q.architecture.overview}</p>
+        <h3 className="text-lg font-semibold text-fg mb-2">{t('tab.architecture')}</h3>
+        <p className="text-sm text-sub">{q.architecture.overview}</p>
       </div>
 
       {/* ASCII diagram */}
@@ -485,15 +485,15 @@ export default function SystemDesign() {
 
       {/* Components */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <Server className="w-5 h-5 text-indigo-500" />
           {t('section.components')}
         </h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {q.architecture.components.map((comp, i) => (
-            <div key={i} className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/30">
-              <div className="font-semibold text-sm text-gray-900 dark:text-white mb-1">{comp.name}</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">{comp.description}</div>
+            <div key={i} className="p-3 rounded-lg border border-line bg-gray-50 dark:bg-gray-700/30">
+              <div className="font-semibold text-sm text-fg mb-1">{comp.name}</div>
+              <div className="text-xs text-sub">{comp.description}</div>
             </div>
           ))}
         </div>
@@ -501,7 +501,7 @@ export default function SystemDesign() {
 
       {/* Data flow */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <ArrowRight className="w-5 h-5 text-teal-500" />
           {t('section.dataFlow')}
         </h3>
@@ -516,7 +516,7 @@ export default function SystemDesign() {
                   <div className="w-0.5 h-6 bg-teal-200 dark:bg-teal-800" />
                 )}
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 pt-1">{step}</p>
+              <p className="text-sm text-body pt-1">{step}</p>
             </div>
           ))}
         </div>
@@ -529,16 +529,16 @@ export default function SystemDesign() {
       {q.deepDive.map((dive, i) => {
         const isExpanded = expandedDive === i
         return (
-          <div key={i} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+          <div key={i} className="border border-line rounded-lg overflow-hidden">
             <button
               onClick={() => setExpandedDive(isExpanded ? null : i)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
             >
-              <span className="font-medium text-sm text-gray-900 dark:text-white">{dive.title}</span>
+              <span className="font-medium text-sm text-fg">{dive.title}</span>
               {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
             </button>
             {isExpanded && (
-              <div className="px-4 pb-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-200 dark:border-gray-700 pt-3">
+              <div className="px-4 pb-4 text-sm text-sub leading-relaxed border-t border-line pt-3">
                 {dive.content}
               </div>
             )}
@@ -552,13 +552,13 @@ export default function SystemDesign() {
     <div className="space-y-6">
       {/* Scalability */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <Zap className="w-5 h-5 text-green-500" />
           {t('section.scalability')}
         </h3>
         <div className="space-y-2">
           {q.scalability.map((item, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <div key={i} className="flex items-start gap-2 text-sm text-body">
               <span className="text-green-500 flex-shrink-0 mt-0.5">&#x2191;</span>
               {item}
             </div>
@@ -568,13 +568,13 @@ export default function SystemDesign() {
 
       {/* Tradeoffs */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           <Scale className="w-5 h-5 text-orange-500" />
           {t('section.tradeoffs')}
         </h3>
         <div className="space-y-2">
           {q.tradeoffs.map((item, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <div key={i} className="flex items-start gap-2 text-sm text-body">
               <Scale className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
               {item}
             </div>
@@ -604,8 +604,8 @@ export default function SystemDesign() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {mode === 'overview' ? renderOverview() : renderDetail()}

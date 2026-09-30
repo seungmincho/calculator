@@ -126,9 +126,9 @@ function calculateRoom(room: Room, settings: MaterialSettings): RoomResult {
 }
 
 const inputCls =
-  'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm'
+  'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm'
 
-const labelCls = 'block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1'
+const labelCls = 'block text-xs font-medium text-sub mb-1'
 
 function fmt(n: number, decimals = 2): string {
   return n.toLocaleString('ko-KR', {
@@ -246,8 +246,8 @@ export default function InteriorCalc() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -255,7 +255,7 @@ export default function InteriorCalc() {
         <div className="lg:col-span-1 space-y-6">
           {/* Paint */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
+            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
               <span>🎨</span> {t('paintCalc')}
             </h2>
             <div>
@@ -297,7 +297,7 @@ export default function InteriorCalc() {
 
           {/* Wallpaper */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
+            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
               <span>📜</span> {t('wallpaperCalc')}
             </h2>
             <div>
@@ -340,7 +340,7 @@ export default function InteriorCalc() {
 
           {/* Tile */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
+            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
               <span>🟦</span> {t('tileCalc')}
             </h2>
             <div className="grid grid-cols-2 gap-3">
@@ -414,11 +414,11 @@ export default function InteriorCalc() {
                     <span className="w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 flex items-center justify-center text-sm font-bold">
                       {idx + 1}
                     </span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                    <span className="font-semibold text-fg">
                       {room.name || `${t('room')} ${idx + 1}`}
                     </span>
                     {result && (
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-muted">
                         {fmt(result.floorArea)} {t('sqm')}
                       </span>
                     )}
@@ -438,7 +438,7 @@ export default function InteriorCalc() {
                 </div>
 
                 {isExpanded && (
-                  <div className="px-5 pb-5 space-y-5 border-t border-gray-100 dark:border-gray-700 pt-4">
+                  <div className="px-5 pb-5 space-y-5 border-t border-line pt-4">
                     {/* Room name */}
                     <div>
                       <label className={labelCls}>{t('roomName')}</label>
@@ -453,7 +453,7 @@ export default function InteriorCalc() {
 
                     {/* Dimensions */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('dimensions')}</p>
+                      <p className="text-xs font-semibold text-body mb-2">{t('dimensions')}</p>
                       <div className="grid grid-cols-3 gap-3">
                         <div>
                           <label className={labelCls}>{t('width')}</label>
@@ -494,7 +494,7 @@ export default function InteriorCalc() {
 
                     {/* Deductions */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('deductions')}</p>
+                      <p className="text-xs font-semibold text-body mb-2">{t('deductions')}</p>
                       <div className="grid grid-cols-3 gap-3">
                         <div>
                           <label className={labelCls}>{t('doors')}</label>
@@ -532,7 +532,7 @@ export default function InteriorCalc() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('customDeductionHelp')}</p>
+                      <p className="text-xs text-faint mt-1">{t('customDeductionHelp')}</p>
                     </div>
 
                     {/* Room result */}
@@ -541,23 +541,23 @@ export default function InteriorCalc() {
                         <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 uppercase tracking-wide">{t('results')}</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('totalFloorArea')}</span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmt(result.floorArea)} {t('sqm')}</span>
+                            <span className="text-sub">{t('totalFloorArea')}</span>
+                            <span className="font-semibold text-fg">{fmt(result.floorArea)} {t('sqm')}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('totalWallArea')}</span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmt(result.wallArea)} {t('sqm')}</span>
+                            <span className="text-sub">{t('totalWallArea')}</span>
+                            <span className="font-semibold text-fg">{fmt(result.wallArea)} {t('sqm')}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('totalCeilingArea')}</span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmt(result.ceilingArea)} {t('sqm')}</span>
+                            <span className="text-sub">{t('totalCeilingArea')}</span>
+                            <span className="font-semibold text-fg">{fmt(result.ceilingArea)} {t('sqm')}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('deductionArea')}</span>
+                            <span className="text-sub">{t('deductionArea')}</span>
                             <span className="font-semibold text-red-600 dark:text-red-400">-{fmt(result.deductionArea)} {t('sqm')}</span>
                           </div>
                           <div className="flex justify-between sm:col-span-2">
-                            <span className="text-gray-600 dark:text-gray-400">{t('netWallArea')}</span>
+                            <span className="text-sub">{t('netWallArea')}</span>
                             <span className="font-semibold text-orange-700 dark:text-orange-300">{fmt(result.netWallArea)} {t('sqm')}</span>
                           </div>
                         </div>
@@ -566,14 +566,14 @@ export default function InteriorCalc() {
 
                         {/* Paint result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">🎨 {t('paintCalc')}</p>
+                          <p className="text-xs font-medium text-muted">🎨 {t('paintCalc')}</p>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('paintNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmt(result.paintNeeded, 1)} {t('liters')}</span>
+                            <span className="text-sub">{t('paintNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
+                            <span className="font-semibold text-fg">{fmt(result.paintNeeded, 1)} {t('liters')}</span>
                           </div>
                           {settings.paintPrice > 0 && (
                             <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">{t('paintCost')}</span>
+                              <span className="text-sub">{t('paintCost')}</span>
                               <span className="font-semibold text-blue-600 dark:text-blue-400">₩{fmtWon(result.paintCost)}</span>
                             </div>
                           )}
@@ -581,23 +581,23 @@ export default function InteriorCalc() {
 
                         {/* Wallpaper result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">📜 {t('wallpaperCalc')}</p>
+                          <p className="text-xs font-medium text-muted">📜 {t('wallpaperCalc')}</p>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('wallpaperRolls')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmtInt(result.wallpaperRolls)} {t('rolls')}</span>
+                            <span className="text-sub">{t('wallpaperRolls')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
+                            <span className="font-semibold text-fg">{fmtInt(result.wallpaperRolls)} {t('rolls')}</span>
                           </div>
                         </div>
 
                         {/* Tile result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">🟦 {t('tileCalc')}</p>
+                          <p className="text-xs font-medium text-muted">🟦 {t('tileCalc')}</p>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{t('tilesNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{fmtInt(result.tilesNeeded)} {t('tiles')}</span>
+                            <span className="text-sub">{t('tilesNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
+                            <span className="font-semibold text-fg">{fmtInt(result.tilesNeeded)} {t('tiles')}</span>
                           </div>
                           {settings.tilePrice > 0 && (
                             <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">{t('tileCost')}</span>
+                              <span className="text-sub">{t('tileCost')}</span>
                               <span className="font-semibold text-blue-600 dark:text-blue-400">₩{fmtWon(result.tileCost)}</span>
                             </div>
                           )}
@@ -663,13 +663,13 @@ export default function InteriorCalc() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guideTitle')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">{t('guideBasicTitle')}</h3>
+            <h3 className="font-semibold text-body mb-3">{t('guideBasicTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideBasicItems') as string[]).map((item: string, i: number) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="text-orange-500 font-bold mt-0.5 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -677,10 +677,10 @@ export default function InteriorCalc() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">{t('guideMaterialTitle')}</h3>
+            <h3 className="font-semibold text-body mb-3">{t('guideMaterialTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideMaterialItems') as string[]).map((item: string, i: number) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="text-orange-500 font-bold mt-0.5 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>

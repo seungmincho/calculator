@@ -37,7 +37,7 @@ export default function StepNavigator({ steps, currentStep, onStepClick }: StepN
                   ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
                   : isPast
                     ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                    : 'bg-gray-100/50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-500 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
+                    : 'bg-gray-100/50 dark:bg-gray-800/50 text-muted hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
               }`}
               title={step.description}
             >

@@ -84,7 +84,7 @@ const TILE_TYPES: TileType[] = [
   // 삼원패 (Dragons)
   { suit: 'dragon', value: 1, label: '中', color: 'text-red-600 dark:text-red-500', bgColor: 'bg-white dark:bg-gray-100' },
   { suit: 'dragon', value: 2, label: '發', color: 'text-green-600 dark:text-green-500', bgColor: 'bg-white dark:bg-gray-100' },
-  { suit: 'dragon', value: 3, label: '白', color: 'text-gray-400 dark:text-gray-500', bgColor: 'bg-white dark:bg-gray-100' },
+  { suit: 'dragon', value: 3, label: '白', color: 'text-faint', bgColor: 'bg-white dark:bg-gray-100' },
 ]
 // 34 regular types (indices 0-33): 9 man + 9 pin + 9 sou + 4 wind + 3 dragon
 
@@ -465,22 +465,22 @@ export default function MahjongSolitaire() {
     <div className="space-y-4">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className="bg-surface rounded-xl shadow-lg p-4">
         <div className="flex flex-wrap items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5 text-sm">
               <Clock className="w-4 h-4 text-gray-500" />
-              <span className="font-mono text-gray-900 dark:text-white">{formatTime(timer)}</span>
+              <span className="font-mono text-fg">{formatTime(timer)}</span>
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
-              {t('remaining')}: <span className="font-bold text-gray-900 dark:text-white">{remainingCount}</span>
+            <div className="text-sm text-sub">
+              {t('remaining')}: <span className="font-bold text-fg">{remainingCount}</span>
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
+            <div className="text-sm text-sub">
               {t('matched')}: <span className="font-bold text-green-600 dark:text-green-400">{matchedCount}</span>
             </div>
           </div>
@@ -508,7 +508,7 @@ export default function MahjongSolitaire() {
             <button
               onClick={handleUndo}
               disabled={history.length === 0}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 transition-colors"
               title={t('undo')}
             >
               <RotateCcw className="w-4 h-4" />
@@ -527,7 +527,7 @@ export default function MahjongSolitaire() {
       </div>
 
       {/* Game board */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 sm:p-4 overflow-x-auto">
+      <div className="bg-surface rounded-xl shadow-lg p-2 sm:p-4 overflow-x-auto">
         <div
           className="relative mx-auto"
           style={{
@@ -644,7 +644,7 @@ export default function MahjongSolitaire() {
             <button
               onClick={handleUndo}
               disabled={history.length === 0}
-              className="px-5 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium disabled:opacity-40"
+              className="px-5 py-2 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium disabled:opacity-40"
             >
               {t('undo')}
             </button>
@@ -666,13 +666,13 @@ export default function MahjongSolitaire() {
       />
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guideTitle')}</h2>
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-4">{t('guideTitle')}</h2>
 
         <div className="space-y-4">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('rulesTitle')}</h3>
-            <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+            <h3 className="font-medium text-fg mb-2">{t('rulesTitle')}</h3>
+            <ul className="list-disc list-inside space-y-1 text-sm text-body">
               {(t.raw('rulesItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
@@ -680,8 +680,8 @@ export default function MahjongSolitaire() {
           </div>
 
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('tipsTitle')}</h3>
-            <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+            <h3 className="font-medium text-fg mb-2">{t('tipsTitle')}</h3>
+            <ul className="list-disc list-inside space-y-1 text-sm text-body">
               {(t.raw('tipsItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
@@ -689,8 +689,8 @@ export default function MahjongSolitaire() {
           </div>
 
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('tilesTitle')}</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <h3 className="font-medium text-fg mb-2">{t('tilesTitle')}</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-body">
               <div><span className="font-medium text-red-600 dark:text-red-400">{t('tileMan')}</span>: 一~九萬 (9{t('tileTypes')})</div>
               <div><span className="font-medium text-blue-600 dark:text-blue-400">{t('tilePin')}</span>: ①~⑨ (9{t('tileTypes')})</div>
               <div><span className="font-medium text-green-600 dark:text-green-400">{t('tileSou')}</span>: 一~九索 (9{t('tileTypes')})</div>

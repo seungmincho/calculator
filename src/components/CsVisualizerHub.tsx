@@ -61,13 +61,13 @@ export default function CsVisualizerHub() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-fg">
           🖥️ {t('title')}
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto">
+        <p className="text-muted mt-2 max-w-2xl mx-auto">
           {t('description')}
         </p>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+        <p className="text-sm text-faint mt-1">
           {t('totalCount', { count: csVisualizers.length })}
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function CsVisualizerHub() {
             className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
               activeFilter === 'all'
                 ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                : 'bg-white/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                : 'bg-surface text-sub border-line hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             {t('filter.all')}
@@ -96,7 +96,7 @@ export default function CsVisualizerHub() {
                 className={`px-4 py-1.5 text-sm rounded-full border transition-colors ${
                   isActive
                     ? filterColorClasses[color]
-                    : 'bg-white/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'bg-surface text-sub border-line hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
                 {t(csCategoryLabels[cat])} ({count})
@@ -104,7 +104,7 @@ export default function CsVisualizerHub() {
             )
           })}
         </div>
-        <div className="flex items-center bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-0.5">
+        <div className="flex items-center bg-surface rounded-lg border border-line p-0.5">
           <button
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
@@ -139,9 +139,9 @@ export default function CsVisualizerHub() {
                   <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${chipColorClasses[color]}`}>
                     {t(csCategoryLabels[cat])}
                   </span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">{items.length}개</span>
+                  <span className="text-xs text-faint">{items.length}개</span>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+                <div className="bg-white/80 dark:bg-gray-800/80">
                   {items.map((item, i) => (
                     <Link
                       key={item.id}
@@ -152,14 +152,14 @@ export default function CsVisualizerHub() {
                     >
                       <span className="text-xl w-8 text-center flex-shrink-0">{item.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <span className="font-medium text-gray-900 dark:text-white text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <span className="font-medium text-fg text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {t(`items.${item.labelKey}.title`)}
                         </span>
-                        <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 line-clamp-1">
+                        <p className="text-faint text-xs mt-0.5 line-clamp-1">
                           {t(`items.${item.labelKey}.description`)}
                         </p>
                       </div>
-                      <span className="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+                      <span className="text-xs text-faint flex-shrink-0">
                         {difficultyLabels[item.difficulty]}
                       </span>
                       <span className="text-xs text-blue-500 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
@@ -183,18 +183,18 @@ export default function CsVisualizerHub() {
               <Link
                 key={item.id}
                 href={item.href}
-                className={`group block bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border rounded-2xl p-5 transition-all hover:shadow-lg ${cardBorderClasses[color]}`}
+                className={`group block bg-surface border rounded-2xl p-5 transition-all hover:shadow-lg ${cardBorderClasses[color]}`}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{item.icon}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="font-semibold text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {t(`items.${item.labelKey}.title`)}
                       </h3>
                       <span className="text-xs text-gray-400">{difficultyLabels[item.difficulty]}</span>
                     </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                    <p className="text-sm text-muted mt-1 line-clamp-2">
                       {t(`items.${item.labelKey}.description`)}
                     </p>
                     <span className={`inline-block mt-2 px-2 py-0.5 text-xs rounded-full ${chipColorClasses[color]}`}>

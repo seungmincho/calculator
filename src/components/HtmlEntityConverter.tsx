@@ -168,24 +168,24 @@ export default function HtmlEntityConverter() {
     <div className="space-y-6">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Code2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 모드 탭 */}
-      <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+      <div className="flex bg-soft rounded-lg p-1">
         <button
           onClick={() => setMode('encode')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
         >
           {t('encodeTab')}
         </button>
         <button
           onClick={() => setMode('decode')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
         >
           {t('decodeTab')}
         </button>
@@ -195,7 +195,7 @@ export default function HtmlEntityConverter() {
       {mode === 'encode' && (
         <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('format')}:</span>
+            <span className="text-sm font-medium text-body">{t('format')}:</span>
             {(['named', 'decimal', 'hex'] as const).map(opt => (
               <label key={opt} className="flex items-center gap-1.5 cursor-pointer">
                 <input
@@ -206,10 +206,10 @@ export default function HtmlEntityConverter() {
                   onChange={() => setEncodeOption(opt)}
                   className="accent-blue-600"
                 />
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t(`formats.${opt}`)}</span>
+                <span className="text-sm text-sub">{t(`formats.${opt}`)}</span>
               </label>
             ))}
-            <div className="border-l border-gray-200 dark:border-gray-600 h-5 mx-1" />
+            <div className="border-l border-line h-5 mx-1" />
             <label className="flex items-center gap-1.5 cursor-pointer">
               <input
                 type="checkbox"
@@ -217,7 +217,7 @@ export default function HtmlEntityConverter() {
                 onChange={e => setEncodeAll(e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('encodeAllNonAscii')}</span>
+              <span className="text-sm text-sub">{t('encodeAllNonAscii')}</span>
             </label>
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function HtmlEntityConverter() {
         {/* 입력 */}
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-sm font-semibold text-fg">
               {mode === 'encode' ? t('inputText') : t('inputEncoded')}
             </h2>
             <span className="text-xs text-gray-400">{charCount.input} chars</span>
@@ -237,7 +237,7 @@ export default function HtmlEntityConverter() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder={mode === 'encode' ? t('encodePlaceholder') : t('decodePlaceholder')}
-            className="w-full h-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono resize-none"
+            className="w-full h-48 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm font-mono resize-none"
             spellCheck={false}
           />
         </div>
@@ -246,7 +246,7 @@ export default function HtmlEntityConverter() {
         <div className="lg:hidden flex justify-center">
           <button
             onClick={swap}
-            className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
+            className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
             aria-label={t('swap')}
           >
             <ArrowRightLeft className="w-5 h-5 text-gray-500 rotate-90" />
@@ -256,7 +256,7 @@ export default function HtmlEntityConverter() {
         {/* 출력 */}
         <div className={`${glassCard} ${glassInset} p-6 relative`}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-sm font-semibold text-fg">
               {mode === 'encode' ? t('outputEncoded') : t('outputText')}
             </h2>
             <div className="flex items-center gap-2">
@@ -265,14 +265,14 @@ export default function HtmlEntityConverter() {
                 <>
                   <button
                     onClick={swap}
-                    className="hidden lg:flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 rounded transition-colors"
+                    className="hidden lg:flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded transition-colors"
                     aria-label={t('swap')}
                   >
                     <ArrowRightLeft className="w-3 h-3" />
                   </button>
                   <button
                     onClick={() => copyToClipboard(output, 'output')}
-                    className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 rounded transition-colors"
+                    className="flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded transition-colors"
                   >
                     {copiedId === 'output' ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
                     {copiedId === 'output' ? t('copied') : t('copy')}
@@ -281,7 +281,7 @@ export default function HtmlEntityConverter() {
               )}
             </div>
           </div>
-          <div className="w-full h-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono overflow-auto whitespace-pre-wrap break-all">
+          <div className="w-full h-48 px-3 py-2 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg text-sm font-mono overflow-auto whitespace-pre-wrap break-all">
             {output || <span className="text-gray-400">{t('outputPlaceholder')}</span>}
           </div>
           {charCount.entities > 0 && (
@@ -295,7 +295,7 @@ export default function HtmlEntityConverter() {
       {/* 엔티티 참고 테이블 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('referenceTable')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('referenceTable')}</h2>
           <div className="relative">
             <Search className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -303,27 +303,27 @@ export default function HtmlEntityConverter() {
               value={refSearch}
               onChange={e => setRefSearch(e.target.value)}
               placeholder={t('searchEntity')}
-              className="pl-8 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 w-48"
+              className="pl-8 pr-3 py-1.5 text-sm border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 w-48"
             />
           </div>
         </div>
         <div className="overflow-x-auto max-h-72 overflow-y-auto">
           <table className="w-full text-sm" aria-label={t('referenceTable')}>
-            <thead className="sticky top-0 bg-gray-50 dark:bg-gray-700/50">
+            <thead className="sticky top-0 bg-subtle">
               <tr>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">{t('charCol')}</th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">{t('descCol')}</th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Named</th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Decimal</th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Hex</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-muted">{t('charCol')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-muted">{t('descCol')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-muted">Named</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-muted">Decimal</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-muted">Hex</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredRef.map((r, i) => (
                 <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 group">
                   <td className="px-3 py-2 text-center text-lg">{r.char === '\u00a0' ? '\u2423' : r.char}</td>
-                  <td className="px-3 py-2 text-gray-600 dark:text-gray-400">{r.desc}</td>
-                  <td className="px-3 py-2 font-mono text-xs text-gray-900 dark:text-white">
+                  <td className="px-3 py-2 text-sub">{r.desc}</td>
+                  <td className="px-3 py-2 font-mono text-xs text-fg">
                     <button
                       onClick={() => copyToClipboard(r.named, `ref-named-${i}`)}
                       className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -331,7 +331,7 @@ export default function HtmlEntityConverter() {
                       {copiedId === `ref-named-${i}` ? <Check className="w-3 h-3 inline text-green-500" /> : r.named}
                     </button>
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-400">
+                  <td className="px-3 py-2 font-mono text-xs text-sub">
                     <button
                       onClick={() => copyToClipboard(r.decimal, `ref-dec-${i}`)}
                       className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -339,7 +339,7 @@ export default function HtmlEntityConverter() {
                       {copiedId === `ref-dec-${i}` ? <Check className="w-3 h-3 inline text-green-500" /> : r.decimal}
                     </button>
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-400">
+                  <td className="px-3 py-2 font-mono text-xs text-sub">
                     <button
                       onClick={() => copyToClipboard(r.hex, `ref-hex-${i}`)}
                       className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -361,16 +361,16 @@ export default function HtmlEntityConverter() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.what.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.what.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.what.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -378,7 +378,7 @@ export default function HtmlEntityConverter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.formats.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.formats.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.formats.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -386,7 +386,7 @@ export default function HtmlEntityConverter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.usage.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.usage.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

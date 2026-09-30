@@ -83,7 +83,8 @@ function calcIncomeTax(taxableIncome: number): { tax: number; marginalRate: numb
 function calculateTax(grossAnnual: number, nonTaxableAnnual: number, dependents: number, children: number): TaxResult {
   const taxableAnnual = Math.max(0, grossAnnual - nonTaxableAnnual)
 
-  // 4대보험  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
+  // 4대보험
+  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
   const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
   const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
   const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
@@ -379,11 +380,11 @@ function BonusCalculatorContent() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -392,7 +393,7 @@ function BonusCalculatorContent() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
             {/* Annual salary */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('annualSalary')}
               </label>
               <input
@@ -407,7 +408,7 @@ function BonusCalculatorContent() {
 
             {/* Bonus type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('bonusType')}
               </label>
               <select
@@ -423,16 +424,16 @@ function BonusCalculatorContent() {
 
             {/* Bonus input method toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('bonusInput')}
               </label>
-              <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+              <div className="flex rounded-lg overflow-hidden border border-line-strong">
                 <button
                   onClick={() => setBonusMethod('percent')}
                   className={`flex-1 py-2 text-sm font-medium transition-colors ${
                     bonusMethod === 'percent'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('byPercent')}
@@ -442,7 +443,7 @@ function BonusCalculatorContent() {
                   className={`flex-1 py-2 text-sm font-medium transition-colors ${
                     bonusMethod === 'amount'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('byAmount')}
@@ -453,7 +454,7 @@ function BonusCalculatorContent() {
             {/* Bonus percent slider OR amount input */}
             {bonusMethod === 'percent' ? (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('bonusPercent')}: <span className="text-blue-600 dark:text-blue-400 font-bold">{bonusPercent}%</span>
                 </label>
                 <input
@@ -473,14 +474,14 @@ function BonusCalculatorContent() {
                   <span>500%</span>
                 </div>
                 {annualSalary > 0 && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     = {formatNumber(bonusGross)}{t('chart.won')}
                   </p>
                 )}
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('bonusAmount')}
                 </label>
                 <input
@@ -497,7 +498,7 @@ function BonusCalculatorContent() {
             {/* Dependents */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('dependents')}
                 </label>
                 <select
@@ -511,7 +512,7 @@ function BonusCalculatorContent() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('childrenUnder20')}
                 </label>
                 <select
@@ -528,7 +529,7 @@ function BonusCalculatorContent() {
 
             {/* Non-taxable */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('nonTaxable')}
               </label>
               <input
@@ -552,7 +553,7 @@ function BonusCalculatorContent() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -566,12 +567,12 @@ function BonusCalculatorContent() {
           {!hasResult ? (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400 text-lg">{t('description')}</p>
+              <p className="text-muted text-lg">{t('description')}</p>
             </div>
           ) : (
             <>
               {/* Tabs */}
-              <div className="border-b border-gray-200 dark:border-gray-700">
+              <div className="border-b border-line">
                 <nav className="flex gap-6">
                   {tabs.map((tab, idx) => (
                     <button
@@ -615,8 +616,8 @@ function BonusCalculatorContent() {
                   {/* Before / After comparison cards */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className={`${glassCard} ${glassInset} p-5`}>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('result.salaryOnly')}</p>
-                      <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                      <p className="text-sm text-muted">{t('result.salaryOnly')}</p>
+                      <p className="text-xl font-bold text-fg mt-1">
                         {formatNumber(salaryOnlyResult.netAnnual)}{t('chart.won')}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
@@ -624,7 +625,7 @@ function BonusCalculatorContent() {
                       </p>
                     </div>
                     <div className={`${glassCard} ${glassInset} p-5`}>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('result.withBonus')}</p>
+                      <p className="text-sm text-muted">{t('result.withBonus')}</p>
                       <p className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-1">
                         {formatNumber(withBonusResult.netAnnual)}{t('chart.won')}
                       </p>
@@ -643,7 +644,7 @@ function BonusCalculatorContent() {
                       onClick={() => setShowDetail(!showDetail)}
                       className="w-full flex items-center justify-between text-left"
                     >
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      <h3 className="text-lg font-semibold text-fg">
                         {t('chart.deductionBreakdown')}
                       </h3>
                       {showDetail ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -653,7 +654,7 @@ function BonusCalculatorContent() {
                       <div className="mt-4 overflow-x-auto">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                            <tr className="border-b border-line text-muted">
                               <th className="text-left py-2 pr-4"></th>
                               <th className="text-right py-2 px-2">{t('result.salaryOnly')}</th>
                               <th className="text-right py-2 px-2">{t('result.withBonus')}</th>
@@ -670,11 +671,11 @@ function BonusCalculatorContent() {
                               ['localIncomeTax', 'result.localTax'],
                             ] as const).map(([key, label]) => (
                               <tr key={key} className="border-b border-gray-100 dark:border-gray-700/50">
-                                <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{t(label)}</td>
-                                <td className="py-2 px-2 text-right text-gray-600 dark:text-gray-400">
+                                <td className="py-2 pr-4 text-body">{t(label)}</td>
+                                <td className="py-2 px-2 text-right text-sub">
                                   {formatNumber(salaryOnlyResult.deductions[key])}
                                 </td>
-                                <td className="py-2 px-2 text-right text-gray-600 dark:text-gray-400">
+                                <td className="py-2 px-2 text-right text-sub">
                                   {formatNumber(withBonusResult.deductions[key])}
                                 </td>
                                 <td className="py-2 pl-2 text-right font-medium text-red-600 dark:text-red-400">
@@ -683,11 +684,11 @@ function BonusCalculatorContent() {
                               </tr>
                             ))}
                             <tr className="font-bold">
-                              <td className="py-2 pr-4 text-gray-900 dark:text-white">{t('result.totalDeduction')}</td>
-                              <td className="py-2 px-2 text-right text-gray-900 dark:text-white">
+                              <td className="py-2 pr-4 text-fg">{t('result.totalDeduction')}</td>
+                              <td className="py-2 px-2 text-right text-fg">
                                 {formatNumber(salaryOnlyResult.deductions.total)}
                               </td>
-                              <td className="py-2 px-2 text-right text-gray-900 dark:text-white">
+                              <td className="py-2 px-2 text-right text-fg">
                                 {formatNumber(withBonusResult.deductions.total)}
                               </td>
                               <td className="py-2 pl-2 text-right text-red-600 dark:text-red-400">
@@ -706,15 +707,15 @@ function BonusCalculatorContent() {
               {activeTab === 1 && simulationData.length > 0 && (
                 <div className="space-y-6">
                   <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                    <h3 className="text-lg font-semibold text-fg mb-1">
                       {t('simulation.title')}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('simulation.description')}</p>
+                    <p className="text-sm text-muted mb-4">{t('simulation.description')}</p>
 
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                          <tr className="border-b border-line text-muted">
                             <th className="text-left py-2">{t('simulation.ratio')}</th>
                             <th className="text-right py-2">{t('simulation.grossBonus')}</th>
                             <th className="text-right py-2">{t('simulation.tax')}</th>
@@ -732,7 +733,7 @@ function BonusCalculatorContent() {
                                   : ''
                               }`}
                             >
-                              <td className="py-2 text-gray-700 dark:text-gray-300">
+                              <td className="py-2 text-body">
                                 {row.ratio}%
                                 {row.isCurrent && (
                                   <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
@@ -740,7 +741,7 @@ function BonusCalculatorContent() {
                                   </span>
                                 )}
                               </td>
-                              <td className="py-2 text-right text-gray-600 dark:text-gray-400">
+                              <td className="py-2 text-right text-sub">
                                 {formatNumber(row.gross)}
                               </td>
                               <td className="py-2 text-right text-red-600 dark:text-red-400">
@@ -749,7 +750,7 @@ function BonusCalculatorContent() {
                               <td className="py-2 text-right text-blue-600 dark:text-blue-400 font-medium">
                                 {formatNumber(row.net)}
                               </td>
-                              <td className="py-2 text-right text-gray-600 dark:text-gray-400">
+                              <td className="py-2 text-right text-sub">
                                 {row.netRate.toFixed(1)}%
                               </td>
                             </tr>
@@ -770,10 +771,10 @@ function BonusCalculatorContent() {
               {activeTab === 2 && salaryOnlyResult && withBonusResult && bonusDeductions && (
                 <div className="space-y-6">
                   <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                    <h3 className="text-lg font-semibold text-fg mb-1">
                       {t('taxAnalysis.title')}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('taxAnalysis.description')}</p>
+                    <p className="text-sm text-muted mb-4">{t('taxAnalysis.description')}</p>
 
                     {/* Bracket warning */}
                     {bracketChanged && (
@@ -786,30 +787,30 @@ function BonusCalculatorContent() {
                     {/* Side by side */}
                     <div className="grid sm:grid-cols-2 gap-6">
                       {/* Without bonus */}
-                      <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 space-y-3">
-                        <h4 className="font-semibold text-gray-900 dark:text-white">{t('taxAnalysis.withoutBonus')}</h4>
+                      <div className="border border-line rounded-xl p-5 space-y-3">
+                        <h4 className="font-semibold text-fg">{t('taxAnalysis.withoutBonus')}</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.taxBracket')}</span>
-                            <span className="text-gray-900 dark:text-white font-medium">
+                            <span className="text-muted">{t('taxAnalysis.taxBracket')}</span>
+                            <span className="text-fg font-medium">
                               {t(`taxAnalysis.brackets.${salaryOnlyResult.bracketLabel}`)}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.marginalRate')}</span>
-                            <span className="text-gray-900 dark:text-white font-medium">
+                            <span className="text-muted">{t('taxAnalysis.marginalRate')}</span>
+                            <span className="text-fg font-medium">
                               {(salaryOnlyResult.marginalRate * 100).toFixed(0)}%
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.totalIncomeTax')}</span>
-                            <span className="text-gray-900 dark:text-white font-medium">
+                            <span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span>
+                            <span className="text-fg font-medium">
                               {formatNumber(salaryOnlyResult.deductions.incomeTax + salaryOnlyResult.deductions.localIncomeTax)}{t('chart.won')}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('result.effectiveRate')}</span>
-                            <span className="text-gray-900 dark:text-white font-medium">
+                            <span className="text-muted">{t('result.effectiveRate')}</span>
+                            <span className="text-fg font-medium">
                               {salaryOnlyResult.effectiveTaxRate.toFixed(1)}%
                             </span>
                           </div>
@@ -821,26 +822,26 @@ function BonusCalculatorContent() {
                         <h4 className="font-semibold text-blue-700 dark:text-blue-300">{t('taxAnalysis.withBonus')}</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.taxBracket')}</span>
-                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                            <span className="text-muted">{t('taxAnalysis.taxBracket')}</span>
+                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
                               {t(`taxAnalysis.brackets.${withBonusResult.bracketLabel}`)}
                               {bracketChanged && <TrendingUp className="w-3 h-3 inline ml-1" />}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.marginalRate')}</span>
-                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                            <span className="text-muted">{t('taxAnalysis.marginalRate')}</span>
+                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
                               {(withBonusResult.marginalRate * 100).toFixed(0)}%
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('taxAnalysis.totalIncomeTax')}</span>
+                            <span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span>
                             <span className="text-blue-700 dark:text-blue-300 font-medium">
                               {formatNumber(withBonusResult.deductions.incomeTax + withBonusResult.deductions.localIncomeTax)}{t('chart.won')}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">{t('result.effectiveRate')}</span>
+                            <span className="text-muted">{t('result.effectiveRate')}</span>
                             <span className="text-blue-700 dark:text-blue-300 font-medium">
                               {withBonusResult.effectiveTaxRate.toFixed(1)}%
                             </span>
@@ -850,29 +851,29 @@ function BonusCalculatorContent() {
                     </div>
 
                     {/* Difference summary */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{t('taxAnalysis.difference')}</h4>
+                    <div className="mt-6 bg-subtle rounded-xl p-5">
+                      <h4 className="font-semibold text-fg mb-3">{t('taxAnalysis.difference')}</h4>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
                         <div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.incomeTax')}</p>
+                          <p className="text-xs text-muted">{t('result.incomeTax')}</p>
                           <p className="text-lg font-bold text-red-600 dark:text-red-400">
                             +{formatNumber(bonusDeductions.incomeTax)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.localTax')}</p>
+                          <p className="text-xs text-muted">{t('result.localTax')}</p>
                           <p className="text-lg font-bold text-red-600 dark:text-red-400">
                             +{formatNumber(bonusDeductions.localIncomeTax)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.totalDeduction')}</p>
+                          <p className="text-xs text-muted">{t('result.totalDeduction')}</p>
                           <p className="text-lg font-bold text-red-600 dark:text-red-400">
                             +{formatNumber(bonusDeductions.total)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.bonusNet')}</p>
+                          <p className="text-xs text-muted">{t('result.bonusNet')}</p>
                           <p className="text-lg font-bold text-green-600 dark:text-green-400">
                             {formatNumber(bonusDeductions.net)}
                           </p>
@@ -883,7 +884,7 @@ function BonusCalculatorContent() {
 
                   {/* Pie chart */}
                   <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                    <h3 className="text-base font-semibold text-fg mb-4">
                       {t('chart.deductionBreakdown')}
                     </h3>
                     <ReactECharts option={deductionPieOption} style={{ height: 300 }} />

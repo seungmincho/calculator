@@ -52,10 +52,10 @@ export default function NameInputModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative max-w-sm w-full p-6 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative max-w-sm w-full p-6 bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
@@ -67,17 +67,17 @@ export default function NameInputModal({
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 dark:bg-yellow-900/50 mb-3">
             <Trophy className="w-8 h-8 text-yellow-500" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h3 className="text-xl font-bold text-fg">
             {t('qualifiedTitle')}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('qualifiedMessage')}
           </p>
         </div>
 
-        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 mb-5 text-center">
-          <div className="text-sm text-gray-500 dark:text-gray-400">{t('yourScore')}</div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+        <div className="bg-subtle rounded-xl p-4 mb-5 text-center">
+          <div className="text-sm text-muted">{t('yourScore')}</div>
+          <div className="text-3xl font-bold text-fg mt-1">
             {formatScore(score)}
           </div>
           {rank && (
@@ -88,7 +88,7 @@ export default function NameInputModal({
         </div>
 
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-body">
             {t('enterName')}
           </label>
           <input
@@ -112,7 +112,7 @@ export default function NameInputModal({
 
           <button
             onClick={onClose}
-            className="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 py-2 transition-colors"
+            className="w-full text-sm text-muted hover:text-gray-700 dark:hover:text-gray-300 py-2 transition-colors"
           >
             {t('skip')}
           </button>

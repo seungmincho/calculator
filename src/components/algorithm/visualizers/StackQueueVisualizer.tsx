@@ -272,8 +272,8 @@ export default function StackQueueVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
               {t('chip')}
@@ -287,7 +287,7 @@ export default function StackQueueVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         {/* Left: canvas + controls */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
 
             {/* Manual operation panel */}
             <div className="space-y-3">
@@ -299,7 +299,7 @@ export default function StackQueueVisualizer() {
                   onKeyDown={e => { if (e.key === 'Enter') handlePush() }}
                   placeholder="값 입력"
                   disabled={isDemoMode}
-                  className="w-24 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 disabled:opacity-40"
+                  className="w-24 px-3 py-1.5 text-sm border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-emerald-500 disabled:opacity-40"
                 />
                 <button
                   onClick={handlePush}
@@ -341,14 +341,14 @@ export default function StackQueueVisualizer() {
                   onClick={isDemoMode ? handleReset : handleRunDemo}
                   className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
                     isDemoMode
-                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                      ? 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
                       : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600'
                   }`}
                 >
                   {isDemoMode ? t('resetDemo') : t('runDemo')}
                 </button>
                 {isDemoMode && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted">
                     {t('demoMode')}
                   </span>
                 )}
@@ -387,19 +387,19 @@ export default function StackQueueVisualizer() {
             </div>
 
             {/* Stats row */}
-            <div className="flex flex-wrap justify-center gap-4 pt-1 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap justify-center gap-4 pt-1 border-t border-line">
               <div className="text-center">
-                <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.stackSize')}</div>
+                <div className="text-xs text-muted">{t('stats.stackSize')}</div>
                 <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{stack.length}</div>
               </div>
               <div className="text-center">
-                <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.queueSize')}</div>
+                <div className="text-xs text-muted">{t('stats.queueSize')}</div>
                 <div className="text-lg font-bold text-blue-600 dark:text-blue-400">{queue.length}</div>
               </div>
               {lastOp && (
                 <div className="text-center min-w-0 flex-1">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.lastOp')}</div>
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">{lastOp}</div>
+                  <div className="text-xs text-muted">{t('stats.lastOp')}</div>
+                  <div className="text-sm font-medium text-body truncate">{lastOp}</div>
                 </div>
               )}
             </div>
@@ -408,9 +408,9 @@ export default function StackQueueVisualizer() {
 
         {/* Right: tabs panel */}
         <div className="xl:col-span-2">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
+          <div className="bg-surface border border-line rounded-2xl overflow-hidden">
             {/* Tab bar */}
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <div className="flex border-b border-line">
               {tabs.map(tab => (
                 <button
                   key={tab.key}
@@ -418,7 +418,7 @@ export default function StackQueueVisualizer() {
                   className={`flex-1 px-3 py-3 text-xs font-medium transition-colors ${
                     activeTab === tab.key
                       ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-900/10'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   {tab.icon} {tab.label}
@@ -436,7 +436,7 @@ export default function StackQueueVisualizer() {
                       <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
                         {t('steps.step')} {currentStepIndex + 1} / {totalSteps}
                       </div>
-                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                      <div className="text-sm text-body">
                         {currentStep.description}
                       </div>
                       <div className="mt-2 flex gap-2">
@@ -448,14 +448,14 @@ export default function StackQueueVisualizer() {
                           {currentStep.action.toUpperCase()}
                         </span>
                         {currentStep.value !== null && (
-                          <span className="px-2 py-0.5 text-xs rounded-full font-mono bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                          <span className="px-2 py-0.5 text-xs rounded-full font-mono bg-soft text-body">
                             value = {currentStep.value}
                           </span>
                         )}
                       </div>
                     </div>
                   ) : (
-                    <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl text-sm text-gray-500 dark:text-gray-400">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl text-sm text-muted">
                       {t('steps.hint')}
                     </div>
                   )}
@@ -466,10 +466,10 @@ export default function StackQueueVisualizer() {
                       <div className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">
                         Stack — LIFO
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                      <div className="text-xs text-sub">
                         {t('steps.lifoDesc')}
                       </div>
-                      <div className="mt-2 text-xs font-mono text-gray-500 dark:text-gray-400">
+                      <div className="mt-2 text-xs font-mono text-muted">
                         push(10) push(20) push(30) → pop() = <strong className="text-emerald-600 dark:text-emerald-400">30</strong>
                       </div>
                     </div>
@@ -477,10 +477,10 @@ export default function StackQueueVisualizer() {
                       <div className="text-xs font-bold text-blue-700 dark:text-blue-400 mb-1">
                         Queue — FIFO
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                      <div className="text-xs text-sub">
                         {t('steps.fifoDesc')}
                       </div>
-                      <div className="mt-2 text-xs font-mono text-gray-500 dark:text-gray-400">
+                      <div className="mt-2 text-xs font-mono text-muted">
                         enqueue(10) enqueue(20) enqueue(30) → dequeue() = <strong className="text-blue-600 dark:text-blue-400">10</strong>
                       </div>
                     </div>
@@ -488,7 +488,7 @@ export default function StackQueueVisualizer() {
 
                   {/* Complexity */}
                   <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl space-y-1">
-                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    <div className="text-xs font-semibold text-sub mb-2">
                       {t('steps.complexity')}
                     </div>
                     <div className="grid grid-cols-3 text-xs text-center gap-1">
@@ -496,32 +496,32 @@ export default function StackQueueVisualizer() {
                       <div className="text-emerald-600 dark:text-emerald-400 font-semibold">Stack</div>
                       <div className="text-blue-600 dark:text-blue-400 font-semibold">Queue</div>
 
-                      <div className="text-gray-500 dark:text-gray-400">push/enqueue</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)</div>
+                      <div className="text-muted">push/enqueue</div>
+                      <div className="font-mono text-body">O(1)</div>
+                      <div className="font-mono text-body">O(1)</div>
 
-                      <div className="text-gray-500 dark:text-gray-400">pop/dequeue</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)*</div>
+                      <div className="text-muted">pop/dequeue</div>
+                      <div className="font-mono text-body">O(1)</div>
+                      <div className="font-mono text-body">O(1)*</div>
 
-                      <div className="text-gray-500 dark:text-gray-400">peek</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)</div>
-                      <div className="font-mono text-gray-700 dark:text-gray-300">O(1)</div>
+                      <div className="text-muted">peek</div>
+                      <div className="font-mono text-body">O(1)</div>
+                      <div className="font-mono text-body">O(1)</div>
                     </div>
                     <div className="text-xs text-gray-400 mt-1">* 연결 리스트 기반 구현 시</div>
                   </div>
 
                   {/* Use cases */}
                   <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl">
-                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    <div className="text-xs font-semibold text-sub mb-2">
                       {t('steps.useCases')}
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-muted">
                         <span className="font-semibold text-emerald-600 dark:text-emerald-400">Stack:</span>{' '}
                         {t('steps.stackUses')}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-muted">
                         <span className="font-semibold text-blue-600 dark:text-blue-400">Queue:</span>{' '}
                         {t('steps.queueUses')}
                       </div>

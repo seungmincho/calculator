@@ -457,8 +457,8 @@ export default function SvgEditor() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Drag & Drop / File Input */}
@@ -470,13 +470,13 @@ export default function SvgEditor() {
           className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${
             isDragging
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-              : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+              : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
           }`}
           onClick={() => fileInputRef.current?.click()}
         >
-          <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" />
-          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">{t('dropzone.title')}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('dropzone.subtitle')}</p>
+          <Upload className="w-12 h-12 mx-auto mb-4 text-faint" />
+          <p className="text-lg font-medium text-body">{t('dropzone.title')}</p>
+          <p className="text-sm text-muted mt-1">{t('dropzone.subtitle')}</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -497,7 +497,7 @@ export default function SvgEditor() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {tab === 'editor' && <FileCode className="w-4 h-4" />}
@@ -510,14 +510,14 @@ export default function SvgEditor() {
           <div className="flex-1" />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             <Upload className="w-4 h-4" />
             {t('upload')}
           </button>
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             {t('reset')}
@@ -537,13 +537,13 @@ export default function SvgEditor() {
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Left: Code Editor */}
           <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-            <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-3 border-b border-line">
               <div className="flex items-center gap-2">
-                <FileCode className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <FileCode className="w-4 h-4 text-muted" />
+                <span className="text-sm font-medium text-body">
                   {showOptimized ? t('optimizedCode') : t('svgCode')}
                 </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500">
+                <span className="text-xs text-faint">
                   {lineCount} {t('lines')}
                 </span>
               </div>
@@ -551,7 +551,7 @@ export default function SvgEditor() {
                 {optimizedCode && (
                   <button
                     onClick={() => setShowOptimized(!showOptimized)}
-                    className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   >
                     <Eye className="w-3 h-3" />
                     {showOptimized ? t('showOriginal') : t('showOptimized')}
@@ -559,7 +559,7 @@ export default function SvgEditor() {
                 )}
                 <button
                   onClick={() => copyToClipboard(displayCode, 'code')}
-                  className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   {copiedId === 'code' ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
                   {copiedId === 'code' ? t('copied') : t('copy')}
@@ -569,7 +569,7 @@ export default function SvgEditor() {
             <div className="relative">
               <div className="flex">
                 {/* Line numbers */}
-                <div className="flex-shrink-0 select-none text-right pr-3 pl-3 py-3 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 text-xs text-gray-400 dark:text-gray-600 font-mono leading-5 overflow-hidden">
+                <div className="flex-shrink-0 select-none text-right pr-3 pl-3 py-3 bg-gray-50 dark:bg-gray-900 border-r border-line text-xs text-gray-400 dark:text-gray-600 font-mono leading-5 overflow-hidden">
                   {Array.from({ length: lineCount || 1 }, (_, i) => (
                     <div key={i}>{i + 1}</div>
                   ))}
@@ -585,7 +585,7 @@ export default function SvgEditor() {
                     }
                   }}
                   readOnly={showOptimized}
-                  className="flex-1 p-3 font-mono text-xs leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none focus:outline-none min-h-[400px] w-full"
+                  className="flex-1 p-3 font-mono text-xs leading-5 bg-surface text-gray-900 dark:text-gray-100 resize-none focus:outline-none min-h-[400px] w-full"
                   spellCheck={false}
                   placeholder={t('placeholder')}
                 />
@@ -597,30 +597,30 @@ export default function SvgEditor() {
           <div className="space-y-4">
             {/* Preview */}
             <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between p-3 border-b border-line">
                 <div className="flex items-center gap-2">
-                  <Eye className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('preview')}</span>
+                  <Eye className="w-4 h-4 text-muted" />
+                  <span className="text-sm font-medium text-body">{t('preview')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setPreviewZoom(Math.max(25, previewZoom - 25))}
-                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
+                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted transition-colors"
                     title={t('zoomOut')}
                   >
                     <ZoomOut className="w-4 h-4" />
                   </button>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[3rem] text-center">{previewZoom}%</span>
+                  <span className="text-xs text-muted min-w-[3rem] text-center">{previewZoom}%</span>
                   <button
                     onClick={() => setPreviewZoom(Math.min(500, previewZoom + 25))}
-                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
+                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted transition-colors"
                     title={t('zoomIn')}
                   >
                     <ZoomIn className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setPreviewZoom(100)}
-                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
+                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted transition-colors"
                     title={t('resetZoom')}
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -637,7 +637,7 @@ export default function SvgEditor() {
                     dangerouslySetInnerHTML={{ __html: displayCode }}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-full min-h-[200px] text-gray-400 dark:text-gray-500">
+                  <div className="flex items-center justify-center h-full min-h-[200px] text-faint">
                     {t('invalidSvg')}
                   </div>
                 )}
@@ -647,27 +647,27 @@ export default function SvgEditor() {
             {/* Stats */}
             <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center gap-2 mb-3">
-                <BarChart3 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('statistics')}</span>
+                <BarChart3 className="w-4 h-4 text-muted" />
+                <span className="text-sm font-medium text-body">{t('statistics')}</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.elements')}</div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">{stats.elements}</div>
+                  <div className="text-xs text-muted">{t('stats.elements')}</div>
+                  <div className="text-lg font-semibold text-fg">{stats.elements}</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.originalSize')}</div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">{formatBytes(stats.originalSize)}</div>
+                  <div className="text-xs text-muted">{t('stats.originalSize')}</div>
+                  <div className="text-lg font-semibold text-fg">{formatBytes(stats.originalSize)}</div>
                 </div>
                 {optimizedCode && (
                   <>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.optimizedSize')}</div>
+                      <div className="text-xs text-muted">{t('stats.optimizedSize')}</div>
                       <div className="text-lg font-semibold text-green-600 dark:text-green-400">{formatBytes(stats.optimizedSize)}</div>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.reduction')}</div>
-                      <div className={`text-lg font-semibold ${stats.ratio > 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'}`}>
+                      <div className="text-xs text-muted">{t('stats.reduction')}</div>
+                      <div className={`text-lg font-semibold ${stats.ratio > 0 ? 'text-green-600 dark:text-green-400' : 'text-fg'}`}>
                         {stats.ratio > 0 ? `-${stats.ratio}%` : `${stats.ratio}%`}
                       </div>
                     </div>
@@ -676,19 +676,19 @@ export default function SvgEditor() {
               </div>
               {/* Dimensions */}
               {isValidSvg && (
-                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-3 pt-3 border-t border-line">
                   <div className="grid grid-cols-3 gap-2 text-xs">
                     <div>
-                      <span className="text-gray-500 dark:text-gray-400">{t('stats.width')}: </span>
-                      <span className="font-medium text-gray-900 dark:text-white">{dimensions.width || 'auto'}</span>
+                      <span className="text-muted">{t('stats.width')}: </span>
+                      <span className="font-medium text-fg">{dimensions.width || 'auto'}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500 dark:text-gray-400">{t('stats.height')}: </span>
-                      <span className="font-medium text-gray-900 dark:text-white">{dimensions.height || 'auto'}</span>
+                      <span className="text-muted">{t('stats.height')}: </span>
+                      <span className="font-medium text-fg">{dimensions.height || 'auto'}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500 dark:text-gray-400">viewBox: </span>
-                      <span className="font-medium text-gray-900 dark:text-white">{dimensions.viewBox || 'none'}</span>
+                      <span className="text-muted">viewBox: </span>
+                      <span className="font-medium text-fg">{dimensions.viewBox || 'none'}</span>
                     </div>
                   </div>
                 </div>
@@ -704,7 +704,7 @@ export default function SvgEditor() {
           {/* Left: Options */}
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('optimizeOptions')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('optimizeOptions')}</h2>
               {(Object.keys(optOptions) as (keyof OptimizationOptions)[]).map((key) => (
                 <label key={key} className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -713,7 +713,7 @@ export default function SvgEditor() {
                     onChange={(e) => setOptOptions((prev) => ({ ...prev, [key]: e.target.checked }))}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t(`opt.${key}`)}</span>
+                  <span className="text-sm text-body">{t(`opt.${key}`)}</span>
                 </label>
               ))}
               <button
@@ -726,10 +726,10 @@ export default function SvgEditor() {
               </button>
 
               {/* Size Adjustment */}
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('sizeAdjust')}</h3>
+              <div className="pt-4 border-t border-line space-y-3">
+                <h3 className="text-sm font-semibold text-fg">{t('sizeAdjust')}</h3>
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400">{t('stats.width')}</label>
+                  <label className="text-xs text-muted">{t('stats.width')}</label>
                   <input
                     type="text"
                     value={newWidth}
@@ -739,7 +739,7 @@ export default function SvgEditor() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400">{t('stats.height')}</label>
+                  <label className="text-xs text-muted">{t('stats.height')}</label>
                   <input
                     type="text"
                     value={newHeight}
@@ -749,7 +749,7 @@ export default function SvgEditor() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400">viewBox</label>
+                  <label className="text-xs text-muted">viewBox</label>
                   <input
                     type="text"
                     value={newViewBox}
@@ -761,7 +761,7 @@ export default function SvgEditor() {
                 <button
                   onClick={handleSizeChange}
                   disabled={!isValidSvg}
-                  className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <Maximize2 className="w-4 h-4 inline mr-2" />
                   {t('applySize')}
@@ -778,12 +778,12 @@ export default function SvgEditor() {
                 <div className={`${glassCard} ${glassInset} p-4`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.originalSize')}</div>
-                      <div className="text-lg font-semibold text-gray-900 dark:text-white">{formatBytes(stats.originalSize)}</div>
+                      <div className="text-xs text-muted">{t('stats.originalSize')}</div>
+                      <div className="text-lg font-semibold text-fg">{formatBytes(stats.originalSize)}</div>
                     </div>
                     <div className="text-2xl text-gray-300 dark:text-gray-600">&rarr;</div>
                     <div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.optimizedSize')}</div>
+                      <div className="text-xs text-muted">{t('stats.optimizedSize')}</div>
                       <div className="text-lg font-semibold text-green-600 dark:text-green-400">{formatBytes(stats.optimizedSize)}</div>
                     </div>
                     <div className={`text-xl font-bold ${stats.ratio > 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-500'}`}>
@@ -794,12 +794,12 @@ export default function SvgEditor() {
 
                 {/* Optimized Code */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('optimizedCode')}</span>
+                  <div className="flex items-center justify-between p-3 border-b border-line">
+                    <span className="text-sm font-medium text-body">{t('optimizedCode')}</span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => copyToClipboard(optimizedCode, 'optimized')}
-                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                       >
                         {copiedId === 'optimized' ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
                         {copiedId === 'optimized' ? t('copied') : t('copy')}
@@ -816,7 +816,7 @@ export default function SvgEditor() {
                       </button>
                     </div>
                   </div>
-                  <pre className="p-4 overflow-auto max-h-[400px] text-xs font-mono text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900">
+                  <pre className="p-4 overflow-auto max-h-[400px] text-xs font-mono text-body bg-gray-50 dark:bg-gray-900">
                     {optimizedCode}
                   </pre>
                 </div>
@@ -824,7 +824,7 @@ export default function SvgEditor() {
             ) : (
               <div className={`${glassCard} ${glassInset} p-12 text-center`}>
                 <Settings className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                <p className="text-gray-500 dark:text-gray-400">{t('optimizeHint')}</p>
+                <p className="text-muted">{t('optimizeHint')}</p>
               </div>
             )}
           </div>
@@ -836,11 +836,11 @@ export default function SvgEditor() {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('exportSettings')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('exportSettings')}</h2>
 
               {/* Format */}
               <div>
-                <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">{t('exportFormat')}</label>
+                <label className="text-sm text-body font-medium">{t('exportFormat')}</label>
                 <div className="flex gap-2 mt-2">
                   {(['svg', 'png', 'jpeg'] as const).map((fmt) => (
                     <button
@@ -849,7 +849,7 @@ export default function SvgEditor() {
                       className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                         exportFormat === fmt
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {fmt.toUpperCase()}
@@ -861,7 +861,7 @@ export default function SvgEditor() {
               {/* Scale */}
               {exportFormat !== 'svg' && (
                 <div>
-                  <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">{t('exportScale')}</label>
+                  <label className="text-sm text-body font-medium">{t('exportScale')}</label>
                   <div className="flex gap-2 mt-2">
                     {[1, 2, 3, 4].map((s) => (
                       <button
@@ -870,7 +870,7 @@ export default function SvgEditor() {
                         className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                           exportScale === s
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {s}x
@@ -883,7 +883,7 @@ export default function SvgEditor() {
               {/* JPEG Quality */}
               {exportFormat === 'jpeg' && (
                 <div>
-                  <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <label className="text-sm text-body font-medium">
                     {t('jpegQuality')}: {jpegQuality}%
                   </label>
                   <input
@@ -906,7 +906,7 @@ export default function SvgEditor() {
                     onChange={(e) => setShowOptimized(e.target.checked)}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('useOptimized')}</span>
+                  <span className="text-sm text-body">{t('useOptimized')}</span>
                 </label>
               )}
 
@@ -924,10 +924,10 @@ export default function SvgEditor() {
           {/* Preview */}
           <div className="lg:col-span-2">
             <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('exportPreview')}</span>
+              <div className="flex items-center justify-between p-3 border-b border-line">
+                <span className="text-sm font-medium text-body">{t('exportPreview')}</span>
                 {exportFormat !== 'svg' && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted">
                     {t('exportResolution')}: {exportScale}x
                   </span>
                 )}
@@ -936,7 +936,7 @@ export default function SvgEditor() {
                 {isValidSvg ? (
                   <div dangerouslySetInnerHTML={{ __html: displayCode }} />
                 ) : (
-                  <div className="flex items-center justify-center h-full min-h-[200px] text-gray-400 dark:text-gray-500">
+                  <div className="flex items-center justify-center h-full min-h-[200px] text-faint">
                     {t('invalidSvg')}
                   </div>
                 )}
@@ -952,10 +952,10 @@ export default function SvgEditor() {
           {/* Left: Color Replace */}
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('colorReplace')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('colorReplace')}</h2>
 
               <div>
-                <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">{t('findColor')}</label>
+                <label className="text-sm text-body font-medium">{t('findColor')}</label>
                 <div className="flex gap-2 mt-1">
                   <input
                     type="text"
@@ -968,13 +968,13 @@ export default function SvgEditor() {
                     type="color"
                     value={findColor.startsWith('#') && (findColor.length === 4 || findColor.length === 7) ? (findColor.length === 4 ? `#${findColor[1]}${findColor[1]}${findColor[2]}${findColor[2]}${findColor[3]}${findColor[3]}` : findColor) : '#000000'}
                     onChange={(e) => setFindColor(e.target.value)}
-                    className="w-10 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                    className="w-10 h-10 rounded border border-line-strong cursor-pointer"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">{t('replaceWith')}</label>
+                <label className="text-sm text-body font-medium">{t('replaceWith')}</label>
                 <div className="flex gap-2 mt-1">
                   <input
                     type="text"
@@ -987,7 +987,7 @@ export default function SvgEditor() {
                     type="color"
                     value={replaceColor.startsWith('#') && replaceColor.length === 7 ? replaceColor : '#000000'}
                     onChange={(e) => setReplaceColor(e.target.value)}
-                    className="w-10 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                    className="w-10 h-10 rounded border border-line-strong cursor-pointer"
                   />
                 </div>
               </div>
@@ -1006,7 +1006,7 @@ export default function SvgEditor() {
           {/* Right: Detected Colors */}
           <div className="lg:col-span-2">
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('detectedColors')}</h2>
+              <h2 className="text-lg font-semibold text-fg mb-4">{t('detectedColors')}</h2>
               {colors.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                   {colors.map((entry, i) => (
@@ -1016,12 +1016,12 @@ export default function SvgEditor() {
                       className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer text-left"
                     >
                       <div
-                        className="w-8 h-8 rounded border border-gray-200 dark:border-gray-600 flex-shrink-0"
+                        className="w-8 h-8 rounded border border-line flex-shrink-0"
                         style={{ backgroundColor: entry.color }}
                       />
                       <div className="min-w-0">
-                        <div className="text-xs font-mono text-gray-900 dark:text-white truncate">{entry.color}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-xs font-mono text-fg truncate">{entry.color}</div>
+                        <div className="text-xs text-muted">
                           {entry.count}x
                         </div>
                       </div>
@@ -1029,7 +1029,7 @@ export default function SvgEditor() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('noColors')}</p>
+                <p className="text-sm text-muted">{t('noColors')}</p>
               )}
             </div>
           </div>
@@ -1038,16 +1038,16 @@ export default function SvgEditor() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('guide.features.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-2">{t('guide.features.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.features.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -1055,10 +1055,10 @@ export default function SvgEditor() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>

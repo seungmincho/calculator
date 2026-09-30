@@ -283,11 +283,11 @@ export default function ContrastChecker() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Palette className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main grid */}
@@ -297,11 +297,11 @@ export default function ContrastChecker() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Foreground */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('foreground')}
               </label>
               <div className="flex gap-2 items-center">
-                <div className="relative w-12 h-10 rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600 flex-shrink-0">
+                <div className="relative w-12 h-10 rounded-lg overflow-hidden border-2 border-line-strong flex-shrink-0">
                   <input
                     type="color"
                     value={fgHex}
@@ -322,7 +322,7 @@ export default function ContrastChecker() {
                 />
                 <button
                   onClick={() => copyToClipboard(fgHex, 'fg')}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 flex-shrink-0"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body flex-shrink-0"
                   aria-label={t('copy')}
                 >
                   {copiedId === 'fg' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -334,14 +334,14 @@ export default function ContrastChecker() {
             <div className="flex gap-2">
               <button
                 onClick={handleSwap}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
               >
                 <ArrowLeftRight className="w-4 h-4" />
                 {t('swap')}
               </button>
               <button
                 onClick={handleRandom}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
               >
                 <Shuffle className="w-4 h-4" />
                 {t('random')}
@@ -350,11 +350,11 @@ export default function ContrastChecker() {
 
             {/* Background */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('background')}
               </label>
               <div className="flex gap-2 items-center">
-                <div className="relative w-12 h-10 rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600 flex-shrink-0">
+                <div className="relative w-12 h-10 rounded-lg overflow-hidden border-2 border-line-strong flex-shrink-0">
                   <input
                     type="color"
                     value={bgHex}
@@ -375,7 +375,7 @@ export default function ContrastChecker() {
                 />
                 <button
                   onClick={() => copyToClipboard(bgHex, 'bg')}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 flex-shrink-0"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body flex-shrink-0"
                   aria-label={t('copy')}
                 >
                   {copiedId === 'bg' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -385,7 +385,7 @@ export default function ContrastChecker() {
 
             {/* Preview swatch */}
             <div
-              className="rounded-lg p-4 flex items-center justify-center min-h-[80px] border border-gray-200 dark:border-gray-700"
+              className="rounded-lg p-4 flex items-center justify-center min-h-[80px] border border-line"
               style={{ backgroundColor: bgHex }}
             >
               <span className="font-semibold text-base" style={{ color: fgHex }}>
@@ -404,19 +404,19 @@ export default function ContrastChecker() {
           <div className={`${glassCard} ${glassInset} p-6 border-2 ${gradeBg}`}>
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('contrastRatio')}</p>
+                <p className="text-sm text-muted mb-1">{t('contrastRatio')}</p>
                 <div className="flex items-baseline gap-3">
                   <span className={`text-5xl font-bold tabular-nums ${gradeColor}`}>
                     {wcag.ratio.toFixed(2)}
                   </span>
-                  <span className="text-2xl text-gray-400 dark:text-gray-500">:1</span>
+                  <span className="text-2xl text-faint">:1</span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <span className={`text-3xl font-bold ${gradeColor}`}>{wcag.grade}</span>
                 <button
                   onClick={() => copyToClipboard(`${wcag.ratio.toFixed(2)}:1`, 'ratio')}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                  className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
                   aria-label={t('copy')}
                 >
                   {copiedId === 'ratio' ? (
@@ -431,15 +431,15 @@ export default function ContrastChecker() {
 
           {/* WCAG grade table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-base font-semibold text-fg mb-4">
               {t('wcagGrades')}
             </h2>
             <div className="grid grid-cols-2 gap-3">
               {/* Normal text AA */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('normalText')}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">AA (4.5:1)</p>
+                  <p className="text-sm font-medium text-fg">{t('normalText')}</p>
+                  <p className="text-xs text-muted">AA (4.5:1)</p>
                 </div>
                 {wcag.normalAA ? (
                   <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
@@ -449,10 +449,10 @@ export default function ContrastChecker() {
               </div>
 
               {/* Normal text AAA */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('normalText')}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">AAA (7:1)</p>
+                  <p className="text-sm font-medium text-fg">{t('normalText')}</p>
+                  <p className="text-xs text-muted">AAA (7:1)</p>
                 </div>
                 {wcag.normalAAA ? (
                   <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
@@ -462,10 +462,10 @@ export default function ContrastChecker() {
               </div>
 
               {/* Large text AA */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('largeText')}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">AA (3:1)</p>
+                  <p className="text-sm font-medium text-fg">{t('largeText')}</p>
+                  <p className="text-xs text-muted">AA (3:1)</p>
                 </div>
                 {wcag.largeAA ? (
                   <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
@@ -475,10 +475,10 @@ export default function ContrastChecker() {
               </div>
 
               {/* Large text AAA */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('largeText')}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">AAA (4.5:1)</p>
+                  <p className="text-sm font-medium text-fg">{t('largeText')}</p>
+                  <p className="text-xs text-muted">AAA (4.5:1)</p>
                 </div>
                 {wcag.largeAAA ? (
                   <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
@@ -491,11 +491,11 @@ export default function ContrastChecker() {
 
           {/* Text preview */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-base font-semibold text-fg mb-4">
               {t('preview.title')}
             </h2>
             <div
-              className="rounded-lg p-6 space-y-4 border border-gray-200 dark:border-gray-700"
+              className="rounded-lg p-6 space-y-4 border border-line"
               style={{ backgroundColor: bgHex }}
             >
               <p className="font-normal leading-relaxed" style={{ color: fgHex, fontSize: '16px' }}>
@@ -510,7 +510,7 @@ export default function ContrastChecker() {
           {/* Suggestions */}
           {(!wcag.normalAA || !wcag.normalAAA) && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-base font-semibold text-fg mb-4">
                 {t('suggestion')}
               </h2>
               <div className="space-y-3">
@@ -518,14 +518,14 @@ export default function ContrastChecker() {
                   <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 flex-shrink-0"
+                        className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
                         style={{ backgroundColor: suggestionAA }}
                       />
                       <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <p className="text-sm font-medium text-fg">
                           {t('aa')} — {suggestionAA}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-muted">
                           {t('suggestionAA')}
                         </p>
                       </div>
@@ -539,7 +539,7 @@ export default function ContrastChecker() {
                       </button>
                       <button
                         onClick={() => copyToClipboard(suggestionAA, 'sugAA')}
-                        className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        className="p-1.5 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
                       >
                         {copiedId === 'sugAA' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
@@ -550,14 +550,14 @@ export default function ContrastChecker() {
                   <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 flex-shrink-0"
+                        className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
                         style={{ backgroundColor: suggestionAAA }}
                       />
                       <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <p className="text-sm font-medium text-fg">
                           {t('aaa')} — {suggestionAAA}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-muted">
                           {t('suggestionAAA')}
                         </p>
                       </div>
@@ -571,7 +571,7 @@ export default function ContrastChecker() {
                       </button>
                       <button
                         onClick={() => copyToClipboard(suggestionAAA, 'sugAAA')}
-                        className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        className="p-1.5 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
                       >
                         {copiedId === 'sugAAA' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
@@ -586,7 +586,7 @@ export default function ContrastChecker() {
 
       {/* Preset pairs */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('presets')}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -601,19 +601,19 @@ export default function ContrastChecker() {
               <button
                 key={pair.labelKey}
                 onClick={() => handlePreset(pair.fg, pair.bg)}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors group"
+                className="flex flex-col items-center gap-2 p-3 rounded-lg border-2 border-line hover:border-blue-400 dark:hover:border-blue-500 transition-colors group"
               >
                 <div
-                  className="w-full h-12 rounded-md flex items-center justify-center text-sm font-semibold border border-gray-300 dark:border-gray-600"
+                  className="w-full h-12 rounded-md flex items-center justify-center text-sm font-semibold border border-line-strong"
                   style={{ backgroundColor: pair.bg, color: pair.fg }}
                 >
                   Aa
                 </div>
                 <div className="text-center">
-                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate w-full">
+                  <p className="text-xs text-sub truncate w-full">
                     {pair.fg} / {pair.bg}
                   </p>
-                  <p className="text-xs font-mono text-gray-500 dark:text-gray-500">
+                  <p className="text-xs font-mono text-muted">
                     {ratio.toFixed(1)}:1
                   </p>
                 </div>
@@ -625,18 +625,18 @@ export default function ContrastChecker() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.wcag.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.wcag.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
                   {item}
                 </li>
@@ -644,12 +644,12 @@ export default function ContrastChecker() {
             </ul>
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-green-500 mt-0.5 flex-shrink-0">•</span>
                   {item}
                 </li>

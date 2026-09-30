@@ -40,7 +40,7 @@ export default function ImageConverterPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ImageConverter />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function ImageConverterPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             이미지 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             이미지 변환기는 JPEG·PNG·WebP·GIF 등 이미지 파일 형식을 브라우저에서 즉시 변환하는 무료 온라인 도구입니다. 아이폰 HEIC 파일을 JPEG로 변환하거나, 투명 배경 보존을 위해 JPEG를 PNG로, 웹 최적화를 위해 PNG를 WebP로 변환하는 등 다양한 포맷 변환이 가능하며, 화질 조절과 실시간 미리보기를 지원합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 변환기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>HEIC → JPEG 변환:</strong> 아이폰으로 찍은 HEIC 파일은 Windows·안드로이드·대부분의 웹사이트에서 열리지 않습니다. JPEG로 변환하면 호환성 문제가 해결됩니다.</li>
             <li><strong>PNG → WebP 변환:</strong> 웹사이트 이미지를 WebP로 변환하면 PNG 대비 파일 크기가 26% 줄어 Core Web Vitals(LCP) 점수를 향상시킬 수 있습니다.</li>
             <li><strong>투명 배경 보존:</strong> PNG에서 PNG로 변환할 때는 투명 배경(alpha 채널)이 유지됩니다. JPEG 변환 시에는 배경이 흰색으로 채워집니다.</li>

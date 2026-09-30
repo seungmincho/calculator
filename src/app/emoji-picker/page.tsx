@@ -40,7 +40,7 @@ export default function EmojiPickerPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><EmojiPicker />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function EmojiPickerPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             이모지 검색이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             이모지 검색 도구는 한글 또는 영어로 원하는 이모지를 검색하고 클릭 한 번으로 클립보드에 복사하는 이모티콘 모음 도구입니다. 표정·사람·동물·음식·여행·스포츠·사물·기호 등 카테고리별로 분류된 이모지를 빠르게 찾아 SNS 게시물, 카카오톡 메시지, 문서 작성 등에 바로 사용할 수 있습니다. 최근 사용한 이모지를 기록하여 자주 쓰는 이모지를 더욱 빠르게 찾을 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             이모지 검색 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>한글 검색:</strong> &apos;웃음&apos;, &apos;하트&apos;, &apos;고양이&apos; 등 한글로 검색하면 관련 이모지가 즉시 표시됩니다. 영어 키워드(smile, heart, cat)로도 검색 가능합니다.</li>
             <li><strong>문서 가독성 향상:</strong> 블로그 제목, 프레젠테이션 소제목, 마크다운 문서에 이모지를 추가하면 시각적 흥미와 가독성을 동시에 높일 수 있습니다.</li>
             <li><strong>SNS 마케팅:</strong> 인스타그램, 트위터 게시물에 적절한 이모지를 사용하면 참여율(engagement)이 평균 25% 이상 향상된다는 연구 결과가 있습니다.</li>

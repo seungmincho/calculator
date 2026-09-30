@@ -256,15 +256,15 @@ export default function GpaCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <GraduationCap className="w-7 h-7" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="shrink-0 flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+          className="shrink-0 flex items-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
           title={t('copyLink')}
         >
           {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -278,7 +278,7 @@ export default function GpaCalculator() {
         <div className="lg:col-span-1 space-y-6">
           {/* Scale Selection */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('scale')}
             </h2>
             <div className="flex gap-3">
@@ -287,7 +287,7 @@ export default function GpaCalculator() {
                 className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
                   scale === '4.5'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {t('scale45')}
@@ -297,7 +297,7 @@ export default function GpaCalculator() {
                 className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
                   scale === '4.3'
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {t('scale43')}
@@ -305,7 +305,7 @@ export default function GpaCalculator() {
             </div>
             <button
               onClick={reset}
-              className="w-full mt-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+              className="w-full mt-4 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -314,22 +314,22 @@ export default function GpaCalculator() {
 
           {/* Target GPA Reverse Calculator */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-1 flex items-center gap-2">
               <Target className="w-5 h-5 text-indigo-500" />
               {t('reverse.title')}
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('reverse.description')}</p>
+            <p className="text-xs text-muted mb-4">{t('reverse.description')}</p>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('reverse.currentGpa')}
                 </label>
-                <div className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
+                <div className="w-full px-3 py-2 border border-line rounded-lg bg-subtle text-body text-sm">
                   {cumulativeStats.gpa.toFixed(2)} ({cumulativeStats.credits} {t('credits')})
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('reverse.targetGpa')}
                 </label>
                 <input
@@ -344,7 +344,7 @@ export default function GpaCalculator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('reverse.remainingCredits')}
                 </label>
                 <input
@@ -360,7 +360,7 @@ export default function GpaCalculator() {
               {reverseResult && (
                 <div className={`rounded-lg p-4 text-sm ${
                   reverseResult.impossible
-                    ? 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                    ? 'bg-subtle text-sub'
                     : reverseResult.feasible
                     ? 'bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-200'
                     : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
@@ -433,21 +433,21 @@ export default function GpaCalculator() {
                 <div key={semester.id} className={`${glassCard} ${glassInset} overflow-hidden`}>
                   {/* Semester Header */}
                   <div
-                    className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 cursor-pointer"
+                    className="flex items-center justify-between p-4 bg-subtle cursor-pointer"
                     onClick={() => toggleSemester(semester.id)}
                   >
                     <div className="flex items-center gap-3">
-                      <button className="text-gray-600 dark:text-gray-400">
+                      <button className="text-sub">
                         {semester.isExpanded ? (
                           <ChevronUp className="w-5 h-5" />
                         ) : (
                           <ChevronDown className="w-5 h-5" />
                         )}
                       </button>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
+                      <h3 className="font-semibold text-fg">
                         {semesterIdx + 1}{t('semester')}
                       </h3>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-muted">
                         {t('result.semesterGpa')}: <span className="font-semibold text-blue-600 dark:text-blue-400">{semesterStats.gpa.toFixed(2)}</span>
                         {' '}({semesterStats.credits} {t('credits')})
                       </div>
@@ -469,7 +469,7 @@ export default function GpaCalculator() {
                   {semester.isExpanded && (
                     <div className="p-6 space-y-4">
                       {/* Course Headers */}
-                      <div className="grid grid-cols-12 gap-3 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                      <div className="grid grid-cols-12 gap-3 text-xs font-semibold text-sub uppercase">
                         <div className="col-span-5">{t('courseName')}</div>
                         <div className="col-span-3">{t('credits')}</div>
                         <div className="col-span-3">{t('grade')}</div>
@@ -535,7 +535,7 @@ export default function GpaCalculator() {
                       {/* Add Course Button */}
                       <button
                         onClick={() => addCourse(semester.id)}
-                        className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+                        className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
                       >
                         <Plus className="w-4 h-4" />
                         {t('addCourse')}
@@ -560,17 +560,17 @@ export default function GpaCalculator() {
 
       {/* Comprehensive Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           {/* How to Use */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 font-bold mt-1">•</span>
@@ -582,15 +582,15 @@ export default function GpaCalculator() {
 
           {/* Scale Info */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               학점 기준표
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+              <div className="bg-subtle rounded-lg p-4">
+                <h4 className="font-semibold text-fg mb-2">
                   {t('scale45')}
                 </h4>
-                <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                <div className="text-sm text-body space-y-1">
                   {Object.entries(GRADE_VALUES_45).map(([grade, value]) => (
                     <div key={grade} className="flex justify-between">
                       <span>{grade}</span>
@@ -599,11 +599,11 @@ export default function GpaCalculator() {
                   ))}
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+              <div className="bg-subtle rounded-lg p-4">
+                <h4 className="font-semibold text-fg mb-2">
                   {t('scale43')}
                 </h4>
-                <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                <div className="text-sm text-body space-y-1">
                   {Object.entries(GRADE_VALUES_43).map(([grade, value]) => (
                     <div key={grade} className="flex justify-between">
                       <span>{grade}</span>
@@ -617,10 +617,10 @@ export default function GpaCalculator() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 font-bold mt-1">•</span>

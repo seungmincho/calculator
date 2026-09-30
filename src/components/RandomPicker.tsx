@@ -223,8 +223,8 @@ export default function RandomPicker() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 모드 탭 */}
@@ -236,7 +236,7 @@ export default function RandomPicker() {
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
               mode === m
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line'
             }`}
           >
             {modeIcons[m]}
@@ -250,7 +250,7 @@ export default function RandomPicker() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t(`${mode}.title`)}
             </h2>
 
@@ -259,7 +259,7 @@ export default function RandomPicker() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-body mb-1">
                       {t('number.min')}
                     </label>
                     <input
@@ -270,7 +270,7 @@ export default function RandomPicker() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-body mb-1">
                       {t('number.max')}
                     </label>
                     <input
@@ -282,7 +282,7 @@ export default function RandomPicker() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('number.count')}
                   </label>
                   <input
@@ -301,7 +301,7 @@ export default function RandomPicker() {
                     onChange={(e) => setAllowDuplicates(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 accent-blue-600"
                   />
-                  <label htmlFor="allow-duplicates" className="text-sm text-gray-700 dark:text-gray-300">
+                  <label htmlFor="allow-duplicates" className="text-sm text-body">
                     {t('number.allowDuplicates')}
                   </label>
                 </div>
@@ -312,7 +312,7 @@ export default function RandomPicker() {
             {mode === 'list' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('list.inputLabel')}
                   </label>
                   <textarea
@@ -327,7 +327,7 @@ export default function RandomPicker() {
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('list.count')}
                   </label>
                   <input
@@ -345,7 +345,7 @@ export default function RandomPicker() {
             {mode === 'team' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('team.inputLabel')}
                   </label>
                   <textarea
@@ -360,7 +360,7 @@ export default function RandomPicker() {
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('team.teamCount')}
                   </label>
                   <input
@@ -386,7 +386,7 @@ export default function RandomPicker() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-3 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 title={t('common.reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -398,7 +398,7 @@ export default function RandomPicker() {
         {/* 결과 패널 */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('common.result')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('common.result')}</h2>
 
             {/* Number mode result */}
             {mode === 'number' && (
@@ -406,7 +406,7 @@ export default function RandomPicker() {
                 {numberResult ? (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl p-6">
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      <p className="text-sm text-muted mb-4">
                         {t('number.result')}
                       </p>
                       <div className="flex flex-wrap gap-3 mb-4">
@@ -424,7 +424,7 @@ export default function RandomPicker() {
                       </div>
                       <button
                         onClick={() => copyToClipboard(numberResult.numbers.join(', '), 'number')}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-field hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-body"
                       >
                         {copiedId === 'number' ? (
                           <>
@@ -452,14 +452,14 @@ export default function RandomPicker() {
                 {listResult ? (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-6">
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      <p className="text-sm text-muted mb-4">
                         {t('list.result')}
                       </p>
                       <div className="space-y-3 mb-4">
                         {listResult.items.map((item, i) => (
                           <div
                             key={`${item}-${i}`}
-                            className={`bg-white dark:bg-gray-700 rounded-lg p-4 shadow-md ${
+                            className={`bg-field rounded-lg p-4 shadow-md ${
                               isShufflingList ? 'animate-pulse' : 'animate-[scale-up_0.3s_ease-out]'
                             }`}
                             style={{ animationDelay: `${i * 100}ms` }}
@@ -468,14 +468,14 @@ export default function RandomPicker() {
                               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 text-white font-bold text-sm">
                                 {i + 1}
                               </div>
-                              <p className="text-lg font-medium text-gray-900 dark:text-white">{item}</p>
+                              <p className="text-lg font-medium text-fg">{item}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                       <button
                         onClick={() => copyToClipboard(listResult.items.join('\n'), 'list')}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-field hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-body"
                       >
                         {copiedId === 'list' ? (
                           <>
@@ -506,7 +506,7 @@ export default function RandomPicker() {
                       {teams.map((team, i) => (
                         <div
                           key={`${team.name}-${i}`}
-                          className={`bg-white dark:bg-gray-700 rounded-xl p-5 shadow-lg border-2 border-transparent ${
+                          className={`bg-field rounded-xl p-5 shadow-lg border-2 border-transparent ${
                             isShufflingTeams ? 'animate-pulse' : 'animate-[scale-up_0.3s_ease-out]'
                           }`}
                           style={{ animationDelay: `${i * 100}ms` }}
@@ -517,7 +517,7 @@ export default function RandomPicker() {
                           </div>
                           <ul className="space-y-2">
                             {team.members.map((member, j) => (
-                              <li key={`${member}-${j}`} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                              <li key={`${member}-${j}`} className="flex items-center gap-2 text-body">
                                 <span className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-xs font-medium">
                                   {j + 1}
                                 </span>
@@ -533,7 +533,7 @@ export default function RandomPicker() {
                         const text = teams.map((team, i) => `${team.name}:\n${team.members.map((m, j) => `  ${j + 1}. ${m}`).join('\n')}`).join('\n\n')
                         copyToClipboard(text, 'team')
                       }}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 hover:from-blue-200 hover:to-indigo-200 dark:hover:from-blue-900/50 dark:hover:to-indigo-900/50 transition-colors text-sm font-medium text-gray-700 dark:text-gray-300"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 hover:from-blue-200 hover:to-indigo-200 dark:hover:from-blue-900/50 dark:hover:to-indigo-900/50 transition-colors text-sm font-medium text-body"
                     >
                       {copiedId === 'team' ? (
                         <>
@@ -559,20 +559,20 @@ export default function RandomPicker() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {(['number', 'list', 'team'] as const).map((section) => (
             <div key={section} className="space-y-3">
-              <h3 className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="font-medium text-fg flex items-center gap-2">
                 {modeIcons[section]}
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                     <span>{item}</span>
                   </li>
@@ -590,7 +590,7 @@ function EmptyState({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="text-center py-12">
       <div className="mx-auto mb-3">{icon}</div>
-      <p className="text-gray-400 dark:text-gray-500 text-sm">{text}</p>
+      <p className="text-faint text-sm">{text}</p>
     </div>
   )
 }

@@ -186,11 +186,11 @@ export default function SeverancePay() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Briefcase className="w-7 h-7" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -198,41 +198,41 @@ export default function SeverancePay() {
         {/* Input Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('inputInfo')}
             </h2>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('startDate')}
               </label>
               <input type="date" value={startDate} onChange={(e) => handleStartDate(e.target.value)} className={inputClass} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('endDate')}
               </label>
               <input type="date" value={endDate} onChange={(e) => handleEndDate(e.target.value)} className={inputClass} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('monthlyPay')}
               </label>
               <input type="number" value={monthlyPay} onChange={(e) => handleMonthlyPay(e.target.value)} placeholder={t('monthlyPayPlaceholder')} className={inputClass} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('annualBonus')}
               </label>
               <input type="number" value={annualBonus} onChange={(e) => handleBonus(e.target.value)} placeholder={t('annualBonusPlaceholder')} className={inputClass} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('annualLeaveAllowance')}
               </label>
               <input type="number" value={annualLeaveAllowance} onChange={(e) => handleLeave(e.target.value)} placeholder={t('annualLeaveAllowancePlaceholder')} className={inputClass} />
@@ -241,13 +241,13 @@ export default function SeverancePay() {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={handleReset}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
               <button
                 onClick={copyLink}
-                className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 {copiedLink ? t('linkCopied') : t('copyLink')}
@@ -260,7 +260,7 @@ export default function SeverancePay() {
         <div className="lg:col-span-2 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
                 {t('result.title')}
               </h2>
@@ -292,10 +292,10 @@ export default function SeverancePay() {
 
                 {/* Daily Wage */}
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6">
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <div className="text-sm font-medium text-body mb-2">
                     {t('result.avgDailyWage')}
                   </div>
-                  <div className="text-xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-xl font-bold text-fg">
                     {formatNumber(result.avgDailyWage)} {t('result.won')}
                   </div>
                 </div>
@@ -316,7 +316,7 @@ export default function SeverancePay() {
                 {/* Breakdown Bar */}
                 {(result.bonusContribution > 0 || result.leaveContribution > 0) && (
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5">
-                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    <div className="text-sm font-medium text-body mb-3">
                       {t('breakdown.title')}
                     </div>
                     <div className="flex rounded-lg overflow-hidden h-8">
@@ -340,7 +340,7 @@ export default function SeverancePay() {
                         />
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-600 dark:text-gray-400">
+                    <div className="flex flex-wrap gap-4 mt-3 text-xs text-sub">
                       <span className="flex items-center gap-1.5">
                         <span className="w-3 h-3 rounded bg-blue-500 inline-block" />
                         {t('breakdown.base')}: {formatNumber(result.baseContribution)} {t('result.won')}
@@ -362,14 +362,14 @@ export default function SeverancePay() {
                 )}
 
                 {/* Formula */}
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-line">
+                  <div className="text-xs text-sub">
                     {t('result.formula')}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted">
                 {t('emptyState')}
               </div>
             )}
@@ -380,17 +380,17 @@ export default function SeverancePay() {
       {/* Simulation Section */}
       {(parseFloat(monthlyPay) || 0) > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg mb-2 flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
             {t('simulation.title')}
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-sm text-muted mb-6">
             {t('simulation.description')}
           </p>
 
           {/* Year slider */}
           <div className="flex items-center gap-4 mb-6">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            <label className="text-sm font-medium text-body whitespace-nowrap">
               {t('simulation.maxYears')}
             </label>
             <input
@@ -401,7 +401,7 @@ export default function SeverancePay() {
               onChange={(e) => setSimYears(parseInt(e.target.value))}
               className="flex-1 accent-blue-600"
             />
-            <span className="text-sm font-bold text-gray-900 dark:text-white w-12 text-right">
+            <span className="text-sm font-bold text-fg w-12 text-right">
               {simYears}{t('result.years')}
             </span>
           </div>
@@ -411,10 +411,10 @@ export default function SeverancePay() {
             <div className="space-y-3">
               {simulation.map((item) => (
                 <div key={item.years} className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right shrink-0">
+                  <span className="text-sm text-sub w-12 text-right shrink-0">
                     {item.years}{t('result.years')}
                   </span>
-                  <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-8 overflow-hidden">
+                  <div className="flex-1 bg-soft rounded-full h-8 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
                       style={{ width: `${Math.max((item.pay / maxSimPay) * 100, 8)}%` }}
@@ -437,7 +437,7 @@ export default function SeverancePay() {
           onClick={() => setShowIrpGuide(!showIrpGuide)}
           className="w-full flex items-center justify-between text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <Briefcase className="w-5 h-5" />
             {t('irpGuide.title')}
           </h2>
@@ -446,7 +446,7 @@ export default function SeverancePay() {
 
         {showIrpGuide && (
           <div className="mt-6 space-y-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               {t('irpGuide.description')}
             </p>
 
@@ -455,16 +455,16 @@ export default function SeverancePay() {
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-gray-50 dark:bg-gray-900">
-                    <th className="text-left px-4 py-3 border border-gray-200 dark:border-gray-700 font-semibold text-gray-900 dark:text-white">
+                    <th className="text-left px-4 py-3 border border-line font-semibold text-fg">
                       {t('irpGuide.table.category')}
                     </th>
-                    <th className="text-left px-4 py-3 border border-gray-200 dark:border-gray-700 font-semibold text-blue-700 dark:text-blue-400">
+                    <th className="text-left px-4 py-3 border border-line font-semibold text-blue-700 dark:text-blue-400">
                       {t('irpGuide.table.db')}
                     </th>
-                    <th className="text-left px-4 py-3 border border-gray-200 dark:border-gray-700 font-semibold text-indigo-700 dark:text-indigo-400">
+                    <th className="text-left px-4 py-3 border border-line font-semibold text-indigo-700 dark:text-indigo-400">
                       {t('irpGuide.table.dc')}
                     </th>
-                    <th className="text-left px-4 py-3 border border-gray-200 dark:border-gray-700 font-semibold text-teal-700 dark:text-teal-400">
+                    <th className="text-left px-4 py-3 border border-line font-semibold text-teal-700 dark:text-teal-400">
                       {t('irpGuide.table.irp')}
                     </th>
                   </tr>
@@ -472,16 +472,16 @@ export default function SeverancePay() {
                 <tbody>
                   {(['manager', 'contribution', 'returns', 'risk', 'taxBenefit', 'recommended'] as const).map((row) => (
                     <tr key={row} className="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                      <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 font-medium text-gray-900 dark:text-white">
+                      <td className="px-4 py-3 border border-line font-medium text-fg">
                         {t(`irpGuide.table.rows.${row}.label`)}
                       </td>
-                      <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+                      <td className="px-4 py-3 border border-line text-body">
                         {t(`irpGuide.table.rows.${row}.db`)}
                       </td>
-                      <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+                      <td className="px-4 py-3 border border-line text-body">
                         {t(`irpGuide.table.rows.${row}.dc`)}
                       </td>
-                      <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+                      <td className="px-4 py-3 border border-line text-body">
                         {t(`irpGuide.table.rows.${row}.irp`)}
                       </td>
                     </tr>
@@ -510,7 +510,7 @@ export default function SeverancePay() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -518,12 +518,12 @@ export default function SeverancePay() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Calculation Method */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.calculation.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.calculation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>
@@ -533,12 +533,12 @@ export default function SeverancePay() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-green-600 dark:text-green-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>

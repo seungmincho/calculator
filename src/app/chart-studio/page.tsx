@@ -66,7 +66,7 @@ export default function ChartStudioPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ChartStudio />
@@ -81,17 +81,17 @@ export default function ChartStudioPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               차트 스튜디오란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               차트 스튜디오는 <strong>JSON·CSV 데이터를 붙여넣으면 바·라인·파이·산점도·레이더 등 6가지 차트를 즉시 생성</strong>하고 ECharts 코드와 React 컴포넌트 코드를 자동으로 만들어주는 데이터 시각화 도구입니다. 별도의 라이브러리 설치 없이 브라우저에서 바로 사용할 수 있으며, 생성된 차트를 PNG 이미지로 다운로드하거나 코드를 복사해 프로젝트에 바로 적용할 수 있습니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               차트 스튜디오 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>CSV 데이터 활용:</strong> 엑셀에서 CSV로 내보낸 후 붙여넣으면 바로 차트가 생성됩니다.</li>
               <li><strong>차트 타입 선택:</strong> 비교에는 바 차트, 추세에는 라인 차트, 비율에는 파이 차트가 가장 효과적입니다.</li>
               <li><strong>ECharts 코드 복사:</strong> 생성된 ECharts 옵션 코드를 바로 프로젝트에 붙여넣어 사용하세요.</li>

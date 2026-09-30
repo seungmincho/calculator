@@ -597,7 +597,7 @@ const RealEstateCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 전세보증금
               </label>
               <div className="relative">
@@ -606,15 +606,15 @@ const RealEstateCalculatorContent = () => {
                   value={jeonseDeposit}
                   onChange={(e) => handleNumberInput(e.target.value, setJeonseDeposit, 'jeonse')}
                   placeholder="예: 500,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   대출금리
                 </label>
                 <div className="relative">
@@ -629,14 +629,14 @@ const RealEstateCalculatorContent = () => {
                       }
                     }}
                     placeholder="3.5"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">%</span>
+                  <span className="absolute right-3 top-3 text-muted">%</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   대출기간
                 </label>
                 <select
@@ -645,7 +645,7 @@ const RealEstateCalculatorContent = () => {
                     setJeonseLoanTerm(e.target.value);
                     updateURL({ jeonseTerm: e.target.value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 >
                   <option value="1">1년</option>
                   <option value="2">2년</option>
@@ -663,7 +663,7 @@ const RealEstateCalculatorContent = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   주택가격
                 </label>
                 <div className="relative">
@@ -672,14 +672,14 @@ const RealEstateCalculatorContent = () => {
                     value={housePrice}
                     onChange={(e) => handleNumberInput(e.target.value, setHousePrice, 'housePrice')}
                     placeholder="예: 1,000,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   계약금/중도금
                 </label>
                 <div className="relative">
@@ -688,16 +688,16 @@ const RealEstateCalculatorContent = () => {
                     value={downPayment}
                     onChange={(e) => handleNumberInput(e.target.value, setDownPayment, 'down')}
                     placeholder="예: 300,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   대출금리
                 </label>
                 <div className="relative">
@@ -712,14 +712,14 @@ const RealEstateCalculatorContent = () => {
                       }
                     }}
                     placeholder="4.0"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">%</span>
+                  <span className="absolute right-3 top-3 text-muted">%</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   대출기간
                 </label>
                 <select
@@ -728,7 +728,7 @@ const RealEstateCalculatorContent = () => {
                     setMortgageTerm(e.target.value);
                     updateURL({ mortgageTerm: e.target.value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 >
                   <option value="10">10년</option>
                   <option value="15">15년</option>
@@ -746,7 +746,7 @@ const RealEstateCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 취득가액
               </label>
               <div className="relative">
@@ -755,15 +755,15 @@ const RealEstateCalculatorContent = () => {
                   value={acquisitionPrice}
                   onChange={(e) => handleNumberInput(e.target.value, setAcquisitionPrice, 'acquisition')}
                   placeholder="예: 800,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   부동산 유형
                 </label>
                 <select
@@ -773,7 +773,7 @@ const RealEstateCalculatorContent = () => {
                     setPropertyType(value);
                     updateURL({ type: value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 >
                   <option value="apartment">아파트</option>
                   <option value="house">단독주택</option>
@@ -782,7 +782,7 @@ const RealEstateCalculatorContent = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   면적
                 </label>
                 <div className="relative">
@@ -797,15 +797,15 @@ const RealEstateCalculatorContent = () => {
                       }
                     }}
                     placeholder="84.3"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">㎡</span>
+                  <span className="absolute right-3 top-3 text-muted">㎡</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 주택 보유 현황
               </label>
               <div className="flex space-x-4">
@@ -842,7 +842,7 @@ const RealEstateCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 부동산 공시가격
               </label>
               <div className="relative">
@@ -851,15 +851,15 @@ const RealEstateCalculatorContent = () => {
                   value={propertyValue}
                   onChange={(e) => handleNumberInput(e.target.value, setPropertyValue, 'propertyValue')}
                   placeholder="예: 1,500,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   보유 주택수
                 </label>
                 <select
@@ -868,7 +868,7 @@ const RealEstateCalculatorContent = () => {
                     setPropertyCount(e.target.value);
                     updateURL({ propertyCount: e.target.value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 >
                   <option value="1">1주택</option>
                   <option value="2">2주택</option>
@@ -877,7 +877,7 @@ const RealEstateCalculatorContent = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   보유기간
                 </label>
                 <div className="relative">
@@ -892,9 +892,9 @@ const RealEstateCalculatorContent = () => {
                       }
                     }}
                     placeholder="5"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
+                  <span className="absolute right-3 top-3 text-muted">년</span>
                 </div>
               </div>
             </div>
@@ -906,7 +906,7 @@ const RealEstateCalculatorContent = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   매도가격
                 </label>
                 <div className="relative">
@@ -915,14 +915,14 @@ const RealEstateCalculatorContent = () => {
                     value={sellPrice}
                     onChange={(e) => handleNumberInput(e.target.value, setSellPrice, 'sellPrice')}
                     placeholder="예: 1,200,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   매수가격
                 </label>
                 <div className="relative">
@@ -931,16 +931,16 @@ const RealEstateCalculatorContent = () => {
                     value={buyPrice}
                     onChange={(e) => handleNumberInput(e.target.value, setBuyPrice, 'buyPrice')}
                     placeholder="예: 800,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                  <span className="absolute right-3 top-3 text-muted">원</span>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   매도일
                 </label>
                 <input
@@ -950,12 +950,12 @@ const RealEstateCalculatorContent = () => {
                     setSellDate(e.target.value);
                     updateURL({ sellDate: e.target.value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   매수일
                 </label>
                 <input
@@ -965,13 +965,13 @@ const RealEstateCalculatorContent = () => {
                     setBuyDate(e.target.value);
                     updateURL({ buyDate: e.target.value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 주택 보유 현황
               </label>
               <div className="flex space-x-4">
@@ -1064,27 +1064,27 @@ const RealEstateCalculatorContent = () => {
           <div className="space-y-4">
             {activeTab === 'acquisition-tax' && (
               <>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">취득세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">취득세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.acquisitionTax!)}원
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">지방교육세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">지방교육세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.localTax!)}원
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">인지세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">인지세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.stampTax!)}원
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">등록세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">등록세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.registrationTax!)}원
                   </span>
                 </div>
@@ -1093,15 +1093,15 @@ const RealEstateCalculatorContent = () => {
             
             {activeTab === 'property-tax' && (
               <>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">종합부동산세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">종합부동산세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.propertyTax!)}원
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">지방교육세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">지방교육세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.educationTax!)}원
                   </span>
                 </div>
@@ -1110,15 +1110,15 @@ const RealEstateCalculatorContent = () => {
             
             {activeTab === 'capital-gains-tax' && (
               <>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">양도소득세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">양도소득세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.capitalGainsTax!)}원
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">지방소득세</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(taxResult.localIncomeTax!)}원
                   </span>
                 </div>
@@ -1168,14 +1168,14 @@ const RealEstateCalculatorContent = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">총 상환금액</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <span className="text-sub">총 상환금액</span>
+              <span className="font-semibold text-fg">
                 {formatNumber(loanResult.totalPayment)}원
               </span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">총 이자비용</span>
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <span className="text-sub">총 이자비용</span>
               <span className="font-semibold text-red-600 dark:text-red-400">
                 {formatNumber(loanResult.totalInterest)}원
               </span>
@@ -1190,8 +1190,8 @@ const RealEstateCalculatorContent = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">부동산 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">부동산 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             전세자금대출, 주택담보대출, 취득세를 정확하게 계산해보세요.
           </p>
         </div>
@@ -1216,8 +1216,8 @@ const RealEstateCalculatorContent = () => {
             }}
             className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === key
-                ? 'bg-white dark:bg-gray-700 text-purple-600 shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-purple-600'
+                ? 'bg-field text-purple-600 shadow-sm'
+                : 'text-sub hover:text-purple-600'
             }`}
           >
             {label}
@@ -1228,7 +1228,7 @@ const RealEstateCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-semibold mb-6 text-fg">
             {calculatorTypes[activeTab]} 정보 입력
           </h2>
           
@@ -1267,14 +1267,14 @@ const RealEstateCalculatorContent = () => {
 
         {/* 결과 섹션 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
             renderResult()
           ) : (
             <div className="text-center py-12">
               <Building className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 필요한 정보를 입력하면<br />
                 계산 결과를 보여드립니다.
               </p>

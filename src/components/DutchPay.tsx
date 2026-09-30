@@ -177,10 +177,10 @@ export default function DutchPay() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
           {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
         </button>
       </div>
@@ -192,7 +192,7 @@ export default function DutchPay() {
           className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
             mode === 'equal'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+              : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
           }`}
         >
           <Users className="inline-block w-5 h-5 mr-2" />
@@ -203,7 +203,7 @@ export default function DutchPay() {
           className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
             mode === 'custom'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+              : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
           }`}
         >
           <DollarSign className="inline-block w-5 h-5 mr-2" />
@@ -219,7 +219,7 @@ export default function DutchPay() {
               <>
                 {/* Equal Split Input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('totalAmount')}
                   </label>
                   <input
@@ -231,7 +231,7 @@ export default function DutchPay() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('numberOfPeople')}
                   </label>
                   <input
@@ -249,9 +249,9 @@ export default function DutchPay() {
                 {/* Custom Split Input */}
                 <div className="space-y-4">
                   {participants.map((participant, index) => (
-                    <div key={participant.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+                    <div key={participant.id} className="border border-line rounded-lg p-4 space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <span className="text-sm font-medium text-body">
                           {t('name')} {index + 1}
                         </span>
                         {participants.length > 2 && (
@@ -272,7 +272,7 @@ export default function DutchPay() {
                       />
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                          <label className="block text-xs text-sub mb-1">
                             {t('paid')}
                           </label>
                           <input
@@ -284,7 +284,7 @@ export default function DutchPay() {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                          <label className="block text-xs text-sub mb-1">
                             {t('consumed')}
                           </label>
                           <input
@@ -300,7 +300,7 @@ export default function DutchPay() {
                   ))}
                   <button
                     onClick={addParticipant}
-                    className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium flex items-center justify-center"
+                    className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     {t('addPerson')}
@@ -311,7 +311,7 @@ export default function DutchPay() {
 
             <button
               onClick={reset}
-              className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium"
+              className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium"
             >
               {t('reset')}
             </button>
@@ -321,7 +321,7 @@ export default function DutchPay() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result')}
               </h2>
               <button
@@ -344,7 +344,7 @@ export default function DutchPay() {
 
             {mode === 'equal' ? (
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-8 text-center">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <div className="text-sm text-sub mb-2">
                   {t('perPerson')}
                 </div>
                 <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
@@ -354,14 +354,14 @@ export default function DutchPay() {
             ) : (
               <div className="space-y-4">
                 {calculateTransfers.length === 0 ? (
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-8 text-center">
-                    <div className="text-gray-600 dark:text-gray-400">
+                  <div className="bg-subtle rounded-xl p-8 text-center">
+                    <div className="text-sub">
                       {t('noTransfers')}
                     </div>
                   </div>
                 ) : (
                   <>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
+                    <h3 className="font-semibold text-fg mb-4">
                       {t('transfers')}
                     </h3>
                     {calculateTransfers.map((transfer, index) => (
@@ -370,11 +370,11 @@ export default function DutchPay() {
                         className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="font-medium text-gray-900 dark:text-white">
+                          <span className="font-medium text-fg">
                             {transfer.from}
                           </span>
                           <span className="text-gray-400">→</span>
-                          <span className="font-medium text-gray-900 dark:text-white">
+                          <span className="font-medium text-fg">
                             {transfer.to}
                           </span>
                         </div>
@@ -393,26 +393,26 @@ export default function DutchPay() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
           <BookOpen className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}

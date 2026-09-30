@@ -281,11 +281,11 @@ export default function ComprehensivePropertyTax() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -294,7 +294,7 @@ export default function ComprehensivePropertyTax() {
         <div className="lg:col-span-1 space-y-4">
           {/* Taxpayer Type */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('taxpayerType.label')}
             </h2>
             <div className="grid grid-cols-2 gap-2">
@@ -305,7 +305,7 @@ export default function ComprehensivePropertyTax() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     taxpayerType === opt.value
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t(`taxpayerType.${opt.labelKey}`)}
@@ -315,9 +315,9 @@ export default function ComprehensivePropertyTax() {
 
             {/* Elderly & Holding (single only) */}
             {isSingle && (
-              <div className="space-y-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="space-y-3 pt-2 border-t border-line">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('elderly.label')}
                   </label>
                   <select
@@ -333,7 +333,7 @@ export default function ComprehensivePropertyTax() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('holdingPeriod.label')}
                   </label>
                   <select
@@ -354,13 +354,13 @@ export default function ComprehensivePropertyTax() {
 
           {/* Property List */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('property.label')}
             </h2>
             <div className="space-y-3">
               {properties.map((prop, idx) => (
                 <div key={prop.id} className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400 w-8 shrink-0">
+                  <span className="text-sm text-muted w-8 shrink-0">
                     {idx + 1}.
                   </span>
                   <div className="relative flex-1">
@@ -400,9 +400,9 @@ export default function ComprehensivePropertyTax() {
             )}
 
             {/* Total assessed */}
-            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-3 border-t border-line">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-body">
                   {t('property.total')}
                 </span>
                 <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
@@ -414,7 +414,7 @@ export default function ComprehensivePropertyTax() {
 
           {/* Previous Year Tax */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-2`}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-body">
               {t('prevYearTax.label')}
             </label>
             <div className="relative">
@@ -430,7 +430,7 @@ export default function ComprehensivePropertyTax() {
                 {t('units.won')}
               </span>
             </div>
-            <p className="text-xs text-gray-400 dark:text-gray-500 flex items-start gap-1">
+            <p className="text-xs text-faint flex items-start gap-1">
               <Info className="w-3 h-3 mt-0.5 shrink-0" />
               {t('prevYearTax.helpText')}
             </p>
@@ -439,7 +439,7 @@ export default function ComprehensivePropertyTax() {
           {/* Reset */}
           <button
             onClick={handleReset}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('reset')}
@@ -468,7 +468,7 @@ export default function ComprehensivePropertyTax() {
           {!result && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 dark:text-gray-500">{t('result.placeholder')}</p>
+              <p className="text-faint">{t('result.placeholder')}</p>
             </div>
           )}
 
@@ -503,7 +503,7 @@ export default function ComprehensivePropertyTax() {
                   onClick={() => setShowSteps(!showSteps)}
                   className="w-full flex items-center justify-between p-6 text-left"
                 >
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-fg">
                     {t('steps.title')}
                   </h2>
                   {showSteps ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
@@ -609,7 +609,7 @@ export default function ComprehensivePropertyTax() {
                   onClick={() => setShowRateTable(!showRateTable)}
                   className="w-full flex items-center justify-between p-6 text-left"
                 >
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-fg">
                     {t('rateTable.title')}
                   </h2>
                   {showRateTable ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
@@ -618,18 +618,18 @@ export default function ComprehensivePropertyTax() {
                 {showRateTable && (
                   <div className="px-6 pb-6">
                     {taxpayerType === 'corp' ? (
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                        <p className="text-gray-700 dark:text-gray-300">{t('rateTable.corpFlat')}</p>
+                      <div className="bg-subtle rounded-lg p-4 text-center">
+                        <p className="text-body">{t('rateTable.corpFlat')}</p>
                       </div>
                     ) : (
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="border-b border-gray-200 dark:border-gray-700">
-                              <th className="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">
+                            <tr className="border-b border-line">
+                              <th className="text-left py-2 px-3 text-muted font-medium">
                                 {t('rateTable.taxBase')}
                               </th>
-                              <th className="text-right py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">
+                              <th className="text-right py-2 px-3 text-muted font-medium">
                                 {t('rateTable.rate')}
                               </th>
                             </tr>
@@ -638,13 +638,13 @@ export default function ComprehensivePropertyTax() {
                             {activeBrackets.map((bracket, idx) => (
                               <tr
                                 key={idx}
-                                className={`border-b border-gray-100 dark:border-gray-700 ${
+                                className={`border-b border-line ${
                                   idx === result.appliedBracketIndex
                                     ? 'bg-blue-50 dark:bg-blue-950 font-semibold'
                                     : ''
                                 }`}
                               >
-                                <td className="py-2 px-3 text-gray-700 dark:text-gray-300">
+                                <td className="py-2 px-3 text-body">
                                   {bracket.label}
                                   {idx === result.appliedBracketIndex && (
                                     <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
@@ -652,7 +652,7 @@ export default function ComprehensivePropertyTax() {
                                     </span>
                                   )}
                                 </td>
-                                <td className="py-2 px-3 text-right text-gray-700 dark:text-gray-300">
+                                <td className="py-2 px-3 text-right text-body">
                                   {(bracket.rate * 100).toFixed(1)}%
                                 </td>
                               </tr>
@@ -671,19 +671,19 @@ export default function ComprehensivePropertyTax() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(['overview', 'rates', 'credits', 'tips'] as const).map(section => (
             <div key={section} className="space-y-2">
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <h3 className="font-semibold text-body">
                 {t(`guide.${section}.title`)}
               </h3>
               <ul className="space-y-1">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">&#8226;</span>
                     {item}
                   </li>
@@ -712,16 +712,16 @@ function StepItem({
 }) {
   return (
     <div className={`flex items-start gap-3 p-3 rounded-lg ${
-      highlight ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800' : 'bg-gray-50 dark:bg-gray-700'
+      highlight ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800' : 'bg-subtle'
     }`}>
       <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
-        highlight ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+        highlight ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-600 text-body'
       }`}>
         {num}
       </span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{label}</span>
+          <span className="text-sm font-medium text-body">{label}</span>
           {badge && (
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               badgeColor === 'green'
@@ -732,10 +732,10 @@ function StepItem({
             </span>
           )}
         </div>
-        <p className={`text-sm mt-0.5 ${highlight ? 'text-blue-700 dark:text-blue-300 font-bold' : 'text-gray-900 dark:text-white font-semibold'}`}>
+        <p className={`text-sm mt-0.5 ${highlight ? 'text-blue-700 dark:text-blue-300 font-bold' : 'text-fg font-semibold'}`}>
           {value}
         </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{desc}</p>
+        <p className="text-xs text-muted mt-0.5">{desc}</p>
       </div>
     </div>
   )

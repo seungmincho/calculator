@@ -387,11 +387,11 @@ export default function ShippingCalc() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Package className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -402,7 +402,7 @@ export default function ShippingCalc() {
 
             {/* Weight */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('weight')}
               </label>
               <input
@@ -416,13 +416,13 @@ export default function ShippingCalc() {
 
             {/* Box Dimensions */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 상자 크기
               </label>
               <div className="space-y-3">
                 {([['width', t('width')], ['height', t('height')], ['depth', t('depth')]] as [string, string][]).map(([field, label]) => (
                   <div key={field}>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</label>
+                    <label className="block text-xs text-muted mb-1">{label}</label>
                     <input
                       type="number" step="0.1" min="0"
                       value={field === 'width' ? width : field === 'height' ? height : depth}
@@ -439,11 +439,11 @@ export default function ShippingCalc() {
                 ))}
               </div>
               <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                <div className="text-xs text-gray-600 dark:text-gray-400">{t('volumeWeightInfo')}</div>
+                <div className="text-xs text-sub">{t('volumeWeightInfo')}</div>
                 <div className="text-lg font-semibold text-blue-600 dark:text-blue-400 mt-0.5">
                   {volumeWeight.toFixed(2)} kg
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted mt-1">
                   세 변 합: <span className="font-semibold">{girth.toFixed(0)} cm</span>
                 </div>
               </div>
@@ -451,7 +451,7 @@ export default function ShippingCalc() {
 
             {/* Destination */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('destination')}
               </label>
               <div className="grid grid-cols-3 gap-1.5">
@@ -466,7 +466,7 @@ export default function ShippingCalc() {
                     className={`py-2 rounded-lg text-xs font-medium transition-colors ${
                       destination === dest
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
                     {label}
@@ -477,7 +477,7 @@ export default function ShippingCalc() {
 
             {/* Carrier Category */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 택배 유형
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -486,7 +486,7 @@ export default function ShippingCalc() {
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'standard'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   <Truck className="w-3.5 h-3.5" />
@@ -497,7 +497,7 @@ export default function ShippingCalc() {
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'cvs'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   <Store className="w-3.5 h-3.5" />
@@ -509,7 +509,7 @@ export default function ShippingCalc() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+              className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -522,20 +522,20 @@ export default function ShippingCalc() {
 
           {/* Weight Summary */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-600" />
               무게 계산
             </h2>
             <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-center">
-                <div className="text-xs text-gray-500 dark:text-gray-400">{t('result.actualWeight')}</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+              <div className="p-3 bg-subtle rounded-lg text-center">
+                <div className="text-xs text-muted">{t('result.actualWeight')}</div>
+                <div className="text-xl font-bold text-fg mt-1">
                   {parseFloat(weight) || 0}<span className="text-sm font-normal ml-1">kg</span>
                 </div>
               </div>
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-center">
-                <div className="text-xs text-gray-500 dark:text-gray-400">{t('result.volumeWeight')}</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+              <div className="p-3 bg-subtle rounded-lg text-center">
+                <div className="text-xs text-muted">{t('result.volumeWeight')}</div>
+                <div className="text-xl font-bold text-fg mt-1">
                   {volumeWeight.toFixed(2)}<span className="text-sm font-normal ml-1">kg</span>
                 </div>
               </div>
@@ -556,7 +556,7 @@ export default function ShippingCalc() {
 
           {/* Carrier Rates */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               {carrierCategory === 'standard'
                 ? <Truck className="w-5 h-5 text-blue-600" />
                 : <Store className="w-5 h-5 text-blue-600" />}
@@ -572,19 +572,19 @@ export default function ShippingCalc() {
                     key={carrier.id}
                     className={`p-3.5 rounded-lg border-2 transition-colors ${
                       isUnavailable
-                        ? 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 opacity-50'
+                        ? 'bg-subtle border-line opacity-50'
                         : isCheapest
                         ? 'bg-green-50 dark:bg-green-950 border-green-400 dark:border-green-600'
-                        : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                        : 'bg-subtle border-line'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-1.5">
-                          <span className={`font-semibold text-sm ${isUnavailable ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'}`}>
+                          <span className={`font-semibold text-sm ${isUnavailable ? 'text-faint' : 'text-fg'}`}>
                             {carrier.name}
                           </span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">{carrier.serviceLabel}</span>
+                          <span className="text-xs text-muted">{carrier.serviceLabel}</span>
                           {isCheapest && (
                             <span className="px-1.5 py-0.5 text-xs bg-green-500 text-white rounded-full font-medium">최저가</span>
                           )}
@@ -593,9 +593,9 @@ export default function ShippingCalc() {
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-gray-400 dark:text-gray-500">배송 {carrier.deliveryDays}</span>
+                          <span className="text-xs text-faint">배송 {carrier.deliveryDays}</span>
                           {carrier.note && (
-                            <span className="text-xs text-gray-400 dark:text-gray-500">· {carrier.note}</span>
+                            <span className="text-xs text-faint">· {carrier.note}</span>
                           )}
                         </div>
                       </div>
@@ -604,7 +604,7 @@ export default function ShippingCalc() {
                           <span className="text-xs text-red-500 dark:text-red-400 font-medium">{unavailableReason}</span>
                         ) : (
                           <>
-                            <span className={`text-lg font-bold ${isCheapest ? 'text-green-700 dark:text-green-300' : 'text-gray-900 dark:text-white'}`}>
+                            <span className={`text-lg font-bold ${isCheapest ? 'text-green-700 dark:text-green-300' : 'text-fg'}`}>
                               {price!.toLocaleString()}원
                             </span>
                             <button
@@ -628,18 +628,18 @@ export default function ShippingCalc() {
             {/* Price Range Summary */}
             {availableResults.length > 1 && (
               <div className="mt-5 p-4 bg-indigo-50 dark:bg-indigo-950 rounded-lg">
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">가격 범위</div>
+                <div className="text-sm text-muted mb-1">가격 범위</div>
                 <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   {availableResults[0].price!.toLocaleString()}원 ~ {availableResults[availableResults.length - 1].price!.toLocaleString()}원
                 </div>
-                <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                <div className="text-xs text-faint mt-1">
                   최대 {(availableResults[availableResults.length - 1].price! - availableResults[0].price!).toLocaleString()}원 차이
                   {' · '}{availableResults.length}개 서비스 이용 가능
                 </div>
               </div>
             )}
 
-            <p className="mt-3 text-xs text-gray-400 dark:text-gray-500 text-right">
+            <p className="mt-3 text-xs text-faint text-right">
               2025~2026년 기준 · 실제 요금은 택배사 정책에 따라 다를 수 있습니다
             </p>
 
@@ -668,19 +668,19 @@ export default function ShippingCalc() {
 
       {/* ── Guide Section ── */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.calculation.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.calculation.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <li key={idx} className="flex gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -688,12 +688,12 @@ export default function ShippingCalc() {
             </ul>
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <li key={idx} className="flex gap-2 text-sm text-sub">
                   <span className="text-green-600 dark:text-green-400 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -703,40 +703,40 @@ export default function ShippingCalc() {
         </div>
 
         {/* Rate Reference Table */}
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+        <h3 className="text-base font-semibold text-fg mb-3">
           2025년 주요 요금표 (내륙 기준)
         </h3>
-        <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="overflow-x-auto rounded-lg border border-line">
           <table className="w-full text-xs text-left">
             <thead>
-              <tr className="bg-gray-100 dark:bg-gray-700">
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300">택배사</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300">접수</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-right">~2kg</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-right">~5kg</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-right">~10kg</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-right">~20kg</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-right">한도</th>
-                <th className="px-3 py-2 font-semibold text-gray-700 dark:text-gray-300 text-center">배송</th>
+              <tr className="bg-soft">
+                <th className="px-3 py-2 font-semibold text-body">택배사</th>
+                <th className="px-3 py-2 font-semibold text-body">접수</th>
+                <th className="px-3 py-2 font-semibold text-body text-right">~2kg</th>
+                <th className="px-3 py-2 font-semibold text-body text-right">~5kg</th>
+                <th className="px-3 py-2 font-semibold text-body text-right">~10kg</th>
+                <th className="px-3 py-2 font-semibold text-body text-right">~20kg</th>
+                <th className="px-3 py-2 font-semibold text-body text-right">한도</th>
+                <th className="px-3 py-2 font-semibold text-body text-center">배송</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
               {RATE_TABLE_ROWS.map((row, i) => (
                 <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-3 py-2 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">{row.name}</td>
-                  <td className="px-3 py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap">{row.service}</td>
-                  <td className="px-3 py-2 text-right text-gray-700 dark:text-gray-300 tabular-nums">{fmtPrice(row.p2)}</td>
-                  <td className="px-3 py-2 text-right text-gray-700 dark:text-gray-300 tabular-nums">{fmtPrice(row.p5)}</td>
-                  <td className="px-3 py-2 text-right text-gray-700 dark:text-gray-300 tabular-nums">{fmtPrice(row.p10)}</td>
-                  <td className="px-3 py-2 text-right text-gray-700 dark:text-gray-300 tabular-nums">{fmtPrice(row.p20)}</td>
-                  <td className="px-3 py-2 text-right text-gray-400 dark:text-gray-500 whitespace-nowrap">{row.max}</td>
-                  <td className="px-3 py-2 text-center text-gray-400 dark:text-gray-500 whitespace-nowrap">{row.days}</td>
+                  <td className="px-3 py-2 font-medium text-body whitespace-nowrap">{row.name}</td>
+                  <td className="px-3 py-2 text-muted whitespace-nowrap">{row.service}</td>
+                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p2)}</td>
+                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p5)}</td>
+                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p10)}</td>
+                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p20)}</td>
+                  <td className="px-3 py-2 text-right text-faint whitespace-nowrap">{row.max}</td>
+                  <td className="px-3 py-2 text-center text-faint whitespace-nowrap">{row.days}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+        <p className="text-xs text-faint mt-2">
           * 2025~2026년 기준 개인 접수 요금(타권역). 동일권역은 약 1,000원 저렴. 제주·도서산간 추가요금 별도. CU는 2026년 4월 1일 요금 인상 예정. 최신 요금은 각 택배사 홈페이지에서 확인하세요.
         </p>
       </div>

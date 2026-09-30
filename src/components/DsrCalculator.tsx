@@ -564,17 +564,17 @@ export default function DsrCalculator() {
 
   const inputClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
   const selectClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
-  const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+  const labelClass = 'block text-sm font-medium text-body mb-1'
 
   return (
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 메인 그리드 */}
@@ -584,7 +584,7 @@ export default function DsrCalculator() {
 
           {/* 소득 정보 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('income.title')}
             </h2>
             <div>
@@ -605,7 +605,7 @@ export default function DsrCalculator() {
 
           {/* 신규 대출 정보 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('newLoan.title')}
             </h2>
             <div className="space-y-4">
@@ -687,7 +687,7 @@ export default function DsrCalculator() {
                       className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
                         rateType === o.value
                           ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                          : 'bg-field text-body border-line-strong hover:bg-gray-50 dark:hover:bg-gray-600'
                       }`}
                     >
                       {o.label}
@@ -708,7 +708,7 @@ export default function DsrCalculator() {
                       className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
                         location === o.value
                           ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                          : 'bg-field text-body border-line-strong hover:bg-gray-50 dark:hover:bg-gray-600'
                       }`}
                     >
                       {o.label}
@@ -722,7 +722,7 @@ export default function DsrCalculator() {
           {/* 기존 대출 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('existing.title')}
               </h2>
               <button
@@ -736,16 +736,16 @@ export default function DsrCalculator() {
             </div>
 
             {existingLoans.length === 0 && (
-              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
+              <p className="text-sm text-faint text-center py-4">
                 {t('existing.add')}
               </p>
             )}
 
             <div className="space-y-4">
               {existingLoans.map((loan, idx) => (
-                <div key={loan.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 relative">
+                <div key={loan.id} className="border border-line rounded-lg p-4 relative">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('existing.loanLabel')} {idx + 1}
                     </span>
                     <button
@@ -801,7 +801,7 @@ export default function DsrCalculator() {
                     <div>
                       <label className={labelClass}>{t('existing.remainingTerm')}</label>
                       {isTermForced(loan.type) ? (
-                        <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-600 rounded-lg">
+                        <div className="px-3 py-2 text-sm text-muted bg-gray-100 dark:bg-gray-600 rounded-lg">
                           {getForcedTermLabel(loan.type)}
                         </div>
                       ) : (
@@ -852,7 +852,7 @@ export default function DsrCalculator() {
             <button
               type="button"
               onClick={handleReset}
-              className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+              className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
             >
               {t('reset')}
             </button>
@@ -865,7 +865,7 @@ export default function DsrCalculator() {
             <>
               {/* DSR 게이지 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('result.title')}
                 </h2>
 
@@ -880,7 +880,7 @@ export default function DsrCalculator() {
 
                 {/* 게이지 바 */}
                 <div className="relative mb-2">
-                  <div className="w-full h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="w-full h-6 bg-track rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-700 ease-out ${getDsrColor(result.dsr)}`}
                       style={{ width: `${Math.min(100, result.dsr)}%` }}
@@ -897,25 +897,25 @@ export default function DsrCalculator() {
                   <span>100%</span>
                 </div>
 
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">{getDsrDesc(result.dsr)}</p>
+                <p className="text-sm text-muted mt-4">{getDsrDesc(result.dsr)}</p>
               </div>
 
               {/* 연간 원리금 내역 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('result.annualRepaymentTitle')}
                 </h2>
                 <div className="space-y-3">
                   {/* 신규 대출 */}
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.newLoanLabel')}</span>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{formatCurrency(Math.round(result.newLoanAnnual))}</span>
+                  <div className="flex justify-between items-center py-2 border-b border-line">
+                    <span className="text-sm text-sub">{t('result.newLoanLabel')}</span>
+                    <span className="text-sm font-semibold text-fg">{formatCurrency(Math.round(result.newLoanAnnual))}</span>
                   </div>
                   {/* 기존 대출들 */}
                   {result.existingLoansAnnual.map((loan, idx) => (
-                    <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{loan.label}</span>
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">{formatCurrency(Math.round(loan.annual))}</span>
+                    <div key={idx} className="flex justify-between items-center py-2 border-b border-line">
+                      <span className="text-sm text-sub">{loan.label}</span>
+                      <span className="text-sm font-semibold text-fg">{formatCurrency(Math.round(loan.annual))}</span>
                     </div>
                   ))}
                   {/* 합계 */}
@@ -924,15 +924,15 @@ export default function DsrCalculator() {
                     <span className="text-sm font-bold text-blue-700 dark:text-blue-300">{formatCurrency(Math.round(result.totalAnnual))}</span>
                   </div>
                   <div className="flex justify-between items-center py-2 px-3">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('result.annualIncome')}</span>
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{formatCurrency(parseNumber(annualIncome))}</span>
+                    <span className="text-sm text-muted">{t('result.annualIncome')}</span>
+                    <span className="text-sm text-body">{formatCurrency(parseNumber(annualIncome))}</span>
                   </div>
                 </div>
               </div>
 
               {/* 대출한도 역산 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
                   {t('limit.title')}
                 </h2>
@@ -944,8 +944,8 @@ export default function DsrCalculator() {
                       <p className="text-xs text-green-500 dark:text-green-400 mt-2">{t('limit.basedOn')}</p>
                     </div>
                     <div className="flex justify-between items-center py-2 px-3">
-                      <span className="text-sm text-gray-500 dark:text-gray-400">{t('limit.availableAnnual')}</span>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-muted">{t('limit.availableAnnual')}</span>
+                      <span className="text-sm font-medium text-body">
                         {formatCurrency(Math.round(Math.max(0, parseNumber(annualIncome) * 0.4 - result.existingLoansAnnual.reduce((s, l) => s + l.annual, 0))))}
                       </span>
                     </div>
@@ -960,11 +960,11 @@ export default function DsrCalculator() {
 
               {/* 스트레스 DSR */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-2 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-purple-600" />
                   {t('stress.title')}
                 </h2>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('stress.description')}</p>
+                <p className="text-xs text-muted mb-4">{t('stress.description')}</p>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
@@ -986,7 +986,7 @@ export default function DsrCalculator() {
                 </div>
 
                 {location === 'nonCapital' && newLoanType === 'mortgage' && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 flex items-start gap-1">
+                  <p className="text-xs text-muted mt-3 flex items-start gap-1">
                     <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" />
                     {t('stress.nonCapitalNote')}
                   </p>
@@ -1005,7 +1005,7 @@ export default function DsrCalculator() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 dark:text-gray-500">{t('description')}</p>
+              <p className="text-faint">{t('description')}</p>
             </div>
           )}
         </div>
@@ -1013,17 +1013,17 @@ export default function DsrCalculator() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {/* DSR이란? */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.whatIsDsr.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.whatIsDsr.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.whatIsDsr.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-1 flex-shrink-0">&#8226;</span>
                   {item}
                 </li>
@@ -1032,10 +1032,10 @@ export default function DsrCalculator() {
           </div>
           {/* 스트레스 DSR */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.stressDsr.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.stressDsr.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.stressDsr.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-purple-500 mt-1 flex-shrink-0">&#8226;</span>
                   {item}
                 </li>
@@ -1044,10 +1044,10 @@ export default function DsrCalculator() {
           </div>
           {/* 팁 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-green-500 mt-1 flex-shrink-0">&#8226;</span>
                   {item}
                 </li>

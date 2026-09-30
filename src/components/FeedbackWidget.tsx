@@ -143,7 +143,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
           {t('feedback.button')}
         </button>
       ) : (
-        <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-6 shadow-lg max-w-md">
+        <div className="bg-surface border border-line-strong rounded-lg p-6 shadow-lg max-w-md">
           {showThankYou ? (
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
@@ -154,7 +154,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 {t('feedback.thankYou.title')}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 {t('feedback.thankYou.message')}
               </p>
             </div>
@@ -175,7 +175,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('feedback.rating.label')}
                 </label>
                 <div className="flex gap-1" role="group" aria-label={t('feedback.rating.label')}>
@@ -211,14 +211,14 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                   ))}
                 </div>
                 {rating > 0 && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-sub mt-1">
                     {t('feedback.rating.selected', { rating })}
                   </p>
                 )}
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('feedback.comment.label')}
                 </label>
                 <textarea
@@ -227,9 +227,9 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                   placeholder={t('feedback.comment.placeholder')}
                   rows={3}
                   maxLength={500}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100 resize-none"
+                  className="w-full px-3 py-2 border border-line-strong rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100 resize-none"
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {comment.length}/500 {t('feedback.comment.optional')}
                 </p>
               </div>
@@ -254,7 +254,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                  className="px-4 py-2 text-sub border border-line-strong rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                 >
                   {t('feedback.cancel')}
                 </button>

@@ -289,24 +289,24 @@ export default function CsInterview() {
     <div className="space-y-4 mt-4">
       {/* Model Answer */}
       <div>
-        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1.5">
+        <h4 className="text-sm font-semibold text-body mb-2 flex items-center gap-1.5">
           <BookOpen className="w-4 h-4" />
           {t('question.answer')}
         </h4>
-        <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+        <p className="text-body leading-relaxed whitespace-pre-line">
           {q.answer}
         </p>
       </div>
 
       {/* Key Points */}
       <div>
-        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1.5">
+        <h4 className="text-sm font-semibold text-body mb-2 flex items-center gap-1.5">
           <Target className="w-4 h-4" />
           {t('question.keyPoints')}
         </h4>
         <ul className="space-y-1.5">
           {q.keyPoints.map((kp: string, i: number) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <li key={i} className="flex items-start gap-2 text-sm text-sub">
               <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
               <span>{kp}</span>
             </li>
@@ -339,7 +339,7 @@ export default function CsInterview() {
       {/* Related Terms */}
       {q.relatedTermIds && q.relatedTermIds.length > 0 && (
         <div>
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <h4 className="text-sm font-semibold text-body mb-2">
             {t('question.relatedTerms')}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -347,7 +347,7 @@ export default function CsInterview() {
               <a
                 key={termId}
                 href={`/cs-dictionary?q=${encodeURIComponent(termId)}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900/40 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
               >
                 <BookMarked className="w-3 h-3" />
                 {termId}
@@ -392,32 +392,32 @@ export default function CsInterview() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats Dashboard */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+      <div className="bg-surface rounded-xl shadow-lg p-5">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.total')}</div>
+            <div className="text-2xl font-bold text-fg">{stats.total}</div>
+            <div className="text-xs text-muted">{t('stats.total')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.mastered}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.mastered')}</div>
+            <div className="text-xs text-muted">{t('stats.mastered')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.review}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.needsReview')}</div>
+            <div className="text-xs text-muted">{t('stats.needsReview')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-500 dark:text-gray-400">{stats.remaining}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.remaining')}</div>
+            <div className="text-2xl font-bold text-muted">{stats.remaining}</div>
+            <div className="text-xs text-muted">{t('stats.remaining')}</div>
           </div>
         </div>
         {/* Progress bar */}
-        <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="relative h-3 bg-track rounded-full overflow-hidden">
           <div
             className="absolute left-0 top-0 h-full bg-green-500 transition-all duration-300"
             style={{ width: stats.total ? `${(stats.mastered / stats.total) * 100}%` : '0%' }}
@@ -430,7 +430,7 @@ export default function CsInterview() {
             }}
           />
         </div>
-        <div className="flex justify-between mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex justify-between mt-1.5 text-xs text-muted">
           <span>{t('stats.progress')}</span>
           <span>{stats.total ? Math.round((stats.mastered / stats.total) * 100) : 0}%</span>
         </div>
@@ -442,8 +442,8 @@ export default function CsInterview() {
           onClick={() => handleModeChange('practice')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
             mode === 'practice'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-field text-fg shadow-sm'
+              : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           <Play className="w-4 h-4" />
@@ -453,8 +453,8 @@ export default function CsInterview() {
           onClick={() => handleModeChange('browse')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
             mode === 'browse'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-field text-fg shadow-sm'
+              : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           <List className="w-4 h-4" />
@@ -463,10 +463,10 @@ export default function CsInterview() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-5 space-y-4">
         {/* Category filter */}
         <div>
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('filter.category')}</div>
+          <div className="text-xs font-medium text-muted mb-2">{t('filter.category')}</div>
           <div className="flex flex-wrap gap-2">
             {ALL_CATEGORIES.map(cat => {
               const isActive = category === cat
@@ -481,7 +481,7 @@ export default function CsInterview() {
                       ? cat === 'all'
                         ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
                         : `${colors!.bg} ${colors!.text} ${colors!.border}`
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                      : 'bg-field text-sub border-line hover:border-gray-400 dark:hover:border-gray-500'
                   }`}
                 >
                   {cat === 'all' ? t('filter.all') : <>{info?.icon} {info?.nameKo}</>}
@@ -493,14 +493,14 @@ export default function CsInterview() {
 
         {/* Difficulty filter */}
         <div>
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('filter.difficulty')}</div>
+          <div className="text-xs font-medium text-muted mb-2">{t('filter.difficulty')}</div>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleDifficultyChange(null)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
                 difficulty === null
                   ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                  : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-gray-400'
+                  : 'bg-field text-sub border-line hover:border-gray-400'
               }`}
             >
               {t('filter.all')}
@@ -514,7 +514,7 @@ export default function CsInterview() {
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
                     difficulty === d
                       ? `${colors.bg} ${colors.text} border-transparent`
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-gray-400'
+                      : 'bg-field text-sub border-line hover:border-gray-400'
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full ${colors.dot}`} />
@@ -529,7 +529,7 @@ export default function CsInterview() {
         <div className="flex justify-end">
           <button
             onClick={handleReset}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted hover:text-red-600 dark:hover:text-red-400 transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             {t('stats.progress')}
@@ -542,15 +542,15 @@ export default function CsInterview() {
         <div className="space-y-4">
           {/* Practice controls */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
+            <div className="flex gap-1 bg-soft rounded-lg p-0.5">
               {(['all', 'review', 'remaining'] as PracticeFilter[]).map(f => (
                 <button
                   key={f}
                   onClick={() => { setPracticeFilter(f); setPracticeIndex(0); setAnswerRevealed(false) }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     practiceFilter === f
-                      ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                      : 'text-gray-500 dark:text-gray-400'
+                      ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                      : 'text-muted'
                   }`}
                 >
                   {t(`practice.filter.${f}`)}
@@ -559,12 +559,12 @@ export default function CsInterview() {
             </div>
             <button
               onClick={handleShuffle}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-sub hover:text-blue-600 dark:hover:text-blue-400 bg-soft rounded-lg transition-colors"
             >
               <Shuffle className="w-3.5 h-3.5" />
               {t('practice.shuffle')}
             </button>
-            <div className="ml-auto text-xs text-gray-500 dark:text-gray-400">
+            <div className="ml-auto text-xs text-muted">
               {practiceQuestions.length > 0
                 ? `${practiceIndex + 1} / ${practiceQuestions.length}`
                 : `0 / 0`}
@@ -573,7 +573,7 @@ export default function CsInterview() {
 
           {/* Question Card */}
           {currentQuestion ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
+            <div className="bg-surface rounded-xl shadow-lg p-6 sm:p-8">
               {/* Top: badges + bookmark */}
               <div className="flex items-start justify-between gap-2 mb-4">
                 {renderBadges(currentQuestion)}
@@ -586,14 +586,14 @@ export default function CsInterview() {
                     className={`w-5 h-5 ${
                       bookmarkIds.has(currentQuestion.id)
                         ? 'text-yellow-500 fill-yellow-500'
-                        : 'text-gray-400 dark:text-gray-500'
+                        : 'text-faint'
                     }`}
                   />
                 </button>
               </div>
 
               {/* Question */}
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-relaxed mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-fg leading-relaxed mb-6">
                 {currentQuestion.question}
               </h3>
 
@@ -610,18 +610,18 @@ export default function CsInterview() {
                 <>
                   <button
                     onClick={() => setAnswerRevealed(false)}
-                    className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-3 hover:text-gray-700 dark:hover:text-gray-300"
+                    className="text-xs text-muted flex items-center gap-1 mb-3 hover:text-gray-700 dark:hover:text-gray-300"
                   >
                     <EyeOff className="w-3.5 h-3.5" />
                     {t('practice.hideAnswer')}
                   </button>
 
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <div className="border-t border-line pt-4">
                     {renderAnswerContent(currentQuestion)}
                   </div>
 
                   {/* Self-evaluation */}
-                  <div className="flex gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex gap-3 mt-6 pt-4 border-t border-line">
                     <button
                       onClick={() => handleMastered(currentQuestion.id)}
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700 rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
@@ -641,22 +641,22 @@ export default function CsInterview() {
               )}
 
               {/* Navigation */}
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-line">
                 <button
                   onClick={() => { setPracticeIndex(i => Math.max(0, i - 1)); setAnswerRevealed(false) }}
                   disabled={practiceIndex === 0}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   {t('practice.prev')}
                 </button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-muted">
                   {practiceIndex + 1} / {practiceQuestions.length}
                 </span>
                 <button
                   onClick={() => { setPracticeIndex(i => Math.min(practiceQuestions.length - 1, i + 1)); setAnswerRevealed(false) }}
                   disabled={practiceIndex >= practiceQuestions.length - 1}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   {t('practice.next')}
                   <ChevronRight className="w-4 h-4" />
@@ -664,9 +664,9 @@ export default function CsInterview() {
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
               <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-500 dark:text-gray-400">{t('search.noResults')}</p>
+              <p className="text-muted">{t('search.noResults')}</p>
             </div>
           )}
         </div>
@@ -684,7 +684,7 @@ export default function CsInterview() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t('search.placeholder')}
-                className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full pl-9 pr-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
               />
               {searchQuery && (
                 <button
@@ -698,13 +698,13 @@ export default function CsInterview() {
             <div className="flex gap-2">
               <button
                 onClick={expandAll}
-                className="px-3 py-2 text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 {t('browse.expandAll')}
               </button>
               <button
                 onClick={collapseAll}
-                className="px-3 py-2 text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 {t('browse.collapseAll')}
               </button>
@@ -713,9 +713,9 @@ export default function CsInterview() {
 
           {/* Grouped questions */}
           {filteredQuestions.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
               <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-500 dark:text-gray-400">{t('search.noResults')}</p>
+              <p className="text-muted">{t('search.noResults')}</p>
             </div>
           ) : (
             Array.from(groupedQuestions.entries()).map(([cat, questions]) => {
@@ -741,7 +741,7 @@ export default function CsInterview() {
                       return (
                         <div
                           key={q.id}
-                          className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+                          className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden"
                         >
                           {/* Accordion header */}
                           <button
@@ -752,7 +752,7 @@ export default function CsInterview() {
                               <div className="flex flex-wrap items-center gap-2 mb-1.5">
                                 {renderBadges(q)}
                               </div>
-                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white leading-relaxed">
+                              <h4 className="text-sm font-semibold text-fg leading-relaxed">
                                 {q.question}
                               </h4>
                             </div>
@@ -766,7 +766,7 @@ export default function CsInterview() {
                                   className={`w-4 h-4 ${
                                     bookmarkIds.has(q.id)
                                       ? 'text-yellow-500 fill-yellow-500'
-                                      : 'text-gray-400 dark:text-gray-500'
+                                      : 'text-faint'
                                   }`}
                                 />
                               </button>
@@ -780,16 +780,16 @@ export default function CsInterview() {
 
                           {/* Accordion content */}
                           {isExpanded && (
-                            <div className="px-4 pb-4 border-t border-gray-100 dark:border-gray-700">
+                            <div className="px-4 pb-4 border-t border-line">
                               {renderAnswerContent(q)}
                               {/* Quick evaluate buttons */}
-                              <div className="flex gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+                              <div className="flex gap-2 mt-4 pt-3 border-t border-line">
                                 <button
                                   onClick={() => handleMastered(q.id)}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                                     masteredIds.has(q.id)
                                       ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700'
-                                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-green-300 hover:text-green-600'
+                                      : 'bg-field text-sub border-line hover:border-green-300 hover:text-green-600'
                                   }`}
                                 >
                                   <Check className="w-3.5 h-3.5" />
@@ -800,7 +800,7 @@ export default function CsInterview() {
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                                     reviewIds.has(q.id)
                                       ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700'
-                                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-red-300 hover:text-red-600'
+                                      : 'bg-field text-sub border-line hover:border-red-300 hover:text-red-600'
                                   }`}
                                 >
                                   <X className="w-3.5 h-3.5" />

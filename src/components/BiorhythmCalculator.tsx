@@ -236,7 +236,7 @@ export default function BiorhythmCalculator() {
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-1.5">
             {icon}
-            <span className="font-medium text-gray-700 dark:text-gray-300">{label}</span>
+            <span className="font-medium text-body">{label}</span>
           </div>
           <div className="flex items-center gap-2">
             {isCrit && (
@@ -248,7 +248,7 @@ export default function BiorhythmCalculator() {
             <span className={`font-bold ${rhythmColor(value)}`}>{Math.round(value)}%</span>
           </div>
         </div>
-        <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="relative h-4 bg-track rounded-full overflow-hidden">
           <div className="absolute top-0 left-1/2 w-px h-full bg-gray-400 dark:bg-gray-500 z-10" />
           <div
             className={`absolute top-0 h-full rounded-full transition-all duration-500 ${color}`}
@@ -258,7 +258,7 @@ export default function BiorhythmCalculator() {
             }}
           />
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{t(statusKey(value))}</p>
+        <p className="text-xs text-muted">{t(statusKey(value))}</p>
       </div>
     )
   }
@@ -269,8 +269,8 @@ export default function BiorhythmCalculator() {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
     return (
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg p-3 text-sm">
-        <p className="font-medium text-gray-900 dark:text-white mb-1">{label}</p>
+      <div className="bg-surface border border-line rounded-lg shadow-lg p-3 text-sm">
+        <p className="font-medium text-fg mb-1">{label}</p>
         {payload.map((entry: { color: string; name: string; value: number }, idx: number) => (
           <p key={idx} style={{ color: entry.color }} className="flex justify-between gap-4">
             <span>{entry.name}</span>
@@ -300,22 +300,22 @@ export default function BiorhythmCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
             </h2>
 
             {/* Birth date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('birthDate')}
               </label>
               <input
@@ -329,7 +329,7 @@ export default function BiorhythmCalculator() {
 
             {/* Target date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('targetDate')}
               </label>
               <input
@@ -342,7 +342,7 @@ export default function BiorhythmCalculator() {
 
             {/* Period */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('periodLabel')}
               </label>
               <select
@@ -369,7 +369,7 @@ export default function BiorhythmCalculator() {
           {/* Compatibility toggle */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <Users className="w-5 h-5 text-purple-600" />
                 {t('compatibility.title')}
               </h2>
@@ -383,7 +383,7 @@ export default function BiorhythmCalculator() {
 
             {showCompatibility && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('compatibility.birthDate2')}
                 </label>
                 <input
@@ -403,16 +403,16 @@ export default function BiorhythmCalculator() {
           {!birth ? (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calendar className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('emptyState')}</p>
+              <p className="text-muted">{t('emptyState')}</p>
             </div>
           ) : (
             <>
               {/* Today's Biorhythm Card */}
               <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('todayTitle')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('todayTitle')}</h2>
                   <div className="text-right">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('overallCondition')}</p>
+                    <p className="text-xs text-muted">{t('overallCondition')}</p>
                     <p className={`text-2xl font-bold ${rhythmColor(overallScore)}`}>{overallScore}%</p>
                   </div>
                 </div>
@@ -424,7 +424,7 @@ export default function BiorhythmCalculator() {
 
               {/* Chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('chartTitle')}</h2>
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('chartTitle')}</h2>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -462,7 +462,7 @@ export default function BiorhythmCalculator() {
               {/* Compatibility Scores */}
               {showCompatibility && compatibility && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                     <Users className="w-5 h-5 text-purple-600" />
                     {t('compatibility.resultTitle')}
                   </h2>
@@ -474,7 +474,7 @@ export default function BiorhythmCalculator() {
                       { key: 'intellectual', value: compatibility.intellectual, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950' },
                     ].map(item => (
                       <div key={item.key} className={`${item.bg} rounded-xl p-4 text-center`}>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                        <p className="text-xs text-muted mb-1">
                           {item.key === 'overall' ? t('compatibility.overall') : t(item.key)}
                         </p>
                         <p className={`text-2xl font-bold ${item.color}`}>{item.value}%</p>
@@ -487,22 +487,22 @@ export default function BiorhythmCalculator() {
               {/* Calendar View */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('calendarTitle')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('calendarTitle')}</h2>
                   <div className="flex items-center gap-2">
                     <button onClick={prevMonth} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                      <ChevronLeft className="w-4 h-4 text-sub" />
                     </button>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[100px] text-center">
+                    <span className="text-sm font-medium text-body min-w-[100px] text-center">
                       {calendarMonth.year}.{String(calendarMonth.month + 1).padStart(2, '0')}
                     </span>
                     <button onClick={nextMonth} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                      <ChevronRight className="w-4 h-4 text-sub" />
                     </button>
                   </div>
                 </div>
 
                 {/* Legend */}
-                <div className="flex items-center gap-4 mb-3 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-4 mb-3 text-xs text-muted">
                   <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />{t('physical')}</span>
                   <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" />{t('emotional')}</span>
                   <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" />{t('intellectual')}</span>
@@ -512,7 +512,7 @@ export default function BiorhythmCalculator() {
                 <div className="grid grid-cols-7 gap-1">
                   {/* Week day headers */}
                   {weekDays.map(day => (
-                    <div key={day} className="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-1">{day}</div>
+                    <div key={day} className="text-center text-xs font-medium text-muted py-1">{day}</div>
                   ))}
                   {/* Calendar cells */}
                   {calendarDays.map((day, idx) => (
@@ -526,7 +526,7 @@ export default function BiorhythmCalculator() {
                     >
                       {day.date && (
                         <>
-                          <span className={`${day.isToday ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                          <span className={`${day.isToday ? 'text-blue-700 dark:text-blue-300' : 'text-body'}`}>
                             {day.date.getDate()}
                           </span>
                           <div className="flex justify-center gap-0.5 mt-0.5">
@@ -550,7 +550,7 @@ export default function BiorhythmCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
@@ -558,8 +558,8 @@ export default function BiorhythmCalculator() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* What is biorhythm */}
           <div className="space-y-3">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('guide.what.title')}</h3>
-            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+            <h3 className="font-medium text-fg">{t('guide.what.title')}</h3>
+            <div className="text-sm text-sub space-y-2">
               {(t.raw('guide.what.items') as string[]).map((item, i) => (
                 <p key={i}>{item}</p>
               ))}
@@ -568,8 +568,8 @@ export default function BiorhythmCalculator() {
 
           {/* Rhythm meanings */}
           <div className="space-y-3">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('guide.rhythms.title')}</h3>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+            <h3 className="font-medium text-fg">{t('guide.rhythms.title')}</h3>
+            <ul className="text-sm text-sub space-y-2">
               {(t.raw('guide.rhythms.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${i === 0 ? 'bg-red-500' : i === 1 ? 'bg-green-500' : 'bg-blue-500'}`} />
@@ -581,11 +581,11 @@ export default function BiorhythmCalculator() {
 
           {/* Critical days */}
           <div className="space-y-3">
-            <h3 className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-medium text-fg flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               {t('guide.critical.title')}
             </h3>
-            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+            <div className="text-sm text-sub space-y-2">
               {(t.raw('guide.critical.items') as string[]).map((item, i) => (
                 <p key={i}>{item}</p>
               ))}
@@ -594,7 +594,7 @@ export default function BiorhythmCalculator() {
 
           {/* Disclaimer */}
           <div className="space-y-3">
-            <h3 className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-medium text-fg flex items-center gap-2">
               <Info className="w-4 h-4 text-blue-500" />
               {t('guide.disclaimer.title')}
             </h3>

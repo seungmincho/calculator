@@ -141,28 +141,28 @@ export default function CategoryHubPage({ category }: { category: HubKey }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         <header className="space-y-4">
-          <nav aria-label="Breadcrumb" className="text-sm text-gray-500 dark:text-gray-400">
+          <nav aria-label="Breadcrumb" className="text-sm text-muted">
             <Link href="/" className="hover:text-blue-600">홈</Link>
             <span className="mx-2">/</span>
-            <span aria-current="page" className="text-gray-700 dark:text-gray-200">{c.h1}</span>
+            <span aria-current="page" className="text-body">{c.h1}</span>
           </nav>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            {c.h1} <span className="text-lg font-normal text-gray-500 dark:text-gray-400">{items.length}개</span>
+          <h1 className="text-3xl font-bold text-fg">
+            {c.h1} <span className="text-lg font-normal text-muted">{items.length}개</span>
           </h1>
           {c.intro.map((p, i) => (
-            <p key={i} className="text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl">{p}</p>
+            <p key={i} className="text-body leading-relaxed max-w-3xl">{p}</p>
           ))}
         </header>
 
         <section aria-labelledby="popular">
-          <h2 id="popular" className="text-lg font-semibold text-gray-900 dark:text-white mb-3">많이 쓰는 도구</h2>
+          <h2 id="popular" className="text-lg font-semibold text-fg mb-3">많이 쓰는 도구</h2>
           <ul className="flex flex-wrap gap-2">
             {popular.map(item => (
               <li key={item.href}>
-                <Link href={item.href} className={`${glassCard} inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-800 dark:text-gray-100 hover:bg-white/80 dark:hover:bg-white/[0.14] transition-colors`}>
+                <Link href={item.href} className={`${glassCard} inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-body hover:bg-soft transition-colors`}>
                   <span>{item.icon}</span>{label(item.labelKey)}
                 </Link>
               </li>
@@ -173,12 +173,12 @@ export default function CategoryHubPage({ category }: { category: HubKey }) {
         <CategoryHub category={category} />
 
         <section aria-labelledby="faq" className={`${glassCard} p-6`}>
-          <h2 id="faq" className="text-lg font-semibold text-gray-900 dark:text-white mb-4">자주 묻는 질문</h2>
+          <h2 id="faq" className="text-lg font-semibold text-fg mb-4">자주 묻는 질문</h2>
           <dl className="space-y-4">
             {c.faq.map(f => (
               <div key={f.q}>
-                <dt className="font-medium text-gray-900 dark:text-white">Q. {f.q}</dt>
-                <dd className="text-sm text-gray-700 dark:text-gray-300 mt-1 leading-relaxed">{f.a}</dd>
+                <dt className="font-medium text-fg">Q. {f.q}</dt>
+                <dd className="text-sm text-body mt-1 leading-relaxed">{f.a}</dd>
               </div>
             ))}
           </dl>

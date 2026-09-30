@@ -163,8 +163,8 @@ export default function DueDateCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -188,7 +188,7 @@ export default function DueDateCalculator() {
                   onChange={(e) => setCalcMethod(e.target.value as CalcMethod)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-gray-900 dark:text-white">{t('lmpMethod')}</span>
+                <span className="text-fg">{t('lmpMethod')}</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
@@ -199,13 +199,13 @@ export default function DueDateCalculator() {
                   onChange={(e) => setCalcMethod(e.target.value as CalcMethod)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-gray-900 dark:text-white">{t('ovulationMethod')}</span>
+                <span className="text-fg">{t('ovulationMethod')}</span>
               </label>
             </div>
 
             {/* Date Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {calcMethod === 'lmp' ? t('lmpDate') : t('ovulationDate')}
               </label>
               <input
@@ -228,7 +228,7 @@ export default function DueDateCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
               >
                 {t('reset')}
               </button>
@@ -240,7 +240,7 @@ export default function DueDateCalculator() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {!calculated || !results ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted">
                 <Baby className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <p>{t('description')}</p>
               </div>
@@ -255,7 +255,7 @@ export default function DueDateCalculator() {
                 <div className="grid md:grid-cols-2 gap-4">
                   {/* Due Date */}
                   <div className="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.dueDate')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.dueDate')}</div>
                     <div className="text-2xl font-bold text-pink-600 dark:text-pink-400">
                       {formatDate(results.dueDate)}
                     </div>
@@ -263,7 +263,7 @@ export default function DueDateCalculator() {
 
                   {/* Current Week */}
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.currentWeek')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.currentWeek')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       {t('result.weeksAndDays', { weeks: results.weeks, days: results.days })}
                     </div>
@@ -271,7 +271,7 @@ export default function DueDateCalculator() {
 
                   {/* Trimester */}
                   <div className="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.trimester')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.trimester')}</div>
                     <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                       {t(`result.trimester${results.trimester}` as Parameters<typeof t>[0])}
                     </div>
@@ -279,7 +279,7 @@ export default function DueDateCalculator() {
 
                   {/* Days Remaining/Elapsed */}
                   <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    <div className="text-sm text-sub mb-1">
                       {results.isPastDue ? t('result.daysElapsed') : t('result.daysRemaining')}
                     </div>
                     <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
@@ -295,11 +295,11 @@ export default function DueDateCalculator() {
 
                 {/* Progress Bar */}
                 <div>
-                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  <div className="flex justify-between text-sm text-sub mb-2">
                     <span>{t('result.progress')}</span>
                     <span>{results.progress.toFixed(1)}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-track rounded-full h-3 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full transition-all duration-500"
                       style={{ width: `${results.progress}%` }}
@@ -309,7 +309,7 @@ export default function DueDateCalculator() {
 
                 {/* Conception Date */}
                 <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4">
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.conceptionDate')}</div>
+                  <div className="text-sm text-sub mb-1">{t('result.conceptionDate')}</div>
                   <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
                     {formatDate(results.conceptionDate)}
                   </div>
@@ -352,7 +352,7 @@ export default function DueDateCalculator() {
                         ? 'bg-blue-600 text-white'
                         : isPast
                         ? 'bg-gray-400 text-white'
-                        : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                        : 'bg-gray-300 dark:bg-gray-700 text-sub'
                     }`}
                   >
                     <Baby className="w-5 h-5" />
@@ -361,12 +361,12 @@ export default function DueDateCalculator() {
                     <div className={`font-medium ${
                       isCurrent
                         ? 'text-blue-600 dark:text-blue-400'
-                        : 'text-gray-900 dark:text-white'
+                        : 'text-fg'
                     }`}>
                       {t(`milestones.${milestone.labelKey}` as Parameters<typeof t>[0])}
                     </div>
                     {milestoneDate && (
-                      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <div className="text-sm text-muted mt-1">
                         {formatDate(milestoneDate)}
                       </div>
                     )}
@@ -395,15 +395,15 @@ export default function DueDateCalculator() {
           <div className="flex flex-wrap gap-3 mb-4 text-xs">
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-3 h-3 rounded-sm bg-green-400" />
-              <span className="text-gray-600 dark:text-gray-400">{t('weeklyProgress.trimester1Label')}</span>
+              <span className="text-sub">{t('weeklyProgress.trimester1Label')}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-3 h-3 rounded-sm bg-blue-400" />
-              <span className="text-gray-600 dark:text-gray-400">{t('weeklyProgress.trimester2Label')}</span>
+              <span className="text-sub">{t('weeklyProgress.trimester2Label')}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-3 h-3 rounded-sm bg-purple-400" />
-              <span className="text-gray-600 dark:text-gray-400">{t('weeklyProgress.trimester3Label')}</span>
+              <span className="text-sub">{t('weeklyProgress.trimester3Label')}</span>
             </span>
           </div>
 
@@ -419,7 +419,7 @@ export default function DueDateCalculator() {
                 else if (week <= 27) colorClass = 'bg-blue-400'
                 else colorClass = 'bg-purple-400'
               } else {
-                colorClass = 'bg-gray-200 dark:bg-gray-700'
+                colorClass = 'bg-track'
               }
               return (
                 <div
@@ -433,7 +433,7 @@ export default function DueDateCalculator() {
           </div>
 
           {/* Week marker */}
-          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-0.5">
+          <div className="flex justify-between text-xs text-muted mt-1 px-0.5">
             <span>1주</span>
             <span>10주</span>
             <span>20주</span>
@@ -449,11 +449,11 @@ export default function DueDateCalculator() {
                 <span className="font-normal text-xs opacity-75">+ {results.days}일</span>
               )}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-muted">
               {t('weeklyProgress.outOf40')}
             </span>
             {babySizeWeek && results.weeks >= 4 && (
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('weeklyProgress.babyThisWeek')}
                 {' '}
                 <span className="font-medium">
@@ -473,7 +473,7 @@ export default function DueDateCalculator() {
             <Baby className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('babySize.title')}</h2>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('babySize.description')}</p>
+          <p className="text-sm text-muted mb-6">{t('babySize.description')}</p>
 
           {/* Highlight card for current week */}
           {(() => {
@@ -482,9 +482,9 @@ export default function DueDateCalculator() {
               <div className="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 rounded-xl p-6 mb-6 flex flex-col sm:flex-row items-center gap-6">
                 <div className="text-7xl leading-none">{data.emoji}</div>
                 <div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{results.weeks}주 아기</div>
+                  <div className="text-sm text-muted mb-1">{results.weeks}주 아기</div>
                   <div className="text-2xl font-bold text-pink-600 dark:text-pink-400 mb-2">{data.fruit} 크기</div>
-                  <div className="flex gap-4 text-sm text-gray-700 dark:text-gray-300">
+                  <div className="flex gap-4 text-sm text-body">
                     <span>📏 {t('babySize.lengthLabel')}: <strong>{data.length}</strong></span>
                     <span>⚖️ {t('babySize.weightLabel')}: <strong>{data.weight}</strong></span>
                   </div>
@@ -497,11 +497,11 @@ export default function DueDateCalculator() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left border-b border-gray-200 dark:border-gray-700">
-                  <th className="pb-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">주수</th>
-                  <th className="pb-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">크기</th>
-                  <th className="pb-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">길이</th>
-                  <th className="pb-2 text-gray-500 dark:text-gray-400 font-medium">몸무게</th>
+                <tr className="text-left border-b border-line">
+                  <th className="pb-2 pr-4 text-muted font-medium">주수</th>
+                  <th className="pb-2 pr-4 text-muted font-medium">크기</th>
+                  <th className="pb-2 pr-4 text-muted font-medium">길이</th>
+                  <th className="pb-2 text-muted font-medium">몸무게</th>
                 </tr>
               </thead>
               <tbody>
@@ -515,16 +515,16 @@ export default function DueDateCalculator() {
                         isCurrentRow ? 'bg-pink-50 dark:bg-pink-950/20 font-medium' : ''
                       }`}
                     >
-                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{w}주</td>
+                      <td className="py-2 pr-4 text-body">{w}주</td>
                       <td className="py-2 pr-4">
                         <span className="mr-1">{data.emoji}</span>
-                        <span className="text-gray-700 dark:text-gray-300">{data.fruit}</span>
+                        <span className="text-body">{data.fruit}</span>
                         {isCurrentRow && (
                           <span className="ml-2 text-xs px-1.5 py-0.5 bg-pink-200 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded-full">현재</span>
                         )}
                       </td>
-                      <td className="py-2 pr-4 text-gray-600 dark:text-gray-400">{data.length}</td>
-                      <td className="py-2 text-gray-600 dark:text-gray-400">{data.weight}</td>
+                      <td className="py-2 pr-4 text-sub">{data.length}</td>
+                      <td className="py-2 text-sub">{data.weight}</td>
                     </tr>
                   )
                 })}
@@ -541,11 +541,11 @@ export default function DueDateCalculator() {
             <Stethoscope className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('prenatalSchedule.title')}</h2>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('prenatalSchedule.subtitle')}</p>
+          <p className="text-sm text-muted mb-6">{t('prenatalSchedule.subtitle')}</p>
 
           <div className="relative">
             {/* Vertical line */}
-            <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+            <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-track" />
 
             <div className="space-y-4">
               {PRENATAL_VISITS.map((visit) => {
@@ -554,7 +554,7 @@ export default function DueDateCalculator() {
                 const isUpcoming = !isPast && !isCurrent
 
                 let dotClass = 'bg-gray-300 dark:bg-gray-600'
-                let labelClass = 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                let labelClass = 'bg-soft text-sub'
                 let labelText = t('prenatalSchedule.upcomingLabel')
                 if (isPast) {
                   dotClass = 'bg-green-500'
@@ -575,14 +575,14 @@ export default function DueDateCalculator() {
                     </div>
                     <div className={`flex-1 rounded-lg p-4 ${isCurrent ? 'bg-teal-50 dark:bg-teal-950/20 border-l-4 border-teal-500' : isPast ? 'bg-gray-50 dark:bg-gray-900/20 opacity-70' : 'bg-gray-50 dark:bg-gray-900/20'}`}>
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className={`font-semibold ${isCurrent ? 'text-teal-700 dark:text-teal-300' : 'text-gray-900 dark:text-white'}`}>
+                        <span className={`font-semibold ${isCurrent ? 'text-teal-700 dark:text-teal-300' : 'text-fg'}`}>
                           {visitData.title}
                         </span>
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${labelClass}`}>
                           {labelText}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{visitData.desc}</p>
+                      <p className="text-sm text-sub">{visitData.desc}</p>
                     </div>
                   </div>
                 )
@@ -599,12 +599,12 @@ export default function DueDateCalculator() {
             <Scale className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('weightGain.title')}</h2>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('weightGain.subtitle')}</p>
+          <p className="text-sm text-muted mb-6">{t('weightGain.subtitle')}</p>
 
           {/* Input row */}
           <div className="grid sm:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('weightGain.heightLabel')}
               </label>
               <input
@@ -618,7 +618,7 @@ export default function DueDateCalculator() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('weightGain.weightLabel')}
               </label>
               <input
@@ -634,7 +634,7 @@ export default function DueDateCalculator() {
           </div>
 
           {!bmiData ? (
-            <div className="text-center py-6 text-gray-400 dark:text-gray-500 text-sm">
+            <div className="text-center py-6 text-faint text-sm">
               {t('weightGain.enterHeightWeight')}
             </div>
           ) : (
@@ -642,17 +642,17 @@ export default function DueDateCalculator() {
               {/* BMI result cards */}
               <div className="grid sm:grid-cols-3 gap-4 mb-6">
                 <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-4 text-center">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('weightGain.bmiLabel')}</div>
+                  <div className="text-sm text-muted mb-1">{t('weightGain.bmiLabel')}</div>
                   <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{bmiData.bmi.toFixed(1)}</div>
                 </div>
                 <div className="bg-amber-50 dark:bg-amber-950/30 rounded-lg p-4 text-center">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('weightGain.categoryLabel')}</div>
+                  <div className="text-sm text-muted mb-1">{t('weightGain.categoryLabel')}</div>
                   <div className="text-base font-semibold text-amber-700 dark:text-amber-300">
                     {t(`weightGain.${bmiData.cat}` as Parameters<typeof t>[0])}
                   </div>
                 </div>
                 <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-lg p-4 text-center">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('weightGain.recommendedGainLabel')}</div>
+                  <div className="text-sm text-muted mb-1">{t('weightGain.recommendedGainLabel')}</div>
                   <div className="text-xl font-bold text-yellow-700 dark:text-yellow-300">
                     {t(`weightGain.${bmiData.cat}Range` as Parameters<typeof t>[0])}
                   </div>
@@ -662,14 +662,14 @@ export default function DueDateCalculator() {
               {/* Trimester breakdown */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
                 <div className="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-4">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('weightGain.trimester1GainLabel')}</div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                  <div className="text-sm text-muted mb-1">{t('weightGain.trimester1GainLabel')}</div>
+                  <div className="font-semibold text-body">
                     {t(`weightGain.${bmiData.cat}Trimester1` as Parameters<typeof t>[0])}
                   </div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-4">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('weightGain.trimester23GainLabel')}</div>
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                  <div className="text-sm text-muted mb-1">{t('weightGain.trimester23GainLabel')}</div>
+                  <div className="font-semibold text-body">
                     {t(`weightGain.${bmiData.cat}Weekly` as Parameters<typeof t>[0])}
                   </div>
                 </div>
@@ -679,10 +679,10 @@ export default function DueDateCalculator() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left border-b border-gray-200 dark:border-gray-700">
-                      <th className="pb-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">체중 분류</th>
-                      <th className="pb-2 pr-4 text-gray-500 dark:text-gray-400 font-medium">총 권장량</th>
-                      <th className="pb-2 text-gray-500 dark:text-gray-400 font-medium">주당 (2·3분기)</th>
+                    <tr className="text-left border-b border-line">
+                      <th className="pb-2 pr-4 text-muted font-medium">체중 분류</th>
+                      <th className="pb-2 pr-4 text-muted font-medium">총 권장량</th>
+                      <th className="pb-2 text-muted font-medium">주당 (2·3분기)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -691,12 +691,12 @@ export default function DueDateCalculator() {
                         key={cat}
                         className={`border-b border-gray-100 dark:border-gray-700/50 ${bmiData.cat === cat ? 'bg-orange-50 dark:bg-orange-950/20 font-semibold' : ''}`}
                       >
-                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                        <td className="py-2 pr-4 text-body">
                           {t(`weightGain.${cat}` as Parameters<typeof t>[0])}
                           {bmiData.cat === cat && <span className="ml-2 text-xs px-1.5 py-0.5 bg-orange-200 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded-full">나</span>}
                         </td>
-                        <td className="py-2 pr-4 text-gray-600 dark:text-gray-400">{t(`weightGain.${cat}Range` as Parameters<typeof t>[0])}</td>
-                        <td className="py-2 text-gray-600 dark:text-gray-400">{t(`weightGain.${cat}Weekly` as Parameters<typeof t>[0])}</td>
+                        <td className="py-2 pr-4 text-sub">{t(`weightGain.${cat}Range` as Parameters<typeof t>[0])}</td>
+                        <td className="py-2 text-sub">{t(`weightGain.${cat}Weekly` as Parameters<typeof t>[0])}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -705,7 +705,7 @@ export default function DueDateCalculator() {
             </>
           )}
 
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">{t('weightGain.disclaimer')}</p>
+          <p className="text-xs text-faint mt-4">{t('weightGain.disclaimer')}</p>
         </div>
       )}
 
@@ -719,12 +719,12 @@ export default function DueDateCalculator() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Calculation Method */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.calculation.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.calculation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -734,12 +734,12 @@ export default function DueDateCalculator() {
 
           {/* Tips */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

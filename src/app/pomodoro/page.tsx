@@ -88,7 +88,7 @@ export default function PomodoroPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PomodoroTimer />
@@ -103,17 +103,17 @@ export default function PomodoroPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             포모도로 타이머란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             포모도로 타이머는 이탈리아어로 '토마토'를 뜻하는 포모도로 기법에 기반한 생산성 시간 관리 도구입니다. 25분 집중 작업 후 5분 짧은 휴식, 4회 반복 후 15분 긴 휴식을 자동으로 안내합니다. 뇌가 집중력을 유지할 수 있는 최적의 주기를 활용하여 번아웃 없이 오랜 시간 작업 효율을 높일 수 있으며, 학생·직장인·프리랜서에게 널리 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             포모도로 기법 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>방해 요소 차단:</strong> 포모도로 세션 시작 전 휴대폰 알림을 끄고, 이메일·SNS 탭을 닫아 25분간 완전히 한 가지 작업에만 집중하세요.</li>
             <li><strong>작업 단위 분할:</strong> 큰 프로젝트는 포모도로 단위로 쪼개 계획하세요. '보고서 초안 작성 - 2 포모도로'처럼 구체적으로 정하면 완료감이 높아집니다.</li>
             <li><strong>휴식 시간 활용:</strong> 짧은 휴식 5분은 스트레칭, 물 마시기 등 몸을 움직이는 활동을 하세요. 화면을 계속 보면 뇌가 쉬지 못합니다.</li>

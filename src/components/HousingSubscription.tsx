@@ -132,12 +132,12 @@ function ScoreBar({ label, score, max, color }: { label: string; score: number; 
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
-        <span className="text-gray-700 dark:text-gray-300">{label}</span>
-        <span className="font-semibold text-gray-900 dark:text-white">
-          {score} <span className="text-gray-400 dark:text-gray-500 font-normal">/ {max}</span>
+        <span className="text-body">{label}</span>
+        <span className="font-semibold text-fg">
+          {score} <span className="text-faint font-normal">/ {max}</span>
         </span>
       </div>
-      <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-3 bg-soft rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${color}`}
           style={{ width: `${pct}%` }}
@@ -183,7 +183,7 @@ interface LabelProps {
 function FormRow({ label, tooltip, children }: LabelProps) {
   return (
     <div className="space-y-1">
-      <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label className="flex items-center text-sm font-medium text-body">
         {label}
         {tooltip && <Tooltip text={tooltip} />}
       </label>
@@ -313,7 +313,7 @@ export default function HousingSubscription() {
     `px-3 py-1 text-xs rounded-md font-medium transition-colors ${
       active
         ? 'bg-blue-600 text-white'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
     }`
 
   return (
@@ -321,13 +321,13 @@ export default function HousingSubscription() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={copyLink}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             title="링크 복사"
           >
             {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -335,7 +335,7 @@ export default function HousingSubscription() {
           </button>
           <button
             onClick={reset}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             aria-label={t('reset')}
           >
             <RotateCcw size={14} />
@@ -353,7 +353,7 @@ export default function HousingSubscription() {
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold">A</span>
-              <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionA')}</h2>
+              <h2 className="font-semibold text-fg text-sm">{t('sectionA')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxA')}</span>
             </div>
 
@@ -374,7 +374,7 @@ export default function HousingSubscription() {
                   <input type="number" value={homelessYearsDirect} min="0" max="30" step="0.5"
                     onChange={e => setHomelessYearsDirect(e.target.value)}
                     className={inputClass} placeholder="0" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('yearsUnit')}</span>
+                  <span className="text-sm text-muted whitespace-nowrap">{t('yearsUnit')}</span>
                 </div>
               </FormRow>
             )}
@@ -384,7 +384,7 @@ export default function HousingSubscription() {
                 onChange={e => setBirthDate(e.target.value)} className={inputClass} />
             </FormRow>
 
-            <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
               <input type="checkbox" checked={isMarried} onChange={e => setIsMarried(e.target.checked)}
                 className="accent-blue-600" />
               {t('marriedLabel')}
@@ -402,7 +402,7 @@ export default function HousingSubscription() {
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 text-xs font-bold">B</span>
-              <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionB')}</h2>
+              <h2 className="font-semibold text-fg text-sm">{t('sectionB')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxB')}</span>
             </div>
 
@@ -411,19 +411,19 @@ export default function HousingSubscription() {
                 <button
                   type="button"
                   onClick={() => setDependentCount(c => Math.max(0, c - 1))}
-                  className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-bold flex items-center justify-center"
                 >-</button>
-                <span className="text-xl font-bold text-gray-900 dark:text-white w-8 text-center">{dependentCount}</span>
+                <span className="text-xl font-bold text-fg w-8 text-center">{dependentCount}</span>
                 <button
                   type="button"
                   onClick={() => setDependentCount(c => Math.min(6, c + 1))}
-                  className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-bold flex items-center justify-center"
                 >+</button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('personUnit')}</span>
+                <span className="text-sm text-muted">{t('personUnit')}</span>
               </div>
             </FormRow>
 
-            <p className="text-xs text-gray-500 dark:text-gray-400">{t('dependentNote')}</p>
+            <p className="text-xs text-muted">{t('dependentNote')}</p>
 
             {/* Score preview for B */}
             <div className="flex justify-between items-center text-xs bg-emerald-50 dark:bg-emerald-950 rounded-lg px-3 py-2">
@@ -436,7 +436,7 @@ export default function HousingSubscription() {
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-bold">C</span>
-              <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionC')}</h2>
+              <h2 className="font-semibold text-fg text-sm">{t('sectionC')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxC')}</span>
             </div>
 
@@ -457,7 +457,7 @@ export default function HousingSubscription() {
                   <input type="number" value={subMonthsDirect} min="0" max="300" step="1"
                     onChange={e => setSubMonthsDirect(e.target.value)}
                     className={inputClass} placeholder="0" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('monthsUnit')}</span>
+                  <span className="text-sm text-muted whitespace-nowrap">{t('monthsUnit')}</span>
                 </div>
               </FormRow>
             )}
@@ -469,15 +469,15 @@ export default function HousingSubscription() {
 
           {/* Total score card */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">{t('resultTitle')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-6">{t('resultTitle')}</h2>
 
             <div className="flex flex-col sm:flex-row items-center gap-8">
               {/* Donut */}
               <div className="relative flex-shrink-0">
                 <DonutChart score={totalScore} max={84} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-extrabold text-gray-900 dark:text-white">{totalScore}</span>
-                  <span className="text-sm text-gray-400 dark:text-gray-500">{t('outOf84')}</span>
+                  <span className="text-3xl font-extrabold text-fg">{totalScore}</span>
+                  <span className="text-sm text-faint">{t('outOf84')}</span>
                 </div>
               </div>
 
@@ -487,8 +487,8 @@ export default function HousingSubscription() {
                 <ScoreBar label={`B. ${t('sectionB')}`} score={scoreB} max={35} color="bg-emerald-500" />
                 <ScoreBar label={`C. ${t('sectionC')}`} score={scoreC} max={17} color="bg-purple-500" />
 
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between items-center">
-                  <span className="font-semibold text-gray-900 dark:text-white">{t('totalLabel')}</span>
+                <div className="border-t border-line pt-3 flex justify-between items-center">
+                  <span className="font-semibold text-fg">{t('totalLabel')}</span>
                   <span className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">{totalScore}점</span>
                 </div>
               </div>
@@ -509,43 +509,43 @@ export default function HousingSubscription() {
 
           {/* Score detail table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{t('detailTableTitle')}</h3>
+            <h3 className="font-semibold text-fg mb-4">{t('detailTableTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">{t('tableCategory')}</th>
-                    <th className="text-center py-2 text-gray-500 dark:text-gray-400 font-medium">{t('tableMyValue')}</th>
-                    <th className="text-center py-2 text-gray-500 dark:text-gray-400 font-medium">{t('tableMyScore')}</th>
-                    <th className="text-center py-2 text-gray-500 dark:text-gray-400 font-medium">{t('tableMaxScore')}</th>
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 text-muted font-medium">{t('tableCategory')}</th>
+                    <th className="text-center py-2 text-muted font-medium">{t('tableMyValue')}</th>
+                    <th className="text-center py-2 text-muted font-medium">{t('tableMyScore')}</th>
+                    <th className="text-center py-2 text-muted font-medium">{t('tableMaxScore')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                   <tr>
-                    <td className="py-2 text-gray-700 dark:text-gray-300">{t('sectionA')}</td>
-                    <td className="py-2 text-center text-gray-900 dark:text-white">
+                    <td className="py-2 text-body">{t('sectionA')}</td>
+                    <td className="py-2 text-center text-fg">
                       {isUnder30Unmarried ? t('notApplicable') : `${homelessYears.toFixed(1)}${t('yearsUnit')}`}
                     </td>
                     <td className="py-2 text-center font-semibold text-blue-600 dark:text-blue-400">{scoreA}</td>
                     <td className="py-2 text-center text-gray-400">32</td>
                   </tr>
                   <tr>
-                    <td className="py-2 text-gray-700 dark:text-gray-300">{t('sectionB')}</td>
-                    <td className="py-2 text-center text-gray-900 dark:text-white">{dependentCount}{t('personUnit')}{dependentCount >= 6 ? ' 이상' : ''}</td>
+                    <td className="py-2 text-body">{t('sectionB')}</td>
+                    <td className="py-2 text-center text-fg">{dependentCount}{t('personUnit')}{dependentCount >= 6 ? ' 이상' : ''}</td>
                     <td className="py-2 text-center font-semibold text-emerald-600 dark:text-emerald-400">{scoreB}</td>
                     <td className="py-2 text-center text-gray-400">35</td>
                   </tr>
                   <tr>
-                    <td className="py-2 text-gray-700 dark:text-gray-300">{t('sectionC')}</td>
-                    <td className="py-2 text-center text-gray-900 dark:text-white">{subMonthsFinal}{t('monthsUnit')}</td>
+                    <td className="py-2 text-body">{t('sectionC')}</td>
+                    <td className="py-2 text-center text-fg">{subMonthsFinal}{t('monthsUnit')}</td>
                     <td className="py-2 text-center font-semibold text-purple-600 dark:text-purple-400">{scoreC}</td>
                     <td className="py-2 text-center text-gray-400">17</td>
                   </tr>
-                  <tr className="bg-gray-50 dark:bg-gray-700/50 font-semibold">
-                    <td className="py-2 text-gray-900 dark:text-white">{t('totalLabel')}</td>
+                  <tr className="bg-subtle font-semibold">
+                    <td className="py-2 text-fg">{t('totalLabel')}</td>
                     <td className="py-2"></td>
                     <td className="py-2 text-center text-blue-600 dark:text-blue-400 text-lg">{totalScore}</td>
-                    <td className="py-2 text-center text-gray-500 dark:text-gray-400">84</td>
+                    <td className="py-2 text-center text-muted">84</td>
                   </tr>
                 </tbody>
               </table>
@@ -560,7 +560,7 @@ export default function HousingSubscription() {
           onClick={() => setGuideOpen(o => !o)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('guideTitle')}</h2>
           {guideOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
         </button>
 
@@ -569,7 +569,7 @@ export default function HousingSubscription() {
             {/* A guide */}
             <div className="space-y-2">
               <h3 className="font-semibold text-blue-700 dark:text-blue-300 text-sm">{t('guideATitle')}</h3>
-              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideAItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-blue-400 flex-shrink-0">•</span>{item}</li>
                 ))}
@@ -579,7 +579,7 @@ export default function HousingSubscription() {
             {/* B guide */}
             <div className="space-y-2">
               <h3 className="font-semibold text-emerald-700 dark:text-emerald-300 text-sm">{t('guideBTitle')}</h3>
-              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideBItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-emerald-400 flex-shrink-0">•</span>{item}</li>
                 ))}
@@ -589,7 +589,7 @@ export default function HousingSubscription() {
             {/* C guide */}
             <div className="space-y-2">
               <h3 className="font-semibold text-purple-700 dark:text-purple-300 text-sm">{t('guideCTitle')}</h3>
-              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideCItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-purple-400 flex-shrink-0">•</span>{item}</li>
                 ))}
@@ -599,7 +599,7 @@ export default function HousingSubscription() {
             {/* Cautions */}
             <div className="space-y-2">
               <h3 className="font-semibold text-amber-700 dark:text-amber-300 text-sm">{t('guideCautionTitle')}</h3>
-              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideCautionItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-amber-400 flex-shrink-0">⚠</span>{item}</li>
                 ))}

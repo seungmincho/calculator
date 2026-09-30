@@ -147,7 +147,7 @@ const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
         indentOnInput: true,
         autocompletion: false,
       }}
-      className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600"
+      className="rounded-lg overflow-hidden border border-line"
     />
   )
 }

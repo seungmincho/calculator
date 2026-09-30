@@ -87,7 +87,7 @@ export default function RegexEnginePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <RegexEngineVisualizer />
@@ -98,20 +98,20 @@ export default function RegexEnginePage() {
         </div>
       </div>
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             정규표현식 엔진 시각화란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             정규표현식 엔진 시각화 도구는 regex 패턴이 문자열을 매칭하는 과정을 단계별로 보여주는 교육 도구입니다.
             패턴을 토큰 단위로 분해하여 각각의 의미를 한국어로 설명하고, 테스트 문자열의 각 위치에서
             매칭 시도 결과를 색상으로 표시합니다. 이메일, 전화번호, IP 주소 등 실무에서 자주 쓰는
             프리셋 패턴을 제공하며, 자동 재생 기능으로 매칭 과정을 애니메이션처럼 관찰할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             정규표현식 학습 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>기본 메타문자부터:</strong> . * + ? [] () 등 기본 메타문자의 의미를 먼저 익히세요. 이것만으로도 대부분의 패턴을 읽을 수 있습니다.</li>
             <li><strong>프리셋으로 시작:</strong> 이메일, 전화번호 등 익숙한 패턴의 정규표현식을 분석해보면 문법이 빠르게 이해됩니다.</li>
             <li><strong>단계별 관찰:</strong> 이 도구의 단계별 실행 기능을 활용하여 엔진이 각 문자를 어떻게 처리하는지 관찰하세요.</li>

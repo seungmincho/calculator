@@ -84,7 +84,7 @@ export default function SpeedTestPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SpeedTest />
@@ -99,17 +99,17 @@ export default function SpeedTestPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             인터넷 속도 측정기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             인터넷 속도 측정기는 현재 사용 중인 인터넷 연결의 다운로드 속도(Mbps)와 핑(지연 시간, ms)을 브라우저에서 바로 측정할 수 있는 무료 도구입니다. 별도 앱 설치 없이 1MB·10MB 테스트를 선택하여 최근 5회의 측정 기록을 비교할 수 있어, 인터넷 품질 이슈를 빠르게 확인하는 데 유용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             인터넷 속도 측정 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>여러 번 측정 후 평균:</strong> 브라우저 기반 측정은 네트워크 상태에 따라 편차가 있을 수 있으므로, 3회 이상 측정해 평균값을 참고하세요.</li>
             <li><strong>Mbps와 MB/s 구분:</strong> 인터넷 속도는 Mbps(메가비트)로 표시되며, 파일 다운로드 속도(MB/s)의 약 8배입니다. 100Mbps = 약 12.5MB/s입니다.</li>
             <li><strong>핑 수치 이해:</strong> 핑 20ms 이하는 온라인 게임에 적합, 100ms 이상이면 게임·화상통화 품질이 저하될 수 있으니 인터넷 제공사에 문의하세요.</li>

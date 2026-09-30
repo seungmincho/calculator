@@ -421,10 +421,10 @@ export default function BudgetCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -435,14 +435,14 @@ export default function BudgetCalculator() {
         <div className="lg:col-span-1 space-y-6">
           {/* Income Section */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Wallet className="w-5 h-5 text-blue-500" />
               {t('income.title')}
             </h2>
             <div className="space-y-4">
               {(['salary', 'sideIncome', 'otherIncome'] as const).map((field) => (
                 <div key={field}>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t(`income.${field}`)}
                   </label>
                   <div className="relative">
@@ -454,15 +454,15 @@ export default function BudgetCalculator() {
                       placeholder="0"
                       className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm pointer-events-none">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm pointer-events-none">
                       {t('currency')}
                     </span>
                   </div>
                 </div>
               ))}
-              <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="pt-3 border-t border-line">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-body">
                     {t('summary.totalIncome')}
                   </span>
                   <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
@@ -478,14 +478,14 @@ export default function BudgetCalculator() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={handleReset}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('actions.reset')}
               </button>
               <button
                 onClick={handleShareSummary}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 {copiedId === 'share' ? (
                   <Check className="w-4 h-4 text-green-500" />
@@ -496,7 +496,7 @@ export default function BudgetCalculator() {
               </button>
               <button
                 onClick={handleCopyLink}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 {copiedId === 'link' ? (
                   <Check className="w-4 h-4 text-green-500" />
@@ -528,17 +528,17 @@ export default function BudgetCalculator() {
             {/* Preset List */}
             {presets.length > 0 && (
               <div className="mt-3 space-y-2">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-medium text-muted">
                   {t('preset.saved')}
                 </p>
                 {presets.map((preset) => (
                   <div
                     key={preset.id}
-                    className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                    className="flex items-center justify-between px-3 py-2 bg-subtle rounded-lg"
                   >
                     <button
                       onClick={() => handleLoadPreset(preset)}
-                      className="flex-1 text-left text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="flex-1 text-left text-sm text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     >
                       <span className="font-medium">{preset.name}</span>
                       <span className="text-xs text-gray-400 ml-2">{preset.date}</span>
@@ -560,7 +560,7 @@ export default function BudgetCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Expense Categories */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('expenses.title')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -575,13 +575,13 @@ export default function BudgetCalculator() {
                     className={`p-4 rounded-lg border transition-colors ${
                       isOverAvg
                         ? 'border-amber-300 dark:border-amber-600 bg-amber-50 dark:bg-amber-950/30'
-                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50'
+                        : 'border-line bg-subtle'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{expense.icon}</span>
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        <span className="text-sm font-medium text-fg">
                           {t(`categories.${expense.labelKey}`)}
                         </span>
                         <span
@@ -610,7 +610,7 @@ export default function BudgetCalculator() {
                         placeholder="0"
                         className={`w-full px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-xs pointer-events-none">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-xs pointer-events-none">
                         {t('currency')}
                       </span>
                     </div>
@@ -634,7 +634,7 @@ export default function BudgetCalculator() {
                           onClick={() =>
                             handleExpenseSlider(expense.id, expense.amount + amt)
                           }
-                          className="px-2 py-0.5 text-[10px] bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 rounded transition-colors"
+                          className="px-2 py-0.5 text-[10px] bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body rounded transition-colors"
                         >
                           +{amt >= 1000000 ? `${amt / 10000}${t('manWon')}` : `${formatWon(amt)}`}
                         </button>
@@ -643,7 +643,7 @@ export default function BudgetCalculator() {
 
                     {/* Korean average comparison */}
                     {totalIncome > 0 && (
-                      <div className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+                      <div className="mt-2 text-[11px] text-muted">
                         {t('expenses.average')}: {formatWon(avgAmount)}{t('currency')} ({avgPercent}%)
                       </div>
                     )}
@@ -657,7 +657,7 @@ export default function BudgetCalculator() {
           <div className="grid sm:grid-cols-2 gap-6">
             {/* Donut Chart */}
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-base font-semibold text-fg mb-4">
                 {t('chart.title')}
               </h3>
               {categoryBreakdown.length > 0 ? (
@@ -670,11 +670,11 @@ export default function BudgetCalculator() {
                       style={{ background: 'conic-gradient(#e5e7eb 0deg 360deg)' }}
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-28 h-28 rounded-full bg-white dark:bg-gray-800 flex flex-col items-center justify-center">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="w-28 h-28 rounded-full bg-surface flex flex-col items-center justify-center">
+                        <span className="text-xs text-muted">
                           {t('chart.total')}
                         </span>
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">0</span>
+                        <span className="text-sm font-bold text-fg">0</span>
                         <span className="text-[10px] text-gray-400">{t('currency')}</span>
                       </div>
                     </div>
@@ -690,11 +690,11 @@ export default function BudgetCalculator() {
                         className="w-3 h-3 rounded-sm flex-shrink-0"
                         style={{ backgroundColor: item.color }}
                       />
-                      <span className="text-gray-700 dark:text-gray-300">
+                      <span className="text-body">
                         {item.icon} {t(`categories.${item.labelKey}`)}
                       </span>
                     </div>
-                    <span className="text-gray-900 dark:text-white font-medium">
+                    <span className="text-fg font-medium">
                       {item.percent.toFixed(1)}%
                     </span>
                   </div>
@@ -706,12 +706,12 @@ export default function BudgetCalculator() {
             <div className="space-y-6">
               {/* Summary Card */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-base font-semibold text-fg mb-4">
                   {t('summary.title')}
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
+                    <span className="text-sm text-sub flex items-center gap-1.5">
                       <TrendingUp className="w-4 h-4 text-blue-500" />
                       {t('summary.totalIncome')}
                     </span>
@@ -720,7 +720,7 @@ export default function BudgetCalculator() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
+                    <span className="text-sm text-sub flex items-center gap-1.5">
                       <TrendingDown className="w-4 h-4 text-red-500" />
                       {t('summary.totalExpenses')}
                     </span>
@@ -728,9 +728,9 @@ export default function BudgetCalculator() {
                       {formatWon(totalExpenses)}{t('currency')}
                     </span>
                   </div>
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+                  <div className="border-t border-line pt-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-body">
                         {t('summary.remaining')}
                       </span>
                       <span
@@ -757,7 +757,7 @@ export default function BudgetCalculator() {
 
                   {/* Progress bar: expense / income */}
                   <div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-muted mb-1">
                       <span>{t('summary.usageRate')}</span>
                       <span>
                         {totalIncome > 0
@@ -766,7 +766,7 @@ export default function BudgetCalculator() {
                         %
                       </span>
                     </div>
-                    <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-track rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-300 ${
                           totalExpenses > totalIncome
@@ -787,7 +787,7 @@ export default function BudgetCalculator() {
 
                   {/* Savings Rate */}
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
+                    <span className="text-sm text-sub flex items-center gap-1.5">
                       <PiggyBank className="w-4 h-4 text-green-500" />
                       {t('summary.savingsRate')}
                     </span>
@@ -808,21 +808,21 @@ export default function BudgetCalculator() {
 
               {/* Category Bars */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-base font-semibold text-fg mb-3">
                   {t('chart.categoryBars')}
                 </h3>
                 <div className="space-y-2">
                   {categoryBreakdown.map((item) => (
                     <div key={item.id}>
                       <div className="flex justify-between text-xs mb-0.5">
-                        <span className="text-gray-700 dark:text-gray-300">
+                        <span className="text-body">
                           {item.icon} {t(`categories.${item.labelKey}`)}
                         </span>
-                        <span className="text-gray-500 dark:text-gray-400">
+                        <span className="text-muted">
                           {formatWon(item.amount)}{t('currency')} ({item.incomePercent.toFixed(1)}%)
                         </span>
                       </div>
-                      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-track rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all duration-300"
                           style={{
@@ -834,7 +834,7 @@ export default function BudgetCalculator() {
                     </div>
                   ))}
                   {categoryBreakdown.length === 0 && (
-                    <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
+                    <p className="text-sm text-faint text-center py-4">
                       {t('chart.noData')}
                     </p>
                   )}
@@ -845,10 +845,10 @@ export default function BudgetCalculator() {
 
           {/* 50/30/20 Rule */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-base font-semibold text-fg mb-2">
               {t('rule.title')}
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-xs text-muted mb-4">
               {t('rule.description')}
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
@@ -942,11 +942,11 @@ export default function BudgetCalculator() {
 
             {/* Recommendations */}
             {totalIncome > 0 && (
-              <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mt-4 p-4 bg-subtle rounded-lg">
+                <h4 className="text-sm font-medium text-fg mb-2">
                   {t('rule.recommendations')}
                 </h4>
-                <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-400">
+                <ul className="space-y-1.5 text-xs text-sub">
                   {rule503020.needs.percent > 55 && (
                     <li className="flex items-start gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0" />
@@ -993,7 +993,7 @@ export default function BudgetCalculator() {
           className="flex items-center gap-2 w-full text-left"
         >
           <BookOpen className="w-5 h-5 text-blue-500" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex-1">
+          <h2 className="text-xl font-semibold text-fg flex-1">
             {t('guide.title')}
           </h2>
           <svg
@@ -1009,10 +1009,10 @@ export default function BudgetCalculator() {
           <div className="mt-6 space-y-6">
             {/* How to use */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-base font-semibold text-fg mb-2">
                 {t('guide.usage.title')}
               </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
@@ -1021,10 +1021,10 @@ export default function BudgetCalculator() {
 
             {/* 50/30/20 Guide */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-base font-semibold text-fg mb-2">
                 {t('guide.rule.title')}
               </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
                 {(t.raw('guide.rule.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
@@ -1033,10 +1033,10 @@ export default function BudgetCalculator() {
 
             {/* Tips */}
             <div>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-base font-semibold text-fg mb-2">
                 {t('guide.tips.title')}
               </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}

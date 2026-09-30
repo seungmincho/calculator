@@ -92,7 +92,7 @@ export default function HttpStatusPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <HttpStatus />
@@ -105,17 +105,17 @@ export default function HttpStatusPage() {
 
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             HTTP 상태코드란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             HTTP 상태코드(HTTP Status Code)는 웹 서버가 클라이언트(브라우저, 앱 등)의 요청에 응답할 때 반환하는 3자리 숫자 코드입니다. 첫 번째 자리가 응답의 종류를 나타냅니다: 1xx(정보), 2xx(성공), 3xx(리다이렉트), 4xx(클라이언트 오류), 5xx(서버 오류). 웹 개발, REST API 설계, SEO 최적화, 서버 운영 모두에서 필수적인 개념입니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             HTTP 상태코드 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>REST API 설계:</strong> 성공 응답은 200(GET), 201(POST 생성 성공), 204(DELETE 성공)로 구분하고, 클라이언트 오류는 400(잘못된 요청), 401(인증 필요), 403(권한 없음), 404(없음)를 정확히 구분하세요.</li>
             <li><strong>SEO 최적화:</strong> 이동한 페이지는 301을 사용해 검색 엔진에 영구 이동을 알리세요. 302는 일시적 이동으로 Link Equity가 전달되지 않습니다.</li>
             <li><strong>오류 모니터링:</strong> 5xx 에러는 서버 장애를 의미하므로 Sentry, Datadog 등으로 실시간 알림을 설정하고 즉시 대응하세요.</li>

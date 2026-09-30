@@ -81,7 +81,7 @@ export default function BackgroundRemoverPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <BackgroundRemover />
@@ -96,17 +96,17 @@ export default function BackgroundRemoverPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             이미지 배경 제거 도구란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             이미지 배경 제거 도구는 색상 기반 크로마키 방식으로 이미지의 배경색을 투명하게 만들어 PNG 파일로 저장하는 무료 온라인 누끼 따기 도구입니다. 클릭 한 번으로 배경색을 선택하고 허용 오차와 엣지 소프트닝을 조절해 정밀하게 배경을 제거할 수 있으며, 모든 처리가 브라우저에서 로컬로 이루어져 이미지가 서버에 업로드되지 않습니다. 증명사진 배경 제거, 상품 사진 편집, 디자인 작업에 유용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             배경 제거 도구 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>단색 배경에 최적:</strong> 흰 배경, 녹색 스튜디오 배경, 파란 배경처럼 균일한 단색 배경에서 가장 깔끔한 결과를 얻을 수 있습니다.</li>
             <li><strong>허용 오차 조절:</strong> 배경이 너무 많이 남으면 허용 오차를 높이고, 피사체 색상까지 투명해지면 허용 오차를 낮춰 세밀하게 조정하세요.</li>
             <li><strong>여러 번 클릭:</strong> 배경에 다양한 색조가 있다면 각 영역을 순서대로 클릭하여 단계적으로 배경을 제거할 수 있습니다.</li>

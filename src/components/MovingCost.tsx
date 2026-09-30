@@ -373,10 +373,10 @@ export default function MovingCost() {
     if (min === 0 && max === 0) return null
     return (
       <div className={`flex justify-between items-center py-2 ${highlight ? 'font-bold text-lg' : 'text-sm'}`}>
-        <span className={highlight ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}>
+        <span className={highlight ? 'text-fg' : 'text-sub'}>
           {label}
         </span>
-        <span className={highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}>
+        <span className={highlight ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}>
           {formatWon(min)}~{formatWon(max)}{t('manwon')}
         </span>
       </div>
@@ -388,13 +388,13 @@ export default function MovingCost() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Truck className="w-7 h-7" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
           {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
         </button>
       </div>
@@ -406,7 +406,7 @@ export default function MovingCost() {
 
           {/* 1. Home Size */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Home className="w-5 h-5" />
               {t('sizeLabel')}
             </h2>
@@ -420,7 +420,7 @@ export default function MovingCost() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     sizeUnit === 'pyeong' && sizeValue === String(preset.pyeong)
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t(`sizePresets.${preset.label}`)}
@@ -431,7 +431,7 @@ export default function MovingCost() {
             {/* Custom input */}
             <div className="flex gap-3 items-end">
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('customSize')}
                 </label>
                 <input
@@ -448,7 +448,7 @@ export default function MovingCost() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     sizeUnit === 'pyeong'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft text-body'
                   }`}
                 >
                   {t('pyeong')}
@@ -458,7 +458,7 @@ export default function MovingCost() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     sizeUnit === 'sqm'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft text-body'
                   }`}
                 >
                   {t('sqm')}
@@ -466,7 +466,7 @@ export default function MovingCost() {
               </div>
             </div>
             {sizeUnit === 'sqm' && pyeongValue > 0 && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted">
                 = {pyeongValue.toFixed(1)}{t('pyeong')}
               </p>
             )}
@@ -474,7 +474,7 @@ export default function MovingCost() {
 
           {/* 2. Moving Type */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Truck className="w-5 h-5" />
               {t('movingTypeLabel')}
             </h2>
@@ -486,13 +486,13 @@ export default function MovingCost() {
                   className={`p-4 rounded-xl border-2 text-left transition-colors ${
                     movingType === type
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
-                  <div className={`font-semibold text-sm ${movingType === type ? 'text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-white'}`}>
+                  <div className={`font-semibold text-sm ${movingType === type ? 'text-blue-700 dark:text-blue-300' : 'text-fg'}`}>
                     {t(`movingTypes.${type}`)}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <div className="text-xs text-muted mt-1">
                     {t(`movingTypeDesc.${type}`)}
                   </div>
                 </button>
@@ -502,7 +502,7 @@ export default function MovingCost() {
 
           {/* 3. Distance */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               {t('distanceLabel')}
             </h2>
@@ -514,7 +514,7 @@ export default function MovingCost() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     distanceType === type
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t(`distances.${type}`)}
@@ -530,21 +530,21 @@ export default function MovingCost() {
                   min="0"
                   className={`${glassInput} w-32 px-3 py-2`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400">km</span>
+                <span className="text-sm text-muted">km</span>
               </div>
             )}
           </div>
 
           {/* 4. Floor Info */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Building2 className="w-5 h-5" />
               {t('floorLabel')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {/* Current Floor */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('currentFloor')}</h3>
+                <h3 className="text-sm font-semibold text-body">{t('currentFloor')}</h3>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
@@ -554,7 +554,7 @@ export default function MovingCost() {
                     max="50"
                     className={`${glassInput} w-20 px-3 py-2`}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('floor')}</span>
+                  <span className="text-sm text-muted">{t('floor')}</span>
                 </div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -563,12 +563,12 @@ export default function MovingCost() {
                     onChange={(e) => setCurrentFloor(prev => ({ ...prev, hasElevator: e.target.checked }))}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('hasElevator')}</span>
+                  <span className="text-sm text-body">{t('hasElevator')}</span>
                 </label>
               </div>
               {/* New Floor */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('newFloor')}</h3>
+                <h3 className="text-sm font-semibold text-body">{t('newFloor')}</h3>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
@@ -578,7 +578,7 @@ export default function MovingCost() {
                     max="50"
                     className={`${glassInput} w-20 px-3 py-2`}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('floor')}</span>
+                  <span className="text-sm text-muted">{t('floor')}</span>
                 </div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -587,32 +587,32 @@ export default function MovingCost() {
                     onChange={(e) => setNewFloor(prev => ({ ...prev, hasElevator: e.target.checked }))}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('hasElevator')}</span>
+                  <span className="text-sm text-body">{t('hasElevator')}</span>
                 </label>
               </div>
             </div>
             {/* Ladder Truck */}
-            <label className="flex items-center gap-2 cursor-pointer pt-2 border-t border-gray-200 dark:border-gray-700">
+            <label className="flex items-center gap-2 cursor-pointer pt-2 border-t border-line">
               <input
                 type="checkbox"
                 checked={needLadderTruck}
                 onChange={(e) => setNeedLadderTruck(e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">{t('ladderTruck')}</span>
+              <span className="text-sm text-body">{t('ladderTruck')}</span>
             </label>
           </div>
 
           {/* 5. Extra Services */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Wrench className="w-5 h-5" />
               {t('extrasLabel')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {/* AC Units */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('extras.acUnits')}
                 </label>
                 <input
@@ -626,7 +626,7 @@ export default function MovingCost() {
               </div>
               {/* Piano */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('extras.piano')}
                 </label>
                 <select
@@ -641,7 +641,7 @@ export default function MovingCost() {
               </div>
               {/* Large Appliances */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('extras.largeAppliances')}
                 </label>
                 <input
@@ -655,7 +655,7 @@ export default function MovingCost() {
               </div>
               {/* Storage Days */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('extras.storageDays')}
                 </label>
                 <input
@@ -668,7 +668,7 @@ export default function MovingCost() {
               </div>
             </div>
             {/* Toggle services */}
-            <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="space-y-2 pt-2 border-t border-line">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -676,7 +676,7 @@ export default function MovingCost() {
                   onChange={(e) => setExtras(prev => ({ ...prev, organizationService: e.target.checked }))}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('extras.organization')}</span>
+                <span className="text-sm text-body">{t('extras.organization')}</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -685,14 +685,14 @@ export default function MovingCost() {
                   onChange={(e) => setExtras(prev => ({ ...prev, cleaningService: e.target.checked }))}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('extras.cleaning')}</span>
+                <span className="text-sm text-body">{t('extras.cleaning')}</span>
               </label>
             </div>
           </div>
 
           {/* 6. Moving Date */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('dateLabel')}
             </h2>
@@ -727,7 +727,7 @@ export default function MovingCost() {
               </div>
             )}
             {dateInfo && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted">
                 {dateInfo.peak && t('peakSeasonNote')}
                 {dateInfo.weekend && !dateInfo.peak && t('weekendNote')}
               </p>
@@ -738,7 +738,7 @@ export default function MovingCost() {
           <div className="flex justify-end">
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+              className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -749,7 +749,7 @@ export default function MovingCost() {
         {/* Right: Result Panel */}
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 sticky top-24`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2 mb-4">
               <Calculator className="w-5 h-5" />
               {t('result.title')}
             </h2>
@@ -781,26 +781,26 @@ export default function MovingCost() {
                   {renderCostRow(t('result.weekend'), costBreakdown.weekend.min, costBreakdown.weekend.max)}
                 </div>
 
-                <div className="pt-3 border-t-2 border-gray-200 dark:border-gray-600">
+                <div className="pt-3 border-t-2 border-line">
                   {renderCostRow(t('result.total'), costBreakdown.total.min, costBreakdown.total.max, true)}
                 </div>
 
                 {/* Copy button */}
                 <button
                   onClick={() => copyToClipboard(costSummaryText, 'summary')}
-                  className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm font-medium transition-colors mt-2"
+                  className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm font-medium transition-colors mt-2"
                 >
                   {copiedId === 'summary' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {copiedId === 'summary' ? t('copied') : t('copyResult')}
                 </button>
 
                 {/* Disclaimer */}
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 leading-relaxed">
+                <p className="text-xs text-faint mt-3 leading-relaxed">
                   {t('disclaimer')}
                 </p>
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
+              <div className="text-center py-8 text-muted text-sm">
                 {t('result.empty')}
               </div>
             )}
@@ -812,20 +812,20 @@ export default function MovingCost() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowChecklist(!showChecklist)}
-          className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+          className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <CheckSquare className="w-5 h-5" />
             {t('checklist.title')}
           </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted">
             {checkedItems.size}/{checklistItems.length}
           </span>
         </button>
         {showChecklist && (
           <div className="mt-4 space-y-2">
             {/* Progress bar */}
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+            <div className="w-full bg-track rounded-full h-2 mb-4">
               <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(checkedItems.size / checklistItems.length) * 100}%` }}
@@ -840,9 +840,9 @@ export default function MovingCost() {
                 {checkedItems.has(index) ? (
                   <CheckSquare className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                 ) : (
-                  <Square className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5" />
+                  <Square className="w-5 h-5 text-faint flex-shrink-0 mt-0.5" />
                 )}
-                <span className={`text-sm ${checkedItems.has(index) ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                <span className={`text-sm ${checkedItems.has(index) ? 'line-through text-faint' : 'text-body'}`}>
                   {item}
                 </span>
               </button>
@@ -853,19 +853,19 @@ export default function MovingCost() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Price Reference */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.priceRef.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.priceRef.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">&#8226;</span>
                   <span>{item}</span>
                 </li>
@@ -874,12 +874,12 @@ export default function MovingCost() {
           </div>
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sm text-body">
                   <span className="text-green-600 dark:text-green-400 mt-0.5">&#8226;</span>
                   <span>{item}</span>
                 </li>

@@ -695,8 +695,8 @@ export default function PacMan() {
   return (
     <div className="space-y-4">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Score bar */}
@@ -755,22 +755,22 @@ export default function PacMan() {
       />
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('guide.title')}</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('guide.rules.title')}</h3>
+            <h3 className="text-sm font-semibold text-body mb-2">{t('guide.rules.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.rules.items') as string[]).map((item: string, i: number) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-yellow-500 mt-0.5">•</span>{item}
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">점수 시스템</h3>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+            <h3 className="text-sm font-semibold text-body mb-2">점수 시스템</h3>
+            <ul className="space-y-1 text-sm text-sub">
               <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>일반 점(·): 10점</li>
               <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>파워 펠릿: 50점</li>
               <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>유령 먹기: 200 → 400 → 800 → 1600점</li>

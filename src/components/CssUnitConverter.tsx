@@ -151,8 +151,8 @@ export default function CssUnitConverter() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main grid */}
@@ -162,7 +162,7 @@ export default function CssUnitConverter() {
           {/* Input card */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('inputLabel')}
               </label>
               <input
@@ -176,7 +176,7 @@ export default function CssUnitConverter() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('unitLabel')}
               </label>
               <div className="grid grid-cols-5 gap-1.5">
@@ -187,7 +187,7 @@ export default function CssUnitConverter() {
                     className={`py-2 rounded-lg text-sm font-bold transition-all ${
                       selectedUnit === unit
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md scale-105'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                     aria-pressed={selectedUnit === unit}
                   >
@@ -200,10 +200,10 @@ export default function CssUnitConverter() {
 
           {/* Settings card */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('settingsTitle')}</h2>
+            <h2 className="text-base font-semibold text-fg">{t('settingsTitle')}</h2>
 
             <div>
-              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('rootFontSize')}</label>
+              <label className="block text-xs text-muted mb-1">{t('rootFontSize')}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -214,12 +214,12 @@ export default function CssUnitConverter() {
                   className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('rootFontSize')}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
+                <span className="text-sm text-muted whitespace-nowrap">px</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('parentFontSize')}</label>
+              <label className="block text-xs text-muted mb-1">{t('parentFontSize')}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -230,12 +230,12 @@ export default function CssUnitConverter() {
                   className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('parentFontSize')}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
+                <span className="text-sm text-muted whitespace-nowrap">px</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('viewportWidth')}</label>
+              <label className="block text-xs text-muted mb-1">{t('viewportWidth')}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -246,12 +246,12 @@ export default function CssUnitConverter() {
                   className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('viewportWidth')}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
+                <span className="text-sm text-muted whitespace-nowrap">px</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('viewportHeight')}</label>
+              <label className="block text-xs text-muted mb-1">{t('viewportHeight')}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -262,7 +262,7 @@ export default function CssUnitConverter() {
                   className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('viewportHeight')}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
+                <span className="text-sm text-muted whitespace-nowrap">px</span>
               </div>
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function CssUnitConverter() {
         {/* Right: Results */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('resultsTitle')}</h2>
+            <h2 className="text-base font-semibold text-fg mb-4">{t('resultsTitle')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {conversions.map(({ unit, value, formatted }) => {
                 const isActive = unit === selectedUnit
@@ -285,7 +285,7 @@ export default function CssUnitConverter() {
                     className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                       isActive
                         ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-950'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                        : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -293,16 +293,16 @@ export default function CssUnitConverter() {
                         {unit}
                       </span>
                       <div className="min-w-0">
-                        <div className="font-mono font-semibold text-gray-900 dark:text-white text-base truncate">
+                        <div className="font-mono font-semibold text-fg text-base truncate">
                           {formatted}
-                          <span className="text-gray-400 dark:text-gray-500 text-sm ml-0.5">{unit}</span>
+                          <span className="text-faint text-sm ml-0.5">{unit}</span>
                         </div>
-                        <div className="text-xs text-gray-400 dark:text-gray-500">{UNIT_LABELS[unit]}</div>
+                        <div className="text-xs text-faint">{UNIT_LABELS[unit]}</div>
                       </div>
                     </div>
                     <button
                       onClick={() => copyToClipboard(displayText, copyId)}
-                      className="ml-2 shrink-0 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                      className="ml-2 shrink-0 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-faint hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                       aria-label={isCopied ? t('copySuccess') : t('copy')}
                       title={isCopied ? t('copySuccess') : t('copy')}
                     >
@@ -321,14 +321,14 @@ export default function CssUnitConverter() {
 
       {/* Quick Reference Table */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{t('quickRefTitle')}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('quickRefDesc')}</p>
+        <h2 className="text-xl font-semibold text-fg mb-2">{t('quickRefTitle')}</h2>
+        <p className="text-sm text-muted mb-4">{t('quickRefDesc')}</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
+              <tr className="border-b border-line">
                 {quickRefHeaders.map((header, i) => (
-                  <th key={i} className="text-left py-2 px-3 font-semibold text-gray-700 dark:text-gray-300">
+                  <th key={i} className="text-left py-2 px-3 font-semibold text-body">
                     {header}
                   </th>
                 ))}
@@ -336,9 +336,9 @@ export default function CssUnitConverter() {
             </thead>
             <tbody>
               {quickRefRows.map((row, i) => (
-                <tr key={i} className={`border-b border-gray-100 dark:border-gray-700 ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-750' : ''}`}>
+                <tr key={i} className={`border-b border-line ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-750' : ''}`}>
                   {row.map((cell, j) => (
-                    <td key={j} className={`py-2.5 px-3 ${j === 0 ? 'font-semibold text-blue-600 dark:text-blue-400 font-mono' : j === 1 ? 'text-gray-600 dark:text-gray-400' : 'font-mono text-gray-700 dark:text-gray-300'}`}>
+                    <td key={j} className={`py-2.5 px-3 ${j === 0 ? 'font-semibold text-blue-600 dark:text-blue-400 font-mono' : j === 1 ? 'text-sub' : 'font-mono text-body'}`}>
                       {cell}
                     </td>
                   ))}
@@ -358,7 +358,7 @@ export default function CssUnitConverter() {
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>
+            <h2 className="text-xl font-semibold text-fg">{t('guideTitle')}</h2>
           </div>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
         </button>

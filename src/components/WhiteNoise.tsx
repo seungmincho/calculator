@@ -213,11 +213,11 @@ export default function WhiteNoise() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Moon className="w-6 h-6 text-indigo-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main control */}
@@ -248,7 +248,7 @@ export default function WhiteNoise() {
 
         {/* Noise type selector */}
         <div className="mb-6">
-          <label className="text-xs text-gray-500 dark:text-gray-400 block mb-2">{t('noiseType')}</label>
+          <label className="text-xs text-muted block mb-2">{t('noiseType')}</label>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {NOISE_TYPES.map(type => (
               <button
@@ -257,7 +257,7 @@ export default function WhiteNoise() {
                 className={`py-3 px-2 rounded-xl text-center transition-colors ${
                   noiseType === type
                     ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-300 dark:ring-indigo-600'
-                    : 'bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                    : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                 }`}
               >
                 <span className="text-xl block">{NOISE_ICONS[type]}</span>
@@ -270,11 +270,11 @@ export default function WhiteNoise() {
         {/* Volume */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
-            <label className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+            <label className="text-xs text-muted flex items-center gap-1">
               <Volume2 className="w-3 h-3" />
               {t('volume')}
             </label>
-            <span className="text-xs text-gray-500 dark:text-gray-400">{volume}%</span>
+            <span className="text-xs text-muted">{volume}%</span>
           </div>
           <input
             type="range"
@@ -282,13 +282,13 @@ export default function WhiteNoise() {
             max={100}
             value={volume}
             onChange={e => setVolume(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            className="w-full h-2 bg-track rounded-lg appearance-none cursor-pointer accent-indigo-600"
           />
         </div>
 
         {/* Sleep timer */}
         <div>
-          <label className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-2">
+          <label className="text-xs text-muted flex items-center gap-1 mb-2">
             <Timer className="w-3 h-3" />
             {t('sleepTimer')}
           </label>
@@ -300,7 +300,7 @@ export default function WhiteNoise() {
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                   timerMinutes === min
                     ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {min === 0 ? t('timerOff') : `${min}${t('timerMin')}`}
@@ -312,14 +312,14 @@ export default function WhiteNoise() {
 
       {/* Noise descriptions */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('aboutNoise')}</h3>
+        <h3 className="text-sm font-semibold text-fg mb-3">{t('aboutNoise')}</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {NOISE_TYPES.map(type => (
             <div key={type} className="flex items-start gap-2 p-2">
               <span className="text-lg">{NOISE_ICONS[type]}</span>
               <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{t(`types.${type}`)}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t(`typeDesc.${type}`)}</p>
+                <p className="text-sm font-medium text-fg">{t(`types.${type}`)}</p>
+                <p className="text-xs text-muted">{t(`typeDesc.${type}`)}</p>
               </div>
             </div>
           ))}
@@ -333,16 +333,16 @@ export default function WhiteNoise() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.benefits.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.benefits.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.benefits.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -350,7 +350,7 @@ export default function WhiteNoise() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

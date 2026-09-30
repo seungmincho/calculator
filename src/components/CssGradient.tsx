@@ -362,10 +362,10 @@ export default function CssGradient() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -373,20 +373,20 @@ export default function CssGradient() {
         {/* Preview Section */}
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('preview')}
             </h2>
             <div className="flex gap-2">
               <button
                 onClick={exportPng}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {t('exportPng')}
               </button>
               <button
                 onClick={toggleFullscreen}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <Maximize2 className="w-4 h-4" />
                 {t('fullscreen')}
@@ -405,7 +405,7 @@ export default function CssGradient() {
         {/* CSS Code Output */}
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('cssCode')}
             </h2>
             <button
@@ -420,15 +420,15 @@ export default function CssGradient() {
               {copiedId === 'css-main' ? t('copied') : t('copy')}
             </button>
           </div>
-          <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all">
+          <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
             {fullCssRule}
           </pre>
 
           {/* Vendor prefix toggle */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+          <div className="border-t border-line pt-3">
             <button
               onClick={() => setShowVendorPrefix((v) => !v)}
-              className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+              className="flex items-center gap-2 text-sm text-sub hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
             >
               {showVendorPrefix ? (
                 <ChevronUp className="w-4 h-4" />
@@ -439,17 +439,17 @@ export default function CssGradient() {
             </button>
             {showVendorPrefix && (
               <div className="mt-2 relative">
-                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                   {vendorPrefixCss}
                 </pre>
                 <button
                   onClick={() => copyToClipboard(vendorPrefixCss, 'css-vendor')}
-                  className="absolute top-2 right-2 p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
+                  className="absolute top-2 right-2 p-1.5 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
                 >
                   {copiedId === 'css-vendor' ? (
                     <Check className="w-3.5 h-3.5 text-green-600" />
                   ) : (
-                    <Copy className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
+                    <Copy className="w-3.5 h-3.5 text-sub" />
                   )}
                 </button>
               </div>
@@ -458,10 +458,10 @@ export default function CssGradient() {
 
           {/* Tailwind hint toggle */}
           {tailwindHint && (
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+            <div className="border-t border-line pt-3">
               <button
                 onClick={() => setShowTailwind((v) => !v)}
-                className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                className="flex items-center gap-2 text-sm text-sub hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
               >
                 {showTailwind ? (
                   <ChevronUp className="w-4 h-4" />
@@ -472,17 +472,17 @@ export default function CssGradient() {
               </button>
               {showTailwind && (
                 <div className="mt-2 relative">
-                  <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                  <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                     {tailwindHint}
                   </pre>
                   <button
                     onClick={() => copyToClipboard(tailwindHint, 'tailwind')}
-                    className="absolute top-2 right-2 p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
+                    className="absolute top-2 right-2 p-1.5 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
                   >
                     {copiedId === 'tailwind' ? (
                       <Check className="w-3.5 h-3.5 text-green-600" />
                     ) : (
-                      <Copy className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
+                      <Copy className="w-3.5 h-3.5 text-sub" />
                     )}
                   </button>
                 </div>
@@ -497,7 +497,7 @@ export default function CssGradient() {
           <div className="lg:col-span-1 space-y-6">
             {/* Gradient type */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-sm font-semibold text-fg">
                 {t('gradientType')}
               </h3>
               <div className="grid grid-cols-3 gap-2">
@@ -508,7 +508,7 @@ export default function CssGradient() {
                     className={`px-3 py-2 text-sm rounded-lg font-medium transition-colors ${
                       gradientType === gt
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`type.${gt}`)}
@@ -520,10 +520,10 @@ export default function CssGradient() {
               {gradientType === 'linear' && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                    <label className="text-sm text-sub">
                       {t('angle')}
                     </label>
-                    <span className="text-sm font-mono text-gray-900 dark:text-white">
+                    <span className="text-sm font-mono text-fg">
                       {angle}&deg;
                     </span>
                   </div>
@@ -543,7 +543,7 @@ export default function CssGradient() {
                         className={`p-2 text-lg rounded-lg transition-colors ${
                           angle === d.angle
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                         title={d.label}
                       >
@@ -558,7 +558,7 @@ export default function CssGradient() {
               {gradientType === 'radial' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="text-sm text-gray-600 dark:text-gray-400 block mb-1.5">
+                    <label className="text-sm text-sub block mb-1.5">
                       {t('shape')}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -567,7 +567,7 @@ export default function CssGradient() {
                         className={`px-3 py-2 text-sm rounded-lg font-medium transition-colors ${
                           radialShape === 'circle'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('shapeCircle')}
@@ -577,7 +577,7 @@ export default function CssGradient() {
                         className={`px-3 py-2 text-sm rounded-lg font-medium transition-colors ${
                           radialShape === 'ellipse'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('shapeEllipse')}
@@ -585,7 +585,7 @@ export default function CssGradient() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600 dark:text-gray-400 block mb-1.5">
+                    <label className="text-sm text-sub block mb-1.5">
                       {t('direction')}
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -596,7 +596,7 @@ export default function CssGradient() {
                           className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
                             radialPosition === pos
                               ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                           }`}
                         >
                           {t(`pos${pos.charAt(0).toUpperCase() + pos.slice(1)}`)}
@@ -611,10 +611,10 @@ export default function CssGradient() {
               {gradientType === 'conic' && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                    <label className="text-sm text-sub">
                       {t('angle')}
                     </label>
-                    <span className="text-sm font-mono text-gray-900 dark:text-white">
+                    <span className="text-sm font-mono text-fg">
                       {angle}&deg;
                     </span>
                   </div>
@@ -632,7 +632,7 @@ export default function CssGradient() {
 
             {/* Tools: repeating + utility buttons */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-sm font-semibold text-fg">
                 {t('tools')}
               </h3>
               <label className="flex items-center gap-3 cursor-pointer">
@@ -642,21 +642,21 @@ export default function CssGradient() {
                   onChange={(e) => setRepeating(e.target.checked)}
                   className="w-4 h-4 accent-blue-600 rounded"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-sm text-body">
                   {t('repeating')}
                 </span>
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={handleRandom}
-                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   <Shuffle className="w-4 h-4" />
                   {t('random')}
                 </button>
                 <button
                   onClick={handleReverse}
-                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   <ArrowLeftRight className="w-4 h-4" />
                   {t('reverse')}
@@ -664,7 +664,7 @@ export default function CssGradient() {
               </div>
               <button
                 onClick={handleReset}
-                className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -676,7 +676,7 @@ export default function CssGradient() {
           <div className="lg:col-span-2">
             <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-sm font-semibold text-fg">
                   {t('colors')}
                 </h3>
                 <button
@@ -697,7 +697,7 @@ export default function CssGradient() {
 
               {/* Visual gradient bar */}
               <div
-                className="h-8 rounded-lg border border-gray-200 dark:border-gray-600"
+                className="h-8 rounded-lg border border-line"
                 style={{ background: barGradient }}
               />
 
@@ -709,7 +709,7 @@ export default function CssGradient() {
                     className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
                   >
                     {/* Stop label */}
-                    <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 font-medium whitespace-nowrap">
+                    <span className="text-xs text-muted flex-shrink-0 font-medium whitespace-nowrap">
                       {t('stopLabel', { n: index + 1 })}
                     </span>
                     {/* Color picker */}
@@ -719,7 +719,7 @@ export default function CssGradient() {
                       onChange={(e) =>
                         updateColorStop(stop.id, 'color', e.target.value)
                       }
-                      className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer flex-shrink-0 p-0"
+                      className="w-10 h-10 rounded-lg border border-line-strong cursor-pointer flex-shrink-0 p-0"
                     />
                     {/* Hex input */}
                     <input
@@ -746,7 +746,7 @@ export default function CssGradient() {
                         }
                         className="flex-1 accent-blue-600"
                       />
-                      <span className="text-xs font-mono text-gray-600 dark:text-gray-400 w-10 text-right flex-shrink-0">
+                      <span className="text-xs font-mono text-sub w-10 text-right flex-shrink-0">
                         {stop.position}%
                       </span>
                     </div>
@@ -767,7 +767,7 @@ export default function CssGradient() {
 
         {/* Presets Section */}
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {t('presets')}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -799,20 +799,20 @@ export default function CssGradient() {
 
         {/* Guide Section */}
         <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
 
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.types.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.types.items') as string[]).map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-start gap-2 text-sm text-sub"
                 >
                   <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                   {item}
@@ -822,14 +822,14 @@ export default function CssGradient() {
           </div>
 
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-start gap-2 text-sm text-sub"
                 >
                   <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                   {item}

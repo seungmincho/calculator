@@ -187,8 +187,8 @@ function ScoreGauge({ score, level, checkedCount, totalCount, t }: ScoreGaugePro
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-bold text-gray-900 dark:text-white">{Math.round(score)}</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">/ 100</span>
+          <span className="text-3xl font-bold text-fg">{Math.round(score)}</span>
+          <span className="text-xs text-muted">/ 100</span>
         </div>
       </div>
 
@@ -196,10 +196,10 @@ function ScoreGauge({ score, level, checkedCount, totalCount, t }: ScoreGaugePro
         <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold ${bgMap[level]}`}>
           {t(`riskLevels.${level}`)}
         </span>
-        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+        <p className="text-sub text-sm leading-relaxed">
           {t(`risk${level.charAt(0).toUpperCase() + level.slice(1)}Desc`)}
         </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-muted">
           {t('checkedCount', { checked: checkedCount, total: totalCount })}
         </p>
       </div>
@@ -222,8 +222,8 @@ function CheckItemRow({ itemKey, weight, state, onChange, t }: CheckItemRowProps
 
   const stateStyle: Record<CheckState, string> = {
     checked: 'border-green-500 bg-green-50 dark:bg-green-950',
-    unchecked: 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800',
-    na: 'border-gray-400 bg-gray-50 dark:bg-gray-700',
+    unchecked: 'border-line-strong bg-surface',
+    na: 'border-gray-400 bg-subtle',
   }
 
   const cycle = useCallback(() => {
@@ -253,7 +253,7 @@ function CheckItemRow({ itemKey, weight, state, onChange, t }: CheckItemRowProps
           <div className="flex items-center justify-between gap-2">
             <button
               onClick={() => setExpanded((e) => !e)}
-              className="text-sm font-medium text-gray-900 dark:text-white text-left hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
+              className="text-sm font-medium text-fg text-left hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
             >
               {t(`items.${itemKey}`)}
               {expanded ? (
@@ -274,7 +274,7 @@ function CheckItemRow({ itemKey, weight, state, onChange, t }: CheckItemRowProps
           </div>
 
           {expanded && (
-            <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="mt-1.5 text-xs text-sub leading-relaxed">
               {t(`items.${itemKey}Desc`)}
             </p>
           )}
@@ -293,7 +293,7 @@ function CheckItemRow({ itemKey, weight, state, onChange, t }: CheckItemRowProps
                     : s === 'na'
                     ? 'bg-gray-400 text-white'
                     : 'bg-red-400 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {s === 'checked' ? t('stateChecked') : s === 'na' ? t('stateNa') : t('stateUnchecked')}
@@ -334,11 +334,11 @@ function CategorySection({ category, states, onChange, t }: CategorySectionProps
         className="w-full flex items-center justify-between p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-xl"
       >
         <div className="flex items-center gap-3">
-          <span className="text-gray-600 dark:text-gray-300">{category.icon}</span>
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span className="text-sub">{category.icon}</span>
+          <span className="font-semibold text-fg">
             {t(`categories.${category.key}`)}
           </span>
-          <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full">
+          <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full">
             {checkedInCat} / {category.items.length}
           </span>
         </div>
@@ -502,17 +502,17 @@ export default function JeonseChecklist() {
       <div>
         <div className="flex items-center gap-3 mb-1">
           <Shield className="w-7 h-7 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+        <p className="text-sm text-muted">{t('description')}</p>
       </div>
 
       {/* Property Info */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('propertyInfo')}</h2>
+        <h2 className="text-base font-semibold text-fg mb-4">{t('propertyInfo')}</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="sm:col-span-1">
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-body mb-1">
               {t('addressLabel')}
             </label>
             <input
@@ -520,11 +520,11 @@ export default function JeonseChecklist() {
               value={address}
               onChange={(e) => handleAddressChange(e.target.value)}
               placeholder={t('addressPlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-body mb-1">
               {t('depositLabel')}
             </label>
             <div className="relative">
@@ -533,20 +533,20 @@ export default function JeonseChecklist() {
                 value={formatNumber(deposit)}
                 onChange={(e) => handleDepositChange(e.target.value)}
                 placeholder="0"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm pr-10"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm pr-10"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('depositUnit')}</span>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-body mb-1">
               {t('contractDateLabel')}
             </label>
             <input
               type="date"
               value={contractDate}
               onChange={(e) => handleDateChange(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
         </div>
@@ -554,7 +554,7 @@ export default function JeonseChecklist() {
 
       {/* Risk Score Dashboard */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('riskScoreTitle')}</h2>
+        <h2 className="text-base font-semibold text-fg mb-4">{t('riskScoreTitle')}</h2>
         <ScoreGauge
           score={score}
           level={riskLevel}
@@ -562,7 +562,7 @@ export default function JeonseChecklist() {
           totalCount={allItemKeys.length}
           t={t}
         />
-        <div className="mt-4 text-xs text-gray-400 dark:text-gray-500">
+        <div className="mt-4 text-xs text-faint">
           {t('scoreDetail', { earned: earnedWeight, total: TOTAL_WEIGHT })}
         </div>
       </div>
@@ -582,7 +582,7 @@ export default function JeonseChecklist() {
 
       {/* Emergency Contacts */}
       <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
           <Phone className="w-5 h-5 text-blue-600" />
           {t('contactsTitle')}
         </h2>
@@ -591,13 +591,13 @@ export default function JeonseChecklist() {
             <a
               key={key}
               href={`tel:${phone}`}
-              className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-shadow group"
+              className="flex items-center justify-between bg-surface rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-shadow group"
             >
               <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                <p className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400">
                   {t(`contacts.${key}`)}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t(`contacts.${key}Desc`)}</p>
+                <p className="text-xs text-muted">{t(`contacts.${key}Desc`)}</p>
               </div>
               <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{phone}</span>
             </a>
@@ -616,14 +616,14 @@ export default function JeonseChecklist() {
         </button>
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+          className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
         >
           <Printer className="w-4 h-4" />
           {t('printLabel')}
         </button>
         <button
           onClick={handleReset}
-          className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+          className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
           {t('resetLabel')}

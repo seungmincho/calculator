@@ -359,22 +359,22 @@ export default function PasswordGenerator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+      <div className="flex bg-soft rounded-lg p-1">
         <button
           onClick={() => { setMode('password'); setResults([]); setError(null) }}
           className={`flex-1 flex items-center justify-center space-x-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             mode === 'password'
-              ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-surface text-fg shadow-sm'
+              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
           <Key className="w-4 h-4" />
@@ -384,8 +384,8 @@ export default function PasswordGenerator() {
           onClick={() => { setMode('passphrase'); setResults([]); setError(null) }}
           className={`flex-1 flex items-center justify-center space-x-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             mode === 'passphrase'
-              ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-surface text-fg shadow-sm'
+              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -400,7 +400,7 @@ export default function PasswordGenerator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('settings.title')}
               </h2>
             </div>
@@ -409,7 +409,7 @@ export default function PasswordGenerator() {
               <>
                 {/* Password Length */}
                 <div className="space-y-3">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.length')}: <span className="text-blue-600 font-bold">{passwordSettings.length}</span>
                   </label>
                   <input
@@ -430,7 +430,7 @@ export default function PasswordGenerator() {
 
                 {/* Character Types */}
                 <div className="space-y-3">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.characters')}
                   </label>
                   <div className="space-y-2">
@@ -443,7 +443,7 @@ export default function PasswordGenerator() {
                         }
                         className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-body">
                         {t('settings.uppercase')}
                       </span>
                     </label>
@@ -456,7 +456,7 @@ export default function PasswordGenerator() {
                         }
                         className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-body">
                         {t('settings.lowercase')}
                       </span>
                     </label>
@@ -469,7 +469,7 @@ export default function PasswordGenerator() {
                         }
                         className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-body">
                         {t('settings.numbers')}
                       </span>
                     </label>
@@ -482,7 +482,7 @@ export default function PasswordGenerator() {
                         }
                         className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-body">
                         {t('settings.specialChars')}
                       </span>
                     </label>
@@ -492,7 +492,7 @@ export default function PasswordGenerator() {
                 {/* Custom Special Characters */}
                 {passwordSettings.specialChars && (
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-body">
                       {t('settings.customSpecialChars')}
                     </label>
                     <input
@@ -518,18 +518,18 @@ export default function PasswordGenerator() {
                       }
                       className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <span className="text-sm text-body">
                       {t('settings.excludeAmbiguous')}
                     </span>
                   </label>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 ml-7">
+                  <p className="text-xs text-faint ml-7">
                     {t('settings.excludeAmbiguousDesc')}
                   </p>
                 </div>
 
                 {/* Generate Count */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.count')}
                   </label>
                   <input
@@ -551,7 +551,7 @@ export default function PasswordGenerator() {
               <>
                 {/* Word Count */}
                 <div className="space-y-3">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.wordCount')}: <span className="text-blue-600 font-bold">{passphraseSettings.wordCount}</span>
                   </label>
                   <input
@@ -572,7 +572,7 @@ export default function PasswordGenerator() {
 
                 {/* Separator */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.separator')}
                   </label>
                   <select
@@ -599,14 +599,14 @@ export default function PasswordGenerator() {
                     }
                     className="w-4 h-4 accent-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-body">
                     {t('settings.capitalizeFirst')}
                   </span>
                 </label>
 
                 {/* Generate Count */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium text-body">
                     {t('settings.count')}
                   </label>
                   <input
@@ -652,7 +652,7 @@ export default function PasswordGenerator() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 text-green-600" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold text-fg">
                   {t('result.title')}
                 </h2>
                 {results.length > 0 && (
@@ -679,10 +679,10 @@ export default function PasswordGenerator() {
             {/* Results List */}
             {results.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-soft rounded-full flex items-center justify-center mx-auto mb-4">
                   <Key className="w-8 h-8 text-gray-400" />
                 </div>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-muted">
                   {t('result.empty')}
                 </p>
               </div>
@@ -691,12 +691,12 @@ export default function PasswordGenerator() {
                 {results.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg space-y-3"
+                    className="p-4 bg-subtle rounded-lg space-y-3"
                   >
                     {/* Password value + copy button */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="font-mono text-sm text-gray-900 dark:text-white break-all leading-relaxed">
+                        <p className="font-mono text-sm text-fg break-all leading-relaxed">
                           {item.value}
                         </p>
                       </div>
@@ -725,7 +725,7 @@ export default function PasswordGenerator() {
                         <span className={`text-xs font-medium ${STRENGTH_TEXT_COLORS[item.strength]}`}>
                           {t(`strength.${item.strength}`)}
                         </span>
-                        <span className="text-xs text-gray-400 dark:text-gray-500">
+                        <span className="text-xs text-faint">
                           {t('strength.entropy')}: {item.entropy.toFixed(1)} {t('strength.bits')}
                         </span>
                       </div>
@@ -743,7 +743,7 @@ export default function PasswordGenerator() {
               className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
             >
               <div className="flex items-center space-x-2">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-fg">
                   {t('history.title')}
                 </h3>
                 {history.length > 0 && (
@@ -752,7 +752,7 @@ export default function PasswordGenerator() {
                   </span>
                 )}
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center space-x-2 text-sm text-muted">
                 <span>{showHistory ? t('history.hide') : t('history.show')}</span>
                 {showHistory ? (
                   <ChevronUp className="w-4 h-4" />
@@ -763,9 +763,9 @@ export default function PasswordGenerator() {
             </button>
 
             {showHistory && (
-              <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+              <div className="border-t border-line p-4">
                 {history.length === 0 ? (
-                  <p className="text-center text-gray-400 dark:text-gray-500 py-4 text-sm">
+                  <p className="text-center text-faint py-4 text-sm">
                     {t('history.empty')}
                   </p>
                 ) : (
@@ -783,13 +783,13 @@ export default function PasswordGenerator() {
                       {history.map((entry) => (
                         <div
                           key={entry.id}
-                          className="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                          className="flex items-center justify-between p-2.5 bg-subtle rounded-lg"
                         >
                           <div className="flex items-center space-x-3 min-w-0 flex-1">
                             <div
                               className={`w-2 h-2 rounded-full flex-shrink-0 ${STRENGTH_COLORS[entry.strength]}`}
                             />
-                            <span className="font-mono text-xs text-gray-800 dark:text-gray-200 truncate">
+                            <span className="font-mono text-xs text-body truncate">
                               {entry.value}
                             </span>
                           </div>
@@ -818,7 +818,7 @@ export default function PasswordGenerator() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-6">
           <Info className="w-5 h-5 text-orange-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
@@ -826,14 +826,14 @@ export default function PasswordGenerator() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Tips */}
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <div className="space-y-3">
               {tipItems.map((item: string, index: number) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item}</p>
+                  <p className="text-sm text-sub">{item}</p>
                 </div>
               ))}
             </div>
@@ -841,14 +841,14 @@ export default function PasswordGenerator() {
 
           {/* Passphrase Benefits */}
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.passphrase.title')}
             </h3>
             <div className="space-y-3">
               {passphraseItems.map((item: string, index: number) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item}</p>
+                  <p className="text-sm text-sub">{item}</p>
                 </div>
               ))}
             </div>

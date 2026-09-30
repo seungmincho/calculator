@@ -85,7 +85,7 @@ function AchievementBadge({ achievement, compact, t }: AchievementBadgeProps) {
               <p className="font-semibold mb-0.5">{name}</p>
               <p className="text-gray-300 dark:text-gray-400 leading-snug">{desc}</p>
               {achievement.unlockedAt && (
-                <p className="text-gray-400 dark:text-gray-500 mt-1 text-[10px]">
+                <p className="text-faint mt-1 text-[10px]">
                   {new Date(achievement.unlockedAt).toLocaleDateString('ko-KR')}
                 </p>
               )}
@@ -101,7 +101,7 @@ function AchievementBadge({ achievement, compact, t }: AchievementBadgeProps) {
   // Locked badge
   return (
     <div
-      className={`relative flex flex-col items-center justify-center ${paddingClass} ${minHeightClass} rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-default select-none`}
+      className={`relative flex flex-col items-center justify-center ${paddingClass} ${minHeightClass} rounded-xl border border-line bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-default select-none`}
       aria-label={t('locked')}
       title={t('locked')}
     >
@@ -110,9 +110,9 @@ function AchievementBadge({ achievement, compact, t }: AchievementBadgeProps) {
         {achievement.icon}
       </span>
       <div className="absolute top-1.5 right-1.5">
-        <span className="text-xs text-gray-400 dark:text-gray-500" aria-hidden="true">🔒</span>
+        <span className="text-xs text-faint" aria-hidden="true">🔒</span>
       </div>
-      <p className={`text-center font-medium text-gray-400 dark:text-gray-500 leading-tight ${compact ? 'text-[10px]' : 'text-xs'}`}>
+      <p className={`text-center font-medium text-faint leading-tight ${compact ? 'text-[10px]' : 'text-xs'}`}>
         {name}
       </p>
     </div>
@@ -135,7 +135,7 @@ export default function GameAchievements({
   const progressPercent = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-surface rounded-2xl shadow-lg overflow-hidden">
       {/* Header — always visible */}
       <button
         className="w-full flex items-center gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -144,7 +144,7 @@ export default function GameAchievements({
         aria-controls="achievements-panel"
       >
         <Trophy className="w-5 h-5 text-yellow-500 flex-shrink-0" aria-hidden="true" />
-        <span className="flex-1 text-left font-bold text-gray-900 dark:text-white text-sm">
+        <span className="flex-1 text-left font-bold text-fg text-sm">
           {t('title')}
         </span>
 
@@ -165,10 +165,10 @@ export default function GameAchievements({
           {/* Progress bar */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-500 dark:text-gray-400">{t('progress')}</span>
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{progressPercent}%</span>
+              <span className="text-xs text-muted">{t('progress')}</span>
+              <span className="text-xs font-medium text-body">{progressPercent}%</span>
             </div>
-            <div className="h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
+            <div className="h-2 rounded-full bg-soft overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
@@ -182,7 +182,7 @@ export default function GameAchievements({
 
           {/* Badge grid */}
           {achievements.length === 0 ? (
-            <p className="text-center text-sm text-gray-400 dark:text-gray-500 py-4">{t('noAchievements')}</p>
+            <p className="text-center text-sm text-faint py-4">{t('noAchievements')}</p>
           ) : (
             <div className={`grid gap-2 ${compact ? 'grid-cols-3' : 'grid-cols-3 sm:grid-cols-4'}`}>
               {achievements.map(achievement => (

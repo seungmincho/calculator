@@ -27,7 +27,7 @@ export default function DueDatePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><DueDateCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -37,17 +37,17 @@ export default function DueDatePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             출산 예정일 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             출산 예정일 계산기는 마지막 생리 시작일(LMP) 또는 배란일을 기준으로 출산 예정일과 현재 임신 주수를 계산하는 임신 도우미 도구입니다. 네겔레 법칙(LMP + 280일)을 기반으로 예정일을 산출하고, 1·2·3분기별 주요 일정과 임신 단계별 발달 정보도 함께 제공합니다. 임신 초기부터 출산 준비까지 임신 주수 및 예정일을 간편하게 확인할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             출산 예정일 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>LMP 기준 계산:</strong> 마지막 생리 시작일에 280일(40주)을 더하면 출산 예정일이 됩니다. 생리 주기가 28일이 아닌 경우 배란일 기준 계산이 더 정확할 수 있습니다.</li>
             <li><strong>임신 주수 확인:</strong> 오늘 기준으로 몇 주 몇 일째인지 자동 계산됩니다. 산부인과 진료 예약 전 미리 확인하면 더 정확한 상담이 가능합니다.</li>
             <li><strong>삼분기별 일정:</strong> 1분기(엽산 섭취·기형아 검사), 2분기(정밀 초음파·임신성 당뇨 검사), 3분기(출산 준비·태아 감시) 일정을 미리 파악하세요.</li>

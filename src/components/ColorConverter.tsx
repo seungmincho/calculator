@@ -191,11 +191,11 @@ export default function ColorConverter() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Palette className="w-7 h-7 text-pink-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -203,8 +203,8 @@ export default function ColorConverter() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Color Preview & Picker */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div className="px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {t('preview.title')}
             </span>
           </div>
@@ -227,7 +227,7 @@ export default function ColorConverter() {
                 type="text"
                 value={hex}
                 onChange={(e) => setHex(e.target.value)}
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono uppercase"
+                className="flex-1 px-4 py-2 rounded-lg border border-line bg-field text-fg font-mono uppercase"
                 maxLength={7}
               />
               <button
@@ -258,18 +258,18 @@ export default function ColorConverter() {
 
         {/* Color Values */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div className="px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {t('values.title')}
             </span>
           </div>
           {colorValues && (
             <div className="p-4 space-y-4">
               {/* HEX */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">HEX</span>
-                  <p className="font-mono text-gray-900 dark:text-white">{colorValues.hex}</p>
+                  <span className="text-xs font-medium text-muted">HEX</span>
+                  <p className="font-mono text-fg">{colorValues.hex}</p>
                 </div>
                 <button
                   onClick={() => handleCopy(colorValues.hex, 'hex')}
@@ -280,10 +280,10 @@ export default function ColorConverter() {
               </div>
 
               {/* RGB */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">RGB</span>
-                  <p className="font-mono text-gray-900 dark:text-white">
+                  <span className="text-xs font-medium text-muted">RGB</span>
+                  <p className="font-mono text-fg">
                     rgb({colorValues.rgb.r}, {colorValues.rgb.g}, {colorValues.rgb.b})
                   </p>
                 </div>
@@ -296,10 +296,10 @@ export default function ColorConverter() {
               </div>
 
               {/* HSL */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">HSL</span>
-                  <p className="font-mono text-gray-900 dark:text-white">
+                  <span className="text-xs font-medium text-muted">HSL</span>
+                  <p className="font-mono text-fg">
                     hsl({colorValues.hsl.h}, {colorValues.hsl.s}%, {colorValues.hsl.l}%)
                   </p>
                 </div>
@@ -312,10 +312,10 @@ export default function ColorConverter() {
               </div>
 
               {/* HSV */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">HSV/HSB</span>
-                  <p className="font-mono text-gray-900 dark:text-white">
+                  <span className="text-xs font-medium text-muted">HSV/HSB</span>
+                  <p className="font-mono text-fg">
                     hsv({colorValues.hsv.h}, {colorValues.hsv.s}%, {colorValues.hsv.v}%)
                   </p>
                 </div>
@@ -328,10 +328,10 @@ export default function ColorConverter() {
               </div>
 
               {/* CMYK */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
                 <div>
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">CMYK</span>
-                  <p className="font-mono text-gray-900 dark:text-white">
+                  <span className="text-xs font-medium text-muted">CMYK</span>
+                  <p className="font-mono text-fg">
                     cmyk({colorValues.cmyk.c}%, {colorValues.cmyk.m}%, {colorValues.cmyk.y}%, {colorValues.cmyk.k}%)
                   </p>
                 </div>
@@ -352,7 +352,7 @@ export default function ColorConverter() {
         <div className="mt-6 grid md:grid-cols-2 gap-6">
           {/* RGB Sliders */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">RGB</h3>
+            <h3 className="text-sm font-medium text-body mb-4">RGB</h3>
             <div className="space-y-4">
               {(['r', 'g', 'b'] as const).map((c) => (
                 <div key={c} className="flex items-center gap-4">
@@ -367,7 +367,7 @@ export default function ColorConverter() {
                       c === 'r' ? 'accent-red-500' : c === 'g' ? 'accent-green-500' : 'accent-blue-500'
                     }`}
                   />
-                  <span className="w-10 text-right font-mono text-sm text-gray-900 dark:text-white">
+                  <span className="w-10 text-right font-mono text-sm text-fg">
                     {colorValues.rgb[c]}
                   </span>
                 </div>
@@ -377,7 +377,7 @@ export default function ColorConverter() {
 
           {/* HSL Sliders */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">HSL</h3>
+            <h3 className="text-sm font-medium text-body mb-4">HSL</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span className="w-4 font-mono text-sm text-gray-500">H</span>
@@ -390,7 +390,7 @@ export default function ColorConverter() {
                   className="flex-1 h-2 rounded-lg appearance-none cursor-pointer"
                   style={{ background: 'linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)' }}
                 />
-                <span className="w-10 text-right font-mono text-sm text-gray-900 dark:text-white">
+                <span className="w-10 text-right font-mono text-sm text-fg">
                   {colorValues.hsl.h}°
                 </span>
               </div>
@@ -404,7 +404,7 @@ export default function ColorConverter() {
                   onChange={(e) => handleHslChange('s', parseInt(e.target.value))}
                   className="flex-1 h-2 rounded-lg appearance-none cursor-pointer accent-pink-500"
                 />
-                <span className="w-10 text-right font-mono text-sm text-gray-900 dark:text-white">
+                <span className="w-10 text-right font-mono text-sm text-fg">
                   {colorValues.hsl.s}%
                 </span>
               </div>
@@ -418,7 +418,7 @@ export default function ColorConverter() {
                   onChange={(e) => handleHslChange('l', parseInt(e.target.value))}
                   className="flex-1 h-2 rounded-lg appearance-none cursor-pointer accent-gray-500"
                 />
-                <span className="w-10 text-right font-mono text-sm text-gray-900 dark:text-white">
+                <span className="w-10 text-right font-mono text-sm text-fg">
                   {colorValues.hsl.l}%
                 </span>
               </div>
@@ -429,12 +429,12 @@ export default function ColorConverter() {
 
       {/* Guide */}
       <div className={`mt-6 ${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-400">
+        <div className="grid md:grid-cols-2 gap-6 text-sm text-sub">
           <div>
-            <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">{t('guide.formats.title')}</h3>
+            <h3 className="font-medium text-body mb-2">{t('guide.formats.title')}</h3>
             <ul className="space-y-1">
               <li><strong>HEX:</strong> {t('guide.formats.hex')}</li>
               <li><strong>RGB:</strong> {t('guide.formats.rgb')}</li>
@@ -443,7 +443,7 @@ export default function ColorConverter() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">{t('guide.useCases.title')}</h3>
+            <h3 className="font-medium text-body mb-2">{t('guide.useCases.title')}</h3>
             <ul className="space-y-1">
               {(t.raw('guide.useCases.items') as string[]).map((item, idx) => (
                 <li key={idx}>• {item}</li>

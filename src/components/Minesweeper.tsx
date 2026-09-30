@@ -38,7 +38,7 @@ const NUMBER_COLORS: Record<number, string> = {
   5: 'text-yellow-700 dark:text-yellow-500',
   6: 'text-teal-600 dark:text-teal-400',
   7: 'text-gray-900 dark:text-gray-100',
-  8: 'text-gray-600 dark:text-gray-400',
+  8: 'text-sub',
 }
 
 export default function Minesweeper() {
@@ -361,7 +361,7 @@ export default function Minesweeper() {
         bgColor = isClickedMine ? 'bg-red-500' : 'bg-red-300 dark:bg-red-800'
         content = <Bomb className="w-4 h-4 sm:w-5 sm:h-5" />
       } else {
-        bgColor = 'bg-gray-100 dark:bg-gray-700'
+        bgColor = 'bg-soft'
         if (cell.neighborMines > 0) {
           content = (
             <span className={`font-bold ${NUMBER_COLORS[cell.neighborMines]}`}>
@@ -399,12 +399,12 @@ export default function Minesweeper() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Game Controls */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
         {/* Difficulty Selector */}
         <div className="flex flex-wrap gap-2">
           <button
@@ -412,7 +412,7 @@ export default function Minesweeper() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'beginner'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
             {t('beginner')}
@@ -422,7 +422,7 @@ export default function Minesweeper() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'intermediate'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
             {t('intermediate')}
@@ -432,7 +432,7 @@ export default function Minesweeper() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'expert'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
             {t('expert')}
@@ -440,10 +440,10 @@ export default function Minesweeper() {
         </div>
 
         {/* Game Status Bar */}
-        <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+        <div className="flex items-center justify-between bg-soft rounded-lg p-4">
           <div className="flex items-center gap-2">
             <Flag className="w-5 h-5 text-red-600 dark:text-red-400" />
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-fg">
               {t('mines')}: {config.mines - flagCount}
             </span>
           </div>
@@ -458,7 +458,7 @@ export default function Minesweeper() {
 
           <div className="flex items-center gap-2">
             <RotateCcw className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-fg">
               {t('time')}: {timer}s
             </span>
           </div>
@@ -478,7 +478,7 @@ export default function Minesweeper() {
       </div>
 
       {/* Game Board */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 overflow-x-auto">
+      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6 overflow-x-auto">
         <div className="flex justify-center">
           <div className="inline-grid gap-0" style={{ gridTemplateColumns: `repeat(${config.cols}, minmax(0, 1fr))` }}>
             {board.map((row, rowIndex) =>
@@ -507,17 +507,17 @@ export default function Minesweeper() {
       />
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">
           {t('guide.title')}
         </h2>
 
         <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-fg mb-2">
               {t('guide.howToPlay.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-body">
               {(t.raw('guide.howToPlay.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -525,10 +525,10 @@ export default function Minesweeper() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-fg mb-2">
               {t('guide.tips.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}

@@ -355,13 +355,13 @@ export default function ColorExtractor() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {image && (
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('upload')}
@@ -376,14 +376,14 @@ export default function ColorExtractor() {
             className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
               isDragging
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                : 'border-gray-300 dark:border-gray-600'
+                : 'border-line-strong'
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
             <Upload className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">{t('dragDrop')}</p>
+            <p className="text-lg text-sub mb-4">{t('dragDrop')}</p>
             <button
               onClick={() => fileInputRef.current?.click()}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
@@ -407,14 +407,14 @@ export default function ColorExtractor() {
         <>
           {/* Canvas - full width */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="mb-3 flex items-center gap-2 text-sm text-sub">
               <Eye className="w-4 h-4" />
               <span>{t('clickToExtract')}</span>
             </div>
             <div ref={containerRef} className="relative w-full">
               <canvas
                 ref={canvasRef}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg cursor-crosshair w-full"
+                className="border border-line rounded-lg cursor-crosshair w-full"
                 style={{ imageRendering: 'auto' }}
                 onClick={handleCanvasClick}
                 onMouseMove={handleCanvasMouseMove}
@@ -426,14 +426,14 @@ export default function ColorExtractor() {
                   className="fixed pointer-events-none z-50"
                   style={{ left: magnifierPos.x + 20, top: magnifierPos.y - 140 }}
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-gray-300 dark:border-gray-600 overflow-hidden">
+                  <div className="bg-surface rounded-xl shadow-2xl border-2 border-line-strong overflow-hidden">
                     <canvas ref={magnifierCanvasRef} className="block" />
                     {magnifierColor && (
                       <div
                         className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono"
                         style={{ backgroundColor: magnifierColor }}
                       >
-                        <span className="bg-white/80 dark:bg-black/60 text-gray-900 dark:text-white px-2 py-0.5 rounded">
+                        <span className="bg-white/80 dark:bg-black/60 text-fg px-2 py-0.5 rounded">
                           {magnifierColor}
                         </span>
                       </div>
@@ -449,7 +449,7 @@ export default function ColorExtractor() {
             {/* Picked Color */}
             <div className="lg:col-span-1">
               <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                   <Droplet className="w-5 h-5" />
                   {t('pickedColor')}
                 </h2>
@@ -457,15 +457,15 @@ export default function ColorExtractor() {
                 {pickedColor ? (
                   <div className="space-y-4">
                     <div
-                      className="w-full h-28 rounded-xl shadow-inner border border-gray-200 dark:border-gray-700"
+                      className="w-full h-28 rounded-xl shadow-inner border border-line"
                       style={{ backgroundColor: pickedColor.hex }}
                     />
                     <div className="space-y-2">
                       {(['hex', 'rgb', 'hsl'] as const).map(key => (
                         <div key={key} className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase">{t(key)}</span>
+                          <span className="text-sm font-medium text-sub uppercase">{t(key)}</span>
                           <div className="flex items-center gap-2">
-                            <code className="text-sm font-mono text-gray-900 dark:text-white">{pickedColor[key]}</code>
+                            <code className="text-sm font-mono text-fg">{pickedColor[key]}</code>
                             <button
                               onClick={() => copyToClipboard(pickedColor[key], key)}
                               className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
@@ -482,7 +482,7 @@ export default function ColorExtractor() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
+                  <p className="text-muted text-sm text-center py-8">
                     {t('clickToExtract')}
                   </p>
                 )}
@@ -493,13 +493,13 @@ export default function ColorExtractor() {
             <div className="lg:col-span-2">
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('palette')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('palette')}</h2>
                   <div className="flex gap-2">
                     {(['css', 'tailwind', 'json'] as const).map(fmt => (
                       <button
                         key={fmt}
                         onClick={() => exportPalette(fmt)}
-                        className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                        className="px-3 py-1 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                       >
                         {copiedId === `export-${fmt}` ? t('copied') : t(fmt === 'css' ? 'cssVars' : fmt === 'tailwind' ? 'tailwind' : 'json')}
                       </button>
@@ -523,7 +523,7 @@ export default function ColorExtractor() {
                           title={`${color.hex} (${color.percent}%)`}
                         >
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-xs font-bold bg-white/80 dark:bg-black/60 text-gray-900 dark:text-white px-1 rounded">
+                            <span className="text-xs font-bold bg-white/80 dark:bg-black/60 text-fg px-1 rounded">
                               {color.percent}%
                             </span>
                           </div>
@@ -536,7 +536,7 @@ export default function ColorExtractor() {
                       {palette.map((color, index) => (
                         <div key={index} className="space-y-1.5">
                           <div
-                            className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-gray-200 dark:border-gray-700"
+                            className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
                             style={{ backgroundColor: color.hex }}
                             onClick={() => {
                               copyToClipboard(color.hex, `palette-${index}`)
@@ -545,15 +545,15 @@ export default function ColorExtractor() {
                             title={`${color.hex} (${color.percent}%)`}
                           />
                           <div className="text-center">
-                            <code className="text-[10px] font-mono text-gray-600 dark:text-gray-400 block">{color.hex}</code>
-                            <span className="text-[10px] text-gray-400 dark:text-gray-500">{color.percent}%</span>
+                            <code className="text-[10px] font-mono text-sub block">{color.hex}</code>
+                            <span className="text-[10px] text-faint">{color.percent}%</span>
                           </div>
                         </div>
                       ))}
                     </div>
                   </>
                 ) : (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
+                  <p className="text-muted text-sm text-center py-8">
                     {t('noImage')}
                   </p>
                 )}
@@ -566,12 +566,12 @@ export default function ColorExtractor() {
       {/* History */}
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('history')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('history')}</h2>
           <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
             {history.map((swatch) => (
               <div key={swatch.id} className="space-y-1">
                 <div
-                  className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-gray-200 dark:border-gray-700"
+                  className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
                   style={{ backgroundColor: swatch.color.hex }}
                   onClick={() => {
                     copyToClipboard(swatch.color.hex, swatch.id)
@@ -579,7 +579,7 @@ export default function ColorExtractor() {
                   }}
                   title={swatch.color.hex}
                 />
-                <code className="text-[10px] font-mono text-gray-600 dark:text-gray-400 block text-center truncate">
+                <code className="text-[10px] font-mono text-sub block text-center truncate">
                   {swatch.color.hex}
                 </code>
               </div>
@@ -590,17 +590,17 @@ export default function ColorExtractor() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-3 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -608,12 +608,12 @@ export default function ColorExtractor() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-3 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

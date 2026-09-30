@@ -36,7 +36,7 @@ export default function ImageCompressorPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ImageCompressor />
@@ -51,17 +51,17 @@ export default function ImageCompressorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             이미지 압축기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             이미지 압축기는 JPG·PNG·WebP 이미지 파일의 용량을 최대 90%까지 줄이는 무료 온라인 이미지 최적화 도구입니다. 화질 조절 슬라이더로 크기와 품질의 균형을 맞추고, 여러 파일을 일괄 처리하거나 WebP 형식으로 변환하여 웹사이트 로딩 속도를 크게 개선할 수 있습니다. 모든 처리는 브라우저에서 이루어져 이미지가 서버에 업로드되지 않습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 압축 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>웹 최적화:</strong> 블로그·쇼핑몰 상품 이미지를 WebP로 변환하면 같은 화질에서 JPEG 대비 25~35% 파일 크기를 줄여 페이지 로딩 속도를 향상시킵니다.</li>
             <li><strong>화질 설정:</strong> 웹 게시용은 80~85%, 인쇄·고화질 보관용은 90~95%로 설정하면 품질을 크게 손상시키지 않고 용량을 줄일 수 있습니다.</li>
             <li><strong>SNS 업로드 최적화:</strong> 인스타그램·카카오스토리 업로드 전 이미지를 1MB 이하로 압축하면 플랫폼의 자동 재압축으로 인한 화질 저하를 방지합니다.</li>

@@ -391,12 +391,12 @@ const BogeumjariLoanCalculatorContent = () => {
   };
 
   const typeColorMap: Record<LoanType, { active: string; base: string }> = {
-    first: { active: 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300', base: 'border-gray-200 dark:border-gray-600 hover:border-blue-300' },
-    newlywed: { active: 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300', base: 'border-gray-200 dark:border-gray-600 hover:border-pink-300' },
-    multichild: { active: 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300', base: 'border-gray-200 dark:border-gray-600 hover:border-green-300' },
-    general: { active: 'border-gray-500 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300', base: 'border-gray-200 dark:border-gray-600 hover:border-gray-400' },
+    first: { active: 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300', base: 'border-line hover:border-blue-300' },
+    newlywed: { active: 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300', base: 'border-line hover:border-pink-300' },
+    multichild: { active: 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300', base: 'border-line hover:border-green-300' },
+    general: { active: 'border-gray-500 bg-subtle text-body', base: 'border-line hover:border-gray-400' },
   };
-  const glassCard = 'bg-white/52 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]';
+  const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]';
   const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]';
 
   return (
@@ -404,14 +404,14 @@ const BogeumjariLoanCalculatorContent = () => {
       {/* 헤더 */}
       <div>
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             LH 보금자리론 계산기
           </h1>
           <span className="text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 px-2 py-0.5 rounded-full">
             2026년 기준
           </span>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-muted">
           내 조건에 맞는 대출한도·금리·월 상환액을 즉시 확인하세요 (2026년 9월 기준금리 4.90~5.20%, 우대 시 최저 3.90%)
         </p>
       </div>
@@ -420,14 +420,14 @@ const BogeumjariLoanCalculatorContent = () => {
         {/* 입력 폼 */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-500" />
               대출 조건 입력
             </h2>
 
             {/* 대출 유형 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 신청 유형 선택 <span className="text-xs text-gray-400 font-normal">(해당하는 유형 선택)</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -438,14 +438,14 @@ const BogeumjariLoanCalculatorContent = () => {
                     <button
                       key={type}
                       onClick={() => setLoanType(type)}
-                      className={`p-3 rounded-xl border-2 transition-all text-left ${isActive ? typeColorMap[type].active : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300'}`}
+                      className={`p-3 rounded-xl border-2 transition-all text-left ${isActive ? typeColorMap[type].active : 'border-line text-sub hover:border-gray-300'}`}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={isActive ? '' : 'text-gray-400 dark:text-gray-500'}>{info.icon}</span>
+                        <span className={isActive ? '' : 'text-faint'}>{info.icon}</span>
                         <span className="font-semibold text-sm">{info.label}</span>
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{info.sublabel}</div>
-                      <div className={`text-xs font-medium mt-1 ${isActive ? '' : 'text-gray-400 dark:text-gray-500'}`}>{info.benefit}</div>
+                      <div className="text-xs text-muted">{info.sublabel}</div>
+                      <div className={`text-xs font-medium mt-1 ${isActive ? '' : 'text-faint'}`}>{info.benefit}</div>
                     </button>
                   );
                 })}
@@ -455,7 +455,7 @@ const BogeumjariLoanCalculatorContent = () => {
             {/* 소득 + 자녀수 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   부부합산 연소득
                 </label>
                 <div className="relative">
@@ -465,9 +465,9 @@ const BogeumjariLoanCalculatorContent = () => {
                     value={householdIncome}
                     onChange={handleIncomeChange}
                     placeholder="70,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400 text-sm">원</span>
+                  <span className="absolute right-3 top-3 text-muted text-sm">원</span>
                 </div>
                 {loanType && (
                   <p className="text-xs text-gray-400 mt-1">
@@ -477,13 +477,13 @@ const BogeumjariLoanCalculatorContent = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   자녀수
                 </label>
                 <select
                   value={childCount}
                   onChange={(e) => setChildCount(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                 >
                   <option value="0">없음</option>
                   <option value="1">1명</option>
@@ -499,7 +499,7 @@ const BogeumjariLoanCalculatorContent = () => {
             {/* 주택가격 + 대출기간 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   주택 매입가격
                 </label>
                 <div className="relative">
@@ -509,21 +509,21 @@ const BogeumjariLoanCalculatorContent = () => {
                     value={housePrice}
                     onChange={handlePriceChange}
                     placeholder="400,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400 text-sm">원</span>
+                  <span className="absolute right-3 top-3 text-muted text-sm">원</span>
                 </div>
                 <p className="text-xs text-gray-400 mt-1">상한: 6억원 이하 주택</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   대출 기간
                 </label>
                 <select
                   value={loanPeriod}
                   onChange={(e) => setLoanPeriod(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
                 >
                   {Object.entries(PERIOD_RATES).map(([y, r]) => (
                     <option key={y} value={y}>{y}년 ({r.toFixed(2)}%)</option>
@@ -539,7 +539,7 @@ const BogeumjariLoanCalculatorContent = () => {
         <div className="space-y-4">
           {!result && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="text-center text-gray-400 dark:text-gray-500 py-8">
+              <div className="text-center text-faint py-8">
                 <Calculator className="w-10 h-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">소득과 주택가격을 입력하면<br />결과가 자동으로 계산됩니다</p>
               </div>
@@ -554,12 +554,12 @@ const BogeumjariLoanCalculatorContent = () => {
                 ) : (
                   <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
                 )}
-                <h3 className="font-semibold text-gray-900 dark:text-white flex-1">
+                <h3 className="font-semibold text-fg flex-1">
                   {result.eligible ? '대출 가능' : '대출 불가'}
                 </h3>
                 <button
                   onClick={copyResult}
-                  className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                  className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-1.5 text-sm"
                 >
                   {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {isCopied ? '복사됨' : '결과 복사'}
@@ -595,12 +595,12 @@ const BogeumjariLoanCalculatorContent = () => {
                   })()}
 
                   {/* 금리 계산 내역 */}
-                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
-                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">금리 계산 내역</div>
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs font-medium text-muted mb-2">금리 계산 내역</div>
                     <div className="space-y-1.5 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-300">기준금리 ({loanPeriod}년)</span>
-                        <span className="font-medium text-gray-900 dark:text-white">{result.baseRate.toFixed(2)}%</span>
+                        <span className="text-sub">기준금리 ({loanPeriod}년)</span>
+                        <span className="font-medium text-fg">{result.baseRate.toFixed(2)}%</span>
                       </div>
                       {result.discounts.map((d, i) => (
                         <div key={i} className="flex justify-between text-green-600 dark:text-green-400">
@@ -608,7 +608,7 @@ const BogeumjariLoanCalculatorContent = () => {
                           <span>- {d.rate.toFixed(2)}%p</span>
                         </div>
                       ))}
-                      <div className="border-t border-gray-200 dark:border-gray-600 pt-1.5 mt-1 flex justify-between font-bold text-blue-700 dark:text-blue-300">
+                      <div className="border-t border-line pt-1.5 mt-1 flex justify-between font-bold text-blue-700 dark:text-blue-300">
                         <span>최종 적용금리</span>
                         <span>{result.interestRate.toFixed(2)}%</span>
                       </div>
@@ -617,20 +617,20 @@ const BogeumjariLoanCalculatorContent = () => {
 
                   {/* 상환 정보 */}
                   <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-0.5">월 상환액</div>
-                      <div className="font-bold text-gray-900 dark:text-white">{formatNumber(result.monthlyPayment)}원</div>
+                    <div className="bg-subtle rounded-lg p-3">
+                      <div className="text-muted text-xs mb-0.5">월 상환액</div>
+                      <div className="font-bold text-fg">{formatNumber(result.monthlyPayment)}원</div>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-0.5">총 이자</div>
-                      <div className="font-bold text-gray-900 dark:text-white">{formatCurrency(result.totalInterest)}</div>
+                    <div className="bg-subtle rounded-lg p-3">
+                      <div className="text-muted text-xs mb-0.5">총 이자</div>
+                      <div className="font-bold text-fg">{formatCurrency(result.totalInterest)}</div>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-0.5">총 상환액</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{formatCurrency(result.totalPayment)}</div>
+                    <div className="bg-subtle rounded-lg p-3">
+                      <div className="text-muted text-xs mb-0.5">총 상환액</div>
+                      <div className="font-semibold text-fg">{formatCurrency(result.totalPayment)}</div>
                     </div>
                     <div className={`rounded-lg p-3 ${result.dti <= 40 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-yellow-50 dark:bg-yellow-900/20'}`}>
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-0.5">DTI</div>
+                      <div className="text-muted text-xs mb-0.5">DTI</div>
                       <div className={`font-bold ${result.dti <= 40 ? 'text-green-700 dark:text-green-300' : 'text-yellow-700 dark:text-yellow-300'}`}>
                         {result.dti.toFixed(1)}%
                       </div>
@@ -652,11 +652,11 @@ const BogeumjariLoanCalculatorContent = () => {
                   </div>
                   {result.maxLoanAmount > 0 && (
                     <div className="text-sm space-y-1">
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between text-sub">
                         <span>LTV 기준 한도</span>
                         <span className="font-medium">{formatCurrency(result.maxLoanAmount)}</span>
                       </div>
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between text-sub">
                         <span>월 상환 부담</span>
                         <span className="font-medium text-red-500">{formatNumber(result.monthlyPayment)}원 ({result.dti.toFixed(1)}%)</span>
                       </div>
@@ -749,7 +749,7 @@ const BogeumjariLoanCalculatorContent = () => {
           <>
             {/* 연도별 상환 스케줄 */}
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-blue-500" />
                 연도별 상환 스케줄
               </h3>
@@ -781,7 +781,7 @@ const BogeumjariLoanCalculatorContent = () => {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex justify-center gap-6 mt-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex justify-center gap-6 mt-2 text-xs text-muted">
                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-300 inline-block" /> 원금 상환</span>
                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-orange-300 inline-block" /> 이자</span>
               </div>
@@ -789,18 +789,18 @@ const BogeumjariLoanCalculatorContent = () => {
 
             {/* 기간별 비교 */}
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                 <TrendingDown className="w-5 h-5 text-green-500" />
                 대출 기간별 비교 <span className="text-xs font-normal text-gray-400">(대출금 {formatCurrency(loan)} 기준)</span>
               </h3>
               <div className="overflow-x-auto -mx-2">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">기간</th>
-                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">금리</th>
-                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">월 상환액</th>
-                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">총 이자</th>
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 px-2 text-muted font-medium text-xs">기간</th>
+                      <th className="text-right py-2 px-2 text-muted font-medium text-xs">금리</th>
+                      <th className="text-right py-2 px-2 text-muted font-medium text-xs">월 상환액</th>
+                      <th className="text-right py-2 px-2 text-muted font-medium text-xs">총 이자</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -809,11 +809,11 @@ const BogeumjariLoanCalculatorContent = () => {
                         key={row.period}
                         className={`border-b border-gray-100 dark:border-gray-700/50 ${row.isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''}`}
                       >
-                        <td className="py-2.5 px-2 text-gray-900 dark:text-white">
+                        <td className="py-2.5 px-2 text-fg">
                           {row.period} {row.isCurrent && <span className="text-xs text-blue-500 ml-1">선택</span>}
                         </td>
-                        <td className="py-2.5 px-2 text-right text-gray-700 dark:text-gray-300">{row.rate.toFixed(2)}%</td>
-                        <td className="py-2.5 px-2 text-right text-gray-900 dark:text-white">{formatNumber(row.monthlyPayment)}원</td>
+                        <td className="py-2.5 px-2 text-right text-body">{row.rate.toFixed(2)}%</td>
+                        <td className="py-2.5 px-2 text-right text-fg">{formatNumber(row.monthlyPayment)}원</td>
                         <td className="py-2.5 px-2 text-right text-orange-600 dark:text-orange-400">{fmtWon(row.totalInterest)}</td>
                       </tr>
                     ))}
@@ -830,7 +830,7 @@ const BogeumjariLoanCalculatorContent = () => {
 
       {/* 관련 사이트 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <span>🔗</span>
           관련 사이트
         </h3>
@@ -871,7 +871,7 @@ const BogeumjariLoanCalculatorContent = () => {
               <span className="text-2xl flex-shrink-0">{link.icon}</span>
               <div>
                 <div className="font-medium text-blue-700 dark:text-blue-300 group-hover:underline text-sm">{link.name}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{link.desc}</div>
+                <div className="text-xs text-muted mt-0.5">{link.desc}</div>
               </div>
             </a>
           ))}
@@ -891,8 +891,8 @@ const BogeumjariLoanCalculatorContent = () => {
       />
 
       {/* 유형별 요약 가이드 */}
-      <div className="bg-gradient-to-r from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl p-6 shadow-[0_18px_50px_rgba(59,130,246,0.10)]">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-gradient-to-r from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] border border-line rounded-2xl p-6 shadow-[0_18px_50px_rgba(59,130,246,0.10)]">
+        <h3 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
           <Home className="w-5 h-5 text-blue-500" />
           2026년 보금자리론 유형별 핵심 조건
         </h3>
@@ -915,11 +915,11 @@ const BogeumjariLoanCalculatorContent = () => {
               items: ['소득: 9천만원 이하', '한도: 최대 4억', '자녀 2명 이상', '금리 우대 0.2%p'],
             },
           ].map((g) => (
-            <div key={g.type} className="bg-white/58 dark:bg-white/[0.07] backdrop-blur-lg border border-white/55 dark:border-white/[0.08] rounded-xl p-4">
-              <div className="font-semibold text-sm text-gray-900 dark:text-white mb-2">{g.type}</div>
+            <div key={g.type} className="bg-surface border border-line rounded-xl p-4">
+              <div className="font-semibold text-sm text-fg mb-2">{g.type}</div>
               <ul className="space-y-1">
                 {g.items.map((item, i) => (
-                  <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-1">
+                  <li key={i} className="text-xs text-sub flex items-start gap-1">
                     <span className="text-blue-400 mt-0.5">·</span>{item}
                   </li>
                 ))}
@@ -927,7 +927,7 @@ const BogeumjariLoanCalculatorContent = () => {
             </div>
           ))}
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-xs text-muted mt-4">
           ※ 2026년 기준. 금리는 매월 변동되므로 주택금융공사 홈페이지에서 최신 금리를 확인하세요.
           주택가격 6억원 이하, 전용면적 85㎡ 이하 주택에 한해 적용됩니다.
         </p>
@@ -943,10 +943,10 @@ export default function BogeumjariLoanCalculator() {
     <Suspense fallback={
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="animate-pulse space-y-6">
-          <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+          <div className="h-16 bg-track rounded-xl" />
           <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 h-96 bg-gray-200 dark:bg-gray-700 rounded-xl" />
-            <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+            <div className="lg:col-span-2 h-96 bg-track rounded-xl" />
+            <div className="h-96 bg-track rounded-xl" />
           </div>
         </div>
       </div>

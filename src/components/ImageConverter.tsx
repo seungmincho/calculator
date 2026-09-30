@@ -154,8 +154,8 @@ export default function ImageConverter() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -163,7 +163,7 @@ export default function ImageConverter() {
         {/* Settings Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('uploadLabel')}
             </h2>
 
@@ -171,7 +171,7 @@ export default function ImageConverter() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setBatchMode(!batchMode)}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
               >
                 {batchMode ? t('batchMode') : t('singleMode')}
               </button>
@@ -186,12 +186,12 @@ export default function ImageConverter() {
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
                 isDragging
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-500'
+                  : 'border-line-strong hover:border-blue-500'
               }`}
             >
               <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('dragDrop')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-500">{t('supportedFormats')}</p>
+              <p className="text-sm text-sub mb-2">{t('dragDrop')}</p>
+              <p className="text-xs text-muted">{t('supportedFormats')}</p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -204,13 +204,13 @@ export default function ImageConverter() {
 
             {/* Output Format */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('outputFormat')}
               </label>
               <select
                 value={outputFormat}
                 onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
               >
                 <option value="jpeg">JPEG</option>
                 <option value="png">PNG</option>
@@ -221,7 +221,7 @@ export default function ImageConverter() {
             {/* Quality Slider (only for JPEG/WebP) */}
             {(outputFormat === 'jpeg' || outputFormat === 'webp') && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('quality')}: {t('qualityPercent', { value: quality })}
                 </label>
                 <input
@@ -248,7 +248,7 @@ export default function ImageConverter() {
               <button
                 onClick={handleReset}
                 disabled={images.length === 0}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <RefreshCw className="w-5 h-5" />
                 {t('reset')}
@@ -261,7 +261,7 @@ export default function ImageConverter() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('preview')}
               </h2>
               {images.length > 1 && (
@@ -278,32 +278,32 @@ export default function ImageConverter() {
             {images.length === 0 ? (
               <div className="text-center py-12">
                 <ImageIcon className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                <p className="text-gray-500 dark:text-gray-400">{t('dragDrop')}</p>
+                <p className="text-muted">{t('dragDrop')}</p>
               </div>
             ) : (
               <div className="space-y-6">
                 {images.map((image) => (
-                  <div key={image.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+                  <div key={image.id} className="border border-line rounded-lg p-4 space-y-4">
                     {/* Image Comparison */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <p className="text-sm font-medium text-body mb-2">
                           {t('original')}
                         </p>
                         <img
                           src={image.originalUrl}
                           alt="Original"
-                          className="w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700"
+                          className="w-full h-auto rounded-lg border border-line"
                         />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <p className="text-sm font-medium text-body mb-2">
                           {t('converted')}
                         </p>
                         <img
                           src={image.convertedUrl}
                           alt="Converted"
-                          className="w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700"
+                          className="w-full h-auto rounded-lg border border-line"
                         />
                       </div>
                     </div>
@@ -311,31 +311,31 @@ export default function ImageConverter() {
                     {/* File Info */}
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">{t('fileInfo.name')}:</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-sub">{t('fileInfo.name')}:</span>
+                        <span className="text-fg font-medium">
                           {image.originalFile.name}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">{t('fileInfo.format')}:</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-sub">{t('fileInfo.format')}:</span>
+                        <span className="text-fg font-medium">
                           {image.originalFile.type.split('/')[1].toUpperCase()} → {image.format.toUpperCase()}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">{t('fileInfo.dimensions')}:</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-sub">{t('fileInfo.dimensions')}:</span>
+                        <span className="text-fg font-medium">
                           {image.originalWidth} × {image.originalHeight}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">{t('fileInfo.size')}:</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-sub">{t('fileInfo.size')}:</span>
+                        <span className="text-fg font-medium">
                           {formatFileSize(image.originalSize)} → {formatFileSize(image.convertedSize)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">{t('fileInfo.reduction')}:</span>
+                        <span className="text-sub">{t('fileInfo.reduction')}:</span>
                         <span className={`font-medium ${
                           image.convertedSize < image.originalSize
                             ? 'text-green-600 dark:text-green-400'
@@ -364,19 +364,19 @@ export default function ImageConverter() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Format Features */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.formats.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.formats.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -386,12 +386,12 @@ export default function ImageConverter() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

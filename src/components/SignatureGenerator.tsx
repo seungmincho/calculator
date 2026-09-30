@@ -249,8 +249,8 @@ export default function SignatureGenerator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -258,13 +258,13 @@ export default function SignatureGenerator() {
         {/* Settings Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               서명 설정
             </h2>
 
             {/* Pen Color */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('penColor')}
               </label>
               <div className="flex items-center gap-3">
@@ -272,15 +272,15 @@ export default function SignatureGenerator() {
                   type="color"
                   value={penColor}
                   onChange={(e) => setPenColor(e.target.value)}
-                  className="w-16 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  className="w-16 h-10 rounded border border-line-strong cursor-pointer"
                 />
-                <span className="text-sm text-gray-600 dark:text-gray-400">{penColor}</span>
+                <span className="text-sm text-sub">{penColor}</span>
               </div>
             </div>
 
             {/* Pen Size */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('penSize')}: {penSize}px
               </label>
               <input
@@ -295,7 +295,7 @@ export default function SignatureGenerator() {
 
             {/* Background Color */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('backgroundColor')}
               </label>
               <div className="flex gap-3">
@@ -304,7 +304,7 @@ export default function SignatureGenerator() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     backgroundColor === 'transparent'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t('transparent')}
@@ -314,7 +314,7 @@ export default function SignatureGenerator() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     backgroundColor === 'white'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
                   {t('white')}
@@ -323,7 +323,7 @@ export default function SignatureGenerator() {
             </div>
 
             {/* Actions */}
-            <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="space-y-2 pt-4 border-t border-line">
               <button
                 onClick={handleClear}
                 className="w-full flex items-center justify-center gap-2 bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-300 rounded-lg px-4 py-3 font-medium transition-colors"
@@ -335,7 +335,7 @@ export default function SignatureGenerator() {
               <button
                 onClick={handleUndo}
                 disabled={strokes.length === 0}
-                className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Undo2 className="w-5 h-5" />
                 {t('undo')}
@@ -372,7 +372,7 @@ export default function SignatureGenerator() {
         {/* Canvas Panel */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('canvas')}
             </h2>
             <div className="relative">
@@ -385,14 +385,14 @@ export default function SignatureGenerator() {
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                className={`w-full h-[300px] border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-crosshair ${
+                className={`w-full h-[300px] border-2 border-line-strong rounded-lg cursor-crosshair ${
                   backgroundColor === 'white' ? 'bg-white' : 'bg-transparent'
                 }`}
                 style={{ touchAction: 'none' }}
               />
               {strokes.length === 0 && currentStroke.length === 0 && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <p className="text-gray-400 dark:text-gray-500 text-sm">
+                  <p className="text-faint text-sm">
                     {t('drawHere')}
                   </p>
                 </div>
@@ -406,7 +406,7 @@ export default function SignatureGenerator() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-3 mb-6">
           <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
@@ -414,10 +414,10 @@ export default function SignatureGenerator() {
         <div className="space-y-6">
           {/* Usage */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
                 <li key={index} className="flex gap-2">
                   <span className="text-blue-600 dark:text-blue-400">•</span>
@@ -429,10 +429,10 @@ export default function SignatureGenerator() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex gap-2">
                   <span className="text-blue-600 dark:text-blue-400">•</span>

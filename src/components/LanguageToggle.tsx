@@ -25,7 +25,7 @@ const LanguageToggle = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        className="flex items-center space-x-2 px-3 py-2 rounded-md text-sub hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
       >
         <Languages className="w-4 h-4" />
         <span className="hidden xl:inline">{currentLanguage.name}</span>
@@ -33,7 +33,7 @@ const LanguageToggle = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+        <div className="absolute top-full right-0 mt-1 w-40 bg-surface rounded-md shadow-lg border border-line py-1 z-50">
           {languages.map((language) => (
             <button
               key={language.code}
@@ -41,7 +41,7 @@ const LanguageToggle = () => {
               className={`w-full flex items-center space-x-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                 currentLanguage.code === language.code
                   ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/30'
-                  : 'text-gray-700 dark:text-gray-200'
+                  : 'text-body'
               }`}
             >
               <span className="text-lg">{language.flag}</span>

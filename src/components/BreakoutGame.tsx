@@ -1178,33 +1178,33 @@ export default function BreakoutGame() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Gamepad2 className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Game Area */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
             {/* Stats Bar */}
             <div className="flex flex-wrap items-center justify-between mb-4 gap-2 text-sm">
               <div className="flex items-center gap-3 sm:gap-4">
-                <span className="font-medium text-gray-700 dark:text-gray-300">
+                <span className="font-medium text-body">
                   {t('score')}: <span className="text-blue-600 dark:text-blue-400 font-bold">{score}</span>
                 </span>
-                <span className="font-medium text-gray-700 dark:text-gray-300">
+                <span className="font-medium text-body">
                   {t('level')}: <span className="text-green-600 dark:text-green-400 font-bold">{level}</span>
                 </span>
-                <span className="font-medium text-gray-700 dark:text-gray-300">
+                <span className="font-medium text-body">
                   {t('lives')}: <span className="text-red-500 font-bold">{'\u2764'.repeat(lives)}</span>
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-yellow-500" />
-                <span className="font-medium text-gray-700 dark:text-gray-300">
+                <span className="font-medium text-body">
                   {t('highScore')}: <span className="text-yellow-600 dark:text-yellow-400 font-bold">{highScore}</span>
                 </span>
               </div>
@@ -1218,7 +1218,7 @@ export default function BreakoutGame() {
             >
               <canvas
                 ref={canvasRef}
-                className="rounded-lg border-2 border-gray-200 dark:border-gray-700 cursor-none"
+                className="rounded-lg border-2 border-line cursor-none"
               />
             </div>
 
@@ -1237,7 +1237,7 @@ export default function BreakoutGame() {
               {gameState === 'playing' && (
                 <button
                   onClick={togglePause}
-                  className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium flex items-center gap-2 transition-colors"
+                  className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium flex items-center gap-2 transition-colors"
                 >
                   <Pause className="w-4 h-4" />
                   {t('pause')}
@@ -1277,7 +1277,7 @@ export default function BreakoutGame() {
               {(gameState === 'playing' || gameState === 'paused') && (
                 <button
                   onClick={startGame}
-                  className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium flex items-center gap-2 transition-colors"
+                  className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium flex items-center gap-2 transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {t('restart')}
@@ -1286,7 +1286,7 @@ export default function BreakoutGame() {
 
               <button
                 onClick={toggleSound}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg p-2.5 transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg p-2.5 transition-colors"
                 aria-label={soundEnabled ? t('soundOn') : t('soundOff')}
               >
                 {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
@@ -1301,7 +1301,7 @@ export default function BreakoutGame() {
           {gameState === 'gameover' && (
             <div className="bg-red-50 dark:bg-red-950 rounded-xl shadow-lg p-6">
               <h3 className="text-lg font-bold text-red-600 dark:text-red-400 mb-2">{t('gameOver')}</h3>
-              <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+              <div className="space-y-1 text-sm text-body">
                 <p>{t('score')}: <span className="font-bold">{score}</span></p>
                 <p>{t('level')}: <span className="font-bold">{level}</span></p>
                 <p>{t('highScore')}: <span className="font-bold text-yellow-600 dark:text-yellow-400">{highScore}</span></p>
@@ -1313,7 +1313,7 @@ export default function BreakoutGame() {
           {gameState === 'levelclear' && (
             <div className="bg-green-50 dark:bg-green-950 rounded-xl shadow-lg p-6">
               <h3 className="text-lg font-bold text-green-600 dark:text-green-400 mb-2">{t('levelClear')}</h3>
-              <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+              <div className="space-y-1 text-sm text-body">
                 <p>{t('score')}: <span className="font-bold">{score}</span></p>
                 <p>{t('level')}: <span className="font-bold">{level}</span> &rarr; <span className="font-bold">{level + 1}</span></p>
               </div>
@@ -1321,20 +1321,20 @@ export default function BreakoutGame() {
           )}
 
           {/* Power-up Legend */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">Power-Ups</h3>
+          <div className="bg-surface rounded-xl shadow-lg p-6">
+            <h3 className="text-base font-semibold text-fg mb-3">Power-Ups</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">W</span>
-                <span className="text-gray-700 dark:text-gray-300">{t('powerUpWide')}</span>
+                <span className="text-body">{t('powerUpWide')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-bold">M</span>
-                <span className="text-gray-700 dark:text-gray-300">{t('powerUpMulti')}</span>
+                <span className="text-body">{t('powerUpMulti')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold">+</span>
-                <span className="text-gray-700 dark:text-gray-300">{t('powerUpLife')}</span>
+                <span className="text-body">{t('powerUpLife')}</span>
               </div>
             </div>
           </div>
@@ -1347,26 +1347,26 @@ export default function BreakoutGame() {
           />
 
           {/* Controls Guide */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-6">
             <button
               onClick={() => setShowGuide(!showGuide)}
-              className="w-full flex items-center justify-between text-base font-semibold text-gray-900 dark:text-white"
+              className="w-full flex items-center justify-between text-base font-semibold text-fg"
             >
               <span>{t('controls')}</span>
               <span className="text-gray-400">{showGuide ? '\u25B2' : '\u25BC'}</span>
             </button>
             {showGuide && (
-              <div className="mt-3 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-3 space-y-2 text-sm text-sub">
                 <div className="flex items-start gap-2">
-                  <span className="text-gray-400 dark:text-gray-500 shrink-0">KB</span>
+                  <span className="text-faint shrink-0">KB</span>
                   <span>{t('controlsKeyboard')}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gray-400 dark:text-gray-500 shrink-0">MS</span>
+                  <span className="text-faint shrink-0">MS</span>
                   <span>{t('controlsMouse')}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gray-400 dark:text-gray-500 shrink-0">TC</span>
+                  <span className="text-faint shrink-0">TC</span>
                   <span>{t('controlsTouch')}</span>
                 </div>
               </div>

@@ -689,10 +689,10 @@ export default function LottoGenerator() {
       {/* 간소화된 헤더 */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -717,7 +717,7 @@ export default function LottoGenerator() {
       </div>
 
       {/* 메인 생성 영역 - 버튼 바로 보이게 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         {/* 빠른 생성 버튼들 */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <button
@@ -798,7 +798,7 @@ export default function LottoGenerator() {
                     {numberOfSets > 1 ? `${index + 1}${t('gameNumber')}` : t('result.title')}
                   </span>
                   {index === 0 && (
-                    <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    <span className="text-xs text-gray-500 bg-soft px-2 py-1 rounded">
                       {getMethodName(set.generateMethod)}
                     </span>
                   )}
@@ -832,7 +832,7 @@ export default function LottoGenerator() {
             <div className="flex gap-2">
               <button
                 onClick={handleShare}
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-lg text-sm text-body transition-colors"
               >
                 {isCopied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
                 {isCopied ? tCommon('copied') : t('result.share')}
@@ -840,7 +840,7 @@ export default function LottoGenerator() {
               {showSaveButton && (
                 <button
                   onClick={handleSaveCalculation}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-lg text-sm text-body transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   {tCommon('save')}
@@ -849,22 +849,22 @@ export default function LottoGenerator() {
             </div>
           </div>
         ) : (
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-8 text-center">
+          <div className="bg-subtle rounded-xl p-8 text-center">
             <Sparkles className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('placeholder')}</p>
+            <p className="text-muted text-sm">{t('placeholder')}</p>
           </div>
         )}
 
         {/* 상세 설정 (접을 수 있게) */}
         <details className="mt-6">
-          <summary className="cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 flex items-center gap-2">
+          <summary className="cursor-pointer text-sm font-medium text-sub hover:text-purple-600 dark:hover:text-purple-400 flex items-center gap-2">
             <Filter className="w-4 h-4" />
             {t('settings.title')}
           </summary>
-          <div className="mt-4 space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-4 space-y-4 pt-4 border-t border-line">
             {/* 생성 방식 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('settings.method')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -878,7 +878,7 @@ export default function LottoGenerator() {
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       generateMethod === method
                         ? 'bg-purple-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`methods.${method}`)}
@@ -889,7 +889,7 @@ export default function LottoGenerator() {
 
             {/* 게임 수 */}
             <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="text-sm font-medium text-body">
                 {t('settings.numberOfSets')}
               </label>
               <div className="flex gap-1">
@@ -903,7 +903,7 @@ export default function LottoGenerator() {
                     className={`w-8 h-8 text-sm rounded-lg transition-colors ${
                       numberOfSets === num
                         ? 'bg-purple-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {num}
@@ -915,7 +915,7 @@ export default function LottoGenerator() {
             {/* 제외 번호 */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-body">
                   {t('settings.excludeNumbers')} {excludedNumbers.length > 0 && `(${excludedNumbers.length})`}
                 </label>
                 {excludedNumbers.length > 0 && (
@@ -935,7 +935,7 @@ export default function LottoGenerator() {
                     className={`w-7 h-7 rounded text-xs font-medium transition-colors ${
                       excludedNumbers.includes(number)
                         ? 'bg-red-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {number}
@@ -948,8 +948,8 @@ export default function LottoGenerator() {
       </div>
 
       {/* 당첨 확인 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
+        <h2 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
           <Trophy className="w-5 h-5 text-yellow-500" />
           {t('winChecker.title')}
         </h2>
@@ -999,7 +999,7 @@ export default function LottoGenerator() {
                 value={num}
                 onChange={(e) => handleCheckNumberChange(index, e.target.value)}
                 placeholder={String(index + 1)}
-                className="w-11 h-11 text-center text-lg font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-11 h-11 text-center text-lg font-bold border-2 border-line-strong rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 maxLength={2}
               />
             ))}
@@ -1015,7 +1015,7 @@ export default function LottoGenerator() {
             </button>
             <button
               onClick={resetCheckNumbers}
-              className="p-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="p-2.5 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1029,7 +1029,7 @@ export default function LottoGenerator() {
             checkResult.prizeRank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800' :
             checkResult.prizeRank === 3 ? 'bg-gradient-to-r from-orange-400 to-amber-600 text-white' :
             checkResult.prizeRank >= 4 ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' :
-            'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            'bg-soft text-body'
           }`}>
             <div className="text-2xl font-bold mb-1">
               {checkResult.prizeRank > 0 ? `🎉 ${checkResult.prize}` : checkResult.prize}
@@ -1052,15 +1052,15 @@ export default function LottoGenerator() {
             )}
           </div>
         ) : (
-          <div className="text-center text-sm text-gray-500 dark:text-gray-400 py-3">
+          <div className="text-center text-sm text-muted py-3">
             {t('winChecker.enterNumbers')}
           </div>
         )}
       </div>
 
       {/* 당첨번호 조회 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
+        <h2 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
           <Database className="w-5 h-5 text-green-600" />
           {t('winningNumbers')}
         </h2>
@@ -1068,14 +1068,14 @@ export default function LottoGenerator() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* 회차 검색 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('searchRound')}</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">{t('searchRound')}</h3>
             <div className="flex gap-2 mb-4">
               <input
                 type="number"
                 value={searchRound}
                 onChange={(e) => setSearchRound(e.target.value)}
                 placeholder={t('searchRoundPlaceholder')}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="flex-1 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
               <button
                 onClick={() => searchWinningNumber(searchRound)}
@@ -1092,8 +1092,8 @@ export default function LottoGenerator() {
             </div>
             
             {searchResult && (
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <div className="bg-subtle rounded-lg p-4">
+                <div className="text-sm text-sub mb-2">
                   {t('round')} {searchResult.round} ({searchResult.drawDate})
                 </div>
                 <div className="flex flex-wrap gap-2 mb-2">
@@ -1106,14 +1106,14 @@ export default function LottoGenerator() {
                     </div>
                   ))}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-sub">
                   {t('bonusNumber')}: <span className="font-bold">{searchResult.bonusNumber}</span>
                 </div>
               </div>
             )}
             
             {searchRound && !searchResult && !isSearching && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-muted">
                 {t('noData')}
               </div>
             )}
@@ -1122,7 +1122,7 @@ export default function LottoGenerator() {
           {/* 최신 추첨 */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('latestDrawing')}</h3>
+              <h3 className="text-sm font-semibold text-fg">{t('latestDrawing')}</h3>
               <div className="flex items-center space-x-2">
                 {/* 데이터 상태 표시 */}
                 {dataStats && (
@@ -1132,7 +1132,7 @@ export default function LottoGenerator() {
                     ) : (
                       <AlertCircle className="w-4 h-4 text-yellow-500" />
                     )}
-                    <span className="text-gray-600 dark:text-gray-400">
+                    <span className="text-sub">
                       {dataStats.latestDraw}회차
                     </span>
                   </div>
@@ -1181,12 +1181,12 @@ export default function LottoGenerator() {
                   </div>
                 </>
               ) : dataLoading ? (
-                <div className="text-center text-gray-500 dark:text-gray-400">
+                <div className="text-center text-muted">
                   <div className="animate-spin w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
                   <div className="text-sm">{t('loading')}</div>
                 </div>
               ) : (
-                <div className="text-center text-gray-500 dark:text-gray-400">
+                <div className="text-center text-muted">
                   <AlertCircle className="w-6 h-6 mx-auto mb-2" />
                   <div className="text-sm">최신 회차 정보를 불러올 수 없습니다</div>
                 </div>
@@ -1197,9 +1197,9 @@ export default function LottoGenerator() {
       </div>
       
       {/* 통계 정보 (간소화) */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <details>
-          <summary className="cursor-pointer text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <summary className="cursor-pointer text-lg font-bold text-fg flex items-center gap-2">
             <Activity className="w-5 h-5 text-blue-600" />
             {t('statisticsRecommendation')}
           </summary>
@@ -1253,20 +1253,20 @@ export default function LottoGenerator() {
 
             {/* 통계 요약 */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-center">
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
+              <div className="bg-soft rounded-lg p-3 text-center">
+                <div className="text-lg font-bold text-fg">
                   {Math.max(...numberStats.map(s => s.frequency))}회
                 </div>
                 <div className="text-xs text-gray-500">최다 출현</div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-center">
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
+              <div className="bg-soft rounded-lg p-3 text-center">
+                <div className="text-lg font-bold text-fg">
                   {Math.min(...numberStats.map(s => s.frequency))}회
                 </div>
                 <div className="text-xs text-gray-500">최소 출현</div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-center">
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
+              <div className="bg-soft rounded-lg p-3 text-center">
+                <div className="text-lg font-bold text-fg">
                   {(numberStats.reduce((sum, s) => sum + s.frequency, 0) / 45).toFixed(0)}회
                 </div>
                 <div className="text-xs text-gray-500">평균 출현</div>
@@ -1278,35 +1278,35 @@ export default function LottoGenerator() {
 
       {/* 이용 가이드 (간소화) */}
       <details className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6">
-        <summary className="cursor-pointer text-lg font-bold text-gray-900 dark:text-white">
+        <summary className="cursor-pointer text-lg font-bold text-fg">
           🎯 {t('guide.title')}
         </summary>
         <div className="mt-4 grid md:grid-cols-3 gap-4 text-sm">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.methodsTitle')}
             </h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-1 text-sub">
               <li>• {t('guide.methods.0')}</li>
               <li>• {t('guide.methods.1')}</li>
               <li>• {t('guide.methods.2')}</li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.tipsTitle')}
             </h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-1 text-sub">
               <li>• {t('guide.tips.0')}</li>
               <li>• {t('guide.tips.1')}</li>
               <li>• {t('guide.tips.2')}</li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.remindersTitle')}
             </h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-1 text-sub">
               <li>• {t('guide.reminders.0')}</li>
               <li>• {t('guide.reminders.1')}</li>
               <li>• {t('guide.reminders.2')}</li>
@@ -1316,9 +1316,9 @@ export default function LottoGenerator() {
       </details>
 
       {/* 당첨 확률 (간소화) */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+      <div className="bg-surface rounded-2xl shadow-lg p-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('stats.title')}</span>
+          <span className="text-sm font-medium text-body">{t('stats.title')}</span>
           <div className="flex gap-4 text-xs">
             <span className="text-green-600">1등 1:8,145,060</span>
             <span className="text-blue-600">2등 1:1,357,510</span>

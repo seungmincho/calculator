@@ -261,20 +261,20 @@ export default function NumberBaseball() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
               <Target className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+              <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+              <p className="text-sm text-muted">{t('description')}</p>
             </div>
           </div>
           {/* Difficulty selector */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">{t('difficulty')}:</span>
+            <span className="text-sm text-sub">{t('difficulty')}:</span>
             {(['easy', 'normal', 'hard'] as Difficulty[]).map((d) => (
               <button
                 key={d}
@@ -282,7 +282,7 @@ export default function NumberBaseball() {
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   difficulty === d
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t(d)}
@@ -296,16 +296,16 @@ export default function NumberBaseball() {
         {/* Left: Input + History */}
         <div className="lg:col-span-2 space-y-6">
           {/* Input panel */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-6">
             {isWon ? (
               <div className="text-center py-6">
                 <div className="flex justify-center mb-3">
                   <Trophy className="w-12 h-12 text-yellow-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-fg mb-2">
                   {t('gameWon')}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-sub mb-6">
                   {t('gameWonMessage', { attempts: history.length })}
                 </p>
                 <button
@@ -319,12 +319,12 @@ export default function NumberBaseball() {
             ) : (
               <>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-fg">
                     {t('guess')} #{history.length + 1}
                   </h2>
                   <button
                     onClick={() => startGame(difficulty)}
-                    className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                    className="inline-flex items-center gap-1 text-sm text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     {t('newGame')}
@@ -343,7 +343,7 @@ export default function NumberBaseball() {
                       value={val}
                       onChange={(e) => handleInput(i, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(i, e)}
-                      className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors"
+                      className="w-12 h-14 text-center text-2xl font-bold border-2 border-line-strong rounded-lg bg-field text-fg focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors"
                     />
                   ))}
                 </div>
@@ -377,7 +377,7 @@ export default function NumberBaseball() {
                       {t('hint')}
                     </button>
                   ) : !hintUsed && !isWon ? (
-                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                    <p className="text-xs text-faint">
                       {t('hintAvailableAfter')}
                     </p>
                   ) : null}
@@ -388,14 +388,14 @@ export default function NumberBaseball() {
 
           {/* History table */}
           {history.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-surface rounded-xl shadow-lg p-6">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('history')}
               </h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                    <tr className="text-muted border-b border-line">
                       <th className="text-left pb-2 pr-4">{t('attempt')}</th>
                       <th className="text-left pb-2 pr-4">{t('guess')}</th>
                       <th className="text-center pb-2 pr-4">
@@ -409,7 +409,7 @@ export default function NumberBaseball() {
                         </span>
                       </th>
                       <th className="text-center pb-2">
-                        <span className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                        <span className="inline-flex items-center gap-1 text-muted">
                           ⚾ {t('out')}
                         </span>
                       </th>
@@ -419,13 +419,13 @@ export default function NumberBaseball() {
                     {[...history].reverse().map((row) => (
                       <tr
                         key={row.attempt}
-                        className="border-b border-gray-100 dark:border-gray-700 last:border-0"
+                        className="border-b border-line last:border-0"
                       >
-                        <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">
+                        <td className="py-2 pr-4 text-muted">
                           #{row.attempt}
                         </td>
                         <td className="py-2 pr-4">
-                          <span className="font-mono font-bold text-gray-900 dark:text-white tracking-widest">
+                          <span className="font-mono font-bold text-fg tracking-widest">
                             {row.guess}
                           </span>
                         </td>
@@ -434,7 +434,7 @@ export default function NumberBaseball() {
                             className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold ${
                               row.strikes > 0
                                 ? 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+                                : 'bg-soft text-faint'
                             }`}
                           >
                             {row.strikes}
@@ -445,7 +445,7 @@ export default function NumberBaseball() {
                             className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold ${
                               row.balls > 0
                                 ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+                                : 'bg-soft text-faint'
                             }`}
                           >
                             {row.balls}
@@ -455,8 +455,8 @@ export default function NumberBaseball() {
                           <span
                             className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold ${
                               row.outs > 0
-                                ? 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+                                ? 'bg-gray-200 dark:bg-gray-600 text-body'
+                                : 'bg-soft text-faint'
                             }`}
                           >
                             {row.outs}
@@ -474,70 +474,70 @@ export default function NumberBaseball() {
         {/* Right: Stats */}
         <div className="space-y-6">
           {/* Game info */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('gameInfo')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('gameInfo')}</h2>
             </div>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('digitCount')}</span>
-                <span className="font-bold text-gray-900 dark:text-white">{digitCount}{t('digits')}</span>
+                <span className="text-muted">{t('digitCount')}</span>
+                <span className="font-bold text-fg">{digitCount}{t('digits')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('currentAttempts')}</span>
-                <span className="font-bold text-gray-900 dark:text-white">{history.length}{t('times')}</span>
+                <span className="text-muted">{t('currentAttempts')}</span>
+                <span className="font-bold text-fg">{history.length}{t('times')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('difficultyLabel')}</span>
+                <span className="text-muted">{t('difficultyLabel')}</span>
                 <span className="font-bold text-blue-600 dark:text-blue-400">{t(difficulty)}</span>
               </div>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="bg-surface rounded-xl shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('stats.title')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('stats.title')}</h2>
             </div>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('stats.gamesPlayed')}</span>
-                <span className="font-bold text-gray-900 dark:text-white">{stats.gamesPlayed}</span>
+                <span className="text-muted">{t('stats.gamesPlayed')}</span>
+                <span className="font-bold text-fg">{stats.gamesPlayed}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('stats.avgAttempts')}</span>
-                <span className="font-bold text-gray-900 dark:text-white">{avgAttempts}</span>
+                <span className="text-muted">{t('stats.avgAttempts')}</span>
+                <span className="font-bold text-fg">{avgAttempts}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('stats.bestRecord')}</span>
-                <span className="font-bold text-gray-900 dark:text-white">
+                <span className="text-muted">{t('stats.bestRecord')}</span>
+                <span className="font-bold text-fg">
                   {stats.bestRecord > 0 ? stats.bestRecord : '-'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">{t('stats.winStreak')}</span>
+                <span className="text-muted">{t('stats.winStreak')}</span>
                 <span className="font-bold text-yellow-600 dark:text-yellow-400">{stats.winStreak}</span>
               </div>
             </div>
           </div>
 
           {/* Legend */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('legend')}</h2>
+          <div className="bg-surface rounded-xl shadow-lg p-6">
+            <h2 className="text-base font-semibold text-fg mb-3">{t('legend')}</h2>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-bold shrink-0">S</span>
-                <span className="text-gray-600 dark:text-gray-300">{t('strikeDesc')}</span>
+                <span className="text-sub">{t('strikeDesc')}</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 text-xs font-bold shrink-0">B</span>
-                <span className="text-gray-600 dark:text-gray-300">{t('ballDesc')}</span>
+                <span className="text-sub">{t('ballDesc')}</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs font-bold shrink-0">O</span>
-                <span className="text-gray-600 dark:text-gray-300">{t('outDesc')}</span>
+                <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-600 text-body text-xs font-bold shrink-0">O</span>
+                <span className="text-sub">{t('outDesc')}</span>
               </div>
             </div>
           </div>
@@ -563,27 +563,27 @@ export default function NumberBaseball() {
       />
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
         <button
           onClick={() => setShowGuide((v) => !v)}
           className="w-full flex items-center justify-between"
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('guide.title')}</h2>
           </div>
-          <span className="text-gray-400 dark:text-gray-500 text-sm">{showGuide ? '▲' : '▼'}</span>
+          <span className="text-faint text-sm">{showGuide ? '▲' : '▼'}</span>
         </button>
 
         {showGuide && (
           <div className="mt-6 grid sm:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="font-semibold text-body mb-2">
                 {t('guide.rules.title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guide.rules.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">•</span>
                     {item}
                   </li>
@@ -591,12 +591,12 @@ export default function NumberBaseball() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="font-semibold text-body mb-2">
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-green-500 mt-0.5">•</span>
                     {item}
                   </li>
@@ -604,12 +604,12 @@ export default function NumberBaseball() {
               </ul>
             </div>
             <div className="sm:col-span-2">
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="font-semibold text-body mb-2">
                 {t('guide.example.title')}
               </h3>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-sm space-y-1">
+              <div className="bg-subtle rounded-lg p-4 text-sm space-y-1">
                 {(t.raw('guide.example.items') as string[]).map((item, i) => (
-                  <p key={i} className="text-gray-600 dark:text-gray-300 font-mono">{item}</p>
+                  <p key={i} className="text-sub font-mono">{item}</p>
                 ))}
               </div>
             </div>

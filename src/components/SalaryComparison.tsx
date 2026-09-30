@@ -296,16 +296,16 @@ export default function SalaryComparison() {
       {/* 헤더 */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <ArrowLeftRight className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={copyLink}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             title="링크 복사"
           >
             {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -313,7 +313,7 @@ export default function SalaryComparison() {
           </button>
           <button
             onClick={resetAll}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('reset')}
@@ -356,7 +356,7 @@ export default function SalaryComparison() {
 
               {/* 연봉/월급 */}
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   {t('salary')}
                 </label>
                 <div className="flex gap-1">
@@ -384,7 +384,7 @@ export default function SalaryComparison() {
 
               {/* 비과세 */}
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   {t('nonTaxable')}
                 </label>
                 <div className="relative">
@@ -402,7 +402,7 @@ export default function SalaryComparison() {
               {/* 부양가족 / 자녀 */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs font-medium text-sub mb-1">
                     {t('dependents')}
                   </label>
                   <select
@@ -416,7 +416,7 @@ export default function SalaryComparison() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs font-medium text-sub mb-1">
                     {t('children')}
                   </label>
                   <select
@@ -433,9 +433,9 @@ export default function SalaryComparison() {
 
               {/* 빠른 결과 미리보기 */}
               {results[idx] && (
-                <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <div className="pt-2 border-t border-line">
                   <div className="flex justify-between items-baseline">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('netMonthly')}</span>
+                    <span className="text-xs text-muted">{t('netMonthly')}</span>
                     <span className={`text-lg font-bold ${color.accent}`}>
                       {formatWon(results[idx]!.netMonthly)}
                     </span>
@@ -450,13 +450,13 @@ export default function SalaryComparison() {
       {/* 비교 결과 테이블 */}
       {hasResults && (
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <div className="px-6 py-4 border-b border-line flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-fg">
               {t('comparisonResult')}
             </h2>
             <button
               onClick={() => copyResult(buildSummaryText(), 'summary')}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             >
               {copiedId === 'summary' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
               {copiedId === 'summary' ? t('copied') : t('copyResult')}
@@ -466,8 +466,8 @@ export default function SalaryComparison() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm" aria-label={t('comparisonResult')}>
               <thead>
-                <tr className="bg-gray-50 dark:bg-gray-700/50">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-40">
+                <tr className="bg-subtle">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider w-40">
                     {t('item')}
                   </th>
                   {scenarios.map((s, idx) => (
@@ -479,7 +479,7 @@ export default function SalaryComparison() {
                     const r = results[idx + 1]
                     if (!r) return null
                     return (
-                      <th key={`diff-${s.id}`} className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      <th key={`diff-${s.id}`} className="px-4 py-3 text-right text-xs font-medium text-muted uppercase tracking-wider">
                         {s.label}-{scenarios[0].label}
                       </th>
                     )
@@ -502,9 +502,9 @@ export default function SalaryComparison() {
 
                 {/* 실효세율 */}
                 <tr className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{t('effectiveRate')}</td>
+                  <td className="px-4 py-3 font-medium text-fg">{t('effectiveRate')}</td>
                   {results.map((r, i) => (
-                    <td key={scenarios[i].id} className="px-4 py-3 text-right text-gray-900 dark:text-white">
+                    <td key={scenarios[i].id} className="px-4 py-3 text-right text-fg">
                       {r ? `${r.taxInfo.effectiveTaxRate.toFixed(1)}%` : '-'}
                     </td>
                   ))}
@@ -514,7 +514,7 @@ export default function SalaryComparison() {
                     const diff = r.taxInfo.effectiveTaxRate - baseResult.taxInfo.effectiveTaxRate
                     return (
                       <td key={`diff-rate-${s.id}`} className="px-4 py-3 text-right">
-                        <span className={`font-medium ${diff > 0.05 ? 'text-red-600 dark:text-red-400' : diff < -0.05 ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                        <span className={`font-medium ${diff > 0.05 ? 'text-red-600 dark:text-red-400' : diff < -0.05 ? 'text-green-600 dark:text-green-400' : 'text-muted'}`}>
                           {diff >= 0 ? '+' : ''}{diff.toFixed(1)}%p
                         </span>
                       </td>
@@ -536,11 +536,11 @@ export default function SalaryComparison() {
       {/* 시각적 비교 차트 (CSS 기반) */}
       {hasResults && (
         <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('visualComparison')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('visualComparison')}</h2>
 
           {/* 월 실수령액 비교 바 */}
           <div>
-            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">{t('netMonthly')}</h3>
+            <h3 className="text-sm font-medium text-sub mb-3">{t('netMonthly')}</h3>
             <div className="space-y-3">
               {scenarios.map((s, idx) => {
                 const r = results[idx]
@@ -549,7 +549,7 @@ export default function SalaryComparison() {
                 return (
                   <div key={s.id} className="flex items-center gap-3">
                     <span className={`w-8 text-sm font-bold ${COLORS[idx].accent}`}>{s.label}</span>
-                    <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-8 overflow-hidden">
+                    <div className="flex-1 bg-soft rounded-full h-8 overflow-hidden">
                       <div
                         className={`${COLORS[idx].bar} h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500`}
                         style={{ width: `${Math.max(pct, 5)}%` }}
@@ -567,7 +567,7 @@ export default function SalaryComparison() {
 
           {/* 총 급여 대비 구성 비교 */}
           <div>
-            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">{t('compositionComparison')}</h3>
+            <h3 className="text-sm font-medium text-sub mb-3">{t('compositionComparison')}</h3>
             <div className="space-y-3">
               {scenarios.map((s, idx) => {
                 const r = results[idx]
@@ -579,7 +579,7 @@ export default function SalaryComparison() {
                   <div key={s.id}>
                     <div className="flex items-center gap-3 mb-1">
                       <span className={`w-8 text-sm font-bold ${COLORS[idx].accent}`}>{s.label}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{formatWon(r.gross)}</span>
+                      <span className="text-xs text-muted">{formatWon(r.gross)}</span>
                     </div>
                     <div className="ml-11 flex rounded-full h-6 overflow-hidden">
                       <div
@@ -610,15 +610,15 @@ export default function SalaryComparison() {
               <div className="ml-11 flex gap-4 mt-2">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 bg-green-500 rounded-sm" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{t('netAnnual')}</span>
+                  <span className="text-xs text-muted">{t('netAnnual')}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 bg-orange-400 rounded-sm" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{t('socialInsurance')}</span>
+                  <span className="text-xs text-muted">{t('socialInsurance')}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 bg-red-400 rounded-sm" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{t('incomeTaxTotal')}</span>
+                  <span className="text-xs text-muted">{t('incomeTaxTotal')}</span>
                 </div>
               </div>
             </div>
@@ -633,16 +633,16 @@ export default function SalaryComparison() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.usage.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.usage.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -650,7 +650,7 @@ export default function SalaryComparison() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -658,7 +658,7 @@ export default function SalaryComparison() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.standard.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.standard.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.standard.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -691,10 +691,10 @@ function CompRow({
   py?: string
 }) {
   const defaultRowClass = sub
-    ? 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400'
+    ? 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-sub'
     : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
-  const defaultLabelClass = sub ? '' : 'font-medium text-gray-900 dark:text-white'
-  const defaultValueClass = sub ? '' : 'text-gray-900 dark:text-white'
+  const defaultLabelClass = sub ? '' : 'font-medium text-fg'
+  const defaultValueClass = sub ? '' : 'text-fg'
 
   return (
     <tr className={rowClass || defaultRowClass}>
@@ -732,7 +732,7 @@ function DiffCell({ value, invert = false, small = false }: { value: number; inv
     ? 'text-green-600 dark:text-green-400'
     : badDirection
       ? 'text-red-600 dark:text-red-400'
-      : 'text-gray-500 dark:text-gray-400'
+      : 'text-muted'
 
   const Icon = goodDirection ? TrendingUp : badDirection ? TrendingDown : Minus
 

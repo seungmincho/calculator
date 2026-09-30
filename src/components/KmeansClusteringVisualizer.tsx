@@ -519,10 +519,10 @@ export default function KmeansClusteringVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           K-means 클러스터링 시각화
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           데이터 포인트를 K개 군집으로 나누는 과정을 단계별로 관찰하세요
         </p>
       </div>
@@ -532,12 +532,12 @@ export default function KmeansClusteringVisualizer() {
         <div className="lg:col-span-1 space-y-4">
           {/* K slider */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-body flex items-center gap-2">
               <Target className="w-4 h-4" /> 설정
             </h2>
 
             <div>
-              <label className="text-xs text-gray-500 dark:text-gray-400">
+              <label className="text-xs text-muted">
                 K (군집 수): <span className="font-bold text-teal-600 dark:text-teal-400">{k}</span>
               </label>
               <input
@@ -552,7 +552,7 @@ export default function KmeansClusteringVisualizer() {
             </div>
 
             <div>
-              <label className="text-xs text-gray-500 dark:text-gray-400">
+              <label className="text-xs text-muted">
                 속도: <span className="font-bold text-teal-600 dark:text-teal-400">{speed}ms</span>
               </label>
               <input
@@ -566,7 +566,7 @@ export default function KmeansClusteringVisualizer() {
               </div>
             </div>
 
-            <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer">
+            <label className="flex items-center gap-2 text-xs text-sub cursor-pointer">
               <input
                 type="checkbox"
                 checked={showVoronoi}
@@ -579,7 +579,7 @@ export default function KmeansClusteringVisualizer() {
 
           {/* Data presets */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-body flex items-center gap-2">
               <Shuffle className="w-4 h-4" /> 데이터 생성
             </h2>
             <div className="grid grid-cols-2 gap-2">
@@ -592,20 +592,20 @@ export default function KmeansClusteringVisualizer() {
                 <button
                   key={id}
                   onClick={() => generateData(id)}
-                  className="px-3 py-2 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 transition-colors font-medium"
+                  className="px-3 py-2 text-xs rounded-lg bg-soft hover:bg-teal-100 dark:hover:bg-teal-900 text-body transition-colors font-medium"
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-gray-400 dark:text-gray-500 flex items-center gap-1">
+            <p className="text-[10px] text-faint flex items-center gap-1">
               <MousePointer className="w-3 h-3" /> 캔버스를 클릭하면 포인트를 추가할 수 있습니다
             </p>
           </div>
 
           {/* Run controls */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <h2 className="text-sm font-semibold text-body">
               실행
             </h2>
             <div className="flex gap-2">
@@ -629,7 +629,7 @@ export default function KmeansClusteringVisualizer() {
             </div>
             <button
               onClick={handleReset}
-              className="w-full flex items-center justify-center gap-1 px-3 py-2 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+              className="w-full flex items-center justify-center gap-1 px-3 py-2 text-xs rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" /> 초기화
             </button>
@@ -637,16 +637,16 @@ export default function KmeansClusteringVisualizer() {
 
           {/* Stats */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-body flex items-center gap-2">
               <Info className="w-4 h-4" /> 통계
             </h2>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2.5">
-                <div className="text-gray-400 dark:text-gray-500">반복</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">{iteration}</div>
+              <div className="bg-subtle rounded-lg p-2.5">
+                <div className="text-faint">반복</div>
+                <div className="text-lg font-bold text-fg">{iteration}</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2.5">
-                <div className="text-gray-400 dark:text-gray-500">상태</div>
+              <div className="bg-subtle rounded-lg p-2.5">
+                <div className="text-faint">상태</div>
                 <div className={`text-sm font-bold ${
                   phase === 'converged'
                     ? 'text-emerald-600 dark:text-emerald-400'
@@ -661,13 +661,13 @@ export default function KmeansClusteringVisualizer() {
                    phase === 'update' ? '이동' : '대기'}
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2.5">
-                <div className="text-gray-400 dark:text-gray-500">포인트</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">{points.length}</div>
+              <div className="bg-subtle rounded-lg p-2.5">
+                <div className="text-faint">포인트</div>
+                <div className="text-lg font-bold text-fg">{points.length}</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2.5">
-                <div className="text-gray-400 dark:text-gray-500">SSE</div>
-                <div className="text-sm font-bold text-gray-900 dark:text-white">
+              <div className="bg-subtle rounded-lg p-2.5">
+                <div className="text-faint">SSE</div>
+                <div className="text-sm font-bold text-fg">
                   {sseHistory.length > 0 ? sseHistory[sseHistory.length - 1].toFixed(0) : '-'}
                 </div>
               </div>
@@ -676,7 +676,7 @@ export default function KmeansClusteringVisualizer() {
             {/* Cluster sizes */}
             {clusterSizes.size > 0 && (
               <div className="space-y-1">
-                <div className="text-[10px] text-gray-400 dark:text-gray-500">군집별 크기</div>
+                <div className="text-[10px] text-faint">군집별 크기</div>
                 <div className="flex gap-1 flex-wrap">
                   {Array.from({ length: k }, (_, i) => (
                     <span
@@ -697,7 +697,7 @@ export default function KmeansClusteringVisualizer() {
             {/* SSE chart */}
             {sseHistory.length > 1 && (
               <div>
-                <div className="text-[10px] text-gray-400 dark:text-gray-500 mb-1">SSE 변화</div>
+                <div className="text-[10px] text-faint mb-1">SSE 변화</div>
                 {sseChart}
               </div>
             )}
@@ -707,7 +707,7 @@ export default function KmeansClusteringVisualizer() {
         {/* ── Right: Canvas ── */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <div className="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="relative overflow-hidden rounded-lg border border-line">
               <canvas
                 ref={canvasRef}
                 onClick={handleCanvasClick}
@@ -726,7 +726,7 @@ export default function KmeansClusteringVisualizer() {
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap items-center gap-3 mt-3 text-[11px] text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap items-center gap-3 mt-3 text-[11px] text-muted">
               <span className="flex items-center gap-1">
                 <span className="inline-block w-2.5 h-2.5 rounded-full bg-gray-400" /> 미할당
               </span>
@@ -748,7 +748,7 @@ export default function KmeansClusteringVisualizer() {
 
           {/* Step explanation */}
           <div className={`${glassCard} ${glassInset} p-5 mt-4`}>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">알고리즘 단계</h3>
+            <h3 className="text-sm font-semibold text-body mb-2">알고리즘 단계</h3>
             <div className="flex gap-2 flex-wrap">
               {([
                 ['idle', '초기화', '랜덤 센트로이드 K개 배치 (K-means++ 방식)'],
@@ -761,13 +761,13 @@ export default function KmeansClusteringVisualizer() {
                   className={`flex-1 min-w-[120px] rounded-lg p-3 text-xs border-2 transition-colors ${
                     phase === p
                       ? 'border-teal-500 bg-teal-50 dark:bg-teal-950 dark:border-teal-400'
-                      : 'border-transparent bg-gray-50 dark:bg-gray-700'
+                      : 'border-transparent bg-subtle'
                   }`}
                 >
-                  <div className={`font-bold mb-0.5 ${phase === p ? 'text-teal-700 dark:text-teal-300' : 'text-gray-600 dark:text-gray-400'}`}>
+                  <div className={`font-bold mb-0.5 ${phase === p ? 'text-teal-700 dark:text-teal-300' : 'text-sub'}`}>
                     {label}
                   </div>
-                  <div className="text-gray-500 dark:text-gray-400 leading-snug">{desc}</div>
+                  <div className="text-muted leading-snug">{desc}</div>
                 </div>
               ))}
             </div>
@@ -781,17 +781,17 @@ export default function KmeansClusteringVisualizer() {
           onClick={() => setGuideOpen(o => !o)}
           className="w-full flex items-center justify-between p-6 text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" /> K-means 클러스터링 가이드
           </h2>
           {guideOpen ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
         </button>
 
         {guideOpen && (
-          <div className="px-6 pb-6 space-y-6 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          <div className="px-6 pb-6 space-y-6 text-sm text-body leading-relaxed">
             {/* What is */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">K-means 클러스터링이란?</h3>
+              <h3 className="text-base font-bold text-fg mb-2">K-means 클러스터링이란?</h3>
               <p>
                 K-means는 주어진 데이터를 <strong>K개의 군집(cluster)</strong>으로 나누는 대표적인 비지도 학습(unsupervised learning) 알고리즘입니다.
                 각 군집은 하나의 센트로이드(중심점)로 대표되며, 데이터 포인트는 가장 가까운 센트로이드에 할당됩니다.
@@ -801,7 +801,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* How to use */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">사용 방법</h3>
+              <h3 className="text-base font-bold text-fg mb-2">사용 방법</h3>
               <ol className="list-decimal list-inside space-y-1">
                 <li><strong>K 슬라이더</strong>로 군집 수를 2~8 사이에서 선택합니다.</li>
                 <li><strong>데이터 생성</strong> 버튼으로 프리셋 데이터를 로드하거나, 캔버스를 클릭해 포인트를 추가합니다.</li>
@@ -813,7 +813,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* How it works */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">동작 원리</h3>
+              <h3 className="text-base font-bold text-fg mb-2">동작 원리</h3>
               <ol className="list-decimal list-inside space-y-1">
                 <li><strong>초기화:</strong> K개의 센트로이드를 K-means++ 방식으로 배치합니다 (멀리 떨어진 점을 우선 선택하여 초기값 편향을 줄임).</li>
                 <li><strong>할당(Assignment):</strong> 각 데이터 포인트를 유클리드 거리가 가장 짧은 센트로이드의 군집에 할당합니다. 시간복잡도 O(n*k).</li>
@@ -825,7 +825,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* Elbow Method */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">엘보 방법 (Elbow Method)</h3>
+              <h3 className="text-base font-bold text-fg mb-2">엘보 방법 (Elbow Method)</h3>
               <p>
                 최적의 K를 찾기 위해 K=1,2,3,...으로 반복 실행하여 각 K에서의 <strong>SSE(Sum of Squared Errors)</strong>를 그래프로 그립니다.
                 SSE가 급격히 감소하다가 완만해지는 지점(&quot;팔꿈치&quot;)이 최적의 K입니다.
@@ -835,7 +835,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* Real world */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">실무 활용</h3>
+              <h3 className="text-base font-bold text-fg mb-2">실무 활용</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong>고객 세분화:</strong> 구매 패턴으로 VIP/일반/이탈 고객 군집 분류</li>
                 <li><strong>이미지 압축:</strong> 색상을 K개로 줄여 이미지 용량 감소 (color quantization)</li>
@@ -847,7 +847,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* Comparison */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">비슷한 알고리즘 비교</h3>
+              <h3 className="text-base font-bold text-fg mb-2">비슷한 알고리즘 비교</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong>DBSCAN:</strong> 밀도 기반 군집화. K를 미리 정하지 않아도 되고, 비볼록 형태도 처리 가능. 단, 밀도 차이가 큰 데이터에 취약.</li>
                 <li><strong>GMM (가우시안 혼합 모델):</strong> 확률적 군집화. 각 포인트의 군집 소속 확률을 제공. 더 유연하지만 계산 비용이 높음.</li>
@@ -858,7 +858,7 @@ export default function KmeansClusteringVisualizer() {
 
             {/* Limitations */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">K-means의 한계</h3>
+              <h3 className="text-base font-bold text-fg mb-2">K-means의 한계</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong>비볼록 형태:</strong> 달 모양, 고리 모양 등 비볼록(non-convex) 군집을 올바르게 분류하지 못합니다. &quot;달 모양&quot; 프리셋으로 직접 확인해보세요.</li>
                 <li><strong>초기값 의존:</strong> 초기 센트로이드 위치에 따라 결과가 달라질 수 있습니다 (K-means++로 완화).</li>
@@ -869,18 +869,18 @@ export default function KmeansClusteringVisualizer() {
 
             {/* FAQ */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">자주 묻는 질문</h3>
+              <h3 className="text-base font-bold text-fg mb-2">자주 묻는 질문</h3>
               <div className="space-y-3">
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q: SSE가 0이 되면 완벽한 군집화인가요?</p>
+                  <p className="font-medium text-fg">Q: SSE가 0이 되면 완벽한 군집화인가요?</p>
                   <p>A: SSE=0은 모든 포인트가 센트로이드와 정확히 일치할 때인데, 이는 K=N(포인트 수)일 때만 가능합니다. 실제로는 SSE의 &quot;감소율&quot;이 중요합니다.</p>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q: K-means는 항상 수렴하나요?</p>
+                  <p className="font-medium text-fg">Q: K-means는 항상 수렴하나요?</p>
                   <p>A: 네, SSE는 매 반복마다 감소하거나 유지되므로 유한 시간 안에 반드시 수렴합니다. 단, 전역 최적(global optimum)이 아닌 지역 최적(local optimum)에 수렴할 수 있습니다.</p>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q: K-means++가 일반 K-means보다 나은 이유는?</p>
+                  <p className="font-medium text-fg">Q: K-means++가 일반 K-means보다 나은 이유는?</p>
                   <p>A: 일반 K-means는 센트로이드를 완전 랜덤으로 초기화하여 나쁜 결과에 빠지기 쉽습니다. K-means++는 이미 선택된 센트로이드와 먼 점을 확률적으로 선택하여 초기 배치를 분산시킵니다.</p>
                 </div>
               </div>

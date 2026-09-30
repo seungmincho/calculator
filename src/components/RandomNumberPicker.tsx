@@ -15,8 +15,8 @@ interface DrawRecord {
 
 type SortMode = 'none' | 'asc' | 'desc'
 
-const GLASS_CARD = 'bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl shadow-[inset_2px_2px_10px_rgba(255,255,255,0.15),inset_-2px_-2px_10px_rgba(255,255,255,0.05)] p-6'
-const GLASS_BTN = 'bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20 rounded-xl px-4 py-2 font-medium text-gray-800 dark:text-white hover:bg-white/30 dark:hover:bg-white/20 transition-all duration-200 shadow-md active:scale-95'
+const GLASS_CARD = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-2xl p-6'
+const GLASS_BTN = 'bg-surface border border-line rounded-xl px-4 py-2 font-medium text-gray-800 dark:text-white hover:bg-soft transition-all duration-200 shadow-md active:scale-95'
 
 export default function RandomNumberPicker() {
   const t = useTranslations('randomNumberPicker')
@@ -142,13 +142,13 @@ export default function RandomNumberPicker() {
 
         {/* Title */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('description')}</p>
+          <h2 className="text-2xl font-bold text-fg">{t('title')}</h2>
+          <p className="text-sm text-sub mt-1">{t('description')}</p>
         </div>
 
         {/* Presets */}
         <div className={GLASS_CARD}>
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{t('presets')}</p>
+          <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('presets')}</p>
           <div className="flex flex-wrap gap-2">
             <button onClick={() => applyPreset(1, 45, 6)} className={GLASS_BTN + ' text-sm'}>
               🎱 {t('presetLotto')}
@@ -166,32 +166,32 @@ export default function RandomNumberPicker() {
         <div className={GLASS_CARD}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">{t('min')}</label>
+              <label className="block text-xs font-semibold text-sub mb-1">{t('min')}</label>
               <input
                 type="number"
                 value={min}
                 onChange={e => { setMin(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/20 rounded-xl text-gray-900 dark:text-white text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">{t('max')}</label>
+              <label className="block text-xs font-semibold text-sub mb-1">{t('max')}</label>
               <input
                 type="number"
                 value={max}
                 onChange={e => { setMax(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/20 rounded-xl text-gray-900 dark:text-white text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">{t('count')}</label>
+              <label className="block text-xs font-semibold text-sub mb-1">{t('count')}</label>
               <input
                 type="number"
                 min={1}
                 max={50}
                 value={count}
                 onChange={e => { setCount(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/20 rounded-xl text-gray-900 dark:text-white text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
               />
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function RandomNumberPicker() {
               >
                 <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${noDuplicates ? 'translate-x-5' : 'translate-x-0'}`} />
               </div>
-              <span className="text-sm text-gray-700 dark:text-gray-200">{t('noDuplicates')}</span>
+              <span className="text-sm text-body">{t('noDuplicates')}</span>
             </label>
 
             <button
@@ -243,7 +243,7 @@ export default function RandomNumberPicker() {
         {(displayNumbers.length > 0) && (
           <div className={GLASS_CARD}>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm font-semibold text-gray-600 dark:text-gray-300">{t('result')}</p>
+              <p className="text-sm font-semibold text-sub">{t('result')}</p>
               {results.length > 0 && (
                 <button onClick={copyResult} className={GLASS_BTN + ' flex items-center gap-1.5 text-xs'}>
                   {copied ? <Check size={13} className="text-green-400" /> : <Copy size={13} />}
@@ -268,7 +268,7 @@ export default function RandomNumberPicker() {
                     boxShadow: '0 0 20px rgba(6,182,212,0.4), inset 2px 2px 8px rgba(255,255,255,0.2)'
                   } : undefined}
                 >
-                  <span className="text-gray-900 dark:text-white drop-shadow-sm">{n}</span>
+                  <span className="text-fg drop-shadow-sm">{n}</span>
                 </div>
               ))}
             </div>
@@ -278,13 +278,13 @@ export default function RandomNumberPicker() {
         {/* History */}
         {history.length > 0 && (
           <div className={GLASS_CARD}>
-            <p className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-3">{t('history')}</p>
+            <p className="text-sm font-semibold text-sub mb-3">{t('history')}</p>
             <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
               {history.map((rec, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs bg-white/10 dark:bg-white/5 rounded-xl px-3 py-2">
+                <div key={i} className="flex items-center gap-2 text-xs bg-surface rounded-xl px-3 py-2">
                   <span className="text-gray-400 shrink-0 tabular-nums">{rec.timestamp}</span>
                   <span className="text-gray-400 shrink-0">[{rec.min}~{rec.max}]</span>
-                  <span className="text-gray-700 dark:text-gray-200 font-semibold truncate">
+                  <span className="text-body font-semibold truncate">
                     {rec.numbers.join(', ')}
                   </span>
                 </div>

@@ -83,7 +83,7 @@ export default function CompoundCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><CompoundCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -93,17 +93,17 @@ export default function CompoundCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             복리 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             복리 계산기는 원금에 이자가 붙고, 그 이자에 다시 이자가 붙는 복리 효과를 시뮬레이션하는 투자 분석 도구입니다. 적립식 펀드, 예금, 주식 투자 등 장기 재테크를 계획 중인 분들에게 복리의 힘을 직관적으로 이해할 수 있도록 도와줍니다. 단리와 복리를 비교하거나, 월 적립액과 기대 수익률을 조정하며 은퇴 자금이나 목돈 마련 계획을 세워보세요.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             복리 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>72법칙 활용:</strong> 72를 연이율로 나누면 원금이 2배 되는 기간을 빠르게 추정할 수 있습니다. 연 6%면 약 12년, 연 9%면 약 8년입니다.</li>
             <li><strong>월 적립식 투자:</strong> 목돈이 없어도 매월 일정액을 적립하면 복리 효과가 누적되어 장기적으로 큰 차이를 만듭니다. 적립 금액과 기간을 바꿔가며 목표 금액을 역산해보세요.</li>
             <li><strong>단리 vs 복리 비교:</strong> 단기(1~3년)에는 차이가 미미하지만 10년 이상 장기 투자에서는 복리가 압도적으로 유리합니다. 그래프로 그 차이를 확인하세요.</li>

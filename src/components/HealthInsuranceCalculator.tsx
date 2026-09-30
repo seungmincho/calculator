@@ -427,7 +427,7 @@ export default function HealthInsuranceCalculator() {
     value: string; onChange: (v: string) => void; placeholder?: string; label?: string; ariaLabel?: string
   }) => (
     <div>
-      {label && <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>}
+      {label && <label className="block text-sm font-medium text-body mb-1">{label}</label>}
       <div className="relative">
         <input
           type="text"
@@ -477,16 +477,16 @@ export default function HealthInsuranceCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
           {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700 overflow-x-auto" role="tablist">
+      <div className="border-b border-line overflow-x-auto" role="tablist">
         <div className="flex min-w-max">
           {tabs.map((tab) => (
             <button
@@ -497,7 +497,7 @@ export default function HealthInsuranceCalculator() {
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                  : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
               }`}
             >
               {tab.icon}
@@ -515,7 +515,7 @@ export default function HealthInsuranceCalculator() {
             {/* Settings */}
             <div className="lg:col-span-1">
               <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('tabs.workplace')}</h2>
+                <h2 className="text-lg font-semibold text-fg">{t('tabs.workplace')}</h2>
 
                 <NumberInput
                   value={wpSalary}
@@ -524,7 +524,7 @@ export default function HealthInsuranceCalculator() {
                   placeholder={wpIsAnnual ? '50,000,000' : '4,000,000'}
                 />
 
-                <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
                   <input
                     type="checkbox"
                     checked={wpIsAnnual}
@@ -554,20 +554,20 @@ export default function HealthInsuranceCalculator() {
                 <div className="space-y-4">
                   <div className={`${glassCard} ${glassInset} p-6`}>
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      <h3 className="text-lg font-semibold text-fg">
                         {t('insurance.healthInsurance')} ({t('insurance.rate2025')})
                       </h3>
                       <button
                         onClick={() => copyToClipboard(buildWorkplaceCopyText(), 'wp')}
-                        className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                       >
                         {copiedId === 'wp' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                         {copiedId === 'wp' ? t('copied') : t('copy')}
                       </button>
                     </div>
 
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                      {t('workplace.remuneration')}: <span className="font-medium text-gray-900 dark:text-white">{formatNumber(workplaceResult.remuneration)}{t('unit.won')}</span>
+                    <div className="text-sm text-muted mb-4">
+                      {t('workplace.remuneration')}: <span className="font-medium text-fg">{formatNumber(workplaceResult.remuneration)}{t('unit.won')}</span>
                     </div>
 
                     {/* Health insurance breakdown */}
@@ -584,18 +584,18 @@ export default function HealthInsuranceCalculator() {
                         employer={workplaceResult.longTermEmployer}
                         t={t}
                       />
-                      <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+                      <div className="border-t border-line pt-3">
                         <div className="flex justify-between text-sm font-semibold">
-                          <span className="text-gray-900 dark:text-white">{t('insurance.myShare')}</span>
+                          <span className="text-fg">{t('insurance.myShare')}</span>
                           <span className="text-blue-600 dark:text-blue-400">{formatNumber(workplaceResult.healthEmployee + workplaceResult.longTermEmployee)}{t('unit.won')}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
-                          <span className="text-gray-500 dark:text-gray-400">{t('workplace.employerShare')}</span>
-                          <span className="text-gray-700 dark:text-gray-300">{formatNumber(workplaceResult.healthEmployer + workplaceResult.longTermEmployer)}{t('unit.won')}</span>
+                          <span className="text-muted">{t('workplace.employerShare')}</span>
+                          <span className="text-body">{formatNumber(workplaceResult.healthEmployer + workplaceResult.longTermEmployer)}{t('unit.won')}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
-                          <span className="text-gray-500 dark:text-gray-400">{t('insurance.total')}</span>
-                          <span className="text-gray-700 dark:text-gray-300">{formatNumber(workplaceResult.healthInsurance + workplaceResult.longTermCare)}{t('unit.won')}</span>
+                          <span className="text-muted">{t('insurance.total')}</span>
+                          <span className="text-body">{formatNumber(workplaceResult.healthInsurance + workplaceResult.longTermCare)}{t('unit.won')}</span>
                         </div>
                       </div>
                     </div>
@@ -610,7 +610,7 @@ export default function HealthInsuranceCalculator() {
                     </button>
 
                     {showAllInsurance && (
-                      <div className="mt-4 space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
+                      <div className="mt-4 space-y-3 border-t border-line pt-4">
                         <PremiumRow
                           label={t('insurance.nationalPension')}
                           employee={workplaceResult.pensionEmployee}
@@ -618,13 +618,13 @@ export default function HealthInsuranceCalculator() {
                           t={t}
                         />
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-700 dark:text-gray-300">{t('insurance.employmentInsurance')}</span>
-                          <span className="text-gray-900 dark:text-white font-medium">{formatNumber(workplaceResult.employmentInsurance)}{t('unit.won')}</span>
+                          <span className="text-body">{t('insurance.employmentInsurance')}</span>
+                          <span className="text-fg font-medium">{formatNumber(workplaceResult.employmentInsurance)}{t('unit.won')}</span>
                         </div>
 
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+                        <div className="border-t border-line pt-3">
                           <div className="flex justify-between text-sm font-semibold">
-                            <span className="text-gray-900 dark:text-white">{t('insurance.total4')}</span>
+                            <span className="text-fg">{t('insurance.total4')}</span>
                             <span className="text-blue-600 dark:text-blue-400">{formatNumber(workplaceResult.totalEmployee)}{t('unit.won')}</span>
                           </div>
                         </div>
@@ -641,7 +641,7 @@ export default function HealthInsuranceCalculator() {
 
                   {/* Annual projection */}
                   <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('workplace.annualProjection')}</h3>
+                    <h3 className="text-lg font-semibold text-fg mb-4">{t('workplace.annualProjection')}</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
                         <div className="text-xs text-blue-600 dark:text-blue-400">{t('insurance.healthInsurance')} + {t('insurance.longTermCare')}</div>
@@ -663,7 +663,7 @@ export default function HealthInsuranceCalculator() {
                   </div>
                 </div>
               ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
                   {t('placeholder.enterSalary')}
                 </div>
               )}
@@ -677,7 +677,7 @@ export default function HealthInsuranceCalculator() {
             <div className="lg:col-span-1 space-y-4">
               {/* Income section */}
               <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.incomeSection')}</legend>
+                <legend className="text-lg font-semibold text-fg">{t('regional.incomeSection')}</legend>
                 <NumberInput value={rgBusinessIncome} onChange={setRgBusinessIncome} label={t('regional.businessIncome')} />
                 <NumberInput value={rgEmploymentIncome} onChange={setRgEmploymentIncome} label={t('regional.employmentIncome')} />
                 <NumberInput value={rgFinancialIncome} onChange={setRgFinancialIncome} label={t('regional.financialIncome')} />
@@ -687,7 +687,7 @@ export default function HealthInsuranceCalculator() {
 
               {/* Property section */}
               <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.propertySection')}</legend>
+                <legend className="text-lg font-semibold text-fg">{t('regional.propertySection')}</legend>
                 <NumberInput value={rgPropertyTaxBase} onChange={setRgPropertyTaxBase} label={t('regional.propertyTaxBase')} />
                 <NumberInput value={rgDeposit} onChange={setRgDeposit} label={t('regional.deposit')} />
               </fieldset>
@@ -696,54 +696,54 @@ export default function HealthInsuranceCalculator() {
             <div className="lg:col-span-2">
               {regionalResult ? (
                 <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.result')}</h3>
+                  <h3 className="text-lg font-semibold text-fg">{t('regional.result')}</h3>
 
                   {/* Income premium */}
                   <div className="space-y-2">
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {t('regional.totalAnnualIncome')}: <span className="font-medium text-gray-900 dark:text-white">{formatNumber(regionalResult.totalAnnualIncome)}{t('unit.won')}</span>
+                    <div className="text-sm text-muted">
+                      {t('regional.totalAnnualIncome')}: <span className="font-medium text-fg">{formatNumber(regionalResult.totalAnnualIncome)}{t('unit.won')}</span>
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {t('regional.monthlyIncome')}: <span className="font-medium text-gray-900 dark:text-white">{formatNumber(regionalResult.monthlyIncome)}{t('unit.won')}</span>
+                    <div className="text-sm text-muted">
+                      {t('regional.monthlyIncome')}: <span className="font-medium text-fg">{formatNumber(regionalResult.monthlyIncome)}{t('unit.won')}</span>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+                  <div className="border-t border-line pt-4 space-y-3">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-700 dark:text-gray-300">{t('regional.incomePremium')}</span>
-                      <span className="text-gray-900 dark:text-white font-medium">{formatNumber(regionalResult.incomePremium)}{t('unit.won')}</span>
+                      <span className="text-body">{t('regional.incomePremium')}</span>
+                      <span className="text-fg font-medium">{formatNumber(regionalResult.incomePremium)}{t('unit.won')}</span>
                     </div>
 
                     {regionalResult.propertyAmount > 0 && (
                       <>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-700 dark:text-gray-300">{t('regional.propertyPoints')}</span>
-                          <span className="text-gray-900 dark:text-white font-medium">{regionalResult.propertyScore}{t('regional.points')}</span>
+                          <span className="text-body">{t('regional.propertyPoints')}</span>
+                          <span className="text-fg font-medium">{regionalResult.propertyScore}{t('regional.points')}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-700 dark:text-gray-300">{t('regional.propertyPremium')} ({regionalResult.propertyScore} x {POINT_VALUE}{t('unit.won')})</span>
-                          <span className="text-gray-900 dark:text-white font-medium">{formatNumber(regionalResult.propertyPremium)}{t('unit.won')}</span>
+                          <span className="text-body">{t('regional.propertyPremium')} ({regionalResult.propertyScore} x {POINT_VALUE}{t('unit.won')})</span>
+                          <span className="text-fg font-medium">{formatNumber(regionalResult.propertyPremium)}{t('unit.won')}</span>
                         </div>
                       </>
                     )}
 
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+                    <div className="border-t border-line pt-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-700 dark:text-gray-300">{t('insurance.healthInsurance')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">{formatNumber(regionalResult.healthPremium)}{t('unit.won')}</span>
+                        <span className="text-body">{t('insurance.healthInsurance')}</span>
+                        <span className="text-fg font-medium">{formatNumber(regionalResult.healthPremium)}{t('unit.won')}</span>
                       </div>
                       <div className="flex justify-between text-sm mt-1">
-                        <span className="text-gray-700 dark:text-gray-300">{t('insurance.longTermCare')} ({(LONG_TERM_CARE_RATE * 100).toFixed(2)}%)</span>
-                        <span className="text-gray-900 dark:text-white font-medium">{formatNumber(regionalResult.longTermCare)}{t('unit.won')}</span>
+                        <span className="text-body">{t('insurance.longTermCare')} ({(LONG_TERM_CARE_RATE * 100).toFixed(2)}%)</span>
+                        <span className="text-fg font-medium">{formatNumber(regionalResult.longTermCare)}{t('unit.won')}</span>
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+                    <div className="border-t border-line pt-3">
                       <div className="flex justify-between font-semibold">
-                        <span className="text-gray-900 dark:text-white">{t('regional.monthlyTotal')}</span>
+                        <span className="text-fg">{t('regional.monthlyTotal')}</span>
                         <span className="text-blue-600 dark:text-blue-400 text-lg">{formatNumber(regionalResult.totalPremium)}{t('unit.won')}</span>
                       </div>
-                      <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <div className="flex justify-between text-sm text-muted mt-1">
                         <span>{t('unit.perYear')}</span>
                         <span>{formatNumber(regionalResult.totalPremium * 12)}{t('unit.won')}</span>
                       </div>
@@ -758,7 +758,7 @@ export default function HealthInsuranceCalculator() {
                   )}
                 </div>
               ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
                   {t('placeholder.enterIncome')}
                 </div>
               )}
@@ -771,10 +771,10 @@ export default function HealthInsuranceCalculator() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
               <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('tabs.dependent')}</h2>
+                <h2 className="text-lg font-semibold text-fg">{t('tabs.dependent')}</h2>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('dependent.relationship')}</label>
+                  <label className="block text-sm font-medium text-body mb-1">{t('dependent.relationship')}</label>
                   <select
                     value={dpRelationship}
                     onChange={(e) => setDpRelationship(e.target.value)}
@@ -789,7 +789,7 @@ export default function HealthInsuranceCalculator() {
                 <NumberInput value={dpAnnualIncome} onChange={setDpAnnualIncome} label={t('dependent.annualIncome')} />
 
                 <div>
-                  <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
                     <input
                       type="checkbox"
                       checked={dpHasBusinessIncome}
@@ -807,7 +807,7 @@ export default function HealthInsuranceCalculator() {
                 <NumberInput value={dpPropertyTaxBase} onChange={setDpPropertyTaxBase} label={t('dependent.propertyTaxBase')} />
 
                 {dpRelationship === 'sibling' && (
-                  <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
                     <input
                       type="checkbox"
                       checked={dpCohabitation}
@@ -850,7 +850,7 @@ export default function HealthInsuranceCalculator() {
 
                   {/* Condition breakdown */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{t('dependent.conditions')}</h4>
+                    <h4 className="text-sm font-semibold text-fg">{t('dependent.conditions')}</h4>
 
                     <ConditionRow
                       pass={dependentResult.incomePass}
@@ -895,7 +895,7 @@ export default function HealthInsuranceCalculator() {
                   )}
                 </div>
               ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
                   {t('placeholder.enterDependentInfo')}
                 </div>
               )}
@@ -909,7 +909,7 @@ export default function HealthInsuranceCalculator() {
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Regional (freelancer) inputs */}
               <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('comparison.freelancer')}</legend>
+                <legend className="text-lg font-semibold text-fg">{t('comparison.freelancer')}</legend>
                 <NumberInput value={cmpBusinessIncome} onChange={setCmpBusinessIncome} label={t('regional.businessIncome')} />
                 <NumberInput value={cmpEmploymentIncome} onChange={setCmpEmploymentIncome} label={t('regional.employmentIncome')} />
                 <NumberInput value={cmpFinancialIncome} onChange={setCmpFinancialIncome} label={t('regional.financialIncome')} />
@@ -921,7 +921,7 @@ export default function HealthInsuranceCalculator() {
 
               {/* Workplace (incorporated CEO) inputs */}
               <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('comparison.incorporated')}</legend>
+                <legend className="text-lg font-semibold text-fg">{t('comparison.incorporated')}</legend>
                 <NumberInput value={cmpCeoSalary} onChange={setCmpCeoSalary} label={t('comparison.ceoSalary')} placeholder="4,000,000" />
                 <NumberInput value={cmpNonTaxable} onChange={setCmpNonTaxable} label={t('workplace.nonTaxable')} />
                 <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-3 text-xs text-yellow-700 dark:text-yellow-300">
@@ -936,35 +936,35 @@ export default function HealthInsuranceCalculator() {
               <div className="space-y-6">
                 {/* Comparison table */}
                 <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('comparison.result')}</h3>
+                  <h3 className="text-lg font-semibold text-fg mb-4">{t('comparison.result')}</h3>
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="col" className="text-left py-2 text-gray-500 dark:text-gray-400 font-medium">{t('comparison.item')}</th>
+                      <tr className="border-b border-line">
+                        <th scope="col" className="text-left py-2 text-muted font-medium">{t('comparison.item')}</th>
                         <th scope="col" className="text-right py-2 text-red-600 dark:text-red-400 font-medium">{t('comparison.freelancer')}</th>
                         <th scope="col" className="text-right py-2 text-blue-600 dark:text-blue-400 font-medium">{t('comparison.incorporated')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                       <tr>
-                        <td className="py-2 text-gray-700 dark:text-gray-300">{t('insurance.healthInsurance')}</td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(comparisonResult.rg.healthPremium)}{t('unit.won')}</td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(comparisonResult.wp.healthEmployee + comparisonResult.wp.healthEmployer)}{t('unit.won')} *</td>
+                        <td className="py-2 text-body">{t('insurance.healthInsurance')}</td>
+                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.rg.healthPremium)}{t('unit.won')}</td>
+                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.healthEmployee + comparisonResult.wp.healthEmployer)}{t('unit.won')} *</td>
                       </tr>
                       <tr>
-                        <td className="py-2 text-gray-700 dark:text-gray-300">{t('insurance.longTermCare')}</td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(comparisonResult.rg.longTermCare)}{t('unit.won')}</td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(comparisonResult.wp.longTermEmployee + comparisonResult.wp.longTermEmployer)}{t('unit.won')} *</td>
+                        <td className="py-2 text-body">{t('insurance.longTermCare')}</td>
+                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.rg.longTermCare)}{t('unit.won')}</td>
+                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.longTermEmployee + comparisonResult.wp.longTermEmployer)}{t('unit.won')} *</td>
                       </tr>
                       <tr>
-                        <td className="py-2 text-gray-700 dark:text-gray-300">{t('insurance.nationalPension')}</td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">
+                        <td className="py-2 text-body">{t('insurance.nationalPension')}</td>
+                        <td className="py-2 text-right text-fg">
                           {formatNumber(Math.floor(Math.min(comparisonResult.rg.monthlyIncome, PENSION_CAP_MONTHLY) * PENSION_RATE))}{t('unit.won')} **
                         </td>
-                        <td className="py-2 text-right text-gray-900 dark:text-white">{formatNumber(comparisonResult.wp.pensionEmployee + comparisonResult.wp.pensionEmployer)}{t('unit.won')} *</td>
+                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.pensionEmployee + comparisonResult.wp.pensionEmployer)}{t('unit.won')} *</td>
                       </tr>
-                      <tr className="font-semibold bg-gray-50 dark:bg-gray-700">
-                        <td className="py-3 text-gray-900 dark:text-white">{t('insurance.total')} ({t('insurance.myShare')})</td>
+                      <tr className="font-semibold bg-subtle">
+                        <td className="py-3 text-fg">{t('insurance.total')} ({t('insurance.myShare')})</td>
                         <td className="py-3 text-right text-red-600 dark:text-red-400">
                           {formatNumber(
                             comparisonResult.rg.totalPremium +
@@ -978,7 +978,7 @@ export default function HealthInsuranceCalculator() {
                     </tbody>
                   </table>
 
-                  <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                  <div className="mt-3 text-xs text-muted space-y-1">
                     <p>* {t('comparison.ceoEmployerNote')}</p>
                     <p>** {t('comparison.regionalPensionNote')}</p>
                   </div>
@@ -995,14 +995,14 @@ export default function HealthInsuranceCalculator() {
                       <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-blue-50 dark:bg-blue-950' : 'bg-red-50 dark:bg-red-950'}`}>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
-                            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('comparison.difference')}</div>
+                            <div className="text-sm font-medium text-body">{t('comparison.difference')}</div>
                             <div className={`text-xl font-bold ${diff > 0 ? 'text-blue-700 dark:text-blue-300' : 'text-red-700 dark:text-red-300'}`}>
                               {diff > 0 ? t('comparison.freelancerMore') : t('comparison.workplaceMore')} {formatNumber(Math.abs(diff))}{t('unit.won')}/{t('unit.month')}
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{t('comparison.annualDifference')}</div>
-                            <div className="text-lg font-bold text-gray-900 dark:text-white">{formatNumber(Math.abs(annualDiff))}{t('unit.won')}</div>
+                            <div className="text-sm text-muted">{t('comparison.annualDifference')}</div>
+                            <div className="text-lg font-bold text-fg">{formatNumber(Math.abs(annualDiff))}{t('unit.won')}</div>
                           </div>
                         </div>
                       </div>
@@ -1012,7 +1012,7 @@ export default function HealthInsuranceCalculator() {
 
                 {/* Chart */}
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('comparison.chartTitle')}</h3>
+                  <h3 className="text-lg font-semibold text-fg mb-4">{t('comparison.chartTitle')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart
                       data={[
@@ -1058,7 +1058,7 @@ export default function HealthInsuranceCalculator() {
                 </div>
               </div>
             ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+              <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
                 {t('placeholder.enterComparison')}
               </div>
             )}
@@ -1074,7 +1074,7 @@ export default function HealthInsuranceCalculator() {
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+            <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
           </div>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
         </button>
@@ -1083,10 +1083,10 @@ export default function HealthInsuranceCalculator() {
           <div className="px-6 pb-6 space-y-6">
             {/* Rates */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.rates.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.rates.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.rates.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-body">
                     <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
                     {item}
                   </li>
@@ -1096,10 +1096,10 @@ export default function HealthInsuranceCalculator() {
 
             {/* Dependent rules */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.dependentRules.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.dependentRules.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.dependentRules.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-body">
                     <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
                     {item}
                   </li>
@@ -1109,10 +1109,10 @@ export default function HealthInsuranceCalculator() {
 
             {/* Regional calc */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.regionalCalc.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.regionalCalc.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.regionalCalc.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-body">
                     <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
                     {item}
                   </li>
@@ -1122,10 +1122,10 @@ export default function HealthInsuranceCalculator() {
 
             {/* Tips */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-body">
                     <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
                     {item}
                   </li>
@@ -1147,17 +1147,17 @@ function PremiumRow({ label, employee, employer, t }: {
   return (
     <div>
       <div className="flex justify-between items-center text-sm mb-1">
-        <span className="font-medium text-gray-800 dark:text-gray-200">{label}</span>
-        <span className="text-gray-500 dark:text-gray-400 text-xs">{formatNumber(employee + employer)}{t('unit.won')}</span>
+        <span className="font-medium text-body">{label}</span>
+        <span className="text-muted text-xs">{formatNumber(employee + employer)}{t('unit.won')}</span>
       </div>
       <div className="flex gap-4 ml-4 text-sm">
         <div className="flex justify-between flex-1">
-          <span className="text-gray-500 dark:text-gray-400">{t('workplace.employee')}</span>
-          <span className="text-gray-900 dark:text-white">{formatNumber(employee)}{t('unit.won')}</span>
+          <span className="text-muted">{t('workplace.employee')}</span>
+          <span className="text-fg">{formatNumber(employee)}{t('unit.won')}</span>
         </div>
         <div className="flex justify-between flex-1">
-          <span className="text-gray-500 dark:text-gray-400">{t('workplace.employer')}</span>
-          <span className="text-gray-900 dark:text-white">{formatNumber(employer)}{t('unit.won')}</span>
+          <span className="text-muted">{t('workplace.employer')}</span>
+          <span className="text-fg">{formatNumber(employer)}{t('unit.won')}</span>
         </div>
       </div>
     </div>
@@ -1176,7 +1176,7 @@ function ConditionRow({ pass, label, detail }: { pass: boolean; label: string; d
         <div className={`text-sm font-medium ${pass ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
           {label}
         </div>
-        <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{detail}</div>
+        <div className="text-xs text-sub mt-0.5">{detail}</div>
       </div>
     </div>
   )

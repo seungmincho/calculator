@@ -66,7 +66,7 @@ export default function FlexboxGridPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <FlexboxGrid />
@@ -81,17 +81,17 @@ export default function FlexboxGridPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             CSS Flexbox & Grid 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             CSS Flexbox & Grid 생성기는 복잡한 CSS 레이아웃 속성을 GUI로 조작하면서 실시간으로 결과를 미리보고 완성된 CSS 코드를 복사할 수 있는 무료 온라인 개발 도구입니다. Flexbox의 justify-content·align-items·flex-wrap과 CSS Grid의 grid-template-columns·gap 등을 시각적으로 설정하면 반응형 웹 레이아웃 코드를 빠르게 완성할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             CSS Flexbox & Grid 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>프리셋 활용:</strong> 카드 그리드, 2단 레이아웃, 네비게이션 바 등 자주 쓰는 프리셋으로 빠르게 시작하세요.</li>
             <li><strong>Flexbox vs Grid 선택:</strong> 네비게이션·버튼 그룹 같은 1차원 정렬은 Flexbox, 전체 페이지 구조·갤러리는 Grid가 적합합니다.</li>
             <li><strong>반응형 테스트:</strong> 생성기에서 컨테이너 너비를 조절하며 모바일/태블릿/데스크톱 레이아웃을 함께 검증하세요.</li>

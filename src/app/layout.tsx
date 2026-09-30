@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -16,8 +15,6 @@ import PushNotificationManager from '@/components/PushNotificationManager'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://toolhub.ai.kr'),
@@ -105,7 +102,7 @@ export default function RootLayout({
   const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN
 
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head suppressHydrationWarning>
         <meta name="google-adsense-account" content={adsenseId} />
         <meta name="naver-site-verification" content="8cdcacf38562d4fa1ee11f4f77a8a0f15f11d532" />
@@ -114,8 +111,8 @@ export default function RootLayout({
 
         {/* Additional SEO Meta Tags */}
         <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#f2f4f6" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#101114" media="(prefers-color-scheme: dark)" />
         <meta name="msapplication-TileColor" content="#2563eb" />
         <meta name="msapplication-TileImage" content="/android-chrome-192x192.png" />
         <meta name="application-name" content="툴허브" />
@@ -125,8 +122,8 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         
         {/* Preconnect for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         
         {/* DNS Prefetch */}
@@ -141,7 +138,9 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className={`${inter.className} min-h-screen bg-white dark:bg-gray-900`}>
+      <body className="min-h-screen bg-canvas text-fg">
+        {/* 테마 깜빡임 방지: 첫 페인트 전에 .dark 적용 (ThemeToggle과 동일 규칙) */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}` }} />
         {/* Axeptio Cookie Consent Script with Google Consent Mode */}
         <Script
           id="axeptio-settings"
@@ -228,7 +227,7 @@ export default function RootLayout({
                           newWorker.addEventListener('statechange', function() {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                               var toast = document.createElement('div');
-                              toast.innerHTML = '<div style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1e40af;color:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-size:14px;font-family:sans-serif;max-width:360px;animation:slideUp .3s ease"><span>새 버전이 있습니다</span><button onclick="window.location.reload()" style="background:#fff;color:#1e40af;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap">업데이트</button><button onclick="this.parentNode.parentNode.remove()" style="background:none;border:none;color:#93c5fd;cursor:pointer;font-size:18px;padding:0 4px">✕</button></div>';
+                              toast.innerHTML = '<div style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#191f28;color:#fff;padding:16px 20px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-size:14px;font-family:sans-serif;max-width:360px;animation:slideUp .3s ease"><span>새 버전이 있습니다</span><button onclick="window.location.reload()" style="background:#3182f6;color:#fff;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap">업데이트</button><button onclick="this.parentNode.parentNode.remove()" style="background:none;border:none;color:#8b95a1;cursor:pointer;font-size:18px;padding:0 4px">✕</button></div>';
                               document.body.appendChild(toast);
                             }
                           });

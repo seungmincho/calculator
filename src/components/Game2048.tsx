@@ -347,12 +347,12 @@ export default function Game2048() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Game Area */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-xl mx-auto">
+      <div className="bg-surface rounded-xl shadow-lg p-6 max-w-xl mx-auto">
         {/* Score and Controls */}
         <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
           <div className="flex items-center gap-4">
@@ -372,7 +372,7 @@ export default function Game2048() {
             <button
               onClick={handleUndo}
               disabled={!previousState}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors flex items-center gap-2"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-body rounded-lg px-4 py-2 font-medium transition-colors flex items-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('undo')}
@@ -433,7 +433,7 @@ export default function Game2048() {
           {(gameOver || (won && !keepPlayingAfterWin)) && (
             <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/90 rounded-lg flex items-center justify-center">
               <div className="text-center space-y-4">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-4xl font-bold text-fg">
                   {gameOver ? t('gameOver') : t('youWin')}
                 </h2>
                 <div className="flex gap-3 justify-center">
@@ -447,7 +447,7 @@ export default function Game2048() {
                   )}
                   <button
                     onClick={initializeGame}
-                    className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-colors"
+                    className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-colors"
                   >
                     {t('tryAgain')}
                   </button>
@@ -458,7 +458,7 @@ export default function Game2048() {
         </div>
 
         {/* Mobile hint */}
-        <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-xs text-center text-muted mt-4">
           {typeof window !== 'undefined' && 'ontouchstart' in window
             ? '스와이프로 타일을 움직이세요'
             : '방향키로 타일을 움직이세요'}
@@ -484,8 +484,8 @@ export default function Game2048() {
       />
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <Trophy className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -493,12 +493,12 @@ export default function Game2048() {
         <div className="space-y-6">
           {/* How to Play */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.howToPlay.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToPlay.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -508,12 +508,12 @@ export default function Game2048() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-green-600 dark:text-green-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

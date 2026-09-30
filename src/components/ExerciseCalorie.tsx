@@ -189,15 +189,15 @@ export default function ExerciseCalorie() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Flame className="w-6 h-6 text-orange-500" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -208,10 +208,10 @@ export default function ExerciseCalorie() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('inputTitle')}</h2>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('weight')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('weight')}</label>
               <div className="relative">
                 <input
                   type="number"
@@ -229,7 +229,7 @@ export default function ExerciseCalorie() {
           {/* 운동 항목 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('exercises')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('exercises')}</h2>
               <button
                 onClick={addEntry}
                 className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
@@ -240,9 +240,9 @@ export default function ExerciseCalorie() {
             </div>
 
             {entries.map((entry, idx) => (
-              <div key={entry.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 space-y-2">
+              <div key={entry.id} className="border border-line rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400">#{idx + 1}</span>
+                  <span className="text-xs font-medium text-muted">#{idx + 1}</span>
                   {entries.length > 1 && (
                     <button
                       onClick={() => removeEntry(entry.id)}
@@ -271,7 +271,7 @@ export default function ExerciseCalorie() {
                 </select>
 
                 <div>
-                  <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{t('duration')}</label>
+                  <label className="block text-xs text-muted mb-1">{t('duration')}</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="number"
@@ -281,13 +281,13 @@ export default function ExerciseCalorie() {
                       onChange={e => updateEntry(entry.id, 'duration', parseInt(e.target.value, 10) || 0)}
                       className={`w-24 px-3 py-1.5 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                     />
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('minutes')}</span>
+                    <span className="text-sm text-muted">{t('minutes')}</span>
                     <div className="flex gap-1 ml-auto">
                       {[15, 30, 60].map(m => (
                         <button
                           key={m}
                           onClick={() => updateEntry(entry.id, 'duration', m)}
-                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
+                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
                         >
                           {m}
                         </button>
@@ -307,10 +307,10 @@ export default function ExerciseCalorie() {
               {/* 총 결과 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('result')}</h2>
                   <button
                     onClick={() => copyToClipboard(buildSummary(), 'result')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'result' ? t('copied') : t('copy')}
@@ -342,8 +342,8 @@ export default function ExerciseCalorie() {
                 </div>
 
                 {/* 항목별 상세 */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('breakdown')}</h3>
+                <div className="border-t border-line pt-4">
+                  <h3 className="text-sm font-medium text-muted mb-3">{t('breakdown')}</h3>
                   <div className="space-y-2">
                     {results.items.map((item) => {
                       const pct = results.totalCalories > 0 ? (item.calories / results.totalCalories) * 100 : 0
@@ -351,10 +351,10 @@ export default function ExerciseCalorie() {
                         <div key={item.id} className="flex items-center gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between text-sm mb-1">
-                              <span className="text-gray-700 dark:text-gray-300 truncate">{t(`activities.${item.activityName}`)}</span>
-                              <span className="text-gray-900 dark:text-white font-medium ml-2 shrink-0">{item.calories} kcal</span>
+                              <span className="text-body truncate">{t(`activities.${item.activityName}`)}</span>
+                              <span className="text-fg font-medium ml-2 shrink-0">{item.calories} kcal</span>
                             </div>
-                            <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div className="h-2 bg-soft rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full transition-all"
                                 style={{ width: `${Math.min(pct, 100)}%` }}
@@ -371,12 +371,12 @@ export default function ExerciseCalorie() {
 
               {/* MET 참고 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('metInfo')}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('metDescription')}</p>
+                <h3 className="text-sm font-semibold text-fg mb-2">{t('metInfo')}</h3>
+                <p className="text-xs text-muted">{t('metDescription')}</p>
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
               <Flame className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('inputPrompt')}</p>
             </div>
@@ -391,16 +391,16 @@ export default function ExerciseCalorie() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.formula.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.formula.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.formula.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -408,7 +408,7 @@ export default function ExerciseCalorie() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

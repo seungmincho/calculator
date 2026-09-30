@@ -123,17 +123,17 @@ export default function CarTaxCalculatorPage() {
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             자동차 취등록세 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             자동차 취등록세 계산기는 <strong>차량 구매 시 납부해야 하는 취득세·등록세·공채매입 비용을 자동으로 계산</strong>하는 도구입니다. 신차 가격과 차종(승용·화물·승합, 경차·전기차)을 입력하면 취득세율 적용 후 정확한 세금 합계를 즉시 확인할 수 있어 차량 구매 예산 계획에 필수적입니다. 딜러 견적과 비교해 세금 항목이 정확한지 검증하는 데도 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             자동차 취등록세 절감 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>경차 혜택:</strong> 배기량 1,000cc 이하 경차는 취득세율이 4%로 일반 승용차(7%)보다 낮습니다.</li>
             <li><strong>전기차 감면:</strong> 전기차·하이브리드차는 취득세 최대 140만 원 감면 혜택이 있습니다.</li>
             <li><strong>공채 즉시 매도:</strong> 의무 매입 공채는 즉시 할인 매도하면 차액만 부담해 비용을 최소화합니다.</li>

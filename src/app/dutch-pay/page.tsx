@@ -39,7 +39,7 @@ export default function DutchPayPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><DutchPay />  <div className="mt-8">
     <RelatedTools />
@@ -49,17 +49,17 @@ export default function DutchPayPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             더치페이 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             더치페이 계산기는 회식비·여행비·모임비를 여러 명이 공평하게 나누는 N빵 정산 도구입니다. 균등 분배는 물론, 각자 실제로 낸 금액이 다를 때 최소 이체 횟수로 차액을 정산하는 기능도 제공합니다. 카카오페이, 토스 등 간편 결제가 보편화된 시대에 팀 회식, 단체 여행, 친목 모임의 정산을 빠르고 정확하게 처리할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             더치페이 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>최소 이체 정산:</strong> 여러 명이 각각 다른 금액을 냈을 때, 이체 횟수를 최소화하는 최적 정산 방법을 자동으로 계산합니다. 복잡한 계산 없이 결과를 바로 확인하세요.</li>
             <li><strong>단위 절사 처리:</strong> 인원수로 나눌 때 발생하는 소수점 금액을 100원·1,000원 단위로 자동 처리하고, 차액은 결제자가 부담하는 방식으로 계산됩니다.</li>
             <li><strong>결과 공유:</strong> 정산 결과를 복사하여 단톡방에 붙여넣으면 모임 멤버 모두가 자신이 보내야 할 금액을 바로 확인할 수 있습니다.</li>

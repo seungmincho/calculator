@@ -181,8 +181,8 @@ export default function EditDistanceVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400">
               {tHub('categories.dp')}
@@ -194,7 +194,7 @@ export default function EditDistanceVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying}
@@ -234,12 +234,12 @@ export default function EditDistanceVisualizer() {
             {/* Stats */}
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               {result && (
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-sub">
                   {t('result')}: <strong className="text-blue-600 dark:text-blue-400">{result.distance}</strong>
                 </span>
               )}
               {currentStep && (
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-sub">
                   {t('currentCell')}: <strong className="text-cyan-600 dark:text-cyan-400">[{currentStep.row}, {currentStep.col}]</strong>
                 </span>
               )}
@@ -253,7 +253,7 @@ export default function EditDistanceVisualizer() {
             {/* Operations list */}
             {currentStep?.action === 'done' && result?.operations && (
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('operations')}</h3>
+                <h3 className="text-sm font-medium text-body">{t('operations')}</h3>
                 <div className="flex flex-wrap gap-1">
                   {result.operations.map((op, i) => (
                     <span key={i} className={`px-2 py-1 rounded text-xs font-medium ${opColor[op.type] ?? ''}`}>
@@ -268,27 +268,27 @@ export default function EditDistanceVisualizer() {
             )}
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-4">
               <div className="flex items-center gap-2">
-                <label className="text-xs text-gray-600 dark:text-gray-400">{t('string1')}:</label>
+                <label className="text-xs text-sub">{t('string1')}:</label>
                 <input
                   type="text"
                   value={str1}
                   onChange={e => { handleReset(); setStr1(e.target.value) }}
                   disabled={isRunning}
-                  className="px-2 py-1 text-xs rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white w-32"
+                  className="px-2 py-1 text-xs rounded border border-line-strong bg-field text-fg w-32"
                   maxLength={12}
                 />
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-xs text-gray-600 dark:text-gray-400">{t('string2')}:</label>
+                <label className="text-xs text-sub">{t('string2')}:</label>
                 <input
                   type="text"
                   value={str2}
                   onChange={e => { handleReset(); setStr2(e.target.value) }}
                   disabled={isRunning}
-                  className="px-2 py-1 text-xs rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white w-32"
+                  className="px-2 py-1 text-xs rounded border border-line-strong bg-field text-fg w-32"
                   maxLength={12}
                 />
               </div>
@@ -303,7 +303,7 @@ export default function EditDistanceVisualizer() {
                   className={`px-2 py-1 text-xs rounded-lg transition-colors ${
                     presetIdx === i && !isRunning
                       ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                   } disabled:opacity-40`}
                 >
                   {p.str1}/{p.str2}
@@ -311,7 +311,7 @@ export default function EditDistanceVisualizer() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-cyan-500" /> {t('currentCell')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t('match')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-amber-500" /> {t('replace')}</span>
@@ -324,8 +324,8 @@ export default function EditDistanceVisualizer() {
         {/* Right panel */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -333,7 +333,7 @@ export default function EditDistanceVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -344,9 +344,9 @@ export default function EditDistanceVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsDescription')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsDescription')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsDescription')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsDescription')}</p>
                     ) : (
                       <EDStepsList steps={result?.steps} currentIndex={currentStepIndex} onStepClick={setCurrentStepIndex} t={t} />
                     )}
@@ -431,12 +431,12 @@ function EDStepsList({ steps, currentIndex, onStepClick, t }: {
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
-                : isActive ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                 : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >
-            <span className="text-gray-700 dark:text-gray-300">{icon} {label}</span>
+            <span className="text-body">{icon} {label}</span>
           </div>
         )
       })}

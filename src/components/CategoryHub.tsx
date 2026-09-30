@@ -20,8 +20,8 @@ export default function CategoryHub({ category }: { category: CategoryKey }) {
       {Array.from(groups.entries()).map(([sub, items]) => (
         <section key={sub || 'all'}>
           {sub && (
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              {t(sub)} <span className="text-sm font-normal text-gray-500 dark:text-gray-400">({items.length})</span>
+            <h2 className="text-lg font-semibold text-fg mb-4">
+              {t(sub)} <span className="text-sm font-normal text-muted">({items.length})</span>
             </h2>
           )}
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -29,17 +29,17 @@ export default function CategoryHub({ category }: { category: CategoryKey }) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`${glassCard} flex items-start gap-3 p-4 h-full hover:bg-white/80 dark:hover:bg-white/[0.14] hover:-translate-y-0.5 transition-all`}
+                  className={`${glassCard} flex items-start gap-3 p-4 h-full hover:bg-soft hover:-translate-y-0.5 transition-all`}
                 >
                   <span className="text-2xl leading-none mt-0.5">{item.icon}</span>
                   <span className="min-w-0">
-                    <span className="flex items-center gap-2 font-medium text-gray-900 dark:text-white">
+                    <span className="flex items-center gap-2 font-medium text-fg">
                       {t(item.labelKey)}
                       {isNewTool(item) && (
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">NEW</span>
                       )}
                     </span>
-                    <span className="block text-sm text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-2">{t(item.descriptionKey)}</span>
+                    <span className="block text-sm text-sub mt-0.5 line-clamp-2">{t(item.descriptionKey)}</span>
                   </span>
                 </Link>
               </li>

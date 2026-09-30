@@ -179,8 +179,8 @@ export default function KoreanSyllable() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode Tabs */}
@@ -191,7 +191,7 @@ export default function KoreanSyllable() {
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'chosung'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('mode.chosung')}
@@ -201,7 +201,7 @@ export default function KoreanSyllable() {
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'decompose'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('mode.decompose')}
@@ -211,7 +211,7 @@ export default function KoreanSyllable() {
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'compose'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('mode.compose')}
@@ -225,7 +225,7 @@ export default function KoreanSyllable() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block text-sm font-medium text-fg">
                 <Type className="w-4 h-4 inline mr-2" />
                 {t('input')}
               </label>
@@ -258,7 +258,7 @@ export default function KoreanSyllable() {
             {mode !== 'compose' && (
               <>
                 <div>
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <p className="text-sm font-medium text-body mb-2">
                     {t('examples')}
                   </p>
                   <div className="space-y-2">
@@ -266,7 +266,7 @@ export default function KoreanSyllable() {
                       <button
                         key={idx}
                         onClick={() => handleExampleClick(text)}
-                        className="w-full px-3 py-2 text-left text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                        className="w-full px-3 py-2 text-left text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                       >
                         {text}
                       </button>
@@ -274,14 +274,14 @@ export default function KoreanSyllable() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="pt-4 border-t border-line">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">{t('charCount')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{stats.charCount}</span>
+                    <span className="text-sub">{t('charCount')}</span>
+                    <span className="font-medium text-fg">{stats.charCount}</span>
                   </div>
                   <div className="flex justify-between text-sm mt-2">
-                    <span className="text-gray-600 dark:text-gray-400">{t('syllableCount')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{stats.syllableCount}</span>
+                    <span className="text-sub">{t('syllableCount')}</span>
+                    <span className="font-medium text-fg">{stats.syllableCount}</span>
                   </div>
                 </div>
               </>
@@ -293,14 +293,14 @@ export default function KoreanSyllable() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result')}
               </h2>
               {mode !== 'decompose' && (
                 <button
                   onClick={() => copyToClipboard(typeof result === 'string' ? result : '', 'result')}
                   disabled={!result || typeof result !== 'string'}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {copiedId === 'result' ? (
                     <>
@@ -339,8 +339,8 @@ export default function KoreanSyllable() {
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
-                        <tr className="border-b-2 border-gray-300 dark:border-gray-600">
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                        <tr className="border-b-2 border-line-strong">
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-fg">
                             {t('original')}
                           </th>
                           <th className="px-4 py-3 text-left text-sm font-semibold text-blue-700 dark:text-blue-400">
@@ -356,8 +356,8 @@ export default function KoreanSyllable() {
                       </thead>
                       <tbody>
                         {result.map((item, idx) => (
-                          <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
-                            <td className="px-4 py-3 text-2xl font-bold text-gray-900 dark:text-white">
+                          <tr key={idx} className="border-b border-line">
+                            <td className="px-4 py-3 text-2xl font-bold text-fg">
                               {item.original}
                             </td>
                             <td className="px-4 py-3 text-2xl font-bold text-blue-700 dark:text-blue-400">
@@ -375,7 +375,7 @@ export default function KoreanSyllable() {
                     </table>
                   </div>
                 ) : (
-                  <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                  <p className="text-muted text-center py-8">
                     결과가 여기 표시됩니다
                   </p>
                 )}
@@ -385,15 +385,15 @@ export default function KoreanSyllable() {
                     <div className="flex flex-wrap gap-4 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                        <span className="text-gray-700 dark:text-gray-300">{t('chosung')}</span>
+                        <span className="text-body">{t('chosung')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-green-500 rounded"></div>
-                        <span className="text-gray-700 dark:text-gray-300">{t('jungsung')}</span>
+                        <span className="text-body">{t('jungsung')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-orange-500 rounded"></div>
-                        <span className="text-gray-700 dark:text-gray-300">{t('jongsung')}</span>
+                        <span className="text-body">{t('jongsung')}</span>
                       </div>
                     </div>
                   </div>
@@ -406,17 +406,17 @@ export default function KoreanSyllable() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.structure.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.structure.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -424,7 +424,7 @@ export default function KoreanSyllable() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               모드 안내
             </h3>
             <div className="space-y-4">
@@ -467,10 +467,10 @@ export default function KoreanSyllable() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.usage.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -478,11 +478,11 @@ export default function KoreanSyllable() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               한글 자모 구성
             </h3>
             <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-body">
                 한글은 유니코드 0xAC00 ~ 0xD7A3 범위에 11,172개의 완성형 글자가 정의되어 있습니다.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">

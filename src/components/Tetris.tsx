@@ -725,11 +725,11 @@ export default function Tetris() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Gamepad2 className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main game area */}
@@ -739,8 +739,8 @@ export default function Tetris() {
         <div className="hidden lg:flex flex-col gap-4 w-36">
           {/* Hold */}
           <div className={`${glassCard} ${glassInset} p-3`}>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">{t('hold')}</p>
-            <div className="h-16 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">{t('hold')}</p>
+            <div className="h-16 flex items-center justify-center bg-subtle rounded-lg">
               {holdPiece ? (
                 <MiniPiece type={holdPiece} />
               ) : (
@@ -755,19 +755,19 @@ export default function Tetris() {
           {/* Score */}
           <div className={`${glassCard} ${glassInset} p-3 space-y-3`}>
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('score')}</p>
+              <p className="text-xs text-muted">{t('score')}</p>
               <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{score.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('level')}</p>
+              <p className="text-xs text-muted">{t('level')}</p>
               <p className="text-lg font-bold text-purple-600 dark:text-purple-400">{level}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('lines')}</p>
+              <p className="text-xs text-muted">{t('lines')}</p>
               <p className="text-lg font-bold text-green-600 dark:text-green-400">{lines}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+              <p className="text-xs text-muted flex items-center gap-1">
                 <Trophy className="w-3 h-3" />{t('bestScore')}
               </p>
               <p className="text-sm font-semibold text-yellow-600 dark:text-yellow-400">{bestScore.toLocaleString()}</p>
@@ -880,15 +880,15 @@ export default function Tetris() {
         <div className="hidden lg:flex flex-col gap-4 w-36">
           {/* Next */}
           <div className={`${glassCard} ${glassInset} p-3`}>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">{t('next')}</p>
+            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">{t('next')}</p>
             <div className="space-y-2">
               {(gameState !== 'idle' ? nextPieces : []).map((type, i) => (
-                <div key={i} className={`h-14 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg ${i === 0 ? '' : 'opacity-60'}`}>
+                <div key={i} className={`h-14 flex items-center justify-center bg-subtle rounded-lg ${i === 0 ? '' : 'opacity-60'}`}>
                   <MiniPiece type={type} />
                 </div>
               ))}
               {gameState === 'idle' && Array(NEXT_COUNT).fill(null).map((_, i) => (
-                <div key={i} className="h-14 bg-gray-50 dark:bg-gray-700 rounded-lg" />
+                <div key={i} className="h-14 bg-subtle rounded-lg" />
               ))}
             </div>
           </div>
@@ -927,17 +927,17 @@ export default function Tetris() {
           <div className="flex gap-3">
             {/* Hold */}
             <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('hold')}</p>
-              <div className="h-12 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('hold')}</p>
+              <div className="h-12 flex items-center justify-center bg-subtle rounded-lg">
                 {holdPiece && <MiniPiece type={holdPiece} />}
               </div>
             </div>
             {/* Next */}
             <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('next')}</p>
+              <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('next')}</p>
               <div className="flex gap-1">
                 {(gameState !== 'idle' ? nextPieces.slice(0, 2) : [null, null]).map((type, i) => (
-                  <div key={i} className="flex-1 h-12 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div key={i} className="flex-1 h-12 flex items-center justify-center bg-subtle rounded-lg">
                     {type && <MiniPiece type={type} />}
                   </div>
                 ))}
@@ -954,7 +954,7 @@ export default function Tetris() {
               { label: t('bestScore'), value: bestScore.toLocaleString(), color: 'text-yellow-600 dark:text-yellow-400' },
             ].map(({ label, value, color }) => (
               <div key={label} className={`${glassCard} ${glassInset} p-2 text-center`}>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{label}</p>
+                <p className="text-xs text-muted truncate">{label}</p>
                 <p className={`text-sm font-bold ${color}`}>{value}</p>
               </div>
             ))}
@@ -991,14 +991,14 @@ export default function Tetris() {
 
       {/* Controls guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Keyboard controls */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('guide.keyboard.title')}</h3>
+            <h3 className="text-sm font-semibold text-body mb-3">{t('guide.keyboard.title')}</h3>
             <div className="space-y-1">
               {(t.raw('guide.keyboard.items') as string[]).map((item, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <div key={i} className="flex items-center gap-2 text-sm text-sub">
                   <span className="text-blue-500">•</span>
                   <span>{item}</span>
                 </div>
@@ -1007,10 +1007,10 @@ export default function Tetris() {
           </div>
           {/* Touch controls */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('guide.touch.title')}</h3>
+            <h3 className="text-sm font-semibold text-body mb-3">{t('guide.touch.title')}</h3>
             <div className="space-y-1">
               {(t.raw('guide.touch.items') as string[]).map((item, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <div key={i} className="flex items-center gap-2 text-sm text-sub">
                   <span className="text-green-500">•</span>
                   <span>{item}</span>
                 </div>
@@ -1019,11 +1019,11 @@ export default function Tetris() {
           </div>
         </div>
         {/* Scoring */}
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('guide.scoring.title')}</h3>
+        <div className="mt-4 pt-4 border-t border-line">
+          <h3 className="text-sm font-semibold text-body mb-3">{t('guide.scoring.title')}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {(t.raw('guide.scoring.items') as string[]).map((item, i) => (
-              <div key={i} className="bg-blue-50 dark:bg-blue-950 rounded-lg p-2 text-center text-sm text-gray-700 dark:text-gray-300">
+              <div key={i} className="bg-blue-50 dark:bg-blue-950 rounded-lg p-2 text-center text-sm text-body">
                 {item}
               </div>
             ))}

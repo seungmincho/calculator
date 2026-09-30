@@ -64,7 +64,7 @@ export default function LadderGameTabs() {
       <div className="flex justify-center mb-6">
         <div className="w-full px-1 flex justify-center">
           <div
-            className="inline-flex flex-wrap justify-center rounded-[1.4rem] p-1.5 gap-1 max-w-full bg-white/38 dark:bg-white/[0.06] backdrop-blur-xl border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08),0_16px_40px_rgba(79,70,229,0.12)]"
+            className="inline-flex flex-wrap justify-center rounded-[1.4rem] p-1.5 gap-1 max-w-full bg-surface border border-line"
           >
             {TABS.map((tab) => (
               <button
@@ -72,8 +72,8 @@ export default function LadderGameTabs() {
                 onClick={() => handleTabChange(tab.id)}
                 className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-white/62 dark:bg-white/[0.14] backdrop-blur-xl text-indigo-700 dark:text-indigo-300 border border-white/55 dark:border-white/[0.14] shadow-[0_0_20px_rgba(99,102,241,0.18)]'
-                    : 'text-gray-700 dark:text-gray-400 hover:bg-white/28 dark:hover:bg-white/[0.06] hover:text-gray-900 dark:hover:text-gray-200'
+                    ? 'bg-surface text-indigo-700 dark:text-indigo-300 border border-line shadow-[0_0_20px_rgba(99,102,241,0.18)]'
+                    : 'text-gray-700 dark:text-gray-400 hover:bg-soft hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
                 style={activeTab === tab.id ? { boxShadow: '0 0 20px rgba(99,102,241,0.16), inset 1px 1px 5px rgba(255,255,255,0.2)' } : undefined}
               >

@@ -120,19 +120,19 @@ export default function HashGenerator() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Hash className="w-7 h-7 text-purple-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
 
       {/* Input Section */}
       <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
-        <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+          <span className="text-sm font-medium text-body">
             {t('input.label')}
           </span>
           <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 transition-all">
@@ -149,11 +149,11 @@ export default function HashGenerator() {
           value={input}
           onChange={(e) => { setInput(e.target.value); setFileName(null); }}
           placeholder={t('input.placeholder')}
-          className="w-full h-40 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+          className="w-full h-40 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
           spellCheck={false}
         />
         {fileName && (
-          <div className="px-4 py-2 bg-purple-50 dark:bg-purple-900/20 border-t border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-2 bg-purple-50 dark:bg-purple-900/20 border-t border-line">
             <span className="text-sm text-purple-700 dark:text-purple-300">
               {t('input.fileLoaded')}: {fileName}
             </span>
@@ -182,7 +182,7 @@ export default function HashGenerator() {
         </button>
         <button
           onClick={handleClear}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
         >
           <Trash2 className="w-4 h-4" />
           {t('actions.clear')}
@@ -192,8 +192,8 @@ export default function HashGenerator() {
       {/* Results */}
       {results.length > 0 && (
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div className="px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {t('results.title')}
             </span>
           </div>
@@ -206,7 +206,7 @@ export default function HashGenerator() {
                   </span>
                   <button
                     onClick={() => handleCopy(result.hash, result.algorithm)}
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-all"
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-all"
                   >
                     {copied === result.algorithm ? (
                       <>
@@ -221,7 +221,7 @@ export default function HashGenerator() {
                     )}
                   </button>
                 </div>
-                <code className="text-xs font-mono text-gray-900 dark:text-white break-all">
+                <code className="text-xs font-mono text-fg break-all">
                   {result.hash}
                 </code>
               </div>
@@ -232,23 +232,23 @@ export default function HashGenerator() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.whatIs.title')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               {t('guide.whatIs.description')}
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.algorithms.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.algorithms.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-purple-500 mt-0.5">•</span>

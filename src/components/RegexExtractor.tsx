@@ -479,10 +479,10 @@ export default function RegexExtractor() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -513,7 +513,7 @@ export default function RegexExtractor() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <Wand2 className="w-6 h-6 text-green-600" />
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold text-fg">
               {t('smartMode.title')}
             </h2>
           </div>
@@ -535,7 +535,7 @@ export default function RegexExtractor() {
           </div>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-sub mb-6">
           {t('smartMode.description')}
         </p>
 
@@ -551,13 +551,13 @@ export default function RegexExtractor() {
               className={`p-3 rounded-lg border-2 text-left transition-all ${
                 smartMode === mode.id
                   ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-green-300'
+                  : 'border-line hover:border-green-300'
               }`}
             >
-              <div className="font-medium text-gray-900 dark:text-white text-sm">
+              <div className="font-medium text-fg text-sm">
                 {mode.title}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-xs text-muted mt-1">
                 {mode.description}
               </div>
             </button>
@@ -572,7 +572,7 @@ export default function RegexExtractor() {
               value={userDescription}
               onChange={(e) => setUserDescription(e.target.value)}
               placeholder={smartModes.find(m => m.id === smartMode)?.placeholder}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              className="flex-1 px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               disabled={!!smartModes.find(m => m.id === smartMode)?.noInput}
             />
             <button
@@ -590,7 +590,7 @@ export default function RegexExtractor() {
       {showGuide && (
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+            <h3 className="text-lg font-semibold text-fg flex items-center">
               <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
               {t('guide.regexBasics')}
             </h3>
@@ -604,7 +604,7 @@ export default function RegexExtractor() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">
+              <h4 className="font-medium text-fg mb-3">
                 {t('guide.basicSymbols')}
               </h4>
               <div className="space-y-2 text-sm">
@@ -617,15 +617,15 @@ export default function RegexExtractor() {
                   { symbol: '+', key: 'plus' }
                 ].map((item) => (
                   <div key={item.key} className="flex justify-between">
-                    <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{item.symbol}</code>
-                    <span className="text-gray-600 dark:text-gray-400">{t(`guide.symbolDescs.${item.key}`)}</span>
+                    <code className="bg-soft px-2 py-1 rounded">{item.symbol}</code>
+                    <span className="text-sub">{t(`guide.symbolDescs.${item.key}`)}</span>
                   </div>
                 ))}
               </div>
             </div>
             
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">
+              <h4 className="font-medium text-fg mb-3">
                 {t('guide.examples')}
               </h4>
               <div className="space-y-2 text-sm">
@@ -636,8 +636,8 @@ export default function RegexExtractor() {
                   { pattern: '.*world$', key: 'endsWithWorld' }
                 ].map((item) => (
                   <div key={item.key}>
-                    <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{item.pattern}</code>
-                    <p className="text-gray-600 dark:text-gray-400">{t(`guide.exampleDescs.${item.key}`)}</p>
+                    <code className="bg-soft px-2 py-1 rounded">{item.pattern}</code>
+                    <p className="text-sub">{t(`guide.exampleDescs.${item.key}`)}</p>
                   </div>
                 ))}
               </div>
@@ -650,7 +650,7 @@ export default function RegexExtractor() {
       {showPatternBuilder && (
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+            <h3 className="text-lg font-semibold text-fg flex items-center">
               <Target className="w-5 h-5 mr-2 text-purple-600" />
               {t('patternBuilder.title')}
             </h3>
@@ -662,7 +662,7 @@ export default function RegexExtractor() {
             </button>
           </div>
           
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <p className="text-sub mb-4">
             {t('patternBuilder.description')}
           </p>
           
@@ -684,10 +684,10 @@ export default function RegexExtractor() {
               <button
                 key={item.symbol}
                 onClick={() => setPattern(pattern + item.symbol)}
-                className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center"
+                className="p-2 bg-soft rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center"
               >
                 <code className="block font-mono text-sm">{item.symbol}</code>
-                <span className="text-xs text-gray-500 dark:text-gray-400">{t(`patternBuilder.symbols.${item.key}`)}</span>
+                <span className="text-xs text-muted">{t(`patternBuilder.symbols.${item.key}`)}</span>
               </button>
             ))}
           </div>
@@ -699,7 +699,7 @@ export default function RegexExtractor() {
         <div className="space-y-6">
           {/* 작업 유형 선택 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+            <h2 className="text-xl font-bold text-fg mb-4 flex items-center">
               <Zap className="w-5 h-5 mr-2 text-blue-600" />
               {t('operation.title')}
             </h2>
@@ -719,12 +719,12 @@ export default function RegexExtractor() {
                   className={`p-4 rounded-lg border-2 text-left transition-all ${
                     operation === key
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-blue-300'
+                      : 'border-line hover:border-blue-300'
                   }`}
                 >
                   <Icon className="w-6 h-6 mb-2 text-blue-600" />
-                  <div className="font-medium text-gray-900 dark:text-white">{label}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{desc}</div>
+                  <div className="font-medium text-fg">{label}</div>
+                  <div className="text-sm text-muted">{desc}</div>
                 </button>
               ))}
             </div>
@@ -733,7 +733,7 @@ export default function RegexExtractor() {
           {/* 정규식 패턴 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-fg">
                 {t('pattern.title')}
               </h3>
               <button
@@ -756,7 +756,7 @@ export default function RegexExtractor() {
                 placeholder={t('pattern.placeholder')}
                 className={`w-full px-4 py-3 border rounded-lg font-mono text-sm focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:text-white ${
                   isValid 
-                    ? 'border-gray-300 dark:border-gray-600 focus:ring-blue-500' 
+                    ? 'border-line-strong focus:ring-blue-500' 
                     : 'border-red-500 focus:ring-red-500'
                 }`}
               />
@@ -792,7 +792,7 @@ export default function RegexExtractor() {
 
             {/* 플래그 */}
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('flags.title')}
               </label>
               <div className="flex space-x-2">
@@ -808,7 +808,7 @@ export default function RegexExtractor() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       flags.includes(flag)
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                     title={desc}
                   >
@@ -821,7 +821,7 @@ export default function RegexExtractor() {
             {/* 교체 문자열 (replace 모드일 때만) */}
             {operation === 'replace' && (
               <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('replacement.title')}
                 </label>
                 <input
@@ -829,9 +829,9 @@ export default function RegexExtractor() {
                   value={replacement}
                   onChange={(e) => setReplacement(e.target.value)}
                   placeholder={t('replacement.placeholder')}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
-                <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <div className="mt-1 text-xs text-muted">
                   {t('replacement.help')}
                 </div>
               </div>
@@ -842,7 +842,7 @@ export default function RegexExtractor() {
           {showPresets && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-fg">
                   {t('presets.title')}
                 </h3>
                 <button
@@ -862,7 +862,7 @@ export default function RegexExtractor() {
                     className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-sm transition-colors ${
                       selectedCategory === category
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200'
+                        : 'bg-soft text-body hover:bg-gray-200'
                     }`}
                   >
                     {getCategoryIcon(category)}
@@ -877,15 +877,15 @@ export default function RegexExtractor() {
                   <button
                     key={index}
                     onClick={() => applyPreset(preset)}
-                    className="w-full text-left p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    className="w-full text-left p-3 bg-subtle rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                   >
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-medium text-fg">
                       {t(`presets.patterns.${preset.name}`)}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-sub">
                       {t(`presets.descriptions.${preset.name}`)}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-500 font-mono mt-1">
+                    <div className="text-xs text-muted font-mono mt-1">
                       {preset.example}
                     </div>
                   </button>
@@ -897,11 +897,11 @@ export default function RegexExtractor() {
           {/* 입력 텍스트 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-fg">
                 {t('input.title')}
               </h3>
               <div className="flex space-x-2">
-                <label className="flex items-center space-x-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer transition-colors">
+                <label className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer transition-colors">
                   <Upload className="w-4 h-4" />
                   <span className="text-sm">{t('input.upload')}</span>
                   <input
@@ -916,7 +916,7 @@ export default function RegexExtractor() {
                     setInputText('')
                     updateURL({ input: '' })
                   }}
-                  className="flex items-center space-x-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="text-sm">{tCommon('clear')}</span>
@@ -932,10 +932,10 @@ export default function RegexExtractor() {
               }}
               placeholder={t('input.placeholder')}
               rows={12}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
             />
             
-            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-sm text-muted">
               {t('input.stats', { 
                 lines: inputText.split('\n').length, 
                 chars: inputText.length 
@@ -950,7 +950,7 @@ export default function RegexExtractor() {
           {pattern && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                <h3 className="text-lg font-semibold text-fg flex items-center">
                   {isValid ? (
                     <CheckCircle className="w-5 h-5 mr-2 text-green-500" />
                   ) : (
@@ -976,30 +976,30 @@ export default function RegexExtractor() {
                   <div className="text-2xl font-bold text-purple-600">{outputText.length}</div>
                   <div className="text-sm text-purple-700 dark:text-purple-300">{t('results.outputChars')}</div>
                 </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-gray-600">{((matches.length / Math.max(inputText.split('\n').length, 1)) * 100).toFixed(1)}%</div>
-                  <div className="text-sm text-gray-700 dark:text-gray-300">{t('results.matchRate')}</div>
+                  <div className="text-sm text-body">{t('results.matchRate')}</div>
                 </div>
               </div>
 
               {/* 매치 상세 정보 (처음 5개만) */}
               {matches.length > 0 && (
                 <div className="mt-4">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <h4 className="text-sm font-medium text-body mb-2">
                     {t('results.matchDetails')}
                   </h4>
                   <div className="space-y-2 max-h-32 overflow-y-auto">
                     {matches.slice(0, 5).map((match, index) => (
-                      <div key={index} className="text-xs bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                        <div className="font-mono text-gray-900 dark:text-white">"{match.match}"</div>
-                        <div className="text-gray-500 dark:text-gray-400">
+                      <div key={index} className="text-xs bg-subtle p-2 rounded">
+                        <div className="font-mono text-fg">"{match.match}"</div>
+                        <div className="text-muted">
                           {t('matchDetail.line', { line: match.line })}, {t('matchDetail.index', { index: match.index })}
                           {match.groups.length > 0 && ` | ${t('matchDetail.groups', { groups: match.groups.join(', ') })}`}
                         </div>
                       </div>
                     ))}
                     {matches.length > 5 && (
-                      <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                      <div className="text-xs text-muted text-center">
                         ... {t('results.moreMatches', { count: matches.length - 5 })}
                       </div>
                     )}
@@ -1012,7 +1012,7 @@ export default function RegexExtractor() {
           {/* 결과 출력 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-fg">
                 {t('results.title')}
               </h3>
               <div className="flex space-x-2">
@@ -1020,14 +1020,14 @@ export default function RegexExtractor() {
                   <>
                     <button
                       onClick={() => copyToClipboard(outputText)}
-                      className="flex items-center space-x-1 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       <Copy className="w-4 h-4" />
                       <span className="text-sm">{isCopied ? tCommon('copied') : tCommon('copy')}</span>
                     </button>
                     <button
                       onClick={downloadResult}
-                      className="flex items-center space-x-1 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       <Download className="w-4 h-4" />
                       <span className="text-sm">{t('results.download')}</span>
@@ -1042,7 +1042,7 @@ export default function RegexExtractor() {
               readOnly
               placeholder={t('results.placeholder')}
               rows={15}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-sm bg-gray-50 dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm bg-subtle dark:text-white resize-none"
             />
           </div>
 
@@ -1051,7 +1051,7 @@ export default function RegexExtractor() {
             <div className="flex space-x-3">
               <button
                 onClick={handleShare}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-body transition-colors"
               >
                 <Share2 className="w-5 h-5" />
                 <span>{t('results.share')}</span>
@@ -1059,7 +1059,7 @@ export default function RegexExtractor() {
               
               <button
                 onClick={handleSaveCalculation}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-body transition-colors"
               >
                 <Save className="w-5 h-5" />
                 <span>{tCommon('save')}</span>
@@ -1071,16 +1071,16 @@ export default function RegexExtractor() {
 
       {/* 사용 가이드 */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           🔍 {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.operationsTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.operations.0')}</li>
               <li>• {t('guide.operations.1')}</li>
               <li>• {t('guide.operations.2')}</li>
@@ -1088,10 +1088,10 @@ export default function RegexExtractor() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tipsTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.tips.0')}</li>
               <li>• {t('guide.tips.1')}</li>
               <li>• {t('guide.tips.2')}</li>
@@ -1099,10 +1099,10 @@ export default function RegexExtractor() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.examplesTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.exampleItems.0')}</li>
               <li>• {t('guide.exampleItems.1')}</li>
               <li>• {t('guide.exampleItems.2')}</li>

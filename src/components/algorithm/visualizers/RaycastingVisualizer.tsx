@@ -140,8 +140,8 @@ export default function RaycastingVisualizer() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
           <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
             {tHub('categories.rendering')}
@@ -152,7 +152,7 @@ export default function RaycastingVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4" ref={containerRef}>
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* 3D View */}
             <div className="flex justify-center" tabIndex={0}>
               <RaycastingCanvas2D
@@ -166,24 +166,24 @@ export default function RaycastingVisualizer() {
 
             {/* Controls info */}
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.position')}: <strong className="text-indigo-600 dark:text-indigo-400">
                   ({player.x.toFixed(1)}, {player.y.toFixed(1)})
                 </strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.angle')}: <strong className="text-yellow-600 dark:text-yellow-400">
                   {(player.angle * 180 / Math.PI).toFixed(0)}°
                 </strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.rays')}: <strong className="text-purple-600 dark:text-purple-400">{NUM_COLUMNS}</strong>
               </span>
             </div>
           </div>
 
           {/* Controls */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setEditMode(!editMode)}
                 className={`px-3 py-1.5 text-xs rounded-lg ${editMode
@@ -202,18 +202,18 @@ export default function RaycastingVisualizer() {
               <div className="grid grid-cols-3 gap-1">
                 <div />
                 <button onPointerDown={() => keysPressed.current.add('w')} onPointerUp={() => keysPressed.current.delete('w')} onPointerLeave={() => keysPressed.current.delete('w')}
-                  className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">W</button>
+                  className="w-10 h-10 rounded-lg bg-track text-body font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">W</button>
                 <div />
                 <button onPointerDown={() => keysPressed.current.add('arrowleft')} onPointerUp={() => keysPressed.current.delete('arrowleft')} onPointerLeave={() => keysPressed.current.delete('arrowleft')}
-                  className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">←</button>
+                  className="w-10 h-10 rounded-lg bg-track text-body font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">←</button>
                 <button onPointerDown={() => keysPressed.current.add('s')} onPointerUp={() => keysPressed.current.delete('s')} onPointerLeave={() => keysPressed.current.delete('s')}
-                  className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">S</button>
+                  className="w-10 h-10 rounded-lg bg-track text-body font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">S</button>
                 <button onPointerDown={() => keysPressed.current.add('arrowright')} onPointerUp={() => keysPressed.current.delete('arrowright')} onPointerLeave={() => keysPressed.current.delete('arrowright')}
-                  className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">→</button>
+                  className="w-10 h-10 rounded-lg bg-track text-body font-bold text-sm active:bg-gray-300 dark:active:bg-gray-600">→</button>
               </div>
             </div>
 
-            <p className="text-xs text-gray-400 dark:text-gray-500 text-center">{t('controls.keyboardHint')}</p>
+            <p className="text-xs text-faint text-center">{t('controls.keyboardHint')}</p>
 
             {/* Map editor grid */}
             {editMode && (
@@ -241,14 +241,14 @@ export default function RaycastingVisualizer() {
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
                     {tab.icon} {tab.label}
                   </button>
@@ -258,13 +258,13 @@ export default function RaycastingVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-3">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub">{t('stepsGuide.description')}</p>
                     <div className="space-y-2">
                       {['step1', 'step2', 'step3', 'step4'].map((key, i) => (
                         <div key={key} className="p-3 rounded-lg bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/30 dark:border-gray-700/30">
                           <div className="flex items-center gap-2">
                             <span className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold flex items-center justify-center">{i + 1}</span>
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{t(`stepsGuide.${key}`)}</span>
+                            <span className="text-sm text-body">{t(`stepsGuide.${key}`)}</span>
                           </div>
                         </div>
                       ))}

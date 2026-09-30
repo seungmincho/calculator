@@ -122,10 +122,10 @@ export default function UrlEncoder() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -137,7 +137,7 @@ export default function UrlEncoder() {
           className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
             mode === 'encode'
               ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
           }`}
         >
           <Link className="w-4 h-4" />
@@ -145,7 +145,7 @@ export default function UrlEncoder() {
         </button>
         <button
           onClick={handleSwap}
-          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+          className="p-2 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           title={t('actions.swap')}
         >
           <ArrowRightLeft className="w-5 h-5" />
@@ -155,7 +155,7 @@ export default function UrlEncoder() {
           className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
             mode === 'decode'
               ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
           }`}
         >
           <Unlink className="w-4 h-4" />
@@ -166,9 +166,9 @@ export default function UrlEncoder() {
       {/* Main Content */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* Input */}
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className={`${glassCard} ${glassInset} border border-line overflow-hidden`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {mode === 'encode' ? t('input.text') : t('input.encoded')}
             </span>
           </div>
@@ -176,15 +176,15 @@ export default function UrlEncoder() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={mode === 'encode' ? t('input.textPlaceholder') : t('input.encodedPlaceholder')}
-            className="w-full h-48 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full h-48 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
             spellCheck={false}
           />
         </div>
 
         {/* Output */}
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className={`${glassCard} ${glassInset} border border-line overflow-hidden`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {mode === 'encode' ? t('output.encoded') : t('output.text')}
             </span>
             <button
@@ -200,7 +200,7 @@ export default function UrlEncoder() {
             value={error || output}
             readOnly
             className={`w-full h-48 p-4 bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed ${
-              error ? 'text-red-500' : 'text-gray-900 dark:text-white'
+              error ? 'text-red-500' : 'text-fg'
             }`}
             spellCheck={false}
           />
@@ -225,7 +225,7 @@ export default function UrlEncoder() {
         )}
         <button
           onClick={handleClear}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
         >
           <Trash2 className="w-4 h-4" />
           {t('actions.clear')}
@@ -234,32 +234,32 @@ export default function UrlEncoder() {
 
       {/* Parsed URL Info */}
       {parsedUrl && (
-        <div className={`mt-6 ${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className={`mt-6 ${glassCard} ${glassInset} border border-line p-6`}>
+          <h3 className="text-lg font-semibold text-fg mb-4">
             {t('urlAnalysis.title')}
           </h3>
           <div className="grid gap-3 text-sm">
             <div className="flex">
-              <span className="w-24 font-medium text-gray-500 dark:text-gray-400">{t('urlAnalysis.protocol')}</span>
-              <span className="text-gray-900 dark:text-white font-mono">{parsedUrl.protocol}</span>
+              <span className="w-24 font-medium text-muted">{t('urlAnalysis.protocol')}</span>
+              <span className="text-fg font-mono">{parsedUrl.protocol}</span>
             </div>
             <div className="flex">
-              <span className="w-24 font-medium text-gray-500 dark:text-gray-400">{t('urlAnalysis.host')}</span>
-              <span className="text-gray-900 dark:text-white font-mono">{parsedUrl.host}</span>
+              <span className="w-24 font-medium text-muted">{t('urlAnalysis.host')}</span>
+              <span className="text-fg font-mono">{parsedUrl.host}</span>
             </div>
             <div className="flex">
-              <span className="w-24 font-medium text-gray-500 dark:text-gray-400">{t('urlAnalysis.path')}</span>
-              <span className="text-gray-900 dark:text-white font-mono">{parsedUrl.pathname}</span>
+              <span className="w-24 font-medium text-muted">{t('urlAnalysis.path')}</span>
+              <span className="text-fg font-mono">{parsedUrl.pathname}</span>
             </div>
             {parsedUrl.params.length > 0 && (
               <div>
-                <span className="font-medium text-gray-500 dark:text-gray-400">{t('urlAnalysis.params')}</span>
+                <span className="font-medium text-muted">{t('urlAnalysis.params')}</span>
                 <div className="mt-2 space-y-1 ml-4">
                   {parsedUrl.params.map((param, idx) => (
                     <div key={idx} className="flex gap-2">
                       <span className="text-blue-600 dark:text-blue-400 font-mono">{param.key}</span>
                       <span className="text-gray-400">=</span>
-                      <span className="text-gray-900 dark:text-white font-mono">{param.value}</span>
+                      <span className="text-fg font-mono">{param.value}</span>
                     </div>
                   ))}
                 </div>
@@ -267,8 +267,8 @@ export default function UrlEncoder() {
             )}
             {parsedUrl.hash && (
               <div className="flex">
-                <span className="w-24 font-medium text-gray-500 dark:text-gray-400">{t('urlAnalysis.hash')}</span>
-                <span className="text-gray-900 dark:text-white font-mono">{parsedUrl.hash}</span>
+                <span className="w-24 font-medium text-muted">{t('urlAnalysis.hash')}</span>
+                <span className="text-fg font-mono">{parsedUrl.hash}</span>
               </div>
             )}
           </div>
@@ -276,24 +276,24 @@ export default function UrlEncoder() {
       )}
 
       {/* Guide */}
-      <div className={`mt-8 ${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`mt-8 ${glassCard} ${glassInset} border border-line p-6`}>
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.whatIs.title')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               {t('guide.whatIs.description')}
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.examples.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400 font-mono">
+            <ul className="space-y-2 text-sm text-sub font-mono">
               <li>공백 → %20</li>
               <li>& → %26</li>
               <li>= → %3D</li>

@@ -61,7 +61,7 @@ export default function LoanSchedulePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <LoanSchedule />
@@ -76,17 +76,17 @@ export default function LoanSchedulePage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               대출 상환 스케줄러란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               대출 상환 스케줄러는 대출 원금, 금리, 기간, 상환 방식을 입력하면 매월 원금·이자·잔액을 항목별로 정리한 상환 계획표를 자동 생성합니다. 원리금균등, 원금균등, 만기일시상환 방식을 비교하고 거치기간·조기상환 시뮬레이션까지 지원해, 실제 은행 거래 전에 상환 계획을 꼼꼼히 점검할 수 있습니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               상환 스케줄 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>월별 계획 확인:</strong> 매월 납부 금액, 원금 비중, 이자 비중을 한눈에 확인해 가계 예산을 정확히 편성하세요.</li>
               <li><strong>조기상환 효과 분석:</strong> 특정 시점에 일부 상환 시 이자 절감액과 기간 단축 효과를 미리 파악하세요.</li>
               <li><strong>상환 방식 총액 비교:</strong> 같은 조건에서 원리금균등과 원금균등의 총 이자를 비교해 최적의 방식을 선택하세요.</li>

@@ -426,11 +426,11 @@ export default function VoiceMemo() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Mic className="w-6 h-6 text-red-500" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className="bg-red-50 dark:bg-red-950/30 rounded-xl p-6 flex items-start gap-3">
           <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
@@ -447,11 +447,11 @@ export default function VoiceMemo() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Mic className="w-6 h-6 text-red-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Recording controls */}
@@ -552,14 +552,14 @@ export default function VoiceMemo() {
 
       {/* Recordings list */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('recordingName')} ({recordings.length})
         </h2>
 
         {recordings.length === 0 ? (
           <div className="text-center py-12">
             <MicOff className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-400 dark:text-gray-500">{t('noRecordings')}</p>
+            <p className="text-faint">{t('noRecordings')}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -572,7 +572,7 @@ export default function VoiceMemo() {
               return (
                 <div
                   key={rec.id}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+                  className="border border-line rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
                 >
                   {/* Top row: name + meta */}
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -587,7 +587,7 @@ export default function VoiceMemo() {
                               if (e.key === 'Enter') confirmRename()
                               if (e.key === 'Escape') cancelRename()
                             }}
-                            className="flex-1 px-2 py-1 text-sm border border-blue-400 dark:border-blue-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="flex-1 px-2 py-1 text-sm border border-blue-400 dark:border-blue-600 rounded bg-field text-fg focus:ring-2 focus:ring-blue-500 outline-none"
                             autoFocus
                           />
                           <button
@@ -606,7 +606,7 @@ export default function VoiceMemo() {
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                          <p className="text-sm font-medium text-fg truncate">
                             {rec.name}
                           </p>
                           <button
@@ -618,7 +618,7 @@ export default function VoiceMemo() {
                           </button>
                         </div>
                       )}
-                      <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500 mt-1">
+                      <div className="flex items-center gap-3 text-xs text-faint mt-1">
                         <span>{formatTime(rec.duration)}</span>
                         <span>{formatFileSize(rec.fileSize)}</span>
                         <span>{formatTimestamp(rec.timestamp)}</span>
@@ -628,7 +628,7 @@ export default function VoiceMemo() {
 
                   {/* Progress bar */}
                   <div
-                    className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full mb-3 cursor-pointer"
+                    className="h-1.5 bg-soft rounded-full mb-3 cursor-pointer"
                     onClick={e => seekPlayback(rec, e)}
                     role="progressbar"
                     aria-valuenow={Math.round(progress)}
@@ -648,7 +648,7 @@ export default function VoiceMemo() {
                       className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
                         isPlaying
                           ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {isPlaying ? (
@@ -666,7 +666,7 @@ export default function VoiceMemo() {
 
                     <button
                       onClick={() => downloadRecording(rec)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       <Download className="w-4 h-4" />
                       {t('download')}
@@ -683,7 +683,7 @@ export default function VoiceMemo() {
                         </button>
                         <button
                           onClick={() => setDeleteConfirmId(null)}
-                          className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                          className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-body rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -712,16 +712,16 @@ export default function VoiceMemo() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '\u2212' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.howto.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.howto.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.howto.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -729,7 +729,7 @@ export default function VoiceMemo() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.formats.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.formats.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.formats.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -737,7 +737,7 @@ export default function VoiceMemo() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

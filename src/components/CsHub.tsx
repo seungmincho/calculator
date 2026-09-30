@@ -190,10 +190,8 @@ export default function CsHub() {
   return (
     <div className="space-y-12">
       {/* ── Hero Section ── */}
-      <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12">
+      <div className="relative overflow-hidden bg-surface rounded-2xl shadow-xl p-8 md:p-12">
         {/* Decorative gradient blobs */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 dark:from-blue-600/10 dark:to-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-gradient-to-br from-purple-400/20 to-pink-400/20 dark:from-purple-600/10 dark:to-pink-600/10 rounded-full blur-3xl" />
 
         <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-8">
           <div className="flex-1 min-w-0">
@@ -210,7 +208,7 @@ export default function CsHub() {
                 {t('title')}
               </span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
+            <p className="text-base md:text-lg text-sub max-w-2xl leading-relaxed">
               {t('description')}
             </p>
           </div>
@@ -229,10 +227,10 @@ export default function CsHub() {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">{overallProgress}%</span>
+                <span className="text-2xl font-bold text-fg">{overallProgress}%</span>
               </div>
             </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('progress.overall')}</span>
+            <span className="text-sm font-medium text-muted">{t('progress.overall')}</span>
           </div>
         </div>
 
@@ -244,13 +242,13 @@ export default function CsHub() {
             { label: t('progress.algorithms'), value: TOTAL_ALGORITHMS, total: TOTAL_ALGORITHMS, icon: Brain, color: 'text-indigo-600 dark:text-indigo-400', isStatic: true },
             { label: t('progress.quizQuestions'), value: TOTAL_QUIZ, total: TOTAL_QUIZ, icon: FileQuestion, color: 'text-purple-600 dark:text-purple-400', isStatic: true },
           ].map((stat) => (
-            <div key={stat.label} className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+            <div key={stat.label} className="flex items-center gap-3 px-4 py-3 bg-subtle rounded-xl">
               <stat.icon className={`w-5 h-5 ${stat.color} shrink-0`} />
               <div className="min-w-0">
-                <p className="text-lg font-bold text-gray-900 dark:text-white">
+                <p className="text-lg font-bold text-fg">
                   {('isStatic' in stat && stat.isStatic) ? stat.total : `${stat.value}/${stat.total}`}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{stat.label}</p>
+                <p className="text-xs text-muted truncate">{stat.label}</p>
               </div>
             </div>
           ))}
@@ -260,8 +258,8 @@ export default function CsHub() {
       {/* ── Tool Cards ── */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <BarChart3 className="w-6 h-6 text-gray-900 dark:text-white" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('tools.title')}</h2>
+          <BarChart3 className="w-6 h-6 text-fg" />
+          <h2 className="text-2xl font-bold text-fg">{t('tools.title')}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {TOOL_CARDS.map((card) => {
@@ -274,7 +272,7 @@ export default function CsHub() {
               <Link
                 key={card.id}
                 href={card.href}
-                className={`group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
+                className={`group relative bg-surface rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
               >
                 {/* Top gradient bar */}
                 <div className={`h-1.5 bg-gradient-to-r ${card.themeGradient}`} />
@@ -291,10 +289,10 @@ export default function CsHub() {
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-lg font-bold text-fg mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {t(`tools.${card.id}.title`)}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                  <p className="text-sm text-muted mb-4 line-clamp-2">
                     {t(`tools.${card.id}.description`)}
                   </p>
 
@@ -302,7 +300,7 @@ export default function CsHub() {
                   {card.progressKey ? (
                     <div className="mb-4">
                       <div className="flex items-center justify-between text-xs mb-1.5">
-                        <span className="text-gray-500 dark:text-gray-400">
+                        <span className="text-muted">
                           {hasProgress ? `${progress}/${card.totalCount}` : t('progress.notStarted')}
                         </span>
                         {hasProgress && (
@@ -318,7 +316,7 @@ export default function CsHub() {
                     </div>
                   ) : (
                     <div className="mb-4">
-                      <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-1.5 text-xs text-muted">
                         <Zap className="w-3.5 h-3.5" />
                         <span>{t(`tools.${card.id}.cta`)}</span>
                       </div>
@@ -338,10 +336,10 @@ export default function CsHub() {
       </section>
 
       {/* ── Learning Roadmap ── */}
-      <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
+      <section className="bg-surface rounded-xl shadow-lg p-6 md:p-8">
         <div className="flex items-center gap-3 mb-8">
           <Trophy className="w-6 h-6 text-amber-500" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('roadmap.title')}</h2>
+          <h2 className="text-2xl font-bold text-fg">{t('roadmap.title')}</h2>
         </div>
 
         {/* Desktop horizontal stepper */}
@@ -362,11 +360,11 @@ export default function CsHub() {
                   <div className={`w-12 h-12 rounded-full ${c.bg} ring-2 ${c.ring} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                     <Icon className={`w-5 h-5 ${c.text}`} />
                   </div>
-                  <span className="text-xs font-bold text-gray-400 dark:text-gray-500 mb-1">STEP {step.id}</span>
-                  <span className={`text-sm font-semibold text-gray-900 dark:text-white text-center`}>
+                  <span className="text-xs font-bold text-faint mb-1">STEP {step.id}</span>
+                  <span className={`text-sm font-semibold text-fg text-center`}>
                     {t(`roadmap.step${step.id}.title`)}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1 max-w-[120px]">
+                  <span className="text-xs text-muted text-center mt-1 max-w-[120px]">
                     {t(`roadmap.step${step.id}.description`)}
                   </span>
                 </Link>
@@ -395,12 +393,12 @@ export default function CsHub() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-gray-400 dark:text-gray-500">STEP {step.id}</span>
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                      <span className="text-xs font-bold text-faint">STEP {step.id}</span>
+                      <span className="text-sm font-semibold text-fg">
                         {t(`roadmap.step${step.id}.title`)}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-xs text-muted mt-0.5">
                       {t(`roadmap.step${step.id}.description`)}
                     </p>
                   </div>
@@ -415,10 +413,10 @@ export default function CsHub() {
       {/* ── Category Overview ── */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <Search className="w-6 h-6 text-gray-900 dark:text-white" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('categories.title')}</h2>
+          <Search className="w-6 h-6 text-fg" />
+          <h2 className="text-2xl font-bold text-fg">{t('categories.title')}</h2>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('categories.description')}</p>
+        <p className="text-sm text-muted mb-6">{t('categories.description')}</p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {CATEGORY_STATS.map((cat) => {
@@ -427,17 +425,17 @@ export default function CsHub() {
             return (
               <div
                 key={cat.id}
-                className={`bg-white dark:bg-gray-800 rounded-xl shadow-md border ${cat.borderColor} p-5 hover:shadow-lg transition-shadow`}
+                className={`bg-surface rounded-xl shadow-md border ${cat.borderColor} p-5 hover:shadow-lg transition-shadow`}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-10 h-10 rounded-lg ${cat.bgColor} flex items-center justify-center`}>
                     <Icon className={`w-5 h-5 ${cat.textColor}`} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                    <h3 className="text-sm font-bold text-fg truncate">
                       {t(cat.nameKo)}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted">
                       {t('categories.totalResources', { count: total })}
                     </p>
                   </div>
@@ -445,35 +443,35 @@ export default function CsHub() {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 dark:text-gray-400">{t('categories.terms')}</span>
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">{cat.terms}</span>
+                    <span className="text-muted">{t('categories.terms')}</span>
+                    <span className="font-semibold text-body">{cat.terms}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 dark:text-gray-400">{t('categories.quiz')}</span>
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">{cat.quiz}</span>
+                    <span className="text-muted">{t('categories.quiz')}</span>
+                    <span className="font-semibold text-body">{cat.quiz}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 dark:text-gray-400">{t('categories.interview')}</span>
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">{cat.interview}</span>
+                    <span className="text-muted">{t('categories.interview')}</span>
+                    <span className="font-semibold text-body">{cat.interview}</span>
                   </div>
                   {cat.algorithms > 0 && (
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-500 dark:text-gray-400">{t('categories.algorithms')}</span>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">{cat.algorithms}</span>
+                      <span className="text-muted">{t('categories.algorithms')}</span>
+                      <span className="font-semibold text-body">{cat.algorithms}</span>
                     </div>
                   )}
                 </div>
 
                 {/* Mini total bar */}
-                <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                <div className="mt-3 pt-3 border-t border-line">
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                    <div className="flex-1 h-1.5 rounded-full bg-soft overflow-hidden">
                       <div
                         className={`h-full rounded-full ${cat.bgColor}`}
                         style={{ width: `${Math.min(100, (total / 80) * 100)}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500">{total}</span>
+                    <span className="text-[10px] font-bold text-faint">{total}</span>
                   </div>
                 </div>
               </div>
@@ -502,7 +500,7 @@ export default function CsHub() {
             </Link>
             <Link
               href="/cs-quiz/"
-              className="flex items-center gap-2 px-6 py-3 bg-white/15 backdrop-blur text-white font-semibold rounded-xl hover:bg-white/25 transition-colors border border-white/20"
+              className="flex items-center gap-2 px-6 py-3 bg-white/15 text-white font-semibold rounded-xl hover:bg-white/25 transition-colors border border-white/20"
             >
               <Zap className="w-5 h-5" />
               {t('quickStart.testCta')}

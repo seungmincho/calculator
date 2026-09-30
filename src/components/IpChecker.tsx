@@ -132,14 +132,14 @@ export default function IpChecker() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className="flex items-center justify-center py-20">
           <div className="flex flex-col items-center gap-4">
             <RefreshCw className="w-12 h-12 text-blue-600 animate-spin" />
-            <p className="text-gray-600 dark:text-gray-400">{t('loading')}</p>
+            <p className="text-sub">{t('loading')}</p>
           </div>
         </div>
       </div>
@@ -150,8 +150,8 @@ export default function IpChecker() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6`}>
@@ -178,12 +178,12 @@ export default function IpChecker() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={fetchIPData}
-          className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-all flex items-center gap-2"
+          className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-all flex items-center gap-2"
         >
           <RefreshCw className="w-5 h-5" />
           {t('refresh')}
@@ -198,7 +198,7 @@ export default function IpChecker() {
             <div className="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
               <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('myIp')}
             </h2>
           </div>
@@ -206,7 +206,7 @@ export default function IpChecker() {
           <div className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('ipv4')}</span>
+                <span className="text-sm text-muted">{t('ipv4')}</span>
                 <button
                   onClick={() => copyToClipboard(ipData.ip, 'ipv4')}
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -226,7 +226,7 @@ export default function IpChecker() {
             {ipData.ipv6 && (
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('ipv6')}</span>
+                  <span className="text-sm text-muted">{t('ipv6')}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.ipv6!, 'ipv6')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -238,7 +238,7 @@ export default function IpChecker() {
                     )}
                   </button>
                 </div>
-                <p className="text-lg font-mono text-gray-700 dark:text-gray-300 break-all">
+                <p className="text-lg font-mono text-body break-all">
                   {ipData.ipv6}
                 </p>
               </div>
@@ -252,7 +252,7 @@ export default function IpChecker() {
             <div className="bg-green-100 dark:bg-green-900 rounded-lg p-3">
               <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('location')}
             </h2>
           </div>
@@ -260,9 +260,9 @@ export default function IpChecker() {
           <div className="space-y-3">
             {ipData.city && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('city')}</span>
+                <span className="text-sm text-muted">{t('city')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium">{ipData.city}</span>
+                  <span className="text-fg font-medium">{ipData.city}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.city!, 'city')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -279,9 +279,9 @@ export default function IpChecker() {
 
             {ipData.region && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('region')}</span>
+                <span className="text-sm text-muted">{t('region')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium">{ipData.region}</span>
+                  <span className="text-fg font-medium">{ipData.region}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.region!, 'region')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -298,9 +298,9 @@ export default function IpChecker() {
 
             {ipData.country_name && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('country')}</span>
+                <span className="text-sm text-muted">{t('country')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium">
+                  <span className="text-fg font-medium">
                     {ipData.country_name} ({ipData.country})
                   </span>
                   <button
@@ -319,9 +319,9 @@ export default function IpChecker() {
 
             {ipData.timezone && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('timezone')}</span>
+                <span className="text-sm text-muted">{t('timezone')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium">{ipData.timezone}</span>
+                  <span className="text-fg font-medium">{ipData.timezone}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.timezone!, 'timezone')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -338,9 +338,9 @@ export default function IpChecker() {
 
             {ipData.latitude && ipData.longitude && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">좌표</span>
+                <span className="text-sm text-muted">좌표</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium font-mono text-sm">
+                  <span className="text-fg font-medium font-mono text-sm">
                     {ipData.latitude.toFixed(4)}, {ipData.longitude.toFixed(4)}
                   </span>
                   <button
@@ -365,7 +365,7 @@ export default function IpChecker() {
             <div className="bg-purple-100 dark:bg-purple-900 rounded-lg p-3">
               <Wifi className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('network')}
             </h2>
           </div>
@@ -373,9 +373,9 @@ export default function IpChecker() {
           <div className="space-y-3">
             {ipData.isp && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('isp')}</span>
+                <span className="text-sm text-muted">{t('isp')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium text-right">{ipData.isp}</span>
+                  <span className="text-fg font-medium text-right">{ipData.isp}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.isp!, 'isp')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -392,9 +392,9 @@ export default function IpChecker() {
 
             {ipData.org && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('org')}</span>
+                <span className="text-sm text-muted">{t('org')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium text-right">{ipData.org}</span>
+                  <span className="text-fg font-medium text-right">{ipData.org}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.org!, 'org')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -411,9 +411,9 @@ export default function IpChecker() {
 
             {ipData.asn && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('asn')}</span>
+                <span className="text-sm text-muted">{t('asn')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900 dark:text-white font-medium font-mono">{ipData.asn}</span>
+                  <span className="text-fg font-medium font-mono">{ipData.asn}</span>
                   <button
                     onClick={() => copyToClipboard(ipData.asn!, 'asn')}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -453,17 +453,17 @@ export default function IpChecker() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.whatIsIp.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.whatIsIp.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <Server className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
@@ -474,10 +474,10 @@ export default function IpChecker() {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.whyCheck.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.whyCheck.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <Globe className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />

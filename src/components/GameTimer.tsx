@@ -18,9 +18,9 @@ interface Player {
   active: boolean
 }
 
-const GLASS_CARD = 'bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl shadow-[inset_2px_2px_10px_rgba(255,255,255,0.15),inset_-2px_-2px_10px_rgba(255,255,255,0.05)] p-6'
-const GLASS_BTN = 'bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-xl px-4 py-2 text-white font-medium transition-all hover:bg-white/20 hover:shadow-[0_0_12px_rgba(255,255,255,0.2)] active:scale-95'
-const DIGIT_BOX = 'bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-4 min-w-[3rem] text-center select-none'
+const GLASS_CARD = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-2xl p-6'
+const GLASS_BTN = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-xl px-4 py-2 text-white font-medium transition-all hover:bg-white/20 active:scale-95'
+const DIGIT_BOX = 'bg-white/10 border border-white/20 rounded-xl px-3 py-4 min-w-[3rem] text-center select-none'
 
 function padTwo(n: number) {
   return String(n).padStart(2, '0')
@@ -302,7 +302,7 @@ export default function GameTimer() {
   ]
 
   const containerClass = isFullscreen
-    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-900/90 via-green-900/80 to-teal-900/90 backdrop-blur-2xl p-8'
+    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-900/90 via-green-900/80 to-teal-900/90 p-8'
     : ''
 
   return (
@@ -337,7 +337,7 @@ export default function GameTimer() {
               <button
                 key={m}
                 onClick={() => setMode(m as Mode)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all border ${mode === m ? 'bg-white/20 border-white/30 text-white shadow-[0_0_12px_rgba(255,255,255,0.15)]' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white/80'}`}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all border ${mode === m ? 'bg-white/20 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white/80'}`}
               >
                 {icon}{label}
               </button>

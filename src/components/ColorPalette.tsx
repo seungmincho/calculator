@@ -334,11 +334,11 @@ export default function ColorPalette() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Palette className="w-8 h-8" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -348,7 +348,7 @@ export default function ColorPalette() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Base Color */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('baseColor')}
               </label>
               <div className="flex gap-2">
@@ -356,7 +356,7 @@ export default function ColorPalette() {
                   type="color"
                   value={baseColor}
                   onChange={(e) => setBaseColor(e.target.value)}
-                  className="w-16 h-12 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  className="w-16 h-12 rounded-lg border border-line-strong cursor-pointer"
                 />
                 <input
                   type="text"
@@ -384,7 +384,7 @@ export default function ColorPalette() {
 
             {/* Harmony Rule */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('harmony')}
               </label>
               <select
@@ -403,10 +403,10 @@ export default function ColorPalette() {
 
             {/* Export Buttons */}
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('export')}</p>
+              <p className="text-sm font-medium text-body">{t('export')}</p>
               <button
                 onClick={exportCSS}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
               >
                 {copiedId === 'css-export' ? (
                   <Check className="w-4 h-4" />
@@ -417,7 +417,7 @@ export default function ColorPalette() {
               </button>
               <button
                 onClick={exportJSON}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
               >
                 {copiedId === 'json-export' ? (
                   <Check className="w-4 h-4" />
@@ -428,7 +428,7 @@ export default function ColorPalette() {
               </button>
               <button
                 onClick={exportTailwind}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm flex items-center justify-center gap-2"
               >
                 {copiedId === 'tailwind-export' ? (
                   <Check className="w-4 h-4" />
@@ -452,20 +452,20 @@ export default function ColorPalette() {
           {/* Saved Palettes */}
           {savedPalettes.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 {t('savedPalettes')}
               </h3>
               <div className="space-y-3">
                 {savedPalettes.map((palette) => (
                   <div
                     key={palette.id}
-                    className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                    className="flex items-center gap-3 p-3 bg-subtle rounded-lg"
                   >
                     <button
                       onClick={() => loadPalette(palette)}
                       className="flex-1 text-left"
                     >
-                      <p className="font-medium text-gray-900 dark:text-white">{palette.name}</p>
+                      <p className="font-medium text-fg">{palette.name}</p>
                       <div className="flex gap-1 mt-1">
                         {palette.colors.slice(0, 5).map((color, i) => (
                           <div
@@ -492,7 +492,7 @@ export default function ColorPalette() {
         {/* Palette Display */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-xl font-semibold text-fg mb-6">
               {t('palette')}
             </h2>
 
@@ -502,11 +502,11 @@ export default function ColorPalette() {
                 <div key={i} className="space-y-2">
                   <button
                     onClick={() => setSelectedColor(color)}
-                    className="w-full aspect-square rounded-xl shadow-lg hover:scale-105 transition-transform cursor-pointer border-2 border-gray-200 dark:border-gray-600"
+                    className="w-full aspect-square rounded-xl shadow-lg hover:scale-105 transition-transform cursor-pointer border-2 border-line"
                     style={{ backgroundColor: color }}
                   />
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-mono text-gray-700 dark:text-gray-300 flex-1">
+                    <p className="text-sm font-mono text-body flex-1">
                       {color.toUpperCase()}
                     </p>
                     <button
@@ -526,14 +526,14 @@ export default function ColorPalette() {
 
             {/* Variations for selected color */}
             {selectedColor && (
-              <div className="space-y-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+              <div className="space-y-6 border-t border-line pt-6">
                 {(() => {
                   const variations = generateVariations(selectedColor)
                   return (
                     <>
                       {/* Shades */}
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        <h3 className="text-sm font-semibold text-body mb-3">
                           {t('shades')}
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
@@ -544,7 +544,7 @@ export default function ColorPalette() {
                                 style={{ backgroundColor: color }}
                               />
                               <div className="flex items-center gap-1">
-                                <p className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1">
+                                <p className="text-xs font-mono text-sub flex-1">
                                   {color.toUpperCase()}
                                 </p>
                                 <button
@@ -565,7 +565,7 @@ export default function ColorPalette() {
 
                       {/* Tints */}
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        <h3 className="text-sm font-semibold text-body mb-3">
                           {t('tints')}
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
@@ -576,7 +576,7 @@ export default function ColorPalette() {
                                 style={{ backgroundColor: color }}
                               />
                               <div className="flex items-center gap-1">
-                                <p className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1">
+                                <p className="text-xs font-mono text-sub flex-1">
                                   {color.toUpperCase()}
                                 </p>
                                 <button
@@ -597,7 +597,7 @@ export default function ColorPalette() {
 
                       {/* Tones */}
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        <h3 className="text-sm font-semibold text-body mb-3">
                           {t('tones')}
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
@@ -608,7 +608,7 @@ export default function ColorPalette() {
                                 style={{ backgroundColor: color }}
                               />
                               <div className="flex items-center gap-1">
-                                <p className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1">
+                                <p className="text-xs font-mono text-sub flex-1">
                                   {color.toUpperCase()}
                                 </p>
                                 <button
@@ -635,37 +635,37 @@ export default function ColorPalette() {
             {/* Color Info Panel */}
             {colorInfo && (
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-fg mb-4">
                   {t('colorInfo.title')}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-12 h-12 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-600"
+                      className="w-12 h-12 rounded-lg shadow-lg border-2 border-line"
                       style={{ backgroundColor: selectedColor ?? undefined }}
                     />
                     <div className="flex-1 space-y-1">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-sub">
                           {t('colorInfo.hex')}
                         </span>
-                        <span className="font-mono text-sm text-gray-900 dark:text-white">
+                        <span className="font-mono text-sm text-fg">
                           {colorInfo.hex}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-sub">
                           {t('colorInfo.rgb')}
                         </span>
-                        <span className="font-mono text-sm text-gray-900 dark:text-white">
+                        <span className="font-mono text-sm text-fg">
                           {colorInfo.rgb}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-sub">
                           {t('colorInfo.hsl')}
                         </span>
-                        <span className="font-mono text-sm text-gray-900 dark:text-white">
+                        <span className="font-mono text-sm text-fg">
                           {colorInfo.hsl}
                         </span>
                       </div>
@@ -680,7 +680,7 @@ export default function ColorPalette() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
@@ -688,10 +688,10 @@ export default function ColorPalette() {
         <div className="space-y-6">
           {/* Color Harmonies */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.harmonies.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.harmonies.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
@@ -703,10 +703,10 @@ export default function ColorPalette() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>

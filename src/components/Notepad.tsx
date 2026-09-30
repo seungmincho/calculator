@@ -201,10 +201,10 @@ export default function Notepad() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -239,7 +239,7 @@ export default function Notepad() {
             {/* Notes List */}
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
               {notes.length === 0 ? (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-8 text-muted">
                   <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">{t('noNotes')}</p>
                 </div>
@@ -250,7 +250,7 @@ export default function Notepad() {
                     className={`p-3 rounded-lg cursor-pointer transition-all ${
                       note.id === activeNoteId
                         ? 'bg-blue-50 dark:bg-blue-950 border-2 border-blue-500'
-                        : 'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-2 border-transparent'
+                        : 'bg-subtle hover:bg-gray-100 dark:hover:bg-gray-600 border-2 border-transparent'
                     }`}
                     onClick={() => {
                       setActiveNoteId(note.id)
@@ -258,7 +258,7 @@ export default function Notepad() {
                     }}
                   >
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="font-medium text-gray-900 dark:text-white text-sm truncate flex-1">
+                      <h3 className="font-medium text-fg text-sm truncate flex-1">
                         {note.title || '제목 없음'}
                       </h3>
                       <button
@@ -272,10 +272,10 @@ export default function Notepad() {
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    <p className="text-xs text-muted truncate">
                       {getPreview(note.content)}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    <p className="text-xs text-faint mt-1">
                       {formatDate(note.updatedAt)}
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export default function Notepad() {
                 onChange={(e) =>
                   updateNote(activeNote.id, { title: e.target.value })
                 }
-                className="w-full px-4 py-3 mb-4 text-xl font-semibold border-b-2 border-gray-200 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-3 mb-4 text-xl font-semibold border-b-2 border-line bg-transparent text-fg focus:outline-none focus:border-blue-500"
                 placeholder="제목을 입력하세요"
               />
 
@@ -312,9 +312,9 @@ export default function Notepad() {
               />
 
               {/* Bottom Bar */}
-              <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+              <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-line">
                 {/* Stats */}
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex flex-wrap gap-4 text-sm text-sub">
                   <span>{t('stats.chars')}: {stats.chars.toLocaleString()}</span>
                   <span>{t('stats.words')}: {stats.words.toLocaleString()}</span>
                   <span>{t('stats.lines')}: {stats.lines.toLocaleString()}</span>
@@ -331,7 +331,7 @@ export default function Notepad() {
                   )}
                   <button
                     onClick={exportNote}
-                    className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg flex items-center gap-2"
+                    className="px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />
                     {t('export')}
@@ -341,7 +341,7 @@ export default function Notepad() {
             </div>
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 h-[700px] flex items-center justify-center`}>
-              <div className="text-center text-gray-500 dark:text-gray-400">
+              <div className="text-center text-muted">
                 <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <p className="text-lg">{t('noNotes')}</p>
                 <p className="text-sm mt-2">{t('createFirstNote')}</p>
@@ -353,7 +353,7 @@ export default function Notepad() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
@@ -361,10 +361,10 @@ export default function Notepad() {
         <div className="space-y-6">
           {/* Features */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.features.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {(t.raw('guide.features.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-500 mt-1">•</span>
@@ -376,10 +376,10 @@ export default function Notepad() {
 
           {/* Usage */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {(t.raw('guide.usage.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-500 mt-1">•</span>
@@ -391,10 +391,10 @@ export default function Notepad() {
 
           {/* Tips */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-500 mt-1">•</span>

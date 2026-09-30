@@ -537,10 +537,10 @@ const JsonXmlConverter = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -553,8 +553,8 @@ const JsonXmlConverter = () => {
             onClick={() => setActiveTab('json-to-xml')}
             className={`px-6 py-3 rounded-md font-medium transition-colors ${
               activeTab === 'json-to-xml'
-                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -566,8 +566,8 @@ const JsonXmlConverter = () => {
             onClick={() => setActiveTab('xml-to-json')}
             className={`px-6 py-3 rounded-md font-medium transition-colors ${
               activeTab === 'xml-to-json'
-                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -582,7 +582,7 @@ const JsonXmlConverter = () => {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Code className="w-5 h-5 text-purple-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('presets.title')}
           </h2>
         </div>
@@ -591,12 +591,12 @@ const JsonXmlConverter = () => {
             <button
               key={key}
               onClick={() => loadPreset(key)}
-              className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:border-purple-500 dark:hover:border-purple-400 transition-colors text-left"
+              className="p-4 border border-line rounded-lg hover:border-purple-500 dark:hover:border-purple-400 transition-colors text-left"
             >
-              <div className="font-medium text-gray-900 dark:text-white mb-1">
+              <div className="font-medium text-fg mb-1">
                 {preset.name}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-sub">
                 {preset.description}
               </div>
             </button>
@@ -615,7 +615,7 @@ const JsonXmlConverter = () => {
               ) : (
                 <FileCode className="w-5 h-5 text-green-600" />
               )}
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {activeTab === 'json-to-xml' ? t('input.jsonTitle') : t('input.xmlTitle')}
               </h2>
             </div>
@@ -637,7 +637,7 @@ const JsonXmlConverter = () => {
               value={currentInput}
               onChange={(e) => handleInputChange(e.target.value, activeTab === 'json-to-xml' ? 'json' : 'xml')}
               placeholder={activeTab === 'json-to-xml' ? t('input.jsonPlaceholder') : t('input.xmlPlaceholder')}
-              className="w-full h-96 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white font-mono text-sm resize-none"
+              className="w-full h-96 px-3 py-2 border border-line-strong rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white font-mono text-sm resize-none"
             />
 
             {/* Validation Status */}
@@ -670,7 +670,7 @@ const JsonXmlConverter = () => {
               ) : (
                 <Braces className="w-5 h-5 text-blue-600" />
               )}
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {activeTab === 'json-to-xml' ? t('output.xmlTitle') : t('output.jsonTitle')}
               </h2>
             </div>
@@ -703,7 +703,7 @@ const JsonXmlConverter = () => {
               value={currentOutput}
               readOnly
               placeholder={activeTab === 'json-to-xml' ? t('output.xmlPlaceholder') : t('output.jsonPlaceholder')}
-              className="w-full h-96 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm resize-none"
+              className="w-full h-96 px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg font-mono text-sm resize-none"
             />
 
             {isConverting && (
@@ -720,14 +720,14 @@ const JsonXmlConverter = () => {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Settings className="w-5 h-5 text-gray-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('options.title')}
           </h2>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="space-y-4">
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-fg">
               {t('options.formatting.title')}
             </h3>
             <label className="flex items-center space-x-2">
@@ -737,7 +737,7 @@ const JsonXmlConverter = () => {
                 onChange={(e) => setOptions(prev => ({ ...prev, prettyPrint: e.target.checked }))}
                 className="rounded"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('options.formatting.prettyPrint')}
               </span>
             </label>
@@ -748,53 +748,53 @@ const JsonXmlConverter = () => {
                 onChange={(e) => setOptions(prev => ({ ...prev, includeDeclaration: e.target.checked }))}
                 className="rounded"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('options.formatting.includeDeclaration')}
               </span>
             </label>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-fg">
               {t('options.structure.title')}
             </h3>
             <div>
-              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm text-body mb-1">
                 {t('options.structure.rootElement')}
               </label>
               <input
                 type="text"
                 value={options.rootElementName}
                 onChange={(e) => setOptions(prev => ({ ...prev, rootElementName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm text-body mb-1">
                 {t('options.structure.arrayElement')}
               </label>
               <input
                 type="text"
                 value={options.arrayElementName}
                 onChange={(e) => setOptions(prev => ({ ...prev, arrayElementName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-fg">
               {t('options.attributes.title')}
             </h3>
             <div>
-              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm text-body mb-1">
                 {t('options.attributes.prefix')}
               </label>
               <input
                 type="text"
                 value={options.attributePrefix}
                 onChange={(e) => setOptions(prev => ({ ...prev, attributePrefix: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
               />
             </div>
             <label className="flex items-center space-x-2">
@@ -804,7 +804,7 @@ const JsonXmlConverter = () => {
                 onChange={(e) => setOptions(prev => ({ ...prev, ignoreAttributes: e.target.checked }))}
                 className="rounded"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('options.attributes.ignore')}
               </span>
             </label>
@@ -817,74 +817,74 @@ const JsonXmlConverter = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <FileText className="w-8 h-8 text-blue-600" />
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold text-fg">
               {t('guide.title')}
             </h2>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+          <p className="text-lg text-sub">
             {t('guide.description')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-surface rounded-xl p-6 shadow-lg">
+            <h3 className="text-xl font-semibold text-fg mb-4">
               {t('guide.features.title')}
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.features.realtime')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.features.validation')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.features.presets')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.features.options')}
                 </span>
               </li>
             </ul>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-surface rounded-xl p-6 shadow-lg">
+            <h3 className="text-xl font-semibold text-fg mb-4">
               {t('guide.useCases.title')}
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.useCases.api')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.useCases.config')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.useCases.legacy')}
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-body">
                   {t('guide.useCases.data')}
                 </span>
               </li>

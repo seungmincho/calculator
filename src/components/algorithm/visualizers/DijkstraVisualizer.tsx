@@ -342,8 +342,8 @@ export default function DijkstraVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
               {tHub('categories.search')}
@@ -359,8 +359,8 @@ export default function DijkstraVisualizer() {
               onClick={() => { setVizMode(mode); handleReset() }}
               className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
                 vizMode === mode
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm font-medium'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'bg-field text-fg shadow-sm font-medium'
+                  : 'text-muted'
               }`}
             >
               {t(`mode.${mode}`)}
@@ -373,7 +373,7 @@ export default function DijkstraVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         {/* Left: visualization (3/5) */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* Playback controls */}
             <div className="flex justify-center">
               <VisualizerControls
@@ -422,7 +422,7 @@ export default function DijkstraVisualizer() {
                       height={canvasHeight}
                     />
                   </div>
-                  <div className="flex justify-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-center gap-3 text-xs text-sub">
                     <span>
                       {t('stats.visited')}: <strong className="text-blue-600 dark:text-blue-400">{dijkstraVisual.visitedCount}</strong>
                     </span>
@@ -460,7 +460,7 @@ export default function DijkstraVisualizer() {
                       height={canvasHeight}
                     />
                   </div>
-                  <div className="flex justify-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-center gap-3 text-xs text-sub">
                     <span>
                       {t('stats.visited')}: <strong className="text-purple-600 dark:text-purple-400">{astarVisual.visitedCount}</strong>
                     </span>
@@ -498,19 +498,19 @@ export default function DijkstraVisualizer() {
 
                 {/* Stats bar */}
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.visited')}: <strong className="text-blue-600 dark:text-blue-400">{dijkstraVisual.visitedCount}</strong>
                   </span>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {t('stats.openSet')}: <strong className="text-orange-600 dark:text-orange-400">{dijkstraVisual.openSetSize}</strong>
                   </span>
                   {dijkstraResult && isFinished && (
                     dijkstraResult.path ? (
                       <>
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-sub">
                           {t('stats.pathLength')}: <strong className="text-emerald-600 dark:text-emerald-400">{dijkstraResult.pathLength}</strong>
                         </span>
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-sub">
                           {t('stats.totalCost')}: <strong className="text-emerald-600 dark:text-emerald-400">{dijkstraResult.totalCost.toFixed(2)}</strong>
                         </span>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
@@ -529,7 +529,7 @@ export default function DijkstraVisualizer() {
           </div>
 
           {/* Tool buttons */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-3">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             {/* Draw mode buttons */}
             <div className="flex flex-wrap gap-2">
               {drawModes.map(dm => (
@@ -540,7 +540,7 @@ export default function DijkstraVisualizer() {
                   className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
                     drawMode === dm.mode
                       ? 'bg-blue-500 text-white shadow-sm'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   } disabled:opacity-40`}
                 >
                   {dm.icon} {dm.label}
@@ -550,7 +550,7 @@ export default function DijkstraVisualizer() {
               <button
                 onClick={handleClearWalls}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40"
               >
                 {t('controls.clearWalls')}
               </button>
@@ -565,7 +565,7 @@ export default function DijkstraVisualizer() {
 
             {/* Grid size slider */}
             <div className="flex items-center gap-3">
-              <span className="text-xs text-gray-500 dark:text-gray-400">{t('controls.gridSize')}</span>
+              <span className="text-xs text-muted">{t('controls.gridSize')}</span>
               <input
                 type="range"
                 min={8}
@@ -575,14 +575,14 @@ export default function DijkstraVisualizer() {
                 disabled={isRunning}
                 className="flex-1 accent-blue-600 disabled:opacity-40"
               />
-              <span className="text-xs text-gray-600 dark:text-gray-400 w-16 text-center tabular-nums">
+              <span className="text-xs text-sub w-16 text-center tabular-nums">
                 {gridSize} x {Math.round(gridSize * (DEFAULT_COLS / DEFAULT_ROWS))}
               </span>
             </div>
 
             {/* Weight type selector */}
             <div className="space-y-1.5">
-              <span className="text-xs text-gray-500 dark:text-gray-400">{t('weight.title')}</span>
+              <span className="text-xs text-muted">{t('weight.title')}</span>
               <div className="flex flex-wrap gap-2">
                 {weightTypes.map(wt => (
                   <button
@@ -592,7 +592,7 @@ export default function DijkstraVisualizer() {
                     className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
                       weightType === wt.type
                         ? 'bg-amber-500 text-white shadow-sm'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     } disabled:opacity-40`}
                   >
                     {wt.icon} {wt.label}
@@ -603,7 +603,7 @@ export default function DijkstraVisualizer() {
 
             {/* Toggles */}
             <div className="flex flex-wrap gap-4">
-              <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs text-sub cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={allowDiagonal}
@@ -612,7 +612,7 @@ export default function DijkstraVisualizer() {
                 />
                 {t('controls.diagonal')}
               </label>
-              <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs text-sub cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={showWeights}
@@ -621,7 +621,7 @@ export default function DijkstraVisualizer() {
                 />
                 {t('controls.showWeights')}
               </label>
-              <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs text-sub cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={showDistances}
@@ -633,7 +633,7 @@ export default function DijkstraVisualizer() {
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap gap-3 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t('grid.start')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-red-500" /> {t('grid.goal')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-gray-700 dark:bg-gray-400" /> {t('grid.wall')}</span>
@@ -647,9 +647,9 @@ export default function DijkstraVisualizer() {
         {/* Right: explanation panel (2/5, sticky) */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
               {/* Tabs */}
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -657,7 +657,7 @@ export default function DijkstraVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -668,7 +668,7 @@ export default function DijkstraVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-sub mb-3">
                       {vizMode === 'compare'
                         ? t('stepsGuide.dijkstraDescription')
                         : t('stepsGuide.description')
@@ -676,7 +676,7 @@ export default function DijkstraVisualizer() {
                     </p>
 
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+                      <p className="text-sm text-faint italic">
                         {t('stepsGuide.description')}
                       </p>
                     ) : (
@@ -772,7 +772,7 @@ function StepsList({
                     ? 'border-emerald-300/50 bg-emerald-50/30 dark:bg-emerald-900/10 dark:border-emerald-700/30'
                     : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
                   : isActive
-                    ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                    ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                     : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
@@ -785,11 +785,11 @@ function StepsList({
                     ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                     : isActive
                       ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+                      : 'bg-track text-gray-500'
               }`}>
                 {isPath ? '→' : isUpdate ? '↻' : step.closedSetSize}
               </span>
-              <span className="text-gray-700 dark:text-gray-300 truncate">
+              <span className="text-body truncate">
                 {isPath
                   ? `${t('grid.path')}: (${step.row}, ${step.col})`
                   : isUpdate
@@ -798,7 +798,7 @@ function StepsList({
                 }
               </span>
               {!isPath && isActive && (
-                <span className="ml-auto flex-shrink-0 text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 tabular-nums">
+                <span className="ml-auto flex-shrink-0 text-[10px] px-1.5 py-0.5 rounded-full bg-soft text-muted tabular-nums">
                   {t('stepsGuide.distance', { dist: step.distance.toFixed(1) })}
                 </span>
               )}

@@ -108,8 +108,8 @@ export default function GraphReprVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
               {tHub('categories.dataStructure')}
@@ -122,8 +122,8 @@ export default function GraphReprVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
           {/* Graph canvas */}
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
-            <div className="overflow-hidden rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
+            <div className="overflow-hidden rounded-xl border border-line">
               <GraphReprCanvas2D
                 state={graphState}
                 selectedNode={selectedNode}
@@ -138,16 +138,16 @@ export default function GraphReprVisualizer() {
 
             {/* Stats */}
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.nodes')}: <strong className="text-blue-600 dark:text-blue-400">{stats.nodeCount}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.edges')}: <strong className="text-purple-600 dark:text-purple-400">{stats.edgeCount}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.density')}: <strong className="text-amber-600 dark:text-amber-400">{stats.density}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.avgDegree')}: <strong className="text-emerald-600 dark:text-emerald-400">{stats.avgDegree}</strong>
               </span>
             </div>
@@ -160,23 +160,23 @@ export default function GraphReprVisualizer() {
           </div>
 
           {/* Controls */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
             {/* Graph type toggles */}
             <div className="flex gap-4">
               <div className="flex-1">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.direction')}</p>
+                <p className="text-xs font-medium text-muted mb-2">{t('controls.direction')}</p>
                 <button onClick={() => setGraphState(prev => toggleDirected(prev))}
                   className={`w-full px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                    graphState.directed ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    graphState.directed ? 'bg-blue-500 text-white' : 'bg-soft text-body'
                   }`}>
                   {graphState.directed ? t('controls.directed') : t('controls.undirected')}
                 </button>
               </div>
               <div className="flex-1">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.weight')}</p>
+                <p className="text-xs font-medium text-muted mb-2">{t('controls.weight')}</p>
                 <button onClick={() => setGraphState(prev => toggleWeighted(prev))}
                   className={`w-full px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                    graphState.weighted ? 'bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    graphState.weighted ? 'bg-amber-500 text-white' : 'bg-soft text-body'
                   }`}>
                   {graphState.weighted ? t('controls.weighted') : t('controls.unweighted')}
                 </button>
@@ -186,9 +186,9 @@ export default function GraphReprVisualizer() {
             {graphState.weighted && (
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('controls.edgeWeight')}</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">{t('controls.edgeWeight')}</label>
                   <input type="number" min={1} max={99} value={edgeWeightInput} onChange={e => setEdgeWeightInput(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
               </div>
             )}
@@ -214,7 +214,7 @@ export default function GraphReprVisualizer() {
               </button>
             </div>
 
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-muted">
               {t('controls.instructions')}
             </div>
           </div>
@@ -223,12 +223,12 @@ export default function GraphReprVisualizer() {
         {/* Right column */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-2 py-2.5 text-xs font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'text-gray-500 dark:text-gray-400'
+                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'text-muted'
                     }`}>{tab.icon} {tab.label}</button>
                 ))}
               </div>
@@ -236,7 +236,7 @@ export default function GraphReprVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'matrix' && (
                   <div className="space-y-3">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('matrix.title')}</p>
+                    <p className="text-sm font-medium text-body">{t('matrix.title')}</p>
                     {graphState.nodes.length === 0 ? (
                       <p className="text-sm text-gray-400 italic">{t('matrix.empty')}</p>
                     ) : (
@@ -244,7 +244,7 @@ export default function GraphReprVisualizer() {
                         <table className="text-xs">
                           <thead>
                             <tr>
-                              <th className="p-1 text-gray-500 dark:text-gray-400" />
+                              <th className="p-1 text-muted" />
                               {graphState.nodes.map(n => (
                                 <th key={n.id} className="p-1 text-center text-blue-600 dark:text-blue-400 font-bold">{n.label}</th>
                               ))}
@@ -278,7 +278,7 @@ export default function GraphReprVisualizer() {
 
                 {activeTab === 'list' && (
                   <div className="space-y-3">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('list.title')}</p>
+                    <p className="text-sm font-medium text-body">{t('list.title')}</p>
                     {adjList.length === 0 ? (
                       <p className="text-sm text-gray-400 italic">{t('list.empty')}</p>
                     ) : (
@@ -288,14 +288,14 @@ export default function GraphReprVisualizer() {
                             <span className="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 text-xs font-bold min-w-[28px] text-center">
                               {entry.label}
                             </span>
-                            <span className="text-gray-400 dark:text-gray-500">→</span>
+                            <span className="text-faint">→</span>
                             <div className="flex flex-wrap gap-1">
                               {entry.neighbors.length === 0 ? (
                                 <span className="text-xs text-gray-400 italic">empty</span>
                               ) : entry.neighbors.map((nb, i) => (
                                 <span key={i}
                                   onClick={() => handleRemoveEdge(entry.nodeId, nb.nodeId)}
-                                  className="px-1.5 py-0.5 rounded text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors">
+                                  className="px-1.5 py-0.5 rounded text-xs bg-soft text-body cursor-pointer hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors">
                                   {nb.label}{graphState.weighted ? `(${nb.weight})` : ''}
                                 </span>
                               ))}

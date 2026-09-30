@@ -84,7 +84,7 @@ export default function BattleshipPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
+      <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="battleship"
           icon="🚢"
@@ -94,17 +94,17 @@ export default function BattleshipPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             배틀십(해전) 게임이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             배틀십(Battleship)은 10×10 격자에 함선을 배치하고 상대방의 함선 위치를 추측하여 모두 격침시키면 승리하는 클래식 2인 전략 보드게임입니다. AI와 1인 플레이 또는 친구와 실시간 온라인 P2P 대전을 즐길 수 있으며, 쉬움·보통·어려움 세 가지 난이도를 제공합니다. 논리적 추론, 확률적 사고, 상대 심리 파악이 승리의 열쇠인 두뇌 전략 게임입니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             배틀십 필승 전략 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>체스판 패턴 공격:</strong> 한 칸씩 건너 공격하면 2칸 이상 함선을 빠짐없이 탐색할 수 있어 효율적으로 위치를 파악할 수 있습니다.</li>
             <li><strong>명중 후 십자 탐색:</strong> Hit(명중) 이후에는 상하좌우 4방향을 순서대로 공격하여 함선 방향을 빠르게 파악하세요.</li>
             <li><strong>함선 배치 전략:</strong> 가장자리와 코너에 함선을 배치하면 상대가 발견하기 어렵고, 불규칙하게 배치할수록 예측이 힘들어집니다.</li>

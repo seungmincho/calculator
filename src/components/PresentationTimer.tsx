@@ -262,13 +262,13 @@ export default function PresentationTimer() {
       {!isFullscreen && (
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-sm text-muted mt-1">{t('description')}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setConfig(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
               aria-label={config.soundEnabled ? t('soundOff') : t('soundOn')}
               title={config.soundEnabled ? t('soundOff') : t('soundOn')}
             >
@@ -276,7 +276,7 @@ export default function PresentationTimer() {
             </button>
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
               aria-label={t('settings')}
               title={t('settings')}
             >
@@ -289,13 +289,13 @@ export default function PresentationTimer() {
       {/* Settings Panel */}
       {showSettings && !isFullscreen && (
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <Settings size={18} />
             {t('settings')}
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('totalTime')} ({t('minutes')})
               </label>
               <input
@@ -308,7 +308,7 @@ export default function PresentationTimer() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('warningTime')} ({t('minutes')})
               </label>
               <input
@@ -321,7 +321,7 @@ export default function PresentationTimer() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('dangerTime')} ({t('minutes')})
               </label>
               <input
@@ -340,7 +340,7 @@ export default function PresentationTimer() {
       {/* Presets */}
       {!isFullscreen && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-body mb-3 flex items-center gap-2">
             <Clock size={16} />
             {t('presets')}
           </h2>
@@ -352,7 +352,7 @@ export default function PresentationTimer() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   config.totalMinutes === min && elapsedSeconds === 0 && !isRunning
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {t(`preset${min}`)}
@@ -365,8 +365,8 @@ export default function PresentationTimer() {
       {/* Main Timer Card */}
       <div className={`rounded-xl shadow-lg p-8 flex flex-col items-center gap-6 transition-colors duration-500 ${
         isFullscreen
-          ? 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm max-w-lg w-full'
-          : `bg-white dark:bg-gray-800 ${currentColors.bg}`
+          ? 'bg-white/80 dark:bg-gray-800/80 max-w-lg w-full'
+          : `bg-surface ${currentColors.bg}`
       }`}>
         {/* Phase indicator */}
         {phase === 'overtime' && (
@@ -415,11 +415,11 @@ export default function PresentationTimer() {
                 ? `${currentColors.text} ${pulseClass}`
                 : phase === 'warning'
                   ? currentColors.text
-                  : 'text-gray-900 dark:text-white'
+                  : 'text-fg'
             }`}>
               {formatTime(remainingSeconds)}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <span className="text-sm text-muted mt-2">
               {config.totalMinutes} {t('minutes')}
             </span>
           </div>
@@ -430,7 +430,7 @@ export default function PresentationTimer() {
           {/* -1 min */}
           <button
             onClick={handleSubtractMinute}
-            className="p-3 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300"
+            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
             aria-label={t('subtractMinute')}
             title={t('subtractMinute')}
           >
@@ -440,7 +440,7 @@ export default function PresentationTimer() {
           {/* Reset */}
           <button
             onClick={handleReset}
-            className="p-3 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300"
+            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
             aria-label={t('reset')}
             title={t('reset')}
           >
@@ -466,7 +466,7 @@ export default function PresentationTimer() {
           {/* Fullscreen */}
           <button
             onClick={toggleFullscreen}
-            className="p-3 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300"
+            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
             aria-label={isFullscreen ? t('exitFullscreen') : t('fullscreen')}
             title={isFullscreen ? t('exitFullscreen') : t('fullscreen')}
           >
@@ -476,7 +476,7 @@ export default function PresentationTimer() {
           {/* +1 min */}
           <button
             onClick={handleAddMinute}
-            className="p-3 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300"
+            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
             aria-label={t('addMinute')}
             title={t('addMinute')}
           >
@@ -489,7 +489,7 @@ export default function PresentationTimer() {
           <div className="flex items-center gap-3 mt-2">
             <button
               onClick={() => setConfig(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
               aria-label={config.soundEnabled ? t('soundOff') : t('soundOn')}
             >
               {config.soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -501,17 +501,17 @@ export default function PresentationTimer() {
       {/* Guide - hidden in fullscreen */}
       {!isFullscreen && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
             <BookOpen size={20} />
             {t('guide.title')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {/* How to use */}
             <div>
-              <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3">{t('guide.howto.title')}</h3>
+              <h3 className="font-medium text-body mb-3">{t('guide.howto.title')}</h3>
               <ol className="space-y-2">
                 {(t.raw('guide.howto.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
                       {i + 1}
                     </span>
@@ -522,10 +522,10 @@ export default function PresentationTimer() {
             </div>
             {/* Features */}
             <div>
-              <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3">{t('guide.features.title')}</h3>
+              <h3 className="font-medium text-body mb-3">{t('guide.features.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.features.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="flex-shrink-0 text-blue-500 mt-0.5">•</span>
                     {item}
                   </li>
@@ -534,10 +534,10 @@ export default function PresentationTimer() {
             </div>
             {/* Tips */}
             <div>
-              <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-3">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-body mb-3">{t('guide.tips.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="flex-shrink-0 text-green-500 mt-0.5">•</span>
                     {item}
                   </li>

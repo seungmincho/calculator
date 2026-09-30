@@ -123,7 +123,7 @@ export default function BodyFatCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <I18nWrapper>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="min-h-screen py-12">
           <div className="container mx-auto px-4">
             <BodyFatCalculator />
           </div>
@@ -137,17 +137,17 @@ export default function BodyFatCalculatorPage() {
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             체지방률 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             체지방률 계산기는 미 해군(Navy) 공식과 YMCA 공식을 이용해 허리·목·엉덩이 둘레 측정값으로 체지방률을 추정하는 무료 온라인 건강 도구입니다. 인바디 기계 없이 줄자만으로 체성분을 분석하고, 체지방량·제지방량·이상 체지방률 목표까지 한번에 계산할 수 있습니다. 다이어트, 운동 계획 수립, 체성분 관리에 관심 있는 분들에게 적합하며 남성·여성 기준을 각각 적용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             체지방률 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>정확한 측정 방법:</strong> 줄자를 피부에 밀착시키되 너무 조이지 않게 하고, 허리는 배꼽 위, 목은 후두부 아래를 측정하면 오차를 최소화할 수 있습니다.</li>
             <li><strong>두 공식 비교:</strong> Navy 공식과 YMCA 공식 결과를 비교하여 두 값의 중간 정도를 실제 체지방률로 참고하면 신뢰도가 높아집니다.</li>
             <li><strong>정상 범위 기준:</strong> 건강한 체지방률은 남성 10~20%, 여성 18~28%이며, 남성 25% 이상, 여성 32% 이상이면 비만에 해당합니다.</li>

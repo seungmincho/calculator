@@ -387,10 +387,10 @@ export default function EmojiPicker() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -417,7 +417,7 @@ export default function EmojiPicker() {
               className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
                 selectedCategory === category.id
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t(category.labelKey)}
@@ -430,12 +430,12 @@ export default function EmojiPicker() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         {/* Counter */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {selectedCategory === 'all'
               ? '전체 이모지'
               : t('categories.' + selectedCategory)}
           </h2>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted">
             {filteredEmojis.length}{t('totalEmojis')}
           </span>
         </div>
@@ -443,7 +443,7 @@ export default function EmojiPicker() {
         {/* Recently Used */}
         {!!recentEmojis.length && selectedCategory === 'all' && !searchQuery && (
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('recentlyUsed')}
             </h3>
             <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2">
@@ -464,7 +464,7 @@ export default function EmojiPicker() {
                 </button>
               ))}
             </div>
-            <div className="mt-4 border-t border-gray-200 dark:border-gray-700" />
+            <div className="mt-4 border-t border-line" />
           </div>
         )}
 
@@ -489,7 +489,7 @@ export default function EmojiPicker() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-12 text-muted">
             {t('noResults')}
           </div>
         )}
@@ -497,7 +497,7 @@ export default function EmojiPicker() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -505,10 +505,10 @@ export default function EmojiPicker() {
         <div className="space-y-6">
           {/* How to Use */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(
                 t.raw('guide.howToUse.items') as string[]
               ).map((item, index) => (
@@ -522,10 +522,10 @@ export default function EmojiPicker() {
 
           {/* Tips */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 mt-1 flex-shrink-0">💡</span>

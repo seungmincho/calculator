@@ -123,7 +123,7 @@ export default function BaseConverter() {
             className={`w-8 h-8 flex items-center justify-center rounded text-xs font-mono font-bold ${
               bit === '1'
                 ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                : 'bg-track text-sub'
             }`}
           >
             {bit}
@@ -140,12 +140,12 @@ export default function BaseConverter() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={handleReset}
-          className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2"
+          className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2"
         >
           <RotateCcw className="w-4 h-4" />
           {t('reset')}
@@ -158,10 +158,10 @@ export default function BaseConverter() {
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('decimal')}
             </h2>
-            <span className="text-xs text-gray-500 dark:text-gray-400">(Base 10)</span>
+            <span className="text-xs text-muted">(Base 10)</span>
           </div>
           <div className="flex gap-2">
             <input
@@ -174,7 +174,7 @@ export default function BaseConverter() {
             <button
               onClick={() => copyToClipboard(values.decimal, 'decimal')}
               disabled={!values.decimal}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {copiedId === 'decimal' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
@@ -185,10 +185,10 @@ export default function BaseConverter() {
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('binary')}
             </h2>
-            <span className="text-xs text-gray-500 dark:text-gray-400">(Base 2)</span>
+            <span className="text-xs text-muted">(Base 2)</span>
           </div>
           <div className="flex gap-2">
             <input
@@ -201,7 +201,7 @@ export default function BaseConverter() {
             <button
               onClick={() => copyToClipboard(values.binary, 'binary')}
               disabled={!values.binary}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {copiedId === 'binary' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
@@ -212,10 +212,10 @@ export default function BaseConverter() {
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('octal')}
             </h2>
-            <span className="text-xs text-gray-500 dark:text-gray-400">(Base 8)</span>
+            <span className="text-xs text-muted">(Base 8)</span>
           </div>
           <div className="flex gap-2">
             <input
@@ -228,7 +228,7 @@ export default function BaseConverter() {
             <button
               onClick={() => copyToClipboard(values.octal, 'octal')}
               disabled={!values.octal}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {copiedId === 'octal' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
@@ -239,10 +239,10 @@ export default function BaseConverter() {
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-fg">
               {t('hex')}
             </h2>
-            <span className="text-xs text-gray-500 dark:text-gray-400">(Base 16)</span>
+            <span className="text-xs text-muted">(Base 16)</span>
           </div>
           <div className="flex gap-2">
             <input
@@ -255,7 +255,7 @@ export default function BaseConverter() {
             <button
               onClick={() => copyToClipboard(values.hex, 'hex')}
               disabled={!values.hex}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {copiedId === 'hex' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
@@ -266,27 +266,27 @@ export default function BaseConverter() {
       {/* Bit Visualization */}
       {values.decimal && parseInput(values.decimal, 10) !== null && (
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {t('bitVisualization')}
           </h2>
 
           <div className="space-y-3">
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-sm font-medium text-body mb-2">
                 8비트
               </h3>
               {renderBitVisualization(8)}
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-sm font-medium text-body mb-2">
                 16비트
               </h3>
               {renderBitVisualization(16)}
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-sm font-medium text-body mb-2">
                 32비트
               </h3>
               {renderBitVisualization(32)}
@@ -297,23 +297,23 @@ export default function BaseConverter() {
 
       {/* Common Values */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('commonValues')}
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-semibold">
+              <tr className="border-b border-line">
+                <th className="text-left py-2 px-3 text-body font-semibold">
                   {t('decimal')}
                 </th>
-                <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-semibold">
+                <th className="text-left py-2 px-3 text-body font-semibold">
                   {t('binary')}
                 </th>
-                <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-semibold">
+                <th className="text-left py-2 px-3 text-body font-semibold">
                   {t('octal')}
                 </th>
-                <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-semibold">
+                <th className="text-left py-2 px-3 text-body font-semibold">
                   {t('hex')}
                 </th>
               </tr>
@@ -325,18 +325,18 @@ export default function BaseConverter() {
                   <tr
                     key={val}
                     onClick={() => handleQuickValue(val)}
-                    className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                    className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                   >
-                    <td className="py-2 px-3 font-mono text-gray-900 dark:text-white">
+                    <td className="py-2 px-3 font-mono text-fg">
                       {converted.decimal}
                     </td>
-                    <td className="py-2 px-3 font-mono text-gray-700 dark:text-gray-300">
+                    <td className="py-2 px-3 font-mono text-body">
                       {converted.binary}
                     </td>
-                    <td className="py-2 px-3 font-mono text-gray-700 dark:text-gray-300">
+                    <td className="py-2 px-3 font-mono text-body">
                       {converted.octal}
                     </td>
-                    <td className="py-2 px-3 font-mono text-gray-700 dark:text-gray-300">
+                    <td className="py-2 px-3 font-mono text-body">
                       {converted.hex}
                     </td>
                   </tr>
@@ -349,17 +349,17 @@ export default function BaseConverter() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           {/* How to Use */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -368,10 +368,10 @@ export default function BaseConverter() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}

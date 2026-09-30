@@ -184,8 +184,8 @@ export default function PortReference() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Search */}
@@ -196,7 +196,7 @@ export default function PortReference() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          className="w-full pl-10 pr-4 py-3 border border-line-strong rounded-xl bg-surface text-fg placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
         />
       </div>
 
@@ -204,7 +204,7 @@ export default function PortReference() {
       <div className="space-y-3">
         {/* Category filter */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400 self-center mr-1">{t('categoryLabel')}</span>
+          <span className="text-xs font-medium text-muted self-center mr-1">{t('categoryLabel')}</span>
           {CATEGORY_BUTTONS.map((btn) => (
             <button
               key={btn.value}
@@ -212,7 +212,7 @@ export default function PortReference() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 categoryFilter === btn.value
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {btn.label}
@@ -225,7 +225,7 @@ export default function PortReference() {
 
         {/* Protocol filter */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400 self-center mr-1">{t('protocolLabel')}</span>
+          <span className="text-xs font-medium text-muted self-center mr-1">{t('protocolLabel')}</span>
           {PROTOCOL_BUTTONS.map((btn) => (
             <button
               key={btn.value}
@@ -233,7 +233,7 @@ export default function PortReference() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 protocolFilter === btn.value
                   ? 'bg-purple-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {btn.label}
@@ -243,14 +243,14 @@ export default function PortReference() {
       </div>
 
       {/* Result count */}
-      <p className="text-sm text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-muted">
         {t('resultCount', { count: filtered.length, total: PORT_DATA.length })}
       </p>
 
       {/* Port list */}
       {filtered.length === 0 ? (
         <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-          <p className="text-gray-400 dark:text-gray-500">{t('noResults')}</p>
+          <p className="text-faint">{t('noResults')}</p>
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-1 lg:grid-cols-2">
@@ -270,7 +270,7 @@ export default function PortReference() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm">
+                    <span className="font-semibold text-fg text-sm">
                       {entry.service}
                     </span>
                     <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${protocolColor(entry.protocol)}`}>
@@ -280,7 +280,7 @@ export default function PortReference() {
                       {categoryLabel(entry.category)}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-snug">
+                  <p className="text-sm text-sub leading-snug">
                     {entry.description}
                   </p>
                   {entry.securityNote && (
@@ -319,7 +319,7 @@ export default function PortReference() {
         >
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-blue-500" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-base font-semibold text-fg">
               {t('guide.title')}
             </h2>
           </div>
@@ -331,10 +331,10 @@ export default function PortReference() {
         </button>
 
         {guideOpen && (
-          <div className="px-6 pb-6 space-y-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+          <div className="px-6 pb-6 space-y-6 border-t border-line pt-4">
             {/* Ranges */}
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.ranges.title')}</h3>
+              <h3 className="font-medium text-fg mb-3">{t('guide.ranges.title')}</h3>
               <div className="grid sm:grid-cols-3 gap-3">
                 <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
                   <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('catWellKnown')} (0–1023)</p>
@@ -344,19 +344,19 @@ export default function PortReference() {
                   <p className="text-sm font-semibold text-yellow-700 dark:text-yellow-400">{t('catRegistered')} (1024–49151)</p>
                   <p className="text-xs text-yellow-600 dark:text-yellow-500 mt-1">{t('guide.ranges.registeredDesc')}</p>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                  <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('catDynamic')} (49152–65535)</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('guide.ranges.dynamicDesc')}</p>
+                <div className="bg-subtle rounded-lg p-3">
+                  <p className="text-sm font-semibold text-body">{t('catDynamic')} (49152–65535)</p>
+                  <p className="text-xs text-muted mt-1">{t('guide.ranges.dynamicDesc')}</p>
                 </div>
               </div>
             </div>
 
             {/* Security tips */}
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.security.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.security.title')}</h3>
               <ul className="space-y-1.5">
                 {(t.raw('guide.security.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
                     {item}
                   </li>
@@ -366,7 +366,7 @@ export default function PortReference() {
 
             {/* TCP vs UDP */}
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tcpUdp.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tcpUdp.title')}</h3>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
                   <p className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-1">TCP</p>

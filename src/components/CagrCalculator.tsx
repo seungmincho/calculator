@@ -421,7 +421,7 @@ export default function CagrCalculator() {
         className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right pr-10`}
       />
       {suffix && (
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">
           {suffix}
         </span>
       )}
@@ -444,11 +444,11 @@ export default function CagrCalculator() {
       <div className="space-y-4">
         {/* Start Value */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             {t('input.startValue')}
           </label>
           {renderCommaInput(sv, setSv, '10,000,000')}
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
+          <p className="text-xs text-muted mt-1 text-right">
             {parseNumber(sv) > 0 ? formatKoreanMoney(parseNumber(sv)) : ''}
           </p>
         </div>
@@ -457,32 +457,32 @@ export default function CagrCalculator() {
         {mode === 'cagr' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.endValue')}
               </label>
               {renderCommaInput(ev, setEv, '20,000,000')}
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
+              <p className="text-xs text-muted mt-1 text-right">
                 {parseNumber(ev) > 0 ? formatKoreanMoney(parseNumber(ev)) : ''}
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.period')}
               </label>
               <div className="flex gap-2">
                 <div className="flex-1">
                   {renderNumberInput(p, setP, '10', periodUnit === 'years' ? t('units.year') : t('units.month'))}
                 </div>
-                <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+                <div className="flex rounded-lg overflow-hidden border border-line-strong">
                   <button
                     onClick={() => setPeriodUnit('years')}
-                    className={`px-3 py-2 text-sm ${periodUnit === 'years' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+                    className={`px-3 py-2 text-sm ${periodUnit === 'years' ? 'bg-blue-600 text-white' : 'bg-field text-body'}`}
                   >
                     {t('input.periodYears')}
                   </button>
                   <button
                     onClick={() => setPeriodUnit('months')}
-                    className={`px-3 py-2 text-sm ${periodUnit === 'months' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+                    className={`px-3 py-2 text-sm ${periodUnit === 'months' ? 'bg-blue-600 text-white' : 'bg-field text-body'}`}
                   >
                     {t('input.periodMonths')}
                   </button>
@@ -495,13 +495,13 @@ export default function CagrCalculator() {
         {mode === 'future' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.cagrRate')}
               </label>
               {renderNumberInput(cr, setCr, '7', '%')}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.period')}
               </label>
               {renderNumberInput(p, setP, '10', t('units.year'))}
@@ -512,16 +512,16 @@ export default function CagrCalculator() {
         {mode === 'period' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.targetValue')}
               </label>
               {renderCommaInput(tv, setTv, '100,000,000')}
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
+              <p className="text-xs text-muted mt-1 text-right">
                 {parseNumber(tv) > 0 ? formatKoreanMoney(parseNumber(tv)) : ''}
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.cagrRate')}
               </label>
               {renderNumberInput(cr, setCr, '7', '%')}
@@ -537,12 +537,12 @@ export default function CagrCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           title="링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -551,7 +551,7 @@ export default function CagrCalculator() {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <div className="flex rounded-xl overflow-hidden border border-line bg-surface">
         {(['cagr', 'future', 'period'] as Mode[]).map(m => {
           const Icon = modeIcons[m]
           return (
@@ -561,7 +561,7 @@ export default function CagrCalculator() {
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                 mode === m
                   ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  : 'text-sub hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -577,7 +577,7 @@ export default function CagrCalculator() {
         {/* Left: Input Panel */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {compareMode ? t('compare.investmentA') : t('input.title')}
             </h2>
             {renderInputPanel(false)}
@@ -595,7 +595,7 @@ export default function CagrCalculator() {
 
           {/* Compound Frequency */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('input.compoundFreq')}
             </label>
             <select
@@ -610,7 +610,7 @@ export default function CagrCalculator() {
 
             {/* Compare Toggle */}
             <div className="mt-4 flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('compare.toggle')}</span>
+              <span className="text-sm font-medium text-body">{t('compare.toggle')}</span>
               <button
                 onClick={() => setCompareMode(!compareMode)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -627,7 +627,7 @@ export default function CagrCalculator() {
 
             {/* Presets */}
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('preset.label')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -635,7 +635,7 @@ export default function CagrCalculator() {
                   <button
                     key={preset.key}
                     onClick={() => handlePreset(preset.key)}
-                    className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {t(`preset.${preset.key}`)}
                   </button>
@@ -646,7 +646,7 @@ export default function CagrCalculator() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -719,43 +719,43 @@ export default function CagrCalculator() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-8 text-center`}>
               <BarChart3 className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-500 dark:text-gray-400">{t('result.placeholder')}</p>
+              <p className="text-muted">{t('result.placeholder')}</p>
             </div>
           )}
 
           {/* Comparison Result */}
           {compareMode && resultA && resultB && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                 <GitCompareArrows className="w-5 h-5" />
                 {t('compare.title')}
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-500 dark:text-gray-400">{t('compare.item')}</th>
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 px-3 text-muted">{t('compare.item')}</th>
                       <th className="text-right py-2 px-3 text-blue-600 dark:text-blue-400">{t('compare.investmentA')}</th>
                       <th className="text-right py-2 px-3 text-emerald-600 dark:text-emerald-400">{t('compare.investmentB')}</th>
                     </tr>
                   </thead>
-                  <tbody className="text-gray-900 dark:text-white">
+                  <tbody className="text-fg">
                     {mode === 'cagr' && (() => {
                       const rA = resultA as { cagr: number; totalReturn: number; totalGain: number; endValue: number }
                       const rB = resultB as { cagr: number; totalReturn: number; totalGain: number; endValue: number }
                       return (
                         <>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">CAGR</td>
                             <td className="text-right py-2 px-3 font-medium">{rA.cagr.toFixed(2)}%</td>
                             <td className="text-right py-2 px-3 font-medium">{rB.cagr.toFixed(2)}%</td>
                           </tr>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('result.totalReturn')}</td>
                             <td className="text-right py-2 px-3">{rA.totalReturn.toFixed(1)}%</td>
                             <td className="text-right py-2 px-3">{rB.totalReturn.toFixed(1)}%</td>
                           </tr>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('compare.finalValue')}</td>
                             <td className="text-right py-2 px-3">{formatKoreanMoney(rA.endValue)}</td>
                             <td className="text-right py-2 px-3">{formatKoreanMoney(rB.endValue)}</td>
@@ -783,17 +783,17 @@ export default function CagrCalculator() {
                       const rB = resultB as { futureValue: number; totalReturn: number; totalGain: number; rate: number }
                       return (
                         <>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">CAGR</td>
                             <td className="text-right py-2 px-3 font-medium">{rA.rate}%</td>
                             <td className="text-right py-2 px-3 font-medium">{rB.rate}%</td>
                           </tr>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('result.totalReturn')}</td>
                             <td className="text-right py-2 px-3">{rA.totalReturn.toFixed(1)}%</td>
                             <td className="text-right py-2 px-3">{rB.totalReturn.toFixed(1)}%</td>
                           </tr>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('compare.finalValue')}</td>
                             <td className="text-right py-2 px-3">{formatKoreanMoney(rA.futureValue)}</td>
                             <td className="text-right py-2 px-3">{formatKoreanMoney(rB.futureValue)}</td>
@@ -821,12 +821,12 @@ export default function CagrCalculator() {
                       const rB = resultB as { fullYears: number; months: number; requiredYears: number; rate: number }
                       return (
                         <>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">CAGR</td>
                             <td className="text-right py-2 px-3 font-medium">{rA.rate}%</td>
                             <td className="text-right py-2 px-3 font-medium">{rB.rate}%</td>
                           </tr>
-                          <tr className="border-b border-gray-100 dark:border-gray-700">
+                          <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('result.requiredPeriod')}</td>
                             <td className="text-right py-2 px-3">{rA.fullYears}{t('units.year')} {rA.months > 0 ? `${rA.months}${t('units.month')}` : ''}</td>
                             <td className="text-right py-2 px-3">{rB.fullYears}{t('units.year')} {rB.months > 0 ? `${rB.months}${t('units.month')}` : ''}</td>
@@ -857,7 +857,7 @@ export default function CagrCalculator() {
           {/* Chart */}
           {chartData.length > 1 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('chart.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-4">{t('chart.title')}</h3>
               <div className="w-full" style={{ minHeight: '300px' }}>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
@@ -916,18 +916,18 @@ export default function CagrCalculator() {
                 onClick={() => setShowTable(!showTable)}
                 className="w-full flex items-center justify-between px-6 py-4 text-left"
               >
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('table.title')}</h3>
+                <h3 className="text-lg font-semibold text-fg">{t('table.title')}</h3>
                 {showTable ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
               </button>
               {showTable && (
                 <div className="px-6 pb-6 overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400">{t('table.year')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('table.value')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('table.growth')}</th>
-                        <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400">{t('table.growthRate')}</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 px-2 text-muted">{t('table.year')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('table.value')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('table.growth')}</th>
+                        <th className="text-right py-2 px-2 text-muted">{t('table.growthRate')}</th>
                         {compareMode && (
                           <>
                             <th className="text-right py-2 px-2 text-emerald-600 dark:text-emerald-400">{t('table.valueB')}</th>
@@ -938,13 +938,13 @@ export default function CagrCalculator() {
                     </thead>
                     <tbody>
                       {chartData.map(row => (
-                        <tr key={row.year} className="border-b border-gray-100 dark:border-gray-700">
-                          <td className="py-2 px-2 text-gray-900 dark:text-white">{row.year}{t('units.year')}</td>
-                          <td className="text-right py-2 px-2 text-gray-900 dark:text-white font-medium">{formatKoreanMoney(row.value)}</td>
-                          <td className="text-right py-2 px-2 text-gray-600 dark:text-gray-400">
+                        <tr key={row.year} className="border-b border-line">
+                          <td className="py-2 px-2 text-fg">{row.year}{t('units.year')}</td>
+                          <td className="text-right py-2 px-2 text-fg font-medium">{formatKoreanMoney(row.value)}</td>
+                          <td className="text-right py-2 px-2 text-sub">
                             {row.year > 0 ? `+${formatKoreanMoney(row.growth)}` : '-'}
                           </td>
-                          <td className="text-right py-2 px-2 text-gray-600 dark:text-gray-400">
+                          <td className="text-right py-2 px-2 text-sub">
                             {row.year > 0 ? `${row.growthRate.toFixed(2)}%` : '-'}
                           </td>
                           {compareMode && (
@@ -974,7 +974,7 @@ export default function CagrCalculator() {
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
@@ -984,10 +984,10 @@ export default function CagrCalculator() {
           <div className="px-6 pb-6 space-y-6">
             {/* What is CAGR */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.whatIsCagr.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.whatIsCagr.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.whatIsCagr.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                  <li key={i} className="flex items-start gap-2 text-body text-sm">
                     <span className="text-blue-500 mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
@@ -997,10 +997,10 @@ export default function CagrCalculator() {
 
             {/* Formula */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.formula.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.formula.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.formula.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                  <li key={i} className="flex items-start gap-2 text-body text-sm">
                     <span className="text-blue-500 mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
@@ -1010,10 +1010,10 @@ export default function CagrCalculator() {
 
             {/* Usage */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.usage.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.usage.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                  <li key={i} className="flex items-start gap-2 text-body text-sm">
                     <span className="text-blue-500 mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
@@ -1023,10 +1023,10 @@ export default function CagrCalculator() {
 
             {/* Tips */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                  <li key={i} className="flex items-start gap-2 text-body text-sm">
                     <span className="text-blue-500 mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>

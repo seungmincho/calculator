@@ -307,16 +307,16 @@ export default function WorldClock() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Globe className="w-8 h-8" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {/* Copy Link Button */}
         <button
           onClick={handleCopyLink}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors text-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors text-sm"
           title={t('copyLink')}
         >
           {copiedLink ? (
@@ -338,14 +338,14 @@ export default function WorldClock() {
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
             <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('myTime')}
             </h2>
           </div>
-          <div className="text-5xl font-bold font-mono text-gray-900 dark:text-white">
+          <div className="text-5xl font-bold font-mono text-fg">
             {formatTime(Intl.DateTimeFormat().resolvedOptions().timeZone)}
           </div>
-          <div className="text-lg text-gray-600 dark:text-gray-300">
+          <div className="text-lg text-sub">
             {formatDate(Intl.DateTimeFormat().resolvedOptions().timeZone)}
           </div>
           <div className="flex items-center justify-center gap-4 mt-4">
@@ -354,7 +354,7 @@ export default function WorldClock() {
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 !is24h
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                  : 'bg-field text-body hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
             >
               {t('format12h')}
@@ -364,7 +364,7 @@ export default function WorldClock() {
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 is24h
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+                  : 'bg-field text-body hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
             >
               {t('format24h')}
@@ -375,7 +375,7 @@ export default function WorldClock() {
 
       {/* Add City */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <Plus className="w-5 h-5" />
           {t('addCity')}
         </h2>
@@ -436,14 +436,14 @@ export default function WorldClock() {
                 className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 aria-label={t('removeCity')}
               >
-                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <X className="w-5 h-5 text-muted" />
               </button>
 
               {/* Flag and City Name */}
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-4xl">{city.flag}</span>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-fg">
                     {t(`cities.${city.id}`)}
                   </h3>
                   {/* DST Indicator */}
@@ -459,7 +459,7 @@ export default function WorldClock() {
                       </span>
                     )}
                     {!dst && (
-                      <span className="text-xs text-gray-400 dark:text-gray-500">
+                      <span className="text-xs text-faint">
                         {t('standardTime')}
                       </span>
                     )}
@@ -468,12 +468,12 @@ export default function WorldClock() {
               </div>
 
               {/* Time */}
-              <div className="text-3xl font-bold font-mono text-gray-900 dark:text-white mb-2">
+              <div className="text-3xl font-bold font-mono text-fg mb-2">
                 {formatTime(city.timezone)}
               </div>
 
               {/* Date */}
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+              <div className="text-sm text-muted mb-3">
                 {formatDate(city.timezone)}
               </div>
 
@@ -492,25 +492,25 @@ export default function WorldClock() {
           onClick={() => setShowMeetingPlanner(v => !v)}
           className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <Users className="w-5 h-5" />
             {t('meetingPlanner.title')}
           </h2>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted">
             {showMeetingPlanner ? '▲' : '▼'}
           </span>
         </button>
 
         {showMeetingPlanner && (
-          <div className="px-6 pb-6 space-y-5 border-t border-gray-100 dark:border-gray-700 pt-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="px-6 pb-6 space-y-5 border-t border-line pt-4">
+            <p className="text-sm text-muted">
               {t('meetingPlanner.description')}
             </p>
 
             {/* Working hours range */}
             <div className="flex flex-wrap gap-6 items-center">
               <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                <label className="text-sm font-medium text-body whitespace-nowrap">
                   {t('meetingPlanner.workStart')}
                 </label>
                 <select
@@ -524,7 +524,7 @@ export default function WorldClock() {
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                <label className="text-sm font-medium text-body whitespace-nowrap">
                   {t('meetingPlanner.workEnd')}
                 </label>
                 <select
@@ -543,7 +543,7 @@ export default function WorldClock() {
             {meetingData && meetingData.cities.length > 0 ? (
               <div className="space-y-3">
                 {/* Hour labels */}
-                <div className="flex text-xs text-gray-400 dark:text-gray-500 pl-24 pr-2">
+                <div className="flex text-xs text-faint pl-24 pr-2">
                   {Array.from({ length: BAR_HOURS + 1 }, (_, i) => (
                     <div
                       key={i}
@@ -559,20 +559,20 @@ export default function WorldClock() {
                 {meetingData.cities.map((city, ci) => (
                   <div key={city.id} className="flex items-center gap-2">
                     {/* City label */}
-                    <div className="w-24 flex-shrink-0 flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
+                    <div className="w-24 flex-shrink-0 flex items-center gap-1.5 text-sm font-medium text-body truncate">
                       <span className="text-base leading-none">{city.flag}</span>
                       <span className="truncate">{t(`cities.${city.id}`)}</span>
                     </div>
 
                     {/* Bar */}
-                    <div className="flex-1 flex h-7 rounded overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <div className="flex-1 flex h-7 rounded overflow-hidden border border-line">
                       {Array.from({ length: BAR_HOURS }, (_, utcH) => {
                         const localH = meetingData.cityHours[ci][utcH]
                         const norm = ((localH % 24) + 24) % 24
                         const isWork = norm >= meetingStart && norm < meetingEnd
                         const isOverlap = meetingData.overlapHours[utcH]
 
-                        let bg = 'bg-gray-100 dark:bg-gray-700' // off hours
+                        let bg = 'bg-soft' // off hours
                         if (isWork && isOverlap) bg = 'bg-green-400 dark:bg-green-500'
                         else if (isWork) bg = 'bg-blue-200 dark:bg-blue-800'
 
@@ -589,7 +589,7 @@ export default function WorldClock() {
                 ))}
 
                 {/* Legend */}
-                <div className="flex flex-wrap gap-4 pt-2 text-xs text-gray-600 dark:text-gray-400">
+                <div className="flex flex-wrap gap-4 pt-2 text-xs text-sub">
                   <div className="flex items-center gap-1.5">
                     <div className="w-4 h-4 rounded bg-green-400 dark:bg-green-500" />
                     <span>{t('meetingPlanner.overlap')}</span>
@@ -599,7 +599,7 @@ export default function WorldClock() {
                     <span>{t('meetingPlanner.workingHours')}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600" />
+                    <div className="w-4 h-4 rounded bg-soft border border-line" />
                     <span>{t('meetingPlanner.offHours')}</span>
                   </div>
                 </div>
@@ -621,7 +621,7 @@ export default function WorldClock() {
                 })()}
               </div>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+              <p className="text-sm text-faint italic">
                 {t('meetingPlanner.noCities')}
               </p>
             )}
@@ -631,16 +631,16 @@ export default function WorldClock() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
@@ -650,10 +650,10 @@ export default function WorldClock() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>

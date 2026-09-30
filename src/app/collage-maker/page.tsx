@@ -81,7 +81,7 @@ export default function CollageMakerPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CollageMaker />
@@ -96,17 +96,17 @@ export default function CollageMakerPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               사진 콜라주 메이커란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               사진 콜라주 메이커는 <strong>여러 장의 사진을 2·3·4·6·9분할 레이아웃으로 하나의 이미지로 합쳐주는</strong> 무료 온라인 도구입니다. 인스타그램용 정사각형(1080×1080), OG 이미지(1200×630), HD 와이드(1920×1080) 등 다양한 크기를 지원하며 모든 처리가 브라우저에서 이루어져 사진이 서버에 업로드되지 않습니다. 여행 사진 정리, SNS 포스팅, 기념 앨범 제작에 활용하세요.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               사진 콜라주 메이커 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>인스타그램 9분할:</strong> 인스타그램 그리드에 9장을 일관된 레이아웃으로 올릴 때 9분할 프리셋을 활용하세요.</li>
               <li><strong>모서리 둥글기:</strong> 모서리를 둥글게 설정하면 더 부드럽고 트렌디한 콜라주를 만들 수 있습니다.</li>
               <li><strong>배경색 선택:</strong> 흰색 배경은 깔끔한 느낌, 검정 배경은 고급스러운 느낌을 줍니다.</li>

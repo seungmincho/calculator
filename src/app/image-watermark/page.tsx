@@ -40,7 +40,7 @@ export default function ImageWatermarkPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ImageWatermark />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function ImageWatermarkPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             이미지 워터마크란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             이미지 워터마크는 사진이나 그림 위에 텍스트나 로고 이미지를 반투명하게 삽입하여 저작권을 표시하고 무단 도용을 방지하는 기술입니다. 사진작가, 디자이너, 유튜버, 블로거 등 콘텐츠 창작자들이 자신의 작업물을 온라인에 공개할 때 반드시 필요하며, 투명도·위치·크기·회전·타일 반복 등 다양한 옵션으로 개성 있는 워터마크를 만들 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 워터마크 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>도용 방지 타일 반복:</strong> 워터마크를 전체 이미지에 대각선으로 반복 배치하면 특정 부분을 잘라내도 제거하기 어렵습니다.</li>
             <li><strong>적절한 투명도 설정:</strong> 너무 진하면 사진 감상을 방해하고, 너무 옅으면 효과가 없습니다. 투명도 30~50%가 가장 일반적입니다.</li>
             <li><strong>브랜드 로고 삽입:</strong> 텍스트 대신 로고 이미지를 워터마크로 사용하면 브랜드 인지도를 높이면서 저작권도 보호됩니다.</li>

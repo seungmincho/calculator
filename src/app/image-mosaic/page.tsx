@@ -44,7 +44,7 @@ export default function ImageMosaicPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><ImageMosaic />  <div className="mt-8">
     <RelatedTools />
@@ -54,17 +54,17 @@ export default function ImageMosaicPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             사진 모자이크·블러 처리란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             사진 모자이크 및 블러 처리 도구는 이미지의 특정 영역을 픽셀화하거나 흐릿하게 만들어 개인정보나 민감한 정보를 가리는 온라인 도구입니다. 얼굴, 차량 번호판, 주민등록번호, 주소 등을 공개 전에 가릴 때 필수적으로 사용되며, 모든 처리가 브라우저에서 이루어져 이미지가 외부 서버에 전송되지 않습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             모자이크·블러 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>얼굴 모자이크:</strong> 사진에 찍힌 타인의 얼굴을 SNS나 블로그 업로드 전에 모자이크 처리하여 초상권을 보호하세요.</li>
             <li><strong>번호판 블러:</strong> 차량 사고 사진이나 블랙박스 영상 캡처 공유 시 번호판을 흐릿하게 처리하는 것이 중요합니다.</li>
             <li><strong>문서 개인정보 가리기:</strong> 공문서, 영수증, 계약서 등에 포함된 주민등록번호나 계좌번호를 블러 처리한 후 공유하세요.</li>

@@ -333,8 +333,8 @@ export default function LunarConverter() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -344,7 +344,7 @@ export default function LunarConverter() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 변환 모드
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -353,7 +353,7 @@ export default function LunarConverter() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     mode === 'solarToLunar'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -368,7 +368,7 @@ export default function LunarConverter() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     mode === 'lunarToSolar'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -384,13 +384,13 @@ export default function LunarConverter() {
             {/* Date Input */}
             {mode === 'solarToLunar' ? (
               <div className="space-y-4">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <h3 className="text-sm font-medium text-body flex items-center gap-2">
                   <Sun className="w-4 h-4" />
                   {t('solar')}
                 </h3>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('year')}
                   </label>
                   <select
@@ -405,7 +405,7 @@ export default function LunarConverter() {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('month')}
                   </label>
                   <select
@@ -425,7 +425,7 @@ export default function LunarConverter() {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('day')}
                   </label>
                   <select
@@ -441,13 +441,13 @@ export default function LunarConverter() {
               </div>
             ) : (
               <div className="space-y-4">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <h3 className="text-sm font-medium text-body flex items-center gap-2">
                   <Moon className="w-4 h-4" />
                   {t('lunar')}
                 </h3>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('year')}
                   </label>
                   <select
@@ -462,7 +462,7 @@ export default function LunarConverter() {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('month')}
                   </label>
                   <select
@@ -486,7 +486,7 @@ export default function LunarConverter() {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs text-sub mb-1">
                     {t('day')}
                   </label>
                   <select
@@ -509,7 +509,7 @@ export default function LunarConverter() {
                       onChange={(e) => setIsLeap(e.target.checked)}
                       className="w-4 h-4 accent-blue-600 rounded"
                     />
-                    <label htmlFor="isLeap" className="text-sm text-gray-700 dark:text-gray-300">
+                    <label htmlFor="isLeap" className="text-sm text-body">
                       {t('leapMonth')}
                     </label>
                   </div>
@@ -521,7 +521,7 @@ export default function LunarConverter() {
             <div className="flex gap-2">
               <button
                 onClick={toggleMode}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <ArrowRightLeft className="w-4 h-4" />
                 모드 전환
@@ -529,7 +529,7 @@ export default function LunarConverter() {
               <button
                 onClick={copyLink}
                 title="링크 복사"
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
               >
                 {copiedId === 'link' ? (
                   <Check className="w-4 h-4 text-green-600" />
@@ -540,7 +540,7 @@ export default function LunarConverter() {
               <button
                 onClick={handleReset}
                 title="초기화"
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
@@ -551,7 +551,7 @@ export default function LunarConverter() {
         {/* Result Panel */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('result.title')}
             </h2>
@@ -562,10 +562,10 @@ export default function LunarConverter() {
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <div className="text-sm text-sub mb-2">
                         {mode === 'solarToLunar' ? '음력' : '양력'}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                      <div className="text-2xl font-bold text-fg mb-1">
                         {mode === 'solarToLunar' ? (
                           <>
                             음력 {result.year}년 {result.isLeap ? '윤' : ''}{result.month}월 {result.day}일
@@ -576,13 +576,13 @@ export default function LunarConverter() {
                           </>
                         )}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {result.dayOfWeek}
                       </div>
                     </div>
                     <button
                       onClick={() => copyToClipboard(getResultText(), 'result')}
-                      className="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 transition-colors"
+                      className="bg-field hover:bg-gray-50 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 transition-colors"
                     >
                       {copiedId === 'result' ? (
                         <Check className="w-4 h-4 text-green-600" />
@@ -595,49 +595,49 @@ export default function LunarConverter() {
 
                 {/* Year Info */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub mb-1">
                       띠
                     </div>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <div className="text-lg font-semibold text-fg">
                       {result.zodiac}띠
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub mb-1">
                       {t('result.sexagenary')}
                     </div>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <div className="text-lg font-semibold text-fg">
                       {result.ganzi}년
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub mb-1">
                       {t('result.heavenlyStem')}
                     </div>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <div className="text-lg font-semibold text-fg">
                       {result.stem}
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub mb-1">
                       {t('result.earthlyBranch')}
                     </div>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <div className="text-lg font-semibold text-fg">
                       {result.branch}
                     </div>
                   </div>
                 </div>
 
                 {/* Original Date */}
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                  <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                <div className="bg-subtle rounded-xl p-4">
+                  <div className="text-xs text-sub mb-1">
                     {mode === 'solarToLunar' ? '입력한 양력' : '입력한 음력'}
                   </div>
-                  <div className="text-base font-medium text-gray-900 dark:text-white">
+                  <div className="text-base font-medium text-fg">
                     {mode === 'solarToLunar' ? (
                       <>양력 {solarYear}년 {solarMonth}월 {solarDay}일</>
                     ) : (
@@ -647,7 +647,7 @@ export default function LunarConverter() {
                 </div>
               </div>
             ) : (
-              <div className="text-center text-gray-500 dark:text-gray-400 py-12">
+              <div className="text-center text-muted py-12">
                 날짜를 선택하면 변환 결과가 표시됩니다
               </div>
             )}
@@ -657,7 +657,7 @@ export default function LunarConverter() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -665,12 +665,12 @@ export default function LunarConverter() {
         <div className="space-y-6">
           {/* How to Use */}
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>
@@ -680,12 +680,12 @@ export default function LunarConverter() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>

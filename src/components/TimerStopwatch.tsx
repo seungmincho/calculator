@@ -285,8 +285,8 @@ export default function TimerStopwatch() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode Tabs */}
@@ -296,7 +296,7 @@ export default function TimerStopwatch() {
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'stopwatch'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Clock className="w-5 h-5" />
@@ -307,7 +307,7 @@ export default function TimerStopwatch() {
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'timer'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Timer className="w-5 h-5" />
@@ -318,7 +318,7 @@ export default function TimerStopwatch() {
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'pomodoro'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Coffee className="w-5 h-5" />
@@ -332,7 +332,7 @@ export default function TimerStopwatch() {
           <div className={`${glassCard} ${glassInset} p-8`}>
             {/* Time Display */}
             <div className="text-center mb-8">
-              <div className="text-6xl font-mono font-bold text-gray-900 dark:text-white">
+              <div className="text-6xl font-mono font-bold text-fg">
                 {formatTime(stopwatchTime, true)}
               </div>
             </div>
@@ -357,7 +357,7 @@ export default function TimerStopwatch() {
               </button>
               <button
                 onClick={resetStopwatch}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-colors"
               >
                 <RotateCcw className="w-5 h-5" />
                 {t('stopwatch.reset')}
@@ -377,34 +377,34 @@ export default function TimerStopwatch() {
           {/* Laps Table */}
           {laps.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-xl font-semibold text-fg mb-4">
                 {t('stopwatch.laps')}
               </h2>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-2 px-4 text-gray-700 dark:text-gray-300">
+                    <tr className="border-b border-line">
+                      <th className="text-left py-2 px-4 text-body">
                         {t('stopwatch.lapNumber')}
                       </th>
-                      <th className="text-left py-2 px-4 text-gray-700 dark:text-gray-300">
+                      <th className="text-left py-2 px-4 text-body">
                         {t('stopwatch.lapTime')}
                       </th>
-                      <th className="text-left py-2 px-4 text-gray-700 dark:text-gray-300">
+                      <th className="text-left py-2 px-4 text-body">
                         {t('stopwatch.totalTime')}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {laps.map((lap) => (
-                      <tr key={lap.lap} className="border-b border-gray-100 dark:border-gray-700">
-                        <td className="py-2 px-4 text-gray-900 dark:text-white font-medium">
+                      <tr key={lap.lap} className="border-b border-line">
+                        <td className="py-2 px-4 text-fg font-medium">
                           {lap.lap}
                         </td>
-                        <td className="py-2 px-4 text-gray-900 dark:text-white font-mono">
+                        <td className="py-2 px-4 text-fg font-mono">
                           {formatTime(lap.lapTime, true)}
                         </td>
-                        <td className="py-2 px-4 text-gray-900 dark:text-white font-mono">
+                        <td className="py-2 px-4 text-fg font-mono">
                           {formatTime(lap.totalTime, true)}
                         </td>
                       </tr>
@@ -426,7 +426,7 @@ export default function TimerStopwatch() {
               <div className="mb-6">
                 <div className="flex justify-center gap-4 mb-6 flex-wrap">
                   <div className="flex flex-col items-center">
-                    <label className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <label className="text-sm text-muted mb-2">
                       {t('countdown.hours')}
                     </label>
                     <input
@@ -439,7 +439,7 @@ export default function TimerStopwatch() {
                     />
                   </div>
                   <div className="flex flex-col items-center">
-                    <label className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <label className="text-sm text-muted mb-2">
                       {t('countdown.minutes')}
                     </label>
                     <input
@@ -452,7 +452,7 @@ export default function TimerStopwatch() {
                     />
                   </div>
                   <div className="flex flex-col items-center">
-                    <label className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <label className="text-sm text-muted mb-2">
                       {t('countdown.seconds')}
                     </label>
                     <input
@@ -472,7 +472,7 @@ export default function TimerStopwatch() {
                     <button
                       key={minutes}
                       onClick={() => setTimerPreset(minutes)}
-                      className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                      className="px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                     >
                       {minutes}분
                     </button>
@@ -483,7 +483,7 @@ export default function TimerStopwatch() {
 
             {/* Countdown Display */}
             <div className="text-center mb-8">
-              <div className="text-6xl font-mono font-bold text-gray-900 dark:text-white">
+              <div className="text-6xl font-mono font-bold text-fg">
                 {formatCountdown(timerRemaining)}
               </div>
               {timerFinished && (
@@ -522,7 +522,7 @@ export default function TimerStopwatch() {
               )}
               <button
                 onClick={resetTimer}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-colors"
               >
                 <Square className="w-5 h-5" />
                 {t('countdown.reset')}
@@ -538,12 +538,12 @@ export default function TimerStopwatch() {
           {/* Settings */}
           {!pomodoroRunning && pomodoroPhase === 'work' && pomodoroRemaining === pomodoroWorkDuration * 60 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 설정
               </h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm text-body mb-2">
                     {t('pomodoro.workDuration')}
                   </label>
                   <input
@@ -560,7 +560,7 @@ export default function TimerStopwatch() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm text-body mb-2">
                     {t('pomodoro.shortBreakDuration')}
                   </label>
                   <input
@@ -573,7 +573,7 @@ export default function TimerStopwatch() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm text-body mb-2">
                     {t('pomodoro.longBreakDuration')}
                   </label>
                   <input
@@ -586,7 +586,7 @@ export default function TimerStopwatch() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm text-body mb-2">
                     {t('pomodoro.sessionsBeforeLong')}
                   </label>
                   <input
@@ -611,7 +611,7 @@ export default function TimerStopwatch() {
                 {pomodoroPhase === 'shortBreak' && t('pomodoro.shortBreak')}
                 {pomodoroPhase === 'longBreak' && t('pomodoro.longBreak')}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-muted">
                 {t('pomodoro.completed')}: {pomodoroCompletedSessions}
               </div>
             </div>
@@ -643,7 +643,7 @@ export default function TimerStopwatch() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-5xl font-mono font-bold text-gray-900 dark:text-white">
+                  <div className="text-5xl font-mono font-bold text-fg">
                     {formatCountdown(pomodoroRemaining)}
                   </div>
                 </div>
@@ -671,14 +671,14 @@ export default function TimerStopwatch() {
               )}
               <button
                 onClick={resetPomodoro}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-colors"
               >
                 <RotateCcw className="w-5 h-5" />
                 {t('pomodoro.reset')}
               </button>
               <button
                 onClick={skipPomodoroPhase}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-colors"
               >
                 <SkipForward className="w-5 h-5" />
                 {t('pomodoro.skip')}
@@ -690,36 +690,36 @@ export default function TimerStopwatch() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <Timer className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-fg mb-2">
               {t('guide.stopwatch.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-body">
               {(t.raw('guide.stopwatch.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-fg mb-2">
               {t('guide.timer.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-body">
               {(t.raw('guide.timer.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-fg mb-2">
               {t('guide.pomodoro.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-body">
               {(t.raw('guide.pomodoro.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}

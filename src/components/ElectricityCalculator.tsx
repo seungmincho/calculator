@@ -270,8 +270,8 @@ export default function ElectricityCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -280,7 +280,7 @@ export default function ElectricityCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-500" />
                 설정
               </h2>
@@ -295,7 +295,7 @@ export default function ElectricityCalculator() {
 
             {/* Usage Input */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('usage')}
               </label>
               <div className="flex items-center gap-3">
@@ -307,7 +307,7 @@ export default function ElectricityCalculator() {
                   min="0"
                   max="1000"
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400">kWh</span>
+                <span className="text-sm text-muted">kWh</span>
               </div>
               <input
                 type="range"
@@ -316,37 +316,37 @@ export default function ElectricityCalculator() {
                 min="0"
                 max="1000"
                 step="10"
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-2 bg-track rounded-lg appearance-none cursor-pointer accent-blue-600"
               />
             </div>
 
             {/* Household Size Quick Buttons */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 가구 인원별 평균
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setUsage(HOUSEHOLD_USAGE.single)}
-                  className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+                  className="px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-body transition-colors"
                 >
                   1인 (200kWh)
                 </button>
                 <button
                   onClick={() => setUsage(HOUSEHOLD_USAGE.couple)}
-                  className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+                  className="px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-body transition-colors"
                 >
                   2인 (300kWh)
                 </button>
                 <button
                   onClick={() => setUsage(HOUSEHOLD_USAGE.three)}
-                  className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+                  className="px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-body transition-colors"
                 >
                   3인 (350kWh)
                 </button>
                 <button
                   onClick={() => setUsage(HOUSEHOLD_USAGE.four)}
-                  className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+                  className="px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-body transition-colors"
                 >
                   4인+ (400kWh)
                 </button>
@@ -355,7 +355,7 @@ export default function ElectricityCalculator() {
 
             {/* Season Selector */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('season')}
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -364,7 +364,7 @@ export default function ElectricityCalculator() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'normal'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('seasons.normal')}
@@ -374,7 +374,7 @@ export default function ElectricityCalculator() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'summer'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('seasons.summer')}
@@ -384,7 +384,7 @@ export default function ElectricityCalculator() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'winter'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('seasons.winter')}
@@ -394,7 +394,7 @@ export default function ElectricityCalculator() {
 
             {/* Contract Type */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('contractType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -403,7 +403,7 @@ export default function ElectricityCalculator() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     contractType === 'low'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('contracts.lowVoltage')}
@@ -413,7 +413,7 @@ export default function ElectricityCalculator() {
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     contractType === 'high'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('contracts.highVoltage')}
@@ -459,12 +459,12 @@ export default function ElectricityCalculator() {
 
           {/* Tier Visualization */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('tiers.title')}
             </h3>
             <div className="space-y-4">
               {/* Progress Bar */}
-              <div className="relative h-8 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+              <div className="relative h-8 bg-track rounded-lg overflow-hidden">
                 {breakdown.tier1Usage > 0 && (
                   <div
                     className={`absolute left-0 h-full ${getTierColor(1)}`}
@@ -497,8 +497,8 @@ export default function ElectricityCalculator() {
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 ${getTierColor(1)} rounded`} />
                     <div className="text-xs">
-                      <p className="font-medium text-gray-900 dark:text-white">{getTierLabel(1)}</p>
-                      <p className="text-gray-500 dark:text-gray-400">{breakdown.tier1Usage.toFixed(0)}kWh</p>
+                      <p className="font-medium text-fg">{getTierLabel(1)}</p>
+                      <p className="text-muted">{breakdown.tier1Usage.toFixed(0)}kWh</p>
                     </div>
                   </div>
                 )}
@@ -506,8 +506,8 @@ export default function ElectricityCalculator() {
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 ${getTierColor(2)} rounded`} />
                     <div className="text-xs">
-                      <p className="font-medium text-gray-900 dark:text-white">{getTierLabel(2)}</p>
-                      <p className="text-gray-500 dark:text-gray-400">{breakdown.tier2Usage.toFixed(0)}kWh</p>
+                      <p className="font-medium text-fg">{getTierLabel(2)}</p>
+                      <p className="text-muted">{breakdown.tier2Usage.toFixed(0)}kWh</p>
                     </div>
                   </div>
                 )}
@@ -515,8 +515,8 @@ export default function ElectricityCalculator() {
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 ${getTierColor(3)} rounded`} />
                     <div className="text-xs">
-                      <p className="font-medium text-gray-900 dark:text-white">{getTierLabel(3)}</p>
-                      <p className="text-gray-500 dark:text-gray-400">{breakdown.tier3Usage.toFixed(0)}kWh</p>
+                      <p className="font-medium text-fg">{getTierLabel(3)}</p>
+                      <p className="text-muted">{breakdown.tier3Usage.toFixed(0)}kWh</p>
                     </div>
                   </div>
                 )}
@@ -526,78 +526,78 @@ export default function ElectricityCalculator() {
 
           {/* Detailed Breakdown */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               상세 내역
             </h3>
             <div className="space-y-2">
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.baseFee')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.baseFee')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.baseFee.toLocaleString()}원
                 </span>
               </div>
               {breakdown.tier1Usage > 0 && (
-                <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between py-2 border-b border-line">
+                  <span className="text-sm text-sub">
                     1구간 {t('tiers.fee')} ({breakdown.tier1Usage.toFixed(0)}kWh)
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-fg">
                     {breakdown.tier1Fee.toLocaleString()}원
                   </span>
                 </div>
               )}
               {breakdown.tier2Usage > 0 && (
-                <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between py-2 border-b border-line">
+                  <span className="text-sm text-sub">
                     2구간 {t('tiers.fee')} ({breakdown.tier2Usage.toFixed(0)}kWh)
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-fg">
                     {breakdown.tier2Fee.toLocaleString()}원
                   </span>
                 </div>
               )}
               {breakdown.tier3Usage > 0 && (
-                <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between py-2 border-b border-line">
+                  <span className="text-sm text-sub">
                     3구간 {t('tiers.fee')} ({breakdown.tier3Usage.toFixed(0)}kWh)
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-fg">
                     {breakdown.tier3Fee.toLocaleString()}원
                   </span>
                 </div>
               )}
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.climateFee')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.climateFee')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.climateFee.toLocaleString()}원
                 </span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.fuelAdjust')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.fuelAdjust')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.fuelAdjustment.toLocaleString()}원
                 </span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.subtotal')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.subtotal')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.subtotal.toLocaleString()}원
                 </span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.vat')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.vat')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.vat.toLocaleString()}원
                 </span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.elecFund')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between py-2 border-b border-line">
+                <span className="text-sm text-sub">{t('result.elecFund')}</span>
+                <span className="font-medium text-fg">
                   {breakdown.fund.toLocaleString()}원
                 </span>
               </div>
               <div className="flex justify-between py-3 bg-blue-50 dark:bg-blue-950 rounded-lg px-3 mt-2">
-                <span className="font-semibold text-gray-900 dark:text-white">총 요금</span>
+                <span className="font-semibold text-fg">총 요금</span>
                 <span className="font-bold text-blue-600 dark:text-blue-400 text-lg">
                   {breakdown.total.toLocaleString()}원
                 </span>
@@ -607,13 +607,13 @@ export default function ElectricityCalculator() {
 
           {/* Saving Tips */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Lightbulb className="w-5 h-5 text-yellow-500" />
               {t('savingTips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('savingTips.items') as string[]).map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{tip}</span>
                 </li>
@@ -629,7 +629,7 @@ export default function ElectricityCalculator() {
           onClick={() => setApplianceOpen(prev => !prev)}
           className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
             {t('simulator.title')}
           </h2>
@@ -640,45 +640,45 @@ export default function ElectricityCalculator() {
               </span>
             )}
             {applianceOpen ? (
-              <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              <ChevronUp className="w-5 h-5 text-muted" />
             ) : (
-              <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              <ChevronDown className="w-5 h-5 text-muted" />
             )}
           </div>
         </button>
 
         {applianceOpen && (
-          <div className="px-6 pb-6 space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="px-6 pb-6 space-y-4 border-t border-line pt-4">
+            <p className="text-sm text-muted">
               {t('simulator.description')}
             </p>
 
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 pr-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.appliance')}</th>
-                    <th className="text-right py-2 px-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.watt')}</th>
-                    <th className="text-center py-2 px-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.hoursPerDay')}</th>
-                    <th className="text-right py-2 pl-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.monthlyKwh')}</th>
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 pr-4 text-sub font-medium">{t('simulator.appliance')}</th>
+                    <th className="text-right py-2 px-4 text-sub font-medium">{t('simulator.watt')}</th>
+                    <th className="text-center py-2 px-4 text-sub font-medium">{t('simulator.hoursPerDay')}</th>
+                    <th className="text-right py-2 pl-4 text-sub font-medium">{t('simulator.monthlyKwh')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {appliances.map(a => {
                     const kwh = (a.watt * a.hours * 30) / 1000
                     return (
-                      <tr key={a.id} className="border-b border-gray-100 dark:border-gray-700">
-                        <td className="py-3 pr-4 font-medium text-gray-900 dark:text-white">
+                      <tr key={a.id} className="border-b border-line">
+                        <td className="py-3 pr-4 font-medium text-fg">
                           {t(a.nameKey)}
                         </td>
-                        <td className="py-3 px-4 text-right text-gray-500 dark:text-gray-400">
+                        <td className="py-3 px-4 text-right text-muted">
                           {a.watt}W
                         </td>
                         <td className="py-3 px-4">
                           <div className="flex items-center justify-center gap-2">
                             <button
                               onClick={() => updateApplianceHours(a.id, -1)}
-                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
                               aria-label="감소"
                             >
                               <Minus className="w-3 h-3" />
@@ -693,14 +693,14 @@ export default function ElectricityCalculator() {
                             />
                             <button
                               onClick={() => updateApplianceHours(a.id, 1)}
-                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
                               aria-label="증가"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
                           </div>
                         </td>
-                        <td className="py-3 pl-4 text-right font-medium text-gray-900 dark:text-white">
+                        <td className="py-3 pl-4 text-right font-medium text-fg">
                           {kwh.toFixed(1)} kWh
                         </td>
                       </tr>
@@ -709,7 +709,7 @@ export default function ElectricityCalculator() {
                 </tbody>
                 <tfoot>
                   <tr className="bg-blue-50 dark:bg-blue-950">
-                    <td colSpan={3} className="py-3 px-4 font-semibold text-gray-900 dark:text-white">
+                    <td colSpan={3} className="py-3 px-4 font-semibold text-fg">
                       {t('simulator.total')}
                     </td>
                     <td className="py-3 pl-4 text-right font-bold text-blue-600 dark:text-blue-400">
@@ -721,7 +721,7 @@ export default function ElectricityCalculator() {
             </div>
 
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted">
                 {t('simulator.note')}
               </p>
               <button
@@ -738,19 +738,19 @@ export default function ElectricityCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           {/* How to Use */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>
@@ -760,12 +760,12 @@ export default function ElectricityCalculator() {
 
           {/* Rate Info */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.rateInfo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.rateInfo.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{item}</span>
                 </li>

@@ -13,23 +13,15 @@ import { usePopularTools } from '@/hooks/useToolAnalytics'
 import SearchDialog from './SearchDialog'
 import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 
-/* ── Glass design tokens ── */
+/* ── Design tokens (globals.css ui-* 기반) ── */
 const glass = {
-  card: 'bg-white/70 dark:bg-white/[0.09] backdrop-blur-xl border border-gray-200/50 dark:border-white/[0.13] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_16px_rgba(0,0,0,0.5)]',
-  cardHover: 'hover:bg-white/90 dark:hover:bg-white/[0.15] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1',
-  cardInset: 'shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[inset_1px_1px_8px_rgba(255,255,255,0.14),inset_-1px_-1px_4px_rgba(255,255,255,0.05)]',
-  pill: 'bg-white/60 dark:bg-white/[0.09] backdrop-blur-lg border border-gray-200/40 dark:border-white/[0.13] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
-  pillActive: 'bg-white/90 dark:bg-white/[0.22] border-indigo-300/60 dark:border-indigo-400/50 shadow-[0_0_20px_rgba(99,102,241,0.25)]',
-  input: 'bg-white/60 dark:bg-white/[0.09] backdrop-blur-xl border border-gray-200/40 dark:border-white/[0.13] rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
+  card: 'ui-card',
+  cardHover: 'hover:bg-subtle active:scale-[0.99] transition-colors',
+  cardInset: '',
+  pill: 'bg-surface border border-line rounded-full',
+  pillActive: 'bg-fg border-fg !text-canvas',
+  input: 'ui-field',
 } as const
-
-const categoryGlass: Record<CategoryKey, { gradient: string; glow: string }> = {
-  calculators: { gradient: 'from-blue-400/20 to-cyan-400/15 dark:from-blue-500/30 dark:to-cyan-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.30)]' },
-  tools: { gradient: 'from-violet-400/20 to-purple-400/15 dark:from-violet-500/30 dark:to-purple-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.30)]' },
-  media: { gradient: 'from-orange-400/20 to-amber-400/15 dark:from-orange-500/30 dark:to-amber-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(251,146,60,0.30)]' },
-  health: { gradient: 'from-emerald-400/20 to-green-400/15 dark:from-emerald-500/30 dark:to-green-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.30)]' },
-  games: { gradient: 'from-pink-400/20 to-rose-400/15 dark:from-pink-500/30 dark:to-rose-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.30)]' },
-}
 
 const categoryEmoji: Record<CategoryKey, string> = {
   calculators: '💰', tools: '🛠️', media: '🖼️', health: '❤️', games: '🎮',
@@ -123,60 +115,38 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen relative">
-      {/* ===== GLOBAL BACKGROUND ===== */}
-      <div className="fixed inset-0 -z-10">
-        {/* Light mode base */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:hidden" />
-        {/* Dark mode base */}
-        <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(160deg, #0a0f1e 0%, #0d1117 40%, #0f1623 100%)' }} />
-        {/* Floating color blobs */}
-        <div className="absolute top-0 left-0 w-[700px] h-[700px] rounded-full opacity-60 dark:opacity-80" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 70%)' }} />
-        <div className="absolute top-[20%] right-0 w-[600px] h-[600px] rounded-full opacity-50 dark:opacity-70" style={{ background: 'radial-gradient(circle, rgba(236,72,153,0.18) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-[10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-50 dark:opacity-65" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.16) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-0 right-[10%] w-[600px] h-[600px] rounded-full opacity-40 dark:opacity-60" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)' }} />
-        <div className="absolute top-[50%] left-[40%] w-[400px] h-[400px] rounded-full opacity-0 dark:opacity-40" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.14) 0%, transparent 70%)' }} />
-        {/* Dot grid texture */}
-        <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-      </div>
-
       {/* ===== HERO ===== */}
       <section className="relative pt-16 pb-20 md:pt-24 md:pb-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Badges */}
           <div className="inline-flex items-center gap-3 mb-7">
-            <div className={`${glass.pill} inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium tracking-wide text-gray-600 dark:text-slate-400`}>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-semibold">
               {totalTools}+ {t('homePage.hero.totalTools')}
             </div>
             {newToolsCount > 0 && (
-              <div className={`${glass.pill} inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium tracking-wide text-red-600 dark:text-red-400`}
-                style={{ background: 'rgba(239,68,68,0.08)' }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/15 text-red-600 dark:text-red-400 text-xs font-semibold">
                 +{newToolsCount} NEW
               </div>
             )}
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-5xl lg:text-[3.75rem] font-bold leading-tight tracking-tight mb-5 text-gray-900 dark:text-slate-100">
+          <h1 className="text-3xl md:text-5xl lg:text-[3.75rem] font-bold leading-tight tracking-tight mb-5 text-fg">
             {t('homePage.hero.title')}
           </h1>
-          <p className="text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed text-gray-500 dark:text-slate-500">
+          <p className="text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed text-muted">
             {t('homePage.hero.subtitle')}
           </p>
 
           {/* Glass Search Bar */}
           <div className="max-w-xl mx-auto relative group">
-            <div className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"
-              style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.25), rgba(236,72,153,0.15), rgba(59,130,246,0.25))' }} />
             <button
               onClick={() => setIsSearchOpen(true)}
-              className={`relative w-full flex items-center gap-3 px-5 py-4 ${glass.input} cursor-text transition-all duration-300 group-hover:bg-white/80 dark:group-hover:bg-white/[0.10]`}
-              style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.2), inset -1px -1px 6px rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.04)' }}
+              className="relative w-full flex items-center gap-3 px-5 py-4 bg-surface border border-line rounded-2xl shadow-md cursor-text transition-colors hover:border-primary"
             >
-              <Search className="w-4 h-4 shrink-0 text-gray-400 dark:text-slate-500" />
-              <span className="flex-1 text-left text-sm text-gray-400 dark:text-slate-500">{t('homePage.hero.searchPlaceholder')}</span>
-              <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded bg-white/40 dark:bg-white/[0.06] border border-white/50 dark:border-white/[0.08] text-gray-400 dark:text-slate-600">
+              <Search className="w-5 h-5 shrink-0 text-faint" />
+              <span className="flex-1 text-left text-base text-faint">{t('homePage.hero.searchPlaceholder')}</span>
+              <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded bg-soft text-muted">
                 Ctrl K
               </kbd>
             </button>
@@ -193,10 +163,10 @@ export default function HomePage() {
                 }}
                 className="text-center group/stat transition-all"
               >
-                <div className="text-xl md:text-2xl font-bold tabular-nums text-gray-800 dark:text-slate-200">
+                <div className="text-xl md:text-2xl font-bold tabular-nums text-fg">
                   {menuConfig[key].items.length}
                 </div>
-                <div className="text-xs mt-0.5 text-gray-500 dark:text-slate-500">
+                <div className="text-xs mt-0.5 text-muted">
                   {categoryEmoji[key]} {t(menuConfig[key].titleKey)}
                 </div>
               </button>
@@ -212,11 +182,11 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <TrendingUp className="w-6 h-6 text-red-500" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('homePage.popular.title')}</h2>
+              <h2 className="text-2xl font-bold text-fg">{t('homePage.popular.title')}</h2>
             </div>
             <button
               onClick={() => setIsDashboardOpen(true)}
-              className={`${glass.pill} flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:bg-white/70 dark:hover:bg-white/[0.10] transition-colors`}
+              className={`${glass.pill} flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:bg-soft transition-colors`}
             >
               <BarChart3 className="w-3.5 h-3.5" />
               {t('homePage.popular.detailView')}
@@ -228,10 +198,10 @@ export default function HomePage() {
               {[...Array(5)].map((_, i) => (
                 <div key={i} className={`${glass.card} p-5 animate-pulse`}>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white/30 dark:bg-white/[0.06] rounded-xl" />
+                    <div className="w-12 h-12 bg-soft rounded-xl" />
                     <div className="flex-1">
-                      <div className="h-4 bg-white/30 dark:bg-white/[0.06] rounded w-3/4 mb-2" />
-                      <div className="h-3 bg-white/20 dark:bg-white/[0.04] rounded w-1/2" />
+                      <div className="h-4 bg-soft rounded w-3/4 mb-2" />
+                      <div className="h-3 bg-soft rounded w-1/2" />
                     </div>
                   </div>
                 </div>
@@ -243,19 +213,18 @@ export default function HomePage() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className={`group relative ${glass.card} ${glass.cardInset} p-5 transition-all duration-300 ${glass.cardHover}`}
+                  className={`group relative ${glass.card} ${glass.cardInset} p-5 ${glass.cardHover}`}
                 >
-                  <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md"
-                    style={{ background: 'linear-gradient(135deg, #f59e0b, #ef4444)' }}>
+                  <div className="absolute top-3 right-4 text-sm font-bold text-primary tabular-nums">
                     {index + 1}
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-3xl">{tool.icon}</div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate transition-colors">
+                      <div className="text-sm font-medium text-fg group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate transition-colors">
                         {t(tool.labelKey)}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      <div className="text-xs text-muted truncate">
                         {t(tool.descriptionKey)}
                       </div>
                     </div>
@@ -271,24 +240,24 @@ export default function HomePage() {
           <section className="py-8">
             <div className="flex items-center gap-2 mb-6">
               <Clock className="w-5 h-5 text-blue-500" />
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('homePage.recentlyViewed.title')}</h2>
+              <h2 className="text-xl font-bold text-fg">{t('homePage.recentlyViewed.title')}</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {recentlyViewedItems.map(item => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group ${glass.card} ${glass.cardInset} p-4 transition-all duration-300 ${glass.cardHover}`}
+                  className={`group ${glass.card} ${glass.cardInset} p-4 ${glass.cardHover}`}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-blue-400/10 dark:bg-blue-400/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-blue-200/30 dark:border-blue-500/20">
+                    <div className="w-10 h-10 bg-soft rounded-xl flex items-center justify-center text-xl">
                       {item.icon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate transition-colors">
+                      <div className="text-sm font-medium text-fg group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate transition-colors">
                         {t(item.labelKey)}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      <div className="text-xs text-muted truncate">
                         {t(item.descriptionKey)}
                       </div>
                     </div>
@@ -301,10 +270,9 @@ export default function HomePage() {
 
         {/* ===== CATEGORY SHOWCASE ===== */}
         <section className="py-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{t('homePage.categories.title')}</h2>
+          <h2 className="text-2xl font-bold text-fg mb-6">{t('homePage.categories.title')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categoryKeys.map(key => {
-              const cg = categoryGlass[key]
               const isActive = activeCategory === key
               return (
                 <button
@@ -313,20 +281,17 @@ export default function HomePage() {
                     setActiveCategory(key)
                     document.getElementById('tools-grid')?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className={`group relative overflow-hidden p-6 rounded-2xl backdrop-blur-xl border transition-all duration-300 text-left ${
+                  className={`group relative overflow-hidden p-6 rounded-2xl border transition-all duration-300 text-left ${
                     isActive
-                      ? 'bg-white/60 dark:bg-white/[0.12] border-indigo-300/60 dark:border-indigo-400/30 shadow-[0_0_20px_rgba(99,102,241,0.15)] scale-[1.02]'
-                      : 'bg-white/30 dark:bg-white/[0.04] border-white/40 dark:border-white/[0.06] hover:bg-white/50 dark:hover:bg-white/[0.08]'
-                  } ${cg.glow}`}
-                  style={{ boxShadow: isActive ? undefined : 'inset 1px 1px 6px rgba(255,255,255,0.2), inset -1px -1px 6px rgba(255,255,255,0.05)' }}
+                      ? 'bg-surface border-primary'
+                      : 'bg-surface border-transparent hover:bg-subtle'
+                  }`}
                 >
-                  {/* Gradient overlay */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cg.gradient} rounded-2xl`} />
                   <div className="relative z-10">
                     <div className="text-3xl mb-2">{categoryEmoji[key]}</div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">{t(menuConfig[key].titleKey)}</div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{menuConfig[key].items.length}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{t('homePage.categories.toolCount')}</div>
+                    <div className="text-sm font-semibold text-fg">{t(menuConfig[key].titleKey)}</div>
+                    <div className="text-2xl font-bold text-fg mt-1">{menuConfig[key].items.length}</div>
+                    <div className="text-xs text-muted">{t('homePage.categories.toolCount')}</div>
                   </div>
                   <ArrowRight className="absolute bottom-4 right-4 w-4 h-4 text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />
                 </button>
@@ -340,15 +305,14 @@ export default function HomePage() {
           <section className="py-8">
             <div className="flex items-center gap-2 mb-6">
               <Star className="w-5 h-5 text-yellow-500 fill-current" />
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('favorites.title')}</h2>
+              <h2 className="text-xl font-bold text-fg">{t('favorites.title')}</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {favoritedItems.map(item => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group relative bg-amber-50/70 dark:bg-amber-500/[0.04] backdrop-blur-xl border border-amber-200/50 dark:border-amber-500/10 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-none transition-all duration-300 ${glass.cardHover}`}
-                  style={{ boxShadow: 'inset 1px 1px 6px rgba(251,191,36,0.1), inset -1px -1px 6px rgba(251,191,36,0.03)' }}
+                  className={`group relative ${glass.card} p-4 ${glass.cardHover}`}
                 >
                   <button
                     onClick={(e) => handleToggleFavorite(e, item.href)}
@@ -358,12 +322,12 @@ export default function HomePage() {
                     <Star className="w-4 h-4 fill-current" />
                   </button>
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-amber-400/10 dark:bg-amber-400/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-amber-200/30 dark:border-amber-500/20">
+                    <div className="w-10 h-10 bg-soft rounded-xl flex items-center justify-center text-xl">
                       {item.icon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white truncate">{t(item.labelKey)}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{t(item.descriptionKey)}</div>
+                      <div className="text-sm font-medium text-fg truncate">{t(item.labelKey)}</div>
+                      <div className="text-xs text-muted truncate">{t(item.descriptionKey)}</div>
                     </div>
                   </div>
                 </Link>
@@ -375,10 +339,8 @@ export default function HomePage() {
         {/* ===== ALL TOOLS GRID ===== */}
         <section id="tools-grid" className="py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('homePage.allTools.title')}</h2>
+            <h2 className="text-2xl font-bold text-fg">{t('homePage.allTools.title')}</h2>
             <div className="relative w-full md:w-80 group">
-              <div className="absolute -inset-0.5 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm"
-                style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.3), rgba(59,130,246,0.3))' }} />
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
@@ -386,7 +348,7 @@ export default function HomePage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('homePage.allTools.filterPlaceholder')}
-                  className={`w-full pl-10 pr-4 py-2.5 ${glass.input} text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400/30 text-sm rounded-xl outline-none`}
+                  className={`pl-10 pr-4 py-2.5 ${glass.input} !bg-surface text-sm`}
                 />
               </div>
             </div>
@@ -396,10 +358,10 @@ export default function HomePage() {
           <div className="flex flex-wrap gap-2 mb-6">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
                 activeCategory === 'all'
-                  ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                  : 'bg-white/40 dark:bg-white/[0.07] border-gray-200/60 dark:border-white/[0.10] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.13] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
+                  ? glass.pillActive
+                  : 'bg-surface border-transparent text-sub hover:bg-subtle'
               }`}
             >
               {t('header.all')} ({totalTools})
@@ -408,10 +370,10 @@ export default function HomePage() {
               <button
                 key={key}
                 onClick={() => { setActiveCategory(key); if (activeCategory === 'all') document.getElementById('tools-grid')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
                   activeCategory === key
-                    ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                    : 'bg-white/40 dark:bg-white/[0.07] border-gray-200/60 dark:border-white/[0.10] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.13] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
+                    ? glass.pillActive
+                    : 'bg-surface border-transparent text-sub hover:bg-subtle'
                 }`}
               >
                 {categoryEmoji[key]} {t(menuConfig[key].titleKey)} ({menuConfig[key].items.length})
@@ -423,7 +385,6 @@ export default function HomePage() {
           {activeCategory === 'all' && !searchQuery ? (
             <div className="space-y-12">
               {categoryKeys.map(catKey => {
-                const cg = categoryGlass[catKey]
                 const catTools = menuConfig[catKey].items
                 const sliderTools = catTools.slice(0, 10)
                 const remaining = catTools.length - sliderTools.length
@@ -432,12 +393,12 @@ export default function HomePage() {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <span className="text-xl">{categoryEmoji[catKey]}</span>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t(menuConfig[catKey].titleKey)}</h3>
-                        <span className="text-sm text-gray-400 dark:text-gray-500">({catTools.length})</span>
+                        <h3 className="text-lg font-semibold text-fg">{t(menuConfig[catKey].titleKey)}</h3>
+                        <span className="text-sm text-faint">({catTools.length})</span>
                       </div>
                       <button
                         onClick={() => setActiveCategory(catKey)}
-                        className={`${glass.pill} flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-white/70 dark:hover:bg-white/[0.15] transition-colors`}
+                        className={`${glass.pill} flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-soft transition-colors`}
                       >
                         {t('homePage.allTools.viewAll')} <ArrowRight className="w-3 h-3" />
                       </button>
@@ -449,18 +410,17 @@ export default function HomePage() {
                           <Link
                             key={item.href}
                             href={item.href}
-                            className={`group relative snap-start shrink-0 w-[148px] sm:w-[164px] ${glass.card} p-4 transition-all duration-200 ${glass.cardHover}`}
+                            className={`group relative snap-start shrink-0 w-[148px] sm:w-[164px] ${glass.card} p-4 ${glass.cardHover}`}
                           >
-                            <div className={`absolute inset-0 bg-gradient-to-br ${cg.gradient} rounded-2xl`} />
                             <div className="relative z-10">
                               <div className="text-2xl mb-2.5">{item.icon}</div>
-                              <div className="text-xs font-medium text-gray-900 dark:text-white leading-snug line-clamp-2">
+                              <div className="text-xs font-medium text-fg leading-snug line-clamp-2">
                                 {t(item.labelKey)}
                                 {isNewTool(item) && (
                                   <span className="ml-1 inline-flex items-center px-1 py-0.5 text-[9px] font-bold bg-red-500 text-white rounded-full leading-none">N</span>
                                 )}
                               </div>
-                              <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-1 truncate">{t(item.descriptionKey)}</div>
+                              <div className="text-[10px] text-muted mt-1 truncate">{t(item.descriptionKey)}</div>
                             </div>
                             <button
                               onClick={(e) => handleToggleFavorite(e, item.href)}
@@ -477,7 +437,7 @@ export default function HomePage() {
                       {remaining > 0 && (
                         <button
                           onClick={() => setActiveCategory(catKey)}
-                          className={`snap-start shrink-0 w-[120px] ${glass.card} p-4 flex flex-col items-center justify-center gap-2.5 text-indigo-600 dark:text-indigo-400 transition-all ${glass.cardHover}`}
+                          className={`snap-start shrink-0 w-[120px] ${glass.card} p-4 flex flex-col items-center justify-center gap-2.5 text-indigo-600 dark:text-indigo-400 ${glass.cardHover}`}
                         >
                           <div className="w-10 h-10 rounded-full bg-indigo-400/10 dark:bg-indigo-400/20 flex items-center justify-center border border-indigo-200/30 dark:border-indigo-400/25">
                             <ArrowRight className="w-4 h-4" />
@@ -499,7 +459,7 @@ export default function HomePage() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`group relative ${glass.card} ${glass.cardInset} p-4 transition-all duration-300 ${glass.cardHover}`}
+                      className={`group relative ${glass.card} ${glass.cardInset} p-4 ${glass.cardHover}`}
                     >
                       <button
                         onClick={(e) => handleToggleFavorite(e, item.href)}
@@ -514,12 +474,12 @@ export default function HomePage() {
                       </button>
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0">
-                          <div className="w-10 h-10 bg-indigo-400/10 dark:bg-indigo-400/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-indigo-200/20 dark:border-indigo-500/15 group-hover:bg-indigo-400/20 transition-colors">
+                          <div className="w-10 h-10 bg-soft rounded-xl flex items-center justify-center text-xl">
                             {item.icon}
                           </div>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                          <h3 className="text-sm font-medium text-fg group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                             {t(item.labelKey)}
                             {isNewTool(item) && (
                               <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
@@ -527,7 +487,7 @@ export default function HomePage() {
                               </span>
                             )}
                           </h3>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{t(item.descriptionKey)}</p>
+                          <p className="text-xs text-muted mt-1 truncate">{t(item.descriptionKey)}</p>
                         </div>
                       </div>
                     </Link>
@@ -536,7 +496,7 @@ export default function HomePage() {
               </div>
 
               {filteredTools.length === 0 && (
-                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-12 text-muted">
                   <Search className="w-12 h-12 mx-auto mb-4 opacity-30" />
                   <p>{t('searchDialog.noResults')}</p>
                 </div>
@@ -546,17 +506,17 @@ export default function HomePage() {
 
           {/* 전체 도구 링크 목록 — 슬라이더는 카테고리당 10개만 노출되므로, 크롤러/키보드 사용자가 242개 전부에 <a>로 도달하도록 native <details>로 제공 */}
           <details className={`mt-10 ${glass.card} ${glass.cardInset} p-4`}>
-            <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-200">
+            <summary className="cursor-pointer text-sm font-semibold text-body">
               {t('homePage.allTools.title')} ({categoryKeys.reduce((n, k) => n + menuConfig[k].items.length, 0)})
             </summary>
             <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {categoryKeys.map(catKey => (
                 <div key={catKey}>
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2"><Link href={categoryHubs[catKey]} className="hover:text-blue-600 dark:hover:text-blue-400">{categoryEmoji[catKey]} {t(menuConfig[catKey].titleKey)} →</Link></h3>
-                  <ul className="space-y-1">
+                  <h3 className="text-sm font-semibold text-fg mb-2"><Link href={categoryHubs[catKey]} className="hover:text-blue-600 dark:hover:text-blue-400">{categoryEmoji[catKey]} {t(menuConfig[catKey].titleKey)} →</Link></h3>
+                  <ul className="space-y-1 text-xs text-sub [&_a:hover]:text-indigo-600 dark:[&_a:hover]:text-indigo-400">
                     {menuConfig[catKey].items.map(item => (
                       <li key={item.href}>
-                        <Link href={item.href} className="text-xs text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                        <Link href={item.href}>
                           {item.icon} {t(item.labelKey)}
                         </Link>
                       </li>
@@ -570,20 +530,19 @@ export default function HomePage() {
 
         {/* ===== FEATURES ===== */}
         <section className="py-12 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t('homePage.features.title')}</h2>
+          <h2 className="text-2xl font-bold text-fg mb-6 text-center">{t('homePage.features.title')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: Zap, key: 'homePage.features.free', desc: 'homePage.features.freeDesc', gradient: 'from-yellow-400/10 to-amber-400/5' },
-              { icon: Smartphone, key: 'homePage.features.pwa', desc: 'homePage.features.pwaDesc', gradient: 'from-blue-400/10 to-cyan-400/5' },
-              { icon: WifiOff, key: 'homePage.features.offline', desc: 'homePage.features.offlineDesc', gradient: 'from-emerald-400/10 to-green-400/5' },
-              { icon: Moon, key: 'homePage.features.darkMode', desc: 'homePage.features.darkModeDesc', gradient: 'from-violet-400/10 to-purple-400/5' },
+              { icon: Zap, key: 'homePage.features.free', desc: 'homePage.features.freeDesc' },
+              { icon: Smartphone, key: 'homePage.features.pwa', desc: 'homePage.features.pwaDesc' },
+              { icon: WifiOff, key: 'homePage.features.offline', desc: 'homePage.features.offlineDesc' },
+              { icon: Moon, key: 'homePage.features.darkMode', desc: 'homePage.features.darkModeDesc' },
             ].map((feat, i) => (
-              <div key={i} className={`relative overflow-hidden ${glass.card} ${glass.cardInset} p-6 text-center hover:bg-white/90 dark:hover:bg-white/[0.08] transition-all duration-300`}>
-                <div className={`absolute inset-0 bg-gradient-to-br ${feat.gradient} dark:opacity-50 rounded-2xl`} />
+              <div key={i} className={`${glass.card} p-6 text-center`}>
                 <div className="relative z-10">
-                  <feat.icon className="w-8 h-8 mx-auto mb-3 text-indigo-600 dark:text-indigo-400" />
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">{t(feat.key)}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t(feat.desc)}</div>
+                  <feat.icon className="w-8 h-8 mx-auto mb-3 text-primary" />
+                  <div className="text-sm font-medium text-fg">{t(feat.key)}</div>
+                  <div className="text-xs text-muted mt-1">{t(feat.desc)}</div>
                 </div>
               </div>
             ))}

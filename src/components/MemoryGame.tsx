@@ -356,14 +356,14 @@ export default function MemoryGame() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className="max-w-xl mx-auto space-y-6">
           {/* Difficulty selection */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('selectDifficulty')}</h2>
+          <div className="bg-surface rounded-xl shadow-lg p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('selectDifficulty')}</h2>
             <div className="grid grid-cols-2 gap-3">
               {difficulties.map(d => {
                 const cfg = DIFFICULTY_CONFIG[d]
@@ -375,13 +375,13 @@ export default function MemoryGame() {
                     className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
                       isSelected
                         ? `${difficultyColors[d]} border-current ring-2 ring-offset-2 ring-current dark:ring-offset-gray-800 scale-[1.02]`
-                        : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:border-gray-400 dark:hover:border-gray-400'
+                        : 'border-line bg-subtle hover:border-gray-400 dark:hover:border-gray-400'
                     }`}
                   >
-                    <div className={`font-bold text-base ${isSelected ? '' : 'text-gray-900 dark:text-white'}`}>
+                    <div className={`font-bold text-base ${isSelected ? '' : 'text-fg'}`}>
                       {t(`difficulty.${d}`)}
                     </div>
-                    <div className={`text-xs mt-1 ${isSelected ? 'opacity-80' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className={`text-xs mt-1 ${isSelected ? 'opacity-80' : 'text-muted'}`}>
                       {cfg.cols}x{cfg.rows} ({cfg.pairs} {t('pairs')})
                     </div>
                   </button>
@@ -391,8 +391,8 @@ export default function MemoryGame() {
           </div>
 
           {/* Theme selection */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('selectTheme')}</h2>
+          <div className="bg-surface rounded-xl shadow-lg p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('selectTheme')}</h2>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
               {themes.map(th => {
                 const isSelected = theme === th
@@ -404,11 +404,11 @@ export default function MemoryGame() {
                     className={`p-3 rounded-xl border-2 transition-all duration-200 text-center ${
                       isSelected
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-300 dark:ring-blue-700 scale-[1.02]'
-                        : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:border-gray-400 dark:hover:border-gray-400'
+                        : 'border-line bg-subtle hover:border-gray-400 dark:hover:border-gray-400'
                     }`}
                   >
                     <div className="text-2xl mb-1">{preview}</div>
-                    <div className={`text-xs font-medium ${isSelected ? 'text-blue-700 dark:text-blue-300' : 'text-gray-600 dark:text-gray-400'}`}>
+                    <div className={`text-xs font-medium ${isSelected ? 'text-blue-700 dark:text-blue-300' : 'text-sub'}`}>
                       {t(`theme.${th}`)}
                     </div>
                   </button>
@@ -460,17 +460,17 @@ export default function MemoryGame() {
         />
 
         {/* Guide */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-xl mx-auto">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <div className="bg-surface rounded-xl shadow-lg p-6 max-w-xl mx-auto">
+          <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('guide.howToPlay.title')}</h3>
+              <h3 className="text-sm font-semibold text-body mb-2">{t('guide.howToPlay.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.howToPlay.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                  <li key={i} className="text-sm text-sub flex gap-2">
                     <span className="text-blue-500 shrink-0">-</span>
                     {item}
                   </li>
@@ -478,10 +478,10 @@ export default function MemoryGame() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('guide.scoring.title')}</h3>
+              <h3 className="text-sm font-semibold text-body mb-2">{t('guide.scoring.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.scoring.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                  <li key={i} className="text-sm text-sub flex gap-2">
                     <span className="text-yellow-500 shrink-0">-</span>
                     {item}
                   </li>
@@ -511,7 +511,7 @@ export default function MemoryGame() {
           defaultName={leaderboard.savedPlayerName}
         />
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         </div>
 
         <div className="max-w-lg mx-auto relative">
@@ -520,10 +520,10 @@ export default function MemoryGame() {
             className="absolute inset-0 w-full h-full pointer-events-none"
             style={{ zIndex: 10 }}
           />
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 text-center relative z-0">
+          <div className="bg-surface rounded-2xl shadow-2xl p-8 text-center relative z-0">
             <div className="text-6xl mb-4 animate-bounce">🎉</div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('congratulations')}</h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('winMessage')}</p>
+            <h2 className="text-2xl font-bold text-fg mb-2">{t('congratulations')}</h2>
+            <p className="text-muted mb-6">{t('winMessage')}</p>
 
             {/* Stars */}
             <div className="flex justify-center gap-2 mb-6">
@@ -576,7 +576,7 @@ export default function MemoryGame() {
               </button>
               <button
                 onClick={resetGame}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-all duration-200"
+                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-xl font-medium transition-all duration-200"
               >
                 {t('backToMenu')}
               </button>
@@ -598,18 +598,18 @@ export default function MemoryGame() {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+        <h1 className="text-xl font-bold text-fg">{t('title')}</h1>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-colors"
+            className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub transition-colors"
             title={soundEnabled ? t('soundOn') : t('soundOff')}
           >
             {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </button>
           <button
             onClick={resetGame}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body text-sm font-medium transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             {t('menu')}
@@ -618,17 +618,17 @@ export default function MemoryGame() {
       </div>
 
       {/* Stats bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+      <div className="bg-surface rounded-xl shadow-lg p-3">
         <div className="flex items-center justify-between gap-4 text-sm flex-wrap">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-blue-500" />
-              <span className="text-gray-600 dark:text-gray-400">{t('movesLabel')}:</span>
-              <span className="font-bold text-gray-900 dark:text-white">{moves}</span>
+              <span className="text-sub">{t('movesLabel')}:</span>
+              <span className="font-bold text-fg">{moves}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-green-500" />
-              <span className="font-bold text-gray-900 dark:text-white">{formatTime(timer)}</span>
+              <span className="font-bold text-fg">{formatTime(timer)}</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -646,13 +646,13 @@ export default function MemoryGame() {
         </div>
 
         {/* Progress bar */}
-        <div className="mt-2 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="mt-2 h-1.5 bg-track rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out"
             style={{ width: `${progressPct}%` }}
           />
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
+        <div className="text-xs text-muted mt-1 text-right">
           {matchedPairs}/{config.pairs} {t('pairs')}
         </div>
       </div>
@@ -701,7 +701,7 @@ export default function MemoryGame() {
                     className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md ${
                       card.matched
                         ? 'bg-green-50 dark:bg-green-900/30 ring-2 ring-green-400 dark:ring-green-500'
-                        : 'bg-white dark:bg-gray-700'
+                        : 'bg-field'
                     }`}
                     style={{
                       backfaceVisibility: 'hidden',
@@ -735,7 +735,7 @@ export default function MemoryGame() {
         <span className={`px-3 py-1 rounded-full border ${difficultyColors[difficulty]}`}>
           {t(`difficulty.${difficulty}`)}
         </span>
-        <span className="px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50">
+        <span className="px-3 py-1 rounded-full border border-line-strong text-sub bg-subtle">
           {t(`theme.${theme}`)}
         </span>
       </div>

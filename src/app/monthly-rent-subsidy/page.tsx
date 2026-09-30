@@ -85,32 +85,32 @@ export default function MonthlyRentSubsidyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <Suspense fallback={
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div className="min-h-screen py-8">
           <div className="max-w-4xl mx-auto p-8">
             <div className="animate-pulse space-y-8">
-              <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-32 bg-track rounded"></div>
+              <div className="h-96 bg-track rounded"></div>
             </div>
           </div>
         </div>
       }>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div className="min-h-screen py-8">
           <MonthlyRentSubsidyCalculator />
         </div>
       </Suspense>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               LH 월세지원금 계산기란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               LH 월세지원금 계산기는 청년·신혼부부·일반가구 대상 정부 월세 지원 프로그램의 지원 가능 금액을 소득과 가구 유형에 따라 자동으로 계산해주는 도구입니다. 청년은 월 최대 20만 원, 신혼부부는 월 최대 25만 원의 월세를 최대 12개월 동안 지원받을 수 있으며, 소득기준과 지역별 상한액을 반영해 실제 수령 예상 금액을 빠르게 확인할 수 있습니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               월세지원금 신청 전 확인사항
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>소득 기준 확인:</strong> 청년은 기준 중위소득 60% 이하, 신혼부부는 70% 이하, 일반가구는 50% 이하여야 신청 자격이 됩니다.</li>
               <li><strong>무주택 요건:</strong> 신청자 본인 및 가구원 모두 주택을 소유하지 않은 무주택자여야 합니다.</li>
               <li><strong>임대차계약 확인:</strong> 전용면적 60㎡ 이하, 보증금 5천만 원 이하, 월세 60만 원 이하 등 주택 요건을 충족해야 합니다.</li>

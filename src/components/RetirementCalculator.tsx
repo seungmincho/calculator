@@ -249,8 +249,8 @@ const RetirementCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">퇴직금 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">퇴직금 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             평균임금과 근무기간을 입력하여 퇴직금과 퇴직소득세를 계산하세요
           </p>
         </div>
@@ -267,11 +267,11 @@ const RetirementCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">퇴직금 정보 입력</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">퇴직금 정보 입력</h2>
           
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 평균임금 (연봉)
               </label>
               <div className="relative">
@@ -282,16 +282,16 @@ const RetirementCalculatorContent = () => {
                   placeholder="예: 50,000,000"
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                <span className="absolute right-3 top-3 text-muted">원</span>
               </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-muted mt-1">
                 퇴직 전 3개월 평균임금 기준
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   근무 년수
                 </label>
                 <div className="relative">
@@ -302,12 +302,12 @@ const RetirementCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
+                  <span className="absolute right-3 top-3 text-muted">년</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   근무 개월수
                 </label>
                 <div className="relative">
@@ -318,7 +318,7 @@ const RetirementCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">개월</span>
+                  <span className="absolute right-3 top-3 text-muted">개월</span>
                 </div>
               </div>
             </div>
@@ -340,7 +340,7 @@ const RetirementCalculatorContent = () => {
 
         {/* Result Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
             <div className="space-y-6">
@@ -378,45 +378,45 @@ const RetirementCalculatorContent = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">1일 평균임금</div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="bg-subtle p-4 rounded-lg">
+                  <div className="text-sm text-sub">1일 평균임금</div>
+                  <div className="text-lg font-semibold text-fg">
                     {formatNumber(result.dailyWage)}원
                   </div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">총 근무기간</div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="bg-subtle p-4 rounded-lg">
+                  <div className="text-sm text-sub">총 근무기간</div>
+                  <div className="text-lg font-semibold text-fg">
                     {result.totalYears}년
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">세전 퇴직금</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">세전 퇴직금</span>
+                  <span className="font-semibold text-fg">
                     {formatNumber(result.retirementPay)}원
                   </span>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">퇴직소득세</span>
+                    <span className="text-sub">퇴직소득세</span>
                     <span className="text-red-600 dark:text-red-400">
                       -{formatNumber(result.tax)}원
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
+                    <span className="text-sub">지방소득세</span>
                     <span className="text-red-600 dark:text-red-400">
                       -{formatNumber(result.localTax)}원
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-t border-gray-200 dark:border-gray-600 font-semibold">
-                  <span className="text-gray-900 dark:text-white">실수령 퇴직금</span>
+                <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
+                  <span className="text-fg">실수령 퇴직금</span>
                   <span className="text-orange-600 dark:text-orange-400">
                     {formatNumber(result.netRetirementPay)}원
                   </span>
@@ -438,7 +438,7 @@ const RetirementCalculatorContent = () => {
           ) : (
             <div className="text-center py-12">
               <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 평균임금과 근무기간을 입력하면<br />
                 퇴직금을 계산해드립니다.
               </p>

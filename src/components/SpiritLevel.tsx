@@ -280,7 +280,7 @@ export default function SpiritLevel() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full">
@@ -288,7 +288,7 @@ export default function SpiritLevel() {
             {t('mobileFriendly')}
           </span>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode tabs */}
@@ -298,7 +298,7 @@ export default function SpiritLevel() {
           className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${
             mode === 'level'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           {t('levelMode')}
@@ -308,7 +308,7 @@ export default function SpiritLevel() {
           className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${
             mode === 'compass'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           {t('compassMode')}
@@ -339,22 +339,22 @@ export default function SpiritLevel() {
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-center">
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg py-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('leftRight')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white tabular-nums">{orientation.gamma.toFixed(1)}°</p>
+                    <div className="bg-subtle rounded-lg py-2">
+                      <p className="text-xs text-muted">{t('leftRight')}</p>
+                      <p className="text-lg font-bold text-fg tabular-nums">{orientation.gamma.toFixed(1)}°</p>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg py-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('frontBack')}</p>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white tabular-nums">{orientation.beta.toFixed(1)}°</p>
+                    <div className="bg-subtle rounded-lg py-2">
+                      <p className="text-xs text-muted">{t('frontBack')}</p>
+                      <p className="text-lg font-bold text-fg tabular-nums">{orientation.beta.toFixed(1)}°</p>
                     </div>
                   </div>
                 </>
               ) : (
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                  <p className="text-4xl font-bold text-fg tabular-nums">
                     {Math.round(orientation.alpha)}°
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-muted mt-1">
                     {getCompassDirection(orientation.alpha, t)}
                   </p>
                 </div>
@@ -385,7 +385,7 @@ export default function SpiritLevel() {
                   className={`flex items-center gap-2 px-4 py-3 rounded-xl transition-colors ${
                     isLocked
                       ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                      : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      : 'bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body'
                   }`}
                   aria-label={isLocked ? t('unlock') : t('lock')}
                 >
@@ -399,13 +399,13 @@ export default function SpiritLevel() {
             <div className="mt-4 text-center">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
               {permissionNeeded && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('iosHint')}</p>
+                <p className="text-xs text-muted mt-1">{t('iosHint')}</p>
               )}
             </div>
           )}
 
           {!isActive && !error && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center">
+            <p className="text-sm text-muted mt-4 text-center">
               {t('startHint')}
             </p>
           )}
@@ -419,16 +419,16 @@ export default function SpiritLevel() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.level.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.level.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.level.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -436,7 +436,7 @@ export default function SpiritLevel() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.compass.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.compass.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.compass.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

@@ -165,13 +165,13 @@ background-color: ${bgColor};`
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Sample Text Input */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           <Type className="inline w-4 h-4 mr-1" />
           {t('sampleText')}
         </label>
@@ -190,13 +190,13 @@ background-color: ${bgColor};`
         <div className="lg:col-span-1 space-y-6">
           {/* Font Settings */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               설정
             </h2>
 
             {/* Font Size */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('fontSize')}: {fontSize}px
               </label>
               <input
@@ -211,7 +211,7 @@ background-color: ${bgColor};`
 
             {/* Font Weight */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('fontWeight')}: {fontWeight}
               </label>
               <input
@@ -227,7 +227,7 @@ background-color: ${bgColor};`
 
             {/* Line Height */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('lineHeight')}: {lineHeight.toFixed(1)}
               </label>
               <input
@@ -243,7 +243,7 @@ background-color: ${bgColor};`
 
             {/* Letter Spacing */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('letterSpacing')}: {letterSpacing}px
               </label>
               <input
@@ -259,7 +259,7 @@ background-color: ${bgColor};`
 
             {/* Text Alignment */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('textAlign')}
               </label>
               <div className="flex gap-2">
@@ -268,7 +268,7 @@ background-color: ${bgColor};`
                   className={`flex-1 p-2 rounded-lg border ${
                     textAlign === 'left'
                       ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
+                      : 'bg-soft text-body border-line-strong'
                   }`}
                 >
                   <AlignLeft className="w-5 h-5 mx-auto" />
@@ -278,7 +278,7 @@ background-color: ${bgColor};`
                   className={`flex-1 p-2 rounded-lg border ${
                     textAlign === 'center'
                       ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
+                      : 'bg-soft text-body border-line-strong'
                   }`}
                 >
                   <AlignCenter className="w-5 h-5 mx-auto" />
@@ -288,7 +288,7 @@ background-color: ${bgColor};`
                   className={`flex-1 p-2 rounded-lg border ${
                     textAlign === 'right'
                       ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
+                      : 'bg-soft text-body border-line-strong'
                   }`}
                 >
                   <AlignRight className="w-5 h-5 mx-auto" />
@@ -299,7 +299,7 @@ background-color: ${bgColor};`
             {/* Colors */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('textColor')}
                 </label>
                 <input
@@ -310,7 +310,7 @@ background-color: ${bgColor};`
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('bgColor')}
                 </label>
                 <input
@@ -343,7 +343,7 @@ background-color: ${bgColor};`
 
           {/* Category Filter */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-sm font-semibold text-fg mb-3">
               {t('category')}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -354,7 +354,7 @@ background-color: ${bgColor};`
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     category === CATEGORY_MAP[cat]
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t(cat)}
@@ -381,7 +381,7 @@ background-color: ${bgColor};`
           {compareList.length > 0 && (
             <div className="bg-blue-50 dark:bg-blue-950 rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
                   <Columns className="w-4 h-4" />
                   {t('compare')} ({compareList.length}/4)
                 </h3>
@@ -396,9 +396,9 @@ background-color: ${bgColor};`
                 {compareList.map((font) => (
                   <div
                     key={font.name}
-                    className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg px-3 py-2"
+                    className="flex items-center justify-between bg-surface rounded-lg px-3 py-2"
                   >
-                    <span className="text-sm text-gray-900 dark:text-white">{font.name}</span>
+                    <span className="text-sm text-fg">{font.name}</span>
                     <button
                       onClick={() => toggleCompare(font)}
                       className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
@@ -418,7 +418,7 @@ background-color: ${bgColor};`
             {compareList.length === 0 ? (
               /* Font List */
               <>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('fonts')} ({filteredFonts.length})
                 </h2>
                 <div className="space-y-4 max-h-[800px] overflow-y-auto">
@@ -428,18 +428,18 @@ background-color: ${bgColor};`
                       className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         selectedFont.name === font.name
                           ? 'border-blue-600 bg-blue-50 dark:bg-blue-950'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                          : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setSelectedFont(font)}
-                            className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                            className="font-medium text-fg hover:text-blue-600 dark:hover:text-blue-400"
                           >
                             {font.name}
                           </button>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-sub">
                             {t(font.category)}
                           </span>
                           {!font.google && (
@@ -453,7 +453,7 @@ background-color: ${bgColor};`
                           className={`px-3 py-1 rounded-lg text-sm transition-colors ${
                             compareList.find(f => f.name === font.name)
                               ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                           }`}
                         >
                           <Columns className="w-4 h-4" />
@@ -472,7 +472,7 @@ background-color: ${bgColor};`
             ) : (
               /* Compare View */
               <>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <Columns className="w-5 h-5" />
                   비교 보기
                 </h2>
@@ -480,14 +480,14 @@ background-color: ${bgColor};`
                   {compareList.map((font) => (
                     <div
                       key={font.name}
-                      className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700"
+                      className="p-4 rounded-lg border-2 border-line"
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div>
-                          <h3 className="font-semibold text-gray-900 dark:text-white">
+                          <h3 className="font-semibold text-fg">
                             {font.name}
                           </h3>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-muted">
                             {t(font.category)}
                           </span>
                         </div>
@@ -515,26 +515,26 @@ background-color: ${bgColor};`
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-sub">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}

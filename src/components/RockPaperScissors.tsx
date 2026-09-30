@@ -18,8 +18,8 @@ function getWinner(a: Hand, b: Hand): 'win' | 'lose' | 'draw' {
   return 'lose'
 }
 
-const glassCard = 'bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl shadow-[inset_2px_2px_10px_rgba(255,255,255,0.15),inset_-2px_-2px_10px_rgba(255,255,255,0.05)] p-6'
-const glassBtn = 'bg-white/20 dark:bg-white/5 backdrop-blur-sm border border-white/30 dark:border-white/10 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-white/30 dark:hover:bg-white/10 hover:shadow-[0_0_15px_rgba(167,139,250,0.4)] hover:border-violet-300/50 active:scale-95'
+const glassCard = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-2xl p-6'
+const glassBtn = 'bg-surface border border-line rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-soft hover:shadow-[0_0_15px_rgba(167,139,250,0.4)] hover:border-violet-300/50 active:scale-95'
 
 interface TournamentPlayer { name: string; id: number }
 interface Match { p1: TournamentPlayer; p2: TournamentPlayer; winner?: TournamentPlayer }
@@ -178,8 +178,8 @@ export default function RockPaperScissors() {
 
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h2 className="text-2xl font-bold text-fg">{t('title')}</h2>
+          <p className="text-sm text-sub mt-1">{t('description')}</p>
         </div>
 
         {/* Mode Selector */}
@@ -188,7 +188,7 @@ export default function RockPaperScissors() {
             <button key={m.key} onClick={() => setMode(m.key)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${mode === m.key
                 ? 'bg-violet-500/30 border-violet-400/50 text-violet-200 shadow-[0_0_15px_rgba(167,139,250,0.3)]'
-                : 'bg-white/10 border-white/20 text-gray-700 dark:text-gray-300 hover:bg-white/20'}`}>
+                : 'bg-white/10 border-white/20 text-body hover:bg-white/20'}`}>
               {m.icon}{m.label}
             </button>
           ))}
@@ -201,14 +201,14 @@ export default function RockPaperScissors() {
               {/* Arena */}
               <div className="flex items-center justify-around mb-6">
                 <div className="text-center">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('yourChoice')}</p>
+                  <p className="text-xs text-muted mb-2">{t('yourChoice')}</p>
                   <div className={`text-6xl transition-all duration-300 ${isShaking ? 'animate-bounce' : ''}`}>
                     {playerChoice ? EMOJIS[playerChoice] : '❓'}
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-gray-400">VS</div>
                 <div className="text-center">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{t('cpuChoice')}</p>
+                  <p className="text-xs text-muted mb-2">{t('cpuChoice')}</p>
                   <div className={`text-6xl transition-all duration-300 ${isShaking ? 'animate-bounce' : ''}`}>
                     {isShaking ? '🤔' : cpuChoice ? EMOJIS[cpuChoice] : '❓'}
                   </div>
@@ -221,7 +221,7 @@ export default function RockPaperScissors() {
                 </div>
               )}
 
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-3">{t('chooseYourHand')}</p>
+              <p className="text-center text-sm text-muted mb-3">{t('chooseYourHand')}</p>
               <div className="flex gap-3 justify-center">
                 {HANDS.map(h => (
                   <button key={h} onClick={() => playRound(h)} disabled={isShaking}
@@ -236,7 +236,7 @@ export default function RockPaperScissors() {
             {/* Stats */}
             <div className={glassCard}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-900 dark:text-white">{t('stats')}</h3>
+                <h3 className="font-semibold text-fg">{t('stats')}</h3>
                 <button onClick={reset1v1} className={`${glassBtn} flex items-center gap-1 text-xs`}>
                   <RotateCcw className="w-3 h-3" />{t('reset')}
                 </button>
@@ -245,12 +245,12 @@ export default function RockPaperScissors() {
                 {(['win', 'lose', 'draw'] as const).map(k => (
                   <div key={k} className="bg-white/10 rounded-xl p-2">
                     <div className={`text-xl font-bold ${k === 'win' ? 'text-green-400' : k === 'lose' ? 'text-red-400' : 'text-yellow-400'}`}>{stats[k]}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{t(k)}</div>
+                    <div className="text-xs text-muted">{t(k)}</div>
                   </div>
                 ))}
                 <div className="bg-white/10 rounded-xl p-2">
                   <div className="text-xl font-bold text-violet-400">{winRate}%</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{t('winRate')}</div>
+                  <div className="text-xs text-muted">{t('winRate')}</div>
                 </div>
               </div>
               {totalGames > 0 && (
@@ -265,7 +265,7 @@ export default function RockPaperScissors() {
             {/* History */}
             {history.length > 0 && (
               <div className={glassCard}>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('history')}</h3>
+                <h3 className="font-semibold text-fg mb-3">{t('history')}</h3>
                 <div className="space-y-2">
                   {history.map((r, i) => (
                     <div key={i} className="flex items-center justify-between text-sm bg-white/5 rounded-lg px-3 py-2">
@@ -289,7 +289,7 @@ export default function RockPaperScissors() {
                 {[3, 5, 7].map(n => (
                   <button key={n} onClick={() => { setBestOfN(n); resetBestOf() }}
                     className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${bestOfN === n
-                      ? 'bg-violet-500/30 border-violet-400/50 text-violet-200' : 'bg-white/10 border-white/20 text-gray-700 dark:text-gray-300 hover:bg-white/20'}`}>
+                      ? 'bg-violet-500/30 border-violet-400/50 text-violet-200' : 'bg-white/10 border-white/20 text-body hover:bg-white/20'}`}>
                     {t(`bestOf${n}` as 'bestOf3' | 'bestOf5' | 'bestOf7')}
                   </button>
                 ))}
@@ -299,15 +299,15 @@ export default function RockPaperScissors() {
               <div className="flex items-center justify-around mb-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-400">{boPlayerWins}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{t('vsComputer').split(' ')[0]}</div>
+                  <div className="text-xs text-muted">{t('vsComputer').split(' ')[0]}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{t('round')} {boRound}</div>
+                  <div className="text-sm text-muted">{t('round')} {boRound}</div>
                   <div className="text-xs text-gray-400">/{bestOfN}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-red-400">{boCpuWins}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">CPU</div>
+                  <div className="text-xs text-muted">CPU</div>
                 </div>
               </div>
 
@@ -327,7 +327,7 @@ export default function RockPaperScissors() {
                       {playerChoice && EMOJIS[playerChoice]} {resultText} {cpuChoice && EMOJIS[cpuChoice]}
                     </div>
                   )}
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-3">{t('chooseYourHand')}</p>
+                  <p className="text-center text-sm text-muted mb-3">{t('chooseYourHand')}</p>
                   <div className="flex gap-3 justify-center">
                     {HANDS.map(h => (
                       <button key={h} onClick={() => playBestOf(h)} disabled={isShaking}
@@ -347,11 +347,11 @@ export default function RockPaperScissors() {
           <div className="space-y-4">
             {bracket.length === 0 ? (
               <div className={glassCard}>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{t('players')}</h3>
+                <h3 className="font-semibold text-fg mb-4">{t('players')}</h3>
                 <div className="space-y-2 mb-4">
                   {players.map(p => (
                     <div key={p.id} className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2">
-                      <span className="text-sm text-gray-800 dark:text-gray-200">{p.name}</span>
+                      <span className="text-sm text-body">{p.name}</span>
                       {players.length > 2 && (
                         <button onClick={() => removePlayer(p.id)} className="text-red-400 hover:text-red-300 text-xs px-2">✕</button>
                       )}
@@ -363,7 +363,7 @@ export default function RockPaperScissors() {
                     <input value={newPlayerName} onChange={e => setNewPlayerName(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && addPlayer()}
                       placeholder={`Player ${players.length + 1}`}
-                      className="flex-1 px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-violet-400/50" />
+                      className="flex-1 px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-sm text-fg placeholder-gray-400 focus:outline-none focus:border-violet-400/50" />
                     <button onClick={addPlayer} className={glassBtn}>{t('addPlayer')}</button>
                   </div>
                 )}
@@ -378,7 +378,7 @@ export default function RockPaperScissors() {
                   <div className={`${glassCard} text-center`}>
                     <div className="text-5xl mb-3">🏆</div>
                     <div className="text-2xl font-bold text-yellow-400">{tournamentWinner.name}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('winner')}</div>
+                    <div className="text-sm text-muted mt-1">{t('winner')}</div>
                     <button onClick={() => { setBracket([]); setTournamentWinner(null); setTournamentRound(0) }}
                       className={`${glassBtn} flex items-center gap-2 mx-auto mt-4`}>
                       <RotateCcw className="w-4 h-4" />{t('reset')}
@@ -387,15 +387,15 @@ export default function RockPaperScissors() {
                 ) : (
                   bracket.map((roundMatches, ri) => (
                     <div key={ri} className={glassCard}>
-                      <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+                      <h3 className="font-semibold text-fg mb-3">
                         {ri === bracket.length - 1 && bracket.length > 1 ? t('finals') : `${t('round')} ${ri + 1}`}
                       </h3>
                       <div className="space-y-2">
                         {roundMatches.map((m, mi) => (
                           <div key={mi} className="flex items-center gap-2 bg-white/5 rounded-lg p-3">
-                            <span className={`flex-1 text-sm text-center ${m.winner?.id === m.p1.id ? 'text-green-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>{m.p1.name}</span>
+                            <span className={`flex-1 text-sm text-center ${m.winner?.id === m.p1.id ? 'text-green-400 font-bold' : 'text-body'}`}>{m.p1.name}</span>
                             <span className="text-gray-400 text-xs">VS</span>
-                            <span className={`flex-1 text-sm text-center ${m.winner?.id === m.p2.id ? 'text-green-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>{m.p2.name}</span>
+                            <span className={`flex-1 text-sm text-center ${m.winner?.id === m.p2.id ? 'text-green-400 font-bold' : 'text-body'}`}>{m.p2.name}</span>
                             {ri === tournamentRound && !m.winner && (
                               <button onClick={() => playTournamentMatch(mi)} className={`${glassBtn} text-xs`}>{t('play')}</button>
                             )}

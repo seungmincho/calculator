@@ -315,8 +315,8 @@ export default function TaxiFare() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -326,7 +326,7 @@ export default function TaxiFare() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Region Selector */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <MapPin className="w-4 h-4 inline mr-1" />
                 {t('region')}
               </label>
@@ -347,7 +347,7 @@ export default function TaxiFare() {
 
             {/* Distance Input + Slider */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Navigation className="w-4 h-4 inline mr-1" />
                 {t('distance')}
               </label>
@@ -362,7 +362,7 @@ export default function TaxiFare() {
                   max="50"
                   className={`${glassInput} px-3 py-2`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">km</span>
+                <span className="text-sm text-muted whitespace-nowrap">km</span>
               </div>
               <input
                 type="range"
@@ -373,7 +373,7 @@ export default function TaxiFare() {
                 onChange={(e) => setDistance(e.target.value)}
                 className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-blue-600"
               />
-              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-faint mt-1">
                 <span>1km</span>
                 <span>25km</span>
                 <span>50km</span>
@@ -382,7 +382,7 @@ export default function TaxiFare() {
 
             {/* Time Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Clock className="w-4 h-4 inline mr-1" />
                 {t('time')}
               </label>
@@ -400,13 +400,13 @@ export default function TaxiFare() {
             {/* Boarding Hour */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {activeNightRate > 0 ? <Moon className="w-4 h-4 inline mr-1 text-indigo-500" /> : <Sun className="w-4 h-4 inline mr-1 text-yellow-500" />}
                   {t('boardingTime')}
                 </label>
                 <button
                   onClick={setNow}
-                  className="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded px-2 py-1 transition-colors"
+                  className="text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded px-2 py-1 transition-colors"
                 >
                   {t('nowButton')}
                 </button>
@@ -421,7 +421,7 @@ export default function TaxiFare() {
                   onChange={(e) => setHour(parseInt(e.target.value, 10))}
                   className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                 />
-                <span className="text-sm font-semibold text-gray-900 dark:text-white whitespace-nowrap w-12 text-right">
+                <span className="text-sm font-semibold text-fg whitespace-nowrap w-12 text-right">
                   {String(hour).padStart(2, '0')}{t('hourUnit')}
                 </span>
               </div>
@@ -432,7 +432,7 @@ export default function TaxiFare() {
 
             {/* Taxi Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className="block text-sm font-medium text-body mb-3">
                 <Car className="w-4 h-4 inline mr-1" />
                 {t('taxiType')}
               </label>
@@ -447,7 +447,7 @@ export default function TaxiFare() {
                       onChange={(e) => setTaxiType(e.target.value as TaxiType)}
                       className="w-4 h-4 accent-blue-600"
                     />
-                    <span className="text-gray-700 dark:text-gray-300">{t(`types.${type}`)}</span>
+                    <span className="text-body">{t(`types.${type}`)}</span>
                   </label>
                 ))}
               </div>
@@ -463,8 +463,8 @@ export default function TaxiFare() {
                   className="w-4 h-4 mt-0.5 accent-blue-600"
                 />
                 <span>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">{t('outOfCity.label')}</span>
-                  <span className="block text-xs text-gray-500 dark:text-gray-400">{t('outOfCity.desc', { rate: Math.round(REGION_RATES[region].outRate * 100) })}</span>
+                  <span className="text-body font-medium">{t('outOfCity.label')}</span>
+                  <span className="block text-xs text-muted">{t('outOfCity.desc', { rate: Math.round(REGION_RATES[region].outRate * 100) })}</span>
                 </span>
               </label>
             </div>
@@ -479,13 +479,13 @@ export default function TaxiFare() {
               </button>
               <button
                 onClick={saveAsImage}
-                className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
               </button>
               <button
                 onClick={handleReset}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
@@ -497,34 +497,34 @@ export default function TaxiFare() {
         <div className="lg:col-span-2 space-y-6">
           {/* Fare Breakdown */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
               <Car className="w-5 h-5 mr-2" />
               {t('result.title')}
             </h2>
 
             <div className="space-y-1">
-              <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-gray-700 dark:text-gray-300">{t('result.baseFare')}</span>
-                <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="flex justify-between items-center py-3 border-b border-line">
+                <span className="text-body">{t('result.baseFare')}</span>
+                <span className="text-lg font-semibold text-fg">
                   {fare.base.toLocaleString()} {t('result.won')}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-gray-700 dark:text-gray-300">{t('result.distanceFare')}</span>
-                <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="flex justify-between items-center py-3 border-b border-line">
+                <span className="text-body">{t('result.distanceFare')}</span>
+                <span className="text-lg font-semibold text-fg">
                   {fare.distanceFare.toLocaleString()} {t('result.won')}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-                <span className="text-gray-700 dark:text-gray-300">{t('result.timeFare')}</span>
-                <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="flex justify-between items-center py-3 border-b border-line">
+                <span className="text-body">{t('result.timeFare')}</span>
+                <span className="text-lg font-semibold text-fg">
                   {fare.timeFare.toLocaleString()} {t('result.won')}
                 </span>
               </div>
 
               {fare.nightSurcharge > 0 && (
-                <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300 flex items-center">
+                <div className="flex justify-between items-center py-3 border-b border-line">
+                  <span className="text-body flex items-center">
                     <Moon className="w-4 h-4 mr-2 text-indigo-500" />
                     {t('result.nightSurcharge')} <span className="ml-1 text-xs text-indigo-500">({Math.round(fare.nightRate * 100)}%)</span>
                   </span>
@@ -535,8 +535,8 @@ export default function TaxiFare() {
               )}
 
               {fare.outSurcharge > 0 && (
-                <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300 flex items-center">
+                <div className="flex justify-between items-center py-3 border-b border-line">
+                  <span className="text-body flex items-center">
                     <Navigation className="w-4 h-4 mr-2 text-amber-500" />
                     {t('result.outSurcharge')} <span className="ml-1 text-xs text-amber-500">({Math.round(fare.outRate * 100)}%)</span>
                   </span>
@@ -554,16 +554,16 @@ export default function TaxiFare() {
               </div>
             </div>
 
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">{t('result.note')}</p>
+            <p className="text-xs text-muted mt-4">{t('result.note')}</p>
           </div>
 
           {/* Fare Comparison Chart */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
               <BarChart2 className="w-5 h-5 mr-2" />
               {t('comparison.title')}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">{t('comparison.subtitle')}</p>
+            <p className="text-sm text-muted mb-5">{t('comparison.subtitle')}</p>
 
             <div className="space-y-4">
               {(['regular', 'deluxe', 'jumbo'] as TaxiType[]).map((type) => {
@@ -573,7 +573,7 @@ export default function TaxiFare() {
                 return (
                   <div key={type}>
                     <div className="flex justify-between items-center mb-1">
-                      <span className={`text-sm font-medium ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-body'}`}>
                         {typeLabels[type]}
                         {isSelected && (
                           <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">
@@ -581,11 +581,11 @@ export default function TaxiFare() {
                           </span>
                         )}
                       </span>
-                      <span className={`text-sm font-bold ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                      <span className={`text-sm font-bold ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}`}>
                         {f.toLocaleString()}{t('result.won')}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-6 overflow-hidden">
+                    <div className="w-full bg-soft rounded-full h-6 overflow-hidden">
                       <div
                         className={`h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2 ${barColors[type]} ${isSelected ? 'opacity-100' : 'opacity-60'}`}
                         style={{ width: `${Math.max(pct, 4)}%` }}
@@ -598,60 +598,60 @@ export default function TaxiFare() {
               })}
             </div>
 
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">{t('comparison.note')}</p>
+            <p className="text-xs text-muted mt-4">{t('comparison.note')}</p>
           </div>
 
           {/* Region Fare Info */}
           <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center">
               <BookOpen className="w-5 h-5 mr-2" />
               {t(`regions.${region}`)} {t('fareInfo.title')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 space-y-1">
-                <p className="font-semibold text-gray-900 dark:text-white mb-1">{t('types.regular')}</p>
-                <p className="text-gray-700 dark:text-gray-300">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{t('result.won')} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
-                <p className="text-gray-700 dark:text-gray-300">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{t('result.won')}</p>
-                <p className="text-gray-700 dark:text-gray-300">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{t('result.won')}</p>
+              <div className="bg-surface rounded-lg p-3 space-y-1">
+                <p className="font-semibold text-fg mb-1">{t('types.regular')}</p>
+                <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{t('result.won')} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
+                <p className="text-body">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{t('result.won')}</p>
+                <p className="text-body">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{t('result.won')}</p>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 space-y-1">
-                <p className="font-semibold text-gray-900 dark:text-white mb-1">{t('fareInfo.surchargeTitle')}</p>
-                <p className="text-gray-700 dark:text-gray-300">
+              <div className="bg-surface rounded-lg p-3 space-y-1">
+                <p className="font-semibold text-fg mb-1">{t('fareInfo.surchargeTitle')}</p>
+                <p className="text-body">
                   <Moon className="w-4 h-4 inline mr-1 text-indigo-500" />
                   {t('fareInfo.night')}: {String(regionRate.nightStart).padStart(2, '0')}~{String(regionRate.nightEnd).padStart(2, '0')}{t('hourUnit')} {Math.round(regionRate.nightRate * 100)}%
                   {regionRate.deepStart != null && ` (${String(regionRate.deepStart).padStart(2, '0')}~${String(regionRate.deepEnd).padStart(2, '0')}${t('hourUnit')} ${Math.round(regionRate.deepRate * 100)}%)`}
                 </p>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-body">
                   <Navigation className="w-4 h-4 inline mr-1 text-amber-500" />
                   {t('fareInfo.outOfCity')}: {Math.round(regionRate.outRate * 100)}%
                 </p>
-                <p className="text-gray-700 dark:text-gray-300">{t('fareInfo.premium')}: {PREMIUM.base.toLocaleString()}{t('result.won')} (3km)</p>
+                <p className="text-body">{t('fareInfo.premium')}: {PREMIUM.base.toLocaleString()}{t('result.won')} (3km)</p>
               </div>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">{t('fareInfo.sourceNote')}</p>
+            <p className="text-xs text-muted mt-3">{t('fareInfo.sourceNote')}</p>
           </div>
         </div>
       </div>
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
           <BookOpen className="w-5 h-5 mr-2" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.calculation.title')}</h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.calculation.title')}</h3>
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.calculation.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}

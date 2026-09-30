@@ -73,7 +73,7 @@ export default function BloodPressure() {
       case 'high1': return 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950'
       case 'high2': return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950'
       case 'crisis': return 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950'
-      default: return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-950'
+      default: return 'text-sub bg-gray-50 dark:bg-gray-950'
     }
   }, [])
 
@@ -160,13 +160,13 @@ export default function BloodPressure() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Heart className="w-7 h-7 text-red-500" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
           {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
         </button>
       </div>
@@ -176,14 +176,14 @@ export default function BloodPressure() {
         {/* Input Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Activity className="w-5 h-5" />
               {t('record')}
             </h2>
 
             {/* Systolic */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('systolic')}
               </label>
               <input
@@ -197,7 +197,7 @@ export default function BloodPressure() {
 
             {/* Diastolic */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('diastolic')}
               </label>
               <input
@@ -211,7 +211,7 @@ export default function BloodPressure() {
 
             {/* Pulse */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('pulse')}
               </label>
               <input
@@ -225,7 +225,7 @@ export default function BloodPressure() {
 
             {/* Memo */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('memo')}
               </label>
               <textarea
@@ -247,7 +247,7 @@ export default function BloodPressure() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
@@ -260,7 +260,7 @@ export default function BloodPressure() {
           {/* Current Classification */}
           {systolic && diastolic && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('classification.title')}
               </h2>
               <div className={`rounded-xl p-6 ${getClassificationColor(classifyBloodPressure(parseFloat(systolic), parseFloat(diastolic)))}`}>
@@ -278,7 +278,7 @@ export default function BloodPressure() {
 
           {/* Classification Reference Table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('classification.title')}
             </h2>
             <div className="space-y-3">
@@ -310,7 +310,7 @@ export default function BloodPressure() {
       {/* History */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-fg">
             {t('history.title')}
           </h2>
           {records.length > 0 && (
@@ -324,44 +324,44 @@ export default function BloodPressure() {
         </div>
 
         {records.length === 0 ? (
-          <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+          <p className="text-center text-muted py-8">
             {t('history.noRecords')}
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     {t('history.date')}
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     {t('history.bp')}
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     {t('history.pulseLabel')}
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     {t('history.class')}
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
                     {t('memo')}
                   </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
                     {t('history.delete')}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {records.map((record) => (
-                  <tr key={record.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                  <tr key={record.id} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td className="py-3 px-4 text-sm text-fg">
                       {formatDate(record.date)}
                     </td>
-                    <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-sm font-medium text-fg">
                       {record.systolic}/{record.diastolic}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-sm text-fg">
                       {record.pulse > 0 ? `${record.pulse} bpm` : '-'}
                     </td>
                     <td className="py-3 px-4">
@@ -369,7 +369,7 @@ export default function BloodPressure() {
                         {t(`classification.${record.classification}`)}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
+                    <td className="py-3 px-4 text-sm text-sub">
                       {record.memo || '-'}
                     </td>
                     <td className="py-3 px-4 text-right">
@@ -390,19 +390,19 @@ export default function BloodPressure() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Measurement */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.measurement.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.measurement.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -412,12 +412,12 @@ export default function BloodPressure() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

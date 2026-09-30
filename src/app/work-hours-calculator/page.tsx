@@ -110,9 +110,7 @@ export default function WorkHoursCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
-        <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_20%),linear-gradient(135deg,rgba(248,250,252,0.96),rgba(239,246,255,0.92),rgba(238,242,255,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_24%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.12),transparent_20%),linear-gradient(135deg,rgba(3,7,18,0.98),rgba(15,23,42,0.96),rgba(30,41,59,0.94))] py-12 overflow-hidden">
-          <div className="fixed top-16 left-8 w-64 h-64 bg-blue-300/18 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="fixed bottom-20 right-8 w-80 h-80 bg-indigo-300/16 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="min-h-screen py-12 overflow-hidden">
           <div className="container mx-auto px-4 relative z-10">
             <WorkHoursCalculator />
           </div>
@@ -127,17 +125,17 @@ export default function WorkHoursCalculatorPage() {
 
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             근무시간 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             근무시간 계산기는 근로기준법에 따라 알바비, 야근수당, 주휴수당, 연장근로수당을 정확하게 계산해 드리는 도구입니다. 출퇴근 시간, 휴게 시간, 시급을 입력하면 기본급과 각종 가산 수당을 항목별로 분리하여 보여줍니다. 2026년 최저시급 10,320원(월 2,156,880원)을 기준으로 하며, 야간근로(밤 10시~새벽 6시) 및 휴일근로 가산수당도 자동으로 반영합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             근무시간 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>급여 명세서 검증:</strong> 사업주로부터 받은 급여 명세서의 수당 계산이 정확한지 직접 검증하여 임금 체불 여부를 확인하세요.</li>
             <li><strong>야간 알바 수당:</strong> 밤 10시 이후 근무는 기본 시급의 150%(시급 + 50% 가산)를 받아야 합니다. 편의점·식당 야간 알바 시 반드시 확인하세요.</li>
             <li><strong>휴게시간 공제:</strong> 4시간 근무 시 30분, 8시간 근무 시 1시간의 휴게시간이 법적으로 보장되며, 해당 시간은 급여 계산에서 제외됩니다.</li>

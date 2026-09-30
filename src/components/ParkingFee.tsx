@@ -162,13 +162,13 @@ export default function ParkingFee() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Car className="w-7 h-7" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
           {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
         </button>
       </div>
@@ -179,7 +179,7 @@ export default function ParkingFee() {
         <div className="lg:col-span-1 space-y-6">
           {/* Parking Type */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Car className="w-5 h-5" />
               {t('parkingType')}
             </h2>
@@ -191,7 +191,7 @@ export default function ParkingFee() {
                   className={`px-4 py-3 rounded-lg font-medium transition-all ${
                     parkingType === type
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t(`types.${type}`)}
@@ -202,7 +202,7 @@ export default function ParkingFee() {
 
           {/* Time Input */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5" />
               {t('duration')}
             </h2>
@@ -214,7 +214,7 @@ export default function ParkingFee() {
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   useManualInput
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft text-body'
                 }`}
               >
                 직접 입력
@@ -224,7 +224,7 @@ export default function ParkingFee() {
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   !useManualInput
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft text-body'
                 }`}
               >
                 시간 선택
@@ -234,7 +234,7 @@ export default function ParkingFee() {
             {useManualInput ? (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('hours')}
                   </label>
                   <input
@@ -246,7 +246,7 @@ export default function ParkingFee() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('minutes')}
                   </label>
                   <input
@@ -262,7 +262,7 @@ export default function ParkingFee() {
             ) : (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('startTime')}
                   </label>
                   <input
@@ -273,7 +273,7 @@ export default function ParkingFee() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('endTime')}
                   </label>
                   <input
@@ -290,7 +290,7 @@ export default function ParkingFee() {
           {/* Reset Button */}
           <button
             onClick={handleReset}
-            className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
+            className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-5 h-5" />
             {t('reset')}
@@ -301,25 +301,25 @@ export default function ParkingFee() {
         <div className="lg:col-span-2 space-y-6">
           {/* Presets */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               {t('presets.title')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 onClick={() => applyPreset('publicSeoul')}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-all"
+                className="px-4 py-3 bg-soft hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-body rounded-lg font-medium transition-all"
               >
                 {t('presets.publicSeoul')}
               </button>
               <button
                 onClick={() => applyPreset('privateAvg')}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-all"
+                className="px-4 py-3 bg-soft hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-body rounded-lg font-medium transition-all"
               >
                 {t('presets.privateAvg')}
               </button>
               <button
                 onClick={() => applyPreset('department')}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-all"
+                className="px-4 py-3 bg-soft hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white text-body rounded-lg font-medium transition-all"
               >
                 {t('presets.department')}
               </button>
@@ -328,13 +328,13 @@ export default function ParkingFee() {
 
           {/* Fee Settings */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5" />
               {t('settings.title')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.baseFee')}
                 </label>
                 <input
@@ -347,7 +347,7 @@ export default function ParkingFee() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.baseMinutes')}
                 </label>
                 <input
@@ -359,7 +359,7 @@ export default function ParkingFee() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.additionalFee')}
                 </label>
                 <input
@@ -372,7 +372,7 @@ export default function ParkingFee() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.additionalMinutes')}
                 </label>
                 <input
@@ -384,7 +384,7 @@ export default function ParkingFee() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.freeMinutes')}
                 </label>
                 <input
@@ -396,7 +396,7 @@ export default function ParkingFee() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('settings.dailyMax')}
                 </label>
                 <input
@@ -415,41 +415,41 @@ export default function ParkingFee() {
           {/* Result */}
           {result && (
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl shadow-lg p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                 <Calculator className="w-5 h-5" />
                 {t('result.title')}
               </h2>
               <div className="space-y-3">
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300">{t('result.totalTime')}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-body">{t('result.totalTime')}</span>
+                  <span className="font-semibold text-fg">
                     {formatTime(result.totalMinutes)}
                   </span>
                 </div>
                 {result.freeMinutes > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-700 dark:text-gray-300">{t('result.freeTime')}</span>
+                  <div className="flex justify-between items-center py-2 border-b border-line">
+                    <span className="text-body">{t('result.freeTime')}</span>
                     <span className="font-semibold text-green-600 dark:text-green-400">
                       {formatTime(result.freeMinutes)}
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300">{t('result.chargedTime')}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-body">{t('result.chargedTime')}</span>
+                  <span className="font-semibold text-fg">
                     {formatTime(result.chargedMinutes)}
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300">{t('result.baseFee')}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-body">{t('result.baseFee')}</span>
+                  <span className="font-semibold text-fg">
                     {result.baseFee.toLocaleString()}{t('result.won')}
                   </span>
                 </div>
                 {result.additionalFee > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-700 dark:text-gray-300">{t('result.additionalFee')}</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                  <div className="flex justify-between items-center py-2 border-b border-line">
+                    <span className="text-body">{t('result.additionalFee')}</span>
+                    <span className="font-semibold text-fg">
                       {result.additionalFee.toLocaleString()}{t('result.won')}
                     </span>
                   </div>
@@ -461,8 +461,8 @@ export default function ParkingFee() {
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between items-center py-3 mt-2 bg-white dark:bg-gray-800 rounded-lg px-4">
-                  <span className="text-lg font-bold text-gray-900 dark:text-white">{t('result.total')}</span>
+                <div className="flex justify-between items-center py-3 mt-2 bg-surface rounded-lg px-4">
+                  <span className="text-lg font-bold text-fg">{t('result.total')}</span>
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     {result.totalFee.toLocaleString()}{t('result.won')}
                   </span>
@@ -475,18 +475,18 @@ export default function ParkingFee() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.structure.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.structure.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -494,12 +494,12 @@ export default function ParkingFee() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

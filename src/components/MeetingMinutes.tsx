@@ -272,7 +272,7 @@ function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }
   return (
     <div className="flex items-center gap-2 mb-4">
       <span className="text-blue-600 dark:text-blue-400">{icon}</span>
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+      <h2 className="text-lg font-semibold text-body">{title}</h2>
     </div>
   )
 }
@@ -419,7 +419,7 @@ export default function MeetingMinutes() {
   }
 
   const inputClass = `${glassInput} px-3 py-2 text-sm`
-  const smallInputClass = 'px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const smallInputClass = 'px-2 py-1.5 border border-line-strong rounded-md bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
 
   const statusColors: Record<ActionStatus, string> = {
     pending: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
@@ -435,23 +435,23 @@ export default function MeetingMinutes() {
       <div className={`${glassCard} ${glassInset} p-6 print:shadow-none`}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
               <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               {t('title')}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+            <p className="text-sm text-muted mt-1">{t('description')}</p>
           </div>
           {/* Tab switcher */}
           <div className="flex gap-2 print:hidden">
             <button
               onClick={() => setActiveTab('edit')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
             >
               {t('editTab')}
             </button>
             <button
               onClick={() => setActiveTab('preview')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
             >
               {t('previewTab')}
             </button>
@@ -463,7 +463,7 @@ export default function MeetingMinutes() {
       <div className={`${glassCard} ${glassInset} p-4 print:hidden`}>
         <div className="flex flex-wrap gap-2 items-center">
           {/* Templates */}
-          <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('template')}:</span>
+          <span className="text-sm text-muted font-medium">{t('template')}:</span>
           {(['weekly', 'kickoff', 'brainstorming', 'retrospective', 'client'] as TemplateId[]).map(id => (
             <button
               key={id}
@@ -477,17 +477,17 @@ export default function MeetingMinutes() {
           <div className="flex-1" />
 
           {/* Export */}
-          <button onClick={() => copyToClipboard(formatForExport(data, 'text'), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => copyToClipboard(formatForExport(data, 'text'), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
             {copiedId === 'copy-text' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {t('copyText')}
           </button>
-          <button onClick={() => exportFile('markdown')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => exportFile('markdown')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
             <Download className="w-4 h-4" /> MD
           </button>
-          <button onClick={() => exportFile('html')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => exportFile('html')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
             <Download className="w-4 h-4" /> HTML
           </button>
-          <button onClick={handlePrint} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={handlePrint} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
             <Printer className="w-4 h-4" /> {t('print')}
           </button>
 
@@ -501,7 +501,7 @@ export default function MeetingMinutes() {
 
         {/* Save slot panel */}
         {showSaveSlots && (
-          <div className="mt-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 space-y-2">
+          <div className="mt-3 p-3 border border-line rounded-lg bg-gray-50 dark:bg-gray-900 space-y-2">
             <div className="flex gap-2">
               <input
                 className={`${smallInputClass} flex-1`}
@@ -517,8 +517,8 @@ export default function MeetingMinutes() {
             {saveSlots.length > 0 && (
               <div className="space-y-1">
                 {saveSlots.map(slot => (
-                  <div key={slot.name} className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-md px-3 py-2">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{slot.name}</span>
+                  <div key={slot.name} className="flex items-center justify-between bg-surface rounded-md px-3 py-2">
+                    <span className="text-sm text-body">{slot.name}</span>
                     <div className="flex gap-2">
                       <button onClick={() => loadSlot(slot)} className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
                         <FolderOpen className="w-3 h-3" /> {t('load')}
@@ -542,30 +542,30 @@ export default function MeetingMinutes() {
             <SectionHeader icon={<Calendar className="w-5 h-5" />} title={t('meetingInfo')} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('meetingTitle')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('meetingTitle')}</label>
                 <input className={inputClass} value={data.title} onChange={e => update('title', e.target.value)} placeholder={t('meetingTitlePlaceholder')} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('date')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('date')}</label>
                 <input type="date" className={inputClass} value={data.date} onChange={e => update('date', e.target.value)} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('time')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('time')}</label>
                 <input type="time" className={inputClass} value={data.time} onChange={e => update('time', e.target.value)} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('location')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('location')}</label>
                 <input className={inputClass} value={data.location} onChange={e => update('location', e.target.value)} placeholder={t('locationPlaceholder')} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('locationType')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('locationType')}</label>
                 <select className={inputClass} value={data.locationType} onChange={e => update('locationType', e.target.value as 'online' | 'offline')}>
                   <option value="offline">{t('offline')}</option>
                   <option value="online">{t('online')}</option>
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('organizer')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('organizer')}</label>
                 <input className={inputClass} value={data.organizer} onChange={e => update('organizer', e.target.value)} placeholder={t('organizerPlaceholder')} />
               </div>
             </div>
@@ -599,7 +599,7 @@ export default function MeetingMinutes() {
             <SectionHeader icon={<FileText className="w-5 h-5" />} title={t('agenda')} />
             <div className="space-y-3 mb-3">
               {data.agenda.map((a, idx) => (
-                <div key={a.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 space-y-2">
+                <div key={a.id} className="border border-line rounded-lg p-3 space-y-2">
                   <div className="flex gap-2 items-start">
                     <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 mt-2 w-5 shrink-0">{idx + 1}.</span>
                     <input className={`${smallInputClass} flex-1`} placeholder={t('agendaTitle')} value={a.title} onChange={e => updateAgenda(a.id, 'title', e.target.value)} />
@@ -644,7 +644,7 @@ export default function MeetingMinutes() {
             <SectionHeader icon={<CheckSquare className="w-5 h-5" />} title={t('actionItems')} />
             <div className="space-y-2 mb-3">
               {data.actions.map((a, idx) => (
-                <div key={a.id} className="flex flex-wrap gap-2 items-center border border-gray-200 dark:border-gray-600 rounded-lg p-2">
+                <div key={a.id} className="flex flex-wrap gap-2 items-center border border-line rounded-lg p-2">
                   <span className="text-xs text-gray-400 w-5 text-right">{idx + 1}.</span>
                   <input className={`${smallInputClass} flex-1 min-w-40`} placeholder={t('actionTask')} value={a.task} onChange={e => updateAction(a.id, 'task', e.target.value)} />
                   <input className={`${smallInputClass} w-24`} placeholder={t('assignee')} value={a.assignee} onChange={e => updateAction(a.id, 'assignee', e.target.value)} />
@@ -668,7 +668,7 @@ export default function MeetingMinutes() {
             <SectionHeader icon={<Clock className="w-5 h-5" />} title={t('nextMeeting')} />
             <input className={inputClass} value={data.nextMeeting} onChange={e => update('nextMeeting', e.target.value)} placeholder={t('nextMeetingPlaceholder')} />
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('extraNotes')}</label>
+              <label className="block text-sm font-medium text-body mb-1">{t('extraNotes')}</label>
               <textarea className={`${inputClass} resize-none`} rows={3} value={data.notes} onChange={e => update('notes', e.target.value)} placeholder={t('extraNotesPlaceholder')} />
             </div>
           </div>
@@ -678,8 +678,8 @@ export default function MeetingMinutes() {
         <div ref={printRef} className={`${glassCard} ${glassInset} p-8 print:shadow-none print:p-0`}>
           <div className="max-w-3xl mx-auto space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white border-b-2 border-blue-600 pb-2">{data.title || t('untitled')}</h1>
-              <div className="mt-3 grid grid-cols-2 gap-x-8 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <h1 className="text-2xl font-bold text-fg border-b-2 border-blue-600 pb-2">{data.title || t('untitled')}</h1>
+              <div className="mt-3 grid grid-cols-2 gap-x-8 gap-y-1 text-sm text-sub">
                 <div className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {data.date} {data.time}</div>
                 <div className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {data.location} ({data.locationType === 'online' ? t('online') : t('offline')})</div>
                 <div className="flex items-center gap-1"><User className="w-4 h-4" /> {t('organizer')}: {data.organizer}</div>
@@ -689,10 +689,10 @@ export default function MeetingMinutes() {
 
             {data.attendees.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 border-l-4 border-blue-600 pl-3">{t('attendees')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('attendees')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {data.attendees.map(a => (
-                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 line-through' : a.status === 'remote' ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300' : 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'}`}>
+                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300' : 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'}`}>
                       {a.name}{a.role ? ` · ${a.role}` : ''}
                     </span>
                   ))}
@@ -702,13 +702,13 @@ export default function MeetingMinutes() {
 
             {data.agenda.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 border-l-4 border-blue-600 pl-3">{t('agenda')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('agenda')}</h2>
                 <ol className="space-y-2 list-decimal list-inside">
                   {data.agenda.map((a, i) => (
-                    <li key={a.id} className="text-sm text-gray-700 dark:text-gray-300">
+                    <li key={a.id} className="text-sm text-body">
                       <span className="font-medium">{a.title}</span>
                       {a.duration ? <span className="ml-1 text-xs text-gray-400">[{a.duration}분]</span> : null}
-                      {a.notes && <p className="ml-4 mt-1 text-gray-500 dark:text-gray-400">{a.notes}</p>}
+                      {a.notes && <p className="ml-4 mt-1 text-muted">{a.notes}</p>}
                     </li>
                   ))}
                 </ol>
@@ -717,10 +717,10 @@ export default function MeetingMinutes() {
 
             {data.discussions.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 border-l-4 border-blue-600 pl-3">{t('discussion')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('discussion')}</h2>
                 <ol className="space-y-1.5 list-decimal list-inside">
                   {data.discussions.map(d => (
-                    <li key={d.id} className="text-sm text-gray-700 dark:text-gray-300">
+                    <li key={d.id} className="text-sm text-body">
                       {d.speaker && <span className="font-semibold text-blue-700 dark:text-blue-400">[{d.speaker}]</span>} {d.content}
                     </li>
                   ))}
@@ -730,33 +730,33 @@ export default function MeetingMinutes() {
 
             {data.decisions && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 border-l-4 border-blue-600 pl-3">{t('decisions')}</h2>
-                <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{data.decisions}</p>
+                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('decisions')}</h2>
+                <p className="text-sm text-body whitespace-pre-wrap">{data.decisions}</p>
               </div>
             )}
 
             {data.actions.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 border-l-4 border-blue-600 pl-3">{t('actionItems')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('actionItems')}</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
                     <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-700">
-                        <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left text-gray-700 dark:text-gray-300">#</th>
-                        <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left text-gray-700 dark:text-gray-300">{t('actionTask')}</th>
-                        <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left text-gray-700 dark:text-gray-300">{t('assignee')}</th>
-                        <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left text-gray-700 dark:text-gray-300">{t('dueDate')}</th>
-                        <th className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-left text-gray-700 dark:text-gray-300">{t('status')}</th>
+                      <tr className="bg-subtle">
+                        <th className="border border-line px-3 py-2 text-left text-body">#</th>
+                        <th className="border border-line px-3 py-2 text-left text-body">{t('actionTask')}</th>
+                        <th className="border border-line px-3 py-2 text-left text-body">{t('assignee')}</th>
+                        <th className="border border-line px-3 py-2 text-left text-body">{t('dueDate')}</th>
+                        <th className="border border-line px-3 py-2 text-left text-body">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {data.actions.map((a, i) => (
                         <tr key={a.id} className="even:bg-gray-50 dark:even:bg-gray-750">
-                          <td className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-gray-600 dark:text-gray-400">{i + 1}</td>
-                          <td className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-gray-800 dark:text-gray-200">{a.task}</td>
-                          <td className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-gray-700 dark:text-gray-300">{a.assignee}</td>
-                          <td className="border border-gray-200 dark:border-gray-600 px-3 py-2 text-gray-700 dark:text-gray-300">{a.dueDate}</td>
-                          <td className={`border border-gray-200 dark:border-gray-600 px-3 py-2 font-medium ${a.status === 'done' ? 'text-green-600 dark:text-green-400' : a.status === 'in-progress' ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                          <td className="border border-line px-3 py-2 text-sub">{i + 1}</td>
+                          <td className="border border-line px-3 py-2 text-body">{a.task}</td>
+                          <td className="border border-line px-3 py-2 text-body">{a.assignee}</td>
+                          <td className="border border-line px-3 py-2 text-body">{a.dueDate}</td>
+                          <td className={`border border-line px-3 py-2 font-medium ${a.status === 'done' ? 'text-green-600 dark:text-green-400' : a.status === 'in-progress' ? 'text-yellow-600 dark:text-yellow-400' : 'text-muted'}`}>
                             {a.status === 'done' ? t('done') : a.status === 'in-progress' ? t('inProgress') : t('pending')}
                           </td>
                         </tr>
@@ -769,15 +769,15 @@ export default function MeetingMinutes() {
 
             {data.nextMeeting && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1 border-l-4 border-blue-600 pl-3">{t('nextMeeting')}</h2>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{data.nextMeeting}</p>
+                <h2 className="text-base font-semibold text-body mb-1 border-l-4 border-blue-600 pl-3">{t('nextMeeting')}</h2>
+                <p className="text-sm text-body">{data.nextMeeting}</p>
               </div>
             )}
 
             {data.notes && (
               <div>
-                <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1 border-l-4 border-blue-600 pl-3">{t('extraNotes')}</h2>
-                <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{data.notes}</p>
+                <h2 className="text-base font-semibold text-body mb-1 border-l-4 border-blue-600 pl-3">{t('extraNotes')}</h2>
+                <p className="text-sm text-body whitespace-pre-wrap">{data.notes}</p>
               </div>
             )}
           </div>
@@ -786,7 +786,7 @@ export default function MeetingMinutes() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6 print:hidden`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guide.title')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(t.raw('guide.sections') as { title: string; items: string[] }[]).map((section, i) => (
             <div key={i} className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">

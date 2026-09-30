@@ -125,17 +125,17 @@ export default function TaxSeason() {
           {t('hero.badge')}
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white leading-tight">
+        <h1 className="text-3xl sm:text-4xl font-bold text-fg leading-tight">
           {t('hero.title')}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-sub max-w-2xl mx-auto">
           {t('hero.subtitle')}
         </p>
 
         {/* Countdown */}
         <div className={`${glassCard} ${glassInset} p-6 max-w-lg mx-auto`}>
           {isPast ? (
-            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('hero.deadlinePast')}</p>
+            <p className="text-muted text-sm">{t('hero.deadlinePast')}</p>
           ) : (
             <>
               <p className="text-sm font-medium text-orange-600 dark:text-orange-400 mb-3">
@@ -155,11 +155,11 @@ export default function TaxSeason() {
                     <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 tabular-nums">
                       {String(value).padStart(2, '0')}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{label}</div>
+                    <div className="text-xs text-muted mt-1">{label}</div>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
+              <p className="text-xs text-faint mt-3">
                 {t('hero.deadlineNote')}
               </p>
             </>
@@ -177,7 +177,7 @@ export default function TaxSeason() {
           </Link>
           <Link
             href="/freelancer-tax"
-            className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 border border-orange-300 dark:border-orange-700 px-6 py-3 rounded-xl font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
+            className="inline-flex items-center gap-2 bg-surface text-orange-600 dark:text-orange-400 border border-orange-300 dark:border-orange-700 px-6 py-3 rounded-xl font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
           >
             <Briefcase className="w-4 h-4" />
             {t('hero.ctaSecondary')}
@@ -188,10 +188,10 @@ export default function TaxSeason() {
       {/* ── Section 2: 신고 대상 ── */}
       <section id="who" className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-fg">
             {t('targets.title')}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
+          <p className="text-muted mt-1 text-sm">
             {t('targets.subtitle')}
           </p>
         </div>
@@ -242,10 +242,10 @@ export default function TaxSeason() {
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-0.5">{icon}</div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-base mb-1">
+                    <h3 className="font-semibold text-fg text-base mb-1">
                       {t(titleKey)}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{t(descKey)}</p>
+                    <p className="text-sm text-sub">{t(descKey)}</p>
                   </div>
                 </div>
               </div>
@@ -255,7 +255,7 @@ export default function TaxSeason() {
 
         <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-start gap-3">
           <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-gray-700 dark:text-gray-300">
+          <p className="text-sm text-body">
             <strong className="text-green-700 dark:text-green-400">{t('targets.exempt.label')}</strong>{' '}
             {t('targets.exempt.desc')}
           </p>
@@ -265,10 +265,10 @@ export default function TaxSeason() {
       {/* ── Section 3: 관련 도구 모음 ── */}
       <section id="tools" className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-fg">
             {t('toolBundle.title')}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
+          <p className="text-muted mt-1 text-sm">
             {t('toolBundle.subtitle')}
           </p>
         </div>
@@ -284,17 +284,17 @@ export default function TaxSeason() {
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{icon}</span>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                    <h3 className="font-semibold text-fg text-sm group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                       {t(titleKey)}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                    <p className="text-xs text-muted mt-1 leading-relaxed">
                       {t(descKey)}
                     </p>
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500 flex-shrink-0 mt-0.5 transition-colors" />
               </div>
-              <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+              <div className="mt-3 pt-3 border-t border-line">
                 <span className="text-xs font-medium text-orange-500 dark:text-orange-400 group-hover:underline">
                   {t('toolBundle.cta')}
                 </span>
@@ -307,10 +307,10 @@ export default function TaxSeason() {
       {/* ── Section 4: 세율표 ── */}
       <section id="rates" className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-fg">
             {t('taxRates.title')}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
+          <p className="text-muted mt-1 text-sm">
             {t('taxRates.subtitle')}
           </p>
         </div>
@@ -319,14 +319,14 @@ export default function TaxSeason() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-orange-50 dark:bg-orange-900/30 border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left px-5 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                <tr className="bg-orange-50 dark:bg-orange-900/30 border-b border-line">
+                  <th className="text-left px-5 py-3 font-semibold text-body">
                     {t('taxRates.colRange')}
                   </th>
-                  <th className="text-center px-5 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                  <th className="text-center px-5 py-3 font-semibold text-body">
                     {t('taxRates.colRate')}
                   </th>
-                  <th className="text-right px-5 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                  <th className="text-right px-5 py-3 font-semibold text-body">
                     {t('taxRates.colDeduction')}
                   </th>
                 </tr>
@@ -338,11 +338,11 @@ export default function TaxSeason() {
                   return (
                     <tr
                       key={range}
-                      className={`border-b border-gray-100 dark:border-gray-700 last:border-0 transition-colors hover:bg-orange-50/50 dark:hover:bg-orange-900/10 ${
+                      className={`border-b border-line last:border-0 transition-colors hover:bg-orange-50/50 dark:hover:bg-orange-900/10 ${
                         i % 2 === 0 ? '' : 'bg-gray-50/50 dark:bg-gray-750/20'
                       }`}
                     >
-                      <td className="px-5 py-3 text-gray-700 dark:text-gray-300">{range}</td>
+                      <td className="px-5 py-3 text-body">{range}</td>
                       <td className="px-5 py-3 text-center">
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full font-bold text-xs ${
@@ -354,7 +354,7 @@ export default function TaxSeason() {
                           {rate}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-right text-gray-500 dark:text-gray-400">
+                      <td className="px-5 py-3 text-right text-muted">
                         {deduction}
                       </td>
                     </tr>
@@ -363,8 +363,8 @@ export default function TaxSeason() {
               </tbody>
             </table>
           </div>
-          <div className="px-5 py-3 bg-gray-50 dark:bg-gray-750/30 border-t border-gray-100 dark:border-gray-700">
-            <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+          <div className="px-5 py-3 bg-gray-50 dark:bg-gray-750/30 border-t border-line">
+            <p className="text-xs text-muted flex items-center gap-1.5">
               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
               {t('taxRates.note')}
             </p>
@@ -372,7 +372,7 @@ export default function TaxSeason() {
         </div>
 
         <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-          <p className="text-sm text-gray-700 dark:text-gray-300">
+          <p className="text-sm text-body">
             <strong className="text-blue-700 dark:text-blue-300">{t('taxRates.exampleLabel')}</strong>{' '}
             {t('taxRates.exampleText')}
           </p>
@@ -382,8 +382,8 @@ export default function TaxSeason() {
       {/* ── Section 5: 절세 팁 ── */}
       <section id="tips" className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('tips.title')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">{t('tips.subtitle')}</p>
+          <h2 className="text-2xl font-bold text-fg">{t('tips.title')}</h2>
+          <p className="text-muted mt-1 text-sm">{t('tips.subtitle')}</p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
@@ -434,10 +434,10 @@ export default function TaxSeason() {
               <div className="flex items-start gap-3">
                 <div className={`flex-shrink-0 rounded-lg p-2 ${color}`}>{icon}</div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+                  <h3 className="font-semibold text-fg text-sm mb-1">
                     {t(titleKey)}
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                  <p className="text-xs text-muted leading-relaxed">
                     {t(descKey)}
                   </p>
                 </div>
@@ -450,10 +450,10 @@ export default function TaxSeason() {
       {/* ── Section 6: 신고 일정 Timeline ── */}
       <section id="step1" className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-fg">
             {t('timeline.title')}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
+          <p className="text-muted mt-1 text-sm">
             {t('timeline.subtitle')}
           </p>
         </div>
@@ -503,10 +503,10 @@ export default function TaxSeason() {
                     {t(dateKey)}
                   </span>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
+                    <h3 className="font-semibold text-fg text-sm">
                       {t(titleKey)}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
+                    <p className="text-xs text-muted mt-0.5 leading-relaxed">
                       {t(descKey)}
                     </p>
                   </div>
@@ -518,7 +518,7 @@ export default function TaxSeason() {
 
         <div className="bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-xl p-4 flex items-start gap-3">
           <Clock className="w-5 h-5 text-orange-500 dark:text-orange-400 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-gray-700 dark:text-gray-300">
+          <p className="text-sm text-body">
             <strong className="text-orange-700 dark:text-orange-400">{t('timeline.penaltyLabel')}</strong>{' '}
             {t('timeline.penaltyDesc')}
           </p>
@@ -527,7 +527,7 @@ export default function TaxSeason() {
 
       {/* ── FAQ ── */}
       <section id="faq" className="space-y-5">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('faq.title')}</h2>
+        <h2 className="text-2xl font-bold text-fg">{t('faq.title')}</h2>
         <div className="space-y-3">
           {(
             [
@@ -542,14 +542,14 @@ export default function TaxSeason() {
               key={qKey}
               className={`group ${glassCard} ${glassInset} overflow-hidden`}
             >
-              <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-gray-900 dark:text-white text-sm hover:bg-gray-50 dark:hover:bg-gray-750/30 transition-colors list-none">
+              <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-fg text-sm hover:bg-gray-50 dark:hover:bg-gray-750/30 transition-colors list-none">
                 <span className="flex items-center gap-2">
                   <span className="text-orange-500 font-bold">Q.</span>
                   {t(qKey)}
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-400 group-open:rotate-90 transition-transform flex-shrink-0 ml-2" />
               </summary>
-              <div className="px-5 pb-4 pt-1 text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-gray-700">
+              <div className="px-5 pb-4 pt-1 text-sm text-sub leading-relaxed border-t border-line">
                 <span className="text-orange-500 font-bold mr-1.5">A.</span>
                 {t(aKey)}
               </div>

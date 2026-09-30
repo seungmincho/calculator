@@ -12,8 +12,8 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
 
   if (!satResult || satResult.axes.length === 0) {
     return (
-      <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 backdrop-blur-sm rounded-xl p-4">
-        <p className="text-sm text-gray-500 dark:text-gray-400">{t('projection.dragToStart')}</p>
+      <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl p-4">
+        <p className="text-sm text-muted">{t('projection.dragToStart')}</p>
       </div>
     )
   }
@@ -31,8 +31,8 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 backdrop-blur-sm rounded-xl p-4 space-y-3">
-      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+    <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl p-4 space-y-3">
+      <h3 className="text-sm font-semibold text-body">
         {t('projection.title')}
       </h3>
 
@@ -47,7 +47,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
             }`}>
               {t('projection.fromEdge', { polygon: activeAxis.sourcePolygon })}
             </span>
-            <span className="text-gray-500 dark:text-gray-400">
+            <span className="text-muted">
               ({activeAxis.axis.x.toFixed(2)}, {activeAxis.axis.y.toFixed(2)})
             </span>
           </div>

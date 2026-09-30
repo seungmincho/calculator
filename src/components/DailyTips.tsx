@@ -123,7 +123,7 @@ const DailyTips = () => {
                 {currentTip.category}
               </span>
             </div>
-            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
+            <p className="text-body text-sm leading-relaxed mb-4">
               {currentTip.tip}
             </p>
           </div>
@@ -148,7 +148,7 @@ const DailyTips = () => {
           </div>
 
           <div className="mt-2 text-center">
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-faint">
               {currentTipIndex + 1} / {tips.length}
             </span>
           </div>

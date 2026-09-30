@@ -78,7 +78,7 @@ export default function MarkdownEditorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <MarkdownEditor />
@@ -93,17 +93,17 @@ export default function MarkdownEditorPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               마크다운 에디터란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               마크다운 에디터는 실시간 분할 화면으로 마크다운 문법을 편집하면서 렌더링 결과를 동시에 확인할 수 있는 온라인 편집기입니다. GitHub README, 기술 블로그, 노션 문서 등을 작성할 때 유용하며, 볼드·이탤릭·표·코드 블록·체크리스트 등 모든 마크다운 문법을 지원합니다. .md 파일 다운로드와 HTML 변환 기능을 제공해 어떤 플랫폼에서도 바로 활용할 수 있습니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               마크다운 에디터 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>툴바 버튼 활용:</strong> 문법을 외우지 않아도 툴바의 볼드, 이탤릭, 표, 코드 블록 버튼으로 서식을 바로 삽입할 수 있습니다.</li>
               <li><strong>실시간 미리보기:</strong> 분할 화면으로 입력과 동시에 결과를 확인해 오타나 문법 오류를 즉시 수정하세요.</li>
               <li><strong>파일 다운로드:</strong> 작성한 내용을 .md 파일로 저장하거나 HTML로 변환해 다양한 용도로 활용하세요.</li>

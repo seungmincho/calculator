@@ -201,28 +201,28 @@ export default function CsDictionary() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <BookOpen className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <StatCard icon={<BookOpen className="w-5 h-5 text-blue-500" />} label={t('stats.total')} value={totalTerms} />
           <StatCard icon={<Check className="w-5 h-5 text-green-500" />} label={t('stats.learned')} value={learnedCount} />
           <StatCard icon={<Star className="w-5 h-5 text-yellow-500" />} label={t('stats.bookmarked')} value={bookmarkCount} />
           <div className="flex flex-col items-center justify-center">
-            <span className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('stats.progress')}</span>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+            <span className="text-xs text-muted mb-1">{t('stats.progress')}</span>
+            <div className="w-full bg-track rounded-full h-3 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
-            <span className="text-sm font-semibold text-gray-900 dark:text-white mt-1">{progressPct}%</span>
+            <span className="text-sm font-semibold text-fg mt-1">{progressPct}%</span>
           </div>
         </div>
 
@@ -240,7 +240,7 @@ export default function CsDictionary() {
       </div>
 
       {/* Search + Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6 space-y-4">
         {/* Search input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -249,7 +249,7 @@ export default function CsDictionary() {
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-10 py-2.5 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           {searchInput && (
             <button
@@ -263,7 +263,7 @@ export default function CsDictionary() {
 
         {/* Category filter */}
         <div>
-          <div className="flex items-center gap-1.5 mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-1.5 mb-2 text-xs font-medium text-muted">
             <Filter className="w-3.5 h-3.5" />
             {t('filter.category')}
           </div>
@@ -278,7 +278,7 @@ export default function CsDictionary() {
                   className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <span>{info.icon}</span>
@@ -293,7 +293,7 @@ export default function CsDictionary() {
         <div className="flex flex-wrap items-center gap-4">
           {/* Difficulty */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{t('filter.difficulty')}:</span>
+            <span className="text-xs font-medium text-muted">{t('filter.difficulty')}:</span>
             <div className="flex gap-1">
               {DIFFICULTIES.map(d => {
                 const isActive = difficulty === d
@@ -304,7 +304,7 @@ export default function CsDictionary() {
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
                       isActive
                         ? `${DIFF_COLORS[d].bg} ${DIFF_COLORS[d].text} ring-1 ring-current`
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${DIFF_COLORS[d].dot}`} />
@@ -317,7 +317,7 @@ export default function CsDictionary() {
 
           {/* Learning status */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{t('filter.status')}:</span>
+            <span className="text-xs font-medium text-muted">{t('filter.status')}:</span>
             <div className="flex gap-1">
               {(['all', 'learned', 'notLearned', 'bookmarked'] as LearningFilter[]).map(s => {
                 const isActive = learningFilter === s
@@ -334,7 +334,7 @@ export default function CsDictionary() {
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
                       isActive
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {icons[s]}
@@ -367,7 +367,7 @@ export default function CsDictionary() {
 
       {/* Result count */}
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm text-gray-500 dark:text-gray-400">
+        <span className="text-sm text-muted">
           {debouncedSearch
             ? t('search.resultCount', { count: filteredTerms.length })
             : `${filteredTerms.length} / ${totalTerms}`}
@@ -376,9 +376,9 @@ export default function CsDictionary() {
 
       {/* Terms display */}
       {filteredTerms.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+        <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
           <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-gray-400">{t('search.noResults')}</p>
+          <p className="text-muted">{t('search.noResults')}</p>
         </div>
       ) : viewMode === 'list' ? (
         <div className="space-y-2">
@@ -419,8 +419,8 @@ export default function CsDictionary() {
       )}
 
       {/* Related Tools */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('relatedTools.title')}</h2>
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('relatedTools.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <RelatedToolLink href="/cs-quiz" icon="📝" label={t('relatedTools.quiz')} />
           <RelatedToolLink href="/cs-visualizer" icon="🔬" label={t('relatedTools.visualizer')} />
@@ -440,8 +440,8 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
   return (
     <div className="flex flex-col items-center justify-center gap-1">
       {icon}
-      <span className="text-xl font-bold text-gray-900 dark:text-white">{value}</span>
-      <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="text-xl font-bold text-fg">{value}</span>
+      <span className="text-xs text-muted">{label}</span>
     </div>
   )
 }
@@ -450,10 +450,10 @@ function RelatedToolLink({ href, icon, label }: { href: string; icon: string; la
   return (
     <a
       href={href}
-      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+      className="flex items-center gap-3 p-3 rounded-lg bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
     >
       <span className="text-xl">{icon}</span>
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{label}</span>
+      <span className="text-sm font-medium text-body group-hover:text-blue-600 dark:group-hover:text-blue-400">{label}</span>
       <ExternalLink className="w-3.5 h-3.5 text-gray-400 ml-auto" />
     </a>
   )
@@ -498,8 +498,8 @@ const ListItem = forwardRef<HTMLDivElement, {
   return (
     <div
       ref={ref}
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-gray-200 dark:border-gray-700'
+      className={`bg-surface rounded-xl shadow-sm border transition-all duration-300 ${
+        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-line'
       }`}
     >
       {/* Header row */}
@@ -509,10 +509,10 @@ const ListItem = forwardRef<HTMLDivElement, {
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-gray-900 dark:text-white">{term.nameKo}</span>
-            <span className="text-sm text-gray-400 dark:text-gray-500">{term.nameEn}</span>
+            <span className="font-semibold text-fg">{term.nameKo}</span>
+            <span className="text-sm text-faint">{term.nameEn}</span>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">{term.shortDef}</p>
+          <p className="text-xs text-muted mt-0.5 truncate">{term.shortDef}</p>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <CategoryBadge category={term.category} />
@@ -524,7 +524,7 @@ const ListItem = forwardRef<HTMLDivElement, {
 
       {/* Expanded content */}
       {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-700 pt-3">
+        <div className="px-4 pb-4 space-y-3 border-t border-line pt-3">
           <TermDetail
             term={term}
             learned={learned}
@@ -556,14 +556,14 @@ const CardItem = forwardRef<HTMLDivElement, {
   return (
     <div
       ref={ref}
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-gray-200 dark:border-gray-700'
+      className={`bg-surface rounded-xl shadow-lg p-5 border transition-all duration-300 ${
+        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-line'
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <div>
-          <h3 className="font-bold text-gray-900 dark:text-white text-lg">{term.nameKo}</h3>
-          <p className="text-sm text-gray-400 dark:text-gray-500">{term.nameEn}</p>
+          <h3 className="font-bold text-fg text-lg">{term.nameKo}</h3>
+          <p className="text-sm text-faint">{term.nameEn}</p>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <CategoryBadge category={term.category} />
@@ -601,21 +601,21 @@ function TermDetail({
     <div className="space-y-3">
       {/* Short def */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('term.definition')}</h4>
-        <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">{term.shortDef}</p>
+        <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.definition')}</h4>
+        <p className="text-sm text-body font-medium">{term.shortDef}</p>
       </div>
 
       {/* Description */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('term.description')}</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{term.description}</p>
+        <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.description')}</h4>
+        <p className="text-sm text-sub leading-relaxed">{term.description}</p>
       </div>
 
       {/* Example */}
       {term.example && (
         <div>
-          <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('term.example')}</h4>
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-sm text-gray-700 dark:text-gray-300 font-mono whitespace-pre-wrap border border-gray-200 dark:border-gray-700">
+          <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.example')}</h4>
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-sm text-body font-mono whitespace-pre-wrap border border-line">
             {term.example}
           </div>
         </div>
@@ -624,7 +624,7 @@ function TermDetail({
       {/* Related terms */}
       {term.relatedTermIds && term.relatedTermIds.length > 0 && (
         <div>
-          <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('term.relatedTermIds')}</h4>
+          <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.relatedTermIds')}</h4>
           <div className="flex flex-wrap gap-1.5">
             {term.relatedTermIds.map(relId => {
               const related = CS_DICTIONARY_TERMS.find(t => t.id === relId)
@@ -650,7 +650,7 @@ function TermDetail({
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             learned
               ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Check className="w-3.5 h-3.5" />
@@ -661,7 +661,7 @@ function TermDetail({
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             bookmarked
               ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Star className={`w-3.5 h-3.5 ${bookmarked ? 'fill-yellow-500' : ''}`} />

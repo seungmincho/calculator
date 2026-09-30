@@ -101,14 +101,14 @@ export default function LotteryDraw() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6 space-y-6 max-w-lg mx-auto`}>
           {/* Total count */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('totalCount')} <span className="text-gray-400">({totalCount})</span>
             </label>
             <input
@@ -130,7 +130,7 @@ export default function LotteryDraw() {
 
           {/* Win count */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('winCount')} <span className="text-gray-400">({winCount})</span>
             </label>
             <input
@@ -148,7 +148,7 @@ export default function LotteryDraw() {
 
           {/* Draw mode */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('drawMode')}
             </label>
             <div className="flex gap-3">
@@ -159,7 +159,7 @@ export default function LotteryDraw() {
                   className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
                     mode === m
                       ? 'bg-indigo-600 border-indigo-600 text-white'
-                      : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-line-strong text-body hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   {t(`mode.${m}`)}
@@ -170,7 +170,7 @@ export default function LotteryDraw() {
 
           {/* Participant names */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('participants')} <span className="text-gray-400 text-xs">{t('participantsOptional')}</span>
             </label>
             <textarea
@@ -204,19 +204,19 @@ export default function LotteryDraw() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         </div>
         <div className="flex gap-2">
           <button
             onClick={handleReset}
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
+            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm flex items-center gap-1"
           >
             <Shuffle size={15} />
             {t('reshuffle')}
           </button>
           <button
             onClick={handleBackToSetup}
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
+            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm flex items-center gap-1"
           >
             <RotateCcw size={15} />
             {t('backToSetup')}
@@ -227,8 +227,8 @@ export default function LotteryDraw() {
       {/* Status bar */}
       <div className={`${glassCard} ${glassInset} p-4 flex flex-wrap gap-4 items-center justify-between`}>
         <div className="flex gap-6 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">
-            {t('remaining')}: <strong className="text-gray-900 dark:text-white">{remainingLots}</strong>
+          <span className="text-muted">
+            {t('remaining')}: <strong className="text-fg">{remainingLots}</strong>
           </span>
           <span className="text-yellow-600 dark:text-yellow-400">
             {t('remainingWins')}: <strong>{remainingWins}</strong>
@@ -265,7 +265,7 @@ export default function LotteryDraw() {
                     ? 'bg-gradient-to-br from-indigo-500 to-purple-600 cursor-pointer hover:scale-105 hover:shadow-lg'
                     : lot.isWin
                     ? 'bg-gradient-to-br from-yellow-400 to-orange-500 scale-105 shadow-lg'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-default'
+                    : 'bg-track text-gray-400 cursor-default'
                 }
               `}
               style={{
@@ -291,7 +291,7 @@ export default function LotteryDraw() {
               ) : (
                 <>
                   <span className="text-2xl">💨</span>
-                  <span className="text-xs mt-1 text-gray-500 dark:text-gray-400">{t('lose')}</span>
+                  <span className="text-xs mt-1 text-muted">{t('lose')}</span>
                   {participantName && (
                     <span className="text-xs text-gray-400 truncate max-w-full px-1">{participantName}</span>
                   )}
@@ -305,7 +305,7 @@ export default function LotteryDraw() {
       {/* Results summary after all revealed */}
       {allRevealed && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('results')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('results')}</h2>
           <div className="space-y-2">
             {revealOrder.map((lotId, orderIdx) => {
               const lot = lots[lotId]
@@ -316,7 +316,7 @@ export default function LotteryDraw() {
                   className={`flex items-center gap-3 px-4 py-2 rounded-lg ${
                     lot.isWin
                       ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300'
-                      : 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                      : 'bg-subtle text-sub'
                   }`}
                 >
                   <span className="text-sm font-medium w-6 text-center text-gray-400">{orderIdx + 1}</span>

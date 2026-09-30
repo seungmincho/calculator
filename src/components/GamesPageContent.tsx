@@ -125,7 +125,7 @@ function GamesContent() {
       <div>
         <button
           onClick={handleBackToHub}
-          className="mb-4 flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+          className="mb-4 flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('backToHub')}

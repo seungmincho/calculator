@@ -180,14 +180,14 @@ export default function ColorBlindTest() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-6">
             <Eye className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('result.title')}
             </h2>
           </div>
@@ -201,9 +201,9 @@ export default function ColorBlindTest() {
               <div className="text-sm text-red-600 dark:text-red-400 mb-1">{t('result.wrong')}</div>
               <div className="text-2xl font-bold text-red-700 dark:text-red-300">{results.wrong}</div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.skipped')}</div>
-              <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{results.skipped}</div>
+            <div className="bg-subtle rounded-lg p-4">
+              <div className="text-sm text-sub mb-1">{t('result.skipped')}</div>
+              <div className="text-2xl font-bold text-body">{results.skipped}</div>
             </div>
             <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
               <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.score')}</div>
@@ -231,22 +231,22 @@ export default function ColorBlindTest() {
                   key={index}
                   className={`flex items-center justify-between p-4 rounded-lg ${
                     isSkipped
-                      ? 'bg-gray-50 dark:bg-gray-700'
+                      ? 'bg-subtle'
                       : isCorrect
                       ? 'bg-green-50 dark:bg-green-950'
                       : 'bg-red-50 dark:bg-red-950'
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('plate')} {index + 1}
                     </span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-sm text-sub">
                       {t('yourAnswer')}: {answer || '-'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-sm text-sub">
                       {isSkipped ? t('result.skipped') : isCorrect ? t('result.correct') : `${t('result.wrong')} (${plate.number})`}
                     </span>
                   </div>
@@ -265,26 +265,26 @@ export default function ColorBlindTest() {
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
             <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('guide.title')}
           </h2>
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-fg mb-3">
                 {t('guide.about.title')}
               </h3>
-              <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+              <ul className="list-disc list-inside space-y-2 text-sub">
                 {(t.raw('guide.about.items') as string[]).map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-fg mb-3">
                 {t('guide.types.title')}
               </h3>
-              <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+              <ul className="list-disc list-inside space-y-2 text-sub">
                 {(t.raw('guide.types.items') as string[]).map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
@@ -299,19 +299,19 @@ export default function ColorBlindTest() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Eye className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('plate')} {currentPlate + 1} {t('of')} {TEST_PLATES.length}
             </h2>
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-muted">
             {answers.filter(a => a !== null).length} / {TEST_PLATES.length}
           </div>
         </div>
@@ -327,7 +327,7 @@ export default function ColorBlindTest() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('instruction')}
             </label>
             <input
@@ -344,7 +344,7 @@ export default function ColorBlindTest() {
             <button
               onClick={handlePrevious}
               disabled={currentPlate === 0}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-body rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
             >
               <ChevronLeft className="w-5 h-5" />
               {t('previous')}
@@ -352,7 +352,7 @@ export default function ColorBlindTest() {
 
             <button
               onClick={handleSkip}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
+              className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
             >
               <SkipForward className="w-5 h-5" />
               {t('skip')}
@@ -369,7 +369,7 @@ export default function ColorBlindTest() {
         </div>
 
         <div className="mt-6">
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-track rounded-full h-2">
             <div
               className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${((currentPlate + 1) / TEST_PLATES.length) * 100}%` }}
@@ -379,26 +379,26 @@ export default function ColorBlindTest() {
       </div>
 
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.about.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-sub">
               {(t.raw('guide.about.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.types.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-sub">
               {(t.raw('guide.types.items') as string[]).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}

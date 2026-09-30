@@ -287,8 +287,8 @@ export default function ImageWatermark() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -298,14 +298,14 @@ export default function ImageWatermark() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('upload')}
               </label>
               <div
                 className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
                   isDragging
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400'
+                    : 'border-line-strong hover:border-blue-500 dark:hover:border-blue-400'
                 }`}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
@@ -313,7 +313,7 @@ export default function ImageWatermark() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-10 h-10 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">{t('uploadDragDrop')}</p>
+                <p className="text-sm text-sub">{t('uploadDragDrop')}</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -331,7 +331,7 @@ export default function ImageWatermark() {
             {!!sourceImage && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('watermarkType')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -340,7 +340,7 @@ export default function ImageWatermark() {
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         watermarkType === 'text'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       <Type className="w-4 h-4" />
@@ -351,7 +351,7 @@ export default function ImageWatermark() {
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         watermarkType === 'image'
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
                       <ImageIcon className="w-4 h-4" />
@@ -365,7 +365,7 @@ export default function ImageWatermark() {
                   <>
                     {/* Text Input */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('text')}
                       </label>
                       <input
@@ -373,13 +373,13 @@ export default function ImageWatermark() {
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         placeholder={t('textPlaceholder')}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
                     {/* Font Size */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('fontSize')}: {fontSize}px
                       </label>
                       <input
@@ -394,13 +394,13 @@ export default function ImageWatermark() {
 
                     {/* Font Family */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('fontFamily')}
                       </label>
                       <select
                         value={fontFamily}
                         onChange={(e) => setFontFamily(e.target.value as FontFamily)}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="sans-serif">Sans-serif</option>
                         <option value="serif">Serif</option>
@@ -410,7 +410,7 @@ export default function ImageWatermark() {
 
                     {/* Font Color */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('fontColor')}
                       </label>
                       <div className="flex items-center gap-3">
@@ -418,13 +418,13 @@ export default function ImageWatermark() {
                           type="color"
                           value={fontColor}
                           onChange={(e) => setFontColor(e.target.value)}
-                          className="w-10 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                          className="w-10 h-10 rounded border border-line-strong cursor-pointer"
                         />
                         <input
                           type="text"
                           value={fontColor}
                           onChange={(e) => setFontColor(e.target.value)}
-                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                          className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
                         />
                       </div>
                     </div>
@@ -438,7 +438,7 @@ export default function ImageWatermark() {
                         onChange={(e) => setBold(e.target.checked)}
                         className="accent-blue-600 w-4 h-4"
                       />
-                      <label htmlFor="bold-toggle" className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+                      <label htmlFor="bold-toggle" className="text-sm font-medium text-body cursor-pointer">
                         {t('bold')}
                       </label>
                     </div>
@@ -449,11 +449,11 @@ export default function ImageWatermark() {
                 {watermarkType === 'image' && (
                   <>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('watermarkImage')}
                       </label>
                       <div
-                        className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                        className="border-2 border-dashed border-line-strong rounded-lg p-4 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                         onClick={() => watermarkInputRef.current?.click()}
                       >
                         {watermarkImage ? (
@@ -466,7 +466,7 @@ export default function ImageWatermark() {
                         ) : (
                           <>
                             <Upload className="w-8 h-8 mx-auto text-gray-400 mb-1" />
-                            <p className="text-sm text-gray-600 dark:text-gray-400">{t('watermarkImageUpload')}</p>
+                            <p className="text-sm text-sub">{t('watermarkImageUpload')}</p>
                           </>
                         )}
                         <input
@@ -484,7 +484,7 @@ export default function ImageWatermark() {
 
                     {/* Watermark Size */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         {t('watermarkSize')}: {watermarkSize}%
                       </label>
                       <input
@@ -500,10 +500,10 @@ export default function ImageWatermark() {
                 )}
 
                 {/* Common Options Divider */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-5">
+                <div className="border-t border-line pt-4 space-y-5">
                   {/* Position Grid */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('position')}
                     </label>
                     <div className="grid grid-cols-3 gap-1.5">
@@ -515,7 +515,7 @@ export default function ImageWatermark() {
                           className={`px-2 py-2 rounded text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                             position === pos && !tileMode
                               ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 ring-2 ring-blue-500'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                           }`}
                         >
                           {t(`positions.${pos}`)}
@@ -526,7 +526,7 @@ export default function ImageWatermark() {
 
                   {/* Opacity */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('opacity')}: {opacity}%
                     </label>
                     <input
@@ -541,7 +541,7 @@ export default function ImageWatermark() {
 
                   {/* Rotation */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('rotation')}: {rotation}&deg;
                     </label>
                     <input
@@ -563,14 +563,14 @@ export default function ImageWatermark() {
                       onChange={(e) => setTileMode(e.target.checked)}
                       className="accent-blue-600 w-4 h-4"
                     />
-                    <label htmlFor="tile-toggle" className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+                    <label htmlFor="tile-toggle" className="text-sm font-medium text-body cursor-pointer">
                       {t('tileMode')}
                     </label>
                   </div>
 
                   {/* Margin */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('margin')}: {margin}px
                     </label>
                     <input
@@ -585,7 +585,7 @@ export default function ImageWatermark() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+                <div className="border-t border-line pt-4 space-y-2">
                   <button
                     onClick={handleDownload}
                     className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
@@ -595,7 +595,7 @@ export default function ImageWatermark() {
                   </button>
                   <button
                     onClick={handleReset}
-                    className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
                   >
                     <RotateCcw className="w-4 h-4" />
                     {t('reset')}
@@ -609,7 +609,7 @@ export default function ImageWatermark() {
         {/* Preview Panel */}
         <div className="lg:col-span-2" ref={containerRef}>
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('preview')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('preview')}</h2>
             {!sourceImage ? (
               <div className="flex flex-col items-center justify-center h-96 text-gray-400">
                 <ImageIcon className="w-24 h-24 mb-4" />
@@ -619,7 +619,7 @@ export default function ImageWatermark() {
               <div className="overflow-auto flex justify-center">
                 <canvas
                   ref={canvasRef}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg"
+                  className="border border-line rounded-lg"
                   style={{
                     maxWidth: '100%',
                     background: 'repeating-conic-gradient(#e5e7eb 0% 25%, transparent 0% 50%) 50% / 16px 16px',
@@ -633,17 +633,17 @@ export default function ImageWatermark() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.features.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.features.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
@@ -654,10 +654,10 @@ export default function ImageWatermark() {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-sub">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>

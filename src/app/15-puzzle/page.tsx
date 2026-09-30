@@ -74,7 +74,7 @@ export default function FifteenPuzzlePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <FifteenPuzzle />
@@ -89,17 +89,17 @@ export default function FifteenPuzzlePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             15퍼즐(슬라이딩 퍼즐)이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             15퍼즐은 4×4 격자판에 놓인 15개의 숫자 타일을 빈 칸을 이용해 밀어 1부터 15까지 순서대로 정렬하는 클래식 두뇌 퍼즐 게임입니다. 1880년대에 미국에서 고안된 이 퍼즐은 논리적 사고와 공간 지각 능력을 기르는 데 탁월하며, 3×3(8퍼즐)부터 5×5(24퍼즐)까지 다양한 난이도로 즐길 수 있습니다. 두뇌 트레이닝과 집중력 향상에 관심 있는 분들에게 추천하는 브레인 게임입니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             15퍼즐 빠르게 푸는 방법
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>행 우선 전략:</strong> 1행, 2행 순서로 먼저 완성한 뒤 마지막 두 행을 열 단위로 정리하세요.</li>
             <li><strong>키보드 활용:</strong> 방향키를 사용하면 마우스보다 훨씬 빠르게 타일을 이동할 수 있어 기록 단축에 유리합니다.</li>
             <li><strong>이동 횟수 최소화:</strong> 목표 위치에서 가장 멀리 있는 타일부터 먼저 처리하면 전체 이동 수를 줄일 수 있습니다.</li>

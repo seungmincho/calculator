@@ -69,7 +69,7 @@ export default function CrosswordPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Crossword />
@@ -81,19 +81,19 @@ export default function CrosswordPage() {
       </div>
       {/* SEO */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             십자말풀이(크로스워드)란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             십자말풀이(크로스워드 퍼즐, Crossword Puzzle)는 격자 모양의 칸에 가로와 세로 힌트를 보고 알맞은 단어를 채워 넣는 대표적인 단어 퍼즐 게임입니다.
             영어권에서 1913년 처음 등장한 이래 전 세계적으로 사랑받고 있으며, 한국어 십자말풀이는 한글의 특성을 살려 음절 단위로 칸을 채우는 것이 특징입니다.
             어휘력, 상식, 논리적 추론 능력을 동시에 키울 수 있어 남녀노소 누구나 즐길 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             십자말풀이 풀이 전략
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>쉬운 힌트부터:</strong> 확실히 알고 있는 단어를 먼저 채우면 교차하는 다른 단어의 글자를 알 수 있습니다.</li>
             <li><strong>교차점 활용:</strong> 가로와 세로 단어가 만나는 교차점의 글자가 일치해야 하므로, 한쪽을 채우면 다른 쪽의 힌트가 됩니다.</li>
             <li><strong>글자 수 확인:</strong> 빈칸 수와 힌트를 조합하면 후보 단어를 좁힐 수 있습니다.</li>

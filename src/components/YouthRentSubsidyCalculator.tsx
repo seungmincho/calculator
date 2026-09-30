@@ -270,15 +270,15 @@ export default function YouthRentSubsidyCalculator() {
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-emerald-100 text-sm sm:text-base mb-6">{t('description')}</p>
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white/20 backdrop-blur rounded-xl p-4 text-center">
+          <div className="bg-white/20 rounded-xl p-4 text-center">
             <div className="text-2xl sm:text-3xl font-bold">{t('hero.monthly')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.monthlyLabel')}</div>
           </div>
-          <div className="bg-white/20 backdrop-blur rounded-xl p-4 text-center">
+          <div className="bg-white/20 rounded-xl p-4 text-center">
             <div className="text-2xl sm:text-3xl font-bold">{t('hero.months')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.monthsLabel')}</div>
           </div>
-          <div className="bg-white/20 backdrop-blur rounded-xl p-4 text-center">
+          <div className="bg-white/20 rounded-xl p-4 text-center">
             <div className="text-2xl sm:text-3xl font-bold">{t('hero.total')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.totalLabel')}</div>
           </div>
@@ -290,14 +290,14 @@ export default function YouthRentSubsidyCalculator() {
         {/* Left Panel - Input Form */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Search className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
             </h2>
 
             {/* 만 나이 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('ageLabel')}
               </label>
               <input
@@ -308,12 +308,12 @@ export default function YouthRentSubsidyCalculator() {
                 onChange={(e) => setAge(e.target.value)}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('ageHint')}</p>
+              <p className="text-xs text-muted mt-1">{t('ageHint')}</p>
             </div>
 
             {/* 독립 거주 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('independentLabel')}
               </label>
               <div className="flex gap-4">
@@ -324,7 +324,7 @@ export default function YouthRentSubsidyCalculator() {
                     onChange={() => setIsIndependent(true)}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('yes')}</span>
+                  <span className="text-sm text-body">{t('yes')}</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -333,14 +333,14 @@ export default function YouthRentSubsidyCalculator() {
                     onChange={() => setIsIndependent(false)}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('no')}</span>
+                  <span className="text-sm text-body">{t('no')}</span>
                 </label>
               </div>
             </div>
 
             {/* 주택 소유 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('homelessLabel')}
               </label>
               <div className="flex gap-4">
@@ -351,7 +351,7 @@ export default function YouthRentSubsidyCalculator() {
                     onChange={() => setIsHomeless(true)}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('homeless')}</span>
+                  <span className="text-sm text-body">{t('homeless')}</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -360,14 +360,14 @@ export default function YouthRentSubsidyCalculator() {
                     onChange={() => setIsHomeless(false)}
                     className="accent-blue-600"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('hasHome')}</span>
+                  <span className="text-sm text-body">{t('hasHome')}</span>
                 </label>
               </div>
             </div>
 
             {/* 본인 월 소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('ownIncomeLabel')}
               </label>
               <div className="relative">
@@ -379,13 +379,13 @@ export default function YouthRentSubsidyCalculator() {
                   placeholder="0"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
             </div>
 
             {/* 원가구 가구원 수 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('householdSizeLabel')}
               </label>
               <select
@@ -401,7 +401,7 @@ export default function YouthRentSubsidyCalculator() {
 
             {/* 원가구 월 소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('parentIncomeLabel')}
               </label>
               <div className="relative">
@@ -413,13 +413,13 @@ export default function YouthRentSubsidyCalculator() {
                   placeholder="0"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
             </div>
 
             {/* 본인 총 재산 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('assetLabel')}
               </label>
               <div className="relative">
@@ -431,13 +431,13 @@ export default function YouthRentSubsidyCalculator() {
                   placeholder="0"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
             </div>
 
             {/* 현재 월세 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('rentLabel')}
               </label>
               <div className="relative">
@@ -449,13 +449,13 @@ export default function YouthRentSubsidyCalculator() {
                   placeholder="0"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
             </div>
 
             {/* 현재 보증금 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('depositLabel')}
               </label>
               <div className="relative">
@@ -467,13 +467,13 @@ export default function YouthRentSubsidyCalculator() {
                   placeholder="0"
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
             </div>
 
             {/* 주거 유형 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('housingTypeLabel')}
               </label>
               <select
@@ -498,7 +498,7 @@ export default function YouthRentSubsidyCalculator() {
               </button>
               <button
                 onClick={reset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 transition-all"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-all"
                 title={t('resetButton')}
               >
                 <RotateCcw className="w-5 h-5" />
@@ -514,8 +514,8 @@ export default function YouthRentSubsidyCalculator() {
               <div className="w-16 h-16 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mb-4">
                 <Home className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('emptyTitle')}</h3>
-              <p className="text-gray-500 dark:text-gray-400">{t('emptyDescription')}</p>
+              <h3 className="text-lg font-semibold text-fg mb-2">{t('emptyTitle')}</h3>
+              <p className="text-muted">{t('emptyDescription')}</p>
             </div>
           ) : (
             <>
@@ -535,14 +535,14 @@ export default function YouthRentSubsidyCalculator() {
                       <div className={`text-2xl font-bold ${result.eligible ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
                         {result.eligible ? t('eligible') : t('ineligible')}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('checkSummary', { pass: passCount, total: totalChecks })}
                       </div>
                     </div>
                   </div>
                   <button
                     onClick={shareUrl}
-                    className="flex items-center gap-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 transition-all"
+                    className="flex items-center gap-2 bg-field hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg px-4 py-2 text-sm font-medium text-body border border-line transition-all"
                   >
                     {copiedUrl ? <Check className="w-4 h-4 text-green-600" /> : <Share2 className="w-4 h-4" />}
                     {copiedUrl ? t('copied') : t('share')}
@@ -553,7 +553,7 @@ export default function YouthRentSubsidyCalculator() {
               {/* Expected Support */}
               {result.eligible && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                     <DollarSign className="w-5 h-5 text-emerald-600" />
                     {t('supportTitle')}
                   </h3>
@@ -563,7 +563,7 @@ export default function YouthRentSubsidyCalculator() {
                       <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {(result.monthlySupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <div className="text-xs text-muted mt-1">
                         ({result.monthlySupport.toLocaleString('ko-KR')}{t('wonUnit')})
                       </div>
                     </div>
@@ -572,25 +572,25 @@ export default function YouthRentSubsidyCalculator() {
                       <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                         {(result.totalSupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <div className="text-xs text-muted mt-1">
                         ({t('months12')})
                       </div>
                     </div>
                   </div>
 
                   {/* Breakdown */}
-                  <div className="mt-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 space-y-2">
+                  <div className="mt-4 bg-subtle rounded-lg p-4 space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('breakdown.actualRent')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">
+                      <span className="text-sub">{t('breakdown.actualRent')}</span>
+                      <span className="font-medium text-fg">
                         {parseNumber(rent).toLocaleString('ko-KR')}{t('manwonUnit')} ({(parseNumber(rent) * 10000).toLocaleString('ko-KR')}{t('wonUnit')})
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t('breakdown.maxSupport')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">20{t('manwonUnit')} (200,000{t('wonUnit')})</span>
+                      <span className="text-sub">{t('breakdown.maxSupport')}</span>
+                      <span className="font-medium text-fg">20{t('manwonUnit')} (200,000{t('wonUnit')})</span>
                     </div>
-                    <div className="border-t border-gray-200 dark:border-gray-600 pt-2 flex justify-between text-sm font-semibold">
+                    <div className="border-t border-line pt-2 flex justify-between text-sm font-semibold">
                       <span className="text-emerald-600 dark:text-emerald-400">{t('breakdown.result')}</span>
                       <span className="text-emerald-700 dark:text-emerald-300">
                         {t('breakdown.resultValue', { monthly: (result.monthlySupport / 10000).toLocaleString('ko-KR'), total: (result.totalSupport / 10000).toLocaleString('ko-KR') })}
@@ -602,7 +602,7 @@ export default function YouthRentSubsidyCalculator() {
 
               {/* 7-item Checklist */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-blue-600" />
                   {t('checklistTitle')}
                 </h3>
@@ -623,7 +623,7 @@ export default function YouthRentSubsidyCalculator() {
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{item.label}</span>
+                          <span className="text-sm font-medium text-fg">{item.label}</span>
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
                             item.pass
                               ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
@@ -632,7 +632,7 @@ export default function YouthRentSubsidyCalculator() {
                             {item.pass ? t('pass') : t('fail')}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{item.detail}</p>
+                        <p className="text-xs text-muted mt-0.5">{item.detail}</p>
                       </div>
                     </div>
                   ))}
@@ -645,7 +645,7 @@ export default function YouthRentSubsidyCalculator() {
                   onClick={() => setShowApplyInfo(!showApplyInfo)}
                   className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
                     <Building2 className="w-5 h-5 text-blue-600" />
                     {t('applyInfoTitle')}
                   </h3>
@@ -658,10 +658,10 @@ export default function YouthRentSubsidyCalculator() {
                 {showApplyInfo && (
                   <div className="px-6 pb-6 space-y-5">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('applyMethodTitle')}</h4>
+                      <h4 className="text-sm font-semibold text-fg mb-2">{t('applyMethodTitle')}</h4>
                       <ul className="space-y-2">
                         {(t.raw('applyMethods') as string[]).map((method, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                          <li key={i} className="flex items-start gap-2 text-sm text-body">
                             <span className="w-5 h-5 flex-shrink-0 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full flex items-center justify-center text-xs font-bold mt-0.5">{i + 1}</span>
                             {method}
                           </li>
@@ -669,10 +669,10 @@ export default function YouthRentSubsidyCalculator() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('docsTitle')}</h4>
+                      <h4 className="text-sm font-semibold text-fg mb-2">{t('docsTitle')}</h4>
                       <ul className="space-y-1">
                         {(t.raw('docsList') as string[]).map((doc, i) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                          <li key={i} className="flex items-center gap-2 text-sm text-body">
                             <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                             {doc}
                           </li>
@@ -685,16 +685,16 @@ export default function YouthRentSubsidyCalculator() {
 
               {/* 중위소득 참고표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5 text-blue-600" />
                   {t('medianTableTitle')}
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 px-3 text-gray-600 dark:text-gray-400 font-medium">{t('medianTable.size')}</th>
-                        <th className="text-right py-2 px-3 text-gray-600 dark:text-gray-400 font-medium">{t('medianTable.median')}</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 px-3 text-sub font-medium">{t('medianTable.size')}</th>
+                        <th className="text-right py-2 px-3 text-sub font-medium">{t('medianTable.median')}</th>
                         <th className="text-right py-2 px-3 text-emerald-600 dark:text-emerald-400 font-medium">{t('medianTable.sixty')}</th>
                         <th className="text-right py-2 px-3 text-blue-600 dark:text-blue-400 font-medium">{t('medianTable.hundred')}</th>
                       </tr>
@@ -702,8 +702,8 @@ export default function YouthRentSubsidyCalculator() {
                     <tbody>
                       {Object.entries(MEDIAN_INCOME_2026).map(([size, income]) => (
                         <tr key={size} className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                          <td className="py-2 px-3 text-gray-900 dark:text-white font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
-                          <td className="py-2 px-3 text-right text-gray-700 dark:text-gray-300">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
+                          <td className="py-2 px-3 text-fg font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
+                          <td className="py-2 px-3 text-right text-body">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
                           <td className="py-2 px-3 text-right text-emerald-700 dark:text-emerald-300 font-medium">{Math.floor(income * 0.6).toLocaleString('ko-KR')}{t('wonUnit')}</td>
                           <td className="py-2 px-3 text-right text-blue-700 dark:text-blue-300 font-medium">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
                         </tr>
@@ -711,7 +711,7 @@ export default function YouthRentSubsidyCalculator() {
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">{t('medianTableNote')}</p>
+                <p className="text-xs text-muted mt-3">{t('medianTableNote')}</p>
               </div>
             </>
           )}

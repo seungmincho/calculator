@@ -234,10 +234,10 @@ const UuidGenerator = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -249,14 +249,14 @@ const UuidGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('settings.title')}
               </h2>
             </div>
 
             {/* UUID Version */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('settings.version')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -281,7 +281,7 @@ const UuidGenerator = () => {
 
             {/* Count */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('settings.count')}
               </label>
               <div className="flex space-x-2">
@@ -312,7 +312,7 @@ const UuidGenerator = () => {
 
             {/* Format */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('settings.format')}
               </label>
               <select
@@ -338,7 +338,7 @@ const UuidGenerator = () => {
                   onChange={(e) => setOptions(prev => ({ ...prev, includeTimestamp: e.target.checked }))}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-sm text-body">
                   {t('settings.includeTimestamp')}
                 </span>
               </label>
@@ -388,7 +388,7 @@ const UuidGenerator = () => {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
                 <List className="w-5 h-5 text-green-600" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold text-fg">
                   {t('result.title')}
                 </h2>
                 {generatedUuids.length > 0 && (
@@ -424,10 +424,10 @@ const UuidGenerator = () => {
 
             {generatedUuids.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-soft rounded-full flex items-center justify-center mx-auto mb-4">
                   <Hash className="w-8 h-8 text-gray-400" />
                 </div>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-muted">
                   {t('placeholder')}
                 </p>
               </div>
@@ -436,14 +436,14 @@ const UuidGenerator = () => {
                 {generatedUuids.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-subtle rounded-lg"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="font-mono text-sm text-gray-900 dark:text-white break-all">
+                      <div className="font-mono text-sm text-fg break-all">
                         {item.uuid}
                       </div>
                       {item.timestamp && (
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <div className="text-xs text-muted mt-1">
                           {item.timestamp.toLocaleString()}
                         </div>
                       )}
@@ -470,14 +470,14 @@ const UuidGenerator = () => {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-6">
           <Info className="w-5 h-5 text-orange-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.versionsTitle')}
             </h3>
             <div className="space-y-3">
@@ -485,10 +485,10 @@ const UuidGenerator = () => {
                 <div key={version} className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
                   <div>
-                    <div className="font-medium text-sm text-gray-900 dark:text-white">
+                    <div className="font-medium text-sm text-fg">
                       UUID {version.toUpperCase()}: {t(`versions.${version}.name`)}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-sub">
                       {t(`versions.${version}.description`)}
                     </div>
                   </div>
@@ -498,14 +498,14 @@ const UuidGenerator = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.useCasesTitle')}
             </h3>
             <div className="space-y-3">
               {[0, 1, 2, 3].map((index) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-600 rounded-full mt-2"></div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-sub">
                     {t(`guide.useCases.${index}`)}
                   </div>
                 </div>

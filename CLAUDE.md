@@ -548,7 +548,7 @@ export default function NewToolPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
@@ -603,27 +603,27 @@ export default function NewTool() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 메인 그리드: 설정(1/3) + 결과(2/3) */}
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="ui-card p-6 space-y-4">
             {/* 설정 패널 */}
           </div>
         </div>
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="ui-card p-6">
             {/* 결과 패널 */}
           </div>
         </div>
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">
           {t('guide.title')}
         </h2>
         {/* 가이드 내용 — 배열은 t.raw('guide.section.items') as string[] */}
@@ -633,34 +633,30 @@ export default function NewTool() {
 }
 ```
 
-### 공통 Tailwind 클래스 패턴
+### 디자인 시스템 (토스 스타일, 2026-09-30~) — **페이지별 색상 하드코딩 금지**
+
+단일 출처: `src/app/globals.css`. 색·모서리·그림자 변경은 여기만 수정하면 전 페이지 반영.
+- **시맨틱 토큰** (`:root` 라이트 / `.dark` 다크 값을 CSS 변수로 전환 → `dark:` 접두사 불필요)
+  - 텍스트: `text-fg`(제목) `text-body`(본문/라벨) `text-sub`(보조) `text-muted`(설명) `text-faint`(플레이스홀더/비활성)
+  - 배경: `bg-canvas`(페이지) `bg-surface`(카드) `bg-field`(입력) `bg-subtle`(카드 내부 구역) `bg-soft`(칩/보조버튼/hover) `bg-track`(진행바 트랙)
+  - 테두리: `border-line` `border-line-strong` · 브랜드: `text-primary` `bg-primary` `bg-primary-soft`
+- **컴포넌트 클래스** (`@layer components` → 같이 쓴 유틸리티가 이김, 예: `ui-card p-6 rounded-xl`)
+  - `ui-card` 카드 · `ui-field` 입력(회색 채움+포커스 파란 링) · `ui-btn` 메인 버튼 · `ui-btn-soft` 보조 버튼
+- **팔레트 재정의**: gray/slate = 토스 그레이, blue = 토스 블루(#3182F6), **indigo/violet/purple → blue로 매핑**(보라 그라데이션 제거). 기존 `bg-blue-600` 등은 그대로 동작.
+- 폰트: Pretendard(CDN). 페이지 배경은 body `bg-canvas` — page.tsx 래퍼에 배경 그라데이션 넣지 말 것.
+- `src/lib/glass.ts`의 `glassCard/glassInput`은 `ui-card/ui-field` 별칭(레거시 238파일 호환). 새 코드는 `ui-*` 직접 사용.
+- 금지: `backdrop-blur`, 배경 color blob(`blur-3xl`), 파랑→보라 그라데이션 버튼, `text-gray-900 dark:text-white` 같은 light/dark 쌍(→ 토큰), 인라인 `rgba()` 그림자.
+- 일괄 치환 스크립트: `python scripts/codemod-design-tokens.py` (재실행 안전, 새로 들어온 쌍 패턴 정리용)
 
 ```
-카드:         bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6
-입력 필드:    w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500
-메인 버튼:    bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700
-보조 버튼:    bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg
-제목 텍스트:  text-gray-900 dark:text-white
-부제 텍스트:  text-gray-500 dark:text-gray-400
-정보 박스:    bg-blue-50 dark:bg-blue-950 rounded-xl p-6
-체크박스:     accent-blue-600
+카드:       ui-card p-6
+입력:       ui-field px-4 py-3
+메인 버튼:  ui-btn px-4 py-3
+보조 버튼:  ui-btn-soft px-4 py-2   또는  bg-soft hover:bg-subtle text-body rounded-xl
+제목/본문:  text-fg / text-body / text-muted
+정보 박스:  bg-primary-soft text-primary rounded-2xl p-5
+결과 숫자:  text-3xl font-bold text-fg tabular-nums
 ```
-
-### Liquid Glass 디자인 패턴 (글래스모피즘)
-
-HomePage와 /ladder-game/에 적용된 글래스 디자인 시스템. 점진적으로 전체 페이지 확장 예정.
-
-```
-글래스 카드:     bg-white/40 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.08] rounded-2xl
-글래스 inset:    shadow-[inset_1px_1px_6px_rgba(255,255,255,0.25),inset_-1px_-1px_6px_rgba(255,255,255,0.08)]
-글래스 hover:    hover:bg-white/60 dark:hover:bg-white/[0.10] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1
-글래스 pill:     bg-white/50 dark:bg-white/[0.06] backdrop-blur-lg border border-white/40 dark:border-white/[0.08] rounded-full
-글래스 pill활성: bg-white/70 dark:bg-white/[0.15] border-indigo-300/60 shadow-[0_0_15px_rgba(99,102,241,0.15)]
-글래스 입력:     bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.10] rounded-2xl
-```
-
-**배경 필수**: 글래스 효과는 배경 color blob(radial-gradient, blur-3xl) 위에서만 살아남. 단색 배경에서는 효과 미미.
-**컴포넌트별 테마**: 각 도구는 고유 gradient wrapper 사용 (예: violet/fuchsia, cyan/blue, amber/orange, emerald/green).
 
 ### 번역 키 네이밍 규칙
 
@@ -736,7 +732,7 @@ HomePage와 /ladder-game/에 적용된 글래스 디자인 시스템. 점진적�
 - [ ] ko.json, en.json 번역 완성 (footer.links + toolsShowcase.tools + 컴포넌트 네임스페이스)
 - [ ] menuConfig.ts에 항목 추가됨
 - [ ] sitemap.ts에 URL 추가됨
-- [ ] 다크모드 호환 (모든 요소에 dark: 접두사)
+- [ ] 디자인 토큰 사용 (text-fg/bg-surface/ui-card 등 — 색상 light/dark 쌍 하드코딩 금지)
 - [ ] 모바일 반응형 (lg:grid-cols 등)
 - [ ] TypeScript 에러 없음 (`npx tsc --noEmit`)
 

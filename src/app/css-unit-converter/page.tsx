@@ -81,7 +81,7 @@ export default function CssUnitConverterPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <CssUnitConverter />
@@ -96,17 +96,17 @@ export default function CssUnitConverterPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             CSS 단위 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             CSS 단위 변환기는 px, rem, em, vw, vh, %, pt, cm, mm, in 등 10가지 CSS 단위를 즉시 상호 변환해주는 웹 개발 도구입니다. 반응형 웹 디자인을 구현할 때 픽셀 단위의 디자인 시안을 rem이나 vw 기반의 유연한 레이아웃으로 변환하거나, 루트 폰트 크기와 뷰포트 크기를 기준값으로 설정하여 정확한 변환 결과를 얻을 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             CSS 단위 변환기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>디자인 시안 변환:</strong> Figma 등 디자인 툴에서 px 값으로 작업된 간격, 폰트 크기를 rem으로 변환하여 접근성 친화적인 코드를 작성하세요.</li>
             <li><strong>루트 폰트 크기 설정:</strong> 프로젝트의 html 요소 기본 폰트 크기(기본 16px)에 맞게 루트 폰트 크기를 조정하면 정확한 rem 변환 결과를 확인할 수 있습니다.</li>
             <li><strong>rem vs em 선택:</strong> 전역 여백과 폰트 크기에는 rem을, 컴포넌트 내부 요소 간격처럼 부모 크기에 따라 변해야 하는 값에는 em을 사용하는 것이 일반적입니다.</li>

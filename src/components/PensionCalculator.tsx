@@ -192,7 +192,7 @@ export default function PensionCalculator() {
   }, [currentAge, monthlyIncome, startAge, retirementAge])
 
   const replacementRateColor = useMemo(() => {
-    if (!result) return 'text-gray-600 dark:text-gray-300'
+    if (!result) return 'text-sub'
     if (result.replacementRate >= 40) return 'text-green-600 dark:text-green-400'
     if (result.replacementRate >= 25) return 'text-yellow-600 dark:text-yellow-400'
     return 'text-red-600 dark:text-red-400'
@@ -213,13 +213,13 @@ export default function PensionCalculator() {
             <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-sm text-muted mt-1">{t('description')}</p>
           </div>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           title="링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -234,7 +234,7 @@ export default function PensionCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* 현재 나이 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('currentAge')}
               </label>
               <div className="flex items-center gap-2">
@@ -246,13 +246,13 @@ export default function PensionCalculator() {
                   onChange={e => setCurrentAge(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('yearsLabel')}</span>
+                <span className="text-sm text-muted whitespace-nowrap">{t('yearsLabel')}</span>
               </div>
             </div>
 
             {/* 월 소득 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('monthlyIncome')}
               </label>
               <div className="flex items-center gap-2">
@@ -264,14 +264,14 @@ export default function PensionCalculator() {
                   onChange={e => setMonthlyIncome(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('manwonUnit')}</span>
+                <span className="text-sm text-muted whitespace-nowrap">{t('manwonUnit')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">상한: 617만원</p>
+              <p className="text-xs text-faint mt-1">상한: 617만원</p>
             </div>
 
             {/* 가입 시작 나이 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('startAge')}
               </label>
               <div className="flex items-center gap-2">
@@ -283,13 +283,13 @@ export default function PensionCalculator() {
                   onChange={e => setStartAge(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('yearsLabel')}</span>
+                <span className="text-sm text-muted whitespace-nowrap">{t('yearsLabel')}</span>
               </div>
             </div>
 
             {/* 은퇴 나이 슬라이더 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('retirementAge')}
                 <span className="ml-2 font-bold text-blue-600 dark:text-blue-400">{retirementAge}{t('yearsLabel')}</span>
               </label>
@@ -302,7 +302,7 @@ export default function PensionCalculator() {
                 onChange={e => setRetirementAge(Number(e.target.value))}
                 className="w-full accent-blue-600"
               />
-              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-faint mt-1">
                 <span>50세</span>
                 <span>60세</span>
                 <span>70세</span>
@@ -320,7 +320,7 @@ export default function PensionCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-all"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-all"
               >
                 {t('reset')}
               </button>
@@ -345,10 +345,10 @@ export default function PensionCalculator() {
 
               {/* 납부 기간 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                <h3 className="text-sm font-semibold text-muted uppercase tracking-wide mb-4">
                   {t('contributionYears')}
                 </h3>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                <p className="text-3xl font-bold text-fg">
                   {result.contributionYears}{t('yearsLabel')}
                   {result.contributionMonths > 0 && (
                     <span className="text-xl ml-1">{result.contributionMonths}{t('monthsLabel')}</span>
@@ -358,25 +358,25 @@ export default function PensionCalculator() {
 
               {/* 납부액 상세 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                <h3 className="text-sm font-semibold text-muted uppercase tracking-wide mb-4">
                   납부액 상세
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">{t('employeeContribution')}</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sm text-sub">{t('employeeContribution')}</span>
+                    <span className="font-semibold text-fg">
                       {formatWonExact(result.monthlyEmployeeContribution)}/월
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">{t('employerContribution')}</span>
-                    <span className="font-semibold text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-sub">{t('employerContribution')}</span>
+                    <span className="font-semibold text-muted">
                       {formatWonExact(result.monthlyEmployerContribution)}/월
                     </span>
                   </div>
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{t('totalMonthlyContribution')}</span>
-                    <span className="font-bold text-gray-900 dark:text-white">
+                  <div className="border-t border-line pt-3 flex justify-between items-center">
+                    <span className="text-sm font-medium text-body">{t('totalMonthlyContribution')}</span>
+                    <span className="font-bold text-fg">
                       {formatWonExact(result.totalMonthlyContribution)}/월
                     </span>
                   </div>
@@ -392,15 +392,15 @@ export default function PensionCalculator() {
               {/* 소득대체율 & 연금비율 */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('replacementRate')}</p>
+                  <p className="text-sm text-muted mb-1">{t('replacementRate')}</p>
                   <p className={`text-3xl font-bold ${replacementRateColor}`}>
                     {result.replacementRate.toFixed(1)}%
                   </p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                  <p className="text-xs text-faint mt-2">
                     목표: 40% 이상
                   </p>
                   {/* 소득대체율 바 */}
-                  <div className="mt-3 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="mt-3 h-2 bg-track rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all"
                       style={{ width: `${Math.min(100, result.replacementRate / 70 * 100)}%` }}
@@ -408,11 +408,11 @@ export default function PensionCalculator() {
                   </div>
                 </div>
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('pensionRatio')}</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-sm text-muted mb-1">{t('pensionRatio')}</p>
+                  <p className="text-3xl font-bold text-fg">
                     {result.pensionRatio.toFixed(2)}배
                   </p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                  <p className="text-xs text-faint mt-2">
                     20년 수령 기준
                   </p>
                 </div>
@@ -433,10 +433,10 @@ export default function PensionCalculator() {
                 <Calculator className="w-12 h-12 text-blue-400 dark:text-blue-500" />
               </div>
               <div>
-                <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                <p className="text-lg font-medium text-body">
                   정보를 입력하고 계산하기를 눌러주세요
                 </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                <p className="text-sm text-faint mt-1">
                   예상 국민연금 수령액을 계산합니다
                 </p>
               </div>
@@ -456,18 +456,18 @@ export default function PensionCalculator() {
 
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="space-y-3">
           {guideFormulaSections.map(({ key, titleKey, itemsKey }) => (
-            <div key={key} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+            <div key={key} className="border border-line rounded-lg overflow-hidden">
               <button
                 onClick={() => toggleSection(key)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-750 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
                 aria-expanded={openSections[key]}
               >
-                <span className="font-medium text-gray-900 dark:text-white text-sm">
+                <span className="font-medium text-fg text-sm">
                   {t(titleKey as Parameters<typeof t>[0])}
                 </span>
                 {openSections[key]
@@ -478,7 +478,7 @@ export default function PensionCalculator() {
               {openSections[key] && (
                 <ul className="px-4 py-3 space-y-2">
                   {(t.raw(itemsKey as Parameters<typeof t.raw>[0]) as string[]).map((item, idx) => (
-                    <li key={idx} className="flex gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <li key={idx} className="flex gap-2 text-sm text-sub">
                       <span className="text-blue-500 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>

@@ -177,16 +177,16 @@ export default function VatCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Calculator className="w-7 h-7" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {/* Copy Link Button */}
         <button
           onClick={handleCopyLink}
-          className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors text-sm"
+          className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors text-sm"
           title="링크 복사"
         >
           {copiedId === 'link' ? (
@@ -204,13 +204,13 @@ export default function VatCalculator() {
       </div>
 
       {/* Tab: Single / Batch */}
-      <div className="flex gap-1 p-1 bg-gray-100 dark:bg-gray-700 rounded-xl w-fit">
+      <div className="flex gap-1 p-1 bg-soft rounded-xl w-fit">
         <button
           onClick={() => setActiveTab('single')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
             activeTab === 'single'
-              ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-surface text-fg shadow'
+              : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           <Calculator className="w-4 h-4" />
@@ -220,8 +220,8 @@ export default function VatCalculator() {
           onClick={() => setActiveTab('batch')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
             activeTab === 'batch'
-              ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-surface text-fg shadow'
+              : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           <List className="w-4 h-4" />
@@ -237,7 +237,7 @@ export default function VatCalculator() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
               {/* Mode Tabs */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-body mb-3">
                   {t('calcMode')}
                 </label>
                 <div className="space-y-2">
@@ -248,7 +248,7 @@ export default function VatCalculator() {
                       className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === m
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {t(`mode.${m}`)}
@@ -259,11 +259,11 @@ export default function VatCalculator() {
 
               {/* Input Amount */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('amountLabel')}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted font-medium">
                     ₩
                   </span>
                   <input
@@ -278,7 +278,7 @@ export default function VatCalculator() {
 
               {/* Quick Amount Buttons */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('quickAmounts')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -286,7 +286,7 @@ export default function VatCalculator() {
                     <button
                       key={qa.value}
                       onClick={() => handleQuickAmount(qa.value)}
-                      className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                      className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
                     >
                       {qa.label}
                     </button>
@@ -297,7 +297,7 @@ export default function VatCalculator() {
               {/* Reset Button */}
               <button
                 onClick={handleReset}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -354,7 +354,7 @@ export default function VatCalculator() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* CSS Pie Chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-base font-semibold text-fg mb-4">
                   {t('pieChartTitle')}
                 </h3>
                 <div className="flex items-center gap-6">
@@ -368,8 +368,8 @@ export default function VatCalculator() {
                     />
                     {/* Donut hole */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
-                        <span className="text-xs font-bold text-gray-700 dark:text-gray-300 text-center leading-tight">
+                      <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center">
+                        <span className="text-xs font-bold text-body text-center leading-tight">
                           10%<br/>VAT
                         </span>
                       </div>
@@ -380,18 +380,18 @@ export default function VatCalculator() {
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{t('supplyAmount')}</span>
+                        <span className="text-sm text-sub">{t('supplyAmount')}</span>
                       </div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white pl-5">
+                      <p className="text-sm font-semibold text-fg pl-5">
                         {supplyPct.toFixed(1)}%
                       </p>
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="w-3 h-3 rounded-full bg-orange-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{t('vatAmount')}</span>
+                        <span className="text-sm text-sub">{t('vatAmount')}</span>
                       </div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white pl-5">
+                      <p className="text-sm font-semibold text-fg pl-5">
                         {vatPct.toFixed(1)}%
                       </p>
                     </div>
@@ -402,7 +402,7 @@ export default function VatCalculator() {
               {/* Tax Invoice Preview */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h3 className="text-base font-semibold text-fg flex items-center gap-2">
                     <Receipt className="w-5 h-5" />
                     {t('receipt')}
                   </h3>
@@ -418,21 +418,21 @@ export default function VatCalculator() {
                   </button>
                 </div>
 
-                <div className="border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-700 px-4 py-2 border-b-2 border-gray-300 dark:border-gray-600">
-                    <h4 className="text-center font-bold text-gray-900 dark:text-white text-sm">세금계산서</h4>
+                <div className="border-2 border-line-strong rounded-lg overflow-hidden">
+                  <div className="bg-soft px-4 py-2 border-b-2 border-line-strong">
+                    <h4 className="text-center font-bold text-fg text-sm">세금계산서</h4>
                   </div>
                   <div className="p-4 space-y-2">
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                      <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">{t('supplyAmount')}</span>
-                      <span className="font-bold text-gray-900 dark:text-white text-sm">{formatCurrency(calculations.supply)}원</span>
+                    <div className="flex items-center justify-between py-2 border-b border-line">
+                      <span className="text-body font-medium text-sm">{t('supplyAmount')}</span>
+                      <span className="font-bold text-fg text-sm">{formatCurrency(calculations.supply)}원</span>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                      <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">{t('vatAmount')}</span>
+                    <div className="flex items-center justify-between py-2 border-b border-line">
+                      <span className="text-body font-medium text-sm">{t('vatAmount')}</span>
                       <span className="font-bold text-orange-600 dark:text-orange-400 text-sm">{formatCurrency(calculations.vat)}원</span>
                     </div>
                     <div className="flex items-center justify-between py-2 bg-blue-50 dark:bg-blue-950 rounded-lg px-3">
-                      <span className="text-gray-900 dark:text-white font-bold text-sm">{t('totalAmount')}</span>
+                      <span className="text-fg font-bold text-sm">{t('totalAmount')}</span>
                       <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatCurrency(calculations.total)}원</span>
                     </div>
                   </div>
@@ -448,7 +448,7 @@ export default function VatCalculator() {
         <div className="space-y-6">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('batchMode')}
               </h2>
               <button
@@ -462,10 +462,10 @@ export default function VatCalculator() {
 
             {/* Column Headers */}
             <div className="grid grid-cols-12 gap-2 mb-2 px-1">
-              <div className="col-span-4 text-xs font-medium text-gray-500 dark:text-gray-400">{t('batchItemName')}</div>
-              <div className="col-span-3 text-xs font-medium text-gray-500 dark:text-gray-400">{t('batchSupply')}</div>
-              <div className="col-span-2 text-xs font-medium text-gray-500 dark:text-gray-400">{t('batchVat')}</div>
-              <div className="col-span-2 text-xs font-medium text-gray-500 dark:text-gray-400">{t('batchTotal')}</div>
+              <div className="col-span-4 text-xs font-medium text-muted">{t('batchItemName')}</div>
+              <div className="col-span-3 text-xs font-medium text-muted">{t('batchSupply')}</div>
+              <div className="col-span-2 text-xs font-medium text-muted">{t('batchVat')}</div>
+              <div className="col-span-2 text-xs font-medium text-muted">{t('batchTotal')}</div>
               <div className="col-span-1" />
             </div>
 
@@ -514,9 +514,9 @@ export default function VatCalculator() {
             </div>
 
             {/* Totals Row */}
-            <div className="mt-4 pt-4 border-t-2 border-gray-300 dark:border-gray-600 grid grid-cols-12 gap-2 items-center">
-              <div className="col-span-4 text-sm font-bold text-gray-900 dark:text-white">{t('batchTotal')} ({batchItems.length}개)</div>
-              <div className="col-span-3 text-sm font-bold text-gray-900 dark:text-white text-right pr-1">
+            <div className="mt-4 pt-4 border-t-2 border-line-strong grid grid-cols-12 gap-2 items-center">
+              <div className="col-span-4 text-sm font-bold text-fg">{t('batchTotal')} ({batchItems.length}개)</div>
+              <div className="col-span-3 text-sm font-bold text-fg text-right pr-1">
                 {formatCurrency(batchTotals.supply)}
               </div>
               <div className="col-span-2 text-sm font-bold text-orange-600 dark:text-orange-400 text-right pr-1">
@@ -549,17 +549,17 @@ export default function VatCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.basic.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.basic.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -567,10 +567,10 @@ export default function VatCalculator() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.reverse.title')}
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               {(t.raw('guide.reverse.items') as string[]).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}

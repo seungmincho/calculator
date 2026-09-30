@@ -48,7 +48,7 @@ export default function PyeongCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><PyeongCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -58,17 +58,17 @@ export default function PyeongCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             평수 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             평수 계산기는 한국 부동산에서 자주 사용하는 평(坪) 단위와 국제 표준 제곱미터(m²) 간의 면적을 즉시 변환해 주는 도구입니다. 아파트 평수 계산, 토지 면적 환산, 상가 임대 면적 비교 등 부동산 거래 시 필수적으로 필요하며, 평방피트(ft²) 변환도 지원하여 해외 부동산 정보와도 손쉽게 비교할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             평수 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>아파트 평수 확인:</strong> 등기부등본이나 분양 공고의 m² 단위 전용면적을 평으로 변환하면 실제 생활 공간 크기를 직관적으로 파악할 수 있습니다.</li>
             <li><strong>공급면적과 전용면적 구분:</strong> 아파트 분양 시 공급면적(계약면적)과 전용면적이 다르므로 각각을 평으로 변환해 실제 사용 공간을 확인하세요.</li>
             <li><strong>임대료 비교:</strong> 상가나 사무실 임대 시 평당 임대료를 구하면 서로 다른 면적의 물건을 객관적으로 비교할 수 있습니다.</li>

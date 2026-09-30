@@ -266,8 +266,8 @@ export default function BackgroundRemover() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Upload Zone */}
@@ -280,13 +280,13 @@ export default function BackgroundRemover() {
           className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-colors ${
             isDragging
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-              : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700'
+              : 'border-line-strong hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700'
           }`}
         >
-          <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
-          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">{t('uploadImage')}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('dragDrop')}</p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">PNG, JPG, WEBP, GIF</p>
+          <Upload className="mx-auto h-12 w-12 text-faint mb-4" />
+          <p className="text-lg font-medium text-body">{t('uploadImage')}</p>
+          <p className="text-sm text-muted mt-1">{t('dragDrop')}</p>
+          <p className="text-xs text-faint mt-2">PNG, JPG, WEBP, GIF</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -313,7 +313,7 @@ export default function BackgroundRemover() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                   isPickMode
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-blue-50 dark:hover:bg-gray-600'
                 }`}
               >
                 <Pipette className="h-4 w-4" />
@@ -324,11 +324,11 @@ export default function BackgroundRemover() {
               {selectedColor && (
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-8 h-8 rounded border border-gray-300 dark:border-gray-600 shadow-sm flex-shrink-0"
+                    className="w-8 h-8 rounded border border-line-strong shadow-sm flex-shrink-0"
                     style={{ backgroundColor: colorToHex(selectedColor) }}
                     title={`RGB(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`}
                   />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-sub">
                     {t('selectedColor')}: {colorToHex(selectedColor).toUpperCase()}
                   </span>
                 </div>
@@ -350,7 +350,7 @@ export default function BackgroundRemover() {
               {/* Reset */}
               <button
                 onClick={handleReset}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-soft text-body rounded-lg font-medium text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 <RefreshCw className="h-4 w-4" />
                 {t('reset')}
@@ -362,7 +362,7 @@ export default function BackgroundRemover() {
               {/* Tolerance */}
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-sm font-medium text-body">
                     {t('tolerance')}
                   </label>
                   <span className="text-sm text-blue-600 dark:text-blue-400 font-semibold">{tolerance}</span>
@@ -375,7 +375,7 @@ export default function BackgroundRemover() {
                   onChange={e => setTolerance(Number(e.target.value))}
                   className="w-full accent-blue-600"
                 />
-                <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
+                <div className="flex justify-between text-xs text-faint">
                   <span>0 (정밀)</span>
                   <span>100 (광범위)</span>
                 </div>
@@ -384,7 +384,7 @@ export default function BackgroundRemover() {
               {/* Edge softening */}
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-sm font-medium text-body">
                     {t('edgeSoftening')}
                   </label>
                   <span className="text-sm text-blue-600 dark:text-blue-400 font-semibold">{edgeSoftening}px</span>
@@ -398,7 +398,7 @@ export default function BackgroundRemover() {
                   onChange={e => setEdgeSoftening(Number(e.target.value))}
                   className="w-full accent-blue-600"
                 />
-                <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
+                <div className="flex justify-between text-xs text-faint">
                   <span>0 (날카로운 경계)</span>
                   <span>5 (부드러운 경계)</span>
                 </div>
@@ -425,9 +425,9 @@ export default function BackgroundRemover() {
           <div className="grid md:grid-cols-2 gap-4">
             {/* Original */}
             <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('original')}</h2>
+              <h2 className="text-sm font-semibold text-body">{t('original')}</h2>
               <div
-                className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-700 max-h-96"
+                className="overflow-auto rounded-lg border border-line max-h-96"
                 style={{ background: '#f0f0f0' }}
               >
                 <canvas
@@ -449,9 +449,9 @@ export default function BackgroundRemover() {
 
             {/* Result */}
             <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('result')}</h2>
+              <h2 className="text-sm font-semibold text-body">{t('result')}</h2>
               <div
-                className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-700 max-h-96 relative"
+                className="overflow-auto rounded-lg border border-line max-h-96 relative"
                 style={{
                   backgroundImage:
                     'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)',
@@ -469,7 +469,7 @@ export default function BackgroundRemover() {
                 />
                 {!hasResult && (
                   <div
-                    className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm"
+                    className="absolute inset-0 flex items-center justify-center text-faint text-sm"
                   >
                     {t('preview')}
                   </div>
@@ -487,7 +487,7 @@ export default function BackgroundRemover() {
           className="w-full flex items-center justify-between p-6 text-left"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('guide.title')}</h2>
           {showGuide ? (
             <ChevronUp className="h-5 w-5 text-gray-400" />
           ) : (
@@ -499,24 +499,24 @@ export default function BackgroundRemover() {
           <div className="px-6 pb-6 space-y-6">
             {/* Usage steps */}
             <div>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              <h3 className="text-base font-semibold text-body mb-3">
                 {t('guide.howToUse.title')}
               </h3>
               <ol className="space-y-2 list-decimal list-inside">
                 {(t.raw('guide.howToUse.steps') as string[]).map((step, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400">{step}</li>
+                  <li key={i} className="text-sm text-sub">{step}</li>
                 ))}
               </ol>
             </div>
 
             {/* Tips */}
             <div>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              <h3 className="text-base font-semibold text-body mb-3">
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((tip, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                  <li key={i} className="text-sm text-sub flex gap-2">
                     <span className="text-blue-500 flex-shrink-0 mt-0.5">•</span>
                     <span>{tip}</span>
                   </li>
@@ -526,12 +526,12 @@ export default function BackgroundRemover() {
 
             {/* Limitations */}
             <div>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              <h3 className="text-base font-semibold text-body mb-3">
                 {t('guide.limitations.title')}
               </h3>
               <ul className="space-y-2">
                 {(t.raw('guide.limitations.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                  <li key={i} className="text-sm text-sub flex gap-2">
                     <span className="text-amber-500 flex-shrink-0 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>

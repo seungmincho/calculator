@@ -31,7 +31,7 @@ interface MatchResult {
 
 const TOKEN_COLORS: Record<RegexToken['type'], { bg: string; border: string; text: string }> = {
   anchor:      { bg: 'bg-purple-100 dark:bg-purple-900/40', border: 'border-purple-300 dark:border-purple-700', text: 'text-purple-800 dark:text-purple-200' },
-  literal:     { bg: 'bg-gray-100 dark:bg-gray-700', border: 'border-gray-300 dark:border-gray-600', text: 'text-gray-800 dark:text-gray-200' },
+  literal:     { bg: 'bg-soft', border: 'border-line-strong', text: 'text-body' },
   quantifier:  { bg: 'bg-amber-100 dark:bg-amber-900/40', border: 'border-amber-300 dark:border-amber-700', text: 'text-amber-800 dark:text-amber-200' },
   class:       { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-blue-300 dark:border-blue-700', text: 'text-blue-800 dark:text-blue-200' },
   group:       { bg: 'bg-green-100 dark:bg-green-900/40', border: 'border-green-300 dark:border-green-700', text: 'text-green-800 dark:text-green-200' },
@@ -457,10 +457,10 @@ export default function RegexEngineVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           정규표현식 엔진 시각화
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           regex 패턴의 매칭 과정을 단계별로 시각화하고 토큰을 분석합니다
         </p>
       </div>
@@ -471,7 +471,7 @@ export default function RegexEngineVisualizer() {
           <button
             key={p.name}
             onClick={() => loadPreset(p)}
-            className="px-3 py-1.5 text-sm rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-700 hover:border-orange-300 dark:hover:border-orange-600 transition-colors"
+            className="px-3 py-1.5 text-sm rounded-lg bg-surface border border-line text-body hover:bg-orange-50 dark:hover:bg-gray-700 hover:border-orange-300 dark:hover:border-orange-600 transition-colors"
           >
             {p.name}
           </button>
@@ -482,27 +482,27 @@ export default function RegexEngineVisualizer() {
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         {/* Pattern input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             정규표현식 패턴
           </label>
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-mono">/</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-faint font-mono">/</span>
               <input
                 type="text"
                 value={pattern}
                 onChange={(e) => { setPattern(e.target.value); setCurrentStep(-1); setIsPlaying(false) }}
-                className={`w-full pl-6 pr-3 py-2.5 font-mono text-sm border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none ${
-                  isValid ? 'border-gray-300 dark:border-gray-600' : 'border-red-500 dark:border-red-500'
+                className={`w-full pl-6 pr-3 py-2.5 font-mono text-sm border rounded-lg bg-field text-fg focus:ring-2 focus:ring-orange-500 focus:outline-none ${
+                  isValid ? 'border-line-strong' : 'border-red-500 dark:border-red-500'
                 }`}
                 placeholder="\\d+|[a-z]+"
                 spellCheck={false}
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-mono">/{flags}</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint font-mono">/{flags}</span>
             </div>
             <button
               onClick={() => copyToClipboard(pattern, 'pattern')}
-              className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-colors"
+              className="px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub transition-colors"
               title="패턴 복사"
             >
               {copiedId === 'pattern' ? <Check size={16} /> : <Copy size={16} />}
@@ -515,7 +515,7 @@ export default function RegexEngineVisualizer() {
 
         {/* Flags */}
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-500 dark:text-gray-400">플래그:</span>
+          <span className="text-sm text-muted">플래그:</span>
           {[
             { flag: 'g', label: 'global', desc: '전역 검색' },
             { flag: 'i', label: 'ignoreCase', desc: '대소문자 무시' },
@@ -528,7 +528,7 @@ export default function RegexEngineVisualizer() {
               className={`px-2.5 py-1 text-xs font-mono rounded-md border transition-colors ${
                 flags.includes(flag)
                   ? 'bg-orange-100 dark:bg-orange-900/40 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300'
-                  : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+                  : 'bg-subtle border-line text-muted'
               }`}
               title={`${label}: ${desc}`}
             >
@@ -539,7 +539,7 @@ export default function RegexEngineVisualizer() {
 
         {/* Test string */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             테스트 문자열
           </label>
           <textarea
@@ -565,18 +565,18 @@ export default function RegexEngineVisualizer() {
           <button
             onClick={handleNext}
             disabled={!isValid || !pattern || !testStr || currentStep >= totalSteps - 1}
-            className="flex items-center gap-2 px-3 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <SkipForward size={16} /> 다음 위치
           </button>
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-3 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
           >
             <RotateCcw size={16} /> 초기화
           </button>
           <div className="flex items-center gap-2 ml-auto">
-            <span className="text-xs text-gray-500 dark:text-gray-400">속도:</span>
+            <span className="text-xs text-muted">속도:</span>
             <input
               type="range"
               min={100}
@@ -586,20 +586,20 @@ export default function RegexEngineVisualizer() {
               onChange={(e) => setSpeed(1600 - Number(e.target.value))}
               className="w-24 accent-orange-500"
             />
-            <span className="text-xs text-gray-500 dark:text-gray-400 w-14 text-right">{speed}ms</span>
+            <span className="text-xs text-muted w-14 text-right">{speed}ms</span>
           </div>
         </div>
 
         {/* Progress */}
         {totalSteps > 0 && (
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="flex-1 h-2 bg-track rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full transition-all duration-200"
                 style={{ width: `${currentStep < 0 ? 0 : ((currentStep + 1) / totalSteps) * 100}%` }}
               />
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums w-16 text-right">
+            <span className="text-xs text-muted tabular-nums w-16 text-right">
               {currentStep < 0 ? 0 : currentStep + 1} / {totalSteps}
             </span>
           </div>
@@ -612,7 +612,7 @@ export default function RegexEngineVisualizer() {
         <div className="lg:col-span-2 space-y-6">
           {/* Pattern Token Breakdown */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Code size={18} /> 패턴 토큰 분석
             </h2>
             {tokens.length > 0 ? (
@@ -625,13 +625,13 @@ export default function RegexEngineVisualizer() {
                       className={`inline-flex flex-col items-center px-3 py-2 rounded-lg border ${c.bg} ${c.border} transition-all`}
                     >
                       <span className={`font-mono text-sm font-bold ${c.text}`}>{tok.raw}</span>
-                      <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5 whitespace-nowrap">{tok.label}</span>
+                      <span className="text-[10px] text-muted mt-0.5 whitespace-nowrap">{tok.label}</span>
                     </div>
                   )
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500">패턴을 입력하면 토큰이 표시됩니다</p>
+              <p className="text-sm text-faint">패턴을 입력하면 토큰이 표시됩니다</p>
             )}
             {/* Token type legend */}
             <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
@@ -649,7 +649,7 @@ export default function RegexEngineVisualizer() {
                 return (
                   <div key={type} className="flex items-center gap-1">
                     <span className={`w-3 h-3 rounded-sm border ${c.bg} ${c.border}`} />
-                    <span className="text-[10px] text-gray-500 dark:text-gray-400">{label}</span>
+                    <span className="text-[10px] text-muted">{label}</span>
                   </div>
                 )
               })}
@@ -658,7 +658,7 @@ export default function RegexEngineVisualizer() {
 
           {/* String Visualization */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Zap size={18} /> 문자열 매칭 시각화
             </h2>
             {testStr ? (
@@ -669,7 +669,7 @@ export default function RegexEngineVisualizer() {
                   if (state === 'matched') cls += 'bg-green-200 dark:bg-green-800/60 text-green-900 dark:text-green-100'
                   else if (state === 'current') cls += 'bg-blue-300 dark:bg-blue-700/70 text-blue-900 dark:text-blue-100 ring-2 ring-blue-500 scale-110'
                   else if (state === 'failed') cls += 'bg-red-200 dark:bg-red-800/60 text-red-900 dark:text-red-100'
-                  else cls += 'text-gray-700 dark:text-gray-300'
+                  else cls += 'text-body'
 
                   // Show spaces explicitly
                   const display = ch === ' ' ? '\u00B7' : ch === '\n' ? '\u21B5' : ch === '\t' ? '\u2192' : ch
@@ -682,7 +682,7 @@ export default function RegexEngineVisualizer() {
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500">테스트 문자열을 입력하세요</p>
+              <p className="text-sm text-faint">테스트 문자열을 입력하세요</p>
             )}
 
             {/* Current step info */}
@@ -701,7 +701,7 @@ export default function RegexEngineVisualizer() {
             )}
 
             {/* Color legend */}
-            <div className="mt-3 flex flex-wrap gap-4 text-xs text-gray-500 dark:text-gray-400">
+            <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-200 dark:bg-green-800/60" /> 매칭됨</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-300 dark:bg-blue-700/70 ring-1 ring-blue-500" /> 현재 위치</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-red-200 dark:bg-red-800/60" /> 실패</span>
@@ -713,22 +713,22 @@ export default function RegexEngineVisualizer() {
         <div className="space-y-6">
           {/* Match results */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-fg mb-4">
               매칭 결과
             </h2>
             {!isValid ? (
               <p className="text-sm text-red-500">패턴 오류</p>
             ) : results.length > 0 ? (
               <div className="space-y-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted">
                   총 <span className="font-bold text-orange-600 dark:text-orange-400">{results.length}</span>개 매칭
                 </p>
                 <div className="max-h-80 overflow-y-auto space-y-2 pr-1">
                   {results.map((r, i) => (
-                    <div key={i} className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div key={i} className="bg-subtle rounded-lg p-3 border border-line">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">매칭 #{i + 1}</span>
-                        <span className="text-[10px] text-gray-400 dark:text-gray-500">위치 {r.start}~{r.end - 1}</span>
+                        <span className="text-xs font-medium text-muted">매칭 #{i + 1}</span>
+                        <span className="text-[10px] text-faint">위치 {r.start}~{r.end - 1}</span>
                       </div>
                       <p className="font-mono text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded break-all">
                         &quot;{r.text}&quot;
@@ -740,7 +740,7 @@ export default function RegexEngineVisualizer() {
                               <span className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded font-mono">
                                 ${gi + 1}
                               </span>
-                              <span className="font-mono text-gray-700 dark:text-gray-300">&quot;{g}&quot;</span>
+                              <span className="font-mono text-body">&quot;{g}&quot;</span>
                             </div>
                           ))}
                         </div>
@@ -750,15 +750,15 @@ export default function RegexEngineVisualizer() {
                 </div>
               </div>
             ) : pattern && testStr ? (
-              <p className="text-sm text-gray-400 dark:text-gray-500">매칭 결과 없음</p>
+              <p className="text-sm text-faint">매칭 결과 없음</p>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500">패턴과 문자열을 입력하세요</p>
+              <p className="text-sm text-faint">패턴과 문자열을 입력하세요</p>
             )}
           </div>
 
           {/* Quick regex snippet */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">JavaScript 코드</h2>
+            <h2 className="text-sm font-semibold text-fg mb-3">JavaScript 코드</h2>
             <div className="relative">
               <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-lg p-3 text-xs font-mono overflow-x-auto">
 {`const regex = /${pattern}/${flags};
@@ -784,7 +784,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"
         >
-          <span className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="flex items-center gap-2 text-lg font-semibold text-fg">
             <BookOpen size={18} /> 정규표현식 가이드
           </span>
           {guideOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
@@ -792,7 +792,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
         {guideOpen && (
           <div className="px-6 pb-6">
             {/* Tabs */}
-            <div className="flex gap-1 mb-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex gap-1 mb-4 border-b border-line">
               {([
                 { key: 'syntax', label: '기본 문법' },
                 { key: 'greedy', label: '탐욕적 vs 게으른' },
@@ -804,7 +804,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                   className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
                     guideTab === key
                       ? 'border-orange-500 text-orange-600 dark:text-orange-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   {label}
@@ -815,22 +815,22 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
             {/* Syntax table */}
             {guideTab === 'syntax' && (
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-sm text-sub mb-4">
                   정규표현식(Regular Expression)은 문자열에서 특정 패턴을 찾기 위한 형식 언어입니다. 아래는 자주 사용하는 문법입니다.
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-2 pr-4 font-medium text-gray-700 dark:text-gray-300 w-28">문법</th>
-                        <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">설명</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 pr-4 font-medium text-body w-28">문법</th>
+                        <th className="text-left py-2 font-medium text-body">설명</th>
                       </tr>
                     </thead>
                     <tbody>
                       {SYNTAX_TABLE.map((row, i) => (
                         <tr key={i} className="border-b border-gray-100 dark:border-gray-700/50">
                           <td className="py-2 pr-4 font-mono text-orange-600 dark:text-orange-400 font-bold">{row.syntax}</td>
-                          <td className="py-2 text-gray-600 dark:text-gray-400">{row.desc}</td>
+                          <td className="py-2 text-sub">{row.desc}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -842,36 +842,36 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
             {/* Greedy vs Lazy */}
             {guideTab === 'greedy' && (
               <div className="space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-sub">
                   수량자(<code className="font-mono text-orange-600 dark:text-orange-400">*</code>, <code className="font-mono text-orange-600 dark:text-orange-400">+</code>, <code className="font-mono text-orange-600 dark:text-orange-400">?</code>)는 기본적으로 <strong>탐욕적(greedy)</strong>으로 동작합니다. 가능한 한 많은 문자를 매칭합니다.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
                     <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">탐욕적 (Greedy)</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                      패턴: <code className="font-mono bg-white dark:bg-gray-800 px-1 rounded">&quot;.*&quot;</code>
+                    <p className="text-sm text-body mb-2">
+                      패턴: <code className="font-mono bg-surface px-1 rounded">&quot;.*&quot;</code>
                     </p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                      입력: <code className="font-mono bg-white dark:bg-gray-800 px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
+                    <p className="text-sm text-body mb-1">
+                      입력: <code className="font-mono bg-surface px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-sub">
                       결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;a&quot; and &quot;b&quot;</span> (전체 매칭)
                     </p>
                   </div>
                   <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 border border-teal-200 dark:border-teal-800">
                     <h4 className="font-semibold text-teal-800 dark:text-teal-200 mb-2">게으른 (Lazy)</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                      패턴: <code className="font-mono bg-white dark:bg-gray-800 px-1 rounded">&quot;.*?&quot;</code>
+                    <p className="text-sm text-body mb-2">
+                      패턴: <code className="font-mono bg-surface px-1 rounded">&quot;.*?&quot;</code>
                     </p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                      입력: <code className="font-mono bg-white dark:bg-gray-800 px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
+                    <p className="text-sm text-body mb-1">
+                      입력: <code className="font-mono bg-surface px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-sub">
                       결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;a&quot;</span>, <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;b&quot;</span> (최소 매칭)
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-sub">
                   수량자 뒤에 <code className="font-mono text-orange-600 dark:text-orange-400">?</code>를 붙이면 게으른 모드가 됩니다:
                   <code className="font-mono ml-1">*?</code>, <code className="font-mono ml-1">+?</code>, <code className="font-mono ml-1">??</code>, <code className="font-mono ml-1">{'{n,m}'}?</code>
                 </p>
@@ -887,8 +887,8 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                   { q: '정규표현식 성능이 느릴 때는?', a: '재앙적 역추적(catastrophic backtracking)이 원인일 수 있습니다. 중첩된 수량자(예: (a+)+)를 피하고, 구체적인 문자 클래스를 사용하세요. 가능하면 .*보다 [^\\n]*처럼 범위를 제한하는 것이 좋습니다.' },
                 ].map((item, i) => (
                   <div key={i} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">Q. {item.q}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.a}</p>
+                    <h4 className="font-semibold text-fg text-sm mb-2">Q. {item.q}</h4>
+                    <p className="text-sm text-sub leading-relaxed">{item.a}</p>
                   </div>
                 ))}
               </div>

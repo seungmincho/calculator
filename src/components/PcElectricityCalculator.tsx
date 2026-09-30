@@ -198,21 +198,21 @@ export default function PcElectricityCalculator() {
     `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
       active
         ? 'bg-blue-600 text-white'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
     }`
 
   const inputClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none'
+    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none'
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Zap className="w-7 h-7 text-yellow-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -220,14 +220,14 @@ export default function PcElectricityCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Components */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Cpu className="w-5 h-5 text-blue-500" />
               {t('components.cpu')}
             </h2>
 
             {/* CPU */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('components.cpuLabel')}
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -238,7 +238,7 @@ export default function PcElectricityCalculator() {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('custom')}</span>
+                <span className="text-sm text-muted">{t('custom')}</span>
                 <input
                   type="number"
                   className={inputClass + ' max-w-[120px]'}
@@ -247,13 +247,13 @@ export default function PcElectricityCalculator() {
                   onChange={(e) => handleCpuCustom(e.target.value)}
                   min={0}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('watt')}</span>
+                <span className="text-sm text-muted">{t('watt')}</span>
               </div>
             </div>
 
             {/* GPU */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('components.gpuLabel')}
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -264,7 +264,7 @@ export default function PcElectricityCalculator() {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('custom')}</span>
+                <span className="text-sm text-muted">{t('custom')}</span>
                 <input
                   type="number"
                   className={inputClass + ' max-w-[120px]'}
@@ -273,17 +273,17 @@ export default function PcElectricityCalculator() {
                   onChange={(e) => handleGpuCustom(e.target.value)}
                   min={0}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('watt')}</span>
+                <span className="text-sm text-muted">{t('watt')}</span>
               </div>
             </div>
 
             {/* RAM */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('components.ramLabel')} ({t('ram.perSlot')})
               </label>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('ram.slots')}</span>
+                <span className="text-sm text-muted">{t('ram.slots')}</span>
                 <select
                   className={inputClass + ' max-w-[100px]'}
                   value={ramSlots}
@@ -293,18 +293,18 @@ export default function PcElectricityCalculator() {
                     <option key={n} value={n}>{n}</option>
                   ))}
                 </select>
-                <span className="text-sm text-gray-500 dark:text-gray-400">= {ramWatt}W</span>
+                <span className="text-sm text-muted">= {ramWatt}W</span>
               </div>
             </div>
 
             {/* Storage */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('components.storageLabel')}
               </label>
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('storage.ssd')}</span>
+                  <span className="text-sm text-sub">{t('storage.ssd')}</span>
                   <select
                     className={inputClass + ' max-w-[80px]'}
                     value={ssdCount}
@@ -316,7 +316,7 @@ export default function PcElectricityCalculator() {
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('storage.hdd')}</span>
+                  <span className="text-sm text-sub">{t('storage.hdd')}</span>
                   <select
                     className={inputClass + ' max-w-[80px]'}
                     value={hddCount}
@@ -327,13 +327,13 @@ export default function PcElectricityCalculator() {
                     ))}
                   </select>
                 </div>
-                <span className="text-sm text-gray-500 dark:text-gray-400">= {storageWatt}W</span>
+                <span className="text-sm text-muted">= {storageWatt}W</span>
               </div>
             </div>
 
             {/* Monitor */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Monitor className="w-4 h-4 inline mr-1" />
                 {t('components.monitorLabel')}
               </label>
@@ -350,7 +350,7 @@ export default function PcElectricityCalculator() {
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('custom')}</span>
+                  <span className="text-sm text-muted">{t('custom')}</span>
                   <input
                     type="number"
                     className={inputClass + ' max-w-[100px]'}
@@ -367,14 +367,14 @@ export default function PcElectricityCalculator() {
                     checked={isDualMonitor}
                     onChange={(e) => setIsDualMonitor(e.target.checked)}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('monitor.dual')}</span>
+                  <span className="text-sm text-body">{t('monitor.dual')}</span>
                 </label>
               </div>
             </div>
 
             {/* Etc */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('components.etcLabel')}
               </label>
               <div className="flex items-center gap-2">
@@ -385,21 +385,21 @@ export default function PcElectricityCalculator() {
                   onChange={(e) => setEtcWatt(Math.max(0, Number(e.target.value)))}
                   min={0}
                 />
-                <span className="text-sm text-gray-500 dark:text-gray-400">{t('watt')}</span>
+                <span className="text-sm text-muted">{t('watt')}</span>
               </div>
             </div>
           </div>
 
           {/* Usage Pattern */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calculator className="w-5 h-5 text-green-500" />
               {t('usage.title')}
             </h2>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('usage.hoursPerDay')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -411,11 +411,11 @@ export default function PcElectricityCalculator() {
                     min={0}
                     max={24}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('usage.hours')}</span>
+                  <span className="text-sm text-muted whitespace-nowrap">{t('usage.hours')}</span>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('usage.daysPerMonth')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -427,14 +427,14 @@ export default function PcElectricityCalculator() {
                     min={0}
                     max={31}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{t('usage.days')}</span>
+                  <span className="text-sm text-muted whitespace-nowrap">{t('usage.days')}</span>
                 </div>
               </div>
             </div>
 
             {/* Load type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('load.title')}
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -459,14 +459,14 @@ export default function PcElectricityCalculator() {
                     min={0}
                     max={100}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('load.percent')}</span>
+                  <span className="text-sm text-muted">{t('load.percent')}</span>
                 </div>
               )}
             </div>
 
             {/* Tariff */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('tariff.title')}
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -484,7 +484,7 @@ export default function PcElectricityCalculator() {
                 </button>
               </div>
               {tariffType === 'progressive' ? (
-                <div className="text-xs text-gray-500 dark:text-gray-400 space-y-0.5 mt-1">
+                <div className="text-xs text-muted space-y-0.5 mt-1">
                   <p>{t('tariff.tier1')}</p>
                   <p>{t('tariff.tier2')}</p>
                   <p>{t('tariff.tier3')}</p>
@@ -498,7 +498,7 @@ export default function PcElectricityCalculator() {
                     onChange={(e) => setCustomTariff(Math.max(0, Number(e.target.value)))}
                     min={0}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('tariff.wonPerKwh')}</span>
+                  <span className="text-sm text-muted">{t('tariff.wonPerKwh')}</span>
                 </div>
               )}
             </div>
@@ -509,7 +509,7 @@ export default function PcElectricityCalculator() {
         <div className="lg:col-span-1 space-y-6">
           {/* Result cards */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Zap className="w-5 h-5 text-yellow-500" />
               {t('result.title')}
             </h2>
@@ -521,15 +521,15 @@ export default function PcElectricityCalculator() {
               <ResultCard label={t('result.yearlyKwh')} value={`${formatNumber(result.yearlyKwh, 1)} ${t('result.kwh')}`} />
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+            <div className="border-t border-line pt-4 space-y-3">
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">{t('result.monthlyCost')}</p>
+                <p className="text-sm text-sub">{t('result.monthlyCost')}</p>
                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {formatNumber(Math.round(result.monthlyCost))}{t('result.won')}
                 </p>
               </div>
               <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">{t('result.yearlyCost')}</p>
+                <p className="text-sm text-sub">{t('result.yearlyCost')}</p>
                 <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   {formatNumber(Math.round(result.yearlyCost))}{t('result.won')}
                 </p>
@@ -539,7 +539,7 @@ export default function PcElectricityCalculator() {
 
           {/* Component ratio bar */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-fg mb-4 flex items-center gap-2">
               <HardDrive className="w-4 h-4 text-purple-500" />
               {t('ratio.title')}
             </h3>
@@ -562,9 +562,9 @@ export default function PcElectricityCalculator() {
                 <div key={entry.key} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span className={`w-3 h-3 rounded-sm ${COMPONENT_COLORS[entry.key]}`} />
-                    <span className="text-gray-700 dark:text-gray-300">{t(componentLabelKey(entry.key))}</span>
+                    <span className="text-body">{t(componentLabelKey(entry.key))}</span>
                   </div>
-                  <span className="text-gray-500 dark:text-gray-400">
+                  <span className="text-muted">
                     {entry.watt}W ({entry.percent.toFixed(1)}%)
                   </span>
                 </div>
@@ -576,16 +576,16 @@ export default function PcElectricityCalculator() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.section1.title')}</h3>
+            <h3 className="font-medium text-fg mb-3">{t('guide.section1.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.section1.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -593,10 +593,10 @@ export default function PcElectricityCalculator() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.section2.title')}</h3>
+            <h3 className="font-medium text-fg mb-3">{t('guide.section2.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.section2.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -611,9 +611,9 @@ export default function PcElectricityCalculator() {
 
 function ResultCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-      <p className="text-lg font-semibold text-gray-900 dark:text-white">{value}</p>
+    <div className="bg-subtle rounded-lg p-3">
+      <p className="text-xs text-muted">{label}</p>
+      <p className="text-lg font-semibold text-fg">{value}</p>
     </div>
   )
 }

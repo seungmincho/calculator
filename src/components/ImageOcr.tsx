@@ -285,8 +285,8 @@ export default function ImageOcr() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -296,7 +296,7 @@ export default function ImageOcr() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Upload Area */}
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h2 className="text-lg font-semibold text-fg mb-3">
                 {t('upload')}
               </h2>
               <div
@@ -307,12 +307,12 @@ export default function ImageOcr() {
                 className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
                   isDragging
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-500'
+                    : 'border-line-strong hover:border-blue-500'
                 }`}
               >
                 <Upload className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('uploadDragDrop')}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">{t('pasteHint')}</p>
+                <p className="text-sm text-sub mb-1">{t('uploadDragDrop')}</p>
+                <p className="text-xs text-muted">{t('pasteHint')}</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -326,7 +326,7 @@ export default function ImageOcr() {
             {/* Image Preview + Rotation */}
             {imageUrl && (
               <div className="space-y-2">
-                <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="overflow-hidden rounded-lg border border-line">
                   <img
                     src={imageUrl}
                     alt="Preview"
@@ -337,16 +337,16 @@ export default function ImageOcr() {
                 <div className="flex items-center justify-center gap-2">
                   <button
                     onClick={() => setRotation((r) => (r + 270) % 360)}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                     title={t('rotateLeft')}
                   >
                     <RotateCcw className="w-4 h-4" />
                     <span>90°</span>
                   </button>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[3rem] text-center">{rotation}°</span>
+                  <span className="text-xs text-muted min-w-[3rem] text-center">{rotation}°</span>
                   <button
                     onClick={() => setRotation((r) => (r + 90) % 360)}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                     title={t('rotateRight')}
                   >
                     <RotateCw className="w-4 h-4" />
@@ -358,7 +358,7 @@ export default function ImageOcr() {
 
             {/* Language Selection */}
             <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className="flex items-center gap-2 text-sm font-medium text-body mb-3">
                 <Languages className="w-4 h-4" />
                 {t('language')}
               </label>
@@ -370,7 +370,7 @@ export default function ImageOcr() {
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       selectedLangs.includes(lang.code)
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(lang.labelKey)}
@@ -392,7 +392,7 @@ export default function ImageOcr() {
               <button
                 onClick={handleReset}
                 disabled={!imageFile && !resultText}
-                className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-5 h-5" />
                 {t('reset')}
@@ -403,7 +403,7 @@ export default function ImageOcr() {
             {isProcessing && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">{t('progress')}</span>
+                  <span className="text-sub">{t('progress')}</span>
                   <span className="text-blue-600 dark:text-blue-400 font-medium">{progress}%</span>
                 </div>
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
@@ -413,7 +413,7 @@ export default function ImageOcr() {
                   />
                 </div>
                 {statusText && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{statusText}</p>
+                  <p className="text-xs text-muted">{statusText}</p>
                 )}
               </div>
             )}
@@ -425,14 +425,14 @@ export default function ImageOcr() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Results Header */}
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('result')}
               </h2>
               {resultText && (
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => copyToClipboard(resultText, 'result')}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {copiedId === 'result' ? (
                       <>
@@ -463,15 +463,15 @@ export default function ImageOcr() {
                 value={resultText}
                 onChange={(e) => setResultText(e.target.value)}
                 rows={12}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y"
               />
             ) : (
               <div className="text-center py-16">
                 <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-muted">
                   {imageFile ? t('noResult') : t('noImage')}
                 </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                <p className="text-sm text-faint mt-1">
                   {t('resultPlaceholder')}
                 </p>
               </div>
@@ -487,13 +487,13 @@ export default function ImageOcr() {
                     onChange={(e) => setShowConfidence(e.target.checked)}
                     className="w-4 h-4 accent-blue-600"
                   />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-body">
                     {t('showConfidence')}
                   </span>
                 </label>
 
                 {showConfidence && (
-                  <div className="mt-3 max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                  <div className="mt-3 max-h-64 overflow-y-auto border border-line rounded-lg p-3">
                     <div className="flex flex-wrap gap-1.5">
                       {words.map((word, index) => (
                         <span
@@ -501,7 +501,7 @@ export default function ImageOcr() {
                           className={`inline-flex items-center gap-1 px-2 py-1 rounded text-sm ${getConfidenceBg(word.confidence)}`}
                           title={`${t('confidence')}: ${word.confidence.toFixed(1)}%`}
                         >
-                          <span className="text-gray-900 dark:text-white">{word.text}</span>
+                          <span className="text-fg">{word.text}</span>
                           <span className={`text-xs font-mono ${getConfidenceColor(word.confidence)}`}>
                             {word.confidence.toFixed(0)}%
                           </span>
@@ -518,19 +518,19 @@ export default function ImageOcr() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Features */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.features.title')}
             </h3>
             <ul className="space-y-2">
               {featureItems.map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -540,12 +540,12 @@ export default function ImageOcr() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {tipItems.map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

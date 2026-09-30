@@ -78,7 +78,7 @@ export default function SalaryComparisonPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SalaryComparison />
@@ -90,17 +90,17 @@ export default function SalaryComparisonPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             연봉 비교 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             연봉 비교 계산기는 최대 4개의 연봉 시나리오를 나란히 비교하여 4대보험, 소득세, 실수령액 차이를 한눈에 확인할 수 있는 이직·연봉 협상 전용 도구입니다. 현재 직장과 이직 제안을 동시에 입력하면 표면적인 연봉 차이뿐 아니라 세후 실제 수령 금액의 차이를 정확히 파악할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             연봉 비교 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>비과세 수당 포함 비교:</strong> 회사마다 식대, 차량유지비 등 비과세 수당이 다릅니다. 이를 포함해 비교하면 동일 연봉이라도 실수령액 차이가 수십만 원 발생할 수 있습니다.</li>
             <li><strong>실효세율 확인:</strong> 연봉이 높을수록 누진세율이 적용돼 세금 비율이 높아집니다. 각 연봉의 실효세율을 비교하면 인상분에서 세금이 얼마나 빠져나가는지 파악할 수 있습니다.</li>
             <li><strong>이직 손익 분기점 계산:</strong> 이직 시 발생하는 퇴직금 정산, 복리후생 변화 등을 감안하면 실질 이익이 달라집니다. 연봉 차이와 함께 종합적으로 검토하세요.</li>

@@ -110,11 +110,11 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className={`w-full flex items-center gap-2 px-3 py-2 border rounded-xl bg-white dark:bg-gray-700 text-left text-sm transition-all
-          ${open ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400' : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'}`}
+        className={`w-full flex items-center gap-2 px-3 py-2 border rounded-xl bg-field text-left text-sm transition-all
+          ${open ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400' : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'}`}
       >
         <Calendar className="w-4 h-4 text-blue-500 flex-shrink-0" />
-        <span className={`flex-1 truncate ${displayText ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}`}>
+        <span className={`flex-1 truncate ${displayText ? 'text-fg' : 'text-faint'}`}>
           {displayText || placeholder}
         </span>
         {value && (
@@ -133,14 +133,14 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
       {open && (
         <div
           ref={dropdownRef}
-          className={`absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow-2xl p-4 w-72
+          className={`absolute z-50 bg-surface border border-line rounded-2xl shadow-2xl p-4 w-72
             ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}
         >
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-3">
             <button
               onClick={prevMonth}
-              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sub"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -148,7 +148,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
               <select
                 value={viewYear}
                 onChange={e => setViewYear(Number(e.target.value))}
-                className="text-sm font-semibold bg-transparent text-gray-900 dark:text-white cursor-pointer focus:outline-none"
+                className="text-sm font-semibold bg-transparent text-fg cursor-pointer focus:outline-none"
               >
                 {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
                   <option key={y} value={y}>{y}년</option>
@@ -157,7 +157,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
               <select
                 value={viewMonth}
                 onChange={e => setViewMonth(Number(e.target.value))}
-                className="text-sm font-semibold bg-transparent text-gray-900 dark:text-white cursor-pointer focus:outline-none"
+                className="text-sm font-semibold bg-transparent text-fg cursor-pointer focus:outline-none"
               >
                 {MONTH_NAMES.map((m, i) => (
                   <option key={i} value={i}>{m}</option>
@@ -166,7 +166,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
             </div>
             <button
               onClick={nextMonth}
-              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sub"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -204,7 +204,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
                       ? 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/50'
                       : isSun
                       ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50'
-                      : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      : 'text-body hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                 >
                   {day}
@@ -214,7 +214,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = '날�
           </div>
 
           {/* 하단 버튼 */}
-          <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
+          <div className="mt-3 pt-3 border-t border-line flex justify-between items-center">
             <button onClick={goToday} className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium">
               오늘
             </button>

@@ -316,8 +316,8 @@ export default function QrScanner() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Browser Support Warning */}
@@ -338,7 +338,7 @@ export default function QrScanner() {
       )}
 
       {/* Tab Bar */}
-      <div className="flex space-x-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex space-x-2 border-b border-line">
         <button
           onClick={() => {
             setActiveTab('camera')
@@ -348,7 +348,7 @@ export default function QrScanner() {
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
             activeTab === 'camera'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <div className="flex items-center space-x-2">
@@ -365,7 +365,7 @@ export default function QrScanner() {
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
             activeTab === 'image'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <div className="flex items-center space-x-2">
@@ -451,7 +451,7 @@ export default function QrScanner() {
               className={`relative border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
                 isDragging
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+                  : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
               }`}
             >
               <input
@@ -461,11 +461,11 @@ export default function QrScanner() {
                 disabled={!isBrowserSupported}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
               />
-              <ImageIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <ImageIcon className="w-16 h-16 text-faint mx-auto mb-4" />
+              <p className="text-lg font-medium text-body mb-2">
                 {t('uploadImage')}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted">
                 {t('dragDrop')}
               </p>
             </div>
@@ -478,14 +478,14 @@ export default function QrScanner() {
       {/* Scan Result */}
       {scanResult !== null && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl font-semibold text-fg mb-4">
             {t('result')}
           </h2>
 
           {scanResult === '' ? (
             <div className="text-center py-8">
               <QrCode className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-500 dark:text-gray-400">{t('noQrFound')}</p>
+              <p className="text-muted">{t('noQrFound')}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -498,7 +498,7 @@ export default function QrScanner() {
 
               {/* Content */}
               <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                <p className="text-sm font-mono text-gray-900 dark:text-white break-all whitespace-pre-wrap">
+                <p className="text-sm font-mono text-fg break-all whitespace-pre-wrap">
                   {scanResult}
                 </p>
               </div>
@@ -507,7 +507,7 @@ export default function QrScanner() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => copyToClipboard(scanResult, 'result')}
-                  className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+                  className="flex items-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
                 >
                   {copiedId === 'result' ? (
                     <>
@@ -563,7 +563,7 @@ export default function QrScanner() {
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('history')}
             </h2>
             <button
@@ -587,22 +587,22 @@ export default function QrScanner() {
                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getTypeBadgeColor(item.type)}`}>
                         {getTypeLabel(item.type)}
                       </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-muted">
                         {new Date(item.timestamp).toLocaleString('ko-KR')}
                       </span>
                     </div>
-                    <p className="text-sm font-mono text-gray-900 dark:text-white break-all line-clamp-2">
+                    <p className="text-sm font-mono text-fg break-all line-clamp-2">
                       {item.content}
                     </p>
                   </div>
                   <button
                     onClick={() => copyToClipboard(item.content, `history-${index}`)}
-                    className="flex-shrink-0 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                    className="flex-shrink-0 p-2 rounded-lg bg-track hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                   >
                     {copiedId === `history-${index}` ? (
                       <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                     ) : (
-                      <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                      <Copy className="w-4 h-4 text-sub" />
                     )}
                   </button>
                 </div>
@@ -614,19 +614,19 @@ export default function QrScanner() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
           <BookOpen className="w-5 h-5 mr-2" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.howTo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start space-x-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start space-x-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -635,12 +635,12 @@ export default function QrScanner() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start space-x-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start space-x-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

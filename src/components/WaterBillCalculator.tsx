@@ -151,8 +151,8 @@ export default function WaterBillCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -162,7 +162,7 @@ export default function WaterBillCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Usage Slider */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('usage')}
               </label>
               <div className="flex items-center gap-4">
@@ -183,14 +183,14 @@ export default function WaterBillCalculator() {
                   className={`w-20 px-3 py-2 ${glassInput} text-center focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 m³
               </p>
             </div>
 
             {/* Quick Usage Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('quickUsage')}
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -201,14 +201,14 @@ export default function WaterBillCalculator() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       householdSize === size
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
                     {size}{t('persons')}
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <p className="text-xs text-muted mt-2">
                 가구원 수를 선택하면 평균 사용량이 자동 입력됩니다
               </p>
             </div>
@@ -230,7 +230,7 @@ export default function WaterBillCalculator() {
             {/* Reset Button */}
             <button
               onClick={handleReset}
-              className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -270,60 +270,60 @@ export default function WaterBillCalculator() {
           <div className="grid md:grid-cols-2 gap-4">
             {/* Basic Fee */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('basicFee')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.basicFee.toLocaleString()}{t('won')}
               </p>
             </div>
 
             {/* Usage Fee */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('usageFee')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.usageFee.toLocaleString()}{t('won')}
               </p>
             </div>
 
             {/* Sewage Fee */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('sewageFee')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.sewageFee.toLocaleString()}{t('won')}
               </p>
             </div>
 
             {/* Water Quality Fee */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('waterQualityFee')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.waterQualityFee.toLocaleString()}{t('won')}
               </p>
             </div>
 
             {/* VAT */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('vat')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.vat.toLocaleString()}{t('won')}
               </p>
             </div>
 
             {/* Subtotal */}
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              <p className="text-sm text-muted mb-1">
                 {t('totalBeforeVat')}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-2xl font-bold text-fg">
                 {result.subtotal.toLocaleString()}{t('won')}
               </p>
             </div>
@@ -331,21 +331,21 @@ export default function WaterBillCalculator() {
 
           {/* Tier Visualization */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('tierInfo')}
             </h3>
             <div className="space-y-3">
               {tierInfo.map((tier, idx) => (
                 <div key={idx}>
                   <div className="flex items-center justify-between text-sm mb-1">
-                    <span className="text-gray-700 dark:text-gray-300">
+                    <span className="text-body">
                       {tier.range}m³ ({tier.usage}m³)
                     </span>
-                    <span className="text-gray-500 dark:text-gray-400">
+                    <span className="text-muted">
                       {tier.rate.toLocaleString()}원/m³
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-track rounded-full h-3 overflow-hidden">
                     <div
                       className={`h-full ${tier.color} transition-all duration-300`}
                       style={{ width: `${tier.percentage}%` }}
@@ -354,7 +354,7 @@ export default function WaterBillCalculator() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+            <p className="text-xs text-muted mt-4">
               사용량 구간별 단가와 비중을 시각적으로 표시합니다
             </p>
           </div>

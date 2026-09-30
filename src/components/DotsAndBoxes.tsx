@@ -538,19 +538,19 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
         />
 
         {/* 게임 규칙 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <div className="bg-surface rounded-2xl shadow-lg p-6">
           <button
             onClick={() => setShowRules(!showRules)}
             className="w-full flex items-center justify-between text-left"
           >
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-fg">
               {t('howToPlay') || 'How to Play'}
             </h3>
             {showRules ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
           </button>
 
           {showRules && (
-            <div className="mt-4 space-y-3 text-sm text-gray-600 dark:text-gray-400">
+            <div className="mt-4 space-y-3 text-sm text-sub">
               <p><strong>{t('rules.objective') || 'Objective'}:</strong> {t('rules.objectiveDesc') || 'Complete more boxes than your opponent.'}</p>
               <p><strong>{t('rules.gameplay') || 'Gameplay'}:</strong> {t('rules.gameplayDesc') || 'Take turns drawing lines between adjacent dots.'}</p>
               <p><strong>{t('rules.scoring') || 'Scoring'}:</strong> {t('rules.scoringDesc') || 'Complete a box by drawing its 4th side to claim it and get an extra turn.'}</p>
@@ -560,13 +560,13 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
         </div>
 
         {/* 직접 입장 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="bg-surface rounded-2xl shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-fg mb-4">
             {t('directConnect') || 'Direct Connect'}
           </h3>
           <button
             onClick={handleDirectJoin}
-            className="w-full py-3 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+            className="w-full py-3 px-6 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
             {t('enterPeerIdButton') || 'Enter Peer ID to Join'}
           </button>
@@ -579,7 +579,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
   if (gamePhase === 'waiting' && !isConnected) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className="bg-surface rounded-2xl shadow-lg p-8">
           <div className={isHostRef.current ? 'animate-pulse' : 'animate-spin'}>
             {isHostRef.current ? (
               <Users className="w-16 h-16 mx-auto text-indigo-600" />
@@ -587,19 +587,19 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
               <RefreshCw className="w-16 h-16 mx-auto text-indigo-600" />
             )}
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 mt-6">
+          <h2 className="text-2xl font-bold text-fg mb-2 mt-6">
             {isHostRef.current ? t('waitingForOpponent') : (t('connecting') || 'Connecting...')}
           </h2>
 
           {isHostRef.current && (
             <>
               <GameInviteLink peerId={peerId} gameSlug="dotsandboxes" gameTitle={t('title')} />
-              <details className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
-                <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+              <details className="bg-soft rounded-xl p-4 mb-6">
+                <summary className="text-sm text-muted cursor-pointer select-none">
                   Peer ID ({t('directConnect') || 'Direct Connect'})
                 </summary>
                 <div className="flex items-center justify-center gap-2 mt-2">
-                  <p className="font-mono text-sm text-gray-900 dark:text-white break-all">{peerId || 'Loading...'}</p>
+                  <p className="font-mono text-sm text-fg break-all">{peerId || 'Loading...'}</p>
                   <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
                     {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
                   </button>
@@ -610,7 +610,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
 
           <button
             onClick={handleBackToLobby}
-            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+            className="px-6 py-3 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
             {t('cancelAndBack')}
           </button>
@@ -629,7 +629,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
           <div className="flex items-center justify-between">
             <button
               onClick={handleBackToLobby}
-              className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               {t('backToLobby')}
@@ -665,12 +665,12 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
           </div>
 
           {/* 점수판 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
             <div className="flex items-center justify-between">
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'player1' && !gameState.winner
                   ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
-                  : 'bg-gray-100 dark:bg-gray-700'
+                  : 'bg-soft'
               }`}>
                 <div className="relative">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-md">
@@ -681,10 +681,10 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className="font-medium text-fg">
                     {myRole === 'player1' ? playerName : opponentName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted">
                     {myRole === 'player1' ? t('you') : t('opponent')} (P1)
                   </p>
                 </div>
@@ -692,7 +692,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
 
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-400">VS</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted mt-1">
                   {winCount.player1} : {winCount.player2}
                 </div>
               </div>
@@ -700,7 +700,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'player2' && !gameState.winner
                   ? 'bg-red-100 dark:bg-red-900/30 border-2 border-red-500'
-                  : 'bg-gray-100 dark:bg-gray-700'
+                  : 'bg-soft'
               }`}>
                 <div className="relative">
                   <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-md">
@@ -711,10 +711,10 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className="font-medium text-fg">
                     {myRole === 'player2' ? playerName : opponentName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted">
                     {myRole === 'player2' ? t('you') : t('opponent')} (P2)
                   </p>
                 </div>
@@ -727,7 +727,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myRole
                 ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myRole ? t('yourTurn') : t('opponentTurn')}
               {gameState.lastMove?.boxesCompleted && gameState.lastMove.boxesCompleted > 0 && gameState.currentTurn === myRole && (
@@ -745,7 +745,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
                 : gameState.winner === 'draw'
                 ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
               <p className="text-xl font-bold">{getWinnerMessage()}</p>
@@ -756,7 +756,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
           )}
 
           {/* 게임 보드 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
             <DotsAndBoxesBoard
               gameState={gameState}
               myRole={myRole}
@@ -767,8 +767,8 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
           </div>
 
           {/* 게임 정보 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+          <div className="bg-surface rounded-2xl shadow-lg p-4">
+            <div className="flex items-center justify-between text-sm text-sub">
               <span>{t('moves') || 'Moves'}: {gameState.moveHistory.length}</span>
               <span>{t('boxesRemaining') || 'Boxes Left'}: {16 - gameState.scores.player1 - gameState.scores.player2}</span>
             </div>
@@ -786,7 +786,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
               </button>
               <button
                 onClick={handleBackToLobby}
-                className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+                className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
               >
                 {t('backToLobby')}
               </button>
@@ -797,9 +797,9 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
         {/* 채팅 영역 */}
         {showChat && (
           <div className="w-80 flex-shrink-0 sticky top-4">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-[500px] flex flex-col">
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
+              <div className="p-4 border-b border-line">
+                <h3 className="font-semibold text-fg flex items-center gap-2">
                   <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
@@ -807,7 +807,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
 
               <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3">
                 {chatMessages.length === 0 ? (
-                  <p className="text-center text-gray-400 dark:text-gray-500 text-sm py-8">
+                  <p className="text-center text-faint text-sm py-8">
                     {t('noChatMessages') || 'No messages yet'}
                   </p>
                 ) : (
@@ -817,10 +817,10 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                       className={`${
                         msg.isMe
                           ? 'ml-auto bg-indigo-500 text-white'
-                          : 'mr-auto bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                          : 'mr-auto bg-soft text-fg'
                       } rounded-xl px-3 py-2 max-w-[80%]`}
                     >
-                      <p className={`text-xs mb-1 ${msg.isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'}`}>
+                      <p className={`text-xs mb-1 ${msg.isMe ? 'text-indigo-200' : 'text-muted'}`}>
                         {msg.sender}
                       </p>
                       <p className="text-sm break-words">{msg.content}</p>
@@ -829,7 +829,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                 )}
               </div>
 
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="p-4 border-t border-line">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -842,7 +842,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
                       }
                     }}
                     placeholder={t('typeMessage') || 'Type a message...'}
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     maxLength={200}
                   />
                   <button

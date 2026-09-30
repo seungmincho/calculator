@@ -65,7 +65,7 @@ const COLOR_CLASS: Record<string, { bg: string; text: string; border: string }> 
   rose:    { bg: 'bg-rose-100 dark:bg-rose-900/40',    text: 'text-rose-700 dark:text-rose-300',    border: 'border-rose-200 dark:border-rose-800' },
   violet:  { bg: 'bg-violet-100 dark:bg-violet-900/40', text: 'text-violet-700 dark:text-violet-300', border: 'border-violet-200 dark:border-violet-800' },
   cyan:    { bg: 'bg-cyan-100 dark:bg-cyan-900/40',    text: 'text-cyan-700 dark:text-cyan-300',    border: 'border-cyan-200 dark:border-cyan-800' },
-  gray:    { bg: 'bg-gray-100 dark:bg-gray-700',       text: 'text-gray-700 dark:text-gray-300',    border: 'border-gray-200 dark:border-gray-600' },
+  gray:    { bg: 'bg-soft',       text: 'text-body',    border: 'border-line' },
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -186,8 +186,8 @@ export default function AllCalculationHistory() {
     return (
       <div className="space-y-6">
         <div className={`${glassCard} ${glassInset} p-6 animate-pulse`}>
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+          <div className="h-6 bg-track rounded w-1/3 mb-4" />
+          <div className="h-4 bg-track rounded w-1/2" />
         </div>
       </div>
     )
@@ -198,11 +198,11 @@ export default function AllCalculationHistory() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <History className="w-7 h-7 text-blue-600" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {histories.length > 0 && (
           <button
@@ -274,7 +274,7 @@ export default function AllCalculationHistory() {
           </div>
 
           {/* Result count */}
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+          <p className="text-xs text-faint mt-2">
             {t('resultCount', { count: displayed.length, total: histories.length })}
           </p>
         </div>
@@ -284,10 +284,10 @@ export default function AllCalculationHistory() {
       {histories.length === 0 ? (
         <div className={`${glassCard} ${glassInset} p-12 text-center`}>
           <Clock className="w-16 h-16 text-gray-200 dark:text-gray-600 mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <h2 className="text-lg font-semibold text-body mb-2">
             {t('emptyTitle')}
           </h2>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-6 max-w-sm mx-auto">
+          <p className="text-sm text-faint mb-6 max-w-sm mx-auto">
             {t('emptyDescription')}
           </p>
           <Link
@@ -302,7 +302,7 @@ export default function AllCalculationHistory() {
         /* No results after filter/search */
         <div className={`${glassCard} ${glassInset} p-10 text-center`}>
           <Search className="w-12 h-12 text-gray-200 dark:text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-gray-400">{t('noResults')}</p>
+          <p className="text-muted">{t('noResults')}</p>
           <button
             onClick={() => { setSearch(''); setFilterTool('all') }}
             className="mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline"
@@ -322,7 +322,7 @@ export default function AllCalculationHistory() {
             return (
               <div
                 key={entry.id}
-                className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border ${colors.border} overflow-hidden transition-all`}
+                className={`bg-surface rounded-xl shadow-sm border ${colors.border} overflow-hidden transition-all`}
               >
                 <div className="p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
@@ -337,12 +337,12 @@ export default function AllCalculationHistory() {
                           {meta?.nameKo ?? entry.type}
                         </span>
                         {/* Title */}
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base leading-snug truncate">
+                        <h3 className="font-semibold text-fg text-sm sm:text-base leading-snug truncate">
                           {entry.title}
                         </h3>
                         {/* Result summary */}
                         {summary && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                          <p className="text-xs text-muted mt-0.5 truncate">
                             {summary}
                           </p>
                         )}
@@ -351,7 +351,7 @@ export default function AllCalculationHistory() {
 
                     {/* Right: date + actions */}
                     <div className="flex flex-col items-end gap-2 shrink-0">
-                      <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">
+                      <span className="text-xs text-faint whitespace-nowrap">
                         {formatDate(entry.timestamp)}
                       </span>
                       <div className="flex items-center gap-1.5">
@@ -376,7 +376,7 @@ export default function AllCalculationHistory() {
                             </button>
                             <button
                               onClick={() => setDeletingId(null)}
-                              className="text-xs px-2 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                              className="text-xs px-2 py-1.5 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                             >
                               {t('cancel')}
                             </button>
@@ -402,23 +402,23 @@ export default function AllCalculationHistory() {
 
       {/* Clear all confirmation modal */}
       {confirmClearAll && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className={`${glassCard} ${glassInset} max-w-sm w-full p-6`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/30">
                 <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-fg">
                 {t('clearAllTitle')}
               </h3>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+            <p className="text-sm text-sub mb-5">
               {t('clearAllDescription', { count: histories.length })}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmClearAll(false)}
-                className="flex-1 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
               >
                 {t('cancel')}
               </button>

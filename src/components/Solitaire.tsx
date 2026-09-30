@@ -1698,8 +1698,8 @@ export default function Solitaire() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats bar */}
@@ -1707,21 +1707,21 @@ export default function Solitaire() {
         <div className="flex flex-wrap items-center gap-4 justify-between">
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
-              <Play className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              <span className="text-gray-500 dark:text-gray-400">{t('moves')}:</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{moveCount}</span>
+              <Play className="w-4 h-4 text-muted" />
+              <span className="text-muted">{t('moves')}:</span>
+              <span className="font-semibold text-fg">{moveCount}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-gray-500 dark:text-gray-400">{t('time')}:</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{formatTime(elapsedTime)}</span>
+              <span className="text-muted">{t('time')}:</span>
+              <span className="font-semibold text-fg">{formatTime(elapsedTime)}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-gray-500 dark:text-gray-400">{t('score')}:</span>
+              <span className="text-muted">{t('score')}:</span>
               <span className="font-semibold text-green-600 dark:text-green-400">{score}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Trophy className="w-4 h-4 text-yellow-500" />
-              <span className="text-gray-500 dark:text-gray-400">{t('highScore')}:</span>
+              <span className="text-muted">{t('highScore')}:</span>
               <span className="font-semibold text-yellow-600 dark:text-yellow-400">{highScore}</span>
             </div>
           </div>
@@ -1739,7 +1739,7 @@ export default function Solitaire() {
             <button
               onClick={performUndo}
               disabled={undoStackRef.current.length === 0 || gameState !== 'playing'}
-              className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               title={`${t('undo')} (Ctrl+Z)`}
             >
               <Undo2 className="w-4 h-4" />
@@ -1748,7 +1748,7 @@ export default function Solitaire() {
             <button
               onClick={showHint}
               disabled={gameState !== 'playing'}
-              className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               title={`${t('hint')} (H)`}
             >
               <Lightbulb className="w-4 h-4" />
@@ -1765,7 +1765,7 @@ export default function Solitaire() {
             )}
             <button
               onClick={toggleSound}
-              className="flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg p-2 transition-all"
+              className="flex items-center justify-center bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg p-2 transition-all"
               title={soundEnabled ? t('soundOn') : t('soundOff')}
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -1797,7 +1797,7 @@ export default function Solitaire() {
             <Trophy className="w-12 h-12 text-yellow-500 mx-auto" />
           </div>
           <h2 className="text-2xl font-bold text-yellow-700 dark:text-yellow-300 mb-2">{t('congratulations')}</h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sub">
             {t('score')}: <span className="font-bold text-green-600 dark:text-green-400">{score}</span>
             {' \u00B7 '}
             {t('moves')}: <span className="font-bold">{moveCount}</span>
@@ -1822,12 +1822,12 @@ export default function Solitaire() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-xl font-semibold text-fg mb-4">
           {t('guide')}
         </h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <div className="grid sm:grid-cols-2 gap-4 text-sm text-sub">
           <div className="space-y-2">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('basicRules')}</h3>
+            <h3 className="font-medium text-fg">{t('basicRules')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('basicRulesItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
@@ -1835,7 +1835,7 @@ export default function Solitaire() {
             </ul>
           </div>
           <div className="space-y-2">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('controls')}</h3>
+            <h3 className="font-medium text-fg">{t('controls')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('controlsItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
@@ -1843,7 +1843,7 @@ export default function Solitaire() {
             </ul>
           </div>
           <div className="space-y-2">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('scoring')}</h3>
+            <h3 className="font-medium text-fg">{t('scoring')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('scoringItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
@@ -1851,7 +1851,7 @@ export default function Solitaire() {
             </ul>
           </div>
           <div className="space-y-2">
-            <h3 className="font-medium text-gray-900 dark:text-white">{t('tips')}</h3>
+            <h3 className="font-medium text-fg">{t('tips')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('tipsItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>

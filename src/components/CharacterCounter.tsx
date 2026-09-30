@@ -42,15 +42,15 @@ const StatCard = ({ icon, label, value, highlight }: StatCardProps) => (
   <div className={`flex flex-col items-center p-4 rounded-xl transition-all ${
     highlight
       ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg scale-105'
-      : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md'
+      : 'bg-surface border border-line hover:shadow-md'
   }`}>
-    <div className={`mb-2 ${highlight ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'}`}>
+    <div className={`mb-2 ${highlight ? 'text-white/80' : 'text-muted'}`}>
       {icon}
     </div>
-    <div className={`text-xs font-medium mb-1 ${highlight ? 'text-white/90' : 'text-gray-500 dark:text-gray-400'}`}>
+    <div className={`text-xs font-medium mb-1 ${highlight ? 'text-white/90' : 'text-muted'}`}>
       {label}
     </div>
-    <div className={`text-2xl font-bold tabular-nums ${highlight ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+    <div className={`text-2xl font-bold tabular-nums ${highlight ? 'text-white' : 'text-fg'}`}>
       {value.toLocaleString()}
     </div>
   </div>
@@ -91,10 +91,10 @@ export default function CharacterCounter() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -136,13 +136,13 @@ export default function CharacterCounter() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={t('input.placeholder')}
-          className="w-full h-64 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-base leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+          className="w-full h-64 p-4 text-fg bg-transparent resize-none focus:outline-none text-base leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
           spellCheck={false}
         />
 
         {/* Bottom Bar */}
-        <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between px-4 py-3 bg-subtle border-t border-line">
+          <div className="flex items-center gap-4 text-sm text-muted">
             <span className="flex items-center gap-1">
               <AlignLeft className="w-4 h-4" />
               {stats.lines} {t('stats.lines')}
@@ -171,7 +171,7 @@ export default function CharacterCounter() {
             <button
               onClick={handleClear}
               disabled={!text}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body"
             >
               <Trash2 className="w-4 h-4" />
               {t('actions.clear')}
@@ -182,17 +182,17 @@ export default function CharacterCounter() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Usage Examples */}
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.sections.usage.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.sections.usage.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-emerald-500 mt-0.5">•</span>
@@ -204,10 +204,10 @@ export default function CharacterCounter() {
 
           {/* Counting Methods */}
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.sections.counting.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               <li className="flex items-start gap-2">
                 <span className="text-emerald-500 mt-0.5">•</span>
                 {t('guide.sections.counting.characters')}

@@ -211,25 +211,25 @@ const ImageResizer = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`min-h-screen ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-fg">
               이미지 리사이저
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted mt-1">
               브라우저에서 바로 이미지 크기를 조정하고 다운로드하세요.
             </p>
           </div>
           {!isFullscreen && (
             <button
               onClick={() => setIsFullscreen(true)}
-              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
               title="전체화면"
             >
-              <Maximize className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              <Maximize className="w-5 h-5 text-sub" />
             </button>
           )}
         </div>
@@ -238,7 +238,7 @@ const ImageResizer = () => {
           {/* Upload Section */}
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold mb-4 text-fg">
                 <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
               </h2>
@@ -251,15 +251,15 @@ const ImageResizer = () => {
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
                     dragOver
                       ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                      : 'border-gray-300 dark:border-gray-600 hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300 mb-2">
+                  <p className="text-sub mb-2">
                     클릭하거나 이미지를 드래그하세요
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-muted">
                     JPG, PNG, WebP 파일 지원
                   </p>
                   <input
@@ -276,7 +276,7 @@ const ImageResizer = () => {
                     <img
                       src={originalImage.src}
                       alt="Original"
-                      className="w-full h-48 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      className="w-full h-48 object-contain bg-soft rounded-lg"
                     />
                     <button
                       onClick={resetImage}
@@ -286,9 +286,9 @@ const ImageResizer = () => {
                     </button>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2">원본 정보</h3>
-                    <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <h3 className="font-medium text-fg mb-2">원본 정보</h3>
+                    <div className="text-sm text-sub space-y-1">
                       <p>파일명: {fileName}</p>
                       <p>크기: {originalDimensions?.width} × {originalDimensions?.height}px</p>
                     </div>
@@ -300,7 +300,7 @@ const ImageResizer = () => {
             {/* Presets */}
             {originalImage && (
               <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold mb-4 text-fg">
                   <Settings className="w-5 h-5 inline mr-2" />
                   사전 설정
                 </h3>
@@ -309,12 +309,12 @@ const ImageResizer = () => {
                     <button
                       key={index}
                       onClick={() => handlePresetSelect(preset)}
-                      className="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+                      className="w-full text-left p-3 rounded-lg border border-line hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
                     >
-                      <div className="font-medium text-gray-900 dark:text-white text-sm">
+                      <div className="font-medium text-fg text-sm">
                         {preset.name}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-muted">
                         {preset.width} × {preset.height}px
                       </div>
                     </button>
@@ -328,34 +328,34 @@ const ImageResizer = () => {
           <div className="lg:col-span-1">
             {originalImage && (
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold mb-4 text-fg">
                   리사이즈 설정
                 </h2>
 
                 <div className="space-y-6">
                   {/* Dimensions */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    <label className="block text-sm font-medium text-body mb-3">
                       크기 설정
                     </label>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">폭 (px)</label>
+                        <label className="block text-xs text-sub mb-1">폭 (px)</label>
                         <input
                           type="number"
                           value={options.width}
                           onChange={(e) => updateDimensions(parseInt(e.target.value) || 0, options.height)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">높이 (px)</label>
+                        <label className="block text-xs text-sub mb-1">높이 (px)</label>
                         <input
                           type="number"
                           value={options.height}
                           onChange={(e) => updateDimensions(options.width, parseInt(e.target.value) || 0)}
                           disabled={options.maintainAspectRatio}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-600"
+                          className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg disabled:bg-gray-100 dark:disabled:bg-gray-600"
                         />
                       </div>
                     </div>
@@ -367,19 +367,19 @@ const ImageResizer = () => {
                         onChange={(e) => setOptions(prev => ({ ...prev, maintainAspectRatio: e.target.checked }))}
                         className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
-                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">비율 유지</span>
+                      <span className="ml-2 text-sm text-body">비율 유지</span>
                     </label>
                   </div>
 
                   {/* Format */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       출력 형식
                     </label>
                     <select
                       value={options.format}
                       onChange={(e) => setOptions(prev => ({ ...prev, format: e.target.value as 'jpeg' | 'png' | 'webp' }))}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
                     >
                       <option value="jpeg">JPEG</option>
                       <option value="png">PNG</option>
@@ -390,7 +390,7 @@ const ImageResizer = () => {
                   {/* Quality */}
                   {options.format !== 'png' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-body mb-2">
                         품질: {Math.round(options.quality * 100)}%
                       </label>
                       <input
@@ -446,7 +446,7 @@ const ImageResizer = () => {
           <div className="lg:col-span-1">
             {resizedImageUrl && (
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold mb-4 text-fg">
                   결과 미리보기
                 </h2>
 
@@ -455,7 +455,7 @@ const ImageResizer = () => {
                     <img
                       src={resizedImageUrl}
                       alt="Resized"
-                      className="w-full h-48 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      className="w-full h-48 object-contain bg-soft rounded-lg"
                     />
                   </div>
 
@@ -467,9 +467,9 @@ const ImageResizer = () => {
                     <span>다운로드</span>
                   </button>
 
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2">결과 정보</h3>
-                    <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="bg-subtle rounded-lg p-4">
+                    <h3 className="font-medium text-fg mb-2">결과 정보</h3>
+                    <div className="text-sm text-sub space-y-1">
                       <p>크기: {options.width} × {options.height}px</p>
                       <p>형식: {options.format.toUpperCase()}</p>
                       {options.format !== 'png' && <p>품질: {Math.round(options.quality * 100)}%</p>}
@@ -483,7 +483,7 @@ const ImageResizer = () => {
 
         {/* Info Section */}
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">이미지 리사이저 사용법</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 리사이저 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
               <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">✅ 주요 기능</h3>

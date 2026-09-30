@@ -505,8 +505,8 @@ export default function NeuralNetworkVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">신경망 시각화</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-fg">신경망 시각화</h1>
+        <p className="text-sm text-muted mt-1">
           순전파·역전파 과정을 뉴런 단위로 시각화하며 딥러닝 원리를 이해하세요
         </p>
       </div>
@@ -516,13 +516,13 @@ export default function NeuralNetworkVisualizer() {
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">프리셋</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">프리셋</h3>
             <div className="space-y-2">
               {PRESETS.map((p) => (
                 <button
                   key={p.name}
                   onClick={() => applyPreset(p)}
-                  className="w-full text-left px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="w-full text-left px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   {p.name}
                 </button>
@@ -532,10 +532,10 @@ export default function NeuralNetworkVisualizer() {
 
           {/* Architecture */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">네트워크 구조</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">네트워크 구조</h3>
             <div className="space-y-3">
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400">입력 뉴런: {layerSizes[0]}</label>
+                <label className="text-xs text-muted">입력 뉴런: {layerSizes[0]}</label>
                 <input type="range" min={1} max={4} value={layerSizes[0]}
                   onChange={e => {
                     const v = Number(e.target.value)
@@ -544,7 +544,7 @@ export default function NeuralNetworkVisualizer() {
                   className="w-full accent-blue-600" />
               </div>
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400">은닉층 수: {hiddenCount}</label>
+                <label className="text-xs text-muted">은닉층 수: {hiddenCount}</label>
                 <input type="range" min={0} max={2} value={hiddenCount}
                   onChange={e => {
                     const v = Number(e.target.value)
@@ -558,7 +558,7 @@ export default function NeuralNetworkVisualizer() {
               </div>
               {Array.from({ length: hiddenCount }).map((_, idx) => (
                 <div key={idx}>
-                  <label className="text-xs text-gray-500 dark:text-gray-400">
+                  <label className="text-xs text-muted">
                     은닉층 {idx + 1} 뉴런: {hiddenSizes[idx] ?? 3}
                   </label>
                   <input type="range" min={1} max={6} value={hiddenSizes[idx] ?? 3}
@@ -572,7 +572,7 @@ export default function NeuralNetworkVisualizer() {
                 </div>
               ))}
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400">출력 뉴런: {layerSizes[layerSizes.length - 1]}</label>
+                <label className="text-xs text-muted">출력 뉴런: {layerSizes[layerSizes.length - 1]}</label>
                 <input type="range" min={1} max={3} value={layerSizes[layerSizes.length - 1]}
                   onChange={e => {
                     const v = Number(e.target.value)
@@ -585,10 +585,10 @@ export default function NeuralNetworkVisualizer() {
 
           {/* Activation & LR */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">하이퍼파라미터</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">하이퍼파라미터</h3>
             <div className="space-y-3">
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400">활성화 함수</label>
+                <label className="text-xs text-muted">활성화 함수</label>
                 <select
                   value={activation}
                   onChange={e => setActivation(e.target.value as ActivationFn)}
@@ -600,7 +600,7 @@ export default function NeuralNetworkVisualizer() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400">학습률: {lr.toFixed(2)}</label>
+                <label className="text-xs text-muted">학습률: {lr.toFixed(2)}</label>
                 <input type="range" min={0.01} max={1} step={0.01} value={lr}
                   onChange={e => setLr(Number(e.target.value))}
                   className="w-full accent-blue-600" />
@@ -610,33 +610,33 @@ export default function NeuralNetworkVisualizer() {
 
           {/* Inputs & Targets */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">입출력 값</h3>
+            <h3 className="text-sm font-semibold text-fg mb-3">입출력 값</h3>
             <div className="space-y-2">
               {inputs.map((v, i) => (
                 <div key={`in-${i}`} className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 w-14">입력 {i + 1}</span>
+                  <span className="text-xs text-muted w-14">입력 {i + 1}</span>
                   <input type="number" step={0.1} value={v}
                     onChange={e => {
                       const newInputs = [...inputs]
                       newInputs[i] = Number(e.target.value)
                       setInputs(newInputs)
                     }}
-                    className="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                    className="flex-1 px-2 py-1 text-sm border border-line-strong rounded bg-field text-fg" />
                 </div>
               ))}
-              <div className="border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
+              <div className="border-t border-line pt-2 mt-2">
                 <span className="text-xs text-gray-400">목표 출력 (역전파용)</span>
               </div>
               {targets.map((v, i) => (
                 <div key={`tgt-${i}`} className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 w-14">목표 {i + 1}</span>
+                  <span className="text-xs text-muted w-14">목표 {i + 1}</span>
                   <input type="number" step={0.1} value={v}
                     onChange={e => {
                       const newTargets = [...targets]
                       newTargets[i] = Number(e.target.value)
                       setTargets(newTargets)
                     }}
-                    className="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                    className="flex-1 px-2 py-1 text-sm border border-line-strong rounded bg-field text-fg" />
                 </div>
               ))}
             </div>
@@ -657,7 +657,7 @@ export default function NeuralNetworkVisualizer() {
               <Zap size={16} /> 50 에포크
             </button>
             <button onClick={resetNetwork}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors">
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors">
               <RotateCcw size={16} /> 초기화
             </button>
           </div>
@@ -668,8 +668,8 @@ export default function NeuralNetworkVisualizer() {
           {/* Canvas */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">네트워크 구조</h3>
-              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+              <h3 className="text-sm font-semibold text-fg">네트워크 구조</h3>
+              <div className="flex items-center gap-4 text-xs text-muted">
                 <span className="flex items-center gap-1">
                   <span className="inline-block w-4 h-0.5 bg-blue-500"></span> 양수 가중치
                 </span>
@@ -686,7 +686,7 @@ export default function NeuralNetworkVisualizer() {
             </div>
             <canvas
               ref={canvasRef}
-              className="w-full border border-gray-200 dark:border-gray-700 rounded-lg"
+              className="w-full border border-line rounded-lg"
               style={{ height: Math.max(280, network.layers.reduce((a, b) => Math.max(a, b), 0) * 65 + 80) }}
             />
           </div>
@@ -694,16 +694,16 @@ export default function NeuralNetworkVisualizer() {
           {/* Training Info */}
           <div className="grid sm:grid-cols-3 gap-4">
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <div className="text-xs text-gray-500 dark:text-gray-400">에포크</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{epoch}</div>
+              <div className="text-xs text-muted">에포크</div>
+              <div className="text-2xl font-bold text-fg mt-1">{epoch}</div>
             </div>
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <div className="text-xs text-gray-500 dark:text-gray-400">손실 (MSE)</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{loss.toFixed(6)}</div>
+              <div className="text-xs text-muted">손실 (MSE)</div>
+              <div className="text-2xl font-bold text-fg mt-1">{loss.toFixed(6)}</div>
             </div>
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <div className="text-xs text-gray-500 dark:text-gray-400">출력</div>
-              <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
+              <div className="text-xs text-muted">출력</div>
+              <div className="text-lg font-bold text-fg mt-1">
                 [{network.activations[network.layers.length - 1].map(v => v.toFixed(4)).join(', ')}]
               </div>
             </div>
@@ -712,7 +712,7 @@ export default function NeuralNetworkVisualizer() {
           {/* Loss Chart */}
           {lossHistory.length >= 2 && (
             <div className={`${glassCard} ${glassInset} p-4`}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">손실 추이</h3>
+              <h3 className="text-sm font-semibold text-fg mb-1">손실 추이</h3>
               {renderLossChart()}
             </div>
           )}
@@ -721,7 +721,7 @@ export default function NeuralNetworkVisualizer() {
           <div className={`${glassCard} ${glassInset}`}>
             <button
               onClick={() => setShowWeights(!showWeights)}
-              className="w-full flex items-center justify-between p-4 text-sm font-semibold text-gray-900 dark:text-white"
+              className="w-full flex items-center justify-between p-4 text-sm font-semibold text-fg"
             >
               가중치 행렬
               {showWeights ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -730,7 +730,7 @@ export default function NeuralNetworkVisualizer() {
               <div className="px-4 pb-4 space-y-3">
                 {network.weights.map((lw, l) => (
                   <div key={l}>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="text-xs text-muted mb-1">
                       레이어 {l} → {l + 1}
                     </div>
                     <div className="overflow-x-auto">
@@ -760,11 +760,11 @@ export default function NeuralNetworkVisualizer() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">가이드</h2>
+        <h2 className="text-xl font-semibold text-fg">가이드</h2>
 
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">인공 신경망이란?</h3>
-          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          <h3 className="text-lg font-semibold text-fg mb-2">인공 신경망이란?</h3>
+          <p className="text-sm text-body leading-relaxed">
             인공 신경망(Artificial Neural Network)은 인간 뇌의 뉴런 구조에서 영감을 받은 머신러닝 모델입니다.
             입력층, 은닉층, 출력층으로 구성되며, 각 뉴런은 이전 층의 출력값에 가중치를 곱하고 편향을 더한 후
             활성화 함수를 통과시켜 다음 층으로 신호를 전달합니다. 충분한 뉴런과 층이 있으면
@@ -773,8 +773,8 @@ export default function NeuralNetworkVisualizer() {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">순전파와 역전파</h3>
-          <div className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+          <h3 className="text-lg font-semibold text-fg mb-2">순전파와 역전파</h3>
+          <div className="text-sm text-body space-y-2">
             <p>
               <strong>순전파(Forward Propagation):</strong> 입력 데이터가 네트워크를 왼쪽에서 오른쪽으로 통과하며
               각 뉴런에서 z = Wx + b를 계산하고 활성화 함수 a = f(z)를 적용합니다. 최종 출력층에서 예측값이 나옵니다.
@@ -788,25 +788,25 @@ export default function NeuralNetworkVisualizer() {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">활성화 함수 비교</h3>
+          <h3 className="text-lg font-semibold text-fg mb-2">활성화 함수 비교</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="py-2 px-3 text-gray-900 dark:text-white">함수</th>
-                  <th className="py-2 px-3 text-gray-900 dark:text-white">수식</th>
-                  <th className="py-2 px-3 text-gray-900 dark:text-white">범위</th>
-                  <th className="py-2 px-3 text-gray-900 dark:text-white">특징</th>
+                <tr className="border-b border-line">
+                  <th className="py-2 px-3 text-fg">함수</th>
+                  <th className="py-2 px-3 text-fg">수식</th>
+                  <th className="py-2 px-3 text-fg">범위</th>
+                  <th className="py-2 px-3 text-fg">특징</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-700 dark:text-gray-300">
-                <tr className="border-b border-gray-100 dark:border-gray-700">
+              <tbody className="text-body">
+                <tr className="border-b border-line">
                   <td className="py-2 px-3 font-medium">Sigmoid</td>
                   <td className="py-2 px-3 font-mono text-xs">1/(1+e^(-x))</td>
                   <td className="py-2 px-3">(0, 1)</td>
                   <td className="py-2 px-3">확률 출력에 적합, 기울기 소실 문제</td>
                 </tr>
-                <tr className="border-b border-gray-100 dark:border-gray-700">
+                <tr className="border-b border-line">
                   <td className="py-2 px-3 font-medium">ReLU</td>
                   <td className="py-2 px-3 font-mono text-xs">max(0, x)</td>
                   <td className="py-2 px-3">[0, +inf)</td>
@@ -824,16 +824,16 @@ export default function NeuralNetworkVisualizer() {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">자주 묻는 질문</h3>
+          <h3 className="text-lg font-semibold text-fg mb-2">자주 묻는 질문</h3>
           <div className="space-y-3">
             {[
               { q: '학습률이 너무 높으면 어떻게 되나요?', a: '손실이 발산하여 학습이 불안정해집니다. 반대로 너무 낮으면 학습 속도가 매우 느려집니다. 일반적으로 0.001~0.1 사이의 값을 사용합니다.' },
               { q: '은닉층이 많을수록 좋은가요?', a: '층이 깊으면 더 복잡한 패턴을 학습할 수 있지만, 기울기 소실/폭발 문제가 발생할 수 있고 과적합 위험이 높아집니다. 문제의 복잡도에 맞게 선택해야 합니다.' },
               { q: 'XOR 문제는 왜 은닉층이 필요한가요?', a: 'XOR은 선형 분리가 불가능한 문제입니다. 은닉층이 입력 공간을 비선형으로 변환하여 선형 분리 가능한 표현을 만들어줍니다.' },
             ].map((item, i) => (
-              <div key={i} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                <div className="text-sm font-medium text-gray-900 dark:text-white">{item.q}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{item.a}</div>
+              <div key={i} className="bg-subtle rounded-lg p-3">
+                <div className="text-sm font-medium text-fg">{item.q}</div>
+                <div className="text-sm text-sub mt-1">{item.a}</div>
               </div>
             ))}
           </div>

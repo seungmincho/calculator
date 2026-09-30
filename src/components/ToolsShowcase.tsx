@@ -114,7 +114,7 @@ export default function ToolsShowcase() {
             </div>
           </div>
           <div className="min-w-0 flex-1">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
+            <h4 className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
               {t(item.labelKey)}
               {isNewTool(item) && (
                 <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
@@ -122,7 +122,7 @@ export default function ToolsShowcase() {
                 </span>
               )}
             </h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
+            <p className="text-xs text-muted mt-1 truncate">
               {t(item.descriptionKey)}
             </p>
           </div>
@@ -154,13 +154,13 @@ export default function ToolsShowcase() {
           <button
             onClick={() => setIsExpanded(true)}
             aria-expanded={false}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all group"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl border border-line hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all group"
           >
             <Wrench className="w-5 h-5 text-blue-600" />
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+            <span className="text-lg font-semibold text-fg">
               {t('toolsShowcase.title')}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-muted">
               ({totalTools})
             </span>
             <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
@@ -184,10 +184,10 @@ export default function ToolsShowcase() {
       {isExpanded && (
       <div>
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-3">
           {t('toolsShowcase.title')}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-sub max-w-2xl mx-auto">
           {t('toolsShowcase.description')}
         </p>
       </div>
@@ -195,7 +195,7 @@ export default function ToolsShowcase() {
       {/* Favorites Section */}
       {favoritedItems.length > 0 && (
         <div className="space-y-4 mb-12">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-yellow-300 dark:border-yellow-600 pb-2 flex items-center gap-2">
+          <h3 className="text-xl font-semibold text-body border-b border-yellow-300 dark:border-yellow-600 pb-2 flex items-center gap-2">
             <Star className="w-5 h-5 text-yellow-500 fill-current" />
             {t('favorites.title')}
           </h3>
@@ -214,10 +214,10 @@ export default function ToolsShowcase() {
                     </div>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-yellow-700 dark:group-hover:text-yellow-400 transition-colors">
+                    <h4 className="text-sm font-medium text-fg group-hover:text-yellow-700 dark:group-hover:text-yellow-400 transition-colors">
                       {t(item.labelKey)}
                     </h4>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
+                    <p className="text-xs text-muted mt-1 truncate">
                       {t(item.descriptionKey)}
                     </p>
                   </div>
@@ -238,7 +238,7 @@ export default function ToolsShowcase() {
 
           return (
             <div key={categoryKey} className="space-y-4">
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2">
+              <h3 className="text-xl font-semibold text-body border-b border-line pb-2">
                 {t(categoryTitleKeys[categoryKey])}
               </h3>
 
@@ -248,7 +248,7 @@ export default function ToolsShowcase() {
                   {Array.from(subcategoryGroups.entries()).map(([subcatKey, items]) => (
                     <div key={subcatKey || '_ungrouped'}>
                       {subcatKey && (
-                        <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
+                        <h4 className="text-sm font-semibold text-sub mb-3 flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                           {t(subcatKey)}
                         </h4>
@@ -281,7 +281,7 @@ export default function ToolsShowcase() {
         <button
           onClick={() => setIsExpanded(false)}
           aria-expanded={true}
-          className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           {t('toolsShowcase.collapse')}
         </button>

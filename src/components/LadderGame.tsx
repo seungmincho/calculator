@@ -45,10 +45,10 @@ const COLORS = [
 ]
 
 const glass = {
-  card: 'bg-white/45 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(79,70,229,0.10)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)]',
+  card: 'bg-surface border border-line rounded-2xl shadow-[0_20px_60px_rgba(79,70,229,0.10)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)]',
   cardInset: 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]',
-  subCardStrong: 'bg-white/55 dark:bg-white/[0.08] backdrop-blur-xl border border-white/60 dark:border-white/[0.10] rounded-xl',
-  pill: 'bg-white/52 dark:bg-white/[0.06] backdrop-blur-lg border border-white/50 dark:border-white/[0.08]',
+  subCardStrong: 'bg-surface border border-line rounded-xl',
+  pill: 'bg-surface border border-line',
 }
 
 // Preset configurations
@@ -901,8 +901,8 @@ export default function LadderGame() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 gap-3 min-w-0">
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg truncate">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1 line-clamp-2">{t('description')}</p>
         </div>
         <div className="flex-shrink-0">
         <CalculationHistory
@@ -930,7 +930,7 @@ export default function LadderGame() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* ── Settings panel ── */}
         <div className={`min-w-0 ${glass.card} ${glass.cardInset} p-4 sm:p-6 lg:p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Users className="w-6 h-6 mr-2 text-green-600" />
             {t('settings.title')}
           </h2>
@@ -938,7 +938,7 @@ export default function LadderGame() {
           <div className="space-y-6">
             {/* Presets */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <BookMarked className="inline w-4 h-4 mr-1 mb-0.5" />
                 {t('presets.title')}
               </label>
@@ -948,7 +948,7 @@ export default function LadderGame() {
                     key={preset.id}
                     onClick={() => applyPreset(preset)}
                     disabled={isPlaying}
-                    className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-400/20 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap backdrop-blur-md"
+                    className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-400/20 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                   >
                     {t(`presets.${preset.id}`)}
                   </button>
@@ -970,7 +970,7 @@ export default function LadderGame() {
 
             {/* Position selection phase UI */}
             {isSelectionPhase && (
-              <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-emerald-200/70 dark:border-emerald-400/20 backdrop-blur-lg">
+              <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-emerald-200/70 dark:border-emerald-400/20">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-semibold text-green-800 dark:text-green-300">
                     📍 위치 선택 ({colAssignments.filter(v => v !== null).length}/{participants.length} 배치)
@@ -979,7 +979,7 @@ export default function LadderGame() {
                     <button onClick={autoAssign} className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800/40 transition-colors">
                       🎲 랜덤 배치
                     </button>
-                    <button onClick={assignInOrder} className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <button onClick={assignInOrder} className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                       📋 순서대로
                     </button>
                   </div>
@@ -1019,7 +1019,7 @@ export default function LadderGame() {
                 </div>
 
                 {selectedParticipant !== null && (
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                  <p className="mt-2 text-xs text-muted">
                     👆 오른쪽 사다리에서 원하는 열을 클릭하세요
                   </p>
                 )}
@@ -1029,7 +1029,7 @@ export default function LadderGame() {
             {/* Participants */}
             <div>
               <div className="flex justify-between items-center mb-3">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-body">
                   {t('settings.participants')} ({participants.length}명)
                 </label>
                 <button
@@ -1050,7 +1050,7 @@ export default function LadderGame() {
                     <select
                       value={p.animal}
                       onChange={e => updateParticipantAnimal(i, e.target.value)}
-                      className="w-12 px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-center flex-shrink-0"
+                      className="w-12 px-1 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-center flex-shrink-0"
                     >
                       {animalIcons.map(a => <option key={a} value={a}>{a}</option>)}
                     </select>
@@ -1058,7 +1058,7 @@ export default function LadderGame() {
                       type="text"
                       value={p.name}
                       onChange={e => updateParticipant(i, e.target.value)}
-                      className="flex-1 min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                      className="flex-1 min-w-0 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                       placeholder={`참가자 ${i + 1}`}
                     />
                     {participants.length > 2 && (
@@ -1076,7 +1076,7 @@ export default function LadderGame() {
 
             {/* Outcomes */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className="block text-sm font-medium text-body mb-3">
                 {t('settings.outcomes')}
               </label>
               <div className="space-y-2">
@@ -1086,7 +1086,7 @@ export default function LadderGame() {
                     type="text"
                     value={o}
                     onChange={e => updateOutcome(i, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                     placeholder={`결과 ${i + 1}`}
                   />
                 ))}
@@ -1095,13 +1095,13 @@ export default function LadderGame() {
 
             {/* Complexity */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('settings.complexity')}
               </label>
               <select
                 value={ladderComplexity}
                 onChange={e => { const v = parseInt(e.target.value); setLadderComplexity(v); updateURL({ complexity: v.toString() }) }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value={1}>{t('settings.complexities.simple')} (25%)</option>
                 <option value={2}>{t('settings.complexities.normal')} (40%)</option>
@@ -1112,13 +1112,13 @@ export default function LadderGame() {
 
             {/* Speed */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('settings.speed')}
               </label>
               <select
                 value={animationSpeed}
                 onChange={e => { const v = parseInt(e.target.value); setAnimationSpeed(v); updateURL({ speed: v.toString() }) }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value={3000}>{t('settings.speeds.slow')}</option>
                 <option value={1500}>{t('settings.speeds.normal')}</option>
@@ -1128,7 +1128,7 @@ export default function LadderGame() {
 
             {/* Feature 4 & 5: Mode toggles */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 게임 모드
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -1138,7 +1138,7 @@ export default function LadderGame() {
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     blindMode
                       ? 'bg-amber-50 dark:bg-amber-900/30 border-amber-400 dark:border-amber-600 text-amber-700 dark:text-amber-300'
-                      : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+                      : 'bg-subtle border-line text-muted'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <span>🙈</span>
@@ -1150,7 +1150,7 @@ export default function LadderGame() {
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     revealOneByOne
                       ? 'bg-purple-50 dark:bg-purple-900/30 border-purple-400 dark:border-purple-600 text-purple-700 dark:text-purple-300'
-                      : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+                      : 'bg-subtle border-line text-muted'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <span>🎭</span>
@@ -1177,7 +1177,7 @@ export default function LadderGame() {
         <div className="min-w-0 space-y-6">
           <div className={`${glass.card} ${glass.cardInset} p-4 sm:p-6`}>
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+              <h3 className="text-xl font-bold text-fg flex items-center">
                 <GitBranch className="w-6 h-6 mr-2 text-green-600" />
                 {t('ladder.title')}
                 {currentRound > 1 && (
@@ -1265,8 +1265,8 @@ export default function LadderGame() {
                           ${isAssigned
                             ? 'cursor-pointer hover:opacity-70'
                             : isSelectedSlot
-                              ? 'bg-emerald-100/70 dark:bg-emerald-500/[0.10] border-2 border-dashed border-emerald-400/80 dark:border-emerald-300/40 animate-pulse cursor-pointer backdrop-blur-md'
-                              : 'bg-white/45 dark:bg-white/[0.05] border-2 border-dashed border-white/70 dark:border-white/[0.12] cursor-default backdrop-blur-md'
+                              ? 'bg-emerald-100/70 dark:bg-emerald-500/[0.10] border-2 border-dashed border-emerald-400/80 dark:border-emerald-300/40 animate-pulse cursor-pointer'
+                              : 'bg-surface border-2 border-dashed border-line cursor-default'
                           }`}
                         style={isAssigned ? {
                           color: COLORS[assignedIdx % COLORS.length],
@@ -1296,7 +1296,7 @@ export default function LadderGame() {
                   {participants.map((_, col) => {
                     const participantIdx = colAssignments[col]
                     if (participantIdx === null || participantIdx === undefined) return (
-                      <div key={col} className="flex-1 flex flex-col items-center gap-0.5 py-1 px-1 rounded-lg text-xs font-medium bg-white/45 dark:bg-white/[0.05] border border-white/55 dark:border-white/[0.08] backdrop-blur-md">
+                      <div key={col} className="flex-1 flex flex-col items-center gap-0.5 py-1 px-1 rounded-lg text-xs font-medium bg-surface border border-line">
                         <span className="text-gray-400">{col + 1}번</span>
                       </div>
                     )
@@ -1512,7 +1512,7 @@ export default function LadderGame() {
               >
                 {outcomes.map((o, i) => (
                   <div key={i} className="flex-1 flex justify-center px-0.5">
-                    <span className="text-xs font-medium text-green-700 dark:text-green-300 bg-emerald-100/70 dark:bg-emerald-500/[0.10] border border-emerald-200/70 dark:border-emerald-400/20 px-2 py-1 rounded-lg max-w-full truncate text-center backdrop-blur-md">
+                    <span className="text-xs font-medium text-green-700 dark:text-green-300 bg-emerald-100/70 dark:bg-emerald-500/[0.10] border border-emerald-200/70 dark:border-emerald-400/20 px-2 py-1 rounded-lg max-w-full truncate text-center">
                       {isSelectionPhase || (blindMode && !revealedOutcomes.has(i)) ? '???' : o}
                     </span>
                   </div>
@@ -1539,8 +1539,8 @@ export default function LadderGame() {
 
           {/* Results card */}
           {showResults && Object.keys(results).length > 0 && (
-            <div className="bg-gradient-to-br from-amber-100/70 via-orange-50/65 to-rose-50/60 dark:from-amber-500/[0.10] dark:via-orange-500/[0.08] dark:to-rose-500/[0.06] backdrop-blur-xl rounded-2xl shadow-[0_24px_60px_rgba(251,146,60,0.18)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)] p-5 sm:p-8 border border-white/60 dark:border-white/[0.08]">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-5 flex items-center">
+            <div className="bg-gradient-to-br from-amber-100/70 via-orange-50/65 to-rose-50/60 dark:from-amber-500/[0.10] dark:via-orange-500/[0.08] dark:to-rose-500/[0.06] rounded-2xl shadow-[0_24px_60px_rgba(251,146,60,0.18)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)] p-5 sm:p-8 border border-line">
+              <h3 className="text-xl font-bold text-fg mb-5 flex items-center">
                 <Target className="w-6 h-6 mr-2 text-orange-500" />
                 {t('result.title')}
               </h3>
@@ -1560,7 +1560,7 @@ export default function LadderGame() {
                           setManualRevealed(prev => new Set([...prev, name]))
                         }
                       }}
-                      className={`flex items-center justify-between p-3 bg-white/60 dark:bg-white/[0.06] backdrop-blur-lg rounded-xl border border-white/60 dark:border-white/[0.08] shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${
+                      className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${
                         shouldHide ? 'cursor-pointer hover:shadow-md' : ''
                       }`}
                       style={{
@@ -1570,14 +1570,14 @@ export default function LadderGame() {
                         perspective: '600px',
                       }}
                     >
-                      <span className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                      <span className="font-medium text-fg flex items-center gap-2">
                         <span className="text-base">{participants.find(p => p.name === name)?.animal}</span>
                         {name}
                       </span>
                       <span className="text-lg text-gray-400">→</span>
                       {shouldHide ? (
                         <span
-                          className="font-bold px-3 py-1 rounded-lg text-white text-sm bg-slate-400/90 dark:bg-slate-500/90 backdrop-blur-md"
+                          className="font-bold px-3 py-1 rounded-lg text-white text-sm bg-slate-400/90 dark:bg-slate-500/90"
                           style={{
                             display: 'inline-block',
                             transition: 'transform 0.6s',
@@ -1609,21 +1609,21 @@ export default function LadderGame() {
                   <button
                     onClick={handleRematch}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-amber-100/70 dark:bg-amber-500/[0.10] hover:bg-amber-100 dark:hover:bg-amber-500/[0.14] px-3 py-2 rounded-xl text-amber-700 dark:text-amber-300 transition-colors text-sm font-medium border border-amber-200/70 dark:border-amber-300/15 backdrop-blur-md disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-amber-100/70 dark:bg-amber-500/[0.10] hover:bg-amber-100 dark:hover:bg-amber-500/[0.14] px-3 py-2 rounded-xl text-amber-700 dark:text-amber-300 transition-colors text-sm font-medium border border-amber-200/70 dark:border-amber-300/15 disabled:opacity-50"
                   >
                     🔄 리매치
                   </button>
                   <button
                     onClick={handleReshuffleLadder}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-teal-700 dark:text-teal-300 transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 backdrop-blur-md disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-teal-700 dark:text-teal-300 transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 disabled:opacity-50"
                   >
                     🔀 사다리만 다시
                   </button>
                   <button
                     onClick={handleNextRound}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-blue-700 dark:text-blue-300 transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 backdrop-blur-md disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-blue-700 dark:text-blue-300 transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 disabled:opacity-50"
                   >
                     ➡️ 다음 라운드
                   </button>
@@ -1631,21 +1631,21 @@ export default function LadderGame() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={exportImage}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 bg-white/55 dark:bg-white/[0.06] hover:bg-white/75 dark:hover:bg-white/[0.10] px-3 py-2 rounded-xl text-gray-700 dark:text-gray-300 transition-colors text-sm font-medium border border-white/60 dark:border-white/[0.08] backdrop-blur-md"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 bg-surface hover:bg-soft px-3 py-2 rounded-xl text-body transition-colors text-sm font-medium border border-line"
                   >
                     <Camera className="w-4 h-4" />
                     <span>이미지 저장</span>
                   </button>
                   <button
                     onClick={handleShare}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-white/55 dark:bg-white/[0.06] hover:bg-white/75 dark:hover:bg-white/[0.10] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 transition-colors text-sm font-medium border border-white/60 dark:border-white/[0.08] backdrop-blur-md"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-surface hover:bg-soft px-4 py-2 rounded-xl text-body transition-colors text-sm font-medium border border-line"
                   >
                     {isCopied ? <><Check className="w-4 h-4" /><span>{tCommon('copied')}</span></> : <><Share2 className="w-4 h-4" /><span>{t('result.share')}</span></>}
                   </button>
                   {showSaveButton && (
                     <button
                       onClick={handleSave}
-                      className="flex-1 inline-flex items-center justify-center gap-2 bg-white/55 dark:bg-white/[0.06] hover:bg-white/75 dark:hover:bg-white/[0.10] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 transition-colors text-sm font-medium border border-white/60 dark:border-white/[0.08] backdrop-blur-md"
+                      className="flex-1 inline-flex items-center justify-center gap-2 bg-surface hover:bg-soft px-4 py-2 rounded-xl text-body transition-colors text-sm font-medium border border-line"
                     >
                       <Save className="w-4 h-4" />
                       <span>{tCommon('save')}</span>
@@ -1661,9 +1661,9 @@ export default function LadderGame() {
             <div className={`${glass.card} ${glass.cardInset} overflow-hidden`}>
               <button
                 onClick={() => setShowRoundHistory(prev => !prev)}
-                className="w-full flex items-center justify-between p-4 hover:bg-white/20 dark:hover:bg-white/[0.04] transition-colors"
+                className="w-full flex items-center justify-between p-4 hover:bg-soft transition-colors"
               >
-                <span className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span className="text-sm font-bold text-fg flex items-center gap-2">
                   📊 라운드 기록 ({rounds.length}라운드)
                 </span>
                 {showRoundHistory ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
@@ -1672,10 +1672,10 @@ export default function LadderGame() {
                 <div className="px-4 pb-4 overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-600">
-                        <th className="py-2 px-3 text-left text-gray-500 dark:text-gray-400 font-medium">참가자</th>
+                      <tr className="border-b border-line">
+                        <th className="py-2 px-3 text-left text-muted font-medium">참가자</th>
                         {rounds.map((r) => (
-                          <th key={r.round} className="py-2 px-3 text-center text-gray-500 dark:text-gray-400 font-medium">
+                          <th key={r.round} className="py-2 px-3 text-center text-muted font-medium">
                             {r.round}R
                           </th>
                         ))}
@@ -1683,8 +1683,8 @@ export default function LadderGame() {
                     </thead>
                     <tbody>
                       {participants.map((p, i) => (
-                        <tr key={i} className="border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-                          <td className="py-2 px-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <tr key={i} className="border-b border-line last:border-b-0">
+                          <td className="py-2 px-3 font-medium text-fg whitespace-nowrap">
                             <span className="mr-1">{p.animal}</span>{p.name}
                           </td>
                           {rounds.map((r) => (

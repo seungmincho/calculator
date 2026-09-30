@@ -32,7 +32,7 @@ export default function TextToSpeechPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><TextToSpeech />  <div className="mt-8">
     <RelatedTools />
@@ -42,17 +42,17 @@ export default function TextToSpeechPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             텍스트 읽어주기(TTS)란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             텍스트 읽어주기(TTS, Text-to-Speech)는 입력한 텍스트를 브라우저의 Web Speech API를 이용해 음성으로 변환해 주는 무료 온라인 도구입니다. 한국어, 영어, 일본어 등 다국어를 지원하며 읽기 속도와 음높이(피치)를 조절할 수 있어 외국어 발음 확인, 문서 청취, 접근성 개선, 콘텐츠 제작 등 다양한 용도로 활용할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             텍스트 읽어주기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>외국어 발음 확인:</strong> 영어나 일본어 텍스트를 붙여넣고 원어민 음성으로 발음을 들어보면 언어 학습 효과를 높일 수 있습니다.</li>
             <li><strong>문서 청취(오디오북):</strong> 긴 글이나 보고서를 음성으로 들으면 눈의 피로를 줄이면서도 내용을 파악할 수 있어 멀티태스킹이 가능합니다.</li>
             <li><strong>속도 조절 활용:</strong> 발음 학습 시에는 0.5~0.75배속으로 천천히, 문서를 빠르게 청취할 때는 1.5~2배속으로 설정하면 효율적입니다.</li>

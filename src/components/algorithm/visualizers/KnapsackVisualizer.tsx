@@ -176,8 +176,8 @@ export default function KnapsackVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400">
               {tHub('categories.dp')}
@@ -189,7 +189,7 @@ export default function KnapsackVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying} onPlay={handlePlay} onPause={() => setIsPlaying(false)}
@@ -215,45 +215,45 @@ export default function KnapsackVisualizer() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.maxValue')}: <strong className="text-cyan-600 dark:text-cyan-400">{result?.maxValue ?? '-'}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.totalWeight')}: <strong className="text-blue-600 dark:text-blue-400">{result?.totalWeight ?? '-'}/{capacity}</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('stats.selected')}: <strong className="text-emerald-600 dark:text-emerald-400">
                   {result?.selectedItems.map(i => items[i]?.icon).join(' ') || '-'}
                 </strong>
               </span>
               {hoverCell && result?.dp[hoverCell.row]?.[hoverCell.col] !== undefined && (
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-sub">
                   dp[{hoverCell.row}][{hoverCell.col}] = <strong className="text-purple-600 dark:text-purple-400">{result.dp[hoverCell.row][hoverCell.col]}</strong>
                 </span>
               )}
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.preset')}</p>
+              <p className="text-xs font-medium text-muted mb-2">{t('controls.preset')}</p>
               <div className="flex gap-2">
                 {KNAPSACK_PRESETS.map((p, i) => (
                   <button key={i} onClick={() => selectPreset(i)}
                     className={`flex-1 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                      presetIdx === i ? 'bg-cyan-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      presetIdx === i ? 'bg-cyan-500 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}>{t(`presets.${p.name}`)}</button>
                 ))}
               </div>
             </div>
 
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.items')}</p>
+              <p className="text-xs font-medium text-muted mb-2">{t('controls.items')}</p>
               <div className="grid grid-cols-5 gap-1">
                 {items.map(item => (
-                  <div key={item.id} className="text-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                  <div key={item.id} className="text-center p-2 bg-subtle rounded-lg">
                     <div className="text-lg">{item.icon}</div>
-                    <div className="text-[10px] text-gray-500 dark:text-gray-400">w:{item.weight} v:{item.value}</div>
+                    <div className="text-[10px] text-muted">w:{item.weight} v:{item.value}</div>
                   </div>
                 ))}
               </div>
@@ -261,7 +261,7 @@ export default function KnapsackVisualizer() {
 
             <div className="flex gap-2 items-end">
               <div className="flex-1">
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">
+                <label className="text-xs font-medium text-muted mb-1 block">
                   {t('controls.capacity')} ({capacity})
                 </label>
                 <input type="range" min={1} max={15} value={capacity}
@@ -278,13 +278,13 @@ export default function KnapsackVisualizer() {
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500 bg-cyan-50/50 dark:bg-cyan-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>{tab.icon} {tab.label}</button>
                 ))}
               </div>
@@ -292,9 +292,9 @@ export default function KnapsackVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.hint')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.hint')}</p>
                     ) : (
                       <StepsList steps={result?.steps} currentIndex={currentStepIndex}
                         onStepClick={setCurrentStepIndex} actionStyle={ACTION_STYLE} actionBadge={ACTION_BADGE} />
@@ -334,10 +334,10 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const idx = ws + wi; const isCur = idx === currentIndex; const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${actionBadge[step.action] || ''}`}>{step.action}</span>
-              <span className="text-gray-600 dark:text-gray-300 truncate">{step.description}</span>
+              <span className="text-sub truncate">{step.description}</span>
             </div>
           </div>
         )

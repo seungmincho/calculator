@@ -182,12 +182,12 @@ const Header = () => {
   };
 
   return (<>
-    <header ref={headerRef} className="bg-white dark:bg-white/[0.04] backdrop-blur-xl border-b border-gray-200/40 dark:border-white/[0.06] sticky top-0 z-50 shadow-[0_1px_20px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_12px_rgba(0,0,0,0.2)]">
+    <header ref={headerRef} className="bg-surface/95 border-b border-line sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2 shrink-0 whitespace-nowrap hover:opacity-80 transition-opacity group">
-            <Calculator className="w-8 h-8 text-blue-600 group-hover:text-indigo-600 transition-colors" />
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">{t('header.title')}</span>
+            <Calculator className="w-7 h-7 text-primary" />
+            <span className="text-xl font-bold tracking-tight text-fg">{t('header.title')}</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -196,7 +196,7 @@ const Header = () => {
               <div key={key} className="relative">
                 <button
                   onClick={() => handleDropdownToggle(key)}
-                  className="flex items-center space-x-1 px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
+                  className="flex items-center space-x-1 px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
                   aria-expanded={openDropdown === key}
                   aria-haspopup="true"
                 >
@@ -205,13 +205,13 @@ const Header = () => {
                 </button>
 
                 {openDropdown === key && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white/95 dark:bg-[#0d1117]/95 backdrop-blur-2xl rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.6)] border border-white/60 dark:border-white/[0.10] z-50 overflow-hidden">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-surface rounded-2xl shadow-xl border border-line z-50 overflow-hidden">
                     <div className="flex">
                       {/* 왼쪽: 최근 사용 또는 추천 항목 */}
-                      <div className="w-[180px] bg-black/[0.03] dark:bg-white/[0.04] p-3 border-r border-black/[0.06] dark:border-white/[0.07]">
+                      <div className="w-[180px] bg-subtle p-3 border-r border-line">
                         <div className="flex items-center gap-1.5 mb-3 px-1">
                           <Clock className="w-3.5 h-3.5 text-blue-500" />
-                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                          <span className="text-xs font-semibold text-muted uppercase tracking-wide">
                             {hasRecentItems(key) ? t('header.recent') : t('header.recommended')}
                           </span>
                         </div>
@@ -221,7 +221,7 @@ const Header = () => {
                               key={item.href}
                               href={item.href}
                               onClick={() => handleToolClick(key, item.href)}
-                              className="flex items-center gap-2 px-2 py-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-white/60 dark:hover:bg-white/[0.08] hover:text-blue-600 transition-all duration-200"
+                              className="flex items-center gap-2 px-2 py-2 rounded-xl text-body hover:bg-soft hover:text-blue-600 transition-all duration-200"
                             >
                               <span className="text-lg">{item.icon}</span>
                               <span className="text-sm font-medium truncate">{item.label}</span>
@@ -233,7 +233,7 @@ const Header = () => {
                       <div className="flex-1 p-3">
                         <div className="flex items-center gap-1.5 mb-3 px-1">
                           <Grid3X3 className="w-3.5 h-3.5 text-gray-400" />
-                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('header.all')} ({menuItems[key].items.length})</span>
+                          <span className="text-xs font-semibold text-muted uppercase tracking-wide">{t('header.all')} ({menuItems[key].items.length})</span>
                         </div>
                         <div className="max-h-[280px] overflow-y-auto pr-1 glass-scrollbar">
                           <div className="grid grid-cols-3 gap-1.5">
@@ -242,7 +242,7 @@ const Header = () => {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => handleToolClick(key, item.href)}
-                                className="flex flex-col items-center text-center p-2.5 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-white/50 dark:hover:bg-white/[0.08] hover:text-blue-600 transition-all duration-200"
+                                className="flex flex-col items-center text-center p-2.5 rounded-xl text-body hover:bg-soft hover:text-blue-600 transition-all duration-200"
                               >
                                 <span className="text-xl mb-1">{item.icon}</span>
                                 <span className="text-[11px] font-medium leading-tight line-clamp-2">{item.label}</span>
@@ -260,7 +260,7 @@ const Header = () => {
             {/* 알고리즘 시각화 */}
             <Link
               href="/algorithm"
-              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-100/50 dark:hover:bg-violet-500/10 transition-all duration-200"
+              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
             >
               🧠 {t('navigation.algorithm')}
             </Link>
@@ -268,7 +268,7 @@ const Header = () => {
             {/* 금융 팁 */}
             <Link
               href="/tips"
-              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
+              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
             >
               {t('navigation.financialTips')}
             </Link>
@@ -276,12 +276,12 @@ const Header = () => {
             {/* 검색 */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-white/40 dark:bg-white/[0.06] hover:bg-white/60 dark:hover:bg-white/[0.10] backdrop-blur-lg border border-white/30 dark:border-white/[0.06] transition-all duration-200 text-sm"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-muted hover:text-gray-700 dark:hover:text-gray-200 bg-surface hover:bg-soft border border-line transition-all duration-200 text-sm"
               aria-label={t('common.search')}
             >
               <Search className="w-4 h-4" />
               <span className="hidden xl:inline">{t('common.search')}</span>
-              <kbd className="hidden 2xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-white/60 dark:bg-white/[0.08] rounded-md border border-white/40 dark:border-white/[0.10]">
+              <kbd className="hidden 2xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-surface rounded-md border border-line">
                 ⌘K
               </kbd>
             </button>
@@ -297,7 +297,7 @@ const Header = () => {
           <div className="lg:hidden flex items-center space-x-2">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/40 dark:hover:bg-white/[0.08] transition-all duration-200"
+              className="p-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
               aria-label={t('common.search')}
             >
               <Search className="w-5 h-5" />
@@ -306,7 +306,7 @@ const Header = () => {
             <LanguageToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/40 dark:hover:bg-white/[0.08] transition-all duration-200"
+              className="p-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
               aria-label={isMobileMenuOpen ? t('common.close') : t('common.menu')}
               aria-expanded={isMobileMenuOpen}
             >
@@ -321,7 +321,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-white/30 dark:border-white/[0.06] max-h-[calc(100vh-5rem)] overflow-y-auto glass-scrollbar">
+          <div className="lg:hidden py-4 border-t border-line max-h-[calc(100vh-5rem)] overflow-y-auto glass-scrollbar">
             {/* Mobile Search */}
             <div className="px-3 pb-3">
               <div className="relative">
@@ -332,7 +332,7 @@ const Header = () => {
                   value={mobileSearchQuery}
                   onChange={(e) => setMobileSearchQuery(e.target.value)}
                   placeholder={t('common.search')}
-                  className="w-full pl-10 pr-8 py-2.5 text-sm border border-white/50 dark:border-white/[0.10] rounded-xl bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/40"
+                  className="w-full pl-10 pr-8 py-2.5 text-sm border border-line rounded-xl bg-surface text-fg focus:ring-2 focus:ring-blue-500/40"
                 />
                 {mobileSearchQuery && (
                   <button
@@ -360,7 +360,7 @@ const Header = () => {
                   }
                   if (results.length === 0) {
                     return (
-                      <div className="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+                      <div className="text-center py-6 text-muted text-sm">
                         {t('searchDialog.noResults')}
                       </div>
                     )
@@ -370,12 +370,12 @@ const Header = () => {
                       key={item.href}
                       href={item.href}
                       onClick={() => { setIsMobileMenuOpen(false); setMobileSearchQuery('') }}
-                      className="flex items-center space-x-3 px-4 py-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/40 dark:hover:bg-white/[0.06] rounded-xl transition-all duration-200"
+                      className="flex items-center space-x-3 px-4 py-2.5 text-sub hover:text-blue-600 hover:bg-soft rounded-xl transition-all duration-200"
                     >
                       <span className="text-lg">{item.icon}</span>
                       <div className="min-w-0 flex-1">
                         <span className="block text-sm">{item.label}</span>
-                        <span className="block text-xs text-gray-400 dark:text-gray-500">{item.catTitle}</span>
+                        <span className="block text-xs text-faint">{item.catTitle}</span>
                       </div>
                     </Link>
                   ))
@@ -388,14 +388,14 @@ const Header = () => {
                   <button
                     onClick={() => setExpandedMobileCategory(expandedMobileCategory === key ? null : key)}
                     aria-expanded={expandedMobileCategory === key}
-                    className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-white/[0.06] rounded-xl transition-all duration-200"
+                    className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-fg hover:bg-soft rounded-xl transition-all duration-200"
                   >
                     <span className="flex items-center gap-2">
                       <span>{categoryIcons[key]}</span>
                       <span>{menuItems[key].title}</span>
                     </span>
                     <span className="flex items-center gap-2">
-                      <span className="text-xs font-normal text-gray-400 dark:text-gray-500 bg-white/40 dark:bg-white/[0.06] px-2 py-0.5 rounded-full">
+                      <span className="text-xs font-normal text-faint bg-surface px-2 py-0.5 rounded-full">
                         {menuItems[key].items.length}
                       </span>
                       <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${expandedMobileCategory === key ? 'rotate-180' : ''}`} />
@@ -408,7 +408,7 @@ const Header = () => {
                           key={item.href}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="flex items-center space-x-3 px-6 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/40 dark:hover:bg-white/[0.06] rounded-xl transition-all duration-200"
+                          className="flex items-center space-x-3 px-6 py-2 text-sub hover:text-blue-600 hover:bg-soft rounded-xl transition-all duration-200"
                         >
                           <span className="text-lg">{item.icon}</span>
                           <span>{item.label}</span>
@@ -424,7 +424,7 @@ const Header = () => {
                 <Link
                   href="/algorithm"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-3 px-3 py-3 text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-100/40 dark:hover:bg-violet-500/10 rounded-xl mx-3 transition-all duration-200 font-medium"
+                  className="flex items-center space-x-3 px-3 py-3 text-sub hover:text-violet-600 hover:bg-violet-100/40 dark:hover:bg-violet-500/10 rounded-xl mx-3 transition-all duration-200 font-medium"
                 >
                   <span className="text-lg">🧠</span>
                   <span>{t('navigation.algorithm')}</span>
@@ -436,7 +436,7 @@ const Header = () => {
                 <Link
                   href="/tips"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-3 px-3 py-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/40 dark:hover:bg-white/[0.06] rounded-xl mx-3 transition-all duration-200 font-medium"
+                  className="flex items-center space-x-3 px-3 py-3 text-sub hover:text-blue-600 hover:bg-soft rounded-xl mx-3 transition-all duration-200 font-medium"
                 >
                   <span className="text-lg">💡</span>
                   <span>{t('navigation.financialTips')}</span>

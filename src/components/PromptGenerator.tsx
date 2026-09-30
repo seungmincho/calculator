@@ -432,7 +432,7 @@ export default function PromptGenerator() {
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
               selected === opt
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t(`${labelPrefix}.${opt}` as Parameters<typeof t>[0])}
@@ -449,7 +449,7 @@ export default function PromptGenerator() {
     <div className="space-y-5">
       {/* Role */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('text.role')}
         </label>
         <select
@@ -465,7 +465,7 @@ export default function PromptGenerator() {
 
       {/* Task */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('text.task')}
         </label>
         <input
@@ -479,7 +479,7 @@ export default function PromptGenerator() {
 
       {/* Context */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('text.context')}
         </label>
         <textarea
@@ -493,7 +493,7 @@ export default function PromptGenerator() {
 
       {/* Output Format */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('text.outputFormat')}
         </label>
         <select
@@ -509,7 +509,7 @@ export default function PromptGenerator() {
 
       {/* Tone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('text.tone')}
         </label>
         {renderButtonGroup(TONES, textSettings.tone, v => updateText('tone', v), 'text.tones')}
@@ -517,7 +517,7 @@ export default function PromptGenerator() {
 
       {/* Language */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('text.language')}
         </label>
         {renderButtonGroup(LANGUAGES, textSettings.language, v => updateText('language', v), 'text.languages')}
@@ -525,7 +525,7 @@ export default function PromptGenerator() {
 
       {/* Length */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('text.length')}
         </label>
         {renderButtonGroup(LENGTHS, textSettings.length, v => updateText('length', v), 'text.lengths')}
@@ -551,7 +551,7 @@ export default function PromptGenerator() {
                 onChange={e => updateText('includeExamples', e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('text.advanced.includeExamples')}
               </span>
             </label>
@@ -562,7 +562,7 @@ export default function PromptGenerator() {
                 onChange={e => updateText('stepByStep', e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('text.advanced.stepByStep')}
               </span>
             </label>
@@ -573,12 +573,12 @@ export default function PromptGenerator() {
                 onChange={e => updateText('compareContrast', e.target.checked)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('text.advanced.compareContrast')}
               </span>
             </label>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-body mb-1.5">
                 {t('text.advanced.customInstruction')}
               </label>
               <textarea
@@ -601,7 +601,7 @@ export default function PromptGenerator() {
     <div className="space-y-5">
       {/* Subject */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('image.subject')}
         </label>
         <input
@@ -615,7 +615,7 @@ export default function PromptGenerator() {
 
       {/* Style */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.style')}
         </label>
         {renderButtonGroup(IMAGE_STYLES, imageSettings.style, v => updateImage('style', v), 'image.styles')}
@@ -623,7 +623,7 @@ export default function PromptGenerator() {
 
       {/* Medium */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.medium')}
         </label>
         {renderButtonGroup(MEDIUMS, imageSettings.medium, v => updateImage('medium', v), 'image.mediums')}
@@ -631,7 +631,7 @@ export default function PromptGenerator() {
 
       {/* Lighting */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.lighting')}
         </label>
         {renderButtonGroup(LIGHTINGS, imageSettings.lighting, v => updateImage('lighting', v), 'image.lightings')}
@@ -639,7 +639,7 @@ export default function PromptGenerator() {
 
       {/* Camera Angle */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.cameraAngle')}
         </label>
         {renderButtonGroup(CAMERA_ANGLES, imageSettings.cameraAngle, v => updateImage('cameraAngle', v), 'image.cameraAngles')}
@@ -647,7 +647,7 @@ export default function PromptGenerator() {
 
       {/* Mood */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.mood')}
         </label>
         {renderButtonGroup(MOODS, imageSettings.mood, v => updateImage('mood', v), 'image.moods')}
@@ -655,7 +655,7 @@ export default function PromptGenerator() {
 
       {/* Quality Tags */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.qualityTagsLabel')}
         </label>
         <div className="flex flex-wrap gap-2">
@@ -667,7 +667,7 @@ export default function PromptGenerator() {
                 onChange={() => toggleQualityTag(tag)}
                 className="accent-blue-600 w-4 h-4"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t(`image.qualityTags.${tag}`)}
               </span>
             </label>
@@ -677,7 +677,7 @@ export default function PromptGenerator() {
 
       {/* Aspect Ratio */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-body mb-2">
           {t('image.aspectRatio')}
         </label>
         {renderButtonGroup(ASPECT_RATIOS, imageSettings.aspectRatio, v => updateImage('aspectRatio', v), 'image.aspectRatios')}
@@ -685,7 +685,7 @@ export default function PromptGenerator() {
 
       {/* Negative Prompt */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-body mb-1.5">
           {t('image.negativePrompt')}
         </label>
         <textarea
@@ -705,11 +705,11 @@ export default function PromptGenerator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Sparkles size={28} />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode Tabs */}
@@ -720,7 +720,7 @@ export default function PromptGenerator() {
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'text'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Type size={18} />
@@ -732,7 +732,7 @@ export default function PromptGenerator() {
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'image'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           <Image size={18} />
@@ -746,13 +746,13 @@ export default function PromptGenerator() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('settings.title')}
               </h2>
               <button
                 type="button"
                 onClick={resetSettings}
-                className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                className="flex items-center gap-1.5 text-sm text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
               >
                 <RotateCcw size={14} />
                 {t('settings.reset')}
@@ -767,10 +767,10 @@ export default function PromptGenerator() {
           {/* Prompt Preview */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('output.preview')}
               </h2>
-              <span className="text-xs text-gray-400 dark:text-gray-500">
+              <span className="text-xs text-faint">
                 {charCount} {t('output.chars')}
               </span>
             </div>
@@ -800,7 +800,7 @@ export default function PromptGenerator() {
               <button
                 type="button"
                 onClick={improvePrompt}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 font-medium transition-colors"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 font-medium transition-colors"
               >
                 <Wand2 size={16} />
                 {t('output.improve')}
@@ -810,7 +810,7 @@ export default function PromptGenerator() {
 
           {/* Templates */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-lg font-semibold text-fg mb-3">
               {t('templates.title')}
             </h2>
             <div className="space-y-2">
@@ -819,9 +819,9 @@ export default function PromptGenerator() {
                   key={tpl.id}
                   type="button"
                   onClick={() => loadTemplate(tpl)}
-                  className="w-full text-left bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-gray-200 dark:border-gray-600 transition-colors"
+                  className="w-full text-left bg-subtle rounded-lg p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-line transition-colors"
                 >
-                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  <span className="text-sm font-medium text-body">
                     {t(tpl.nameKey)}
                   </span>
                 </button>
@@ -833,18 +833,18 @@ export default function PromptGenerator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-fg mb-2">
               {t('guide.textTips.title')}
             </h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.textTips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                <li key={i} className="text-sm text-sub flex gap-2">
                   <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                   {item}
                 </li>
@@ -852,12 +852,12 @@ export default function PromptGenerator() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-fg mb-2">
               {t('guide.imageTips.title')}
             </h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.imageTips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                <li key={i} className="text-sm text-sub flex gap-2">
                   <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
                   {item}
                 </li>

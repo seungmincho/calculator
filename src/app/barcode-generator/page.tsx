@@ -100,17 +100,17 @@ export default function BarcodeGeneratorPage() {
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             바코드 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             바코드 생성기는 EAN-13, CODE128, UPC-A, CODE39, ITF-14 등 다양한 표준 바코드를 무료로 생성하고 PNG/SVG로 다운로드할 수 있는 온라인 도구입니다. 제품 바코드, 재고 관리 라벨, 이벤트 티켓, 도서 ISBN 바코드 등 다양한 용도에 활용할 수 있으며, SVG 형식으로 저장하면 어떤 크기로도 선명하게 인쇄됩니다. 별도 소프트웨어 설치 없이 브라우저에서 즉시 생성하고 활용할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             바코드 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>용도별 형식 선택:</strong> 소매 상품은 EAN-13, 물류·재고 관리는 CODE128, 미국·캐나다 유통은 UPC-A, 내부 관리용 문자 포함은 CODE39를 사용하세요.</li>
             <li><strong>SVG 형식 권장:</strong> PNG보다 SVG로 저장하면 확대해도 선명도가 유지되어 라벨 프린터나 인쇄 작업에 적합합니다.</li>
             <li><strong>여백(Quiet Zone) 확보:</strong> 바코드 스캐너가 정확히 인식하려면 바코드 좌우에 최소 5mm 이상의 흰 여백을 유지해야 합니다.</li>

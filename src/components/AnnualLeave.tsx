@@ -288,14 +288,14 @@ export default function AnnualLeave() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {joinDate && (
           <div className="flex gap-2">
             <button
               onClick={copyLink}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               title={t('copyLink')}
             >
               {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -325,16 +325,16 @@ export default function AnnualLeave() {
 
             {/* Calculation Basis Toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('calculationBasis')}
               </label>
-              <div className="grid grid-cols-2 gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <div className="grid grid-cols-2 gap-1 bg-soft rounded-lg p-1">
                 <button
                   onClick={() => setCalcBasis('joinDate')}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     calcBasis === 'joinDate'
                       ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                      : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                   }`}
                 >
                   {t('joinDateBasis')}
@@ -344,20 +344,20 @@ export default function AnnualLeave() {
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     calcBasis === 'fiscalYear'
                       ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                      : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                   }`}
                 >
                   {t('fiscalYearBasis')}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {calcBasis === 'joinDate' ? t('joinDateBasisDesc') : t('fiscalYearBasisDesc')}
               </p>
             </div>
 
             {/* Join Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('joinDate')}
               </label>
               <input
@@ -371,7 +371,7 @@ export default function AnnualLeave() {
 
             {/* Used Leaves */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('usedLeaves')}
               </label>
               <input
@@ -386,7 +386,7 @@ export default function AnnualLeave() {
 
             {/* Daily Wage (for leave pay calculation) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('dailyWage')}
               </label>
               <div className="relative">
@@ -400,14 +400,14 @@ export default function AnnualLeave() {
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('dailyWageDesc')}</p>
+              <p className="text-xs text-muted mt-1">{t('dailyWageDesc')}</p>
             </div>
 
             {/* Buttons */}
             <div className="flex gap-2 pt-2">
               <button
                 onClick={handleReset}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
@@ -424,7 +424,7 @@ export default function AnnualLeave() {
                 <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
                   <Sun className="w-5 h-5" />
                   <h2 className="text-lg font-semibold">{t('result.title')}</h2>
-                  <span className="ml-auto text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
+                  <span className="ml-auto text-xs text-faint bg-soft px-2 py-0.5 rounded">
                     {calcBasis === 'joinDate' ? t('joinDateBasis') : t('fiscalYearBasis')}
                   </span>
                 </div>
@@ -432,7 +432,7 @@ export default function AnnualLeave() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {/* Work Period */}
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.workPeriod')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.workPeriod')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       {calculateLeave.years}{t('result.years')} {calculateLeave.months}{t('result.months')}
                     </div>
@@ -440,7 +440,7 @@ export default function AnnualLeave() {
 
                   {/* Total Earned */}
                   <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.totalEarned')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.totalEarned')}</div>
                     <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                       {calculateLeave.totalEarned}{t('result.days')}
                     </div>
@@ -448,7 +448,7 @@ export default function AnnualLeave() {
 
                   {/* Used */}
                   <div className="bg-orange-50 dark:bg-orange-950 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.used')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.used')}</div>
                     <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                       {calculateLeave.used}{t('result.days')}
                     </div>
@@ -456,7 +456,7 @@ export default function AnnualLeave() {
 
                   {/* Remaining */}
                   <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.remaining')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.remaining')}</div>
                     <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                       {calculateLeave.remaining}{t('result.days')}
                     </div>
@@ -464,7 +464,7 @@ export default function AnnualLeave() {
 
                   {/* Current Year Earned */}
                   <div className="bg-indigo-50 dark:bg-indigo-950 rounded-lg p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.currentYearEarned')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.currentYearEarned')}</div>
                     <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                       {calculateLeave.currentYearEarned}{t('result.days')}
                     </div>
@@ -473,7 +473,7 @@ export default function AnnualLeave() {
                   {/* Next Earned Date */}
                   {calculateLeave.nextEarnedDate && (
                     <div className="bg-teal-50 dark:bg-teal-950 rounded-lg p-4">
-                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.nextEarned')}</div>
+                      <div className="text-sm text-sub mb-1">{t('result.nextEarned')}</div>
                       <div className="text-xl font-bold text-teal-600 dark:text-teal-400">
                         {calculateLeave.nextEarnedDate}
                       </div>
@@ -484,11 +484,11 @@ export default function AnnualLeave() {
                 {/* Leave Pay Calculation */}
                 {calculateLeave.leavePay !== null && calculateLeave.remaining > 0 && (
                   <div className="mt-4 bg-amber-50 dark:bg-amber-950 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('leavePay.title')}</div>
+                    <div className="text-sm text-sub mb-1">{t('leavePay.title')}</div>
                     <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                       {formatNumber(calculateLeave.leavePay)}{t('won')}
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       {t('leavePay.formula', {
                         remaining: calculateLeave.remaining,
                         wage: formatNumber(dailyWage),
@@ -509,7 +509,7 @@ export default function AnnualLeave() {
 
                   {/* Timeline bar */}
                   <div className="relative mt-6 mb-10">
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-3 bg-track rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
                         style={{ width: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
@@ -538,7 +538,7 @@ export default function AnnualLeave() {
                             isPast ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-500'
                           }`} />
                           <div className={`absolute top-4 transform -translate-x-1/2 text-center whitespace-nowrap ${
-                            isPast ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'
+                            isPast ? 'text-green-600 dark:text-green-400' : 'text-faint'
                           }`}>
                             <div className="text-[10px] font-semibold">{m.year}{t('result.years')}</div>
                             <div className="text-[10px]">{m.days}{t('result.days')}</div>
@@ -548,7 +548,7 @@ export default function AnnualLeave() {
                     })}
                   </div>
 
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{t('timeline.desc')}</p>
+                  <p className="text-xs text-muted mt-2">{t('timeline.desc')}</p>
                 </div>
               )}
 
@@ -562,14 +562,14 @@ export default function AnnualLeave() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      <tr className="border-b border-line">
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-body">
                           {t('breakdown.year')}
                         </th>
-                        <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        <th className="text-right py-3 px-4 text-sm font-semibold text-body">
                           {t('breakdown.earned')}
                         </th>
-                        <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        <th className="text-right py-3 px-4 text-sm font-semibold text-body">
                           {t('breakdown.type')}
                         </th>
                       </tr>
@@ -578,15 +578,15 @@ export default function AnnualLeave() {
                       {calculateLeave.breakdown.map((item, index) => (
                         <tr
                           key={index}
-                          className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                          className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/50"
                         >
-                          <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                          <td className="py-3 px-4 text-sm text-fg">
                             {item.year}{t('breakdown.year')}
                           </td>
                           <td className="text-right py-3 px-4 text-sm font-semibold text-blue-600 dark:text-blue-400">
                             {item.earned}{t('result.days')}
                           </td>
-                          <td className="text-right py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
+                          <td className="text-right py-3 px-4 text-sm text-sub">
                             {t(`breakdown.${item.type}`)}
                           </td>
                         </tr>
@@ -599,7 +599,7 @@ export default function AnnualLeave() {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Sun className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('description')}</p>
+              <p className="text-muted">{t('description')}</p>
             </div>
           )}
         </div>
@@ -620,7 +620,7 @@ export default function AnnualLeave() {
 
         {promotionOpen && (
           <div className="mt-4 space-y-4">
-            <p className="text-sm text-gray-700 dark:text-gray-300">{t('promotion.description')}</p>
+            <p className="text-sm text-body">{t('promotion.description')}</p>
 
             <div className="space-y-3">
               {(t.raw('promotion.steps') as string[]).map((step, i) => (
@@ -628,7 +628,7 @@ export default function AnnualLeave() {
                   <span className="flex-shrink-0 w-6 h-6 bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded-full flex items-center justify-center text-sm font-bold">
                     {i + 1}
                   </span>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{step}</span>
+                  <span className="text-sm text-body">{step}</span>
                 </div>
               ))}
             </div>
@@ -650,10 +650,10 @@ export default function AnnualLeave() {
         <div className="space-y-6">
           {/* Rules */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.rules.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {guideItems.map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
@@ -665,10 +665,10 @@ export default function AnnualLeave() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               {tipsItems.map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>

@@ -32,7 +32,7 @@ export default function RomanNumeralPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><RomanNumeral />  <div className="mt-8">
     <RelatedTools />
@@ -42,17 +42,17 @@ export default function RomanNumeralPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             로마 숫자 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             로마 숫자 변환기는 아라비아 숫자(1, 2, 3...)와 로마 숫자(I, II, III...) 간의 변환을 즉시 수행해 주는 온라인 도구입니다. 시계 문자판, 영화·소설 시리즈 번호, 법률 문서, 학술 자료의 챕터 번호, 올림픽·슈퍼볼 등 스포츠 이벤트 번호에 사용되는 로마 숫자를 쉽게 읽고 변환할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             로마 숫자 변환기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>기본 기호 암기:</strong> I(1), V(5), X(10), L(50), C(100), D(500), M(1000) 7개만 알면 어떤 로마 숫자도 읽을 수 있습니다. 작은 수가 큰 수 앞에 오면 뺄셈(IV=4, IX=9)임을 기억하세요.</li>
             <li><strong>연도 표기 변환:</strong> 영화 크레딧이나 건물 준공 연도의 로마 숫자(예: MCMXCIX = 1999)를 변환해 확인하는 데 활용하세요.</li>
             <li><strong>게임·판타지 콘텐츠 참고:</strong> RPG 게임이나 판타지 소설에서 로마 숫자로 표기된 던전 레벨, 왕의 이름 번호 등을 해독하는 데 사용할 수 있습니다.</li>

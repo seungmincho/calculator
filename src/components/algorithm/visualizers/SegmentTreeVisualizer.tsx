@@ -253,8 +253,8 @@ export default function SegmentTreeVisualizer() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
               {tHub('categories.dataStructure')}
@@ -266,7 +266,7 @@ export default function SegmentTreeVisualizer() {
 
       <div className="grid xl:grid-cols-5 gap-6">
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             <div className="flex justify-center">
               <VisualizerControls
                 isPlaying={isPlaying} onPlay={handlePlay} onPause={() => setIsPlaying(false)} onReset={handleReset}
@@ -294,29 +294,29 @@ export default function SegmentTreeVisualizer() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('array')}: <strong className="text-blue-600 dark:text-blue-400">[{array.join(', ')}]</strong>
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-sub">
                 {t('queryType')}: <strong className="text-purple-600 dark:text-purple-400">{queryType}</strong>
               </span>
               {answer !== null && (
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-sub">
                   {t('result')}: <strong className="text-emerald-600 dark:text-emerald-400">{answer}</strong>
                 </span>
               )}
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
             {/* Operation selector */}
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('controls.operation')}</p>
+              <p className="text-xs font-medium text-muted mb-2">{t('controls.operation')}</p>
               <div className="flex gap-2">
                 {operations.map(op => (
                   <button key={op.key} onClick={() => { setOperation(op.key); handleReset() }}
                     className={`flex-1 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                      operation === op.key ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      operation === op.key ? 'bg-blue-500 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}>{op.label}</button>
                 ))}
               </div>
@@ -324,12 +324,12 @@ export default function SegmentTreeVisualizer() {
 
             {/* Query type */}
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('queryType')}</p>
+              <p className="text-xs font-medium text-muted mb-2">{t('queryType')}</p>
               <div className="flex gap-2">
                 {queryTypes.map(qt => (
                   <button key={qt.key} onClick={() => { setQueryType(qt.key); handleReset() }}
                     className={`flex-1 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                      queryType === qt.key ? 'bg-emerald-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      queryType === qt.key ? 'bg-emerald-500 text-white' : 'bg-soft text-body'
                     }`}>{qt.label}</button>
                 ))}
               </div>
@@ -337,11 +337,11 @@ export default function SegmentTreeVisualizer() {
 
             {/* Array input */}
             <div>
-              <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('array')}</label>
+              <label className="text-xs font-medium text-muted mb-1 block">{t('array')}</label>
               <div className="flex gap-2">
                 <input type="text" value={arrayInput} onChange={e => setArrayInput(e.target.value)}
                   onBlur={parseAndSetArray} onKeyDown={e => e.key === 'Enter' && parseAndSetArray()}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                  className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                   placeholder="5, 8, 6, 3, 2, 7, 4, 1" />
                 <button onClick={fillRandom}
                   className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors whitespace-nowrap">
@@ -354,14 +354,14 @@ export default function SegmentTreeVisualizer() {
             {operation === 'query' && (
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('queryRange')} L</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">{t('queryRange')} L</label>
                   <input type="number" min={0} max={array.length - 1} value={queryL} onChange={e => setQueryL(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <div className="flex-1">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('queryRange')} R</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">{t('queryRange')} R</label>
                   <input type="number" min={0} max={array.length - 1} value={queryR} onChange={e => setQueryR(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <button onClick={executeOperation}
                   className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
@@ -374,14 +374,14 @@ export default function SegmentTreeVisualizer() {
             {operation === 'update' && (
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('updateIndex')}</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">{t('updateIndex')}</label>
                   <input type="number" min={0} max={array.length - 1} value={updateIdx} onChange={e => setUpdateIdx(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <div className="flex-1">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{t('updateValue')}</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">{t('updateValue')}</label>
                   <input type="number" value={updateVal} onChange={e => setUpdateVal(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <button onClick={executeOperation}
                   className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
@@ -399,7 +399,7 @@ export default function SegmentTreeVisualizer() {
             )}
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400 pt-1">
+            <div className="flex flex-wrap gap-3 text-xs text-muted pt-1">
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-blue-500/80" />{t('legend.active')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-emerald-500/80" />{t('legend.matched')}</span>
               <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-amber-400/80" />{t('legend.visited')}</span>
@@ -411,14 +411,14 @@ export default function SegmentTreeVisualizer() {
 
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>{tab.icon} {tab.label}</button>
                 ))}
               </div>
@@ -426,9 +426,9 @@ export default function SegmentTreeVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStepIndex < 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">{t('stepsGuide.hint')}</p>
+                      <p className="text-sm text-faint italic">{t('stepsGuide.hint')}</p>
                     ) : (
                       <SegTreeStepsList steps={opResult?.steps} currentIndex={currentStepIndex} onStepClick={setCurrentStepIndex} />
                     )}
@@ -492,11 +492,11 @@ function SegTreeStepsList({ steps, currentIndex, onStepClick }: {
           <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(i)}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40'
-                : i <= currentIndex ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                : i <= currentIndex ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
             }`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action] || ''}`}>{step.action}</span>
-              <span className="text-gray-600 dark:text-gray-300 truncate">{step.description}</span>
+              <span className="text-sub truncate">{step.description}</span>
             </div>
           </div>
         )

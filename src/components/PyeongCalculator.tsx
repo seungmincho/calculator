@@ -168,11 +168,11 @@ export default function PyeongCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Ruler className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -182,7 +182,7 @@ export default function PyeongCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Tabs */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 변환 모드
               </label>
               <div className="flex gap-2">
@@ -191,7 +191,7 @@ export default function PyeongCalculator() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'pyeongToMeter'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('pyeongToSqm')}
@@ -201,7 +201,7 @@ export default function PyeongCalculator() {
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'meterToPyeong'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('sqmToPyeong')}
@@ -211,7 +211,7 @@ export default function PyeongCalculator() {
 
             {/* Input Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {mode === 'pyeongToMeter' ? t('inputPyeong') : t('inputSqm')}
               </label>
               <div className="relative">
@@ -236,7 +236,7 @@ export default function PyeongCalculator() {
             {/* Quick Value Buttons */}
             {mode === 'pyeongToMeter' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('quickValues')}
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -247,7 +247,7 @@ export default function PyeongCalculator() {
                       className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         parseFloat(inputValue) === value
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {value}
@@ -270,7 +270,7 @@ export default function PyeongCalculator() {
             {/* Copy Link Button */}
             <button
               onClick={copyCurrentURL}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
             >
               {copiedId === 'link' ? (
                 <>
@@ -360,10 +360,10 @@ export default function PyeongCalculator() {
 
           {/* Visual Size Comparison (CSS squares) */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+            <h3 className="text-lg font-semibold text-fg mb-1">
               면적 시각화
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">
+            <p className="text-xs text-muted mb-5">
               기준: 33평 (109㎡) 아파트 대비 현재 면적
             </p>
             <div className="flex items-end gap-6 flex-wrap">
@@ -377,7 +377,7 @@ export default function PyeongCalculator() {
                     {pyeong.toFixed(1)}평
                   </span>
                 </div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">현재</span>
+                <span className="text-xs text-muted">현재</span>
               </div>
 
               {/* Reference square (33평) */}
@@ -386,11 +386,11 @@ export default function PyeongCalculator() {
                   className="bg-gray-200 dark:bg-gray-600 border-2 border-gray-400 dark:border-gray-500 rounded-md flex items-center justify-center"
                   style={{ width: `${refSidePx}px`, height: `${refSidePx}px` }}
                 >
-                  <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 text-center px-1">
+                  <span className="text-xs font-semibold text-sub text-center px-1">
                     33평<br/>(기준)
                   </span>
                 </div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">기준</span>
+                <span className="text-xs text-muted">기준</span>
               </div>
 
               {/* Ratio label */}
@@ -398,7 +398,7 @@ export default function PyeongCalculator() {
                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {((pyeong / REF_PYEONG) * 100).toFixed(0)}%
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">33평 대비</p>
+                <p className="text-xs text-muted">33평 대비</p>
               </div>
             </div>
 
@@ -406,14 +406,14 @@ export default function PyeongCalculator() {
             <div className="mt-6 space-y-3">
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-body">
                     현재 값
                   </span>
                   <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                     {pyeong.toFixed(2)} {t('pyeong')}
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                <div className="w-full bg-track rounded-full h-4">
                   <div
                     className="bg-gradient-to-r from-blue-500 to-blue-600 h-4 rounded-full transition-all duration-300"
                     style={{ width: `${Math.min((pyeong / maxPyeongForComparison) * 100, 100)}%` }}
@@ -426,14 +426,14 @@ export default function PyeongCalculator() {
                 return (
                   <div key={room.name}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-sub">
                         {room.name}
                       </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-500">
+                      <span className="text-sm text-muted">
                         {avgPyeong.toFixed(0)} {t('pyeong')}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-track rounded-full h-2">
                       <div
                         className="bg-gray-400 dark:bg-gray-500 h-2 rounded-full"
                         style={{ width: `${Math.min((avgPyeong / maxPyeongForComparison) * 100, 100)}%` }}
@@ -447,7 +447,7 @@ export default function PyeongCalculator() {
 
           {/* Room Size Reference */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Home className="w-5 h-5 text-blue-600" />
               {t('roomSize')}
             </h3>
@@ -464,10 +464,10 @@ export default function PyeongCalculator() {
                   <div className={`font-semibold ${room.color} mb-2`}>
                     {room.name}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-sub">
                     {room.min}-{room.max} {t('pyeong')}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-500">
+                  <div className="text-sm text-muted">
                     {(room.min * PYEONG_TO_M2).toFixed(1)}-{(room.max * PYEONG_TO_M2).toFixed(1)} {t('sqm')}
                   </div>
                 </div>
@@ -483,7 +483,7 @@ export default function PyeongCalculator() {
           onClick={() => setRefTableOpen((v) => !v)}
           className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <span className="text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="text-lg font-semibold text-fg">
             자주 쓰는 평수 변환표
           </span>
           {refTableOpen ? (
@@ -495,14 +495,14 @@ export default function PyeongCalculator() {
 
         {refTableOpen && (
           <div className="px-6 pb-6">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+            <p className="text-xs text-muted mb-3">
               클릭하면 해당 값으로 바로 계산합니다.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300">구분</th>
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 pr-4 font-semibold text-body">구분</th>
                     <th className="text-right py-2 px-4 font-semibold text-blue-700 dark:text-blue-300">평 (坪)</th>
                     <th className="text-right py-2 pl-4 font-semibold text-green-700 dark:text-green-300">제곱미터 (㎡)</th>
                   </tr>
@@ -525,13 +525,13 @@ export default function PyeongCalculator() {
                             setInputValue(String(p))
                           }
                         }}
-                        className={`border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors ${
+                        className={`border-b border-line cursor-pointer transition-colors ${
                           isActive
                             ? 'bg-blue-50 dark:bg-blue-950'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                       >
-                        <td className="py-2.5 pr-4 font-medium text-gray-800 dark:text-gray-200">{label}</td>
+                        <td className="py-2.5 pr-4 font-medium text-body">{label}</td>
                         <td className="py-2.5 px-4 text-right text-blue-700 dark:text-blue-300 font-mono">{p}</td>
                         <td className="py-2.5 pl-4 text-right text-green-700 dark:text-green-300 font-mono">{m}</td>
                       </tr>
@@ -546,17 +546,17 @@ export default function PyeongCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* What is Pyeong */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.what.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.what.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
@@ -568,10 +568,10 @@ export default function PyeongCalculator() {
 
           {/* Reference */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-lg font-semibold text-body mb-3">
               {t('guide.reference.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.reference.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-green-600 dark:text-green-400 mt-0.5">•</span>

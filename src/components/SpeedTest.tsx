@@ -299,8 +299,8 @@ export default function SpeedTest() {
             <Wifi className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-sm text-muted">{t('description')}</p>
           </div>
         </div>
       </div>
@@ -314,20 +314,20 @@ export default function SpeedTest() {
             <div className="text-center -mt-2">
               {currentResult?.downloadSpeed !== null && currentResult !== null ? (
                 <div>
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                  <span className="text-4xl font-bold text-fg">
                     {currentResult.downloadSpeed}
                   </span>
-                  <span className="text-lg text-gray-500 dark:text-gray-400 ml-1">{t('mbps')}</span>
+                  <span className="text-lg text-muted ml-1">{t('mbps')}</span>
                 </div>
               ) : (
                 <div className="text-4xl font-bold text-gray-300 dark:text-gray-600">—</div>
               )}
-              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('downloadSpeed')}</div>
+              <div className="text-sm text-muted mt-1">{t('downloadSpeed')}</div>
             </div>
           </div>
 
           {/* Ping */}
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+          <div className="flex items-center gap-2 text-sub">
             <Clock className="w-4 h-4" />
             <span className="font-medium">{t('ping')}:</span>
             <span className="font-bold text-blue-600 dark:text-blue-400">
@@ -340,11 +340,11 @@ export default function SpeedTest() {
           {/* Progress bar */}
           {testing && (
             <div className="w-full max-w-xs">
-              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <div className="flex justify-between text-xs text-muted mb-1">
                 <span>{t('progress')}</span>
                 <span>{progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-track rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
@@ -357,10 +357,10 @@ export default function SpeedTest() {
           {currentResult !== null && !testing && (
             <div className={`w-full max-w-xs rounded-lg border p-3 ${SPEED_BG[speedClass]}`}>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('classification')}</span>
+                <span className="text-sm font-medium text-body">{t('classification')}</span>
                 <span className={`font-bold ${SPEED_TEXT[speedClass]}`}>{classLabelMap[speedClass]}</span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{classDescMap[speedClass]}</p>
+              <p className="text-xs text-muted mt-1">{classDescMap[speedClass]}</p>
             </div>
           )}
 
@@ -376,7 +376,7 @@ export default function SpeedTest() {
             <button
               onClick={() => runTest('full')}
               disabled={testing}
-              className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {t('fullTest')}
             </button>
@@ -398,7 +398,7 @@ export default function SpeedTest() {
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-blue-500" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('history')}</h2>
           </div>
           <div className="space-y-2">
             {history.map((item, idx) => {
@@ -406,10 +406,10 @@ export default function SpeedTest() {
               return (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm"
+                  className="flex items-center justify-between p-3 bg-subtle rounded-lg text-sm"
                 >
-                  <span className="text-gray-500 dark:text-gray-400">{formatTime(item.timestamp)}</span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                  <span className="text-muted">{formatTime(item.timestamp)}</span>
+                  <span className="text-xs text-faint">
                     {item.mode === 'quick' ? '1MB' : '10MB'}
                   </span>
                   <div className="flex gap-4">
@@ -421,7 +421,7 @@ export default function SpeedTest() {
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5 text-gray-400" />
-                      <span className="text-gray-700 dark:text-gray-300">
+                      <span className="text-body">
                         {item.ping !== null ? `${item.ping} ${t('ms')}` : '—'}
                       </span>
                     </span>
@@ -440,20 +440,20 @@ export default function SpeedTest() {
           onClick={() => setGuideOpen(v => !v)}
           aria-expanded={guideOpen}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('guideTitle')}</h2>
           {guideOpen
             ? <ChevronUp className="w-5 h-5 text-gray-500" />
             : <ChevronDown className="w-5 h-5 text-gray-500" />}
         </button>
         {guideOpen && (
-          <div className="px-6 pb-6 space-y-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+          <div className="px-6 pb-6 space-y-6 border-t border-line pt-4">
             <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="font-semibold text-body mb-2">
                 {t('guideSection1Title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guideSection1Items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="text-blue-500 font-bold flex-shrink-0">•</span>
                     <span>{item}</span>
                   </li>
@@ -461,12 +461,12 @@ export default function SpeedTest() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="font-semibold text-body mb-2">
                 {t('guideSection2Title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guideSection2Items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li key={i} className="flex gap-2 text-sm text-sub">
                     <span className="text-green-500 font-bold flex-shrink-0">•</span>
                     <span>{item}</span>
                   </li>

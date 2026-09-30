@@ -24,7 +24,7 @@ export default function AverageCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><AverageCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -34,20 +34,20 @@ export default function AverageCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">가중평균 계산기란?</h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">가중평균 계산기란?</h2>
+          <p className="text-body leading-relaxed mb-6">
             가중평균 계산기는 각 값에 서로 다른 중요도(가중치)를 반영해 평균을 구하는 도구입니다. 값과 가중치를 입력하면 가중평균은 물론 산술평균·기하평균·조화평균, 그리고 분산·표준편차·중앙값 같은 기초 통계까지 한 번에 계산합니다. 성적 산출, 학점(GPA) 계산, 투자 포트폴리오 비중 평균, 설문 점수 집계 등 중요도가 다른 데이터를 다룰 때 유용합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">가중평균 공식과 예시</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 mb-6">
+          <h3 className="text-lg font-semibold text-fg mb-3">가중평균 공식과 예시</h3>
+          <ul className="list-disc list-inside space-y-2 text-body mb-6">
             <li><strong>공식:</strong> 가중평균 = Σ(값 × 가중치) ÷ Σ(가중치)</li>
             <li><strong>예시(성적):</strong> 중간 80점(가중치 40%), 기말 90점(가중치 60%) → (80×40 + 90×60) ÷ 100 = 86점</li>
             <li><strong>예시(학점):</strong> A(4.5, 3학점), B+(3.5, 2학점) → (4.5×3 + 3.5×2) ÷ 5 = 4.1</li>
             <li><strong>산술평균과 비교:</strong> 위 성적을 단순 산술평균하면 85점이지만, 기말 비중이 크므로 가중평균은 86점이 됩니다.</li>
           </ul>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">4가지 평균, 언제 쓰나요?</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <h3 className="text-lg font-semibold text-fg mb-3">4가지 평균, 언제 쓰나요?</h3>
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>산술평균:</strong> 모든 값의 중요도가 같을 때 (가장 기본).</li>
             <li><strong>가중평균:</strong> 값마다 중요도·비중이 다를 때 (성적, 학점, 포트폴리오).</li>
             <li><strong>기하평균:</strong> 성장률·수익률 등 비율의 평균 (연평균 수익률).</li>

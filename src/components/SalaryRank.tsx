@@ -373,10 +373,10 @@ export default function SalaryRank() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0">
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0">
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
         </button>
@@ -388,7 +388,7 @@ export default function SalaryRank() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Annual salary */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('annualSalary')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('annualSalary')}</label>
               <div className="relative">
                 <input
                   type="text"
@@ -403,14 +403,14 @@ export default function SalaryRank() {
               {salaryInput && Number(salaryInput) > 0 && (
                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">= {formatKRW(Number(salaryInput))}{t('won')}</p>
               )}
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('salaryHint')}</p>
+              <p className="text-xs text-faint mt-1">{t('salaryHint')}</p>
             </div>
 
             {/* Quick amounts */}
             <div className="grid grid-cols-4 gap-1.5">
               {[2000, 3000, 4000, 5000, 6000, 8000, 10000, 15000].map(v => (
                 <button key={v} onClick={() => setSalaryInput(String(v * 10000))}
-                  className="px-2 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-700 dark:text-gray-300 rounded-lg transition-colors">
+                  className="px-2 py-1.5 text-xs font-medium bg-soft hover:bg-blue-100 dark:hover:bg-blue-900 text-body rounded-lg transition-colors">
                   {v >= 10000 ? `${v / 10000}억` : `${v.toLocaleString()}만`}
                 </button>
               ))}
@@ -418,14 +418,14 @@ export default function SalaryRank() {
 
             {/* Age group */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('ageGroup')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('ageGroup')}</label>
               <div className="flex flex-wrap gap-1.5">
                 {AGE_GROUPS.map(ag => (
                   <button key={ag} onClick={() => setAgeGroup(ageGroup === ag ? '' : ag)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       ageGroup === ag
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}>
                     {t(`ages.${ag}`)}
                   </button>
@@ -435,14 +435,14 @@ export default function SalaryRank() {
 
             {/* Gender */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('gender')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('gender')}</label>
               <div className="flex gap-2">
                 {GENDERS.map(g => (
                   <button key={g} onClick={() => setGender(gender === g ? '' : g)}
                     className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       gender === g
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}>
                     {t(`genders.${g}`)}
                   </button>
@@ -452,7 +452,7 @@ export default function SalaryRank() {
 
             {/* Industry */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('industry')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('industry')}</label>
               <select value={industry} onChange={e => setIndustry(e.target.value)}
                 className={`${glassInput} px-3 py-2 text-sm`}>
                 <option value="">{t('industryAll')}</option>
@@ -469,7 +469,7 @@ export default function SalaryRank() {
                 <BarChart3 className="w-5 h-5" />
                 {t('calculate')}
               </button>
-              <button onClick={handleReset} className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors">
+              <button onClick={handleReset} className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors">
                 <RotateCcw className="w-5 h-5" />
               </button>
             </div>
@@ -487,7 +487,7 @@ export default function SalaryRank() {
           {!result ? (
             <div className={`${glassCard} ${glassInset} p-16 text-center`}>
               <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-              <p className="text-gray-400 dark:text-gray-500 text-lg">{t('enterSalary')}</p>
+              <p className="text-faint text-lg">{t('enterSalary')}</p>
             </div>
           ) : (
             <>
@@ -524,11 +524,11 @@ export default function SalaryRank() {
                   <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <Users className="w-4 h-4 text-blue-500" />
-                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('ageComparison')}</p>
+                      <p className="text-sm font-semibold text-body">{t('ageComparison')}</p>
                     </div>
-                    <p className="text-2xl font-black text-gray-900 dark:text-white">{t('top')} {result.byAge.topPercent}%</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('ages.' + ageGroup)} {t('median')}: {formatKRW(result.byAge.median)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <p className="text-2xl font-black text-fg">{t('top')} {result.byAge.topPercent}%</p>
+                    <p className="text-xs text-muted mt-1">{t('ages.' + ageGroup)} {t('median')}: {formatKRW(result.byAge.median)}{t('won')}</p>
+                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
                       <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${result.byAge.percentile}%` }} />
                     </div>
                   </div>
@@ -537,11 +537,11 @@ export default function SalaryRank() {
                   <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <TrendingUp className="w-4 h-4 text-purple-500" />
-                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('genderComparison')}</p>
+                      <p className="text-sm font-semibold text-body">{t('genderComparison')}</p>
                     </div>
-                    <p className="text-2xl font-black text-gray-900 dark:text-white">{t('top')} {result.byGender.topPercent}%</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('genders.' + gender)} {t('median')}: {formatKRW(result.byGender.median)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <p className="text-2xl font-black text-fg">{t('top')} {result.byGender.topPercent}%</p>
+                    <p className="text-xs text-muted mt-1">{t('genders.' + gender)} {t('median')}: {formatKRW(result.byGender.median)}{t('won')}</p>
+                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
                       <div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${result.byGender.percentile}%` }} />
                     </div>
                   </div>
@@ -550,11 +550,11 @@ export default function SalaryRank() {
                   <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <BarChart3 className="w-4 h-4 text-green-500" />
-                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('industryComparison')}</p>
+                      <p className="text-sm font-semibold text-body">{t('industryComparison')}</p>
                     </div>
-                    <p className="text-2xl font-black text-gray-900 dark:text-white">{t('top')} {result.byIndustry.topPercent}%</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('industries.' + industry)} {t('average')}: {formatKRW(result.byIndustry.avg)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <p className="text-2xl font-black text-fg">{t('top')} {result.byIndustry.topPercent}%</p>
+                    <p className="text-xs text-muted mt-1">{t('industries.' + industry)} {t('average')}: {formatKRW(result.byIndustry.avg)}{t('won')}</p>
+                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
                       <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${result.byIndustry.percentile}%` }} />
                     </div>
                   </div>
@@ -563,7 +563,7 @@ export default function SalaryRank() {
 
               {/* Distribution chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
                   <BarChart3 className="w-4 h-4" /> {t('distributionChart')}
                 </h3>
                 <div className="h-64">
@@ -587,7 +587,7 @@ export default function SalaryRank() {
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
-                <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-2">{t('chartNote')}</p>
+                <p className="text-xs text-center text-faint mt-2">{t('chartNote')}</p>
               </div>
 
               {/* Data contribution */}
@@ -623,9 +623,9 @@ export default function SalaryRank() {
               {/* Community Stats */}
               {communityStats && communityStats.totalCount >= 5 && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
                     <Users className="w-4 h-4 text-indigo-500" /> {t('community.title')}
-                    <span className="text-xs font-normal text-gray-400 dark:text-gray-500">({t('community.realtime')})</span>
+                    <span className="text-xs font-normal text-faint">({t('community.realtime')})</span>
                   </h3>
 
                   {/* Summary stats */}
@@ -665,21 +665,21 @@ export default function SalaryRank() {
                   {/* Age group breakdown */}
                   {Object.keys(communityStats.byAge).length > 0 && (
                     <div className="mb-4">
-                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('community.byAge')}</p>
+                      <p className="text-xs font-semibold text-sub mb-2">{t('community.byAge')}</p>
                       <div className="space-y-1.5">
                         {AGE_GROUPS.filter(ag => communityStats.byAge[ag]).map(ag => {
                           const d = communityStats.byAge[ag]
                           const maxAvg = Math.max(...Object.values(communityStats.byAge).map(v => v.avg))
                           return (
                             <div key={ag} className="flex items-center gap-2 text-xs">
-                              <span className="w-10 text-gray-500 dark:text-gray-400 shrink-0">{t(`ages.${ag}`)}</span>
-                              <div className="flex-1 h-5 bg-gray-100 dark:bg-gray-700 rounded overflow-hidden">
+                              <span className="w-10 text-muted shrink-0">{t(`ages.${ag}`)}</span>
+                              <div className="flex-1 h-5 bg-soft rounded overflow-hidden">
                                 <div className="h-full bg-blue-400 dark:bg-blue-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
                                   style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
                                   {formatKRW(d.avg)}
                                 </div>
                               </div>
-                              <span className="w-12 text-gray-400 dark:text-gray-500 text-right shrink-0">{d.count}{t('community.people')}</span>
+                              <span className="w-12 text-faint text-right shrink-0">{d.count}{t('community.people')}</span>
                             </div>
                           )
                         })}
@@ -690,21 +690,21 @@ export default function SalaryRank() {
                   {/* Industry breakdown */}
                   {Object.keys(communityStats.byIndustry).length > 0 && (
                     <div>
-                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('community.byIndustry')}</p>
+                      <p className="text-xs font-semibold text-sub mb-2">{t('community.byIndustry')}</p>
                       <div className="space-y-1.5">
                         {INDUSTRIES.filter(ind => communityStats.byIndustry[ind]).map(ind => {
                           const d = communityStats.byIndustry[ind]
                           const maxAvg = Math.max(...Object.values(communityStats.byIndustry).map(v => v.avg))
                           return (
                             <div key={ind} className="flex items-center gap-2 text-xs">
-                              <span className="w-16 text-gray-500 dark:text-gray-400 truncate shrink-0">{t(`industries.${ind}`)}</span>
-                              <div className="flex-1 h-5 bg-gray-100 dark:bg-gray-700 rounded overflow-hidden">
+                              <span className="w-16 text-muted truncate shrink-0">{t(`industries.${ind}`)}</span>
+                              <div className="flex-1 h-5 bg-soft rounded overflow-hidden">
                                 <div className="h-full bg-green-400 dark:bg-green-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
                                   style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
                                   {formatKRW(d.avg)}
                                 </div>
                               </div>
-                              <span className="w-12 text-gray-400 dark:text-gray-500 text-right shrink-0">{d.count}{t('community.people')}</span>
+                              <span className="w-12 text-faint text-right shrink-0">{d.count}{t('community.people')}</span>
                             </div>
                           )
                         })}
@@ -730,7 +730,7 @@ export default function SalaryRank() {
         <button onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           aria-expanded={showGuide}>
-          <span className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
+          <span className="flex items-center gap-2 font-semibold text-fg">
             <BookOpen className="w-5 h-5" /> {t('guide.title')}
           </span>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -739,10 +739,10 @@ export default function SalaryRank() {
           <div className="px-4 pb-4 space-y-4">
             {(['howToRead', 'dataExplain', 'tips'] as const).map(section => (
               <div key={section}>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t(`guide.${section}.title`)}</h3>
+                <h3 className="font-semibold text-body mb-2">{t(`guide.${section}.title`)}</h3>
                 <ul className="space-y-1">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                    <li key={i} className="text-sm text-sub flex items-start gap-2">
                       <span className="text-blue-500 mt-0.5">•</span><span>{item}</span>
                     </li>
                   ))}
@@ -755,14 +755,14 @@ export default function SalaryRank() {
 
       {/* FAQ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('faqTitle')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('faqTitle')}</h2>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <details key={i} className="group">
-              <summary className="cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <summary className="cursor-pointer font-medium text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 {t(`faq.q${i}.question`)}
               </summary>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 pl-4 border-l-2 border-blue-300 dark:border-blue-700">
+              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-blue-300 dark:border-blue-700">
                 {t(`faq.q${i}.answer`)}
               </p>
             </details>

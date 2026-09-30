@@ -74,7 +74,7 @@ export default function Viewer3DPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Viewer3D />
@@ -89,17 +89,17 @@ export default function Viewer3DPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             온라인 3D 뷰어 및 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             3D 뷰어는 GLB, GLTF, OBJ, STL 등 다양한 3D 파일 형식을 브라우저에서 바로 열람하고 변환할 수 있는 무료 온라인 도구입니다. Babylon.js 엔진을 기반으로 WebGL 렌더링을 제공하며, 별도 소프트웨어 설치 없이 3D 모델 미리보기, 와이어프레임 확인, 3D 프린팅 분석(출력 시간·재료량 예상)까지 한 번에 처리할 수 있습니다. 3D 프린터 사용자, 게임 개발자, 디자이너에게 유용한 도구입니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             3D 뷰어 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>파일 형식 선택:</strong> 웹/게임용은 GLB(텍스처 포함 단일 파일), 3D 프린팅용은 STL, 범용 호환성은 OBJ 형식을 사용하세요.</li>
             <li><strong>3D 프린팅 분석:</strong> STL 파일을 업로드하면 예상 출력 시간과 필라멘트 소모량을 미리 확인하여 비용을 계산할 수 있습니다.</li>
             <li><strong>와이어프레임 모드:</strong> 모델의 폴리곤 구조와 메쉬 품질을 확인하는 데 와이어프레임 뷰를 활용하세요.</li>

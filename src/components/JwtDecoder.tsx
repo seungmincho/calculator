@@ -230,8 +230,8 @@ const JwtDecoder = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -251,14 +251,14 @@ const JwtDecoder = () => {
       <div className="space-y-8">
         {/* Input Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
+          <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
             <Key className="w-6 h-6 mr-2" />
             {t('input.title')}
           </h2>
 
           {/* Sample Tokens */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('samples.title')}
             </label>
             <div className="flex flex-wrap gap-2">
@@ -266,7 +266,7 @@ const JwtDecoder = () => {
                 <button
                   key={index}
                   onClick={() => handleTokenChange(sample.token)}
-                  className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
+                  className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-md transition-colors"
                 >
                   {sample.name}
                 </button>
@@ -276,14 +276,14 @@ const JwtDecoder = () => {
 
           {/* JWT Token Input */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('input.tokenLabel')}
             </label>
             <textarea
               value={jwtToken}
               onChange={(e) => handleTokenChange(e.target.value)}
               placeholder={t('input.tokenPlaceholder')}
-              className="w-full h-32 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white dark:bg-gray-700 font-mono text-sm"
+              className="w-full h-32 px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg dark:bg-gray-700 font-mono text-sm"
             />
           </div>
 
@@ -326,7 +326,7 @@ const JwtDecoder = () => {
             {/* Header */}
             <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+                <h3 className="text-xl font-semibold text-fg flex items-center">
                   <Shield className="w-5 h-5 mr-2" />
                   {t('result.header')}
                 </h3>
@@ -338,16 +338,16 @@ const JwtDecoder = () => {
                   <span>{isCopied.header ? tc('copied') : t('result.copy')}</span>
                 </button>
               </div>
-              <pre className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-sm overflow-x-auto">
+              <pre className="bg-subtle p-4 rounded-lg text-sm overflow-x-auto">
                 <code>{JSON.stringify(decodedParts.header, null, 2)}</code>
               </pre>
               
               {/* Header Info */}
               <div className="mt-4 space-y-2">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-sub">
                   <span className="font-medium">{t('result.algorithm')}:</span> {String(decodedParts.header.alg ?? 'N/A')}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-sub">
                   <span className="font-medium">{t('result.type')}:</span> {String(decodedParts.header.typ ?? 'N/A')}
                 </div>
               </div>
@@ -356,7 +356,7 @@ const JwtDecoder = () => {
             {/* Payload */}
             <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+                <h3 className="text-xl font-semibold text-fg flex items-center">
                   <FileText className="w-5 h-5 mr-2" />
                   {t('result.payload')}
                 </h3>
@@ -368,37 +368,37 @@ const JwtDecoder = () => {
                   <span>{isCopied.payload ? tc('copied') : t('result.copy')}</span>
                 </button>
               </div>
-              <pre className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-sm overflow-x-auto">
+              <pre className="bg-subtle p-4 rounded-lg text-sm overflow-x-auto">
                 <code>{JSON.stringify(decodedParts.payload, null, 2)}</code>
               </pre>
 
               {/* Payload Info */}
               <div className="mt-4 space-y-2">
                 {!!decodedParts.payload.sub && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                  <div className="text-sm text-sub flex items-center">
                     <User className="w-4 h-4 mr-2" />
                     <span className="font-medium">{t('result.subject')}:</span> {String(decodedParts.payload.sub)}
                   </div>
                 )}
                 {!!decodedParts.payload.iat && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                  <div className="text-sm text-sub flex items-center">
                     <Calendar className="w-4 h-4 mr-2" />
                     <span className="font-medium">{t('result.issuedAt')}:</span> {formatTimestamp(decodedParts.payload.iat as number)}
                   </div>
                 )}
                 {!!decodedParts.payload.exp && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                  <div className="text-sm text-sub flex items-center">
                     <Clock className="w-4 h-4 mr-2" />
                     <span className="font-medium">{t('result.expiresAt')}:</span> {formatTimestamp(decodedParts.payload.exp as number)}
                   </div>
                 )}
                 {!!decodedParts.payload.iss && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-sub">
                     <span className="font-medium">{t('result.issuer')}:</span> {String(decodedParts.payload.iss)}
                   </div>
                 )}
                 {!!decodedParts.payload.aud && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-sub">
                     <span className="font-medium">{t('result.audience')}:</span> {Array.isArray(decodedParts.payload.aud) ? (decodedParts.payload.aud as string[]).join(', ') : String(decodedParts.payload.aud)}
                   </div>
                 )}
@@ -408,7 +408,7 @@ const JwtDecoder = () => {
             {/* Signature */}
             <div className={`lg:col-span-2 ${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+                <h3 className="text-xl font-semibold text-fg flex items-center">
                   <Key className="w-5 h-5 mr-2" />
                   {t('result.signature')}
                 </h3>
@@ -420,7 +420,7 @@ const JwtDecoder = () => {
                   <span>{isCopied.signature ? tc('copied') : t('result.copy')}</span>
                 </button>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+              <div className="bg-subtle p-4 rounded-lg">
                 <code className="text-sm break-all">{decodedParts.signature}</code>
               </div>
               <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
@@ -435,16 +435,16 @@ const JwtDecoder = () => {
 
         {/* Guide Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-8 text-gray-900 dark:text-white text-center">{t('guide.title')}</h2>
+          <h2 className="text-2xl font-semibold mb-8 text-fg text-center">{t('guide.title')}</h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('guide.about.title')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-3">{t('guide.about.description')}</p>
-              <ul className="text-sm text-gray-500 dark:text-gray-500 space-y-1 text-left">
+              <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.about.title')}</h3>
+              <p className="text-sub mb-3">{t('guide.about.description')}</p>
+              <ul className="text-sm text-muted space-y-1 text-left">
                 {[0, 1, 2].map((index) => (
                   <li key={index}>• {t(`guide.about.points.${index}`)}</li>
                 ))}
@@ -455,9 +455,9 @@ const JwtDecoder = () => {
               <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('guide.structure.title')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-3">{t('guide.structure.description')}</p>
-              <ul className="text-sm text-gray-500 dark:text-gray-500 space-y-1 text-left">
+              <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.structure.title')}</h3>
+              <p className="text-sub mb-3">{t('guide.structure.description')}</p>
+              <ul className="text-sm text-muted space-y-1 text-left">
                 {[0, 1, 2].map((index) => (
                   <li key={index}>• {t(`guide.structure.points.${index}`)}</li>
                 ))}
@@ -468,9 +468,9 @@ const JwtDecoder = () => {
               <div className="bg-red-100 dark:bg-red-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('guide.security.title')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-3">{t('guide.security.description')}</p>
-              <ul className="text-sm text-gray-500 dark:text-gray-500 space-y-1 text-left">
+              <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.security.title')}</h3>
+              <p className="text-sub mb-3">{t('guide.security.description')}</p>
+              <ul className="text-sm text-muted space-y-1 text-left">
                 {[0, 1, 2].map((index) => (
                   <li key={index}>• {t(`guide.security.points.${index}`)}</li>
                 ))}

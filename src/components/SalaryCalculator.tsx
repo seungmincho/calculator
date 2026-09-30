@@ -19,9 +19,9 @@ const SalaryCalculatorContent = () => {
   const searchParams = useSearchParams();
   const t = useTranslations('salary');
   const tc = useTranslations('common');
-  const glassCard = 'bg-white/60 dark:bg-white/[0.10] backdrop-blur-2xl border border-white/65 dark:border-white/[0.14] rounded-[28px] shadow-[0_24px_80px_rgba(59,130,246,0.12)] dark:shadow-[0_24px_80px_rgba(2,6,23,0.52),0_0_0_1px_rgba(255,255,255,0.04)]'
-  const glassInset = 'shadow-[inset_1px_1px_10px_rgba(255,255,255,0.30),inset_0_-1px_10px_rgba(255,255,255,0.10)] dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.14),inset_0_1px_18px_rgba(255,255,255,0.06),inset_0_-12px_24px_rgba(0,0,0,0.22)]'
-  const glassInput = 'w-full rounded-2xl border border-white/55 dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.08] backdrop-blur-xl text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 transition-all'
+  const glassCard = 'bg-surface border border-line rounded-[28px] shadow-[0_24px_80px_rgba(59,130,246,0.12)]'
+  const glassInset = 'shadow-[inset_1px_1px_10px_rgba(255,255,255,0.30),inset_0_-1px_10px_rgba(255,255,255,0.10)]'
+  const glassInput = 'w-full rounded-2xl border border-line bg-surface text-fg placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 transition-all'
   const [salary, setSalary] = useState('');
   const [salaryType, setSalaryType] = useState<'annual' | 'monthly'>('annual');
   const [nonTaxableAmount, setNonTaxableAmount] = useState('0');
@@ -287,8 +287,8 @@ const SalaryCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -305,15 +305,15 @@ const SalaryCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{t('input.salaryType')}</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">{t('input.salaryType')}</h2>
           
           <div className="space-y-6">
             {/* 급여 유형 선택 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className="block text-sm font-medium text-body mb-3">
                 {t('input.salaryType')}
               </label>
-              <div className="flex p-1 rounded-2xl bg-white/40 dark:bg-white/[0.06] border border-white/50 dark:border-white/[0.10] backdrop-blur-lg">
+              <div className="flex p-1 rounded-2xl bg-surface border border-line">
                 {(['annual', 'monthly'] as const).map((type) => (
                   <button
                     key={type}
@@ -321,7 +321,7 @@ const SalaryCalculatorContent = () => {
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                       salaryType === type
                         ? 'bg-white dark:bg-white/[0.20] text-indigo-700 dark:text-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.4)]'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                        : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                     }`}
                   >
                     {t(`input.${type}`)}
@@ -332,7 +332,7 @@ const SalaryCalculatorContent = () => {
 
             {/* 급여 입력 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {salaryType === 'annual' ? `${t('input.annual')} (세전)` : `${t('input.monthly')} (세전)`}
               </label>
               <div className="relative">
@@ -349,7 +349,7 @@ const SalaryCalculatorContent = () => {
 
             {/* 비과세액 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.nonTaxable')}
               </label>
               <div className="relative">
@@ -360,9 +360,9 @@ const SalaryCalculatorContent = () => {
                   placeholder={t('input.nonTaxablePlaceholder')}
                   className={`${glassInput} px-4 py-3 pr-14`}
                 />
-                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">{t('input.currency')}</span>
+                <span className="absolute right-3 top-3 text-muted">{t('input.currency')}</span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {t('input.nonTaxableDesc')}
               </p>
             </div>
@@ -370,7 +370,7 @@ const SalaryCalculatorContent = () => {
             {/* 부양가족 정보 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.dependents')}
                 </label>
                 <select
@@ -388,7 +388,7 @@ const SalaryCalculatorContent = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('input.children')}
                 </label>
                 <select
@@ -407,15 +407,15 @@ const SalaryCalculatorContent = () => {
             </div>
 
             {/* 고급 설정 (접이식) */}
-            <details className="group rounded-2xl border border-white/45 dark:border-white/[0.10] bg-white/40 dark:bg-white/[0.05] backdrop-blur-xl overflow-hidden">
-              <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-gray-700 dark:text-gray-300 select-none list-none">
-                <span>⚙️ 고급 설정 <span className="font-normal text-gray-400 dark:text-gray-500">(상여금 · 성과급 · 경력)</span></span>
+            <details className="group rounded-2xl border border-line bg-surface overflow-hidden">
+              <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-body select-none list-none">
+                <span>⚙️ 고급 설정 <span className="font-normal text-faint">(상여금 · 성과급 · 경력)</span></span>
                 <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none">+</span>
               </summary>
-              <div className="border-t border-white/40 dark:border-white/[0.08] px-5 py-5 space-y-5">
+              <div className="border-t border-line px-5 py-5 space-y-5">
                 {/* 상여금 설정 */}
                 <div>
-                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">상여금 설정</h3>
+                  <h3 className="text-sm font-medium text-body mb-2">상여금 설정</h3>
                   <div className="bg-amber-50/80 dark:bg-amber-900/20 rounded-xl p-3 mb-3 border border-amber-200/40 dark:border-amber-700/20">
                     <p className="text-xs text-amber-800 dark:text-amber-200">
                       💡 <strong>상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
@@ -424,7 +424,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">상여금 비율</label>
+                      <label className="block text-xs text-sub mb-1.5">상여금 비율</label>
                       <select
                         value={bonusPercentage}
                         onChange={(e) => setBonusPercentage(e.target.value)}
@@ -441,7 +441,7 @@ const SalaryCalculatorContent = () => {
                     </div>
                     {bonusPercentage !== '0' && (
                       <div>
-                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">상여금 지급 월</label>
+                        <label className="block text-xs text-sub mb-1.5">상여금 지급 월</label>
                         <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                             <button
@@ -456,7 +456,7 @@ const SalaryCalculatorContent = () => {
                               className={`py-1.5 px-2 text-xs rounded-xl transition-all font-medium ${
                                 bonusMonths.includes(month)
                                   ? 'bg-blue-500 text-white shadow-[0_2px_8px_rgba(59,130,246,0.4)]'
-                                  : 'bg-white/50 dark:bg-white/[0.07] border border-white/50 dark:border-white/[0.10] text-gray-700 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-white/[0.12]'
+                                  : 'bg-surface border border-line text-body hover:bg-soft'
                               }`}
                             >
                               {month}월
@@ -469,15 +469,15 @@ const SalaryCalculatorContent = () => {
                 </div>
 
                 {/* 성과급 설정 */}
-                <div className="border-t border-white/30 dark:border-white/[0.06] pt-5">
-                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">성과급 설정</h3>
+                <div className="border-t border-line pt-5">
+                  <h3 className="text-sm font-medium text-body mb-2">성과급 설정</h3>
                   <div className="bg-green-50/80 dark:bg-green-900/20 rounded-xl p-3 mb-3 border border-green-200/40 dark:border-green-700/20">
                     <p className="text-xs text-green-800 dark:text-green-200">
                       💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
                       예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
                     </p>
                   </div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">성과급 비율</label>
+                  <label className="block text-xs text-sub mb-1.5">성과급 비율</label>
                   <select
                     value={performanceBonus}
                     onChange={(e) => setPerformanceBonus(e.target.value)}
@@ -490,12 +490,12 @@ const SalaryCalculatorContent = () => {
                     <option value="200">200% (연봉의 200%)</option>
                     <option value="300">300% (연봉의 300%)</option>
                   </select>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">성과급은 회사 실적에 따라 변동될 수 있습니다</p>
+                  <p className="text-xs text-muted mt-1.5">성과급은 회사 실적에 따라 변동될 수 있습니다</p>
                 </div>
 
                 {/* 경력 정보 */}
-                <div className="border-t border-white/30 dark:border-white/[0.06] pt-5">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">경력 (연차)</label>
+                <div className="border-t border-line pt-5">
+                  <label className="block text-sm font-medium text-body mb-2">경력 (연차)</label>
                   <select
                     value={experienceYears}
                     onChange={(e) => setExperienceYears(e.target.value)}
@@ -512,9 +512,9 @@ const SalaryCalculatorContent = () => {
               </div>
             </details>
 
-            <div className="bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] rounded-2xl p-4">
-              <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">💡 {t('calculation.basis')}</h3>
-              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+            <div className="bg-surface border border-line rounded-2xl p-4">
+              <h3 className="font-medium text-body mb-2">💡 {t('calculation.basis')}</h3>
+              <ul className="text-sm text-sub space-y-1">
                 {Array.from({ length: 6 }, (_, index) => (
                   <li key={index}>• {t(`calculation.points.${index}`)}</li>
                 ))}
@@ -525,12 +525,12 @@ const SalaryCalculatorContent = () => {
 
         {/* Result Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{tc('result')}</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">{tc('result')}</h2>
           
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 to-slate-900/92 dark:from-black/60 dark:to-slate-900/55 backdrop-blur-2xl border border-white/[0.15] dark:border-white/[0.10] rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_1px_1px_0_rgba(255,255,255,0.06)]">
+              <div className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 to-slate-900/92 dark:from-black/60 dark:to-slate-900/55 border border-line rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(15,23,42,0.25)]">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.08] via-transparent to-blue-500/[0.05] pointer-events-none rounded-2xl" />
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
                 <div className="relative">
@@ -584,38 +584,38 @@ const SalaryCalculatorContent = () => {
               {/* Tax Information */}
               {result.taxInfo && (
                 <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{t('result.taxInfo')}</h3>
-                  <div className="bg-white/50 dark:bg-white/[0.06] backdrop-blur-md border border-white/40 dark:border-white/[0.08] rounded-2xl p-4 space-y-2 text-sm">
+                  <h3 className="font-semibold text-fg">{t('result.taxInfo')}</h3>
+                  <div className="bg-surface border border-line rounded-2xl p-4 space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.grossSalary')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.gross)}{t('input.currency')}</span>
+                      <span className="text-sub">{t('result.grossSalary')}</span>
+                      <span className="font-medium text-fg">{formatNumber(result.gross)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.taxableIncome')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.taxable)}{t('input.currency')}</span>
+                      <span className="text-sub">{t('result.taxableIncome')}</span>
+                      <span className="font-medium text-fg">{formatNumber(result.taxable)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.workIncomeDeduction')}</span>
+                      <span className="text-sub">{t('result.workIncomeDeduction')}</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.workIncomeDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.workIncome')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.workIncome)}{t('input.currency')}</span>
+                      <span className="text-sub">{t('result.workIncome')}</span>
+                      <span className="font-medium text-fg">{formatNumber(result.workIncome)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.personalDeduction')} ({dependents}명)</span>
+                      <span className="text-sub">{t('result.personalDeduction')} ({dependents}명)</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.pensionDeduction')}</span>
+                      <span className="text-sub">{t('result.pensionDeduction')}</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.taxableStandard')}</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.taxInfo.taxableIncome)}{t('input.currency')}</span>
+                      <span className="text-sub">{t('result.taxableStandard')}</span>
+                      <span className="font-medium text-fg">{formatNumber(result.taxInfo.taxableIncome)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.taxCredit')}</span>
+                      <span className="text-sub">{t('result.taxCredit')}</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
                     </div>
                   </div>
@@ -624,42 +624,42 @@ const SalaryCalculatorContent = () => {
 
               {/* Deduction Breakdown */}
               <div className="space-y-3">
-                <h3 className="font-semibold text-gray-900 dark:text-white">{t('result.deductionBreakdown')}</h3>
+                <h3 className="font-semibold text-fg">{t('result.deductionBreakdown')}</h3>
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.nationalPension')} ({pct(INSURANCE.pensionRate)})</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.nationalPension')} ({pct(INSURANCE.pensionRate)})</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.healthInsurance')} ({pct(INSURANCE.healthRate)})</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.healthInsurance')} ({pct(INSURANCE.healthRate)})</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} ({pct(INSURANCE.longTermCareRate)})</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.longTermCare')} ({pct(INSURANCE.longTermCareRate)})</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.employmentInsurance')} ({pct(INSURANCE.employmentRate)})</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.employmentInsurance')} ({pct(INSURANCE.employmentRate)})</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.incomeTax')}</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.incomeTax)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.incomeTax')}</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.incomeTax)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.localIncomeTax')} (10%)</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.localIncomeTax)}{t('input.currency')}</span>
+                    <span className="text-sub">{t('result.localIncomeTax')} (10%)</span>
+                    <span className="font-semibold text-fg">{formatNumber(result.deductions.localIncomeTax)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-3 border-t-2 border-gray-200/80 dark:border-white/[0.10] font-bold">
-                    <span className="text-gray-900 dark:text-white">{t('result.totalDeduction')}</span>
+                    <span className="text-fg">{t('result.totalDeduction')}</span>
                     <span className="text-red-600 dark:text-red-400 font-bold">{formatNumber(result.deductions.total)}{t('input.currency')}</span>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
+            <div className="flex flex-col items-center justify-center h-64 text-faint">
               <Calculator className="w-16 h-16 mb-4" />
               <p>{t('placeholder')}</p>
             </div>
@@ -687,17 +687,17 @@ const SalaryCalculatorContent = () => {
 
       {/* Tips Section */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 {t('tips.title')}</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 {t('tips.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border-l-4 border-emerald-400/70 border border-white/30 dark:border-white/[0.08] rounded-2xl p-6">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('tips.yearEndTax.title')}</h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
+          <div className="bg-surface border-l-4 border-emerald-400/70 border border-line rounded-2xl p-6">
+            <h3 className="font-semibold text-fg mb-2">{t('tips.yearEndTax.title')}</h3>
+            <p className="text-sub text-sm">
               {t('tips.yearEndTax.content')}
             </p>
           </div>
-          <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border-l-4 border-amber-400/70 border border-white/30 dark:border-white/[0.08] rounded-2xl p-6">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('tips.taxSaving.title')}</h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
+          <div className="bg-surface border-l-4 border-amber-400/70 border border-line rounded-2xl p-6">
+            <h3 className="font-semibold text-fg mb-2">{t('tips.taxSaving.title')}</h3>
+            <p className="text-sub text-sm">
               {t('tips.taxSaving.content')}
             </p>
           </div>
@@ -708,12 +708,12 @@ const SalaryCalculatorContent = () => {
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('table.title')}</h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">{t('table.description')}</p>
+            <h2 className="text-2xl font-semibold text-fg">{t('table.title')}</h2>
+            <p className="text-sub mt-1">{t('table.description')}</p>
           </div>
           <button
             onClick={() => setShowTable(!showTable)}
-            className="inline-flex items-center gap-2 bg-white/40 dark:bg-white/[0.08] hover:bg-white/60 dark:hover:bg-white/[0.14] border border-white/40 dark:border-white/[0.12] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors backdrop-blur-sm"
+            className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
           >
             <Table className="w-4 h-4" />
             <span>{showTable ? t('table.hideTable') : t('table.showTable')}</span>
@@ -724,21 +724,21 @@ const SalaryCalculatorContent = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/30 dark:border-white/[0.10]">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.salary')}</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.annualTakeHome')}</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.monthlyTakeHome')}</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.totalDeduction')}</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.takeHomeRatio')}</th>
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 px-4 font-semibold text-fg">{t('table.headers.salary')}</th>
+                  <th className="text-right py-3 px-4 font-semibold text-fg">{t('table.headers.annualTakeHome')}</th>
+                  <th className="text-right py-3 px-4 font-semibold text-fg">{t('table.headers.monthlyTakeHome')}</th>
+                  <th className="text-right py-3 px-4 font-semibold text-fg">{t('table.headers.totalDeduction')}</th>
+                  <th className="text-right py-3 px-4 font-semibold text-fg">{t('table.headers.takeHomeRatio')}</th>
                 </tr>
               </thead>
               <tbody>
                 {generateSalaryTable().map((row, index) => (
-                  <tr key={row.grossAnnual} className={`border-b border-white/20 dark:border-white/[0.05] ${index % 2 === 0 ? 'bg-white/20 dark:bg-white/[0.03]' : ''} hover:bg-white/40 dark:hover:bg-white/[0.07] transition-colors`}>
-                    <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                  <tr key={row.grossAnnual} className={`border-b border-line ${index % 2 === 0 ? 'bg-surface' : ''} hover:bg-soft transition-colors`}>
+                    <td className="py-3 px-4 font-medium text-fg">
                       {formatNumber(row.grossAnnual)}{t('input.currency')}
                     </td>
-                    <td className="py-3 px-4 text-right text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-right text-fg">
                       {formatNumber(row.netAnnual)}{t('input.currency')}
                     </td>
                     <td className="py-3 px-4 text-right font-medium text-blue-600 dark:text-blue-400">
@@ -747,7 +747,7 @@ const SalaryCalculatorContent = () => {
                     <td className="py-3 px-4 text-right text-red-600 dark:text-red-400">
                       {formatNumber(row.totalDeductions)}{t('input.currency')}
                     </td>
-                    <td className="py-3 px-4 text-right font-medium text-gray-900 dark:text-white">
+                    <td className="py-3 px-4 text-right font-medium text-fg">
                       {((row.netAnnual / row.grossAnnual) * 100).toFixed(1)}%
                     </td>
                   </tr>
@@ -758,12 +758,12 @@ const SalaryCalculatorContent = () => {
         )}
 
         {showTable && (
-          <div className="mt-6 bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] p-4 rounded-2xl">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <div className="mt-6 bg-surface border border-line p-4 rounded-2xl">
+            <h3 className="text-sm font-medium text-body mb-2">
               <Calculator className="w-4 h-4 inline mr-1" />
               {t('table.usage.title')}
             </h3>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+            <ul className="text-sm text-sub space-y-1">
               {Array.from({ length: 4 }, (_, index) => (
                 <li key={index}>• {t(`table.usage.points.${index}`)}</li>
               ))}
@@ -776,10 +776,10 @@ const SalaryCalculatorContent = () => {
       {result && (
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">📊 상세 분석 차트</h2>
+            <h2 className="text-2xl font-semibold text-fg">📊 상세 분석 차트</h2>
             <button
               onClick={() => setShowCharts(!showCharts)}
-              className="inline-flex items-center gap-2 bg-white/40 dark:bg-white/[0.08] hover:bg-white/60 dark:hover:bg-white/[0.14] border border-white/40 dark:border-white/[0.12] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors backdrop-blur-sm"
+              className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
             >
               <BarChart3 className="w-4 h-4" />
               <span>{showCharts ? '차트 숨기기' : '차트 보기'}</span>
@@ -789,8 +789,8 @@ const SalaryCalculatorContent = () => {
           {showCharts && (
             <div className="space-y-8">
               {/* 월별 실수령액 차트 */}
-              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="bg-surface border border-line rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
                   <LineChart className="w-6 h-6 mr-2 text-blue-600" />
                   월별 실수령액 변화 (상여금 포함)
                 </h3>
@@ -811,27 +811,27 @@ const SalaryCalculatorContent = () => {
                   ]
                 }} style={{ height: '300px' }} />
                 <div className="mt-4 space-y-2">
-                  <div className="p-3 bg-white/40 dark:bg-white/[0.06] border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <div className="p-3 bg-surface border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                    <p className="text-sm text-body">
                       <strong>📊 상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
                     </p>
                     {bonusMonths.length > 0 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-muted mt-1">
                         상여금 지급월: {bonusMonths.sort((a, b) => a - b).join(', ')}월 
                         (월 {(parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1)}회분씩)
                       </p>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       기본 월급: {formatNumber(Math.floor(result.gross / (12 + parseInt(bonusPercentage)/100)))}원/회
                     </p>
                   </div>
                   
                   {parseInt(performanceBonus) > 0 && (
-                    <div className="p-3 bg-white/40 dark:bg-white/[0.06] border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <div className="p-3 bg-surface border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
+                      <p className="text-sm text-body">
                         <strong>🎯 성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-muted mt-1">
                         성과급은 회사 실적에 따라 변동될 수 있습니다
                       </p>
                     </div>
@@ -840,8 +840,8 @@ const SalaryCalculatorContent = () => {
               </div>
 
               {/* 경력별 연봉 비교 */}
-              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="bg-surface border border-line rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
                   <BarChart3 className="w-6 h-6 mr-2 text-green-600" />
                   경력별 평균 연봉 비교
                 </h3>
@@ -870,8 +870,8 @@ const SalaryCalculatorContent = () => {
                   }]
                 }} style={{ height: '300px' }} />
                 {result && (
-                  <div className="mt-4 p-4 bg-white/40 dark:bg-white/[0.06] border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <div className="mt-4 p-4 bg-surface border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                    <p className="text-sm text-body">
                       현재 연봉: {formatNumber(result.gross)}원 | 
                       선택한 경력: {
                         experienceYears === '0' ? '신입' :
@@ -886,8 +886,8 @@ const SalaryCalculatorContent = () => {
               </div>
 
               {/* 세금 구성 차트 */}
-              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="bg-surface border border-line rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
                   <PieChart className="w-6 h-6 mr-2 text-purple-600" />
                   공제항목별 구성
                 </h3>
@@ -908,10 +908,10 @@ const SalaryCalculatorContent = () => {
                       <div key={index} className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                           <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }}></div>
-                          <span className="text-gray-700 dark:text-gray-300">{item.name}</span>
+                          <span className="text-body">{item.name}</span>
                         </div>
                         <div className="text-right">
-                          <div className="font-medium text-gray-900 dark:text-white">
+                          <div className="font-medium text-fg">
                             {formatNumber(item.value)}원
                           </div>
                           <div className="text-xs text-gray-500">
@@ -920,9 +920,9 @@ const SalaryCalculatorContent = () => {
                         </div>
                       </div>
                     ))}
-                    <div className="pt-3 border-t border-white/30 dark:border-white/[0.08]">
+                    <div className="pt-3 border-t border-line">
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-gray-900 dark:text-white">총 공제액</span>
+                        <span className="font-semibold text-fg">총 공제액</span>
                         <span className="font-bold text-red-600 dark:text-red-400">
                           {formatNumber(result.deductions.total)}원
                         </span>
@@ -938,14 +938,14 @@ const SalaryCalculatorContent = () => {
 
       {/* 상세 가이드 섹션 */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 {t('guide.title')}</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
+        <h2 className="text-3xl font-bold mb-8 text-fg text-center">🚀 {t('guide.title')}</h2>
+        <p className="text-lg text-sub text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           {t('guide.subtitle')}
         </p>
         
         {/* 핵심 기능 소개 */}
         <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-blue-200/40 dark:border-blue-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
+          <div className="bg-surface border border-blue-200/40 dark:border-blue-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
             <div className="flex items-center mb-4">
               <div className="bg-blue-500/15 dark:bg-blue-500/20 p-3 rounded-full mr-3">
                 <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -956,22 +956,22 @@ const SalaryCalculatorContent = () => {
               {t('guide.features.accurate.description')}
             </p>
             <div className="space-y-3">
-              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
+              <div className="bg-surface border border-line p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 {t('guide.features.accurate.points.0.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.0.content')}</p>
               </div>
-              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
+              <div className="bg-surface border border-line p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 {t('guide.features.accurate.points.1.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.1.content')}</p>
               </div>
-              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
+              <div className="bg-surface border border-line p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ {t('guide.features.accurate.points.2.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.2.content')}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-emerald-200/40 dark:border-emerald-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]">
+          <div className="bg-surface border border-emerald-200/40 dark:border-emerald-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]">
             <div className="flex items-center mb-4">
               <div className="bg-emerald-500/15 dark:bg-emerald-500/20 p-3 rounded-full mr-3">
                 <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
@@ -985,7 +985,7 @@ const SalaryCalculatorContent = () => {
               {[0, 1, 2].map((index) => {
                 const icons = ['📊', '💡', '📋'];
                 return (
-                  <div key={index} className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
+                  <div key={index} className="bg-surface border border-line p-3 rounded-xl">
                     <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.smart.points.${index}.title`)}
@@ -997,7 +997,7 @@ const SalaryCalculatorContent = () => {
             </div>
           </div>
           
-          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-purple-200/40 dark:border-purple-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]">
+          <div className="bg-surface border border-purple-200/40 dark:border-purple-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]">
             <div className="flex items-center mb-4">
               <div className="bg-purple-500/15 dark:bg-purple-500/20 p-3 rounded-full mr-3">
                 <DollarSign className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -1011,7 +1011,7 @@ const SalaryCalculatorContent = () => {
               {[0, 1, 2].map((index) => {
                 const icons = ['📱', '🔗', '💻'];
                 return (
-                  <div key={index} className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
+                  <div key={index} className="bg-surface border border-line p-3 rounded-xl">
                     <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.practical.points.${index}.title`)}
@@ -1025,12 +1025,12 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* 4대보험 완전정복 */}
-        <div className="bg-white/30 dark:bg-white/[0.05] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8 mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t('insurance.title')}</h3>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">{t('insurance.description')}</p>
+        <div className="bg-surface border border-line rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">{t('insurance.title')}</h3>
+          <p className="text-center text-sub mb-8">{t('insurance.description')}</p>
           
           <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
+            <div className="bg-surface border border-line p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
                 <span className="bg-blue-500/10 dark:bg-blue-500/15 p-2 rounded-full mr-3">🏥</span>
                 {t('insurance.health.title')}
@@ -1038,7 +1038,7 @@ const SalaryCalculatorContent = () => {
               <div className="space-y-4">
                 <div className="border-l-4 border-blue-400 pl-4">
                   <h5 className="font-semibold text-blue-600">💊 {t('insurance.health.healthInsurance.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('insurance.health.healthInsurance.description')}</p>
+                  <p className="text-sm text-sub">{t('insurance.health.healthInsurance.description')}</p>
                   <div className="mt-2 text-xs text-blue-500 space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.health.healthInsurance.details.${index}`)}</p>
@@ -1047,7 +1047,7 @@ const SalaryCalculatorContent = () => {
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
                   <h5 className="font-semibold text-green-600">🏠 {t('insurance.health.longTermCare.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('insurance.health.longTermCare.description')}</p>
+                  <p className="text-sm text-sub">{t('insurance.health.longTermCare.description')}</p>
                   <div className="mt-2 text-xs text-green-500 space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.health.longTermCare.details.${index}`)}</p>
@@ -1057,7 +1057,7 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
+            <div className="bg-surface border border-line p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
                 <span className="bg-purple-500/10 dark:bg-purple-500/15 p-2 rounded-full mr-3">👴</span>
                 {t('insurance.pension.title')}
@@ -1065,7 +1065,7 @@ const SalaryCalculatorContent = () => {
               <div className="space-y-4">
                 <div className="border-l-4 border-purple-400 pl-4">
                   <h5 className="font-semibold text-purple-600">💰 {t('insurance.pension.nationalPension.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('insurance.pension.nationalPension.description')}</p>
+                  <p className="text-sm text-sub">{t('insurance.pension.nationalPension.description')}</p>
                   <div className="mt-2 text-xs text-purple-500 space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.pension.nationalPension.details.${index}`)}</p>
@@ -1074,7 +1074,7 @@ const SalaryCalculatorContent = () => {
                 </div>
                 <div className="border-l-4 border-orange-400 pl-4">
                   <h5 className="font-semibold text-orange-600">🏢 {t('insurance.pension.employment.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('insurance.pension.employment.description')}</p>
+                  <p className="text-sm text-sub">{t('insurance.pension.employment.description')}</p>
                   <div className="mt-2 text-xs text-orange-500 space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.pension.employment.details.${index}`)}</p>
@@ -1088,147 +1088,147 @@ const SalaryCalculatorContent = () => {
 
         {/* 소득세 누진세율 상세 설명 */}
         <div className="rounded-2xl p-2 mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t('taxBracket.title')}</h3>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">{t('taxBracket.description')}</p>
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">{t('taxBracket.title')}</h3>
+          <p className="text-center text-sub mb-8">{t('taxBracket.description')}</p>
           
-          <div className="overflow-x-auto bg-white/30 dark:bg-white/[0.04] backdrop-blur-sm border border-white/30 dark:border-white/[0.08] rounded-xl">
+          <div className="overflow-x-auto bg-surface border border-line rounded-xl">
             <table className="w-full">
-              <thead className="border-b border-white/30 dark:border-white/[0.10]">
+              <thead className="border-b border-line">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.bracket')}</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.rate')}</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.deduction')}</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.salaryRange')}</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-fg">{t('taxBracket.headers.bracket')}</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-fg">{t('taxBracket.headers.rate')}</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-fg">{t('taxBracket.headers.deduction')}</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-fg">{t('taxBracket.headers.salaryRange')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/20 dark:divide-white/[0.06]">
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400만원 이하</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">1,400만원 이하</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-green-600">6%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">-</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">~3,000만원</td>
+                  <td className="px-6 py-4 text-sm text-sub">~3,000만원</td>
                 </tr>
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400~5,000만원</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">1,400~5,000만원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-blue-600">15%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">126만원</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">3,000~7,000만원</td>
+                  <td className="px-6 py-4 text-sm text-sub">3,000~7,000만원</td>
                 </tr>
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">5,000~8,800만원</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">5,000~8,800만원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-purple-600">24%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">576만원</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">7,000~1억원</td>
+                  <td className="px-6 py-4 text-sm text-sub">7,000~1억원</td>
                 </tr>
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">8,800만원~1.5억원</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">8,800만원~1.5억원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-orange-600">35%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">1,544만원</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">1억~2억원</td>
+                  <td className="px-6 py-4 text-sm text-sub">1억~2억원</td>
                 </tr>
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1.5억~3억원</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">1.5억~3억원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-600">38%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">1,994만원</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">2억~4억원</td>
+                  <td className="px-6 py-4 text-sm text-sub">2억~4억원</td>
                 </tr>
-                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">3억원 초과</td>
+                <tr className="hover:bg-soft transition-colors">
+                  <td className="px-6 py-4 text-sm text-fg">3억원 초과</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-700">40%+</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">다양</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">4억원 이상</td>
+                  <td className="px-6 py-4 text-sm text-sub">4억원 이상</td>
                 </tr>
               </tbody>
             </table>
           </div>
           
-          <div className="mt-6 p-4 bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] rounded-2xl">
-            <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">💡 {t('taxBracket.understanding.title')}</h5>
-            <div className="mb-3 pb-3 border-b border-white/20 dark:border-white/[0.06]">
-              <h6 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{t('taxBracket.understanding.keyPoint.title')}</h6>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('taxBracket.understanding.keyPoint.description')}</p>
+          <div className="mt-6 p-4 bg-surface border border-line rounded-2xl">
+            <h5 className="font-semibold text-body mb-3">💡 {t('taxBracket.understanding.title')}</h5>
+            <div className="mb-3 pb-3 border-b border-line">
+              <h6 className="font-semibold text-body mb-1">{t('taxBracket.understanding.keyPoint.title')}</h6>
+              <p className="text-sm text-sub">{t('taxBracket.understanding.keyPoint.description')}</p>
             </div>
             <div>
-              <h6 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('taxBracket.understanding.example.title')}</h6>
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <h6 className="font-semibold text-body mb-2">{t('taxBracket.understanding.example.title')}</h6>
+              <div className="text-sm text-sub space-y-1">
                 {[0, 1, 2, 3].map((index) => (
                   <p key={index}>• {t(`taxBracket.understanding.example.details.${index}`)}</p>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-2 italic">{t('taxBracket.understanding.note')}</p>
+              <p className="text-xs text-muted mt-2 italic">{t('taxBracket.understanding.note')}</p>
             </div>
           </div>
         </div>
 
         {/* 절세 전략 가이드 */}
         <div className="rounded-2xl p-2 mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">💰 {t('taxStrategy.title')}</h3>
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">💰 {t('taxStrategy.title')}</h3>
           <div className="grid lg:grid-cols-3 gap-6">
-            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
+            <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
                 <div className="bg-emerald-500/10 dark:bg-emerald-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">💼</span>
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.incomeDeduction.title')}</h4>
+                <h4 className="text-xl font-bold text-fg">{t('taxStrategy.incomeDeduction.title')}</h4>
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-green-400 pl-4">
                   <h5 className="font-semibold text-green-600">📱 {t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.incomeDeduction.creditCard.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.creditCard.description')}</p>
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
                   <h5 className="font-semibold text-green-600">🏠 {t('taxStrategy.incomeDeduction.housing.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.incomeDeduction.housing.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.housing.description')}</p>
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
                   <h5 className="font-semibold text-green-600">👶 {t('taxStrategy.incomeDeduction.childcare.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.incomeDeduction.childcare.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.childcare.description')}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
+            <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
                 <div className="bg-blue-500/10 dark:bg-blue-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">💊</span>
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.taxCredit.title')}</h4>
+                <h4 className="text-xl font-bold text-fg">{t('taxStrategy.taxCredit.title')}</h4>
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-blue-400 pl-4">
                   <h5 className="font-semibold text-blue-600">🏥 {t('taxStrategy.taxCredit.medical.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.taxCredit.medical.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.taxCredit.medical.description')}</p>
                 </div>
                 <div className="border-l-4 border-blue-400 pl-4">
                   <h5 className="font-semibold text-blue-600">📚 {t('taxStrategy.taxCredit.education.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.taxCredit.education.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.taxCredit.education.description')}</p>
                 </div>
                 <div className="border-l-4 border-blue-400 pl-4">
                   <h5 className="font-semibold text-blue-600">💝 {t('taxStrategy.taxCredit.donation.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.taxCredit.donation.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.taxCredit.donation.description')}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
+            <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
                 <div className="bg-purple-500/10 dark:bg-purple-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">🏦</span>
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.pension.title')}</h4>
+                <h4 className="text-xl font-bold text-fg">{t('taxStrategy.pension.title')}</h4>
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-purple-400 pl-4">
                   <h5 className="font-semibold text-purple-600">💰 {t('taxStrategy.pension.pensionFund.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.pension.pensionFund.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.pension.pensionFund.description')}</p>
                 </div>
                 <div className="border-l-4 border-purple-400 pl-4">
                   <h5 className="font-semibold text-purple-600">🏢 {t('taxStrategy.pension.irp.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.pension.irp.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.pension.irp.description')}</p>
                 </div>
                 <div className="border-l-4 border-purple-400 pl-4">
                   <h5 className="font-semibold text-purple-600">📈 {t('taxStrategy.pension.isa.title')}</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taxStrategy.pension.isa.description')}</p>
+                  <p className="text-sm text-sub">{t('taxStrategy.pension.isa.description')}</p>
                 </div>
               </div>
             </div>
@@ -1237,7 +1237,7 @@ const SalaryCalculatorContent = () => {
 
         {/* 연말정산 준비 가이드 */}
         <div className="rounded-2xl p-2">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📋 {t('yearEndTax.title')}</h3>
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">📋 {t('yearEndTax.title')}</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
@@ -1245,17 +1245,17 @@ const SalaryCalculatorContent = () => {
                 {t('yearEndTax.schedule.title')}
               </h4>
               <div className="space-y-4">
-                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
+                <div className="border-b border-line pb-4">
                   <h5 className="font-semibold text-indigo-600 mb-2">🗓️ {t('yearEndTax.schedule.timeline.title')}</h5>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.timeline.details.${index}`)}</p>
                     ))}
                   </div>
                 </div>
-                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
+                <div className="border-b border-line pb-4">
                   <h5 className="font-semibold text-indigo-600 mb-2">📄 {t('yearEndTax.schedule.documents.title')}</h5>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.documents.details.${index}`)}</p>
                     ))}
@@ -1269,17 +1269,17 @@ const SalaryCalculatorContent = () => {
                 {t('yearEndTax.tips.title')}
               </h4>
               <div className="space-y-4">
-                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
+                <div className="border-b border-line pb-4">
                   <h5 className="font-semibold text-purple-600 mb-2">✅ {t('yearEndTax.tips.receiptManagement.title')}</h5>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.receiptManagement.details.${index}`)}</p>
                     ))}
                   </div>
                 </div>
-                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
+                <div className="border-b border-line pb-4">
                   <h5 className="font-semibold text-purple-600 mb-2">⚡ {t('yearEndTax.tips.taxSavingProducts.title')}</h5>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.taxSavingProducts.details.${index}`)}</p>
                     ))}

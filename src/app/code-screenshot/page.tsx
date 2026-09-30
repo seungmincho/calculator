@@ -58,7 +58,7 @@ export default function CodeScreenshotPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CodeScreenshot />
@@ -73,17 +73,17 @@ export default function CodeScreenshotPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               코드 스크린샷 생성기란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               코드 스크린샷 생성기는 <strong>코드를 구문 강조가 적용된 아름다운 이미지로 변환</strong>하는 무료 온라인 도구입니다. Carbon, Poet.so와 같은 인기 서비스와 유사하게 8가지 테마, 그라디언트 배경, 다양한 언어 구문 강조를 지원하며 PNG·SVG 내보내기와 클립보드 복사까지 가능합니다. SNS 코드 공유, 기술 블로그 이미지, 개발자 포트폴리오에 필수적인 도구입니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               코드 스크린샷 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>SNS 공유:</strong> 트위터·링크드인에서 코드 이미지는 텍스트보다 2~3배 높은 참여율을 보입니다.</li>
               <li><strong>테마 선택:</strong> Dracula·One Dark Pro 테마는 가독성이 높아 SNS 공유용으로 인기가 많습니다.</li>
               <li><strong>그라디언트 배경:</strong> 배경에 그라디언트를 적용하면 시각적으로 더 임팩트 있는 이미지가 만들어집니다.</li>

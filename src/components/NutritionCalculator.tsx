@@ -263,15 +263,15 @@ export default function NutritionCalculator() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <Utensils className="w-6 h-6 text-green-500" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -288,7 +288,7 @@ export default function NutritionCalculator() {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 selectedCategory === cat
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t(`categories.${cat}`)}
@@ -321,11 +321,11 @@ export default function NutritionCalculator() {
         <div className="lg:col-span-2 space-y-4">
           {/* 음식 그리드 */}
           <div className={`${glassCard} ${glassInset} p-4`}>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-base font-semibold text-fg mb-3">
               {t('foodDatabase')} <span className="text-sm font-normal text-gray-400">({filteredFoods.length})</span>
             </h2>
             {filteredFoods.length === 0 ? (
-              <div className="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
+              <div className="text-center py-8 text-faint text-sm">
                 {t('noResults')}
               </div>
             ) : (
@@ -333,7 +333,7 @@ export default function NutritionCalculator() {
                 {filteredFoods.map(food => (
                   <div
                     key={food.id}
-                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group"
+                    className="bg-subtle rounded-lg p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group"
                     onClick={() => addFood(food)}
                     role="button"
                     tabIndex={0}
@@ -342,10 +342,10 @@ export default function NutritionCalculator() {
                   >
                     <div className="flex items-start justify-between gap-1">
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <p className="text-sm font-medium text-fg truncate">
                           {t(`foods.${food.id}`)}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <p className="text-xs text-muted mt-0.5">
                           {food.serving}g {t('perServing')}
                         </p>
                       </div>
@@ -362,7 +362,7 @@ export default function NutritionCalculator() {
                         {food.cal}
                       </span>
                       <span className="text-xs text-gray-400">kcal</span>
-                      <div className="flex gap-2 ml-auto text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex gap-2 ml-auto text-xs text-muted">
                         <span className="text-blue-500">C {food.carbs}g</span>
                         <span className="text-green-500">P {food.protein}g</span>
                         <span className="text-amber-500">F {food.fat}g</span>
@@ -378,13 +378,13 @@ export default function NutritionCalculator() {
           {totals && (
             <div className="grid sm:grid-cols-2 gap-4">
               <div className={`${glassCard} ${glassInset} p-4`}>
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('chart.macroRatio')}</h3>
+                <h3 className="text-sm font-semibold text-body mb-2">{t('chart.macroRatio')}</h3>
                 {donutOption && (
                   <ReactECharts option={donutOption} style={{ height: 220 }} />
                 )}
               </div>
               <div className={`${glassCard} ${glassInset} p-4`}>
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('chart.dailyPct')}</h3>
+                <h3 className="text-sm font-semibold text-body mb-2">{t('chart.dailyPct')}</h3>
                 {barOption && (
                   <ReactECharts option={barOption} style={{ height: 220 }} />
                 )}
@@ -398,7 +398,7 @@ export default function NutritionCalculator() {
           {/* 식단 목록 */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-base font-semibold text-fg">
                 {t('mealList')} <span className="text-sm font-normal text-gray-400">({mealEntries.length})</span>
               </h2>
               {mealEntries.length > 0 && (
@@ -412,7 +412,7 @@ export default function NutritionCalculator() {
             </div>
 
             {mealEntries.length === 0 ? (
-              <div className="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
+              <div className="text-center py-8 text-faint text-sm">
                 <Utensils className="w-8 h-8 mx-auto mb-2 opacity-30" />
                 <p>{t('mealEmpty')}</p>
               </div>
@@ -421,11 +421,11 @@ export default function NutritionCalculator() {
                 {mealEntries.map(entry => (
                   <div
                     key={entry.uid}
-                    className="border border-gray-200 dark:border-gray-700 rounded-lg p-3"
+                    className="border border-line rounded-lg p-3"
                   >
                     <div className="flex items-start justify-between gap-1 mb-2">
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <p className="text-sm font-medium text-fg truncate">
                           {t(`foods.${entry.food.id}`)}
                         </p>
                         <p className="text-xs text-orange-600 dark:text-orange-400 font-semibold">
@@ -441,7 +441,7 @@ export default function NutritionCalculator() {
                       </button>
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">{t('portion')}</label>
+                      <label className="text-xs text-muted mb-1 block">{t('portion')}</label>
                       <div className="flex gap-1 flex-wrap">
                         {PORTIONS.map(p => (
                           <button
@@ -450,7 +450,7 @@ export default function NutritionCalculator() {
                             className={`px-2 py-0.5 text-xs rounded transition-colors ${
                               entry.portion === p
                                 ? 'bg-blue-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                             }`}
                           >
                             {p}x
@@ -458,7 +458,7 @@ export default function NutritionCalculator() {
                         ))}
                       </div>
                     </div>
-                    <div className="mt-2 flex gap-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="mt-2 flex gap-2 text-xs text-muted">
                       <span className="text-blue-500">C {formatNumber(entry.food.carbs * entry.portion)}g</span>
                       <span className="text-green-500">P {formatNumber(entry.food.protein * entry.portion)}g</span>
                       <span className="text-amber-500">F {formatNumber(entry.food.fat * entry.portion)}g</span>
@@ -473,10 +473,10 @@ export default function NutritionCalculator() {
           {totals && (
             <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('summary.title')}</h2>
+                <h2 className="text-base font-semibold text-fg">{t('summary.title')}</h2>
                 <button
                   onClick={() => copyToClipboard(buildSummary(), 'summary')}
-                  className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   {copiedId === 'summary' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                   {copiedId === 'summary' ? t('copied') : t('copy')}
@@ -488,7 +488,7 @@ export default function NutritionCalculator() {
                 <p className="text-xs text-orange-600 dark:text-orange-400">{t('summary.totalCal')}</p>
                 <p className="text-3xl font-bold text-orange-700 dark:text-orange-400">{formatNumber(totals.cal)}</p>
                 <p className="text-xs text-orange-500">kcal</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {t('summary.driPct', { pct: ((totals.cal / DRI.cal) * 100).toFixed(0) })}
                 </p>
               </div>
@@ -504,12 +504,12 @@ export default function NutritionCalculator() {
                   return (
                     <div key={label}>
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-600 dark:text-gray-400">{label}</span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="text-sub">{label}</span>
+                        <span className="font-medium text-fg">
                           {formatNumber(value)}{unit} <span className="text-gray-400 font-normal">/ {dri}{unit}</span>
                         </span>
                       </div>
-                      <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-2 bg-soft rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all bg-${color}-500`}
                           style={{ width: `${pct}%` }}
@@ -521,7 +521,7 @@ export default function NutritionCalculator() {
               </div>
 
               {/* DRI 기준 안내 */}
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('summary.driNote')}</p>
+              <p className="text-xs text-faint mt-3">{t('summary.driNote')}</p>
             </div>
           )}
         </div>
@@ -534,16 +534,16 @@ export default function NutritionCalculator() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.howToUse.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.howToUse.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.howToUse.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -551,7 +551,7 @@ export default function NutritionCalculator() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.macros.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.macros.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.macros.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -559,7 +559,7 @@ export default function NutritionCalculator() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

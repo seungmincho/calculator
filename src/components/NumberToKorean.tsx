@@ -165,11 +165,11 @@ export default function NumberToKorean() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Hash className="w-7 h-7" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -178,7 +178,7 @@ export default function NumberToKorean() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('inputNumber')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('inputNumber')}</label>
               <input
                 type="text"
                 inputMode="numeric"
@@ -188,24 +188,24 @@ export default function NumberToKorean() {
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-lg`}
                 maxLength={20}
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('maxNumber')}</p>
+              <p className="text-xs text-muted mt-1">{t('maxNumber')}</p>
             </div>
 
             {/* Spacing toggle */}
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={spacing} onChange={(e) => setSpacing(e.target.checked)} className="w-4 h-4 accent-blue-600" />
-              <span className="text-sm text-gray-700 dark:text-gray-300">{t('spacing')}</span>
+              <span className="text-sm text-body">{t('spacing')}</span>
             </label>
 
             {/* Quick Amount Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('quickAmounts')}</label>
+              <label className="block text-sm font-medium text-body mb-2">{t('quickAmounts')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {quickAmounts.map((item) => (
                   <button
                     key={item.value}
                     onClick={() => handleQuickAmount(item.value)}
-                    className="px-2 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
+                    className="px-2 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded transition-colors"
                   >
                     {item.label}
                   </button>
@@ -215,7 +215,7 @@ export default function NumberToKorean() {
 
             <button
               onClick={handleReset}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -227,9 +227,9 @@ export default function NumberToKorean() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Number display */}
-            <div className="text-center pb-5 border-b border-gray-200 dark:border-gray-700">
-              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{t('numberDisplay')}</div>
-              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white break-all">{formattedNumber}</div>
+            <div className="text-center pb-5 border-b border-line">
+              <div className="text-sm font-medium text-muted mb-2">{t('numberDisplay')}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-fg break-all">{formattedNumber}</div>
             </div>
 
             {cards.map((card) => (
@@ -237,14 +237,14 @@ export default function NumberToKorean() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className={`text-sm font-medium mb-2 ${card.accent}`}>{card.label}</div>
-                    <div className="text-xl font-medium text-gray-900 dark:text-white break-words">
+                    <div className="text-xl font-medium text-fg break-words">
                       {card.value || t('inputPrompt')}
                     </div>
                   </div>
                   <button
                     onClick={() => card.value && copyToClipboard(card.value, card.id)}
                     disabled={!card.value}
-                    className="flex-shrink-0 p-2 hover:bg-white/60 dark:hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-shrink-0 p-2 hover:bg-soft rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     title={t('copy')}
                   >
                     {copiedId === card.id ? <Check className="w-5 h-5 text-green-600 dark:text-green-400" /> : <Copy className={`w-5 h-5 ${card.accent}`} />}
@@ -258,16 +258,16 @@ export default function NumberToKorean() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.usage.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.usage.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex gap-2">
+                <li key={index} className="text-sm text-sub flex gap-2">
                   <span className="text-blue-600 dark:text-blue-400">•</span>
                   <span>{item}</span>
                 </li>
@@ -275,10 +275,10 @@ export default function NumberToKorean() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.rules.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.rules.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.rules.items') as string[]).map((item, index) => (
-                <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex gap-2">
+                <li key={index} className="text-sm text-sub flex gap-2">
                   <span className="text-blue-600 dark:text-blue-400">•</span>
                   <span>{item}</span>
                 </li>

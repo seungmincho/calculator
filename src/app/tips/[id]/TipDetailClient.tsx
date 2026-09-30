@@ -141,7 +141,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -149,13 +149,13 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
 
   if (!tip) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Navigation */}
           <div className="flex items-center justify-between mb-8">
             <Link 
               href="/tips"
-              className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="flex items-center text-sub hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               전체 팁 보기
@@ -163,15 +163,15 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           </div>
 
           {/* Not Found Content */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-surface rounded-2xl shadow-lg border border-line overflow-hidden">
             <div className="p-8 text-center">
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-soft rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Lightbulb className="w-8 h-8 text-gray-400" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-fg mb-2">
                 팁을 찾을 수 없습니다
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-sub mb-6">
                 요청하신 금융 팁이 존재하지 않거나 삭제되었습니다.
               </p>
               <Link 
@@ -189,7 +189,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen">
       {/* Copy Notification */}
       {showCopyNotification && (
         <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-in slide-in-from-top-2 duration-300">
@@ -203,7 +203,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
         <div className="flex items-center justify-between mb-8">
           <Link 
             href="/tips"
-            className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="flex items-center text-sub hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             전체 팁 보기
@@ -219,7 +219,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
         </div>
 
         {/* Main Content */}
-        <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <article className="bg-surface rounded-2xl shadow-lg border border-line overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-8 text-white">
             <div className="flex items-center space-x-4 mb-4">
@@ -243,35 +243,35 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           <div className="p-8">
             <div className="flex items-center space-x-2 mb-6">
               <Lightbulb className="w-5 h-5 text-yellow-500" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">상세 설명</h3>
+              <h3 className="text-lg font-semibold text-fg">상세 설명</h3>
             </div>
             
             <div className="prose prose-lg max-w-none dark:prose-invert">
               {getDetailedContent(tip).map((content, index) => (
-                <p key={index} className="text-gray-700 dark:text-gray-300 mb-4">
+                <p key={index} className="text-body mb-4">
                   {content}
                 </p>
               ))}
             </div>
 
             {/* Action Items */}
-            <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl">
+            <div className="mt-8 p-6 bg-subtle rounded-xl">
               <div className="flex items-center space-x-2 mb-4">
                 <BookOpen className="w-5 h-5 text-green-600" />
-                <h4 className="font-semibold text-gray-900 dark:text-white">실행 단계</h4>
+                <h4 className="font-semibold text-fg">실행 단계</h4>
               </div>
               <ul className="space-y-2">
                 <li className="flex items-start space-x-2">
                   <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">1</span>
-                  <span className="text-gray-700 dark:text-gray-300">현재 상황을 파악하고 목표를 설정하세요</span>
+                  <span className="text-body">현재 상황을 파악하고 목표를 설정하세요</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">2</span>
-                  <span className="text-gray-700 dark:text-gray-300">구체적인 실행 계획을 세우고 일정을 정하세요</span>
+                  <span className="text-body">구체적인 실행 계획을 세우고 일정을 정하세요</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">3</span>
-                  <span className="text-gray-700 dark:text-gray-300">정기적으로 진행 상황을 점검하고 조정하세요</span>
+                  <span className="text-body">정기적으로 진행 상황을 점검하고 조정하세요</span>
                 </li>
               </ul>
             </div>
@@ -283,7 +283,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           <div className="mt-12">
             <div className="flex items-center space-x-2 mb-6">
               <TrendingUp className="w-5 h-5 text-blue-600" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-bold text-fg">
                 {tip.category} 관련 팁
               </h3>
             </div>
@@ -295,7 +295,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
                   href={`/tips/${relatedTip.id}`}
                   className="block group"
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700 group-hover:border-blue-300 dark:group-hover:border-blue-600">
+                  <div className="bg-surface rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-line group-hover:border-blue-300 dark:group-hover:border-blue-600">
                     <div className="flex items-center space-x-3 mb-4">
                       <span className="text-xl">{getCategoryIcon(relatedTip.category)}</span>
                       <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
@@ -303,7 +303,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
                       </span>
                     </div>
                     
-                    <p className="text-gray-800 dark:text-gray-200 line-clamp-3 mb-4">
+                    <p className="text-body line-clamp-3 mb-4">
                       {relatedTip.tip}
                     </p>
                     
@@ -319,10 +319,10 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
 
         {/* CTA */}
         <div className="mt-12 text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl font-bold text-fg mb-4">
             금융 계산기로 실제 계획 세우기
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
+          <p className="text-sub mb-6">
             이론을 실제로 적용해보세요. 다양한 계산기를 활용해 구체적인 재정 계획을 세워보세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -334,7 +334,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
             </Link>
             <Link 
               href="/savings-calculator"
-              className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-medium border border-gray-300 dark:border-gray-600 transition-colors"
+              className="bg-surface hover:bg-gray-50 dark:hover:bg-gray-700 text-fg px-6 py-3 rounded-lg font-medium border border-line-strong transition-colors"
             >
               적금 계산기
             </Link>

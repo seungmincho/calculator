@@ -240,13 +240,13 @@ export default function OvulationCalculator() {
 
     return (
       <div key={`${year}-${month}`} className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white text-center mb-4">
+        <h3 className="text-lg font-bold text-fg text-center mb-4">
           {year}. {monthNames[month]}
         </h3>
         <div className="grid grid-cols-7 gap-1">
           {weekdays.map((wd: string, i: number) => (
             <div key={i} className={`text-center text-xs font-semibold py-1 ${
-              i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'
+              i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-muted'
             }`}>
               {wd}
             </div>
@@ -256,7 +256,7 @@ export default function OvulationCalculator() {
             const date = new Date(year, month, day)
             const type = getDayType(date)
             const isToday = isSameDay(date, today)
-            let cellClass = 'text-gray-700 dark:text-gray-300'
+            let cellClass = 'text-body'
             if (type === 'period') cellClass = 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200'
             else if (type === 'ovulation') cellClass = 'bg-purple-500 text-white font-bold'
             else if (type === 'fertile') cellClass = 'bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200'
@@ -282,18 +282,18 @@ export default function OvulationCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Heart className="w-7 h-7 text-pink-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Input Section */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
         {/* Last period date */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             <Calendar className="w-4 h-4 inline mr-1" />
             {t('lastPeriod')}
           </label>
@@ -307,16 +307,16 @@ export default function OvulationCalculator() {
 
         {/* Cycle length */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             {t('cycleLength')}
           </label>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCycleLength(Math.max(21, cycleLength - 1))}
-              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
               aria-label="Decrease cycle length"
             >
-              <Minus className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+              <Minus className="w-4 h-4 text-body" />
             </button>
             <input
               type="number"
@@ -331,27 +331,27 @@ export default function OvulationCalculator() {
             />
             <button
               onClick={() => setCycleLength(Math.min(45, cycleLength + 1))}
-              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
               aria-label="Increase cycle length"
             >
-              <Plus className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+              <Plus className="w-4 h-4 text-body" />
             </button>
-            <span className="text-sm text-gray-500 dark:text-gray-400">{t('days')}</span>
+            <span className="text-sm text-muted">{t('days')}</span>
           </div>
         </div>
 
         {/* Period length */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-body mb-1">
             {t('periodLength')}
           </label>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setPeriodLength(Math.max(3, periodLength - 1))}
-              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
               aria-label="Decrease period length"
             >
-              <Minus className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+              <Minus className="w-4 h-4 text-body" />
             </button>
             <input
               type="number"
@@ -366,12 +366,12 @@ export default function OvulationCalculator() {
             />
             <button
               onClick={() => setPeriodLength(Math.min(7, periodLength + 1))}
-              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
               aria-label="Increase period length"
             >
-              <Plus className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+              <Plus className="w-4 h-4 text-body" />
             </button>
-            <span className="text-sm text-gray-500 dark:text-gray-400">{t('days')}</span>
+            <span className="text-sm text-muted">{t('days')}</span>
           </div>
         </div>
 
@@ -386,7 +386,7 @@ export default function OvulationCalculator() {
           </button>
           <button
             onClick={handleReset}
-            className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             {t('reset')}
@@ -399,7 +399,7 @@ export default function OvulationCalculator() {
         <>
           {/* Summary Cards */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-fg mb-4 flex items-center gap-2">
               {t('result')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -483,7 +483,7 @@ export default function OvulationCalculator() {
             </button>
             <button
               onClick={copyLink}
-              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+              className="px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
             >
               {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copiedLink ? t('linkCopied') : t('copyLinkButton')}
@@ -492,7 +492,7 @@ export default function OvulationCalculator() {
 
           {/* 3-Month Calendar */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-fg mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-pink-500" />
               {t('calendar')}
             </h2>
@@ -502,25 +502,25 @@ export default function OvulationCalculator() {
 
             {/* Legend */}
             <div className={`mt-4 ${glassCard} ${glassInset} p-4`}>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-body mb-3">
                 {t('legend')}
               </h3>
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-4 h-4 rounded bg-red-200 dark:bg-red-800 inline-block" />
-                  <span className="text-gray-600 dark:text-gray-400">{t('legendPeriod')}</span>
+                  <span className="text-sub">{t('legendPeriod')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-4 h-4 rounded bg-orange-200 dark:bg-orange-800 inline-block" />
-                  <span className="text-gray-600 dark:text-gray-400">{t('legendFertile')}</span>
+                  <span className="text-sub">{t('legendFertile')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-4 h-4 rounded bg-purple-500 inline-block" />
-                  <span className="text-gray-600 dark:text-gray-400">{t('legendOvulation')}</span>
+                  <span className="text-sub">{t('legendOvulation')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-4 h-4 rounded bg-green-100 dark:bg-green-900 inline-block" />
-                  <span className="text-gray-600 dark:text-gray-400">{t('legendSafe')}</span>
+                  <span className="text-sub">{t('legendSafe')}</span>
                 </div>
               </div>
             </div>
@@ -534,7 +534,7 @@ export default function OvulationCalculator() {
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <span className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="flex items-center gap-2 text-lg font-semibold text-fg">
             <BookOpen className="w-5 h-5 text-pink-500" />
             {t('guide.title')}
           </span>
@@ -547,12 +547,12 @@ export default function OvulationCalculator() {
         {guideOpen && (
           <div className="px-6 pb-6 space-y-6">
             <div>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="text-base font-semibold text-body mb-2">
                 {t('guide.howItWorks.title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guide.howItWorks.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-pink-500 mt-0.5">•</span>
                     {item}
                   </li>
@@ -560,12 +560,12 @@ export default function OvulationCalculator() {
               </ul>
             </div>
             <div>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h3 className="text-base font-semibold text-body mb-2">
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-purple-500 mt-0.5">•</span>
                     {item}
                   </li>
@@ -577,7 +577,7 @@ export default function OvulationCalculator() {
       </div>
 
       {/* Disclaimer */}
-      <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
+      <p className="text-xs text-faint text-center">
         {t('disclaimer')}
       </p>
     </div>

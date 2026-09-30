@@ -180,11 +180,11 @@ export default function PenaltyRoulette() {
       <div className="relative z-10 p-4 sm:p-6 space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+          <h2 className="text-2xl font-bold text-fg flex items-center justify-center gap-2">
             <Sparkles className="w-6 h-6 text-orange-500" />
             {t('title')}
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-sub mt-1">{t('description')}</p>
         </div>
 
         {/* Category selector */}
@@ -198,7 +198,7 @@ export default function PenaltyRoulette() {
             boxShadow: 'inset 2px 2px 10px rgba(255,255,255,0.15), inset -2px -2px 10px rgba(255,255,255,0.05)',
           }}
         >
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">{t('category')}</p>
+          <p className="text-xs font-semibold text-muted mb-2 uppercase tracking-wide">{t('category')}</p>
           <div className="flex flex-wrap gap-2">
             {Object.entries(CATEGORY_PRESETS).map(([key, { label }]) => (
               <button
@@ -207,7 +207,7 @@ export default function PenaltyRoulette() {
                 className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   category === key
                     ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-105'
-                    : 'bg-white/20 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-white/20'
+                    : 'bg-surface text-body hover:bg-soft'
                 }`}
               >
                 {label}
@@ -218,7 +218,7 @@ export default function PenaltyRoulette() {
               className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 category === 'custom'
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-105'
-                  : 'bg-white/20 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-white/20'
+                  : 'bg-surface text-body hover:bg-soft'
               }`}
             >
               {t('custom')}
@@ -269,8 +269,8 @@ export default function PenaltyRoulette() {
                 }}
               >
                 {itemCount === 0 ? (
-                  <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                    <span className="text-xs text-gray-500 dark:text-gray-400 text-center px-4">{t('addItem')}</span>
+                  <div className="w-full h-full bg-track rounded-full flex items-center justify-center">
+                    <span className="text-xs text-muted text-center px-4">{t('addItem')}</span>
                   </div>
                 ) : (
                   <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -360,18 +360,18 @@ export default function PenaltyRoulette() {
                   style={{ animationIterationCount: 3 }}
                 >
                   <p className="text-xs text-orange-500 font-semibold uppercase tracking-widest mb-1">{t('penaltyIs')}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{result}</p>
+                  <p className="text-2xl font-bold text-fg">{result}</p>
                   <button
                     onClick={spin}
                     disabled={spinning}
-                    className="mt-3 text-xs text-gray-500 dark:text-gray-400 hover:text-orange-500 dark:hover:text-orange-400 flex items-center gap-1 mx-auto transition-colors"
+                    className="mt-3 text-xs text-muted hover:text-orange-500 dark:hover:text-orange-400 flex items-center gap-1 mx-auto transition-colors"
                   >
                     <RotateCcw className="w-3 h-3" />
                     {t('reroll')}
                   </button>
                 </div>
               ) : (
-                <div className="text-gray-400 dark:text-gray-500">
+                <div className="text-faint">
                   <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">{t('ready')}</p>
                 </div>
@@ -390,7 +390,7 @@ export default function PenaltyRoulette() {
                   boxShadow: 'inset 2px 2px 10px rgba(255,255,255,0.15), inset -2px -2px 10px rgba(255,255,255,0.05)',
                 }}
               >
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('addCustom')}</p>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wide">{t('addCustom')}</p>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -398,7 +398,7 @@ export default function PenaltyRoulette() {
                     onChange={e => setCustomInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && addCustomItem()}
                     placeholder={t('placeholder')}
-                    className="flex-1 px-3 py-2 text-sm rounded-xl bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="flex-1 px-3 py-2 text-sm rounded-xl bg-surface border border-line text-fg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
                   />
                   <button
                     onClick={addCustomItem}
@@ -411,7 +411,7 @@ export default function PenaltyRoulette() {
                   {customItems.map(item => (
                     <span
                       key={item}
-                      className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/20 dark:bg-white/10 text-sm text-gray-800 dark:text-gray-200"
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg bg-surface text-sm text-body"
                     >
                       {item}
                       <button
@@ -423,7 +423,7 @@ export default function PenaltyRoulette() {
                     </span>
                   ))}
                   {customItems.length === 0 && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{t('addItem')}</p>
+                    <p className="text-xs text-faint">{t('addItem')}</p>
                   )}
                 </div>
               </div>
@@ -441,7 +441,7 @@ export default function PenaltyRoulette() {
                   boxShadow: 'inset 2px 2px 10px rgba(255,255,255,0.15), inset -2px -2px 10px rgba(255,255,255,0.05)',
                 }}
               >
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">{t('result')}</p>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">{t('result')}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {activeItems.map((item, i) => (
                     <span
@@ -469,7 +469,7 @@ export default function PenaltyRoulette() {
                 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('history')}</p>
+                  <p className="text-xs font-semibold text-muted uppercase tracking-wide">{t('history')}</p>
                   <button
                     onClick={resetAll}
                     className="text-xs text-gray-400 hover:text-red-500 dark:hover:text-red-400 flex items-center gap-1 transition-colors"
@@ -480,7 +480,7 @@ export default function PenaltyRoulette() {
                 </div>
                 <ol className="space-y-1">
                   {history.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-center gap-2 text-sm text-body">
                       <span className="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: WHEEL_COLORS[i % WHEEL_COLORS.length] }}>
                         {i + 1}
                       </span>

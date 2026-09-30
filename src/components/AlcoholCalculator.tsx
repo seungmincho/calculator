@@ -145,7 +145,7 @@ export default function AlcoholCalculator() {
       case 'drunk': return 'text-orange-600 dark:text-orange-400'
       case 'veryDrunk': return 'text-red-600 dark:text-red-400'
       case 'dangerous': return 'text-red-700 dark:text-red-300'
-      default: return 'text-gray-600 dark:text-gray-400'
+      default: return 'text-sub'
     }
   }
 
@@ -156,7 +156,7 @@ export default function AlcoholCalculator() {
       case 'drunk': return 'bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-200'
       case 'veryDrunk': return 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-200'
       case 'dangerous': return 'bg-red-200 dark:bg-red-900 text-red-900 dark:text-red-100'
-      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+      default: return 'bg-soft text-body'
     }
   }
 
@@ -176,12 +176,12 @@ export default function AlcoholCalculator() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           {linkCopied ? t('linkCopied') : t('copyLink')}
@@ -195,7 +195,7 @@ export default function AlcoholCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Gender Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('gender')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -204,7 +204,7 @@ export default function AlcoholCalculator() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     gender === 'male'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('male')}
@@ -214,7 +214,7 @@ export default function AlcoholCalculator() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     gender === 'female'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t('female')}
@@ -224,7 +224,7 @@ export default function AlcoholCalculator() {
 
             {/* Weight Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('weight')}
               </label>
               <div className="relative">
@@ -236,7 +236,7 @@ export default function AlcoholCalculator() {
                   min="0"
                   step="1"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
                   kg
                 </span>
               </div>
@@ -245,7 +245,7 @@ export default function AlcoholCalculator() {
             {/* Drinks List */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-body">
                   {t('drinks')}
                 </label>
                 <button
@@ -258,18 +258,18 @@ export default function AlcoholCalculator() {
               </div>
 
               {drinks.length === 0 ? (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
+                <div className="text-center py-8 text-muted text-sm">
                   {t('addDrinksPrompt')}
                 </div>
               ) : (
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {drinks.map((drink) => (
-                    <div key={drink.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 space-y-2">
+                    <div key={drink.id} className="bg-subtle rounded-lg p-3 space-y-2">
                       <div className="flex items-center justify-between gap-2">
                         <select
                           value={drink.type}
                           onChange={(e) => updateDrink(drink.id, 'type', e.target.value)}
-                          className="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                          className="flex-1 px-2 py-1 text-sm border border-line-strong rounded bg-white dark:bg-gray-600 text-fg"
                         >
                           <option value="soju">{t('drinkTypes.soju')}</option>
                           <option value="beer">{t('drinkTypes.beer')}</option>
@@ -287,7 +287,7 @@ export default function AlcoholCalculator() {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="text-xs text-gray-600 dark:text-gray-400">
+                          <label className="text-xs text-sub">
                             {t('amount')}
                           </label>
                           <div className="relative">
@@ -295,16 +295,16 @@ export default function AlcoholCalculator() {
                               type="number"
                               value={drink.amount}
                               onChange={(e) => updateDrink(drink.id, 'amount', Number(e.target.value))}
-                              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                              className="w-full px-2 py-1 text-sm border border-line-strong rounded bg-white dark:bg-gray-600 text-fg"
                               min="0"
                             />
-                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-500 dark:text-gray-400">
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted">
                               ml
                             </span>
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs text-gray-600 dark:text-gray-400">
+                          <label className="text-xs text-sub">
                             {t('alcoholPercent')}
                           </label>
                           <div className="relative">
@@ -312,13 +312,13 @@ export default function AlcoholCalculator() {
                               type="number"
                               value={drink.alcoholPercent}
                               onChange={(e) => updateDrink(drink.id, 'alcoholPercent', Number(e.target.value))}
-                              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                              className="w-full px-2 py-1 text-sm border border-line-strong rounded bg-white dark:bg-gray-600 text-fg"
                               min="0"
                               max="100"
                               step="0.1"
                               disabled={drink.type !== 'custom'}
                             />
-                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-500 dark:text-gray-400">
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted">
                               %
                             </span>
                           </div>
@@ -332,7 +332,7 @@ export default function AlcoholCalculator() {
 
             {/* Quick Add Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('quickAdd')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -340,7 +340,7 @@ export default function AlcoholCalculator() {
                   <button
                     key={preset.key}
                     onClick={() => addDrink(preset.type, preset.amount)}
-                    className="px-3 py-2 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="px-3 py-2 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {t(`drinkUnits.${preset.key}`)}
                   </button>
@@ -351,7 +351,7 @@ export default function AlcoholCalculator() {
             {/* Timing Inputs */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('drinkingDuration')}
                 </label>
                 <div className="relative">
@@ -363,14 +363,14 @@ export default function AlcoholCalculator() {
                     min="0"
                     step="0.5"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
                     {t('hours')}
                   </span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('timeSinceDrinking')}
                 </label>
                 <div className="relative">
@@ -382,7 +382,7 @@ export default function AlcoholCalculator() {
                     min="0"
                     step="0.5"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
                     {t('hours')}
                   </span>
                 </div>
@@ -405,7 +405,7 @@ export default function AlcoholCalculator() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {!showResult || drinks.length === 0 ? (
-              <div className="text-center py-16 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-16 text-muted">
                 {t('addAndCalculate')}
               </div>
             ) : (
@@ -427,22 +427,22 @@ export default function AlcoholCalculator() {
 
                 {/* Legal Limits Visual */}
                 <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <h3 className="text-sm font-medium text-body">
                     {t('legal')}
                   </h3>
 
                   {/* 0.03% Limit */}
                   <div>
-                    <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                    <div className="flex items-center justify-between text-xs text-sub mb-1">
                       <span>{t('driveLimit')}</span>
                       <span>0.03%</span>
                     </div>
-                    <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-6 bg-track rounded-full overflow-hidden">
                       <div
                         className="absolute h-full bg-yellow-500 transition-all duration-500"
                         style={{ width: `${Math.min(100, (currentBAC / 0.03) * 100)}%` }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-900 dark:text-white">
+                      <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-fg">
                         {currentBAC >= 0.03 ? t('exceeded') : t('within')}
                       </div>
                     </div>
@@ -450,16 +450,16 @@ export default function AlcoholCalculator() {
 
                   {/* 0.08% Limit */}
                   <div>
-                    <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                    <div className="flex items-center justify-between text-xs text-sub mb-1">
                       <span>{t('driveRevoke')}</span>
                       <span>0.08%</span>
                     </div>
-                    <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-6 bg-track rounded-full overflow-hidden">
                       <div
                         className="absolute h-full bg-red-500 transition-all duration-500"
                         style={{ width: `${Math.min(100, (currentBAC / 0.08) * 100)}%` }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-900 dark:text-white">
+                      <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-fg">
                         {currentBAC >= 0.08 ? t('exceeded') : t('within')}
                       </div>
                     </div>
@@ -471,10 +471,10 @@ export default function AlcoholCalculator() {
                   <div className="flex items-center gap-3">
                     <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('soberTime')}
                       </div>
-                      <div className="text-xl font-bold text-gray-900 dark:text-white">
+                      <div className="text-xl font-bold text-fg">
                         {currentBAC === 0
                           ? t('sober')
                           : `${soberTimeHours.toFixed(1)}시간`
@@ -489,7 +489,7 @@ export default function AlcoholCalculator() {
                   <div className="flex gap-3">
                     <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
-                      <p className="font-semibold text-gray-900 dark:text-white">
+                      <p className="font-semibold text-fg">
                         {t('warning')}
                       </p>
                     </div>
@@ -498,7 +498,7 @@ export default function AlcoholCalculator() {
 
                 {/* Peak BAC Info */}
                 {timeSinceDrinking > 0 && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  <div className="text-sm text-sub text-center">
                     {t('peakBac', { value: peakBAC.toFixed(3) })}
                   </div>
                 )}
@@ -510,7 +510,7 @@ export default function AlcoholCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
@@ -518,10 +518,10 @@ export default function AlcoholCalculator() {
         <div className="space-y-6">
           {/* Formula */}
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.formula.title')}
             </h3>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <div className="bg-subtle rounded-lg p-4 space-y-2 text-sm text-body">
               {(t.raw('guide.formula.items') as string[]).map((item, idx) => (
                 <p key={idx}>• {item}</p>
               ))}
@@ -530,10 +530,10 @@ export default function AlcoholCalculator() {
 
           {/* Factors */}
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+            <h3 className="font-medium text-fg mb-3">
               {t('guide.factors.title')}
             </h3>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <div className="bg-subtle rounded-lg p-4 space-y-2 text-sm text-body">
               {(t.raw('guide.factors.items') as string[]).map((item, idx) => (
                 <p key={idx}>• {item}</p>
               ))}

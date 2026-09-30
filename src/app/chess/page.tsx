@@ -88,7 +88,7 @@ export default function ChessPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
+      <div className="min-h-screen py-8 px-4">
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
@@ -107,17 +107,17 @@ export default function ChessPage() {
       </div>
       {/* SEO Content */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             체스(Chess)란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             체스(Chess)는 <strong>8x8 보드에서 두 사람이 각 16개의 말을 전략적으로 이동하며 상대 킹을 체크메이트하는</strong> 세계에서 가장 유명한 전략 보드게임입니다. 1,500년 이상의 역사를 가지며, 논리적 사고력과 전략적 계획 능력을 키울 수 있습니다. 툴허브의 체스는 3단계 AI와의 대전을 지원합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             체스 전략 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>중앙 통제:</strong> 게임 초반에 폰과 나이트로 보드 중앙(d4, d5, e4, e5)을 장악하세요.</li>
             <li><strong>말 전개:</strong> 나이트와 비숍을 빨리 전개하고, 조기 캐슬링으로 킹을 안전하게 보호하세요.</li>
             <li><strong>퀸 조기 출동 금지:</strong> 퀸을 너무 일찍 내보내면 상대 공격의 표적이 됩니다.</li>

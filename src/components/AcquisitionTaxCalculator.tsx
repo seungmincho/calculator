@@ -273,13 +273,13 @@ export default function AcquisitionTaxCalculator() {
             <Building className="w-8 h-8 text-blue-600 dark:text-blue-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-sm text-muted mt-1">{t('description')}</p>
           </div>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
           title="링크 복사"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -292,14 +292,14 @@ export default function AcquisitionTaxCalculator() {
         {/* ── 입력 패널 ── */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calculator className="w-5 h-5" />
               {t('propertyType.label')}
             </h2>
 
             {/* 취득 유형 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('propertyType.label')}
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -310,7 +310,7 @@ export default function AcquisitionTaxCalculator() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       propertyType === type
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`propertyType.${type}`)}
@@ -321,7 +321,7 @@ export default function AcquisitionTaxCalculator() {
 
             {/* 취득가액 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('price.label')}
               </label>
               <input
@@ -333,7 +333,7 @@ export default function AcquisitionTaxCalculator() {
                 className={`${glassInput} px-3 py-2`}
               />
               {priceNum > 0 && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {toEokMan(priceNum)}{t('units.won')}
                 </p>
               )}
@@ -342,7 +342,7 @@ export default function AcquisitionTaxCalculator() {
             {/* 전용면적 */}
             {propertyType === 'house' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('area.label')}
                 </label>
                 <div className="relative">
@@ -358,7 +358,7 @@ export default function AcquisitionTaxCalculator() {
                   </span>
                 </div>
                 {areaNum > 0 && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     {areaNum > 85 ? t('areaOver85.yes') : t('areaOver85.no')}
                   </p>
                 )}
@@ -370,7 +370,7 @@ export default function AcquisitionTaxCalculator() {
               <>
                 {/* 주택 수 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('houseCount.label')}
                   </label>
                   <select
@@ -388,7 +388,7 @@ export default function AcquisitionTaxCalculator() {
                 {/* 조정대상지역 */}
                 {(houseCount === '2' || houseCount === '3plus') && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('adjustedArea.label')}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -397,7 +397,7 @@ export default function AcquisitionTaxCalculator() {
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           isAdjusted
                             ? 'bg-red-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('adjustedArea.yes')}
@@ -407,7 +407,7 @@ export default function AcquisitionTaxCalculator() {
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           !isAdjusted
                             ? 'bg-green-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('adjustedArea.no')}
@@ -419,7 +419,7 @@ export default function AcquisitionTaxCalculator() {
                 {/* 면적 미입력 시 수동 85㎡ 선택 */}
                 {!areaNum && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-body mb-2">
                       {t('areaOver85.label')}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -428,7 +428,7 @@ export default function AcquisitionTaxCalculator() {
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           !isOver85
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('areaOver85.no')}
@@ -438,7 +438,7 @@ export default function AcquisitionTaxCalculator() {
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           isOver85
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t('areaOver85.yes')}
@@ -458,12 +458,12 @@ export default function AcquisitionTaxCalculator() {
               {/* 총 세금 요약 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-fg">
                     {t('result.title')}
                   </h2>
                   <button
                     onClick={copyResult}
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'result' ? t('copied') : t('copy')}
@@ -472,32 +472,32 @@ export default function AcquisitionTaxCalculator() {
 
                 {/* 총 세금 강조 */}
                 <div className="text-center py-4 mb-4 bg-blue-50 dark:bg-blue-950 rounded-xl">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('result.totalTax')}</p>
+                  <p className="text-sm text-muted mb-1">{t('result.totalTax')}</p>
                   <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {formatWon(result.totalTax)}<span className="text-lg ml-1">{t('units.won')}</span>
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-muted mt-1">
                     ({toEokMan(result.totalTax)}{t('units.won')})
                   </p>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-300 mt-2">
+                  <p className="text-sm font-medium text-sub mt-2">
                     {t('result.effectiveRate')}: {result.effectiveRate.toFixed(2)}%
                   </p>
                 </div>
 
                 {/* 세부 항목 3칸 */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('result.acquisitionTax')}</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4 text-center">
+                    <p className="text-xs text-muted mb-1">{t('result.acquisitionTax')}</p>
+                    <p className="text-lg font-bold text-fg">
                       {formatWon(result.acquisitionTax)}<span className="text-xs ml-1">{t('units.won')}</span>
                     </p>
                     <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
                       {(result.acquisitionTaxRate * 100).toFixed(1)}%
                     </p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('result.specialTax')}</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4 text-center">
+                    <p className="text-xs text-muted mb-1">{t('result.specialTax')}</p>
+                    <p className="text-lg font-bold text-fg">
                       {result.specialTaxExempt ? (
                         <span className="text-green-600 dark:text-green-400">{t('result.exemptLabel')}</span>
                       ) : (
@@ -512,9 +512,9 @@ export default function AcquisitionTaxCalculator() {
                       </p>
                     )}
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('result.educationTax')}</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  <div className="bg-subtle rounded-lg p-4 text-center">
+                    <p className="text-xs text-muted mb-1">{t('result.educationTax')}</p>
+                    <p className="text-lg font-bold text-fg">
                       {formatWon(result.educationTax)}<span className="text-xs ml-1">{t('units.won')}</span>
                     </p>
                     <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -534,34 +534,34 @@ export default function AcquisitionTaxCalculator() {
 
               {/* 단계별 내역 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('breakdown.title')}
                 </h2>
                 <div className="space-y-3">
                   {/* Step 1: 취득세 */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{t('breakdown.step1')}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm font-medium text-fg">{t('breakdown.step1')}</p>
+                      <p className="text-xs text-muted">
                         {formatWon(priceNum)} x {(result.acquisitionTaxRate * 100).toFixed(1)}%
                       </p>
                     </div>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-bold text-fg">
                       {formatWon(result.acquisitionTax)}{t('units.won')}
                     </p>
                   </div>
 
                   {/* Step 2: 농특세 */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{t('breakdown.step2')}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm font-medium text-fg">{t('breakdown.step2')}</p>
+                      <p className="text-xs text-muted">
                         {result.specialTaxExempt
                           ? t('result.exemptLabel')
                           : `${formatWon(result.acquisitionTax)} x 10%`}
                       </p>
                     </div>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-bold text-fg">
                       {result.specialTaxExempt
                         ? t('result.exemptLabel')
                         : `${formatWon(result.specialTax)}${t('units.won')}`}
@@ -569,14 +569,14 @@ export default function AcquisitionTaxCalculator() {
                   </div>
 
                   {/* Step 3: 지방교육세 */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{t('breakdown.step3')}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm font-medium text-fg">{t('breakdown.step3')}</p>
+                      <p className="text-xs text-muted">
                         {formatWon(result.acquisitionTax)} x 10%
                       </p>
                     </div>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-bold text-fg">
                       {formatWon(result.educationTax)}{t('units.won')}
                     </p>
                   </div>
@@ -593,20 +593,20 @@ export default function AcquisitionTaxCalculator() {
 
               {/* 세율 참고표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('rateTable.title')}
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-600">
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-medium">
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 px-3 text-body font-medium">
                           {t('rateTable.type')}
                         </th>
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300 font-medium">
+                        <th className="text-left py-2 px-3 text-body font-medium">
                           {t('rateTable.condition')}
                         </th>
-                        <th className="text-right py-2 px-3 text-gray-700 dark:text-gray-300 font-medium">
+                        <th className="text-right py-2 px-3 text-body font-medium">
                           {t('rateTable.rate')}
                         </th>
                       </tr>
@@ -614,9 +614,9 @@ export default function AcquisitionTaxCalculator() {
                     <tbody>
                       {(t.raw('rateTable.rows') as Array<{ type: string; condition: string; rate: string }>).map(
                         (row, i) => (
-                          <tr key={i} className="border-b border-gray-100 dark:border-gray-700">
-                            <td className="py-2 px-3 text-gray-900 dark:text-white">{row.type}</td>
-                            <td className="py-2 px-3 text-gray-600 dark:text-gray-400">{row.condition}</td>
+                          <tr key={i} className="border-b border-line">
+                            <td className="py-2 px-3 text-fg">{row.type}</td>
+                            <td className="py-2 px-3 text-sub">{row.condition}</td>
                             <td className="py-2 px-3 text-right font-medium text-blue-600 dark:text-blue-400">
                               {row.rate}
                             </td>
@@ -632,7 +632,7 @@ export default function AcquisitionTaxCalculator() {
             /* 결과 없을 때 안내 */
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Building className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('noResult')}</p>
+              <p className="text-muted">{t('noResult')}</p>
             </div>
           )}
 
@@ -653,7 +653,7 @@ export default function AcquisitionTaxCalculator() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
@@ -664,10 +664,10 @@ export default function AcquisitionTaxCalculator() {
           <div className="mt-6 grid md:grid-cols-2 gap-6">
             {/* 취득세 */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('guide.acquisitionTax.title')}</h3>
+              <h3 className="font-semibold text-fg">{t('guide.acquisitionTax.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.acquisitionTax.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-1">•</span>
                     {item}
                   </li>
@@ -677,10 +677,10 @@ export default function AcquisitionTaxCalculator() {
 
             {/* 농특세 */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('guide.specialTax.title')}</h3>
+              <h3 className="font-semibold text-fg">{t('guide.specialTax.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.specialTax.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-1">•</span>
                     {item}
                   </li>
@@ -690,10 +690,10 @@ export default function AcquisitionTaxCalculator() {
 
             {/* 지방교육세 */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('guide.educationTax.title')}</h3>
+              <h3 className="font-semibold text-fg">{t('guide.educationTax.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.educationTax.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-blue-500 mt-1">•</span>
                     {item}
                   </li>
@@ -703,10 +703,10 @@ export default function AcquisitionTaxCalculator() {
 
             {/* 팁 */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('guide.tips.title')}</h3>
+              <h3 className="font-semibold text-fg">{t('guide.tips.title')}</h3>
               <ul className="space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-sub flex items-start gap-2">
                     <span className="text-green-500 mt-1">•</span>
                     {item}
                   </li>

@@ -47,7 +47,7 @@ export default function BaseConverterPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><BaseConverter />  <div className="mt-8">
     <RelatedTools />
@@ -57,17 +57,17 @@ export default function BaseConverterPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             진법 변환기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             진법 변환기는 2진수(Binary), 8진수(Octal), 10진수(Decimal), 16진수(Hexadecimal)를 실시간으로 상호 변환하는 무료 온라인 개발 도구입니다. 컴퓨터 과학, 프로그래밍, 네트워크 관리, 디지털 회로 설계 등 다양한 분야에서 진법 변환이 필요하며, 이 도구는 비트 시각화까지 제공하여 개발자와 학생 모두에게 유용합니다. 색상 코드(HEX), 메모리 주소, chmod 권한 설정 등 실무 활용도가 높습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             진법 변환기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>색상 코드 변환:</strong> 웹 색상 #FF5733은 16진수이므로 10진수로 변환하면 RGB(255, 87, 51) 값과 일치합니다.</li>
             <li><strong>chmod 권한 계산:</strong> Unix/Linux 파일 권한 755는 8진수이며, 이를 2진수로 변환하면 rwxr-xr-x(111 101 101) 구조를 바로 이해할 수 있습니다.</li>
             <li><strong>메모리 주소 분석:</strong> 16진수 메모리 주소(예: 0x1A2B)를 10진수로 변환하면 실제 메모리 위치 계산에 도움이 됩니다.</li>

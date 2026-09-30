@@ -251,7 +251,7 @@ export default function BMICalculator() {
       case 'overweight': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
       case 'obese1': return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
       case 'obese2': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      default: return 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+      default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
     }
   }
 
@@ -297,10 +297,10 @@ export default function BMICalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -329,7 +329,7 @@ export default function BMICalculator() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('input.title')}
           </h2>
@@ -337,7 +337,7 @@ export default function BMICalculator() {
           <div className="space-y-6">
             {/* 키 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Scale className="w-4 h-4 inline mr-1" />
                 {t('input.height')}
               </label>
@@ -347,13 +347,13 @@ export default function BMICalculator() {
                 onChange={(e) => setHeight(e.target.value)}
                 placeholder={t('input.heightPlaceholder')}
                 step="0.1"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
             </div>
 
             {/* 몸무게 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Activity className="w-4 h-4 inline mr-1" />
                 {t('input.weight')}
               </label>
@@ -363,13 +363,13 @@ export default function BMICalculator() {
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder={t('input.weightPlaceholder')}
                 step="0.1"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
             </div>
 
             {/* 나이 (선택사항) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.age')}
               </label>
               <input
@@ -377,7 +377,7 @@ export default function BMICalculator() {
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 placeholder={t('input.agePlaceholder')}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
               <p className="text-xs text-gray-500 mt-1">
                 {t('input.ageNote')}
@@ -386,7 +386,7 @@ export default function BMICalculator() {
 
             {/* 성별 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('input.gender')}
               </label>
               <div className="flex space-x-4">
@@ -419,7 +419,7 @@ export default function BMICalculator() {
             <>
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getBMIBgColor(result.category)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
                   <TrendingUp className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
@@ -432,21 +432,21 @@ export default function BMICalculator() {
                     <div className={`text-lg font-semibold mt-2 ${getBMIColor(result.category)}`}>
                       {result.categoryKorean}
                     </div>
-                    <div className="text-sm text-gray-700 dark:text-gray-300 mt-1">
+                    <div className="text-sm text-body mt-1">
                       {result.healthRisk}
                     </div>
                   </div>
                   
-                  <div className="border-t border-gray-300 dark:border-gray-600 pt-4">
+                  <div className="border-t border-line-strong pt-4">
                     <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-800 dark:text-gray-200">{t('result.idealWeightRange')}</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
+                      <span className="text-body">{t('result.idealWeightRange')}</span>
+                      <span className="font-semibold text-fg">
                         {formatNumber(result.idealWeightMin, 1)} - {formatNumber(result.idealWeightMax, 1)}kg
                       </span>
                     </div>
                     
                     <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-800 dark:text-gray-200">{t('result.weightDifference')}</span>
+                      <span className="text-body">{t('result.weightDifference')}</span>
                       <span className={`font-semibold ${result.weightDifference > 0 ? 'text-red-600' : result.weightDifference < 0 ? 'text-blue-600' : 'text-green-600'}`}>
                         {result.weightDifference > 0 ? '+' : ''}{formatNumber(result.weightDifference, 1)}kg
                       </span>
@@ -492,7 +492,7 @@ export default function BMICalculator() {
 
               {/* BMI 단계별 설명 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h4 className="text-lg font-bold text-fg mb-4">
                   {t('classification.title')}
                 </h4>
                 <div className="space-y-3 text-sm">
@@ -501,37 +501,37 @@ export default function BMICalculator() {
                       <span className="text-blue-600 font-medium">{t('categories.underweight')}</span>
                       <span className="text-gray-500 text-xs ml-2">(Underweight)</span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">18.5 미만</span>
+                    <span className="text-body font-medium">18.5 미만</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-green-600 font-medium">{t('categories.normal')}</span>
                       <span className="text-gray-500 text-xs ml-2">(Normal)</span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">18.5 - 22.9</span>
+                    <span className="text-body font-medium">18.5 - 22.9</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-yellow-600 font-medium">{t('categories.overweight')}</span>
                       <span className="text-gray-500 text-xs ml-2">(Overweight)</span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">23.0 - 24.9</span>
+                    <span className="text-body font-medium">23.0 - 24.9</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-orange-600 font-medium">{t('categories.obese1')}</span>
                       <span className="text-gray-500 text-xs ml-2">(Obese Class I)</span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">25.0 - 29.9</span>
+                    <span className="text-body font-medium">25.0 - 29.9</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-red-600 font-medium">{t('categories.obese2')}</span>
                       <span className="text-gray-500 text-xs ml-2">(Obese Class II+)</span>
                     </div>
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">30.0 이상</span>
+                    <span className="text-body font-medium">30.0 이상</span>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
+                  <p className="text-xs text-sub mt-3 pt-2 border-t border-line">
                     {t('classification.note')}
                   </p>
                 </div>
@@ -542,7 +542,7 @@ export default function BMICalculator() {
           {!result && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
               <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 {t('placeholder')}
               </p>
             </div>
@@ -552,16 +552,16 @@ export default function BMICalculator() {
 
       {/* BMI 건강 가이드 */}
       <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.meaningTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.meaning.0')}</li>
               <li>• {t('guide.meaning.1')}</li>
               <li>• {t('guide.meaning.2')}</li>
@@ -570,10 +570,10 @@ export default function BMICalculator() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.managementTitle')}
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• {t('guide.management.0')}</li>
               <li>• {t('guide.management.1')}</li>
               <li>• {t('guide.management.2')}</li>
@@ -587,7 +587,7 @@ export default function BMICalculator() {
       <div className="grid md:grid-cols-2 gap-8">
         {/* BMI 계산기 활용법 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('usage.title')}
           </h3>
@@ -597,8 +597,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">1</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.1.title')}</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.1.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.1.title')}</h4>
+                <p className="text-sub text-sm">{t('usage.steps.1.content')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -606,8 +606,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">2</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.2.title')}</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.2.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.2.title')}</h4>
+                <p className="text-sub text-sm">{t('usage.steps.2.content')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -615,8 +615,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">3</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.3.title')}</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.3.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.3.title')}</h4>
+                <p className="text-sub text-sm">{t('usage.steps.3.content')}</p>
               </div>
             </div>
           </div>
@@ -624,7 +624,7 @@ export default function BMICalculator() {
 
         {/* 체중 관리 팁 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
             <Heart className="w-6 h-6 mr-2 text-red-500" />
             {t('healthTips.title')}
           </h3>
@@ -651,40 +651,40 @@ export default function BMICalculator() {
 
       {/* BMI와 질병 위험도 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
           <TrendingUp className="w-6 h-6 mr-2 text-yellow-600" />
           BMI와 건강 위험도
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-600">
-                <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">BMI 범위</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">분류</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">질병 위험도</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">주요 관심사</th>
+              <tr className="border-b border-line">
+                <th className="text-left py-3 px-4 font-semibold text-fg">BMI 범위</th>
+                <th className="text-left py-3 px-4 font-semibold text-fg">분류</th>
+                <th className="text-left py-3 px-4 font-semibold text-fg">질병 위험도</th>
+                <th className="text-left py-3 px-4 font-semibold text-fg">주요 관심사</th>
               </tr>
             </thead>
-            <tbody className="text-gray-700 dark:text-gray-300">
-              <tr className="border-b border-gray-100 dark:border-gray-700">
+            <tbody className="text-body">
+              <tr className="border-b border-line">
                 <td className="py-3 px-4">18.5 미만</td>
                 <td className="py-3 px-4"><span className="text-blue-600 font-medium">저체중</span></td>
                 <td className="py-3 px-4">증가</td>
                 <td className="py-3 px-4">영양실조, 골다공증, 면역력 저하</td>
               </tr>
-              <tr className="border-b border-gray-100 dark:border-gray-700">
+              <tr className="border-b border-line">
                 <td className="py-3 px-4">18.5 - 22.9</td>
                 <td className="py-3 px-4"><span className="text-green-600 font-medium">정상</span></td>
                 <td className="py-3 px-4">최저</td>
                 <td className="py-3 px-4">건강한 상태 유지</td>
               </tr>
-              <tr className="border-b border-gray-100 dark:border-gray-700">
+              <tr className="border-b border-line">
                 <td className="py-3 px-4">23.0 - 24.9</td>
                 <td className="py-3 px-4"><span className="text-yellow-600 font-medium">과체중</span></td>
                 <td className="py-3 px-4">약간 증가</td>
                 <td className="py-3 px-4">생활습관 개선 필요</td>
               </tr>
-              <tr className="border-b border-gray-100 dark:border-gray-700">
+              <tr className="border-b border-line">
                 <td className="py-3 px-4">25.0 - 29.9</td>
                 <td className="py-3 px-4"><span className="text-orange-600 font-medium">비만 1단계</span></td>
                 <td className="py-3 px-4">증가</td>
@@ -699,7 +699,7 @@ export default function BMICalculator() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-xs text-muted mt-4">
           * 개인차가 있을 수 있으며, 정확한 진단은 의료진과 상담하시기 바랍니다.
         </p>
       </div>

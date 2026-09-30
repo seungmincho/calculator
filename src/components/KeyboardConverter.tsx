@@ -346,8 +346,8 @@ export default function KeyboardConverter() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main converter card */}
@@ -359,7 +359,7 @@ export default function KeyboardConverter() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               mode === 'engToKor'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
             {t('engToKor')}
@@ -369,7 +369,7 @@ export default function KeyboardConverter() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               mode === 'korToEng'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
             {t('korToEng')}
@@ -379,10 +379,10 @@ export default function KeyboardConverter() {
         {/* Input textarea */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-body">
               {t('input')}
             </label>
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-faint">
               {input.length} {t('charCount')}
             </span>
           </div>
@@ -400,7 +400,7 @@ export default function KeyboardConverter() {
           <button
             onClick={handleSwap}
             disabled={!output}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             title={t('swap')}
           >
             <ArrowUpDown className="w-4 h-4" />
@@ -409,7 +409,7 @@ export default function KeyboardConverter() {
           <button
             onClick={handleReset}
             disabled={!input}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <RotateCcw className="w-4 h-4" />
             <span className="text-sm">{t('reset')}</span>
@@ -419,17 +419,17 @@ export default function KeyboardConverter() {
         {/* Output textarea */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-body">
               {t('output')}
             </label>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400 dark:text-gray-500">
+              <span className="text-xs text-faint">
                 {output.length} {t('charCount')}
               </span>
               {output && (
                 <button
                   onClick={() => copyToClipboard(output, 'output')}
-                  className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-md transition-colors"
                 >
                   {copiedId === 'output' ? (
                     <>
@@ -450,14 +450,14 @@ export default function KeyboardConverter() {
             value={output}
             readOnly
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white resize-none text-base"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg resize-none text-base"
           />
         </div>
       </div>
 
       {/* Examples */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('examples')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-3">
@@ -465,14 +465,14 @@ export default function KeyboardConverter() {
             <button
               key={idx}
               onClick={() => handleExample(ex.input)}
-              className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="flex items-center justify-between px-4 py-3 bg-subtle hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg transition-colors text-left"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span className="text-sm font-mono text-blue-600 dark:text-blue-400 truncate">
                   {ex.input}
                 </span>
-                <span className="text-gray-400 dark:text-gray-500 shrink-0">→</span>
-                <span className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                <span className="text-faint shrink-0">→</span>
+                <span className="text-sm font-medium text-fg truncate">
                   {ex.output}
                 </span>
               </div>
@@ -483,19 +483,19 @@ export default function KeyboardConverter() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           {/* How to use */}
           <div>
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-base font-semibold text-body mb-3">
               {t('guide.howTo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={idx} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5 shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -505,12 +505,12 @@ export default function KeyboardConverter() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-base font-semibold text-body mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={idx} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-green-500 mt-0.5 shrink-0">•</span>
                   <span>{item}</span>
                 </li>

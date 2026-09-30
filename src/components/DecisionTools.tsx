@@ -470,10 +470,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {single ? (initialTab === 'order' ? '순서 정하기' : '메뉴 룰렛') : '결정 도구'}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {single
             ? initialTab === 'order'
               ? '참가자를 입력하면 랜덤으로 순서를 뽑아드려요'
@@ -484,15 +484,15 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
       {/* Tab switcher (숨김: single 모드) */}
       {!single && (
-        <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-fit">
+        <div className="flex gap-2 bg-soft p-1 rounded-xl w-fit">
           {(['roulette', 'order'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab
-                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                  ? 'bg-surface text-fg shadow'
+                  : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
               }`}
             >
               {tab === 'roulette' ? '🎡 돌림판' : '🎴 순서뽑기'}
@@ -518,13 +518,13 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           <div className="lg:col-span-2 space-y-4">
             <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
               <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-gray-900 dark:text-white">항목 설정</h2>
+                <h2 className="font-semibold text-fg">항목 설정</h2>
                 <span className="text-xs text-gray-400">{rouletteItems.length}/12</span>
               </div>
 
               {/* Preset buttons */}
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">프리셋</p>
+                <p className="text-xs text-muted mb-2">프리셋</p>
                 <div className="flex flex-wrap gap-2">
                   {Object.keys(PRESETS).map(key => (
                     <button
@@ -546,7 +546,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                       className="w-3 h-3 rounded-full flex-shrink-0"
                       style={{ backgroundColor: WHEEL_COLORS[i % WHEEL_COLORS.length] }}
                     />
-                    <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">
+                    <span className="flex-1 text-sm text-body truncate">
                       {item}
                     </span>
                     <button
@@ -587,7 +587,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               <div className={`${glassCard} ${glassInset} p-5`}>
                 <button
                   onClick={() => setShowHistory(v => !v)}
-                  className="flex items-center justify-between w-full text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className="flex items-center justify-between w-full text-sm font-medium text-body"
                 >
                   <span>뽑기 기록 ({spinHistory.length})</span>
                   {showHistory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -595,7 +595,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 {showHistory && (
                   <ul className="mt-3 space-y-1 max-h-48 overflow-y-auto">
                     {spinHistory.map((r, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <li key={i} className="flex items-center gap-2 text-sm text-sub">
                         <span className="text-gray-400 text-xs w-5 text-right">{i + 1}</span>
                         <span>{r}</span>
                       </li>
@@ -656,18 +656,18 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl shadow-lg p-5 border border-blue-200 dark:border-blue-800">
                 <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">결과</p>
                 <div className="flex items-center justify-between">
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{spinResult}</p>
+                  <p className="text-2xl font-bold text-fg">{spinResult}</p>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={saveWheelImage}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-surface text-sub rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
                     >
                       {wheelSaved ? <Check size={14} className="text-green-500" /> : <Download size={14} />}
                       {wheelSaved ? '저장됨' : '이미지'}
                     </button>
                     <button
                       onClick={copyRouletteResult}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-surface text-sub rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
                     >
                       {rouletteCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
                       {rouletteCopied ? '복사됨' : '복사'}
@@ -686,7 +686,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           {/* Left: participants */}
           <div className="lg:col-span-2 space-y-4">
             <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-              <h2 className="font-semibold text-gray-900 dark:text-white">참가자 목록</h2>
+              <h2 className="font-semibold text-fg">참가자 목록</h2>
 
               <ul className="space-y-2 max-h-72 overflow-y-auto">
                 {orderItems.map((item, i) => (
@@ -694,7 +694,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold flex-shrink-0">
                       {i + 1}
                     </span>
-                    <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">
+                    <span className="flex-1 text-sm text-body truncate">
                       {item}
                     </span>
                     <button
@@ -741,7 +741,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 {orderResult.length > 0 && (
                   <button
                     onClick={resetOrder}
-                    className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    className="px-3 py-2 bg-soft text-sub rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     title="초기화"
                   >
                     <RotateCcw size={18} />
@@ -755,7 +755,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           <div className="lg:col-span-3">
             <div className={`${glassCard} ${glassInset} p-5`}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold text-gray-900 dark:text-white">
+                <h2 className="font-semibold text-fg">
                   순서 결과
                   {isRevealing && (
                     <span className="ml-2 text-sm text-gray-400">
@@ -767,7 +767,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   {isRevealing && revealedCount < orderResult.length && (
                     <button
                       onClick={revealAll}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       <Eye size={14} />
                       전체 공개
@@ -776,7 +776,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   {orderResult.length > 0 && revealedCount === orderResult.length && (
                     <button
                       onClick={copyOrderResult}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       {orderCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
                       {orderCopied ? '복사됨' : '결과 복사'}
@@ -786,7 +786,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               </div>
 
               {orderResult.length === 0 && !isShuffling && (
-                <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
+                <div className="flex flex-col items-center justify-center py-16 text-faint">
                   <Shuffle size={48} className="mb-3 opacity-30" />
                   <p className="text-sm">왼쪽에서 뽑기를 시작하세요</p>
                 </div>
@@ -795,7 +795,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               {isShuffling && (
                 <div className="flex flex-col items-center justify-center py-16">
                   <div className="text-4xl animate-bounce mb-3">🎴</div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">섞는 중...</p>
+                  <p className="text-sm text-muted">섞는 중...</p>
                 </div>
               )}
 
@@ -823,10 +823,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                           </div>
                         ) : (
                           <div
-                            className="flex flex-col items-center justify-center h-full p-3 bg-gray-200 dark:bg-gray-700"
+                            className="flex flex-col items-center justify-center h-full p-3 bg-track"
                             style={{ minHeight: 96 }}
                           >
-                            <span className="text-3xl text-gray-400 dark:text-gray-500">?</span>
+                            <span className="text-3xl text-faint">?</span>
                           </div>
                         )}
                       </div>

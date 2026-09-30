@@ -94,22 +94,22 @@ export default function YesNoDecider() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="font-semibold text-gray-900 dark:text-white">{t('settings')}</h2>
+            <h2 className="font-semibold text-fg">{t('settings')}</h2>
 
             {/* Mode toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('modeLabel')}
               </label>
-              <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+              <div className="flex rounded-lg overflow-hidden border border-line-strong">
                 {(['simple', 'detailed'] as const).map(m => (
                   <button
                     key={m}
@@ -117,7 +117,7 @@ export default function YesNoDecider() {
                     className={`flex-1 py-2 text-sm font-medium transition-colors ${
                       mode === m
                         ? 'bg-blue-600 text-white'
-                        : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                        : 'bg-field text-body hover:bg-gray-50 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(`mode.${m}`)}
@@ -129,7 +129,7 @@ export default function YesNoDecider() {
             {/* Probability slider */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-body">
                   {t('probabilityLabel')}
                 </label>
                 <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
@@ -153,7 +153,7 @@ export default function YesNoDecider() {
             {/* Answer key for detailed mode */}
             {mode === 'detailed' && (
               <div className="space-y-1">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('answerLegend')}</p>
+                <p className="text-xs font-medium text-muted mb-2">{t('answerLegend')}</p>
                 {(['strongYes', 'yes', 'leanYes', 'maybe', 'leanNo', 'no', 'strongNo'] as AnswerKey[]).map(key => (
                   <div key={key} className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full flex-shrink-0 ${DOT_COLORS[key]}`} />
@@ -230,10 +230,10 @@ export default function YesNoDecider() {
           {history.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold text-gray-900 dark:text-white">{t('historyTitle')}</h2>
+                <h2 className="font-semibold text-fg">{t('historyTitle')}</h2>
                 <button
                   onClick={resetHistory}
-                  className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                  className="flex items-center gap-1.5 text-xs text-muted hover:text-red-500 dark:hover:text-red-400 transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   {t('reset')}
@@ -243,7 +243,7 @@ export default function YesNoDecider() {
                 {history.map((entry, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm">
                     <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${getDotColor(entry.answer)}`} />
-                    <span className="text-gray-700 dark:text-gray-300 flex-1 truncate">{entry.question}</span>
+                    <span className="text-body flex-1 truncate">{entry.question}</span>
                     <span className={`font-semibold flex-shrink-0 ${getAnswerColor(entry.answer)}`}>
                       {t(`answers.${entry.answer}`)}
                     </span>

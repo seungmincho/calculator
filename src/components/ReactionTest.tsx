@@ -198,18 +198,18 @@ export default function ReactionTest() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Zap className="w-6 h-6 text-yellow-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Round Progress Bar (visible during session) */}
       {sessionAttempts.length > 0 && gameState !== 'sessionComplete' && (
         <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            <span className="text-sm font-medium text-sub">
               {t('roundProgress', { current: Math.min(currentRound, MAX_ROUNDS), total: MAX_ROUNDS })}
             </span>
             {sessionBest && (
@@ -234,10 +234,10 @@ export default function ReactionTest() {
                           'bg-orange-500'
                         : isCurrent
                           ? 'bg-blue-300 dark:bg-blue-600 animate-pulse'
-                          : 'bg-gray-200 dark:bg-gray-700'
+                          : 'bg-track'
                     }`}
                   />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted">
                     {attempt ? `${attempt.time}ms` : ''}
                   </span>
                 </div>
@@ -324,17 +324,17 @@ export default function ReactionTest() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4">
+              <div className="bg-white/15 rounded-xl p-4">
                 <div className="text-white/70 text-sm">{t('average')}</div>
                 <div className="text-white text-3xl font-bold">{sessionAverage}<span className="text-lg ml-0.5">{t('ms')}</span></div>
               </div>
-              <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4">
+              <div className="bg-white/15 rounded-xl p-4">
                 <div className="text-white/70 text-sm">{t('best')}</div>
                 <div className="text-white text-3xl font-bold">{sessionBest}<span className="text-lg ml-0.5">{t('ms')}</span></div>
               </div>
             </div>
 
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4">
+            <div className="bg-white/15 rounded-xl p-4">
               <div className="text-white/70 text-sm mb-1">{t('yourRanking')}</div>
               <div className="text-white text-2xl font-bold flex items-center justify-center gap-2">
                 <Users className="w-5 h-5" />
@@ -346,7 +346,7 @@ export default function ReactionTest() {
             </div>
 
             {/* Comparison bars */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-left space-y-3">
+            <div className="bg-white/10 rounded-xl p-4 text-left space-y-3">
               <div className="text-white/80 text-sm font-medium">{t('comparison')}</div>
               {([
                 { labelKey: 'compProGamer', ms: 160, color: 'bg-green-400' },
@@ -389,37 +389,37 @@ export default function ReactionTest() {
       {allAttempts.length > 0 && gameState !== 'sessionComplete' && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex items-center gap-2 text-muted mb-1">
               <Target className="w-4 h-4" />
               <span className="text-xs font-medium">{t('currentRound')}</span>
             </div>
-            <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="text-2xl md:text-3xl font-bold text-fg">
               {Math.min(currentRound, MAX_ROUNDS)}<span className="text-base text-gray-400">/{MAX_ROUNDS}</span>
             </div>
           </div>
 
           <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex items-center gap-2 text-muted mb-1">
               <Timer className="w-4 h-4" />
               <span className="text-xs font-medium">{t('totalAttempts')}</span>
             </div>
-            <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="text-2xl md:text-3xl font-bold text-fg">
               {allAttempts.length}
             </div>
           </div>
 
           <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex items-center gap-2 text-muted mb-1">
               <TrendingUp className="w-4 h-4" />
               <span className="text-xs font-medium">{t('sessionAvg')}</span>
             </div>
-            <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="text-2xl md:text-3xl font-bold text-fg">
               {sessionAverage ?? '-'} <span className="text-sm text-gray-400">{sessionAverage ? t('ms') : ''}</span>
             </div>
           </div>
 
           <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex items-center gap-2 text-muted mb-1">
               <Trophy className="w-4 h-4" />
               <span className="text-xs font-medium">{t('allTimeBest')}</span>
             </div>
@@ -434,7 +434,7 @@ export default function ReactionTest() {
       {allAttempts.length > 0 && gameState !== 'sessionComplete' && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-fg">
               {t('history')}
             </h2>
             <button
@@ -451,20 +451,20 @@ export default function ReactionTest() {
               return (
                 <div
                   key={allAttempts.length - index - 1}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-subtle rounded-lg"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <span className="text-sm font-medium text-muted">
                       #{allAttempts.length - index}
                     </span>
-                    <span className="text-lg font-bold text-gray-900 dark:text-white">
+                    <span className="text-lg font-bold text-fg">
                       {attempt.time} {t('ms')}
                     </span>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${rating.bgColor}`}>
                       {t(rating.key)}
                     </span>
                   </div>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                  <span className="text-xs text-faint">
                     {attempt.timestamp.toLocaleTimeString()}
                   </span>
                 </div>
@@ -494,19 +494,19 @@ export default function ReactionTest() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.howTo.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">{index + 1}.</span>
                   <span>{item}</span>
                 </li>
@@ -515,12 +515,12 @@ export default function ReactionTest() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.standards.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.standards.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">•</span>
                   <span>{item}</span>
                 </li>

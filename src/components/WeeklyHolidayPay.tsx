@@ -216,12 +216,12 @@ function WeeklyHolidayPayInner() {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex-shrink-0"
+          className="flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex-shrink-0"
           aria-label={t('copyLink')}
         >
           {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -235,11 +235,11 @@ function WeeklyHolidayPayInner() {
         {/* 입력 패널 */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('input.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('input.title')}</h2>
 
             {/* 시급 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.hourlyWage')}
               </label>
               <div className="relative">
@@ -250,14 +250,14 @@ function WeeklyHolidayPayInner() {
                   onChange={e => setHourlyWage(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">원</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">원</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('input.hourlyWageHint')}</p>
+              <p className="text-xs text-faint mt-1">{t('input.hourlyWageHint')}</p>
             </div>
 
             {/* 주간 근무일수 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.workDays')}
               </label>
               <div className="flex gap-2 flex-wrap">
@@ -268,7 +268,7 @@ function WeeklyHolidayPayInner() {
                     className={`flex-1 min-w-[2.5rem] py-2 rounded-lg text-sm font-medium transition-colors ${
                       workDays === d
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {d}{t('input.daysUnit')}
@@ -279,7 +279,7 @@ function WeeklyHolidayPayInner() {
 
             {/* 1일 근무시간 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.dailyHours')}
                 <span className="ml-1 text-blue-600 dark:text-blue-400 font-semibold">{dailyHours}{t('input.hoursUnit')}</span>
               </label>
@@ -292,7 +292,7 @@ function WeeklyHolidayPayInner() {
                 onChange={e => setDailyHours(Number(e.target.value))}
                 className="w-full accent-blue-600"
               />
-              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+              <div className="flex justify-between text-xs text-faint mt-0.5">
                 <span>1{t('input.hoursUnit')}</span>
                 <span>12{t('input.hoursUnit')}</span>
               </div>
@@ -300,7 +300,7 @@ function WeeklyHolidayPayInner() {
 
             {/* 월 근무 주수 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.weeksPerMonth')}
               </label>
               <div className="relative">
@@ -313,9 +313,9 @@ function WeeklyHolidayPayInner() {
                   onChange={e => setWeeksPerMonth(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">{t('input.weeksUnit')}</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">{t('input.weeksUnit')}</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('input.weeksPerMonthHint')}</p>
+              <p className="text-xs text-faint mt-1">{t('input.weeksPerMonthHint')}</p>
             </div>
 
             {/* 주간 근무시간 요약 */}
@@ -347,10 +347,10 @@ function WeeklyHolidayPayInner() {
           {/* 결과 카드 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
               <button
                 onClick={copyResult}
-                className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center gap-1.5 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 aria-label={t('copyResult')}
               >
                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -360,32 +360,32 @@ function WeeklyHolidayPayInner() {
 
             <div className="space-y-3">
               {/* 주간 분석 */}
-              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{t('result.weeklySection')}</p>
+              <div className="bg-subtle rounded-lg p-4">
+                <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('result.weeklySection')}</p>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.weeklyHours')}</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{result.weeklyHours}{t('input.hoursUnit')}</span>
+                    <span className="text-sm text-sub">{t('result.weeklyHours')}</span>
+                    <span className="text-sm font-medium text-fg">{result.weeklyHours}{t('input.hoursUnit')}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.holidayHours')}</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-sm text-sub">{t('result.holidayHours')}</span>
+                    <span className="text-sm font-medium text-fg">
                       {result.eligible ? `${result.holidayHours.toFixed(2)}${t('input.hoursUnit')}` : '-'}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.weeklyBase')}</span>
+                    <span className="text-sm text-sub">{t('result.weeklyBase')}</span>
                     <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{formatWon(result.weeklyBase)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.holidayPay')}</span>
-                    <span className={`text-sm font-medium ${result.eligible ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'}`}>
+                    <span className="text-sm text-sub">{t('result.holidayPay')}</span>
+                    <span className={`text-sm font-medium ${result.eligible ? 'text-green-600 dark:text-green-400' : 'text-faint'}`}>
                       {result.eligible ? formatWon(result.holidayPay) : '-'}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
-                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('result.weeklyTotal')}</span>
-                    <span className="text-base font-bold text-gray-900 dark:text-white">{formatWon(result.weeklyTotal)}</span>
+                  <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
+                    <span className="text-sm font-semibold text-body">{t('result.weeklyTotal')}</span>
+                    <span className="text-base font-bold text-fg">{formatWon(result.weeklyTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -395,15 +395,15 @@ function WeeklyHolidayPayInner() {
                 <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-3">{t('result.monthlySection')}</p>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.monthlyBase')}</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{formatWon(result.monthlyBase)}</span>
+                    <span className="text-sm text-sub">{t('result.monthlyBase')}</span>
+                    <span className="text-sm font-medium text-fg">{formatWon(result.monthlyBase)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('result.monthlyTotal')}</span>
+                    <span className="text-sm font-semibold text-body">{t('result.monthlyTotal')}</span>
                     <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatWon(result.monthlyTotal)}</span>
                   </div>
                   <div className="flex justify-between items-center border-t border-blue-200 dark:border-blue-800 pt-2 mt-2">
-                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('result.annualTotal')}</span>
+                    <span className="text-sm font-semibold text-body">{t('result.annualTotal')}</span>
                     <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{formatWon(result.annualTotal)}</span>
                   </div>
                 </div>
@@ -411,8 +411,8 @@ function WeeklyHolidayPayInner() {
 
               {/* 월 급여 구성 시각화 (스택 바) */}
               {result.monthlyTotal > 0 && (
-                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{t('result.monthlyBarTitle')}</p>
+                <div className="bg-subtle rounded-lg p-4">
+                  <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('result.monthlyBarTitle')}</p>
                   <div className="space-y-2">
                     <div className="flex h-7 rounded-lg overflow-hidden w-full">
                       <div
@@ -440,7 +440,7 @@ function WeeklyHolidayPayInner() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                    <div className="flex items-center gap-4 text-xs text-sub">
                       <span className="flex items-center gap-1.5">
                         <span className="inline-block w-3 h-3 rounded-sm bg-blue-500"></span>
                         {t('result.monthlyBase')} {formatWon(result.monthlyBase)}
@@ -505,7 +505,7 @@ function WeeklyHolidayPayInner() {
               )}
 
               {aiSummary && (
-                <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                <p className="text-sm text-body leading-relaxed whitespace-pre-line">
                   {aiSummary}
                 </p>
               )}
@@ -514,7 +514,7 @@ function WeeklyHolidayPayInner() {
 
           {/* Chrome AI 미지원 안내 */}
           {aiStatus === 'not-supported' && result.monthlyTotal > 0 && (
-            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 px-1">
+            <div className="flex items-center gap-2 text-xs text-faint px-1">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Chrome 브라우저에서는 AI가 계산 결과를 요약해드립니다</span>
             </div>
@@ -523,8 +523,8 @@ function WeeklyHolidayPayInner() {
           {/* 도넛 차트 */}
           {result.eligible && result.weeklyTotal > 0 && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">{t('result.chartTitle')}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+              <h3 className="text-base font-semibold text-fg mb-2">{t('result.chartTitle')}</h3>
+              <p className="text-xs text-muted mb-4">
                 {t('result.baseRatio')}: {result.baseRatio.toFixed(1)}% &nbsp;|&nbsp;
                 {t('result.holidayRatio')}: {result.holidayRatio.toFixed(1)}%
               </p>
@@ -536,17 +536,17 @@ function WeeklyHolidayPayInner() {
 
       {/* 시나리오 비교 테이블 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{t('scenario.title')}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('scenario.description')}</p>
+        <h3 className="text-lg font-semibold text-fg mb-1">{t('scenario.title')}</h3>
+        <p className="text-sm text-muted mb-4">{t('scenario.description')}</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colHours')}</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colEligible')}</th>
+              <tr className="border-b border-line">
+                <th className="text-left py-2 pr-4 font-semibold text-body whitespace-nowrap">{t('scenario.colHours')}</th>
+                <th className="text-right py-2 px-3 font-semibold text-body whitespace-nowrap">{t('scenario.colEligible')}</th>
                 <th className="text-right py-2 px-3 font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">{t('scenario.colWeeklyBase')}</th>
                 <th className="text-right py-2 px-3 font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{t('scenario.colHolidayPay')}</th>
-                <th className="text-right py-2 pl-3 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colMonthlyTotal')}</th>
+                <th className="text-right py-2 pl-3 font-semibold text-body whitespace-nowrap">{t('scenario.colMonthlyTotal')}</th>
               </tr>
             </thead>
             <tbody>
@@ -561,7 +561,7 @@ function WeeklyHolidayPayInner() {
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
                     }`}
                   >
-                    <td className="py-3 pr-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    <td className="py-3 pr-4 font-medium text-fg whitespace-nowrap">
                       {s.hours}{t('input.hoursUnit')}
                       {isCurrent && (
                         <span className="ml-2 text-xs bg-blue-600 text-white rounded px-1.5 py-0.5">{t('scenario.current')}</span>
@@ -580,17 +580,17 @@ function WeeklyHolidayPayInner() {
                     <td className="py-3 px-3 text-right font-medium">
                       {s.eligible
                         ? <span className="text-emerald-600 dark:text-emerald-400">{formatWon(s.holidayPay)}</span>
-                        : <span className="text-gray-400 dark:text-gray-500">-</span>
+                        : <span className="text-faint">-</span>
                       }
                     </td>
-                    <td className="py-3 pl-3 text-right font-bold text-gray-900 dark:text-white">{formatWon(s.monthlyTotal)}</td>
+                    <td className="py-3 pl-3 text-right font-bold text-fg">{formatWon(s.monthlyTotal)}</td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('scenario.footnote')}</p>
+        <p className="text-xs text-faint mt-3">{t('scenario.footnote')}</p>
       </div>
 
       {/* 15시간 룰 안내 */}
@@ -610,15 +610,15 @@ function WeeklyHolidayPayInner() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           {/* 섹션 1: 계산 방법 */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.calc.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.calc.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.calc.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs flex items-center justify-center font-bold">{i + 1}</span>
                   <span>{item}</span>
                 </li>
@@ -627,10 +627,10 @@ function WeeklyHolidayPayInner() {
           </div>
           {/* 섹션 2: 주의사항 */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.notes.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.notes.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.notes.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex gap-2 text-sm text-sub">
                   <span className="flex-shrink-0 text-amber-500">•</span>
                   <span>{item}</span>
                 </li>
@@ -645,7 +645,7 @@ function WeeklyHolidayPayInner() {
 
 export default function WeeklyHolidayPay() {
   return (
-    <Suspense fallback={<div className="text-center py-12 text-gray-500 dark:text-gray-400">Loading...</div>}>
+    <Suspense fallback={<div className="text-center py-12 text-muted">Loading...</div>}>
       <WeeklyHolidayPayInner />
     </Suspense>
   )

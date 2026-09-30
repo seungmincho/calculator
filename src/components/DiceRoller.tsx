@@ -21,7 +21,7 @@ function D6Face({ value, rolling }: { value: number; rolling: boolean }) {
   const dots = D6_DOTS[value] ?? []
   return (
     <div
-      className={`w-16 h-16 bg-white dark:bg-gray-700 rounded-lg shadow-md relative border-2 border-gray-200 dark:border-gray-600 ${rolling ? 'animate-dice-roll' : ''}`}
+      className={`w-16 h-16 bg-field rounded-lg shadow-md relative border-2 border-line ${rolling ? 'animate-dice-roll' : ''}`}
       style={{ minWidth: '4rem' }}
     >
       <div className="absolute inset-1 grid"
@@ -47,11 +47,11 @@ function DieFace({ value, sides, rolling }: { value: number; sides: number; roll
   if (sides === 6) return <D6Face value={value} rolling={rolling} />
   return (
     <div
-      className={`w-16 h-16 bg-white dark:bg-gray-700 rounded-lg shadow-md border-2 border-gray-200 dark:border-gray-600 flex flex-col items-center justify-center ${rolling ? 'animate-dice-roll' : ''}`}
+      className={`w-16 h-16 bg-field rounded-lg shadow-md border-2 border-line flex flex-col items-center justify-center ${rolling ? 'animate-dice-roll' : ''}`}
       style={{ minWidth: '4rem' }}
     >
-      <span className="text-xs font-medium text-gray-400 dark:text-gray-500 leading-none">D{sides}</span>
-      <span className="text-xl font-bold text-gray-900 dark:text-white leading-tight">{value}</span>
+      <span className="text-xs font-medium text-faint leading-none">D{sides}</span>
+      <span className="text-xl font-bold text-fg leading-tight">{value}</span>
     </div>
   )
 }
@@ -107,8 +107,8 @@ export default function DiceRoller() {
 
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -117,20 +117,20 @@ export default function DiceRoller() {
             <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               {/* Dice count */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('diceCount')}
                 </label>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setDiceCount(c => Math.max(1, c - 1))}
-                    className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+                    className="w-9 h-9 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-10 text-center text-xl font-bold text-gray-900 dark:text-white">{diceCount}</span>
+                  <span className="w-10 text-center text-xl font-bold text-fg">{diceCount}</span>
                   <button
                     onClick={() => setDiceCount(c => Math.min(10, c + 1))}
-                    className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+                    className="w-9 h-9 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -139,7 +139,7 @@ export default function DiceRoller() {
 
               {/* Sides selector */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('diceSides')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -150,7 +150,7 @@ export default function DiceRoller() {
                       className={`py-2 rounded-lg text-sm font-semibold transition-colors ${
                         sides === s
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       D{s}
@@ -161,13 +161,13 @@ export default function DiceRoller() {
 
               {/* Modifier */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('modifier')}
                 </label>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setModifier(m => m - 1)}
-                    className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+                    className="w-9 h-9 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
@@ -176,7 +176,7 @@ export default function DiceRoller() {
                   </span>
                   <button
                     onClick={() => setModifier(m => m + 1)}
-                    className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-colors"
+                    className="w-9 h-9 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-body transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -194,7 +194,7 @@ export default function DiceRoller() {
 
               <button
                 onClick={reset}
-                className="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors"
+                className="w-full py-2 flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -206,9 +206,9 @@ export default function DiceRoller() {
           <div className="lg:col-span-2 space-y-4">
             {/* Dice faces */}
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">{t('diceResults')}</h2>
+              <h2 className="text-sm font-medium text-muted mb-4">{t('diceResults')}</h2>
               {results.length === 0 ? (
-                <div className="flex items-center justify-center h-20 text-gray-400 dark:text-gray-500 text-sm">
+                <div className="flex items-center justify-center h-20 text-faint text-sm">
                   {t('noRollYet')}
                 </div>
               ) : (
@@ -229,13 +229,13 @@ export default function DiceRoller() {
                   { label: t('min'), value: min },
                   { label: t('average'), value: avg },
                 ].map(({ label, value, highlight }) => (
-                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-blue-50 dark:bg-blue-950' : 'bg-gray-50 dark:bg-gray-700'}`}>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</div>
-                    <div className={`text-2xl font-bold ${highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-blue-50 dark:bg-blue-950' : 'bg-subtle'}`}>
+                    <div className="text-xs text-muted mb-1">{label}</div>
+                    <div className={`text-2xl font-bold ${highlight ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}`}>
                       {value}
                     </div>
                     {highlight && modifier !== 0 && (
-                      <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                      <div className="text-xs text-faint mt-1">
                         {rawSum} {modifier >= 0 ? '+' : ''}{modifier}
                       </div>
                     )}
@@ -247,13 +247,13 @@ export default function DiceRoller() {
             {/* History */}
             {history.length > 0 && (
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('history')}</h2>
+                <h2 className="text-sm font-medium text-muted mb-3">{t('history')}</h2>
                 <div className="space-y-2">
                   {history.map((h, i) => (
-                    <div key={i} className="flex items-center justify-between text-sm py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                      <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                    <div key={i} className="flex items-center justify-between text-sm py-2 border-b border-line last:border-0">
+                      <div className="flex items-center gap-2 text-muted">
                         <span className="w-5 text-xs text-gray-400">#{i + 1}</span>
-                        <span className="font-medium text-gray-600 dark:text-gray-300">{h.results.length}D{h.sides}</span>
+                        <span className="font-medium text-sub">{h.results.length}D{h.sides}</span>
                         <span>[{h.results.join(', ')}]</span>
                         {h.modifier !== 0 && (
                           <span className={h.modifier > 0 ? 'text-blue-500' : 'text-red-500'}>
@@ -261,7 +261,7 @@ export default function DiceRoller() {
                           </span>
                         )}
                       </div>
-                      <span className="font-bold text-gray-900 dark:text-white">{t('total')}: {h.sum}</span>
+                      <span className="font-bold text-fg">{t('total')}: {h.sum}</span>
                     </div>
                   ))}
                 </div>

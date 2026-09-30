@@ -281,8 +281,8 @@ export default function GasBill() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -290,7 +290,7 @@ export default function GasBill() {
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Flame className="inline-block w-4 h-4 mr-1" />
                 {t('usage')}
               </label>
@@ -304,7 +304,7 @@ export default function GasBill() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <MapPin className="inline-block w-4 h-4 mr-1" />
                 {t('region')}
               </label>
@@ -320,7 +320,7 @@ export default function GasBill() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Thermometer className="inline-block w-4 h-4 mr-1" />
                 {t('season')}
               </label>
@@ -332,7 +332,7 @@ export default function GasBill() {
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       season === s
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
                     {t(`seasons.${s}`)}
@@ -344,13 +344,13 @@ export default function GasBill() {
             <div className="flex gap-2">
               <button
                 onClick={handleReset}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
               <button
                 onClick={shareLink}
-                className="flex items-center justify-center gap-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium transition-colors"
+                className="flex items-center justify-center gap-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
                 title={t('shareLink')}
               >
                 {copiedId === 'share' ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
@@ -364,16 +364,16 @@ export default function GasBill() {
               onClick={() => setShowBoilerSim(!showBoilerSim)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              <span className="flex items-center gap-2 font-medium text-gray-900 dark:text-white">
+              <span className="flex items-center gap-2 font-medium text-fg">
                 <Home className="w-4 h-4" />
                 {t('boilerSim.title')}
               </span>
               <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showBoilerSim ? 'rotate-180' : ''}`} />
             </button>
             {showBoilerSim && (
-              <div className="px-4 pb-4 space-y-3 border-t border-gray-200 dark:border-gray-700 pt-3">
+              <div className="px-4 pb-4 space-y-3 border-t border-line pt-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs font-medium text-sub mb-1">
                     {t('boilerSim.houseSize')}
                   </label>
                   <div className="flex items-center gap-2">
@@ -383,12 +383,12 @@ export default function GasBill() {
                       onChange={(e) => setHouseSize(parseFloat(e.target.value) || 0)}
                       className={`flex-1 px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                     />
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('boilerSim.pyeong')}</span>
+                    <span className="text-sm text-muted">{t('boilerSim.pyeong')}</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs font-medium text-sub mb-1">
                     {t('boilerSim.insulation')}
                   </label>
                   <select
@@ -403,7 +403,7 @@ export default function GasBill() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <label className="block text-xs font-medium text-sub mb-1">
                     {t('boilerSim.heatingHours')}
                   </label>
                   <div className="flex items-center gap-2">
@@ -415,15 +415,15 @@ export default function GasBill() {
                       onChange={(e) => setHeatingHours(parseInt(e.target.value))}
                       className="flex-1 accent-blue-600"
                     />
-                    <span className="text-sm font-medium text-gray-900 dark:text-white w-16 text-right">
+                    <span className="text-sm font-medium text-fg w-16 text-right">
                       {heatingHours}{t('boilerSim.hoursPerDay')}
                     </span>
                   </div>
                 </div>
 
                 <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
-                  <div className="text-xs text-gray-600 dark:text-gray-400">{t('boilerSim.estimatedUsage')}</div>
-                  <div className="text-xl font-bold text-gray-900 dark:text-white">{boilerEstimate.toLocaleString('ko-KR')} MJ</div>
+                  <div className="text-xs text-sub">{t('boilerSim.estimatedUsage')}</div>
+                  <div className="text-xl font-bold text-fg">{boilerEstimate.toLocaleString('ko-KR')} MJ</div>
                 </div>
 
                 <button
@@ -442,8 +442,8 @@ export default function GasBill() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             {result ? (
               <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-3">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <div className="flex items-center justify-between border-b border-line pb-3">
+                  <h2 className="text-xl font-semibold text-fg">
                     {t('result.title')}
                   </h2>
                   <button
@@ -460,26 +460,26 @@ export default function GasBill() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{t('result.basicCharge')}</div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                    <div className="text-sm text-sub">{t('result.basicCharge')}</div>
+                    <div className="text-2xl font-bold text-fg mt-1">
                       {result.basicCharge.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{t('result.usageCharge')}</div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                    <div className="text-sm text-sub">{t('result.usageCharge')}</div>
+                    <div className="text-2xl font-bold text-fg mt-1">
                       {result.usageCharge.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{t('result.subtotal')}</div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                    <div className="text-sm text-sub">{t('result.subtotal')}</div>
+                    <div className="text-2xl font-bold text-fg mt-1">
                       {result.subtotal.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{t('result.vat')}</div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                    <div className="text-sm text-sub">{t('result.vat')}</div>
+                    <div className="text-2xl font-bold text-fg mt-1">
                       {result.vat.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
@@ -497,7 +497,7 @@ export default function GasBill() {
 
                 {/* Tiered Rate Breakdown */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-lg font-semibold text-fg mb-3">
                     {t('tierBreakdown.title')}
                   </h3>
                   <div className="space-y-2">
@@ -507,21 +507,21 @@ export default function GasBill() {
                       return (
                         <div key={i} className={`${tierBgColors[i]} rounded-lg p-3`}>
                           <div className="flex items-center justify-between text-sm mb-1">
-                            <span className="font-medium text-gray-900 dark:text-white">
+                            <span className="font-medium text-fg">
                               {t(`tierBreakdown.${tier.label}`)} ({tier.min}~{tier.max === Infinity ? '∞' : tier.max} MJ)
                             </span>
-                            <span className="text-gray-700 dark:text-gray-300">
+                            <span className="text-body">
                               {tier.usage.toLocaleString('ko-KR')} MJ × {tier.rate}{t('result.won')}/MJ
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
-                            <div className="flex-1 h-5 bg-white/50 dark:bg-gray-800/50 rounded-full overflow-hidden">
+                            <div className="flex-1 h-5 bg-surface rounded-full overflow-hidden">
                               <div
                                 className={`h-full ${tierColors[i]} rounded-full transition-all duration-500`}
                                 style={{ width: `${Math.max(pct, 2)}%` }}
                               />
                             </div>
-                            <span className="text-sm font-bold text-gray-900 dark:text-white w-24 text-right">
+                            <span className="text-sm font-bold text-fg w-24 text-right">
                               {tier.charge.toLocaleString('ko-KR')}{t('result.won')}
                             </span>
                           </div>
@@ -533,10 +533,10 @@ export default function GasBill() {
 
                 {/* Average Usage Reference */}
                 <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-sm font-semibold text-fg mb-2">
                     {t('averageUsage.title')}
                   </h3>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <div className="text-sm text-sub space-y-1">
                     <div>{t('averageUsage.spring')}</div>
                     <div>{t('averageUsage.summer')}</div>
                     <div>{t('averageUsage.autumn')}</div>
@@ -546,7 +546,7 @@ export default function GasBill() {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-400 dark:text-gray-500">
+              <div className="text-center py-12 text-faint">
                 <Flame className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <p>{t('calculate')}</p>
               </div>
@@ -555,14 +555,14 @@ export default function GasBill() {
 
           {/* Monthly Cost Chart */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('monthlyChart.title')}
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('monthlyChart.description')}</p>
+            <p className="text-xs text-muted mb-4">{t('monthlyChart.description')}</p>
             <div className="flex items-end gap-1 sm:gap-2 h-48">
               {monthlyData.map((d) => (
                 <div key={d.month} className="flex-1 flex flex-col items-center justify-end h-full">
-                  <div className="text-xs text-gray-600 dark:text-gray-400 mb-1 hidden sm:block">
+                  <div className="text-xs text-sub mb-1 hidden sm:block">
                     {(d.total / 10000).toFixed(1)}
                   </div>
                   <div
@@ -570,7 +570,7 @@ export default function GasBill() {
                     style={{ height: `${(d.total / maxMonthly) * 100}%` }}
                     title={`${d.month}${t('monthlyChart.monthSuffix')}: ${d.total.toLocaleString('ko-KR')}${t('result.won')}`}
                   />
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <div className="text-xs text-muted mt-1">
                     {d.month}{t('monthlyChart.monthLabel')}
                   </div>
                 </div>
@@ -578,7 +578,7 @@ export default function GasBill() {
             </div>
             <div className="flex flex-wrap gap-3 mt-4 justify-center">
               {(['spring', 'summer', 'autumn', 'winter'] as Season[]).map((s) => (
-                <div key={s} className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                <div key={s} className="flex items-center gap-1 text-xs text-sub">
                   <div className={`w-3 h-3 rounded-sm ${seasonBarColors[s]}`} />
                   {t(`seasons.${s}`)}
                 </div>
@@ -594,29 +594,29 @@ export default function GasBill() {
           onClick={() => setShowUtility(!showUtility)}
           className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <span className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="flex items-center gap-2 text-lg font-semibold text-fg">
             <Zap className="w-5 h-5" />
             {t('utility.title')}
           </span>
           <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${showUtility ? 'rotate-180' : ''}`} />
         </button>
         {showUtility && (
-          <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-700 pt-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('utility.description')}</p>
+          <div className="px-6 pb-6 border-t border-line pt-4">
+            <p className="text-sm text-muted mb-4">{t('utility.description')}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
                   <Flame className="w-4 h-4" />
                   {t('utility.gas')}
                 </div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-xl font-bold text-fg">
                   {(result?.total ?? 0).toLocaleString('ko-KR')} {t('result.won')}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('utility.gasAuto')}</div>
+                <div className="text-xs text-muted mt-1">{t('utility.gasAuto')}</div>
               </div>
 
               <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
                   <Zap className="w-4 h-4" />
                   {t('utility.electricity')}
                 </div>
@@ -630,7 +630,7 @@ export default function GasBill() {
               </div>
 
               <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
                   <Droplets className="w-4 h-4" />
                   {t('utility.water')}
                 </div>
@@ -644,7 +644,7 @@ export default function GasBill() {
               </div>
 
               <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
-                <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="text-sm font-medium text-body mb-2">
                   {t('utility.internet')}
                 </div>
                 <input
@@ -675,18 +675,18 @@ export default function GasBill() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.structure.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.structure.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -694,12 +694,12 @@ export default function GasBill() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-sub">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

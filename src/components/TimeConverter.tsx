@@ -301,10 +301,10 @@ const TimeConverter = () => {
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-fg">
               {t('title')}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted mt-1">
               {t('description')}
             </p>
           </div>
@@ -312,7 +312,7 @@ const TimeConverter = () => {
 
         {/* 실시간 세계시계 */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-fg mb-4 flex items-center gap-2">
             <Globe className="h-5 w-5" />
             {t('realTimeWorldClock')}
           </h2>
@@ -321,14 +321,14 @@ const TimeConverter = () => {
               <div key={tz.value} className={`${glassCard} ${glassInset}-md p-4`}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">{tz.label}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{tz.offset}</div>
+                    <div className="font-semibold text-fg">{tz.label}</div>
+                    <div className="text-sm text-muted">{tz.offset}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xl font-mono font-bold text-blue-600 dark:text-blue-400">
                       {tz.time}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{tz.date}</div>
+                    <div className="text-sm text-muted">{tz.date}</div>
                   </div>
                 </div>
               </div>
@@ -343,7 +343,7 @@ const TimeConverter = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'converter'
                 ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {t('timezoneConversion')}
@@ -353,7 +353,7 @@ const TimeConverter = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'unix'
                 ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {t('unixTimestamp')}
@@ -363,7 +363,7 @@ const TimeConverter = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'relative'
                 ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {t('relativeTime')}
@@ -401,7 +401,7 @@ const TimeConverter = () => {
                 </button>
                 <button
                   onClick={() => setPasteInput('')}
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-body rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
                 >
                   {tc('clear')}
                 </button>
@@ -417,7 +417,7 @@ const TimeConverter = () => {
                     }
                   }}
                   placeholder={t('pasteTimeInfoPlaceholder')}
-                  className="w-full h-20 px-3 py-2 border border-blue-300 dark:border-blue-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm resize-none"
+                  className="w-full h-20 px-3 py-2 border border-blue-300 dark:border-blue-600 rounded-md shadow-sm bg-field text-fg placeholder-gray-500 dark:placeholder-gray-400 text-sm resize-none"
                 />
               </div>
 
@@ -432,14 +432,14 @@ const TimeConverter = () => {
             </div>
             {activeTab === 'converter' && (
               <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <ArrowRightLeft className="h-5 w-5" />
                   {t('timezoneConversion')}
                 </h3>
                 
                 {/* 날짜/시간 입력 */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('convertDateTime')}
                   </label>
                   <input
@@ -452,7 +452,7 @@ const TimeConverter = () => {
 
                 {/* 원본 타임존 */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('sourceTimezone')}
                   </label>
                   <select
@@ -470,7 +470,7 @@ const TimeConverter = () => {
 
                 {/* 대상 타임존 */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('targetTimezone')}
                   </label>
                   <select
@@ -487,9 +487,9 @@ const TimeConverter = () => {
                 </div>
 
                 {/* 변환 결과 */}
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="bg-subtle rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('convertedTime')}
                     </span>
                     <button
@@ -508,13 +508,13 @@ const TimeConverter = () => {
 
             {activeTab === 'unix' && (
               <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <Timer className="h-5 w-5" />
                   {t('unixTimestamp')} {t('timezoneConversion')}
                 </h3>
                 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('unixTimestampSeconds')}
                   </label>
                   <input
@@ -537,9 +537,9 @@ const TimeConverter = () => {
 
                 {unixTimestamp && convertUnixTimestamp(unixTimestamp) && (
                   <div className="space-y-3">
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div className="bg-subtle rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <span className="text-sm font-medium text-body">
                           {t('koreanTime')}
                         </span>
                         <button
@@ -554,9 +554,9 @@ const TimeConverter = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div className="bg-subtle rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <span className="text-sm font-medium text-body">
                           {t('utcTime')}
                         </span>
                         <button
@@ -577,13 +577,13 @@ const TimeConverter = () => {
 
             {activeTab === 'relative' && (
               <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   {t('relativeTime')} {tc('calculate')}
                 </h3>
                 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('compareDateTime')}
                   </label>
                   <input
@@ -594,9 +594,9 @@ const TimeConverter = () => {
                   />
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="bg-subtle rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('timeDifference')}
                     </span>
                     <button
@@ -618,16 +618,16 @@ const TimeConverter = () => {
           <div className="space-y-6">
             {/* 개발자 도구 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 🛠️ {t('developerTools')}
               </h3>
               <div className="space-y-3">
                 <div className="grid grid-cols-1 gap-3">
                   {/* 현재 Unix 타임스탬프 */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('currentUnixSeconds')}</span>
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
+                    <span className="text-sm text-body">{t('currentUnixSeconds')}</span>
                     <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
                         {Math.floor(Date.now() / 1000)}
                       </code>
                       <button
@@ -640,10 +640,10 @@ const TimeConverter = () => {
                   </div>
                   
                   {/* 현재 Unix 타임스탬프 (밀리초) */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('currentUnixMilliseconds')}</span>
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
+                    <span className="text-sm text-body">{t('currentUnixMilliseconds')}</span>
                     <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
                         {Date.now()}
                       </code>
                       <button
@@ -656,10 +656,10 @@ const TimeConverter = () => {
                   </div>
 
                   {/* ISO 8601 (UTC) */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('iso8601UTC')}</span>
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
+                    <span className="text-sm text-body">{t('iso8601UTC')}</span>
                     <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
                         {new Date().toISOString()}
                       </code>
                       <button
@@ -672,10 +672,10 @@ const TimeConverter = () => {
                   </div>
 
                   {/* ISO 8601 (KST) */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('iso8601KST')}</span>
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
+                    <span className="text-sm text-body">{t('iso8601KST')}</span>
                     <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
                         {new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().replace('Z', '+09:00')}
                       </code>
                       <button
@@ -688,10 +688,10 @@ const TimeConverter = () => {
                   </div>
 
                   {/* RFC 2822 */}
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('rfc2822')}</span>
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
+                    <span className="text-sm text-body">{t('rfc2822')}</span>
                     <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
                         {new Date().toUTCString()}
                       </code>
                       <button
@@ -705,11 +705,11 @@ const TimeConverter = () => {
                 </div>
 
                 {/* 계산된 타임스탬프들 */}
-                <div className="border-t border-gray-200 dark:border-gray-600 pt-3 mt-4">
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">{t('commonTimestamps')}</h4>
+                <div className="border-t border-line pt-3 mt-4">
+                  <h4 className="text-sm font-medium text-fg mb-2">{t('commonTimestamps')}</h4>
                   <div className="grid grid-cols-1 gap-2">
-                    <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
-                      <span className="text-gray-700 dark:text-gray-300">{t('oneHourLater')}</span>
+                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
+                      <span className="text-body">{t('oneHourLater')}</span>
                       <div className="flex items-center gap-1">
                         <code className="font-mono text-blue-600 dark:text-blue-400">
                           {Math.floor((Date.now() + 60 * 60 * 1000) / 1000)}
@@ -722,8 +722,8 @@ const TimeConverter = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
-                      <span className="text-gray-700 dark:text-gray-300">{t('oneDayLater')}</span>
+                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
+                      <span className="text-body">{t('oneDayLater')}</span>
                       <div className="flex items-center gap-1">
                         <code className="font-mono text-blue-600 dark:text-blue-400">
                           {Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000)}
@@ -736,8 +736,8 @@ const TimeConverter = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
-                      <span className="text-gray-700 dark:text-gray-300">{t('oneWeekLater')}</span>
+                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
+                      <span className="text-body">{t('oneWeekLater')}</span>
                       <div className="flex items-center gap-1">
                         <code className="font-mono text-blue-600 dark:text-blue-400">
                           {Math.floor((Date.now() + 7 * 24 * 60 * 60 * 1000) / 1000)}
@@ -757,7 +757,7 @@ const TimeConverter = () => {
 
             {/* 티케팅 도구 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 🎫 {t('ticketingTools')}
               </h3>
               <div className="space-y-4">
@@ -767,13 +767,13 @@ const TimeConverter = () => {
                     {t('concertTicketingDesc')}
                   </p>
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded border">
+                    <div className="bg-surface p-2 rounded border">
                       <div className="font-medium">{t('interpark')}</div>
-                      <div className="text-gray-600 dark:text-gray-400">{t('weekdaysOpen')}</div>
+                      <div className="text-sub">{t('weekdaysOpen')}</div>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded border">
+                    <div className="bg-surface p-2 rounded border">
                       <div className="font-medium">{t('yes24')}</div>
-                      <div className="text-gray-600 dark:text-gray-400">{t('weekdaysOpen')}</div>
+                      <div className="text-sub">{t('weekdaysOpen')}</div>
                     </div>
                   </div>
                 </div>
@@ -784,13 +784,13 @@ const TimeConverter = () => {
                     {t('overseasEventsDesc')}
                   </p>
                   <div className="grid grid-cols-1 gap-2 text-xs">
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded border">
+                    <div className="bg-surface p-2 rounded border">
                       <div className="font-medium">{t('appleEvent')}</div>
-                      <div className="text-gray-600 dark:text-gray-400">{t('appleEventTime')}</div>
+                      <div className="text-sub">{t('appleEventTime')}</div>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded border">
+                    <div className="bg-surface p-2 rounded border">
                       <div className="font-medium">{t('steamGameRelease')}</div>
-                      <div className="text-gray-600 dark:text-gray-400">{t('steamReleaseTime')}</div>
+                      <div className="text-sub">{t('steamReleaseTime')}</div>
                     </div>
                   </div>
                 </div>
@@ -799,10 +799,10 @@ const TimeConverter = () => {
 
             {/* 유용한 팁 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 💡 {t('timeConversionTips')}
               </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+              <div className="space-y-3 text-sm text-sub">
                 <div className="flex items-start gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
                   <div>{t('daylightSavingTip')}</div>
@@ -824,14 +824,14 @@ const TimeConverter = () => {
 
             {/* 자주 사용하는 시간대 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-semibold text-fg mb-4">
                 🌍 {t('commonTimeConversions')}
               </h3>
               <div className="space-y-2 text-sm">
-                <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">{t('koreaToUSEast')}</div>
-                    <div className="text-gray-600 dark:text-gray-400">{t('timeDifferenceNote')}</div>
+                    <div className="font-medium text-fg">{t('koreaToUSEast')}</div>
+                    <div className="text-sub">{t('timeDifferenceNote')}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-blue-600 dark:text-blue-400 font-mono">
@@ -845,10 +845,10 @@ const TimeConverter = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">{t('koreaToUK')}</div>
-                    <div className="text-gray-600 dark:text-gray-400">{t('timeDifferenceUK')}</div>
+                    <div className="font-medium text-fg">{t('koreaToUK')}</div>
+                    <div className="text-sub">{t('timeDifferenceUK')}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-blue-600 dark:text-blue-400 font-mono">
@@ -862,10 +862,10 @@ const TimeConverter = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">{t('koreaToAustralia')}</div>
-                    <div className="text-gray-600 dark:text-gray-400">{t('timeDifferenceAustralia')}</div>
+                    <div className="font-medium text-fg">{t('koreaToAustralia')}</div>
+                    <div className="text-sub">{t('timeDifferenceAustralia')}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-blue-600 dark:text-blue-400 font-mono">

@@ -245,7 +245,7 @@ export default function SATBabylonView() {
                 height: '50%',
               }}
             >
-              <div className="absolute top-2 left-2 bg-black/70 text-white text-[11px] px-2 py-1 rounded z-10 backdrop-blur-sm font-mono">
+              <div className="absolute top-2 left-2 bg-black/70 text-white text-[11px] px-2 py-1 rounded z-10 font-mono">
                 {label}
               </div>
               <div className={`absolute bottom-3 right-3 px-3 py-1.5 rounded-lg text-xs font-bold z-10 transition-all duration-300 ${

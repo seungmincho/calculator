@@ -390,7 +390,7 @@ export default function ChessBoard({
     <div className="space-y-3">
       {/* Top captured pieces (opponent's captured = player's advantage) */}
       <div className="flex items-center gap-1 min-h-[28px] px-1">
-        <span className="text-xs text-gray-500 dark:text-gray-400 mr-1">{t('capturedPieces')}:</span>
+        <span className="text-xs text-muted mr-1">{t('capturedPieces')}:</span>
         {sortCaptures(playerColor === 'w' ? blackCaptured : whiteCaptured).map((p, i) => (
           <span key={i} className="text-lg leading-none">{PIECE_UNICODE[p]}</span>
         ))}
@@ -416,7 +416,7 @@ export default function ChessBoard({
 
       {/* Bottom captured pieces */}
       <div className="flex items-center gap-1 min-h-[28px] px-1">
-        <span className="text-xs text-gray-500 dark:text-gray-400 mr-1">{t('capturedPieces')}:</span>
+        <span className="text-xs text-muted mr-1">{t('capturedPieces')}:</span>
         {sortCaptures(playerColor === 'w' ? whiteCaptured : blackCaptured).map((p, i) => (
           <span key={i} className="text-lg leading-none">{PIECE_UNICODE[p]}</span>
         ))}
@@ -424,9 +424,9 @@ export default function ChessBoard({
 
       {/* Move history */}
       {gameState.moveHistory.length > 0 && (
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 max-h-40 overflow-y-auto">
-          <p className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-2">{t('moveHistory')}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-1 text-xs font-mono text-gray-700 dark:text-gray-300">
+        <div className="bg-subtle rounded-lg p-3 max-h-40 overflow-y-auto">
+          <p className="text-xs font-medium text-sub mb-2">{t('moveHistory')}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-1 text-xs font-mono text-body">
             {getMoveNotation().map((entry) => (
               <div key={entry.num} className="flex gap-1">
                 <span className="text-gray-400 w-6 text-right">{entry.num}.</span>

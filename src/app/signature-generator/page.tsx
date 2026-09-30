@@ -40,7 +40,7 @@ export default function SignatureGeneratorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><SignatureGenerator />  <div className="mt-8">
     <RelatedTools />
@@ -50,17 +50,17 @@ export default function SignatureGeneratorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             서명 생성기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             서명 생성기는 마우스 드래그나 모바일 터치만으로 나만의 전자 서명 이미지를 만들고 PNG·SVG 파일로 다운로드할 수 있는 무료 온라인 도구입니다. 투명 배경을 지원하여 Word, 한글, PDF, 이메일 서명 등 다양한 문서에 바로 삽입해 사용할 수 있으며, 펜 굵기와 색상을 자유롭게 설정할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             서명 생성기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>투명 PNG 저장:</strong> 배경 없는 PNG로 저장하면 어떤 색상의 문서에도 깔끔하게 삽입할 수 있어 이메일 서명과 계약서에 활용하기 좋습니다.</li>
             <li><strong>Word/한글 삽입:</strong> 다운로드한 PNG를 삽입 후 텍스트 줄 바꿈을 '앞으로' 설정하면 서명을 원하는 위치에 자유롭게 배치할 수 있습니다.</li>
             <li><strong>모바일에서 그리기:</strong> 스마트폰 화면에서 손가락으로 그리면 더욱 자연스러운 필기체 서명을 만들 수 있습니다.</li>

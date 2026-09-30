@@ -460,7 +460,7 @@ export default function MarkdownEditor() {
 
   // ── Toolbar button styles ─────────────────────────────────────────────────
   const btnCls =
-    'px-2 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors select-none'
+    'px-2 py-1.5 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded transition-colors select-none'
   const btnActiveCls = 'px-2 py-1.5 text-xs font-medium bg-blue-600 text-white rounded transition-colors select-none'
 
   const viewBtnCls = (mode: ViewMode) =>
@@ -477,14 +477,14 @@ export default function MarkdownEditor() {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className={`${glassCard} ${glassInset} p-4 mb-3 flex flex-wrap items-center gap-3`}>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
+          <h1 className="text-xl font-bold text-fg leading-tight">
             {t('title')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('description')}</p>
+          <p className="text-xs text-muted mt-0.5">{t('description')}</p>
         </div>
 
         {/* View mode toggles */}
-        <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+        <div className="flex items-center gap-1 bg-soft rounded-lg p-1">
           <button className={viewBtnCls('split')} onClick={() => setViewMode('split')}>
             {t('split')}
           </button>
@@ -576,11 +576,11 @@ export default function MarkdownEditor() {
                 {t('heading')} ▾
               </button>
               {showHeadingMenu && (
-                <div className="absolute top-full left-0 mt-1 z-20 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg overflow-hidden">
+                <div className="absolute top-full left-0 mt-1 z-20 bg-surface border border-line rounded-lg shadow-lg overflow-hidden">
                   {[1, 2, 3, 4, 5, 6].map((level) => (
                     <button
                       key={level}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-body"
                       onClick={() => {
                         insertBlock('#'.repeat(level) + ' ', `H${level} ${t('insert.heading')}`)
                         setShowHeadingMenu(false)
@@ -696,12 +696,12 @@ export default function MarkdownEditor() {
         {/* TOC sidebar */}
         {showToc && (
           <div className={`w-56 flex-shrink-0 ${glassCard} ${glassInset} overflow-hidden flex flex-col hidden lg:flex`}>
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2.5 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('toc')}</span>
+            <div className="bg-subtle px-4 py-2.5 border-b border-line">
+              <span className="text-sm font-semibold text-body">{t('toc')}</span>
             </div>
             <nav className="flex-1 overflow-y-auto p-3">
               {tocItems.length === 0 ? (
-                <p className="text-xs text-gray-400 dark:text-gray-500">{t('tocEmpty')}</p>
+                <p className="text-xs text-faint">{t('tocEmpty')}</p>
               ) : (
                 <ul className="space-y-1">
                   {tocItems.map((item, idx) => (
@@ -711,7 +711,7 @@ export default function MarkdownEditor() {
                           const el = document.getElementById(item.id)
                           el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                         }}
-                        className="text-left w-full text-xs text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 truncate transition-colors"
+                        className="text-left w-full text-xs text-sub hover:text-blue-600 dark:hover:text-blue-400 truncate transition-colors"
                         style={{ paddingLeft: `${(item.level - 1) * 12}px` }}
                       >
                         {item.text}
@@ -739,8 +739,8 @@ export default function MarkdownEditor() {
               viewMode === 'split' ? 'flex-1' : 'w-full'
             } ${isFullscreen ? 'overflow-hidden' : ''}`}
           >
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2.5 border-b border-gray-200 dark:border-gray-600 flex items-center">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <div className="bg-subtle px-4 py-2.5 border-b border-line flex items-center">
+              <span className="text-sm font-semibold text-body">
                 {t('editor')}
               </span>
             </div>
@@ -748,7 +748,7 @@ export default function MarkdownEditor() {
               ref={textareaRef}
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
-              className={`flex-1 w-full p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset ${
+              className={`flex-1 w-full p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-surface resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset ${
                 isFullscreen ? 'h-full' : 'min-h-[400px]'
               }`}
               spellCheck={false}
@@ -765,8 +765,8 @@ export default function MarkdownEditor() {
               viewMode === 'split' ? 'flex-1' : 'w-full'
             } ${isFullscreen ? 'overflow-hidden' : ''}`}
           >
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2.5 border-b border-gray-200 dark:border-gray-600 flex items-center">
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <div className="bg-subtle px-4 py-2.5 border-b border-line flex items-center">
+              <span className="text-sm font-semibold text-body">
                 {t('preview')}
               </span>
             </div>
@@ -784,9 +784,9 @@ export default function MarkdownEditor() {
       {/* ── Status bar + export ─────────────────────────────────────────────── */}
       <div className={`${glassCard} ${glassInset} px-4 py-3 mt-3 flex flex-wrap items-center justify-between gap-3`}>
         {/* Counts */}
-        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-          <span>{t('wordCount')}: <span className="font-medium text-gray-700 dark:text-gray-300">{wordCount.toLocaleString()}</span></span>
-          <span>{t('charCount')}: <span className="font-medium text-gray-700 dark:text-gray-300">{charCount.toLocaleString()}</span></span>
+        <div className="flex items-center gap-4 text-xs text-muted">
+          <span>{t('wordCount')}: <span className="font-medium text-body">{wordCount.toLocaleString()}</span></span>
+          <span>{t('charCount')}: <span className="font-medium text-body">{charCount.toLocaleString()}</span></span>
         </div>
 
         {/* Export buttons */}

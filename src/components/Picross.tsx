@@ -357,7 +357,7 @@ export default function Picross() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             {t('title')}
             {isDaily && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full">
@@ -366,10 +366,10 @@ export default function Picross() {
               </span>
             )}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+          <div className="flex items-center gap-1 text-body">
             <Clock className="w-4 h-4" />
             <span className="font-mono text-lg">{formatTime(timer)}</span>
           </div>
@@ -384,7 +384,7 @@ export default function Picross() {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
         {/* Size selector */}
-        <div className="flex items-center gap-1 bg-white dark:bg-gray-800 rounded-lg shadow p-1">
+        <div className="flex items-center gap-1 bg-surface rounded-lg shadow p-1">
           {([5, 10, 15] as GridSize[]).map(size => (
             <button
               key={size}
@@ -392,7 +392,7 @@ export default function Picross() {
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 gridSize === size
                   ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  : 'text-body hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
             >
               {size}x{size}
@@ -413,7 +413,7 @@ export default function Picross() {
 
         <button
           onClick={newRandomPuzzle}
-          className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+          className="flex items-center gap-1 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
           {t('newPuzzle')}
@@ -421,19 +421,19 @@ export default function Picross() {
 
         <button
           onClick={() => initGrid(gridSize)}
-          className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+          className="flex items-center gap-1 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
         >
           {t('reset')}
         </button>
       </div>
 
       {/* Help text */}
-      <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
+      <div className="text-xs text-muted bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
         {t('helpClick')} &middot; {t('helpRightClick')}
       </div>
 
       {/* Grid */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 overflow-x-auto">
+      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6 overflow-x-auto">
         <div className="inline-block">
           {/* Column clues + grid */}
           <div className="flex">
@@ -446,7 +446,7 @@ export default function Picross() {
                 <div
                   key={ci}
                   className={`${cellSize} flex flex-col items-center justify-end ${clueFontSize} ${
-                    isColComplete(ci) ? 'text-green-500 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'
+                    isColComplete(ci) ? 'text-green-500 dark:text-green-400' : 'text-sub'
                   }`}
                   style={{ minHeight: `${maxColClueLen * (gridSize <= 5 ? 20 : gridSize <= 10 ? 16 : 13)}px` }}
                 >
@@ -464,7 +464,7 @@ export default function Picross() {
               {/* Row clue */}
               <div
                 className={`flex items-center justify-end gap-1 pr-2 ${clueFontSize} ${
-                  isRowComplete(ri) ? 'text-green-500 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'
+                  isRowComplete(ri) ? 'text-green-500 dark:text-green-400' : 'text-sub'
                 }`}
                 style={{ minWidth: `${maxRowClueLen * (gridSize <= 5 ? 24 : gridSize <= 10 ? 18 : 14)}px` }}
               >
@@ -481,7 +481,7 @@ export default function Picross() {
                 return (
                   <button
                     key={ci}
-                    className={`${cellSize} ${fontSize} border border-gray-200 dark:border-gray-600 ${borderRight} ${borderBottom} flex items-center justify-center select-none transition-colors ${
+                    className={`${cellSize} ${fontSize} border border-line ${borderRight} ${borderBottom} flex items-center justify-center select-none transition-colors ${
                       cell === 1
                         ? gameWon
                           ? 'bg-blue-500 dark:bg-blue-600'
@@ -489,8 +489,8 @@ export default function Picross() {
                             ? 'bg-blue-700 dark:bg-blue-500'
                             : 'bg-red-400 dark:bg-red-600'
                         : cell === 2
-                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
-                          : 'bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700'
+                          ? 'bg-soft text-faint'
+                          : 'bg-surface hover:bg-blue-50 dark:hover:bg-gray-700'
                     } ${gameWon ? 'cursor-default' : 'cursor-pointer'}`}
                     onClick={() => handleCellClick(ri, ci)}
                     onContextMenu={(e) => handleCellRightClick(e, ri, ci)}
@@ -502,7 +502,7 @@ export default function Picross() {
                     aria-label={`${t('cell')} ${ri + 1},${ci + 1}`}
                   >
                     {cell === 2 && (
-                      <span className="font-bold text-gray-400 dark:text-gray-500">&times;</span>
+                      <span className="font-bold text-faint">&times;</span>
                     )}
                   </button>
                 )
@@ -536,7 +536,7 @@ export default function Picross() {
             </button>
             <button
               onClick={newRandomPuzzle}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('playAgain')}
@@ -546,22 +546,22 @@ export default function Picross() {
       )}
 
       {/* Statistics */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <Trophy className="w-5 h-5 text-yellow-500" />
           {t('statsTitle')}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.gamesPlayed}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">{t('statsPlayed')}</div>
+          <div className="bg-subtle rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-fg">{stats.gamesPlayed}</div>
+            <div className="text-xs text-muted">{t('statsPlayed')}</div>
           </div>
           {([5, 10, 15] as GridSize[]).map(size => (
-            <div key={size} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div key={size} className="bg-subtle rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-fg">
                 {stats.bestTimes[size] !== null ? formatTime(stats.bestTimes[size]!) : '-'}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted">
                 {t('statsBest', { size: `${size}x${size}` })}
               </div>
             </div>
@@ -577,14 +577,14 @@ export default function Picross() {
       />
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
           <Grid3X3 className="w-5 h-5" />
           {t('guideTitle')}
         </h2>
-        <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+        <div className="space-y-4 text-sm text-body">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-1">{t('guideRulesTitle')}</h3>
+            <h3 className="font-medium text-fg mb-1">{t('guideRulesTitle')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('guideRulesItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
@@ -592,7 +592,7 @@ export default function Picross() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-1">{t('guideTipsTitle')}</h3>
+            <h3 className="font-medium text-fg mb-1">{t('guideTipsTitle')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('guideTipsItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>
@@ -600,7 +600,7 @@ export default function Picross() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-1">{t('guideControlsTitle')}</h3>
+            <h3 className="font-medium text-fg mb-1">{t('guideControlsTitle')}</h3>
             <ul className="list-disc list-inside space-y-1">
               {(t.raw('guideControlsItems') as string[]).map((item, i) => (
                 <li key={i}>{item}</li>

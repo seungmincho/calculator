@@ -163,8 +163,8 @@ export default function BusinessNumber() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -173,7 +173,7 @@ export default function BusinessNumber() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('inputLabel')}
               </label>
               <input
@@ -184,7 +184,7 @@ export default function BusinessNumber() {
                 maxLength={12}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono text-lg`}
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {t('digitCount')}: {digits.length}/10
               </p>
             </div>
@@ -200,7 +200,7 @@ export default function BusinessNumber() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium"
               >
                 {t('reset')}
               </button>
@@ -211,7 +211,7 @@ export default function BusinessNumber() {
           {history.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-fg">
                   {t('recentVerifications')}
                 </h3>
                 <button
@@ -235,7 +235,7 @@ export default function BusinessNumber() {
                       ) : (
                         <ShieldX className="w-4 h-4 text-red-600 dark:text-red-400" />
                       )}
-                      <span className="font-mono text-sm text-gray-900 dark:text-white">
+                      <span className="font-mono text-sm text-fg">
                         {item.number}
                       </span>
                     </div>
@@ -288,7 +288,7 @@ export default function BusinessNumber() {
               <div className="space-y-4">
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-body">
                       {t('formatted')}
                     </span>
                     <button
@@ -308,7 +308,7 @@ export default function BusinessNumber() {
                       )}
                     </button>
                   </div>
-                  <div className="font-mono text-2xl text-gray-900 dark:text-white font-bold">
+                  <div className="font-mono text-2xl text-fg font-bold">
                     {result.formatted}
                   </div>
                 </div>
@@ -338,7 +338,7 @@ export default function BusinessNumber() {
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="text-center py-12">
                 <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-muted">
                   {t('inputPlaceholder')}
                 </p>
               </div>
@@ -349,7 +349,7 @@ export default function BusinessNumber() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
@@ -357,14 +357,14 @@ export default function BusinessNumber() {
         <div className="space-y-6">
           {/* Structure */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.structure.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.structure.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                  <span className="text-body">{item}</span>
                 </li>
               ))}
             </ul>
@@ -372,14 +372,14 @@ export default function BusinessNumber() {
 
           {/* Validation Algorithm */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.validation.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.validation.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-purple-600 dark:text-purple-400 mt-1">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                  <span className="text-body">{item}</span>
                 </li>
               ))}
             </ul>

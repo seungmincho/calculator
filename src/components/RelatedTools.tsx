@@ -74,10 +74,10 @@ export default function RelatedTools() {
     >
       <span className="text-2xl flex-shrink-0">{item.icon}</span>
       <div className="min-w-0">
-        <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+        <div className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
           {t(item.labelKey)}
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+        <div className="text-xs text-muted truncate">
           {t(item.descriptionKey)}
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function RelatedTools() {
       {/* Same category recommendations */}
       {sameCategoryTools.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          <h3 className="text-lg font-semibold text-body mb-4">
             {t('relatedTools.title')}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -101,7 +101,7 @@ export default function RelatedTools() {
       {/* Cross category discovery */}
       {crossCategoryTools.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          <h3 className="text-lg font-semibold text-body mb-4">
             {t('relatedTools.discover')}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

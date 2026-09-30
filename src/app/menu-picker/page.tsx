@@ -81,9 +81,7 @@ export default function MenuPickerPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(251,146,60,0.22),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,63,94,0.14),transparent_20%),linear-gradient(135deg,rgba(255,247,237,0.96),rgba(254,242,242,0.92),rgba(255,251,235,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(225,29,72,0.14),transparent_20%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(31,41,55,0.96),rgba(69,26,3,0.94))] py-8 overflow-hidden">
-        <div className="fixed top-16 left-8 w-64 h-64 bg-orange-300/20 dark:bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="fixed bottom-16 right-8 w-80 h-80 bg-rose-300/18 dark:bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="min-h-screen py-8 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <I18nWrapper>
               <MenuPicker />
@@ -98,17 +96,17 @@ export default function MenuPickerPage() {
       </div>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">
-          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-12 border-t border-line pt-8">
+            <h2 className="text-xl font-bold text-fg mb-4">
               오늘 뭐 먹지? 메뉴 추천 룰렛이란?
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            <p className="text-body leading-relaxed mb-6">
               메뉴 추천 룰렛은 한식·중식·일식·양식·분식·치킨·카페·아시안 8개 카테고리 100가지 이상의 메뉴 중에서 오늘의 식사를 랜덤으로 골라주는 도구입니다. 매일 점심·저녁 메뉴 고르기가 귀찮은 분, 혼밥·회식·데이트·야식·해장 등 상황별 맞춤 추천이 필요한 분 모두에게 유용합니다. 결정 장애(결정을 못 내리는 상황)를 간단히 해결해 드립니다.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               메뉴 추천 룰렛 활용 팁
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-body">
               <li><strong>상황별 추천:</strong> 혼밥, 회식, 데이트, 야식, 해장, 다이어트 등 상황을 선택하면 해당 상황에 적합한 메뉴만 추천됩니다.</li>
               <li><strong>카테고리 좁히기:</strong> 먹고 싶은 음식 종류가 대략 정해졌다면 해당 카테고리만 선택해 범위를 좁혀 룰렛을 돌리세요.</li>
               <li><strong>맛집 검색 연동:</strong> 추천된 메뉴 아래의 맛집 검색 버튼을 누르면 네이버 지도에서 주변 맛집을 바로 찾을 수 있습니다.</li>

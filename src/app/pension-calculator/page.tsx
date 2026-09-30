@@ -87,7 +87,7 @@ export default function PensionCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PensionCalculator />
@@ -102,17 +102,17 @@ export default function PensionCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             국민연금 수령액 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             국민연금 수령액 계산기는 현재 소득과 가입 기간을 입력하면 예상 국민연금 월 수령액, 총 납부액, 소득대체율을 자동으로 계산해주는 무료 노후 준비 도구입니다. 2024년 기준 국민연금공단 공식 계산 공식(A값·B값)을 적용하며, 은퇴 나이별 수령액 비교와 연금/납부 수익률도 확인할 수 있어 장기적인 노후 재무 계획 수립에 도움이 됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             국민연금 수령액 늘리는 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>가입 기간 연장:</strong> 국민연금은 가입 기간이 길수록 수령액이 비례해서 증가합니다. 직장 이직 공백기에 임의계속가입을 신청하면 수령액을 높일 수 있습니다.</li>
             <li><strong>임의가입 활용:</strong> 전업주부나 소득이 없는 기간에도 임의가입(월 최소 9만 원대)으로 국민연금에 납부하면 수령액과 가입 기간을 늘릴 수 있습니다.</li>
             <li><strong>연금 수령 시기 조절:</strong> 65세 이후로 수령을 연기하면 매 1년마다 7.2%씩 연금액이 증가합니다. 5년 연기 시 36% 증가 효과가 있습니다.</li>

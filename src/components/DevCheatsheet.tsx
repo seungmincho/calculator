@@ -259,19 +259,19 @@ export default function DevCheatsheet() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Terminal className="w-7 h-7" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats Bar */}
-      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-        <span>{t('stats.total')}: <strong className="text-gray-900 dark:text-white">{totalCount}</strong></span>
+      <div className="flex flex-wrap items-center gap-4 text-sm text-sub">
+        <span>{t('stats.total')}: <strong className="text-fg">{totalCount}</strong></span>
         <span className="flex items-center gap-1">
           <BookMarked className="w-4 h-4" />
-          {t('stats.bookmarked')}: <strong className="text-gray-900 dark:text-white">{bookmarkedCount}</strong>
+          {t('stats.bookmarked')}: <strong className="text-fg">{bookmarkedCount}</strong>
         </span>
         {searchQuery && (
           <span>{t('search.resultCount', { count: filtered.length })}</span>
@@ -279,7 +279,7 @@ export default function DevCheatsheet() {
       </div>
 
       {/* Search + Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-4 space-y-4">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -288,7 +288,7 @@ export default function DevCheatsheet() {
             value={searchInput}
             onChange={e => handleSearchInput(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            className="w-full pl-10 pr-10 py-2.5 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
           />
           {searchInput && (
             <button
@@ -304,8 +304,8 @@ export default function DevCheatsheet() {
         <div className="flex flex-wrap items-center gap-3">
           {/* Difficulty Filter */}
           <div className="flex items-center gap-1.5">
-            <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-xs text-gray-500 dark:text-gray-400 mr-1">{t('filter.difficulty')}:</span>
+            <Filter className="w-4 h-4 text-muted" />
+            <span className="text-xs text-muted mr-1">{t('filter.difficulty')}:</span>
             {(['all', 'basic', 'intermediate', 'advanced'] as DifficultyFilter[]).map(d => (
               <button
                 key={d}
@@ -313,7 +313,7 @@ export default function DevCheatsheet() {
                 className={`px-2.5 py-1 text-xs rounded-full transition-colors ${
                   difficulty === d
                     ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {d === 'all' ? t('filter.all') : (
@@ -332,7 +332,7 @@ export default function DevCheatsheet() {
             className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-full transition-colors ${
               showBookmarkedOnly
                 ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300 font-medium'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             <BookMarked className="w-3.5 h-3.5" />
@@ -350,7 +350,7 @@ export default function DevCheatsheet() {
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
               category === 'all'
                 ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('filter.all')}
@@ -374,7 +374,7 @@ export default function DevCheatsheet() {
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
                     ? CATEGORY_TAB_ACTIVE[cat.color] || 'bg-gray-900 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <span>{cat.icon}</span>
@@ -394,9 +394,9 @@ export default function DevCheatsheet() {
 
       {/* Command List */}
       {filtered.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+        <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
           <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-gray-400">{t('search.noResults')}</p>
+          <p className="text-muted">{t('search.noResults')}</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -406,10 +406,10 @@ export default function DevCheatsheet() {
             const catInfo = CHEATSHEET_CATEGORIES[catKey]
 
             return (
-              <div key={catKey} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div key={catKey} className="bg-surface rounded-xl shadow-lg overflow-hidden">
                 {/* Category Header */}
                 {category === 'all' && (
-                  <div className={`px-6 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2 ${CATEGORY_BG[catInfo.color] || ''}`}>
+                  <div className={`px-6 py-3 border-b border-line flex items-center gap-2 ${CATEGORY_BG[catInfo.color] || ''}`}>
                     <span className="text-lg">{catInfo.icon}</span>
                     <span className="font-semibold">{catInfo.nameKo}</span>
                     <span className="text-xs opacity-70">{catInfo.nameEn}</span>
@@ -444,7 +444,7 @@ export default function DevCheatsheet() {
                                 {highlightText(cmd.command, searchQuery)}
                               </code>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                            <p className="text-sm text-sub leading-relaxed">
                               {highlightText(desc, searchQuery)}
                             </p>
                           </div>
@@ -498,7 +498,7 @@ export default function DevCheatsheet() {
                           <div className="px-4 pb-4 sm:px-6 sm:pb-4 ml-5 space-y-3">
                             {cmd.example && (
                               <div>
-                                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <span className="text-xs font-medium text-muted uppercase tracking-wide">
                                   {t('command.example')}
                                 </span>
                                 <pre className="mt-1 font-mono bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 px-4 py-3 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap break-all">
@@ -508,14 +508,14 @@ export default function DevCheatsheet() {
                             )}
                             {cmd.tags.length > 0 && (
                               <div>
-                                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <span className="text-xs font-medium text-muted uppercase tracking-wide">
                                   {t('command.tags')}
                                 </span>
                                 <div className="flex flex-wrap gap-1.5 mt-1">
                                   {cmd.tags.map(tag => (
                                     <span
                                       key={tag}
-                                      className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full"
+                                      className="px-2 py-0.5 text-xs bg-soft text-sub rounded-full"
                                     >
                                       {highlightText(tag, searchQuery)}
                                     </span>

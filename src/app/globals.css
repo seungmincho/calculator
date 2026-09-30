@@ -4,130 +4,212 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-
-  /* White Mode Theme Colors */
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
-  --secondary: #8b5cf6;
-  --accent: #06b6d4;
-
-  /* Surface Colors */
+  /* ── Semantic tokens (light) — 디자인 변경은 이 블록과 .dark 블록만 수정 ── */
+  --canvas: #f2f4f6;
   --surface: #ffffff;
-  --surface-secondary: #f8fafc;
-  --surface-tertiary: #f1f5f9;
+  --field: #ffffff;
+  --subtle: #f9fafb;
+  --soft: #f2f4f6;
+  --track: #e5e8eb;
+  --line: #e5e8eb;
+  --line-strong: #d1d6db;
+  --fg: #191f28;
+  --body: #333d4b;
+  --sub: #4e5968;
+  --muted: #6b7684;
+  --faint: #a3acb7;
+  --primary: #3182f6;
+  --primary-hover: #1b64da;
+  --primary-soft: #e8f3ff;
+  --field-fill: #f2f4f6;
 
-  /* Border Colors */
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
+  /* legacy aliases */
+  --background: var(--canvas);
+  --foreground: var(--fg);
+}
 
-  /* Text Colors */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
-
-  /* Shadow */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+.dark {
+  --canvas: #101114;
+  --surface: #1e2026;
+  --field: #333842;
+  --subtle: #2a2d34;
+  --soft: #333842;
+  --track: #333842;
+  --line: #2e3139;
+  --line-strong: #4e5968;
+  --fg: #f9fafb;
+  --body: #d1d6db;
+  --sub: #b0b8c1;
+  --muted: #a3acb7;
+  --faint: #6b7684;
+  --primary: #3182f6;
+  --primary-hover: #4593fc;
+  --primary-soft: rgb(49 130 246 / 0.16);
+  --field-fill: #2a2d34;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--canvas);
+  --color-foreground: var(--fg);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-field: var(--field);
+  --color-subtle: var(--subtle);
+  --color-soft: var(--soft);
+  --color-track: var(--track);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-body: var(--body);
+  --color-sub: var(--sub);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 }
 
-/* 수동 라이트 모드 클래스 - 시스템 다크모드여도 라이트모드로 강제 */
-.light {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Palette remap (토스 계열). 기존 442개 컴포넌트의 gray/blue/indigo/purple 클래스가 전부 여기서 재정의됨 ── */
+@theme {
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f2f4f6;
+  --color-gray-200: #e5e8eb;
+  --color-gray-300: #d1d6db;
+  --color-gray-400: #a3acb7;
+  --color-gray-500: #6b7684;
+  --color-gray-600: #4e5968;
+  --color-gray-700: #333842;
+  --color-gray-800: #1e2026;
+  --color-gray-900: #17181c;
+  --color-gray-950: #101114;
 
-  /* White Mode Theme Colors */
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
-  --secondary: #8b5cf6;
-  --accent: #06b6d4;
+  --color-slate-50: #f9fafb;
+  --color-slate-100: #f2f4f6;
+  --color-slate-200: #e5e8eb;
+  --color-slate-300: #d1d6db;
+  --color-slate-400: #a3acb7;
+  --color-slate-500: #6b7684;
+  --color-slate-600: #4e5968;
+  --color-slate-700: #333842;
+  --color-slate-800: #1e2026;
+  --color-slate-900: #17181c;
+  --color-slate-950: #101114;
 
-  /* Surface Colors */
-  --surface: #ffffff;
-  --surface-secondary: #f8fafc;
-  --surface-tertiary: #f1f5f9;
+  --color-blue-50: #e8f3ff;
+  --color-blue-100: #c9e2ff;
+  --color-blue-200: #90c2ff;
+  --color-blue-300: #64a8ff;
+  --color-blue-400: #4593fc;
+  --color-blue-500: #3182f6;
+  --color-blue-600: #2272eb;
+  --color-blue-700: #1b64da;
+  --color-blue-800: #1957c2;
+  --color-blue-900: #194aa6;
+  --color-blue-950: #0f2a5c;
 
-  /* Border Colors */
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
+  /* indigo/violet/purple = blue: 파랑→보라 그라데이션("AI 느낌") 제거 */
+  --color-indigo-50: #e8f3ff;
+  --color-indigo-100: #c9e2ff;
+  --color-indigo-200: #90c2ff;
+  --color-indigo-300: #64a8ff;
+  --color-indigo-400: #4593fc;
+  --color-indigo-500: #3182f6;
+  --color-indigo-600: #2272eb;
+  --color-indigo-700: #1b64da;
+  --color-indigo-800: #1957c2;
+  --color-indigo-900: #194aa6;
+  --color-indigo-950: #0f2a5c;
+  --color-violet-50: #e8f3ff;
+  --color-violet-100: #c9e2ff;
+  --color-violet-200: #90c2ff;
+  --color-violet-300: #64a8ff;
+  --color-violet-400: #4593fc;
+  --color-violet-500: #3182f6;
+  --color-violet-600: #2272eb;
+  --color-violet-700: #1b64da;
+  --color-violet-800: #1957c2;
+  --color-violet-900: #194aa6;
+  --color-violet-950: #0f2a5c;
+  --color-purple-50: #e8f3ff;
+  --color-purple-100: #c9e2ff;
+  --color-purple-200: #90c2ff;
+  --color-purple-300: #64a8ff;
+  --color-purple-400: #4593fc;
+  --color-purple-500: #3182f6;
+  --color-purple-600: #2272eb;
+  --color-purple-700: #1b64da;
+  --color-purple-800: #1957c2;
+  --color-purple-900: #194aa6;
+  --color-purple-950: #0f2a5c;
 
-  /* Text Colors */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 4px 16px rgb(0 0 0 / 0.06);
+  --shadow-xl: 0 8px 24px rgb(0 0 0 / 0.08);
+  --shadow-2xl: 0 12px 32px rgb(0 0 0 / 0.10);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-
-    /* Dark Mode Theme Colors */
-    --primary: #3b82f6;
-    --primary-light: #60a5fa;
-    --primary-dark: #2563eb;
-    --secondary: #a78bfa;
-    --accent: #22d3ee;
-
-    /* Surface Colors */
-    --surface: #111827;
-    --surface-secondary: #1f2937;
-    --surface-tertiary: #374151;
-
-    /* Border Colors */
-    --border: #374151;
-    --border-light: #4b5563;
-
-    /* Text Colors */
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --text-tertiary: #9ca3af;
+/* ── Components (utilities보다 낮은 우선순위 → 같이 쓴 p-6/rounded-xl 등이 이김) ── */
+@layer components {
+  .ui-card {
+    background: var(--surface);
+    border-radius: 20px;
+    border: 1px solid transparent;
   }
-}
+  .dark .ui-card { border-color: var(--line); }
 
-/* 수동 다크 모드 클래스 */
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  .ui-field {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: var(--field-fill);
+    color: var(--fg);
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .ui-field::placeholder { color: var(--faint); }
+  .ui-field:focus {
+    outline: none;
+    background: var(--surface);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgb(49 130 246 / 0.18);
+  }
 
-  /* Dark Mode Theme Colors */
-  --primary: #3b82f6;
-  --primary-light: #60a5fa;
-  --primary-dark: #2563eb;
-  --secondary: #a78bfa;
-  --accent: #22d3ee;
+  .ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    background: var(--primary);
+    color: #fff;
+    transition: background .15s, transform .1s;
+  }
+  .ui-btn:hover { background: var(--primary-hover); }
+  .ui-btn:active { transform: scale(.98); }
+  .ui-btn:disabled { opacity: .45; pointer-events: none; }
 
-  /* Surface Colors */
-  --surface: #111827;
-  --surface-secondary: #1f2937;
-  --surface-tertiary: #374151;
-
-  /* Border Colors */
-  --border: #374151;
-  --border-light: #4b5563;
-
-  /* Text Colors */
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --text-tertiary: #9ca3af;
+  .ui-btn-soft {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    background: var(--primary-soft);
+    color: var(--primary);
+    transition: filter .15s;
+  }
+  .ui-btn-soft:hover { filter: brightness(.97); }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Accessibility - Consistent focus styles */
@@ -143,22 +225,6 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Clean White Mode Background - Light Mode */
-.bg-gradient-to-br.from-slate-50.to-blue-50 {
-  background: linear-gradient(to bottom right, #ffffff, #f8fafc) !important;
-}
-
-/* Enhanced Card Shadows for Light Mode */
-@media (prefers-color-scheme: light) {
-  .shadow-xl {
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05) !important;
-  }
-
-  .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05) !important;
   }
 }
 
@@ -255,10 +321,10 @@ body {
 
 /* 당첨 번호 박스 스타일 */
 .winning-numbers-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #3182f6;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  
 }
 
 /* 번호 생성 버튼 글로우 효과 */
@@ -428,7 +494,7 @@ body {
 }
 
 #nprogress .bar {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  background: #3182f6;
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -436,7 +502,7 @@ body {
   width: 100%;
   height: 3px;
   border-radius: 0 0 2px 2px;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  
 }
 
 #nprogress .peg {

@@ -125,11 +125,11 @@ export default function ResidentNumber() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Shield className="w-6 h-6" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
@@ -141,7 +141,7 @@ export default function ResidentNumber() {
 
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div>
-          <label htmlFor="resident-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label htmlFor="resident-input" className="block text-sm font-medium text-body mb-2">
             {t('inputLabel')}
           </label>
           <input
@@ -165,7 +165,7 @@ export default function ResidentNumber() {
           </button>
           <button
             onClick={handleReset}
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all"
+            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-all"
           >
             {t('reset')}
           </button>
@@ -202,13 +202,13 @@ export default function ResidentNumber() {
           </p>
 
           {result.isValid && (
-            <div className="space-y-3 bg-white dark:bg-gray-800 rounded-lg p-4">
+            <div className="space-y-3 bg-surface rounded-lg p-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-body">
                   {t('inputLabel')}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-900 dark:text-white font-mono">
+                  <span className="text-sm text-fg font-mono">
                     {maskNumber(input)}
                   </span>
                   <button
@@ -225,16 +225,16 @@ export default function ResidentNumber() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('info.birthDate')}</span>
-                <span className="text-sm text-gray-900 dark:text-white">{result.birthDate}</span>
+                <span className="text-sm font-medium text-body">{t('info.birthDate')}</span>
+                <span className="text-sm text-fg">{result.birthDate}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('info.gender')}</span>
-                <span className="text-sm text-gray-900 dark:text-white">{result.gender}</span>
+                <span className="text-sm font-medium text-body">{t('info.gender')}</span>
+                <span className="text-sm text-fg">{result.gender}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('info.region')}</span>
-                <span className="text-sm text-gray-900 dark:text-white font-mono">{result.regionCode}</span>
+                <span className="text-sm font-medium text-body">{t('info.region')}</span>
+                <span className="text-sm text-fg font-mono">{result.regionCode}</span>
               </div>
             </div>
           )}
@@ -242,16 +242,16 @@ export default function ResidentNumber() {
       )}
 
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">{t('guide.structure.title')}</h3>
+            <h3 className="text-lg font-medium text-fg mb-3">{t('guide.structure.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.structure.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -259,10 +259,10 @@ export default function ResidentNumber() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">{t('guide.validation.title')}</h3>
+            <h3 className="text-lg font-medium text-fg mb-3">{t('guide.validation.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.validation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

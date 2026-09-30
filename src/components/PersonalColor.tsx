@@ -410,7 +410,7 @@ export default function PersonalColor() {
             {SEASON_KEYS.map((key) => (
               <div
                 key={key}
-                className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center"
+                className="bg-white/20 rounded-lg p-3 text-center"
               >
                 <div className="text-2xl mb-1">{t(`types.${key}.emoji`)}</div>
                 <div className="text-sm font-medium">{t(`types.${key}.name`)}</div>
@@ -462,7 +462,7 @@ export default function PersonalColor() {
             </div>
           </div>
           <div className="animate-pulse">
-            <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+            <p className="text-xl font-semibold text-body">
               {t('analyzing')}
             </p>
           </div>
@@ -489,22 +489,22 @@ export default function PersonalColor() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6 sm:p-8`}>
           {/* Progress bar */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <span className="text-sm font-medium text-sub">
                 {currentQ + 1} {t('questionOf')}
               </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-muted">
                 {Math.round(progress)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div className="w-full bg-track rounded-full h-2.5">
               <div
                 className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
@@ -521,7 +521,7 @@ export default function PersonalColor() {
                 : 'animate-[slideInRight_0.3s_ease-out]'
             }`}
           >
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-fg mb-6">
               {q.question}
             </h2>
 
@@ -535,14 +535,14 @@ export default function PersonalColor() {
                     className={`w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-200 ${
                       selected
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 ring-2 ring-purple-300 dark:ring-purple-700'
-                        : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50/50 dark:hover:bg-purple-900/20'
+                        : 'border-line bg-field hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50/50 dark:hover:bg-purple-900/20'
                     }`}
                   >
                     <span
                       className={`text-sm sm:text-base ${
                         selected
                           ? 'text-purple-700 dark:text-purple-300 font-medium'
-                          : 'text-gray-700 dark:text-gray-300'
+                          : 'text-body'
                       }`}
                     >
                       {option}
@@ -558,7 +558,7 @@ export default function PersonalColor() {
             <button
               onClick={handlePrev}
               disabled={currentQ === 0}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               {t('prevButton')}
@@ -587,8 +587,8 @@ export default function PersonalColor() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         {/* Result Header Card */}
@@ -606,7 +606,7 @@ export default function PersonalColor() {
           </div>
 
           <div className="p-6 sm:p-8">
-            <p className="text-gray-700 dark:text-gray-300 text-center leading-relaxed mb-6">
+            <p className="text-body text-center leading-relaxed mb-6">
               {t(`types.${result}.description`)}
             </p>
             <p className={`text-center text-sm ${SEASON_ACCENT[result]} font-medium`}>
@@ -617,7 +617,7 @@ export default function PersonalColor() {
 
         {/* Score Breakdown */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <h3 className="text-lg font-semibold text-fg mb-4">
             {t('resultTitle')}
           </h3>
           <div className="space-y-3">
@@ -631,20 +631,20 @@ export default function PersonalColor() {
                       className={`font-medium ${
                         isWinner
                           ? SEASON_ACCENT[key]
-                          : 'text-gray-600 dark:text-gray-400'
+                          : 'text-sub'
                       }`}
                     >
                       {t(`types.${key}.emoji`)} {t(`types.${key}.name`)}
                     </span>
                     <span
                       className={`${
-                        isWinner ? 'font-bold ' + SEASON_ACCENT[key] : 'text-gray-500 dark:text-gray-400'
+                        isWinner ? 'font-bold ' + SEASON_ACCENT[key] : 'text-muted'
                       }`}
                     >
                       {pct}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                  <div className="w-full bg-track rounded-full h-3">
                     <div
                       className={`${SEASON_BAR[key]} h-3 rounded-full transition-all duration-700 ease-out ${
                         isWinner ? 'ring-2 ' + SEASON_RING[key] : ''
@@ -662,7 +662,7 @@ export default function PersonalColor() {
         <div className="grid sm:grid-cols-2 gap-6">
           {/* Best Colors */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-yellow-500" />
               {t('bestColors')}
             </h3>
@@ -670,10 +670,10 @@ export default function PersonalColor() {
               {Object.entries(bestColors).map(([hex], i) => (
                 <div key={hex} className="text-center">
                   <div
-                    className="w-full aspect-square rounded-xl shadow-md border border-gray-200 dark:border-gray-600 mb-1.5"
+                    className="w-full aspect-square rounded-xl shadow-md border border-line mb-1.5"
                     style={{ backgroundColor: hex }}
                   />
-                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                  <span className="text-xs text-sub">
                     {bestColorNames[i]}
                   </span>
                 </div>
@@ -683,14 +683,14 @@ export default function PersonalColor() {
 
           {/* Worst Colors */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('worstColors')}
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(worstColors).map(([hex], i) => (
                 <div key={hex} className="text-center">
                   <div
-                    className="w-full aspect-square rounded-xl shadow-md border border-gray-200 dark:border-gray-600 mb-1.5 relative"
+                    className="w-full aspect-square rounded-xl shadow-md border border-line mb-1.5 relative"
                     style={{ backgroundColor: hex }}
                   >
                     {/* X mark overlay */}
@@ -700,7 +700,7 @@ export default function PersonalColor() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                  <span className="text-xs text-sub">
                     {worstColorNames[i]}
                   </span>
                 </div>
@@ -712,18 +712,18 @@ export default function PersonalColor() {
         {/* Celebrity & Fashion Tips */}
         <div className="grid sm:grid-cols-2 gap-6">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('celebrities')}
             </h3>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-body">
               {t(`types.${result}.celebrities`)}
             </p>
           </div>
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('fashionTips')}
             </h3>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-body">
               {t(`types.${result}.fashionTips`)}
             </p>
           </div>
@@ -747,7 +747,7 @@ export default function PersonalColor() {
           </button>
           <button
             onClick={handleCopyLink}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
           >
             {copiedId === 'link' ? (
               <>
@@ -763,7 +763,7 @@ export default function PersonalColor() {
           </button>
           <button
             onClick={handleRetry}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             {t('retryButton')}
@@ -803,7 +803,7 @@ function GuideSection({
       >
         <div className="flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-purple-500" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
@@ -816,14 +816,14 @@ function GuideSection({
       {guideOpen && (
         <div className="px-6 pb-6 space-y-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.whatIs.title')}
             </h3>
             <ul className="space-y-2">
               {whatIsItems.map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm"
+                  className="flex items-start gap-2 text-body text-sm"
                 >
                   <span className="text-purple-500 mt-0.5">&#x2022;</span>
                   {item}
@@ -832,14 +832,14 @@ function GuideSection({
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {tipsItems.map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm"
+                  className="flex items-start gap-2 text-body text-sm"
                 >
                   <span className="text-pink-500 mt-0.5">&#x2022;</span>
                   {item}

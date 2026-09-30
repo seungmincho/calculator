@@ -1038,10 +1038,10 @@ export default function Viewer3D() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-fg mb-2">
           {t('title')}
         </h1>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-sub">
           {t('description')}
         </p>
         {isWebGPU && (
@@ -1184,7 +1184,7 @@ export default function Viewer3D() {
         <div className="space-y-4">
           {/* Tab Navigation */}
           <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <div className="flex border-b border-line">
               <button
                 onClick={() => setActiveTab('viewer')}
                 className={`flex-1 py-3 px-2 text-xs font-medium transition-colors ${
@@ -1238,45 +1238,45 @@ export default function Viewer3D() {
                 <div className="space-y-4">
                   {/* Model Info */}
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
                       <Box className="w-4 h-4" />
                       {t('info.title')}
                     </h3>
                     <div className="space-y-1.5 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('info.fileName')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium truncate max-w-[120px]">
+                        <span className="text-muted">{t('info.fileName')}</span>
+                        <span className="text-fg font-medium truncate max-w-[120px]">
                           {modelInfo.fileName}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('info.fileSize')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-muted">{t('info.fileSize')}</span>
+                        <span className="text-fg font-medium">
                           {modelInfo.fileSize}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('info.vertices')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-muted">{t('info.vertices')}</span>
+                        <span className="text-fg font-medium">
                           {modelInfo.vertices.toLocaleString()}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('info.faces')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-muted">{t('info.faces')}</span>
+                        <span className="text-fg font-medium">
                           {modelInfo.faces.toLocaleString()}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500 dark:text-gray-400">{t('info.meshes')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-muted">{t('info.meshes')}</span>
+                        <span className="text-fg font-medium">
                           {modelInfo.meshes}
                         </span>
                       </div>
                       {modelInfo.boundingBoxSize && (
                         <div className="flex justify-between">
-                          <span className="text-gray-500 dark:text-gray-400">{t('info.dimensions')}</span>
-                          <span className="text-gray-900 dark:text-white font-medium text-[10px]">
+                          <span className="text-muted">{t('info.dimensions')}</span>
+                          <span className="text-fg font-medium text-[10px]">
                             {modelInfo.boundingBoxSize.x.toFixed(1)} x {modelInfo.boundingBoxSize.y.toFixed(1)} x {modelInfo.boundingBoxSize.z.toFixed(1)} mm
                           </span>
                         </div>
@@ -1287,7 +1287,7 @@ export default function Viewer3D() {
               )}
 
               {activeTab === 'viewer' && !modelInfo && (
-                <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <div className="text-center text-muted py-8">
                   <Upload className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">{t('upload.hint')}</p>
                 </div>
@@ -1297,23 +1297,23 @@ export default function Viewer3D() {
               {activeTab === 'convert' && (
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
                       <FileType className="w-4 h-4" />
                       {t('export.title')}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    <p className="text-xs text-muted mb-3">
                       {t('export.description')}
                     </p>
                   </div>
 
                   <div>
-                    <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                    <label className="text-xs text-muted block mb-1">
                       {t('export.format')}
                     </label>
                     <select
                       value={exportFormat}
                       onChange={(e) => setExportFormat(e.target.value)}
-                      className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm"
+                      className="w-full px-3 py-2 bg-soft rounded-lg text-sm"
                       disabled={!modelInfo}
                     >
                       <option value="glb">GLB (Binary glTF)</option>
@@ -1323,7 +1323,7 @@ export default function Viewer3D() {
                     </select>
                   </div>
 
-                  <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                  <div className="text-xs text-muted space-y-1">
                     <p><strong>GLB:</strong> {t('export.formats.glb')}</p>
                     <p><strong>OBJ:</strong> {t('export.formats.obj')}</p>
                     <p><strong>STL:</strong> {t('export.formats.stl')}</p>
@@ -1353,20 +1353,20 @@ export default function Viewer3D() {
               {activeTab === 'optimize' && (
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
                       <Settings className="w-4 h-4" />
                       {t('optimize.title')}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    <p className="text-xs text-muted mb-3">
                       {t('optimize.description')}
                     </p>
                   </div>
 
                   {modelInfo && (
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-xs">
+                    <div className="bg-subtle rounded-lg p-3 text-xs">
                       <div className="flex justify-between mb-1">
-                        <span className="text-gray-500 dark:text-gray-400">{t('optimize.current')}</span>
-                        <span className="text-gray-900 dark:text-white font-medium">
+                        <span className="text-muted">{t('optimize.current')}</span>
+                        <span className="text-fg font-medium">
                           {modelInfo.vertices.toLocaleString()} vertices / {modelInfo.faces.toLocaleString()} faces
                         </span>
                       </div>
@@ -1382,7 +1382,7 @@ export default function Viewer3D() {
                   )}
 
                   <div>
-                    <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                    <label className="text-xs text-muted block mb-1">
                       {t('optimize.level')}: {optimizationLevel}%
                     </label>
                     <input
@@ -1434,7 +1434,7 @@ export default function Viewer3D() {
                     )}
                   </div>
 
-                  <p className="text-[10px] text-gray-400 dark:text-gray-500">
+                  <p className="text-[10px] text-faint">
                     {t('optimize.note')}
                   </p>
                 </div>
@@ -1444,11 +1444,11 @@ export default function Viewer3D() {
               {activeTab === 'print' && (
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
                       <Printer className="w-4 h-4" />
                       {t('print.title')}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    <p className="text-xs text-muted mb-3">
                       {t('print.description')}
                     </p>
                   </div>
@@ -1456,7 +1456,7 @@ export default function Viewer3D() {
                   {/* Scale and Infill */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                      <label className="text-xs text-muted block mb-1">
                         {t('print.scale')}: {printScale}%
                       </label>
                       <input
@@ -1480,7 +1480,7 @@ export default function Viewer3D() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                      <label className="text-xs text-muted block mb-1">
                         {t('print.infill')}: {infillPercent}%
                       </label>
                       <input
@@ -1521,8 +1521,8 @@ export default function Viewer3D() {
                       )}
 
                       {/* Dimensions */}
-                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-xs space-y-1.5">
-                        <div className="font-semibold text-gray-900 dark:text-white mb-2">{t('print.dimensions')}</div>
+                      <div className="bg-subtle rounded-lg p-3 text-xs space-y-1.5">
+                        <div className="font-semibold text-fg mb-2">{t('print.dimensions')}</div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">{t('print.size')}</span>
                           <span className="font-medium">
@@ -1541,7 +1541,7 @@ export default function Viewer3D() {
 
                       {/* Time Estimates */}
                       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-xs space-y-1.5">
-                        <div className="font-semibold text-gray-900 dark:text-white mb-2">{t('print.timeEstimate')}</div>
+                        <div className="font-semibold text-fg mb-2">{t('print.timeEstimate')}</div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">FDM (PLA/ABS)</span>
                           <span className="font-medium">{printAnalysis.estimatedPrintTime.fdm.toFixed(1)} {t('print.hours')}</span>
@@ -1554,7 +1554,7 @@ export default function Viewer3D() {
 
                       {/* Material Estimates */}
                       <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-xs space-y-1.5">
-                        <div className="font-semibold text-gray-900 dark:text-white mb-2">{t('print.materialEstimate')}</div>
+                        <div className="font-semibold text-fg mb-2">{t('print.materialEstimate')}</div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">PLA</span>
                           <span className="font-medium">{printAnalysis.estimatedMaterial.pla.toFixed(1)}g</span>
@@ -1572,7 +1572,7 @@ export default function Viewer3D() {
                   )}
 
                   {!printAnalysis && !modelInfo && (
-                    <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+                    <div className="text-center text-muted py-4">
                       <Printer className="w-8 h-8 mx-auto mb-2 opacity-50" />
                       <p className="text-xs">{t('print.uploadFirst')}</p>
                     </div>
@@ -1584,20 +1584,20 @@ export default function Viewer3D() {
 
           {/* Animation Controls */}
           {modelInfo && modelInfo.animations.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <div className="bg-surface rounded-xl p-4 shadow-lg">
+              <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
                 <Film className="w-4 h-4" />
                 {t('animation.title')}
               </h3>
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                  <label className="text-xs text-muted block mb-1">
                     {t('animation.select')}
                   </label>
                   <select
                     value={selectedAnimation || ''}
                     onChange={(e) => setSelectedAnimation(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-xs"
+                    className="w-full px-3 py-2 bg-soft rounded-lg text-xs"
                   >
                     {modelInfo.animations.map((anim) => (
                       <option key={anim} value={anim}>{anim}</option>
@@ -1624,7 +1624,7 @@ export default function Viewer3D() {
                 </div>
 
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                  <label className="text-xs text-muted block mb-1">
                     {t('animation.speed')}: {animationSpeed.toFixed(1)}x
                   </label>
                   <input
@@ -1638,7 +1638,7 @@ export default function Viewer3D() {
                   />
                 </div>
 
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-sub">
                   <input
                     type="checkbox"
                     checked={loopAnimation}
@@ -1652,21 +1652,21 @@ export default function Viewer3D() {
           )}
 
           {/* Viewer Settings (Environment, Lighting, Background) */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+          <div className="bg-surface rounded-xl p-4 shadow-lg">
+            <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
               <Layers className="w-4 h-4" />
               {t('controls.title')}
             </h3>
             <div className="space-y-3">
               {/* Environment */}
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-muted block mb-1">
                   {t('environment.preset')}
                 </label>
                 <select
                   value={envPreset}
                   onChange={(e) => setEnvPreset(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-xs"
+                  className="w-full px-3 py-1.5 bg-soft rounded-lg text-xs"
                 >
                   <option value="none">{t('environment.none')}</option>
                   <option value="studio">{t('environment.studio')}</option>
@@ -1678,7 +1678,7 @@ export default function Viewer3D() {
 
               {/* Lighting */}
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-muted block mb-1">
                   {t('lighting.intensity')}
                 </label>
                 <input
@@ -1694,7 +1694,7 @@ export default function Viewer3D() {
 
               {/* Background */}
               <div>
-                <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-muted block mb-1">
                   {t('background.color')}
                 </label>
                 <div className="flex gap-1.5">
@@ -1720,7 +1720,7 @@ export default function Viewer3D() {
               </div>
 
               {/* Controls Guide */}
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 space-y-0.5 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-[10px] text-muted space-y-0.5 pt-2 border-t border-line">
                 <p>{t('controls.rotate')}</p>
                 <p>{t('controls.zoom')}</p>
                 <p>{t('controls.pan')}</p>

@@ -70,7 +70,7 @@ export default function DatePicker({ value, onChange, maxDate, minDate, placehol
           className={`
             w-8 h-8 rounded-md text-xs font-medium transition-colors
             ${!inMonth ? 'text-gray-300 dark:text-gray-600' : ''}
-            ${inMonth && !isSelected && !isDisabled ? 'text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-900/40' : ''}
+            ${inMonth && !isSelected && !isDisabled ? 'text-body hover:bg-blue-100 dark:hover:bg-blue-900/40' : ''}
             ${isSelected ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
             ${isToday && !isSelected ? 'ring-1 ring-blue-400' : ''}
             ${isDisabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}
@@ -92,38 +92,38 @@ export default function DatePicker({ value, onChange, maxDate, minDate, placehol
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-left"
+        className="w-full flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-field dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-left"
       >
-        <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
+        <Calendar className="w-4 h-4 text-faint shrink-0" />
         {selectedDate ? (
-          <span className="text-gray-900 dark:text-white">
+          <span className="text-fg">
             {format(selectedDate, 'yyyy년 M월 d일 (EEE)', { locale: ko })}
           </span>
         ) : (
-          <span className="text-gray-400 dark:text-gray-500">{placeholder}</span>
+          <span className="text-faint">{placeholder}</span>
         )}
       </button>
 
       {/* 캘린더 팝오버 */}
       {isOpen && (
-        <div className="absolute z-50 mt-1 p-3 w-[280px] bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl">
+        <div className="absolute z-50 mt-1 p-3 w-[280px] bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl">
           {/* 월 네비게이션 */}
           <div className="flex items-center justify-between mb-3">
             <button
               type="button"
               onClick={prevMonth}
-              className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
+              className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-sub transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-sm font-semibold text-gray-900 dark:text-white">
+            <span className="text-sm font-semibold text-fg">
               {format(currentMonth, 'yyyy년 M월', { locale: ko })}
             </span>
             <button
               type="button"
               onClick={nextMonth}
               disabled={!canGoNext}
-              className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-sub transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -132,7 +132,7 @@ export default function DatePicker({ value, onChange, maxDate, minDate, placehol
           {/* 요일 헤더 */}
           <div className="grid grid-cols-7 gap-0.5 mb-1">
             {['일', '월', '화', '수', '목', '금', '토'].map(d => (
-              <div key={d} className="w-8 h-6 flex items-center justify-center text-xs font-medium text-gray-400 dark:text-gray-500">
+              <div key={d} className="w-8 h-6 flex items-center justify-center text-xs font-medium text-faint">
                 {d}
               </div>
             ))}
@@ -144,7 +144,7 @@ export default function DatePicker({ value, onChange, maxDate, minDate, placehol
           </div>
 
           {/* 오늘 버튼 */}
-          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700 flex justify-center">
+          <div className="mt-2 pt-2 border-t border-line flex justify-center">
             <button
               type="button"
               onClick={() => {

@@ -556,7 +556,7 @@ export default function FlexboxGrid() {
         className={`${small ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-xs'} rounded-lg font-medium transition-colors whitespace-nowrap ${
           active
             ? 'bg-blue-600 text-white'
-            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
         }`}
       >
         {label}
@@ -570,8 +570,8 @@ export default function FlexboxGrid() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode tabs */}
@@ -581,7 +581,7 @@ export default function FlexboxGrid() {
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'flexbox'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
+              : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
           }`}
         >
           <Layout className="w-4 h-4" />
@@ -592,7 +592,7 @@ export default function FlexboxGrid() {
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'grid'
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
+              : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
           }`}
         >
           <Grid3X3 className="w-4 h-4" />
@@ -607,12 +607,12 @@ export default function FlexboxGrid() {
           {/* Container settings card */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-sm font-semibold text-fg">
                 {t('container')}
               </h2>
               <button
                 onClick={handleReset}
-                className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 rounded-lg transition-colors"
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 {t('resetBtn')}
@@ -623,7 +623,7 @@ export default function FlexboxGrid() {
               <>
                 {/* flex-direction */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">flex-direction</label>
+                  <label className="text-xs font-medium text-sub">flex-direction</label>
                   <div className="grid grid-cols-2 gap-1.5">
                     {FLEX_DIRECTION_OPTIONS.map((opt) => (
                       <PropButton
@@ -638,7 +638,7 @@ export default function FlexboxGrid() {
 
                 {/* justify-content */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">justify-content</label>
+                  <label className="text-xs font-medium text-sub">justify-content</label>
                   <div className="flex flex-wrap gap-1.5">
                     {JUSTIFY_CONTENT_OPTIONS.map((val) => (
                       <PropButton
@@ -654,7 +654,7 @@ export default function FlexboxGrid() {
 
                 {/* align-items */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">align-items</label>
+                  <label className="text-xs font-medium text-sub">align-items</label>
                   <div className="flex flex-wrap gap-1.5">
                     {ALIGN_ITEMS_OPTIONS.map((val) => (
                       <PropButton
@@ -670,7 +670,7 @@ export default function FlexboxGrid() {
 
                 {/* flex-wrap */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">flex-wrap</label>
+                  <label className="text-xs font-medium text-sub">flex-wrap</label>
                   <div className="flex flex-wrap gap-1.5">
                     {FLEX_WRAP_OPTIONS.map((val) => (
                       <PropButton
@@ -687,8 +687,8 @@ export default function FlexboxGrid() {
                 {/* gap */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-gray-600 dark:text-gray-400">gap</label>
-                    <span className="text-xs font-mono text-gray-900 dark:text-white">{flexGap}px</span>
+                    <label className="text-xs font-medium text-sub">gap</label>
+                    <span className="text-xs font-mono text-fg">{flexGap}px</span>
                   </div>
                   <input
                     type="range"
@@ -705,7 +705,7 @@ export default function FlexboxGrid() {
                 {/* grid-template-columns */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-gray-600 dark:text-gray-400">grid-template-columns</label>
+                    <label className="text-xs font-medium text-sub">grid-template-columns</label>
                     <button
                       onClick={addGridColumn}
                       disabled={gridColumns.length >= 6}
@@ -724,13 +724,13 @@ export default function FlexboxGrid() {
                             max={col.unit === 'fr' ? 6 : col.unit === '%' ? 100 : 1000}
                             value={col.value}
                             onChange={(e) => updateGridColumn(i, 'value', Number(e.target.value))}
-                            className="w-16 px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                            className="w-16 px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg focus:ring-1 focus:ring-blue-500 focus:outline-none"
                           />
                         )}
                         <select
                           value={col.unit}
                           onChange={(e) => updateGridColumn(i, 'unit', e.target.value as ColumnUnit)}
-                          className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                          className="px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg focus:ring-1 focus:ring-blue-500 focus:outline-none"
                         >
                           {COLUMN_UNIT_OPTIONS.map((u) => (
                             <option key={u} value={u}>{u}</option>
@@ -751,7 +751,7 @@ export default function FlexboxGrid() {
                 {/* grid-template-rows */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-gray-600 dark:text-gray-400">grid-template-rows</label>
+                    <label className="text-xs font-medium text-sub">grid-template-rows</label>
                     <button
                       onClick={addGridRow}
                       disabled={gridRows.length >= 6}
@@ -770,13 +770,13 @@ export default function FlexboxGrid() {
                             max={row.unit === 'fr' ? 6 : row.unit === '%' ? 100 : 1000}
                             value={row.value}
                             onChange={(e) => updateGridRow(i, 'value', Number(e.target.value))}
-                            className="w-16 px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                            className="w-16 px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg focus:ring-1 focus:ring-blue-500 focus:outline-none"
                           />
                         )}
                         <select
                           value={row.unit}
                           onChange={(e) => updateGridRow(i, 'unit', e.target.value as ColumnUnit)}
-                          className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                          className="px-2 py-1 text-xs border border-line-strong rounded bg-field text-fg focus:ring-1 focus:ring-blue-500 focus:outline-none"
                         >
                           {COLUMN_UNIT_OPTIONS.map((u) => (
                             <option key={u} value={u}>{u}</option>
@@ -797,8 +797,8 @@ export default function FlexboxGrid() {
                 {/* gap */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-gray-600 dark:text-gray-400">gap</label>
-                    <span className="text-xs font-mono text-gray-900 dark:text-white">{gridGap}px</span>
+                    <label className="text-xs font-medium text-sub">gap</label>
+                    <span className="text-xs font-mono text-fg">{gridGap}px</span>
                   </div>
                   <input
                     type="range"
@@ -812,7 +812,7 @@ export default function FlexboxGrid() {
 
                 {/* justify-items */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">justify-items</label>
+                  <label className="text-xs font-medium text-sub">justify-items</label>
                   <div className="flex flex-wrap gap-1.5">
                     {JUSTIFY_ITEMS_OPTIONS.map((val) => (
                       <PropButton
@@ -828,7 +828,7 @@ export default function FlexboxGrid() {
 
                 {/* align-items */}
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400">align-items</label>
+                  <label className="text-xs font-medium text-sub">align-items</label>
                   <div className="flex flex-wrap gap-1.5">
                     {GRID_ALIGN_ITEMS_OPTIONS.map((val) => (
                       <PropButton
@@ -851,8 +851,8 @@ export default function FlexboxGrid() {
           {/* Preview */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('preview')}</h2>
-              <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
+              <h2 className="text-sm font-semibold text-fg">{t('preview')}</h2>
+              <div className="flex items-center gap-1 bg-soft rounded-lg p-0.5">
                 {([
                   { key: 'desktop' as PreviewWidth, icon: Monitor },
                   { key: 'tablet' as PreviewWidth, icon: Tablet },
@@ -864,7 +864,7 @@ export default function FlexboxGrid() {
                     className={`p-1.5 rounded-md transition-colors ${
                       previewWidth === key
                         ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
                     }`}
                     title={t(key)}
                   >
@@ -875,7 +875,7 @@ export default function FlexboxGrid() {
             </div>
             <div className="flex justify-center">
               <div
-                className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-900 transition-all overflow-auto"
+                className="border-2 border-dashed border-line-strong rounded-xl bg-gray-50 dark:bg-gray-900 transition-all overflow-auto"
                 style={{
                   width: previewWidth === 'desktop' ? '100%' : `${PREVIEW_WIDTHS[previewWidth]}px`,
                   maxWidth: '100%',
@@ -927,7 +927,7 @@ export default function FlexboxGrid() {
           {/* CSS code output */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('cssCode')}</h2>
+              <h2 className="text-sm font-semibold text-fg">{t('cssCode')}</h2>
               <button
                 onClick={() => copyToClipboard(fullCss, 'css-main')}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
@@ -940,7 +940,7 @@ export default function FlexboxGrid() {
                 {copiedId === 'css-main' ? t('copied') : t('copy')}
               </button>
             </div>
-            <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-all">
+            <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
               {fullCss}
             </pre>
           </div>
@@ -950,7 +950,7 @@ export default function FlexboxGrid() {
       {/* Children settings */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('children')}</h2>
+          <h2 className="text-sm font-semibold text-fg">{t('children')}</h2>
           <button
             onClick={mode === 'flexbox' ? addFlexChild : addGridChild}
             disabled={(mode === 'flexbox' ? flexChildren.length : gridChildren.length) >= MAX_CHILDREN}
@@ -967,14 +967,14 @@ export default function FlexboxGrid() {
         <div className="space-y-2">
           {mode === 'flexbox'
             ? flexChildren.map((child, i) => (
-                <div key={child.id} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <div key={child.id} className="border border-line rounded-lg overflow-hidden">
                   <button
                     onClick={() => setExpandedChild(expandedChild === child.id ? null : child.id)}
                     className="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 rounded ${ITEM_COLORS[i % ITEM_COLORS.length]}`} />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      <span className="text-sm font-medium text-fg">
                         {t('childLabel', { n: i + 1 })}
                       </span>
                     </div>
@@ -997,11 +997,11 @@ export default function FlexboxGrid() {
                     </div>
                   </button>
                   {expandedChild === child.id && (
-                    <div className="p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-700">
+                    <div className="p-3 pt-0 space-y-3 border-t border-line">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3">
                         {/* flex-grow */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">flex-grow</label>
+                          <label className="text-xs text-muted">flex-grow</label>
                           <input
                             type="number"
                             min={0}
@@ -1013,7 +1013,7 @@ export default function FlexboxGrid() {
                         </div>
                         {/* flex-shrink */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">flex-shrink</label>
+                          <label className="text-xs text-muted">flex-shrink</label>
                           <input
                             type="number"
                             min={0}
@@ -1025,7 +1025,7 @@ export default function FlexboxGrid() {
                         </div>
                         {/* flex-basis */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">flex-basis</label>
+                          <label className="text-xs text-muted">flex-basis</label>
                           <input
                             type="text"
                             value={child.flexBasis}
@@ -1036,7 +1036,7 @@ export default function FlexboxGrid() {
                         </div>
                         {/* order */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">order</label>
+                          <label className="text-xs text-muted">order</label>
                           <input
                             type="number"
                             min={-10}
@@ -1048,7 +1048,7 @@ export default function FlexboxGrid() {
                         </div>
                         {/* align-self */}
                         <div className="space-y-1 col-span-2">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">align-self</label>
+                          <label className="text-xs text-muted">align-self</label>
                           <div className="flex flex-wrap gap-1">
                             {ALIGN_SELF_OPTIONS.map((val) => (
                               <PropButton
@@ -1067,14 +1067,14 @@ export default function FlexboxGrid() {
                 </div>
               ))
             : gridChildren.map((child, i) => (
-                <div key={child.id} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <div key={child.id} className="border border-line rounded-lg overflow-hidden">
                   <button
                     onClick={() => setExpandedChild(expandedChild === child.id ? null : child.id)}
                     className="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 rounded ${ITEM_COLORS[i % ITEM_COLORS.length]}`} />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      <span className="text-sm font-medium text-fg">
                         {t('childLabel', { n: i + 1 })}
                       </span>
                     </div>
@@ -1097,11 +1097,11 @@ export default function FlexboxGrid() {
                     </div>
                   </button>
                   {expandedChild === child.id && (
-                    <div className="p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-700">
+                    <div className="p-3 pt-0 space-y-3 border-t border-line">
                       <div className="grid grid-cols-2 gap-3 pt-3">
                         {/* grid-column span */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">grid-column span</label>
+                          <label className="text-xs text-muted">grid-column span</label>
                           <input
                             type="number"
                             min={1}
@@ -1113,7 +1113,7 @@ export default function FlexboxGrid() {
                         </div>
                         {/* grid-row span */}
                         <div className="space-y-1">
-                          <label className="text-xs text-gray-500 dark:text-gray-400">grid-row span</label>
+                          <label className="text-xs text-muted">grid-row span</label>
                           <input
                             type="number"
                             min={1}
@@ -1133,16 +1133,16 @@ export default function FlexboxGrid() {
 
       {/* Presets */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('presets')}</h2>
+        <h2 className="text-lg font-semibold text-fg">{t('presets')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {presets.map((preset) => (
             <button
               key={preset.key}
               onClick={preset.apply}
-              className="group relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-950"
+              className="group relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-line hover:border-blue-500 dark:hover:border-blue-500 transition-all bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-950"
             >
-              <span className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">{preset.mode}</span>
-              <span className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <span className="text-xs font-medium text-faint uppercase">{preset.mode}</span>
+              <span className="text-sm font-semibold text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {t(`preset.${preset.key}`)}
               </span>
             </button>
@@ -1152,18 +1152,18 @@ export default function FlexboxGrid() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-base font-semibold text-fg mb-3">
             {t('guide.flexboxGuide.title')}
           </h3>
           <ul className="space-y-2">
             {(t.raw('guide.flexboxGuide.items') as string[]).map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="flex items-start gap-2 text-sm text-sub">
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                 {item}
               </li>
@@ -1172,12 +1172,12 @@ export default function FlexboxGrid() {
         </div>
 
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-base font-semibold text-fg mb-3">
             {t('guide.gridGuide.title')}
           </h3>
           <ul className="space-y-2">
             {(t.raw('guide.gridGuide.items') as string[]).map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="flex items-start gap-2 text-sm text-sub">
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                 {item}
               </li>
@@ -1186,12 +1186,12 @@ export default function FlexboxGrid() {
         </div>
 
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-base font-semibold text-fg mb-3">
             {t('guide.tips.title')}
           </h3>
           <ul className="space-y-2">
             {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="flex items-start gap-2 text-sm text-sub">
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">&bull;</span>
                 {item}
               </li>

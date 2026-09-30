@@ -147,11 +147,11 @@ export default function LoremIpsumGenerator() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <FileText className="w-7 h-7 text-indigo-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -161,7 +161,7 @@ export default function LoremIpsumGenerator() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Language */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('options.language')}
             </label>
             <select
@@ -176,7 +176,7 @@ export default function LoremIpsumGenerator() {
 
           {/* Output Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('options.type')}
             </label>
             <select
@@ -192,7 +192,7 @@ export default function LoremIpsumGenerator() {
 
           {/* Count */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('options.count')}
             </label>
             <input
@@ -214,7 +214,7 @@ export default function LoremIpsumGenerator() {
                 onChange={(e) => setStartWithLorem(e.target.checked)}
                 className="w-4 h-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-body">
                 {t('options.startWithLorem')}
               </span>
             </label>
@@ -236,8 +236,8 @@ export default function LoremIpsumGenerator() {
       {/* Output */}
       {output && (
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+            <div className="flex items-center gap-4 text-xs text-muted">
               <span>{stats.characters.toLocaleString()} {t('stats.characters')}</span>
               <span>{stats.words.toLocaleString()} {t('stats.words')}</span>
               <span>{stats.paragraphs} {t('stats.paragraphs')}</span>
@@ -252,7 +252,7 @@ export default function LoremIpsumGenerator() {
               </button>
               <button
                 onClick={handleClear}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 transition-all"
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body transition-all"
               >
                 <Trash2 className="w-4 h-4" />
                 {t('actions.clear')}
@@ -260,7 +260,7 @@ export default function LoremIpsumGenerator() {
             </div>
           </div>
           <div className="p-4 max-h-96 overflow-y-auto">
-            <div className="text-gray-900 dark:text-white whitespace-pre-wrap leading-relaxed">
+            <div className="text-fg whitespace-pre-wrap leading-relaxed">
               {output}
             </div>
           </div>
@@ -269,23 +269,23 @@ export default function LoremIpsumGenerator() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.whatIs.title')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               {t('guide.whatIs.description')}
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.useCases.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.useCases.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-indigo-500 mt-0.5">•</span>

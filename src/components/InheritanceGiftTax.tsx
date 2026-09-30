@@ -265,31 +265,31 @@ export default function InheritanceGiftTax() {
     <div className="space-y-6">
       {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 탭 + 링크 복사 */}
       <div className="flex items-center gap-2">
-        <div className="flex flex-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+        <div className="flex flex-1 bg-soft rounded-lg p-1">
           <button
             onClick={() => setTaxType('inheritance')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
           >
             {t('inheritanceTab')}
           </button>
           <button
             onClick={() => setTaxType('gift')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
           >
             {t('giftTab')}
           </button>
           <button
             onClick={() => setTaxType('compare')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-1 ${taxType === 'compare' ? 'bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-1 ${taxType === 'compare' ? 'bg-surface text-purple-600 dark:text-purple-400 shadow' : 'text-sub'}`}
           >
             <GitCompare className="w-3.5 h-3.5" />
             {t('compareTab')}
@@ -298,7 +298,7 @@ export default function InheritanceGiftTax() {
         <button
           onClick={copyLink}
           title={t('copyLink')}
-          className="flex items-center gap-1.5 px-3 py-2.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-3 py-2.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors shrink-0"
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
           <span className="hidden sm:inline">{copiedId === 'link' ? t('copied') : t('copyLink')}</span>
@@ -318,12 +318,12 @@ export default function InheritanceGiftTax() {
                 {/* 상속세 카드 */}
                 <div className={`${glassCard} ${glassInset} p-6 border-2 ${compareResult.lowerIs === 'inheritance' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">{t('inheritanceTab')}</h3>
+                    <h3 className="font-semibold text-fg">{t('inheritanceTab')}</h3>
                     {compareResult.lowerIs === 'inheritance' && (
                       <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('compareAssumption.inheritance')}</p>
+                  <p className="text-xs text-muted mb-1">{t('compareAssumption.inheritance')}</p>
                   <div className="mt-4 space-y-2 text-sm">
                     <Row label={t('taxableAmount')} value={formatWon(compareResult.inheritTaxable)} />
                     <Row label={t('inheritanceTax')} value={formatWon(compareResult.inheritTax)} highlight />
@@ -333,12 +333,12 @@ export default function InheritanceGiftTax() {
                 {/* 증여세 카드 */}
                 <div className={`${glassCard} ${glassInset} p-6 border-2 ${compareResult.lowerIs === 'gift' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">{t('giftTab')}</h3>
+                    <h3 className="font-semibold text-fg">{t('giftTab')}</h3>
                     {compareResult.lowerIs === 'gift' && (
                       <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('compareAssumption.gift')}</p>
+                  <p className="text-xs text-muted mb-1">{t('compareAssumption.gift')}</p>
                   <div className="mt-4 space-y-2 text-sm">
                     <Row label={t('taxableAmount')} value={formatWon(compareResult.giftTaxable)} />
                     <Row label={t('giftTax')} value={formatWon(compareResult.giftTax)} highlight />
@@ -346,14 +346,14 @@ export default function InheritanceGiftTax() {
                   </div>
                 </div>
               </div>
-              <div className={`${glassCard} ${glassInset} p-4 text-center text-sm text-gray-700 dark:text-gray-300`}>
+              <div className={`${glassCard} ${glassInset} p-4 text-center text-sm text-body`}>
                 {compareResult.lowerIs === 'inheritance'
                   ? t('compareSummary.inheritanceLower', { diff: formatWon(compareResult.diff) })
                   : t('compareSummary.giftLower', { diff: formatWon(compareResult.diff) })}
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
               <GitCompare className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('comparePrompt')}</p>
             </div>
@@ -366,7 +366,7 @@ export default function InheritanceGiftTax() {
         <div className="lg:col-span-1 space-y-4">
           {taxType === 'inheritance' ? (
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inheritanceInput')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('inheritanceInput')}</h2>
 
               <InputField
                 label={t('totalEstate')}
@@ -407,12 +407,12 @@ export default function InheritanceGiftTax() {
                     onChange={e => setHasSpouse(e.target.checked)}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('hasSpouse')}</span>
+                  <span className="text-sm text-body">{t('hasSpouse')}</span>
                 </label>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('childCount')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('childCount')}</label>
                 <select
                   value={childCount}
                   onChange={e => setChildCount(e.target.value)}
@@ -432,13 +432,13 @@ export default function InheritanceGiftTax() {
                     onChange={e => setUseItemizedDeduction(e.target.checked)}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{t('useItemized')}</span>
+                  <span className="text-sm text-body">{t('useItemized')}</span>
                 </label>
               </div>
             </div>
           ) : (
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('giftInput')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('giftInput')}</h2>
 
               <InputField
                 label={t('giftAmount')}
@@ -449,7 +449,7 @@ export default function InheritanceGiftTax() {
               />
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('giftRelation')}</label>
+                <label className="block text-sm font-medium text-body mb-1">{t('giftRelation')}</label>
                 <select
                   value={giftRelation}
                   onChange={e => setGiftRelation(e.target.value as GiftRelation)}
@@ -473,7 +473,7 @@ export default function InheritanceGiftTax() {
                       onChange={e => setIsMarriageGift(e.target.checked)}
                       className="accent-blue-600 w-4 h-4"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{t('marriageDeduction')}</span>
+                    <span className="text-sm text-body">{t('marriageDeduction')}</span>
                   </label>
                 </div>
               )}
@@ -495,10 +495,10 @@ export default function InheritanceGiftTax() {
               {/* 핵심 결과 카드 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
+                  <h2 className="text-lg font-semibold text-fg">{t('result')}</h2>
                   <button
                     onClick={() => copyToClipboard(buildSummary(), 'result')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'result' ? t('copied') : t('copyResult')}
@@ -530,8 +530,8 @@ export default function InheritanceGiftTax() {
                 </div>
 
                 {/* 상세 내역 */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('breakdown')}</h3>
+                <div className="border-t border-line pt-4">
+                  <h3 className="text-sm font-medium text-muted mb-3">{t('breakdown')}</h3>
                   <div className="space-y-2 text-sm">
                     {taxType === 'inheritance' && inheritanceResult && (
                       <>
@@ -543,7 +543,7 @@ export default function InheritanceGiftTax() {
                           <Row label={t('funeralExpense')} value={`-${formatWon(inheritanceResult.funeralDeduction)}`} sub />
                         )}
                         <Row label={t('netEstate')} value={formatWon(inheritanceResult.netEstate)} bold />
-                        <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                        <div className="border-t border-line my-2" />
                         <Row
                           label={inheritanceResult.deductionDetail?.isLumpSum ? t('lumpSumDeduction') : t('itemizedDeduction')}
                           value={`-${formatWon(inheritanceResult.generalDeduction)}`}
@@ -555,7 +555,7 @@ export default function InheritanceGiftTax() {
                           <Row label={t('financialDeduction')} value={`-${formatWon(inheritanceResult.financialDeduction)}`} sub />
                         )}
                         <Row label={t('totalDeduction')} value={`-${formatWon(inheritanceResult.totalDeduction)}`} accent />
-                        <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                        <div className="border-t border-line my-2" />
                         <Row label={t('taxableAmount')} value={formatWon(inheritanceResult.taxable)} bold />
                         <Row label={t('appliedRate')} value={`${inheritanceResult.rate}%`} sub />
                         <Row label={t('inheritanceTax')} value={formatWon(inheritanceResult.tax)} highlight />
@@ -569,7 +569,7 @@ export default function InheritanceGiftTax() {
                           <Row label={t('marriageDeductionAmount')} value={`-${formatWon(giftResult.marriageDeduction)}`} sub />
                         )}
                         <Row label={t('totalDeduction')} value={`-${formatWon(giftResult.totalDeduction)}`} accent />
-                        <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                        <div className="border-t border-line my-2" />
                         <Row label={t('taxableAmount')} value={formatWon(giftResult.taxable)} bold />
                         <Row label={t('appliedRate')} value={`${giftResult.rate}%`} sub />
                         <Row label={t('giftTax')} value={formatWon(giftResult.tax)} highlight />
@@ -581,14 +581,14 @@ export default function InheritanceGiftTax() {
 
               {/* 세율표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rateTable')}</h3>
+                <h3 className="text-sm font-semibold text-fg mb-3">{t('rateTable')}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm" aria-label={t('rateTable')}>
                     <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-700/50">
-                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">{t('bracket')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400">{t('rateCol')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400">{t('progressiveDeduction')}</th>
+                      <tr className="bg-subtle">
+                        <th className="px-3 py-2 text-left text-xs font-medium text-muted">{t('bracket')}</th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('rateCol')}</th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('progressiveDeduction')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -598,14 +598,14 @@ export default function InheritanceGiftTax() {
                         const prev = i > 0 ? TAX_BRACKETS[i - 1].upTo : 0
                         return (
                           <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-blue-50 dark:bg-blue-950/30' : ''}>
-                            <td className="px-3 py-2 text-gray-900 dark:text-white">
+                            <td className="px-3 py-2 text-fg">
                               {b.upTo === Infinity
                                 ? `${formatNumber(prev)}원 초과`
                                 : `${i === 0 ? '0' : formatNumber(prev)}원 ~ ${formatNumber(b.upTo)}원`
                               }
                             </td>
-                            <td className="px-3 py-2 text-right font-medium text-gray-900 dark:text-white">{b.rate * 100}%</td>
-                            <td className="px-3 py-2 text-right text-gray-600 dark:text-gray-400">{formatWon(b.deduction)}</td>
+                            <td className="px-3 py-2 text-right font-medium text-fg">{b.rate * 100}%</td>
+                            <td className="px-3 py-2 text-right text-sub">{formatWon(b.deduction)}</td>
                           </tr>
                         )
                       })}
@@ -615,7 +615,7 @@ export default function InheritanceGiftTax() {
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
+            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
               <Calculator className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('inputPrompt')}</p>
             </div>
@@ -630,16 +630,16 @@ export default function InheritanceGiftTax() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.inheritance.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.inheritance.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.inheritance.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -647,7 +647,7 @@ export default function InheritanceGiftTax() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.gift.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.gift.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.gift.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -655,7 +655,7 @@ export default function InheritanceGiftTax() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.tips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -682,7 +682,7 @@ function InputField({ label, value, onChange, placeholder, suffix, hint }: {
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-body mb-1">{label}</label>
       <div className="relative">
         <input
           type="text"
@@ -703,9 +703,9 @@ function Row({ label, value, bold, sub, accent, highlight }: {
   label: string; value: string; bold?: boolean; sub?: boolean; accent?: boolean; highlight?: boolean
 }) {
   return (
-    <div className={`flex justify-between items-center ${sub ? 'pl-4 text-xs text-gray-500 dark:text-gray-400' : ''} ${bold ? 'font-medium' : ''} ${highlight ? 'bg-red-50 dark:bg-red-950/30 -mx-2 px-2 py-1.5 rounded-lg font-bold text-red-700 dark:text-red-400' : ''}`}>
-      <span className={accent ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-700 dark:text-gray-300'}>{label}</span>
-      <span className={`${bold ? 'text-gray-900 dark:text-white' : ''} ${accent ? 'text-blue-600 dark:text-blue-400 font-medium' : ''} ${highlight ? '' : 'text-gray-900 dark:text-white'}`}>{value}</span>
+    <div className={`flex justify-between items-center ${sub ? 'pl-4 text-xs text-muted' : ''} ${bold ? 'font-medium' : ''} ${highlight ? 'bg-red-50 dark:bg-red-950/30 -mx-2 px-2 py-1.5 rounded-lg font-bold text-red-700 dark:text-red-400' : ''}`}>
+      <span className={accent ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-body'}>{label}</span>
+      <span className={`${bold ? 'text-fg' : ''} ${accent ? 'text-blue-600 dark:text-blue-400 font-medium' : ''} ${highlight ? '' : 'text-fg'}`}>{value}</span>
     </div>
   )
 }

@@ -163,7 +163,7 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
 
   const content = (
     <div
-      className={`group relative backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border ${colors.border} rounded-2xl overflow-hidden transition-all duration-300 ${
+      className={`group relative bg-surface border ${colors.border} rounded-2xl overflow-hidden transition-all duration-300 ${
         isComingSoon
           ? 'opacity-60 cursor-not-allowed'
           : `hover:scale-[1.02] hover:shadow-xl ${colors.glow} cursor-pointer`
@@ -195,11 +195,11 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       <div className="p-4 space-y-2">
         <div className="flex items-center gap-2">
           <span className="text-lg">{algorithm.icon}</span>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
+          <h3 className="font-semibold text-fg">
             {t(`algorithms.${algorithm.labelKey}.title`)}
           </h3>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+        <p className="text-sm text-muted line-clamp-2">
           {t(`algorithms.${algorithm.labelKey}.description`)}
         </p>
         <div className="flex items-center gap-2">

@@ -27,7 +27,7 @@ export default function InstallmentCalcPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><InstallmentCalc />  <div className="mt-8">
     <RelatedTools />
@@ -37,17 +37,17 @@ export default function InstallmentCalcPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             카드 할부 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             카드 할부 계산기는 신용카드로 물품 구매 시 할부 기간별 월 납부금액과 총 할부 수수료를 미리 계산해볼 수 있는 도구입니다. 무이자 할부와 유이자 할부를 비교하고, 납부 스케줄을 확인하여 합리적인 결제 방법을 선택하는 데 도움이 됩니다. 고가 가전, 여행 패키지, 의료비 등 큰 지출 전에 반드시 확인해보세요.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             카드 할부 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>무이자 할부 찾기:</strong> 카드사별 무이자 할부 이벤트를 확인하세요. 동일한 구매라도 카드에 따라 무이자 기간이 다릅니다.</li>
             <li><strong>할부 기간과 수수료:</strong> 할부 기간이 길수록 월 부담은 줄지만 총 수수료가 증가합니다. 6개월 이내 단기 할부를 권장합니다.</li>
             <li><strong>포인트·적립 고려:</strong> 일부 카드는 할부 결제에도 포인트가 동일하게 적립되므로 실질 혜택을 비교해보세요.</li>

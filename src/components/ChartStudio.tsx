@@ -571,14 +571,14 @@ export default function MyChart() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Data Input Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <FileJson className="w-5 h-5" />
             {t('dataInput.title')}
           </h2>
@@ -600,7 +600,7 @@ export default function MyChart() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               dataTab === 'paste'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('dataInput.pasteTab')}
@@ -610,7 +610,7 @@ export default function MyChart() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               dataTab === 'sample'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('dataInput.sampleTab')}
@@ -622,7 +622,7 @@ export default function MyChart() {
             className={`relative rounded-lg border-2 border-dashed transition-colors ${
               isDragging
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                : 'border-gray-300 dark:border-gray-600'
+                : 'border-line-strong'
             }`}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
@@ -632,7 +632,7 @@ export default function MyChart() {
               value={rawInput}
               onChange={(e) => handleParseData(e.target.value)}
               placeholder={t('dataInput.placeholder')}
-              className="w-full min-h-[140px] px-4 py-3 bg-transparent text-gray-900 dark:text-white font-mono text-sm focus:outline-none resize-y rounded-lg"
+              className="w-full min-h-[140px] px-4 py-3 bg-transparent text-fg font-mono text-sm focus:outline-none resize-y rounded-lg"
             />
             {isDragging && (
               <div className="absolute inset-0 flex items-center justify-center bg-blue-50/80 dark:bg-blue-900/60 rounded-lg pointer-events-none">
@@ -649,12 +649,12 @@ export default function MyChart() {
               <button
                 key={key}
                 onClick={() => handleLoadSample(key)}
-                className="flex flex-col items-start gap-1 p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left"
+                className="flex flex-col items-start gap-1 p-4 rounded-lg border border-line hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left"
               >
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <span className="text-sm font-medium text-fg">
                   {t(`sampleData.${dataset.label}`)}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-muted">
                   {dataset.data.length} {t('dataInput.rows')} / {Object.keys(dataset.data[0]).length} {t('dataInput.columns')}
                 </span>
               </button>
@@ -679,14 +679,14 @@ export default function MyChart() {
           {/* Left: Config Panel */}
           <div className="lg:col-span-1 space-y-6">
             <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <Settings className="w-5 h-5" />
                 {t('config.title')}
               </h2>
 
               {/* Chart Type Selector */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('config.chartType')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -697,11 +697,11 @@ export default function MyChart() {
                       className={`flex flex-col items-center gap-1 p-3 rounded-lg transition-colors ${
                         config.chartType === type
                           ? 'border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                          : 'border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300'
+                          : 'border-2 border-line hover:border-blue-300'
                       }`}
                     >
-                      <Icon className={`w-5 h-5 ${config.chartType === type ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
-                      <span className={`text-xs ${config.chartType === type ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <Icon className={`w-5 h-5 ${config.chartType === type ? 'text-blue-600 dark:text-blue-400' : 'text-muted'}`} />
+                      <span className={`text-xs ${config.chartType === type ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-sub'}`}>
                         {t(`chartTypes.${type}`)}
                       </span>
                     </button>
@@ -711,7 +711,7 @@ export default function MyChart() {
 
               {/* X Axis Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('config.xAxis')}
                 </label>
                 <select
@@ -728,13 +728,13 @@ export default function MyChart() {
 
               {/* Y Axis Fields (Multi-Select) */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('config.yAxis')}
                   {config.chartType === 'pie' && (
                     <span className="text-xs text-gray-400 ml-1">({t('config.singleOnly')})</span>
                   )}
                 </label>
-                <div className="space-y-1 max-h-40 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2">
+                <div className="space-y-1 max-h-40 overflow-y-auto border border-line rounded-lg p-2">
                   {parsedData.headers
                     .filter(h => h !== config.xField)
                     .map(h => {
@@ -754,7 +754,7 @@ export default function MyChart() {
                             onChange={() => toggleYField(h)}
                             className="accent-blue-600 rounded"
                           />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{h}</span>
+                          <span className="text-sm text-body">{h}</span>
                           {isNumericColumn(parsedData.rows, h) && (
                             <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded ml-auto">
                               {t('config.numeric')}
@@ -769,7 +769,7 @@ export default function MyChart() {
               {/* Group By Field */}
               {config.chartType !== 'pie' && config.chartType !== 'radar' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-body mb-1">
                     {t('config.groupBy')}
                     <span className="text-xs text-gray-400 ml-1">({t('config.optional')})</span>
                   </label>
@@ -788,7 +788,7 @@ export default function MyChart() {
 
               {/* Chart Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('config.chartTitle')}
                 </label>
                 <input
@@ -837,7 +837,7 @@ export default function MyChart() {
 
               {/* Color Scheme */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('config.colorScheme')}
                 </label>
                 <div className="space-y-2">
@@ -860,7 +860,7 @@ export default function MyChart() {
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400">
+                      <span className="text-xs text-sub">
                         {t(`colorSchemes.${scheme}`)}
                       </span>
                     </button>
@@ -873,7 +873,7 @@ export default function MyChart() {
           {/* Right: Chart Preview */}
           <div className="lg:col-span-2 space-y-6">
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('preview.title')}
               </h2>
 
@@ -888,7 +888,7 @@ export default function MyChart() {
                 </div>
               ) : (
                 <div className="h-[400px] bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
-                  <p className="text-gray-400 dark:text-gray-500 text-sm">
+                  <p className="text-faint text-sm">
                     {t('preview.noChart')}
                   </p>
                 </div>
@@ -906,14 +906,14 @@ export default function MyChart() {
                   </button>
                   <button
                     onClick={() => copyToClipboard(optionCode, 'option')}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {copiedId === 'option' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {t('export.copyOption')}
                   </button>
                   <button
                     onClick={() => copyToClipboard(reactCode, 'react')}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {copiedId === 'react' ? <Check className="w-4 h-4 text-green-500" /> : <Code className="w-4 h-4" />}
                     {t('export.copyReact')}
@@ -925,13 +925,13 @@ export default function MyChart() {
             {/* Data Preview Table */}
             {parsedData && parsedData.rows.length > 0 && (
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-lg font-semibold text-fg mb-4">
                   {t('dataPreview.title')}
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <tr className="border-b border-line">
                         {parsedData.headers.map(h => (
                           <th
                             key={h}
@@ -940,7 +940,7 @@ export default function MyChart() {
                                 ? 'text-blue-600 dark:text-blue-400'
                                 : config.yFields.includes(h)
                                   ? 'text-green-600 dark:text-green-400'
-                                  : 'text-gray-600 dark:text-gray-400'
+                                  : 'text-sub'
                             }`}
                           >
                             {h}
@@ -954,7 +954,7 @@ export default function MyChart() {
                       {parsedData.rows.slice(0, 10).map((row, i) => (
                         <tr key={i} className="border-b border-gray-100 dark:border-gray-700/50">
                           {parsedData.headers.map(h => (
-                            <td key={h} className="px-3 py-1.5 text-gray-700 dark:text-gray-300">
+                            <td key={h} className="px-3 py-1.5 text-body">
                               {String(row[h] ?? '')}
                             </td>
                           ))}
@@ -963,7 +963,7 @@ export default function MyChart() {
                     </tbody>
                   </table>
                   {parsedData.rows.length > 10 && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
+                    <p className="text-xs text-faint mt-2 text-center">
                       {t('dataPreview.showing', { shown: 10, total: parsedData.rows.length })}
                     </p>
                   )}
@@ -977,7 +977,7 @@ export default function MyChart() {
       {/* Generated Code Section */}
       {echartsOption && (
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
             <Code className="w-5 h-5" />
             {t('codeOutput.title')}
           </h2>
@@ -989,7 +989,7 @@ export default function MyChart() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 codeTab === 'option'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t('codeOutput.optionTab')}
@@ -999,7 +999,7 @@ export default function MyChart() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 codeTab === 'react'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t('codeOutput.reactTab')}
@@ -1032,19 +1032,19 @@ export default function MyChart() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Supported Formats */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+            <h3 className="text-sm font-semibold text-body">
               {t('guide.formats.title')}
             </h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.formats.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -1053,12 +1053,12 @@ export default function MyChart() {
           </div>
           {/* Chart Types */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+            <h3 className="text-sm font-semibold text-body">
               {t('guide.chartTypes.title')}
             </h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.chartTypes.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -1067,12 +1067,12 @@ export default function MyChart() {
           </div>
           {/* Tips */}
           <div className="space-y-3 md:col-span-2">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+            <h3 className="text-sm font-semibold text-body">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-1.5">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <li key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -1098,7 +1098,7 @@ function ToggleSwitch({
 }) {
   return (
     <label className="flex items-center justify-between cursor-pointer">
-      <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+      <span className="text-sm text-body">{label}</span>
       <button
         type="button"
         role="switch"

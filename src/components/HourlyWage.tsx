@@ -173,13 +173,13 @@ function HourlyWageInner() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         {/* Copy Link Button */}
         <button
           onClick={handleCopyLink}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors shrink-0"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body text-sm font-medium transition-colors shrink-0"
           title="링크 복사"
         >
           {copied ? (
@@ -203,14 +203,14 @@ function HourlyWageInner() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center gap-2 mb-4">
               <ArrowRightLeft className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-fg">
                 {t('inputType')}
               </h2>
             </div>
 
             {/* Input Type Selector */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('inputType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -221,7 +221,7 @@ function HourlyWageInner() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       inputType === type
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t(type)}
@@ -232,7 +232,7 @@ function HourlyWageInner() {
 
             {/* Amount Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('amount')}
               </label>
               <div className="relative">
@@ -253,17 +253,17 @@ function HourlyWageInner() {
             </div>
 
             {/* Work Settings */}
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-4 border-t border-line">
               <div className="flex items-center gap-2 mb-3">
                 <Clock className="w-4 h-4 text-gray-500" />
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-sm font-semibold text-fg">
                   Work Settings
                 </h3>
               </div>
 
               {/* Hours per Day */}
               <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('workHoursPerDay')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -276,7 +276,7 @@ function HourlyWageInner() {
                     step="0.5"
                     className={`${glassInput} px-3 py-2`}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <span className="text-sm text-muted whitespace-nowrap">
                     {t('hours')}
                   </span>
                 </div>
@@ -284,7 +284,7 @@ function HourlyWageInner() {
 
               {/* Days per Week */}
               <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('workDaysPerWeek')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -299,7 +299,7 @@ function HourlyWageInner() {
                     step="0.5"
                     className={`${glassInput} px-3 py-2`}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <span className="text-sm text-muted whitespace-nowrap">
                     {t('days')}
                   </span>
                 </div>
@@ -307,7 +307,7 @@ function HourlyWageInner() {
 
               {/* Days per Month */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-body mb-1">
                   {t('workDaysPerMonth')}
                 </label>
                 <div className="flex items-center gap-2">
@@ -322,7 +322,7 @@ function HourlyWageInner() {
                     step="0.01"
                     className={`${glassInput} px-3 py-2`}
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <span className="text-sm text-muted whitespace-nowrap">
                     {t('days')}
                   </span>
                 </div>
@@ -333,7 +333,7 @@ function HourlyWageInner() {
             <div className="flex gap-2 pt-4">
               <button
                 onClick={handleReset}
-                className="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
               >
                 {t('reset')}
               </button>
@@ -344,7 +344,7 @@ function HourlyWageInner() {
         {/* Results Panel */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-xl font-semibold text-fg mb-6">
               {t('result.title')}
             </h2>
 
@@ -354,10 +354,10 @@ function HourlyWageInner() {
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl p-4 border-t-4 border-blue-600">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('result.hourlyWage')}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-2xl font-bold text-fg mt-1">
                         {formatCurrency(results.hourly)}{' '}
                         <span className="text-lg">{t('result.won')}</span>
                       </div>
@@ -370,10 +370,10 @@ function HourlyWageInner() {
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-xl p-4 border-t-4 border-green-600">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('result.dailyWage')}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-2xl font-bold text-fg mt-1">
                         {formatCurrency(results.daily)}{' '}
                         <span className="text-lg">{t('result.won')}</span>
                       </div>
@@ -386,10 +386,10 @@ function HourlyWageInner() {
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-xl p-4 border-t-4 border-purple-600">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('result.monthlyWage')}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-2xl font-bold text-fg mt-1">
                         {formatCurrency(results.monthly)}{' '}
                         <span className="text-lg">{t('result.won')}</span>
                       </div>
@@ -402,10 +402,10 @@ function HourlyWageInner() {
                 <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950 dark:to-red-950 rounded-xl p-4 border-t-4 border-orange-600">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-sub">
                         {t('result.yearlyWage')}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-2xl font-bold text-fg mt-1">
                         {formatCurrency(results.yearly)}{' '}
                         <span className="text-lg">{t('result.won')}</span>
                       </div>
@@ -417,7 +417,7 @@ function HourlyWageInner() {
                 {/* ── NEW: Minimum Wage Visual Comparison Bar ── */}
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-sm font-semibold text-fg">
                       2025년 최저임금 비교
                     </h3>
                     <span
@@ -433,11 +433,11 @@ function HourlyWageInner() {
 
                   {/* Bar: user wage */}
                   <div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-muted mb-1">
                       <span>내 시급 {formatCurrency(results.hourly)}원</span>
                       <span>{minimumWageComparison.percent}%</span>
                     </div>
-                    <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
                           minimumWageComparison.isAbove
@@ -451,11 +451,11 @@ function HourlyWageInner() {
 
                   {/* Bar: minimum wage (always 100% of itself) */}
                   <div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-muted mb-1">
                       <span>최저임금 9,860원</span>
                       <span>기준</span>
                     </div>
-                    <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full bg-blue-400"
                         style={{
@@ -484,7 +484,7 @@ function HourlyWageInner() {
                 {/* ── NEW: Annual Salary Projection ── */}
                 <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5 space-y-3 border border-indigo-200 dark:border-indigo-800">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-sm font-semibold text-fg">
                       연봉 환산 예상 (주 52주 기준)
                     </h3>
                     <span
@@ -500,22 +500,22 @@ function HourlyWageInner() {
 
                   <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
                     {formatCurrency(annualProjection)}원
-                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">
+                    <span className="text-sm font-normal text-muted ml-2">
                       / 년
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted">
                     시급 {formatCurrency(results.hourly)}원 × {hoursPerDay}시간 × {daysPerWeek}일 × 52주
                   </p>
 
                   {/* Bar: annual projection */}
                   <div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-muted mb-1">
                       <span>내 예상 연봉</span>
                       <span>{annualComparison.percent}%</span>
                     </div>
-                    <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
                           annualComparison.isAbove ? 'bg-green-500' : 'bg-orange-400'
@@ -527,11 +527,11 @@ function HourlyWageInner() {
 
                   {/* Bar: average salary */}
                   <div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-muted mb-1">
                       <span>한국 평균 연봉 4,200만원</span>
                       <span>기준</span>
                     </div>
-                    <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full bg-blue-400"
                         style={{
@@ -561,23 +561,23 @@ function HourlyWageInner() {
 
                 {/* Original Minimum Wage Info Cards */}
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mt-2">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-lg font-semibold text-fg mb-4">
                     {t('minimumWage.title')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="bg-surface rounded-lg p-4">
+                      <div className="text-sm text-sub">
                         {t('minimumWage.current')}
                       </div>
-                      <div className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-xl font-bold text-fg mt-1">
                         {t('minimumWage.currentValue')}
                       </div>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="bg-surface rounded-lg p-4">
+                      <div className="text-sm text-sub">
                         {t('minimumWage.monthlyMin')}
                       </div>
-                      <div className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                      <div className="text-xl font-bold text-fg mt-1">
                         {t('minimumWage.monthlyMinValue')}
                       </div>
                     </div>
@@ -605,7 +605,7 @@ function HourlyWageInner() {
                             ? t('minimumWage.above')
                             : t('minimumWage.below')}
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <div className="text-sm text-sub mt-1">
                           {t('minimumWage.percent', { percent: minimumWageComparison.percent })}
                         </div>
                       </div>
@@ -623,7 +623,7 @@ function HourlyWageInner() {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted">
                 <DollarSign className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <p>{t('amountPlaceholder')}</p>
               </div>
@@ -636,21 +636,21 @@ function HourlyWageInner() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.conversion.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.conversion.items') as string[]).map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-start gap-2 text-sm text-sub"
                 >
                   <span className="text-blue-600 mt-1">•</span>
                   <span>{item}</span>
@@ -660,14 +660,14 @@ function HourlyWageInner() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-start gap-2 text-sm text-sub"
                 >
                   <span className="text-blue-600 mt-1">•</span>
                   <span>{item}</span>
@@ -683,7 +683,7 @@ function HourlyWageInner() {
 
 export default function HourlyWage() {
   return (
-    <Suspense fallback={<div className="text-center py-12 text-gray-500 dark:text-gray-400">Loading...</div>}>
+    <Suspense fallback={<div className="text-center py-12 text-muted">Loading...</div>}>
       <HourlyWageInner />
     </Suspense>
   )

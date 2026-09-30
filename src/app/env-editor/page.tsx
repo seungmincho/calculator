@@ -77,7 +77,7 @@ export default function EnvEditorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <EnvEditor />
@@ -89,17 +89,17 @@ export default function EnvEditorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             환경변수(.env) 편집기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             환경변수 편집기는 .env 파일을 브라우저에서 직접 편집하고 여러 형식으로 변환할 수 있는 개발 도구입니다. Raw 텍스트 편집과 테이블 뷰 편집 모드를 지원하며, Docker --env-file, docker-compose YAML, JSON, Shell export 등 다양한 형식으로 변환할 수 있습니다. API 키나 데이터베이스 URL 같은 민감한 환경 설정을 코드와 분리하여 관리할 때 필수적인 도구로, 중복 키 감지와 유효성 검사 기능도 제공합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             환경변수 편집기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>보안 주의:</strong> .env 파일에는 API 키, 비밀번호 등 민감한 정보가 담겨 있습니다. 이 도구는 모든 처리가 브라우저 내에서 이루어지므로 서버로 데이터가 전송되지 않아 안전합니다.</li>
             <li><strong>Docker 변환:</strong> .env 파일을 Docker --env-file 형식 또는 docker-compose.yml의 environment 섹션으로 즉시 변환하여 컨테이너 배포에 바로 활용하세요.</li>
             <li><strong>중복 키 검사:</strong> 환경변수 파일이 길어지면 같은 키가 두 번 선언되는 실수가 생깁니다. 중복 키 감지 기능으로 배포 전 오류를 방지하세요.</li>

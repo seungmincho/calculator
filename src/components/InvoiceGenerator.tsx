@@ -109,9 +109,9 @@ const STORAGE_KEY = 'invoiceGenerator_saved'
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ElementType; title: string }) {
   return (
-    <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+    <div className="flex items-center gap-2 mb-4 pb-2 border-b border-line">
       <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
-      <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
+      <h2 className="text-base font-semibold text-fg">{title}</h2>
     </div>
   )
 }
@@ -128,7 +128,7 @@ function CompanyForm({
   t: ReturnType<typeof useTranslations>
 }) {
   const inputClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
+    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
 
   const Field = ({
     field,
@@ -140,7 +140,7 @@ function CompanyForm({
     type?: string
   }) => (
     <div>
-      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+      <label className="block text-xs font-medium text-sub mb-1">
         {t(`company.${field}`)}
       </label>
       <input
@@ -562,10 +562,10 @@ export default function InvoiceGenerator() {
   // ── Input classes ────────────────────────────────────────────────────────
 
   const inputClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
+    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
 
   const textareaClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none'
+    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none'
 
   // ── Render ───────────────────────────────────────────────────────────────
 
@@ -574,32 +574,32 @@ export default function InvoiceGenerator() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <FileText className="w-7 h-7 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
 
         {/* Action buttons */}
         <div className="flex flex-wrap gap-2">
           <button
             onClick={saveToStorage}
-            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
           >
             <Save className="w-4 h-4" />
             {saved ? t('savedFeedback') : t('save')}
           </button>
           <button
             onClick={loadFromStorage}
-            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
           >
             <FolderOpen className="w-4 h-4" />
             {loaded ? t('loadedFeedback') : t('load')}
           </button>
           <button
             onClick={resetInvoice}
-            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             {t('reset')}
@@ -641,7 +641,7 @@ export default function InvoiceGenerator() {
             <SectionHeader icon={FileText} title={t('section.invoiceInfo')} />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   {t('invoiceNumber')}
                 </label>
                 <input
@@ -652,7 +652,7 @@ export default function InvoiceGenerator() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   {t('invoiceDate')}
                 </label>
                 <input
@@ -663,7 +663,7 @@ export default function InvoiceGenerator() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-sub mb-1">
                   {t('dueDate')}
                 </label>
                 <input
@@ -694,17 +694,17 @@ export default function InvoiceGenerator() {
 
             {/* Table header */}
             <div className="hidden sm:grid grid-cols-12 gap-2 mb-2 px-2">
-              <div className="col-span-4 text-xs font-medium text-gray-500 dark:text-gray-400">{t('items.name')}</div>
-              <div className="col-span-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-right">
+              <div className="col-span-4 text-xs font-medium text-muted">{t('items.name')}</div>
+              <div className="col-span-2 text-xs font-medium text-muted text-right">
                 {t('items.quantity')}
               </div>
-              <div className="col-span-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-right">
+              <div className="col-span-2 text-xs font-medium text-muted text-right">
                 {t('items.unitPrice')}
               </div>
-              <div className="col-span-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-right">
+              <div className="col-span-2 text-xs font-medium text-muted text-right">
                 {t('items.amount')}
               </div>
-              <div className="col-span-1 text-xs font-medium text-gray-500 dark:text-gray-400 text-center">
+              <div className="col-span-1 text-xs font-medium text-muted text-center">
                 {t('items.taxable')}
               </div>
               <div className="col-span-1" />
@@ -716,7 +716,7 @@ export default function InvoiceGenerator() {
                 return (
                   <div
                     key={item.id}
-                    className="grid grid-cols-12 gap-2 items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50"
+                    className="grid grid-cols-12 gap-2 items-center p-2 rounded-lg bg-subtle"
                   >
                     {/* Name */}
                     <div className="col-span-12 sm:col-span-4">
@@ -750,7 +750,7 @@ export default function InvoiceGenerator() {
                     </div>
                     {/* Amount (read-only) */}
                     <div className="col-span-4 sm:col-span-2">
-                      <div className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-600 rounded-lg text-right text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-600 rounded-lg text-right text-sm font-medium text-fg">
                         {amount.toLocaleString()}
                       </div>
                     </div>
@@ -763,7 +763,7 @@ export default function InvoiceGenerator() {
                           checked={item.taxable}
                           onChange={(e) => updateItem(item.id, 'taxable', e.target.checked)}
                         />
-                        <span className="text-xs text-gray-500 dark:text-gray-400 sm:hidden">{t('items.taxable')}</span>
+                        <span className="text-xs text-muted sm:hidden">{t('items.taxable')}</span>
                       </label>
                     </div>
                     {/* Remove */}
@@ -794,15 +794,15 @@ export default function InvoiceGenerator() {
             <div className="mt-6 flex justify-end">
               <div className="w-full sm:w-64 space-y-2">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">{t('summary.subtotal')}</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{formatKRW(subtotal)}</span>
+                  <span className="text-muted">{t('summary.subtotal')}</span>
+                  <span className="font-medium text-fg">{formatKRW(subtotal)}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">{t('summary.vat')} (10%)</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{formatKRW(vat)}</span>
+                  <span className="text-muted">{t('summary.vat')} (10%)</span>
+                  <span className="font-medium text-fg">{formatKRW(vat)}</span>
                 </div>
-                <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-600">
-                  <span className="font-bold text-gray-900 dark:text-white">{t('summary.total')}</span>
+                <div className="flex justify-between items-center pt-2 border-t border-line">
+                  <span className="font-bold text-fg">{t('summary.total')}</span>
                   <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{formatKRW(total)}</span>
                 </div>
               </div>
@@ -830,7 +830,7 @@ export default function InvoiceGenerator() {
           onClick={() => setGuideOpen((o) => !o)}
           aria-expanded={guideOpen}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             {t('guide.title')}
           </h2>

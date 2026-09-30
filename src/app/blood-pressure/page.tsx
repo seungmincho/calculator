@@ -27,7 +27,7 @@ export default function BloodPressurePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><BloodPressure />  <div className="mt-8">
     <RelatedTools />
@@ -37,17 +37,17 @@ export default function BloodPressurePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             혈압 기록기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             혈압 기록기는 수축기·이완기 혈압과 맥박 수치를 날짜별로 기록하고 추이 차트와 통계를 제공하는 무료 온라인 혈압 관리 도구입니다. WHO 및 대한고혈압학회 기준에 따라 정상·주의·고혈압 전단계·고혈압을 자동으로 분류하며, 측정 평균값과 추세를 한눈에 파악할 수 있습니다. 고혈압 환자와 혈압 관리가 필요한 분들이 병원 방문 전 혈압 수첩 대신 사용하기에 적합합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             올바른 혈압 측정 및 관리 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>일정한 시간에 측정:</strong> 아침(기상 후 1시간 이내, 식전)과 저녁(취침 전) 하루 2회 같은 시간에 측정해야 신뢰성 있는 데이터를 얻을 수 있습니다.</li>
             <li><strong>측정 전 안정:</strong> 측정 5분 전부터 등을 기대고 앉아 안정을 취하고, 카페인·운동·흡연은 30분 전부터 피하세요.</li>
             <li><strong>2회 측정 평균 사용:</strong> 2분 간격으로 2회 측정하여 평균값을 기록하면 일시적 변동에 의한 오차를 줄일 수 있습니다.</li>

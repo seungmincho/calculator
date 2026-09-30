@@ -101,8 +101,8 @@ export default function TextToSpeech() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <div className="bg-red-50 dark:bg-red-950 rounded-xl p-6">
           <p className="text-red-700 dark:text-red-300">{t('notSupported')}</p>
@@ -115,8 +115,8 @@ export default function TextToSpeech() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -124,14 +124,14 @@ export default function TextToSpeech() {
         {/* Settings Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Volume2 className="w-5 h-5" />
               {t('voice')}
             </h2>
 
             {/* Voice Selector */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('voice')}
               </label>
               {voices.length > 0 ? (
@@ -147,13 +147,13 @@ export default function TextToSpeech() {
                   ))}
                 </select>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('noVoices')}</p>
+                <p className="text-sm text-muted">{t('noVoices')}</p>
               )}
             </div>
 
             {/* Rate Slider */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('rate')}: {rate.toFixed(1)}x
               </label>
               <input
@@ -169,7 +169,7 @@ export default function TextToSpeech() {
 
             {/* Pitch Slider */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('pitch')}: {pitch.toFixed(1)}
               </label>
               <input
@@ -185,7 +185,7 @@ export default function TextToSpeech() {
 
             {/* Volume Slider */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('volume')}: {Math.round(volume * 100)}%
               </label>
               <input
@@ -200,14 +200,14 @@ export default function TextToSpeech() {
             </div>
 
             {/* Status Display */}
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-4 border-t border-line">
               <div className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${
                   status === 'speaking' ? 'bg-green-500 animate-pulse' :
                   status === 'paused' ? 'bg-yellow-500' :
                   'bg-gray-400'
                 }`} />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-body">
                   {status === 'speaking' ? t('speaking') :
                    status === 'paused' ? t('paused') :
                    t('stopped')}
@@ -221,7 +221,7 @@ export default function TextToSpeech() {
         <div className="lg:col-span-2 space-y-6">
           {/* Text Input */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-body mb-2">
               {t('textInput')}
             </label>
             <textarea
@@ -232,7 +232,7 @@ export default function TextToSpeech() {
             />
 
             {/* Info */}
-            <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex flex-wrap gap-4 mt-4 text-sm text-sub">
               <span>{t('charCount')}: {charCount}</span>
               {charCount > 0 && (
                 <span>{t('estimatedTime')}: {estimatedTime} {t('seconds')}</span>
@@ -255,7 +255,7 @@ export default function TextToSpeech() {
               <button
                 onClick={handlePause}
                 disabled={status !== 'speaking'}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Pause className="w-5 h-5" />
                 {t('pause')}
@@ -264,7 +264,7 @@ export default function TextToSpeech() {
               <button
                 onClick={handleResume}
                 disabled={status !== 'paused'}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 {t('resume')}
@@ -283,7 +283,7 @@ export default function TextToSpeech() {
 
           {/* Sample Presets */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <MessageSquare className="w-5 h-5" />
               {t('presets.title')}
             </h3>
@@ -313,7 +313,7 @@ export default function TextToSpeech() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -321,12 +321,12 @@ export default function TextToSpeech() {
         <div className="space-y-6">
           {/* Usage Section */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -336,12 +336,12 @@ export default function TextToSpeech() {
 
           {/* Tips Section */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

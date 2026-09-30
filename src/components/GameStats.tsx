@@ -89,12 +89,10 @@ export default function GameStats({ onClose }: GameStatsProps) {
       {/* 헤더 */}
       <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+            <div className="p-3 bg-white/20 rounded-2xl">
               <BarChart3 className="w-8 h-8" />
             </div>
             <div>
@@ -107,59 +105,59 @@ export default function GameStats({ onClose }: GameStatsProps) {
 
       {/* 전체 통계 카드 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700">
+        <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl text-white shadow-lg">
               <Trophy className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{totalStats.monthlyGames}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{tStats('monthlyGames')}</p>
+              <p className="text-3xl font-bold text-fg">{totalStats.monthlyGames}</p>
+              <p className="text-sm text-muted">{tStats('monthlyGames')}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700">
+        <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl text-white shadow-lg">
               <Gamepad2 className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{totalStats.activeGames}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{tStats('activeGames')}</p>
+              <p className="text-3xl font-bold text-fg">{totalStats.activeGames}</p>
+              <p className="text-sm text-muted">{tStats('activeGames')}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700">
+        <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl text-white shadow-lg">
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{totalStats.waitingRooms}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{tStats('waitingRooms')}</p>
+              <p className="text-3xl font-bold text-fg">{totalStats.waitingRooms}</p>
+              <p className="text-sm text-muted">{tStats('waitingRooms')}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700">
+        <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{totalStats.totalRooms}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{tStats('totalRooms')}</p>
+              <p className="text-3xl font-bold text-fg">{totalStats.totalRooms}</p>
+              <p className="text-sm text-muted">{tStats('totalRooms')}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* 게임별 통계 */}
-      <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-xl border border-gray-100 dark:border-gray-700">
+      <div className="bg-surface rounded-3xl p-6 shadow-xl border border-line">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-xl">
             <PieChart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-fg">
             {tStats('gameRanking')}
           </h2>
         </div>
@@ -187,22 +185,22 @@ export default function GameStats({ onClose }: GameStatsProps) {
                   {/* 게임 정보 */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-gray-900 dark:text-white">
+                      <span className="font-semibold text-fg">
                         {game.name}
                       </span>
-                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <span className="text-sm font-medium text-sub">
                         {game.gamesPlayed} {tStats('games')}
                       </span>
                     </div>
                     {/* 프로그레스 바 */}
-                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-2 bg-soft rounded-full overflow-hidden">
                       <div
                         className={`h-full bg-gradient-to-r ${game.color} transition-all duration-500`}
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
                     {/* 추가 정보 */}
-                    <div className="flex items-center gap-4 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-4 mt-1 text-xs text-muted">
                       <span className="flex items-center gap-1">
                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                         {tStats('playing')}: {game.activeRooms}
@@ -232,10 +230,10 @@ export default function GameStats({ onClose }: GameStatsProps) {
                   {tStats('mostPopular')}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-2xl font-bold text-fg">
                 {topGame.name}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 {tStats('totalGamesPlayed', { count: topGame.gamesPlayed })}
               </p>
             </div>

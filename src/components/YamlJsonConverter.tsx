@@ -238,11 +238,11 @@ export default function YamlJsonConverter() {
       {/* 헤더 */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
             <ArrowLeftRight className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
       </div>
 
@@ -250,10 +250,10 @@ export default function YamlJsonConverter() {
       <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex flex-wrap items-center gap-3">
           {/* 방향 토글 */}
-          <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <div className="flex items-center bg-soft rounded-lg p-1">
             <button
               onClick={() => { setDirection('yaml-to-json'); setInput('') }}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${direction === 'yaml-to-json' ? 'bg-blue-600 text-white shadow' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${direction === 'yaml-to-json' ? 'bg-blue-600 text-white shadow' : 'text-sub hover:text-gray-900 dark:hover:text-white'}`}
             >
               YAML → JSON
             </button>
@@ -266,7 +266,7 @@ export default function YamlJsonConverter() {
             </button>
             <button
               onClick={() => { setDirection('json-to-yaml'); setInput('') }}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${direction === 'json-to-yaml' ? 'bg-blue-600 text-white shadow' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${direction === 'json-to-yaml' ? 'bg-blue-600 text-white shadow' : 'text-sub hover:text-gray-900 dark:hover:text-white'}`}
             >
               JSON → YAML
             </button>
@@ -275,13 +275,13 @@ export default function YamlJsonConverter() {
           <div className="flex items-center gap-2 ml-auto">
             <button
               onClick={loadSample}
-              className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             >
               {t('loadSample')}
             </button>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
             >
               <Upload className="w-4 h-4" />
               {t('uploadFile')}
@@ -295,7 +295,7 @@ export default function YamlJsonConverter() {
             />
             <button
               onClick={() => setShowOptions(!showOptions)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'}`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'}`}
               aria-expanded={showOptions}
             >
               <Settings className="w-4 h-4" />
@@ -306,9 +306,9 @@ export default function YamlJsonConverter() {
 
         {/* 옵션 패널 */}
         {showOptions && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="mt-3 pt-3 border-t border-line grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('indent')}</label>
+              <label className="block text-xs font-medium text-sub mb-1">{t('indent')}</label>
               <select
                 value={indent}
                 onChange={e => setIndent(Number(e.target.value))}
@@ -327,12 +327,12 @@ export default function YamlJsonConverter() {
                   onChange={e => setSortKeys(e.target.checked)}
                   className="accent-blue-600 w-4 h-4"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">{t('sortKeys')}</span>
+                <span className="text-sm text-body">{t('sortKeys')}</span>
               </label>
             </div>
             {direction === 'json-to-yaml' && (
               <div>
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('flowLevel')}</label>
+                <label className="block text-xs font-medium text-sub mb-1">{t('flowLevel')}</label>
                 <select
                   value={flowLevel}
                   onChange={e => setFlowLevel(Number(e.target.value))}
@@ -353,10 +353,10 @@ export default function YamlJsonConverter() {
       <div className="grid lg:grid-cols-2 gap-4">
         {/* 입력 */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-line flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{inputLabel}</span>
+              <FileText className="w-4 h-4 text-muted" />
+              <span className="text-sm font-medium text-body">{inputLabel}</span>
               {input && (
                 <span className="text-xs text-gray-400">{lineCount} {t('lines')}</span>
               )}
@@ -386,7 +386,7 @@ export default function YamlJsonConverter() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder={direction === 'yaml-to-json' ? t('yamlPlaceholder') : t('jsonPlaceholder')}
-            className="w-full h-96 px-4 py-3 font-mono text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none focus:outline-none"
+            className="w-full h-96 px-4 py-3 font-mono text-sm bg-surface text-gray-900 dark:text-gray-100 resize-none focus:outline-none"
             spellCheck={false}
             aria-label={`${inputLabel} input`}
           />
@@ -394,10 +394,10 @@ export default function YamlJsonConverter() {
 
         {/* 출력 */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-line flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{outputLabel}</span>
+              <FileText className="w-4 h-4 text-muted" />
+              <span className="text-sm font-medium text-body">{outputLabel}</span>
               {result.output && (
                 <span className="text-xs text-gray-400">{result.output.split('\n').length} {t('lines')}</span>
               )}
@@ -435,7 +435,7 @@ export default function YamlJsonConverter() {
             ) : result.output ? (
               <pre className="px-4 py-3 font-mono text-sm text-gray-900 dark:text-gray-100 whitespace-pre overflow-x-auto">{result.output}</pre>
             ) : (
-              <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">
+              <div className="flex items-center justify-center h-full text-faint text-sm">
                 {t('outputPlaceholder')}
               </div>
             )}
@@ -457,7 +457,7 @@ export default function YamlJsonConverter() {
           )}
           <span>{result.error ? t('invalidInput') : t('validInput')}</span>
           {!result.error && result.output && (
-            <span className="ml-auto text-xs text-gray-500 dark:text-gray-400">
+            <span className="ml-auto text-xs text-muted">
               {new Blob([result.output]).size.toLocaleString('ko-KR')} bytes
             </span>
           )}
@@ -471,16 +471,16 @@ export default function YamlJsonConverter() {
           className="w-full flex items-center justify-between"
           aria-expanded={showGuide}
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
         </button>
         {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 space-y-4 text-sm text-body">
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.features.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.features.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.features.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -488,7 +488,7 @@ export default function YamlJsonConverter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.useCases.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.useCases.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.useCases.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
@@ -496,7 +496,7 @@ export default function YamlJsonConverter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('guide.yamlTips.title')}</h3>
+              <h3 className="font-medium text-fg mb-2">{t('guide.yamlTips.title')}</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {(t.raw('guide.yamlTips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>

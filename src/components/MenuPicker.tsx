@@ -791,28 +791,28 @@ export default function MenuPicker() {
   const getCategoryLabelSafe = useCallback((cat: string): string => {
     return getCategoryLabel(cat)
   }, [getCategoryLabel])
-  const glassCard = 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
+  const glassCard = 'bg-surface border border-line rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
   const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode Selector */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-white/45 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08] rounded-xl p-1 gap-1">
+        <div className="inline-flex bg-surface border border-line rounded-xl p-1 gap-1">
           <button
             onClick={() => setMode('roulette')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'roulette'
-                ? 'bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 shadow-md'
-                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-surface text-orange-600 dark:text-orange-400 shadow-md'
+                : 'text-sub hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             <Zap className="w-4 h-4" />
@@ -822,8 +822,8 @@ export default function MenuPicker() {
             onClick={() => setMode('tournament')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'tournament'
-                ? 'bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 shadow-md'
-                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-surface text-purple-600 dark:text-purple-400 shadow-md'
+                : 'text-sub hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             <Trophy className="w-4 h-4" />
@@ -833,8 +833,8 @@ export default function MenuPicker() {
             onClick={() => setMode('top3')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'top3'
-                ? 'bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 shadow-md'
-                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-surface text-amber-600 dark:text-amber-400 shadow-md'
+                : 'text-sub hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             <Star className="w-4 h-4" />
@@ -845,7 +845,7 @@ export default function MenuPicker() {
 
       {/* Situation Chips */}
       <div className={`${glassCard} ${glassInset} p-4`}>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+        <p className="text-xs font-semibold text-muted mb-2 uppercase tracking-wider">
           {t('situation')}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -856,7 +856,7 @@ export default function MenuPicker() {
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
                 situation === s
                   ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md scale-105'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t(`situations.${s}`)}
@@ -867,7 +867,7 @@ export default function MenuPicker() {
 
       {/* Category Filter */}
       <div className={`${glassCard} ${glassInset} p-4`}>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+        <p className="text-xs font-semibold text-muted mb-2 uppercase tracking-wider">
           {t('categories')}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -878,7 +878,7 @@ export default function MenuPicker() {
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
                 selectedCategories.has(cat)
                   ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 ring-1 ring-blue-300 dark:ring-blue-700'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+                  : 'bg-soft text-faint'
               }`}
             >
               <span>{FOOD_DB[cat].emoji}</span>
@@ -886,7 +886,7 @@ export default function MenuPicker() {
             </button>
           ))}
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+        <p className="text-xs text-faint mt-2">
           {t('itemCount', { count: itemPool.length })}
         </p>
       </div>
@@ -894,7 +894,7 @@ export default function MenuPicker() {
       {/* Favorites */}
       {favorites.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-4`}>
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-muted mb-2 uppercase tracking-wider">
             {`⭐ ${t('favorites')}`}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -933,7 +933,7 @@ export default function MenuPicker() {
               <button
                 onClick={handleShuffle}
                 disabled={spinning}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-all text-sm font-medium"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-all text-sm font-medium"
               >
                 <Shuffle className="w-4 h-4" />
                 {t('shuffle')}
@@ -977,8 +977,8 @@ export default function MenuPicker() {
             <div className={`${glassCard} ${glassInset} p-6 text-center space-y-5`}>
               <div>
                 <Trophy className="w-12 h-12 mx-auto text-purple-500 mb-3" />
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('modeTournament')}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <h2 className="text-xl font-bold text-fg">{t('modeTournament')}</h2>
+                <p className="text-sm text-muted mt-1">
                   {t('tournamentDesc')}
                 </p>
               </div>
@@ -991,7 +991,7 @@ export default function MenuPicker() {
                     className={`px-6 py-3 rounded-xl text-lg font-bold transition-all ${
                       tournamentSize === size
                         ? 'bg-purple-500 text-white shadow-lg scale-105'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {t('round', { size })}
@@ -1035,7 +1035,7 @@ export default function MenuPicker() {
                       key={side}
                       onClick={() => pickTournamentWinner(side)}
                       disabled={!!tournamentPicked}
-                      className={`relative bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(168,85,247,0.10)] p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
+                      className={`relative bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(168,85,247,0.10)] p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
                         isPicked
                           ? 'ring-4 ring-purple-500 scale-105 shadow-xl shadow-purple-200 dark:shadow-purple-900/30'
                           : isOther
@@ -1044,10 +1044,10 @@ export default function MenuPicker() {
                       }`}
                     >
                       <span className="text-5xl sm:text-6xl">{item.emoji}</span>
-                      <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-center">
+                      <span className="text-lg sm:text-xl font-bold text-fg text-center">
                         {item.name}
                       </span>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-muted">
                         {getCategoryLabelSafe(findCategory(item))}
                       </span>
                       {isPicked && (
@@ -1071,11 +1071,11 @@ export default function MenuPicker() {
 
               {/* Progress bar */}
               <div className={`${glassCard} ${glassInset} p-4 -mt-8`}>
-                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
+                <div className="flex items-center justify-between text-xs text-muted mb-2">
                   <span>{t('progress')}</span>
                   <span>{Math.round((currentMatchup.matchNumber / currentMatchup.totalMatches) * 100)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-track rounded-full h-2">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-500"
                     style={{ width: `${((currentMatchup.matchNumber - 1) / currentMatchup.totalMatches) * 100}%` }}
@@ -1121,7 +1121,7 @@ export default function MenuPicker() {
                   {t('champion')}
                 </p>
                 <div className="text-6xl mb-4">{tournamentWinner.emoji}</div>
-                <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2">
+                <h2 className="text-3xl font-black text-fg mb-2">
                   {tournamentWinner.name}
                 </h2>
                 <span className="inline-block text-xs px-3 py-1 rounded-full bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 font-medium">
@@ -1165,11 +1165,11 @@ export default function MenuPicker() {
       {mode === 'top3' && (
         <div className="space-y-4">
           <div className="text-center">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+            <h2 className="text-lg font-bold text-fg flex items-center justify-center gap-2">
               <Star className="w-5 h-5 text-amber-500" />
               {t('modeTop3')}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted mt-1">
               {t('top3Desc')}
             </p>
           </div>
@@ -1183,7 +1183,7 @@ export default function MenuPicker() {
                 return (
                   <div
                     key={`${item.name}-${idx}`}
-                      className={`relative bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(245,158,11,0.10)] overflow-hidden transition-all duration-500 ${
+                      className={`relative bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(245,158,11,0.10)] overflow-hidden transition-all duration-500 ${
                       isSelected
                         ? 'ring-4 ring-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/30 scale-105'
                         : isUnselected
@@ -1200,10 +1200,10 @@ export default function MenuPicker() {
 
                     <div className="p-6 text-center">
                       <div className="text-5xl mb-3">{item.emoji}</div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      <h3 className="text-xl font-bold text-fg mb-2">
                         {item.name}
                       </h3>
-                      <span className="inline-block text-xs px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 mb-4">
+                      <span className="inline-block text-xs px-2.5 py-0.5 rounded-full bg-soft text-muted mb-4">
                         {getCategoryLabelSafe(cat)}
                       </span>
 
@@ -1277,7 +1277,7 @@ export default function MenuPicker() {
       {/* History */}
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-4`}>
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-muted mb-3 uppercase tracking-wider">
             {t('history')}
           </p>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
@@ -1287,7 +1287,7 @@ export default function MenuPicker() {
                 className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm ${
                   i === 0
                     ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 ring-1 ring-orange-300 dark:ring-orange-700'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                    : 'bg-soft text-sub'
                 }`}
               >
                 <span>{item.emoji}</span>
@@ -1329,7 +1329,7 @@ function ResultCard({
 }) {
   return (
     <div
-      className={`bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] overflow-hidden transition-all duration-500 ${
+      className={`bg-surface border border-line rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] overflow-hidden transition-all duration-500 ${
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
@@ -1338,7 +1338,7 @@ function ResultCard({
       </div>
       <div className="p-6 text-center">
         <div className="text-5xl mb-3">{item.emoji}</div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-2xl font-bold text-fg mb-4">
           {item.name}
         </h2>
         <div className="flex flex-wrap justify-center gap-2">
@@ -1360,7 +1360,7 @@ function ResultCard({
           </a>
           <button
             onClick={() => onCopy(item.name)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
           >
             {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
             {copiedId === 'result' ? t('copied') : t('copy')}
@@ -1381,9 +1381,9 @@ function ResultCard({
         </div>
         {eatenToday.length > 0 && (
           <div className="flex flex-wrap justify-center gap-1 mt-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400">{t('todayExcluded')}</span>
+            <span className="text-xs text-muted">{t('todayExcluded')}</span>
             {eatenToday.map(name => (
-              <span key={name} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full line-through">
+              <span key={name} className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full line-through">
                 {name}
               </span>
             ))}

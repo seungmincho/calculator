@@ -74,7 +74,7 @@ export default function SpiritLevelPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SpiritLevel />
@@ -86,17 +86,17 @@ export default function SpiritLevelPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             디지털 수평계·나침반이란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             디지털 수평계와 나침반은 스마트폰의 가속도 센서(자이로스코프)와 자기 센서(magnetometer)를 활용하여 기울기 각도와 방위각을 실시간으로 측정하는 도구입니다. 별도 앱 설치 없이 브라우저에서 바로 사용할 수 있어 가구 조립, DIY 인테리어, 캠핑, 선반 설치 등 다양한 상황에서 편리하게 활용할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             수평계·나침반 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>iOS 센서 권한 허용:</strong> iPhone·iPad에서는 브라우저의 센서 접근 권한을 허용해야 수평계가 작동합니다. 브라우저 설정에서 동작 및 방향 접근을 허용하세요.</li>
             <li><strong>나침반 캘리브레이션:</strong> 방위가 부정확하게 느껴지면 스마트폰을 8자 모양으로 천천히 흔들어 캘리브레이션하면 정확도가 높아집니다.</li>
             <li><strong>금속·전자기기 거리 유지:</strong> 주변 금속이나 전자기기는 자기 센서에 영향을 주므로, 정확한 방위 측정 시 거리를 두세요.</li>

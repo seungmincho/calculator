@@ -235,15 +235,15 @@ function FrameTable({ pages, result, currentStep, label, color }: {
         <table className={`border-collapse text-center text-xs sm:text-sm ${borderColor}`}>
           <thead>
             <tr>
-              <th className="px-2 py-1 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 sticky left-0 z-10 min-w-[60px]">참조</th>
+              <th className="px-2 py-1 border border-line-strong bg-subtle text-body sticky left-0 z-10 min-w-[60px]">참조</th>
               {pages.map((p, i) => (
                 <th
                   key={i}
                   data-step={i}
-                  className={`px-2 py-1 border border-gray-300 dark:border-gray-600 min-w-[36px] transition-colors ${
+                  className={`px-2 py-1 border border-line-strong min-w-[36px] transition-colors ${
                     i === currentStep ? 'bg-sky-200 dark:bg-sky-800 font-bold ring-2 ring-sky-500' :
-                    i < currentStep ? 'bg-gray-50 dark:bg-gray-700' : 'bg-gray-100/50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500'
-                  } text-gray-900 dark:text-white`}
+                    i < currentStep ? 'bg-subtle' : 'bg-gray-100/50 dark:bg-gray-800/50 text-faint'
+                  } text-fg`}
                 >
                   {p}
                 </th>
@@ -253,19 +253,19 @@ function FrameTable({ pages, result, currentStep, label, color }: {
           <tbody>
             {Array.from({ length: frameCount }, (_, row) => (
               <tr key={row}>
-                <td className="px-2 py-1 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-mono sticky left-0 z-10">
+                <td className="px-2 py-1 border border-line-strong bg-subtle text-sub font-mono sticky left-0 z-10">
                   F{row}
                 </td>
                 {pages.map((_, col) => {
                   if (col > currentStep) {
-                    return <td key={col} className="px-2 py-1 border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30" />
+                    return <td key={col} className="px-2 py-1 border border-line bg-gray-50/50 dark:bg-gray-800/30" />
                   }
                   const step = result.steps[col]
                   const val = step.frames[row]
                   const isCurrentCol = col === currentStep
                   const wasEvicted = step.evicted !== null && col > 0 && result.steps[col - 1]?.frames[row] === step.evicted && step.frames[row] !== step.evicted
 
-                  let cellBg = 'bg-white dark:bg-gray-800'
+                  let cellBg = 'bg-surface'
                   if (isCurrentCol && !step.isHit && step.frames[row] === pages[col]) {
                     cellBg = 'bg-red-100 dark:bg-red-900/30'
                   } else if (isCurrentCol && step.isHit && val === pages[col]) {
@@ -275,9 +275,9 @@ function FrameTable({ pages, result, currentStep, label, color }: {
                   return (
                     <td
                       key={col}
-                      className={`px-2 py-1 border border-gray-200 dark:border-gray-600 font-mono transition-colors ${cellBg} ${
+                      className={`px-2 py-1 border border-line font-mono transition-colors ${cellBg} ${
                         isCurrentCol ? 'ring-2 ring-sky-400 ring-inset' : ''
-                      } ${wasEvicted ? 'line-through text-red-400' : 'text-gray-900 dark:text-white'}`}
+                      } ${wasEvicted ? 'line-through text-red-400' : 'text-fg'}`}
                     >
                       {val !== null ? val : '-'}
                     </td>
@@ -287,18 +287,18 @@ function FrameTable({ pages, result, currentStep, label, color }: {
             ))}
             {/* Hit/Fault row */}
             <tr>
-              <td className="px-2 py-1 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold sticky left-0 z-10">
+              <td className="px-2 py-1 border border-line-strong bg-subtle text-sub font-semibold sticky left-0 z-10">
                 결과
               </td>
               {pages.map((_, col) => {
                 if (col > currentStep) {
-                  return <td key={col} className="px-2 py-1 border border-gray-200 dark:border-gray-700" />
+                  return <td key={col} className="px-2 py-1 border border-line" />
                 }
                 const step = result.steps[col]
                 return (
                   <td
                     key={col}
-                    className={`px-2 py-1 border border-gray-200 dark:border-gray-600 font-bold ${
+                    className={`px-2 py-1 border border-line font-bold ${
                       step.isHit
                         ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
                         : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
@@ -314,7 +314,7 @@ function FrameTable({ pages, result, currentStep, label, color }: {
       </div>
       {/* Step explanation */}
       {currentStep >= 0 && currentStep < result.steps.length && (
-        <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded px-3 py-1.5">
+        <div className="mt-2 text-xs text-sub bg-subtle rounded px-3 py-1.5">
           Step {currentStep + 1}: {result.steps[currentStep].reason}
         </div>
       )}
@@ -416,8 +416,8 @@ export default function MemoryManagementVisualizer() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">메모리 관리 시각화</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-fg">메모리 관리 시각화</h1>
+        <p className="text-sm text-muted mt-1">
           페이지 교체 알고리즘(FIFO, LRU, LFU, Optimal)을 프레임 테이블로 시각화하고 비교합니다
         </p>
       </div>
@@ -427,7 +427,7 @@ export default function MemoryManagementVisualizer() {
         <div className="grid sm:grid-cols-2 gap-4">
           {/* Page reference string */}
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">페이지 참조열 (공백/쉼표 구분)</label>
+            <label className="block text-sm font-medium text-body mb-1">페이지 참조열 (공백/쉼표 구분)</label>
             <input
               type="text"
               value={pageStr}
@@ -439,7 +439,7 @@ export default function MemoryManagementVisualizer() {
 
           {/* Frame count */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">프레임 수</label>
+            <label className="block text-sm font-medium text-body mb-1">프레임 수</label>
             <select
               value={frameCount}
               onChange={e => setFrameCount(Number(e.target.value))}
@@ -451,7 +451,7 @@ export default function MemoryManagementVisualizer() {
 
           {/* Algorithm */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">알고리즘</label>
+            <label className="block text-sm font-medium text-body mb-1">알고리즘</label>
             <select
               value={algorithm}
               onChange={e => { setAlgorithm(e.target.value as Algorithm); setCompareMode(false) }}
@@ -467,14 +467,14 @@ export default function MemoryManagementVisualizer() {
 
         {/* Presets */}
         <div>
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">프리셋</span>
+          <span className="text-xs font-medium text-muted mb-1 block">프리셋</span>
           <div className="flex flex-wrap gap-2">
             {PRESETS.map((p, i) => (
               <button
                 key={i}
                 onClick={() => { setPageStr(p.pages); setResults(null); setCurrentStep(-1) }}
                 title={p.desc}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                className="px-3 py-1.5 text-xs rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
               >
                 {p.label}
               </button>
@@ -502,24 +502,24 @@ export default function MemoryManagementVisualizer() {
 
           {/* Playback */}
           {isPlaying ? (
-            <button onClick={handlePause} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300" title="일시정지">
+            <button onClick={handlePause} className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body" title="일시정지">
               <Pause className="w-4 h-4" />
             </button>
           ) : (
-            <button onClick={handlePlay} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300" title="재생">
+            <button onClick={handlePlay} className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body" title="재생">
               <Play className="w-4 h-4" />
             </button>
           )}
-          <button onClick={handleStep} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300" title="한 단계">
+          <button onClick={handleStep} className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body" title="한 단계">
             <SkipForward className="w-4 h-4" />
           </button>
-          <button onClick={handleReset} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300" title="초기화">
+          <button onClick={handleReset} className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body" title="초기화">
             <RotateCcw className="w-4 h-4" />
           </button>
 
           {/* Speed slider */}
           <div className="flex items-center gap-2 ml-auto">
-            <span className="text-xs text-gray-500 dark:text-gray-400">속도</span>
+            <span className="text-xs text-muted">속도</span>
             <input
               type="range"
               min={100}
@@ -529,14 +529,14 @@ export default function MemoryManagementVisualizer() {
               onChange={e => setSpeed(1600 - Number(e.target.value))}
               className="w-20 accent-blue-600"
             />
-            <span className="text-xs text-gray-500 dark:text-gray-400 w-12">{speed}ms</span>
+            <span className="text-xs text-muted w-12">{speed}ms</span>
           </div>
         </div>
 
         {/* Step indicator */}
         {results && (
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-muted">
               Step: {currentStep < 0 ? '대기' : `${currentStep + 1} / ${pages.length}`}
             </span>
             <input
@@ -575,19 +575,19 @@ export default function MemoryManagementVisualizer() {
       {/* Comparison summary */}
       {results && compareMode && (
         <div className={`${glassCard} ${glassInset} p-5`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
             알고리즘 비교 요약
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-2 px-3 text-gray-600 dark:text-gray-400">알고리즘</th>
-                  <th className="text-center py-2 px-3 text-gray-600 dark:text-gray-400">페이지 폴트</th>
-                  <th className="text-center py-2 px-3 text-gray-600 dark:text-gray-400">페이지 히트</th>
-                  <th className="text-center py-2 px-3 text-gray-600 dark:text-gray-400">히트율</th>
-                  <th className="py-2 px-3 text-gray-600 dark:text-gray-400 w-1/3">히트율 바</th>
+                <tr className="border-b border-line">
+                  <th className="text-left py-2 px-3 text-sub">알고리즘</th>
+                  <th className="text-center py-2 px-3 text-sub">페이지 폴트</th>
+                  <th className="text-center py-2 px-3 text-sub">페이지 히트</th>
+                  <th className="text-center py-2 px-3 text-sub">히트율</th>
+                  <th className="py-2 px-3 text-sub w-1/3">히트율 바</th>
                 </tr>
               </thead>
               <tbody>
@@ -598,16 +598,16 @@ export default function MemoryManagementVisualizer() {
                   const best = Math.min(...Object.values(results).map(v => v.faults))
                   const isBest = r.faults === best
                   return (
-                    <tr key={algo} className={`border-b border-gray-100 dark:border-gray-700 ${isBest ? 'bg-emerald-50 dark:bg-emerald-900/20' : ''}`}>
-                      <td className="py-2 px-3 font-medium text-gray-900 dark:text-white">
+                    <tr key={algo} className={`border-b border-line ${isBest ? 'bg-emerald-50 dark:bg-emerald-900/20' : ''}`}>
+                      <td className="py-2 px-3 font-medium text-fg">
                         {ALGO_NAMES[algo]}
                         {isBest && <span className="ml-2 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">최소 폴트</span>}
                       </td>
                       <td className="text-center py-2 px-3 text-red-600 dark:text-red-400 font-mono font-bold">{r.faults}</td>
                       <td className="text-center py-2 px-3 text-emerald-600 dark:text-emerald-400 font-mono font-bold">{r.hits}</td>
-                      <td className="text-center py-2 px-3 text-gray-900 dark:text-white font-mono">{hitRate.toFixed(1)}%</td>
+                      <td className="text-center py-2 px-3 text-fg font-mono">{hitRate.toFixed(1)}%</td>
                       <td className="py-2 px-3">
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                        <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all ${
                               isBest ? 'bg-emerald-500' : 'bg-blue-500'
@@ -628,29 +628,29 @@ export default function MemoryManagementVisualizer() {
       {/* Single algorithm stats */}
       {results && !compareMode && results[algorithm] && (
         <div className={`${glassCard} ${glassInset} p-5`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">통계</h2>
+          <h2 className="text-lg font-semibold text-fg mb-3">통계</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">{pages.length}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">총 참조</div>
+              <div className="text-2xl font-bold text-fg">{pages.length}</div>
+              <div className="text-xs text-muted">총 참조</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">{results[algorithm].faults}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">페이지 폴트</div>
+              <div className="text-xs text-muted">페이지 폴트</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{results[algorithm].hits}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">페이지 히트</div>
+              <div className="text-xs text-muted">페이지 히트</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {((results[algorithm].hits / pages.length) * 100).toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">히트율</div>
+              <div className="text-xs text-muted">히트율</div>
             </div>
           </div>
           <div className="mt-3">
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+            <div className="w-full bg-track rounded-full h-3 overflow-hidden">
               <div
                 className="h-full bg-emerald-500 rounded-full transition-all"
                 style={{ width: `${(results[algorithm].hits / pages.length) * 100}%` }}
@@ -668,15 +668,15 @@ export default function MemoryManagementVisualizer() {
         >
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">가이드</span>
+            <span className="text-lg font-semibold text-fg">가이드</span>
           </div>
           {guideOpen ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
         </button>
         {guideOpen && (
-          <div className="px-5 pb-5 space-y-6 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          <div className="px-5 pb-5 space-y-6 text-sm text-body leading-relaxed">
             {/* Section 1 */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">페이지 교체란?</h3>
+              <h3 className="font-semibold text-fg mb-2">페이지 교체란?</h3>
               <p>
                 운영체제는 프로세스의 가상 주소 공간을 페이지 단위로 나누고, 물리 메모리(RAM)의 프레임에 매핑합니다.
                 프로세스가 참조하는 페이지가 메모리에 없으면 <strong>페이지 폴트</strong>가 발생하고,
@@ -688,41 +688,41 @@ export default function MemoryManagementVisualizer() {
 
             {/* Section 2: Algorithm comparison */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">알고리즘 비교</h3>
+              <h3 className="font-semibold text-fg mb-2">알고리즘 비교</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs border-collapse">
                   <thead>
-                    <tr className="bg-gray-50 dark:bg-gray-700">
-                      <th className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 text-left">알고리즘</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 text-left">교체 기준</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 text-left">장점</th>
-                      <th className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 text-left">단점</th>
+                    <tr className="bg-subtle">
+                      <th className="border border-line px-2 py-1.5 text-left">알고리즘</th>
+                      <th className="border border-line px-2 py-1.5 text-left">교체 기준</th>
+                      <th className="border border-line px-2 py-1.5 text-left">장점</th>
+                      <th className="border border-line px-2 py-1.5 text-left">단점</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 font-medium">FIFO</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">가장 먼저 들어온 페이지</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">구현 간단 (큐)</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">Belady 모순 발생 가능</td>
+                      <td className="border border-line px-2 py-1.5 font-medium">FIFO</td>
+                      <td className="border border-line px-2 py-1.5">가장 먼저 들어온 페이지</td>
+                      <td className="border border-line px-2 py-1.5">구현 간단 (큐)</td>
+                      <td className="border border-line px-2 py-1.5">Belady 모순 발생 가능</td>
                     </tr>
                     <tr>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 font-medium">LRU</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">가장 오래 전 사용된 페이지</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">시간 지역성 활용, 실용적</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">타임스탬프/스택 오버헤드</td>
+                      <td className="border border-line px-2 py-1.5 font-medium">LRU</td>
+                      <td className="border border-line px-2 py-1.5">가장 오래 전 사용된 페이지</td>
+                      <td className="border border-line px-2 py-1.5">시간 지역성 활용, 실용적</td>
+                      <td className="border border-line px-2 py-1.5">타임스탬프/스택 오버헤드</td>
                     </tr>
                     <tr>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 font-medium">LFU</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">사용 빈도 가장 낮은 페이지</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">빈도 지역성 활용</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">과거 빈도에 치우침, 초기 적응 느림</td>
+                      <td className="border border-line px-2 py-1.5 font-medium">LFU</td>
+                      <td className="border border-line px-2 py-1.5">사용 빈도 가장 낮은 페이지</td>
+                      <td className="border border-line px-2 py-1.5">빈도 지역성 활용</td>
+                      <td className="border border-line px-2 py-1.5">과거 빈도에 치우침, 초기 적응 느림</td>
                     </tr>
                     <tr>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5 font-medium">Optimal</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">미래에 가장 늦게 사용될 페이지</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">최소 폴트 보장 (이론적 하한)</td>
-                      <td className="border border-gray-200 dark:border-gray-600 px-2 py-1.5">미래 예측 필요 → 실제 구현 불가</td>
+                      <td className="border border-line px-2 py-1.5 font-medium">Optimal</td>
+                      <td className="border border-line px-2 py-1.5">미래에 가장 늦게 사용될 페이지</td>
+                      <td className="border border-line px-2 py-1.5">최소 폴트 보장 (이론적 하한)</td>
+                      <td className="border border-line px-2 py-1.5">미래 예측 필요 → 실제 구현 불가</td>
                     </tr>
                   </tbody>
                 </table>
@@ -731,7 +731,7 @@ export default function MemoryManagementVisualizer() {
 
             {/* Section 3: Belady's Anomaly */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Belady의 모순 (Belady&apos;s Anomaly)</h3>
+              <h3 className="font-semibold text-fg mb-2">Belady의 모순 (Belady&apos;s Anomaly)</h3>
               <p className="mb-2">
                 직관적으로 프레임 수를 늘리면 폴트가 줄어야 합니다. 하지만 <strong>FIFO</strong>에서는 프레임 수를 늘렸는데
                 오히려 폴트가 <strong>증가</strong>하는 경우가 있습니다. 이를 Belady의 모순이라 합니다.
@@ -751,18 +751,18 @@ export default function MemoryManagementVisualizer() {
 
             {/* Section 4: FAQ */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">자주 묻는 질문</h3>
+              <h3 className="font-semibold text-fg mb-2">자주 묻는 질문</h3>
               <div className="space-y-3">
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q. 실제 운영체제에서는 어떤 알고리즘을 쓰나요?</p>
+                  <p className="font-medium text-fg">Q. 실제 운영체제에서는 어떤 알고리즘을 쓰나요?</p>
                   <p>대부분 LRU의 근사 알고리즘을 사용합니다. Linux는 Active/Inactive 리스트 기반의 이중 LRU를, Windows는 Working Set + Standby List를 사용합니다. 순수 LRU는 오버헤드가 커서 참조 비트(Clock 알고리즘)로 근사합니다.</p>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q. Optimal 알고리즘은 왜 실제로 쓸 수 없나요?</p>
+                  <p className="font-medium text-fg">Q. Optimal 알고리즘은 왜 실제로 쓸 수 없나요?</p>
                   <p>미래에 어떤 페이지가 참조될지 미리 알아야 하기 때문입니다. 그러나 다른 알고리즘의 성능 상한(이론적 최적)으로 비교 기준에 활용됩니다.</p>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Q. 히트율이 높을수록 좋은 건가요?</p>
+                  <p className="font-medium text-fg">Q. 히트율이 높을수록 좋은 건가요?</p>
                   <p>네. 히트율이 높으면 디스크 I/O가 줄어 프로세스 실행 속도가 빨라집니다. 일반적으로 90% 이상의 히트율이 기대되며, 참조의 지역성(locality)이 높을수록 히트율이 올라갑니다.</p>
                 </div>
               </div>

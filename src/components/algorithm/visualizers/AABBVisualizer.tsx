@@ -144,8 +144,8 @@ export default function AABBVisualizer() {
       {/* Title bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-0.5 text-xs rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
               {tHub('categories.collision')}
@@ -159,7 +159,7 @@ export default function AABBVisualizer() {
       <div className="grid xl:grid-cols-5 gap-6">
         {/* Left: visualization */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 space-y-4">
+          <div className="bg-surface border border-line rounded-2xl p-4 space-y-4">
             {/* Controls */}
             <div className="flex justify-center">
               <VisualizerControls
@@ -189,8 +189,8 @@ export default function AABBVisualizer() {
           </div>
 
           {/* Projection summary */}
-          <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl p-4 space-y-2">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div className="bg-surface border border-line rounded-xl p-4 space-y-2">
+            <h3 className="text-sm font-medium text-body">
               {t('projection.title')}
             </h3>
             {fullResult.steps.map((step, i) => {
@@ -203,7 +203,7 @@ export default function AABBVisualizer() {
                     visible ? 'opacity-100' : 'opacity-30'
                   }`}
                 >
-                  <span className="font-medium text-gray-600 dark:text-gray-400 w-10">{axisLabel}</span>
+                  <span className="font-medium text-sub w-10">{axisLabel}</span>
                   <span className="text-blue-600 dark:text-blue-400">
                     A[{fmt(step.rangeA.min)}..{fmt(step.rangeA.max)}]
                   </span>
@@ -234,19 +234,19 @@ export default function AABBVisualizer() {
           />
 
           {/* Parameters (collapsible) */}
-          <details className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/30 rounded-xl overflow-hidden">
-            <summary className="px-4 py-3 cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-700/30">
+          <details className="bg-surface border border-line rounded-xl overflow-hidden">
+            <summary className="px-4 py-3 cursor-pointer text-sm font-medium text-body hover:bg-white/30 dark:hover:bg-gray-700/30">
               ⚙️ {t('params.title')}
             </summary>
             <div className="px-4 pb-4 grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <h4 className="text-sm font-medium text-blue-600 dark:text-blue-400">{t('params.boxA')}</h4>
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-sub">
                   {t('params.width')}
                   <input type="range" min={40} max={200} value={widthA} onChange={e => updateBoxASize(Number(e.target.value), heightA)} className="flex-1 accent-blue-600" />
                   <span className="w-8 text-center">{widthA}</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-sub">
                   {t('params.height')}
                   <input type="range" min={40} max={200} value={heightA} onChange={e => updateBoxASize(widthA, Number(e.target.value))} className="flex-1 accent-blue-600" />
                   <span className="w-8 text-center">{heightA}</span>
@@ -254,12 +254,12 @@ export default function AABBVisualizer() {
               </div>
               <div className="space-y-2">
                 <h4 className="text-sm font-medium text-amber-600 dark:text-amber-400">{t('params.boxB')}</h4>
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-sub">
                   {t('params.width')}
                   <input type="range" min={40} max={200} value={widthB} onChange={e => updateBoxBSize(Number(e.target.value), heightB)} className="flex-1 accent-amber-600" />
                   <span className="w-8 text-center">{widthB}</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-sub">
                   {t('params.height')}
                   <input type="range" min={40} max={200} value={heightB} onChange={e => updateBoxBSize(widthB, Number(e.target.value))} className="flex-1 accent-amber-600" />
                   <span className="w-8 text-center">{heightB}</span>
@@ -273,8 +273,8 @@ export default function AABBVisualizer() {
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
             {/* Tabs */}
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
-              <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="bg-surface border border-line rounded-2xl overflow-hidden">
+              <div className="flex border-b border-line">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
@@ -282,7 +282,7 @@ export default function AABBVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
                     {tab.icon} {tab.label}
@@ -293,7 +293,7 @@ export default function AABBVisualizer() {
               <div className="p-4 max-h-[70vh] overflow-y-auto">
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('stepsGuide.description')}</p>
+                    <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
 
                     {/* Step 1: X axis */}
                     <div
@@ -301,7 +301,7 @@ export default function AABBVisualizer() {
                         currentStep === 0
                           ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
                           : currentStep > 0
-                            ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                            ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                             : 'border-gray-200/30 dark:border-gray-700/30 opacity-50'
                       }`}
                       onClick={() => setCurrentStep(0)}
@@ -312,11 +312,11 @@ export default function AABBVisualizer() {
                             ? fullResult.steps[0].isSeparating
                               ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+                            : 'bg-track text-gray-500'
                         }`}>
                           1
                         </span>
-                        <span className="text-xs text-gray-700 dark:text-gray-300">
+                        <span className="text-xs text-body">
                           {t('stepsGuide.checkX')}
                         </span>
                         {currentStep >= 0 && (
@@ -337,7 +337,7 @@ export default function AABBVisualizer() {
                         currentStep === 1
                           ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
                           : currentStep > 1
-                            ? 'border-gray-200/50 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30'
+                            ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
                             : 'border-gray-200/30 dark:border-gray-700/30 opacity-50'
                       }`}
                       onClick={() => setCurrentStep(1)}
@@ -348,11 +348,11 @@ export default function AABBVisualizer() {
                             ? fullResult.steps[1].isSeparating
                               ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+                            : 'bg-track text-gray-500'
                         }`}>
                           2
                         </span>
-                        <span className="text-xs text-gray-700 dark:text-gray-300">
+                        <span className="text-xs text-body">
                           {t('stepsGuide.checkY')}
                         </span>
                         {currentStep >= 1 && (

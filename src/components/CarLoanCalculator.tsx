@@ -208,10 +208,10 @@ export default function CarLoanCalculator() {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
         </div>
@@ -241,7 +241,7 @@ export default function CarLoanCalculator() {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-blue-600" />
             할부 정보 입력
           </h2>
@@ -249,7 +249,7 @@ export default function CarLoanCalculator() {
           <div className="space-y-6">
             {/* 차량 가격 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Car className="w-4 h-4 inline mr-1" />
                 차량 가격 (원)
               </label>
@@ -261,7 +261,7 @@ export default function CarLoanCalculator() {
                   setCarPrice(value)
                 }}
                 placeholder="30000000"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
               {carPrice && (
                 <p className="text-sm text-gray-500 mt-1">
@@ -272,7 +272,7 @@ export default function CarLoanCalculator() {
 
             {/* 선수금 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <DollarSign className="w-4 h-4 inline mr-1" />
                 선수금 (원)
               </label>
@@ -284,7 +284,7 @@ export default function CarLoanCalculator() {
                   setDownPayment(value)
                 }}
                 placeholder="3000000"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
               {downPayment && (
                 <p className="text-sm text-gray-500 mt-1">
@@ -295,14 +295,14 @@ export default function CarLoanCalculator() {
 
             {/* 할부 기간 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Calendar className="w-4 h-4 inline mr-1" />
                 할부 기간 (개월)
               </label>
               <select
                 value={loanTerm}
                 onChange={(e) => setLoanTerm(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               >
                 <option value="12">12개월 (1년)</option>
                 <option value="24">24개월 (2년)</option>
@@ -316,7 +316,7 @@ export default function CarLoanCalculator() {
 
             {/* 금리 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 <Percent className="w-4 h-4 inline mr-1" />
                 연 금리 (%)
               </label>
@@ -327,7 +327,7 @@ export default function CarLoanCalculator() {
                 step="0.1"
                 min="0"
                 max="30"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
               />
             </div>
           </div>
@@ -400,31 +400,31 @@ export default function CarLoanCalculator() {
 
               {/* 할부 정보 요약 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                <h4 className="text-lg font-bold text-fg mb-4">
                   할부 정보 요약
                 </h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">차량 가격</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">차량 가격</span>
+                    <p className="font-semibold text-fg">
                       {formatCurrency(parseFloat(carPrice))}원
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">선수금</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">선수금</span>
+                    <p className="font-semibold text-fg">
                       {formatCurrency(parseFloat(downPayment) || 0)}원
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">할부 원금</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">할부 원금</span>
+                    <p className="font-semibold text-fg">
                       {formatCurrency(parseFloat(carPrice) - (parseFloat(downPayment) || 0))}원
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-gray-400">할부 기간</span>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <span className="text-sub">할부 기간</span>
+                    <p className="font-semibold text-fg">
                       {loanTerm}개월
                     </p>
                   </div>
@@ -436,7 +436,7 @@ export default function CarLoanCalculator() {
           {!result && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
               <Car className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sub">
                 차량 가격과 할부 조건을 입력하면<br />
                 할부 계산 결과가 표시됩니다
               </p>
@@ -448,16 +448,16 @@ export default function CarLoanCalculator() {
 
       {/* 할부 가이드 */}
       <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h3 className="text-2xl font-bold text-fg mb-6">
           💡 자동차 할부 가이드
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               할부 선택 시 고려사항
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• 월 소득의 30% 이내로 월납입금 설정</li>
               <li>• 선수금이 많을수록 월납입금 감소</li>
               <li>• 할부 기간이 길수록 총 이자 증가</li>
@@ -466,10 +466,10 @@ export default function CarLoanCalculator() {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="text-lg font-semibold text-fg mb-3">
               할부 금리 현황 (2024년 기준)
             </h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-body">
               <li>• 신차 할부: 연 3~7%</li>
               <li>• 중고차 할부: 연 5~10%</li>
               <li>• 캐피탈 할부: 연 7~15%</li>

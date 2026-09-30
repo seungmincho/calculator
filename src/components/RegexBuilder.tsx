@@ -276,27 +276,27 @@ export default function RegexBuilder() {
     if (!flags.has('g')) setFlags(prev => new Set([...prev, 'g']))
   }, [flags])
 
-  const inputBase = 'w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono text-sm'
+  const inputBase = 'w-full px-3 py-2 border rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono text-sm'
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Mode toggle */}
       <div className="flex gap-2">
         <button
           onClick={() => setMode('match')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'match' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'match' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
         >
           {t('matchMode')}
         </button>
         <button
           onClick={() => setMode('replace')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'replace' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'replace' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
         >
           {t('replaceMode')}
         </button>
@@ -306,7 +306,7 @@ export default function RegexBuilder() {
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex flex-col sm:flex-row gap-3 items-start">
           <div className="flex-1 min-w-0">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('pattern')}</label>
+            <label className="block text-sm font-medium text-body mb-1">{t('pattern')}</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-base select-none">/</span>
               <input
@@ -314,7 +314,7 @@ export default function RegexBuilder() {
                 value={pattern}
                 onChange={e => setPattern(e.target.value)}
                 placeholder="\\d{3}-\\d{4}-\\d{4}"
-                className={`${inputBase} pl-7 pr-7 ${regexError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 dark:border-gray-600'}`}
+                className={`${inputBase} pl-7 pr-7 ${regexError ? 'border-red-400 focus:ring-red-400' : 'border-line-strong'}`}
                 spellCheck={false}
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-base select-none">/</span>
@@ -325,14 +325,14 @@ export default function RegexBuilder() {
             )}
           </div>
           <div className="flex-shrink-0">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('flags')}</label>
+            <label className="block text-sm font-medium text-body mb-1">{t('flags')}</label>
             <div className="flex gap-1">
               {flagList.map(({ flag, label, title }) => (
                 <button
                   key={flag}
                   title={title}
                   onClick={() => toggleFlag(flag)}
-                  className={`w-8 h-9 rounded text-sm font-mono font-bold transition-colors ${flags.has(flag) ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+                  className={`w-8 h-9 rounded text-sm font-mono font-bold transition-colors ${flags.has(flag) ? 'bg-blue-600 text-white' : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'}`}
                 >
                   {label}
                 </button>
@@ -343,7 +343,7 @@ export default function RegexBuilder() {
 
         {/* Copy regex */}
         {pattern && (
-          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg font-mono text-sm text-gray-700 dark:text-gray-200">
+          <div className="flex items-center gap-2 p-3 bg-subtle rounded-lg font-mono text-sm text-body">
             <span className="flex-1 break-all">/{pattern}/{flagString}</span>
             <button
               onClick={() => copyToClipboard(`/${pattern}/${flagString}`, 'regex')}
@@ -359,20 +359,20 @@ export default function RegexBuilder() {
       {/* Test area + results */}
       <div className="grid lg:grid-cols-2 gap-6">
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="font-semibold text-gray-900 dark:text-white">{t('testText')}</h2>
+          <h2 className="font-semibold text-fg">{t('testText')}</h2>
           <textarea
             value={testText}
             onChange={e => setTestText(e.target.value)}
             rows={6}
             placeholder="테스트할 텍스트를 입력하세요..."
-            className={`${inputBase} border-gray-300 dark:border-gray-600 resize-none`}
+            className={`${inputBase} border-line-strong resize-none`}
           />
           {/* Highlighted output */}
           <div>
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('matches')} ({matches.length > 0 ? `${matches.length}${t('matchCount')}` : t('noMatch')})</div>
+            <div className="text-xs font-medium text-muted mb-1">{t('matches')} ({matches.length > 0 ? `${matches.length}${t('matchCount')}` : t('noMatch')})</div>
             {testText && (
               <div
-                className="text-sm text-gray-800 dark:text-gray-200 font-mono whitespace-pre-wrap break-all p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 min-h-[48px]"
+                className="text-sm text-body font-mono whitespace-pre-wrap break-all p-3 bg-subtle rounded-lg border border-line min-h-[48px]"
                 dangerouslySetInnerHTML={{ __html: highlightedHtml }}
               />
             )}
@@ -380,17 +380,17 @@ export default function RegexBuilder() {
 
           {/* Replace mode */}
           {mode === 'replace' && (
-            <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('replaceWith')}</label>
+            <div className="space-y-2 pt-2 border-t border-line">
+              <label className="block text-sm font-medium text-body">{t('replaceWith')}</label>
               <input
                 type="text"
                 value={replaceWith}
                 onChange={e => setReplaceWith(e.target.value)}
                 placeholder="$1, $2 로 그룹 참조 가능"
-                className={`${inputBase} border-gray-300 dark:border-gray-600`}
+                className={`${inputBase} border-line-strong`}
               />
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('result')}</div>
-              <div className="text-sm text-gray-800 dark:text-gray-200 font-mono whitespace-pre-wrap break-all p-3 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800 min-h-[48px]">
+              <div className="text-xs font-medium text-muted mb-1">{t('result')}</div>
+              <div className="text-sm text-body font-mono whitespace-pre-wrap break-all p-3 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800 min-h-[48px]">
                 {replaceResult}
               </div>
               <button
@@ -406,27 +406,27 @@ export default function RegexBuilder() {
 
         {/* Match results table */}
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('matches')}</h2>
+          <h2 className="font-semibold text-fg mb-4">{t('matches')}</h2>
           {matches.length === 0 ? (
-            <div className="text-sm text-gray-400 dark:text-gray-500 text-center py-12">{t('noMatch')}</div>
+            <div className="text-sm text-faint text-center py-12">{t('noMatch')}</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-3">{t('index')}</th>
-                    <th className="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-3">{t('value')}</th>
-                    <th className="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2">{t('groups')}</th>
+                  <tr className="border-b border-line">
+                    <th className="text-left text-xs font-medium text-muted pb-2 pr-3">{t('index')}</th>
+                    <th className="text-left text-xs font-medium text-muted pb-2 pr-3">{t('value')}</th>
+                    <th className="text-left text-xs font-medium text-muted pb-2">{t('groups')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                   {matches.map((m, i) => (
                     <tr key={i}>
-                      <td className="py-1.5 pr-3 text-gray-500 dark:text-gray-400 font-mono">{m.index}</td>
-                      <td className="py-1.5 pr-3 font-mono text-gray-900 dark:text-white max-w-[140px] truncate">
+                      <td className="py-1.5 pr-3 text-muted font-mono">{m.index}</td>
+                      <td className="py-1.5 pr-3 font-mono text-fg max-w-[140px] truncate">
                         <span className="bg-yellow-100 dark:bg-yellow-900 rounded px-1">{m.value}</span>
                       </td>
-                      <td className="py-1.5 font-mono text-gray-600 dark:text-gray-300 text-xs">
+                      <td className="py-1.5 font-mono text-sub text-xs">
                         {m.groups.length > 0 ? m.groups.map((g, gi) => (
                           <span key={gi} className="mr-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded px-1">{g || '(없음)'}</span>
                         )) : '-'}
@@ -442,18 +442,18 @@ export default function RegexBuilder() {
 
       {/* Common patterns */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('commonPatterns')}</h2>
+        <h2 className="font-semibold text-fg mb-4">{t('commonPatterns')}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {COMMON_PATTERNS.map(({ labelKey, pattern: p }) => (
             <button
               key={labelKey}
               onClick={() => loadPattern(p)}
-              className="text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors group"
+              className="text-left p-3 rounded-lg border border-line hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors group"
             >
-              <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-300">
+              <div className="text-sm font-medium text-fg group-hover:text-blue-700 dark:group-hover:text-blue-300">
                 {t(labelKey as Parameters<typeof t>[0])}
               </div>
-              <div className="text-xs font-mono text-gray-400 dark:text-gray-500 mt-1 truncate">{p}</div>
+              <div className="text-xs font-mono text-faint mt-1 truncate">{p}</div>
             </button>
           ))}
         </div>

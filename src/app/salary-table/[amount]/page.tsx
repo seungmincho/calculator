@@ -88,23 +88,23 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-          <nav aria-label="Breadcrumb" className="text-sm text-gray-500 dark:text-gray-400">
+          <nav aria-label="Breadcrumb" className="text-sm text-muted">
             <Link href="/" className="hover:text-blue-600">홈</Link><span className="mx-2">/</span>
             <Link href="/salary-table/" className="hover:text-blue-600">연봉 실수령액 표</Link><span className="mx-2">/</span>
-            <span aria-current="page" className="text-gray-700 dark:text-gray-200">연봉 {salaryLabel(man)}</span>
+            <span aria-current="page" className="text-body">연봉 {salaryLabel(man)}</span>
           </nav>
 
           <header className={`${glassCard} p-6 sm:p-8`}>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">연봉 {salaryLabel(man)} 실수령액 <span className="text-blue-600 dark:text-blue-400">{YEAR}</span></h1>
-            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">월 실수령액 (부양가족 1인 · 비과세 20만원)</p>
-            <p className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">{won(r.netMonthly)}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-fg">연봉 {salaryLabel(man)} 실수령액 <span className="text-blue-600 dark:text-blue-400">{YEAR}</span></h1>
+            <p className="mt-4 text-sm text-muted">월 실수령액 (부양가족 1인 · 비과세 20만원)</p>
+            <p className="text-4xl sm:text-5xl font-extrabold text-fg tracking-tight">{won(r.netMonthly)}</p>
             <dl className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-              <div><dt className="text-gray-500 dark:text-gray-400">세전 월급</dt><dd className="font-semibold text-gray-900 dark:text-white">{won(monthlyGross)}</dd></div>
-              <div><dt className="text-gray-500 dark:text-gray-400">4대보험(월)</dt><dd className="font-semibold text-gray-900 dark:text-white">-{won(insMonthly)}</dd></div>
-              <div><dt className="text-gray-500 dark:text-gray-400">세금(월)</dt><dd className="font-semibold text-gray-900 dark:text-white">-{won(taxMonthly)}</dd></div>
-              <div><dt className="text-gray-500 dark:text-gray-400">연 실수령액</dt><dd className="font-semibold text-gray-900 dark:text-white">{won(r.netAnnual)}</dd></div>
+              <div><dt className="text-muted">세전 월급</dt><dd className="font-semibold text-fg">{won(monthlyGross)}</dd></div>
+              <div><dt className="text-muted">4대보험(월)</dt><dd className="font-semibold text-fg">-{won(insMonthly)}</dd></div>
+              <div><dt className="text-muted">세금(월)</dt><dd className="font-semibold text-fg">-{won(taxMonthly)}</dd></div>
+              <div><dt className="text-muted">연 실수령액</dt><dd className="font-semibold text-fg">{won(r.netAnnual)}</dd></div>
             </dl>
             <Link href={calcLink(man)} className="mt-6 inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700">
               내 조건으로 다시 계산 →
@@ -112,7 +112,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
           </header>
 
           <section className={`${glassCard} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">월 공제 내역</h2>
+            <h2 className="text-lg font-semibold text-fg mb-3">월 공제 내역</h2>
             <table className="w-full text-sm">
               <tbody className="divide-y divide-black/5 dark:divide-white/5">
                 {[
@@ -124,25 +124,25 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                   ['지방소득세', d.localIncomeTax, '소득세의 10%'],
                 ].map(([name, annual, note]) => (
                   <tr key={name as string}>
-                    <th scope="row" className={`${cell} text-left font-medium text-gray-700 dark:text-gray-300`}>{name}</th>
-                    <td className={`${cell} text-xs text-gray-500 dark:text-gray-400`}>{note}</td>
-                    <td className={`${cell} text-right text-gray-900 dark:text-white`}>{won((annual as number) / 12)}</td>
+                    <th scope="row" className={`${cell} text-left font-medium text-body`}>{name}</th>
+                    <td className={`${cell} text-xs text-muted`}>{note}</td>
+                    <td className={`${cell} text-right text-fg`}>{won((annual as number) / 12)}</td>
                   </tr>
                 ))}
                 <tr className="font-semibold">
-                  <th scope="row" className={`${cell} text-left text-gray-900 dark:text-white`}>공제 합계</th>
-                  <td className={`${cell} text-xs text-gray-500 dark:text-gray-400`}>{((d.total / r.gross) * 100).toFixed(1)}%</td>
-                  <td className={`${cell} text-right text-gray-900 dark:text-white`}>{won(d.total / 12)}</td>
+                  <th scope="row" className={`${cell} text-left text-fg`}>공제 합계</th>
+                  <td className={`${cell} text-xs text-muted`}>{((d.total / r.gross) * 100).toFixed(1)}%</td>
+                  <td className={`${cell} text-right text-fg`}>{won(d.total / 12)}</td>
                 </tr>
               </tbody>
             </table>
           </section>
 
           <section className={`${glassCard} p-6 overflow-x-auto`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">부양가족·비과세별 월 실수령액</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">가족 수는 본인 포함, 자녀는 8~20세 기준(자녀세액공제). 비과세는 월 식대 등.</p>
+            <h2 className="text-lg font-semibold text-fg mb-1">부양가족·비과세별 월 실수령액</h2>
+            <p className="text-xs text-muted mb-3">가족 수는 본인 포함, 자녀는 8~20세 기준(자녀세액공제). 비과세는 월 식대 등.</p>
             <table className="w-full text-sm text-right whitespace-nowrap">
-              <thead className="text-xs text-gray-500 dark:text-gray-400 border-b border-black/10 dark:border-white/10">
+              <thead className="text-xs text-muted border-b border-black/10 dark:border-white/10">
                 <tr>
                   <th scope="col" className={`${cell} text-left`}>가족 구성</th>
                   {NON_TAXABLE.map(nt => <th key={nt} scope="col" className={cell}>비과세 {nt === 0 ? '없음' : manwon(nt)}</th>)}
@@ -151,12 +151,12 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
               <tbody className="divide-y divide-black/5 dark:divide-white/5">
                 {FAMILY.map(f => (
                   <tr key={f.label}>
-                    <th scope="row" className={`${cell} text-left font-medium text-gray-700 dark:text-gray-300`}>{f.label}</th>
+                    <th scope="row" className={`${cell} text-left font-medium text-body`}>{f.label}</th>
                     {NON_TAXABLE.map(nt => {
                       const opt = { dependents: f.dependents, children: f.children, nonTaxableMonthly: nt }
                       const base = f.dependents === BASE.dependents && nt === BASE.nonTaxableMonthly
                       return (
-                        <td key={nt} className={`${cell} ${base ? 'font-bold text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-white'}`}>
+                        <td key={nt} className={`${cell} ${base ? 'font-bold text-blue-700 dark:text-blue-300' : 'text-fg'}`}>
                           <Link href={calcLink(man, opt)} className="hover:underline">{won(net(man, opt).netMonthly)}</Link>
                         </td>
                       )
@@ -168,9 +168,9 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
           </section>
 
           <section className={`${glassCard} p-6 overflow-x-auto`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">인근 연봉과 비교</h2>
+            <h2 className="text-lg font-semibold text-fg mb-3">인근 연봉과 비교</h2>
             <table className="w-full text-sm text-right whitespace-nowrap">
-              <thead className="text-xs text-gray-500 dark:text-gray-400 border-b border-black/10 dark:border-white/10">
+              <thead className="text-xs text-muted border-b border-black/10 dark:border-white/10">
                 <tr>
                   <th scope="col" className={`${cell} text-left`}>연봉</th>
                   <th scope="col" className={cell}>세전 월급</th>
@@ -187,8 +187,8 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                       <th scope="row" className={`${cell} text-left`}>
                         <Link href={isBracket ? `/salary-table/${m}/` : calcLink(m)} className="text-blue-700 dark:text-blue-300 hover:underline">{salaryLabel(m)}</Link>
                       </th>
-                      <td className={`${cell} text-gray-700 dark:text-gray-300`}>{won((m * 10_000) / 12)}</td>
-                      <td className={`${cell} text-gray-900 dark:text-white`}>{won(n.netMonthly)}</td>
+                      <td className={`${cell} text-body`}>{won((m * 10_000) / 12)}</td>
+                      <td className={`${cell} text-fg`}>{won(n.netMonthly)}</td>
                       <td className={`${cell} ${n.netMonthly >= r.netMonthly ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
                         {m === man ? '—' : `${n.netMonthly >= r.netMonthly ? '+' : ''}${won(n.netMonthly - r.netMonthly)}`}
                       </td>
@@ -200,12 +200,12 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
           </section>
 
           <section className={`${glassCard} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">자주 묻는 질문</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">자주 묻는 질문</h2>
             <dl className="space-y-4">
               {faq.map(f => (
                 <div key={f.q}>
-                  <dt className="font-medium text-gray-900 dark:text-white">Q. {f.q}</dt>
-                  <dd className="text-sm text-gray-700 dark:text-gray-300 mt-1 leading-relaxed">{f.a}</dd>
+                  <dt className="font-medium text-fg">Q. {f.q}</dt>
+                  <dd className="text-sm text-body mt-1 leading-relaxed">{f.a}</dd>
                 </div>
               ))}
             </dl>
@@ -213,12 +213,12 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
 
           <nav className="flex flex-wrap justify-between gap-3 text-sm">
             <span>{prev && <Link href={`/salary-table/${prev}/`} className="text-blue-700 dark:text-blue-300 hover:underline">← 연봉 {salaryLabel(prev)}</Link>}</span>
-            <Link href="/salary-table/" className="text-gray-600 dark:text-gray-300 hover:underline">전체 실수령액 표</Link>
+            <Link href="/salary-table/" className="text-sub hover:underline">전체 실수령액 표</Link>
             <span>{next && <Link href={`/salary-table/${next}/`} className="text-blue-700 dark:text-blue-300 hover:underline">연봉 {salaryLabel(next)} →</Link>}</span>
           </nav>
 
           <section className={`${glassCard} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">함께 보는 도구</h2>
+            <h2 className="text-lg font-semibold text-fg mb-3">함께 보는 도구</h2>
             <ul className="grid sm:grid-cols-2 gap-2 text-sm">
               {[
                 ['/salary-calculator', '💰 연봉 계산기 — 부양가족·비과세·성과급 직접 입력'],
@@ -228,7 +228,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                 ['/hourly-wage', '⏱️ 시급 계산기 — 연봉을 시급으로 환산'],
                 ['/salary-rank', '📊 내 연봉 상위 몇 %? — 연령·업종별 순위'],
               ].map(([href, text]) => (
-                <li key={href}><Link href={href} className="block px-3 py-2 rounded-lg hover:bg-white/60 dark:hover:bg-white/[0.08] text-gray-800 dark:text-gray-100">{text}</Link></li>
+                <li key={href}><Link href={href} className="block px-3 py-2 rounded-lg hover:bg-soft text-body">{text}</Link></li>
               ))}
             </ul>
           </section>

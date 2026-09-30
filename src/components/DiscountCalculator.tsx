@@ -213,8 +213,8 @@ export default function DiscountCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -224,7 +224,7 @@ export default function DiscountCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Tabs */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 계산 모드
               </label>
               <div className="flex flex-col gap-2">
@@ -233,7 +233,7 @@ export default function DiscountCalculator() {
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountRate'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function DiscountCalculator() {
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'finalPrice'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -259,7 +259,7 @@ export default function DiscountCalculator() {
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountAmount'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -272,7 +272,7 @@ export default function DiscountCalculator() {
 
             {/* Original Price Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('originalPrice')}
               </label>
               <input
@@ -288,7 +288,7 @@ export default function DiscountCalculator() {
             {mode === 'discountRate' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('discountRate')}
                   </label>
                   <div className="flex gap-2">
@@ -301,7 +301,7 @@ export default function DiscountCalculator() {
                       max="100"
                       step="0.1"
                     />
-                    <span className="flex items-center px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg">
+                    <span className="flex items-center px-3 py-2 bg-soft text-body rounded-lg">
                       %
                     </span>
                   </div>
@@ -309,7 +309,7 @@ export default function DiscountCalculator() {
 
                 {/* Quick Rate Buttons */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('quickRates')}
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -320,7 +320,7 @@ export default function DiscountCalculator() {
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           discountRate === rate
                             ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {rate}%
@@ -333,7 +333,7 @@ export default function DiscountCalculator() {
 
             {mode === 'finalPrice' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('finalPrice')}
                 </label>
                 <input
@@ -348,7 +348,7 @@ export default function DiscountCalculator() {
 
             {mode === 'discountAmount' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-body mb-2">
                   {t('discountAmount')}
                 </label>
                 <input
@@ -365,7 +365,7 @@ export default function DiscountCalculator() {
             <div className="flex gap-2">
               <button
                 onClick={reset}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
@@ -392,17 +392,17 @@ export default function DiscountCalculator() {
 
           {/* Multi Discount Section */}
           <div className={`mt-6 ${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t('multiDiscount')}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-muted mb-4">
               여러 할인을 순차적으로 적용하여 실질 할인율을 계산합니다
             </p>
 
             <div className="space-y-3 mb-4">
               {multiDiscounts.map((discount, index) => (
                 <div key={discount.id} className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-6">
+                  <span className="text-sm font-medium text-body w-6">
                     {index + 1}.
                   </span>
                   <input
@@ -414,7 +414,7 @@ export default function DiscountCalculator() {
                     max="100"
                     step="0.1"
                   />
-                  <span className="text-gray-700 dark:text-gray-300">%</span>
+                  <span className="text-body">%</span>
                   {multiDiscounts.length > 1 && (
                     <button
                       onClick={() => removeMultiDiscount(discount.id)}
@@ -439,29 +439,29 @@ export default function DiscountCalculator() {
             )}
 
             {/* Multi Discount Result */}
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+            <div className="mt-4 pt-4 border-t border-line space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">{t('originalPrice')}</span>
-                <span className="font-medium text-gray-900 dark:text-white">₩{formatCurrency(originalPrice)}</span>
+                <span className="text-sub">{t('originalPrice')}</span>
+                <span className="font-medium text-fg">₩{formatCurrency(originalPrice)}</span>
               </div>
               {multiResult.steps.map((step, index) => (
                 <div key={index} className="flex justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-sub">
                     {index + 1}단계 ({formatPercent(step.rate)}% 할인)
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">₩{formatCurrency(step.price)}</span>
+                  <span className="font-medium text-fg">₩{formatCurrency(step.price)}</span>
                 </div>
               ))}
-              <div className="flex justify-between text-sm pt-2 border-t border-gray-200 dark:border-gray-700">
-                <span className="text-gray-600 dark:text-gray-400">{t('effectiveRate')}</span>
+              <div className="flex justify-between text-sm pt-2 border-t border-line">
+                <span className="text-sub">{t('effectiveRate')}</span>
                 <span className="font-semibold text-green-600 dark:text-green-400">{formatPercent(multiResult.effectiveRate)}%</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">총 {t('savings')}</span>
+                <span className="text-sub">총 {t('savings')}</span>
                 <span className="font-semibold text-orange-600 dark:text-orange-400">₩{formatCurrency(multiResult.totalSavings)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium text-gray-900 dark:text-white">{t('finalPrice')}</span>
+                <span className="font-medium text-fg">{t('finalPrice')}</span>
                 <span className="text-lg font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(multiResult.finalPrice)}</span>
               </div>
             </div>
@@ -552,7 +552,7 @@ export default function DiscountCalculator() {
 
             {/* ── Savings Summary Bar ────────────────────────────────────────── */}
             <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-5">
+              <h3 className="text-sm font-semibold text-body mb-5">
                 {t('savingsSummary')}
               </h3>
 
@@ -586,7 +586,7 @@ export default function DiscountCalculator() {
                 )}
                 {/* 100% case — no savings */}
                 {savingsPct === 0 && finalPct === 0 && (
-                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                  <div className="flex-1 bg-track flex items-center justify-center">
                     <span className="text-gray-500 text-xs">0%</span>
                   </div>
                 )}
@@ -598,35 +598,35 @@ export default function DiscountCalculator() {
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
                     <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600 flex-shrink-0" />
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('originalPrice')}</span>
+                    <span className="text-xs text-muted">{t('originalPrice')}</span>
                   </div>
-                  <p className="text-sm font-bold text-gray-900 dark:text-white">₩{formatCurrency(result.original)}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">100%</p>
+                  <p className="text-sm font-bold text-fg">₩{formatCurrency(result.original)}</p>
+                  <p className="text-xs text-faint">100%</p>
                 </div>
                 {/* Final */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
                     <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-purple-500 to-purple-600 flex-shrink-0" />
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('finalPrice')}</span>
+                    <span className="text-xs text-muted">{t('finalPrice')}</span>
                   </div>
                   <p className="text-sm font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(result.final)}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">{formatPercent(finalPct)}%</p>
+                  <p className="text-xs text-faint">{formatPercent(finalPct)}%</p>
                 </div>
                 {/* Savings */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
                     <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-orange-400 to-orange-500 flex-shrink-0" />
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('savings')}</span>
+                    <span className="text-xs text-muted">{t('savings')}</span>
                   </div>
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">₩{formatCurrency(result.savings)}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">{formatPercent(savingsPct)}%</p>
+                  <p className="text-xs text-faint">{formatPercent(savingsPct)}%</p>
                 </div>
               </div>
 
               {/* Summary sentence */}
               {result.savings > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="mt-4 pt-4 border-t border-line text-center">
+                  <span className="text-sm text-sub">
                     {t('summaryText', {
                       original: `₩${formatCurrency(result.original)}`,
                       rate: formatPercent(result.discountRate),
@@ -643,7 +643,7 @@ export default function DiscountCalculator() {
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
@@ -651,12 +651,12 @@ export default function DiscountCalculator() {
         <div className="space-y-6">
           {/* Basic Usage */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.basic.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.basic.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -666,12 +666,12 @@ export default function DiscountCalculator() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-lg font-semibold text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-purple-600 dark:text-purple-400 mt-1">💡</span>
                   <span>{item}</span>
                 </li>

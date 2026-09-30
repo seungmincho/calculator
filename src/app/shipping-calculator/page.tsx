@@ -27,7 +27,7 @@ export default function ShippingCalcPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ShippingCalc />  <div className="mt-8">
     <RelatedTools />
@@ -37,17 +37,17 @@ export default function ShippingCalcPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             배송비 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             배송비 계산기는 CJ대한통운, 한진, 로젠 등 주요 택배사의 배송 요금을 무게와 크기에 따라 빠르게 비교할 수 있는 온라인 도구입니다. 쇼핑몰 운영자, 개인 판매자, 직구·역직구 이용자 모두 활용할 수 있으며, 부피 무게 계산까지 지원하여 실제 청구 요금을 정확히 예측할 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             배송비 계산 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>부피 무게 확인:</strong> 가로×세로×높이(cm) ÷ 6,000으로 계산한 부피 무게가 실제 무게보다 크면 부피 무게 기준으로 요금이 부과됩니다.</li>
             <li><strong>편의점 택배 활용:</strong> GS25, CU 편의점 택배는 5kg 이하 소형 물품을 일반 택배보다 저렴하게 발송할 수 있어 개인 발송에 유리합니다.</li>
             <li><strong>택배사별 특화 서비스 비교:</strong> 냉장·냉동 식품은 한진 또는 CJ의 신선 배송 서비스를, 대형 가구·가전은 특수 배송 서비스를 별도로 문의하세요.</li>

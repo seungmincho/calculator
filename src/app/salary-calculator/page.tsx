@@ -156,19 +156,6 @@ export default function SalaryCalculatorPage() {
       />
       <I18nWrapper>
         <div className="min-h-screen py-8 relative">
-          {/* ── Fixed background layer ── */}
-          <div className="fixed inset-0 -z-10">
-            {/* Light mode base */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50/60 to-slate-50 dark:hidden" />
-            {/* Dark mode base — flat dark navy, NO purple */}
-            <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(160deg, #080d1a 0%, #0c1120 50%, #0a0f1c 100%)' }} />
-            {/* Color blobs — 5개, 뷰포트 전체 커버 */}
-            <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none opacity-50 dark:opacity-70" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.30) 0%, transparent 70%)' }} />
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-55" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)' }} />
-            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none opacity-30 dark:opacity-40" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%)' }} />
-            <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none opacity-35 dark:opacity-50" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.20) 0%, transparent 70%)' }} />
-            <div className="absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-55" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)' }} />
-          </div>
           <div className="relative z-10">
             <SalaryCalculator />
           </div>
@@ -182,17 +169,17 @@ export default function SalaryCalculatorPage() {
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             연봉 실수령액 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             연봉 실수령액 계산기는 2026년 최신 세법 기준으로 국민연금, 건강보험, 고용보험, 장기요양보험 등 4대보험과 소득세, 지방소득세를 자동으로 공제한 월 실수령액을 정확하게 계산해 주는 무료 온라인 도구입니다. 연봉 협상, 이직 결정, 가계 예산 계획 시 실제 통장에 들어오는 금액을 미리 파악하는 데 필수적으로 활용됩니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             연봉 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>비과세 수당 입력:</strong> 식대(월 20만원), 자가운전보조금(월 20만원) 등 비과세 항목을 입력하면 과세표준이 낮아져 실수령액이 증가합니다. 회사 급여 명세서에서 비과세 항목을 확인하세요.</li>
             <li><strong>부양가족 공제:</strong> 본인 외 배우자, 자녀, 부모 등 부양가족 수를 입력하면 소득세 공제가 적용되어 실수령액이 달라집니다. 정확한 부양가족 수를 반영하세요.</li>
             <li><strong>연봉 협상 기준 설정:</strong> 이직 제안 연봉의 실수령액을 현재 연봉과 비교하면 실질적인 인상분을 파악하고 협상 목표를 명확히 설정할 수 있습니다.</li>

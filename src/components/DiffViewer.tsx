@@ -157,11 +157,11 @@ export default function DiffViewer() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <FileText className="w-7 h-7 text-orange-500" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -170,7 +170,7 @@ export default function DiffViewer() {
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* Left Text */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-red-50 dark:bg-red-900/20 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-3 bg-red-50 dark:bg-red-900/20 border-b border-line">
             <span className="text-sm font-medium text-red-700 dark:text-red-300">
               {t('input.original')}
             </span>
@@ -179,14 +179,14 @@ export default function DiffViewer() {
             value={leftText}
             onChange={(e) => { setLeftText(e.target.value); setShowDiff(false); }}
             placeholder={t('input.originalPlaceholder')}
-            className="w-full h-64 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full h-64 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
             spellCheck={false}
           />
         </div>
 
         {/* Right Text */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-green-50 dark:bg-green-900/20 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-3 bg-green-50 dark:bg-green-900/20 border-b border-line">
             <span className="text-sm font-medium text-green-700 dark:text-green-300">
               {t('input.modified')}
             </span>
@@ -195,7 +195,7 @@ export default function DiffViewer() {
             value={rightText}
             onChange={(e) => { setRightText(e.target.value); setShowDiff(false); }}
             placeholder={t('input.modifiedPlaceholder')}
-            className="w-full h-64 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full h-64 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
             spellCheck={false}
           />
         </div>
@@ -211,14 +211,14 @@ export default function DiffViewer() {
         </button>
         <button
           onClick={handleSwap}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
         >
           <ArrowLeftRight className="w-4 h-4" />
           {t('actions.swap')}
         </button>
         <button
           onClick={handleClear}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
         >
           <Trash2 className="w-4 h-4" />
           {t('actions.clear')}
@@ -228,9 +228,9 @@ export default function DiffViewer() {
       {/* Diff Result */}
       {showDiff && diffResult.length > 0 && (
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
             <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-body">
                 {t('results.title')}
               </span>
               <div className="flex items-center gap-3 text-xs">
@@ -240,7 +240,7 @@ export default function DiffViewer() {
                 <span className="px-2 py-1 rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
                   -{stats.removed} {t('results.removed')}
                 </span>
-                <span className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300">
+                <span className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-600 text-body">
                   {stats.unchanged} {t('results.unchanged')}
                 </span>
               </div>
@@ -266,10 +266,10 @@ export default function DiffViewer() {
                       : ''
                   }`}
                 >
-                  <div className="w-12 flex-shrink-0 px-2 py-1 text-right text-gray-400 border-r border-gray-200 dark:border-gray-700 select-none">
+                  <div className="w-12 flex-shrink-0 px-2 py-1 text-right text-gray-400 border-r border-line select-none">
                     {line.lineNumber.left || ''}
                   </div>
-                  <div className="w-12 flex-shrink-0 px-2 py-1 text-right text-gray-400 border-r border-gray-200 dark:border-gray-700 select-none">
+                  <div className="w-12 flex-shrink-0 px-2 py-1 text-right text-gray-400 border-r border-line select-none">
                     {line.lineNumber.right || ''}
                   </div>
                   <div className="w-8 flex-shrink-0 px-2 py-1 text-center select-none">
@@ -288,7 +288,7 @@ export default function DiffViewer() {
                       ? 'text-green-800 dark:text-green-200'
                       : line.type === 'removed'
                       ? 'text-red-800 dark:text-red-200'
-                      : 'text-gray-900 dark:text-white'
+                      : 'text-fg'
                   }`}>
                     {line.content || ' '}
                   </div>
@@ -301,15 +301,15 @@ export default function DiffViewer() {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-orange-500 mt-0.5">•</span>
@@ -319,10 +319,10 @@ export default function DiffViewer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.useCases.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.useCases.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-orange-500 mt-0.5">•</span>

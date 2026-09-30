@@ -1266,11 +1266,11 @@ export default function CurlBuilder() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Terminal className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Tabs */}
@@ -1279,8 +1279,8 @@ export default function CurlBuilder() {
           onClick={() => setActiveTab('build')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'build'
-              ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+              : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
           }`}
         >
           <Code className="w-4 h-4" />
@@ -1290,8 +1290,8 @@ export default function CurlBuilder() {
           onClick={() => setActiveTab('parse')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'parse'
-              ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
+              : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
           }`}
         >
           <ArrowRightLeft className="w-4 h-4" />
@@ -1311,11 +1311,11 @@ export default function CurlBuilder() {
       {activeTab === 'parse' ? (
         /* ── Parse Mode ── */
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('parse.title')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('parse.title')}</h2>
 
           {/* Example dropdown */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-body mb-1">
               {t('parse.examples')}
             </label>
             <select
@@ -1356,14 +1356,14 @@ export default function CurlBuilder() {
             </button>
             <button
               onClick={() => { setParseInput(''); setParseError('') }}
-              className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2"
+              className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('params.remove')}
             </button>
           </div>
 
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-faint">
             Ctrl+Enter to parse
           </p>
         </div>
@@ -1374,7 +1374,7 @@ export default function CurlBuilder() {
           <div className="space-y-4">
             {/* Method & URL */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                 {t('request.method')} & {t('request.url')}
               </h3>
               <div className="flex gap-2">
@@ -1392,10 +1392,10 @@ export default function CurlBuilder() {
                   value={config.url}
                   onChange={e => setConfig(prev => ({ ...prev, url: e.target.value }))}
                   placeholder={t('request.urlPlaceholder')}
-                  className={`flex-1 px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 ${
+                  className={`flex-1 px-3 py-2 border rounded-lg bg-field text-fg text-sm focus:ring-2 focus:ring-blue-500 ${
                     !isValidUrl
                       ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      : 'border-line-strong'
                   }`}
                 />
               </div>
@@ -1409,7 +1409,7 @@ export default function CurlBuilder() {
 
             {/* Query Params */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                 {t('request.queryParams')}
               </h3>
               {renderKeyValueRows(
@@ -1421,7 +1421,7 @@ export default function CurlBuilder() {
             {/* Headers */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.headers')}
                 </h3>
                 <div className="relative">
@@ -1431,7 +1431,7 @@ export default function CurlBuilder() {
                       if (!isNaN(idx)) addHeaderPreset(HEADER_PRESETS[idx])
                       e.target.value = ''
                     }}
-                    className="text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    className="text-xs px-2 py-1 border border-line-strong rounded bg-field text-body"
                     defaultValue=""
                   >
                     <option value="" disabled>{t('request.headerPresets')}</option>
@@ -1453,7 +1453,7 @@ export default function CurlBuilder() {
                 onClick={() => setShowAuth(!showAuth)}
                 className="w-full flex items-center justify-between p-6 text-left"
               >
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.auth')}
                   {config.auth.type !== 'none' && (
                     <span className="ml-2 text-xs font-normal text-blue-600 dark:text-blue-400">
@@ -1473,7 +1473,7 @@ export default function CurlBuilder() {
                         className={`px-3 py-1.5 text-sm rounded-lg ${
                           config.auth.type === type
                             ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {t(`auth.${type}`)}
@@ -1535,7 +1535,7 @@ export default function CurlBuilder() {
             {/* Body (for POST/PUT/PATCH) */}
             {showBodySection && (
               <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.body')}
                 </h3>
 
@@ -1547,7 +1547,7 @@ export default function CurlBuilder() {
                       className={`px-3 py-1.5 text-sm rounded-lg ${
                         config.body.type === type
                           ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {t(`body.${type}`)}
@@ -1582,7 +1582,7 @@ export default function CurlBuilder() {
                           placeholder={t('params.value')}
                           className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
                         />
-                        <label className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
+                        <label className="flex items-center gap-1 text-xs text-muted flex-shrink-0">
                           <input
                             type="checkbox"
                             checked={field.isFile || false}
@@ -1653,7 +1653,7 @@ export default function CurlBuilder() {
                 onClick={() => setShowOptions(!showOptions)}
                 className="w-full flex items-center justify-between p-6 text-left"
               >
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.options')}
                 </h3>
                 {showOptions ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
@@ -1677,11 +1677,11 @@ export default function CurlBuilder() {
                         }))}
                         className="accent-blue-600"
                       />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{opt.label}</span>
+                      <span className="text-sm text-body">{opt.label}</span>
                     </label>
                   ))}
                   <div className="flex items-center gap-3">
-                    <label className="text-sm text-gray-700 dark:text-gray-300 flex-shrink-0">
+                    <label className="text-sm text-body flex-shrink-0">
                       {t('options.maxTime')}
                     </label>
                     <input
@@ -1712,7 +1712,7 @@ export default function CurlBuilder() {
               </button>
               <button
                 onClick={resetForm}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5"
+                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5"
               >
                 <RotateCcw className="w-4 h-4" />
                 Reset
@@ -1732,7 +1732,7 @@ export default function CurlBuilder() {
                     className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                       exportFormat === f.key
                         ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {f.label}
@@ -1742,7 +1742,7 @@ export default function CurlBuilder() {
 
               {/* Multiline toggle (only for cURL) */}
               {exportFormat === 'curl' && (
-                <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-sub cursor-pointer">
                   <input
                     type="checkbox"
                     checked={multiline}
@@ -1780,7 +1780,7 @@ export default function CurlBuilder() {
               {config.url.trim() && (
                 <div className="flex items-center gap-2 text-sm">
                   {renderMethodBadge(config.method)}
-                  <span className="text-gray-600 dark:text-gray-400 truncate font-mono text-xs">
+                  <span className="text-sub truncate font-mono text-xs">
                     {buildUrlWithParams(config.url, config.queryParams)}
                   </span>
                 </div>
@@ -1796,7 +1796,7 @@ export default function CurlBuilder() {
           onClick={() => setShowHistory(!showHistory)}
           className="w-full flex items-center justify-between p-6 text-left"
         >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
             <Clock className="w-5 h-5 text-gray-400" />
             {t('history.title')}
             {history.length > 0 && (
@@ -1808,20 +1808,20 @@ export default function CurlBuilder() {
         {showHistory && (
           <div className="px-6 pb-6">
             {history.length === 0 ? (
-              <p className="text-gray-400 dark:text-gray-500 text-sm">{t('history.empty')}</p>
+              <p className="text-faint text-sm">{t('history.empty')}</p>
             ) : (
               <div className="space-y-2">
                 {history.map(item => (
                   <button
                     key={item.id}
                     onClick={() => loadFromHistory(item)}
-                    className="w-full flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-left transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3 bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-left transition-colors"
                   >
                     {renderMethodBadge(item.method, true)}
-                    <span className="flex-1 min-w-0 text-sm text-gray-700 dark:text-gray-300 truncate font-mono">
+                    <span className="flex-1 min-w-0 text-sm text-body truncate font-mono">
                       {item.url}
                     </span>
-                    <span className="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+                    <span className="text-xs text-faint flex-shrink-0">
                       {formatRelativeTime(item.timestamp)}
                     </span>
                   </button>
@@ -1844,7 +1844,7 @@ export default function CurlBuilder() {
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6 text-left"
         >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-500" />
             {t('guide.title')}
           </h3>
@@ -1854,8 +1854,8 @@ export default function CurlBuilder() {
           <div className="px-6 pb-6 space-y-6">
             {/* DevTools guide */}
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.devtools.title')}</h4>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <h4 className="font-medium text-fg mb-3">{t('guide.devtools.title')}</h4>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-sub">
                 {(t.raw('guide.devtools.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
@@ -1864,8 +1864,8 @@ export default function CurlBuilder() {
 
             {/* Tips */}
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h4>
-              <ul className="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <h4 className="font-medium text-fg mb-3">{t('guide.tips.title')}</h4>
+              <ul className="list-disc list-inside space-y-2 text-sm text-sub">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}

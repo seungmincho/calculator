@@ -75,7 +75,7 @@ export default function SubnetCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SubnetCalculator />
@@ -87,17 +87,17 @@ export default function SubnetCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             IP 서브넷 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             IP 서브넷 계산기는 IPv4 주소와 CIDR 표기법(예: 192.168.1.0/24)을 입력하면 서브넷마스크, 네트워크 주소, 브로드캐스트 주소, 사용 가능한 호스트 범위와 개수, 와일드카드 마스크, 바이너리 표현까지 한 번에 계산해 주는 네트워크 엔지니어·개발자용 도구입니다. 사설/공인 IP 구분과 IP 클래스 정보도 함께 제공합니다.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             서브넷 계산기 활용 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>CIDR 표기법 이해:</strong> /24는 앞 24비트가 네트워크 부분으로 255.255.255.0과 같으며, 254개의 호스트를 수용합니다. /16은 65,534개, /8은 16,777,214개입니다.</li>
             <li><strong>사설 IP 대역 파악:</strong> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16이 사설 IP 대역으로 인터넷에서 직접 라우팅되지 않아 내부 네트워크에 자유롭게 사용 가능합니다.</li>
             <li><strong>네트워크 분할(서브넷팅):</strong> 큰 네트워크를 작은 서브넷으로 나눌 때 프리픽스 길이를 늘리면(예: /24 → /26) 더 작은 서브넷 4개로 분할할 수 있습니다.</li>

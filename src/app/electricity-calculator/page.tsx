@@ -61,7 +61,7 @@ export default function ElectricityCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+      <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ElectricityCalculator />  <div className="mt-8">
     <RelatedTools />
@@ -71,17 +71,17 @@ export default function ElectricityCalculatorPage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mt-12 border-t border-line pt-8">
+          <h2 className="text-xl font-bold text-fg mb-4">
             전기요금 계산기란?
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          <p className="text-body leading-relaxed mb-6">
             전기요금 계산기는 월 사용량(kWh)을 입력하면 한국전력(한전)의 주택용 전기요금을 누진제 기준으로 계산하는 도구입니다. 기본요금, 사용요금(3단계 누진제), 부가가치세(10%), 전력산업기반기금(3.7%)까지 포함한 최종 청구 금액을 예측할 수 있습니다. 여름·겨울 냉난방 시즌에 요금이 얼마나 늘어나는지 미리 확인하고 절약 계획을 세워보세요.
           </p>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-fg mb-3">
             전기요금 절약 팁
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>누진 구간 관리:</strong> 월 200kWh 이하는 1구간, 201~400kWh는 2구간, 400kWh 초과는 3구간으로 요금이 크게 올라갑니다. 사용량이 구간 경계에 걸리지 않도록 관리하는 것이 중요합니다.</li>
             <li><strong>에너지캐시백 활용:</strong> 전년 동월 대비 전기 사용량을 3% 이상 절감하면 kWh당 30원의 에너지캐시백을 받을 수 있습니다. 절감 목표를 계산기로 미리 확인하세요.</li>
             <li><strong>대기전력 차단:</strong> TV, 셋톱박스, 컴퓨터의 대기전력은 가정 전기 사용량의 약 11%를 차지합니다. 멀티탭 스위치로 차단하면 연간 수만 원을 절약할 수 있습니다.</li>

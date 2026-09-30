@@ -108,10 +108,10 @@ export default function Base64Converter() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-fg">
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {t('description')}
         </p>
       </div>
@@ -123,14 +123,14 @@ export default function Base64Converter() {
           className={`px-6 py-2 rounded-lg font-medium transition-all ${
             mode === 'encode'
               ? 'bg-emerald-500 text-white shadow-md'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
           }`}
         >
           {t('modes.encode')}
         </button>
         <button
           onClick={handleSwap}
-          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+          className="p-2 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           title={t('actions.swap')}
         >
           <ArrowRightLeft className="w-5 h-5" />
@@ -140,7 +140,7 @@ export default function Base64Converter() {
           className={`px-6 py-2 rounded-lg font-medium transition-all ${
             mode === 'decode'
               ? 'bg-emerald-500 text-white shadow-md'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
           }`}
         >
           {t('modes.decode')}
@@ -150,12 +150,12 @@ export default function Base64Converter() {
       {/* Main Content */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* Input */}
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className={`${glassCard} ${glassInset} border border-line overflow-hidden`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {mode === 'encode' ? t('input.text') : t('input.base64')}
             </span>
-            <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 transition-all">
+            <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body transition-all">
               <Upload className="w-4 h-4" />
               {t('actions.upload')}
               <input
@@ -170,15 +170,15 @@ export default function Base64Converter() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={mode === 'encode' ? t('input.textPlaceholder') : t('input.base64Placeholder')}
-            className="w-full h-64 p-4 text-gray-900 dark:text-white bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full h-64 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
             spellCheck={false}
           />
         </div>
 
         {/* Output */}
-        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className={`${glassCard} ${glassInset} border border-line overflow-hidden`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
+            <span className="text-sm font-medium text-body">
               {mode === 'encode' ? t('output.base64') : t('output.text')}
             </span>
             <button
@@ -200,7 +200,7 @@ export default function Base64Converter() {
               value={error || output}
               readOnly
               className={`w-full h-64 p-4 bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed ${
-                error ? 'text-red-500' : 'text-gray-900 dark:text-white'
+                error ? 'text-red-500' : 'text-fg'
               }`}
               spellCheck={false}
             />
@@ -218,7 +218,7 @@ export default function Base64Converter() {
         </button>
         <button
           onClick={handleClear}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
         >
           <Trash2 className="w-4 h-4" />
           {t('actions.clear')}
@@ -226,24 +226,24 @@ export default function Base64Converter() {
       </div>
 
       {/* Guide */}
-      <div className={`mt-8 ${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`mt-8 ${glassCard} ${glassInset} border border-line p-6`}>
+        <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.whatIs.title')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-sub">
               {t('guide.whatIs.description')}
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.useCases.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-sub">
               {(t.raw('guide.useCases.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-emerald-500 mt-0.5">•</span>

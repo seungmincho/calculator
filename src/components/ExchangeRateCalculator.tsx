@@ -266,8 +266,8 @@ const ExchangeRateCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">환율 계산기</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-fg">환율 계산기</h1>
+          <p className="text-sm text-muted mt-1">
             실시간 환율을 기반으로 정확한 환전 금액을 계산하세요
             {lastUpdated && ` · 업데이트: ${lastUpdated.toLocaleString('ko-KR')}`}
           </p>
@@ -284,9 +284,9 @@ const ExchangeRateCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-surface rounded-2xl shadow-xl p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">환전 계산</h2>
+            <h2 className="text-2xl font-semibold text-fg">환전 계산</h2>
             <button
               onClick={fetchExchangeRates}
               disabled={loading}
@@ -300,7 +300,7 @@ const ExchangeRateCalculatorContent = () => {
           <div className="space-y-6">
             {/* 금액 입력 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 금액
               </label>
               <input
@@ -308,13 +308,13 @@ const ExchangeRateCalculatorContent = () => {
                 value={amount}
                 onChange={handleAmountChange}
                 placeholder="100"
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white text-lg"
+                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg text-lg"
               />
             </div>
 
             {/* 기준 통화 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 보낸 통화
               </label>
               <select
@@ -323,7 +323,7 @@ const ExchangeRateCalculatorContent = () => {
                   setFromCurrency(e.target.value);
                   updateURL({ from: e.target.value });
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
               >
                 {currencies.map(currency => (
                   <option key={currency.code} value={currency.code}>
@@ -345,7 +345,7 @@ const ExchangeRateCalculatorContent = () => {
 
             {/* 대상 통화 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 받을 통화
               </label>
               <select
@@ -354,7 +354,7 @@ const ExchangeRateCalculatorContent = () => {
                   setToCurrency(e.target.value);
                   updateURL({ to: e.target.value });
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
               >
                 {currencies.map(currency => (
                   <option key={currency.code} value={currency.code}>
@@ -379,10 +379,10 @@ const ExchangeRateCalculatorContent = () => {
             
             {/* 로딩 중일 때 */}
             {loading && (
-              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+              <div className="bg-subtle p-4 rounded-lg">
                 <div className="flex items-center space-x-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">환율 정보 로딩 중...</span>
+                  <span className="text-sm text-sub">환율 정보 로딩 중...</span>
                 </div>
               </div>
             )}
@@ -390,13 +390,13 @@ const ExchangeRateCalculatorContent = () => {
         </div>
 
         {/* 결과 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">환전 결과</h2>
+        <div className="bg-surface rounded-2xl shadow-xl p-8">
+          <h2 className="text-2xl font-semibold mb-6 text-fg">환전 결과</h2>
           
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-500 dark:text-gray-400">환율 정보를 가져오는 중...</p>
+              <p className="text-muted">환율 정보를 가져오는 중...</p>
             </div>
           ) : result !== null ? (
             <div className="space-y-6">
@@ -437,22 +437,22 @@ const ExchangeRateCalculatorContent = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">보낸 금액</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">보낸 금액</span>
+                  <span className="font-semibold text-fg">
                     {getCurrencyInfo(fromCurrency).symbol} {formatAmount(parseFloat(amount))}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-400">환율</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center py-2 border-b border-line">
+                  <span className="text-sub">환율</span>
+                  <span className="font-semibold text-fg">
                     1 {fromCurrency} = {formatNumber(getExchangeRate()!, 4)} {toCurrency}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-t border-gray-200 dark:border-gray-600 font-semibold">
-                  <span className="text-gray-900 dark:text-white">받을 금액</span>
+                <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
+                  <span className="text-fg">받을 금액</span>
                   <span className="text-blue-600 dark:text-blue-400">
                     {getCurrencyInfo(toCurrency).symbol} {formatNumber(result)}
                   </span>
@@ -474,7 +474,7 @@ const ExchangeRateCalculatorContent = () => {
           ) : (
             <div className="text-center py-12">
               <Globe className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 금액을 입력하면<br />
                 환전 결과를 계산해드립니다.
               </p>

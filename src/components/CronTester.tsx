@@ -411,10 +411,10 @@ const CronTester = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {t('descriptionText')}
           </p>
         </div>
@@ -426,14 +426,14 @@ const CronTester = () => {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('input.title')}
               </h2>
             </div>
 
             {/* Cron Expression Input */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('input.expression')}
               </label>
               <div className="relative">
@@ -459,7 +459,7 @@ const CronTester = () => {
                   )}
                 </button>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted">
                 {t('input.format')}: {t('input.formatDesc')}
               </div>
             </div>
@@ -493,7 +493,7 @@ const CronTester = () => {
 
             {/* Quick Presets */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-body">
                 {t('presets.title')}
               </label>
               <div className="grid grid-cols-1 gap-2">
@@ -501,12 +501,12 @@ const CronTester = () => {
                   <button
                     key={preset.expression}
                     onClick={() => setCronExpression(preset.expression)}
-                    className="text-left p-2 text-sm bg-gray-50 dark:bg-gray-700 rounded border hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    className="text-left p-2 text-sm bg-subtle rounded border hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                   >
                     <div className="font-mono text-blue-600 dark:text-blue-400">
                       {preset.expression}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400 text-xs">
+                    <div className="text-sub text-xs">
                       {t(`presets.${preset.key}`)}
                     </div>
                   </button>
@@ -522,14 +522,14 @@ const CronTester = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Info className="w-5 h-5 text-green-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result.description')}
               </h2>
             </div>
             {description ? (
-              <p className="text-gray-700 dark:text-gray-300">{description}</p>
+              <p className="text-body">{description}</p>
             ) : (
-              <p className="text-gray-500 dark:text-gray-400 italic">
+              <p className="text-muted italic">
                 {t('placeholder')}
               </p>
             )}
@@ -539,7 +539,7 @@ const CronTester = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Calendar className="w-5 h-5 text-purple-600" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('result.nextExecutions')}
               </h2>
             </div>
@@ -549,13 +549,13 @@ const CronTester = () => {
                 {nextExecutions.map((execution, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-subtle rounded-lg"
                   >
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium text-fg">
                         {execution.humanReadable}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-muted">
                         {execution.date.toISOString()}
                       </div>
                     </div>
@@ -566,7 +566,7 @@ const CronTester = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 dark:text-gray-400 italic">
+              <p className="text-muted italic">
                 {t('result.noExecutions')}
               </p>
             )}
@@ -587,7 +587,7 @@ const CronTester = () => {
                   {t('guide.formatTitle')}
                 </h3>
                 <div className="space-y-2 text-sm">
-                  <div className="font-mono bg-white dark:bg-gray-800 p-2 rounded border">
+                  <div className="font-mono bg-surface p-2 rounded border">
                     {t('guide.formatExample')}
                   </div>
                   <div className="space-y-1 text-blue-700 dark:text-blue-300">

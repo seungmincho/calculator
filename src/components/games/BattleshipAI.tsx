@@ -209,28 +209,28 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
         <div className="flex items-center justify-between">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
           >
             <ArrowLeft className="w-5 h-5" />
             {tHub('backToHub')}
           </button>
-          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <span>{tHub('vsComputer')}</span>
-            <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+            <span className="px-2 py-1 bg-soft rounded">
               {getDifficultyLabel(difficulty)}
             </span>
           </div>
         </div>
 
         {/* Ship Placement */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="bg-surface rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-bold text-fg mb-4">
             {t('placeYourShips') || 'Place Your Ships'}
           </h2>
 
           {currentShipIndex < SHIP_TYPES.length ? (
             <div className="mb-4">
-              <p className="text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sub mb-2">
                 {t('placingShip') || 'Placing'}: <strong>{SHIP_TYPES[currentShipIndex].name}</strong> ({SHIP_TYPES[currentShipIndex].size} {t('cells') || 'cells'})
               </p>
               <div className="flex gap-2">
@@ -243,7 +243,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
                 </button>
                 <button
                   onClick={handleRandomPlace}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
+                  className="flex items-center gap-2 px-4 py-2 bg-soft text-sub rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
                 >
                   <Shuffle className="w-4 h-4" />
                   {t('randomPlace') || 'Random'}
@@ -282,7 +282,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
                     ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
                     : index === currentShipIndex
                     ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                    : 'bg-soft text-muted'
                 }`}
               >
                 {ship.name} ({ship.size})
@@ -301,21 +301,21 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
           {tHub('backToHub')}
         </button>
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-muted">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="p-2 text-muted hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
             title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
           >
             {soundEnabled ? '🔊' : '🔇'}
           </button>
           <span>{tHub('vsComputer')}</span>
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+          <span className="px-2 py-1 bg-soft rounded">
             {getDifficultyLabel(difficulty)}
           </span>
         </div>
@@ -326,7 +326,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
         <div className={`text-center py-2 px-4 rounded-xl ${
           isPlayerTurn
             ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+            : 'bg-soft text-sub'
         }`}>
           {isThinking ? (
             <span className="flex items-center justify-center gap-2">
@@ -344,7 +344,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
         <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerRole
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
-            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            : 'bg-track text-body'
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
           <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
@@ -358,8 +358,8 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       {/* Boards */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* Enemy Board (Attack) */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <div className="bg-surface rounded-2xl shadow-lg p-4">
+          <h3 className="text-lg font-semibold text-fg mb-2">
             {t('enemyWaters') || 'Enemy Waters'}
           </h3>
           <BattleshipBoardComponent
@@ -370,14 +370,14 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
             lastMove={gameState.lastMove?.player === playerRole ? gameState.lastMove : null}
             showShips={false}
           />
-          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <div className="mt-2 text-sm text-muted">
             {t('shipsRemaining') || 'Ships remaining'}: {gameState.player2Ships.filter(s => !s.sunk).length}
           </div>
         </div>
 
         {/* Your Board */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <div className="bg-surface rounded-2xl shadow-lg p-4">
+          <h3 className="text-lg font-semibold text-fg mb-2">
             {t('yourFleet') || 'Your Fleet'}
           </h3>
           <BattleshipBoardComponent
@@ -388,7 +388,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
             lastMove={gameState.lastMove?.player === aiRole ? gameState.lastMove : null}
             showShips={true}
           />
-          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <div className="mt-2 text-sm text-muted">
             {t('shipsRemaining') || 'Ships remaining'}: {gameState.player1Ships.filter(s => !s.sunk).length}
           </div>
         </div>
@@ -412,7 +412,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
           />
           <button
             onClick={onBack}
-            className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
+            className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl"
           >
             {tHub('backToHub')}
           </button>
@@ -420,10 +420,10 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       )}
 
       {/* Stats */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowStats(!showStats)}
-          className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+          className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
@@ -436,29 +436,29 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-xl">
                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalWins}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
               </div>
               <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-xl">
                 <p className="text-2xl font-bold text-red-600 dark:text-red-400">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
               </div>
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.totalGames}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{tHub('totalGames') || 'Total'}</p>
+              <div className="p-3 bg-subtle rounded-xl">
+                <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
+                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🟢 {tHub('easy')}</span>
                 <span>{stats.easy.wins}W / {stats.easy.losses}L / {stats.easy.draws}D</span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🟡 {tHub('normal')}</span>
                 <span>{stats.normal.wins}W / {stats.normal.losses}L / {stats.normal.draws}D</span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-sub">
                 <span>🔴 {tHub('hard')}</span>
                 <span>{stats.hard.wins}W / {stats.hard.losses}L / {stats.hard.draws}D</span>
               </div>
@@ -468,10 +468,10 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       </div>
 
       {/* Rules */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowRules(!showRules)}
-          className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
+          className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
@@ -480,7 +480,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
           <span>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
-          <div className="mt-4 text-gray-600 dark:text-gray-400 space-y-2">
+          <div className="mt-4 text-sub space-y-2">
             <p>1. {t('rules.rule1') || 'Place your ships on the board before battle begins.'}</p>
             <p>2. {t('rules.rule2') || 'Take turns firing at the enemy grid.'}</p>
             <p>3. {t('rules.rule3') || 'Red X marks a hit, gray dot marks a miss.'}</p>

@@ -183,8 +183,8 @@ export default function AspectRatio() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main Grid */}
@@ -194,12 +194,12 @@ export default function AspectRatio() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center gap-2 mb-4">
               <Monitor className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('calculate')}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t('calculate')}</h2>
             </div>
 
             {/* Width Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('width')}
               </label>
               <input
@@ -214,7 +214,7 @@ export default function AspectRatio() {
 
             {/* Height Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('height')}
               </label>
               <input
@@ -231,7 +231,7 @@ export default function AspectRatio() {
             <div className="flex gap-2">
               <button
                 onClick={handleSwap}
-                className="flex-1 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm font-medium transition-colors"
               >
                 <ArrowLeftRight className="w-4 h-4" />
                 {t('swap')}
@@ -241,7 +241,7 @@ export default function AspectRatio() {
                 className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                   isRatioLocked
                     ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
                 {isRatioLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
@@ -251,13 +251,13 @@ export default function AspectRatio() {
 
             {/* Presets */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('presets.title')}</h3>
+              <h3 className="text-sm font-medium text-body mb-3">{t('presets.title')}</h3>
               <div className="flex flex-wrap gap-2">
                 {presets.map((preset, index) => (
                   <button
                     key={index}
                     onClick={() => handlePresetClick(preset)}
-                    className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 text-sm transition-colors"
+                    className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 text-sm transition-colors"
                   >
                     {preset.name}
                   </button>
@@ -271,30 +271,30 @@ export default function AspectRatio() {
         <div className="lg:col-span-2 space-y-6">
           {/* Main Results */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('result.title')}</h2>
+            <h2 className="text-xl font-semibold text-fg mb-6">{t('result.title')}</h2>
 
             {results ? (
               <div className="space-y-6">
                 {/* Results Grid */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.aspectRatio')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.aspectRatio')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{results.ratio}</div>
                   </div>
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.decimal')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.decimal')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{results.decimal}</div>
                   </div>
                   <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.totalPixels')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.totalPixels')}</div>
                     <div className="text-xl font-bold text-green-600 dark:text-green-400">{results.totalPixels}</div>
                   </div>
                   <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.megapixels')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.megapixels')}</div>
                     <div className="text-xl font-bold text-green-600 dark:text-green-400">{results.megapixels} MP</div>
                   </div>
                   <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4 md:col-span-2">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.orientation')}</div>
+                    <div className="text-sm text-sub mb-1">{t('result.orientation')}</div>
                     <div className="text-xl font-bold text-purple-600 dark:text-purple-400">{results.orientationText}</div>
                   </div>
                 </div>
@@ -317,7 +317,7 @@ export default function AspectRatio() {
                 )}
               </div>
             ) : (
-              <div className="text-center text-gray-500 dark:text-gray-400 py-12">
+              <div className="text-center text-muted py-12">
                 {t('description')}
               </div>
             )}
@@ -328,12 +328,12 @@ export default function AspectRatio() {
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center gap-2 mb-6">
                 <Maximize className="w-5 h-5 text-purple-600" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('resizer.title')}</h2>
+                <h2 className="text-xl font-semibold text-fg">{t('resizer.title')}</h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('resizer.targetWidth')}
                   </label>
                   <input
@@ -349,7 +349,7 @@ export default function AspectRatio() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-body mb-2">
                     {t('resizer.targetHeight')}
                   </label>
                   <input
@@ -368,7 +368,7 @@ export default function AspectRatio() {
 
               {resizerResults && (
                 <div className="mt-4 bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('resizer.resultSize')}</div>
+                  <div className="text-sm text-sub mb-1">{t('resizer.resultSize')}</div>
                   <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                     {resizerResults.width} × {resizerResults.height}
                   </div>
@@ -383,16 +383,16 @@ export default function AspectRatio() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
+          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
         </div>
 
         <div className="space-y-6">
           {/* Common Ratios */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.common.title')}</h3>
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.common.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.common.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>
@@ -402,10 +402,10 @@ export default function AspectRatio() {
 
           {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <li key={index} className="flex items-start gap-2 text-body">
                   <span className="text-green-600 dark:text-green-400 mt-1">•</span>
                   <span>{item}</span>
                 </li>

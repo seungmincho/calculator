@@ -48,10 +48,10 @@ function HangmanSVG({ wrongCount, label }: { wrongCount: number; label: string }
       className="mx-auto"
     >
       {/* Gallows */}
-      <line x1="20" y1="230" x2="180" y2="230" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-gray-700 dark:text-gray-300" />
-      <line x1="60" y1="230" x2="60" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-gray-700 dark:text-gray-300" />
-      <line x1="60" y1="20" x2="130" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-gray-700 dark:text-gray-300" />
-      <line x1="130" y1="20" x2="130" y2="45" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-gray-700 dark:text-gray-300" />
+      <line x1="20" y1="230" x2="180" y2="230" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
+      <line x1="60" y1="230" x2="60" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
+      <line x1="60" y1="20" x2="130" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
+      <line x1="130" y1="20" x2="130" y2="45" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
 
       {/* 1: Head */}
       {wrongCount >= 1 && (
@@ -202,13 +202,13 @@ export default function Hangman() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Category selector */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('category')}</p>
+      <div className="bg-surface rounded-xl shadow-lg p-4">
+        <p className="text-sm font-medium text-body mb-3">{t('category')}</p>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => (
             <button
@@ -217,7 +217,7 @@ export default function Hangman() {
               className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                 category === cat
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {categoryIcon[cat]} {t(`categories.${cat}`)}
@@ -229,17 +229,17 @@ export default function Hangman() {
       {/* Game area */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Left: Hangman figure */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center">
+        <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col items-center">
           <HangmanSVG wrongCount={wrongCount} label={t('svgLabel', { wrong: wrongCount, max: MAX_WRONG })} />
           <div className="mt-4 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted">
               {t('remainingTries')}: <span className={`font-bold text-lg ${remainingTries <= 2 ? 'text-red-500' : 'text-green-600 dark:text-green-400'}`}>{remainingTries}</span> / {MAX_WRONG}
             </p>
           </div>
         </div>
 
         {/* Right: Word display + keyboard */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col gap-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col gap-6">
           {/* Hint */}
           <div className="text-center">
             <span className="inline-block bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-sm font-medium px-3 py-1 rounded-full">
@@ -257,7 +257,7 @@ export default function Hangman() {
                     key={i}
                     className={`w-12 h-12 border-b-4 flex items-center justify-center text-xl font-bold transition-all ${
                       revealed
-                        ? 'border-blue-500 text-gray-900 dark:text-white'
+                        ? 'border-blue-500 text-fg'
                         : 'border-gray-400 dark:border-gray-500 text-transparent'
                     }`}
                     aria-label={revealed ? ch : t('unrevealed')}
@@ -270,17 +270,17 @@ export default function Hangman() {
           )}
 
           {/* Used letters count */}
-          <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
+          <p className="text-xs text-faint text-center">
             {t('usedLetters')}: {guessed.size}
           </p>
         </div>
       </div>
 
       {/* Virtual keyboard */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
         {/* Consonants */}
         <div>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('consonants')}</p>
+          <p className="text-xs font-medium text-muted mb-2">{t('consonants')}</p>
           <div className="flex flex-wrap gap-1.5">
             {CONSONANTS.map((con) => {
               const used = guessed.has(con)
@@ -298,7 +298,7 @@ export default function Hangman() {
                       ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
                       : isWrong
                       ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
+                      : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
                   }`}
                 >
                   {con}
@@ -310,7 +310,7 @@ export default function Hangman() {
 
         {/* Vowels */}
         <div>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('vowels')}</p>
+          <p className="text-xs font-medium text-muted mb-2">{t('vowels')}</p>
           <div className="flex flex-wrap gap-1.5">
             {VOWELS.map((vow) => {
               const used = guessed.has(vow)
@@ -328,7 +328,7 @@ export default function Hangman() {
                       ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
                       : isWrong
                       ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
+                      : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
                   }`}
                 >
                   {vow}
@@ -347,15 +347,15 @@ export default function Hangman() {
           aria-modal="true"
           aria-label={gameStatus === 'won' ? t('gameWon') : t('gameLost')}
         >
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 mx-4 max-w-sm w-full text-center space-y-4">
+          <div className="bg-surface rounded-2xl shadow-2xl p-8 mx-4 max-w-sm w-full text-center space-y-4">
             <div className="text-5xl">{gameStatus === 'won' ? '🎉' : '😢'}</div>
             <h2 className={`text-2xl font-bold ${gameStatus === 'won' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {gameStatus === 'won' ? t('won') : t('lost')}
             </h2>
             {gameStatus === 'lost' && (
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{t('answer')}</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{word}</p>
+                <p className="text-sm text-muted">{t('answer')}</p>
+                <p className="text-3xl font-bold text-fg mt-1">{word}</p>
               </div>
             )}
             <button
@@ -373,7 +373,7 @@ export default function Hangman() {
         <div className="flex justify-center">
           <button
             onClick={() => startNewGame(category)}
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-2 font-medium text-sm transition-colors"
+            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-2 font-medium text-sm transition-colors"
           >
             {t('newGame')}
           </button>
@@ -388,13 +388,13 @@ export default function Hangman() {
       />
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
         <div>
-          <h3 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2">{t('guide.rules.title')}</h3>
+          <h3 className="text-base font-medium text-body mb-2">{t('guide.rules.title')}</h3>
           <ul className="space-y-2">
             {(t.raw('guide.rules.items') as string[]).map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <li key={i} className="flex items-start gap-2 text-sm text-sub">
                 <span className="text-blue-500 mt-0.5">•</span>
                 <span>{item}</span>
               </li>

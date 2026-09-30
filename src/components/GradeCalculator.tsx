@@ -153,11 +153,11 @@ export default function GradeCalculator() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
           <Award className="w-7 h-7 text-blue-600" />
           {t('title')}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Main grid */}
@@ -165,14 +165,14 @@ export default function GradeCalculator() {
         {/* Left: Input */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-600" />
               {t('input.title')}
             </h2>
 
             {/* Score (optional) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.score')}
               </label>
               <input
@@ -187,7 +187,7 @@ export default function GradeCalculator() {
 
             {/* Rank */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.rank')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -199,7 +199,7 @@ export default function GradeCalculator() {
                 min="1"
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <p className="text-xs text-faint mt-1">
                 <Info className="w-3 h-3 inline mr-1" />
                 {t('input.rankHelp')}
               </p>
@@ -207,7 +207,7 @@ export default function GradeCalculator() {
 
             {/* Total Students */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('input.totalStudents')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -239,7 +239,7 @@ export default function GradeCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 transition-colors"
+                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-colors"
                 aria-label={t('input.reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -253,7 +253,7 @@ export default function GradeCalculator() {
           {/* Result card */}
           {result && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-blue-600" />
                 {t('result.title')}
               </h2>
@@ -264,21 +264,21 @@ export default function GradeCalculator() {
                   <div className={`w-24 h-24 rounded-2xl flex items-center justify-center text-white text-4xl font-bold ${gradeColors[result.grade - 1]}`}>
                     {result.grade}
                   </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  <span className="text-sm text-muted mt-2">
                     {t('result.gradeUnit')}
                   </span>
                 </div>
                 <div className="flex-1 grid grid-cols-2 gap-4 w-full">
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.percentile')}</p>
+                    <p className="text-xs text-muted">{t('result.percentile')}</p>
                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{result.percentile.toFixed(1)}%</p>
                   </div>
                   <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.topPercent')}</p>
+                    <p className="text-xs text-muted">{t('result.topPercent')}</p>
                     <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{result.topPercent.toFixed(1)}%</p>
                   </div>
                   <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center col-span-2">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('result.rank')}</p>
+                    <p className="text-xs text-muted">{t('result.rank')}</p>
                     <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                       {result.rank} / {result.totalStudents}
                     </p>
@@ -288,7 +288,7 @@ export default function GradeCalculator() {
 
               {/* Position bar */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <h3 className="text-sm font-medium text-body mb-3">
                   {t('position.title')}
                 </h3>
                 <div className="relative">
@@ -315,7 +315,7 @@ export default function GradeCalculator() {
                     className="absolute -bottom-6 transform -translate-x-1/2"
                     style={{ left: `${Math.min(result.topPercent, 99.5)}%` }}
                   >
-                    <span className="text-xs font-bold text-gray-900 dark:text-white bg-yellow-300 dark:bg-yellow-500 px-1.5 py-0.5 rounded">
+                    <span className="text-xs font-bold text-fg bg-yellow-300 dark:bg-yellow-500 px-1.5 py-0.5 rounded">
                       {t('position.topLabel', { percent: result.topPercent.toFixed(1) })}
                     </span>
                   </div>
@@ -326,19 +326,19 @@ export default function GradeCalculator() {
 
           {/* Grade table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-blue-600" />
               {t('table.title')}
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="py-2 px-3 text-left text-gray-600 dark:text-gray-400 font-medium">{t('table.grade')}</th>
-                    <th className="py-2 px-3 text-center text-gray-600 dark:text-gray-400 font-medium">{t('table.ratio')}</th>
-                    <th className="py-2 px-3 text-center text-gray-600 dark:text-gray-400 font-medium">{t('table.cumulative')}</th>
+                  <tr className="border-b border-line">
+                    <th className="py-2 px-3 text-left text-sub font-medium">{t('table.grade')}</th>
+                    <th className="py-2 px-3 text-center text-sub font-medium">{t('table.ratio')}</th>
+                    <th className="py-2 px-3 text-center text-sub font-medium">{t('table.cumulative')}</th>
                     {result && (
-                      <th className="py-2 px-3 text-center text-gray-600 dark:text-gray-400 font-medium">{t('table.cutoff')}</th>
+                      <th className="py-2 px-3 text-center text-sub font-medium">{t('table.cutoff')}</th>
                     )}
                   </tr>
                 </thead>
@@ -349,27 +349,27 @@ export default function GradeCalculator() {
                     return (
                       <tr
                         key={i}
-                        className={`border-b border-gray-100 dark:border-gray-700 transition-colors ${
+                        className={`border-b border-line transition-colors ${
                           isCurrentGrade
                             ? 'bg-blue-50 dark:bg-blue-950 font-semibold'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                       >
                         <td className="py-2.5 px-3">
-                          <span className={`inline-flex items-center gap-1.5 ${isCurrentGrade ? gradeTextColors[i] : 'text-gray-900 dark:text-white'}`}>
+                          <span className={`inline-flex items-center gap-1.5 ${isCurrentGrade ? gradeTextColors[i] : 'text-fg'}`}>
                             <span className={`w-3 h-3 rounded-full ${gradeColors[i]}`} />
                             {i + 1}{t('result.gradeUnit')}
                             {isCurrentGrade && <span className="text-xs">&#9664;</span>}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3 text-center text-gray-700 dark:text-gray-300">
+                        <td className="py-2.5 px-3 text-center text-body">
                           {GRADE_RATIOS[i]}%
                         </td>
-                        <td className="py-2.5 px-3 text-center text-gray-700 dark:text-gray-300">
+                        <td className="py-2.5 px-3 text-center text-body">
                           ~{cutoff}%
                         </td>
                         {result && (
-                          <td className="py-2.5 px-3 text-center text-gray-700 dark:text-gray-300">
+                          <td className="py-2.5 px-3 text-center text-body">
                             ~{cutoffRank}{t('table.person')}
                           </td>
                         )}
@@ -385,18 +385,18 @@ export default function GradeCalculator() {
 
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.gradeSystem.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.gradeSystem.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-blue-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>
@@ -404,12 +404,12 @@ export default function GradeCalculator() {
             </ul>
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.usage.title')}
             </h3>
             <ul className="space-y-2">
               {(t.raw('guide.usage.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-sub">
                   <span className="text-green-500 mt-0.5">&#8226;</span>
                   {item}
                 </li>

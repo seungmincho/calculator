@@ -565,8 +565,8 @@ export const metadata: Metadata = {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* ═══ Image Editor — full-width section ═══ */}
@@ -574,14 +574,14 @@ export const metadata: Metadata = {
         <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           {/* Toolbar row */}
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('editor.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('editor.title')}</h2>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setActiveEditTool(activeEditTool === 'crop' ? 'none' : 'crop')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   activeEditTool === 'crop'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <Crop className="w-4 h-4" />
@@ -592,7 +592,7 @@ export const metadata: Metadata = {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   activeEditTool === 'colorPick'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <Pipette className="w-4 h-4" />
@@ -601,7 +601,7 @@ export const metadata: Metadata = {
               {(cropRect || removeColor) && (
                 <button
                   onClick={resetEdits}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {t('editor.reset')}
@@ -618,7 +618,7 @@ export const metadata: Metadata = {
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
-                className={`max-w-full rounded border border-gray-200 dark:border-gray-700 ${
+                className={`max-w-full rounded border border-line ${
                   activeEditTool !== 'none' ? 'cursor-crosshair' : ''
                 }`}
                 style={{
@@ -658,14 +658,14 @@ export const metadata: Metadata = {
               <div className="flex-1 min-w-[240px] bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-3">
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-8 h-8 rounded-lg border-2 border-gray-300 dark:border-gray-600 shrink-0"
+                    className="w-8 h-8 rounded-lg border-2 border-line-strong shrink-0"
                     style={{ backgroundColor: `rgb(${removeColor.r}, ${removeColor.g}, ${removeColor.b})` }}
                   />
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-fg">
                       {t('editor.selectedColor')}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                    <p className="text-xs text-muted font-mono">
                       {rgbToHex(removeColor.r, removeColor.g, removeColor.b)} &middot; RGB({removeColor.r}, {removeColor.g}, {removeColor.b})
                     </p>
                   </div>
@@ -678,10 +678,10 @@ export const metadata: Metadata = {
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="text-sm text-gray-700 dark:text-gray-300">
+                    <label className="text-sm text-body">
                       {t('editor.colorThreshold')}
                     </label>
-                    <span className="text-sm font-mono text-gray-500 dark:text-gray-400 tabular-nums">
+                    <span className="text-sm font-mono text-muted tabular-nums">
                       {colorThreshold}
                     </span>
                   </div>
@@ -704,10 +704,10 @@ export const metadata: Metadata = {
             {/* Crop info */}
             {cropRect && cropRect.w > 5 && cropRect.h > 5 && !isDragging && (
               <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <p className="text-sm font-medium text-fg">
                   {t('editor.cropActive')}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                <p className="text-xs text-muted font-mono">
                   {Math.round(cropRect.w)} × {Math.round(cropRect.h)}px
                 </p>
                 <button
@@ -728,23 +728,23 @@ export const metadata: Metadata = {
         <div className="lg:col-span-1 space-y-6">
           {/* Upload */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('upload.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('upload.title')}</h2>
             <div
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+              className="border-2 border-dashed border-line-strong rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
             >
               {sourceImage ? (
                 <div className="space-y-3">
                   <img src={sourceImage} alt="Source" className="w-24 h-24 object-contain mx-auto rounded-lg" />
-                  <p className="text-sm text-gray-600 dark:text-gray-300 truncate max-w-full" title={fileName}>{fileName}</p>
+                  <p className="text-sm text-sub truncate max-w-full" title={fileName}>{fileName}</p>
                   <p className="text-xs text-gray-400">{t('upload.change')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <Upload className="w-10 h-10 mx-auto text-gray-400" />
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('upload.dragDrop')}</p>
+                  <p className="text-sm text-sub">{t('upload.dragDrop')}</p>
                   <p className="text-xs text-gray-400">{t('upload.formats')}</p>
                 </div>
               )}
@@ -769,9 +769,9 @@ export const metadata: Metadata = {
 
           {/* Options */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('options.title')}</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('options.title')}</h2>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('options.bgColor')}
               </label>
               <div className="flex items-center gap-2">
@@ -779,7 +779,7 @@ export const metadata: Metadata = {
                   type="color"
                   value={backgroundColor === 'transparent' ? '#ffffff' : backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  className="w-10 h-10 rounded-lg border border-line-strong cursor-pointer"
                 />
                 <input
                   type="text"
@@ -789,20 +789,20 @@ export const metadata: Metadata = {
                 />
                 <button
                   onClick={() => setBackgroundColor('transparent')}
-                  className="px-3 py-2 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  className="px-3 py-2 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                 >
                   {t('options.transparent')}
                 </button>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('options.padding')}: {padding}%
               </label>
               <input type="range" min="0" max="30" value={padding} onChange={(e) => setPadding(Number(e.target.value))} className="w-full accent-blue-600" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 {t('options.borderRadius')}: {borderRadius}%
               </label>
               <input type="range" min="0" max="100" value={borderRadius} onChange={(e) => setBorderRadius(Number(e.target.value))} className="w-full accent-blue-600" />
@@ -826,7 +826,7 @@ export const metadata: Metadata = {
             <>
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-fg">
                     {t('result.title')} ({generatedFavicons.size} {t('result.files')})
                   </h2>
                   <button
@@ -846,7 +846,7 @@ export const metadata: Metadata = {
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                         activeFilter === key
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {categoryInfo[key].icon}
@@ -860,7 +860,7 @@ export const metadata: Metadata = {
                     const dataUrl = generatedFavicons.get(size.name)
                     if (!dataUrl) return null
                     return (
-                      <div key={size.name} className="group bg-gray-50 dark:bg-gray-900 rounded-lg p-3 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+                      <div key={size.name} className="group bg-gray-50 dark:bg-gray-900 rounded-lg p-3 border border-line hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
                         <div className="flex items-center justify-center mb-2 h-16">
                           <img
                             src={dataUrl}
@@ -874,8 +874,8 @@ export const metadata: Metadata = {
                           />
                         </div>
                         <div className="text-center">
-                          <p className="text-xs font-medium text-gray-900 dark:text-white truncate">{size.name}</p>
-                          <p className="text-[10px] text-gray-500 dark:text-gray-400">{size.width}x{size.height}</p>
+                          <p className="text-xs font-medium text-fg truncate">{size.name}</p>
+                          <p className="text-[10px] text-muted">{size.width}x{size.height}</p>
                         </div>
                         <button
                           onClick={() => downloadSingle(dataUrl, size.name)}
@@ -893,13 +893,13 @@ export const metadata: Metadata = {
               {/* HTML Code */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                     <FileCode className="w-5 h-5 text-blue-600" />
                     {t('code.htmlTitle')}
                   </h2>
                   <button
                     onClick={() => copyToClipboard(getHtmlCode(), 'html')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'html' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'html' ? t('code.copied') : t('code.copy')}
@@ -911,13 +911,13 @@ export const metadata: Metadata = {
               {/* Next.js Code */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
                     <FileCode className="w-5 h-5 text-purple-600" />
                     {t('code.nextjsTitle')}
                   </h2>
                   <button
                     onClick={() => copyToClipboard(getNextJsCode(), 'nextjs')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
                   >
                     {copiedId === 'nextjs' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {copiedId === 'nextjs' ? t('code.copied') : t('code.copy')}
@@ -929,8 +929,8 @@ export const metadata: Metadata = {
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Image className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">{t('result.empty')}</p>
-              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('result.emptyHint')}</p>
+              <p className="text-muted">{t('result.empty')}</p>
+              <p className="text-sm text-faint mt-1">{t('result.emptyHint')}</p>
             </div>
           )}
         </div>
@@ -938,26 +938,26 @@ export const metadata: Metadata = {
 
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.sizes.title')}</h3>
+            <h3 className="font-medium text-fg mb-3">{t('guide.sizes.title')}</h3>
             <div className="space-y-2">
               {(t.raw('guide.sizes.items') as string[]).map((item, i) => (
-                <p key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <p key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-blue-500 mt-0.5">•</span>{item}
                 </p>
               ))}
             </div>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-3">{t('guide.tips.title')}</h3>
+            <h3 className="font-medium text-fg mb-3">{t('guide.tips.title')}</h3>
             <div className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <p key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                <p key={i} className="text-sm text-sub flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">•</span>{item}
                 </p>
               ))}

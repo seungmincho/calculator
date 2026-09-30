@@ -195,8 +195,8 @@ export default function ScreenCompare() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Category filter */}
@@ -208,7 +208,7 @@ export default function ScreenCompare() {
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               filterCat === cat
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {cat === 'all' ? t('category.all') : (
@@ -226,7 +226,7 @@ export default function ScreenCompare() {
           return (
             <div key={idx} className={`rounded-xl border-2 p-4 ${color.border} ${color.bg} space-y-3`}>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                <span className="text-xs font-semibold text-muted">
                   {t('deviceN', { n: idx + 1 })}
                 </span>
                 {selectedIds.length > 1 && (
@@ -252,7 +252,7 @@ export default function ScreenCompare() {
               </select>
 
               {dev && (
-                <div className="text-xs space-y-1 text-gray-600 dark:text-gray-300">
+                <div className="text-xs space-y-1 text-sub">
                   <div className="flex items-center gap-1">
                     <span className={`inline-block w-2 h-2 rounded-full ${CATEGORY_COLORS[dev.category].label}`} />
                     <span>{catLabel(dev.category)}</span>
@@ -264,26 +264,26 @@ export default function ScreenCompare() {
 
               <button
                 onClick={() => initCustomForm(idx)}
-                className="w-full text-xs px-2 py-1.5 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                className="w-full text-xs px-2 py-1.5 rounded-lg bg-field border border-line-strong text-sub hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
               >
                 {t('customSize')}
               </button>
 
               {/* Custom device form */}
               {showCustomForm === idx && (
-                <div className="space-y-2 pt-2 border-t border-gray-300 dark:border-gray-600">
-                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">{t('customTitle')}</p>
+                <div className="space-y-2 pt-2 border-t border-line-strong">
+                  <p className="text-xs font-semibold text-body">{t('customTitle')}</p>
                   <input
                     type="text"
                     placeholder={t('customName')}
                     value={customForms[idx]?.name ?? ''}
                     onChange={e => updateCustomForm(idx, 'name', e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
                   />
                   <select
                     value={customForms[idx]?.category ?? 'phone'}
                     onChange={e => updateCustomForm(idx, 'category', e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
                   >
                     <option value="phone">{t('category.phone')}</option>
                     <option value="tablet">{t('category.tablet')}</option>
@@ -296,7 +296,7 @@ export default function ScreenCompare() {
                     value={customForms[idx]?.diagonal ?? ''}
                     onChange={e => updateCustomForm(idx, 'diagonal', e.target.value)}
                     step="0.1"
-                    className="w-full px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
                   />
                   <div className="flex gap-1">
                     <input
@@ -304,14 +304,14 @@ export default function ScreenCompare() {
                       placeholder={t('customWidth')}
                       value={customForms[idx]?.width ?? ''}
                       onChange={e => updateCustomForm(idx, 'width', e.target.value)}
-                      className="w-1/2 px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-1/2 px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
                     />
                     <input
                       type="number"
                       placeholder={t('customHeight')}
                       value={customForms[idx]?.height ?? ''}
                       onChange={e => updateCustomForm(idx, 'height', e.target.value)}
-                      className="w-1/2 px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-1/2 px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -323,7 +323,7 @@ export default function ScreenCompare() {
                     </button>
                     <button
                       onClick={() => setShowCustomForm(null)}
-                      className="px-2 py-1.5 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-500"
+                      className="px-2 py-1.5 text-xs bg-gray-200 dark:bg-gray-600 text-body rounded hover:bg-gray-300 dark:hover:bg-gray-500"
                     >
                       {t('cancel')}
                     </button>
@@ -338,7 +338,7 @@ export default function ScreenCompare() {
         {selectedIds.length < 4 && (
           <button
             onClick={addSlot}
-            className="rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 flex flex-col items-center justify-center gap-2 text-gray-400 dark:text-gray-500 hover:border-blue-400 hover:text-blue-500 transition-colors min-h-[140px]"
+            className="rounded-xl border-2 border-dashed border-line-strong p-4 flex flex-col items-center justify-center gap-2 text-faint hover:border-blue-400 hover:text-blue-500 transition-colors min-h-[140px]"
           >
             <Plus size={24} />
             <span className="text-sm">{t('addDevice')}</span>
@@ -348,11 +348,11 @@ export default function ScreenCompare() {
 
       {/* Visual comparison */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">{t('visualTitle')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-6">{t('visualTitle')}</h2>
         <div className="flex flex-wrap items-end justify-center gap-8 min-h-[220px]">
           {selectedDevices.map((dev, idx) => {
             if (!dev) return (
-              <div key={idx} className="flex items-center justify-center text-gray-400 dark:text-gray-600 text-sm border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg w-24 h-32">
+              <div key={idx} className="flex items-center justify-center text-gray-400 dark:text-gray-600 text-sm border-2 border-dashed border-line-strong rounded-lg w-24 h-32">
                 {t('empty')}
               </div>
             )
@@ -370,37 +370,37 @@ export default function ScreenCompare() {
                   style={{ width: Math.round(dispW) + 'px', height: Math.round(dispH) + 'px' }}
                 >
                   <div className="text-center px-1">
-                    <div className="text-xs font-bold text-gray-700 dark:text-gray-200 leading-tight truncate max-w-full">
+                    <div className="text-xs font-bold text-body leading-tight truncate max-w-full">
                       {dev.diagonal}"
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
+                    <div className="text-xs text-muted leading-tight">
                       {calcAspectRatio(dev.width, dev.height)}
                     </div>
                   </div>
                 </div>
-                <p className="text-xs font-medium text-gray-700 dark:text-gray-300 text-center max-w-[120px] leading-tight">
+                <p className="text-xs font-medium text-body text-center max-w-[120px] leading-tight">
                   {dev.name}
                 </p>
               </div>
             )
           })}
         </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-4">{t('scaleNote')}</p>
+        <p className="text-xs text-faint text-center mt-4">{t('scaleNote')}</p>
       </div>
 
       {/* Specs table */}
       {selectedDevices.some(Boolean) && (
         <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('specsTitle')}</h2>
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('specsTitle')}</h2>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left py-2 pr-4 text-gray-500 dark:text-gray-400 font-medium w-36">{t('spec')}</th>
+              <tr className="border-b border-line">
+                <th className="text-left py-2 pr-4 text-muted font-medium w-36">{t('spec')}</th>
                 {selectedDevices.map((dev, idx) => {
                   const color = SLOT_COLORS[idx]
                   return (
                     <th key={idx} className={`py-2 px-3 text-left font-medium rounded-t ${color.bg}`}>
-                      <span className="text-gray-800 dark:text-gray-100 text-xs">
+                      <span className="text-body text-xs">
                         {dev ? dev.name : `${t('deviceN', { n: idx + 1 })}`}
                       </span>
                     </th>
@@ -411,9 +411,9 @@ export default function ScreenCompare() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
               {/* Category */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specCategory')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specCategory')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? (
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white ${CATEGORY_COLORS[dev.category].label}`}>
                         {catIcon(dev.category)}{catLabel(dev.category)}
@@ -424,29 +424,29 @@ export default function ScreenCompare() {
               </tr>
               {/* Diagonal */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specDiagonal')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specDiagonal')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? `${dev.diagonal}"` : '—'}
                   </td>
                 ))}
               </tr>
               {/* Resolution */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specResolution')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specResolution')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? `${dev.width}×${dev.height}` : '—'}
                   </td>
                 ))}
               </tr>
               {/* PPI */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">PPI</td>
+                <td className="py-2 pr-4 text-muted">PPI</td>
                 {selectedDevices.map((dev, idx) => {
-                  if (!dev) return <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">—</td>
+                  if (!dev) return <td key={idx} className="py-2 px-3 text-body">—</td>
                   const ppi = calcPPI(dev.width, dev.height, dev.diagonal)
-                  const quality = ppi >= 400 ? 'text-green-600 dark:text-green-400' : ppi >= 250 ? 'text-blue-600 dark:text-blue-400' : ppi >= 100 ? 'text-gray-800 dark:text-gray-200' : 'text-orange-600 dark:text-orange-400'
+                  const quality = ppi >= 400 ? 'text-green-600 dark:text-green-400' : ppi >= 250 ? 'text-blue-600 dark:text-blue-400' : ppi >= 100 ? 'text-body' : 'text-orange-600 dark:text-orange-400'
                   return (
                     <td key={idx} className={`py-2 px-3 font-semibold ${quality}`}>
                       {ppi}
@@ -456,27 +456,27 @@ export default function ScreenCompare() {
               </tr>
               {/* Aspect ratio */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specAspect')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specAspect')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? calcAspectRatio(dev.width, dev.height) : '—'}
                   </td>
                 ))}
               </tr>
               {/* Screen area */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specArea')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specArea')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? `${calcAreaSqIn(dev.diagonal, dev.width, dev.height).toFixed(2)} in²` : '—'}
                   </td>
                 ))}
               </tr>
               {/* Total pixels */}
               <tr>
-                <td className="py-2 pr-4 text-gray-500 dark:text-gray-400">{t('specTotalPixels')}</td>
+                <td className="py-2 pr-4 text-muted">{t('specTotalPixels')}</td>
                 {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-gray-800 dark:text-gray-200">
+                  <td key={idx} className="py-2 px-3 text-body">
                     {dev ? `${(dev.width * dev.height / 1_000_000).toFixed(1)} MP` : '—'}
                   </td>
                 ))}
@@ -488,7 +488,7 @@ export default function ScreenCompare() {
 
       {/* PPI guide */}
       <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('ppiGuide.title')}</h2>
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('ppiGuide.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
             { range: '400+ PPI', label: t('ppiGuide.retina'), color: 'bg-green-500' },
@@ -498,8 +498,8 @@ export default function ScreenCompare() {
           ].map(item => (
             <div key={item.range} className="flex items-center gap-3">
               <span className={`w-3 h-3 rounded-full flex-shrink-0 ${item.color}`} />
-              <span className="text-sm font-mono text-gray-700 dark:text-gray-300 min-w-[100px]">{item.range}</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
+              <span className="text-sm font-mono text-body min-w-[100px]">{item.range}</span>
+              <span className="text-sm text-sub">{item.label}</span>
             </div>
           ))}
         </div>

@@ -86,11 +86,11 @@ export default function GameLobby({
     <div className="max-w-4xl mx-auto space-y-6">
       {/* 헤더 */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-fg mb-2">
           {gameTitle}
         </h1>
         {gameDescription && (
-          <p className="text-gray-600 dark:text-gray-400">{gameDescription}</p>
+          <p className="text-sub">{gameDescription}</p>
         )}
       </div>
 
@@ -100,19 +100,19 @@ export default function GameLobby({
           <div className="flex items-center justify-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <Gamepad2 className="w-4 h-4 text-green-500" />
-              <span className="text-gray-600 dark:text-gray-400">{tOmok('playing') || 'Playing'}:</span>
+              <span className="text-sub">{tOmok('playing') || 'Playing'}:</span>
               <span className="font-bold text-green-600 dark:text-green-400">{stats.playing}</span>
             </div>
             <div className="w-px h-4 bg-gray-300 dark:bg-gray-600" />
             <div className="flex items-center gap-2">
               <Globe className="w-4 h-4 text-blue-500" />
-              <span className="text-gray-600 dark:text-gray-400">{tOmok('public') || 'Public'}:</span>
+              <span className="text-sub">{tOmok('public') || 'Public'}:</span>
               <span className="font-bold text-blue-600 dark:text-blue-400">{stats.public}</span>
             </div>
             <div className="w-px h-4 bg-gray-300 dark:bg-gray-600" />
             <div className="flex items-center gap-2">
               <Lock className="w-4 h-4 text-orange-500" />
-              <span className="text-gray-600 dark:text-gray-400">{tOmok('private') || 'Private'}:</span>
+              <span className="text-sub">{tOmok('private') || 'Private'}:</span>
               <span className="font-bold text-orange-600 dark:text-orange-400">{stats.private}</span>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function GameLobby({
       )}
 
       {/* 방 만들기 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         {!showCreateForm ? (
           <button
             onClick={() => setShowCreateForm(true)}
@@ -138,11 +138,11 @@ export default function GameLobby({
           </button>
         ) : (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-fg">
               {t('createNewRoom')}
             </h3>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {t('yourName')}
               </label>
               <input
@@ -150,7 +150,7 @@ export default function GameLobby({
                 value={hostName}
                 onChange={(e) => setHostName(e.target.value)}
                 placeholder={t('enterYourName')}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-line-strong rounded-xl bg-field text-fg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 maxLength={20}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleCreateRoom()
@@ -160,7 +160,7 @@ export default function GameLobby({
 
             {/* 공개/비공개 설정 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-body mb-2">
                 {tOmok('roomVisibility')}
               </label>
               <div className="flex gap-3">
@@ -170,7 +170,7 @@ export default function GameLobby({
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     !isPrivate
                       ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-400'
+                      : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >
                   <Globe className="w-5 h-5" />
@@ -185,7 +185,7 @@ export default function GameLobby({
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     isPrivate
                       ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-400'
+                      : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >
                   <Lock className="w-5 h-5" />
@@ -211,7 +211,7 @@ export default function GameLobby({
                   setHostName('')
                   setIsPrivate(false)
                 }}
-                className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all"
+                className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
               >
                 {t('cancel')}
               </button>
@@ -221,12 +221,12 @@ export default function GameLobby({
       </div>
 
       {/* 대기 중인 방 목록 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className="bg-surface rounded-2xl shadow-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
             <Users className="w-5 h-5 text-green-500" />
             {t('availableRooms')}
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <span className="text-sm font-normal text-muted">
               ({waitingRooms.length})
             </span>
           </h3>
@@ -240,12 +240,12 @@ export default function GameLobby({
         </div>
 
         {isLoading && rooms.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-12 text-muted">
             <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2" />
             {t('loading')}
           </div>
         ) : waitingRooms.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted">
             <Users className="w-10 h-10 mx-auto mb-2 opacity-50" />
             <p>{t('noRooms')}</p>
             <p className="text-sm mt-1">{t('createFirstRoom')}</p>
@@ -263,10 +263,10 @@ export default function GameLobby({
                     {room.host_name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
-                    <p className="font-medium text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400">
+                    <p className="font-medium text-fg group-hover:text-green-600 dark:group-hover:text-green-400">
                       {room.host_name}{t('roomSuffix')}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                    <p className="text-sm text-muted flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {formatTime(room.created_at)}
                     </p>
@@ -284,8 +284,8 @@ export default function GameLobby({
 
       {/* 월별 통계 */}
       {monthlyStats.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+        <div className="bg-surface rounded-2xl shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-fg flex items-center gap-2 mb-4">
             <BarChart3 className="w-5 h-5 text-indigo-500" />
             {t('monthlyStats')}
           </h3>
@@ -297,17 +297,17 @@ export default function GameLobby({
                   key={stat.month}
                   className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4 text-center"
                 >
-                  <div className="flex items-center justify-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  <div className="flex items-center justify-center gap-1 text-xs text-muted mb-2">
                     <Calendar className="w-3 h-3" />
                     {year}.{month}
                   </div>
                   <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {stat.totalGames}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                  <div className="text-xs text-muted">
                     {t('gamesPlayed')}
                   </div>
-                  <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  <div className="text-xs text-faint mt-1">
                     ({stat.totalRooms} {t('rooms')})
                   </div>
                 </div>
@@ -315,15 +315,15 @@ export default function GameLobby({
             })}
           </div>
           {/* 총계 */}
-          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-center gap-8">
+          <div className="mt-4 pt-4 border-t border-line flex justify-center gap-8">
             <div className="text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400">{t('totalGames')}</div>
+              <div className="text-sm text-muted">{t('totalGames')}</div>
               <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                 {monthlyStats.reduce((sum, s) => sum + s.totalGames, 0)}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-500 dark:text-gray-400">{t('totalRooms')}</div>
+              <div className="text-sm text-muted">{t('totalRooms')}</div>
               <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                 {monthlyStats.reduce((sum, s) => sum + s.totalRooms, 0)}
               </div>
