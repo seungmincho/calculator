@@ -403,7 +403,7 @@ export default function GpaCalculator() {
         {/* Right Panel: Semesters & Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Cumulative Results */}
-          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+          <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
             <h2 className="text-lg font-semibold mb-4">{t('result.cumulativeGpa')}</h2>
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white/20 rounded-lg p-4">

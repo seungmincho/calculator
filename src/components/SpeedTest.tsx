@@ -295,7 +295,7 @@ export default function SpeedTest() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary hover:bg-blue-700 flex items-center justify-center text-white">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
             <Wifi className="w-5 h-5" />
           </div>
           <div>

@@ -19,7 +19,7 @@ import {
   Minimize2, Video, Mic, Film, Scissors, Download, Apple, Dumbbell, Wine, Stethoscope, Wind, BedDouble, Salad,
   NotebookText, Brain, HeartHandshake, Users, Flower2, BookOpenCheck, Hexagon, Gamepad2, CircleDot, Circle,
   Grid2x2, Crown, Ship, Spline, Hand, Rows3, Bomb, LayoutPanelTop, Swords, Blocks, Spade, Bird, Ghost,
-  SquareDashed, Calculator, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper,
+  SquareDashed, Calculator, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper, CircleHelp, Disc3,
 } from 'lucide-react'
 import type { CategoryKey } from './menuConfig'
 
@@ -190,6 +190,15 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/order-picker': Shuffle,
   '/menu-roulette': UtensilsCrossed,
   '/menu-picker': UtensilsCrossed,
+  '/roulette': Disc3,
+  '/team-divider': Users,
+  '/lottery-draw': Ticket,
+  '/coin-flip': Coins,
+  '/dice-roller': Dices,
+  '/random-number': Hash,
+  '/yes-no': CircleHelp,
+  '/rock-paper-scissors': Hand,
+  '/penalty-roulette': Target,
   '/cs-visualizer': Cpu,
   '/cs-quiz': ListChecks,
   '/cs-dictionary': BookOpen,

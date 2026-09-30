@@ -1,14 +1,15 @@
 import { Metadata } from 'next'
+import DecisionToolsBar from '@/components/DecisionToolsBar'
 import MenuPicker from '@/components/MenuPicker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '오늘 뭐 먹지? 메뉴 추천 룰렛 - 랜덤 음식 추천 | 툴허브',
+  title: '오늘 뭐 먹지? 메뉴 추천 - 한식·중식·일식 랜덤 음식 고르기 | 툴허브',
   description: '오늘 뭐 먹을지 고민될 때! 메뉴 추천 룰렛을 돌려보세요. 한식, 중식, 일식, 양식, 분식, 치킨 등 100가지 이상 메뉴에서 랜덤 추천. 상황별(혼밥, 회식, 데이트, 야식, 해장) 맞춤 추천도 가능합니다.',
   keywords: '오늘뭐먹지, 메뉴추천, 랜덤메뉴, 음식추천, 메뉴룰렛, 점심메뉴, 저녁메뉴, 혼밥추천, 야식추천, 회식메뉴, 데이트맛집',
   openGraph: {
-    title: '오늘 뭐 먹지? 메뉴 추천 룰렛 | 툴허브',
+    title: '오늘 뭐 먹지? 메뉴 추천 | 툴허브',
     description: '메뉴 고르기 힘들 때! 룰렛을 돌려 오늘의 메뉴를 정해보세요. 8개 카테고리 100가지 이상 메뉴에서 랜덤 추천.',
     url: 'https://toolhub.ai.kr/menu-picker',
     siteName: '툴허브',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '오늘 뭐 먹지? 메뉴 추천 룰렛',
+    title: '오늘 뭐 먹지? 메뉴 추천',
     description: '메뉴 고르기 힘들 때! 룰렛을 돌려 오늘의 메뉴를 정해보세요.',
   },
   alternates: {
@@ -84,6 +85,7 @@ export default function MenuPickerPage() {
       <div className="min-h-screen py-8 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <I18nWrapper>
+              <div className="mb-6"><DecisionToolsBar current="/menu-picker" /></div>
               <MenuPicker />
               <div className="mt-8">
 

@@ -658,7 +658,7 @@ export default function CagrCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Primary Result Card */}
           {resultA ? (
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-start justify-between">
                 <div>
                   {mode === 'cagr' && (() => {

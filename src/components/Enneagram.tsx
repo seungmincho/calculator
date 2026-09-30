@@ -484,7 +484,7 @@ export default function Enneagram() {
           </div>
           <div className="w-full bg-track rounded-full h-2.5">
             <div
-              className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-300"
+              className="bg-primary h-2.5 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -552,7 +552,7 @@ export default function Enneagram() {
   return (
     <div className="space-y-8">
       {/* Primary Type Header */}
-      <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-xl p-8 text-white text-center">
+      <div className="bg-primary rounded-2xl shadow-xl p-8 text-white text-center">
         <div className="text-6xl mb-3">{primaryInfo.emoji}</div>
         <div className="text-lg opacity-80 mb-1">당신의 에니어그램 유형은</div>
         <h2 className="text-4xl font-bold mb-1">Type {primaryType} — {primaryInfo.name}</h2>

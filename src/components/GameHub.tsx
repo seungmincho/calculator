@@ -280,7 +280,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
   return (
     <div className="max-w-7xl mx-auto space-y-4">
       {/* 슬림 헤더 */}
-      <div className="bg-primary hover:bg-blue-700 rounded-xl px-5 py-4 text-white shadow-md">
+      <div className="bg-primary rounded-xl px-5 py-4 text-white shadow-md">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <Gamepad2 className="w-6 h-6" />
@@ -604,7 +604,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       <div className="grid lg:grid-cols-3 gap-4">
         {/* 대기방 */}
         <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
-          <div className="px-4 py-3 bg-primary hover:bg-blue-700 text-white flex items-center justify-between">
+          <div className="px-4 py-3 bg-primary text-white flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 bg-white/30 rounded-full flex items-center justify-center text-xs font-bold">{allWaitingRooms.length}</span>
               <span className="font-semibold text-sm">{t('waitingRooms')}</span>
@@ -768,7 +768,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                                 </span>
                               </div>
                               <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1">
-                                <div className="h-1 rounded-full bg-primary hover:bg-blue-700" style={{ width: `${pct}%` }} />
+                                <div className="h-1 rounded-full bg-primary" style={{ width: `${pct}%` }} />
                               </div>
                             </div>
                           </div>
@@ -805,7 +805,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
           onKeyDown={(e) => e.key === 'Escape' && handleCloseJoinModal()}
         >
           <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
-            <div className="bg-primary hover:bg-blue-700 p-5 text-white flex items-center gap-4">
+            <div className="bg-primary p-5 text-white flex items-center gap-4">
               <div className="text-3xl">{BOARD_GAMES.find(g => hrefToGameId(g.href) === joiningRoom.gameType)?.icon}</div>
               <div>
                 <h3 id="join-modal-title" className="text-lg font-bold">{t('joinRoom')}</h3>

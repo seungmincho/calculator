@@ -661,7 +661,7 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
 
           {/* 승리 메시지 */}
           {gameState.winner && (
-            <div className={`text-center py-4 px-6 rounded-2xl ${gameState.winner === myColor ? 'bg-primary hover:bg-blue-700 text-white' : 'bg-track text-body'}`}>
+            <div className={`text-center py-4 px-6 rounded-2xl ${gameState.winner === myColor ? 'bg-primary text-white' : 'bg-track text-body'}`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
               <p className="text-xl font-bold">{getWinnerMessage()}</p>
             </div>

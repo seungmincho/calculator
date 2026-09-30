@@ -539,7 +539,7 @@ export default function CsQuiz() {
     return (
       <div className="space-y-6">
         {/* Score Summary */}
-        <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-center text-white">
+        <div className="bg-primary rounded-xl shadow-lg p-8 text-center text-white">
           <Trophy className="w-12 h-12 mx-auto mb-4 opacity-80" />
           <div className="text-5xl font-bold mb-2">
             {correctCount} / {totalCount}

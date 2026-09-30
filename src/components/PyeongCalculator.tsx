@@ -292,7 +292,7 @@ export default function PyeongCalculator() {
           {/* Result Cards */}
           <div className="grid md:grid-cols-3 gap-4">
             {/* Pyeong Result */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium opacity-90">{t('pyeong')}</span>
                 <button
@@ -314,7 +314,7 @@ export default function PyeongCalculator() {
             </div>
 
             {/* Square Meter Result */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium opacity-90">{t('sqm')}</span>
                 <button
@@ -336,7 +336,7 @@ export default function PyeongCalculator() {
             </div>
 
             {/* Square Feet Result */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium opacity-90">{t('sqft')}</span>
                 <button
@@ -415,7 +415,7 @@ export default function PyeongCalculator() {
                 </div>
                 <div className="w-full bg-track rounded-full h-4">
                   <div
-                    className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-300"
+                    className="bg-primary h-4 rounded-full transition-all duration-300"
                     style={{ width: `${Math.min((pyeong / maxPyeongForComparison) * 100, 100)}%` }}
                   />
                 </div>

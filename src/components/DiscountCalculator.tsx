@@ -474,7 +474,7 @@ export default function DiscountCalculator() {
             {/* Result Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Original Price */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+              <div className="bg-primary rounded-xl p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('originalPrice')}</h3>
                   <button
@@ -493,7 +493,7 @@ export default function DiscountCalculator() {
               </div>
 
               {/* Discount Rate */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+              <div className="bg-primary rounded-xl p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('discountRate')}</h3>
                   <button
@@ -512,7 +512,7 @@ export default function DiscountCalculator() {
               </div>
 
               {/* Savings */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+              <div className="bg-primary rounded-xl p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('savings')}</h3>
                   <button
@@ -531,7 +531,7 @@ export default function DiscountCalculator() {
               </div>
 
               {/* Final Price */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+              <div className="bg-primary rounded-xl p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('finalPrice')}</h3>
                   <button
@@ -561,7 +561,7 @@ export default function DiscountCalculator() {
                 {/* Final price segment (purple) */}
                 {finalPct > 0 && (
                   <div
-                    className="bg-primary hover:bg-blue-700 flex items-center justify-center transition-all duration-500"
+                    className="bg-primary flex items-center justify-center transition-all duration-500"
                     style={{ width: `${finalPct}%` }}
                   >
                     {finalPct >= 12 && (
@@ -574,7 +574,7 @@ export default function DiscountCalculator() {
                 {/* Savings segment (orange) */}
                 {savingsPct > 0 && (
                   <div
-                    className="bg-primary hover:bg-blue-700 flex items-center justify-center transition-all duration-500"
+                    className="bg-primary flex items-center justify-center transition-all duration-500"
                     style={{ width: `${savingsPct}%` }}
                   >
                     {savingsPct >= 12 && (
@@ -597,7 +597,7 @@ export default function DiscountCalculator() {
                 {/* Original */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="inline-block w-3 h-3 rounded-sm bg-primary hover:bg-blue-700 flex-shrink-0" />
+                    <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
                     <span className="text-xs text-muted">{t('originalPrice')}</span>
                   </div>
                   <p className="text-sm font-bold text-fg">₩{formatCurrency(result.original)}</p>
@@ -606,7 +606,7 @@ export default function DiscountCalculator() {
                 {/* Final */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="inline-block w-3 h-3 rounded-sm bg-primary hover:bg-blue-700 flex-shrink-0" />
+                    <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
                     <span className="text-xs text-muted">{t('finalPrice')}</span>
                   </div>
                   <p className="text-sm font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(result.final)}</p>
@@ -615,7 +615,7 @@ export default function DiscountCalculator() {
                 {/* Savings */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="inline-block w-3 h-3 rounded-sm bg-primary hover:bg-blue-700 flex-shrink-0" />
+                    <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
                     <span className="text-xs text-muted">{t('savings')}</span>
                   </div>
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">₩{formatCurrency(result.savings)}</p>

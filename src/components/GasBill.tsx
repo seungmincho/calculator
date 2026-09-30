@@ -482,7 +482,7 @@ export default function GasBill() {
                   </div>
                 </div>
 
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+                <div className="bg-primary rounded-xl p-6 text-white">
                   <div className="text-sm opacity-90">{t('result.total')}</div>
                   <div className="text-4xl font-bold mt-2">
                     {result.total.toLocaleString('ko-KR')} {t('result.won')}
@@ -654,7 +654,7 @@ export default function GasBill() {
               </div>
             </div>
 
-            <div className="mt-4 bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
+            <div className="mt-4 bg-primary rounded-xl p-5 text-white">
               <div className="text-sm opacity-90">{t('utility.totalLabel')}</div>
               <div className="text-3xl font-bold mt-1">
                 {utilityTotal.toLocaleString('ko-KR')} {t('result.won')}

@@ -1390,7 +1390,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       {/* Result banner */}
       {isFinished && (
         <div className={`text-center py-4 px-6 rounded-2xl ${
-          iWon ? 'bg-primary hover:bg-blue-700 text-white'
+          iWon ? 'bg-primary text-white'
             : iLost ? 'bg-track text-body'
               : 'bg-soft text-sub'
         }`}>
@@ -1408,7 +1408,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       <div className={`${glassCard} ${glassInset} p-3`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary hover:bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
               {(playerName || '?')[0].toUpperCase()}
             </div>
             <div>
@@ -1506,7 +1506,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           </div>
           {/* Combo */}
           {comboCount > 1 && (
-            <div className="bg-primary hover:bg-blue-700 rounded-lg p-3 text-center text-white">
+            <div className="bg-primary rounded-lg p-3 text-center text-white">
               <p className="text-xs font-bold uppercase">Combo</p>
               <p className="text-2xl font-bold">x{comboCount}</p>
             </div>
@@ -1576,7 +1576,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           ))}
         </div>
         {comboCount > 1 && (
-          <div className="bg-primary hover:bg-blue-700 rounded-lg p-2 text-center text-white">
+          <div className="bg-primary rounded-lg p-2 text-center text-white">
             <span className="text-xs font-bold uppercase">Combo x{comboCount}</span>
           </div>
         )}

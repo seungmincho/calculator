@@ -218,7 +218,7 @@ export default function CsDictionary() {
             <span className="text-xs text-muted mb-1">{t('stats.progress')}</span>
             <div className="w-full bg-track rounded-full h-3 overflow-hidden">
               <div
-                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
+                className="h-full bg-primary rounded-full transition-all duration-500"
                 style={{ width: `${progressPct}%` }}
               />
             </div>

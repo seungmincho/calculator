@@ -292,7 +292,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
       {gameState.winner && (
         <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerColor
-            ? 'bg-primary hover:bg-blue-700 text-white'
+            ? 'bg-primary text-white'
             : gameState.winner === 'draw'
             ? 'bg-primary hover:bg-blue-700 text-white'
             : 'bg-track text-body'

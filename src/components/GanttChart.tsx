@@ -562,7 +562,7 @@ export default function GanttChart() {
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-4">
             <div
-              className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-300"
+              className="bg-primary h-2.5 rounded-full transition-all duration-300"
               style={{ width: `${overallProgress}%` }}
             />
           </div>

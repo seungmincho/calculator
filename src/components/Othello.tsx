@@ -771,7 +771,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           {gameState.winner && (
             <div className={`text-center py-4 px-6 rounded-2xl ${
               gameState.winner === myColor
-                ? 'bg-primary hover:bg-blue-700 text-white'
+                ? 'bg-primary text-white'
                 : gameState.winner === 'draw'
                 ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-track text-body'

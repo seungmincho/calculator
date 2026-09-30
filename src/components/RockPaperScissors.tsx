@@ -178,7 +178,7 @@ export default function RockPaperScissors() {
 
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-fg">{t('title')}</h2>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-sub mt-1">{t('description')}</p>
         </div>
 

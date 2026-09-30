@@ -1131,7 +1131,7 @@ const RealEstateCalculatorContent = () => {
       const loanResult = result as LoanResult;
       return (
         <div className="space-y-6">
-          <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
+          <div className="text-center p-6 bg-primary rounded-xl text-white">
             <div className="text-sm opacity-90 mb-1">월 상환금액</div>
             <div className="text-3xl font-bold">{formatNumber(loanResult.monthlyPayment)}원</div>
             {loanResult.loanToValue && (

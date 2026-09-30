@@ -489,7 +489,7 @@ export default function PercentCalculator() {
                       </div>
                       <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                         <div
-                          className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+                          className="bg-primary h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
                           style={{ width: `${Math.min(whatPercentResult, 100)}%` }}
                         >
                           {whatPercentResult >= 15 && (

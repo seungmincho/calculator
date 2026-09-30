@@ -399,7 +399,7 @@ const ExchangeRateCalculatorContent = () => {
             </div>
           ) : result !== null ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">환전 결과</div>
                 <div className="text-3xl font-bold mb-2">
                   {getCurrencyInfo(toCurrency).symbol} {formatNumber(result)}

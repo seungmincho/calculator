@@ -388,7 +388,7 @@ export default function NationalPensionCalculator() {
               <div className="grid sm:grid-cols-3 gap-4">
                 {/* 조기수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
+                  <div className="bg-primary px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <Clock className="w-5 h-5" />
                       <span className="font-bold">{t('earlyPension')}</span>
@@ -422,7 +422,7 @@ export default function NationalPensionCalculator() {
 
                 {/* 정상수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden ring-2 ring-blue-500`}>
-                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
+                  <div className="bg-primary px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
                       <span className="font-bold">{t('normalPension')}</span>
@@ -457,7 +457,7 @@ export default function NationalPensionCalculator() {
 
                 {/* 연기수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
+                  <div className="bg-primary px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
                       <span className="font-bold">{t('deferredPension')}</span>

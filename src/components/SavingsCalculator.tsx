@@ -779,7 +779,7 @@ const SavingsCalculatorContent = () => {
             
             {results.find(r => r.type === 'target') ? (
               <div className="space-y-6">
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+                <div className="bg-primary rounded-xl p-6 text-white">
                   <h3 className="text-lg font-semibold mb-4">목표 달성 정보</h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>

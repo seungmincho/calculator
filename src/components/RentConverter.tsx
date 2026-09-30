@@ -622,7 +622,7 @@ export default function RentConverter() {
                 </div>
                 <div className="w-full bg-track rounded-full h-4">
                   <div
-                    className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-300"
+                    className="bg-primary h-4 rounded-full transition-all duration-300"
                     style={{
                       width: `${
                         Math.min(
@@ -651,7 +651,7 @@ export default function RentConverter() {
                 </div>
                 <div className="w-full bg-track rounded-full h-4">
                   <div
-                    className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-300"
+                    className="bg-primary h-4 rounded-full transition-all duration-300"
                     style={{
                       width: `${
                         Math.min(

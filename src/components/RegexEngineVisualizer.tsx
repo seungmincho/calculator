@@ -595,7 +595,7 @@ export default function RegexEngineVisualizer() {
           <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-track rounded-full overflow-hidden">
               <div
-                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-200"
+                className="h-full bg-primary rounded-full transition-all duration-200"
                 style={{ width: `${currentStep < 0 ? 0 : ((currentStep + 1) / totalSteps) * 100}%` }}
               />
             </div>

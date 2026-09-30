@@ -435,7 +435,7 @@ export default function CompoundCalculator() {
           {/* Total Results Cards */}
           <div className="grid md:grid-cols-2 gap-4">
             {/* Total Amount */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalAmount')}</h3>
                 <button
@@ -450,7 +450,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Total Interest */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalInterest')}</h3>
                 <button
@@ -465,7 +465,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Total Deposited */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalDeposit')}</h3>
                 <button
@@ -480,7 +480,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Effective Rate */}
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.effectiveRate')}</h3>
                 <button

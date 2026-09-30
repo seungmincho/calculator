@@ -270,7 +270,7 @@ const StockCalculatorContent = () => {
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className={`rounded-xl p-6 text-white ${result.isProfit ? 'bg-primary hover:bg-blue-700' : 'bg-red-500 hover:bg-red-600'}`}>
+              <div className={`rounded-xl p-6 text-white ${result.isProfit ? 'bg-primary' : 'bg-red-500 hover:bg-red-600'}`}>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-white/90">수익률</span>
                   {result.isProfit ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}

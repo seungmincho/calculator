@@ -1620,7 +1620,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
 
           {/* Summary Card */}
           {drivingLogs.length > 0 && (
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <h3 className="text-lg font-semibold mb-4">{t('drivingLog.summary.title')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div>

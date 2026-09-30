@@ -621,7 +621,7 @@ export default function InteriorCalc() {
 
           {/* Summary */}
           {rooms.length > 1 && (
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
               <h2 className="font-bold text-lg mb-4">{t('summaryTitle')} ({rooms.length} {t('totalRooms')})</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="bg-white/20 rounded-lg p-3 text-center">

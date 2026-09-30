@@ -309,7 +309,7 @@ export default function VatCalculator() {
           <div className="lg:col-span-2 space-y-6">
             {/* Result Cards */}
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('supplyAmount')}</h3>
                   <button
@@ -322,7 +322,7 @@ export default function VatCalculator() {
                 <p className="text-2xl font-bold">{formatCurrency(calculations.supply)}원</p>
               </div>
 
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('vatAmount')}</h3>
                   <button
@@ -336,7 +336,7 @@ export default function VatCalculator() {
                 <p className="text-xs opacity-75 mt-1">(10%)</p>
               </div>
 
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('totalAmount')}</h3>
                   <button
@@ -530,15 +530,15 @@ export default function VatCalculator() {
 
           {/* Batch Summary Cards */}
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('supplyAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.supply)}원</p>
             </div>
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('vatAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.vat)}원</p>
             </div>
-            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('totalAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.total)}원</p>
             </div>

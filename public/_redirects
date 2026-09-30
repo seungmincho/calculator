@@ -97,6 +97,7 @@
 /chmod-calculator  /chmod-calculator/  301
 /code-screenshot  /code-screenshot/  301
 /coding-patterns  /coding-patterns/  301
+/coin-flip  /coin-flip/  301
 /collage-maker  /collage-maker/  301
 /color-blind-test  /color-blind-test/  301
 /color-blindness-simulator  /color-blindness-simulator/  301
@@ -124,6 +125,7 @@
 /decision-tree  /decision-tree/  301
 /dev-cheatsheet  /dev-cheatsheet/  301
 /dev-roadmap  /dev-roadmap/  301
+/dice-roller  /dice-roller/  301
 /diff-viewer  /diff-viewer/  301
 /discount-calculator  /discount-calculator/  301
 /dns-lookup  /dns-lookup/  301
@@ -196,6 +198,7 @@
 /loan-calculator  /loan-calculator/  301
 /loan-schedule  /loan-schedule/  301
 /lorem-ipsum  /lorem-ipsum/  301
+/lottery-draw  /lottery-draw/  301
 /lotto-generator  /lotto-generator/  301
 /lotto-tax  /lotto-tax/  301
 /lunar-converter  /lunar-converter/  301
@@ -239,6 +242,7 @@
 /password-generator  /password-generator/  301
 /pc-electricity  /pc-electricity/  301
 /pdf-tools  /pdf-tools/  301
+/penalty-roulette  /penalty-roulette/  301
 /pension-calculator  /pension-calculator/  301
 /percent-calculator  /percent-calculator/  301
 /personal-color  /personal-color/  301
@@ -250,6 +254,7 @@
 /pyeong-calculator  /pyeong-calculator/  301
 /qr-generator  /qr-generator/  301
 /qr-scanner  /qr-scanner/  301
+/random-number  /random-number/  301
 /random-picker  /random-picker/  301
 /reaction-test  /reaction-test/  301
 /real-estate-calculator  /real-estate-calculator/  301
@@ -259,7 +264,9 @@
 /rent-converter  /rent-converter/  301
 /resident-number  /resident-number/  301
 /retirement-calculator  /retirement-calculator/  301
+/rock-paper-scissors  /rock-paper-scissors/  301
 /roman-numeral  /roman-numeral/  301
+/roulette  /roulette/  301
 /salary-calculator  /salary-calculator/  301
 /salary-comparison  /salary-comparison/  301
 /salary-rank  /salary-rank/  301
@@ -303,6 +310,7 @@
 /tax-season  /tax-season/  301
 /taxi-fare  /taxi-fare/  301
 /tcp-handshake  /tcp-handshake/  301
+/team-divider  /team-divider/  301
 /tetris  /tetris/  301
 /text-converter  /text-converter/  301
 /text-to-speech  /text-to-speech/  301
@@ -326,4 +334,5 @@
 /world-clock  /world-clock/  301
 /yaml-json-converter  /yaml-json-converter/  301
 /year-end-tax  /year-end-tax/  301
+/yes-no  /yes-no/  301
 /youth-rent-subsidy  /youth-rent-subsidy/  301

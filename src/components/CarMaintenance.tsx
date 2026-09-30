@@ -605,15 +605,15 @@ export default function CarMaintenance() {
             <>
               {/* Summary Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('annualTotal')}</p>
                   <p className="text-2xl font-bold mt-1">{formatWon(annualTotal)}</p>
                 </div>
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('monthlyAverage')}</p>
                   <p className="text-2xl font-bold mt-1">{formatWon(monthlyTotal)}</p>
                 </div>
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('costPerKm')}</p>
                   <p className="text-2xl font-bold mt-1">{formatNumber(costPerKm)}{t('wonPerKm')}</p>
                 </div>

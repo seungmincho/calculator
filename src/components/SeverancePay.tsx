@@ -413,7 +413,7 @@ export default function SeverancePay() {
                   </span>
                   <div className="flex-1 bg-soft rounded-full h-8 overflow-hidden">
                     <div
-                      className="bg-primary hover:bg-blue-700 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                      className="bg-primary h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
                       style={{ width: `${Math.max((item.pay / maxSimPay) * 100, 8)}%` }}
                     >
                       <span className="text-xs text-white font-medium whitespace-nowrap">

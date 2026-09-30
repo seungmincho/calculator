@@ -751,7 +751,7 @@ export default function WeddingCalculator() {
               })}
 
               {/* Running total sticky bar */}
-              <div className="sticky bottom-0 bg-primary hover:bg-blue-700 rounded-xl p-4 text-white shadow-lg" aria-live="polite">
+              <div className="sticky bottom-0 bg-primary rounded-xl p-4 text-white shadow-lg" aria-live="polite">
                 <div className="flex flex-wrap justify-between items-center gap-2">
                   <div className="flex items-center gap-4">
                     <div>
@@ -1088,11 +1088,11 @@ export default function WeddingCalculator() {
             <div ref={dashboardRef} className="space-y-6">
               {/* Summary cards */}
               <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
+                <div className="bg-primary rounded-xl p-5 text-white">
                   <div className="text-sm opacity-80">{t('dashboard.totalCost')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(effectiveTotalCost)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
+                <div className="bg-primary rounded-xl p-5 text-white">
                   <div className="text-sm opacity-80">{t('dashboard.congratulatoryMoney')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(totalCongratulatoryMoney)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>

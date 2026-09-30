@@ -752,7 +752,7 @@ const TaxCalculatorContent = () => {
           
           {result ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">
                   {activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'}
                 </div>

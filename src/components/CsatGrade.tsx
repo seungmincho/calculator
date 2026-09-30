@@ -359,7 +359,7 @@ export default function CsatGrade() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-primary hover:bg-blue-700 rounded-lg text-white">
+        <div className="p-2 bg-primary rounded-lg text-white">
           <GraduationCap className="w-6 h-6" />
         </div>
         <div>

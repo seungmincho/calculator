@@ -258,7 +258,7 @@ export default function GameLobby({
                 className="w-full flex items-center justify-between p-4 bg-subtle hover:bg-green-100 dark:hover:bg-green-900/40 border border-line hover:border-green-300 dark:hover:border-green-700 rounded-xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary hover:bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                     {room.host_name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">

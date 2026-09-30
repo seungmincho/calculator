@@ -423,7 +423,7 @@ export default function AgeCalculator() {
               {/* 메인 나이 카드 */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* 만 나이 */}
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-80">{t('result.internationalAge')}</p>
                   <div className="flex items-end gap-1 mt-2">
                     <span className="text-4xl font-bold">{result.intAge}</span>
@@ -441,7 +441,7 @@ export default function AgeCalculator() {
                 </div>
 
                 {/* 한국 나이 */}
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-80">{t('result.koreanAge')}</p>
                   <div className="flex items-end gap-1 mt-2">
                     <span className="text-4xl font-bold">{result.koreanAge}</span>
@@ -457,7 +457,7 @@ export default function AgeCalculator() {
                 </div>
 
                 {/* 연 나이 */}
-                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-80">{t('result.yearAge')}</p>
                   <div className="flex items-end gap-1 mt-2">
                     <span className="text-4xl font-bold">{result.yearAge}</span>

@@ -1062,7 +1062,7 @@ export default function MenuPicker() {
 
               {/* VS badge */}
               <div className="flex justify-center -mt-2">
-                <div className={`relative -top-14 sm:-top-16 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary hover:bg-blue-700 flex items-center justify-center shadow-lg ${
+                <div className={`relative -top-14 sm:-top-16 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary flex items-center justify-center shadow-lg ${
                   tournamentAnim ? 'animate-bounce' : ''
                 }`}>
                   <span className="text-white font-black text-sm sm:text-base">VS</span>
@@ -1077,7 +1077,7 @@ export default function MenuPicker() {
                 </div>
                 <div className="w-full bg-track rounded-full h-2">
                   <div
-                    className="bg-primary hover:bg-blue-700 h-2 rounded-full transition-all duration-500"
+                    className="bg-primary h-2 rounded-full transition-all duration-500"
                     style={{ width: `${((currentMatchup.matchNumber - 1) / currentMatchup.totalMatches) * 100}%` }}
                   />
                 </div>
@@ -1192,7 +1192,7 @@ export default function MenuPicker() {
                   >
                     {/* Card gradient top */}
                     <div className={`h-2 ${
-                      idx === 0 ? 'bg-primary hover:bg-blue-700' :
+                      idx === 0 ? 'bg-primary' :
                       idx === 1 ? 'bg-primary hover:bg-blue-700' :
                       'bg-primary hover:bg-blue-700'
                     }`} />
@@ -1332,7 +1332,7 @@ function ResultCard({
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
-      <div className="bg-primary hover:bg-blue-700 px-6 py-3">
+      <div className="bg-primary px-6 py-3">
         <p className="text-white font-semibold text-sm">{t('result')}</p>
       </div>
       <div className="p-6 text-center">

@@ -333,7 +333,7 @@ export default function CarLoanCalculator() {
           {result && (
             <>
               {/* 주요 결과 */}
-              <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-lg p-8 text-white">
+              <div className="bg-primary rounded-2xl shadow-lg p-8 text-white">
                 <h3 className="text-xl font-bold mb-6 flex items-center">
                   할부 계산 결과
                 </h3>

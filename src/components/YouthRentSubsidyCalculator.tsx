@@ -266,7 +266,7 @@ export default function YouthRentSubsidyCalculator() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="bg-primary hover:bg-blue-700 rounded-2xl p-6 sm:p-8 text-white">
+      <div className="bg-primary rounded-2xl p-6 sm:p-8 text-white">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-emerald-100 text-sm sm:text-base mb-6">{t('description')}</p>
         <div className="grid grid-cols-3 gap-4">

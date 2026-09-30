@@ -41,7 +41,7 @@ interface StatCardProps {
 const StatCard = ({ icon, label, value, highlight }: StatCardProps) => (
   <div className={`flex flex-col items-center p-4 rounded-xl transition-all ${
     highlight
-      ? 'bg-primary hover:bg-blue-700 text-white shadow-lg scale-105'
+      ? 'bg-primary text-white shadow-lg scale-105'
       : 'bg-surface border border-line hover:shadow-md'
   }`}>
     <div className={`mb-2 ${highlight ? 'text-white/80' : 'text-muted'}`}>

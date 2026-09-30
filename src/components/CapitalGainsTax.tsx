@@ -510,7 +510,7 @@ export default function CapitalGainsTax() {
               ) : null}
 
               {/* 총 납부세액 요약 */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <p className="text-blue-200 text-sm font-medium">{t('totalTaxLabel')}</p>
                 <p className="text-4xl font-bold mt-1">
                   {formatWon(result.totalTax)}<span className="text-xl ml-1">{t('wonUnit')}</span>
@@ -604,7 +604,7 @@ export default function CapitalGainsTax() {
                   <div className="flex items-center gap-3">
                     <div className="flex-1 bg-track rounded-full h-4 overflow-hidden">
                       <div
-                        className="h-4 rounded-full bg-primary hover:bg-blue-700 transition-all duration-500"
+                        className="h-4 rounded-full bg-primary transition-all duration-500"
                         style={{ width: `${(result.lthdRate * 100).toFixed(0)}%` }}
                       />
                     </div>

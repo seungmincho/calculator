@@ -333,7 +333,7 @@ export default function PensionCalculator() {
           {hasCalculated && result ? (
             <>
               {/* 메인 결과 카드 */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <p className="text-blue-100 text-sm font-medium mb-2">{t('resultTitle')}</p>
                 <p className="text-4xl font-bold mb-1">{formatWon(result.monthlyPension)}</p>
                 <p className="text-blue-200 text-sm">{t('monthlyPension')}</p>
@@ -402,7 +402,7 @@ export default function PensionCalculator() {
                   {/* 소득대체율 바 */}
                   <div className="mt-3 h-2 bg-track rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all"
+                      className="h-full bg-primary rounded-full transition-all"
                       style={{ width: `${Math.min(100, result.replacementRate / 70 * 100)}%` }}
                     />
                   </div>

@@ -301,7 +301,7 @@ export default function DueDateCalculator() {
                   </div>
                   <div className="w-full bg-track rounded-full h-3 overflow-hidden">
                     <div
-                      className="bg-primary hover:bg-blue-700 h-full transition-all duration-500"
+                      className="bg-primary h-full transition-all duration-500"
                       style={{ width: `${results.progress}%` }}
                     />
                   </div>

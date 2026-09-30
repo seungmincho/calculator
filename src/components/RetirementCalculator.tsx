@@ -343,7 +343,7 @@ const RetirementCalculatorContent = () => {
           
           {result ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
                 <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
                 <div className="flex space-x-2 mt-4">

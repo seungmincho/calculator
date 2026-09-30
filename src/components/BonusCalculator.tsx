@@ -594,7 +594,7 @@ function BonusCalculatorContent() {
               {activeTab === 0 && bonusDeductions && salaryOnlyResult && withBonusResult && (
                 <div className="space-y-6">
                   {/* Hero card */}
-                  <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+                  <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                     <p className="text-sm opacity-80">{t('result.bonusNet')}</p>
                     <p className="text-3xl font-bold mt-1">
                       {formatNumber(bonusDeductions.net)}{t('chart.won')}

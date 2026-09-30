@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import DecisionToolsBar from '@/components/DecisionToolsBar'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import OrderPickerClient from './OrderPickerClient'
@@ -188,6 +189,7 @@ export default function OrderPickerPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <I18nWrapper>
+              <div className="mb-6"><DecisionToolsBar current="/order-picker" /></div>
               <OrderPickerClient />
             </I18nWrapper>
 

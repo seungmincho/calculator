@@ -485,7 +485,7 @@ export default function EvSubsidyCalculator() {
           {result ? (
             <>
               {/* Summary card */}
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <h2 className="text-base font-medium opacity-90 mb-4">{t('subsidySummary')}</h2>
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="text-center">

@@ -196,7 +196,7 @@ export default function CsHub() {
         <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-8">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white shadow-lg shadow-blue-500/25">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 text-sub">
@@ -204,7 +204,7 @@ export default function CsHub() {
               </span>
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
-              <span className="bg-clip-text text-transparent bg-primary hover:bg-blue-700 dark:via-indigo-400 dark:to-purple-400">
+              <span className="bg-clip-text text-transparent bg-primary dark:via-indigo-400 dark:to-purple-400">
                 {t('title')}
               </span>
             </h1>
@@ -481,7 +481,7 @@ export default function CsHub() {
       </section>
 
       {/* ── Quick Start CTA ── */}
-      <section className="relative overflow-hidden bg-primary hover:bg-blue-700 rounded-2xl shadow-xl p-8 md:p-10 text-white">
+      <section className="relative overflow-hidden bg-primary rounded-2xl shadow-xl p-8 md:p-10 text-white">
         <div className="absolute -top-20 -right-20 w-56 h-56 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-12 -left-12 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
 

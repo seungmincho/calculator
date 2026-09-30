@@ -221,7 +221,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
         {/* Main Content */}
         <article className="bg-surface rounded-2xl shadow-lg border border-line overflow-hidden">
           {/* Header */}
-          <div className="bg-primary hover:bg-blue-700 p-8 text-white">
+          <div className="bg-primary p-8 text-white">
             <div className="flex items-center space-x-4 mb-4">
               <div className="bg-white/20 p-3 rounded-full">
                 <span className="text-3xl">{getCategoryIcon(tip.category)}</span>

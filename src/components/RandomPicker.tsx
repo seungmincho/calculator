@@ -413,7 +413,7 @@ export default function RandomPicker() {
                         {numberResult.numbers.map((num, i) => (
                           <div
                             key={`${num}-${i}`}
-                            className={`flex items-center justify-center w-16 h-16 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-xl shadow-lg ${
+                            className={`flex items-center justify-center w-16 h-16 rounded-xl bg-primary text-white font-bold text-xl shadow-lg ${
                               isShufflingNumbers ? 'animate-pulse' : 'animate-[scale-up_0.3s_ease-out]'
                             }`}
                             style={{ animationDelay: `${i * 50}ms` }}
@@ -465,7 +465,7 @@ export default function RandomPicker() {
                             style={{ animationDelay: `${i * 100}ms` }}
                           >
                             <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary hover:bg-blue-700 text-white font-bold text-sm">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm">
                                 {i + 1}
                               </div>
                               <p className="text-lg font-medium text-fg">{item}</p>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import DecisionToolsBar from '@/components/DecisionToolsBar'
 import RandomPicker from '@/components/RandomPicker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -48,7 +49,8 @@ export default function RandomPickerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <I18nWrapper><RandomPicker />  <div className="mt-8">
+            <I18nWrapper><div className="mb-6"><DecisionToolsBar current="/random-picker" /></div>
+              <RandomPicker />  <div className="mt-8">
     <RelatedTools />
   </div>
 </I18nWrapper>

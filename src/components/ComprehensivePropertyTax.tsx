@@ -475,7 +475,7 @@ export default function ComprehensivePropertyTax() {
           {/* Summary Card */}
           {result && result.taxBase > 0 && (
             <>
-              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
                 <h2 className="text-lg font-semibold mb-4">{t('result.title')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>

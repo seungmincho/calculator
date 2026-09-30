@@ -2,6 +2,15 @@ const fs = require('fs');
 
 // All menuConfig hrefs with labelKeys
 const menuItems = [
+  { href: '/roulette', labelKey: 'footer.links.roulette' },
+  { href: '/team-divider', labelKey: 'footer.links.teamDivider' },
+  { href: '/lottery-draw', labelKey: 'footer.links.lotteryDraw' },
+  { href: '/coin-flip', labelKey: 'footer.links.coinFlip' },
+  { href: '/dice-roller', labelKey: 'footer.links.diceRoller' },
+  { href: '/random-number', labelKey: 'footer.links.randomNumber' },
+  { href: '/yes-no', labelKey: 'footer.links.yesNo' },
+  { href: '/rock-paper-scissors', labelKey: 'footer.links.rockPaperScissors' },
+  { href: '/penalty-roulette', labelKey: 'footer.links.penaltyRoulette' },
   { href: '/15-puzzle', labelKey: 'footer.links.fifteenPuzzle' },
   { href: '/2048', labelKey: 'footer.links.game2048' },
   { href: '/3d-viewer', labelKey: 'footer.links.3dConverter' },

@@ -647,7 +647,7 @@ export default function MemoryGame() {
         {/* Progress bar */}
         <div className="mt-2 h-1.5 bg-track rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
             style={{ width: `${progressPct}%` }}
           />
         </div>
@@ -690,7 +690,7 @@ export default function MemoryGame() {
                 >
                   {/* Back (hidden state) */}
                   <div
-                    className="absolute inset-0 rounded-xl flex items-center justify-center bg-primary hover:bg-blue-700 shadow-md hover:shadow-lg transition-shadow"
+                    className="absolute inset-0 rounded-xl flex items-center justify-center bg-primary shadow-md hover:shadow-lg transition-shadow"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     <div className="text-white/30 text-3xl sm:text-4xl font-bold">?</div>

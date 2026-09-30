@@ -518,7 +518,7 @@ export default function ChildBenefitCalculator() {
           </div>
 
           {/* 총 누적 수령액 */}
-          <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
+          <div className="bg-primary rounded-xl p-6 text-white">
             <h2 className="font-semibold mb-3">{t('cumulativeTitle')}</h2>
             <div className="text-4xl font-bold mb-1">
               {formatKRW(cumulativeNoDay)}

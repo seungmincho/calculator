@@ -22,6 +22,9 @@ interface DecisionToolsProps {
   single?: boolean
   /** URL 파라미터가 없을 때 룰렛 기본 항목으로 적용할 프리셋 (예: 메뉴 룰렛 → '저녁메뉴') */
   defaultPreset?: keyof typeof PRESETS
+  /** single 모드 제목/설명 덮어쓰기 */
+  title?: string
+  subtitle?: string
 }
 
 const WHEEL_COLORS = [
@@ -69,7 +72,7 @@ interface Confetti {
   alpha: number
 }
 
-export default function DecisionTools({ initialTab = 'roulette', single = false, defaultPreset }: DecisionToolsProps) {
+export default function DecisionTools({ initialTab = 'roulette', single = false, defaultPreset, title, subtitle }: DecisionToolsProps) {
   const searchParams = useSearchParams()
 
   // -- shared participants state --
@@ -471,14 +474,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">
-          {single ? (initialTab === 'order' ? '순서 정하기' : '메뉴 룰렛') : '결정 도구'}
+          {title ?? (single ? (initialTab === 'order' ? '순서 정하기' : '메뉴 룰렛') : '결정 도구')}
         </h1>
         <p className="text-sm text-muted mt-1">
-          {single
+          {subtitle ?? (single
             ? initialTab === 'order'
               ? '참가자를 입력하면 랜덤으로 순서를 뽑아드려요'
               : '돌림판을 돌려 오늘의 메뉴를 정하세요'
-            : '돌림판과 순서뽑기로 공정하게 결정하세요'}
+            : '돌림판과 순서뽑기로 공정하게 결정하세요')}
         </p>
       </div>
 
@@ -495,20 +498,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
               }`}
             >
-              {tab === 'roulette' ? '🎡 돌림판' : '🎴 순서뽑기'}
+              {tab === 'roulette' ? '돌림판' : '순서뽑기'}
             </button>
           ))}
         </div>
-      )}
-
-      {/* 사다리 허브 크로스링크 (single 모드) */}
-      {single && (
-        <a
-          href="/ladder-game/"
-          className="inline-flex items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
-        >
-          🪜 사다리타기 · 팀나누기 · 주사위 등 결정 도구 12종 모두 보기 →
-        </a>
       )}
 
       {/* ═══ ROULETTE TAB ═══════════════════════════════════════════════════ */}

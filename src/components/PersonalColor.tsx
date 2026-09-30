@@ -398,7 +398,7 @@ export default function PersonalColor() {
   if (phase === 'intro') {
     return (
       <div className="space-y-8">
-        <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-center text-white">
+        <div className="bg-primary rounded-xl shadow-lg p-8 text-center text-white">
           <div className="text-5xl mb-4">
             <Palette className="inline-block w-12 h-12" />
           </div>
@@ -506,7 +506,7 @@ export default function PersonalColor() {
             </div>
             <div className="w-full bg-track rounded-full h-2.5">
               <div
-                className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-500 ease-out"
+                className="bg-primary h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>

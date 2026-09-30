@@ -343,7 +343,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       {gameState.winner && (
         <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerRole
-            ? 'bg-primary hover:bg-blue-700 text-white'
+            ? 'bg-primary text-white'
             : 'bg-track text-body'
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />

@@ -356,7 +356,7 @@ export default function ExerciseCalorie() {
                             </div>
                             <div className="h-2 bg-soft rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all"
+                                className="h-full bg-primary rounded-full transition-all"
                                 style={{ width: `${Math.min(pct, 100)}%` }}
                               />
                             </div>

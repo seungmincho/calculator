@@ -976,7 +976,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           {gameState.winner && (
             <div className={`text-center py-4 px-6 rounded-2xl ${
               gameState.winner === myRole
-                ? 'bg-primary hover:bg-blue-700 text-white'
+                ? 'bg-primary text-white'
                 : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />

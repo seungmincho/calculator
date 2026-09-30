@@ -425,7 +425,7 @@ export default function ElectricityCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Total Bill Card */}
-          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-white">
+          <div className="bg-primary rounded-xl shadow-lg p-8 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium opacity-90">{t('result.totalMonthly')}</p>

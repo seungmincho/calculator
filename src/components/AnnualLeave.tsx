@@ -511,7 +511,7 @@ export default function AnnualLeave() {
                   <div className="relative mt-6 mb-10">
                     <div className="h-3 bg-track rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
+                        className="h-full bg-primary rounded-full transition-all duration-500"
                         style={{ width: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
                       />
                     </div>

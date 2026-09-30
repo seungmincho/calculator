@@ -170,7 +170,7 @@ export default function GameAchievements({
             </div>
             <div className="h-2 rounded-full bg-soft overflow-hidden">
               <div
-                className="h-full rounded-full bg-primary hover:bg-blue-700 transition-all duration-500"
+                className="h-full rounded-full bg-primary transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
                 role="progressbar"
                 aria-valuenow={progressPercent}
@@ -231,7 +231,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-      <div className="pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl shadow-xl bg-primary hover:bg-blue-700 text-white animate-in slide-in-from-top-2 fade-in duration-300 min-w-[260px] max-w-xs">
+      <div className="pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl shadow-xl bg-primary text-white animate-in slide-in-from-top-2 fade-in duration-300 min-w-[260px] max-w-xs">
         {/* Trophy + icon */}
         <div className="flex-shrink-0 flex flex-col items-center gap-0.5 pt-0.5">
           <Trophy className="w-4 h-4" aria-hidden="true" />

@@ -240,7 +240,7 @@ export default function WaterBillCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Total Card */}
-          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-white">
+          <div className="bg-primary rounded-xl shadow-lg p-8 text-white">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm opacity-90 mb-1">{t('totalAmount')}</p>

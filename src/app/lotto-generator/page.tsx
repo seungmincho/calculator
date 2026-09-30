@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import DecisionToolsBar from '@/components/DecisionToolsBar'
 import LottoGenerator from '@/components/LottoGenerator'
 
 export const metadata: Metadata = {
@@ -140,7 +141,8 @@ export default function LottoGeneratorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-12">
         <div className="container mx-auto px-4">
-          <LottoGenerator />
+          <div className="mb-6"><DecisionToolsBar current="/lotto-generator" /></div>
+              <LottoGenerator />
         </div>
       </div>
         {/* SEO 콘텐츠 */}

@@ -3,7 +3,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
-import { X, BarChart3, Trophy, Eye } from 'lucide-react'
+import { X, BarChart3 } from 'lucide-react'
+import ToolIcon from './ToolIcon'
 import { glassCard, glassInset } from '@/lib/glass'
 import { getAllPopularTools } from '@/utils/toolAnalytics'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
@@ -169,9 +170,6 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-line shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary hover:bg-blue-700 rounded-xl flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-white" />
-            </div>
             <div>
               <h2 id="analytics-title" className="text-lg font-bold text-fg">
                 {t('analyticsDashboard.title')}
@@ -184,33 +182,33 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-soft transition-colors"
             aria-label={t('analyticsDashboard.close')}
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-muted" />
           </button>
         </div>
 
         {/* Summary Cards */}
         <div className="px-6 py-4 border-b border-line shrink-0">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-sub">{totalClicks.toLocaleString()}</div>
-              <div className="text-xs text-blue-600 dark:text-blue-400">{t('analyticsDashboard.totalVisits')}</div>
+            <div className="bg-subtle rounded-xl px-4 py-3">
+              <div className="text-xl font-bold text-fg tabular-nums">{totalClicks.toLocaleString()}</div>
+              <div className="text-xs text-muted mt-0.5">{t('analyticsDashboard.totalVisits')}</div>
             </div>
-            <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-sub">{allTools.length}</div>
-              <div className="text-xs text-purple-600 dark:text-purple-400">{t('analyticsDashboard.totalTools')}</div>
+            <div className="bg-subtle rounded-xl px-4 py-3">
+              <div className="text-xl font-bold text-fg tabular-nums">{allTools.length}</div>
+              <div className="text-xs text-muted mt-0.5">{t('analyticsDashboard.totalTools')}</div>
             </div>
-            <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-sub">{activeToolCount}</div>
-              <div className="text-xs text-green-600 dark:text-green-400">{t('analyticsDashboard.activeTools')}</div>
+            <div className="bg-subtle rounded-xl px-4 py-3">
+              <div className="text-xl font-bold text-fg tabular-nums">{activeToolCount}</div>
+              <div className="text-xs text-muted mt-0.5">{t('analyticsDashboard.activeTools')}</div>
             </div>
-            <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-sub">
+            <div className="bg-subtle rounded-xl px-4 py-3">
+              <div className="text-xl font-bold text-fg tabular-nums">
                 {activeToolCount > 0 ? Math.round(totalClicks / activeToolCount) : 0}
               </div>
-              <div className="text-xs text-orange-600 dark:text-orange-400">{t('analyticsDashboard.avgVisits')}</div>
+              <div className="text-xs text-muted mt-0.5">{t('analyticsDashboard.avgVisits')}</div>
             </div>
           </div>
         </div>
@@ -222,8 +220,8 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
               onClick={() => setActiveCategory('all')}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 activeCategory === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-sub hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-fg text-canvas'
+                  : 'bg-soft text-sub hover:text-fg'
               }`}
             >
               {t('header.all')} ({allTools.length})
@@ -234,11 +232,11 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                 onClick={() => setActiveCategory(key)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   activeCategory === key
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-sub hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'bg-fg text-canvas'
+                    : 'bg-soft text-sub hover:text-fg'
                 }`}
               >
-                {categoryEmoji[key]} {t(menuConfig[key].titleKey)} ({categoryStats[key]?.clicks.toLocaleString() ?? 0})
+                {t(menuConfig[key].titleKey)} ({categoryStats[key]?.clicks.toLocaleString() ?? 0})
               </button>
             ))}
           </div>
@@ -276,50 +274,26 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                     key={tool.href}
                     href={tool.href}
                     onClick={onClose}
-                    className="group flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    className="group flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-subtle transition-colors"
                   >
-                    {/* Rank */}
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 ${
-                      isTop3
-                        ? 'bg-primary hover:bg-blue-700 text-white shadow-sm'
-                        : 'bg-gray-100 dark:bg-gray-800 text-muted'
-                    }`}>
-                      {isTop3 ? <Trophy className="w-4 h-4" /> : globalRank}
-                    </div>
-
-                    {/* Icon */}
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0 bg-subtle">
-                      {tool.icon}
-                    </div>
-
-                    {/* Info */}
+                    <span className={`w-6 text-center text-[15px] font-bold tabular-nums shrink-0 ${isTop3 ? 'text-primary' : 'text-faint'}`}>
+                      {globalRank}
+                    </span>
+                    <ToolIcon href={tool.href} size="sm" />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
-                          {t(tool.labelKey)}
-                        </span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium shrink-0 ${categoryColors[tool.categoryKey]}`}>
-                          {categoryEmoji[tool.categoryKey]}
-                        </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-sm font-semibold text-fg truncate">{t(tool.labelKey)}</span>
+                        <span className="text-[11px] text-faint shrink-0">{t(menuConfig[tool.categoryKey].titleKey)}</span>
                       </div>
-                      {/* Bar */}
-                      <div className="mt-1 h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-500 ${
-                            isTop3
-                              ? 'bg-primary hover:bg-blue-700'
-                              : 'bg-primary hover:bg-blue-700'
-                          }`}
-                          style={{ width: `${Math.max(percentage, 1)}%` }}
-                        />
+                      <div className="mt-1.5 h-1 w-full bg-soft rounded-full overflow-hidden">
+                        <div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(percentage, 1)}%` }} />
                       </div>
                     </div>
 
                     {/* Count */}
                     <div className="text-right shrink-0 ml-2">
                       <div className="flex items-center gap-1 text-sm font-semibold text-fg tabular-nums">
-                        <Eye className="w-3.5 h-3.5 text-gray-400" />
-                        {tool.clickCount.toLocaleString()}
+                                                {tool.clickCount.toLocaleString()}
                       </div>
                       {totalClicks > 0 && tool.clickCount > 0 && (
                         <div className="text-[10px] text-faint tabular-nums">

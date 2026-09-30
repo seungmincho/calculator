@@ -137,7 +137,7 @@ export default function CodingPatterns() {
         </div>
         <div className="w-full bg-track rounded-full h-3">
           <div
-            className="bg-primary hover:bg-blue-700 h-3 rounded-full transition-all duration-500"
+            className="bg-primary h-3 rounded-full transition-all duration-500"
             style={{ width: `${progressPct}%` }}
           />
         </div>

@@ -344,7 +344,7 @@ export default function LottoTaxCalculator() {
             <>
               {/* Main result card */}
               <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                <div className="bg-primary hover:bg-blue-700 px-6 py-3">
+                <div className="bg-primary px-6 py-3">
                   <h2 className="text-white font-semibold">{t('result')}</h2>
                 </div>
                 <div className="p-6 space-y-6">

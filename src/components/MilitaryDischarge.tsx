@@ -341,7 +341,7 @@ export default function MilitaryDischarge() {
                   </div>
                   <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                     <div
-                      className="h-4 rounded-full transition-all duration-700 bg-primary hover:bg-blue-700"
+                      className="h-4 rounded-full transition-all duration-700 bg-primary"
                       style={{ width: `${result.progressPct}%` }}
                     />
                   </div>

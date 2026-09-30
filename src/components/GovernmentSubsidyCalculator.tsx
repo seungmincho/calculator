@@ -994,7 +994,7 @@ export default function GovernmentSubsidyCalculator() {
                   ))}
                   {/* Income bar */}
                   <div
-                    className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
+                    className="h-full bg-primary rounded-full transition-all duration-500"
                     style={{ width: `${Math.min(incomeRatio * 100, 100)}%` }}
                   />
                 </div>

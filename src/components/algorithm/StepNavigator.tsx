@@ -17,7 +17,7 @@ export default function StepNavigator({ steps, currentStep, onStepClick }: StepN
       {/* Progress bar */}
       <div className="h-1.5 bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
         <div
-          className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
+          className="h-full bg-primary rounded-full transition-all duration-500"
           style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
         />
       </div>

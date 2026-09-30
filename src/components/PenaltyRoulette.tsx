@@ -180,9 +180,9 @@ export default function PenaltyRoulette() {
       <div className="relative z-10 p-4 sm:p-6 space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-fg flex items-center justify-center gap-2">
+          <h1 className="text-2xl font-bold text-fg">
             {t('title')}
-          </h2>
+          </h1>
           <p className="text-sm text-sub mt-1">{t('description')}</p>
         </div>
 

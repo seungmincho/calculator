@@ -370,7 +370,7 @@ export default function ColorBlindTest() {
         <div className="mt-6">
           <div className="w-full bg-track rounded-full h-2">
             <div
-              className="bg-primary hover:bg-blue-700 h-2 rounded-full transition-all duration-300"
+              className="bg-primary h-2 rounded-full transition-all duration-300"
               style={{ width: `${((currentPlate + 1) / TEST_PLATES.length) * 100}%` }}
             />
           </div>

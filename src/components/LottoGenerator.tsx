@@ -1024,7 +1024,7 @@ export default function LottoGenerator() {
         {/* 확인 결과 */}
         {checkResult ? (
           <div className={`rounded-xl p-5 text-center ${
-            checkResult.prizeRank === 1 ? 'bg-primary hover:bg-blue-700 text-white' :
+            checkResult.prizeRank === 1 ? 'bg-primary text-white' :
             checkResult.prizeRank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800' :
             checkResult.prizeRank === 3 ? 'bg-primary hover:bg-blue-700 text-white' :
             checkResult.prizeRank >= 4 ? 'bg-primary hover:bg-blue-700 text-white' :

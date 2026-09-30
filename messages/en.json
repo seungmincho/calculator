@@ -1665,7 +1665,16 @@
       "invoiceGenerator": "Invoice Generator",
       "kanbanBoard": "Kanban Board",
       "meetingMinutes": "Meeting Minutes",
-      "menuPicker": "Menu Picker Roulette",
+      "menuPicker": "What to Eat",
+      "roulette": "Spin Wheel",
+      "teamDivider": "Team Divider",
+      "lotteryDraw": "Lottery Draw",
+      "coinFlip": "Coin Flip",
+      "diceRoller": "Dice Roller",
+      "randomNumber": "Random Number",
+      "yesNo": "Yes or No",
+      "rockPaperScissors": "Rock Paper Scissors",
+      "penaltyRoulette": "Penalty Roulette",
       "breakoutGame": "Breakout",
       "solitaire": "Solitaire",
       "crontabGenerator": "Crontab Generator",
@@ -5432,8 +5441,44 @@
         "title": "Meeting Minutes",
         "description": "Write meeting minutes with 5 templates, export as Markdown/HTML"
       },
+      "roulette": {
+        "title": "Spin Wheel",
+        "description": "Enter options and spin to pick one"
+      },
+      "teamDivider": {
+        "title": "Team Divider",
+        "description": "Split people into random teams"
+      },
+      "lotteryDraw": {
+        "title": "Lottery Draw",
+        "description": "Draw lots one by one"
+      },
+      "coinFlip": {
+        "title": "Coin Flip",
+        "description": "Heads or tails with stats"
+      },
+      "diceRoller": {
+        "title": "Dice Roller",
+        "description": "Roll up to 10 dice"
+      },
+      "randomNumber": {
+        "title": "Random Number",
+        "description": "Pick numbers in a range"
+      },
+      "yesNo": {
+        "title": "Yes or No",
+        "description": "Let chance decide yes or no"
+      },
+      "rockPaperScissors": {
+        "title": "Rock Paper Scissors",
+        "description": "Play against the computer"
+      },
+      "penaltyRoulette": {
+        "title": "Penalty Roulette",
+        "description": "Pick a random penalty"
+      },
       "menuPicker": {
-        "title": "Menu Picker Roulette",
+        "title": "What to Eat Today",
         "description": "Can't decide what to eat? Spin the roulette! 100+ menus in 8 categories"
       },
       "breakoutGame": {

@@ -336,7 +336,7 @@ export default function WorkHoursCalculator() {
   // ─── 결과 패널 ─────────────────────────────────────────
   const ResultPanel = () => result ? (
     <>
-      <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-lg p-6 text-white">
+      <div className="bg-primary rounded-2xl shadow-lg p-6 text-white">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-semibold opacity-90 flex items-center gap-2">
             {t('result.title')}
