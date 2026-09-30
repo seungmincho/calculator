@@ -520,10 +520,10 @@ export default function Picross() {
               <Sparkles className="w-10 h-10 text-yellow-500 mx-auto" />
             </div>
           )}
-          <h2 className="text-xl font-bold text-green-800 dark:text-green-200">
+          <h2 className="text-xl font-bold text-fg">
             {t('winTitle')}
           </h2>
-          <p className="text-green-700 dark:text-green-300">
+          <p className="text-sub">
             {t('winMessage', { size: `${gridSize}x${gridSize}`, time: formatTime(timer) })}
           </p>
           <div className="flex justify-center gap-3">

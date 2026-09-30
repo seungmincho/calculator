@@ -575,8 +575,8 @@ export default function MarginCalculator() {
                 <div className="bg-subtle rounded-xl p-4 flex items-center gap-3">
                   <Target className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">{t('result.calculatedPrice')}</p>
-                    <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                    <p className="text-sm text-sub font-medium">{t('result.calculatedPrice')}</p>
+                    <p className="text-2xl font-bold text-fg">
                       {formatNumber(result.sellingPrice)}{t('input.unit')}
                     </p>
                   </div>

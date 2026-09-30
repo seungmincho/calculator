@@ -764,7 +764,7 @@ export default function KmeansClusteringVisualizer() {
                       : 'border-transparent bg-subtle'
                   }`}
                 >
-                  <div className={`font-bold mb-0.5 ${phase === p ? 'text-teal-700 dark:text-teal-300' : 'text-sub'}`}>
+                  <div className={`font-bold mb-0.5 ${phase === p ? 'text-sub' : 'text-sub'}`}>
                     {label}
                   </div>
                   <div className="text-muted leading-snug">{desc}</div>

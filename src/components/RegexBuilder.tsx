@@ -428,7 +428,7 @@ export default function RegexBuilder() {
                       </td>
                       <td className="py-1.5 font-mono text-sub text-xs">
                         {m.groups.length > 0 ? m.groups.map((g, gi) => (
-                          <span key={gi} className="mr-1 bg-subtle text-blue-700 dark:text-blue-300 rounded px-1">{g || '(없음)'}</span>
+                          <span key={gi} className="mr-1 bg-subtle text-sub rounded px-1">{g || '(없음)'}</span>
                         )) : '-'}
                       </td>
                     </tr>

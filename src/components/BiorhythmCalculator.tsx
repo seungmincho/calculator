@@ -358,7 +358,7 @@ export default function BiorhythmCalculator() {
             {/* Days lived info */}
             {birth && (
               <div className="bg-subtle rounded-lg p-3 text-sm">
-                <p className="text-blue-800 dark:text-blue-300">
+                <p className="text-sub">
                   {t('daysLived', { days: todayDays.toLocaleString() })}
                 </p>
               </div>
@@ -523,7 +523,7 @@ export default function BiorhythmCalculator() {
                     >
                       {day.date && (
                         <>
-                          <span className={`${day.isToday ? 'text-blue-700 dark:text-blue-300' : 'text-body'}`}>
+                          <span className={`${day.isToday ? 'text-sub' : 'text-body'}`}>
                             {day.date.getDate()}
                           </span>
                           <div className="flex justify-center gap-0.5 mt-0.5">

@@ -310,7 +310,7 @@ export default function InheritanceGiftTax() {
         <div className="space-y-4">
           {compareResult ? (
             <>
-              <div className="bg-subtle rounded-xl p-4 flex items-center gap-2 text-sm text-purple-700 dark:text-purple-300">
+              <div className="bg-subtle rounded-xl p-4 flex items-center gap-2 text-sm text-sub">
                 <GitCompare className="w-4 h-4 shrink-0" />
                 <span>{t('compareNote')}</span>
               </div>
@@ -479,7 +479,7 @@ export default function InheritanceGiftTax() {
               )}
 
               <div className="bg-subtle rounded-lg p-3">
-                <p className="text-xs text-blue-700 dark:text-blue-300">
+                <p className="text-xs text-sub">
                   <AlertCircle className="w-3.5 h-3.5 inline mr-1" />
                   {t('giftPeriodNote')}
                 </p>

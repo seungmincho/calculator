@@ -386,7 +386,7 @@ export default function YamlJsonConverter() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder={direction === 'yaml-to-json' ? t('yamlPlaceholder') : t('jsonPlaceholder')}
-            className="w-full h-96 px-4 py-3 font-mono text-sm bg-surface text-gray-900 dark:text-gray-100 resize-none focus:outline-none"
+            className="w-full h-96 px-4 py-3 font-mono text-sm bg-surface text-fg resize-none focus:outline-none"
             spellCheck={false}
             aria-label={`${inputLabel} input`}
           />
@@ -433,7 +433,7 @@ export default function YamlJsonConverter() {
                 </div>
               </div>
             ) : result.output ? (
-              <pre className="px-4 py-3 font-mono text-sm text-gray-900 dark:text-gray-100 whitespace-pre overflow-x-auto">{result.output}</pre>
+              <pre className="px-4 py-3 font-mono text-sm text-fg whitespace-pre overflow-x-auto">{result.output}</pre>
             ) : (
               <div className="flex items-center justify-center h-full text-faint text-sm">
                 {t('outputPlaceholder')}

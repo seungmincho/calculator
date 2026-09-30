@@ -110,13 +110,13 @@ const PLATFORM_COLORS: Record<PlatformKey, { bg: string; text: string; ring: str
   },
   smartstore: {
     bg: 'bg-subtle',
-    text: 'text-green-700 dark:text-green-300',
+    text: 'text-sub',
     ring: 'ring-green-500',
     icon: 'text-green-500',
   },
   elevenst: {
     bg: 'bg-subtle',
-    text: 'text-orange-700 dark:text-orange-300',
+    text: 'text-sub',
     ring: 'ring-orange-500',
     icon: 'text-orange-500',
   },

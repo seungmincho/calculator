@@ -409,7 +409,7 @@ export default function RentConverter() {
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                <h3 className="text-sm font-medium text-fg">
                   {mode === 'jeonseToWolse'
                     ? '예상 월세'
                     : '예상 전세금'}
@@ -434,12 +434,12 @@ export default function RentConverter() {
                   )}
                 </button>
               </div>
-              <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+              <p className="text-2xl font-bold text-fg">
                 {mode === 'jeonseToWolse'
                   ? `${formatWon(jeonseToWolseResult.monthlyRent)}원`
                   : `${formatWonUnit(wolseToJeonseResult.jeonseDeposit)}원`}
               </p>
-              <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+              <p className="text-xs text-sub mt-1">
                 {mode === 'jeonseToWolse'
                   ? formatWonUnit(jeonseToWolseResult.monthlyRent)
                   : formatWon(wolseToJeonseResult.jeonseDeposit)}
@@ -449,7 +449,7 @@ export default function RentConverter() {
 
             <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-green-900 dark:text-green-100">
+                <h3 className="text-sm font-medium text-fg">
                   연간 월세 합계
                 </h3>
                 <button
@@ -465,17 +465,17 @@ export default function RentConverter() {
                   )}
                 </button>
               </div>
-              <p className="text-2xl font-bold text-green-900 dark:text-green-100">
+              <p className="text-2xl font-bold text-fg">
                 {formatWon(currentResult.yearlyTotal)}원
               </p>
-              <p className="text-xs text-green-700 dark:text-green-300 mt-1">
+              <p className="text-xs text-sub mt-1">
                 {formatWonUnit(currentResult.yearlyTotal)}원
               </p>
             </div>
 
             <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-purple-900 dark:text-purple-100">
+                <h3 className="text-sm font-medium text-fg">
                   전환율
                 </h3>
                 <button
@@ -489,10 +489,10 @@ export default function RentConverter() {
                   )}
                 </button>
               </div>
-              <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+              <p className="text-2xl font-bold text-fg">
                 {currentRate}%
               </p>
-              <p className="text-xs text-purple-700 dark:text-purple-300 mt-1">
+              <p className="text-xs text-sub mt-1">
                 연율 기준
               </p>
             </div>
@@ -577,7 +577,7 @@ export default function RentConverter() {
                           <span
                             className={`font-semibold ${
                               isActive
-                                ? 'text-blue-700 dark:text-blue-300'
+                                ? 'text-sub'
                                 : 'text-body'
                             }`}
                           >
@@ -670,7 +670,7 @@ export default function RentConverter() {
               </div>
 
               <div className="mt-4 p-4 bg-subtle rounded-lg">
-                <p className="text-sm text-blue-900 dark:text-blue-100">
+                <p className="text-sm text-fg">
                   {currentResult.jeonseOpportunityCost > currentResult.yearlyTotal
                     ? '전세 기회비용이 더 큽니다. 월세가 유리할 수 있습니다.'
                     : '월세 총액이 더 큽니다. 전세가 유리할 수 있습니다.'}

@@ -119,3 +119,31 @@ for f in glob.glob('src/**/*.tsx', recursive=True):
         kf += 1
         open(f, 'w', encoding='utf-8', newline='').write(s)
 print('badge', kf, 'files', dict(k))
+
+# ── 6차: 장식용 색 글자·색 테두리·호버 떠오름 ──
+TXT = [
+    (re.compile(B + r'text-' + DECOR + r'-(?:800|900|950) dark:text-' + DECOR + r'-(?:50|100|200)' + A), 'text-fg'),
+    (re.compile(B + r'text-' + DECOR + r'-(?:700|800) dark:text-' + DECOR + r'-(?:200|300)' + A), 'text-sub'),
+    (re.compile(B + r'border-' + DECOR + r'-(?:100|200|300)/\d+ dark:border-' + DECOR + r'-(?:[4-9]00)/\d+' + A), 'border-line'),
+    (re.compile(r' hover:shadow-\[[^\]\s]*\]'), ''),
+    (re.compile(r' hover:-translate-y-(?:0\.5|1|2)' + A), ''),
+]
+x = collections.Counter(); xf = 0
+for f in glob.glob('src/**/*.tsx', recursive=True):
+    s = open(f, encoding='utf-8').read(); o = s
+    for i, (rx, b) in enumerate(TXT):
+        s, n = rx.subn(b, s); x[i] += n
+    if s != o:
+        xf += 1
+        open(f, 'w', encoding='utf-8', newline='').write(s)
+print('text', xf, 'files', dict(x))
+
+# ── 7차: 회색 타일(bg-soft) 안 아이콘의 장식 색 → text-body ──
+TILEICON = re.compile(r'(<(?:div|span) className="bg-soft[^"]*">\s*<[A-Z]\w+ className="[^"]*?)text-' + DECOR + r'-[4-7]00(?: dark:text-' + DECOR + r'-[2-5]00)?')
+y = 0
+for f in glob.glob('src/**/*.tsx', recursive=True):
+    s = open(f, encoding='utf-8').read(); o = s
+    s, n = TILEICON.subn(r'\1text-body', s); y += n
+    if s != o:
+        open(f, 'w', encoding='utf-8', newline='').write(s)
+print('tile-icons', y)

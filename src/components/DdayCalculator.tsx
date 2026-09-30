@@ -501,7 +501,7 @@ const DdayCalculator = () => {
 
           {/* Presets */}
           <div className="bg-subtle rounded-xl p-6">
-            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
               {t('presets.title')}
             </h3>
             <div className="grid grid-cols-2 gap-2">

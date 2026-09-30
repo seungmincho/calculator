@@ -453,7 +453,7 @@ export default function ParkingFee() {
                 {result.dailyMaxApplied && (
                   <div className="py-2 px-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
                     <span className="text-sm text-yellow-800 dark:text-yellow-200">
-                      ⚠️ {t('result.dailyMax')}
+                      {t('result.dailyMax')}
                     </span>
                   </div>
                 )}

@@ -195,7 +195,7 @@ export default function ColorBlindTest() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-subtle rounded-lg p-4">
               <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('result.correct')}</div>
-              <div className="text-2xl font-bold text-green-700 dark:text-green-300">{results.correct}</div>
+              <div className="text-2xl font-bold text-sub">{results.correct}</div>
             </div>
             <div className="bg-red-50 dark:bg-red-950 rounded-lg p-4">
               <div className="text-sm text-red-600 dark:text-red-400 mb-1">{t('result.wrong')}</div>
@@ -207,15 +207,15 @@ export default function ColorBlindTest() {
             </div>
             <div className="bg-subtle rounded-lg p-4">
               <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.score')}</div>
-              <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{results.score}%</div>
+              <div className="text-2xl font-bold text-sub">{results.score}%</div>
             </div>
           </div>
 
           <div className="bg-subtle rounded-xl p-6 mb-6">
-            <p className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            <p className="text-lg font-semibold text-fg mb-2">
               {results.classification}
             </p>
-            <p className="text-sm text-blue-700 dark:text-blue-300">
+            <p className="text-sm text-sub">
               {t('result.disclaimer')}
             </p>
           </div>

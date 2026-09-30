@@ -920,8 +920,8 @@ export default function DsrCalculator() {
                   ))}
                   {/* 합계 */}
                   <div className="flex justify-between items-center py-2 bg-subtle rounded-lg px-3">
-                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('result.totalAnnual')}</span>
-                    <span className="text-sm font-bold text-blue-700 dark:text-blue-300">{formatCurrency(Math.round(result.totalAnnual))}</span>
+                    <span className="text-sm font-medium text-sub">{t('result.totalAnnual')}</span>
+                    <span className="text-sm font-bold text-sub">{formatCurrency(Math.round(result.totalAnnual))}</span>
                   </div>
                   <div className="flex justify-between items-center py-2 px-3">
                     <span className="text-sm text-muted">{t('result.annualIncome')}</span>
@@ -939,7 +939,7 @@ export default function DsrCalculator() {
                   <div className="space-y-3">
                     <div className="text-center bg-subtle rounded-xl p-6">
                       <p className="text-sm text-green-600 dark:text-green-400 mb-1">{t('limit.maxAdditional')}</p>
-                      <p className="text-3xl font-bold text-green-700 dark:text-green-300">{formatCurrency(Math.round(result.maxAdditionalLoan))}</p>
+                      <p className="text-3xl font-bold text-sub">{formatCurrency(Math.round(result.maxAdditionalLoan))}</p>
                       <p className="text-xs text-green-500 dark:text-green-400 mt-2">{t('limit.basedOn')}</p>
                     </div>
                     <div className="flex justify-between items-center py-2 px-3">
@@ -967,11 +967,11 @@ export default function DsrCalculator() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.additionalRate')}</p>
-                    <p className="text-xl font-bold text-purple-700 dark:text-purple-300">+{result.stressAdditional.toFixed(2)}%p</p>
+                    <p className="text-xl font-bold text-sub">+{result.stressAdditional.toFixed(2)}%p</p>
                   </div>
                   <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.appliedRate')}</p>
-                    <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{result.stressRate.toFixed(2)}%</p>
+                    <p className="text-xl font-bold text-sub">{result.stressRate.toFixed(2)}%</p>
                   </div>
                   <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultDsr')}</p>
@@ -979,7 +979,7 @@ export default function DsrCalculator() {
                   </div>
                   <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultLimit')}</p>
-                    <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{formatCurrency(Math.round(result.stressMaxLoan))}</p>
+                    <p className="text-xl font-bold text-sub">{formatCurrency(Math.round(result.stressMaxLoan))}</p>
                   </div>
                 </div>
 

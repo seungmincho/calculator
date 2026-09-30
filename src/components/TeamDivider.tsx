@@ -298,7 +298,7 @@ export default function TeamDivider() {
                   <button
                     key={name}
                     onClick={() => handleDraftPick(name)}
-                    className="px-3 py-1.5 text-sm rounded-lg border-2 border-blue-400 text-blue-700 dark:text-blue-300 bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
+                    className="px-3 py-1.5 text-sm rounded-lg border-2 border-blue-400 text-sub bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
                   >
                     {name}
                   </button>

@@ -242,7 +242,7 @@ export default function Hangman() {
         <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col gap-6">
           {/* Hint */}
           <div className="text-center">
-            <span className="inline-block bg-subtle text-blue-700 dark:text-blue-300 text-sm font-medium px-3 py-1 rounded-full">
+            <span className="inline-block bg-subtle text-sub text-sm font-medium px-3 py-1 rounded-full">
               {t('hint')}: {categoryIcon[category]} {t(`categories.${category}`)}
             </span>
           </div>

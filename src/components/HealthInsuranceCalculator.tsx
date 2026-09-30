@@ -541,7 +541,7 @@ export default function HealthInsuranceCalculator() {
                   placeholder="200,000"
                 />
 
-                <div className="bg-subtle rounded-lg p-3 text-xs text-blue-700 dark:text-blue-300">
+                <div className="bg-subtle rounded-lg p-3 text-xs text-sub">
                   <Info className="w-4 h-4 inline mr-1" />
                   {t('workplace.rateInfo')}
                 </div>
@@ -631,8 +631,8 @@ export default function HealthInsuranceCalculator() {
 
                         <div className="bg-subtle rounded-lg p-4 mt-3">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm font-semibold text-green-800 dark:text-green-200">{t('workplace.netSalary')}</span>
-                            <span className="text-lg font-bold text-green-700 dark:text-green-300">{formatNumber(workplaceResult.netSalary)}{t('unit.won')}</span>
+                            <span className="text-sm font-semibold text-fg">{t('workplace.netSalary')}</span>
+                            <span className="text-lg font-bold text-sub">{formatNumber(workplaceResult.netSalary)}{t('unit.won')}</span>
                           </div>
                         </div>
                       </div>
@@ -645,7 +645,7 @@ export default function HealthInsuranceCalculator() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-subtle rounded-lg p-4">
                         <div className="text-xs text-blue-600 dark:text-blue-400">{t('insurance.healthInsurance')} + {t('insurance.longTermCare')}</div>
-                        <div className="text-lg font-bold text-blue-700 dark:text-blue-300 mt-1">
+                        <div className="text-lg font-bold text-sub mt-1">
                           {formatNumber((workplaceResult.healthEmployee + workplaceResult.longTermEmployee) * 12)}{t('unit.won')}
                         </div>
                         <div className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{t('unit.perYear')}</div>
@@ -653,7 +653,7 @@ export default function HealthInsuranceCalculator() {
                       {showAllInsurance && (
                         <div className="bg-subtle rounded-lg p-4">
                           <div className="text-xs text-purple-600 dark:text-purple-400">{t('insurance.total4')}</div>
-                          <div className="text-lg font-bold text-purple-700 dark:text-purple-300 mt-1">
+                          <div className="text-lg font-bold text-sub mt-1">
                             {formatNumber(workplaceResult.totalEmployee * 12)}{t('unit.won')}
                           </div>
                           <div className="text-xs text-purple-500 dark:text-purple-400 mt-0.5">{t('unit.perYear')}</div>
@@ -836,7 +836,7 @@ export default function HealthInsuranceCalculator() {
                     )}
                     <div>
                       <div className={`text-lg font-bold ${
-                        dependentResult.eligible ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'
+                        dependentResult.eligible ? 'text-sub' : 'text-red-700 dark:text-red-300'
                       }`}>
                         {dependentResult.eligible ? t('dependent.eligible') : t('dependent.notEligible')}
                       </div>
@@ -882,10 +882,10 @@ export default function HealthInsuranceCalculator() {
                   {/* Estimated regional premium if not eligible */}
                   {!dependentResult.eligible && dependentResult.estimatedRegionalPremium !== null && (
                     <div className="mt-6 bg-subtle rounded-xl p-4">
-                      <div className="text-sm text-orange-700 dark:text-orange-300 font-medium mb-1">
+                      <div className="text-sm text-sub font-medium mb-1">
                         {t('dependent.switchToRegional')}
                       </div>
-                      <div className="text-2xl font-bold text-orange-800 dark:text-orange-200">
+                      <div className="text-2xl font-bold text-fg">
                         {t('unit.monthly')} {formatNumber(dependentResult.estimatedRegionalPremium)}{t('unit.won')}
                       </div>
                       <div className="text-sm text-orange-600 dark:text-orange-400 mt-1">
@@ -996,7 +996,7 @@ export default function HealthInsuranceCalculator() {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
                             <div className="text-sm font-medium text-body">{t('comparison.difference')}</div>
-                            <div className={`text-xl font-bold ${diff > 0 ? 'text-blue-700 dark:text-blue-300' : 'text-red-700 dark:text-red-300'}`}>
+                            <div className={`text-xl font-bold ${diff > 0 ? 'text-sub' : 'text-red-700 dark:text-red-300'}`}>
                               {diff > 0 ? t('comparison.freelancerMore') : t('comparison.workplaceMore')} {formatNumber(Math.abs(diff))}{t('unit.won')}/{t('unit.month')}
                             </div>
                           </div>
@@ -1173,7 +1173,7 @@ function ConditionRow({ pass, label, detail }: { pass: boolean; label: string; d
         <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
       )}
       <div>
-        <div className={`text-sm font-medium ${pass ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+        <div className={`text-sm font-medium ${pass ? 'text-sub' : 'text-red-700 dark:text-red-300'}`}>
           {label}
         </div>
         <div className="text-xs text-sub mt-0.5">{detail}</div>

@@ -1387,12 +1387,12 @@ export default function KoreanWordle() {
 
           {/* Streak emphasis */}
           {endStreak && endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-orange-700 dark:text-orange-300">
+            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-sub">
               {t('streakLost', { count: endStreak.value })}
             </div>
           )}
           {endStreak && !endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-green-700 dark:text-green-300">
+            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-sub">
               {t('streakContinued', { count: endStreak.value })}
             </div>
           )}
@@ -1412,7 +1412,7 @@ export default function KoreanWordle() {
             {typeof navigator !== 'undefined' && !!navigator.share && (
               <button
                 onClick={shareResults}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 dark:hover:bg-blue-900 text-sub text-sm font-medium transition-colors"
               >
                 <Share2 className="w-4 h-4" />
                 {t('shareNative')}
@@ -1590,7 +1590,7 @@ export default function KoreanWordle() {
               </div>
 
               <div className="bg-subtle rounded-lg p-3 space-y-1">
-                <p className="font-semibold text-blue-800 dark:text-blue-300">{t('helpJamoTitle')}</p>
+                <p className="font-semibold text-sub">{t('helpJamoTitle')}</p>
                 <p className="text-blue-700 dark:text-blue-400">{t('helpJamo')}</p>
               </div>
 

@@ -259,10 +259,10 @@ export default function PyeongCalculator() {
 
             {/* Formula Display */}
             <div className="bg-subtle rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              <h3 className="text-sm font-semibold text-fg mb-2">
                 변환 공식
               </h3>
-              <div className="text-xs text-blue-700 dark:text-blue-300 space-y-1">
+              <div className="text-xs text-sub space-y-1">
                 <p>{t('formula')}</p>
               </div>
             </div>
@@ -373,7 +373,7 @@ export default function PyeongCalculator() {
                   className="bg-soft border-2 border-blue-500 dark:border-blue-400 rounded-md transition-all duration-300 flex items-center justify-center"
                   style={{ width: `${currentSidePx}px`, height: `${currentSidePx}px`, minWidth: '20px', minHeight: '20px' }}
                 >
-                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300 text-center px-1">
+                  <span className="text-xs font-semibold text-sub text-center px-1">
                     {pyeong.toFixed(1)}평
                   </span>
                 </div>
@@ -502,8 +502,8 @@ export default function PyeongCalculator() {
                 <thead>
                   <tr className="border-b border-line">
                     <th className="text-left py-2 pr-4 font-semibold text-body">구분</th>
-                    <th className="text-right py-2 px-4 font-semibold text-blue-700 dark:text-blue-300">평 (坪)</th>
-                    <th className="text-right py-2 pl-4 font-semibold text-green-700 dark:text-green-300">제곱미터 (㎡)</th>
+                    <th className="text-right py-2 px-4 font-semibold text-sub">평 (坪)</th>
+                    <th className="text-right py-2 pl-4 font-semibold text-sub">제곱미터 (㎡)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -531,8 +531,8 @@ export default function PyeongCalculator() {
                         }`}
                       >
                         <td className="py-2.5 pr-4 font-medium text-body">{label}</td>
-                        <td className="py-2.5 px-4 text-right text-blue-700 dark:text-blue-300 font-mono">{p}</td>
-                        <td className="py-2.5 pl-4 text-right text-green-700 dark:text-green-300 font-mono">{m}</td>
+                        <td className="py-2.5 px-4 text-right text-sub font-mono">{p}</td>
+                        <td className="py-2.5 pl-4 text-right text-sub font-mono">{m}</td>
                       </tr>
                     )
                   })}

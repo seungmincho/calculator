@@ -451,7 +451,7 @@ export default function ComprehensivePropertyTax() {
           {/* Not subject message */}
           {result && result.taxBase <= 0 && (
             <div className="bg-subtle border border-line rounded-xl p-6 text-center">
-              <p className="text-lg font-semibold text-green-700 dark:text-green-300">
+              <p className="text-lg font-semibold text-sub">
                 {t('result.notSubject')}
               </p>
               <p className="text-sm text-green-600 dark:text-green-400 mt-2">
@@ -731,7 +731,7 @@ function StepItem({
             </span>
           )}
         </div>
-        <p className={`text-sm mt-0.5 ${highlight ? 'text-blue-700 dark:text-blue-300 font-bold' : 'text-fg font-semibold'}`}>
+        <p className={`text-sm mt-0.5 ${highlight ? 'text-sub font-bold' : 'text-fg font-semibold'}`}>
           {value}
         </p>
         <p className="text-xs text-muted mt-0.5">{desc}</p>

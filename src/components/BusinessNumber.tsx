@@ -270,14 +270,14 @@ export default function BusinessNumber() {
                 <div>
                   <div className={`text-xl font-bold ${
                     result.isValid
-                      ? 'text-green-900 dark:text-green-100'
+                      ? 'text-fg'
                       : 'text-red-900 dark:text-red-100'
                   }`}>
                     {result.isValid ? t('valid') : t('invalid')}
                   </div>
                   <div className={`text-sm ${
                     result.isValid
-                      ? 'text-green-700 dark:text-green-300'
+                      ? 'text-sub'
                       : 'text-red-700 dark:text-red-300'
                   }`}>
                     {result.isValid ? t('validMessage') : t('invalidMessage')}
@@ -315,19 +315,19 @@ export default function BusinessNumber() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-blue-700 dark:text-blue-300 mb-1">
+                    <div className="text-sm text-sub mb-1">
                       {t('digitCount')}
                     </div>
-                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                    <div className="text-2xl font-bold text-fg">
                       10
                     </div>
                   </div>
 
                   <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-purple-700 dark:text-purple-300 mb-1">
+                    <div className="text-sm text-sub mb-1">
                       {t('checkDigit')}
                     </div>
-                    <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                    <div className="text-2xl font-bold text-fg">
                       {result.checkDigit}
                     </div>
                   </div>

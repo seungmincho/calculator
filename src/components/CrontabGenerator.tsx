@@ -372,7 +372,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
     <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
       <div className="flex items-center justify-between">
         <span className="font-semibold text-fg text-sm">{label}</span>
-        <span className="text-xs font-mono bg-subtle text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
+        <span className="text-xs font-mono bg-subtle text-sub px-2 py-0.5 rounded">
           {buildField(state)}
         </span>
       </div>
@@ -538,7 +538,7 @@ export default function CrontabGenerator() {
                 onClick={() => applyPreset(p.expr)}
                 className={`text-left px-3 py-2 rounded-lg text-sm transition-colors border ${
                   expression === p.expr
-                    ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
+                    ? 'border-blue-500 bg-subtle text-sub'
                     : 'border-line bg-subtle text-body hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950'
                 }`}
               >

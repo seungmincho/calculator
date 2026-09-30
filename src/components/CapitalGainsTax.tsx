@@ -493,7 +493,7 @@ export default function CapitalGainsTax() {
                 <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
                   <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400 shrink-0" />
                   <div>
-                    <p className="font-semibold text-green-800 dark:text-green-300">{t('exemptBadge')}</p>
+                    <p className="font-semibold text-sub">{t('exemptBadge')}</p>
                     <p className="text-sm text-green-700 dark:text-green-400">{t('exemptDesc')}</p>
                   </div>
                 </div>
@@ -501,7 +501,7 @@ export default function CapitalGainsTax() {
                 <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
                   <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
                   <div>
-                    <p className="font-semibold text-blue-800 dark:text-blue-300">{t('partialExemptBadge')}</p>
+                    <p className="font-semibold text-sub">{t('partialExemptBadge')}</p>
                     <p className="text-sm text-blue-700 dark:text-blue-400">
                       {t('partialExemptDesc')} ({(result.taxableRatio * 100).toFixed(1)}% {t('taxableRatioLabel')})
                     </p>
@@ -590,7 +590,7 @@ export default function CapitalGainsTax() {
                   </div>
                   <div className="flex justify-between items-center py-3 font-bold bg-subtle rounded-lg px-2 mt-1">
                     <span className="text-base text-fg">{t('totalTaxLabel')}</span>
-                    <span className="text-base text-blue-700 dark:text-blue-300 tabular-nums">
+                    <span className="text-base text-sub tabular-nums">
                       {formatWon(result.totalTax)}{t('wonUnit')}
                     </span>
                   </div>
@@ -657,10 +657,10 @@ export default function CapitalGainsTax() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* 계산 순서 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">{t('guideStepsTitle')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guideStepsTitle')}</h3>
             <ol className="space-y-2">
               {(t.raw('guideSteps') as string[]).map((step, i) => (
-                <li key={i} className="text-sm text-blue-800 dark:text-blue-300 flex gap-2">
+                <li key={i} className="text-sm text-sub flex gap-2">
                   <span className="font-bold shrink-0">{i + 1}.</span>
                   <span>{step}</span>
                 </li>
@@ -670,10 +670,10 @@ export default function CapitalGainsTax() {
 
           {/* 1세대1주택 비과세 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-3">{t('guideExemptTitle')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guideExemptTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideExemptItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-green-800 dark:text-green-300 flex items-start gap-1.5">
+                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
                   <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
@@ -683,7 +683,7 @@ export default function CapitalGainsTax() {
 
           {/* 장기보유특별공제 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-3">{t('guideLthdTitle')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guideLthdTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
@@ -693,7 +693,7 @@ export default function CapitalGainsTax() {
                     <th className="text-right py-1">{t('guideLthdOneHouse')}</th>
                   </tr>
                 </thead>
-                <tbody className="text-purple-800 dark:text-purple-300">
+                <tbody className="text-sub">
                   {[
                     ['3~4년', '6%', '12%'],
                     ['5~6년', '10%', '20%'],
@@ -715,7 +715,7 @@ export default function CapitalGainsTax() {
 
           {/* 세율표 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-orange-900 dark:text-orange-200 mb-3">{t('guideTaxRateTitle')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guideTaxRateTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
@@ -724,7 +724,7 @@ export default function CapitalGainsTax() {
                     <th className="text-right py-1">{t('guideTaxRateRate')}</th>
                   </tr>
                 </thead>
-                <tbody className="text-orange-800 dark:text-orange-300">
+                <tbody className="text-sub">
                   {[
                     ['1,400만 이하', '6%'],
                     ['1,400~5,000만', '15%'],

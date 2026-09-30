@@ -166,7 +166,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           <div className="bg-surface rounded-2xl shadow-lg border border-line overflow-hidden">
             <div className="p-8 text-center">
               <div className="bg-soft rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Lightbulb className="w-8 h-8 text-gray-400" />
+                <Lightbulb className="w-8 h-8 text-body" />
               </div>
               <h1 className="text-2xl font-bold text-fg mb-2">
                 팁을 찾을 수 없습니다

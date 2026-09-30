@@ -559,7 +559,7 @@ const LoanCalculatorContent = () => {
                       {showSaveButton && (
                         <button
                           onClick={handleSaveCalculation}
-                          className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-blue-700 dark:text-blue-300 transition-colors"
+                          className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-sub transition-colors"
                         >
                           <Save className="w-4 h-4" />
                           <span className="text-sm">저장</span>
@@ -578,7 +578,7 @@ const LoanCalculatorContent = () => {
                     
                     <div className="bg-subtle rounded-xl p-4">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">총 상환금액</div>
-                      <div className="text-lg font-bold text-blue-900 dark:text-blue-200">
+                      <div className="text-lg font-bold text-fg">
                         {formatNumber(result.totalPayment)}원
                       </div>
                     </div>
@@ -703,18 +703,18 @@ const LoanCalculatorContent = () => {
                 <h2 className="text-2xl font-semibold mb-6 text-fg">추천</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-subtle rounded-lg p-6">
-                    <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">
+                    <h3 className="font-semibold text-fg mb-2">
                       총 이자 최소: {loanTypes[results.sort((a, b) => a.totalInterest - b.totalInterest)[0].type]}
                     </h3>
-                    <p className="text-green-800 dark:text-green-300 text-sm">
+                    <p className="text-sub text-sm">
                       장기적으로 가장 적은 이자를 부담하는 방식입니다.
                     </p>
                   </div>
                   <div className="bg-subtle rounded-lg p-6">
-                    <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                    <h3 className="font-semibold text-fg mb-2">
                       초기 부담 최소: {loanTypes[results.sort((a, b) => a.monthlyPayment - b.monthlyPayment)[0].type]}
                     </h3>
-                    <p className="text-blue-800 dark:text-blue-300 text-sm">
+                    <p className="text-sub text-sm">
                       초기 월 상환 부담이 가장 적은 방식입니다.
                     </p>
                   </div>

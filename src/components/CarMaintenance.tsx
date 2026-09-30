@@ -481,7 +481,7 @@ export default function CarMaintenance() {
                     onClick={() => setAnnualKm(km)}
                     className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                       annualKm === km
-                        ? 'bg-blue-100 dark:bg-blue-900 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-300'
+                        ? 'bg-blue-100 dark:bg-blue-900 border-blue-400 dark:border-blue-600 text-sub'
                         : 'border-line-strong text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >

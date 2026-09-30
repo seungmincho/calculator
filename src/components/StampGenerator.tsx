@@ -461,7 +461,7 @@ export default function StampGenerator() {
 
           {/* Usage Tips */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-3">{t('tipsTitle')}</h3>
+            <h3 className="text-sm font-semibold text-sub mb-3">{t('tipsTitle')}</h3>
             <ul className="space-y-1">
               {(t.raw('tipsList') as string[]).map((tip, i) => (
                 <li key={i} className="text-xs text-blue-700 dark:text-blue-400 flex gap-2">

@@ -135,7 +135,7 @@ export default function HashGenerator() {
           <span className="text-sm font-medium text-body">
             {t('input.label')}
           </span>
-          <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 transition-all">
+          <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-sub transition-all">
             {t('actions.uploadFile')}
             <input
               type="file"
@@ -153,7 +153,7 @@ export default function HashGenerator() {
         />
         {fileName && (
           <div className="px-4 py-2 bg-subtle border-t border-line">
-            <span className="text-sm text-purple-700 dark:text-purple-300">
+            <span className="text-sm text-sub">
               {t('input.fileLoaded')}: {fileName}
             </span>
           </div>

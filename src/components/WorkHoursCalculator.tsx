@@ -669,7 +669,7 @@ export default function WorkHoursCalculator() {
             </div>
 
             {convResult && (
-              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-subtle text-green-700 dark:text-green-300' : 'bg-subtle text-gray-500'}`}>
+              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-subtle text-sub' : 'bg-subtle text-gray-500'}`}>
                 {convResult.isEligibleWeeklyHoliday
                   ? `✅ ${t('conversion.eligibleWeeklyHoliday')} — 주휴수당 ${fmt(convResult.weeklyHolidayPay)}원/주`
                   : '주 15시간 미만 — 주휴수당 미발생'}
@@ -741,9 +741,9 @@ export default function WorkHoursCalculator() {
         </h3>
         <div className="grid grid-cols-3 gap-4">
           {[
-            { val: '10,320원', label: t('minimumWage.2026'), bg: 'bg-subtle', c: 'text-green-600', lc: 'text-green-700 dark:text-green-300' },
-            { val: '2,156,880원', label: t('minimumWage.monthly'), bg: 'bg-subtle', c: 'text-blue-600', lc: 'text-blue-700 dark:text-blue-300' },
-            { val: '209시간', label: t('minimumWage.monthlyHours'), bg: 'bg-subtle', c: 'text-purple-600', lc: 'text-purple-700 dark:text-purple-300' },
+            { val: '10,320원', label: t('minimumWage.2026'), bg: 'bg-subtle', c: 'text-green-600', lc: 'text-sub' },
+            { val: '2,156,880원', label: t('minimumWage.monthly'), bg: 'bg-subtle', c: 'text-blue-600', lc: 'text-sub' },
+            { val: '209시간', label: t('minimumWage.monthlyHours'), bg: 'bg-subtle', c: 'text-purple-600', lc: 'text-sub' },
           ].map((item, i) => (
             <div key={i} className={`text-center p-4 ${item.bg} rounded-xl`}>
               <div className={`text-xl font-bold ${item.c} mb-1`}>{item.val}</div>
@@ -756,7 +756,7 @@ export default function WorkHoursCalculator() {
 
       {/* ═══ 근로기준법 가이드 ═══ */}
       <div className="bg-gradient-to-br from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] border border-line rounded-2xl p-6 shadow-[0_18px_50px_rgba(99,102,241,0.10)]">
-        <h3 className="text-lg font-bold text-fg mb-5">💼 {t('guide.title')}</h3>
+        <h3 className="text-lg font-bold text-fg mb-5">{t('guide.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h4 className="text-sm font-semibold text-fg mb-3">{t('guide.overtimeTitle')}</h4>
@@ -775,7 +775,7 @@ export default function WorkHoursCalculator() {
 
       {/* ═══ 근로자 권리 ═══ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-bold text-fg mb-5">⚖️ {t('rights.title')}</h3>
+        <h3 className="text-lg font-bold text-fg mb-5">{t('rights.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h4 className="text-sm font-semibold text-fg mb-3">{t('rights.basicTitle')}</h4>

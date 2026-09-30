@@ -30,7 +30,7 @@ export default function CategoryHub({ category }: { category: CategoryKey }) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`${glassCard} flex items-start gap-3 p-4 h-full hover:bg-soft hover:-translate-y-0.5 transition-all`}
+                  className={`${glassCard} flex items-start gap-3 p-4 h-full hover:bg-soft transition-all`}
                 >
                   <ToolIcon href={item.href} size="md" />
                   <span className="min-w-0">

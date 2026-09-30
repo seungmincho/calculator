@@ -290,7 +290,7 @@ const ExchangeRateCalculatorContent = () => {
             <button
               onClick={fetchExchangeRates}
               disabled={loading}
-              className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-blue-700 dark:text-blue-300 transition-colors disabled:opacity-50"
+              className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-sub transition-colors disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               <span className="text-sm">환율 갱신</span>
@@ -367,10 +367,10 @@ const ExchangeRateCalculatorContent = () => {
             {/* 환율 정보 */}
             {!loading && Object.keys(exchangeRates).length > 0 && getExchangeRate() && (
               <div className="bg-subtle p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                <h3 className="text-sm font-medium text-fg mb-2">
                   현재 환율
                 </h3>
-                <p className="text-blue-700 dark:text-blue-300">
+                <p className="text-sub">
                   1 {fromCurrency} = {formatNumber(getExchangeRate()!, 4)} {toCurrency}
                 </p>
               </div>

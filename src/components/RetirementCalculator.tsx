@@ -324,10 +324,10 @@ const RetirementCalculatorContent = () => {
             </div>
 
             <div className="bg-subtle p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-orange-800 dark:text-orange-200 mb-2">
+              <h3 className="text-sm font-medium text-fg mb-2">
                 계산 기준
               </h3>
-              <ul className="text-sm text-orange-700 dark:text-orange-300 space-y-1">
+              <ul className="text-sm text-sub space-y-1">
                 <li>• 퇴직금 = 1일 평균임금 × 30일 × 재직연수</li>
                 <li>• 1년 미만 근무시 월할 계산</li>
                 <li>• 퇴직소득공제: 5년 이하 연300만원, 이후 단계별 증가</li>
@@ -423,10 +423,10 @@ const RetirementCalculatorContent = () => {
               </div>
 
               <div className="bg-subtle p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                <h3 className="text-sm font-medium text-fg mb-2">
                   참고사항
                 </h3>
-                <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   <li>• 실제 퇴직금은 회사 규정에 따라 다를 수 있습니다</li>
                   <li>• 중간정산을 받은 경우 별도 계산이 필요합니다</li>
                   <li>• 퇴직연금 가입시 산정 방식이 다를 수 있습니다</li>

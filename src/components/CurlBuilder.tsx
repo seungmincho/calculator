@@ -1301,7 +1301,7 @@ export default function CurlBuilder() {
 
       {/* Parse Success Toast */}
       {parseSuccess && (
-        <div className="bg-subtle text-green-700 dark:text-green-300 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+        <div className="bg-subtle text-sub px-4 py-2 rounded-lg text-sm flex items-center gap-2">
           <Check className="w-4 h-4" />
           {t('parse.parseSuccess')}
         </div>

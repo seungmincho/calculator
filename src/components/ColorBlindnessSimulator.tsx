@@ -574,7 +574,7 @@ export default function ColorBlindnessSimulator() {
               />
             </div>
             <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-blue-700 dark:text-blue-300 border-b border-line">
+              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-sub border-b border-line">
                 {t('simulated')} — {t(`types.${selectedType}.name`)}
               </div>
               <canvas

@@ -427,8 +427,8 @@ export default function HousingSubscription() {
 
             {/* Score preview for B */}
             <div className="flex justify-between items-center text-xs bg-subtle rounded-lg px-3 py-2">
-              <span className="text-emerald-700 dark:text-emerald-300">{t('expectedScore')}</span>
-              <span className="font-bold text-emerald-700 dark:text-emerald-300">{scoreB}점</span>
+              <span className="text-sub">{t('expectedScore')}</span>
+              <span className="font-bold text-sub">{scoreB}점</span>
             </div>
           </div>
 
@@ -499,8 +499,8 @@ export default function HousingSubscription() {
           <div className="bg-subtle rounded-xl p-5 flex gap-4 items-start">
             <Info size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-blue-800 dark:text-blue-200 text-sm">{t('percentileTitle')}</p>
-              <p className="text-blue-700 dark:text-blue-300 text-sm mt-1">
+              <p className="font-semibold text-fg text-sm">{t('percentileTitle')}</p>
+              <p className="text-sub text-sm mt-1">
                 {t('percentileDesc').replace('{score}', String(totalScore)).replace('{pct}', percentile)}
               </p>
               <p className="text-xs text-blue-500 dark:text-blue-400 mt-1">{t('percentileNote')}</p>
@@ -568,7 +568,7 @@ export default function HousingSubscription() {
           <div className="px-6 pb-6 grid md:grid-cols-2 gap-6">
             {/* A guide */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-blue-700 dark:text-blue-300 text-sm">{t('guideATitle')}</h3>
+              <h3 className="font-semibold text-sub text-sm">{t('guideATitle')}</h3>
               <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideAItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-blue-400 flex-shrink-0">•</span>{item}</li>
@@ -578,7 +578,7 @@ export default function HousingSubscription() {
 
             {/* B guide */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-emerald-700 dark:text-emerald-300 text-sm">{t('guideBTitle')}</h3>
+              <h3 className="font-semibold text-sub text-sm">{t('guideBTitle')}</h3>
               <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideBItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-emerald-400 flex-shrink-0">•</span>{item}</li>
@@ -588,7 +588,7 @@ export default function HousingSubscription() {
 
             {/* C guide */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-purple-700 dark:text-purple-300 text-sm">{t('guideCTitle')}</h3>
+              <h3 className="font-semibold text-sub text-sm">{t('guideCTitle')}</h3>
               <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideCItems') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2"><span className="text-purple-400 flex-shrink-0">•</span>{item}</li>

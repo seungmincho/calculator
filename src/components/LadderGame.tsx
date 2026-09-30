@@ -946,7 +946,7 @@ export default function LadderGame() {
                     key={preset.id}
                     onClick={() => applyPreset(preset)}
                     disabled={isPlaying}
-                    className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-400/20 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-sub border border-line rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                   >
                     {t(`presets.${preset.id}`)}
                   </button>
@@ -968,9 +968,9 @@ export default function LadderGame() {
 
             {/* Position selection phase UI */}
             {isSelectionPhase && (
-              <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-emerald-200/70 dark:border-emerald-400/20">
+              <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-line">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-green-800 dark:text-green-300">
+                  <h3 className="text-sm font-semibold text-sub">
                     📍 위치 선택 ({colAssignments.filter(v => v !== null).length}/{participants.length} 배치)
                   </h3>
                   <div className="flex gap-2">
@@ -1147,7 +1147,7 @@ export default function LadderGame() {
                   disabled={isPlaying}
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     revealOneByOne
-                      ? 'bg-subtle border-purple-400 dark:border-purple-600 text-purple-700 dark:text-purple-300'
+                      ? 'bg-subtle border-purple-400 dark:border-purple-600 text-sub'
                       : 'bg-subtle border-line text-muted'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
@@ -1160,7 +1160,7 @@ export default function LadderGame() {
             {/* Round indicator */}
             {rounds.length > 0 && (
               <div className="flex items-center justify-center gap-2 py-2 px-4 bg-subtle rounded-xl">
-                <span className="text-sm font-bold text-blue-700 dark:text-blue-300">
+                <span className="text-sm font-bold text-sub">
                   {currentRound}라운드
                 </span>
                 <span className="text-xs text-blue-500 dark:text-blue-400">
@@ -1219,7 +1219,7 @@ export default function LadderGame() {
             {/* Hint for individual play (only when not in selection phase) */}
             {ladderReady && !isPlaying && !allCompleted && !isSelectionPhase && (
               <div className="text-center mb-2">
-                <span className={`text-xs text-green-700 dark:text-green-300 px-3 py-1 rounded-full ${glass.pill}`}>
+                <span className={`text-xs text-sub px-3 py-1 rounded-full ${glass.pill}`}>
                   🖱️ 아래 이름을 클릭하면 개별 확인 가능
                 </span>
               </div>
@@ -1509,7 +1509,7 @@ export default function LadderGame() {
               >
                 {outcomes.map((o, i) => (
                   <div key={i} className="flex-1 flex justify-center px-0.5">
-                    <span className="text-xs font-medium text-green-700 dark:text-green-300 bg-emerald-100/70 dark:bg-emerald-500/[0.10] border border-emerald-200/70 dark:border-emerald-400/20 px-2 py-1 rounded-lg max-w-full truncate text-center">
+                    <span className="text-xs font-medium text-sub bg-emerald-100/70 dark:bg-emerald-500/[0.10] border border-line px-2 py-1 rounded-lg max-w-full truncate text-center">
                       {isSelectionPhase || (blindMode && !revealedOutcomes.has(i)) ? '???' : o}
                     </span>
                   </div>
@@ -1612,14 +1612,14 @@ export default function LadderGame() {
                   <button
                     onClick={handleReshuffleLadder}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-teal-700 dark:text-teal-300 transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 disabled:opacity-50"
                   >
                     🔀 사다리만 다시
                   </button>
                   <button
                     onClick={handleNextRound}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-blue-700 dark:text-blue-300 transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 disabled:opacity-50"
                   >
                     ➡️ 다음 라운드
                   </button>

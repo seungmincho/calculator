@@ -717,10 +717,10 @@ const TaxCalculatorContent = () => {
           {renderInputSection()}
 
           <div className="bg-subtle p-4 rounded-lg mt-6">
-            <h3 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+            <h3 className="text-sm font-medium text-fg mb-2">
               계산 기준
             </h3>
-            <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
+            <ul className="text-sm text-sub space-y-1">
               {activeTab === 'income' && (
                 <>
                   <li>• 2025년 소득세법 기준</li>
@@ -871,10 +871,10 @@ const TaxCalculatorContent = () => {
               </div>
 
               <div className="bg-subtle p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                <h3 className="text-sm font-medium text-fg mb-2">
                   참고사항
                 </h3>
-                <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                <ul className="text-sm text-sub space-y-1">
                   {activeTab === 'income' && (
                     <>
                       <li>• 실제 세액은 다른 소득공제, 세액공제에 따라 달라질 수 있습니다</li>

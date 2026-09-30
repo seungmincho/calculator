@@ -345,9 +345,9 @@ export default function MemoryGame() {
   const themes: ThemeKey[] = ['emoji', 'food', 'sports', 'korean', 'numbers']
 
   const difficultyColors: Record<Difficulty, string> = {
-    easy: 'bg-green-100 dark:bg-green-900/40 border-green-400 text-green-800 dark:text-green-300',
-    normal: 'bg-blue-100 dark:bg-blue-900/40 border-blue-400 text-blue-800 dark:text-blue-300',
-    hard: 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 text-orange-800 dark:text-orange-300',
+    easy: 'bg-green-100 dark:bg-green-900/40 border-green-400 text-sub',
+    normal: 'bg-blue-100 dark:bg-blue-900/40 border-blue-400 text-sub',
+    hard: 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 text-sub',
     expert: 'bg-red-100 dark:bg-red-900/40 border-red-400 text-red-800 dark:text-red-300',
   }
 
@@ -408,7 +408,7 @@ export default function MemoryGame() {
                     }`}
                   >
                     <div className="text-2xl mb-1">{preview}</div>
-                    <div className={`text-xs font-medium ${isSelected ? 'text-blue-700 dark:text-blue-300' : 'text-sub'}`}>
+                    <div className={`text-xs font-medium ${isSelected ? 'text-sub' : 'text-sub'}`}>
                       {t(`theme.${th}`)}
                     </div>
                   </button>
@@ -711,7 +711,7 @@ export default function MemoryGame() {
                       <span className={`font-bold ${
                         isKoreanTheme
                           ? 'text-2xl sm:text-3xl text-gray-800 dark:text-white'
-                          : 'text-xl sm:text-2xl text-blue-700 dark:text-blue-300'
+                          : 'text-xl sm:text-2xl text-sub'
                       }`}>
                         {card.value}
                       </span>

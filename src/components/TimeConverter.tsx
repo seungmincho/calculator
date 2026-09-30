@@ -375,8 +375,8 @@ const TimeConverter = () => {
           <div className="space-y-6">
             {/* 스마트 붙여넣기 도구 */}
             <div className="bg-subtle border border-line rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3 flex items-center gap-2">
-                🔮 {t('smartPaste')}
+              <h3 className="text-lg font-semibold text-sub mb-3 flex items-center gap-2">
+                {t('smartPaste')}
               </h3>
               <p className="text-sm text-blue-700 dark:text-blue-400 mb-4">
                 {clipboardSupported 
@@ -385,7 +385,7 @@ const TimeConverter = () => {
                 }
                 {!clipboardSupported && (
                   <span className="block mt-1 text-xs text-orange-600 dark:text-orange-400">
-                    💡 {t('httpsClipboardTip')}
+                    {t('httpsClipboardTip')}
                   </span>
                 )}
               </p>
@@ -619,7 +619,7 @@ const TimeConverter = () => {
             {/* 개발자 도구 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4">
-                🛠️ {t('developerTools')}
+                {t('developerTools')}
               </h3>
               <div className="space-y-3">
                 <div className="grid grid-cols-1 gap-3">
@@ -758,7 +758,7 @@ const TimeConverter = () => {
             {/* 티케팅 도구 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4">
-                🎫 {t('ticketingTools')}
+                {t('ticketingTools')}
               </h3>
               <div className="space-y-4">
                 <div className="bg-subtle border border-red-200 dark:border-red-800 rounded-lg p-4">
@@ -779,7 +779,7 @@ const TimeConverter = () => {
                 </div>
 
                 <div className="bg-subtle border border-line rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">{t('overseasEvents')}</h4>
+                  <h4 className="font-semibold text-sub mb-2">{t('overseasEvents')}</h4>
                   <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
                     {t('overseasEventsDesc')}
                   </p>
@@ -800,7 +800,7 @@ const TimeConverter = () => {
             {/* 유용한 팁 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4">
-                💡 {t('timeConversionTips')}
+                {t('timeConversionTips')}
               </h3>
               <div className="space-y-3 text-sm text-sub">
                 <div className="flex items-start gap-2">
@@ -825,7 +825,7 @@ const TimeConverter = () => {
             {/* 자주 사용하는 시간대 */}
             <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4">
-                🌍 {t('commonTimeConversions')}
+                {t('commonTimeConversions')}
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">

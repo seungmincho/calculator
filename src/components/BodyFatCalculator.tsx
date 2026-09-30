@@ -712,7 +712,7 @@ export default function BodyFatCalculator() {
       {/* 체지방률 가이드 */}
       <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
-          💡 {t('guide.title')}
+          {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
@@ -779,7 +779,7 @@ export default function BodyFatCalculator() {
           </div>
         </div>
         <div className="mt-6 p-4 bg-subtle rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-300">
+          <p className="text-sm text-sub">
             💡 <strong>{t('measurementGuide.measurementTip')}</strong> {t('measurementGuide.measurementTipText')}
           </p>
         </div>

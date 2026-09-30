@@ -611,7 +611,7 @@ export default function MahjongSolitaire() {
       {gameStatus === 'won' && (
         <div className="bg-subtle border border-line rounded-xl p-6 text-center">
           <Trophy className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
-          <h2 className="text-xl font-bold text-green-700 dark:text-green-300 mb-2">{t('winTitle')}</h2>
+          <h2 className="text-xl font-bold text-sub mb-2">{t('winTitle')}</h2>
           <p className="text-green-600 dark:text-green-400 mb-1">
             {t('winTime')}: {formatTime(timer)}
           </p>

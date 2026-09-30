@@ -383,7 +383,7 @@ export default function UnemploymentBenefit() {
               {result.cappedAt !== 'none' && (
                 <div className="flex items-start gap-3 bg-subtle border border-line rounded-xl p-4">
                   <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <p className="text-sm text-fg">
                     {result.cappedAt === 'cap' ? t('result.capNotice') : t('result.floorNotice')}
                   </p>
                 </div>
@@ -409,12 +409,12 @@ export default function UnemploymentBenefit() {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">{t('result.dailyBenefit')}</p>
-                    <p className="text-xl font-bold text-blue-700 dark:text-blue-300">{formatWon(result.dailyBenefit)}</p>
+                    <p className="text-xl font-bold text-sub">{formatWon(result.dailyBenefit)}</p>
                     <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{t('result.perDay')}</p>
                   </div>
                   <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">{t('result.benefitDays')}</p>
-                    <p className="text-xl font-bold text-indigo-700 dark:text-indigo-300">
+                    <p className="text-xl font-bold text-sub">
                       {result.benefitDays}{t('result.days')}
                     </p>
                     <p className="text-xs text-indigo-500 dark:text-indigo-400 mt-0.5">
@@ -423,12 +423,12 @@ export default function UnemploymentBenefit() {
                   </div>
                   <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">{t('result.monthlyEstimate')}</p>
-                    <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{formatWon(result.monthlyEstimate)}</p>
+                    <p className="text-xl font-bold text-sub">{formatWon(result.monthlyEstimate)}</p>
                     <p className="text-xs text-purple-500 dark:text-purple-400 mt-0.5">{t('result.per30days')}</p>
                   </div>
                   <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">{t('result.totalBenefit')}</p>
-                    <p className="text-xl font-bold text-green-700 dark:text-green-300">{formatWon(result.totalBenefit)}</p>
+                    <p className="text-xl font-bold text-sub">{formatWon(result.totalBenefit)}</p>
                     <p className="text-xs text-green-500 dark:text-green-400 mt-0.5">{t('result.totalLabel')}</p>
                   </div>
                 </div>
@@ -497,10 +497,10 @@ export default function UnemploymentBenefit() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* 수급 요건 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">{t('guide.eligibility.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.eligibility.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.eligibility.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-200">
+                <li key={i} className="flex items-start gap-2 text-sm text-fg">
                   <span className="mt-0.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
                   {item}
                 </li>
@@ -510,10 +510,10 @@ export default function UnemploymentBenefit() {
 
           {/* 신청 방법 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-3">{t('guide.howToApply.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.howToApply.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToApply.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-indigo-800 dark:text-indigo-200">
+                <li key={i} className="flex items-start gap-2 text-sm text-fg">
                   <span className="flex-shrink-0 w-5 h-5 bg-indigo-500 text-white rounded-full text-xs flex items-center justify-center font-bold">
                     {i + 1}
                   </span>
@@ -525,10 +525,10 @@ export default function UnemploymentBenefit() {
 
           {/* 연장급여 */}
           <div className="bg-subtle rounded-xl p-5">
-            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">{t('guide.extended.title')}</h3>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.extended.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.extended.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-purple-800 dark:text-purple-200">
+                <li key={i} className="flex items-start gap-2 text-sm text-fg">
                   <span className="mt-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0" />
                   {item}
                 </li>

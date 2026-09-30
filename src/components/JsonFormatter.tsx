@@ -1327,23 +1327,23 @@ const JsonFormatter = () => {
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Code className="w-5 h-5 text-green-600" />
-              <h3 className="font-semibold text-green-900 dark:text-green-200 ml-2">{t('guide.features.syntaxHighlight')}</h3>
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.syntaxHighlight')}</h3>
             </div>
-            <p className="text-green-800 dark:text-green-300 text-sm">{t('guide.features.syntaxHighlightDesc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.syntaxHighlightDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <TreePine className="w-5 h-5 text-blue-600" />
-              <h3 className="font-semibold text-blue-900 dark:text-blue-200 ml-2">{t('guide.features.treeView')}</h3>
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.treeView')}</h3>
             </div>
-            <p className="text-blue-800 dark:text-blue-300 text-sm">{t('guide.features.treeViewDesc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.treeViewDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Search className="w-5 h-5 text-purple-600" />
-              <h3 className="font-semibold text-purple-900 dark:text-purple-200 ml-2">{t('guide.features.jsonPath')}</h3>
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.jsonPath')}</h3>
             </div>
-            <p className="text-purple-800 dark:text-purple-300 text-sm">{t('guide.features.jsonPathDesc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.jsonPathDesc')}</p>
           </div>
         </div>
 
@@ -1358,16 +1358,16 @@ const JsonFormatter = () => {
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <BarChart3 className="w-5 h-5 text-cyan-600" />
-              <h3 className="font-semibold text-cyan-900 dark:text-cyan-200 ml-2">{t('guide.features.stats')}</h3>
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.stats')}</h3>
             </div>
-            <p className="text-cyan-800 dark:text-cyan-300 text-sm">{t('guide.features.statsDesc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.statsDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Zap className="w-5 h-5 text-orange-600" />
-              <h3 className="font-semibold text-orange-900 dark:text-orange-200 ml-2">{t('guide.features.performance')}</h3>
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.performance')}</h3>
             </div>
-            <p className="text-orange-800 dark:text-orange-300 text-sm">{t('guide.features.performanceDesc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.performanceDesc')}</p>
           </div>
         </div>
 
@@ -1376,16 +1376,16 @@ const JsonFormatter = () => {
           <h3 className="text-lg font-semibold text-fg mb-4">{t('guide.useCases.title')}</h3>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-subtle rounded-lg p-4">
-              <h4 className="font-semibold text-green-900 dark:text-green-200 mb-2">{t('guide.useCases.apiDebug')}</h4>
-              <p className="text-green-800 dark:text-green-300 text-sm">{t('guide.useCases.apiDebugDesc')}</p>
+              <h4 className="font-semibold text-fg mb-2">{t('guide.useCases.apiDebug')}</h4>
+              <p className="text-sub text-sm">{t('guide.useCases.apiDebugDesc')}</p>
             </div>
             <div className="bg-subtle rounded-lg p-4">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">{t('guide.useCases.configEdit')}</h4>
-              <p className="text-blue-800 dark:text-blue-300 text-sm">{t('guide.useCases.configEditDesc')}</p>
+              <h4 className="font-semibold text-fg mb-2">{t('guide.useCases.configEdit')}</h4>
+              <p className="text-sub text-sm">{t('guide.useCases.configEditDesc')}</p>
             </div>
             <div className="bg-subtle rounded-lg p-4">
-              <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">{t('guide.useCases.dataAnalysis')}</h4>
-              <p className="text-purple-800 dark:text-purple-300 text-sm">{t('guide.useCases.dataAnalysisDesc')}</p>
+              <h4 className="font-semibold text-fg mb-2">{t('guide.useCases.dataAnalysis')}</h4>
+              <p className="text-sub text-sm">{t('guide.useCases.dataAnalysisDesc')}</p>
             </div>
           </div>
         </div>

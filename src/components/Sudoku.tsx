@@ -556,7 +556,7 @@ export default function Sudoku() {
             {completed && (
               <div className="bg-subtle rounded-xl p-4 text-center space-y-2">
                 <p className="text-lg font-bold text-green-600 dark:text-green-400">{t('completed')}</p>
-                <p className="text-sm text-green-700 dark:text-green-300">{t('congratulations')}</p>
+                <p className="text-sm text-sub">{t('congratulations')}</p>
                 <p className="text-xs text-sub">
                   {t('time')}: {formatTime(time)}
                 </p>

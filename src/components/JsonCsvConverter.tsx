@@ -703,9 +703,9 @@ const JsonCsvConverter = () => {
             <div className="mb-6 p-4 bg-subtle border border-line rounded-lg">
               <div className="flex items-center mb-2">
                 <Info className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
-                <span className="text-green-800 dark:text-green-200 font-medium">{t('result.stats')}</span>
+                <span className="text-fg font-medium">{t('result.stats')}</span>
               </div>
-              <div className="grid grid-cols-4 gap-4 text-sm text-green-700 dark:text-green-300">
+              <div className="grid grid-cols-4 gap-4 text-sm text-sub">
                 <div>{t('result.rows')}: {stats.rows}</div>
                 <div>{t('result.columns')}: {stats.columns}</div>
                 <div>{t('result.size')}: {stats.size}</div>
@@ -829,7 +829,7 @@ const JsonCsvConverter = () => {
                       </table>
                     </div>
                     
-                    <div className="px-4 py-2 bg-subtle border-t border-line text-sm text-blue-800 dark:text-blue-200 flex justify-between items-center">
+                    <div className="px-4 py-2 bg-subtle border-t border-line text-sm text-fg flex justify-between items-center">
                       <span>
                         {tableData.length > rowsPerPage ? 
                           `${(currentPage - 1) * rowsPerPage + 1}-${Math.min(currentPage * rowsPerPage, tableData.length)} / ${tableData.length} 행 표시` :
@@ -882,7 +882,7 @@ const JsonCsvConverter = () => {
                     
                     {/* 잘린 내용 알림 */}
                     {result.length > 500000 && (
-                      <div className="mt-2 p-2 bg-subtle border border-line rounded text-sm text-blue-800 dark:text-blue-200">
+                      <div className="mt-2 p-2 bg-subtle border border-line rounded text-sm text-fg">
                         성능을 위해 처음 500KB만 표시됩니다. 전체 내용은 다운로드하거나 테이블 보기를 사용하세요.
                       </div>
                     )}

@@ -195,19 +195,19 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         <div className="px-6 py-4 border-b border-line shrink-0">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{totalClicks.toLocaleString()}</div>
+              <div className="text-2xl font-bold text-sub">{totalClicks.toLocaleString()}</div>
               <div className="text-xs text-blue-600 dark:text-blue-400">{t('analyticsDashboard.totalVisits')}</div>
             </div>
             <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">{allTools.length}</div>
+              <div className="text-2xl font-bold text-sub">{allTools.length}</div>
               <div className="text-xs text-purple-600 dark:text-purple-400">{t('analyticsDashboard.totalTools')}</div>
             </div>
             <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-green-700 dark:text-green-300">{activeToolCount}</div>
+              <div className="text-2xl font-bold text-sub">{activeToolCount}</div>
               <div className="text-xs text-green-600 dark:text-green-400">{t('analyticsDashboard.activeTools')}</div>
             </div>
             <div className="bg-subtle rounded-xl p-3 text-center">
-              <div className="text-2xl font-bold text-orange-700 dark:text-orange-300">
+              <div className="text-2xl font-bold text-sub">
                 {activeToolCount > 0 ? Math.round(totalClicks / activeToolCount) : 0}
               </div>
               <div className="text-xs text-orange-600 dark:text-orange-400">{t('analyticsDashboard.avgVisits')}</div>

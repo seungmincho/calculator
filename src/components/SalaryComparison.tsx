@@ -140,10 +140,10 @@ const formatNumber = (num: number) => num.toLocaleString('ko-KR')
 const formatWon = (num: number) => `${formatNumber(num)}원`
 
 const COLORS = [
-  { bg: 'bg-subtle', border: 'border-line', text: 'text-blue-700 dark:text-blue-300', accent: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', label: 'A' },
-  { bg: 'bg-subtle', border: 'border-line', text: 'text-emerald-700 dark:text-emerald-300', accent: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', label: 'B' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-sub', accent: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', label: 'A' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-sub', accent: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', label: 'B' },
   { bg: 'bg-amber-50 dark:bg-amber-950', border: 'border-amber-200 dark:border-amber-800', text: 'text-amber-700 dark:text-amber-300', accent: 'text-amber-600 dark:text-amber-400', bar: 'bg-amber-500', label: 'C' },
-  { bg: 'bg-subtle', border: 'border-line', text: 'text-purple-700 dark:text-purple-300', accent: 'text-purple-600 dark:text-purple-400', bar: 'bg-purple-500', label: 'D' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-sub', accent: 'text-purple-600 dark:text-purple-400', bar: 'bg-purple-500', label: 'D' },
 ]
 
 export default function SalaryComparison() {

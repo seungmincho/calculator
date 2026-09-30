@@ -686,10 +686,10 @@ export default function Crossword() {
       {/* Win banner */}
       {completed && (
         <div className="bg-subtle border border-line rounded-xl p-4 text-center">
-          <p className="text-lg font-bold text-green-800 dark:text-green-200">
+          <p className="text-lg font-bold text-fg">
             {t('congratulations')}
           </p>
-          <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+          <p className="text-sm text-sub mt-1">
             {t('completedIn', { time: formatTime(time) })}
           </p>
         </div>
@@ -703,10 +703,10 @@ export default function Crossword() {
             {/* Active clue display */}
             {activeClue && (
               <div className="mb-4 p-3 bg-subtle rounded-lg">
-                <span className="font-bold text-blue-800 dark:text-blue-200">
+                <span className="font-bold text-fg">
                   {activeClue.clue.number}{activeClue.direction === 'across' ? t('acrossShort') : t('downShort')}
                 </span>
-                <span className="ml-2 text-blue-700 dark:text-blue-300">{activeClue.clue.clue}</span>
+                <span className="ml-2 text-sub">{activeClue.clue.clue}</span>
               </div>
             )}
 
@@ -855,7 +855,7 @@ export default function Crossword() {
                     className={`
                       w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
                       ${isActive
-                        ? 'bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100'
+                        ? 'bg-blue-100 dark:bg-blue-800 text-fg'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                       }
                     `}
@@ -889,7 +889,7 @@ export default function Crossword() {
                       className={`
                         w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
                         ${isActive
-                          ? 'bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100'
+                          ? 'bg-blue-100 dark:bg-blue-800 text-fg'
                           : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                         }
                       `}

@@ -16,16 +16,16 @@ type Mode = 'overview' | 'detail'
 type DetailTab = 'requirements' | 'estimation' | 'architecture' | 'deepDive' | 'scaleTradeoffs'
 
 const CATEGORY_COLORS: Record<DesignCategory, { bg: string; text: string; border: string }> = {
-  web: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
-  data: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
-  messaging: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
+  web: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
+  data: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
+  messaging: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
   storage: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  infrastructure: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
+  infrastructure: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
 }
 
 const DIFFICULTY_COLORS: Record<DesignDifficulty, { bg: string; text: string }> = {
   intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300' },
-  advanced: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300' },
+  advanced: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub' },
   expert: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300' },
 }
 
@@ -229,7 +229,7 @@ export default function SystemDesign() {
             <div
               key={q.id}
               onClick={() => openDetail(q.id)}
-              className="bg-surface rounded-xl shadow-lg p-5 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-0.5 relative group"
+              className="bg-surface rounded-xl shadow-lg p-5 cursor-pointer hover:shadow-xl transition-all relative group"
             >
               {/* Bookmark star */}
               <button
@@ -352,7 +352,7 @@ export default function SystemDesign() {
           {practicing && (
             <div className="mt-4 p-3 bg-subtle rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                <span className="text-sm font-medium text-sub">
                   {isPracticeComplete
                     ? t('practice.complete')
                     : `${t('practice.step')} ${practiceStep + 1} / ${TABS.length}`

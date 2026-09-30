@@ -252,8 +252,8 @@ const StockCalculatorContent = () => {
             </div>
 
             <div className="bg-subtle rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">계산 방식</h3>
-              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+              <h3 className="font-medium text-fg mb-2">계산 방식</h3>
+              <ul className="text-sm text-sub space-y-1">
                 <li>• 수익률 = ((현재가 - 매수가) / 매수가) × 100</li>
                 <li>• 총 수익금 = (현재가 - 매수가) × 보유 주식 수</li>
                 <li>• 수수료 및 세금은 포함되지 않음</li>
@@ -361,14 +361,14 @@ const StockCalculatorContent = () => {
         <h2 className="text-2xl font-semibold mb-6 text-fg">주식 투자 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-subtle rounded-lg p-6">
-            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">수익률 이해</h3>
-            <p className="text-green-800 dark:text-green-300 text-sm">
+            <h3 className="font-semibold text-fg mb-2">수익률 이해</h3>
+            <p className="text-sub text-sm">
               단기적인 등락보다는 장기적인 관점에서 투자하세요. 수익률은 변동성이 있습니다.
             </p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">분산 투자</h3>
-            <p className="text-blue-800 dark:text-blue-300 text-sm">
+            <h3 className="font-semibold text-fg mb-2">분산 투자</h3>
+            <p className="text-sub text-sm">
               한 종목에만 집중하지 말고 여러 종목과 자산에 분산 투자하여 리스크를 관리하세요.
             </p>
           </div>

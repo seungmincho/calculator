@@ -451,7 +451,7 @@ export default function CollageMaker() {
                     className={`
                       text-left text-sm px-3 py-2 rounded-lg border transition-all
                       ${outputSizeIdx === i
-                        ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
+                        ? 'border-blue-500 bg-subtle text-sub'
                         : 'border-line text-body hover:border-blue-300'
                       }
                     `}

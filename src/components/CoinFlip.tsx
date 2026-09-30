@@ -176,7 +176,7 @@ export default function CoinFlip() {
 
             {gameOver && (
               <div className="bg-subtle rounded-xl p-4 text-center">
-                <p className="text-lg font-bold text-blue-700 dark:text-blue-300">
+                <p className="text-lg font-bold text-sub">
                   {p1Wins >= neededWins ? t('player1') : t('player2')} {t('wins')}!
                 </p>
                 <p className="text-sm text-blue-500 dark:text-blue-400 mt-1">

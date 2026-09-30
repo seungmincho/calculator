@@ -347,7 +347,7 @@ export default function BreathingExercise() {
             {/* Pattern timing display */}
             <div className="mt-6 w-full">
               <div className="bg-subtle rounded-xl p-4">
-                <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                <div className="text-sm font-semibold text-fg mb-2">
                   {t(`pattern${selectedPattern.id === '478' ? '478' : selectedPattern.id === 'box' ? 'Box' : 'Relaxing'}Name`)}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -368,7 +368,7 @@ export default function BreathingExercise() {
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">
+                <p className="text-xs text-sub mt-2">
                   {t(`pattern${selectedPattern.id === '478' ? '478' : selectedPattern.id === 'box' ? 'Box' : 'Relaxing'}Desc`)}
                 </p>
               </div>

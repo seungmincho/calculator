@@ -37,7 +37,7 @@ const NUMBER_COLORS: Record<number, string> = {
   4: 'text-purple-600 dark:text-purple-400',
   5: 'text-yellow-700 dark:text-yellow-500',
   6: 'text-teal-600 dark:text-teal-400',
-  7: 'text-gray-900 dark:text-gray-100',
+  7: 'text-fg',
   8: 'text-sub',
 }
 

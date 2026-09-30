@@ -199,7 +199,7 @@ export default function InquiryForm() {
       {fromTool && (
         <div className="mb-4 flex items-center gap-2 px-3 py-2 bg-subtle rounded-lg border border-line">
           <span className="text-lg">{fromTool.icon}</span>
-          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+          <span className="text-sm font-medium text-sub">
             {fromTool.name}
           </span>
           <span className="text-xs text-blue-500 dark:text-blue-400">{t('pageInfo')}</span>
@@ -225,7 +225,7 @@ export default function InquiryForm() {
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-colors
                   ${
                     category === cat
-                      ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
+                      ? 'border-blue-500 bg-subtle text-sub'
                       : 'border-line-strong bg-field text-body hover:border-blue-300 dark:hover:border-blue-700'
                   }`}
               >

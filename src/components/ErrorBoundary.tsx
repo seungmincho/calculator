@@ -27,7 +27,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
       return this.props.fallback || (
         <div className="min-h-[50vh] flex items-center justify-center">
           <div className={`text-center p-8 ${glassCard} ${glassInset} max-w-md`}>
-            <div className="text-4xl mb-4">⚠️</div>
+            <div className="text-4xl mb-4">️</div>
             <h2 className="text-xl font-bold text-fg mb-2">
               문제가 발생했습니다
             </h2>

@@ -536,7 +536,7 @@ export default function FifteenPuzzle() {
               </li>
             ))}
           </ul>
-          <div className="mt-4 p-3 bg-subtle rounded-lg text-sm text-blue-700 dark:text-blue-300">
+          <div className="mt-4 p-3 bg-subtle rounded-lg text-sm text-sub">
             <strong>팁:</strong> 방향키(↑↓←→)를 사용하면 더 빠르게 조작할 수 있습니다. 초록색 타일은 정확한 위치에 있는 것입니다.
           </div>
         </div>

@@ -303,7 +303,7 @@ export default function AnnualLeave() {
             </button>
             <button
               onClick={shareResult}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-sub rounded-lg transition-colors"
               title={t('share')}
             >
               <Share2 className="w-4 h-4" />

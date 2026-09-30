@@ -223,12 +223,12 @@ export default function MilitaryDischarge() {
       {/* Celebration banners */}
       {result?.isAlreadyDischarged && (
         <div className="bg-subtle border border-line rounded-xl p-4 text-center">
-          <p className="text-blue-700 dark:text-blue-300 font-bold text-lg">{t('celebrationMessage')}</p>
+          <p className="text-sub font-bold text-lg">{t('celebrationMessage')}</p>
         </div>
       )}
       {isNearDischarge && (
         <div className="bg-subtle border border-line rounded-xl p-4 text-center">
-          <p className="text-green-700 dark:text-green-300 font-bold text-lg">{t('nearDischargeMessage')}</p>
+          <p className="text-sub font-bold text-lg">{t('nearDischargeMessage')}</p>
         </div>
       )}
 
@@ -400,7 +400,7 @@ export default function MilitaryDischarge() {
                               m.isCurrent
                                 ? 'text-blue-600 dark:text-blue-400'
                                 : m.isPast
-                                ? 'text-green-700 dark:text-green-300'
+                                ? 'text-sub'
                                 : 'text-body'
                             }`}>
                               {t(m.rank)}

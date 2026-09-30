@@ -422,7 +422,7 @@ const JwtDecoder = () => {
               <div className="mt-4 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
                   <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
-                  <p className="text-sm text-blue-800 dark:text-blue-200">{t('result.signatureNote')}</p>
+                  <p className="text-sm text-fg">{t('result.signatureNote')}</p>
                 </div>
               </div>
             </div>

@@ -62,7 +62,7 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
             : 'text-body hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
         }`}
       >
-        🏠 {t('title')}
+        {t('title')}
       </Link>
 
       <div className="border-t border-line my-2" />
@@ -123,7 +123,7 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
       {/* Learning tip */}
       <div className="border-t border-line my-3" />
       <div className="px-3 py-2 text-xs text-muted">
-        💡 {t('sidebar.tip')}
+        {t('sidebar.tip')}
       </div>
     </nav>
   )

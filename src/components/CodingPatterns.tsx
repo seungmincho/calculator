@@ -13,12 +13,12 @@ import {
 
 
 const CATEGORY_COLORS: Record<PatternCategory, { bg: string; text: string; border: string }> = {
-  array:  { bg: 'bg-subtle', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
-  string: { bg: 'bg-subtle', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
-  tree:   { bg: 'bg-subtle', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
-  graph:  { bg: 'bg-subtle', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
-  dp:     { bg: 'bg-subtle', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
-  design: { bg: 'bg-subtle', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
+  array:  { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
+  string: { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
+  tree:   { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
+  graph:  { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
+  dp:     { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
+  design: { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
 }
 
 const DIFF_COLORS: Record<PatternDifficulty, string> = {
@@ -359,12 +359,12 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
             <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span className="text-muted text-xs">{t('time')}:</span>
-            <span className="font-semibold text-blue-700 dark:text-blue-300">{pattern.timeComplexity}</span>
+            <span className="font-semibold text-sub">{pattern.timeComplexity}</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
             <Database className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
             <span className="text-muted text-xs">{t('space')}:</span>
-            <span className="font-semibold text-purple-700 dark:text-purple-300">{pattern.spaceComplexity}</span>
+            <span className="font-semibold text-sub">{pattern.spaceComplexity}</span>
           </span>
         </div>
       </Section>

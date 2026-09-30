@@ -442,10 +442,10 @@ export default function PdfTools() {
         <div
           className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
             status.type === 'success'
-              ? 'bg-subtle text-green-700 dark:text-green-300'
+              ? 'bg-subtle text-sub'
               : status.type === 'error'
               ? 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
-              : 'bg-subtle text-blue-700 dark:text-blue-300'
+              : 'bg-subtle text-sub'
           }`}
         >
           {status.type === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0" />}

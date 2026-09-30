@@ -498,7 +498,7 @@ function HourlyWageInner() {
                     </span>
                   </div>
 
-                  <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                  <div className="text-2xl font-bold text-sub">
                     {formatCurrency(annualProjection)}원
                     <span className="text-sm font-normal text-muted ml-2">
                       / 년

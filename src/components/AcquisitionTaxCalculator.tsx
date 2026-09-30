@@ -582,8 +582,8 @@ export default function AcquisitionTaxCalculator() {
 
                   {/* 합계 */}
                   <div className="flex items-center justify-between p-3 bg-subtle rounded-lg border border-line">
-                    <p className="text-sm font-bold text-blue-700 dark:text-blue-300">{t('result.totalTax')}</p>
-                    <p className="text-lg font-bold text-blue-700 dark:text-blue-300">
+                    <p className="text-sm font-bold text-sub">{t('result.totalTax')}</p>
+                    <p className="text-lg font-bold text-sub">
                       {formatWon(result.totalTax)}{t('units.won')}
                     </p>
                   </div>

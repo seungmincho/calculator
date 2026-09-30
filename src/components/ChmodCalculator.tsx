@@ -294,8 +294,8 @@ export default function ChmodCalculator() {
 
           {/* Permission Description */}
           <div className="bg-subtle rounded-xl p-4">
-            <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">{t('permDescTitle')}</p>
-            <p className="text-sm text-blue-800 dark:text-blue-200">{getPermDescription(perms)}</p>
+            <p className="text-xs font-semibold text-sub mb-1">{t('permDescTitle')}</p>
+            <p className="text-sm text-fg">{getPermDescription(perms)}</p>
           </div>
         </div>
       </div>

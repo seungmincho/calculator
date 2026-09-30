@@ -215,10 +215,10 @@ export default function WaterBillCalculator() {
 
             {/* Average Usage Reference */}
             <div className="bg-subtle rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
                 {t('averageUsage')}
               </h3>
-              <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
+              <ul className="text-xs text-fg space-y-1">
                 <li>• {t('avgInfo.person1')}</li>
                 <li>• {t('avgInfo.person2')}</li>
                 <li>• {t('avgInfo.person3')}</li>

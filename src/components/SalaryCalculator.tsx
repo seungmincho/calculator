@@ -472,7 +472,7 @@ const SalaryCalculatorContent = () => {
                 <div className="border-t border-line pt-5">
                   <h3 className="text-sm font-medium text-body mb-2">성과급 설정</h3>
                   <div className="bg-subtle rounded-xl p-3 mb-3 border border-line">
-                    <p className="text-xs text-green-800 dark:text-green-200">
+                    <p className="text-xs text-fg">
                       💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
                       예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
                     </p>
@@ -513,7 +513,7 @@ const SalaryCalculatorContent = () => {
             </details>
 
             <div className="bg-surface border border-line rounded-2xl p-4">
-              <h3 className="font-medium text-body mb-2">💡 {t('calculation.basis')}</h3>
+              <h3 className="font-medium text-body mb-2">{t('calculation.basis')}</h3>
               <ul className="text-sm text-sub space-y-1">
                 {Array.from({ length: 6 }, (_, index) => (
                   <li key={index}>• {t(`calculation.points.${index}`)}</li>
@@ -687,7 +687,7 @@ const SalaryCalculatorContent = () => {
 
       {/* Tips Section */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 {t('tips.title')}</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">{t('tips.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-surface border-l-4 border-emerald-400/70 border border-line rounded-2xl p-6">
             <h3 className="font-semibold text-fg mb-2">{t('tips.yearEndTax.title')}</h3>
@@ -809,7 +809,7 @@ const SalaryCalculatorContent = () => {
                   ]
                 }} style={{ height: '300px' }} />
                 <div className="mt-4 space-y-2">
-                  <div className="p-3 bg-surface border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                  <div className="p-3 bg-surface border border-line rounded-xl">
                     <p className="text-sm text-body">
                       <strong>상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
                     </p>
@@ -867,7 +867,7 @@ const SalaryCalculatorContent = () => {
                   }]
                 }} style={{ height: '300px' }} />
                 {result && (
-                  <div className="mt-4 p-4 bg-surface border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                  <div className="mt-4 p-4 bg-surface border border-line rounded-xl">
                     <p className="text-sm text-body">
                       현재 연봉: {formatNumber(result.gross)}원 | 
                       선택한 경력: {
@@ -934,47 +934,47 @@ const SalaryCalculatorContent = () => {
 
       {/* 상세 가이드 섹션 */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-3xl font-bold mb-8 text-fg text-center">🚀 {t('guide.title')}</h2>
+        <h2 className="text-3xl font-bold mb-8 text-fg text-center">{t('guide.title')}</h2>
         <p className="text-lg text-sub text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           {t('guide.subtitle')}
         </p>
         
         {/* 핵심 기능 소개 */}
         <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-surface border border-blue-200/40 dark:border-blue-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
+          <div className="bg-surface border border-line rounded-2xl p-8 transition-all">
             <div className="flex items-center mb-4">
               <div className="bg-soft p-3 rounded-full mr-3">
-                <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <Calculator className="w-6 h-6 text-body" />
               </div>
-              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 {t('guide.features.accurate.title')}</h3>
+              <h3 className="text-xl font-bold text-fg">{t('guide.features.accurate.title')}</h3>
             </div>
-            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+            <p className="text-sub mb-4 leading-relaxed">
               {t('guide.features.accurate.description')}
             </p>
             <div className="space-y-3">
               <div className="bg-surface border border-line p-3 rounded-xl">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 {t('guide.features.accurate.points.0.title')}</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.0.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('guide.features.accurate.points.0.title')}</h4>
+                <p className="text-sm text-sub">{t('guide.features.accurate.points.0.content')}</p>
               </div>
               <div className="bg-surface border border-line p-3 rounded-xl">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 {t('guide.features.accurate.points.1.title')}</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.1.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('guide.features.accurate.points.1.title')}</h4>
+                <p className="text-sm text-sub">{t('guide.features.accurate.points.1.content')}</p>
               </div>
               <div className="bg-surface border border-line p-3 rounded-xl">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ {t('guide.features.accurate.points.2.title')}</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.2.content')}</p>
+                <h4 className="font-semibold text-fg mb-1">{t('guide.features.accurate.points.2.title')}</h4>
+                <p className="text-sm text-sub">{t('guide.features.accurate.points.2.content')}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-surface border border-emerald-200/40 dark:border-emerald-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]">
+          <div className="bg-surface border border-line rounded-2xl p-8 transition-all">
             <div className="flex items-center mb-4">
               <div className="bg-soft p-3 rounded-full mr-3">
-                <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                <TrendingUp className="w-6 h-6 text-body" />
               </div>
-              <h3 className="text-xl font-bold text-green-900 dark:text-green-200">📊 {t('guide.features.smart.title')}</h3>
+              <h3 className="text-xl font-bold text-fg">{t('guide.features.smart.title')}</h3>
             </div>
-            <p className="text-green-800 dark:text-green-300 mb-4 leading-relaxed">
+            <p className="text-sub mb-4 leading-relaxed">
               {t('guide.features.smart.description')}
             </p>
             <div className="space-y-3">
@@ -982,25 +982,25 @@ const SalaryCalculatorContent = () => {
                 const icons = ['📊', '💡', '📋'];
                 return (
                   <div key={index} className="bg-surface border border-line p-3 rounded-xl">
-                    <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1 flex items-center">
+                    <h4 className="font-semibold text-fg mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.smart.points.${index}.title`)}
                     </h4>
-                    <p className="text-sm text-green-700 dark:text-green-300">{t(`guide.features.smart.points.${index}.content`)}</p>
+                    <p className="text-sm text-sub">{t(`guide.features.smart.points.${index}.content`)}</p>
                   </div>
                 );
               })}
             </div>
           </div>
           
-          <div className="bg-surface border border-purple-200/40 dark:border-purple-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]">
+          <div className="bg-surface border border-line rounded-2xl p-8 transition-all">
             <div className="flex items-center mb-4">
               <div className="bg-soft p-3 rounded-full mr-3">
-                <DollarSign className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <DollarSign className="w-6 h-6 text-body" />
               </div>
-              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ {t('guide.features.practical.title')}</h3>
+              <h3 className="text-xl font-bold text-fg">{t('guide.features.practical.title')}</h3>
             </div>
-            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+            <p className="text-sub mb-4 leading-relaxed">
               {t('guide.features.practical.description')}
             </p>
             <div className="space-y-3">
@@ -1008,11 +1008,11 @@ const SalaryCalculatorContent = () => {
                 const icons = ['📱', '🔗', '💻'];
                 return (
                   <div key={index} className="bg-surface border border-line p-3 rounded-xl">
-                    <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center">
+                    <h4 className="font-semibold text-fg mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.practical.points.${index}.title`)}
                     </h4>
-                    <p className="text-sm text-purple-700 dark:text-purple-300">{t(`guide.features.practical.points.${index}.content`)}</p>
+                    <p className="text-sm text-sub">{t(`guide.features.practical.points.${index}.content`)}</p>
                   </div>
                 );
               })}
@@ -1033,7 +1033,7 @@ const SalaryCalculatorContent = () => {
               </h4>
               <div className="space-y-4">
                 <div className="border-l-4 border-blue-400 pl-4">
-                  <h5 className="font-semibold text-blue-600">💊 {t('insurance.health.healthInsurance.title')}</h5>
+                  <h5 className="font-semibold text-blue-600">{t('insurance.health.healthInsurance.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.healthInsurance.description')}</p>
                   <div className="mt-2 text-xs text-blue-500 space-y-1">
                     {[0, 1, 2].map((index) => (
@@ -1042,7 +1042,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
-                  <h5 className="font-semibold text-green-600">🏠 {t('insurance.health.longTermCare.title')}</h5>
+                  <h5 className="font-semibold text-green-600">{t('insurance.health.longTermCare.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.longTermCare.description')}</p>
                   <div className="mt-2 text-xs text-green-500 space-y-1">
                     {[0, 1, 2].map((index) => (
@@ -1060,7 +1060,7 @@ const SalaryCalculatorContent = () => {
               </h4>
               <div className="space-y-4">
                 <div className="border-l-4 border-purple-400 pl-4">
-                  <h5 className="font-semibold text-purple-600">💰 {t('insurance.pension.nationalPension.title')}</h5>
+                  <h5 className="font-semibold text-purple-600">{t('insurance.pension.nationalPension.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.nationalPension.description')}</p>
                   <div className="mt-2 text-xs text-purple-500 space-y-1">
                     {[0, 1, 2].map((index) => (
@@ -1069,7 +1069,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-l-4 border-orange-400 pl-4">
-                  <h5 className="font-semibold text-orange-600">🏢 {t('insurance.pension.employment.title')}</h5>
+                  <h5 className="font-semibold text-orange-600">{t('insurance.pension.employment.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.employment.description')}</p>
                   <div className="mt-2 text-xs text-orange-500 space-y-1">
                     {[0, 1, 2].map((index) => (
@@ -1139,7 +1139,7 @@ const SalaryCalculatorContent = () => {
           </div>
           
           <div className="mt-6 p-4 bg-surface border border-line rounded-2xl">
-            <h5 className="font-semibold text-body mb-3">💡 {t('taxBracket.understanding.title')}</h5>
+            <h5 className="font-semibold text-body mb-3">{t('taxBracket.understanding.title')}</h5>
             <div className="mb-3 pb-3 border-b border-line">
               <h6 className="font-semibold text-body mb-1">{t('taxBracket.understanding.keyPoint.title')}</h6>
               <p className="text-sm text-sub">{t('taxBracket.understanding.keyPoint.description')}</p>
@@ -1158,7 +1158,7 @@ const SalaryCalculatorContent = () => {
 
         {/* 절세 전략 가이드 */}
         <div className="rounded-2xl p-2 mb-12">
-          <h3 className="text-2xl font-bold text-fg mb-6 text-center">💰 {t('taxStrategy.title')}</h3>
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">{t('taxStrategy.title')}</h3>
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
@@ -1169,15 +1169,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-green-400 pl-4">
-                  <h5 className="font-semibold text-green-600">📱 {t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
+                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.creditCard.description')}</p>
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
-                  <h5 className="font-semibold text-green-600">🏠 {t('taxStrategy.incomeDeduction.housing.title')}</h5>
+                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.housing.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.housing.description')}</p>
                 </div>
                 <div className="border-l-4 border-green-400 pl-4">
-                  <h5 className="font-semibold text-green-600">👶 {t('taxStrategy.incomeDeduction.childcare.title')}</h5>
+                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.childcare.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.childcare.description')}</p>
                 </div>
               </div>
@@ -1192,15 +1192,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-blue-400 pl-4">
-                  <h5 className="font-semibold text-blue-600">🏥 {t('taxStrategy.taxCredit.medical.title')}</h5>
+                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.medical.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.medical.description')}</p>
                 </div>
                 <div className="border-l-4 border-blue-400 pl-4">
-                  <h5 className="font-semibold text-blue-600">📚 {t('taxStrategy.taxCredit.education.title')}</h5>
+                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.education.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.education.description')}</p>
                 </div>
                 <div className="border-l-4 border-blue-400 pl-4">
-                  <h5 className="font-semibold text-blue-600">💝 {t('taxStrategy.taxCredit.donation.title')}</h5>
+                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.donation.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.donation.description')}</p>
                 </div>
               </div>
@@ -1215,15 +1215,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div className="border-l-4 border-purple-400 pl-4">
-                  <h5 className="font-semibold text-purple-600">💰 {t('taxStrategy.pension.pensionFund.title')}</h5>
+                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.pensionFund.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.pensionFund.description')}</p>
                 </div>
                 <div className="border-l-4 border-purple-400 pl-4">
-                  <h5 className="font-semibold text-purple-600">🏢 {t('taxStrategy.pension.irp.title')}</h5>
+                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.irp.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.irp.description')}</p>
                 </div>
                 <div className="border-l-4 border-purple-400 pl-4">
-                  <h5 className="font-semibold text-purple-600">📈 {t('taxStrategy.pension.isa.title')}</h5>
+                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.isa.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.isa.description')}</p>
                 </div>
               </div>
@@ -1233,7 +1233,7 @@ const SalaryCalculatorContent = () => {
 
         {/* 연말정산 준비 가이드 */}
         <div className="rounded-2xl p-2">
-          <h3 className="text-2xl font-bold text-fg mb-6 text-center">📋 {t('yearEndTax.title')}</h3>
+          <h3 className="text-2xl font-bold text-fg mb-6 text-center">{t('yearEndTax.title')}</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
@@ -1242,7 +1242,7 @@ const SalaryCalculatorContent = () => {
               </h4>
               <div className="space-y-4">
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-indigo-600 mb-2">🗓️ {t('yearEndTax.schedule.timeline.title')}</h5>
+                  <h5 className="font-semibold text-indigo-600 mb-2">{t('yearEndTax.schedule.timeline.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.timeline.details.${index}`)}</p>
@@ -1250,7 +1250,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-indigo-600 mb-2">📄 {t('yearEndTax.schedule.documents.title')}</h5>
+                  <h5 className="font-semibold text-indigo-600 mb-2">{t('yearEndTax.schedule.documents.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.documents.details.${index}`)}</p>
@@ -1266,7 +1266,7 @@ const SalaryCalculatorContent = () => {
               </h4>
               <div className="space-y-4">
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-purple-600 mb-2">✅ {t('yearEndTax.tips.receiptManagement.title')}</h5>
+                  <h5 className="font-semibold text-purple-600 mb-2">{t('yearEndTax.tips.receiptManagement.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.receiptManagement.details.${index}`)}</p>
@@ -1274,7 +1274,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-purple-600 mb-2">⚡ {t('yearEndTax.tips.taxSavingProducts.title')}</h5>
+                  <h5 className="font-semibold text-purple-600 mb-2">{t('yearEndTax.tips.taxSavingProducts.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.taxSavingProducts.details.${index}`)}</p>

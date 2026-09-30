@@ -491,7 +491,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                 <div className="space-y-4">
                   <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">월 지원금액</div>
-                    <div className="text-3xl font-bold text-blue-900 dark:text-blue-100">
+                    <div className="text-3xl font-bold text-fg">
                       {formatNumber(result.subsidy)}원
                     </div>
                   </div>

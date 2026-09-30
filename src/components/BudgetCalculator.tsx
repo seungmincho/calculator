@@ -854,14 +854,14 @@ export default function BudgetCalculator() {
               {/* Needs 50% */}
               <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                  <span className="text-sm font-medium text-sub">
                     {t('rule.needs')} (50%)
                   </span>
                   {rule503020.needs.percent > 55 && (
                     <AlertTriangle className="w-4 h-4 text-amber-500" />
                   )}
                 </div>
-                <p className="text-lg font-bold text-blue-800 dark:text-blue-200">
+                <p className="text-lg font-bold text-fg">
                   {formatWon(rule503020.needs.actual)}{t('currency')}
                 </p>
                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -883,14 +883,14 @@ export default function BudgetCalculator() {
               {/* Wants 30% */}
               <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+                  <span className="text-sm font-medium text-sub">
                     {t('rule.wants')} (30%)
                   </span>
                   {rule503020.wants.percent > 35 && (
                     <AlertTriangle className="w-4 h-4 text-amber-500" />
                   )}
                 </div>
-                <p className="text-lg font-bold text-purple-800 dark:text-purple-200">
+                <p className="text-lg font-bold text-fg">
                   {formatWon(rule503020.wants.actual)}{t('currency')}
                 </p>
                 <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
@@ -912,14 +912,14 @@ export default function BudgetCalculator() {
               {/* Savings 20% */}
               <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-green-700 dark:text-green-300">
+                  <span className="text-sm font-medium text-sub">
                     {t('rule.saving')} (20%)
                   </span>
                   {rule503020.saving.percent < 15 && totalIncome > 0 && (
                     <AlertTriangle className="w-4 h-4 text-amber-500" />
                   )}
                 </div>
-                <p className="text-lg font-bold text-green-800 dark:text-green-200">
+                <p className="text-lg font-bold text-fg">
                   {formatWon(rule503020.saving.actual)}{t('currency')}
                 </p>
                 <p className="text-xs text-green-600 dark:text-green-400 mt-1">

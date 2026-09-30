@@ -764,7 +764,7 @@ export default function GitVisualizer() {
                   onClick={() => executeCommand(`checkout ${name}`)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm flex items-center justify-between transition-colors ${
                     name === repo.head
-                      ? 'bg-subtle text-emerald-700 dark:text-emerald-300 font-semibold'
+                      ? 'bg-subtle text-sub font-semibold'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                   }`}
                 >
@@ -793,8 +793,8 @@ export default function GitVisualizer() {
                   <div className="font-mono text-xs text-muted">$ {log.command}</div>
                   <div className={`text-xs mt-0.5 ${
                     log.type === 'error' ? 'text-red-600 dark:text-red-400' :
-                    log.type === 'success' ? 'text-emerald-700 dark:text-emerald-300' :
-                    'text-blue-700 dark:text-blue-300'
+                    log.type === 'success' ? 'text-sub' :
+                    'text-sub'
                   }`}>
                     {log.description}
                   </div>
@@ -893,7 +893,7 @@ export default function GitVisualizer() {
               <h3 className="text-base font-bold text-fg mb-3">merge vs rebase</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-4 bg-subtle rounded-lg">
-                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">merge</h4>
+                  <h4 className="font-semibold text-sub mb-2">merge</h4>
                   <ul className="text-sm text-body space-y-1.5">
                     <li>- 병합 커밋을 생성 (부모 2개)</li>
                     <li>- 히스토리를 있는 그대로 보존</li>
@@ -903,7 +903,7 @@ export default function GitVisualizer() {
                   </ul>
                 </div>
                 <div className="p-4 bg-subtle rounded-lg">
-                  <h4 className="font-semibold text-purple-700 dark:text-purple-300 mb-2">rebase</h4>
+                  <h4 className="font-semibold text-sub mb-2">rebase</h4>
                   <ul className="text-sm text-body space-y-1.5">
                     <li>- 커밋을 새 위치에 재생성</li>
                     <li>- 깔끔한 직선 히스토리</li>

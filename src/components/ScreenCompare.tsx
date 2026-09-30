@@ -80,10 +80,10 @@ function calcAreaSqIn(diag: number, w: number, h: number): number {
 // ── Category colors ──────────────────────────────────────────────────────────
 
 const CATEGORY_COLORS: Record<DeviceCategory, { bg: string; border: string; text: string; label: string }> = {
-  phone:   { bg: 'bg-blue-100 dark:bg-blue-900',   border: 'border-blue-400',   text: 'text-blue-700 dark:text-blue-300',   label: 'bg-blue-500' },
-  tablet:  { bg: 'bg-purple-100 dark:bg-purple-900', border: 'border-purple-400', text: 'text-purple-700 dark:text-purple-300', label: 'bg-purple-500' },
-  monitor: { bg: 'bg-green-100 dark:bg-green-900',  border: 'border-green-400',  text: 'text-green-700 dark:text-green-300',  label: 'bg-green-500' },
-  laptop:  { bg: 'bg-orange-100 dark:bg-orange-900', border: 'border-orange-400', text: 'text-orange-700 dark:text-orange-300', label: 'bg-orange-500' },
+  phone:   { bg: 'bg-blue-100 dark:bg-blue-900',   border: 'border-blue-400',   text: 'text-sub',   label: 'bg-blue-500' },
+  tablet:  { bg: 'bg-purple-100 dark:bg-purple-900', border: 'border-purple-400', text: 'text-sub', label: 'bg-purple-500' },
+  monitor: { bg: 'bg-green-100 dark:bg-green-900',  border: 'border-green-400',  text: 'text-sub',  label: 'bg-green-500' },
+  laptop:  { bg: 'bg-orange-100 dark:bg-orange-900', border: 'border-orange-400', text: 'text-sub', label: 'bg-orange-500' },
 }
 
 const SLOT_COLORS = [

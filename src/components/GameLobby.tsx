@@ -169,7 +169,7 @@ export default function GameLobby({
                   onClick={() => setIsPrivate(false)}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     !isPrivate
-                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-sub'
                       : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function GameLobby({
                   onClick={() => setIsPrivate(true)}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     isPrivate
-                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-sub'
                       : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >

@@ -302,7 +302,7 @@ export default function GpaConverter() {
                       className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-subtle'}`}
                     >
                       <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-muted'}`}>{tile.label}</p>
-                      <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-blue-700 dark:text-blue-300'}`}>{tile.val}</p>
+                      <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-sub'}`}>{tile.val}</p>
                     </div>
                   ))}
                 </div>

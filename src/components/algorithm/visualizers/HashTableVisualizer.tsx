@@ -392,7 +392,7 @@ export default function HashTableVisualizer() {
                         : 'bg-white/50 dark:bg-gray-700/30 border-line hover:bg-white/80 dark:hover:bg-gray-700/50'
                     }`}
                   >
-                    <div className={`text-sm font-medium ${strategy === opt.value ? 'text-emerald-700 dark:text-emerald-300' : 'text-body'}`}>
+                    <div className={`text-sm font-medium ${strategy === opt.value ? 'text-sub' : 'text-body'}`}>
                       {opt.label}
                     </div>
                     <div className="text-xs text-muted mt-0.5">{opt.description}</div>

@@ -748,7 +748,7 @@ export default function MarkdownEditor() {
               ref={textareaRef}
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
-              className={`flex-1 w-full p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-surface resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset ${
+              className={`flex-1 w-full p-4 font-mono text-sm text-fg bg-surface resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset ${
                 isFullscreen ? 'h-full' : 'min-h-[400px]'
               }`}
               spellCheck={false}
@@ -793,19 +793,19 @@ export default function MarkdownEditor() {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={downloadMd}
-            className="px-3 py-1.5 text-xs font-medium bg-orange-100 dark:bg-orange-900/40 hover:bg-orange-200 dark:hover:bg-orange-800/60 text-orange-700 dark:text-orange-300 rounded-lg transition-colors"
+            className="px-3 py-1.5 text-xs font-medium bg-orange-100 dark:bg-orange-900/40 hover:bg-orange-200 dark:hover:bg-orange-800/60 text-sub rounded-lg transition-colors"
           >
             {t('exportMd')}
           </button>
           <button
             onClick={() => copyToClipboard(markdown, 'md')}
-            className="px-3 py-1.5 text-xs font-medium bg-green-100 dark:bg-green-900/40 hover:bg-green-200 dark:hover:bg-green-800/60 text-green-700 dark:text-green-300 rounded-lg transition-colors"
+            className="px-3 py-1.5 text-xs font-medium bg-green-100 dark:bg-green-900/40 hover:bg-green-200 dark:hover:bg-green-800/60 text-sub rounded-lg transition-colors"
           >
             {copiedId === 'md' ? t('copied') : t('copyMarkdown')}
           </button>
           <button
             onClick={() => copyToClipboard(parsedHtml, 'html')}
-            className="px-3 py-1.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/40 hover:bg-blue-200 dark:hover:bg-blue-800/60 text-blue-700 dark:text-blue-300 rounded-lg transition-colors"
+            className="px-3 py-1.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/40 hover:bg-blue-200 dark:hover:bg-blue-800/60 text-sub rounded-lg transition-colors"
           >
             {copiedId === 'html' ? t('copied') : t('copyHtml')}
           </button>

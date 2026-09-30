@@ -381,8 +381,8 @@ export default function PensionCalculator() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center bg-subtle rounded-lg px-3 py-2">
-                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('totalContribution')}</span>
-                    <span className="font-bold text-blue-700 dark:text-blue-300">
+                    <span className="text-sm font-medium text-sub">{t('totalContribution')}</span>
+                    <span className="font-bold text-sub">
                       {formatWon(result.totalEmployeeContribution)}
                     </span>
                   </div>

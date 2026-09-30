@@ -599,7 +599,7 @@ function IncomeTaxContent() {
                 {/* Simple rate display */}
                 {expenseMethod === 'simple' && revenue && (
                   <div className="mt-3 bg-subtle rounded-lg p-3">
-                    <p className="text-sm text-blue-800 dark:text-blue-300">
+                    <p className="text-sm text-sub">
                       {t('appliedExpenseRate')}: {(getOccupation().simpleRate * 100).toFixed(1)}% → {t('expenseAmount')}: {formatWon(parseNum(revenue) * getOccupation().simpleRate)}{t('won')}
                     </p>
                   </div>
@@ -645,7 +645,7 @@ function IncomeTaxContent() {
                       </div>
                     </div>
                     <div className="bg-subtle rounded-lg p-3">
-                      <p className="text-sm text-blue-800 dark:text-blue-300">
+                      <p className="text-sm text-sub">
                         {t('standardExpenseRate')}: {(getOccupation().standardRate * 100).toFixed(1)}%
                       </p>
                     </div>

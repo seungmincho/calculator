@@ -288,19 +288,19 @@ export default function TextToSpeech() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => handlePresetClick(t('presets.greeting'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.greeting').substring(0, 20)}...
               </button>
               <button
                 onClick={() => handlePresetClick(t('presets.news'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.news').substring(0, 20)}...
               </button>
               <button
                 onClick={() => handlePresetClick(t('presets.story'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.story').substring(0, 20)}...
               </button>

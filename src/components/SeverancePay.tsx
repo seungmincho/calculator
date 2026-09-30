@@ -280,7 +280,7 @@ export default function SeverancePay() {
                   <div className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
                     {t('result.workPeriod')}
                   </div>
-                  <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                  <div className="text-2xl font-bold text-fg">
                     {result.years}{t('result.years')} {result.months}{t('result.months')} {result.days}{t('result.days')}
                   </div>
                   <div className="text-sm text-blue-700 dark:text-blue-400 mt-2">
@@ -303,7 +303,7 @@ export default function SeverancePay() {
                   <div className="text-sm font-medium text-green-900 dark:text-green-300 mb-2">
                     {t('result.severancePay')}
                   </div>
-                  <div className="text-3xl font-bold text-green-900 dark:text-green-100">
+                  <div className="text-3xl font-bold text-fg">
                     {formatNumber(result.severancePay)} {t('result.won')}
                   </div>
                   <div className="text-xs text-green-700 dark:text-green-400 mt-3">
@@ -493,7 +493,7 @@ export default function SeverancePay() {
               </h3>
               <ul className="space-y-1.5">
                 {(t.raw('irpGuide.taxBenefitItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>

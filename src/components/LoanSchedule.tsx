@@ -578,7 +578,7 @@ export default function LoanSchedule() {
             {/* Early Repayment Savings */}
             {extraMonthly > 0 && resultNoExtra && result && (
               <div className="bg-subtle rounded-xl p-4 border border-line">
-                <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 flex items-center gap-1.5 mb-2">
+                <h3 className="text-sm font-semibold text-sub flex items-center gap-1.5 mb-2">
                   {t('earlyRepaymentSavings')}
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -778,7 +778,7 @@ export default function LoanSchedule() {
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Loan A Summary */}
             <div className="bg-subtle rounded-xl p-6 border border-line">
-              <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-4">{t('loanA')}</h3>
+              <h3 className="text-sm font-semibold text-sub mb-4">{t('loanA')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-sub">{t('totalPayment')}</span>
@@ -805,7 +805,7 @@ export default function LoanSchedule() {
 
             {/* Loan B Summary */}
             <div className="bg-subtle rounded-xl p-6 border border-line">
-              <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-4">{t('loanB')}</h3>
+              <h3 className="text-sm font-semibold text-sub mb-4">{t('loanB')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-sub">{t('totalPayment')}</span>

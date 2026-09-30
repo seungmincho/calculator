@@ -361,7 +361,7 @@ export default function GpaCalculator() {
                   reverseResult.impossible
                     ? 'bg-subtle text-sub'
                     : reverseResult.feasible
-                    ? 'bg-subtle text-green-800 dark:text-green-200'
+                    ? 'bg-subtle text-fg'
                     : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
                 }`}>
                   {reverseResult.impossible ? (
@@ -386,10 +386,10 @@ export default function GpaCalculator() {
 
           {/* Quick Guide */}
           <div className="bg-subtle rounded-xl p-6">
-            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+            <ul className="space-y-2 text-sm text-fg">
               {(t.raw('guide.howToUse.items') as string[]).map((step, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">•</span>

@@ -369,7 +369,7 @@ export default function LottoTaxCalculator() {
 
                   {result.isTaxFree ? (
                     <div className="bg-subtle rounded-xl p-4 text-center">
-                      <p className="text-green-700 dark:text-green-300 font-bold text-lg">{t('noTax')}</p>
+                      <p className="text-sub font-bold text-lg">{t('noTax')}</p>
                     </div>
                   ) : (
                     <>
@@ -434,7 +434,7 @@ export default function LottoTaxCalculator() {
                       <div className="bg-subtle rounded-xl p-4 space-y-3">
                         {result.taxBelow300m > 0 && (
                           <div>
-                            <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">
+                            <p className="text-xs font-semibold text-sub mb-1">
                               {t('belowThreshold')} — {t('taxRate22')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-xs">
@@ -455,7 +455,7 @@ export default function LottoTaxCalculator() {
                         )}
                         {result.taxAbove300m > 0 && (
                           <div>
-                            <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">
+                            <p className="text-xs font-semibold text-sub mb-1">
                               {t('aboveThreshold')} — {t('taxRate33')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-xs">

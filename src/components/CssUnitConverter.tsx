@@ -367,10 +367,10 @@ export default function CssUnitConverter() {
           <div className="mt-6 space-y-6">
             {/* Absolute Units */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="text-base font-semibold text-blue-800 dark:text-blue-200 mb-3">{t('guideAbsoluteTitle')}</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">{t('guideAbsoluteTitle')}</h3>
               <ul className="space-y-2">
                 {guideAbsoluteItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
                     {item}
                   </li>
@@ -380,10 +380,10 @@ export default function CssUnitConverter() {
 
             {/* Relative Units */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="text-base font-semibold text-purple-800 dark:text-purple-200 mb-3">{t('guideRelativeTitle')}</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">{t('guideRelativeTitle')}</h3>
               <ul className="space-y-2">
                 {guideRelativeItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-purple-700 dark:text-purple-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
                     {item}
                   </li>
@@ -393,10 +393,10 @@ export default function CssUnitConverter() {
 
             {/* Viewport Units */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="text-base font-semibold text-green-800 dark:text-green-200 mb-3">{t('guideViewportTitle')}</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">{t('guideViewportTitle')}</h3>
               <ul className="space-y-2">
                 {guideViewportItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-green-700 dark:text-green-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
                     {item}
                   </li>
@@ -406,10 +406,10 @@ export default function CssUnitConverter() {
 
             {/* Tips */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="text-base font-semibold text-orange-800 dark:text-orange-200 mb-3">{t('guideTipsTitle')}</h3>
+              <h3 className="text-base font-semibold text-fg mb-3">{t('guideTipsTitle')}</h3>
               <ul className="space-y-2">
                 {guideTipsItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-orange-700 dark:text-orange-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
                     {item}
                   </li>

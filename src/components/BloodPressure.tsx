@@ -281,7 +281,7 @@ export default function BloodPressure() {
               {t('classification.title')}
             </h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-green-700 dark:text-green-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-sub">
                 <span className="font-medium">{t('classification.normal')}</span>
                 <span className="text-sm">{t('ranges.normal')}</span>
               </div>
@@ -289,7 +289,7 @@ export default function BloodPressure() {
                 <span className="font-medium">{t('classification.elevated')}</span>
                 <span className="text-sm">{t('ranges.elevated')}</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-orange-700 dark:text-orange-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-sub">
                 <span className="font-medium">{t('classification.high1')}</span>
                 <span className="text-sm">{t('ranges.high1')}</span>
               </div>
@@ -297,7 +297,7 @@ export default function BloodPressure() {
                 <span className="font-medium">{t('classification.high2')}</span>
                 <span className="text-sm">{t('ranges.high2')}</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-purple-700 dark:text-purple-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-sub">
                 <span className="font-medium">{t('classification.crisis')}</span>
                 <span className="text-sm">{t('ranges.crisis')}</span>
               </div>

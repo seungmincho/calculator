@@ -843,11 +843,11 @@ export default function CarTaxCalculator() {
                 <div className="bg-subtle border border-line rounded-2xl p-6">
                   <div className="flex items-center mb-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
-                    <h4 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+                    <h4 className="text-lg font-semibold text-fg">
                       환경차 세제 혜택 적용
                     </h4>
                   </div>
-                  <p className="text-blue-800 dark:text-blue-200">
+                  <p className="text-fg">
                     {fuelType === 'electric' ? '전기차' : '하이브리드차'}로 취득세·등록세 50% 감면이 적용되었습니다.
                   </p>
                 </div>

@@ -954,7 +954,7 @@ export default function WebserverConfig() {
                     onClick={() => updateOption('scenario', s.id)}
                     className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                       options.scenario === s.id
-                        ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
+                        ? 'border-blue-500 bg-subtle text-sub'
                         : 'border-line hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                     }`}
                   >

@@ -255,12 +255,12 @@ export default function ChildBenefitCalculator() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-subtle rounded-xl p-5 text-center">
           <div className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">{t('hero.parentPay')}</div>
-          <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">{t('hero.parentPayAmount')}</div>
+          <div className="text-2xl font-bold text-sub">{t('hero.parentPayAmount')}</div>
           <div className="text-xs text-indigo-500 dark:text-indigo-400 mt-1">{t('hero.parentPaySub')}</div>
         </div>
         <div className="bg-subtle rounded-xl p-5 text-center">
           <div className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">{t('hero.childAllowance')}</div>
-          <div className="text-2xl font-bold text-green-700 dark:text-green-300">{t('hero.childAllowanceAmount')}</div>
+          <div className="text-2xl font-bold text-sub">{t('hero.childAllowanceAmount')}</div>
           <div className="text-xs text-green-500 dark:text-green-400 mt-1">{t('hero.childAllowanceSub')}</div>
         </div>
         <div className="bg-amber-50 dark:bg-amber-950 rounded-xl p-5 text-center">
@@ -386,14 +386,14 @@ export default function ChildBenefitCalculator() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-xl p-4 text-center">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('monthlyTotal')}</div>
-                    <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
+                    <div className="text-3xl font-bold text-sub">
                       {formatKRW(monthlyTotal)}
                     </div>
                     <div className="text-xs text-blue-500 dark:text-blue-400 mt-1">{t('perMonth')}</div>
                   </div>
                   <div className="bg-subtle rounded-xl p-4 text-center">
                     <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">{t('yearlyTotal')}</div>
-                    <div className="text-3xl font-bold text-indigo-700 dark:text-indigo-300">
+                    <div className="text-3xl font-bold text-sub">
                       {formatKRW(yearlyTotal)}
                     </div>
                     <div className="text-xs text-indigo-500 dark:text-indigo-400 mt-1">{t('perYear')}</div>

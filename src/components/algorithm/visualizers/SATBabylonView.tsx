@@ -288,7 +288,7 @@ export default function SATBabylonView() {
 
       {/* How it works */}
       <div className="bg-blue-950/30 border border-blue-500/10 rounded-xl p-4 text-sm space-y-2">
-        <p className="font-semibold text-gray-200">💡 {t('threeView.howItWorks')}</p>
+        <p className="font-semibold text-gray-200">{t('threeView.howItWorks')}</p>
         <p className="text-gray-400">{t('threeView.explanation')}</p>
       </div>
     </div>

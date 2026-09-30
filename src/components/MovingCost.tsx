@@ -487,7 +487,7 @@ export default function MovingCost() {
                       : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
-                  <div className={`font-semibold text-sm ${movingType === type ? 'text-blue-700 dark:text-blue-300' : 'text-fg'}`}>
+                  <div className={`font-semibold text-sm ${movingType === type ? 'text-sub' : 'text-fg'}`}>
                     {t(`movingTypes.${type}`)}
                   </div>
                   <div className="text-xs text-muted mt-1">
@@ -751,10 +751,10 @@ export default function MovingCost() {
               <div className="space-y-3">
                 {/* Summary badge */}
                 <div className="bg-subtle rounded-xl p-4 border-2 border-line">
-                  <div className="text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">
+                  <div className="text-xs font-medium text-sub mb-1">
                     {t('result.estimatedTotal')}
                   </div>
-                  <div className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                  <div className="text-xl font-bold text-fg">
                     {formatWon(costBreakdown.total.min)}~{formatWon(costBreakdown.total.max)}{t('manwon')}
                   </div>
                   <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">

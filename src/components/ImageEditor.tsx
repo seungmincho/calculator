@@ -1046,8 +1046,8 @@ const ImageEditor = () => {
           <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 편집기 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-subtle rounded-lg p-6">
-              <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">주요 기능</h3>
-              <ul className="text-green-800 dark:text-green-300 text-sm space-y-1">
+              <h3 className="font-semibold text-fg mb-2">주요 기능</h3>
+              <ul className="text-sub text-sm space-y-1">
                 <li>• 브라우저에서 직접 편집 (서버 업로드 없음)</li>
                 <li>• 이미지 크롭 및 회전</li>
                 <li>• 텍스트 오버레이 추가</li>

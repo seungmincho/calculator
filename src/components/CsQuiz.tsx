@@ -33,7 +33,7 @@ const CATEGORY_ICONS: Record<QuizCategory | 'all', string> = {
 
 const DIFFICULTIES: QuizDifficulty[] = ['beginner', 'intermediate', 'advanced']
 const DIFF_COLORS: Record<QuizDifficulty, { bg: string; ring: string; text: string }> = {
-  beginner: { bg: 'bg-subtle', ring: 'ring-green-500', text: 'text-green-700 dark:text-green-300' },
+  beginner: { bg: 'bg-subtle', ring: 'ring-green-500', text: 'text-sub' },
   intermediate: { bg: 'bg-yellow-50 dark:bg-yellow-900/30', ring: 'ring-yellow-500', text: 'text-yellow-700 dark:text-yellow-300' },
   advanced: { bg: 'bg-red-50 dark:bg-red-900/30', ring: 'ring-red-500', text: 'text-red-700 dark:text-red-300' },
 }
@@ -472,7 +472,7 @@ export default function CsQuiz() {
                 {ans.correct ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
                 {ans.correct ? t('correct') : t('incorrect')}
               </div>
-              <div className="bg-subtle rounded-xl p-4 text-sm text-blue-800 dark:text-blue-200">
+              <div className="bg-subtle rounded-xl p-4 text-sm text-fg">
                 {q.explanation}
               </div>
             </div>
@@ -615,7 +615,7 @@ export default function CsQuiz() {
                         </span>
                       </div>
                     </div>
-                    <div className="mt-3 bg-subtle rounded-lg p-3 text-xs text-blue-800 dark:text-blue-200">
+                    <div className="mt-3 bg-subtle rounded-lg p-3 text-xs text-fg">
                       {wq.explanation}
                     </div>
                   </div>
@@ -626,7 +626,7 @@ export default function CsQuiz() {
         ) : (
           <div className="bg-subtle rounded-xl shadow-lg p-8 text-center">
             <div className="text-4xl mb-3">🎉</div>
-            <p className="text-lg font-semibold text-green-700 dark:text-green-300">{t('perfectScore')}</p>
+            <p className="text-lg font-semibold text-sub">{t('perfectScore')}</p>
           </div>
         )}
 

@@ -30,14 +30,14 @@ interface MatchResult {
 // ── Token colors by type ──
 
 const TOKEN_COLORS: Record<RegexToken['type'], { bg: string; border: string; text: string }> = {
-  anchor:      { bg: 'bg-purple-100 dark:bg-purple-900/40', border: 'border-line', text: 'text-purple-800 dark:text-purple-200' },
+  anchor:      { bg: 'bg-purple-100 dark:bg-purple-900/40', border: 'border-line', text: 'text-fg' },
   literal:     { bg: 'bg-soft', border: 'border-line-strong', text: 'text-body' },
   quantifier:  { bg: 'bg-amber-100 dark:bg-amber-900/40', border: 'border-amber-300 dark:border-amber-700', text: 'text-amber-800 dark:text-amber-200' },
-  class:       { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-line', text: 'text-blue-800 dark:text-blue-200' },
-  group:       { bg: 'bg-green-100 dark:bg-green-900/40', border: 'border-line', text: 'text-green-800 dark:text-green-200' },
-  escape:      { bg: 'bg-teal-100 dark:bg-teal-900/40', border: 'border-line', text: 'text-teal-800 dark:text-teal-200' },
-  alternation: { bg: 'bg-rose-100 dark:bg-rose-900/40', border: 'border-line', text: 'text-rose-800 dark:text-rose-200' },
-  special:     { bg: 'bg-indigo-100 dark:bg-indigo-900/40', border: 'border-line', text: 'text-indigo-800 dark:text-indigo-200' },
+  class:       { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-line', text: 'text-fg' },
+  group:       { bg: 'bg-green-100 dark:bg-green-900/40', border: 'border-line', text: 'text-fg' },
+  escape:      { bg: 'bg-teal-100 dark:bg-teal-900/40', border: 'border-line', text: 'text-fg' },
+  alternation: { bg: 'bg-rose-100 dark:bg-rose-900/40', border: 'border-line', text: 'text-fg' },
+  special:     { bg: 'bg-indigo-100 dark:bg-indigo-900/40', border: 'border-line', text: 'text-fg' },
 }
 
 // ── Regex tokenizer ──
@@ -527,7 +527,7 @@ export default function RegexEngineVisualizer() {
               onClick={() => toggleFlag(flag)}
               className={`px-2.5 py-1 text-xs font-mono rounded-md border transition-colors ${
                 flags.includes(flag)
-                  ? 'bg-orange-100 dark:bg-orange-900/40 border-line text-orange-700 dark:text-orange-300'
+                  ? 'bg-orange-100 dark:bg-orange-900/40 border-line text-sub'
                   : 'bg-subtle border-line text-muted'
               }`}
               title={`${label}: ${desc}`}
@@ -666,8 +666,8 @@ export default function RegexEngineVisualizer() {
                 {testStr.split('').map((ch, i) => {
                   const state = charStates[i]
                   let cls = 'px-0.5 py-0.5 rounded transition-all duration-200 '
-                  if (state === 'matched') cls += 'bg-green-200 dark:bg-green-800/60 text-green-900 dark:text-green-100'
-                  else if (state === 'current') cls += 'bg-blue-300 dark:bg-blue-700/70 text-blue-900 dark:text-blue-100 ring-2 ring-blue-500 scale-110'
+                  if (state === 'matched') cls += 'bg-green-200 dark:bg-green-800/60 text-fg'
+                  else if (state === 'current') cls += 'bg-blue-300 dark:bg-blue-700/70 text-fg ring-2 ring-blue-500 scale-110'
                   else if (state === 'failed') cls += 'bg-red-200 dark:bg-red-800/60 text-red-900 dark:text-red-100'
                   else cls += 'text-body'
 
@@ -689,7 +689,7 @@ export default function RegexEngineVisualizer() {
             {currentAttempt && (
               <div className={`mt-4 px-4 py-3 rounded-lg text-sm ${
                 currentAttempt.success
-                  ? 'bg-subtle border border-line text-green-800 dark:text-green-200'
+                  ? 'bg-subtle border border-line text-fg'
                   : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
               }`}>
                 <span className="font-medium">위치 {currentAttempt.position}:</span>{' '}
@@ -730,7 +730,7 @@ export default function RegexEngineVisualizer() {
                         <span className="text-xs font-medium text-muted">매칭 #{i + 1}</span>
                         <span className="text-[10px] text-faint">위치 {r.start}~{r.end - 1}</span>
                       </div>
-                      <p className="font-mono text-sm text-green-700 dark:text-green-300 bg-subtle px-2 py-1 rounded break-all">
+                      <p className="font-mono text-sm text-sub bg-subtle px-2 py-1 rounded break-all">
                         &quot;{r.text}&quot;
                       </p>
                       {r.groups.length > 0 && r.groups.some(g => g !== '') && (
@@ -855,11 +855,11 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                       입력: <code className="font-mono bg-surface px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
                     </p>
                     <p className="text-sm text-sub">
-                      결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;a&quot; and &quot;b&quot;</span> (전체 매칭)
+                      결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-fg">&quot;a&quot; and &quot;b&quot;</span> (전체 매칭)
                     </p>
                   </div>
                   <div className="bg-subtle rounded-lg p-4 border border-line">
-                    <h4 className="font-semibold text-teal-800 dark:text-teal-200 mb-2">게으른 (Lazy)</h4>
+                    <h4 className="font-semibold text-fg mb-2">게으른 (Lazy)</h4>
                     <p className="text-sm text-body mb-2">
                       패턴: <code className="font-mono bg-surface px-1 rounded">&quot;.*?&quot;</code>
                     </p>
@@ -867,7 +867,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                       입력: <code className="font-mono bg-surface px-1 rounded">&quot;a&quot; and &quot;b&quot;</code>
                     </p>
                     <p className="text-sm text-sub">
-                      결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;a&quot;</span>, <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;b&quot;</span> (최소 매칭)
+                      결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-fg">&quot;a&quot;</span>, <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-fg">&quot;b&quot;</span> (최소 매칭)
                     </p>
                   </div>
                 </div>

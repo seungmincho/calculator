@@ -507,7 +507,7 @@ export default function Enneagram() {
                   onClick={() => handleAnswer(val)}
                   className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl border-2 transition-all text-left ${
                     selected
-                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-sub'
                       : 'border-line hover:border-indigo-300 dark:hover:border-indigo-500 text-body'
                   }`}
                 >

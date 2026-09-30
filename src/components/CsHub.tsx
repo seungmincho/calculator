@@ -39,16 +39,16 @@ interface CategoryStats {
 }
 
 const CATEGORY_STATS: CategoryStats[] = [
-  { id: 'dataStructures', nameKo: 'categories.dataStructures', icon: Layers, color: 'blue', bgColor: 'bg-blue-100 dark:bg-blue-900/40', textColor: 'text-blue-700 dark:text-blue-300', borderColor: 'border-line', terms: 26, quiz: 25, interview: 10, algorithms: 13 },
-  { id: 'algorithms', nameKo: 'categories.algorithms', icon: Zap, color: 'purple', bgColor: 'bg-purple-100 dark:bg-purple-900/40', textColor: 'text-purple-700 dark:text-purple-300', borderColor: 'border-line', terms: 25, quiz: 25, interview: 10, algorithms: 9 },
-  { id: 'network', nameKo: 'categories.network', icon: Globe, color: 'cyan', bgColor: 'bg-cyan-100 dark:bg-cyan-900/40', textColor: 'text-cyan-700 dark:text-cyan-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'os', nameKo: 'categories.os', icon: Monitor, color: 'orange', bgColor: 'bg-orange-100 dark:bg-orange-900/40', textColor: 'text-orange-700 dark:text-orange-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'database', nameKo: 'categories.database', icon: Database, color: 'green', bgColor: 'bg-green-100 dark:bg-green-900/40', textColor: 'text-green-700 dark:text-green-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'architecture', nameKo: 'categories.architecture', icon: Layout, color: 'indigo', bgColor: 'bg-indigo-100 dark:bg-indigo-900/40', textColor: 'text-indigo-700 dark:text-indigo-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'softwareEngineering', nameKo: 'categories.softwareEngineering', icon: Wrench, color: 'pink', bgColor: 'bg-pink-100 dark:bg-pink-900/40', textColor: 'text-pink-700 dark:text-pink-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'dataStructures', nameKo: 'categories.dataStructures', icon: Layers, color: 'blue', bgColor: 'bg-blue-100 dark:bg-blue-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 26, quiz: 25, interview: 10, algorithms: 13 },
+  { id: 'algorithms', nameKo: 'categories.algorithms', icon: Zap, color: 'purple', bgColor: 'bg-purple-100 dark:bg-purple-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 25, quiz: 25, interview: 10, algorithms: 9 },
+  { id: 'network', nameKo: 'categories.network', icon: Globe, color: 'cyan', bgColor: 'bg-cyan-100 dark:bg-cyan-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'os', nameKo: 'categories.os', icon: Monitor, color: 'orange', bgColor: 'bg-orange-100 dark:bg-orange-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'database', nameKo: 'categories.database', icon: Database, color: 'green', bgColor: 'bg-green-100 dark:bg-green-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'architecture', nameKo: 'categories.architecture', icon: Layout, color: 'indigo', bgColor: 'bg-indigo-100 dark:bg-indigo-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'softwareEngineering', nameKo: 'categories.softwareEngineering', icon: Wrench, color: 'pink', bgColor: 'bg-pink-100 dark:bg-pink-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
   { id: 'security', nameKo: 'categories.security', icon: Shield, color: 'red', bgColor: 'bg-red-100 dark:bg-red-900/40', textColor: 'text-red-700 dark:text-red-300', borderColor: 'border-red-300 dark:border-red-700', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
   { id: 'linux', nameKo: 'categories.linux', icon: Terminal, color: 'amber', bgColor: 'bg-amber-100 dark:bg-amber-900/40', textColor: 'text-amber-700 dark:text-amber-300', borderColor: 'border-amber-300 dark:border-amber-700', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'web', nameKo: 'categories.web', icon: Code, color: 'teal', bgColor: 'bg-teal-100 dark:bg-teal-900/40', textColor: 'text-teal-700 dark:text-teal-300', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'web', nameKo: 'categories.web', icon: Code, color: 'teal', bgColor: 'bg-teal-100 dark:bg-teal-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
 ]
 
 const TOTAL_TERMS = 211
@@ -199,7 +199,7 @@ export default function CsHub() {
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25">
                 <GraduationCap className="w-6 h-6" />
               </div>
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 text-blue-700 dark:text-blue-300">
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 text-sub">
                 {t('badge')}
               </span>
             </div>
@@ -272,7 +272,7 @@ export default function CsHub() {
               <Link
                 key={card.id}
                 href={card.href}
-                className={`group relative bg-surface rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
+                className={`group relative bg-surface rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl`}
               >
                 {/* Top gradient bar */}
                 <div className={`h-1.5 bg-gradient-to-r ${card.themeGradient}`} />

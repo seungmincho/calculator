@@ -501,7 +501,7 @@ export default function DevCheatsheet() {
                                 <span className="text-xs font-medium text-muted uppercase tracking-wide">
                                   {t('command.example')}
                                 </span>
-                                <pre className="mt-1 font-mono bg-subtle text-gray-800 dark:text-gray-300 px-4 py-3 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap break-all">
+                                <pre className="mt-1 font-mono bg-subtle text-sub px-4 py-3 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap break-all">
                                   {cmd.example}
                                 </pre>
                               </div>

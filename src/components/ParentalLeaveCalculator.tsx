@@ -908,7 +908,7 @@ export default function ParentalLeaveCalculator() {
                                 m.fatherActive
                                   ? m.fatherEnhanced
                                     ? 'bg-blue-500 text-white'
-                                    : 'bg-blue-300 dark:bg-blue-700 text-blue-900 dark:text-blue-100'
+                                    : 'bg-blue-300 dark:bg-blue-700 text-fg'
                                   : 'bg-soft text-faint'
                               }`}
                               title={m.fatherActive ? `${formatNumber(m.fatherBenefit)}${t('inputs.won')}` : ''}
@@ -929,7 +929,7 @@ export default function ParentalLeaveCalculator() {
                                 m.motherActive
                                   ? m.motherEnhanced
                                     ? 'bg-pink-500 text-white'
-                                    : 'bg-pink-300 dark:bg-pink-700 text-pink-900 dark:text-pink-100'
+                                    : 'bg-pink-300 dark:bg-pink-700 text-fg'
                                   : 'bg-soft text-faint'
                               }`}
                               title={m.motherActive ? `${formatNumber(m.motherBenefit)}${t('inputs.won')}` : ''}

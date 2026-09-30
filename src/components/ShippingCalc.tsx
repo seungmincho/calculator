@@ -540,7 +540,7 @@ export default function ShippingCalc() {
               </div>
               <div className="p-3 bg-subtle rounded-lg text-center border-2 border-line">
                 <div className="text-xs text-blue-600 dark:text-blue-400">{t('result.appliedWeight')}</div>
-                <div className="text-xl font-bold text-blue-700 dark:text-blue-300 mt-1">
+                <div className="text-xl font-bold text-sub mt-1">
                   {appliedWeight.toFixed(2)}<span className="text-sm font-normal ml-1">kg</span>
                 </div>
               </div>
@@ -603,7 +603,7 @@ export default function ShippingCalc() {
                           <span className="text-xs text-red-500 dark:text-red-400 font-medium">{unavailableReason}</span>
                         ) : (
                           <>
-                            <span className={`text-lg font-bold ${isCheapest ? 'text-green-700 dark:text-green-300' : 'text-fg'}`}>
+                            <span className={`text-lg font-bold ${isCheapest ? 'text-sub' : 'text-fg'}`}>
                               {price!.toLocaleString()}원
                             </span>
                             <button

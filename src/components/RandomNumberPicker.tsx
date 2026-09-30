@@ -151,13 +151,13 @@ export default function RandomNumberPicker() {
           <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('presets')}</p>
           <div className="flex flex-wrap gap-2">
             <button onClick={() => applyPreset(1, 45, 6)} className={GLASS_BTN + ' text-sm'}>
-              🎱 {t('presetLotto')}
+              {t('presetLotto')}
             </button>
             <button onClick={() => applyPreset(1, 999, 1)} className={GLASS_BTN + ' text-sm'}>
-              🚗 {t('presetParking')}
+              {t('presetParking')}
             </button>
             <button onClick={() => applyPreset(1, 30, 1)} className={GLASS_BTN + ' text-sm'}>
-              🏫 {t('presetClass')}
+              {t('presetClass')}
             </button>
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function RandomNumberPicker() {
                   className={`
                     relative flex items-center justify-center rounded-2xl font-black
                     bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-500/20 dark:to-blue-600/20
-                    border border-cyan-300/50 dark:border-cyan-500/30
+                    border border-line
                     shadow-[0_0_15px_rgba(6,182,212,0.3)] dark:shadow-[0_0_15px_rgba(6,182,212,0.2)]
                     transition-all duration-300
                     ${isDrawing ? 'animate-pulse scale-95 opacity-70' : (revealed[i] ? 'scale-100 opacity-100' : 'scale-50 opacity-0')}

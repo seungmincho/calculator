@@ -956,7 +956,7 @@ export default function LottoGenerator() {
         {/* 비교 대상 당첨번호 - 상단에 표시 */}
         <div className="bg-subtle rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+            <span className="text-sm font-medium text-sub">
               {searchResult ? (
                 <>{searchResult.round}회차 ({searchResult.drawDate})</>
               ) : latestWinning ? (
@@ -1153,7 +1153,7 @@ export default function LottoGenerator() {
               <div className="mb-3 p-2 bg-subtle rounded-lg">
                 <div className="flex items-center space-x-2">
                   {isUpdating && <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />}
-                  <span className="text-sm text-blue-800 dark:text-blue-200">{updateStatus}</span>
+                  <span className="text-sm text-fg">{updateStatus}</span>
                 </div>
               </div>
             )}
@@ -1235,7 +1235,7 @@ export default function LottoGenerator() {
                 </div>
               </div>
               <div className="bg-subtle rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-1">
+                <h4 className="text-sm font-semibold text-sub mb-2 flex items-center gap-1">
                   <TrendingUp className="w-4 h-4 rotate-180" />
                   {t('coldNumbers')} 6
                 </h4>

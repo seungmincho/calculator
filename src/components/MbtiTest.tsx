@@ -260,10 +260,10 @@ export default function MbtiTest() {
           <div className="grid sm:grid-cols-3 gap-5">
             {/* What is MBTI */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-purple-800 dark:text-purple-200 mb-3">{t('guide.what.title')}</h3>
+              <h3 className="font-semibold text-fg mb-3">{t('guide.what.title')}</h3>
               <ul className="space-y-2">
                 {guideWhat.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-purple-700 dark:text-purple-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-0.5 text-purple-400">•</span>
                     <span>{item}</span>
                   </li>
@@ -273,10 +273,10 @@ export default function MbtiTest() {
 
             {/* How to */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">{t('guide.howTo.title')}</h3>
+              <h3 className="font-semibold text-fg mb-3">{t('guide.howTo.title')}</h3>
               <ul className="space-y-2">
                 {guideHowTo.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-0.5 text-blue-400">•</span>
                     <span>{item}</span>
                   </li>
@@ -286,10 +286,10 @@ export default function MbtiTest() {
 
             {/* Axes */}
             <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-3">{t('guide.axes.title')}</h3>
+              <h3 className="font-semibold text-fg mb-3">{t('guide.axes.title')}</h3>
               <ul className="space-y-2">
                 {guideAxes.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-indigo-700 dark:text-indigo-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
                     <span className="mt-0.5 text-indigo-400">•</span>
                     <span>{item}</span>
                   </li>
@@ -365,7 +365,7 @@ export default function MbtiTest() {
               onClick={() => handleAnswer(currentQuestion.optionA.value)}
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionA.value
-                  ? 'border-purple-500 bg-subtle text-purple-700 dark:text-purple-200'
+                  ? 'border-purple-500 bg-subtle text-sub'
                   : 'border-line bg-field text-body hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900'
               }`}
             >
@@ -395,7 +395,7 @@ export default function MbtiTest() {
               onClick={() => handleAnswer(currentQuestion.optionB.value)}
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionB.value
-                  ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-200'
+                  ? 'border-indigo-500 bg-subtle text-sub'
                   : 'border-line bg-field text-body hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900'
               }`}
             >
@@ -558,10 +558,10 @@ export default function MbtiTest() {
           {/* Strengths & weaknesses */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="bg-subtle rounded-xl p-4">
-              <h3 className="font-semibold text-green-800 dark:text-green-200 mb-3">{t('strengths')}</h3>
+              <h3 className="font-semibold text-fg mb-3">{t('strengths')}</h3>
               <ul className="space-y-1.5">
                 {profile.strengths.map(s => (
-                  <li key={s} className="flex items-start gap-2 text-sm text-green-700 dark:text-green-300">
+                  <li key={s} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-green-500 mt-0.5">✓</span>
                     <span>{s}</span>
                   </li>
@@ -617,7 +617,7 @@ export default function MbtiTest() {
               <h3 className="text-sm font-medium text-muted mb-2">한국인</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousKoreans.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-subtle text-blue-700 dark:text-blue-300 rounded-lg text-sm">
+                  <span key={p} className="px-2.5 py-1 bg-subtle text-sub rounded-lg text-sm">
                     {p}
                   </span>
                 ))}
@@ -627,7 +627,7 @@ export default function MbtiTest() {
               <h3 className="text-sm font-medium text-muted mb-2">해외</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousInternational.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-subtle text-purple-700 dark:text-purple-300 rounded-lg text-sm">
+                  <span key={p} className="px-2.5 py-1 bg-subtle text-sub rounded-lg text-sm">
                     {p}
                   </span>
                 ))}

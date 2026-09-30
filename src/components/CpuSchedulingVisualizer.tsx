@@ -541,7 +541,7 @@ export default function CpuSchedulingVisualizer() {
             <div className="grid grid-cols-2 gap-2">
               {PRESETS.map((pr, i) => (
                 <button key={i} onClick={() => loadPreset(i)}
-                  className="text-xs px-2 py-1.5 rounded-lg bg-subtle text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors">
+                  className="text-xs px-2 py-1.5 rounded-lg bg-subtle text-sub hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors">
                   {pr.label}
                 </button>
               ))}
@@ -710,10 +710,10 @@ export default function CpuSchedulingVisualizer() {
                           </tr>
                         ))}
                         <tr className="border-b-2 border-line-strong bg-subtle">
-                          <td className="py-1.5 px-2 font-semibold text-violet-700 dark:text-violet-300">평균</td>
-                          <td className="py-1.5 px-2 text-right font-semibold text-violet-700 dark:text-violet-300">{r.avgWaiting.toFixed(1)}</td>
-                          <td className="py-1.5 px-2 text-right font-semibold text-violet-700 dark:text-violet-300">{r.avgTurnaround.toFixed(1)}</td>
-                          <td className="py-1.5 px-2 text-right font-semibold text-violet-700 dark:text-violet-300">{r.avgResponse.toFixed(1)}</td>
+                          <td className="py-1.5 px-2 font-semibold text-sub">평균</td>
+                          <td className="py-1.5 px-2 text-right font-semibold text-sub">{r.avgWaiting.toFixed(1)}</td>
+                          <td className="py-1.5 px-2 text-right font-semibold text-sub">{r.avgTurnaround.toFixed(1)}</td>
+                          <td className="py-1.5 px-2 text-right font-semibold text-sub">{r.avgResponse.toFixed(1)}</td>
                         </tr>
                       </React.Fragment>
                     ))}
@@ -784,19 +784,19 @@ export default function CpuSchedulingVisualizer() {
               <h3 className="font-semibold text-fg mb-2">핵심 용어</h3>
               <dl className="space-y-2">
                 <div>
-                  <dt className="font-medium text-violet-700 dark:text-violet-300">대기 시간 (Waiting Time)</dt>
+                  <dt className="font-medium text-sub">대기 시간 (Waiting Time)</dt>
                   <dd className="ml-4 text-sub">프로세스가 준비 큐에서 CPU를 기다린 총 시간. 반환 시간 - 실행 시간.</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-violet-700 dark:text-violet-300">반환 시간 (Turnaround Time)</dt>
+                  <dt className="font-medium text-sub">반환 시간 (Turnaround Time)</dt>
                   <dd className="ml-4 text-sub">프로세스 제출부터 완료까지의 총 시간. 대기 시간 + 실행 시간.</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-violet-700 dark:text-violet-300">응답 시간 (Response Time)</dt>
+                  <dt className="font-medium text-sub">응답 시간 (Response Time)</dt>
                   <dd className="ml-4 text-sub">프로세스 제출 후 최초로 CPU를 할당받기까지의 시간. 대화형 시스템에서 중요.</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-violet-700 dark:text-violet-300">문맥 교환 (Context Switch)</dt>
+                  <dt className="font-medium text-sub">문맥 교환 (Context Switch)</dt>
                   <dd className="ml-4 text-sub">CPU가 다른 프로세스로 전환할 때 현재 상태를 저장하고 복원하는 과정. 오버헤드 발생.</dd>
                 </div>
               </dl>
@@ -812,7 +812,7 @@ export default function CpuSchedulingVisualizer() {
                   { q: '기아(Starvation)란 무엇이며 어떻게 해결하나요?', a: '우선순위가 낮은 프로세스가 무한히 대기하는 현상입니다. 에이징(Aging) 기법으로 대기 시간이 길어질수록 우선순위를 높여 해결합니다. 또는 Round Robin을 혼합하는 방법도 있습니다.' },
                 ].map(({ q, a }, i) => (
                   <div key={i} className="bg-subtle rounded-lg p-3">
-                    <p className="font-medium text-violet-800 dark:text-violet-200 mb-1">Q. {q}</p>
+                    <p className="font-medium text-fg mb-1">Q. {q}</p>
                     <p className="text-sub">{a}</p>
                   </div>
                 ))}

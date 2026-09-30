@@ -477,7 +477,7 @@ export default function SalaryRank() {
 
           {/* Data source note */}
           <div className="bg-subtle rounded-xl p-4">
-            <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">{t('dataSource')}</p>
+            <p className="text-xs text-sub font-medium mb-1">{t('dataSource')}</p>
             <p className="text-xs text-blue-600 dark:text-blue-400">{t('dataSourceDesc')}</p>
           </div>
         </div>
@@ -595,7 +595,7 @@ export default function SalaryRank() {
                 <div className="bg-subtle rounded-xl p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-green-800 dark:text-green-200">{t('contributeTitle')}</p>
+                      <p className="text-sm font-semibold text-fg">{t('contributeTitle')}</p>
                       <p className="text-xs text-green-600 dark:text-green-400 mt-0.5">{t('contributeDesc')}</p>
                     </div>
                     {contributed ? (
@@ -632,15 +632,15 @@ export default function SalaryRank() {
                   <div className="grid grid-cols-3 gap-3 mb-5">
                     <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-indigo-600 dark:text-indigo-400">{t('community.participants')}</p>
-                      <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{communityStats.totalCount.toLocaleString()}{t('community.people')}</p>
+                      <p className="text-lg font-bold text-sub">{communityStats.totalCount.toLocaleString()}{t('community.people')}</p>
                     </div>
                     <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-blue-600 dark:text-blue-400">{t('community.avgSalary')}</p>
-                      <p className="text-lg font-bold text-blue-700 dark:text-blue-300">{formatKRW(communityStats.avgSalary)}</p>
+                      <p className="text-lg font-bold text-sub">{formatKRW(communityStats.avgSalary)}</p>
                     </div>
                     <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-purple-600 dark:text-purple-400">{t('community.medianSalary')}</p>
-                      <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{formatKRW(communityStats.medianSalary)}</p>
+                      <p className="text-lg font-bold text-sub">{formatKRW(communityStats.medianSalary)}</p>
                     </div>
                   </div>
 
@@ -648,8 +648,8 @@ export default function SalaryRank() {
                   {communityRank && communityRank.total > 0 && (
                     <div className="bg-subtle rounded-lg p-4 mb-5">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm text-indigo-700 dark:text-indigo-300">{t('community.yourRank')}</p>
-                        <p className="text-xl font-black text-indigo-700 dark:text-indigo-300">
+                        <p className="text-sm text-sub">{t('community.yourRank')}</p>
+                        <p className="text-xl font-black text-sub">
                           {t('top')} {Math.max(0.1, Math.round((100 - communityRank.percentile) * 10) / 10)}%
                         </p>
                       </div>

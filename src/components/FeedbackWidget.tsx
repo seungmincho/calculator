@@ -151,7 +151,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              <h3 className="text-lg font-semibold text-fg mb-2">
                 {t('feedback.thankYou.title')}
               </h3>
               <p className="text-sub">
@@ -161,7 +161,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
           ) : (
             <>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-fg">
                   {t('feedback.title')}
                 </h3>
                 <button

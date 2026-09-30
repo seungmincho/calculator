@@ -944,19 +944,19 @@ export default function GovernmentSubsidyCalculator() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('result.eligibleCount')}</div>
-                  <div className="text-3xl font-bold text-green-700 dark:text-green-300">
+                  <div className="text-3xl font-bold text-sub">
                     {summary.eligibleCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.monthlyTotal')}</div>
-                  <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+                  <div className="text-2xl font-bold text-sub">
                     {formatKoreanMoney(summary.totalMonthly)}
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.yearlyTotal')}</div>
-                  <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                  <div className="text-2xl font-bold text-sub">
                     {formatKoreanMoney(summary.totalYearly)}
                   </div>
                 </div>
@@ -1075,12 +1075,12 @@ export default function GovernmentSubsidyCalculator() {
                         {result.status === 'eligible' && result.monthlyAmount > 0 && (
                           <div className="bg-subtle rounded-lg p-3">
                             <div className="flex justify-between text-sm">
-                              <span className="text-green-700 dark:text-green-300">{t('result.monthlyEstimate')}</span>
-                              <span className="font-bold text-green-800 dark:text-green-200">{formatKoreanMoney(result.monthlyAmount)}</span>
+                              <span className="text-sub">{t('result.monthlyEstimate')}</span>
+                              <span className="font-bold text-fg">{formatKoreanMoney(result.monthlyAmount)}</span>
                             </div>
                             <div className="flex justify-between text-sm mt-1">
-                              <span className="text-green-700 dark:text-green-300">{t('result.yearlyEstimate')}</span>
-                              <span className="font-bold text-green-800 dark:text-green-200">{formatKoreanMoney(result.yearlyAmount)}</span>
+                              <span className="text-sub">{t('result.yearlyEstimate')}</span>
+                              <span className="font-bold text-fg">{formatKoreanMoney(result.yearlyAmount)}</span>
                             </div>
                           </div>
                         )}

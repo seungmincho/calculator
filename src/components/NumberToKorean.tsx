@@ -155,10 +155,10 @@ export default function NumberToKorean() {
   ]
 
   const cards: { id: string; label: string; value: string; accent: string; border: string }[] = [
-    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-blue-700 dark:text-blue-300', border: 'border-blue-500 bg-subtle' },
-    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-green-700 dark:text-green-300', border: 'border-green-500 bg-subtle' },
-    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-500 bg-subtle' },
-    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-orange-700 dark:text-orange-300', border: 'border-orange-500 bg-subtle' },
+    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-sub', border: 'border-blue-500 bg-subtle' },
+    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-sub', border: 'border-green-500 bg-subtle' },
+    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-sub', border: 'border-indigo-500 bg-subtle' },
+    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-sub', border: 'border-orange-500 bg-subtle' },
   ]
 
   return (

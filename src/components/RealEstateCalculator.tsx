@@ -1235,10 +1235,10 @@ const RealEstateCalculatorContent = () => {
           {renderInputSection()}
 
           <div className="bg-subtle p-4 rounded-lg mt-6">
-            <h3 className="text-sm font-medium text-purple-800 dark:text-purple-200 mb-2">
+            <h3 className="text-sm font-medium text-fg mb-2">
               계산 기준
             </h3>
-            <ul className="text-sm text-purple-700 dark:text-purple-300 space-y-1">
+            <ul className="text-sm text-sub space-y-1">
               {activeTab === 'jeonse-loan' && (
                 <>
                   <li>• LTV 80% 기준 계산</li>
@@ -1282,10 +1282,10 @@ const RealEstateCalculatorContent = () => {
 
           {result && (
             <div className="bg-subtle p-4 rounded-lg mt-6">
-              <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+              <h3 className="text-sm font-medium text-fg mb-2">
                 참고사항
               </h3>
-              <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+              <ul className="text-sm text-sub space-y-1">
                 {activeTab === 'jeonse-loan' && (
                   <>
                     <li>• 실제 대출한도는 소득과 신용등급에 따라 달라집니다</li>

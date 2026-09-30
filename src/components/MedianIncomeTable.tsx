@@ -461,17 +461,17 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           </summary>
           <div className="mt-4 space-y-3 text-sm">
             <div className="bg-subtle rounded-lg p-3">
-              <p className="font-semibold text-blue-700 dark:text-blue-300">
+              <p className="font-semibold text-sub">
                 소득인정액 = 소득평가액 + 소득환산액
               </p>
             </div>
             <div className="bg-subtle rounded-lg p-3">
-              <p className="font-semibold text-green-700 dark:text-green-300">
+              <p className="font-semibold text-sub">
                 소득평가액 = 실제소득 - 가구특성 지출비용 - 근로소득공제(30%)
               </p>
             </div>
             <div className="bg-subtle rounded-lg p-3">
-              <p className="font-semibold text-purple-700 dark:text-purple-300">
+              <p className="font-semibold text-sub">
                 소득환산액 = (재산 - 기본재산액 - 부채) × 소득환산율
               </p>
               <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
@@ -597,7 +597,7 @@ const MedianIncomeTable = () => {
                   className="bg-subtle rounded-xl p-4 text-center border-2 border-line"
                 >
                   <div className="text-sm text-sub mb-1">{label}</div>
-                  <div className="text-lg font-bold text-purple-700 dark:text-purple-300">
+                  <div className="text-lg font-bold text-sub">
                     {formatCurrency(calculateAmount(baseData[index], customPercentageNum))}
                   </div>
                 </div>

@@ -187,7 +187,7 @@ export default function DiffViewer() {
         {/* Right Text */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-4 py-3 bg-subtle border-b border-line">
-            <span className="text-sm font-medium text-green-700 dark:text-green-300">
+            <span className="text-sm font-medium text-sub">
               {t('input.modified')}
             </span>
           </div>
@@ -285,7 +285,7 @@ export default function DiffViewer() {
                   </div>
                   <div className={`flex-1 px-2 py-1 whitespace-pre ${
                     line.type === 'added'
-                      ? 'text-green-800 dark:text-green-200'
+                      ? 'text-fg'
                       : line.type === 'removed'
                       ? 'text-red-800 dark:text-red-200'
                       : 'text-fg'

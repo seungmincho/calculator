@@ -531,7 +531,7 @@ export default function YouthRentSubsidyCalculator() {
                       <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
                     )}
                     <div>
-                      <div className={`text-2xl font-bold ${result.eligible ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+                      <div className={`text-2xl font-bold ${result.eligible ? 'text-sub' : 'text-red-700 dark:text-red-300'}`}>
                         {result.eligible ? t('eligible') : t('ineligible')}
                       </div>
                       <div className="text-sm text-sub">
@@ -558,7 +558,7 @@ export default function YouthRentSubsidyCalculator() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="bg-subtle rounded-xl p-5 text-center">
                       <div className="text-sm text-emerald-600 dark:text-emerald-400 mb-1">{t('monthlySupport')}</div>
-                      <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
+                      <div className="text-3xl font-bold text-sub">
                         {(result.monthlySupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
                       <div className="text-xs text-muted mt-1">
@@ -567,7 +567,7 @@ export default function YouthRentSubsidyCalculator() {
                     </div>
                     <div className="bg-subtle rounded-xl p-5 text-center">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('totalSupport')}</div>
-                      <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
+                      <div className="text-3xl font-bold text-sub">
                         {(result.totalSupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
                       <div className="text-xs text-muted mt-1">
@@ -590,7 +590,7 @@ export default function YouthRentSubsidyCalculator() {
                     </div>
                     <div className="border-t border-line pt-2 flex justify-between text-sm font-semibold">
                       <span className="text-emerald-600 dark:text-emerald-400">{t('breakdown.result')}</span>
-                      <span className="text-emerald-700 dark:text-emerald-300">
+                      <span className="text-sub">
                         {t('breakdown.resultValue', { monthly: (result.monthlySupport / 10000).toLocaleString('ko-KR'), total: (result.totalSupport / 10000).toLocaleString('ko-KR') })}
                       </span>
                     </div>
@@ -699,8 +699,8 @@ export default function YouthRentSubsidyCalculator() {
                         <tr key={size} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
                           <td className="py-2 px-3 text-fg font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
                           <td className="py-2 px-3 text-right text-body">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
-                          <td className="py-2 px-3 text-right text-emerald-700 dark:text-emerald-300 font-medium">{Math.floor(income * 0.6).toLocaleString('ko-KR')}{t('wonUnit')}</td>
-                          <td className="py-2 px-3 text-right text-blue-700 dark:text-blue-300 font-medium">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
+                          <td className="py-2 px-3 text-right text-sub font-medium">{Math.floor(income * 0.6).toLocaleString('ko-KR')}{t('wonUnit')}</td>
+                          <td className="py-2 px-3 text-right text-sub font-medium">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
                         </tr>
                       ))}
                     </tbody>

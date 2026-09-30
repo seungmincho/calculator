@@ -606,7 +606,7 @@ export default function TcpHandshakeVisualizer() {
               </div>
               {currentStepData.packet && (
                 <div className="bg-subtle rounded-lg px-3 py-2">
-                  <code className="text-xs font-mono text-blue-800 dark:text-blue-200">
+                  <code className="text-xs font-mono text-fg">
                     {currentStepData.packet.label}
                   </code>
                 </div>
@@ -703,7 +703,7 @@ export default function TcpHandshakeVisualizer() {
               </h3>
               <div className="space-y-3">
                 <div className="bg-subtle rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-1">3-way Handshake (연결 수립)</h4>
+                  <h4 className="font-semibold text-fg mb-1">3-way Handshake (연결 수립)</h4>
                   <ol className="list-decimal list-inside space-y-1">
                     <li>Client → Server: <code className="bg-surface px-1 rounded">SYN</code> (연결 요청, 초기 seq 번호 전달)</li>
                     <li>Server → Client: <code className="bg-surface px-1 rounded">SYN-ACK</code> (요청 수락, 서버 seq + 클라이언트 seq 확인)</li>

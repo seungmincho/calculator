@@ -132,7 +132,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
                               onLoadHistory(history.id);
                               setIsOpen(false);
                             }}
-                            className="inline-flex items-center space-x-1 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 px-3 py-1 rounded text-sm transition-colors"
+                            className="inline-flex items-center space-x-1 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-sub px-3 py-1 rounded text-sm transition-colors"
                           >
                             <Download className="w-3 h-3" />
                             <span>{tCommon('load')}</span>

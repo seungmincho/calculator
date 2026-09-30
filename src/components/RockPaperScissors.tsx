@@ -19,7 +19,7 @@ function getWinner(a: Hand, b: Hand): 'win' | 'lose' | 'draw' {
 }
 
 const glassCard = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-2xl p-6'
-const glassBtn = 'bg-surface border border-line rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-soft hover:shadow-[0_0_15px_rgba(167,139,250,0.4)] hover:border-violet-300/50 active:scale-95'
+const glassBtn = 'bg-surface border border-line rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-soft hover:border-violet-300/50 active:scale-95'
 
 interface TournamentPlayer { name: string; id: number }
 interface Match { p1: TournamentPlayer; p2: TournamentPlayer; winner?: TournamentPlayer }

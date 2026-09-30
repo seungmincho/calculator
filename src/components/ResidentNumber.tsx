@@ -133,7 +133,7 @@ export default function ResidentNumber() {
       </div>
 
       <div className="bg-subtle border border-line rounded-xl p-4">
-        <p className="text-sm text-blue-900 dark:text-blue-100 flex items-center gap-2">
+        <p className="text-sm text-fg flex items-center gap-2">
           <Shield className="w-4 h-4" />
           {t('privacy')}
         </p>
@@ -186,7 +186,7 @@ export default function ResidentNumber() {
             )}
             <h2 className={`text-xl font-semibold ${
               result.isValid
-                ? 'text-green-900 dark:text-green-100'
+                ? 'text-fg'
                 : 'text-red-900 dark:text-red-100'
             }`}>
               {result.isValid ? t('valid') : t('invalid')}
@@ -195,7 +195,7 @@ export default function ResidentNumber() {
 
           <p className={`text-sm mb-4 ${
             result.isValid
-              ? 'text-green-800 dark:text-green-200'
+              ? 'text-fg'
               : 'text-red-800 dark:text-red-200'
           }`}>
             {result.isValid ? t('validMessage') : t('invalidMessage')}

@@ -318,7 +318,7 @@ export default function KoreanSyllable() {
 
             {mode === 'chosung' && (
               <div className="bg-subtle rounded-xl p-6">
-                <p className="text-4xl font-bold text-blue-900 dark:text-blue-100 break-all tracking-wider">
+                <p className="text-4xl font-bold text-fg break-all tracking-wider">
                   {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
                 </p>
               </div>
@@ -326,7 +326,7 @@ export default function KoreanSyllable() {
 
             {mode === 'compose' && (
               <div className="bg-subtle rounded-xl p-6">
-                <p className="text-4xl font-bold text-green-900 dark:text-green-100 break-all">
+                <p className="text-4xl font-bold text-fg break-all">
                   {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
                 </p>
               </div>
@@ -427,37 +427,37 @@ export default function KoreanSyllable() {
             </h3>
             <div className="space-y-4">
               <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                <h4 className="font-semibold text-fg mb-2">
                   초성 추출
                 </h4>
-                <p className="text-blue-800 dark:text-blue-200 text-sm mb-2">
+                <p className="text-fg text-sm mb-2">
                   한글 텍스트에서 각 글자의 첫소리(초성)만 추출합니다.
                 </p>
-                <p className="text-blue-700 dark:text-blue-300 text-sm font-mono">
+                <p className="text-sub text-sm font-mono">
                   예: 대한민국 → ㄷㅎㅁㄱ
                 </p>
               </div>
 
               <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+                <h4 className="font-semibold text-fg mb-2">
                   자모 분리
                 </h4>
-                <p className="text-green-800 dark:text-green-200 text-sm mb-2">
+                <p className="text-fg text-sm mb-2">
                   한글을 초성, 중성, 종성으로 완전히 분해하여 표시합니다.
                 </p>
-                <p className="text-green-700 dark:text-green-300 text-sm font-mono">
+                <p className="text-sub text-sm font-mono">
                   예: 한 → ㅎ(초성) + ㅏ(중성) + ㄴ(종성)
                 </p>
               </div>
 
               <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
+                <h4 className="font-semibold text-fg mb-2">
                   자모 합치기
                 </h4>
-                <p className="text-orange-800 dark:text-orange-200 text-sm mb-2">
+                <p className="text-fg text-sm mb-2">
                   자음과 모음을 입력하면 완성된 한글로 조합합니다.
                 </p>
-                <p className="text-orange-700 dark:text-orange-300 text-sm font-mono">
+                <p className="text-sub text-sm font-mono">
                   예: ㅎㅏㄴ → 한
                 </p>
               </div>
@@ -485,26 +485,26 @@ export default function KoreanSyllable() {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div className="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                  <p className="text-xs font-semibold text-fg mb-1">
                     초성
                   </p>
-                  <p className="text-xs text-blue-800 dark:text-blue-200 font-mono">
+                  <p className="text-xs text-fg font-mono">
                     19개
                   </p>
                 </div>
                 <div className="bg-green-100 dark:bg-green-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-green-900 dark:text-green-100 mb-1">
+                  <p className="text-xs font-semibold text-fg mb-1">
                     중성
                   </p>
-                  <p className="text-xs text-green-800 dark:text-green-200 font-mono">
+                  <p className="text-xs text-fg font-mono">
                     21개
                   </p>
                 </div>
                 <div className="bg-orange-100 dark:bg-orange-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-orange-900 dark:text-orange-100 mb-1">
+                  <p className="text-xs font-semibold text-fg mb-1">
                     종성
                   </p>
-                  <p className="text-xs text-orange-800 dark:text-orange-200 font-mono">
+                  <p className="text-xs text-fg font-mono">
                     28개 (없음 포함)
                   </p>
                 </div>

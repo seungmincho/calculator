@@ -558,7 +558,7 @@ export default function InteriorCalc() {
                           </div>
                           <div className="flex justify-between sm:col-span-2">
                             <span className="text-sub">{t('netWallArea')}</span>
-                            <span className="font-semibold text-orange-700 dark:text-orange-300">{fmt(result.netWallArea)} {t('sqm')}</span>
+                            <span className="font-semibold text-sub">{fmt(result.netWallArea)} {t('sqm')}</span>
                           </div>
                         </div>
 
@@ -566,7 +566,7 @@ export default function InteriorCalc() {
 
                         {/* Paint result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">🎨 {t('paintCalc')}</p>
+                          <p className="text-xs font-medium text-muted">{t('paintCalc')}</p>
                           <div className="flex justify-between">
                             <span className="text-sub">{t('paintNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
                             <span className="font-semibold text-fg">{fmt(result.paintNeeded, 1)} {t('liters')}</span>
@@ -581,7 +581,7 @@ export default function InteriorCalc() {
 
                         {/* Wallpaper result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">📜 {t('wallpaperCalc')}</p>
+                          <p className="text-xs font-medium text-muted">{t('wallpaperCalc')}</p>
                           <div className="flex justify-between">
                             <span className="text-sub">{t('wallpaperRolls')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
                             <span className="font-semibold text-fg">{fmtInt(result.wallpaperRolls)} {t('rolls')}</span>
@@ -590,7 +590,7 @@ export default function InteriorCalc() {
 
                         {/* Tile result */}
                         <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">🟦 {t('tileCalc')}</p>
+                          <p className="text-xs font-medium text-muted">{t('tileCalc')}</p>
                           <div className="flex justify-between">
                             <span className="text-sub">{t('tilesNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
                             <span className="font-semibold text-fg">{fmtInt(result.tilesNeeded)} {t('tiles')}</span>

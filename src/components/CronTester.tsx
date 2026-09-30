@@ -576,21 +576,21 @@ const CronTester = () => {
           <div className="bg-subtle rounded-xl p-6">
             <div className="flex items-center space-x-2 mb-4">
               <Timer className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-semibold text-blue-900 dark:text-blue-100">
+              <h2 className="text-xl font-semibold text-fg">
                 {t('guide.title')}
               </h2>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-3">
+                <h3 className="font-medium text-fg mb-3">
                   {t('guide.formatTitle')}
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="font-mono bg-surface p-2 rounded border">
                     {t('guide.formatExample')}
                   </div>
-                  <div className="space-y-1 text-blue-700 dark:text-blue-300">
+                  <div className="space-y-1 text-sub">
                     <div>• {t('guide.fields.minute')}</div>
                     <div>• {t('guide.fields.hour')}</div>
                     <div>• {t('guide.fields.day')}</div>
@@ -601,10 +601,10 @@ const CronTester = () => {
               </div>
               
               <div>
-                <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-3">
+                <h3 className="font-medium text-fg mb-3">
                   {t('guide.specialChars')}
                 </h3>
-                <div className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
+                <div className="space-y-1 text-sm text-sub">
                   <div>• <code>*</code>: {t('guide.chars.asterisk')}</div>
                   <div>• <code>,</code>: {t('guide.chars.comma')}</div>
                   <div>• <code>-</code>: {t('guide.chars.dash')}</div>

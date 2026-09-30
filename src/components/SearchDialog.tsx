@@ -262,7 +262,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                       onMouseEnter={() => setSelectedIndex(i)}
                       className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                         i === selectedIndex
-                          ? 'bg-subtle text-blue-700 dark:text-blue-300'
+                          ? 'bg-subtle text-sub'
                           : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                       }`}
                     >
@@ -295,7 +295,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                         onMouseEnter={() => setSelectedIndex(idx)}
                         className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                           idx === selectedIndex
-                            ? 'bg-subtle text-blue-700 dark:text-blue-300'
+                            ? 'bg-subtle text-sub'
                             : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                         }`}
                       >
@@ -346,7 +346,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                           onMouseEnter={() => setSelectedIndex(globalIndex)}
                           className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                             isSelected
-                              ? 'bg-subtle text-blue-700 dark:text-blue-300'
+                              ? 'bg-subtle text-sub'
                               : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                           }`}
                         >

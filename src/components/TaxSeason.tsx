@@ -373,7 +373,7 @@ export default function TaxSeason() {
 
         <div className="bg-subtle border border-line rounded-xl p-4">
           <p className="text-sm text-body">
-            <strong className="text-blue-700 dark:text-blue-300">{t('taxRates.exampleLabel')}</strong>{' '}
+            <strong className="text-sub">{t('taxRates.exampleLabel')}</strong>{' '}
             {t('taxRates.exampleText')}
           </p>
         </div>

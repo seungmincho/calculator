@@ -468,7 +468,7 @@ export default function MeetingMinutes() {
             <button
               key={id}
               onClick={() => applyTemplate(id)}
-              className="px-3 py-1.5 text-xs bg-subtle text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors border border-line"
+              className="px-3 py-1.5 text-xs bg-subtle text-sub rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors border border-line"
             >
               {t(`templates.${id}`)}
             </button>
@@ -589,7 +589,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAttendee')}
             </button>
           </div>
@@ -610,7 +610,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAgenda')}
             </button>
           </div>
@@ -628,7 +628,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addDiscussion')}
             </button>
           </div>
@@ -658,7 +658,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAction')}
             </button>
           </div>
@@ -790,10 +790,10 @@ export default function MeetingMinutes() {
         <div className="grid md:grid-cols-2 gap-6">
           {(t.raw('guide.sections') as { title: string; items: string[] }[]).map((section, i) => (
             <div key={i} className="bg-subtle rounded-xl p-4">
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">{section.title}</h3>
+              <h3 className="font-semibold text-fg mb-3">{section.title}</h3>
               <ul className="space-y-1.5">
                 {section.items.map((item, j) => (
-                  <li key={j} className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+                  <li key={j} className="flex items-start gap-2 text-sm text-sub">
                     <span className="text-blue-500 mt-0.5 shrink-0">•</span>
                     <span>{item}</span>
                   </li>

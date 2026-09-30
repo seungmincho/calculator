@@ -408,7 +408,7 @@ export default function OvulationCalculator() {
                 <div className="text-sm text-purple-600 dark:text-purple-400 font-medium mb-1">
                   {t('ovulationDate')}
                 </div>
-                <div className="text-lg font-bold text-purple-800 dark:text-purple-200">
+                <div className="text-lg font-bold text-fg">
                   {formatShortDate(cycles[0].ovulationDate)}
                 </div>
                 <div className="text-xs text-purple-500 dark:text-purple-400 mt-1">
@@ -422,7 +422,7 @@ export default function OvulationCalculator() {
                 <div className="text-sm text-orange-600 dark:text-orange-400 font-medium mb-1">
                   {t('fertileWindow')}
                 </div>
-                <div className="text-lg font-bold text-orange-800 dark:text-orange-200">
+                <div className="text-lg font-bold text-fg">
                   {formatShortDate(cycles[0].fertileStart)} {t('to')} {formatShortDate(cycles[0].fertileEnd)}
                 </div>
               </div>
@@ -447,13 +447,13 @@ export default function OvulationCalculator() {
                 <div className="text-sm text-green-600 dark:text-green-400 font-medium mb-1">
                   {t('safeEarly')}
                 </div>
-                <div className="text-sm font-bold text-green-800 dark:text-green-200">
+                <div className="text-sm font-bold text-fg">
                   {formatShortDate(cycles[0].safeEarlyStart)} {t('to')} {formatShortDate(cycles[0].safeEarlyEnd)}
                 </div>
                 <div className="text-sm text-green-600 dark:text-green-400 font-medium mt-2 mb-1">
                   {t('safeLate')}
                 </div>
-                <div className="text-sm font-bold text-green-800 dark:text-green-200">
+                <div className="text-sm font-bold text-fg">
                   {formatShortDate(cycles[0].safeLateStart)} {t('to')} {formatShortDate(cycles[0].safeLateEnd)}
                 </div>
               </div>
@@ -475,7 +475,7 @@ export default function OvulationCalculator() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={handleShare}
-              className="px-4 py-2 bg-pink-100 dark:bg-pink-900 hover:bg-pink-200 dark:hover:bg-pink-800 text-pink-700 dark:text-pink-300 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+              className="px-4 py-2 bg-pink-100 dark:bg-pink-900 hover:bg-pink-200 dark:hover:bg-pink-800 text-sub rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
             >
               <Heart className="w-4 h-4" />
               {t('shareButton')}

@@ -156,7 +156,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                       const opt = { dependents: f.dependents, children: f.children, nonTaxableMonthly: nt }
                       const base = f.dependents === BASE.dependents && nt === BASE.nonTaxableMonthly
                       return (
-                        <td key={nt} className={`${cell} ${base ? 'font-bold text-blue-700 dark:text-blue-300' : 'text-fg'}`}>
+                        <td key={nt} className={`${cell} ${base ? 'font-bold text-sub' : 'text-fg'}`}>
                           <Link href={calcLink(man, opt)} className="hover:underline">{won(net(man, opt).netMonthly)}</Link>
                         </td>
                       )
@@ -185,7 +185,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                   return (
                     <tr key={m} className={m === man ? 'font-bold bg-blue-500/10' : ''}>
                       <th scope="row" className={`${cell} text-left`}>
-                        <Link href={isBracket ? `/salary-table/${m}/` : calcLink(m)} className="text-blue-700 dark:text-blue-300 hover:underline">{salaryLabel(m)}</Link>
+                        <Link href={isBracket ? `/salary-table/${m}/` : calcLink(m)} className="text-sub hover:underline">{salaryLabel(m)}</Link>
                       </th>
                       <td className={`${cell} text-body`}>{won((m * 10_000) / 12)}</td>
                       <td className={`${cell} text-fg`}>{won(n.netMonthly)}</td>
@@ -212,9 +212,9 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
           </section>
 
           <nav className="flex flex-wrap justify-between gap-3 text-sm">
-            <span>{prev && <Link href={`/salary-table/${prev}/`} className="text-blue-700 dark:text-blue-300 hover:underline">← 연봉 {salaryLabel(prev)}</Link>}</span>
+            <span>{prev && <Link href={`/salary-table/${prev}/`} className="text-sub hover:underline">← 연봉 {salaryLabel(prev)}</Link>}</span>
             <Link href="/salary-table/" className="text-sub hover:underline">전체 실수령액 표</Link>
-            <span>{next && <Link href={`/salary-table/${next}/`} className="text-blue-700 dark:text-blue-300 hover:underline">연봉 {salaryLabel(next)} →</Link>}</span>
+            <span>{next && <Link href={`/salary-table/${next}/`} className="text-sub hover:underline">연봉 {salaryLabel(next)} →</Link>}</span>
           </nav>
 
           <section className={`${glassCard} p-6`}>

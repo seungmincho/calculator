@@ -189,13 +189,13 @@ function getGradeColor(grade: number): string {
     case 2:
       return 'bg-soft border-gray-400 dark:border-gray-500 text-body'
     case 3:
-      return 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 dark:border-orange-600 text-orange-800 dark:text-orange-200'
+      return 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 dark:border-orange-600 text-fg'
     case 4:
     case 5:
-      return 'bg-subtle border-line text-blue-800 dark:text-blue-200'
+      return 'bg-subtle border-line text-fg'
     case 6:
     case 7:
-      return 'bg-subtle border-line text-green-800 dark:text-green-200'
+      return 'bg-subtle border-line text-fg'
     default:
       return 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-800 dark:text-red-200'
   }
@@ -381,7 +381,7 @@ export default function CsatGrade() {
             </h2>
 
             {/* Year badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-subtle rounded-full text-sm font-medium text-blue-700 dark:text-blue-300">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-subtle rounded-full text-sm font-medium text-sub">
               <GraduationCap className="w-4 h-4" />
               {t('year')}
             </div>
@@ -547,7 +547,7 @@ export default function CsatGrade() {
                             <div className="text-xs text-blue-600 dark:text-blue-400">
                               {t('standardScore')}
                             </div>
-                            <div className="text-xl font-bold text-blue-800 dark:text-blue-200">
+                            <div className="text-xl font-bold text-fg">
                               {matchedCutoff.standardScore}
                             </div>
                           </div>
@@ -557,7 +557,7 @@ export default function CsatGrade() {
                             <div className="text-xs text-indigo-600 dark:text-indigo-400">
                               {t('percentile')}
                             </div>
-                            <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                            <div className="text-xl font-bold text-fg">
                               {matchedCutoff.percentile}%
                             </div>
                           </div>

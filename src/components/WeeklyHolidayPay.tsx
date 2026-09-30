@@ -321,7 +321,7 @@ function WeeklyHolidayPayInner() {
             {/* 주간 근무시간 요약 */}
             <div className={`rounded-lg p-3 text-sm font-medium text-center ${
               result.eligible
-                ? 'bg-subtle text-green-700 dark:text-green-300'
+                ? 'bg-subtle text-sub'
                 : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
             }`}>
               {t('result.weeklyHours')}: {result.weeklyHours}{t('input.hoursUnit')} &nbsp;|&nbsp;
@@ -464,7 +464,7 @@ function WeeklyHolidayPayInner() {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                  <span className="text-sm font-semibold text-purple-800 dark:text-purple-200">AI 요약</span>
+                  <span className="text-sm font-semibold text-fg">AI 요약</span>
                   <span className="text-[10px] px-1.5 py-0.5 bg-soft text-sub rounded-full">Chrome AI</span>
                 </div>
                 {aiSummary && (
@@ -490,7 +490,7 @@ function WeeklyHolidayPayInner() {
                     ].filter(Boolean).join('\n')
                     aiSummarize(text, '한국 근로기준법 기반 주휴수당 계산 결과입니다. 핵심 수치와 근로자에게 중요한 정보를 한국어로 간단히 요약해주세요.')
                   }}
-                  className="w-full text-sm text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 bg-white/60 dark:bg-gray-800/60 hover:bg-white dark:hover:bg-gray-800 rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-2"
+                  className="w-full text-sm text-sub hover:text-purple-900 dark:hover:text-purple-100 bg-white/60 dark:bg-gray-800/60 hover:bg-white dark:hover:bg-gray-800 rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   계산 결과 AI로 요약하기
@@ -597,8 +597,8 @@ function WeeklyHolidayPayInner() {
       <div className="bg-subtle rounded-xl p-6 flex gap-4">
         <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
         <div>
-          <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">{t('info.title')}</h3>
-          <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
+          <h3 className="font-semibold text-fg mb-2">{t('info.title')}</h3>
+          <ul className="text-sm text-fg space-y-1 list-disc list-inside">
             {(t.raw('info.items') as string[]).map((item, i) => (
               <li key={i}>{item}</li>
             ))}

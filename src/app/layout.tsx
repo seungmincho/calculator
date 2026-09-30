@@ -46,7 +46,7 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
     ],
     other: [
-      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#2563eb' }
+      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#3182f6' }
     ]
   },
   openGraph: {
@@ -113,7 +113,7 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
-        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="msapplication-TileColor" content="#3182f6" />
         <meta name="msapplication-TileImage" content="/android-chrome-192x192.png" />
         <meta name="application-name" content="툴허브" />
         <meta name="apple-mobile-web-app-title" content="툴허브" />

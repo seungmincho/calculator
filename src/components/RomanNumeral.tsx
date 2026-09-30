@@ -277,7 +277,7 @@ export default function RomanNumeral() {
                 {/* Arabic Number Card */}
                 <div className="bg-subtle rounded-xl p-6 border border-line">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                    <span className="text-sm font-medium text-sub">
                       {t('arabicNumber')}
                     </span>
                     <button
@@ -300,7 +300,7 @@ export default function RomanNumeral() {
                 {/* Roman Numeral Card */}
                 <div className="bg-subtle rounded-xl p-6 border border-line">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+                    <span className="text-sm font-medium text-sub">
                       {t('romanNumeral')}
                     </span>
                     <button
@@ -324,7 +324,7 @@ export default function RomanNumeral() {
 
             {/* Information Box */}
             <div className="bg-subtle rounded-xl p-4 border border-line">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
+              <p className="text-sm text-fg">
                 {t('maxNumber')}
               </p>
             </div>

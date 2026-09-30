@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
+import BrandMark from './BrandMark';
 import { Calculator, Menu, X, ChevronDown, Search } from 'lucide-react';
 import ToolIcon from './ToolIcon';
 import LanguageToggle from './LanguageToggle';
@@ -177,9 +178,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-14 gap-6">
           <Link href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
-            <span className="w-7 h-7 rounded-lg bg-primary text-white inline-flex items-center justify-center">
-              <Calculator className="w-4 h-4" strokeWidth={2.25} />
-            </span>
+            <BrandMark />
             <span className="text-[17px] font-bold tracking-tight text-fg">{t('header.title')}</span>
           </Link>
 

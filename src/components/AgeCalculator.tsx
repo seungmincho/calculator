@@ -590,13 +590,13 @@ export default function AgeCalculator() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-subtle rounded-lg p-4">
                       <p className="text-xs text-muted">{t('school.entryYear')}</p>
-                      <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-1">
+                      <p className="text-lg font-bold text-sub mt-1">
                         {result.schoolInfo.elementaryEntryYear}{t('school.yearSuffix')}
                       </p>
                     </div>
                     <div className="bg-subtle rounded-lg p-4">
                       <p className="text-xs text-muted">{t('school.currentStatus')}</p>
-                      <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-1">
+                      <p className="text-lg font-bold text-sub mt-1">
                         {result.schoolInfo.status === 'preschool' && t('school.status.preschool')}
                         {result.schoolInfo.status === 'elementary' && t('school.status.elementaryGrade', { grade: result.schoolInfo.grade })}
                         {result.schoolInfo.status === 'middle' && t('school.status.middleGrade', { grade: result.schoolInfo.grade })}
@@ -696,7 +696,7 @@ export default function AgeCalculator() {
                               </span>
                               <span className={`text-sm font-medium ${
                                 milestone.isCurrent
-                                  ? 'text-blue-700 dark:text-blue-300'
+                                  ? 'text-sub'
                                   : milestone.isPast
                                     ? 'text-muted'
                                     : 'text-body'
@@ -728,7 +728,7 @@ export default function AgeCalculator() {
 
               {/* 나이 계산 방식 안내 */}
               <div className="bg-subtle rounded-xl p-6">
-                <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-sub mb-4 flex items-center gap-2">
                   {t('ageExplanation.title')}
                 </h3>
                 <div className="space-y-3">

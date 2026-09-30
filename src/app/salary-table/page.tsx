@@ -88,7 +88,7 @@ export default function SalaryTablePage() {
                   return (
                     <tr key={man} className={`border-b border-black/5 dark:border-white/5 ${hot ? 'bg-blue-500/10 font-semibold' : man % 1000 === 0 ? 'bg-subtle' : ''}`}>
                       <th scope="row" className="px-4 py-2 text-left font-medium">
-                        <Link href={hot ? `/salary-table/${man}/` : calcLink(man)} className="text-blue-700 dark:text-blue-300 hover:underline">{salaryLabel(man)}</Link>
+                        <Link href={hot ? `/salary-table/${man}/` : calcLink(man)} className="text-sub hover:underline">{salaryLabel(man)}</Link>
                       </th>
                       <td className="px-4 py-2 text-fg font-semibold">{won(r.netMonthly)}</td>
                       <td className="px-4 py-2 text-body">{won(r.netAnnual)}</td>

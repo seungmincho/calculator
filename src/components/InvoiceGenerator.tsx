@@ -606,7 +606,7 @@ export default function InvoiceGenerator() {
           </button>
           <button
             onClick={() => setShowPreview((p) => !p)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-indigo-700 dark:text-indigo-300 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-sub rounded-lg text-sm font-medium transition-colors"
           >
             {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             {showPreview ? t('editMode') : t('previewMode')}
@@ -844,10 +844,10 @@ export default function InvoiceGenerator() {
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             {(t.raw('guide.sections') as Array<{ title: string; items: string[] }>).map((section) => (
               <div key={section.title} className="bg-subtle rounded-xl p-5">
-                <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">{section.title}</h3>
+                <h3 className="font-semibold text-fg mb-3">{section.title}</h3>
                 <ul className="space-y-1.5">
                   {section.items.map((item: string) => (
-                    <li key={item} className="flex gap-2 text-sm text-blue-800 dark:text-blue-300">
+                    <li key={item} className="flex gap-2 text-sm text-sub">
                       <span className="text-blue-500 shrink-0">•</span>
                       <span>{item}</span>
                     </li>

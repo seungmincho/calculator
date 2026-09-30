@@ -208,8 +208,8 @@ export default function BogeumjariLoanPage() {
             </h2>
             <p className="text-sm text-body leading-relaxed mb-4">
               생애최초 보금자리론은 본인과 배우자 모두 과거에 주택을 소유한 적이 없는 경우에 적용되는 우대 유형입니다.
-              일반 보금자리론 대비 LTV가 70%에서 <strong className="text-blue-700 dark:text-blue-300">80%로 확대</strong>되고 대출 한도도 3.6억에서 <strong className="text-blue-700 dark:text-blue-300">최대 4.2억원</strong>으로 늘어납니다.
-              금리도 기준금리에서 <strong className="text-green-700 dark:text-green-300">0.2%p 추가 우대</strong>가 적용되어 실수요 1주택 취득자에게 가장 유리한 정책 모기지 중 하나입니다.
+              일반 보금자리론 대비 LTV가 70%에서 <strong className="text-sub">80%로 확대</strong>되고 대출 한도도 3.6억에서 <strong className="text-sub">최대 4.2억원</strong>으로 늘어납니다.
+              금리도 기준금리에서 <strong className="text-sub">0.2%p 추가 우대</strong>가 적용되어 실수요 1주택 취득자에게 가장 유리한 정책 모기지 중 하나입니다.
             </p>
             <div className="grid sm:grid-cols-3 gap-4 mb-4">
               {[
@@ -219,7 +219,7 @@ export default function BogeumjariLoanPage() {
               ].map((item) => (
                 <div key={item.label} className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-xs text-muted mb-1">{item.label}</div>
-                  <div className="text-xl font-bold text-blue-700 dark:text-blue-300">{item.value}</div>
+                  <div className="text-xl font-bold text-sub">{item.value}</div>
                   <div className="text-xs text-muted mt-0.5">{item.sub}</div>
                 </div>
               ))}
@@ -273,7 +273,7 @@ export default function BogeumjariLoanPage() {
                     <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-subtle' : 'bg-white dark:bg-gray-900'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.type}</td>
                       <td className="px-4 py-3 text-center text-body">{row.income}</td>
-                      <td className="px-4 py-3 text-center font-semibold text-blue-700 dark:text-blue-300">{row.limit}</td>
+                      <td className="px-4 py-3 text-center font-semibold text-sub">{row.limit}</td>
                       <td className="px-4 py-3 text-center text-body">{row.ltv}</td>
                       <td className="px-4 py-3 text-center text-green-700 dark:text-green-400 font-medium">{row.discount}</td>
                     </tr>
@@ -312,7 +312,7 @@ export default function BogeumjariLoanPage() {
                     <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
                       <td className="px-4 py-3 text-center text-body">{row.base}</td>
-                      <td className="px-4 py-3 text-center text-blue-700 dark:text-blue-300">{row.mid}</td>
+                      <td className="px-4 py-3 text-center text-sub">{row.mid}</td>
                       <td className="px-4 py-3 text-center font-semibold text-green-700 dark:text-green-400">{row.max}</td>
                     </tr>
                   ))}
@@ -361,8 +361,8 @@ export default function BogeumjariLoanPage() {
                 <thead>
                   <tr className="bg-gray-100 dark:bg-gray-800 text-body">
                     <th className="px-4 py-3 text-left">구분</th>
-                    <th className="px-4 py-3 text-center bg-subtle text-green-800 dark:text-green-300">디딤돌대출</th>
-                    <th className="px-4 py-3 text-center bg-subtle text-blue-800 dark:text-blue-300">보금자리론</th>
+                    <th className="px-4 py-3 text-center bg-subtle text-sub">디딤돌대출</th>
+                    <th className="px-4 py-3 text-center bg-subtle text-sub">보금자리론</th>
                   </tr>
                 </thead>
                 <tbody>

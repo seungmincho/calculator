@@ -656,7 +656,7 @@ export default function CalorieCalculator() {
       {/* 칼로리 가이드 */}
       <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
-          💡 {t('guide.title')}
+          {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">

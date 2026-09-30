@@ -575,7 +575,7 @@ export default function DueDateCalculator() {
                     </div>
                     <div className={`flex-1 rounded-lg p-4 ${isCurrent ? 'bg-subtle border-l-4 border-teal-500' : isPast ? 'bg-subtle opacity-70' : 'bg-subtle'}`}>
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className={`font-semibold ${isCurrent ? 'text-teal-700 dark:text-teal-300' : 'text-fg'}`}>
+                        <span className={`font-semibold ${isCurrent ? 'text-sub' : 'text-fg'}`}>
                           {visitData.title}
                         </span>
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${labelClass}`}>

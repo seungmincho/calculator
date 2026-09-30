@@ -940,8 +940,8 @@ export default function KanbanBoard() {
         </div>
 
         <div className="mt-6 bg-subtle rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">{t('guide.dragDrop.title')}</h3>
-          <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.dragDrop.desc')}</p>
+          <h3 className="text-sm font-semibold text-fg mb-2">{t('guide.dragDrop.title')}</h3>
+          <p className="text-sm text-sub">{t('guide.dragDrop.desc')}</p>
         </div>
       </div>
 

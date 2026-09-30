@@ -541,7 +541,7 @@ export default function PersonalColor() {
                     <span
                       className={`text-sm sm:text-base ${
                         selected
-                          ? 'text-purple-700 dark:text-purple-300 font-medium'
+                          ? 'text-sub font-medium'
                           : 'text-body'
                       }`}
                     >

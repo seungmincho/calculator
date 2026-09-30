@@ -940,7 +940,7 @@ export default function ApiTester() {
             {loading && (
               <div className="flex items-center gap-3 px-4 py-3 border-b border-line bg-subtle">
                 <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" />
-                <span className="text-sm text-blue-700 dark:text-blue-300">{t('sending')}</span>
+                <span className="text-sm text-sub">{t('sending')}</span>
               </div>
             )}
 

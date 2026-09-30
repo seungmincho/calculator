@@ -608,7 +608,7 @@ export default function WorldClock() {
                   return (
                     <div className={`rounded-lg px-4 py-3 text-sm font-medium ${
                       overlapCount > 0
-                        ? 'bg-subtle text-green-700 dark:text-green-300'
+                        ? 'bg-subtle text-sub'
                         : 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
                     }`}>
                       {overlapCount > 0

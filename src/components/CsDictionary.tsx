@@ -20,22 +20,22 @@ const ALL_CATEGORIES: (TermCategory | 'all')[] = [
 const DIFFICULTIES: TermDifficulty[] = ['beginner', 'intermediate', 'advanced']
 
 const DIFF_COLORS: Record<TermDifficulty, { bg: string; text: string; dot: string }> = {
-  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', dot: 'bg-green-500' },
+  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', dot: 'bg-green-500' },
   intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', dot: 'bg-yellow-500' },
   advanced: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', dot: 'bg-red-500' },
 }
 
 const CATEGORY_COLORS: Record<TermCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-line' },
+  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
+  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
+  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-sub', border: 'border-line' },
+  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub', border: 'border-line' },
+  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
+  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
+  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-sub', border: 'border-line' },
   security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
   linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-line' },
+  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-sub', border: 'border-line' },
 }
 
 type ViewMode = 'list' | 'card'
@@ -633,7 +633,7 @@ function TermDetail({
                 <button
                   key={relId}
                   onClick={() => onRelatedClick(relId)}
-                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-subtle text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-subtle text-sub hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                 >
                   {related.nameKo}
                 </button>

@@ -585,7 +585,7 @@ export default function SvgEditor() {
                     }
                   }}
                   readOnly={showOptimized}
-                  className="flex-1 p-3 font-mono text-xs leading-5 bg-surface text-gray-900 dark:text-gray-100 resize-none focus:outline-none min-h-[400px] w-full"
+                  className="flex-1 p-3 font-mono text-xs leading-5 bg-surface text-fg resize-none focus:outline-none min-h-[400px] w-full"
                   spellCheck={false}
                   placeholder={t('placeholder')}
                 />

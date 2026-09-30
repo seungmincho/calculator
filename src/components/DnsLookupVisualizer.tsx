@@ -955,7 +955,7 @@ export default function DnsLookupVisualizer() {
                     {currentStepData.detail}
                   </p>
                   {currentStepData.recordInfo && (
-                    <div className="mt-2 px-3 py-1.5 bg-subtle rounded-lg text-xs font-mono text-indigo-700 dark:text-indigo-300">
+                    <div className="mt-2 px-3 py-1.5 bg-subtle rounded-lg text-xs font-mono text-sub">
                       {currentStepData.recordInfo}
                     </div>
                   )}
@@ -1104,7 +1104,7 @@ export default function DnsLookupVisualizer() {
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg bg-subtle">
-                  <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">
+                  <div className="text-sm font-medium text-sub mb-1">
                     재귀 조회 (Recursive)
                   </div>
                   <p className="text-xs text-sub">
@@ -1114,7 +1114,7 @@ export default function DnsLookupVisualizer() {
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-subtle">
-                  <div className="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">
+                  <div className="text-sm font-medium text-sub mb-1">
                     반복 조회 (Iterative)
                   </div>
                   <p className="text-xs text-sub">

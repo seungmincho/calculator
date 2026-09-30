@@ -431,7 +431,7 @@ export default function NameCompatibility() {
                     {strokeNumbers.map((num, i) => (
                       <div
                         key={i}
-                        className="w-8 h-8 flex items-center justify-center bg-pink-100 dark:bg-pink-900 rounded-full text-sm font-bold text-pink-700 dark:text-pink-300 transition-all duration-300"
+                        className="w-8 h-8 flex items-center justify-center bg-pink-100 dark:bg-pink-900 rounded-full text-sm font-bold text-sub transition-all duration-300"
                       >
                         {num}
                       </div>
@@ -454,7 +454,7 @@ export default function NameCompatibility() {
                               className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
                                 rowIdx === reductionRows.length - 1
                                   ? 'bg-red-500 text-white scale-110'
-                                  : 'bg-subtle text-pink-700 dark:text-pink-300'
+                                  : 'bg-subtle text-sub'
                               }`}
                             >
                               {num}

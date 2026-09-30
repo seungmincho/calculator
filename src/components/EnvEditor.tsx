@@ -351,7 +351,7 @@ export default function EnvEditor() {
                             type="text"
                             value={entry.rawComment}
                             onChange={e => updateEntry(entry.id, 'rawComment', e.target.value)}
-                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-subtle text-green-700 dark:text-green-300 focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-subtle text-sub focus:ring-1 focus:ring-blue-500"
                           />
                         </div>
                         <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-gray-400 hover:text-red-500 transition-colors flex justify-center">
@@ -507,10 +507,10 @@ export default function EnvEditor() {
 
           {/* Guide */}
           <div className="bg-subtle rounded-xl p-5">
-            <h2 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">{t('guide.title')}</h2>
+            <h2 className="text-sm font-semibold text-fg mb-2">{t('guide.title')}</h2>
             <ul className="space-y-1.5">
               {(t.raw('guide.format.items') as string[]).map((item, i) => (
-                <li key={i} className="text-xs text-blue-700 dark:text-blue-300 flex gap-1.5">
+                <li key={i} className="text-xs text-sub flex gap-1.5">
                   <span className="shrink-0">•</span>
                   <span>{item}</span>
                 </li>
@@ -519,7 +519,7 @@ export default function EnvEditor() {
             <div className="mt-3 pt-3 border-t border-line">
               <ul className="space-y-1.5">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-xs text-blue-700 dark:text-blue-300 flex gap-1.5">
+                  <li key={i} className="text-xs text-sub flex gap-1.5">
                     <span className="shrink-0">•</span>
                     <span>{item}</span>
                   </li>

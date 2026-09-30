@@ -1187,7 +1187,7 @@ export default function MenuPicker() {
                         ? 'ring-4 ring-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/30 scale-105'
                         : isUnselected
                         ? 'opacity-40 scale-95 grayscale'
-                        : 'hover:shadow-xl hover:-translate-y-1'
+                        : 'hover:shadow-xl'
                     }`}
                   >
                     {/* Card gradient top */}

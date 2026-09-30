@@ -988,7 +988,7 @@ export default function WeddingCalculator() {
               {splitConfig.mode === 'amount' && (
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-xl p-4">
-                    <label className="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
+                    <label className="block text-sm font-medium text-sub mb-2">
                       {t('split.groomSide')}
                     </label>
                     <div className="flex items-center gap-1">
@@ -1001,7 +1001,7 @@ export default function WeddingCalculator() {
                     </div>
                   </div>
                   <div className="bg-subtle rounded-xl p-4">
-                    <label className="block text-sm font-medium text-pink-700 dark:text-pink-300 mb-2">
+                    <label className="block text-sm font-medium text-sub mb-2">
                       {t('split.brideSide')}
                     </label>
                     <div className="flex items-center gap-1">

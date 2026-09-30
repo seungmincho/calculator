@@ -354,26 +354,26 @@ export default function InvestmentCalculator() {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('totalInvested')}</p>
-          <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{formatKRW(res.totalInvested)}<span className="text-sm font-normal">{t('won')}</span></p>
+          <p className="text-lg font-bold text-fg">{formatKRW(res.totalInvested)}<span className="text-sm font-normal">{t('won')}</span></p>
         </div>
         <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('finalAmount')}</p>
-          <p className="text-lg font-bold text-green-900 dark:text-green-100">{formatKRW(res.finalAmount)}<span className="text-sm font-normal">{t('won')}</span></p>
+          <p className="text-lg font-bold text-fg">{formatKRW(res.finalAmount)}<span className="text-sm font-normal">{t('won')}</span></p>
         </div>
         <div className={`rounded-xl p-4 ${res.profit >= 0 ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950'}`}>
           <p className={`text-xs mb-1 ${res.profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{t('profit')}</p>
-          <p className={`text-lg font-bold flex items-center gap-1 ${res.profit >= 0 ? 'text-emerald-900 dark:text-emerald-100' : 'text-red-900 dark:text-red-100'}`}>
+          <p className={`text-lg font-bold flex items-center gap-1 ${res.profit >= 0 ? 'text-fg' : 'text-red-900 dark:text-red-100'}`}>
             {res.profit >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {formatKRW(Math.abs(res.profit))}<span className="text-sm font-normal">{t('won')}</span>
           </p>
         </div>
         <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('totalReturn')}</p>
-          <p className="text-lg font-bold text-purple-900 dark:text-purple-100">{res.totalReturnPct.toFixed(2)}%</p>
+          <p className="text-lg font-bold text-fg">{res.totalReturnPct.toFixed(2)}%</p>
         </div>
         <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">{t('cagr')}</p>
-          <p className="text-lg font-bold text-indigo-900 dark:text-indigo-100">{res.cagr.toFixed(2)}%</p>
+          <p className="text-lg font-bold text-fg">{res.cagr.toFixed(2)}%</p>
         </div>
         <div className="bg-amber-50 dark:bg-amber-950 rounded-xl p-4">
           <p className="text-xs text-amber-600 dark:text-amber-400 mb-1">{t('realReturn')}</p>
@@ -560,7 +560,7 @@ export default function InvestmentCalculator() {
             {/* Comparison mode explanation */}
             {investmentType === 'comparison' && (
               <div className="bg-subtle rounded-lg p-3">
-                <p className="text-xs text-blue-700 dark:text-blue-300">
+                <p className="text-xs text-sub">
                   {t('vs.title')}
                 </p>
               </div>

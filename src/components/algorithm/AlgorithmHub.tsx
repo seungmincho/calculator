@@ -82,7 +82,7 @@ export default function AlgorithmHub() {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-fg">
-          🧠 {t('title')}
+          {t('title')}
         </h1>
         <p className="text-muted mt-2 max-w-2xl mx-auto">
           {t('description')}

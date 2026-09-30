@@ -26,22 +26,22 @@ const ALL_CATEGORIES: (InterviewCategory | 'all')[] = [
 const DIFFICULTIES: InterviewDifficulty[] = ['beginner', 'intermediate', 'advanced']
 
 const DIFF_COLORS: Record<InterviewDifficulty, { bg: string; text: string; dot: string }> = {
-  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', dot: 'bg-green-500' },
+  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', dot: 'bg-green-500' },
   intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', dot: 'bg-yellow-500' },
   advanced: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', dot: 'bg-red-500' },
 }
 
 const CATEGORY_COLORS: Record<InterviewCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-line' },
+  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
+  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
+  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-sub', border: 'border-line' },
+  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub', border: 'border-line' },
+  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
+  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
+  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-sub', border: 'border-line' },
   security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
   linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-line' },
+  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-sub', border: 'border-line' },
 }
 
 // ── localStorage helpers ──
@@ -317,7 +317,7 @@ export default function CsInterview() {
       {/* Follow-up Question */}
       {q.followUp && (
         <div className="bg-subtle border border-line rounded-lg p-4">
-          <h4 className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-1 flex items-center gap-1.5">
+          <h4 className="text-sm font-semibold text-sub mb-1 flex items-center gap-1.5">
             <MessageCircle className="w-4 h-4" />
             {t('question.followUp')}
           </h4>
@@ -624,7 +624,7 @@ export default function CsInterview() {
                   <div className="flex gap-3 mt-6 pt-4 border-t border-line">
                     <button
                       onClick={() => handleMastered(currentQuestion.id)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-subtle text-green-700 dark:text-green-300 border border-line rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-subtle text-sub border border-line rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
                     >
                       <Check className="w-5 h-5" />
                       {t('practice.mastered')}

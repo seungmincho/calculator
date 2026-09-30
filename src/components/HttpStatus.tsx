@@ -694,14 +694,14 @@ export default function HttpStatus() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 1xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">1xx — 정보 응답</h3>
+            <h3 className="font-semibold text-sub mb-2">1xx — 정보 응답</h3>
             <p className="text-sm text-sub">
               요청을 받았으며 작업을 계속 진행 중임을 알립니다. 주로 WebSocket 업그레이드(101)나 사전 확인(100)에 사용됩니다.
             </p>
           </div>
           {/* 2xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-green-700 dark:text-green-300 mb-2">2xx — 성공</h3>
+            <h3 className="font-semibold text-sub mb-2">2xx — 성공</h3>
             <p className="text-sm text-sub">
               요청이 성공적으로 처리되었습니다. GET 성공은 200, 리소스 생성은 201, 삭제 성공은 204를 사용하세요.
             </p>
@@ -715,7 +715,7 @@ export default function HttpStatus() {
           </div>
           {/* 4xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-orange-700 dark:text-orange-300 mb-2">4xx — 클라이언트 오류</h3>
+            <h3 className="font-semibold text-sub mb-2">4xx — 클라이언트 오류</h3>
             <p className="text-sm text-sub">
               클라이언트 요청에 문제가 있습니다. 인증 없음(401), 권한 없음(403), 리소스 없음(404), 잘못된 요청(400)을 구분하세요.
             </p>
@@ -729,7 +729,7 @@ export default function HttpStatus() {
           </div>
           {/* Tips */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">REST API 설계 팁</h3>
+            <h3 className="font-semibold text-sub mb-2">REST API 설계 팁</h3>
             <p className="text-sm text-sub">
               GET→200, POST→201, DELETE→204, 인증→401, 권한→403, 없음→404, 유효성→422, Rate Limit→429, 서버 오류→500을 정확히 구분하세요.
             </p>

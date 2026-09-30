@@ -41,13 +41,13 @@ const qualityColors: Record<string, { bg: string; border: string; text: string; 
   excellent: {
     bg: 'bg-subtle',
     border: 'border-line',
-    text: 'text-emerald-700 dark:text-emerald-300',
+    text: 'text-sub',
     badge: 'bg-soft text-sub',
   },
   good: {
     bg: 'bg-subtle',
     border: 'border-line',
-    text: 'text-green-700 dark:text-green-300',
+    text: 'text-sub',
     badge: 'bg-soft text-sub',
   },
   fair: {
@@ -361,7 +361,7 @@ export default function SleepCalculator() {
           </div>
 
           {/* Explanation */}
-          <div className="bg-subtle rounded-xl p-4 text-sm text-indigo-700 dark:text-indigo-300">
+          <div className="bg-subtle rounded-xl p-4 text-sm text-sub">
             <p className="flex items-start gap-2">
               <ChevronRight size={16} className="flex-shrink-0 mt-0.5" />
               {t('cycleExplanation')}

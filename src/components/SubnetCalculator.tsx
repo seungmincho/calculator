@@ -617,7 +617,7 @@ export default function SubnetCalculator() {
             ) : overlapResults.ranges.length >= 2 ? (
               <div className="bg-subtle border border-line rounded-lg p-4 text-center">
                 <Check className="w-6 h-6 text-green-500 mx-auto mb-1" />
-                <p className="text-sm text-green-700 dark:text-green-300">{t('noOverlap')}</p>
+                <p className="text-sm text-sub">{t('noOverlap')}</p>
               </div>
             ) : (
               <div className="text-center text-faint py-8">
@@ -794,7 +794,7 @@ export default function SubnetCalculator() {
       {/* 참고 */}
       <div className="bg-subtle rounded-xl p-4 flex items-start gap-3">
         <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-        <p className="text-xs text-blue-700 dark:text-blue-300">{t('note')}</p>
+        <p className="text-xs text-sub">{t('note')}</p>
       </div>
     </div>
   )

@@ -776,10 +776,10 @@ export default function RegexExtractor() {
                 <div className="flex items-start space-x-2">
                   <HelpCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <div className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
+                    <div className="text-sm font-medium text-fg mb-1">
                       {t('pattern.explanation')}
                     </div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300 font-mono">
+                    <div className="text-sm text-sub font-mono">
                       {explainPattern(pattern)}
                     </div>
                   </div>
@@ -962,15 +962,15 @@ export default function RegexExtractor() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">{matches.length}</div>
-                  <div className="text-sm text-blue-700 dark:text-blue-300">{t('results.matches')}</div>
+                  <div className="text-sm text-sub">{t('results.matches')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-green-600">{outputText.split('\n').filter(line => line.trim()).length}</div>
-                  <div className="text-sm text-green-700 dark:text-green-300">{t('results.outputLines')}</div>
+                  <div className="text-sm text-sub">{t('results.outputLines')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-purple-600">{outputText.length}</div>
-                  <div className="text-sm text-purple-700 dark:text-purple-300">{t('results.outputChars')}</div>
+                  <div className="text-sm text-sub">{t('results.outputChars')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-gray-600">{((matches.length / Math.max(inputText.split('\n').length, 1)) * 100).toFixed(1)}%</div>
@@ -1068,7 +1068,7 @@ export default function RegexExtractor() {
       {/* 사용 가이드 */}
       <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
-          🔍 {t('guide.title')}
+          {t('guide.title')}
         </h3>
         
         <div className="grid md:grid-cols-3 gap-6">

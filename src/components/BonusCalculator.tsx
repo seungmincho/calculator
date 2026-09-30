@@ -819,7 +819,7 @@ function BonusCalculatorContent() {
 
                       {/* With bonus */}
                       <div className="border-2 border-line rounded-xl p-5 space-y-3 bg-subtle">
-                        <h4 className="font-semibold text-blue-700 dark:text-blue-300">{t('taxAnalysis.withBonus')}</h4>
+                        <h4 className="font-semibold text-sub">{t('taxAnalysis.withBonus')}</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
                             <span className="text-muted">{t('taxAnalysis.taxBracket')}</span>
@@ -836,13 +836,13 @@ function BonusCalculatorContent() {
                           </div>
                           <div className="flex justify-between">
                             <span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span>
-                            <span className="text-blue-700 dark:text-blue-300 font-medium">
+                            <span className="text-sub font-medium">
                               {formatNumber(withBonusResult.deductions.incomeTax + withBonusResult.deductions.localIncomeTax)}{t('chart.won')}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-muted">{t('result.effectiveRate')}</span>
-                            <span className="text-blue-700 dark:text-blue-300 font-medium">
+                            <span className="text-sub font-medium">
                               {withBonusResult.effectiveTaxRate.toFixed(1)}%
                             </span>
                           </div>

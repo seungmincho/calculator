@@ -513,7 +513,7 @@ const SqlFormatter = () => {
 
             <button
               onClick={insertExample}
-              className="flex items-center space-x-1 px-3 py-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-lg text-sm transition-colors"
+              className="flex items-center space-x-1 px-3 py-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-sub rounded-lg text-sm transition-colors"
             >
               <Eye className="w-4 h-4" />
               <span>예제</span>
@@ -538,7 +538,7 @@ const SqlFormatter = () => {
               <>
                 <button
                   onClick={handleCopy}
-                  className="flex items-center space-x-1 px-3 py-2 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-green-700 dark:text-green-300 rounded-lg text-sm transition-colors"
+                  className="flex items-center space-x-1 px-3 py-2 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-sub rounded-lg text-sm transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   <span>{copied ? '복사됨!' : '복사'}</span>
@@ -546,7 +546,7 @@ const SqlFormatter = () => {
 
                 <button
                   onClick={handleDownload}
-                  className="flex items-center space-x-1 px-3 py-2 bg-purple-100 dark:bg-purple-900 hover:bg-purple-200 dark:hover:bg-purple-800 text-purple-700 dark:text-purple-300 rounded-lg text-sm transition-colors"
+                  className="flex items-center space-x-1 px-3 py-2 bg-purple-100 dark:bg-purple-900 hover:bg-purple-200 dark:hover:bg-purple-800 text-sub rounded-lg text-sm transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   <span>다운로드</span>
@@ -663,29 +663,29 @@ const SqlFormatter = () => {
                 {/* 분석 결과 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-200 mb-2">테이블</h4>
-                    <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <h4 className="font-medium text-fg mb-2">테이블</h4>
+                    <div className="text-sm text-sub">
                       {analysis.tables.length > 0 ? analysis.tables.join(', ') : '없음'}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-green-900 dark:text-green-200 mb-2">함수</h4>
-                    <div className="text-sm text-green-800 dark:text-green-300">
+                    <h4 className="font-medium text-fg mb-2">함수</h4>
+                    <div className="text-sm text-sub">
                       {analysis.functions.length > 0 ? analysis.functions.join(', ') : '없음'}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-purple-900 dark:text-purple-200 mb-2">JOIN 타입</h4>
-                    <div className="text-sm text-purple-800 dark:text-purple-300">
+                    <h4 className="font-medium text-fg mb-2">JOIN 타입</h4>
+                    <div className="text-sm text-sub">
                       {analysis.joins.length > 0 ? analysis.joins.join(', ') : '없음'}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-orange-900 dark:text-orange-200 mb-2">복잡도</h4>
-                    <div className="text-sm text-orange-800 dark:text-orange-300">
+                    <h4 className="font-medium text-fg mb-2">복잡도</h4>
+                    <div className="text-sm text-sub">
                       {analysis.complexity}
                     </div>
                   </div>

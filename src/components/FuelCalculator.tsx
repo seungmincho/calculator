@@ -1137,7 +1137,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       }}
                       className="flex-1 accent-purple-600"
                     />
-                    <span className="text-sm font-bold text-purple-700 dark:text-purple-300 w-12 text-right">
+                    <span className="text-sm font-bold text-sub w-12 text-right">
                       ×{depreciationMultiplier.toFixed(2)}
                     </span>
                   </div>
@@ -1215,11 +1215,11 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <DollarSign className="w-5 h-5 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                          <span className="text-sm font-medium text-fg">
                             {t('result.totalCost')}
                           </span>
                         </div>
-                        <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                        <p className="text-2xl font-bold text-fg">
                           {Math.round(calculation.totalCost).toLocaleString()}원
                         </p>
                       </div>
@@ -1227,14 +1227,14 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <Fuel className="w-5 h-5 text-green-600" />
-                          <span className="text-sm font-medium text-green-800 dark:text-green-200">
+                          <span className="text-sm font-medium text-fg">
                             {t('result.fuelCost')}
                           </span>
                         </div>
-                        <p className="text-xl font-bold text-green-900 dark:text-green-100">
+                        <p className="text-xl font-bold text-fg">
                           {Math.round(calculation.fuelCost).toLocaleString()}원
                         </p>
-                        <p className="text-sm text-green-700 dark:text-green-300">
+                        <p className="text-sm text-sub">
                           {calculation.fuelConsumption.toFixed(2)}L
                         </p>
                       </div>
@@ -1244,11 +1244,11 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <TrendingDown className="w-5 h-5 text-orange-600" />
-                          <span className="text-sm font-medium text-orange-800 dark:text-orange-200">
+                          <span className="text-sm font-medium text-fg">
                             {t('result.depreciationCost')}
                           </span>
                         </div>
-                        <p className="text-xl font-bold text-orange-900 dark:text-orange-100">
+                        <p className="text-xl font-bold text-fg">
                           {Math.round(calculation.depreciationCost).toLocaleString()}원
                         </p>
                       </div>
@@ -1256,11 +1256,11 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <Zap className="w-5 h-5 text-purple-600" />
-                          <span className="text-sm font-medium text-purple-800 dark:text-purple-200">
+                          <span className="text-sm font-medium text-fg">
                             {t('result.costPerKm')}
                           </span>
                         </div>
-                        <p className="text-xl font-bold text-purple-900 dark:text-purple-100">
+                        <p className="text-xl font-bold text-fg">
                           {calculation.costPerKm.toFixed(0)}원/km
                         </p>
                       </div>
@@ -1532,19 +1532,19 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
               <div className="grid grid-cols-3 gap-3 mb-4">
                 <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">총 주행거리</div>
-                  <div className="text-sm font-bold text-blue-700 dark:text-blue-300">
+                  <div className="text-sm font-bold text-sub">
                     {filteredLogs.reduce((sum, l) => sum + l.distance, 0).toLocaleString()} km
                   </div>
                 </div>
                 <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">총 연료비</div>
-                  <div className="text-sm font-bold text-orange-700 dark:text-orange-300">
+                  <div className="text-sm font-bold text-sub">
                     {filteredLogs.reduce((sum, l) => sum + calculateLogFuelCost(l.distance), 0).toLocaleString()} 원
                   </div>
                 </div>
                 <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">기록 수</div>
-                  <div className="text-sm font-bold text-green-700 dark:text-green-300">
+                  <div className="text-sm font-bold text-sub">
                     {filteredLogs.length}건
                   </div>
                 </div>

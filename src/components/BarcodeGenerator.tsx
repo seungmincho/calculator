@@ -726,26 +726,26 @@ const BarcodeGenerator = () => {
 
         <div className="mt-8 grid md:grid-cols-3 gap-6">
           <div className="bg-subtle rounded-lg p-4">
-            <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.tips.printing.title')}
             </h4>
-            <p className="text-sm text-blue-700 dark:text-blue-300">
+            <p className="text-sm text-sub">
               {t('guide.tips.printing.content')}
             </p>
           </div>
           <div className="bg-subtle rounded-lg p-4">
-            <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.tips.scanning.title')}
             </h4>
-            <p className="text-sm text-green-700 dark:text-green-300">
+            <p className="text-sm text-sub">
               {t('guide.tips.scanning.content')}
             </p>
           </div>
           <div className="bg-subtle rounded-lg p-4">
-            <h4 className="font-semibold text-purple-800 dark:text-purple-200 mb-2">
+            <h4 className="font-semibold text-fg mb-2">
               {t('guide.tips.format.title')}
             </h4>
-            <p className="text-sm text-purple-700 dark:text-purple-300">
+            <p className="text-sm text-sub">
               {t('guide.tips.format.content')}
             </p>
           </div>

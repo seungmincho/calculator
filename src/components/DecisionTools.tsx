@@ -530,7 +530,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <button
                       key={key}
                       onClick={() => applyPreset(key)}
-                      className="px-3 py-1 text-xs bg-subtle text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                      className="px-3 py-1 text-xs bg-subtle text-sub rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
                     >
                       {PRESET_EMOJI[key] ?? '📋'} {key}
                     </button>

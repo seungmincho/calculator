@@ -391,9 +391,9 @@ const BogeumjariLoanCalculatorContent = () => {
   };
 
   const typeColorMap: Record<LoanType, { active: string; base: string }> = {
-    first: { active: 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300', base: 'border-line hover:border-blue-300' },
-    newlywed: { active: 'border-pink-500 bg-subtle text-pink-700 dark:text-pink-300', base: 'border-line hover:border-pink-300' },
-    multichild: { active: 'border-green-500 bg-subtle text-green-700 dark:text-green-300', base: 'border-line hover:border-green-300' },
+    first: { active: 'border-blue-500 bg-subtle text-sub', base: 'border-line hover:border-blue-300' },
+    newlywed: { active: 'border-pink-500 bg-subtle text-sub', base: 'border-line hover:border-pink-300' },
+    multichild: { active: 'border-green-500 bg-subtle text-sub', base: 'border-line hover:border-green-300' },
     general: { active: 'border-gray-500 bg-subtle text-body', base: 'border-line hover:border-gray-400' },
   };
   const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]';
@@ -570,7 +570,7 @@ const BogeumjariLoanCalculatorContent = () => {
                   {/* 최대 대출한도 */}
                   <div className="bg-subtle rounded-xl p-4">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">최대 대출한도</div>
-                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                    <div className="text-2xl font-bold text-fg">
                       {formatCurrency(result.maxLoanAmount)}
                     </div>
                     <div className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">
@@ -607,7 +607,7 @@ const BogeumjariLoanCalculatorContent = () => {
                           <span>- {d.rate.toFixed(2)}%p</span>
                         </div>
                       ))}
-                      <div className="border-t border-line pt-1.5 mt-1 flex justify-between font-bold text-blue-700 dark:text-blue-300">
+                      <div className="border-t border-line pt-1.5 mt-1 flex justify-between font-bold text-sub">
                         <span>최종 적용금리</span>
                         <span>{result.interestRate.toFixed(2)}%</span>
                       </div>
@@ -630,7 +630,7 @@ const BogeumjariLoanCalculatorContent = () => {
                     </div>
                     <div className={`rounded-lg p-3 ${result.dti <= 40 ? 'bg-subtle' : 'bg-yellow-50 dark:bg-yellow-900/20'}`}>
                       <div className="text-muted text-xs mb-0.5">DTI</div>
-                      <div className={`font-bold ${result.dti <= 40 ? 'text-green-700 dark:text-green-300' : 'text-yellow-700 dark:text-yellow-300'}`}>
+                      <div className={`font-bold ${result.dti <= 40 ? 'text-sub' : 'text-yellow-700 dark:text-yellow-300'}`}>
                         {result.dti.toFixed(1)}%
                       </div>
                     </div>
@@ -662,7 +662,7 @@ const BogeumjariLoanCalculatorContent = () => {
                     </div>
                   )}
                   <div className="bg-subtle rounded-lg p-3">
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
+                    <p className="text-xs text-sub">
                       다른 유형(신혼/다자녀)이 해당된다면 소득기준이 완화됩니다. 디딤돌대출도 함께 검토해보세요.
                     </p>
                   </div>
@@ -867,7 +867,7 @@ const BogeumjariLoanCalculatorContent = () => {
             >
               <span className="text-2xl flex-shrink-0">{link.icon}</span>
               <div>
-                <div className="font-medium text-blue-700 dark:text-blue-300 group-hover:underline text-sm">{link.name}</div>
+                <div className="font-medium text-sub group-hover:underline text-sm">{link.name}</div>
                 <div className="text-xs text-muted mt-0.5">{link.desc}</div>
               </div>
             </a>
