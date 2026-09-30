@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '지뢰찾기 - 마인스위퍼 게임 | 툴허브',
-  description: '클래식 지뢰찾기(마인스위퍼)를 온라인에서 무료로 즐기세요. 초급, 중급, 고급 3단계 난이도를 지원합니다.',
+  description: '클래식 지뢰찾기(마인스위퍼)를 무료로! 초급·중급·고급·사용자 지정, 추측 없는 판, 매일 같은 판으로 겨루는 오늘의 지뢰찾기, 0.01초 기록과 3BV·효율 통계를 지원합니다.',
   keywords: '지뢰찾기, 마인스위퍼, minesweeper, 무료 게임, 온라인 게임, 퍼즐 게임, 브라우저 게임',
   openGraph: {
     title: '지뢰찾기 - 마인스위퍼 | 툴허브',
-    description: '클래식 지뢰찾기를 온라인에서 무료로! 3단계 난이도.',
+    description: '클래식 지뢰찾기를 무료로! 추측 없는 판·오늘의 지뢰찾기·0.01초 기록.',
     url: 'https://toolhub.ai.kr/minesweeper',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -30,13 +30,13 @@ export default function MinesweeperPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '지뢰찾기 (마인스위퍼)',
-    description: '클래식 지뢰찾기 게임. 초급/중급/고급 난이도 지원.',
+    description: '클래식 지뢰찾기 게임. 초급/중급/고급/사용자 지정, 추측 없는 판, 오늘의 지뢰찾기 지원.',
     url: 'https://toolhub.ai.kr/minesweeper',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['3단계 난이도', '첫 클릭 안전', '타이머', '깃발 표시', '터치 지원'],
+    featureList: ['초급·중급·고급·사용자 지정', '첫 클릭 3×3 안전(영역 열림)', '추측 없는 판(No-guess)', '오늘의 지뢰찾기 #N (모두 같은 판)', '숫자 클릭·양쪽 클릭 chord', '길게 눌러 깃발·깃발 모드', '0.01초 타이머·난이도별 최고 기록', '3BV·효율 통계', '키보드 조작'],
   }
 
   const faqJsonLd = {
@@ -81,7 +81,7 @@ export default function MinesweeperPage() {
               지뢰찾기(마인스위퍼)란?
             </h2>
             <p className="text-body leading-relaxed mb-6">
-              지뢰찾기(마인스위퍼, Minesweeper)는 격자 위의 숫자 힌트를 이용해 지뢰 위치를 추론하고 지뢰가 없는 칸을 모두 열면 승리하는 클래식 퍼즐 게임입니다. 1990년대 윈도우 기본 게임으로 큰 인기를 끌었으며, 논리적 추론 능력과 집중력을 키우는 데 효과적입니다. 초급(9x9, 지뢰 10개)부터 고급(16x30, 지뢰 99개)까지 3단계 난이도를 제공합니다.
+              지뢰찾기(마인스위퍼, Minesweeper)는 격자 위의 숫자 힌트를 이용해 지뢰 위치를 추론하고 지뢰가 없는 칸을 모두 열면 승리하는 클래식 퍼즐 게임입니다. 1990년대 윈도우 기본 게임으로 큰 인기를 끌었으며, 논리적 추론 능력과 집중력을 키우는 데 효과적입니다. 초급(9×9, 지뢰 10개)·중급(16×16, 40개)·고급(30×16, 99개)과 사용자 지정 판을 제공하고, 찍기 없이 논리만으로 풀리는 '추측 없는 판'과 매일 모두 같은 판으로 기록을 겨루는 '오늘의 지뢰찾기'도 즐길 수 있습니다.
             </p>
             <h3 className="text-lg font-semibold text-fg mb-3">
               지뢰찾기 공략 팁

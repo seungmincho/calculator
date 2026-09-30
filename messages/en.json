@@ -10504,8 +10504,61 @@
     }
   },
   "fontPreview": {
+    "presetLabel": "Sample text",
+    "presets": {
+      "ganada": {
+        "name": "Ga-na-da",
+        "text": "가나다라마바사 아자차카타파하\n다람쥐 헌 쳇바퀴에 타고파"
+      },
+      "greeting": {
+        "name": "Greeting",
+        "text": "안녕하세요, 반갑습니다.\nHello, nice to meet you!"
+      },
+      "mixed": {
+        "name": "Numbers & Latin",
+        "text": "툴허브 Toolhub 2026 · 가격 ₩12,900 (VAT 포함)\nABCDEFG abcdefg 0123456789 @#&%?!"
+      },
+      "paragraph": {
+        "name": "Paragraph",
+        "text": "좋은 글꼴은 읽는 사람이 글꼴을 의식하지 않게 만듭니다. 본문용 서체는 작은 크기에서도 획이 뭉개지지 않아야 합니다. A good typeface disappears behind the text. Try your real copy at the size and weight you will actually use."
+      }
+    },
+    "cat": {
+      "gothic": "Gothic (sans)",
+      "myeongjo": "Myeongjo (serif)",
+      "handwriting": "Handwriting",
+      "display": "Display",
+      "coding": "Coding"
+    },
+    "previewBg": "Preview background",
+    "light": "Light",
+    "dark": "Dark",
+    "shareLink": "Copy share link",
+    "linkCopied": "Link copied",
+    "compareTitle": "Side-by-side ({n}/{max})",
+    "compareHint": "Pin more font cards to compare up to 4 side by side.",
+    "pin": "Pin to compare",
+    "unpin": "Unpin",
+    "pinFull": "You can pin up to 4 fonts",
+    "favorite": "Favorite",
+    "unfavorite": "Remove favorite",
+    "favOnly": "Favorites",
+    "weightsAvail": "Weights",
+    "weightApplied": "shown as {w}",
+    "official": "Official page",
+    "noResults": "No fonts match. Try another category or search term.",
+    "count": "{n}",
+    "local": {
+      "title": "Preview your own font file",
+      "hint": "Drop or choose a .ttf, .otf, .woff or .woff2 file. It is read only in this browser and never uploaded.",
+      "choose": "Choose file",
+      "badType": "Only .ttf, .otf, .woff and .woff2 files are supported.",
+      "tooLarge": "Files must be 30 MB or smaller.",
+      "error": "Could not read this font. The file may be corrupted or in an unsupported format.",
+      "remove": "Close"
+    },
     "title": "Font Preview",
-    "description": "Preview and compare text in various web fonts.",
+    "description": "Preview 38 commercially free Korean fonts with your own copy, compare up to 4 side by side, and copy the CSS.",
     "sampleText": "Preview Text",
     "defaultText": "The quick brown fox jumps over the lazy dog 0123456789 다람쥐 헌 쳇바퀴에 타고파",
     "fontSize": "Font Size",
@@ -10525,7 +10578,7 @@
     "monospace": "Monospace",
     "handwriting": "Handwriting",
     "display": "Display",
-    "search": "Search Fonts",
+    "search": "Search by name, Korean name or foundry (e.g. Nanum, Noto)",
     "addToCompare": "Add to Compare",
     "compare": "Compare Mode",
     "clearCompare": "Clear Compare",
@@ -10534,43 +10587,64 @@
     "fonts": "Font List",
     "preview": "Preview",
     "guide": {
+      "license": {
+        "title": "License — can I use these commercially?",
+        "items": [
+          "All 38 fonts in the list are under the SIL Open Font License (OFL 1.1). You can use them for free in websites, apps, ads, print, video and logos, including commercial work.",
+          "Embedding as a web font or bundling in PDFs and apps is allowed.",
+          "Not allowed: selling the font files by themselves, or distributing modified versions under the original (reserved) font name.",
+          "License info was checked against the Google Fonts repository (ofl folder) and each vendor's repository. Re-check the latest terms on each card's official page before use."
+        ]
+      },
       "title": "Font Preview Guide",
       "usage": {
         "title": "How to Use",
         "items": [
-          "Enter preview text and select your desired font",
-          "Adjust font size, weight, line height, and other settings",
-          "Use compare mode to view multiple fonts side by side",
-          "Copy CSS button lets you copy the style code directly"
+          "Type your copy or pick a sample (Ga-na-da, greeting, numbers & Latin, paragraph).",
+          "Adjust size, weight, line height, letter spacing and the preview background. Fonts without the chosen weight use the closest one, noted on the card.",
+          "Narrow down by category (gothic, myeongjo, handwriting, display, coding) or search, and star favorites (saved in this browser).",
+          "Pin up to 4 fonts to compare them side by side at the top.",
+          "Use 'Copy CSS' for the <link>, @import and font-family code, and 'Official page' to download.",
+          "'Copy share link' keeps your text, size and pinned fonts in the URL.",
+          "Drop your own font file (ttf/otf/woff/woff2) to preview it with the same settings. The file is never uploaded."
         ]
       },
       "tips": {
         "title": "Font Selection Tips",
         "items": [
-          "Body text: Use readable sans-serif fonts (Noto Sans KR, Pretendard)",
-          "Headings: Use bold, impactful fonts (Black Han Sans, Jua)",
-          "Coding: Use monospace fonts (JetBrains Mono, D2Coding)",
-          "Free web fonts: Available for free on Google Fonts"
+          "Body text: multi-weight gothics like Pretendard, Noto Sans KR or Nanum Gothic. Around 16px, line height 1.6–1.8 and letter spacing -1 to -2% suit Korean body text.",
+          "Headlines and banners: bold display faces like Black Han Sans, Do Hyeon or Jua, paired with a gothic for body text.",
+          "Emotional or brand copy: use myeongjo (Gowun Batang, Hahmlet) or handwriting fonts for short headlines only.",
+          "Code and tables: monospace fonts like D2Coding or Nanum Gothic Coding keep digits aligned.",
+          "On the web, load only the weights you use. Each weight adds hundreds of KB."
         ]
       },
       "whatIs": {
         "title": "What is the Font Preview Tool?",
-        "description": "A tool that lets you apply dozens of web fonts — including Google Fonts — to your own text in real time, adjusting size, weight, letter spacing, and line height to compare them side by side. Web developers, designers, and bloggers can quickly identify the right font for a project without switching between browser tabs or writing any CSS."
+        "description": "A tool for designers and marketers choosing a Korean font for banners, product pages and websites. Preview 38 commercially free (SIL OFL) Korean fonts with your real copy, adjust size, weight, line height, letter spacing and light/dark background, and compare them side by side. Only fonts on screen are loaded, subset to the characters you typed, so the page stays light."
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Can I apply a font I've chosen here directly to my website?",
-            "a": "Yes. Copy the CSS snippet shown in the preview. For Google Fonts, add the provided `<link>` tag or `@import` rule to your HTML and set the `font-family` in your CSS."
+            "q": "Can I use the font on my website right away?",
+            "a": "Yes. 'Copy CSS' copies a <link> tag, an @import rule and the font-family declaration. Put the <link> in your HTML <head> or the @import at the top of your CSS, then set font-family."
           },
           {
-            "q": "Are Korean (Hangul) fonts available?",
-            "a": "Yes. Popular Korean web fonts such as Noto Sans KR, Nanum Gothic, and Pretendard are included. Type Korean text to compare readability across different fonts."
+            "q": "Can I use these fonts commercially?",
+            "a": "All fonts in the list are SIL OFL 1.1, free for commercial use in ads, print, web and video. Selling the font files by themselves and distributing modified versions under the original name are not allowed. Check the latest terms on each card's official page."
           },
           {
-            "q": "Can I download font files from this tool?",
-            "a": "Font downloading is not provided here. Visit Google Fonts (fonts.google.com) to download files directly, or obtain fonts from their official source after reviewing the license terms."
+            "q": "Where do I download the font files?",
+            "a": "Each card's 'Official page' button opens the Google Fonts specimen page or the vendor repository (Pretendard, D2Coding)."
+          },
+          {
+            "q": "I chose weight 900 but the text looks thin.",
+            "a": "If the font has no 900 weight, the closest available weight is used. The 'Weights' line on the card shows available and applied weights."
+          },
+          {
+            "q": "Is my own font file uploaded to a server?",
+            "a": "No. It is read locally with the browser FontFace API and never sent anywhere. It is gone when you close the page."
           }
         ]
       }
@@ -15018,6 +15092,59 @@
     }
   },
   "minesweeper": {
+    "modeClassic": "Classic",
+    "modeDaily": "Daily Minesweeper",
+    "custom": "Custom",
+    "customWidth": "Width (5–30)",
+    "customHeight": "Height (5–24)",
+    "customMines": "Mines",
+    "apply": "Apply",
+    "customHint": "Up to (width×height − 9) mines — the 3×3 around your first click is always empty.",
+    "noGuess": "No-guess board",
+    "noGuessHint": "Only generates boards solvable by pure logic",
+    "noGuessFailed": "Couldn't find a no-guess board this time, so this is a regular board.",
+    "qmarks": "Question marks",
+    "qmarksHint": "Right-click cycle: flag → ? → none",
+    "minesLeft": "Mines left",
+    "flagMode": "Flag mode",
+    "flagModeOn": "Flag mode on",
+    "cellSize": "Cell size",
+    "boardLabel": "Minesweeper board {w}×{h}, {mines} mines. Arrow keys to move, Space to open, F to flag",
+    "cellLabel": "Row {r}, column {c}: {state}",
+    "cell": {
+      "closed": "closed",
+      "flag": "flag",
+      "wrongFlag": "wrong flag",
+      "question": "question mark",
+      "mine": "mine",
+      "empty": "empty"
+    },
+    "controlsHint": "Click to open · right-click/long-press to flag · click a number to open neighbors · keyboard: arrows · Space · F",
+    "newBest": "New best",
+    "bvps": "3BV/s",
+    "clicks": "Clicks",
+    "efficiency": "Efficiency",
+    "statsHint": "3BV = minimum clicks needed to solve this board. Efficiency = 3BV ÷ your clicks.",
+    "shareClassic": "ToolHub Minesweeper {diff} cleared in {time}!",
+    "cardLabel": "Minesweeper {diff} ({w}×{h}, {mines} mines) cleared",
+    "bestTimes": "Best times",
+    "daily": {
+      "title": "Daily Minesweeper #{day}",
+      "desc": "The same {diff} board for everyone, changing at midnight KST. It's solvable without guessing and the starting area is already open. One try per day!",
+      "played": "Played",
+      "winRate": "Win %",
+      "streak": "Streak",
+      "best": "Best",
+      "next": "Next board in",
+      "goClassic": "Play classic",
+      "copy": "Copy result",
+      "copied": "Copied",
+      "shareWon": "ToolHub Minesweeper #{day} {diff} {time}",
+      "shareLost": "ToolHub Minesweeper #{day} {diff} 💥 {pct}%",
+      "cardLabel": "Daily Minesweeper #{day} · {diff}",
+      "cardLost": "Boom at {pct}%",
+      "cardStreak": "{n}-day streak"
+    },
     "title": "Minesweeper",
     "description": "Clear all safe cells without hitting a mine!",
     "mines": "Mines",
@@ -15029,23 +15156,33 @@
     "youWin": "You Win!",
     "newGame": "New Game",
     "guide": {
+      "records": {
+        "title": "Records & stats",
+        "items": [
+          "Time is measured from your first click to 1/100 s",
+          "3BV is the minimum number of clicks needed; higher 3BV/s means a faster solve",
+          "Efficiency above 100% means you used chording well",
+          "Best times and daily stats are saved in this browser"
+        ]
+      },
       "title": "Game Guide",
       "howToPlay": {
         "title": "How to Play",
         "items": [
-          "Left click to reveal a cell",
-          "Right click (or long press) to place a flag",
-          "Numbers indicate how many mines are in adjacent cells",
-          "Reveal all safe cells to win"
+          "Left click (tap) to open a cell. The first click is always safe and opens an area",
+          "Right click or long-press (0.35 s) to flag. On mobile, turn on Flag mode to flag with a tap",
+          "Click an opened number (or press both / middle button) to open its neighbors when the flags match",
+          "Keyboard: focus the board, move with arrows, Space/Enter to open, F to flag",
+          "If the expert board is larger than your screen, shrink it with the Cell size slider or drag to pan"
         ]
       },
       "tips": {
         "title": "Strategy Tips",
         "items": [
-          "The first click is always safe",
-          "Start from corners and edges for better odds",
-          "If a number matches its flag count, surrounding cells are safe",
-          "Leave uncertain cells unflagged rather than guessing"
+          "When a number equals its adjacent flags, the rest are safe. Click the number to open them all",
+          "Learn patterns like 1-2-1 and 1-2-2-1 to clear edges quickly",
+          "Turn on No-guess board to solve with logic alone, no luck needed",
+          "Only flag where you need to chord. Fewer clicks means higher efficiency"
         ]
       },
       "guide": {
@@ -15079,16 +15216,24 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I hit a mine on my first click?",
-            "a": "No. The first click is always safe — mines are placed after your first move and never directly adjacent to it."
+            "q": "Can I hit a mine on the first click?",
+            "a": "No. No mines are placed on the first cell or its 8 neighbors, so the first click is always safe and opens an area."
           },
           {
-            "q": "How do I place a flag?",
-            "a": "Right-click on desktop or long-press on mobile to place a flag on a suspected mine cell."
+            "q": "What is a no-guess board?",
+            "a": "After generating a board we check that it can be solved with basic deduction rules; if not, we regenerate. You never face a 50:50 guess."
+          },
+          {
+            "q": "Is the daily board the same for everyone?",
+            "a": "Yes. Everyone gets the same intermediate board for the KST date, with one try per day and a shareable result."
+          },
+          {
+            "q": "What are 3BV and efficiency?",
+            "a": "3BV is the minimum clicks needed to solve the board; efficiency is 3BV divided by your clicks. Good chording can push it above 100%."
           },
           {
             "q": "When does the timer start?",
-            "a": "The timer starts the moment you click the first cell. Try to beat your best clear time!"
+            "a": "On your first opened cell, measured to 1/100 of a second."
           }
         ]
       }
@@ -16279,8 +16424,63 @@
     }
   },
   "numberBaseball": {
+    "loading": "Loading…",
+    "ruleLine": "{n} digits · {range} · no repeats",
+    "remainingTries": "Tries left",
+    "currentGuess": "Current guess",
+    "errorZero": "0 is not used in this game",
+    "errorRepeat": "You already tried that number",
+    "backspace": "Delete",
+    "keyboardHint": "Type with number keys, Enter to submit, Backspace to delete",
+    "lost": "Out of tries",
+    "answer": "Answer",
+    "historyEmpty": "Enter your first guess. Starting with all-different digits gives you the most information.",
+    "outShort": "Out",
+    "sbShort": "{s}S {b}B",
+    "legendLine": "S strike (right digit, right spot) · B ball (right digit, wrong spot) · Out (no shared digits)",
+    "candidates": "{n} candidates still match every result so far",
+    "showCandidates": "Show remaining candidates",
+    "peek": "Reveal one possible candidate (costs 1 try)",
+    "peekNote": "A candidate may or may not be the answer. Peeks are recorded and shown as 💡 in your shared result.",
+    "peeked": "Peeked:",
+    "close": "Close",
+    "memo": {
+      "title": "Notepad",
+      "help": "Tap a digit to cycle ❌ not in → ⭕ in → ❓ unsure → clear. Marks also show on the number pad.",
+      "clear": "Clear notes",
+      "x": "not in",
+      "o": "in",
+      "maybe": "unsure",
+      "none": "no mark"
+    },
+    "daily": {
+      "tab": "Daily Baseball",
+      "tabWithDay": "Daily Baseball #{day}",
+      "next": "Next puzzle in",
+      "goPractice": "Practice",
+      "copyResult": "Copy result",
+      "copied": "Copied",
+      "shareTitle": "ToolHub Number Baseball #{day}",
+      "scoreWin": "{n} tries",
+      "scoreLose": "failed",
+      "cardLabel": "Daily Number Baseball #{day}",
+      "cardWon": "Solved in {n}",
+      "cardLost": "Not this time",
+      "cardStreak": "{n}-day streak",
+      "about": "The daily puzzle changes at midnight KST and everyone gets the same 4-digit number (1–9, no repeats). One try per day — crack it within 10 guesses."
+    },
+    "practice": {
+      "tab": "Practice",
+      "len": "{n} digits",
+      "digitsUsed": "Digits",
+      "noZero": "1–9",
+      "withZero": "0–9 (with 0)",
+      "limit": "Try limit",
+      "limitN": "{n} tries",
+      "unlimited": "Unlimited"
+    },
     "title": "Number Baseball",
-    "description": "A brain game where you deduce hidden numbers using strike, ball, and out judgments.",
+    "description": "Deduce the hidden number from strikes and balls. Play the daily puzzle everyone shares, or practice with custom rules.",
     "difficulty": "Difficulty",
     "difficultyLabel": "Select Difficulty",
     "easy": "Easy",
@@ -16297,12 +16497,12 @@
     "ballDesc": "Correct digit in wrong position",
     "outDesc": "Digit not in the number",
     "attempt": "Attempt",
-    "currentAttempts": "Current attempts",
+    "currentAttempts": "Tries",
     "times": "times",
     "history": "Guess History",
-    "hint": "Show Hint",
+    "hint": "Hints",
     "hintUsed": "Hint Used",
-    "hintAvailableAfter": "attempts before hint available",
+    "hintAvailableAfter": "{n} more guesses to unlock hints",
     "hintReveal": "Digit #{pos} is {digit}",
     "newGame": "New Game",
     "gameWon": "Correct!",
@@ -16313,6 +16513,12 @@
     "errorIncomplete": "Fill in all digits",
     "errorLeadingZero": "First digit cannot be 0",
     "stats": {
+      "played": "Played",
+      "winRate": "Win %",
+      "current": "Streak",
+      "maxStreak": "Max streak",
+      "distribution": "Guess distribution",
+      "distributionNote": "Daily results are stored only in this browser.",
       "title": "Statistics",
       "gamesPlayed": "Games Played",
       "avgAttempts": "Avg. Attempts",
@@ -16324,12 +16530,11 @@
       "rules": {
         "title": "Game Rules",
         "items": [
-          "The computer picks a number with unique digits",
-          "You guess the number and get judgment results",
-          "Strike: Correct digit in correct position",
-          "Ball: Correct digit in wrong position",
-          "Out: Digit not in the number",
-          "Goal: Guess the number in minimum attempts"
+          "Guess a secret number made of distinct digits (daily puzzle: 4 digits, 1–9)",
+          "Right digit in the right spot is a strike (S); right digit in the wrong spot is a ball (B)",
+          "No shared digits at all is an out",
+          "Practice mode lets you pick 3/4/5 digits, whether 0 is used, and a try limit",
+          "After 3 guesses you can see how many candidates remain, or spend one try to reveal a possible candidate"
         ]
       },
       "example": {
@@ -16344,10 +16549,10 @@
       "tips": {
         "title": "Strategy Tips",
         "items": [
-          "Use unique digits for your first guess",
-          "Remember and eliminate digits judged as Out",
-          "Use Ball judgments to narrow down positions",
-          "Use the hint after 5+ attempts"
+          "Use two non-overlapping guesses first (e.g. 1234, 5678) to find which digits are in",
+          "Mark every digit from an out with ❌ in the notepad",
+          "Never put a ball digit back in the same spot — that spot is ruled out",
+          "When stuck, check the remaining candidate count and pick a guess that splits them best"
         ]
       },
       "guide": {
@@ -16381,16 +16586,16 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "What is the best first guess?",
-            "a": "Starting with non-repeating digits like '1234' is a common strategy. The first result tells you which digits are and aren't in the answer, setting up efficient follow-up guesses."
+            "q": "When does the daily puzzle change?",
+            "a": "At midnight KST, and everyone gets the same number. Shared results show only 🟩 (strike) 🟨 (ball) ⬜ (out) counts, so no spoilers."
           },
           {
-            "q": "Can 0 appear in the first digit?",
-            "a": "By default, 0 does not appear in the first position. All digits in the answer are unique."
+            "q": "Can 0 be used?",
+            "a": "The daily puzzle uses 1–9 only. In practice mode, choose '0–9' and 0 may appear in any position."
           },
           {
-            "q": "How many guesses is considered good?",
-            "a": "A 4-digit game can always be solved in 7 guesses or fewer. Solving in 5 or fewer is considered excellent."
+            "q": "How many guesses is good?",
+            "a": "A good player usually cracks a 4-digit (1–9) number in 5–6 guesses, and around 7 at most. Solving in 5 or less is excellent."
           }
         ]
       }
@@ -20470,8 +20675,66 @@
     "disclaimer": "This tool is for reference only and cannot replace professional measuring equipment. Accuracy varies by device sensor quality, and the compass may be affected by nearby magnetic fields."
   },
   "metronome": {
+    "beatPattern": "Beat accent pattern",
+    "beatPatternHint": "Tap a dot to cycle accent → normal → mute",
+    "beatAria": "Beat {n}: {level} (tap to change)",
+    "accentLevels": {
+      "a": "Accent",
+      "n": "Normal",
+      "m": "Muted"
+    },
+    "bpmUnit": "BPM",
+    "bpmChange": "BPM {n}",
+    "play": "Play",
+    "stop": "Stop",
+    "countingIn": "Count-in…",
+    "barCount": "Bar {n}",
+    "gapBar": "Silent — keep counting",
+    "keyboardShort": "Space to start · ↑↓ to change BPM",
+    "tapCount": "{n} taps",
+    "custom": "Custom",
+    "beatsPerBar": "Beats per bar",
+    "noteValue": "Note value",
+    "noteHint": "BPM counts 1/{unit} notes (one click = one 1/{unit} note).",
+    "subdivision": "Subdivision",
+    "subdivisions": {
+      "none": "None",
+      "eighth": "8ths",
+      "triplet": "Triplets",
+      "sixteenth": "16ths",
+      "swing": "Swing"
+    },
+    "sound": "Sound",
+    "sounds": {
+      "click": "Click",
+      "wood": "Woodblock",
+      "beep": "Beep"
+    },
+    "volume": "Volume",
+    "countIn": "Count-in",
+    "bars": "{n} bar(s)",
+    "off": "Off",
+    "flash": "Screen flash",
+    "flashHint": "See the beat silently (use with volume 0)",
+    "practice": "Practice tools",
+    "trainer": "Speed trainer",
+    "trainerHint": "Automatically raises BPM every few bars",
+    "trStart": "Start BPM",
+    "trTarget": "Target BPM",
+    "trStep": "Step (BPM)",
+    "trEvery": "Every N bars",
+    "trainerStatus": "Trainer {from} → {to} BPM · {step} every {every} bars",
+    "trainerNext": "{n} bar(s) to next step",
+    "gap": "Random mute",
+    "gapHint": "Randomly silences whole bars to train your internal clock",
+    "stopAfter": "Auto stop",
+    "stopAfterHint": "Stops after your practice time",
+    "minutes": "{n} min",
+    "keyboardHint": "Keyboard: Space play/stop · ↑↓ BPM ±1 (Shift ±5) · T tap tempo. Settings are saved in this browser and can be shared with the link below.",
+    "shareLabel": "Metronome preset",
+    "shareText": "Practice with this metronome preset: {bpm} BPM · {ts}",
     "title": "Metronome",
-    "description": "Practice with an online metronome. BPM control, time signatures, tap tempo, vibration support.",
+    "description": "An accurate metronome for piano, guitar, drums and choir. Time signatures, subdivisions, per-beat accents, tap tempo, speed trainer and random mute.",
     "vibrationSupport": "Vibration",
     "tapTempo": "Tap Tempo",
     "settings": "Settings",
@@ -20480,6 +20743,7 @@
     "vibration": "Vibration feedback",
     "presets": "Tempo Presets",
     "tempos": {
+      "prestissimo": "Prestissimo",
       "grave": "Grave",
       "largo": "Largo",
       "adagio": "Adagio",
@@ -20490,6 +20754,25 @@
       "presto": "Presto"
     },
     "guide": {
+      "howToUse": {
+        "title": "How to use",
+        "items": [
+          "Start/stop with the play button or the Space key.",
+          "Change BPM with ±1/±5, the slider or ↑↓ (Shift for ±5). Changes apply instantly while playing.",
+          "Tap along 4+ times with Tap Tempo (T key) to get the average BPM. Pausing 2 seconds starts a new measurement.",
+          "Pick a time signature and subdivision (8ths, triplets, 16ths, swing), then tap beat dots to set accent/normal/mute.",
+          "In Practice tools, enable the speed trainer, random mute or auto stop, and add a count-in bar."
+        ]
+      },
+      "howItWorks": {
+        "title": "Accuracy and how it works",
+        "items": [
+          "A 25 ms timer schedules clicks due in the next ~0.1 s on the AudioContext clock (the A Tale of Two Clocks pattern).",
+          "Click timing comes from the audio hardware clock, so rendering or other work cannot shift the intervals.",
+          "The beat display is drawn when the click is actually heard (output latency compensated).",
+          "While playing it requests a screen wake lock, and extends the schedule window to 1.5 s when the tab is in the background."
+        ]
+      },
       "title": "User Guide",
       "how": {
         "title": "How to Use",
@@ -20546,31 +20829,36 @@
         }
       },
       "whatIs": {
-        "title": "What is the Metronome?",
-        "description": "An online metronome that provides a steady beat for music practice. Adjust BPM (beats per minute), set time signatures like 4/4 or 3/4, and use the tap function to measure the tempo of any song. Works for all instruments — piano, guitar, drums, voice, and dance practice. No installation required; runs directly in your browser."
+        "title": "What is a metronome?",
+        "description": "A practice tool that clicks at a steady tempo. This metronome schedules clicks ahead on the audio clock, so timing stays steady even if the page stutters. Time signatures, subdivisions, per-beat accents, a speed trainer and random mute cover piano, guitar, drums and choir practice."
       },
       "tips": {
-        "title": "Pro Tips",
+        "title": "Tips by instrument",
         "items": [
-          "When learning a new piece, start at 70–80% of your target BPM and gradually increase as accuracy improves.",
-          "Use the tap tempo feature to measure the BPM of any song you want to play along with.",
-          "Use accent settings to emphasize backbeats (beats 2 and 4) for a more natural groove feel."
+          "Piano: start new pieces at 60-70% of the target tempo and let the speed trainer add 2-4 BPM every 4 bars.",
+          "Guitar: turn on 16ths and match each alternate pick stroke to a click for an even picking hand.",
+          "Drums: mute beats 1 and 3 to feel the backbeat, and use random mute to hold time on your own.",
+          "Choir: add a one-bar count-in, and turn on screen flash to share the beat without sound."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "The metronome seems to drift — is this normal?",
-            "a": "With many open browser tabs or high system load, timing can become slightly irregular. Close unnecessary tabs or enable vibration mode for a more consistent beat feel."
+            "q": "What does BPM count in 6/8?",
+            "a": "The note value in the bottom number. In 6/8 each click is an eighth note, with accents on 1 and 4. For dotted quarter = 60, set 180 BPM."
           },
           {
-            "q": "What BPM range is supported?",
-            "a": "Generally 20 BPM (very slow Largo) to 240 BPM (very fast Prestissimo)."
+            "q": "No sound on iPhone",
+            "a": "iOS silences web audio when the ring/silent switch is on. Turn silent mode off and press play again."
           },
           {
-            "q": "What are the BPM ranges for classical tempo markings?",
-            "a": "Largo (40–60), Adagio (66–76), Andante (76–108), Moderato (108–120), Allegro (120–156), Presto (168–200) are the commonly accepted BPM ranges."
+            "q": "Does it keep playing in another tab?",
+            "a": "In most browsers, yes. Power saving or browser policies may delay tempo changes or pause it in the background, so keep this tab in front for the most accurate practice."
+          },
+          {
+            "q": "Can I save or share settings?",
+            "a": "Settings are saved automatically in this browser. The share link contains BPM, time signature, accents, subdivision and trainer settings so students or choir members get the exact same setup."
           }
         ]
       }

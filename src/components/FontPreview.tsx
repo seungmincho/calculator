@@ -1,103 +1,200 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, BookOpen, Search, Columns, Type, X, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Copy, Check, Search, Star, Pin, X, ExternalLink, Upload, Link2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
+import {
+  FONTS, CATS, MAX_PIN, LOCAL_EXT, LOCAL_MAX_BYTES, type FontCat, type FontInfo,
+  fontStack, nearestWeight, previewCssUrl, cssSnippet, filterFonts, parseIds, togglePin, clampNum,
+} from '@/utils/fontPreview'
 
-interface Font {
-  name: string
-  category: 'sansSerif' | 'serif' | 'monospace' | 'handwriting' | 'display'
-  google: boolean
+const FAV_KEY = 'fontPreview.favs'
+const PRESETS = ['ganada', 'greeting', 'mixed', 'paragraph'] as const
+const WEIGHTS = [100, 200, 300, 400, 500, 600, 700, 800, 900]
+const DEF = { size: 40, weight: 400, lh: 1.5, ls: 0 }
+type Align = 'left' | 'center' | 'right'
+// 번역 배열이 없을 때 크래시 대신 빈 목록
+const arr = <T,>(v: unknown): T[] => (Array.isArray(v) ? v : [])
+
+interface Look { size: number; weight: number; lh: number; ls: number; align: Align; dark: boolean }
+
+/** 같은 href가 이미 있으면 건너뛰고, 새 CSS가 로드되면 같은 폰트의 이전 CSS 제거 (깜빡임 방지) */
+function ensureCss(key: string, url: string) {
+  if ([...document.querySelectorAll('link[rel="stylesheet"]')].some(l => l.getAttribute('href') === url)) return
+  const old = document.querySelectorAll(`link[data-fp="${key}"]`)
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = url
+  link.dataset.fp = key
+  link.onload = () => old.forEach(l => l.remove())
+  document.head.appendChild(link)
 }
 
-const FONTS: Font[] = [
-  // Korean fonts
-  { name: 'Noto Sans KR', category: 'sansSerif', google: true },
-  { name: 'Pretendard', category: 'sansSerif', google: false },
-  { name: 'Nanum Gothic', category: 'sansSerif', google: true },
-  { name: 'Nanum Myeongjo', category: 'serif', google: true },
-  { name: 'Black Han Sans', category: 'display', google: true },
-  { name: 'Jua', category: 'display', google: true },
-  { name: 'Gamja Flower', category: 'handwriting', google: true },
-  { name: 'Gothic A1', category: 'sansSerif', google: true },
-  { name: 'Do Hyeon', category: 'display', google: true },
-  { name: 'Nanum Pen Script', category: 'handwriting', google: true },
-  { name: 'D2Coding', category: 'monospace', google: false },
-  // English/System fonts
-  { name: 'Arial', category: 'sansSerif', google: false },
-  { name: 'Georgia', category: 'serif', google: false },
-  { name: 'Courier New', category: 'monospace', google: false },
-  { name: 'Roboto', category: 'sansSerif', google: true },
-  { name: 'Open Sans', category: 'sansSerif', google: true },
-  { name: 'Lato', category: 'sansSerif', google: true },
-  { name: 'Playfair Display', category: 'serif', google: true },
-  { name: 'JetBrains Mono', category: 'monospace', google: true },
-]
+function useInView<T extends Element>() {
+  const ref = useRef<T>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (!('IntersectionObserver' in window)) { setInView(true); return }
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { rootMargin: '300px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return [ref, inView] as const
+}
 
-const CATEGORY_MAP: Record<string, Font['category'] | 'all'> = {
-  all: 'all',
-  sansSerif: 'sansSerif',
-  serif: 'serif',
-  monospace: 'monospace',
-  handwriting: 'handwriting',
-  display: 'display',
+const previewStyle = (family: string, weight: number, look: Look): React.CSSProperties => ({
+  fontFamily: family,
+  fontSize: `${look.size}px`,
+  fontWeight: weight,
+  lineHeight: look.lh,
+  letterSpacing: `${look.ls / 100}em`,
+  textAlign: look.align,
+  background: look.dark ? '#191f28' : '#ffffff',
+  color: look.dark ? '#f2f4f6' : '#191f28',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'keep-all',
+  overflowWrap: 'anywhere',
+})
+
+function FontCard({ font, text, subset, look, pinned, pinFull, fav, copied, onPin, onFav, onCopy }: {
+  font: FontInfo; text: string; subset: string; look: Look; pinned: boolean; pinFull: boolean; fav: boolean
+  copied: boolean; onPin: () => void; onFav: () => void; onCopy: () => void
+}) {
+  const t = useTranslations('fontPreview')
+  const [ref, inView] = useInView<HTMLDivElement>()
+  const applied = nearestWeight(font.weights, look.weight)
+  useEffect(() => {
+    if (inView) ensureCss(font.id, previewCssUrl(font, look.weight, subset))
+  }, [inView, font, look.weight, subset])
+
+  const iconBtn = 'p-2 rounded-lg transition-colors'
+  return (
+    <div ref={ref} className="ui-card p-5 space-y-3 min-w-0">
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="font-semibold text-fg">{font.name}</h3>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-sub">{t(`cat.${font.cat}`)}</span>
+          </div>
+          <p className="text-xs text-muted mt-0.5 truncate">{font.ko} · {font.designer}</p>
+        </div>
+        <div className="flex gap-1 shrink-0">
+          <button onClick={onFav} aria-pressed={fav} aria-label={fav ? t('unfavorite') : t('favorite')} title={fav ? t('unfavorite') : t('favorite')}
+            className={`${iconBtn} ${fav ? 'text-primary bg-primary-soft' : 'text-faint hover:bg-soft'}`}>
+            <Star className="w-4 h-4" fill={fav ? 'currentColor' : 'none'} />
+          </button>
+          <button onClick={onPin} disabled={!pinned && pinFull} aria-pressed={pinned}
+            aria-label={pinned ? t('unpin') : t('pin')} title={!pinned && pinFull ? t('pinFull') : pinned ? t('unpin') : t('pin')}
+            className={`${iconBtn} disabled:opacity-40 ${pinned ? 'bg-primary text-white' : 'text-sub hover:bg-soft'}`}>
+            <Pin className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+      <div className="p-4 rounded-xl border border-line min-h-[5rem]" style={previewStyle(fontStack(font), applied, look)}>
+        {text}
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
+        <span>
+          {t('weightsAvail')} {font.weights.join('·')}
+          {applied !== look.weight && <> ({t('weightApplied', { w: applied })})</>} · {font.license}
+        </span>
+        <div className="flex gap-1.5">
+          <button onClick={onCopy} className="bg-soft hover:bg-subtle text-body rounded-lg px-2.5 py-1.5 font-medium inline-flex items-center gap-1">
+            {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? t('copiedCSS') : t('copyCSS')}
+          </button>
+          <a href={font.link} target="_blank" rel="noopener noreferrer"
+            className="bg-soft hover:bg-subtle text-body rounded-lg px-2.5 py-1.5 font-medium inline-flex items-center gap-1">
+            <ExternalLink className="w-3.5 h-3.5" /> {t('official')}
+          </a>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function FontPreview() {
   const t = useTranslations('fontPreview')
+  const searchParams = useSearchParams()
+  const presetText = useCallback((p: typeof PRESETS[number]) => t(`presets.${p}.text`), [t])
+  const defaultText = presetText('ganada')
 
-  const [sampleText, setSampleText] = useState('다람쥐 헌 쳇바퀴에 타고파 The quick brown fox 0123456789')
-  const [fontSize, setFontSize] = useState(24)
-  const [fontWeight, setFontWeight] = useState(400)
-  const [lineHeight, setLineHeight] = useState(1.5)
-  const [letterSpacing, setLetterSpacing] = useState(0)
-  const [textColor, setTextColor] = useState('#000000')
-  const [bgColor, setBgColor] = useState('#ffffff')
-  const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right'>('left')
-  const [selectedFont, setSelectedFont] = useState<Font>(FONTS[0])
-  const [category, setCategory] = useState<'all' | Font['category']>('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [compareList, setCompareList] = useState<Font[]>([])
+  const [text, setText] = useState(defaultText)
+  const [subset, setSubset] = useState(defaultText)
+  const [look, setLook] = useState<Look>({ ...DEF, align: 'left', dark: false })
+  const [cat, setCat] = useState<FontCat | 'all'>('all')
+  const [q, setQ] = useState('')
+  const [favOnly, setFavOnly] = useState(false)
+  const [favs, setFavs] = useState<string[]>([])
+  const [pins, setPins] = useState<string[]>([])
+  const [ready, setReady] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [loadedFonts, setLoadedFonts] = useState<Set<string>>(new Set())
+  const [local, setLocal] = useState<{ name: string; family: string } | null>(null)
+  const [localErr, setLocalErr] = useState('')
+  const [dragOver, setDragOver] = useState(false)
+  const localFace = useRef<FontFace | null>(null)
 
-  // Load Google Fonts dynamically
+  const set = <K extends keyof Look>(k: K, v: Look[K]) => setLook(l => ({ ...l, [k]: v }))
+
+  // 초기화: URL > 기본값, 즐겨찾기는 localStorage. 한 번만.
   useEffect(() => {
-    const fontsToLoad = new Set<string>()
+    if (ready) return
+    const p = searchParams
+    const tx = p.get('t')
+    if (tx) { setText(tx); setSubset(tx) }
+    setLook(l => ({
+      ...l,
+      size: clampNum(p.get('s'), 12, 120, DEF.size),
+      weight: nearestWeight(WEIGHTS, clampNum(p.get('w'), 100, 900, DEF.weight)),
+      lh: clampNum(p.get('lh'), 0.8, 3, DEF.lh),
+      ls: clampNum(p.get('ls'), -10, 20, DEF.ls),
+      dark: p.get('bg') === 'dark',
+    }))
+    setPins(parseIds(p.get('f')))
+    try {
+      const saved = JSON.parse(localStorage.getItem(FAV_KEY) ?? '[]')
+      if (Array.isArray(saved)) setFavs(saved.filter((x): x is string => typeof x === 'string'))
+    } catch { /* 저장소 차단 */ }
+    setReady(true)
+  }, [searchParams, ready])
 
-    // Add selected font
-    if (selectedFont.google && !loadedFonts.has(selectedFont.name)) {
-      fontsToLoad.add(selectedFont.name)
-    }
+  // URL 동기화 (기본값은 생략)
+  useEffect(() => {
+    if (!ready) return
+    const url = new URL(window.location.href)
+    const put = (k: string, v: string | null) => (v == null ? url.searchParams.delete(k) : url.searchParams.set(k, v))
+    put('t', text === defaultText ? null : text.slice(0, 1000))
+    put('s', look.size === DEF.size ? null : String(look.size))
+    put('w', look.weight === DEF.weight ? null : String(look.weight))
+    put('lh', look.lh === DEF.lh ? null : String(look.lh))
+    put('ls', look.ls === DEF.ls ? null : String(look.ls))
+    put('bg', look.dark ? 'dark' : null)
+    put('f', pins.length ? pins.join(',') : null)
+    window.history.replaceState(window.history.state, '', url)
+  }, [ready, text, defaultText, look, pins])
 
-    // Add compare fonts
-    compareList.forEach(font => {
-      if (font.google && !loadedFonts.has(font.name)) {
-        fontsToLoad.add(font.name)
-      }
-    })
+  // 서브셋 CSS는 입력이 멈춘 뒤 갱신
+  useEffect(() => {
+    const id = setTimeout(() => setSubset(text), 400)
+    return () => clearTimeout(id)
+  }, [text])
 
-    if (fontsToLoad.size > 0) {
-      fontsToLoad.forEach(fontName => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@100;300;400;500;700;900&display=swap`
-        link.id = `font-${fontName.replace(/ /g, '-')}`
-        document.head.appendChild(link)
-      })
+  const toggleFav = (id: string) => setFavs(prev => {
+    const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(next)) } catch { /* 저장소 차단 */ }
+    return next
+  })
 
-      setLoadedFonts(prev => new Set([...prev, ...fontsToLoad]))
-    }
-  }, [selectedFont, compareList, loadedFonts])
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
+  const copyToClipboard = useCallback(async (value: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
+        await navigator.clipboard.writeText(value)
       } else {
         const textarea = document.createElement('textarea')
-        textarea.value = text
+        textarea.value = value
         textarea.style.position = 'fixed'
         textarea.style.left = '-999999px'
         document.body.appendChild(textarea)
@@ -105,436 +202,214 @@ export default function FontPreview() {
         document.execCommand('copy')
         document.body.removeChild(textarea)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
+    } catch { /* 무시 */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
+
+  const loadLocal = async (file?: File) => {
+    if (!file) return
+    setLocalErr('')
+    if (!LOCAL_EXT.test(file.name)) { setLocalErr(t('local.badType')); return }
+    if (file.size > LOCAL_MAX_BYTES) { setLocalErr(t('local.tooLarge')); return }
+    try {
+      const family = `fp-local-${Date.now()}`
+      const face = new FontFace(family, await file.arrayBuffer())
+      await face.load()
+      if (localFace.current) document.fonts.delete(localFace.current)
+      document.fonts.add(face)
+      localFace.current = face
+      setLocal({ name: file.name, family })
     } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
+      setLocalErr(t('local.error'))
     }
-  }, [])
+  }
+  const closeLocal = () => {
+    if (localFace.current) document.fonts.delete(localFace.current)
+    localFace.current = null
+    setLocal(null)
+  }
 
-  const copyCSS = useCallback(() => {
-    const fallback = selectedFont.category === 'serif' ? 'serif' :
-                     selectedFont.category === 'monospace' ? 'monospace' : 'sans-serif'
-    const css = `font-family: '${selectedFont.name}', ${fallback};
-font-size: ${fontSize}px;
-font-weight: ${fontWeight};
-line-height: ${lineHeight};
-letter-spacing: ${letterSpacing}px;
-text-align: ${textAlign};
-color: ${textColor};
-background-color: ${bgColor};`
+  const list = useMemo(() => filterFonts(FONTS, { cat, q, favOnly, favs }), [cat, q, favOnly, favs])
+  const pinned = useMemo(() => pins.map(id => FONTS.find(f => f.id === id)!).filter(Boolean), [pins])
 
-    copyToClipboard(css, 'css')
-  }, [selectedFont, fontSize, fontWeight, lineHeight, letterSpacing, textAlign, textColor, bgColor, copyToClipboard])
+  const card = (font: FontInfo, key: string) => (
+    <FontCard key={key} font={font} text={text} subset={subset} look={look}
+      pinned={pins.includes(font.id)} pinFull={pins.length >= MAX_PIN} fav={favs.includes(font.id)}
+      copied={copiedId === `css-${font.id}`}
+      onPin={() => setPins(p => togglePin(p, font.id))} onFav={() => toggleFav(font.id)}
+      onCopy={() => copyToClipboard(cssSnippet(font, look.weight), `css-${font.id}`)} />
+  )
 
-  const filteredFonts = FONTS.filter(font => {
-    const matchesCategory = category === 'all' || font.category === category
-    const matchesSearch = searchQuery === '' ||
-      font.name.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
-
-  const toggleCompare = useCallback((font: Font) => {
-    setCompareList(prev => {
-      const exists = prev.find(f => f.name === font.name)
-      if (exists) {
-        return prev.filter(f => f.name !== font.name)
-      } else if (prev.length < 4) {
-        return [...prev, font]
-      }
-      return prev
-    })
-  }, [])
-
-  const getFontStyle = (font: Font) => ({
-    fontFamily: `'${font.name}', ${
-      font.category === 'serif' ? 'serif' :
-      font.category === 'monospace' ? 'monospace' : 'sans-serif'
-    }`,
-    fontSize: `${fontSize}px`,
-    fontWeight,
-    lineHeight,
-    letterSpacing: `${letterSpacing}px`,
-    textAlign,
-    color: textColor,
-    backgroundColor: bgColor,
-  })
+  const chip = (active: boolean) =>
+    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const label = 'block text-sm font-medium text-body mb-2'
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Sample Text Input */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <label className="block text-sm font-medium text-body mb-2">
-          {t('sampleText')}
-        </label>
-        <textarea
-          value={sampleText}
-          onChange={(e) => setSampleText(e.target.value)}
-          className={`w-full px-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-none`}
-          rows={2}
-          placeholder={t('defaultText')}
-        />
-      </div>
-
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel: Controls */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Font Settings */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              설정
-            </h2>
-
-            {/* Font Size */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('fontSize')}: {fontSize}px
-              </label>
-              <input
-                type="range"
-                min="12"
-                max="72"
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Font Weight */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('fontWeight')}: {fontWeight}
-              </label>
-              <input
-                type="range"
-                min="100"
-                max="900"
-                step="100"
-                value={fontWeight}
-                onChange={(e) => setFontWeight(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Line Height */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('lineHeight')}: {lineHeight.toFixed(1)}
-              </label>
-              <input
-                type="range"
-                min="1"
-                max="3"
-                step="0.1"
-                value={lineHeight}
-                onChange={(e) => setLineHeight(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Letter Spacing */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('letterSpacing')}: {letterSpacing}px
-              </label>
-              <input
-                type="range"
-                min="-2"
-                max="10"
-                step="0.5"
-                value={letterSpacing}
-                onChange={(e) => setLetterSpacing(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Text Alignment */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('textAlign')}
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setTextAlign('left')}
-                  className={`flex-1 p-2 rounded-lg border ${
-                    textAlign === 'left'
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-soft text-body border-line-strong'
-                  }`}
-                >
-                  <AlignLeft className="w-5 h-5 mx-auto" />
-                </button>
-                <button
-                  onClick={() => setTextAlign('center')}
-                  className={`flex-1 p-2 rounded-lg border ${
-                    textAlign === 'center'
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-soft text-body border-line-strong'
-                  }`}
-                >
-                  <AlignCenter className="w-5 h-5 mx-auto" />
-                </button>
-                <button
-                  onClick={() => setTextAlign('right')}
-                  className={`flex-1 p-2 rounded-lg border ${
-                    textAlign === 'right'
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-soft text-body border-line-strong'
-                  }`}
-                >
-                  <AlignRight className="w-5 h-5 mx-auto" />
-                </button>
-              </div>
-            </div>
-
-            {/* Colors */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('textColor')}
-                </label>
-                <input
-                  type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="w-full h-10 rounded-lg cursor-pointer"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('bgColor')}
-                </label>
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                  className="w-full h-10 rounded-lg cursor-pointer"
-                />
-              </div>
-            </div>
-
-            {/* Copy CSS Button */}
-            <button
-              onClick={copyCSS}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
-            >
-              {copiedId === 'css' ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  {t('copiedCSS')}
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" />
-                  {t('copyCSS')}
-                </>
-              )}
-            </button>
+      {/* 텍스트 + 스타일 */}
+      <div className="ui-card p-6 space-y-5">
+        <div>
+          <label htmlFor="fp-text" className={label}>{t('sampleText')}</label>
+          <textarea id="fp-text" value={text} onChange={e => setText(e.target.value)} rows={2}
+            className="ui-field px-4 py-3 resize-y" />
+          <div className="flex flex-wrap items-center gap-2 mt-2">
+            <span className="text-xs text-muted">{t('presetLabel')}</span>
+            {PRESETS.map(p => (
+              <button key={p} onClick={() => setText(presetText(p))} className={chip(text === presetText(p))}>
+                {t(`presets.${p}.name`)}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Category Filter */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-fg mb-3">
-              {t('category')}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(CATEGORY_MAP).map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setCategory(CATEGORY_MAP[cat])}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    category === CATEGORY_MAP[cat]
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {t(cat)}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+          <div>
+            <label htmlFor="fp-size" className={label}>{t('fontSize')}: {look.size}px</label>
+            <input id="fp-size" type="range" min={12} max={120} value={look.size}
+              onChange={e => set('size', Number(e.target.value))} className="w-full accent-blue-600" />
+          </div>
+          <div>
+            <label htmlFor="fp-weight" className={label}>{t('fontWeight')}</label>
+            <select id="fp-weight" value={look.weight} onChange={e => set('weight', Number(e.target.value))} className="ui-field px-3 py-2">
+              {WEIGHTS.map(w => <option key={w} value={w}>{w}</option>)}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="fp-lh" className={label}>{t('lineHeight')}: {look.lh.toFixed(1)}</label>
+            <input id="fp-lh" type="range" min={0.8} max={3} step={0.1} value={look.lh}
+              onChange={e => set('lh', Number(e.target.value))} className="w-full accent-blue-600" />
+          </div>
+          <div>
+            <label htmlFor="fp-ls" className={label}>{t('letterSpacing')}: {look.ls}%</label>
+            <input id="fp-ls" type="range" min={-10} max={20} step={1} value={look.ls}
+              onChange={e => set('ls', Number(e.target.value))} className="w-full accent-blue-600" />
+          </div>
+          <div>
+            <span className={label}>{t('textAlign')}</span>
+            <div className="flex gap-2">
+              {([['left', AlignLeft, 'alignLeft'], ['center', AlignCenter, 'alignCenter'], ['right', AlignRight, 'alignRight']] as const).map(([a, Icon, k]) => (
+                <button key={a} onClick={() => set('align', a)} aria-label={t(k)} aria-pressed={look.align === a}
+                  className={`flex-1 p-2 rounded-lg ${look.align === a ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                  <Icon className="w-5 h-5 mx-auto" />
                 </button>
               ))}
             </div>
           </div>
-
-          {/* Search */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('search')}
-                className={`w-full pl-10 pr-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
+          <div>
+            <span className={label}>{t('previewBg')}</span>
+            <div className="flex gap-2">
+              <button onClick={() => set('dark', false)} aria-pressed={!look.dark} className={`flex-1 ${chip(!look.dark)}`}>{t('light')}</button>
+              <button onClick={() => set('dark', true)} aria-pressed={look.dark} className={`flex-1 ${chip(look.dark)}`}>{t('dark')}</button>
             </div>
           </div>
-
-          {/* Compare Mode */}
-          {compareList.length > 0 && (
-            <div className="bg-subtle rounded-xl shadow-lg p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
-                  {t('compare')} ({compareList.length}/4)
-                </h3>
-                <button
-                  onClick={() => setCompareList([])}
-                  className="text-sm text-red-600 dark:text-red-400 hover:underline"
-                >
-                  {t('clearCompare')}
-                </button>
-              </div>
-              <div className="space-y-2">
-                {compareList.map((font) => (
-                  <div
-                    key={font.name}
-                    className="flex items-center justify-between bg-surface rounded-lg px-3 py-2"
-                  >
-                    <span className="text-sm text-fg">{font.name}</span>
-                    <button
-                      onClick={() => toggleCompare(font)}
-                      className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Right Panel: Font List or Compare View */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            {compareList.length === 0 ? (
-              /* Font List */
-              <>
-                <h2 className="text-lg font-semibold text-fg mb-4">
-                  {t('fonts')} ({filteredFonts.length})
-                </h2>
-                <div className="space-y-4 max-h-[800px] overflow-y-auto">
-                  {filteredFonts.map((font) => (
-                    <div
-                      key={font.name}
-                      className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                        selectedFont.name === font.name
-                          ? 'border-blue-600 bg-subtle'
-                          : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => setSelectedFont(font)}
-                            className="font-medium text-fg hover:text-blue-600 dark:hover:text-blue-400"
-                          >
-                            {font.name}
-                          </button>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-sub">
-                            {t(font.category)}
-                          </span>
-                          {!font.google && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-sub">
-                              System
-                            </span>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => toggleCompare(font)}
-                          className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                            compareList.find(f => f.name === font.name)
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                          }`}
-                        >
-                          <Columns className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <div
-                        style={getFontStyle(font)}
-                        className="p-4 rounded-lg"
-                      >
-                        {sampleText}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              /* Compare View */
-              <>
-                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  비교 보기
-                </h2>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {compareList.map((font) => (
-                    <div
-                      key={font.name}
-                      className="p-4 rounded-lg border-2 border-line"
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <h3 className="font-semibold text-fg">
-                            {font.name}
-                          </h3>
-                          <span className="text-xs text-muted">
-                            {t(font.category)}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => toggleCompare(font)}
-                          className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <div
-                        style={getFontStyle(font)}
-                        className="p-4 rounded-lg"
-                      >
-                        {sampleText}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+        <div className="flex justify-end">
+          <button onClick={() => copyToClipboard(window.location.href, 'link')} className="ui-btn-soft px-4 py-2 text-sm">
+            {copiedId === 'link' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
+            {copiedId === 'link' ? t('linkCopied') : t('shareLink')}
+          </button>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.usage.title')}
-            </h3>
-            <ul className="list-disc list-inside space-y-2 text-sub">
-              {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
+      {/* 나란히 비교 */}
+      {pinned.length > 0 && (
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-fg">{t('compareTitle', { n: pinned.length, max: MAX_PIN })}</h2>
+            <button onClick={() => setPins([])} className="text-sm text-sub hover:text-fg">{t('clearCompare')}</button>
+          </div>
+          <div className={`grid gap-4 ${pinned.length > 1 ? 'md:grid-cols-2' : ''}`}>
+            {pinned.map(f => card(f, `pin-${f.id}`))}
+          </div>
+          {pinned.length === 1 && <p className="text-sm text-muted">{t('compareHint')}</p>}
+        </section>
+      )}
+
+      {/* 필터 */}
+      <div className="ui-card p-4 space-y-3">
+        <div className="flex flex-wrap gap-2">
+          <button onClick={() => setCat('all')} className={chip(cat === 'all')}>{t('all')}</button>
+          {CATS.map(c => <button key={c} onClick={() => setCat(c)} className={chip(cat === c)}>{t(`cat.${c}`)}</button>)}
+          <button onClick={() => setFavOnly(v => !v)} aria-pressed={favOnly} className={`${chip(favOnly)} inline-flex items-center gap-1`}>
+            <Star className="w-3.5 h-3.5" fill={favOnly ? 'currentColor' : 'none'} /> {t('favOnly')} {favs.length > 0 && `(${favs.length})`}
+          </button>
+        </div>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
+          <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder={t('search')} aria-label={t('search')}
+            className="ui-field pl-10 pr-3 py-2.5" />
+        </div>
+      </div>
+
+      {/* 내 폰트 파일 */}
+      <div
+        onDragOver={e => { e.preventDefault(); setDragOver(true) }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={e => { e.preventDefault(); setDragOver(false); loadLocal(e.dataTransfer.files[0]) }}
+        className={`ui-card p-5 border-dashed ${dragOver ? 'border-primary bg-primary-soft' : ''}`}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-semibold text-fg">{t('local.title')}</h2>
+            <p className="text-xs text-muted mt-0.5">{t('local.hint')}</p>
+          </div>
+          <label className="ui-btn-soft px-4 py-2 text-sm cursor-pointer">
+            <Upload className="w-4 h-4" /> {t('local.choose')}
+            <input type="file" accept=".ttf,.otf,.woff,.woff2" className="sr-only"
+              onChange={e => { loadLocal(e.target.files?.[0]); e.target.value = '' }} />
+          </label>
+        </div>
+        {localErr && <p className="text-sm text-red-600 mt-3" role="alert">{localErr}</p>}
+        {local && (
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-medium text-fg truncate">{local.name}</span>
+              <button onClick={closeLocal} aria-label={t('local.remove')} className="p-1.5 rounded-lg text-sub hover:bg-soft"><X className="w-4 h-4" /></button>
+            </div>
+            <div className="p-4 rounded-xl border border-line" style={previewStyle(`'${local.family}'`, look.weight, look)}>{text}</div>
+          </div>
+        )}
+      </div>
+
+      {/* 폰트 목록 */}
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold text-fg">{t('fonts')} <span className="text-sm font-normal text-muted">{t('count', { n: list.length })}</span></h2>
+        {list.length === 0
+          ? <p className="ui-card p-8 text-center text-sm text-muted">{t('noResults')}</p>
+          : <div className="grid md:grid-cols-2 gap-4">{list.map(f => card(f, f.id))}</div>}
+      </section>
+
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div>
+          <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.whatIs.title')}</h3>
+          <p className="text-sub leading-relaxed">{t('guide.whatIs.description')}</p>
+        </div>
+        {(['usage', 'tips', 'license'] as const).map(s => (
+          <div key={s}>
+            <h3 className="text-lg font-semibold text-fg mb-2">{t(`guide.${s}.title`)}</h3>
+            <ul className="list-disc list-inside space-y-1.5 text-sub">
+              {arr<string>(t.raw(`guide.${s}.items`)).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="list-disc list-inside space-y-2 text-sub">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
+        ))}
+        <div>
+          <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {arr<{ q: string; a: string }>(t.raw('guide.faq.items')).map((f, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4">
+                <p className="font-medium text-fg">{f.q}</p>
+                <p className="text-sm text-sub mt-1">{f.a}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
