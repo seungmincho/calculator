@@ -168,8 +168,21 @@ export default function ToolsShowcase() {
         </div>
       )}
 
-      {/* Expanded content — 항상 HTML에 렌더(크롤러가 242개 도구 링크를 발견하도록), 접힘 상태는 hidden 속성으로만 숨김 */}
-      <div hidden={!isExpanded}>
+      {/* 접힘: 크롤러용 경량 링크 목록만 (카드 242개 = 페이지당 ~500KB라 펼칠 때만 렌더) */}
+      {!isExpanded && (
+        <nav hidden aria-label={t('toolsShowcase.title')}>
+          {categoryKeys.map((categoryKey) => (
+            <ul key={categoryKey}>
+              {menuConfig[categoryKey].items.map((item) => (
+                <li key={item.href}><a href={item.href}>{t(item.labelKey)}</a></li>
+              ))}
+            </ul>
+          ))}
+        </nav>
+      )}
+
+      {isExpanded && (
+      <div>
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           {t('toolsShowcase.title')}
@@ -274,6 +287,7 @@ export default function ToolsShowcase() {
         </button>
       </div>
       </div>
+      )}
     </section>
   )
 }
