@@ -33,9 +33,25 @@ interface CarrierData {
   note?: string
 }
 
+// 요금 기준일 · 출처 (개인 발송 기준, 2026-09-30 확인)
+const RATE_BASIS = '2026.09'
+const RATE_SOURCES: { label: string; url: string }[] = [
+  { label: '우정사업본부 소포요금', url: 'https://koreapost.go.kr/kpost/subIndex/201.do' },
+  { label: '우체국 방문접수 요금', url: 'https://parcel.epost.go.kr/parcel/use_guide/charge_1.jsp' },
+  { label: '롯데택배 요금안내', url: 'https://www.lotteglogis.com/mobile/reservation/feeinfo/write' },
+  { label: '로젠택배 요금안내', url: 'https://www.ilogen.com/web/personal/chargeInfo' },
+  { label: 'CJ대한통운 배송운임', url: 'https://www.cjlogistics.com/ko/utility/parcel-price' },
+  { label: 'GS25 중량별 운임', url: 'https://www.cvsnet.co.kr/service/national-delivery/use/contentsid/205/index.do' },
+  { label: 'GS25 반값택배', url: 'https://www.cvsnet.co.kr/service/slow-delivery/use/contentsid/274/index.do' },
+  { label: 'CU 반값택배 (ZDNet 2026.02)', url: 'https://zdnet.co.kr/view/?no=20260209092755' },
+  { label: '세븐일레븐 착한택배 (헤럴드경제 2026.04)', url: 'https://www.heraldk.com/article/2026040717030145483' },
+]
+
 const CARRIER_DATA: CarrierData[] = [
-  // ── 일반 택배사 ──
+  // ── 일반 택배사 ── (타권역 개인 요금. 동일권역은 보통 1,000원 저렴)
   {
+    // 구간(극소 2kg/80cm·소 5kg/100cm·중 10kg/120cm·대 15kg/140cm·특대 20kg/160cm, 최대 25kg)은 공식 운임검색·예약 페이지로 확인
+    // 미검증: 공식 페이지가 금액을 폼 제출 후에만 보여 줘 2026 금액 확인 못함(2025.4 기업택배만 인상, 개인요금 동결 보도)
     id: 'cj',
     name: 'CJ대한통운',
     serviceLabel: '방문접수',
@@ -50,9 +66,9 @@ const CARRIER_DATA: CarrierData[] = [
     ],
     maxWeight: 25, maxGirth: 160, cvsPickupOnly: false,
     jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
-    note: '4월 소폭 인상 예정',
   },
   {
+    // 미검증: 공식 요금 페이지 접근 불가. 소형(5kg)·중형(15kg) 동일가 구조는 2021.5 보도(초소형 3kg / 소형·중형 동일 / 대형)와 일치해 유지
     id: 'hanjin',
     name: '한진택배',
     serviceLabel: '방문접수',
@@ -67,6 +83,8 @@ const CARRIER_DATA: CarrierData[] = [
     jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
   },
   {
+    // 검증: 롯데택배 요금안내 — 타권역 소(5kg/110cm) 6,000 / 중(15kg/130cm) 7,000 / 대(20kg/160cm) 8,000, 제주권 8,000/9,000/10,000
+    // 미검증: 도서산간 요금(공식 표에 없음, 기존 값 유지)
     id: 'lotte',
     name: '롯데택배',
     serviceLabel: '방문접수',
@@ -80,6 +98,8 @@ const CARRIER_DATA: CarrierData[] = [
     jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
   },
   {
+    // 검증: 로젠 요금안내 — 기본(동일권) 6,000/7,000/9,000/12,000 + 타권역 1,000원
+    // 미검증: 제주 추가요금 금액 미공개(5kg 제주 9,500원은 기존 값 유지), 도서산간은 지역별 별도
     id: 'logen',
     name: '로젠택배',
     serviceLabel: '방문접수',
@@ -92,62 +112,68 @@ const CARRIER_DATA: CarrierData[] = [
     ],
     maxWeight: 25, maxGirth: 160, cvsPickupOnly: false,
     jejuAvailable: true, islandAvailable: false, deliveryDays: '익일~2일',
-    note: '도서산간 배송 제한',
+    note: '제주 5kg 초과·도서산간 별도 문의',
   },
   {
+    // 검증: 우체국 방문접수(2025.6.1 시행 요금, 2026.09 현행) — 5,000/8,000/10,000/14,000
+    // 제주 익일 할증(7,500~)은 제주발(제주→육지)에만 적용, 육지→제주는 D+2 동일요금. 도서 할증 항목 없음(배달기간만 상이)
     id: 'post_visit',
     name: '우체국',
     serviceLabel: '방문접수',
     category: 'standard',
     tiers: [
-      { maxWeight: 5,  price: 5000,  jejuPrice: 7500,  islandPrice: 5000  },
-      { maxWeight: 10, price: 8000,  jejuPrice: 10500, islandPrice: 8000  },
-      { maxWeight: 20, price: 10000, jejuPrice: 12500, islandPrice: 10000 },
-      { maxWeight: 30, price: 14000, jejuPrice: 16500, islandPrice: 14000 },
+      { maxWeight: 5,  price: 5000,  jejuPrice: 5000,  islandPrice: 5000  },
+      { maxWeight: 10, price: 8000,  jejuPrice: 8000,  islandPrice: 8000  },
+      { maxWeight: 20, price: 10000, jejuPrice: 10000, islandPrice: 10000 },
+      { maxWeight: 30, price: 14000, jejuPrice: 14000, islandPrice: 14000 },
     ],
     maxWeight: 30, maxGirth: 160, cvsPickupOnly: false,
     jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
+    note: '제주행 D+2 · 도서 배달기간 상이',
   },
   {
+    // 검증: 우정사업본부 등기소포 창구 — 4,000~13,000 (육지→제주 D+2 동일요금, 도서 할증 없음)
     id: 'post_registered',
     name: '우체국 등기소포',
     serviceLabel: '창구접수',
     category: 'standard',
     tiers: [
-      { maxWeight: 3,  price: 4000,  jejuPrice: 6500  },
-      { maxWeight: 5,  price: 4500,  jejuPrice: 7000  },
-      { maxWeight: 7,  price: 5000,  jejuPrice: 7500  },
-      { maxWeight: 10, price: 6000,  jejuPrice: 8500  },
-      { maxWeight: 15, price: 7000,  jejuPrice: 9500  },
-      { maxWeight: 20, price: 8000,  jejuPrice: 10500 },
-      { maxWeight: 25, price: 11000, jejuPrice: 13500 },
-      { maxWeight: 30, price: 13000, jejuPrice: 15500 },
+      { maxWeight: 3,  price: 4000,  jejuPrice: 4000,  islandPrice: 4000  },
+      { maxWeight: 5,  price: 4500,  jejuPrice: 4500,  islandPrice: 4500  },
+      { maxWeight: 7,  price: 5000,  jejuPrice: 5000,  islandPrice: 5000  },
+      { maxWeight: 10, price: 6000,  jejuPrice: 6000,  islandPrice: 6000  },
+      { maxWeight: 15, price: 7000,  jejuPrice: 7000,  islandPrice: 7000  },
+      { maxWeight: 20, price: 8000,  jejuPrice: 8000,  islandPrice: 8000  },
+      { maxWeight: 25, price: 11000, jejuPrice: 11000, islandPrice: 11000 },
+      { maxWeight: 30, price: 13000, jejuPrice: 13000, islandPrice: 13000 },
     ],
     maxWeight: 30, maxGirth: 160, cvsPickupOnly: false,
     jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
-    note: '추적·배상 가능',
+    note: '추적·배상 가능 · 제주행 D+2',
   },
   {
+    // 검증: 우정사업본부 일반소포 D+3 — 2,700~11,700. 우체국은 권역 할증 없음(CUpost: "우체국은 동일권/타권/제주권 요금이 동일")
     id: 'post_regular',
     name: '우체국 일반소포',
     serviceLabel: '창구접수',
     category: 'standard',
     tiers: [
-      { maxWeight: 3,  price: 2700  },
-      { maxWeight: 5,  price: 3200  },
-      { maxWeight: 7,  price: 3700  },
-      { maxWeight: 10, price: 4700  },
-      { maxWeight: 15, price: 5700  },
-      { maxWeight: 20, price: 6700  },
-      { maxWeight: 25, price: 9700  },
-      { maxWeight: 30, price: 11700 },
+      { maxWeight: 3,  price: 2700,  jejuPrice: 2700,  islandPrice: 2700  },
+      { maxWeight: 5,  price: 3200,  jejuPrice: 3200,  islandPrice: 3200  },
+      { maxWeight: 7,  price: 3700,  jejuPrice: 3700,  islandPrice: 3700  },
+      { maxWeight: 10, price: 4700,  jejuPrice: 4700,  islandPrice: 4700  },
+      { maxWeight: 15, price: 5700,  jejuPrice: 5700,  islandPrice: 5700  },
+      { maxWeight: 20, price: 6700,  jejuPrice: 6700,  islandPrice: 6700  },
+      { maxWeight: 25, price: 9700,  jejuPrice: 9700,  islandPrice: 9700  },
+      { maxWeight: 30, price: 11700, jejuPrice: 11700, islandPrice: 11700 },
     ],
     maxWeight: 30, maxGirth: 160, cvsPickupOnly: false,
-    jejuAvailable: false, islandAvailable: false, deliveryDays: '2~3일',
+    jejuAvailable: true, islandAvailable: true, deliveryDays: 'D+3',
     note: '최저가, 추적·배상 없음',
   },
   // ── 편의점 택배 ──
   {
+    // 미검증: CUpost 요금표가 동적 로딩이라 금액 확인 못함(2026.1 내일보장택배만 100원 인상 보도). 기존 값 유지. 택배사는 롯데글로벌로지스·우체국 선택
     id: 'cu_standard',
     name: 'CU',
     serviceLabel: 'CU POST (일반)',
@@ -159,12 +185,14 @@ const CARRIER_DATA: CarrierData[] = [
     ],
     maxWeight: 20, maxGirth: 160, cvsPickupOnly: false,
     jejuAvailable: true, islandAvailable: false, deliveryDays: '익일',
-    note: '롯데글로벌로지스 배송 · 집 배달 가능 · 4월 인상 예정',
+    note: '롯데글로벌로지스·우체국 · 집 배달 가능',
   },
   {
+    // 검증: ZDNet 2026.02.09 — 2월 200원 할인가 1,600/1,900/~2,500 → 정가 1,800/2,100/2,700. 2026.1 롯데글로벌로지스 이관, 익일 배송
+    // 미검증: 제주·도서 노선 요금(CUpost 표 동적 로딩)
     id: 'cu_economy',
     name: 'CU',
-    serviceLabel: '알뜰택배 (편의점→편의점)',
+    serviceLabel: '반값택배 (편의점→편의점)',
     category: 'cvs',
     tiers: [
       { maxWeight: 0.5, price: 1800 },
@@ -172,48 +200,68 @@ const CARRIER_DATA: CarrierData[] = [
       { maxWeight: 5,   price: 2700 },
     ],
     maxWeight: 5, maxGirth: 80, cvsPickupOnly: true,
-    jejuAvailable: false, islandAvailable: false, deliveryDays: '2~5일',
-    note: '내륙 편의점 수령 전용',
+    jejuAvailable: false, islandAvailable: false, deliveryDays: '익일',
+    note: '편의점 수령 전용',
   },
   {
+    // 검증: GS25 중량별 운임(타권 기준, 제주권 별도, 도서지역 +4,000원)
+    // 미검증: 최대 크기(160cm 기존 가정 유지)
     id: 'gs_standard',
     name: 'GS25',
     serviceLabel: '일반택배',
     category: 'cvs',
     tiers: [
-      { maxWeight: 0.35, price: 3200 },
-      { maxWeight: 5,    price: 3600, jejuPrice: 5600 },
-      { maxWeight: 10,   price: 4700 },
+      { maxWeight: 0.35, price: 3900,  jejuPrice: 6600,  islandPrice: 7900  },
+      { maxWeight: 0.4,  price: 4100,  jejuPrice: 6800,  islandPrice: 8100  },
+      { maxWeight: 0.45, price: 4200,  jejuPrice: 6900,  islandPrice: 8200  },
+      { maxWeight: 0.5,  price: 4400,  jejuPrice: 7100,  islandPrice: 8400  },
+      { maxWeight: 0.6,  price: 4600,  jejuPrice: 7600,  islandPrice: 8600  },
+      { maxWeight: 0.7,  price: 4700,  jejuPrice: 7700,  islandPrice: 8700  },
+      { maxWeight: 0.8,  price: 4800,  jejuPrice: 7800,  islandPrice: 8800  },
+      { maxWeight: 0.9,  price: 4900,  jejuPrice: 7900,  islandPrice: 8900  },
+      { maxWeight: 1,    price: 5000,  jejuPrice: 8000,  islandPrice: 9000  },
+      { maxWeight: 1.5,  price: 5300,  jejuPrice: 8300,  islandPrice: 9300  },
+      { maxWeight: 2,    price: 5600,  jejuPrice: 8600,  islandPrice: 9600  },
+      { maxWeight: 3,    price: 5900,  jejuPrice: 8900,  islandPrice: 9900  },
+      { maxWeight: 4,    price: 6000,  jejuPrice: 9000,  islandPrice: 10000 },
+      { maxWeight: 5,    price: 6200,  jejuPrice: 9200,  islandPrice: 10200 },
+      { maxWeight: 7,    price: 7700,  jejuPrice: 10700, islandPrice: 11700 },
+      { maxWeight: 10,   price: 8200,  jejuPrice: 10700, islandPrice: 12200 },
+      { maxWeight: 15,   price: 9000,  jejuPrice: 12000, islandPrice: 13000 },
+      { maxWeight: 20,   price: 10000, jejuPrice: 12000, islandPrice: 14000 },
     ],
-    maxWeight: 10, maxGirth: 160, cvsPickupOnly: false,
-    jejuAvailable: true, islandAvailable: false, deliveryDays: '익일',
-    note: '집 배달 가능',
+    maxWeight: 20, maxGirth: 160, cvsPickupOnly: false,
+    jejuAvailable: true, islandAvailable: true, deliveryDays: '익일',
+    note: '집 배달 가능 · 동일권 500원~ 저렴',
   },
   {
+    // 검증: GS25 반값택배 — 내륙 1,900/2,300/2,700, 제주↔내륙·내륙→도서 3,600/4,000/4,400, 5kg·80cm 이하
     id: 'gs_halfprice',
     name: 'GS25',
     serviceLabel: '반값택배 (편의점→편의점)',
     category: 'cvs',
     tiers: [
-      { maxWeight: 0.5, price: 1900, jejuPrice: 3600 },
-      { maxWeight: 1,   price: 2300, jejuPrice: 4000 },
-      { maxWeight: 5,   price: 2700, jejuPrice: 4400 },
+      { maxWeight: 0.5, price: 1900, jejuPrice: 3600, islandPrice: 3600 },
+      { maxWeight: 1,   price: 2300, jejuPrice: 4000, islandPrice: 4000 },
+      { maxWeight: 5,   price: 2700, jejuPrice: 4400, islandPrice: 4400 },
     ],
     maxWeight: 5, maxGirth: 80, cvsPickupOnly: true,
-    jejuAvailable: true, islandAvailable: false, deliveryDays: '2~3일',
-    note: '편의점 수령 전용',
+    jejuAvailable: true, islandAvailable: true, deliveryDays: '4일 이내',
+    note: '편의점 수령 전용 · 제주 5~7일',
   },
   {
+    // 검증: 착한택배 전국 균일 1,980원(바이라인 2025.03), 2026.04 인상 대상 제외(헤럴드경제). 점포 간 배송
+    // 미검증: 20kg·160cm 한도(검색 요약으로만 확인, 기존 25kg에서 하향), 제주 노선(2026.2 확대 보도) 요금
     id: 'seven',
     name: '세븐일레븐',
-    serviceLabel: '착한택배 (무인기기)',
+    serviceLabel: '착한택배 (편의점→편의점)',
     category: 'cvs',
     tiers: [
-      { maxWeight: 25, price: 3100 },
+      { maxWeight: 20, price: 1980 },
     ],
-    maxWeight: 25, maxGirth: 160, cvsPickupOnly: false,
-    jejuAvailable: false, islandAvailable: false, deliveryDays: '익일',
-    note: '균일가, 프로모션 시 1,980원',
+    maxWeight: 20, maxGirth: 160, cvsPickupOnly: true,
+    jejuAvailable: false, islandAvailable: false, deliveryDays: '2~3일',
+    note: '전국 균일가 · 편의점 수령 전용',
   },
 ]
 
@@ -253,20 +301,17 @@ function getUnavailableReason(
   return '배송 불가'
 }
 
-const RATE_TABLE_ROWS = [
-  { name: 'CJ대한통운',    service: '방문접수',       p2: 5000,  p5: 6000, p10: 7000, p20: 9000,  max: '25kg/160cm', days: '익일'   },
-  { name: '한진택배',      service: '방문접수',       p2: null,  p5: 7000, p10: 7000, p20: 8000,  max: '20kg/160cm', days: '익일'   },
-  { name: '롯데택배',      service: '방문접수',       p2: null,  p5: 6000, p10: 7000, p20: 8000,  max: '20kg/160cm', days: '익일'   },
-  { name: '로젠택배',      service: '방문접수',       p2: null,  p5: 7000, p10: 8000, p20: 10000, max: '25kg/160cm', days: '익일~2일'},
-  { name: '우체국',        service: '방문접수',       p2: null,  p5: 5000, p10: 8000, p20: 10000, max: '30kg/160cm', days: '익일'   },
-  { name: '우체국 등기소포', service: '창구접수',     p2: null,  p5: 4500, p10: 6000, p20: 8000,  max: '30kg/160cm', days: '익일'   },
-  { name: '우체국 일반소포', service: '창구접수',     p2: null,  p5: 3200, p10: 4700, p20: 6700,  max: '30kg/160cm', days: '2~3일'  },
-  { name: 'CU POST',       service: '편의점접수',     p2: null,  p5: 6200, p10: 8100, p20: 9800,  max: '20kg/160cm', days: '익일'   },
-  { name: 'GS25 일반',     service: '편의점접수',     p2: null,  p5: 3600, p10: 4700, p20: null,  max: '10kg/160cm', days: '익일'   },
-  { name: 'CU 알뜰',       service: '편의점→편의점', p2: 1800,  p5: 2700, p10: null, p20: null,  max: '5kg/80cm',   days: '2~5일'  },
-  { name: 'GS25 반값',     service: '편의점→편의점', p2: 1900,  p5: 2700, p10: null, p20: null,  max: '5kg/80cm',   days: '2~3일'  },
-  { name: '세븐일레븐',    service: '착한택배(무인)', p2: 3100,  p5: 3100, p10: 3100, p20: 3100,  max: '25kg/160cm', days: '익일'   },
+const BOX_PRESETS: { id: string; w: number; h: number; d: number }[] = [
+  // 우체국 택배상자 규격(cm). 6호는 단종
+  { id: '0', w: 22.5, h: 15.5, d: 3 },
+  { id: '1', w: 22, h: 19, d: 9 },
+  { id: '2', w: 27, h: 18, d: 15 },
+  { id: '3', w: 34, h: 25, d: 21 },
+  { id: '4', w: 41, h: 31, d: 28 },
+  { id: '5', w: 48, h: 38, d: 34 },
 ]
+
+const TABLE_WEIGHTS = [2, 5, 10, 20]
 
 function fmtPrice(v: number | null): string {
   if (v === null) return '—'
@@ -305,9 +350,9 @@ export default function ShippingCalc() {
     return w + h + d
   }, [width, height, depth])
 
-  const carrierResults = useMemo(() => {
+  // 전 카테고리(일반+편의점) 결과, 가격순
+  const allResults = useMemo(() => {
     return CARRIER_DATA
-      .filter(c => c.category === carrierCategory)
       .map(carrier => {
         const price = getCarrierPrice(carrier, appliedWeight, girth, destination)
         const unavailableReason = price === null
@@ -321,8 +366,10 @@ export default function ShippingCalc() {
         if (b.price === null) return -1
         return a.price - b.price
       })
-  }, [carrierCategory, appliedWeight, girth, destination])
+  }, [appliedWeight, girth, destination])
 
+  const carrierResults = allResults.filter(r => r.carrier.category === carrierCategory)
+  const bestOverall = allResults[0]?.price != null ? allResults[0] : null
   const availableResults = carrierResults.filter(r => r.price !== null)
   const cheapestPrice = availableResults[0]?.price ?? null
 
@@ -417,8 +464,27 @@ export default function ShippingCalc() {
             {/* Box Dimensions */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                상자 크기
+                {t('boxSize')}
               </label>
+              <div className="grid grid-cols-3 gap-1.5 mb-3">
+                {BOX_PRESETS.map(b => {
+                  const active = width === String(b.w) && height === String(b.h) && depth === String(b.d)
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => { setWidth(String(b.w)); setHeight(String(b.h)); setDepth(String(b.d)); setShowSaveButton(true) }}
+                      title={`${b.w}×${b.h}×${b.d}cm`}
+                      aria-pressed={active}
+                      className={`py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'
+                      }`}
+                    >
+                      {t('boxPreset', { n: b.id })}
+                    </button>
+                  )
+                })}
+              </div>
               <div className="space-y-3">
                 {([['width', t('width')], ['height', t('height')], ['depth', t('depth')]] as [string, string][]).map(([field, label]) => (
                   <div key={field}>
@@ -444,7 +510,7 @@ export default function ShippingCalc() {
                   {volumeWeight.toFixed(2)} kg
                 </div>
                 <div className="text-xs text-muted mt-1">
-                  세 변 합: <span className="font-semibold">{girth.toFixed(0)} cm</span>
+                  {t('girth')}: <span className="font-semibold">{girth.toFixed(0)} cm</span>
                 </div>
               </div>
             </div>
@@ -455,11 +521,7 @@ export default function ShippingCalc() {
                 {t('destination')}
               </label>
               <div className="grid grid-cols-3 gap-1.5">
-                {([
-                  ['mainland', '내륙'],
-                  ['jeju', '제주도'],
-                  ['island', '도서산간'],
-                ] as [DestinationType, string][]).map(([dest, label]) => (
+                {(['mainland', 'jeju', 'island'] as DestinationType[]).map(dest => [dest, t(`destinations.${dest}`)] as const).map(([dest, label]) => (
                   <button
                     key={dest}
                     onClick={() => { setDestination(dest); setShowSaveButton(true) }}
@@ -520,6 +582,32 @@ export default function ShippingCalc() {
         {/* ── Results Panel ── */}
         <div className="lg:col-span-2 space-y-6">
 
+          {/* Overall Best Pick (일반 + 편의점) */}
+          {bestOverall && (
+            <div className={`${glassCard} p-6`}>
+              <div className="text-sm text-muted">{t('bestOverall.title')}</div>
+              <div className="mt-1 flex items-end justify-between gap-3 flex-wrap">
+                <div className="min-w-0">
+                  <div className="text-base font-semibold text-fg">
+                    {bestOverall.carrier.name} <span className="text-sm font-normal text-muted">{bestOverall.carrier.serviceLabel}</span>
+                  </div>
+                  <div className="mt-1.5 flex flex-wrap gap-1.5 text-xs">
+                    <span className="px-2 py-0.5 rounded-full bg-soft text-body">
+                      {bestOverall.carrier.category === 'cvs' ? t('bestOverall.cvsDropoff') : t('bestOverall.noCvs')}
+                    </span>
+                    {bestOverall.carrier.cvsPickupOnly && (
+                      <span className="px-2 py-0.5 rounded-full bg-soft text-body">{t('bestOverall.cvsPickup')}</span>
+                    )}
+                    <span className="px-2 py-0.5 rounded-full bg-soft text-body">{bestOverall.carrier.deliveryDays}</span>
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-fg tabular-nums">
+                  {bestOverall.price!.toLocaleString()}{t('result.won')}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Weight Summary */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
@@ -548,7 +636,7 @@ export default function ShippingCalc() {
             {appliedWeight === volumeWeight && appliedWeight > (parseFloat(weight) || 0) && (
               <div className="mt-3 flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 bg-subtle rounded-lg p-2.5">
                 <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
-                부피무게가 실중량보다 큽니다 — 부피무게 기준으로 요금이 적용됩니다
+                {t('volumeWeightWarning')}
               </div>
             )}
           </div>
@@ -639,7 +727,7 @@ export default function ShippingCalc() {
             )}
 
             <p className="mt-3 text-xs text-faint text-right">
-              2025~2026년 기준 · 실제 요금은 택배사 정책에 따라 다를 수 있습니다
+              {t('rateBasis', { date: RATE_BASIS })} · {t('result.note')}
             </p>
 
             {/* Save */}
@@ -700,43 +788,53 @@ export default function ShippingCalc() {
           </div>
         </div>
 
-        {/* Rate Reference Table */}
-        <h3 className="text-base font-semibold text-fg mb-3">
-          2025년 주요 요금표 (내륙 기준)
+        {/* Rate Reference Table — CARRIER_DATA에서 파생 */}
+        <h3 className="text-base font-semibold text-fg mb-1">
+          {t('rateTable.title')}
         </h3>
+        <p className="text-xs text-muted mb-3">{t('rateBasis', { date: RATE_BASIS })}</p>
         <div className="overflow-x-auto rounded-lg border border-line">
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="bg-soft">
-                <th className="px-3 py-2 font-semibold text-body">택배사</th>
-                <th className="px-3 py-2 font-semibold text-body">접수</th>
-                <th className="px-3 py-2 font-semibold text-body text-right">~2kg</th>
-                <th className="px-3 py-2 font-semibold text-body text-right">~5kg</th>
-                <th className="px-3 py-2 font-semibold text-body text-right">~10kg</th>
-                <th className="px-3 py-2 font-semibold text-body text-right">~20kg</th>
-                <th className="px-3 py-2 font-semibold text-body text-right">한도</th>
-                <th className="px-3 py-2 font-semibold text-body text-center">배송</th>
+                <th className="px-3 py-2 font-semibold text-body">{t('rateTable.carrier')}</th>
+                <th className="px-3 py-2 font-semibold text-body">{t('rateTable.service')}</th>
+                {TABLE_WEIGHTS.map(w => (
+                  <th key={w} className="px-3 py-2 font-semibold text-body text-right">~{w}kg</th>
+                ))}
+                <th className="px-3 py-2 font-semibold text-body text-right">{t('rateTable.limit')}</th>
+                <th className="px-3 py-2 font-semibold text-body text-center">{t('rateTable.days')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-              {RATE_TABLE_ROWS.map((row, i) => (
-                <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-3 py-2 font-medium text-body whitespace-nowrap">{row.name}</td>
-                  <td className="px-3 py-2 text-muted whitespace-nowrap">{row.service}</td>
-                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p2)}</td>
-                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p5)}</td>
-                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p10)}</td>
-                  <td className="px-3 py-2 text-right text-body tabular-nums">{fmtPrice(row.p20)}</td>
-                  <td className="px-3 py-2 text-right text-faint whitespace-nowrap">{row.max}</td>
-                  <td className="px-3 py-2 text-center text-faint whitespace-nowrap">{row.days}</td>
+            <tbody className="divide-y divide-line">
+              {CARRIER_DATA.map(c => (
+                <tr key={c.id} className="hover:bg-subtle">
+                  <td className="px-3 py-2 font-medium text-body whitespace-nowrap">{c.name}</td>
+                  <td className="px-3 py-2 text-muted whitespace-nowrap">{c.serviceLabel}</td>
+                  {TABLE_WEIGHTS.map(w => (
+                    <td key={w} className="px-3 py-2 text-right text-body tabular-nums">
+                      {fmtPrice(getCarrierPrice(c, w, 0, 'mainland'))}
+                    </td>
+                  ))}
+                  <td className="px-3 py-2 text-right text-faint whitespace-nowrap">{c.maxWeight}kg/{c.maxGirth}cm</td>
+                  <td className="px-3 py-2 text-center text-faint whitespace-nowrap">{c.deliveryDays}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <p className="text-xs text-faint mt-2">
-          * 2025~2026년 기준 개인 접수 요금(타권역). 동일권역은 약 1,000원 저렴. 제주·도서산간 추가요금 별도. CU는 2026년 4월 1일 요금 인상 예정. 최신 요금은 각 택배사 홈페이지에서 확인하세요.
+          {t('rateTable.note')}
         </p>
+        <div className="mt-3 text-xs text-muted">
+          <span className="font-medium text-body">{t('rateTable.sources')}</span>{' '}
+          {RATE_SOURCES.map((src, i) => (
+            <span key={src.url}>
+              {i > 0 && ' · '}
+              <a href={src.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-fg">{src.label}</a>
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Guide Section */}

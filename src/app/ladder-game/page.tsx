@@ -1,9 +1,11 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
+import ToolIcon from '@/components/ToolIcon'
 import LadderGameTabs from './LadderGameTabs'
 
 export const metadata: Metadata = {
   title: '사다리타기 게임 - 온라인 사다리 타기 · 돌림판 · 벌칙 룰렛 | 툴허브',
-  description: '참가자와 결과를 입력하면 바로 사다리타기. 돌림판, 가위바위보, 벌칙 룰렛, 숫자뽑기 등 결정 도구 12종을 한 곳에서, 링크로 결과 공유.',
+  description: '참가자와 결과를 입력하면 바로 사다리타기. 블라인드 모드, 한 명씩 공개, 이미지 저장, 링크로 결과 공유까지 무료로.',
   keywords: [
     '사다리 타기',
     '사다리 게임',
@@ -34,8 +36,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '결정 도구 12종 - 사다리·돌림판·가위바위보·벌칙룰렛 | 툴허브',
-    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 무료 결정 도구',
+    title: '사다리타기 게임 - 온라인 사다리 타기 | 툴허브',
+    description: '참가자와 결과를 입력하면 바로 사다리타기. 블라인드 모드, 이미지 저장, 링크 공유.',
     type: 'website',
     url: 'https://toolhub.ai.kr/ladder-game',
     siteName: '툴허브',
@@ -51,8 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '결정 도구 12종 - 사다리·돌림판·가위바위보·벌칙룰렛 | 툴허브',
-    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 무료 결정 도구',
+    title: '사다리타기 게임 - 온라인 사다리 타기 | 툴허브',
+    description: '참가자와 결과를 입력하면 바로 사다리타기. 블라인드 모드, 이미지 저장, 링크 공유.',
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
@@ -75,8 +77,8 @@ export default function LadderGamePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
-    name: '결정 도구 모음 12종 — 사다리·돌림판·가위바위보·벌칙룰렛·숫자뽑기·타이머',
-    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 온라인 결정 도구 12종 모음',
+    name: '사다리타기 게임',
+    description: '참가자와 결과를 1:1로 이어 주는 무료 온라인 사다리타기',
     url: 'https://toolhub.ai.kr/ladder-game',
     genre: 'Party Game',
     gamePlatform: 'Web Browser',
@@ -128,7 +130,6 @@ export default function LadderGamePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen py-8 sm:py-12 overflow-hidden">
-        {/* 배경 장식 — 글래스 효과용 컬러 블롭 */}
         <div className="container mx-auto px-4 relative z-10">
             <LadderGameTabs />
         </div>
@@ -137,67 +138,59 @@ export default function LadderGamePage() {
       <section className="max-w-4xl mx-auto px-4 pb-12">
         <div className="mt-12 border-t border-line pt-8">
           <h2 className="text-xl font-bold text-fg mb-4">
-            온라인 결정 도구 12종 모음
+            사다리 타기와 함께 쓰는 결정 도구
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            툴허브의 결정 도구 모음은 사다리타기, 돌림판, 순서뽑기, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No, 가위바위보, 숫자뽑기, 벌칙룰렛, 타이머 총 12가지 방식을 제공합니다.
-            순서 정하기, 벌칙 정하기, 팀 나누기, 메뉴 고르기 등 다양한 상황에서 공정하고 재미있게 결정할 수 있습니다.
+            사다리 타기는 참가자와 결과를 1:1로 이어 줍니다. 블라인드 모드, 시드 공유, 이미지 저장을 지원합니다.
+            하나만 고르거나, 팀을 나누거나, 순서를 정해야 할 때는 아래 전용 도구를 쓰면 더 빠릅니다.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🪜 사다리 타기</h3>
-              <p className="text-sm text-sub">참가자와 결과를 1:1 매칭. 블라인드 모드, 시드 공유, 이미지 저장.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🎯 돌림판</h3>
-              <p className="text-sm text-sub">회전 룰렛으로 하나를 선택. 점심 메뉴, 벌칙 등에 최적.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🔢 순서뽑기</h3>
-              <p className="text-sm text-sub">전체 참가자 순서를 한 번에 결정. 카드 공개 애니메이션.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🪙 동전 던지기</h3>
-              <p className="text-sm text-sub">3D 회전 애니메이션. 통계, 연속기록, N판 M선승제.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🎲 주사위</h3>
-              <p className="text-sm text-sub">D4~D20, 최대 10개 동시. 보정값, TRPG 지원.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">👥 팀 나누기</h3>
-              <p className="text-sm text-sub">랜덤/캡틴 드래프트. 운동, 조별과제, 회식 팀 분배.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🎫 제비뽑기</h3>
-              <p className="text-sm text-sub">당첨/꽝 비율 설정. 한 명씩 뽑기, 커스텀 상품.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">⚖️ Yes or No</h3>
-              <p className="text-sm text-sub">매직 8볼 스타일. 7단계 답변, 확률 조정 가능.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">✊ 가위바위보</h3>
-              <p className="text-sm text-sub">1:1, N판 M선승, 토너먼트. 전적 통계 및 히스토리.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🔢 숫자 뽑기</h3>
-              <p className="text-sm text-sub">범위·개수 설정, 중복제거, 슬롯머신 애니메이션.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">🍺 벌칙 룰렛</h3>
-              <p className="text-sm text-sub">회식/MT/커플 프리셋. 커스텀 벌칙 추가 가능.</p>
-            </div>
-            <div className="bg-surface rounded-xl p-4 border border-line">
-              <h3 className="font-semibold text-fg mb-2">⏱️ 타이머</h3>
-              <p className="text-sm text-sub">카운트다운, 스톱워치, 턴 타이머. 프리셋 지원.</p>
-            </div>
+          <div className="grid sm:grid-cols-2 gap-3 mb-8">
+            <Link href="/roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/roulette" size="sm" />
+              <span><span className="block font-semibold text-fg">돌림판</span><span className="block text-sm text-sub mt-0.5">회전 룰렛으로 하나를 선택. 점심 메뉴, 벌칙 등에 적합.</span></span>
+            </Link>
+            <Link href="/order-picker" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/order-picker" size="sm" />
+              <span><span className="block font-semibold text-fg">순서 정하기</span><span className="block text-sm text-sub mt-0.5">전체 참가자 순서를 한 번에 결정. 카드 공개 애니메이션.</span></span>
+            </Link>
+            <Link href="/coin-flip" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/coin-flip" size="sm" />
+              <span><span className="block font-semibold text-fg">동전 던지기</span><span className="block text-sm text-sub mt-0.5">3D 회전 애니메이션. 통계, 연속기록, N판 M선승제.</span></span>
+            </Link>
+            <Link href="/dice-roller" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/dice-roller" size="sm" />
+              <span><span className="block font-semibold text-fg">주사위</span><span className="block text-sm text-sub mt-0.5">D4~D20, 최대 10개 동시. 보정값, TRPG 지원.</span></span>
+            </Link>
+            <Link href="/team-divider" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/team-divider" size="sm" />
+              <span><span className="block font-semibold text-fg">팀 나누기</span><span className="block text-sm text-sub mt-0.5">랜덤/캡틴 드래프트. 운동, 조별과제, 회식 팀 분배.</span></span>
+            </Link>
+            <Link href="/lottery-draw" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/lottery-draw" size="sm" />
+              <span><span className="block font-semibold text-fg">제비뽑기</span><span className="block text-sm text-sub mt-0.5">당첨/꽝 비율 설정. 한 장씩 뽑기, 커스텀 상품.</span></span>
+            </Link>
+            <Link href="/yes-no" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/yes-no" size="sm" />
+              <span><span className="block font-semibold text-fg">Yes or No</span><span className="block text-sm text-sub mt-0.5">7단계 답변, 확률 조정 가능.</span></span>
+            </Link>
+            <Link href="/rock-paper-scissors" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/rock-paper-scissors" size="sm" />
+              <span><span className="block font-semibold text-fg">가위바위보</span><span className="block text-sm text-sub mt-0.5">1:1, N판 M선승, 토너먼트. 전적 통계.</span></span>
+            </Link>
+            <Link href="/random-number" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/random-number" size="sm" />
+              <span><span className="block font-semibold text-fg">숫자 뽑기</span><span className="block text-sm text-sub mt-0.5">범위·개수 설정, 중복 제거, 슬롯머신 애니메이션.</span></span>
+            </Link>
+            <Link href="/penalty-roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+              <ToolIcon href="/penalty-roulette" size="sm" />
+              <span><span className="block font-semibold text-fg">벌칙 룰렛</span><span className="block text-sm text-sub mt-0.5">회식/MT/커플 프리셋. 커스텀 벌칙 추가 가능.</span></span>
+            </Link>
           </div>
           <h3 className="text-lg font-semibold text-fg mb-3">
             활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>순서 정하기:</strong> 사다리타기 또는 순서뽑기로 발표/청소/주문 순서를 공정하게 결정하세요.</li>
+            <li><strong>순서 정하기:</strong> 사다리타기 또는 순서 정하기 도구로 발표/청소/주문 순서를 공정하게 결정하세요.</li>
             <li><strong>벌칙 정하기:</strong> 돌림판이나 제비뽑기로 게임 벌칙을 투명하게 결정할 수 있습니다.</li>
             <li><strong>팀 나누기:</strong> 팀 나누기 도구로 스포츠, 조별 과제, 회식 팀을 균형있게 편성하세요.</li>
             <li><strong>간단한 결정:</strong> 동전 던지기(양자택일)나 Yes/No(질문 답변)로 빠르게 결정하세요.</li>

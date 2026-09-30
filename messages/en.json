@@ -11783,6 +11783,26 @@
     }
   },
   "shippingCalc": {
+    "boxSize": "Box size",
+    "boxPreset": "Post box #{n}",
+    "girth": "Sum of 3 sides",
+    "volumeWeightWarning": "Volumetric weight exceeds actual weight — rates are based on volumetric weight",
+    "rateBasis": "Rates as of: {date}",
+    "bestOverall": {
+      "title": "Cheapest overall (standard + convenience store)",
+      "cvsDropoff": "Drop-off at convenience store",
+      "noCvs": "No store visit needed",
+      "cvsPickup": "Recipient picks up at store"
+    },
+    "rateTable": {
+      "title": "Rate table (mainland, inter-region)",
+      "carrier": "Carrier",
+      "service": "Service",
+      "limit": "Limit",
+      "days": "Delivery",
+      "note": "* Individual rates (inter-region). Same-region is usually 500–1,000 KRW cheaper. Select a destination above for Jeju/remote-island rates. Check each carrier's website for the latest rates.",
+      "sources": "Sources:"
+    },
     "title": "Shipping Calculator",
     "description": "Compare Korean courier & convenience store shipping rates (2025 pricing)",
     "weight": "Weight (kg)",
@@ -13193,6 +13213,9 @@
     "description": "Convert English keystrokes to Korean and vice versa. Useful when you forget to switch keyboard layout.",
     "engToKor": "Eng → Kor",
     "korToEng": "Kor → Eng",
+    "auto": "Auto detect",
+    "detected": "Detected",
+    "copyFailed": "Copy failed — select and copy manually",
     "input": "Input",
     "inputPlaceholder": "Enter text to convert",
     "output": "Result",
@@ -13269,6 +13292,8 @@
     }
   },
   "imageMosaic": {
+    "redo": "Redo",
+    "changeImage": "Change image",
     "title": "Image Mosaic/Blur",
     "description": "Apply mosaic or blur effects to photos. Select areas or use brush to process specific parts.",
     "upload": "Upload Image",

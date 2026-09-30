@@ -1,284 +1,10 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ArrowUpDown, RotateCcw, BookOpen } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
-
-// ── Korean keyboard mapping tables ──
-
-const ENG_TO_KOR: Record<string, string> = {
-  'q': 'ㅂ', 'w': 'ㅈ', 'e': 'ㄷ', 'r': 'ㄱ', 't': 'ㅅ',
-  'y': 'ㅛ', 'u': 'ㅕ', 'i': 'ㅑ', 'o': 'ㅐ', 'p': 'ㅔ',
-  'a': 'ㅁ', 's': 'ㄴ', 'd': 'ㅇ', 'f': 'ㄹ', 'g': 'ㅎ',
-  'h': 'ㅗ', 'j': 'ㅓ', 'k': 'ㅏ', 'l': 'ㅣ',
-  'z': 'ㅋ', 'x': 'ㅌ', 'c': 'ㅊ', 'v': 'ㅍ',
-  'b': 'ㅠ', 'n': 'ㅜ', 'm': 'ㅡ',
-  'Q': 'ㅃ', 'W': 'ㅉ', 'E': 'ㄸ', 'R': 'ㄲ', 'T': 'ㅆ',
-  'O': 'ㅒ', 'P': 'ㅖ',
-}
-
-const KOR_TO_ENG: Record<string, string> = {}
-for (const [eng, kor] of Object.entries(ENG_TO_KOR)) {
-  KOR_TO_ENG[kor] = eng
-}
-
-// Hangul Unicode constants
-const CHO_LIST = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-const JUNG_LIST = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ']
-const JONG_LIST = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-
-const CHO_SET = new Set(CHO_LIST)
-const JUNG_SET = new Set(JUNG_LIST)
-
-// Jamo that can be chosung (initial consonant)
-const JAMO_TO_CHO: Record<string, number> = {}
-CHO_LIST.forEach((c, i) => { JAMO_TO_CHO[c] = i })
-
-const JAMO_TO_JUNG: Record<string, number> = {}
-JUNG_LIST.forEach((v, i) => { JAMO_TO_JUNG[v] = i })
-
-const JAMO_TO_JONG: Record<string, number> = {}
-JONG_LIST.forEach((j, i) => { JAMO_TO_JONG[j] = i })
-
-// Compound vowel combinations: base + added = compound
-const COMPOUND_VOWELS: Record<string, Record<string, string>> = {
-  'ㅗ': { 'ㅏ': 'ㅘ', 'ㅐ': 'ㅙ', 'ㅣ': 'ㅚ' },
-  'ㅜ': { 'ㅓ': 'ㅝ', 'ㅔ': 'ㅞ', 'ㅣ': 'ㅟ' },
-  'ㅡ': { 'ㅣ': 'ㅢ' },
-}
-
-// Compound jongseong (final consonant) combinations
-const COMPOUND_JONG: Record<string, Record<string, string>> = {
-  'ㄱ': { 'ㅅ': 'ㄳ' },
-  'ㄴ': { 'ㅈ': 'ㄵ', 'ㅎ': 'ㄶ' },
-  'ㄹ': { 'ㄱ': 'ㄺ', 'ㅁ': 'ㄻ', 'ㅂ': 'ㄼ', 'ㅅ': 'ㄽ', 'ㅌ': 'ㄾ', 'ㅍ': 'ㄿ', 'ㅎ': 'ㅀ' },
-  'ㅂ': { 'ㅅ': 'ㅄ' },
-}
-
-// Decompose compound jongseong into two single jamo
-const DECOMPOSE_JONG: Record<string, [string, string]> = {
-  'ㄳ': ['ㄱ', 'ㅅ'],
-  'ㄵ': ['ㄴ', 'ㅈ'],
-  'ㄶ': ['ㄴ', 'ㅎ'],
-  'ㄺ': ['ㄹ', 'ㄱ'],
-  'ㄻ': ['ㄹ', 'ㅁ'],
-  'ㄼ': ['ㄹ', 'ㅂ'],
-  'ㄽ': ['ㄹ', 'ㅅ'],
-  'ㄾ': ['ㄹ', 'ㅌ'],
-  'ㄿ': ['ㄹ', 'ㅍ'],
-  'ㅀ': ['ㄹ', 'ㅎ'],
-  'ㅄ': ['ㅂ', 'ㅅ'],
-}
-
-// Decompose compound vowels
-const DECOMPOSE_VOWEL: Record<string, [string, string]> = {
-  'ㅘ': ['ㅗ', 'ㅏ'],
-  'ㅙ': ['ㅗ', 'ㅐ'],
-  'ㅚ': ['ㅗ', 'ㅣ'],
-  'ㅝ': ['ㅜ', 'ㅓ'],
-  'ㅞ': ['ㅜ', 'ㅔ'],
-  'ㅟ': ['ㅜ', 'ㅣ'],
-  'ㅢ': ['ㅡ', 'ㅣ'],
-}
-
-const HANGUL_BASE = 0xAC00
-
-function isConsonant(jamo: string): boolean {
-  return CHO_SET.has(jamo)
-}
-
-function isVowel(jamo: string): boolean {
-  return JUNG_SET.has(jamo)
-}
-
-function composeHangul(cho: number, jung: number, jong: number): string {
-  return String.fromCharCode(HANGUL_BASE + (cho * 21 + jung) * 28 + jong)
-}
-
-// ── Eng→Kor: assemble jamo into hangul syllables ──
-
-function engToKorConvert(text: string): string {
-  // First, map each english character to its jamo
-  const jamos: string[] = []
-  for (const ch of text) {
-    if (ENG_TO_KOR[ch]) {
-      jamos.push(ENG_TO_KOR[ch])
-    } else {
-      jamos.push(ch)
-    }
-  }
-
-  // State machine to assemble jamo into syllables
-  let result = ''
-  let cho = -1    // current chosung index
-  let jung = -1   // current jungseong index
-  let jong = -1   // current jongseong index
-  let jongJamo = '' // the actual jamo for current jongseong (needed for compound decomposition)
-
-  const flush = () => {
-    if (cho >= 0 && jung >= 0) {
-      result += composeHangul(cho, jung, jong >= 0 ? jong : 0)
-    } else if (cho >= 0) {
-      result += CHO_LIST[cho]
-    }
-    cho = -1
-    jung = -1
-    jong = -1
-    jongJamo = ''
-  }
-
-  for (let i = 0; i < jamos.length; i++) {
-    const jamo = jamos[i]
-
-    if (isConsonant(jamo)) {
-      if (cho < 0) {
-        // No current syllable - start new one with this as chosung
-        cho = JAMO_TO_CHO[jamo] ?? -1
-      } else if (jung < 0) {
-        // Have chosung but no vowel - previous chosung is standalone
-        result += CHO_LIST[cho]
-        cho = JAMO_TO_CHO[jamo] ?? -1
-      } else if (jong < 0) {
-        // Have cho+jung, no jong yet
-        // Check if this consonant can be jongseong
-        if (JAMO_TO_JONG[jamo] !== undefined && JAMO_TO_JONG[jamo] > 0) {
-          jong = JAMO_TO_JONG[jamo]
-          jongJamo = jamo
-        } else {
-          // Cannot be jongseong (shouldn't happen for standard jamo, but safety)
-          flush()
-          cho = JAMO_TO_CHO[jamo] ?? -1
-        }
-      } else {
-        // Already have jong - try compound jongseong
-        if (COMPOUND_JONG[jongJamo] && COMPOUND_JONG[jongJamo][jamo]) {
-          const compound = COMPOUND_JONG[jongJamo][jamo]
-          jong = JAMO_TO_JONG[compound]
-          jongJamo = compound
-        } else {
-          // Can't compound - flush current syllable, start new one
-          flush()
-          cho = JAMO_TO_CHO[jamo] ?? -1
-        }
-      }
-    } else if (isVowel(jamo)) {
-      if (cho < 0 && jung < 0) {
-        // Standalone vowel - output directly
-        result += jamo
-      } else if (cho >= 0 && jung < 0) {
-        // Have chosung, add jungseong
-        jung = JAMO_TO_JUNG[jamo]
-      } else if (cho >= 0 && jung >= 0 && jong < 0) {
-        // Have cho+jung, no jong - try compound vowel
-        const currentVowel = JUNG_LIST[jung]
-        if (COMPOUND_VOWELS[currentVowel] && COMPOUND_VOWELS[currentVowel][jamo]) {
-          const compound = COMPOUND_VOWELS[currentVowel][jamo]
-          jung = JAMO_TO_JUNG[compound]
-        } else {
-          // Can't compound vowel - flush and treat as standalone vowel
-          flush()
-          result += jamo
-        }
-      } else if (cho >= 0 && jung >= 0 && jong >= 0) {
-        // Have cho+jung+jong, vowel comes - split jongseong
-        if (DECOMPOSE_JONG[jongJamo]) {
-          // Compound jongseong: first part stays, second becomes next chosung
-          const [first, second] = DECOMPOSE_JONG[jongJamo]
-          jong = JAMO_TO_JONG[first]
-          jongJamo = first
-          // Flush current syllable
-          result += composeHangul(cho, jung, jong)
-          // Start new syllable
-          cho = JAMO_TO_CHO[second] ?? -1
-          jung = JAMO_TO_JUNG[jamo]
-          jong = -1
-          jongJamo = ''
-        } else {
-          // Simple jongseong becomes next chosung
-          const prevJong = jongJamo
-          jong = -1
-          jongJamo = ''
-          // Flush without jongseong
-          flush()
-          // Start new syllable
-          cho = JAMO_TO_CHO[prevJong] ?? -1
-          jung = JAMO_TO_JUNG[jamo]
-        }
-      } else {
-        // Standalone vowel
-        flush()
-        result += jamo
-      }
-    } else {
-      // Non-Korean character
-      flush()
-      result += jamo
-    }
-  }
-
-  // Flush remaining
-  flush()
-
-  return result
-}
-
-// ── Kor→Eng: decompose hangul syllables to english keys ──
-
-function korToEngConvert(text: string): string {
-  let result = ''
-
-  for (const ch of text) {
-    const code = ch.charCodeAt(0)
-
-    if (code >= HANGUL_BASE && code <= 0xD7A3) {
-      // Composed hangul syllable
-      const offset = code - HANGUL_BASE
-      const choIdx = Math.floor(offset / (21 * 28))
-      const jungIdx = Math.floor((offset % (21 * 28)) / 28)
-      const jongIdx = offset % 28
-
-      const choJamo = CHO_LIST[choIdx]
-      const jungJamo = JUNG_LIST[jungIdx]
-      const jongJamo = jongIdx > 0 ? JONG_LIST[jongIdx] : null
-
-      // Convert chosung to english
-      result += jameToEng(choJamo)
-
-      // Convert jungseong (may be compound vowel)
-      if (DECOMPOSE_VOWEL[jungJamo]) {
-        const [v1, v2] = DECOMPOSE_VOWEL[jungJamo]
-        result += jameToEng(v1)
-        result += jameToEng(v2)
-      } else {
-        result += jameToEng(jungJamo)
-      }
-
-      // Convert jongseong (may be compound consonant)
-      if (jongJamo) {
-        if (DECOMPOSE_JONG[jongJamo]) {
-          const [j1, j2] = DECOMPOSE_JONG[jongJamo]
-          result += jameToEng(j1)
-          result += jameToEng(j2)
-        } else {
-          result += jameToEng(jongJamo)
-        }
-      }
-    } else if (KOR_TO_ENG[ch]) {
-      // Standalone jamo
-      result += KOR_TO_ENG[ch]
-    } else {
-      // Non-Korean character - pass through
-      result += ch
-    }
-  }
-
-  return result
-}
-
-function jameToEng(jamo: string): string {
-  return KOR_TO_ENG[jamo] || jamo
-}
+import { engToKorConvert, korToEngConvert, detectMode } from '@/utils/keyboardConvert'
 
 // ── Example items (hardcoded, not from translation) ──
 const EXAMPLES = [
@@ -293,13 +19,18 @@ const EXAMPLES = [
 export default function KeyboardConverter() {
   const t = useTranslations('keyboardConverter')
   const [input, setInput] = useState('')
-  const [mode, setMode] = useState<'engToKor' | 'korToEng'>('engToKor')
+  const [mode, setMode] = useState<'auto' | 'engToKor' | 'korToEng'>('auto')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [copyFailed, setCopyFailed] = useState(false)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  const direction = mode === 'auto' ? detectMode(input) : mode
   const output = useMemo(() => {
     if (!input) return ''
-    return mode === 'engToKor' ? engToKorConvert(input) : korToEngConvert(input)
-  }, [input, mode])
+    return direction === 'engToKor' ? engToKorConvert(input) : korToEngConvert(input)
+  }, [input, direction])
+
+  useEffect(() => { inputRef.current?.focus() }, [])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -315,30 +46,38 @@ export default function KeyboardConverter() {
         document.execCommand('copy')
         document.body.removeChild(textarea)
       }
+      setCopyFailed(false)
       setCopiedId(id)
       setTimeout(() => setCopiedId(null), 2000)
     } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
+      setCopyFailed(true)
+      setTimeout(() => setCopyFailed(false), 3000)
     }
   }, [])
 
+  // Ctrl/Cmd + Enter → 결과 복사
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && output) {
+        e.preventDefault()
+        copyToClipboard(output, 'output')
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [output, copyToClipboard])
+
   const handleSwap = useCallback(() => {
     setInput(output)
-    setMode(prev => prev === 'engToKor' ? 'korToEng' : 'engToKor')
-  }, [output])
-
-  const handleToggleMode = useCallback(() => {
-    setMode(prev => prev === 'engToKor' ? 'korToEng' : 'engToKor')
-    setInput('')
-  }, [])
+    setMode(direction === 'engToKor' ? 'korToEng' : 'engToKor')
+  }, [output, direction])
 
   const handleReset = useCallback(() => {
     setInput('')
   }, [])
 
   const handleExample = useCallback((exInput: string) => {
-    setMode('engToKor')
+    setMode('auto')
     setInput(exInput)
   }, [])
 
@@ -352,28 +91,25 @@ export default function KeyboardConverter() {
 
       {/* Main converter card */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        {/* Mode toggle */}
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={handleToggleMode}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              mode === 'engToKor'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-            }`}
-          >
-            {t('engToKor')}
-          </button>
-          <button
-            onClick={handleToggleMode}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              mode === 'korToEng'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-            }`}
-          >
-            {t('korToEng')}
-          </button>
+        {/* Mode */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex p-1 bg-soft rounded-xl">
+            {(['auto', 'engToKor', 'korToEng'] as const).map(m => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                aria-pressed={mode === m}
+                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  mode === m ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-fg'
+                }`}
+              >
+                {t(m)}
+              </button>
+            ))}
+          </div>
+          {mode === 'auto' && input && (
+            <span className="text-xs text-muted">{t('detected')}: {t(direction)}</span>
+          )}
         </div>
 
         {/* Input textarea */}
@@ -387,6 +123,7 @@ export default function KeyboardConverter() {
             </span>
           </div>
           <textarea
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={t('inputPlaceholder')}
@@ -400,7 +137,7 @@ export default function KeyboardConverter() {
           <button
             onClick={handleSwap}
             disabled={!output}
-            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-track text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             title={t('swap')}
           >
             <ArrowUpDown className="w-4 h-4" />
@@ -409,7 +146,7 @@ export default function KeyboardConverter() {
           <button
             onClick={handleReset}
             disabled={!input}
-            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-track text-body rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <RotateCcw className="w-4 h-4" />
             <span className="text-sm">{t('reset')}</span>
@@ -429,13 +166,15 @@ export default function KeyboardConverter() {
               {output && (
                 <button
                   onClick={() => copyToClipboard(output, 'output')}
-                  className="flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-md transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 text-xs bg-soft hover:bg-track text-body rounded-md transition-colors"
                 >
                   {copiedId === 'output' ? (
                     <>
-                      <Check className="w-3 h-3 text-green-500" />
-                      <span className="text-green-500">{t('copied')}</span>
+                      <Check className="w-3 h-3 text-primary" />
+                      <span className="text-primary">{t('copied')}</span>
                     </>
+                  ) : copyFailed ? (
+                    <span className="text-red-500">{t('copyFailed')}</span>
                   ) : (
                     <>
                       <Copy className="w-3 h-3" />
@@ -450,7 +189,7 @@ export default function KeyboardConverter() {
             value={output}
             readOnly
             rows={5}
-            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg resize-none text-base"
+            className="w-full px-4 py-3 border border-line rounded-xl bg-subtle text-fg resize-none text-lg font-medium"
           />
         </div>
       </div>
@@ -465,10 +204,10 @@ export default function KeyboardConverter() {
             <button
               key={idx}
               onClick={() => handleExample(ex.input)}
-              className="flex items-center justify-between px-4 py-3 bg-subtle hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="flex items-center justify-between px-4 py-3 bg-subtle hover:bg-soft rounded-xl transition-colors text-left"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <span className="text-sm font-mono text-blue-600 dark:text-blue-400 truncate">
+                <span className="text-sm font-mono text-muted truncate">
                   {ex.input}
                 </span>
                 <span className="text-faint shrink-0">→</span>
@@ -495,7 +234,7 @@ export default function KeyboardConverter() {
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                  <span className="text-faint mt-0.5 shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -510,7 +249,7 @@ export default function KeyboardConverter() {
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-green-500 mt-0.5 shrink-0">•</span>
+                  <span className="text-faint mt-0.5 shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}

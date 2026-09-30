@@ -62,9 +62,9 @@ export default function KeyboardConverterPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>긴 문서 오타 수정:</strong> 한영 전환을 잊고 긴 문장을 입력했을 때, 전체를 지우지 않고 변환기에 붙여넣어 즉시 수정하세요.</li>
-            <li><strong>인터넷 검색어 오타:</strong> 검색창에 영타로 잘못 입력된 한글 검색어(예: 'gksmf' → '나는')를 변환하여 올바른 검색어를 찾을 수 있습니다.</li>
+            <li><strong>인터넷 검색어 오타:</strong> 검색창에 영타로 잘못 입력된 한글 검색어(예: 'gksmf' → '한글')를 변환하여 올바른 검색어를 찾을 수 있습니다.</li>
             <li><strong>두벌식 자판 기반:</strong> 이 도구는 한국 표준 두벌식 자판을 기준으로 변환합니다. 세벌식 사용자는 결과가 다를 수 있습니다.</li>
-            <li><strong>한글 자모 분리 활용:</strong> 변환 결과가 자모 단위로 분리될 경우, 자모 합치기 기능으로 완성형 한글로 조합할 수 있습니다.</li>
+            <li><strong>CapsLock이 켜져 있었다면:</strong> 'DKSSUD'처럼 대문자로 입력된 글도 그대로 붙여넣으면 한글로 변환됩니다.</li>
             <li><strong>영문 이메일 오타:</strong> 한글 모드에서 영문 이메일 주소를 잘못 입력한 경우도 영문 복원 기능으로 빠르게 수정할 수 있습니다.</li>
           </ul>
         </div>

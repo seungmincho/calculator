@@ -2,8 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Upload, Image as ImageIcon, Square, Paintbrush, Undo, RotateCcw, Download } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { Upload, Image as ImageIcon, ImagePlus, Square, Paintbrush, Undo, Redo, RotateCcw, Download } from 'lucide-react'
 
 type Mode = 'rectangle' | 'brush'
 type EffectType = 'mosaic' | 'blur'
@@ -13,74 +12,131 @@ interface Point {
   y: number
 }
 
+// Region snapshot: pixels of (x, y, data.width, data.height) before/after an action
+interface HistoryEntry {
+  x: number
+  y: number
+  data: ImageData
+}
+
+interface Stroke {
+  start: Point
+  last: Point
+  radius: number
+  layer?: HTMLCanvasElement
+  snap?: HTMLCanvasElement
+  box?: { x1: number; y1: number; x2: number; y2: number }
+}
+
+// iOS Safari refuses canvases above ~16.7M pixels
+const MAX_PIXELS = 16_777_216
+// ponytail: byte budget for undo+redo region snapshots; raise if users need deeper history on huge photos
+const HISTORY_BYTES = 256 * 1024 * 1024
+const HISTORY_MAX = 30
+
+function makeCanvas(w: number, h: number) {
+  const c = document.createElement('canvas')
+  c.width = w
+  c.height = h
+  return c
+}
+
+// Full-size copy of `src` with the effect applied; callers clip and draw the part they need
+function buildEffectLayer(src: HTMLCanvasElement, effect: EffectType, strength: number) {
+  const { width: w, height: h } = src
+  const out = makeCanvas(w, h)
+  const ctx = out.getContext('2d')!
+
+  if (effect === 'mosaic') {
+    const b = Math.max(2, Math.round(strength))
+    const sw = Math.max(1, Math.ceil(w / b))
+    const sh = Math.max(1, Math.ceil(h / b))
+    const small = makeCanvas(sw, sh)
+    const sctx = small.getContext('2d')!
+    sctx.imageSmoothingEnabled = true
+    sctx.imageSmoothingQuality = 'high'
+    sctx.drawImage(src, 0, 0, sw, sh)
+    ctx.imageSmoothingEnabled = false
+    ctx.drawImage(small, 0, 0, sw * b, sh * b)
+  } else {
+    // Pad with stretched edges so blur near the border does not fade to transparent (which would leak the original)
+    const p = Math.ceil(strength * 3)
+    const pad = makeCanvas(w + 2 * p, h + 2 * p)
+    const pctx = pad.getContext('2d')!
+    pctx.drawImage(src, p, p)
+    pctx.drawImage(src, 0, 0, 1, h, 0, p, p, h)
+    pctx.drawImage(src, w - 1, 0, 1, h, p + w, p, p, h)
+    pctx.drawImage(pad, 0, p, w + 2 * p, 1, 0, 0, w + 2 * p, p)
+    pctx.drawImage(pad, 0, p + h - 1, w + 2 * p, 1, 0, p + h, w + 2 * p, p)
+    ctx.filter = `blur(${strength}px)`
+    ctx.drawImage(pad, -p, -p)
+  }
+  return out
+}
+
 export default function ImageMosaic() {
   const t = useTranslations('imageMosaic')
 
   const [image, setImage] = useState<HTMLImageElement | null>(null)
+  const [baseName, setBaseName] = useState('image')
   const [mode, setMode] = useState<Mode>('rectangle')
   const [effectType, setEffectType] = useState<EffectType>('mosaic')
   const [intensity, setIntensity] = useState(20)
   const [brushSize, setBrushSize] = useState(30)
-  const [isDrawing, setIsDrawing] = useState(false)
-  const [startPoint, setStartPoint] = useState<Point | null>(null)
-  const [currentPoint, setCurrentPoint] = useState<Point | null>(null)
-  const [history, setHistory] = useState<string[]>([])
-  const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpeg'>('png')
+  const [, setHistoryVersion] = useState(0)
+  const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpeg'>('jpeg')
   const [jpegQuality, setJpegQuality] = useState(0.9)
 
+  // canvasRef holds the ORIGINAL resolution; CSS scales it down for display
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const rectOverlayRef = useRef<HTMLDivElement>(null)
+  const cursorRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const objectUrlRef = useRef<string | null>(null)
+  const undoRef = useRef<HistoryEntry[]>([])
+  const redoRef = useRef<HistoryEntry[]>([])
+  const strokeRef = useRef<Stroke | null>(null)
 
-  // Load image onto canvas
-  const loadImageToCanvas = useCallback((img: HTMLImageElement) => {
+  const bumpHistory = () => setHistoryVersion((v) => v + 1)
+
+  // Draw the original at full resolution whenever a new image is loaded
+  useEffect(() => {
     const canvas = canvasRef.current
-    const container = containerRef.current
-    if (!canvas || !container) return
-
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    if (!ctx) return
-
-    // Calculate canvas size to fit container while maintaining aspect ratio
-    const maxWidth = container.clientWidth
-    const maxHeight = 600
-    let width = img.width
-    let height = img.height
-
-    if (width > maxWidth) {
-      height = (height * maxWidth) / width
-      width = maxWidth
+    if (!image || !canvas) return
+    let w = image.naturalWidth
+    let h = image.naturalHeight
+    if (w * h > MAX_PIXELS) {
+      const s = Math.sqrt(MAX_PIXELS / (w * h))
+      w = Math.floor(w * s)
+      h = Math.floor(h * s)
     }
-    if (height > maxHeight) {
-      width = (width * maxHeight) / height
-      height = maxHeight
-    }
+    canvas.width = w
+    canvas.height = h
+    canvas.getContext('2d')!.drawImage(image, 0, 0, w, h)
+    undoRef.current = []
+    redoRef.current = []
+    bumpHistory()
+  }, [image])
 
-    canvas.width = width
-    canvas.height = height
-    ctx.drawImage(img, 0, 0, width, height)
-
-    // Save initial state
-    setHistory([canvas.toDataURL()])
+  useEffect(() => () => {
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current)
   }, [])
 
-  // Handle file upload
   const handleFileSelect = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) return
-
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const img = new Image()
-      img.onload = () => {
-        setImage(img)
-        loadImageToCanvas(img)
-      }
-      img.src = e.target?.result as string
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current)
+      objectUrlRef.current = url
+      setBaseName(file.name.replace(/\.[^.]+$/, '') || 'image')
+      setImage(img)
     }
-    reader.readAsDataURL(file)
-  }, [loadImageToCanvas])
+    img.onerror = () => URL.revokeObjectURL(url)
+    img.src = url
+  }, [])
 
-  // Drag and drop handlers
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
@@ -91,341 +147,265 @@ export default function ImageMosaic() {
     e.preventDefault()
   }, [])
 
-  // Get canvas coordinates from mouse/touch event
-  const getCanvasCoordinates = useCallback((e: React.MouseEvent | React.TouchEvent): Point => {
-    const canvas = canvasRef.current
-    if (!canvas) return { x: 0, y: 0 }
-
-    const rect = canvas.getBoundingClientRect()
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
-
-    return {
-      x: clientX - rect.left,
-      y: clientY - rect.top
+  // ── History ──
+  const pushUndo = useCallback((entry: HistoryEntry) => {
+    const undo = undoRef.current
+    undo.push(entry)
+    redoRef.current = []
+    let bytes = undo.reduce((s, en) => s + en.data.data.byteLength, 0)
+    while (undo.length > 1 && (undo.length > HISTORY_MAX || bytes > HISTORY_BYTES)) {
+      bytes -= undo.shift()!.data.data.byteLength
     }
+    bumpHistory()
   }, [])
 
-  // Apply mosaic effect
-  const applyMosaic = useCallback((imageData: ImageData, blockSize: number, x: number, y: number, width: number, height: number) => {
-    const data = imageData.data
-    const imgWidth = imageData.width
+  // Put `entry` back on the canvas and return what it replaced (for the opposite stack)
+  const swapRegion = (entry: HistoryEntry): HistoryEntry | null => {
+    const ctx = canvasRef.current?.getContext('2d')
+    if (!ctx) return null
+    const current = ctx.getImageData(entry.x, entry.y, entry.data.width, entry.data.height)
+    ctx.putImageData(entry.data, entry.x, entry.y)
+    return { x: entry.x, y: entry.y, data: current }
+  }
 
-    for (let by = y; by < y + height; by += blockSize) {
-      for (let bx = x; bx < x + width; bx += blockSize) {
-        let r = 0, g = 0, b = 0, count = 0
-
-        // Calculate average color in block
-        for (let py = by; py < Math.min(by + blockSize, y + height); py++) {
-          for (let px = bx; px < Math.min(bx + blockSize, x + width); px++) {
-            const idx = (py * imgWidth + px) * 4
-            r += data[idx]
-            g += data[idx + 1]
-            b += data[idx + 2]
-            count++
-          }
-        }
-
-        r = Math.floor(r / count)
-        g = Math.floor(g / count)
-        b = Math.floor(b / count)
-
-        // Fill block with average color
-        for (let py = by; py < Math.min(by + blockSize, y + height); py++) {
-          for (let px = bx; px < Math.min(bx + blockSize, x + width); px++) {
-            const idx = (py * imgWidth + px) * 4
-            data[idx] = r
-            data[idx + 1] = g
-            data[idx + 2] = b
-          }
-        }
-      }
-    }
-  }, [])
-
-  // Apply blur effect
-  const applyBlur = useCallback((imageData: ImageData, radius: number, x: number, y: number, width: number, height: number) => {
-    const data = imageData.data
-    const imgWidth = imageData.width
-    const imgHeight = imageData.height
-    const tempData = new Uint8ClampedArray(data)
-
-    for (let py = y; py < y + height; py++) {
-      for (let px = x; px < x + width; px++) {
-        let r = 0, g = 0, b = 0, count = 0
-
-        // Average surrounding pixels within radius
-        for (let dy = -radius; dy <= radius; dy++) {
-          for (let dx = -radius; dx <= radius; dx++) {
-            const nx = px + dx
-            const ny = py + dy
-
-            if (nx >= 0 && nx < imgWidth && ny >= 0 && ny < imgHeight) {
-              const idx = (ny * imgWidth + nx) * 4
-              r += tempData[idx]
-              g += tempData[idx + 1]
-              b += tempData[idx + 2]
-              count++
-            }
-          }
-        }
-
-        const idx = (py * imgWidth + px) * 4
-        data[idx] = Math.floor(r / count)
-        data[idx + 1] = Math.floor(g / count)
-        data[idx + 2] = Math.floor(b / count)
-      }
-    }
-  }, [])
-
-  // Apply effect to rectangular area
-  const applyEffectToArea = useCallback((x1: number, y1: number, x2: number, y2: number) => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    if (!ctx) return
-
-    // Normalize coordinates
-    const x = Math.min(x1, x2)
-    const y = Math.min(y1, y2)
-    const width = Math.abs(x2 - x1)
-    const height = Math.abs(y2 - y1)
-
-    if (width === 0 || height === 0) return
-
-    // Save state before applying effect
-    const newHistory = [...history, canvas.toDataURL()]
-    if (newHistory.length > 20) newHistory.shift()
-    setHistory(newHistory)
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-    if (effectType === 'mosaic') {
-      applyMosaic(imageData, intensity, x, y, width, height)
-    } else {
-      applyBlur(imageData, intensity, x, y, width, height)
-    }
-
-    ctx.putImageData(imageData, 0, 0)
-  }, [effectType, intensity, history, applyMosaic, applyBlur])
-
-  // Apply effect to circular area (brush mode)
-  const applyEffectToBrush = useCallback((x: number, y: number) => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    if (!ctx) return
-
-    const radius = brushSize / 2
-    const x1 = Math.max(0, Math.floor(x - radius))
-    const y1 = Math.max(0, Math.floor(y - radius))
-    const x2 = Math.min(canvas.width, Math.ceil(x + radius))
-    const y2 = Math.min(canvas.height, Math.ceil(y + radius))
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-    // Apply effect only to pixels within circular brush
-    const tempData = new Uint8ClampedArray(imageData.data)
-
-    for (let py = y1; py < y2; py++) {
-      for (let px = x1; px < x2; px++) {
-        const dx = px - x
-        const dy = py - y
-        const distance = Math.sqrt(dx * dx + dy * dy)
-
-        if (distance <= radius) {
-          if (effectType === 'mosaic') {
-            // For mosaic in brush mode, use smaller blocks
-            const blockSize = Math.max(5, Math.floor(intensity / 2))
-            const bx = Math.floor(px / blockSize) * blockSize
-            const by = Math.floor(py / blockSize) * blockSize
-
-            let r = 0, g = 0, b = 0, count = 0
-            for (let iy = by; iy < Math.min(by + blockSize, canvas.height); iy++) {
-              for (let ix = bx; ix < Math.min(bx + blockSize, canvas.width); ix++) {
-                const idx = (iy * canvas.width + ix) * 4
-                r += tempData[idx]
-                g += tempData[idx + 1]
-                b += tempData[idx + 2]
-                count++
-              }
-            }
-
-            const idx = (py * canvas.width + px) * 4
-            imageData.data[idx] = Math.floor(r / count)
-            imageData.data[idx + 1] = Math.floor(g / count)
-            imageData.data[idx + 2] = Math.floor(b / count)
-          } else {
-            // Blur
-            const blurRadius = Math.max(1, Math.floor(intensity / 3))
-            let r = 0, g = 0, b = 0, count = 0
-
-            for (let dy = -blurRadius; dy <= blurRadius; dy++) {
-              for (let dx = -blurRadius; dx <= blurRadius; dx++) {
-                const nx = px + dx
-                const ny = py + dy
-
-                if (nx >= 0 && nx < canvas.width && ny >= 0 && ny < canvas.height) {
-                  const idx = (ny * canvas.width + nx) * 4
-                  r += tempData[idx]
-                  g += tempData[idx + 1]
-                  b += tempData[idx + 2]
-                  count++
-                }
-              }
-            }
-
-            const idx = (py * canvas.width + px) * 4
-            imageData.data[idx] = Math.floor(r / count)
-            imageData.data[idx + 1] = Math.floor(g / count)
-            imageData.data[idx + 2] = Math.floor(b / count)
-          }
-        }
-      }
-    }
-
-    ctx.putImageData(imageData, 0, 0)
-  }, [brushSize, effectType, intensity])
-
-  // Mouse/touch event handlers
-  const handleMouseDown = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (!image) return
-
-    const point = getCanvasCoordinates(e)
-    setIsDrawing(true)
-    setStartPoint(point)
-    setCurrentPoint(point)
-
-    if (mode === 'brush') {
-      // Save state on first brush stroke
-      const canvas = canvasRef.current
-      if (canvas) {
-        const newHistory = [...history, canvas.toDataURL()]
-        if (newHistory.length > 20) newHistory.shift()
-        setHistory(newHistory)
-      }
-      applyEffectToBrush(point.x, point.y)
-    }
-  }, [image, mode, getCanvasCoordinates, applyEffectToBrush, history])
-
-  const handleMouseMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing || !image) return
-
-    const point = getCanvasCoordinates(e)
-    setCurrentPoint(point)
-
-    if (mode === 'brush') {
-      applyEffectToBrush(point.x, point.y)
-    }
-  }, [isDrawing, image, mode, getCanvasCoordinates, applyEffectToBrush])
-
-  const handleMouseUp = useCallback(() => {
-    if (!isDrawing || !image) return
-
-    if (mode === 'rectangle' && startPoint && currentPoint) {
-      applyEffectToArea(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y)
-    }
-
-    setIsDrawing(false)
-    setStartPoint(null)
-    setCurrentPoint(null)
-  }, [isDrawing, image, mode, startPoint, currentPoint, applyEffectToArea])
-
-  // Draw selection rectangle
-  useEffect(() => {
-    if (mode === 'rectangle' && isDrawing && startPoint && currentPoint) {
-      const canvas = canvasRef.current
-      if (!canvas) return
-
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return
-
-      // Redraw from history
-      const lastState = history[history.length - 1]
-      if (lastState) {
-        const img = new Image()
-        img.onload = () => {
-          ctx.drawImage(img, 0, 0)
-
-          // Draw selection rectangle
-          ctx.strokeStyle = '#3b82f6'
-          ctx.lineWidth = 2
-          ctx.setLineDash([5, 5])
-          ctx.strokeRect(
-            startPoint.x,
-            startPoint.y,
-            currentPoint.x - startPoint.x,
-            currentPoint.y - startPoint.y
-          )
-          ctx.setLineDash([])
-        }
-        img.src = lastState
-      }
-    }
-  }, [mode, isDrawing, startPoint, currentPoint, history])
-
-  // Undo
   const handleUndo = useCallback(() => {
-    if (history.length <= 1) return
+    const entry = undoRef.current.pop()
+    if (!entry) return
+    const inverse = swapRegion(entry)
+    if (inverse) redoRef.current.push(inverse)
+    bumpHistory()
+  }, [])
 
-    const newHistory = [...history]
-    newHistory.pop()
-    setHistory(newHistory)
+  const handleRedo = useCallback(() => {
+    const entry = redoRef.current.pop()
+    if (!entry) return
+    const inverse = swapRegion(entry)
+    if (inverse) undoRef.current.push(inverse)
+    bumpHistory()
+  }, [])
 
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const lastState = newHistory[newHistory.length - 1]
-    const img = new Image()
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0)
-    }
-    img.src = lastState
-  }, [history])
-
-  // Reset
+  // Reset always restores the original image (and is itself undoable)
   const handleReset = useCallback(() => {
-    if (history.length === 0 || !image) return
-
     const canvas = canvasRef.current
-    if (!canvas) return
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx || !image) return
+    const before = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+    pushUndo({ x: 0, y: 0, data: before })
+  }, [image, pushUndo])
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const firstState = history[0]
-    const img = new Image()
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0)
-      setHistory([firstState])
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return
+      const el = e.target as HTMLElement
+      if (el.isContentEditable || el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && (el as HTMLInputElement).type !== 'range')) return
+      const key = e.key.toLowerCase()
+      if (key === 'z' && !e.shiftKey) {
+        e.preventDefault()
+        handleUndo()
+      } else if ((key === 'z' && e.shiftKey) || key === 'y') {
+        e.preventDefault()
+        handleRedo()
+      }
     }
-    img.src = firstState
-  }, [history, image])
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [handleUndo, handleRedo])
 
-  // Download
+  // ── Pointer ──
+  // Display px → canvas px factor (1 display px = `scale` original px)
+  const getScale = () => {
+    const canvas = canvasRef.current!
+    return canvas.width / canvas.getBoundingClientRect().width
+  }
+
+  const toCanvas = (e: React.PointerEvent, clamp: boolean): Point => {
+    const canvas = canvasRef.current!
+    const r = canvas.getBoundingClientRect()
+    let x = (e.clientX - r.left) * (canvas.width / r.width)
+    let y = (e.clientY - r.top) * (canvas.height / r.height)
+    if (clamp) {
+      x = Math.min(Math.max(x, 0), canvas.width)
+      y = Math.min(Math.max(y, 0), canvas.height)
+    }
+    return { x, y }
+  }
+
+  const effectStrength = (scale: number) =>
+    effectType === 'mosaic' ? intensity * scale : intensity * scale * 0.6
+
+  // Stamp the effect layer along a→b (interpolated so fast strokes stay continuous)
+  const paintSegment = (stroke: Stroke, a: Point, b: Point) => {
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx || !stroke.layer) return
+    const r = stroke.radius
+    const dist = Math.hypot(b.x - a.x, b.y - a.y)
+    const steps = Math.max(1, Math.ceil(dist / Math.max(1, r / 3)))
+
+    ctx.save()
+    ctx.beginPath()
+    for (let i = 0; i <= steps; i++) {
+      const x = a.x + ((b.x - a.x) * i) / steps
+      const y = a.y + ((b.y - a.y) * i) / steps
+      ctx.moveTo(x + r, y)
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+    }
+    ctx.clip()
+
+    const x1 = Math.max(0, Math.floor(Math.min(a.x, b.x) - r))
+    const y1 = Math.max(0, Math.floor(Math.min(a.y, b.y) - r))
+    const x2 = Math.min(canvas.width, Math.ceil(Math.max(a.x, b.x) + r))
+    const y2 = Math.min(canvas.height, Math.ceil(Math.max(a.y, b.y) + r))
+    if (x2 > x1 && y2 > y1) {
+      ctx.drawImage(stroke.layer, x1, y1, x2 - x1, y2 - y1, x1, y1, x2 - x1, y2 - y1)
+      const box = stroke.box
+      stroke.box = box
+        ? { x1: Math.min(box.x1, x1), y1: Math.min(box.y1, y1), x2: Math.max(box.x2, x2), y2: Math.max(box.y2, y2) }
+        : { x1, y1, x2, y2 }
+    }
+    ctx.restore()
+  }
+
+  const moveCursor = (e: React.PointerEvent) => {
+    const cursor = cursorRef.current
+    const wrapper = wrapperRef.current
+    if (!cursor || !wrapper) return
+    const wr = wrapper.getBoundingClientRect()
+    cursor.style.display = 'block'
+    cursor.style.width = `${brushSize}px`
+    cursor.style.height = `${brushSize}px`
+    cursor.style.left = `${e.clientX - wr.left - brushSize / 2}px`
+    cursor.style.top = `${e.clientY - wr.top - brushSize / 2}px`
+  }
+
+  const updateRectOverlay = (a: Point, b: Point) => {
+    const overlay = rectOverlayRef.current
+    const wrapper = wrapperRef.current
+    const canvas = canvasRef.current
+    if (!overlay || !wrapper || !canvas) return
+    const scale = getScale()
+    const cr = canvas.getBoundingClientRect()
+    const wr = wrapper.getBoundingClientRect()
+    overlay.style.display = 'block'
+    overlay.style.left = `${cr.left - wr.left + Math.min(a.x, b.x) / scale}px`
+    overlay.style.top = `${cr.top - wr.top + Math.min(a.y, b.y) / scale}px`
+    overlay.style.width = `${Math.abs(b.x - a.x) / scale}px`
+    overlay.style.height = `${Math.abs(b.y - a.y) / scale}px`
+  }
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current
+    if (!image || !canvas || e.button > 0) return
+    canvas.setPointerCapture(e.pointerId)
+    const scale = getScale()
+
+    if (mode === 'brush') {
+      const p = toCanvas(e, false)
+      const snap = makeCanvas(canvas.width, canvas.height)
+      snap.getContext('2d')!.drawImage(canvas, 0, 0)
+      const stroke: Stroke = {
+        start: p,
+        last: p,
+        radius: (brushSize / 2) * scale,
+        snap,
+        layer: buildEffectLayer(canvas, effectType, effectStrength(scale)),
+      }
+      strokeRef.current = stroke
+      paintSegment(stroke, p, p)
+      moveCursor(e)
+    } else {
+      const p = toCanvas(e, true)
+      strokeRef.current = { start: p, last: p, radius: 0 }
+      updateRectOverlay(p, p)
+    }
+  }
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!image) return
+    if (mode === 'brush') moveCursor(e)
+    const stroke = strokeRef.current
+    if (!stroke) return
+
+    if (mode === 'brush') {
+      const p = toCanvas(e, false)
+      paintSegment(stroke, stroke.last, p)
+      stroke.last = p
+    } else {
+      stroke.last = toCanvas(e, true)
+      updateRectOverlay(stroke.start, stroke.last)
+    }
+  }
+
+  const handlePointerUp = () => {
+    const stroke = strokeRef.current
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    strokeRef.current = null
+    if (rectOverlayRef.current) rectOverlayRef.current.style.display = 'none'
+    if (!stroke || !canvas || !ctx) return
+
+    if (stroke.snap) {
+      const box = stroke.box
+      if (box) {
+        const data = stroke.snap.getContext('2d')!.getImageData(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1)
+        pushUndo({ x: box.x1, y: box.y1, data })
+      }
+      return
+    }
+
+    const x = Math.floor(Math.min(stroke.start.x, stroke.last.x))
+    const y = Math.floor(Math.min(stroke.start.y, stroke.last.y))
+    const w = Math.ceil(Math.max(stroke.start.x, stroke.last.x)) - x
+    const h = Math.ceil(Math.max(stroke.start.y, stroke.last.y)) - y
+    if (w < 1 || h < 1) return
+
+    const before = ctx.getImageData(x, y, w, h)
+    const layer = buildEffectLayer(canvas, effectType, effectStrength(getScale()))
+    ctx.drawImage(layer, x, y, w, h, x, y, w, h)
+    pushUndo({ x, y, data: before })
+  }
+
+  const hideCursor = () => {
+    if (cursorRef.current) cursorRef.current.style.display = 'none'
+  }
+
+  // Download from the full-resolution canvas
   const handleDownload = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const mimeType = downloadFormat === 'png' ? 'image/png' : 'image/jpeg'
-    const quality = downloadFormat === 'jpeg' ? jpegQuality : undefined
+    let out = canvas
+    if (downloadFormat === 'jpeg') {
+      // JPEG has no alpha: flatten transparent areas onto white instead of black
+      out = makeCanvas(canvas.width, canvas.height)
+      const octx = out.getContext('2d')!
+      octx.fillStyle = '#fff'
+      octx.fillRect(0, 0, out.width, out.height)
+      octx.drawImage(canvas, 0, 0)
+    }
 
-    canvas.toBlob((blob) => {
+    out.toBlob((blob) => {
       if (!blob) return
-
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `mosaic-${Date.now()}.${downloadFormat}`
+      a.download = `${baseName}-mosaic.${downloadFormat === 'png' ? 'png' : 'jpg'}`
       a.click()
-      URL.revokeObjectURL(url)
-    }, mimeType, quality)
-  }, [downloadFormat, jpegQuality])
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    }, downloadFormat === 'png' ? 'image/png' : 'image/jpeg', downloadFormat === 'jpeg' ? jpegQuality : undefined)
+  }, [downloadFormat, jpegQuality, baseName])
+
+  const canUndo = undoRef.current.length > 0
+  const canRedo = redoRef.current.length > 0
+
+  const toggleClass = (active: boolean) =>
+    `flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
+      active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'
+    }`
+  const softBtn =
+    'w-full flex items-center justify-center gap-2 bg-soft hover:bg-subtle text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
 
   return (
     <div className="space-y-8">
@@ -435,11 +415,23 @@ export default function ImageMosaic() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) handleFileSelect(file)
+          e.target.value = ''
+        }}
+      />
+
       {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Controls */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+          <div className="ui-card p-6 space-y-6">
             {/* Upload */}
             {!image && (
               <div>
@@ -447,54 +439,30 @@ export default function ImageMosaic() {
                   {t('upload')}
                 </label>
                 <div
-                  className="border-2 border-dashed border-line-strong rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                  className="border-2 border-dashed border-line-strong rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                  <Upload className="w-12 h-12 mx-auto text-faint mb-3" />
                   <p className="text-sm text-sub">{t('dragDrop')}</p>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0]
-                      if (file) handleFileSelect(file)
-                    }}
-                  />
                 </div>
               </div>
             )}
 
-            {/* Mode Selection */}
             {!!image && (
               <>
+                {/* Mode Selection */}
                 <div>
                   <label className="block text-sm font-medium text-body mb-2">
                     {t('mode')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setMode('rectangle')}
-                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
-                        mode === 'rectangle'
-                          ? 'bg-primary hover:bg-blue-700 text-white'
-                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                      }`}
-                    >
+                    <button onClick={() => setMode('rectangle')} className={toggleClass(mode === 'rectangle')}>
                       <Square className="w-4 h-4" />
                       {t('rectangle')}
                     </button>
-                    <button
-                      onClick={() => setMode('brush')}
-                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
-                        mode === 'brush'
-                          ? 'bg-primary hover:bg-blue-700 text-white'
-                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                      }`}
-                    >
+                    <button onClick={() => setMode('brush')} className={toggleClass(mode === 'brush')}>
                       <Paintbrush className="w-4 h-4" />
                       {t('brush')}
                     </button>
@@ -507,24 +475,10 @@ export default function ImageMosaic() {
                     {t('effectType')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setEffectType('mosaic')}
-                      className={`px-4 py-3 rounded-lg font-medium transition-colors ${
-                        effectType === 'mosaic'
-                          ? 'bg-primary hover:bg-blue-700 text-white'
-                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                      }`}
-                    >
+                    <button onClick={() => setEffectType('mosaic')} className={toggleClass(effectType === 'mosaic')}>
                       {t('mosaic')}
                     </button>
-                    <button
-                      onClick={() => setEffectType('blur')}
-                      className={`px-4 py-3 rounded-lg font-medium transition-colors ${
-                        effectType === 'blur'
-                          ? 'bg-primary hover:bg-blue-700 text-white'
-                          : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                      }`}
-                    >
+                    <button onClick={() => setEffectType('blur')} className={toggleClass(effectType === 'blur')}>
                       {t('blur')}
                     </button>
                   </div>
@@ -564,21 +518,23 @@ export default function ImageMosaic() {
 
                 {/* Action Buttons */}
                 <div className="space-y-2">
-                  <button
-                    onClick={handleUndo}
-                    disabled={history.length <= 1}
-                    className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <Undo className="w-4 h-4" />
-                    {t('undo')}
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    disabled={history.length <= 1}
-                    className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
+                  <div className="grid grid-cols-2 gap-2">
+                    <button onClick={handleUndo} disabled={!canUndo} title="Ctrl+Z" className={softBtn}>
+                      <Undo className="w-4 h-4" />
+                      {t('undo')}
+                    </button>
+                    <button onClick={handleRedo} disabled={!canRedo} title="Ctrl+Shift+Z / Ctrl+Y" className={softBtn}>
+                      <Redo className="w-4 h-4" />
+                      {t('redo')}
+                    </button>
+                  </div>
+                  <button onClick={handleReset} disabled={!canUndo && !canRedo} className={softBtn}>
                     <RotateCcw className="w-4 h-4" />
                     {t('reset')}
+                  </button>
+                  <button onClick={() => fileInputRef.current?.click()} className={softBtn}>
+                    <ImagePlus className="w-4 h-4" />
+                    {t('changeImage')}
                   </button>
                 </div>
 
@@ -590,24 +546,16 @@ export default function ImageMosaic() {
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
-                        onClick={() => setDownloadFormat('png')}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          downloadFormat === 'png'
-                            ? 'bg-soft text-sub'
-                            : 'bg-soft text-body'
-                        }`}
-                      >
-                        {t('png')}
-                      </button>
-                      <button
                         onClick={() => setDownloadFormat('jpeg')}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          downloadFormat === 'jpeg'
-                            ? 'bg-soft text-sub'
-                            : 'bg-soft text-body'
-                        }`}
+                        className={`${toggleClass(downloadFormat === 'jpeg')} !py-2 text-sm`}
                       >
                         {t('jpeg')}
+                      </button>
+                      <button
+                        onClick={() => setDownloadFormat('png')}
+                        className={`${toggleClass(downloadFormat === 'png')} !py-2 text-sm`}
+                      >
+                        {t('png')}
                       </button>
                     </div>
                   </div>
@@ -629,10 +577,7 @@ export default function ImageMosaic() {
                     </div>
                   )}
 
-                  <button
-                    onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
-                  >
+                  <button onClick={handleDownload} className="ui-btn w-full flex items-center justify-center gap-2 px-4 py-3">
                     <Download className="w-4 h-4" />
                     {t('download')}
                   </button>
@@ -643,10 +588,10 @@ export default function ImageMosaic() {
         </div>
 
         {/* Canvas */}
-        <div className="lg:col-span-2" ref={containerRef}>
-          <div className={`${glassCard} ${glassInset} p-6`}>
+        <div className="lg:col-span-2">
+          <div className="ui-card p-6" onDrop={handleDrop} onDragOver={handleDragOver}>
             {!image ? (
-              <div className="flex flex-col items-center justify-center h-96 text-gray-400">
+              <div className="flex flex-col items-center justify-center h-96 text-faint">
                 <ImageIcon className="w-24 h-24 mb-4" />
                 <p className="text-lg">{t('noImage')}</p>
               </div>
@@ -657,18 +602,24 @@ export default function ImageMosaic() {
                     {t('selectArea')}
                   </p>
                 )}
-                <div className="overflow-auto">
+                <div ref={wrapperRef} className="relative flex justify-center items-start overflow-hidden">
                   <canvas
                     ref={canvasRef}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    onTouchStart={handleMouseDown}
-                    onTouchMove={handleMouseMove}
-                    onTouchEnd={handleMouseUp}
-                    className="border border-line rounded-lg cursor-crosshair mx-auto"
-                    style={{ touchAction: 'none' }}
+                    onPointerDown={handlePointerDown}
+                    onPointerMove={handlePointerMove}
+                    onPointerUp={handlePointerUp}
+                    onPointerCancel={handlePointerUp}
+                    onPointerLeave={hideCursor}
+                    className={`block max-w-full h-auto border border-line rounded-lg ${mode === 'brush' ? 'cursor-none' : 'cursor-crosshair'}`}
+                    style={{ touchAction: 'none', maxHeight: 600 }}
+                  />
+                  <div
+                    ref={rectOverlayRef}
+                    className="absolute hidden pointer-events-none border-2 border-dashed border-primary"
+                  />
+                  <div
+                    ref={cursorRef}
+                    className="absolute hidden pointer-events-none rounded-full border-2 border-white outline outline-1 outline-black/60"
                   />
                 </div>
               </div>
@@ -678,8 +629,8 @@ export default function ImageMosaic() {
       </div>
 
       {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">
           {t('guide.title')}
         </h2>
 
@@ -688,12 +639,9 @@ export default function ImageMosaic() {
             <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.howToUse.title')}
             </h3>
-            <ul className="space-y-2 text-sub">
+            <ul className="space-y-2 text-sub list-disc pl-5">
               {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
+                <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
@@ -702,12 +650,9 @@ export default function ImageMosaic() {
             <h3 className="text-lg font-medium text-fg mb-3">
               {t('guide.tips.title')}
             </h3>
-            <ul className="space-y-2 text-sub">
+            <ul className="space-y-2 text-sub list-disc pl-5">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
+                <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
