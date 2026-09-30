@@ -1,153 +1,118 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Home, Copy, Check, RotateCcw, BookOpen, ArrowLeftRight, Link } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { RotateCcw } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  BASE_RATE, legalCapRate, jeonseToWolse, wolseToJeonse, rentCreditRate,
+  housingCost, breakevenRate, renewalCap,
+} from '@/utils/rentConvert'
 
-type ConversionMode = 'jeonseToWolse' | 'wolseToJeonse'
+type Mode = 'jeonseToWolse' | 'wolseToJeonse'
+
+const DEFAULTS = {
+  jd: 300_000_000, wd: 100_000_000, mr: 750_000,
+  cr: legalCapRate(BASE_RATE.rate), br: BASE_RATE.rate,
+  nd: -1, // -1 = 전세금과 보증금의 중간 (반전세 기본값)
+  yrs: 2, cash: 100_000_000, lr: 4, dr: 3, sal: 50_000_000, tc: 1,
+  rd: 100_000_000, rr: 800_000,
+}
+type State = typeof DEFAULTS & { mode: Mode }
+type NumKey = keyof typeof DEFAULTS
+
+function decode(sp: URLSearchParams): State {
+  const num = (k: string, def: number) => {
+    const v = sp.get(k)
+    const n = v === null || v === '' ? NaN : Number(v)
+    return Number.isFinite(n) ? n : def
+  }
+  const mode: Mode = sp.get('mode') === 'wolseToJeonse' ? 'wolseToJeonse' : 'jeonseToWolse'
+  const s = { mode } as State
+  for (const k of Object.keys(DEFAULTS) as NumKey[]) s[k] = num(k, DEFAULTS[k])
+  // 예전 링크 호환 (월세→전세 모드는 rwd/rcr 사용)
+  if (mode === 'wolseToJeonse') { s.wd = num('rwd', s.wd); s.cr = num('rcr', s.cr) }
+  return s
+}
 
 export default function RentConverter() {
   const t = useTranslations('rentConverter')
   const searchParams = useSearchParams()
-  const [mode, setMode] = useState<ConversionMode>(
-    (searchParams.get('mode') as ConversionMode) || 'jeonseToWolse'
-  )
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [s, setS] = useState<State>(() => decode(searchParams))
+  const set = (k: NumKey, v: number) => setS((p) => ({ ...p, [k]: Number.isFinite(v) ? Math.max(0, v) : 0 }))
 
-  // Jeonse to Wolse inputs
-  const [jeonseDeposit, setJeonseDeposit] = useState(
-    Number(searchParams.get('jd')) || 300000000
-  )
-  const [wolseDeposit, setWolseDeposit] = useState(
-    Number(searchParams.get('wd')) || 100000000
-  )
-  const [conversionRate, setConversionRate] = useState(
-    Number(searchParams.get('cr')) || 4.5
-  )
-
-  // Wolse to Jeonse inputs
-  const [reverseWolseDeposit, setReverseWolseDeposit] = useState(
-    Number(searchParams.get('rwd')) || 100000000
-  )
-  const [monthlyRent, setMonthlyRent] = useState(
-    Number(searchParams.get('mr')) || 750000
-  )
-  const [reverseConversionRate, setReverseConversionRate] = useState(
-    Number(searchParams.get('rcr')) || 4.5
-  )
-
-  // Sync URL params when inputs change
   useEffect(() => {
     const url = new URL(window.location.href)
-    url.searchParams.set('mode', mode)
-    url.searchParams.set('jd', String(jeonseDeposit))
-    url.searchParams.set('wd', String(wolseDeposit))
-    url.searchParams.set('cr', String(conversionRate))
-    url.searchParams.set('rwd', String(reverseWolseDeposit))
-    url.searchParams.set('mr', String(monthlyRent))
-    url.searchParams.set('rcr', String(reverseConversionRate))
+    for (const old of ['rwd', 'rcr']) url.searchParams.delete(old)
+    url.searchParams.set('mode', s.mode)
+    for (const k of Object.keys(DEFAULTS) as NumKey[]) url.searchParams.set(k, String(s[k]))
     window.history.replaceState({}, '', url)
-  }, [mode, jeonseDeposit, wolseDeposit, conversionRate, reverseWolseDeposit, monthlyRent, reverseConversionRate])
+  }, [s])
 
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const jeonseToWolseResult = useMemo(() => {
-    const difference = jeonseDeposit - wolseDeposit
-    if (difference <= 0 || conversionRate <= 0) {
-      return {
-        monthlyRent: 0,
-        yearlyTotal: 0,
-        jeonseOpportunityCost: 0,
-      }
-    }
-
-    const monthly = (difference * conversionRate) / 100 / 12
-    const yearly = monthly * 12
-    const jeonseOpportunity = jeonseDeposit * conversionRate / 100
-
-    return {
-      monthlyRent: Math.round(monthly),
-      yearlyTotal: Math.round(yearly),
-      jeonseOpportunityCost: Math.round(jeonseOpportunity),
-    }
-  }, [jeonseDeposit, wolseDeposit, conversionRate])
-
-  const wolseToJeonseResult = useMemo(() => {
-    if (monthlyRent <= 0 || reverseConversionRate <= 0) {
-      return {
-        jeonseDeposit: reverseWolseDeposit,
-        yearlyTotal: 0,
-        jeonseOpportunityCost: 0,
-      }
-    }
-
-    const yearlyRent = monthlyRent * 12
-    const convertedAmount = (yearlyRent / reverseConversionRate) * 100
-    const totalJeonse = reverseWolseDeposit + convertedAmount
-    const jeonseOpportunity = totalJeonse * reverseConversionRate / 100
-
-    return {
-      jeonseDeposit: Math.round(totalJeonse),
-      yearlyTotal: yearlyRent,
-      jeonseOpportunityCost: Math.round(jeonseOpportunity),
-    }
-  }, [reverseWolseDeposit, monthlyRent, reverseConversionRate])
-
-  const formatWon = (value: number) => {
-    return new Intl.NumberFormat('ko-KR').format(value)
+  const won = (v: number) => `${new Intl.NumberFormat('ko-KR').format(Math.round(v))}${t('unit.won')}`
+  const short = (v: number) => {
+    const sign = v < 0 ? '-' : ''
+    const a = Math.abs(Math.round(v))
+    const eok = Math.floor(a / 1e8), man = Math.floor((a % 1e8) / 1e4)
+    if (eok) return `${sign}${eok}${t('unit.eok')}${man ? ` ${man.toLocaleString('ko-KR')}${t('unit.man')}` : ''}${t('unit.won')}`
+    if (man) return `${sign}${man.toLocaleString('ko-KR')}${t('unit.man')}${t('unit.won')}`
+    return `${sign}${won(a)}`
   }
 
-  const formatWonUnit = (value: number) => {
-    if (value >= 100000000) {
-      const eok = Math.floor(value / 100000000)
-      const man = Math.floor((value % 100000000) / 10000)
-      if (man === 0) return `${eok}억`
-      return `${eok}억 ${man}만`
-    } else if (value >= 10000) {
-      return `${Math.floor(value / 10000)}만`
-    }
-    return formatWon(value)
-  }
+  const cap = legalCapRate(s.br)
+  const rate = s.cr
+  // 등가 전세금 J, 월세 계약 (보증금 W, 월세 R)
+  const W = s.wd
+  const R = s.mode === 'jeonseToWolse' ? jeonseToWolse(s.jd, W, rate) : s.mr
+  const J = s.mode === 'jeonseToWolse' ? s.jd : wolseToJeonse(W, s.mr, rate)
+  const invalid = s.mode === 'jeonseToWolse' && W >= s.jd
+  const nd = Math.min(J, s.nd < 0 ? Math.round((J + W) / 2 / 1e7) * 1e7 : s.nd)
+  const ndRent = jeonseToWolse(J, nd, rate)
+  const per10m = jeonseToWolse(1e7, 0, rate)
 
-  const quickRates = [3, 3.5, 4, 4.5, 5, 5.5, 6]
-  const quickDeposits = [50000000, 100000000, 150000000, 200000000, 250000000, 300000000, 400000000, 500000000]
+  const creditRate = rentCreditRate(s.sal, s.tc === 1)
+  const rates = { loanRate: s.lr, depositRate: s.dr }
+  const base = { years: s.yrs, cash: s.cash, creditRate }
+  const scenarios = useMemo(() => {
+    const list = [
+      { key: 'jeonse', deposit: J, monthlyRent: 0 },
+      { key: 'half', deposit: nd, monthlyRent: ndRent },
+      { key: 'wolse', deposit: W, monthlyRent: R },
+    ]
+    return list.map((x) => ({ ...x, cost: housingCost({ ...base, ...rates, ...x }) }))
+  }, [J, W, R, nd, ndRent, s.yrs, s.cash, s.lr, s.dr, creditRate]) // eslint-disable-line react-hooks/exhaustive-deps
+  const best = scenarios.reduce((a, b) => (b.cost.net < a.cost.net ? b : a))
+  const beKey = J > s.cash ? 'loanRate' : 'depositRate'
+  const be = breakevenRate({ ...base, deposit: J, monthlyRent: 0 }, { ...base, deposit: W, monthlyRent: R }, rates, beKey)
+  const renewal = renewalCap(s.rd, s.rr, rate)
 
-  const resetForm = () => {
-    if (mode === 'jeonseToWolse') {
-      setJeonseDeposit(300000000)
-      setWolseDeposit(100000000)
-      setConversionRate(4.5)
-    } else {
-      setReverseWolseDeposit(100000000)
-      setMonthlyRent(750000)
-      setReverseConversionRate(4.5)
-    }
-  }
+  const headline = s.mode === 'jeonseToWolse' ? won(R) : short(J)
+  const headLabel = s.mode === 'jeonseToWolse'
+    ? t('hero.monthly', { jeonse: short(s.jd), deposit: short(W) })
+    : t('hero.jeonse', { deposit: short(W), rent: won(s.mr) })
 
-  const currentResult = mode === 'jeonseToWolse' ? jeonseToWolseResult : wolseToJeonseResult
-  const currentRate = mode === 'jeonseToWolse' ? conversionRate : reverseConversionRate
+  const moneyField = (k: NumKey, label: string, step = 10_000_000) => (
+    <div>
+      <label htmlFor={`rc-${k}`} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <input id={`rc-${k}`} type="number" inputMode="numeric" min={0} step={step} value={s[k]}
+        onChange={(e) => set(k, Number(e.target.value))} className="ui-field px-4 py-3 tabular-nums" />
+      <p className="text-xs text-muted mt-1">{short(s[k])}</p>
+    </div>
+  )
+  const pctField = (k: NumKey, label: string, hint?: string) => (
+    <div>
+      <label htmlFor={`rc-${k}`} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <input id={`rc-${k}`} type="number" inputMode="decimal" min={0} max={30} step={0.05} value={s[k]}
+        onChange={(e) => set(k, Number(e.target.value))} className="ui-field px-4 py-3 tabular-nums" />
+      {hint && <p className="text-xs text-muted mt-1">{hint}</p>}
+    </div>
+  )
+  const chip = (active: boolean) =>
+    `px-3 py-2 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+
+  const rateChips = Array.from(new Set([cap, 4, 4.5, 5.5, 6])).sort((a, b) => a - b)
 
   return (
     <div className="space-y-8">
@@ -157,446 +122,197 @@ export default function RentConverter() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel - Settings */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+          <div className="ui-card p-6 space-y-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Home className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h2 className="text-lg font-semibold text-fg">
-                  설정
-                </h2>
-              </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => copyToClipboard(window.location.href, 'link')}
-                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  title={t('copyLink')}
-                >
-                  {copiedId === 'link' ? (
-                    <Check className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <Link className="w-5 h-5" />
-                  )}
-                </button>
-                <button
-                  onClick={resetForm}
-                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  title={t('reset')}
-                >
-                  <RotateCcw className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Mode Tabs */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setMode('jeonseToWolse')}
-                className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  mode === 'jeonseToWolse'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                {t('mode.jeonseToWolse')}
-              </button>
-              <button
-                onClick={() => setMode('wolseToJeonse')}
-                className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  mode === 'wolseToJeonse'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                {t('mode.wolseToJeonse')}
+              <h2 className="text-lg font-semibold text-fg">{t('settings')}</h2>
+              <button onClick={() => setS({ ...DEFAULTS, mode: s.mode })} className="p-2 text-muted hover:text-body" title={t('reset')} aria-label={t('reset')}>
+                <RotateCcw className="w-5 h-5" />
               </button>
             </div>
 
-            {mode === 'jeonseToWolse' ? (
+            <div className="grid grid-cols-2 gap-2" role="tablist">
+              {(['jeonseToWolse', 'wolseToJeonse'] as Mode[]).map((m) => (
+                <button key={m} role="tab" aria-selected={s.mode === m} onClick={() => setS((p) => ({ ...p, mode: m }))} className={chip(s.mode === m)}>
+                  {t(`mode.${m}`)}
+                </button>
+              ))}
+            </div>
+
+            {s.mode === 'jeonseToWolse' ? (
               <>
-                {/* Jeonse Deposit */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('jeonseDeposit')}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-                      ₩
-                    </span>
-                    <input
-                      type="number"
-                      value={jeonseDeposit}
-                      onChange={(e) => setJeonseDeposit(Number(e.target.value))}
-                      className={`${glassInput} pl-8 pr-3 py-2`}
-                      min="0"
-                      step="10000000"
-                    />
-                  </div>
-                  <p className="text-xs text-muted mt-1">
-                    {formatWonUnit(jeonseDeposit)}원
-                  </p>
-                </div>
-
-                {/* Wolse Deposit */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('wolseDeposit')}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-                      ₩
-                    </span>
-                    <input
-                      type="number"
-                      value={wolseDeposit}
-                      onChange={(e) => setWolseDeposit(Number(e.target.value))}
-                      className={`${glassInput} pl-8 pr-3 py-2`}
-                      min="0"
-                      step="10000000"
-                    />
-                  </div>
-                  <p className="text-xs text-muted mt-1">
-                    {formatWonUnit(wolseDeposit)}원
-                  </p>
-                </div>
-
-                {/* Conversion Rate */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('conversionRate')}
-                  </label>
-                  <input
-                    type="number"
-                    value={conversionRate}
-                    onChange={(e) => setConversionRate(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                    min="0"
-                    max="20"
-                    step="0.1"
-                  />
-                  <p className="text-xs text-muted mt-1">
-                    연율: {conversionRate}%
-                  </p>
-                </div>
+                {moneyField('jd', t('jeonseDeposit'))}
+                {moneyField('wd', t('wolseDeposit'))}
               </>
             ) : (
               <>
-                {/* Reverse Wolse Deposit */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('wolseDeposit')}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-                      ₩
-                    </span>
-                    <input
-                      type="number"
-                      value={reverseWolseDeposit}
-                      onChange={(e) => setReverseWolseDeposit(Number(e.target.value))}
-                      className={`${glassInput} pl-8 pr-3 py-2`}
-                      min="0"
-                      step="10000000"
-                    />
-                  </div>
-                  <p className="text-xs text-muted mt-1">
-                    {formatWonUnit(reverseWolseDeposit)}원
-                  </p>
-                </div>
-
-                {/* Monthly Rent */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('monthlyRent')}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-                      ₩
-                    </span>
-                    <input
-                      type="number"
-                      value={monthlyRent}
-                      onChange={(e) => setMonthlyRent(Number(e.target.value))}
-                      className={`${glassInput} pl-8 pr-3 py-2`}
-                      min="0"
-                      step="10000"
-                    />
-                  </div>
-                  <p className="text-xs text-muted mt-1">
-                    {formatWonUnit(monthlyRent)}원
-                  </p>
-                </div>
-
-                {/* Reverse Conversion Rate */}
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('conversionRate')}
-                  </label>
-                  <input
-                    type="number"
-                    value={reverseConversionRate}
-                    onChange={(e) => setReverseConversionRate(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                    min="0"
-                    max="20"
-                    step="0.1"
-                  />
-                  <p className="text-xs text-muted mt-1">
-                    연율: {reverseConversionRate}%
-                  </p>
-                </div>
+                {moneyField('wd', t('wolseDeposit'))}
+                {moneyField('mr', t('monthlyRent'), 10_000)}
               </>
             )}
 
-            {/* Quick Rates */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('quickRates')}
-              </label>
-              <div className="grid grid-cols-4 gap-2">
-                {quickRates.map((rate) => (
-                  <button
-                    key={rate}
-                    onClick={() => {
-                      if (mode === 'jeonseToWolse') {
-                        setConversionRate(rate)
-                      } else {
-                        setReverseConversionRate(rate)
-                      }
-                    }}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      currentRate === rate
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {rate}%
+              {pctField('cr', t('conversionRate'))}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {rateChips.map((r) => (
+                  <button key={r} onClick={() => set('cr', r)} className={chip(rate === r)}>
+                    {r === cap ? t('rate.capChip', { rate: r }) : `${r}%`}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Quick Deposits */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('quickDeposits')}
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {quickDeposits.map((deposit) => (
-                  <button
-                    key={deposit}
-                    onClick={() => {
-                      if (mode === 'jeonseToWolse') {
-                        setJeonseDeposit(deposit)
-                      } else {
-                        setReverseWolseDeposit(deposit)
-                      }
-                    }}
-                    className="px-3 py-2 rounded-lg text-sm font-medium bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    {formatWonUnit(deposit)}
-                  </button>
-                ))}
-              </div>
+            <div className="bg-subtle rounded-2xl p-4 space-y-3">
+              {pctField('br', t('rate.baseRate'), t('rate.baseRateHint', { rate: BASE_RATE.rate, date: BASE_RATE.date }))}
+              <p className="text-sm text-sub">{t('rate.capFormula', { base: s.br, cap })}</p>
+              <p className="text-xs text-muted">
+                <a href="https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643" target="_blank" rel="noopener noreferrer" className="underline">{t('rate.bokLink')}</a>
+                {' · '}
+                <a href="https://www.reb.or.kr/r-one/" target="_blank" rel="noopener noreferrer" className="underline">{t('rate.marketLink')}</a>
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Right Panel - Results */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Result Cards */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-subtle rounded-xl shadow-lg p-6">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-fg">
-                  {mode === 'jeonseToWolse'
-                    ? '예상 월세'
-                    : '예상 전세금'}
-                </h3>
-                <button
-                  onClick={() =>
-                    copyToClipboard(
-                      String(
-                        mode === 'jeonseToWolse'
-                          ? jeonseToWolseResult.monthlyRent
-                          : wolseToJeonseResult.jeonseDeposit
-                      ),
-                      'main'
-                    )
-                  }
-                  className="p-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-                >
-                  {copiedId === 'main' ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-              <p className="text-2xl font-bold text-fg">
-                {mode === 'jeonseToWolse'
-                  ? `${formatWon(jeonseToWolseResult.monthlyRent)}원`
-                  : `${formatWonUnit(wolseToJeonseResult.jeonseDeposit)}원`}
-              </p>
-              <p className="text-xs text-sub mt-1">
-                {mode === 'jeonseToWolse'
-                  ? formatWonUnit(jeonseToWolseResult.monthlyRent)
-                  : formatWon(wolseToJeonseResult.jeonseDeposit)}
-                원
-              </p>
-            </div>
-
-            <div className="bg-subtle rounded-xl shadow-lg p-6">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-fg">
-                  연간 월세 합계
-                </h3>
-                <button
-                  onClick={() =>
-                    copyToClipboard(String(currentResult.yearlyTotal), 'yearly')
-                  }
-                  className="p-1 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300"
-                >
-                  {copiedId === 'yearly' ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-              <p className="text-2xl font-bold text-fg">
-                {formatWon(currentResult.yearlyTotal)}원
-              </p>
-              <p className="text-xs text-sub mt-1">
-                {formatWonUnit(currentResult.yearlyTotal)}원
-              </p>
-            </div>
-
-            <div className="bg-subtle rounded-xl shadow-lg p-6">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-medium text-fg">
-                  전환율
-                </h3>
-                <button
-                  onClick={() => copyToClipboard(String(currentRate), 'rate')}
-                  className="p-1 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
-                >
-                  {copiedId === 'rate' ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-              <p className="text-2xl font-bold text-fg">
-                {currentRate}%
-              </p>
-              <p className="text-xs text-sub mt-1">
-                연율 기준
-              </p>
-            </div>
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{headLabel}</p>
+            <p className="text-3xl font-bold tabular-nums mt-1">{invalid ? '—' : headline}</p>
+            <p className="text-sm text-white/70 mt-2 tabular-nums">
+              {s.mode === 'jeonseToWolse'
+                ? t('hero.formulaMonthly', { diff: short(s.jd - W), rate, result: won(R) })
+                : t('hero.formulaJeonse', { deposit: short(W), rent: won(s.mr), rate, result: short(J) })}
+            </p>
           </div>
 
-          {/* Formula Display */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center gap-2 mb-4">
-              <ArrowLeftRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <h3 className="text-lg font-semibold text-fg">
-                계산 공식
-              </h3>
-            </div>
-            <div className="bg-subtle rounded-lg p-4">
-              <p className="text-sm font-mono text-body">
-                {mode === 'jeonseToWolse'
-                  ? '월세 = (전세금 - 월세보증금) × 전환율 ÷ 12'
-                  : '전세금 = 월세보증금 + (월세 × 12 ÷ 전환율)'}
-              </p>
-              <div className="mt-3 pt-3 border-t border-line">
-                <p className="text-xs text-sub">
-                  {mode === 'jeonseToWolse' ? (
-                    <>
-                      ({formatWonUnit(jeonseDeposit)} - {formatWonUnit(wolseDeposit)}) × {conversionRate}% ÷ 12 = {formatWonUnit(jeonseToWolseResult.monthlyRent)}원
-                    </>
-                  ) : (
-                    <>
-                      {formatWonUnit(reverseWolseDeposit)} + ({formatWonUnit(monthlyRent)} × 12 ÷ {reverseConversionRate}%) = {formatWonUnit(wolseToJeonseResult.jeonseDeposit)}원
-                    </>
-                  )}
-                </p>
+          {invalid && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('warn.depositTooHigh')}</div>}
+          {rate > cap && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('warn.overCap', { rate, cap })}</div>}
+
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: headLabel,
+              headline: invalid ? '—' : headline,
+              sub: t('share.sub', { rate, cap }),
+              rows: [
+                { label: t('scenario.best'), value: t(`scenario.${best.key}`) },
+                { label: t('scenario.net', { years: s.yrs }), value: short(best.cost.net) },
+              ],
+            }}
+            fileName="rent-converter"
+          />
+
+          {/* 보증금 조정 */}
+          <div className="ui-card p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-fg">{t('adjust.title')}</h3>
+            <p className="text-sm text-muted">{t('adjust.desc', { amount: won(per10m) })}</p>
+            <input type="range" min={0} max={Math.max(J, 1e7)} step={1e7} value={nd} aria-label={t('adjust.deposit')}
+              onChange={(e) => set('nd', Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-sub">{t('adjust.deposit')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums">{short(nd)}</p>
+              </div>
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-sub">{t('adjust.rent')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums">{won(ndRent)}</p>
+                <p className="text-xs text-muted mt-1 tabular-nums">{t('adjust.vs', { diff: `${ndRent > R ? '+' : ''}${won(ndRent - R)}` })}</p>
               </div>
             </div>
           </div>
 
-          {/* Conversion Rate Comparison Table */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-fg mb-4">
-              {t('rateComparisonTable.title')}
-            </h3>
+          {/* 2년 총비용 비교 */}
+          <div className="ui-card p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-fg">{t('scenario.title', { years: s.yrs })}</h3>
+            <div className="bg-subtle rounded-2xl p-4 grid sm:grid-cols-3 gap-4">
+              {pctField('yrs', t('scenario.years'))}
+              {pctField('lr', t('scenario.loanRate'))}
+              {pctField('dr', t('scenario.depositRate'))}
+              <div className="sm:col-span-1">{moneyField('cash', t('scenario.cash'))}</div>
+              <div className="sm:col-span-1">{moneyField('sal', t('scenario.salary'), 1_000_000)}</div>
+              <label className="flex items-start gap-2 text-sm text-body sm:pt-8">
+                <input type="checkbox" checked={s.tc === 1} onChange={(e) => set('tc', e.target.checked ? 1 : 0)} className="mt-0.5" />
+                <span>{t('scenario.creditEligible')}<span className="block text-xs text-muted">{t('scenario.creditRate', { rate: Math.round(creditRate * 100) })}</span></span>
+              </label>
+            </div>
+
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm tabular-nums">
                 <thead>
-                  <tr className="border-b border-line">
-                    <th className="text-left py-2 pr-4 font-medium text-muted">
-                      {t('rateComparisonTable.rate')}
-                    </th>
-                    <th className="text-right py-2 px-4 font-medium text-muted">
-                      {mode === 'jeonseToWolse'
-                        ? t('rateComparisonTable.monthlyRent')
-                        : t('rateComparisonTable.jeonseDeposit')}
-                    </th>
-                    <th className="text-right py-2 pl-4 font-medium text-muted">
-                      {t('rateComparisonTable.yearlyTotal')}
-                    </th>
+                  <tr className="border-b border-line text-muted">
+                    <th className="text-left py-2 pr-3 font-medium">{t('scenario.item')}</th>
+                    {scenarios.map((x) => (
+                      <th key={x.key} className={`text-right py-2 px-3 font-medium ${x.key === best.key ? 'text-primary' : ''}`}>{t(`scenario.${x.key}`)}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {[2, 3, 4, 5, 6].map((rate) => {
-                    let mainValue: number
-                    let yearly: number
-                    if (mode === 'jeonseToWolse') {
-                      const diff = jeonseDeposit - wolseDeposit
-                      mainValue = diff > 0 ? Math.round((diff * rate) / 100 / 12) : 0
-                      yearly = mainValue * 12
-                    } else {
-                      yearly = monthlyRent * 12
-                      const converted = rate > 0 ? (yearly / rate) * 100 : 0
-                      mainValue = Math.round(reverseWolseDeposit + converted)
-                    }
-                    const isActive = currentRate === rate
+                  {([
+                    ['deposit', (x: typeof scenarios[number]) => short(x.deposit)],
+                    ['monthly', (x: typeof scenarios[number]) => won(x.monthlyRent)],
+                    ['loan', (x: typeof scenarios[number]) => short(x.cost.loan)],
+                    ['interest', (x: typeof scenarios[number]) => short(x.cost.interest)],
+                    ['opportunity', (x: typeof scenarios[number]) => short(x.cost.opportunity)],
+                    ['rentTotal', (x: typeof scenarios[number]) => short(x.cost.rent)],
+                    ['credit', (x: typeof scenarios[number]) => `-${short(x.cost.credit)}`],
+                  ] as const).map(([k, f]) => (
+                    <tr key={k} className="border-b border-line">
+                      <td className="py-2 pr-3 text-sub">{t(`scenario.row.${k}`)}</td>
+                      {scenarios.map((x) => <td key={x.key} className="text-right py-2 px-3 text-body">{f(x)}</td>)}
+                    </tr>
+                  ))}
+                  <tr>
+                    <td className="py-3 pr-3 font-semibold text-fg">{t('scenario.net', { years: s.yrs })}</td>
+                    {scenarios.map((x) => (
+                      <td key={x.key} className={`text-right py-3 px-3 font-bold ${x.key === best.key ? 'bg-primary-soft text-primary rounded-lg' : 'text-fg'}`}>{short(x.cost.net)}</td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-subtle rounded-2xl p-5 text-sub text-sm space-y-2">
+              <p className="text-fg font-semibold">
+                {t('scenario.verdict', { best: t(`scenario.${best.key}`), save: short(Math.max(...scenarios.map((x) => x.cost.net)) - best.cost.net) })}
+              </p>
+              <p>
+                {be === null
+                  ? t('scenario.noBreakeven')
+                  : t(beKey === 'loanRate' ? 'scenario.breakevenLoan' : 'scenario.breakevenDeposit', { rate: be })}
+              </p>
+              <p className="text-xs text-muted">{t('scenario.note')}</p>
+            </div>
+          </div>
+
+          {/* 전환율별 비교 */}
+          <div className="ui-card p-6">
+            <h3 className="text-lg font-semibold text-fg mb-4">{t('rateComparisonTable.title')}</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm tabular-nums">
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    <th className="text-left py-2 pr-4 font-medium">{t('rateComparisonTable.rate')}</th>
+                    <th className="text-right py-2 px-4 font-medium">
+                      {s.mode === 'jeonseToWolse' ? t('rateComparisonTable.monthlyRent') : t('rateComparisonTable.jeonseDeposit')}
+                    </th>
+                    <th className="text-right py-2 pl-4 font-medium">{t('rateComparisonTable.yearlyTotal')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from(new Set([3, 4, cap, 5, 6, 7])).sort((a, b) => a - b).map((r) => {
+                    const rent = s.mode === 'jeonseToWolse' ? jeonseToWolse(s.jd, W, r) : s.mr
+                    const active = r === rate
                     return (
-                      <tr
-                        key={rate}
-                        className={`border-b border-line transition-colors ${
-                          isActive
-                            ? 'bg-primary-soft text-primary'
-                            : 'hover:bg-gray-50 dark:hover:bg-gray-700'
-                        }`}
-                      >
-                        <td className="py-2 pr-4">
-                          <span
-                            className={`font-semibold ${
-                              isActive
-                                ? 'text-sub'
-                                : 'text-body'
-                            }`}
-                          >
-                            {rate}%
-                            {isActive && (
-                              <span className="ml-2 text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded">
-                                {t('rateComparisonTable.current')}
-                              </span>
-                            )}
-                          </span>
+                      <tr key={r} className={`border-b border-line ${active ? 'bg-primary-soft text-primary' : ''}`}>
+                        <td className="py-2 pr-4 font-semibold">
+                          {r}%{r === cap && <span className="ml-2 text-xs text-muted">{t('rate.capTag')}</span>}
                         </td>
-                        <td className="text-right py-2 px-4 font-medium text-fg">
-                          {mode === 'jeonseToWolse'
-                            ? `${formatWon(mainValue)}원`
-                            : `${formatWonUnit(mainValue)}원`}
+                        <td className="text-right py-2 px-4 font-medium">
+                          {s.mode === 'jeonseToWolse' ? won(rent) : short(wolseToJeonse(W, s.mr, r))}
                         </td>
-                        <td className="text-right py-2 pl-4 text-sub">
-                          {formatWonUnit(yearly)}원
-                        </td>
+                        <td className="text-right py-2 pl-4">{short(rent * 12)}</td>
                       </tr>
                     )
                   })}
@@ -605,121 +321,40 @@ export default function RentConverter() {
             </div>
           </div>
 
-          {/* Comparison Section */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-fg mb-4">
-              전세 vs 월세 비교
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-body">
-                    전세 기회비용 (연간)
-                  </span>
-                  <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                    {formatWon(currentResult.jeonseOpportunityCost)}원
-                  </span>
-                </div>
-                <div className="w-full bg-track rounded-full h-4">
-                  <div
-                    className="bg-primary h-4 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${
-                        Math.min(
-                          (currentResult.jeonseOpportunityCost /
-                            Math.max(
-                              currentResult.jeonseOpportunityCost,
-                              currentResult.yearlyTotal
-                            )) *
-                            100,
-                          100
-                        )
-                      }%`,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-body">
-                    연간 월세 총액
-                  </span>
-                  <span className="text-sm font-bold text-green-600 dark:text-green-400">
-                    {formatWon(currentResult.yearlyTotal)}원
-                  </span>
-                </div>
-                <div className="w-full bg-track rounded-full h-4">
-                  <div
-                    className="bg-primary h-4 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${
-                        Math.min(
-                          (currentResult.yearlyTotal /
-                            Math.max(
-                              currentResult.jeonseOpportunityCost,
-                              currentResult.yearlyTotal
-                            )) *
-                            100,
-                          100
-                        )
-                      }%`,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4 p-4 bg-subtle rounded-lg">
-                <p className="text-sm text-fg">
-                  {currentResult.jeonseOpportunityCost > currentResult.yearlyTotal
-                    ? '전세 기회비용이 더 큽니다. 월세가 유리할 수 있습니다.'
-                    : '월세 총액이 더 큽니다. 전세가 유리할 수 있습니다.'}
-                </p>
-              </div>
+          {/* 갱신 5% 상한 */}
+          <div className="ui-card p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-fg">{t('renewal.title')}</h3>
+            <p className="text-sm text-muted">{t('renewal.desc', { rate })}</p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {moneyField('rd', t('renewal.deposit'))}
+              {moneyField('rr', t('renewal.rent'), 10_000)}
             </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {([
+                ['converted', short(renewal.converted), short(renewal.maxConverted)],
+                ['depositOnly', short(s.rd), short(renewal.maxDepositOnly)],
+                ['rentOnly', won(s.rr), won(renewal.maxRentOnly)],
+              ] as const).map(([k, from, to]) => (
+                <div key={k} className="bg-subtle rounded-2xl p-4">
+                  <p className="text-sm text-sub">{t(`renewal.${k}`)}</p>
+                  <p className="text-xs text-muted mt-1 tabular-nums">{from} →</p>
+                  <p className="text-lg font-bold text-fg tabular-nums">{to}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted">{t('renewal.note')}</p>
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex items-center gap-2 mb-6">
-          <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-          <h2 className="text-xl font-semibold text-fg">
-            {t('guide.title')}
-          </h2>
-        </div>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.what.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.what.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span className="text-body">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.example.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.example.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-green-600 dark:text-green-400 mt-1">•</span>
-                  <span className="text-body">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg mb-3">{t('sources.title')}</h2>
+        <ul className="space-y-1 text-sm text-sub list-disc list-inside">
+          {(t.raw('sources.items') as string[]).map((x) => <li key={x}>{x}</li>)}
+        </ul>
       </div>
+
+      <GuideSection namespace="rentConverter" />
     </div>
   )
 }

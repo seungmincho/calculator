@@ -9900,6 +9900,97 @@
     "batchTotalLabel": "Total"
   },
   "alcoholCalculator": {
+    "u": {
+      "startTime": "Started drinking at",
+      "nowTime": "Reference time",
+      "nowNote": "Reference time starts at the current time. If it is earlier than the start time, it counts as the next day.",
+      "presetTitle": "Add a drink",
+      "kinds": {
+        "sojuGlass": "Soju shot glass",
+        "sojuBottle": "Soju bottle",
+        "beer500": "Draft beer 500cc",
+        "beerCan": "Beer can",
+        "makgeolliBottle": "Makgeolli bottle",
+        "makgeolliCup": "Makgeolli bowl",
+        "wineGlass": "Glass of wine",
+        "wineBottle": "Bottle of wine",
+        "whiskyShot": "Liquor shot",
+        "highball": "Highball",
+        "somaek": "Somaek",
+        "custom": "Custom"
+      },
+      "somaekTitle": "Somaek mixer (soju:beer ml)",
+      "somaekSoju": "Soju (ml)",
+      "somaekBeer": "Beer (ml)",
+      "somaekAdd": "Add somaek · {ml}ml {abv}%",
+      "ml": "ml",
+      "abv": "ABV %",
+      "count": "Count",
+      "drinkAt": "Time",
+      "heroLabel": "Estimated BAC at {time}",
+      "heroRange": "Individual range {lo}–{hi}%",
+      "status": {
+        "zero": "Estimated 0%",
+        "low": "Alcohol present · do not drive",
+        "suspend": "License suspension level (≥0.03%)",
+        "revoke": "License revocation level (≥0.08%)",
+        "severe": "Aggravated level (≥0.2%)"
+      },
+      "zeroAt": "Estimated time to 0%",
+      "zeroIn": "Slow elimination · about {h} h from start",
+      "peak": "Peak estimate",
+      "alcoholG": "Pure alcohol {g}g · about {n} soju bottles",
+      "day0": "Today",
+      "day1": "Tomorrow",
+      "day2": "Day after",
+      "noDrive": "If you drank, do not drive. The only safe BAC for driving is 0%.",
+      "summary": "About {n} bottles of soju",
+      "share": {
+        "headline": "About {h} h to 0.00%",
+        "sub": "Just an estimate · if you drank, skip the drive",
+        "alcohol": "Pure alcohol",
+        "text": "{summary} · about {h} h to reach 0% (slow elimination). If you drank, skip the drive."
+      },
+      "morningTitle": "Careful driving the next morning",
+      "morningBody": "With slow elimination, alcohol may remain until {time}. You can still be caught driving the morning after, so take public transit.",
+      "chartTitle": "BAC over time",
+      "chartNote": "Solid line: average elimination (0.015%/h). Dashed: slow elimination (0.010%/h). Real absorption takes 30-90 min, so the peak may come a bit later.",
+      "chartTypical": "Average",
+      "chartSlow": "Slow",
+      "lineSuspend": "Suspension 0.03%",
+      "lineRevoke": "Revocation 0.08%",
+      "lineNow": "Ref",
+      "legalTitle": "Korean drunk-driving thresholds",
+      "legalHead": {
+        "range": "BAC",
+        "admin": "License",
+        "penalty": "Criminal penalty (1st offense)"
+      },
+      "legalRows": [
+        {
+          "range": "0.03% to <0.08%",
+          "admin": "Suspension (100 points)",
+          "penalty": "Up to 1 year or up to KRW 5M fine"
+        },
+        {
+          "range": "0.08% to <0.2%",
+          "admin": "Revocation",
+          "penalty": "1-2 years or KRW 5-10M fine"
+        },
+        {
+          "range": "0.2% or higher",
+          "admin": "Revocation",
+          "penalty": "2-5 years or KRW 10-20M fine"
+        },
+        {
+          "range": "Refusing a test",
+          "admin": "Revocation",
+          "penalty": "1-5 years or KRW 5-20M fine"
+        }
+      ],
+      "legalNote": "Source: Road Traffic Act Art. 44 and 148-2, Enforcement Rule Annex 28. Repeat offenses within 10 years or accidents are punished more heavily. Below 0.03% does not mean it is OK to drive.",
+      "assumptions": "Assumptions: Widmark r 0.68 (male) / 0.55 (female), the low end so estimates run high; 100% instant absorption; ethanol density 0.789 g/ml. Soju 15.7% is the 2026 ABV of Chamisul Fresh / Chum Churum; edit ABV for other products."
+    },
     "title": "Blood Alcohol Calculator",
     "description": "Estimate blood alcohol concentration (BAC) using the Widmark formula.",
     "gender": "Gender",
@@ -9955,16 +10046,16 @@
     "exceeded": "Exceeded",
     "within": "Within",
     "peakBac": "Peak BAC: {value}%",
-    "warning": "This calculator is for reference only and may differ from actual BAC. Never drive after drinking.",
+    "warning": "This is a statistical Widmark estimate. Body type, food, liver function, medication and sleep can change the real value a lot, and it cannot be used as evidence for a breath test or legal judgment. If you drank, do not drive.",
     "guide": {
       "title": "Blood Alcohol Calculator Guide",
       "formula": {
         "title": "Widmark Formula",
         "items": [
-          "BAC = (Alcohol(ml) × ABV × 0.7894) / (Weight(kg) × Body Water Ratio) - (Hours × 0.015)",
-          "Body water ratio: Male 0.68, Female 0.55",
-          "Alcohol metabolism rate: approximately 0.015% per hour",
-          "This formula provides estimates and individual results may vary"
+          "BAC(%) = alcohol(g) / (weight kg x r x 10) - beta x hours elapsed",
+          "Alcohol(g) = volume(ml) x ABV x 0.789 (e.g. one soju bottle 360ml at 15.7% = about 44.6g)",
+          "r (distribution factor): men 0.68-0.70, women 0.55-0.60. This tool uses the low end to estimate high",
+          "beta (elimination): average 0.015%/h, 0.010-0.020% by person. Time to 0% uses the slow 0.010%"
         ]
       },
       "factors": {
@@ -9978,15 +10069,15 @@
       },
       "whatIs": {
         "title": "What is the Blood Alcohol Calculator?",
-        "description": "A tool that estimates blood alcohol concentration (BAC) after drinking using the Widmark formula. Enter your body weight, sex, number of drinks, and time of first drink to get an estimated current BAC, a comparison against legal thresholds (0.03% DUI limit, 0.08% high intoxication), and an estimated time until full sobriety."
+        "description": "Estimates blood alcohol concentration (BAC) with the Widmark formula. Enter sex, weight, drinks (soju, beer, somaek, wine, makgeolli, liquor, highball) and times to see your current estimate, the individual range, the estimated time to 0%, and a BAC timeline. Korean thresholds for license suspension (0.03%) and revocation (0.08%) are shown too."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select your sex and enter your body weight (kg). The Widmark distribution factor (r) differs by sex.",
-          "2. Choose the drink type (beer/soju/wine/makgeolli, etc.) and number of drinks, or enter the pure alcohol amount (g) directly.",
-          "3. Set the time you started drinking to calculate your estimated current BAC.",
-          "4. The result shows your estimated BAC, legal status relative to the 0.03% driving limit, and the time until you reach zero BAC."
+          "1. Enter sex and weight. The Widmark r value depends on sex.",
+          "2. Set the start time and add what you drank. Build somaek from a soju:beer ratio.",
+          "3. Edit count, ABV and time in the list; results update instantly.",
+          "4. Check the estimated time to 0% and do not drive before then. Share via link or image."
         ]
       },
       "tips": {
@@ -10001,16 +10092,16 @@
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "What is the estimated BAC after drinking a full bottle of soju?",
-            "a": "For a 70 kg male, one 360 ml bottle of soju (17%) contains about 48 g of pure alcohol. Immediately after drinking, estimated BAC is roughly 0.08–0.09% — above the high intoxication threshold. It takes approximately 4–5 hours to fall below the 0.03% driving limit."
+            "q": "What BAC does one bottle of soju give?",
+            "a": "For a 70 kg man, one bottle (360ml, 15.7%) is about 44.6g of alcohol, an estimated 0.094% right after, above the 0.08% revocation line. Reaching 0% takes about 6 hours on average and over 9 hours if elimination is slow."
           },
           {
-            "q": "Can I use this to decide whether it is safe to drive?",
-            "a": "This calculator provides estimates only. Real BAC varies greatly between individuals, and the Widmark formula has a margin of error. Only a certified breathalyzer or blood test can measure BAC accurately. Never drive after drinking."
+            "q": "Can I use this to decide whether I can drive?",
+            "a": "No. The Widmark formula is a statistical estimate with large individual variation. The only safe BAC for driving is 0%. If you drank, do not drive."
           },
           {
-            "q": "Why do women typically get more intoxicated than men from the same amount?",
-            "a": "Women have a lower body water percentage and a smaller Widmark factor r (average 0.55 vs. 0.68 for men). The same amount of alcohol is distributed in less body water, resulting in a higher BAC."
+            "q": "Why do women get a higher BAC from the same amount?",
+            "a": "Women have less body water per kg, so a smaller Widmark r (women 0.55-0.60, men 0.68-0.70). The same alcohol spreads into less water, giving a higher BAC."
           }
         ]
       }
@@ -10201,8 +10292,92 @@
     }
   },
   "rentConverter": {
+    "settings": "Inputs",
+    "unit": {
+      "won": " KRW",
+      "eok": "×100M",
+      "man": "×10K"
+    },
+    "rate": {
+      "capChip": "Legal cap {rate}%",
+      "capTag": "Legal cap",
+      "baseRate": "Bank of Korea base rate (%)",
+      "baseRateHint": "{rate}% as of {date}. Edit it if the rate changes.",
+      "capFormula": "Legal conversion cap = min(10%, base rate {base}% + 2%p) = {cap}%",
+      "bokLink": "Check the BOK base rate",
+      "marketLink": "Regional market rates (Korea Real Estate Board R-ONE)"
+    },
+    "hero": {
+      "monthly": "Jeonse {jeonse} with a {deposit} deposit becomes a monthly rent of",
+      "jeonse": "Deposit {deposit} + rent {rent} converts to a jeonse of",
+      "formulaMonthly": "{diff} × {rate}% ÷ 12 = {result}",
+      "formulaJeonse": "{deposit} + {rent} × 12 ÷ {rate}% = {result}"
+    },
+    "warn": {
+      "depositTooHigh": "The deposit is equal to or larger than the jeonse amount, so there is nothing to convert.",
+      "overCap": "A {rate}% rate exceeds the legal cap of {cap}%. When a deposit is converted to rent during the lease or on renewal, rent above the cap cannot be charged and the excess can be reclaimed."
+    },
+    "share": {
+      "sub": "Conversion rate {rate}% (legal cap {cap}%)"
+    },
+    "adjust": {
+      "title": "Deposit adjustment",
+      "desc": "Raising the deposit by 10M KRW lowers rent by {amount}. Use the slider to pick a semi-jeonse deposit.",
+      "deposit": "Deposit",
+      "rent": "Monthly rent",
+      "vs": "{diff} vs current rent"
+    },
+    "scenario": {
+      "title": "Jeonse vs semi-jeonse vs monthly rent — {years}-year total cost",
+      "years": "Years",
+      "loanRate": "Jeonse loan rate (%)",
+      "depositRate": "Savings rate (%)",
+      "cash": "Own cash for the deposit",
+      "salary": "Gross salary (annual)",
+      "creditEligible": "Eligible for the rent tax credit (homeless household head, ≤85㎡ or ≤400M KRW standard price)",
+      "creditRate": "Credit rate {rate}%",
+      "item": "Item",
+      "jeonse": "Jeonse",
+      "half": "Semi-jeonse",
+      "wolse": "Monthly rent",
+      "best": "Better choice",
+      "net": "{years}-year net cost",
+      "row": {
+        "deposit": "Deposit",
+        "monthly": "Monthly rent",
+        "loan": "Jeonse loan",
+        "interest": "Loan interest",
+        "opportunity": "Opportunity cost of own cash",
+        "rentTotal": "Total rent",
+        "credit": "Rent tax credit"
+      },
+      "verdict": "{best} is cheapest — {save} less than the most expensive option.",
+      "breakevenLoan": "If the jeonse loan rate is below {rate}%, jeonse wins; above it, monthly rent wins.",
+      "breakevenDeposit": "If the savings rate is below {rate}%, jeonse wins; above it, monthly rent wins.",
+      "noBreakeven": "Under these conditions the ranking does not flip as rates change.",
+      "note": "Own cash is used first and the rest is borrowed. The tax credit covers up to 10M KRW of rent per year and cannot exceed your tax due. Loan-interest income deduction, brokerage fees and moving costs are not included."
+    },
+    "renewal": {
+      "title": "5% renewal cap",
+      "desc": "When renewing with the lease renewal right, rent can rise by at most 5%. For mixed deposit + rent leases, the cap is 5% of the converted deposit (rent converted at {rate}%).",
+      "deposit": "Current deposit",
+      "rent": "Current monthly rent",
+      "converted": "Max converted deposit",
+      "depositOnly": "Max if only the deposit rises",
+      "rentOnly": "Max if only the rent rises",
+      "note": "This conversion method follows the MOLIT/Ministry of Justice guidance. The 5% cap does not apply to brand-new contracts."
+    },
+    "sources": {
+      "title": "Sources",
+      "items": [
+        "Conversion cap: Housing Lease Protection Act art. 7-2, Enforcement Decree art. 9 — the lower of 10% and the BOK base rate + 2%p",
+        "BOK base rate: raised to 3.00% on 2026-08-27",
+        "Rent tax credit: Restriction of Special Taxation Act art. 95-2 — gross salary ≤80M KRW, 17% if ≤55M KRW else 15%, up to 10M KRW of rent per year",
+        "Renewal increase limit: Housing Lease Protection Act art. 7(2) — 1/20 of the agreed rent or deposit"
+      ]
+    },
     "title": "Rent Converter",
-    "description": "Convert between Jeonse (lump-sum deposit) and monthly rent using conversion rate.",
+    "description": "Convert jeonse ↔ monthly rent, adjust the deposit, compare total costs of jeonse, semi-jeonse and monthly rent, and check the 5% renewal cap using the legal conversion rate.",
     "mode": {
       "jeonseToWolse": "Jeonse → Monthly",
       "wolseToJeonse": "Monthly → Jeonse"
@@ -10231,9 +10406,9 @@
       "what": {
         "title": "What is Rent Conversion?",
         "items": [
-          "Converting between Jeonse (lump-sum deposit) and monthly rent",
-          "Conversion rate is typically 4-6% annually, based on base rate + premium",
-          "Legal maximum conversion rate is base rate + 3.5%"
+          "Converting a jeonse deposit into monthly rent, or monthly rent into a jeonse deposit",
+          "Rates vary by contract; regional market rates are published by the Korea Real Estate Board (R-ONE)",
+          "Under the Housing Lease Protection Act the conversion rate is capped at the lower of 10% and the BOK base rate + 2%p"
         ]
       },
       "example": {
@@ -10251,10 +10426,11 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. 'Jeonse → Wolse' mode: Enter the full jeonse deposit and the deposit you want to retain. The remainder is converted to monthly rent at the given conversion rate.",
-          "2. 'Wolse → Jeonse' mode: Enter the monthly deposit and monthly rent to calculate the equivalent jeonse amount.",
-          "3. Adjust the conversion rate field to use the current market rate or the legal maximum (Bank of Korea base rate + 2%).",
-          "4. Review the total monthly outflow comparison (opportunity cost of deposit + monthly rent) to choose the most cost-effective lease type."
+          "1. Jeonse → monthly: enter the jeonse amount and the deposit to keep; the rent on the remainder is shown instantly.",
+          "2. Monthly → jeonse: enter deposit and rent to get the equivalent jeonse amount.",
+          "3. The rate defaults to the legal cap (base rate + 2%p). Edit the base rate if it changes, or type your contract's actual rate.",
+          "4. Use the deposit slider for a semi-jeonse deposit, then enter loan/savings rates and salary to compare total costs and the breakeven rate.",
+          "5. For renewals, check the maximum deposit or rent allowed under the 5% cap."
         ]
       },
       "tips": {
@@ -10556,8 +10732,50 @@
     }
   },
   "koreanSyllable": {
+    "empty": "Results appear as you type",
+    "stats": {
+      "chars": "Characters",
+      "syllables": "Hangul syllables",
+      "keystrokes": "Jamo (keystrokes)"
+    },
+    "nfd": {
+      "notice": "This text is NFD (decomposed jamo), common in file names created on macOS. Results below are computed after converting to NFC.",
+      "fix": "Convert to NFC"
+    },
+    "out": {
+      "chosung": "Initial consonants",
+      "jamo": "Jamo decomposition",
+      "roman": "Romanization",
+      "code": "Unicode code points",
+      "nfd": "NFD jamo (JS escapes)"
+    },
+    "opt": {
+      "keepOther": "Keep spaces/symbols",
+      "splitCompound": "Split double jamo",
+      "capitalize": "Capitalize"
+    },
+    "romanNote": "Follows the Revised Romanization of Korean: liaison, consonant assimilation, palatalization and h-aspiration are applied; tensing is not written, per the rules. ㄴ-insertion and some compound exceptions need word meaning and are not applied. For personal names, separate surname and given name with a space.",
+    "table": {
+      "title": "Per-character breakdown",
+      "char": "Char",
+      "code": "Code",
+      "none": "none",
+      "more": "Showing the first {n} characters"
+    },
+    "compose": {
+      "title": "Compose jamo",
+      "desc": "Assemble separate jamo or Dubeolsik keyboard keys into Hangul syllables. Compound vowels and final clusters are merged automatically.",
+      "jamo": "Jamo → Hangul",
+      "keys": "English keys → Hangul"
+    },
+    "josa": {
+      "title": "Particle picker",
+      "desc": "Chooses the Korean particle from the final consonant of the last syllable ('로' after ㄹ; digits are read aloud, e.g. 3 = 삼). Click to copy.",
+      "word": "Enter a word",
+      "snippet": "Show JavaScript code"
+    },
     "title": "Korean Syllable Decomposer",
-    "description": "Decompose Korean text into initial, medial, and final consonants/vowels.",
+    "description": "Extract initial consonants, split and compose jamo, romanize, and pick particles, all live as you type.",
     "input": "Text Input",
     "placeholder": "Enter Korean text",
     "mode": {
@@ -10584,6 +10802,16 @@
       "ex3": "프로그래밍 → ㅍㄹㄱㄹㅁ"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "The 11,172 precomposed Hangul syllables start at U+AC00. Code = 0xAC00 + (initial×21 + medial)×28 + final.",
+          "Initial = (code − 0xAC00) ÷ 588, medial = (code − 0xAC00) % 588 ÷ 28, final = (code − 0xAC00) % 28. A final of 0 means no batchim.",
+          "Composition uses the same automaton as a Dubeolsik IME: ㅇㅏㄴㅈㅏ becomes '안자'; type ㅇㅏㄴㅈㅇㅏ for '앉아'.",
+          "Romanization applies sound changes between a batchim and the next initial within each word (baengma, silla, gachi, joko), then maps letters per the official table.",
+          "NFD stores each syllable as separate conjoining jamo (U+1100 block). It looks identical but breaks search and comparison, so normalize to NFC."
+        ]
+      },
       "title": "Korean Syllable Guide",
       "structure": {
         "title": "Korean Structure",
@@ -10610,10 +10838,11 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Type or paste Korean text into the input field.",
-          "2. Click 'Extract initials' to get only the leading consonant of each character. Example: '안녕하세요' → 'ㅇㄴㅎㅅㅇ'.",
-          "3. Click 'Full decomposition' to split every character into its initial consonant, vowel, and final consonant.",
-          "4. Copy the result with the copy button, or export the decomposition as JSON for use in code."
+          "Type or paste Korean text; initials, jamo, romanization and Unicode appear instantly.",
+          "Turn on 'Keep spaces/symbols' for quizzes, off for search indexes.",
+          "Turn on 'Split double jamo' to break ㄺ or ㅘ into Dubeolsik keystrokes.",
+          "Copy any output with its button; share the page URL to restore the same input.",
+          "Use 'Compose jamo' (ㅎㅏㄴ → 한, dkssud → 안녕) and the particle picker below."
         ]
       },
       "tips": {
@@ -10625,19 +10854,27 @@
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "Are standalone jamo characters (ㄱ, ㅏ etc.) handled correctly?",
-            "a": "Yes. Both composed Hangul syllables (가, 나, 다) and standalone consonants (ㄱ, ㄴ) and vowels (ㅏ, ㅑ) are handled. Standalone jamo are already decomposed, so they are passed through as-is."
+            "q": "Are standalone jamo (ㄱ, ㅏ) supported?",
+            "a": "Yes. They are passed through, and 'Compose jamo' assembles them into syllables."
           },
           {
-            "q": "What happens to English letters, numbers, and special characters?",
-            "a": "Non-Hangul characters are passed through unchanged in the output. Only Hangul syllables are decomposed; everything else is preserved as-is."
+            "q": "What about English, digits and symbols?",
+            "a": "Non-Hangul characters are kept as is. Turn off 'Keep spaces/symbols' to drop them from the initials output."
           },
           {
-            "q": "How do I find all words starting with 'ㄱ' using a regex?",
-            "a": "Korean syllables beginning with ㄱ fall in the Unicode range U+AC00 (가) to U+AE3B (깋). The regex pattern is `/[가-깋]/`. Use the initial extraction results from this tool to determine the correct Unicode range for your target consonant."
+            "q": "How do I match every word starting with ㄱ?",
+            "a": "Syllables starting with ㄱ are 가 (U+AC00) to 깋 (U+AE3B), so use /[가-깋]/. ㄲ is a separate range (까–낗)."
+          },
+          {
+            "q": "File names from a Mac show split jamo like ㅎㅏㄴㄱㅡㄹ.",
+            "a": "macOS stores file names in NFD. Paste the text here; it is detected and 'Convert to NFC' fixes it."
+          },
+          {
+            "q": "Why does the romanization differ from my passport name?",
+            "a": "Passport names keep your established spelling and do not apply sound changes between surname and given name. Enter names with a space between them."
           }
         ]
       }
@@ -20245,8 +20482,124 @@
     ]
   },
   "speedTest": {
+    "start": "Start test",
+    "again": "Test again",
+    "stop": "Stop",
+    "phase": {
+      "latency": "Ping",
+      "download": "Download",
+      "upload": "Upload"
+    },
+    "metric": {
+      "download": "Download",
+      "upload": "Upload",
+      "ping": "Ping",
+      "jitter": "Jitter"
+    },
+    "server": {
+      "label": "Test server",
+      "short": "Server",
+      "value": "Cloudflare {colo} server",
+      "pending": "Connects to the nearest Cloudflare server when you start"
+    },
+    "errorMsg": "Could not reach the Cloudflare speed test server (speed.cloudflare.com). Check whether an ad blocker or a corporate/school firewall is blocking it, then try again.",
+    "method": "Method: same as Cloudflare's speed test — sequential transfers of growing size (100KB→25MB), first request skipped, 90th percentile. About 10 s per direction.",
+    "hero": {
+      "label": "Download speed",
+      "shared": "Shared result",
+      "sub": "Upload {up} Mbps · Ping {ping} ms · Jitter {jitter} ms",
+      "loaded": "Ping during download {loaded} ms (+{diff} ms vs idle) — a big jump means bufferbloat, which can cause lag in games and calls",
+      "sharedHint": "Test your own connection and compare"
+    },
+    "share": {
+      "label": "My internet download speed",
+      "sub": "Upload {up} Mbps · Ping {ping} ms",
+      "text": "My internet speed: download {d}Mbps · upload {u} · ping {p}ms"
+    },
+    "plan": {
+      "title": "Compare with your plan",
+      "none": "None",
+      "ratio": "You got {pct}% of your plan speed",
+      "meets": "At or above the minimum guaranteed speed ({g}Mbps)",
+      "below": "Below the minimum guaranteed speed ({g}Mbps) — connect to the router with a cable and test again",
+      "needResult": "Run a test to see the ratio to your plan and whether the minimum guaranteed speed is met.",
+      "notes": [
+        "In Korea, KT, SK Broadband and LG U+ set the minimum guaranteed speed at 50% of the plan speed (100M → 50M, 500M → 250M, 1G → 500M).",
+        "Even on a 1G plan, a wired 1Gbps LAN port tops out around 930–940Mbps due to overhead. A CAT.5 (100Mbps) cable caps you at 100Mbps.",
+        "Over Wi‑Fi, depending on router/device standard (Wi‑Fi 5/6/7), distance, walls and channel congestion, 200–600Mbps on a gigabit plan is common.",
+        "Official quality checks and fee reductions are based on the NIA (National Information Society Agency) test, so if speeds keep falling short, test there and contact your ISP."
+      ],
+      "nia": "NIA official internet speed test (speed.nia.or.kr) →"
+    },
+    "uses": {
+      "title": "What this speed can handle",
+      "hint": "Run a test to see whether each use case will run smoothly.",
+      "hintMeasured": "Your results compared with recommended requirements. Several devices at once need more.",
+      "colUse": "Use",
+      "colNeed": "Recommended",
+      "colResult": "Verdict",
+      "good": "Smooth",
+      "ok": "May be unstable",
+      "bad": "Difficult",
+      "web": {
+        "name": "Web browsing & messaging",
+        "need": "Download 5Mbps"
+      },
+      "fhd": {
+        "name": "Full HD streaming",
+        "need": "Download 5Mbps (Netflix)"
+      },
+      "uhd": {
+        "name": "4K streaming",
+        "need": "Download 15Mbps (Netflix)"
+      },
+      "family": {
+        "name": "Four 4K streams at once",
+        "need": "Download 60Mbps"
+      },
+      "video": {
+        "name": "Video call (1080p)",
+        "need": "4Mbps down/up, ping ≤150ms"
+      },
+      "game": {
+        "name": "Online games (FPS, LoL)",
+        "need": "Ping ≤50ms, jitter ≤30ms"
+      },
+      "cloudGame": {
+        "name": "Cloud gaming (1080p 60fps)",
+        "need": "Download 25Mbps, ping ≤40ms"
+      },
+      "live": {
+        "name": "1080p live streaming",
+        "need": "Upload 10Mbps"
+      }
+    },
+    "files": {
+      "title": "At {d}Mbps download",
+      "photo": "Photo (5MB)",
+      "movie": "Movie (4GB)",
+      "game": "Large game (100GB)",
+      "sec": "{n} s",
+      "min": "{m} min {s} s",
+      "hour": "{h} h {m} min"
+    },
+    "hist": {
+      "clear": "Clear history",
+      "date": "Time",
+      "summary": "{count} tests · median download {d}Mbps (stored in this browser only)"
+    },
+    "caveats": {
+      "title": "Why results can be lower than your plan",
+      "items": [
+        "Wi‑Fi: distance to the router, walls and channel interference are the biggest factors. Use a LAN cable for an accurate result.",
+        "Device & browser limits: older laptops/phones, power saving and the browser itself can under-report speeds above a few hundred Mbps.",
+        "Other traffic: videos in other tabs, cloud sync and other devices at home take bandwidth away from the test.",
+        "VPN & security software: rerouting or inspecting traffic slows it down.",
+        "Server location: this measures to the nearest Cloudflare server (usually Seoul, ICN). Overseas or specific game servers may differ."
+      ]
+    },
     "title": "Internet Speed Test",
-    "description": "Measure download speed and ping (latency) in real time.",
+    "description": "Measure download and upload speed, ping and jitter against Cloudflare servers.",
     "startTest": "Start Speed Test",
     "quickTest": "Quick Test (1MB)",
     "fullTest": "Full Test (10MB)",
@@ -20257,7 +20610,7 @@
     "progress": "Progress",
     "result": "Test Result",
     "history": "Test History",
-    "historyEmpty": "No test history yet.",
+    "historyEmpty": "No tests yet. Up to 30 recent results are saved in this browser.",
     "testTime": "Test Time",
     "mbps": "Mbps",
     "ms": "ms",
@@ -20272,20 +20625,23 @@
     "fastDesc": "100–500 Mbps — 4K video, large files",
     "veryFastDesc": "500+ Mbps — gigabit internet",
     "corsNote": "Results may be approximate due to CORS policies with external servers.",
-    "disclaimer": "Results may vary based on network conditions, server location, and device performance. For reference only.",
+    "disclaimer": "Results vary with network conditions, server location and device performance, and are for reference only. One test can use up to a few hundred MB of data in total, so be careful on mobile data.",
     "guideTitle": "Speed Test Guide",
     "guideSection1Title": "Understanding Metrics",
     "guideSection1Items": [
-      "Download Speed: how fast data is received from the internet (Mbps)",
-      "Ping: round-trip time for a request to reach a server and return (ms — lower is better)",
-      "Mbps: Megabits per second, the unit of transfer rate"
+      "Download speed: how fast you receive data (Mbps). Affects streaming and file downloads",
+      "Upload speed: how fast your device sends data. Affects video calls, live streaming and cloud backups",
+      "Ping: round-trip time to the server (ms, lower is better). Affects game responsiveness",
+      "Jitter: how much ping fluctuates (ms). High jitter breaks up calls and makes games stutter",
+      "Mbps vs MB/s: 1MB/s = 8Mbps. A 100Mbps connection downloads about 12.5MB per second"
     ],
     "guideSection2Title": "Tips for Accurate Results",
     "guideSection2Items": [
-      "A wired Ethernet connection gives more accurate results than Wi-Fi.",
-      "Measure when other devices or apps are not using the network.",
-      "Run multiple tests and average the results for reliability.",
-      "VPN usage may cause lower-than-actual speed readings."
+      "A wired LAN connection gives more accurate results than Wi‑Fi.",
+      "Test when no other tabs, apps or devices are using the network.",
+      "Test at different times of day to see evening peak-hour quality too.",
+      "Speeds may be lower when using a VPN.",
+      "If you keep falling short of your plan, the official NIA test (speed.nia.or.kr) can back a fee-reduction request to your ISP."
     ]
   },
   "cssUnitConverter": {

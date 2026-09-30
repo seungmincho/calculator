@@ -5,15 +5,15 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '한글 초성 추출기 - 자음/모음 분리, 초성 검색 | 툴허브',
-  description: '한글 초성 추출기 - 한글 텍스트의 초성, 중성, 종성을 분리합니다. 초성만 추출, 자모 분리, 자모 합치기 기능.',
-  keywords: '초성 추출, 한글 자모 분리, 초성 변환, 한글 분리, korean syllable decompose, 자음 모음 분리',
+  description: '한글 초성 추출기 - 초성만 추출(초성 퀴즈·초성 검색), 자음/모음 분리(겹받침 분리), 자모 합치기, 로마자 표기(음운 변화 반영), 을/를·이/가 조사 자동 선택, 유니코드·NFD까지 입력 즉시 변환.',
+  keywords: '초성 추출, 초성 변환기, 한글 자모 분리, 자음 모음 분리, 자모 합치기, 겹받침 분리, 로마자 표기 변환, 조사 자동 선택, 받침 유무, 한글 유니코드, NFD NFC, korean syllable decompose',
   openGraph: { title: '한글 초성 추출기 | 툴허브', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/korean-syllable.png', width: 1200, height: 630, alt: '한글 초성 추출기' }] },
   twitter: { card: 'summary_large_image', title: '한글 초성 추출기 | 툴허브', description: '한글 초성 추출, 자모 분리', images: ['https://toolhub.ai.kr/og/korean-syllable.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/korean-syllable/' },
 }
 
 export default function KoreanSyllablePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '한글 초성 추출기', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['초성 추출', '자모 분리', '자모 합치기', '유니코드 처리'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '한글 초성 추출기', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['초성 추출', '자모 분리(겹받침·겹모음)', '자모 합치기·두벌식 키 변환', '로마자 표기(국어의 로마자 표기법)', '조사 자동 선택(을/를·이/가·으로/로)', '유니코드 코드포인트·NFD 변환'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -26,6 +26,22 @@ export default function KoreanSyllablePage() {
           text: '한글은 초성(19개: ㄱㄲㄴㄷ...), 중성(21개: ㅏㅐㅑ...), 종성(27개+없음: ㄱㄲㄳ...)의 조합으로 구성됩니다. 유니코드에서 한글 글자 코드 = 0xAC00 + (초성 인덱스 × 21 × 28) + (중성 인덱스 × 28) + 종성 인덱스. 총 11,172개(19×21×28)의 완성형 한글이 가능합니다. 세종대왕이 창제한 훈민정음은 발음 기관의 모양을 본뜬 과학적 문자 체계입니다.',
         },
       },
+      {
+        '@type': 'Question',
+        name: '맥에서 받은 파일명의 한글이 ㅎㅏㄴㄱㅡㄹ처럼 풀려 보이는 이유는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'macOS는 파일명을 NFD(자모를 따로 저장하는 조합형)로 저장해 윈도우 등에서 자모가 분리되어 보입니다. 이 도구에 붙여넣으면 NFD를 감지하고 NFC(완성형)로 바꿔 복사할 수 있습니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '받침에 따라 을/를, 이/가를 고르는 방법은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '마지막 글자의 유니코드 값에서 0xAC00을 뺀 값을 28로 나눈 나머지가 0이면 받침이 없습니다. 받침이 있으면 을·이·은·과·으로, 없으면 를·가·는·와·로를 씁니다. 단, ㄹ받침 뒤에는 으로가 아니라 로를 씁니다(서울로).',
+        },
+      },
     ],
   }
   return (
@@ -34,10 +50,12 @@ export default function KoreanSyllablePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><KoreanSyllable />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <KoreanSyllable />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}
@@ -57,6 +75,8 @@ export default function KoreanSyllablePage() {
             <li><strong>한글 정렬:</strong> 이름 목록을 가나다순으로 정렬할 때 초성 기준 정렬 알고리즘에 이 도구의 분리 원리를 적용할 수 있습니다.</li>
             <li><strong>자모 합치기:</strong> 분리된 자모(ㅎ, ㅏ, ㄴ)를 다시 합쳐 완성형 한글 '한'으로 조합하는 기능도 제공합니다.</li>
             <li><strong>유니코드 한글 원리:</strong> 한글 유니코드는 가(0xAC00)를 시작으로 초성 19개×중성 21개×종성 28개 = 11,172개의 완성형이 연속 배치됩니다.</li>
+            <li><strong>로마자 표기:</strong> 국어의 로마자 표기법에 따라 연음·자음동화·구개음화를 반영합니다(종로 → jongno, 같이 → gachi). 된소리와 ㄴ 첨가는 반영하지 않습니다.</li>
+            <li><strong>조사 자동 선택:</strong> 받침 유무로 을/를·이/가·은/는·과/와·으로/로를 고릅니다. 개발용 JavaScript 코드도 복사할 수 있습니다.</li>
             <li><strong>한국어 NLP 전처리:</strong> 자연어 처리(NLP) 모델 학습을 위해 한글 텍스트를 자모 단위로 분해할 때 초성 추출이 핵심 전처리 단계입니다.</li>
           </ul>
         </div>

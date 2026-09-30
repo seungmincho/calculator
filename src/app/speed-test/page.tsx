@@ -5,8 +5,8 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '인터넷 속도 측정 - 다운로드 속도, 핑 테스트 | 툴허브',
-  description: '인터넷 다운로드 속도와 핑(지연 시간)을 무료로 측정하세요. 별도 앱 설치 없이 브라우저에서 바로 측정 가능하며 측정 기록을 확인할 수 있습니다.',
-  keywords: '인터넷 속도 측정, 다운로드 속도 테스트, 핑 테스트, 인터넷 속도 확인, 네트워크 속도, Mbps 측정, 속도 측정기',
+  description: 'Cloudflare 서버 기준으로 인터넷 다운로드·업로드 속도, 핑, 지터를 무료로 측정하세요. 요금제(100M·500M·1G) 최저보장속도 비교, 용도별 판정, 측정 기록 그래프까지 앱 설치 없이 브라우저에서 확인합니다.',
+  keywords: '인터넷 속도 측정, 다운로드 속도 테스트, 업로드 속도 측정, 핑 테스트, 지터, 기가 인터넷 속도, 최저보장속도, 인터넷 속도 확인, 네트워크 속도, Mbps 측정, 속도 측정기',
   openGraph: {
     title: '인터넷 속도 측정 | 툴허브',
     description: '다운로드 속도와 핑(지연 시간)을 브라우저에서 바로 측정하세요.',
@@ -33,19 +33,19 @@ export default function SpeedTestPage() {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       name: '인터넷 속도 측정',
-      description: '인터넷 다운로드 속도와 핑(지연 시간)을 브라우저에서 무료로 측정합니다.',
+      description: 'Cloudflare 서버 기준으로 인터넷 다운로드·업로드 속도와 핑·지터를 브라우저에서 무료로 측정합니다.',
       url: 'https://toolhub.ai.kr/speed-test',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
       featureList: [
-        '다운로드 속도 측정 (Mbps)',
-        '핑(지연 시간) 측정 (ms)',
-        '속도 등급 분류',
-        'SVG 반원 게이지 시각화',
-        '최근 5회 측정 기록',
-        '1MB 빠른 테스트 / 10MB 전체 테스트',
+        '다운로드·업로드 속도 측정 (Mbps, 90퍼센타일)',
+        '핑·지터·부하 시 핑(버퍼블로트) 측정',
+        'Cloudflare 가장 가까운 서버 자동 선택',
+        '요금제 대비 최저보장속도 비교',
+        '넷플릭스 4K·화상회의·게임 용도별 판정',
+        '측정 기록 그래프 및 결과 이미지 공유',
       ],
     },
     {
@@ -57,7 +57,7 @@ export default function SpeedTestPage() {
           name: '인터넷 속도 측정 결과가 정확한가요?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: '브라우저 기반 측정이므로 전용 앱보다 다소 차이가 있을 수 있습니다. CORS 제한으로 외부 서버 측정이 제한될 경우 근사값이 표시됩니다. 정확한 측정을 위해 여러 번 측정하고 평균값을 참고하세요.',
+            text: 'Cloudflare 공개 속도 측정 서버(speed.cloudflare.com)와 실제로 데이터를 주고받아 측정하며, 크기를 늘려가며 여러 번 전송한 뒤 90퍼센타일을 결과로 씁니다. 다만 Wi‑Fi 상태, 기기 성능, 다른 탭·기기의 사용량, 브라우저 한계 때문에 요금제 속도보다 낮게 나올 수 있으니 유선으로 여러 번 측정해 비교하세요.',
           },
         },
         {
@@ -106,7 +106,7 @@ export default function SpeedTestPage() {
             인터넷 속도 측정기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            인터넷 속도 측정기는 현재 사용 중인 인터넷 연결의 다운로드 속도(Mbps)와 핑(지연 시간, ms)을 브라우저에서 바로 측정할 수 있는 무료 도구입니다. 별도 앱 설치 없이 1MB·10MB 테스트를 선택하여 최근 5회의 측정 기록을 비교할 수 있어, 인터넷 품질 이슈를 빠르게 확인하는 데 유용합니다.
+            인터넷 속도 측정기는 현재 사용 중인 인터넷 연결의 다운로드·업로드 속도(Mbps)와 핑·지터(ms)를 브라우저에서 바로 측정하는 무료 도구입니다. 가장 가까운 Cloudflare 서버와 실제 데이터를 주고받아 측정하고, 가입한 요금제의 최저보장속도와 비교하거나 측정 기록을 그래프로 확인할 수 있어 인터넷 품질 문제를 빠르게 점검하는 데 유용합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             인터넷 속도 측정 활용 팁

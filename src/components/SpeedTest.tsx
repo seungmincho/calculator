@@ -1,478 +1,584 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Wifi, Clock, Activity, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts'
+import { Play, Square, ChevronDown, ChevronUp } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import {
+  mbps, median, jitter as calcJitter, nextSize, bandwidth, gaugeRatio, downloadSeconds, verdict, speedClass,
+  planGuarantee, fmtMbps, serverTimeFromHeader, pingMs, downSample, upSample,
+  DOWN_STEPS, UP_STEPS, type Sample, type Need, type Verdict, type Step,
+} from '@/utils/speedTest'
 
-interface TestResult {
-  downloadSpeed: number | null
-  ping: number | null
-  timestamp: Date
-  mode: 'quick' | 'full'
+// 측정 서버: Cloudflare 공개 속도 측정 엔드포인트 (Access-Control-Allow-Origin: * / Timing-Allow-Origin: *)
+const CF = 'https://speed.cloudflare.com'
+const BUDGET_MS = 10_000
+const HARD_STOP_MS = 15_000 // 예산 직전에 시작된 큰 요청이 늘어질 때 강제 중단
+const LATENCY_COUNT = 20
+const HISTORY_KEY = 'toolhub-speed-test-history'
+
+type Phase = 'idle' | 'latency' | 'download' | 'upload' | 'done' | 'error'
+
+interface Result {
+  ts: number
+  down: number
+  up: number
+  ping: number
+  jitter: number
+  loaded: number
+  colo?: string
 }
 
-type SpeedClass = 'slow' | 'moderate' | 'fast' | 'veryFast'
+interface Meta { colo?: string; isp?: string }
 
-function getSpeedClass(mbps: number | null): SpeedClass {
-  if (mbps === null) return 'slow'
-  if (mbps < 25) return 'slow'
-  if (mbps < 100) return 'moderate'
-  if (mbps < 500) return 'fast'
-  return 'veryFast'
+// 용도별 기준 (근거: 넷플릭스 고객센터 권장 속도, Zoom 1080p 그룹통화, NVIDIA GeForce NOW 1080p60, YouTube 라이브 1080p 권장 비트레이트)
+const USES: { id: string; need: Need }[] = [
+  { id: 'web', need: { down: 5 } },
+  { id: 'fhd', need: { down: 5 } },
+  { id: 'uhd', need: { down: 15 } },
+  { id: 'family', need: { down: 60 } },
+  { id: 'video', need: { down: 4, up: 4, ping: 150 } },
+  { id: 'game', need: { down: 3, ping: 50, jitter: 30 } },
+  { id: 'cloudGame', need: { down: 25, ping: 40 } },
+  { id: 'live', need: { up: 10 } },
+]
+const FILES: { id: string; gb: number }[] = [
+  { id: 'photo', gb: 0.005 }, { id: 'movie', gb: 4 }, { id: 'game', gb: 100 },
+]
+const PLANS = [0, 100, 500, 1000] as const
+
+const VERDICT_CLS: Record<Verdict, string> = {
+  good: 'text-primary',
+  ok: 'text-amber-600',
+  bad: 'text-red-600',
 }
 
-const SPEED_COLORS: Record<SpeedClass, string> = {
-  slow: '#ef4444',
-  moderate: '#f59e0b',
-  fast: '#22c55e',
-  veryFast: '#3b82f6',
+let seq = 0
+const uniq = (path: string) => `${CF}${path}${path.includes('?') ? '&' : '?'}measId=${Date.now()}${++seq}`
+const bodyCache = new Map<number, string>()
+const uploadBody = (n: number) => {
+  if (!bodyCache.has(n)) bodyCache.set(n, '0'.repeat(n)) // text/plain → 사전 요청(preflight) 없는 단순 요청
+  return bodyCache.get(n)!
 }
 
-const SPEED_BG: Record<SpeedClass, string> = {
-  slow: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800',
-  moderate: 'bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800',
-  fast: 'bg-subtle border-line',
-  veryFast: 'bg-subtle border-line',
+/** 한 번 요청하고 Resource Timing(없으면 performance.now)으로 해석 */
+async function measure(
+  kind: 'down' | 'up', bytes: number, signal: AbortSignal,
+  onProgress?: (loaded: number, ms: number) => void,
+): Promise<{ sample: Sample; ping: number; headers: Headers }> {
+  const url = kind === 'down' ? uniq(`/__down?bytes=${bytes}`) : uniq('/__up')
+  const t0 = performance.now()
+  const res = await fetch(url, kind === 'down'
+    ? { cache: 'no-store', signal }
+    : { method: 'POST', body: uploadBody(bytes), signal })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const tHead = performance.now()
+  const server = serverTimeFromHeader(res.headers.get('server-timing'))
+  if (onProgress && res.body) {
+    const reader = res.body.getReader()
+    let loaded = 0
+    for (;;) {
+      const { done, value } = await reader.read()
+      if (done) break
+      loaded += value.length
+      onProgress(loaded, performance.now() - tHead)
+    }
+  } else {
+    await res.arrayBuffer()
+  }
+  const tEnd = performance.now()
+  const e = performance.getEntriesByName(url).slice(-1)[0] as PerformanceResourceTiming | undefined
+  const rt = !!e && e.requestStart > 0 && e.responseStart > 0 && e.responseEnd > 0
+  const ttfb = rt ? e!.responseStart - e!.requestStart : tHead - t0
+  const payload = rt ? e!.responseEnd - e!.responseStart : tEnd - tHead
+  return {
+    sample: kind === 'down' ? downSample(bytes, ttfb, payload, server) : upSample(bytes, ttfb),
+    ping: pingMs(ttfb, server),
+    headers: res.headers,
+  }
 }
 
-const SPEED_TEXT: Record<SpeedClass, string> = {
-  slow: 'text-red-600 dark:text-red-400',
-  moderate: 'text-amber-600 dark:text-amber-400',
-  fast: 'text-green-600 dark:text-green-400',
-  veryFast: 'text-blue-600 dark:text-blue-400',
+function loadHistory(): Result[] {
+  try {
+    const v = JSON.parse(localStorage.getItem(HISTORY_KEY) ?? '[]')
+    return Array.isArray(v) ? v : []
+  } catch { return [] }
+}
+function saveHistory(h: Result[]) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)) } catch { /* 저장소 차단 */ }
 }
 
-// SVG semicircle gauge
-function SpeedGauge({ speed, maxSpeed = 1000 }: { speed: number | null; maxSpeed?: number }) {
-  const value = Math.min(speed ?? 0, maxSpeed)
-  const ratio = value / maxSpeed
-  // Semicircle: from -180deg to 0deg (left to right)
-  const angle = ratio * 180 - 180 // -180 to 0
+const num = (v: string | null) => (v !== null && v !== '' && Number.isFinite(+v) ? +v : NaN)
+const fmtMs = (v: number) => (Number.isFinite(v) ? (v >= 10 ? String(Math.round(v)) : v.toFixed(1)) : '—')
 
-  const cx = 100
-  const cy = 100
-  const r = 80
-
-  // Arc background: from 180deg to 0deg (left semicircle)
-  const startAngle = Math.PI       // 180deg
-  const endAngle = 0               // 0deg
-  const x1 = cx + r * Math.cos(startAngle)
-  const y1 = cy + r * Math.sin(startAngle)
-  const x2 = cx + r * Math.cos(endAngle)
-  const y2 = cy + r * Math.sin(endAngle)
-
-  // Needle end point
-  const needleAngle = (angle / 180) * Math.PI
-  const nx = cx + r * Math.cos(needleAngle)
-  const ny = cy + r * Math.sin(needleAngle)
-
-  const speedClass = getSpeedClass(speed)
-  const color = SPEED_COLORS[speedClass]
-
-  // Active arc: from start to needle position
-  const activeAngle = (angle / 180) * Math.PI
-  const ax1 = cx + r * Math.cos(startAngle)
-  const ay1 = cy + r * Math.sin(startAngle)
-  const ax2 = cx + r * Math.cos(activeAngle)
-  const ay2 = cy + r * Math.sin(activeAngle)
-
-  // Determine if active arc sweeps more than 180deg
-  const activeSpan = angle + 180 // 0 to 180
-  const largeArcFlag = activeSpan > 180 ? 1 : 0
-
+// 반원 게이지 (제곱근 눈금 — 10Mbps 도 보이게)
+function Gauge({ value, label }: { value: number; label: string }) {
+  const ratio = gaugeRatio(Number.isFinite(value) ? value : 0)
+  const arc = 'M 20 110 A 90 90 0 0 1 200 110'
+  const tick = (v: number) => {
+    const a = Math.PI * (1 - gaugeRatio(v))
+    return { x: 110 + 108 * Math.cos(a), y: 110 - 108 * Math.sin(a) }
+  }
   return (
-    <svg viewBox="0 0 200 110" className="w-full max-w-xs mx-auto" aria-hidden="true">
-      {/* Background track */}
-      <path
-        d={`M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`}
-        fill="none"
-        stroke="#e5e7eb"
-        strokeWidth="14"
-        strokeLinecap="round"
-        className="dark:stroke-gray-700"
-      />
-      {/* Active arc */}
-      {speed !== null && speed > 0 && (
-        <path
-          d={`M ${ax1} ${ay1} A ${r} ${r} 0 ${largeArcFlag} 1 ${ax2} ${ay2}`}
-          fill="none"
-          stroke={color}
-          strokeWidth="14"
-          strokeLinecap="round"
-          style={{ transition: 'all 0.5s ease' }}
-        />
-      )}
-      {/* Needle */}
-      <line
-        x1={cx}
-        y1={cy}
-        x2={speed !== null ? nx : cx - r}
-        y2={speed !== null ? ny : cy}
-        stroke={color}
-        strokeWidth="3"
-        strokeLinecap="round"
-        style={{ transition: 'all 0.5s ease' }}
-      />
-      {/* Center dot */}
-      <circle cx={cx} cy={cy} r="6" fill={color} style={{ transition: 'fill 0.5s ease' }} />
-      {/* Speed labels */}
-      <text x="22" y="108" fontSize="10" fill="#9ca3af" textAnchor="middle">0</text>
-      <text x="100" y="18" fontSize="10" fill="#9ca3af" textAnchor="middle">500</text>
-      <text x="178" y="108" fontSize="10" fill="#9ca3af" textAnchor="middle">1000</text>
-    </svg>
+    <div className="relative w-full max-w-sm mx-auto">
+      <svg viewBox="-12 0 244 125" overflow="visible" className="w-full" aria-hidden="true">
+        <path d={arc} fill="none" stroke="var(--track)" strokeWidth="14" strokeLinecap="round" />
+        <path d={arc} fill="none" stroke="var(--primary)" strokeWidth="14" strokeLinecap="round" pathLength={1}
+          strokeDasharray={`${ratio} 1`} style={{ transition: 'stroke-dasharray .3s ease' }} opacity={ratio > 0 ? 1 : 0} />
+        {[0, 10, 50, 100, 250, 500, 1000].map(v => {
+          const p = tick(v)
+          return <text key={v} x={p.x} y={p.y + 3} fontSize="8" fill="var(--faint)" textAnchor="middle">{v === 1000 ? '1G' : v}</text>
+        })}
+      </svg>
+      <div className="absolute inset-x-0 bottom-1 text-center">
+        <div className="text-4xl sm:text-5xl font-bold text-fg tabular-nums">{fmtMbps(value)}</div>
+        <div className="text-sm text-muted">Mbps · {label}</div>
+      </div>
+    </div>
   )
-}
-
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 }
 
 export default function SpeedTest() {
   const t = useTranslations('speedTest')
-  const [testing, setTesting] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [currentResult, setCurrentResult] = useState<TestResult | null>(null)
-  const [history, setHistory] = useState<TestResult[]>([])
-  const [corsBlocked, setCorsBlocked] = useState(false)
+  const searchParams = useSearchParams()
+  const [phase, setPhase] = useState<Phase>('idle')
+  const [live, setLive] = useState(NaN)
+  const [partial, setPartial] = useState<Partial<Result>>({})
+  const [result, setResult] = useState<Result | null>(null)
+  const [shared, setShared] = useState(false)
+  const [meta, setMeta] = useState<Meta>({})
+  const [history, setHistory] = useState<Result[]>([])
+  const [plan, setPlan] = useState<number>(0)
   const [guideOpen, setGuideOpen] = useState(false)
-  const abortRef = useRef<AbortController | null>(null)
+  const ctrlRef = useRef<AbortController | null>(null)
+  const coloRef = useRef<string | undefined>(undefined)
 
-  // Measure ping via fetch timing
-  const measurePing = useCallback(async (url: string): Promise<number | null> => {
-    const attempts = 3
-    const times: number[] = []
-    for (let i = 0; i < attempts; i++) {
-      try {
-        const start = performance.now()
-        await fetch(url, {
-          method: 'HEAD',
-          cache: 'no-store',
-          signal: AbortSignal.timeout(5000),
-        })
-        times.push(performance.now() - start)
-      } catch {
-        // ignore individual failure
-      }
-    }
-    if (times.length === 0) return null
-    return Math.round(Math.min(...times))
-  }, [])
+  useEffect(() => { setHistory(loadHistory()) }, [])
 
-  // Measure download speed
-  const measureDownload = useCallback(async (
-    url: string,
-    bytes: number,
-    signal: AbortSignal,
-    onProgress: (pct: number) => void
-  ): Promise<number | null> => {
-    const start = performance.now()
-    let loaded = 0
-    try {
-      const response = await fetch(url, { cache: 'no-store', signal })
-      if (!response.ok || !response.body) return null
-      const reader = response.body.getReader()
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        loaded += value?.length ?? 0
-        onProgress(Math.min(100, Math.round((loaded / bytes) * 100)))
-      }
-    } catch {
-      return null
-    }
-    const elapsed = (performance.now() - start) / 1000 // seconds
-    if (elapsed <= 0 || loaded === 0) return null
-    const mbps = (loaded * 8) / (elapsed * 1_000_000)
-    return Math.round(mbps * 10) / 10
-  }, [])
+  // 공유 링크 (?d=&u=&p=&j=) → 결과 재현
+  useEffect(() => {
+    const d = num(searchParams.get('d'))
+    if (!Number.isFinite(d) || result) return
+    setResult({
+      ts: 0, down: d, up: num(searchParams.get('u')), ping: num(searchParams.get('p')),
+      jitter: num(searchParams.get('j')), loaded: NaN, colo: searchParams.get('c') ?? undefined,
+    })
+    setShared(true)
+    setPhase('done')
+  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fallback: synthetic speed using Crypto + ArrayBuffer processing
-  const syntheticSpeedTest = useCallback(async (
-    mb: number,
-    onProgress: (pct: number) => void
-  ): Promise<number> => {
-    const chunkSize = 256 * 1024 // 256 KB
-    const totalChunks = Math.ceil((mb * 1024 * 1024) / chunkSize)
-    let processed = 0
-    const start = performance.now()
-    for (let i = 0; i < totalChunks; i++) {
-      const buf = new Uint8Array(chunkSize)
-      crypto.getRandomValues(buf)
-      // Do a lightweight hash-like XOR fold to prevent dead-code elimination
-      let _acc = 0
-      for (let j = 0; j < buf.length; j += 64) _acc ^= buf[j]
-      processed += chunkSize
-      onProgress(Math.min(100, Math.round((processed / (mb * 1024 * 1024)) * 100)))
-      // Yield to keep UI responsive
-      await new Promise(r => setTimeout(r, 0))
-    }
-    const elapsed = (performance.now() - start) / 1000
-    return Math.round(((processed * 8) / (elapsed * 1_000_000)) * 10) / 10
-  }, [])
+  useEffect(() => () => ctrlRef.current?.abort(), [])
 
-  const runTest = useCallback(async (mode: 'quick' | 'full') => {
-    if (testing) return
-    setTesting(true)
-    setProgress(0)
-    setCurrentResult(null)
-    setCorsBlocked(false)
+  const running = phase === 'latency' || phase === 'download' || phase === 'upload'
 
+  const stop = useCallback(() => ctrlRef.current?.abort(), [])
+
+  const start = useCallback(async () => {
+    if (running) return
     const ctrl = new AbortController()
-    abortRef.current = ctrl
+    ctrlRef.current = ctrl
+    const signal = ctrl.signal
+    try { performance.setResourceTimingBufferSize(1000) } catch { /* 미지원 */ }
+    setShared(false)
+    setResult(null)
+    setPartial({})
+    setLive(NaN)
+    setMeta({})
+    coloRef.current = undefined
+    setPhase('latency')
 
-    const bytes = mode === 'quick' ? 1_000_000 : 10_000_000
-    const downloadUrl = `https://speed.cloudflare.com/__down?bytes=${bytes}`
-    const pingUrl = 'https://speed.cloudflare.com/__down?bytes=0'
-
-    let downloadSpeed: number | null = null
-    let ping: number | null = null
-    let usedFallback = false
+    // 통신사 이름 (자체 /api/ip — 로컬 개발 서버에는 없음)
+    fetch('/api/ip', { cache: 'no-store' }).then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        if (!j) return
+        coloRef.current ??= j.colo || undefined
+        setMeta(m => ({ colo: m.colo ?? (j.colo || undefined), isp: j.asOrganization || undefined }))
+      }).catch(() => {})
 
     try {
-      // 1. Ping
-      setProgress(5)
-      ping = await measurePing(pingUrl)
-      setProgress(15)
-
-      // 2. Download
-      downloadSpeed = await measureDownload(
-        downloadUrl,
-        bytes,
-        ctrl.signal,
-        (pct) => setProgress(15 + Math.round(pct * 0.8))
-      )
-
-      if (downloadSpeed === null) {
-        usedFallback = true
+      // 1) 무부하 핑: 첫 요청은 연결 수립(워밍업) → 제외, 중앙값
+      const pings: number[] = []
+      for (let i = 0; i <= LATENCY_COUNT; i++) {
+        const r = await measure('down', 0, signal)
+        if (i === 0) continue
+        pings.push(r.ping)
+        setPartial({ ping: median(pings), jitter: calcJitter(pings) })
       }
+      const ping = median(pings)
+      const jit = calcJitter(pings)
+
+      // 2) 다운로드 (+ 부하 중 핑: 400ms 마다 병렬 0바이트 요청)
+      const loadedPings: number[] = []
+      const direction = async (kind: 'down' | 'up', steps: Step[]) => {
+        const dirCtrl = new AbortController()
+        const onAbort = () => dirCtrl.abort()
+        signal.addEventListener('abort', onAbort)
+        const hard = setTimeout(() => dirCtrl.abort(), HARD_STOP_MS)
+        const done: Sample[] = []
+        const skip = kind === 'down' ? 1 : 0
+        const t0 = performance.now()
+        let loadedOn = false
+        let probe: ReturnType<typeof setInterval> | undefined
+        if (kind === 'down') {
+          probe = setInterval(() => {
+            if (!loadedOn) return
+            measure('down', 0, dirCtrl.signal).then(r => loadedPings.push(r.ping)).catch(() => {})
+          }, 400)
+        }
+        try {
+          let size: number | null
+          while ((size = nextSize(steps, done, performance.now() - t0, BUDGET_MS)) !== null) {
+            loadedOn = size >= 1e6
+            const big = size >= 1e6
+            const r = await measure(kind, size, dirCtrl.signal,
+              kind === 'down' && big ? (loaded, ms) => { if (ms > 100) setLive(mbps(loaded, ms)) } : undefined)
+            done.push(r.sample)
+            // 실제 측정 서버 위치: __up 응답만 cf-meta-colo 를 노출 (__down 은 미노출)
+            const c = r.headers.get('cf-meta-colo')
+            if (c && coloRef.current !== c) { coloRef.current = c; setMeta(m => ({ ...m, colo: c })) }
+            const bw = bandwidth(done, skip)
+            if (Number.isFinite(bw)) setLive(bw)
+          }
+        } catch (e) {
+          // 사용자 중지 → 전파, 강제 중단(시간 초과) → 모인 표본으로 결과
+          if (signal.aborted) throw e
+          if (!dirCtrl.signal.aborted && done.length <= skip) throw e
+        } finally {
+          clearTimeout(hard)
+          if (probe) clearInterval(probe)
+          signal.removeEventListener('abort', onAbort)
+        }
+        return bandwidth(done, skip)
+      }
+
+      setPhase('download')
+      setLive(NaN)
+      const down = await direction('down', DOWN_STEPS)
+      setPartial(p => ({ ...p, down }))
+
+      setPhase('upload')
+      setLive(NaN)
+      const up = await direction('up', UP_STEPS)
+
+      const res: Result = {
+        ts: Date.now(), down, up, ping, jitter: jit,
+        loaded: loadedPings.length >= 3 ? median(loadedPings) : NaN,
+        colo: coloRef.current,
+      }
+      setResult(res)
+      setPhase('done')
+      setHistory(prev => {
+        const next = [res, ...prev].slice(0, 30)
+        saveHistory(next)
+        return next
+      })
+      // 결과를 URL에 → 링크로 재현
+      const url = new URL(window.location.href)
+      url.searchParams.set('d', fmtMbps(down))
+      url.searchParams.set('u', fmtMbps(up))
+      url.searchParams.set('p', fmtMs(ping))
+      url.searchParams.set('j', fmtMs(jit))
+      if (res.colo) url.searchParams.set('c', res.colo)
+      window.history.replaceState({}, '', url)
     } catch {
-      usedFallback = true
+      setPhase(signal.aborted ? 'idle' : 'error')
+    } finally {
+      ctrlRef.current = null
     }
+  }, [running])
 
-    // Fallback if CORS blocked or fetch failed
-    if (usedFallback) {
-      setCorsBlocked(true)
-      setProgress(15)
-      const mb = mode === 'quick' ? 10 : 50
-      downloadSpeed = await syntheticSpeedTest(mb, (pct) =>
-        setProgress(15 + Math.round(pct * 0.8))
-      )
-    }
+  const view: Partial<Result> = result ?? partial
+  const shownDown = phase === 'download' ? live : (view.down ?? NaN)
+  const shownUp = phase === 'upload' ? live : (view.up ?? NaN)
+  const gaugeValue = phase === 'upload' ? shownUp : shownDown
+  const gaugeLabel = phase === 'upload' ? t('metric.upload') : t('metric.download')
 
-    setProgress(100)
+  const measured = useMemo(() => (result
+    ? { down: result.down, up: result.up, ping: result.ping, jitter: result.jitter }
+    : null), [result])
 
-    const result: TestResult = {
-      downloadSpeed,
-      ping,
-      timestamp: new Date(),
-      mode,
-    }
+  const colo = result?.colo ?? meta.colo
+  const card = result ? {
+    tool: t('title'),
+    label: t('share.label'),
+    headline: `${fmtMbps(result.down)} Mbps`,
+    sub: t('share.sub', { up: fmtMbps(result.up), ping: fmtMs(result.ping) }),
+    rows: [
+      { label: t('metric.upload'), value: `${fmtMbps(result.up)} Mbps` },
+      { label: t('metric.ping'), value: `${fmtMs(result.ping)} ms` },
+      { label: t('metric.jitter'), value: `${fmtMs(result.jitter)} ms` },
+      ...(colo ? [{ label: t('server.label'), value: `Cloudflare ${colo}` }] : []),
+    ],
+  } : null
 
-    setCurrentResult(result)
-    setHistory(prev => [result, ...prev].slice(0, 5))
-    setTesting(false)
-    abortRef.current = null
-  }, [testing, measurePing, measureDownload, syntheticSpeedTest])
-
-  const speedClass = getSpeedClass(currentResult?.downloadSpeed ?? null)
-
-  const classLabelMap: Record<SpeedClass, string> = {
-    slow: t('slow'),
-    moderate: t('moderate'),
-    fast: t('fast'),
-    veryFast: t('veryFast'),
+  const fmtDuration = (s: number) => {
+    if (!Number.isFinite(s)) return '—'
+    if (s < 60) return t('files.sec', { n: s < 10 ? s.toFixed(1) : Math.round(s) })
+    if (s < 3600) return t('files.min', { m: Math.floor(s / 60), s: Math.round(s % 60) })
+    return t('files.hour', { h: Math.floor(s / 3600), m: Math.round((s % 3600) / 60) })
   }
-  const classDescMap: Record<SpeedClass, string> = {
-    slow: t('slowDesc'),
-    moderate: t('moderateDesc'),
-    fast: t('fastDesc'),
-    veryFast: t('veryFastDesc'),
-  }
+
+  const chartData = useMemo(() => [...history].slice(0, 20).reverse().map(h => ({
+    x: new Date(h.ts).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+    down: Math.round(h.down), up: Math.round(h.up),
+  })), [history])
+
+  const avgDown = history.length ? median(history.map(h => h.down)) : NaN
+  const cls = result ? speedClass(result.down) : null
+
+  const phases: Phase[] = ['latency', 'download', 'upload']
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-6">
       <div>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
-            <Wifi className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-            <p className="text-sm text-muted">{t('description')}</p>
-          </div>
-        </div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Gauge + Controls */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex flex-col items-center gap-6">
-          {/* Gauge */}
-          <div className="w-full max-w-xs">
-            <SpeedGauge speed={currentResult?.downloadSpeed ?? null} />
-            <div className="text-center -mt-2">
-              {currentResult?.downloadSpeed !== null && currentResult !== null ? (
-                <div>
-                  <span className="text-4xl font-bold text-fg">
-                    {currentResult.downloadSpeed}
-                  </span>
-                  <span className="text-lg text-muted ml-1">{t('mbps')}</span>
-                </div>
-              ) : (
-                <div className="text-4xl font-bold text-gray-300 dark:text-gray-600">—</div>
-              )}
-              <div className="text-sm text-muted mt-1">{t('downloadSpeed')}</div>
-            </div>
-          </div>
-
-          {/* Ping */}
-          <div className="flex items-center gap-2 text-sub">
-            <Clock className="w-4 h-4" />
-            <span className="font-medium">{t('ping')}:</span>
-            <span className="font-bold text-blue-600 dark:text-blue-400">
-              {currentResult?.ping !== null && currentResult !== null
-                ? `${currentResult.ping} ${t('ms')}`
-                : '—'}
-            </span>
-          </div>
-
-          {/* Progress bar */}
-          {testing && (
-            <div className="w-full max-w-xs">
-              <div className="flex justify-between text-xs text-muted mb-1">
-                <span>{t('progress')}</span>
-                <span>{progress}%</span>
-              </div>
-              <div className="w-full bg-track rounded-full h-2">
-                <div
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Speed classification */}
-          {currentResult !== null && !testing && (
-            <div className={`w-full max-w-xs rounded-lg border p-3 ${SPEED_BG[speedClass]}`}>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">{t('classification')}</span>
-                <span className={`font-bold ${SPEED_TEXT[speedClass]}`}>{classLabelMap[speedClass]}</span>
-              </div>
-              <p className="text-xs text-muted mt-1">{classDescMap[speedClass]}</p>
-            </div>
-          )}
-
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
-            <button
-              onClick={() => runTest('quick')}
-              disabled={testing}
-              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              {testing ? t('testing') : t('quickTest')}
-            </button>
-            <button
-              onClick={() => runTest('full')}
-              disabled={testing}
-              className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              {t('fullTest')}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* CORS / Disclaimer notice */}
-      <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex gap-3">
-        <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-        <div className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
-          {corsBlocked && <p className="font-medium">{t('corsNote')}</p>}
-          <p>{t('disclaimer')}</p>
-        </div>
-      </div>
-
-      {/* History */}
-      {history.length > 0 && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 mb-4">
-            <Activity className="w-5 h-5 text-blue-500" />
-            <h2 className="text-lg font-semibold text-fg">{t('history')}</h2>
-          </div>
-          <div className="space-y-2">
-            {history.map((item, idx) => {
-              const cls = getSpeedClass(item.downloadSpeed)
+      {/* 측정 카드 */}
+      <div className="ui-card p-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+          <div className="flex gap-1.5">
+            {phases.map(p => {
+              const idx = phases.indexOf(p), cur = phases.indexOf(phase as Phase)
+              const on = phase === p
+              const past = phase === 'done' || (cur > idx)
               return (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-3 bg-subtle rounded-lg text-sm"
-                >
-                  <span className="text-muted">{formatTime(item.timestamp)}</span>
-                  <span className="text-xs text-faint">
-                    {item.mode === 'quick' ? '1MB' : '10MB'}
-                  </span>
-                  <div className="flex gap-4">
-                    <span className="flex items-center gap-1">
-                      <Wifi className="w-3.5 h-3.5 text-gray-400" />
-                      <span className={`font-bold ${SPEED_TEXT[cls]}`}>
-                        {item.downloadSpeed !== null ? `${item.downloadSpeed} ${t('mbps')}` : '—'}
-                      </span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-gray-400" />
-                      <span className="text-body">
-                        {item.ping !== null ? `${item.ping} ${t('ms')}` : '—'}
-                      </span>
-                    </span>
-                  </div>
-                </div>
+                <span key={p} className={`px-3 py-1 rounded-full text-xs font-medium ${on ? 'bg-primary text-white' : past ? 'bg-primary-soft text-primary' : 'bg-soft text-muted'}`}>
+                  {t(`phase.${p}`)}
+                </span>
               )
             })}
           </div>
+          <span className="text-muted text-xs">
+            {colo ? t('server.value', { colo }) : t('server.pending')}
+            {meta.isp ? ` · ${meta.isp}` : ''}
+          </span>
+        </div>
+
+        <div className="mt-4">
+          <Gauge value={running ? gaugeValue : (result?.down ?? NaN)} label={running ? gaugeLabel : t('metric.download')} />
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-6">
+          {[
+            { k: 'download', v: fmtMbps(shownDown), u: 'Mbps', on: phase === 'download' },
+            { k: 'upload', v: fmtMbps(shownUp), u: 'Mbps', on: phase === 'upload' },
+            { k: 'ping', v: fmtMs(view.ping ?? NaN), u: 'ms', on: phase === 'latency' },
+            { k: 'jitter', v: fmtMs(view.jitter ?? NaN), u: 'ms', on: phase === 'latency' },
+          ].map(m => (
+            <div key={m.k} className={`rounded-xl p-3 text-center ${m.on ? 'bg-primary-soft' : 'bg-subtle'}`}>
+              <div className={`text-xs ${m.on ? 'text-primary' : 'text-muted'}`}>{t(`metric.${m.k}`)}</div>
+              <div className="text-xl font-bold text-fg tabular-nums mt-0.5">{m.v}<span className="text-xs font-normal text-muted ml-1">{m.u}</span></div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center mt-6">
+          {running ? (
+            <button onClick={stop} className="ui-btn-soft px-8 py-3 min-w-48">
+              <Square className="w-4 h-4" /> {t('stop')}
+            </button>
+          ) : (
+            <button onClick={start} className="ui-btn px-8 py-3 min-w-48">
+              <Play className="w-4 h-4" /> {result && !shared ? t('again') : t('start')}
+            </button>
+          )}
+        </div>
+        {phase === 'error' && (
+          <p className="mt-4 bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm" role="alert">{t('errorMsg')}</p>
+        )}
+        <p className="text-xs text-faint text-center mt-4">{t('method')}</p>
+      </div>
+
+      {/* 결과 */}
+      {result && phase === 'done' && (
+        <div className="space-y-3">
+          <div className="ui-hero p-6 sm:p-8" aria-live="polite">
+            <div className="text-sm text-white/70">{shared ? t('hero.shared') : t('hero.label')}</div>
+            <div className="text-4xl sm:text-5xl font-bold tabular-nums mt-1">
+              {fmtMbps(result.down)}<span className="text-xl font-semibold ml-1">Mbps</span>
+            </div>
+            <div className="text-white/80 mt-2">
+              {t('hero.sub', { up: fmtMbps(result.up), ping: fmtMs(result.ping), jitter: fmtMs(result.jitter) })}
+            </div>
+            {cls && (
+              <div className="mt-4 text-sm text-white/90">
+                <span className="font-semibold">{t(cls)}</span> · {t(`${cls}Desc`)}
+              </div>
+            )}
+            {Number.isFinite(result.loaded) && (
+              <div className="mt-1 text-sm text-white/70">
+                {t('hero.loaded', { loaded: fmtMs(result.loaded), diff: fmtMs(Math.max(0, result.loaded - result.ping)) })}
+              </div>
+            )}
+            {shared && <div className="mt-3 text-sm text-white/70">{t('hero.sharedHint')}</div>}
+          </div>
+          {card && <ShareResult card={card} text={t('share.text', { d: fmtMbps(result.down), u: fmtMbps(result.up), p: fmtMs(result.ping) })} fileName="toolhub-speed-test" />}
         </div>
       )}
 
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
-          onClick={() => setGuideOpen(v => !v)}
-          aria-expanded={guideOpen}
-        >
+      {/* 요금제 비교 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('plan.title')}</h2>
+        <div className="flex gap-1 mt-3 p-1 bg-soft rounded-xl w-fit" role="radiogroup">
+          {PLANS.map(p => (
+            <button key={p} role="radio" aria-checked={plan === p} onClick={() => setPlan(p)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${plan === p ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`}>
+              {p === 0 ? t('plan.none') : p === 1000 ? '1G' : `${p}M`}
+            </button>
+          ))}
+        </div>
+        {plan > 0 && result && (
+          <div className="mt-4 bg-subtle rounded-2xl p-5">
+            <div className="text-sm text-sub">{t('plan.ratio', { pct: Math.round((result.down / plan) * 100) })}</div>
+            <div className="h-2 bg-track rounded-full mt-2 relative overflow-hidden">
+              <div className="absolute inset-y-0 left-0 bg-primary rounded-full" style={{ width: `${Math.min(100, (result.down / plan) * 100)}%` }} />
+              <div className="absolute inset-y-0 w-0.5 bg-fg" style={{ left: '50%' }} />
+            </div>
+            <p className={`text-sm font-medium mt-3 ${result.down >= planGuarantee(plan) ? 'text-primary' : 'text-amber-700'}`}>
+              {result.down >= planGuarantee(plan)
+                ? t('plan.meets', { g: planGuarantee(plan) })
+                : t('plan.below', { g: planGuarantee(plan) })}
+            </p>
+          </div>
+        )}
+        {plan > 0 && !result && <p className="text-sm text-muted mt-3">{t('plan.needResult')}</p>}
+        <ul className="mt-4 space-y-1.5 text-sm text-sub list-disc pl-5">
+          {(t.raw('plan.notes') as string[]).map((n, i) => <li key={i}>{n}</li>)}
+        </ul>
+        <a href="https://speed.nia.or.kr/" target="_blank" rel="noopener noreferrer" className="inline-block text-sm text-primary mt-3 hover:underline">
+          {t('plan.nia')}
+        </a>
+      </div>
+
+      {/* 용도별 판정 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('uses.title')}</h2>
+        <p className="text-sm text-muted mt-1">{measured ? t('uses.hintMeasured') : t('uses.hint')}</p>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-muted border-b border-line">
+                <th className="py-2 pr-3 font-medium">{t('uses.colUse')}</th>
+                <th className="py-2 pr-3 font-medium">{t('uses.colNeed')}</th>
+                <th className="py-2 font-medium text-right">{t('uses.colResult')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {USES.map(u => {
+                const v = measured ? verdict(u.need, measured) : null
+                return (
+                  <tr key={u.id} className="border-b border-line last:border-0">
+                    <td className="py-2.5 pr-3 text-body">{t(`uses.${u.id}.name`)}</td>
+                    <td className="py-2.5 pr-3 text-muted">{t(`uses.${u.id}.need`)}</td>
+                    <td className={`py-2.5 text-right font-semibold whitespace-nowrap ${v ? VERDICT_CLS[v] : 'text-faint'}`}>
+                      {v ? t(`uses.${v}`) : '—'}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        {result && (
+          <div className="mt-5 bg-subtle rounded-2xl p-5">
+            <div className="text-sm font-semibold text-body mb-2">{t('files.title', { d: fmtMbps(result.down) })}</div>
+            <div className="grid sm:grid-cols-3 gap-2">
+              {FILES.map(f => (
+                <div key={f.id} className="text-sm">
+                  <div className="text-muted">{t(`files.${f.id}`)}</div>
+                  <div className="font-semibold text-fg tabular-nums">{fmtDuration(downloadSeconds(f.gb, result.down))}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 측정 기록 */}
+      <div className="ui-card p-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-fg">{t('history')}</h2>
+          {history.length > 0 && (
+            <button onClick={() => { setHistory([]); saveHistory([]) }} className="text-sm text-muted hover:text-fg">{t('hist.clear')}</button>
+          )}
+        </div>
+        {history.length === 0 ? (
+          <p className="text-sm text-muted mt-3">{t('historyEmpty')}</p>
+        ) : (
+          <>
+            <p className="text-sm text-muted mt-1">{t('hist.summary', { count: history.length, d: fmtMbps(avgDown) })}</p>
+            {chartData.length >= 2 && (
+              <div className="h-48 mt-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+                    <XAxis dataKey="x" tick={{ fontSize: 10, fill: 'var(--muted)' }} stroke="var(--line)" tickLine={false} interval="preserveStartEnd" />
+                    <YAxis tick={{ fontSize: 10, fill: 'var(--muted)' }} stroke="var(--line)" tickLine={false} />
+                    <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, fontSize: 12 }}
+                      formatter={(v, name) => [`${v ?? 0} Mbps`, name === 'down' ? t('metric.download') : t('metric.upload')]} />
+                    <Line type="monotone" dataKey="down" stroke="var(--primary)" strokeWidth={2} dot={{ r: 2 }} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="up" stroke="var(--faint)" strokeWidth={2} dot={{ r: 2 }} isAnimationActive={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+            <div className="overflow-x-auto mt-4">
+              <table className="w-full text-sm tabular-nums">
+                <thead>
+                  <tr className="text-left text-muted border-b border-line">
+                    <th className="py-2 pr-3 font-medium">{t('hist.date')}</th>
+                    <th className="py-2 pr-3 font-medium text-right">{t('metric.download')}</th>
+                    <th className="py-2 pr-3 font-medium text-right">{t('metric.upload')}</th>
+                    <th className="py-2 pr-3 font-medium text-right">{t('metric.ping')}</th>
+                    <th className="py-2 font-medium text-right">{t('server.short')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {history.slice(0, 10).map(h => (
+                    <tr key={h.ts} className="border-b border-line last:border-0">
+                      <td className="py-2 pr-3 text-muted whitespace-nowrap">{new Date(h.ts).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                      <td className="py-2 pr-3 text-right font-semibold text-fg">{fmtMbps(h.down)}</td>
+                      <td className="py-2 pr-3 text-right text-body">{fmtMbps(h.up)}</td>
+                      <td className="py-2 pr-3 text-right text-body">{fmtMs(h.ping)}</td>
+                      <td className="py-2 text-right text-muted">{h.colo ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* 결과가 낮게 나오는 이유 */}
+      <div className="bg-subtle rounded-2xl p-5">
+        <h2 className="font-semibold text-fg">{t('caveats.title')}</h2>
+        <ul className="mt-2 space-y-1.5 text-sm text-sub list-disc pl-5">
+          {(t.raw('caveats.items') as string[]).map((c, i) => <li key={i}>{c}</li>)}
+        </ul>
+        <p className="text-xs text-muted mt-3">{t('disclaimer')}</p>
+      </div>
+
+      {/* 가이드 */}
+      <div className="ui-card overflow-hidden">
+        <button className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-subtle transition-colors"
+          onClick={() => setGuideOpen(v => !v)} aria-expanded={guideOpen}>
           <h2 className="text-lg font-semibold text-fg">{t('guideTitle')}</h2>
-          {guideOpen
-            ? <ChevronUp className="w-5 h-5 text-gray-500" />
-            : <ChevronDown className="w-5 h-5 text-gray-500" />}
+          {guideOpen ? <ChevronUp className="w-5 h-5 text-muted" /> : <ChevronDown className="w-5 h-5 text-muted" />}
         </button>
         {guideOpen && (
           <div className="px-6 pb-6 space-y-6 border-t border-line pt-4">
-            <div>
-              <h3 className="font-semibold text-body mb-2">
-                {t('guideSection1Title')}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw('guideSection1Items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-sub">
-                    <span className="text-blue-500 font-bold flex-shrink-0">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-body mb-2">
-                {t('guideSection2Title')}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw('guideSection2Items') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-sub">
-                    <span className="text-green-500 font-bold flex-shrink-0">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {(['guideSection1', 'guideSection2'] as const).map(s => (
+              <div key={s}>
+                <h3 className="font-semibold text-body mb-2">{t(`${s}Title`)}</h3>
+                <ul className="space-y-1.5 text-sm text-sub list-disc pl-5">
+                  {(t.raw(`${s}Items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
       </div>

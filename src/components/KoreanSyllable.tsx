@@ -1,518 +1,305 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, RotateCcw, BookOpen, Type } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Copy, Check, RotateCcw } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
+import {
+  chosung, jamoString, composeJamo, composeKeys, stats as textStats, codePoint, codePoints, nfdEscaped,
+  romanize, decompose, nfc, josa, JOSA_PAIRS, JOSA_SNIPPET,
+} from '@/utils/koreanSyllable'
 
-type Mode = 'chosung' | 'decompose' | 'compose'
+const SAMPLE = '안녕하세요 대한민국 닭갈비'
+const SAMPLES = ['대한민국', '종로구 청계천', '닭갈비 먹고 싶다', '같이 해돋이 보러 가요']
+const TABLE_MAX = 60
 
-interface DecomposedChar {
-  original: string
-  chosung: string
-  jungsung: string
-  jongsung: string
-}
-
-// Korean Unicode constants
-const HANGUL_BASE = 0xAC00
-const HANGUL_END = 0xD7A3
-const CHOSUNG_COUNT = 19
-const JUNGSUNG_COUNT = 21
-const JONGSUNG_COUNT = 28
-
-const CHOSUNG_LIST = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-const JUNGSUNG_LIST = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ']
-const JONGSUNG_LIST = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-
-function isHangulSyllable(char: string): boolean {
-  const code = char.charCodeAt(0)
-  return code >= HANGUL_BASE && code <= HANGUL_END
-}
-
-function extractChosung(text: string): string {
-  return Array.from(text)
-    .map(char => {
-      if (!isHangulSyllable(char)) return ''
-      const code = char.charCodeAt(0) - HANGUL_BASE
-      const chosungIndex = Math.floor(code / (JUNGSUNG_COUNT * JONGSUNG_COUNT))
-      return CHOSUNG_LIST[chosungIndex]
-    })
-    .join('')
-}
-
-function decomposeChar(char: string): DecomposedChar {
-  if (!isHangulSyllable(char)) {
-    return {
-      original: char,
-      chosung: '',
-      jungsung: '',
-      jongsung: ''
-    }
-  }
-
-  const code = char.charCodeAt(0) - HANGUL_BASE
-  const chosungIndex = Math.floor(code / (JUNGSUNG_COUNT * JONGSUNG_COUNT))
-  const jungsungIndex = Math.floor((code % (JUNGSUNG_COUNT * JONGSUNG_COUNT)) / JONGSUNG_COUNT)
-  const jongsungIndex = code % JONGSUNG_COUNT
-
-  return {
-    original: char,
-    chosung: CHOSUNG_LIST[chosungIndex],
-    jungsung: JUNGSUNG_LIST[jungsungIndex],
-    jongsung: JONGSUNG_LIST[jongsungIndex]
-  }
-}
-
-function decomposeText(text: string): DecomposedChar[] {
-  return Array.from(text).map(char => decomposeChar(char))
-}
-
-function composeJamo(chosung: string, jungsung: string, jongsung: string = ''): string {
-  const chosungIndex = CHOSUNG_LIST.indexOf(chosung)
-  const jungsungIndex = JUNGSUNG_LIST.indexOf(jungsung)
-  const jongsungIndex = jongsung ? JONGSUNG_LIST.indexOf(jongsung) : 0
-
-  if (chosungIndex === -1 || jungsungIndex === -1 || jongsungIndex === -1) {
-    return ''
-  }
-
-  const code = HANGUL_BASE + (chosungIndex * JUNGSUNG_COUNT + jungsungIndex) * JONGSUNG_COUNT + jongsungIndex
-  return String.fromCharCode(code)
-}
-
-function composeText(jamoText: string): string {
-  // Simple composition: expects jamo separated by spaces or continuous
-  // Example: "ㅎㅏㄴ" -> "한"
-  const jamos = Array.from(jamoText.replace(/\s+/g, ''))
-  const result: string[] = []
-  let i = 0
-
-  while (i < jamos.length) {
-    const char1 = jamos[i]
-    const char2 = jamos[i + 1]
-    const char3 = jamos[i + 2]
-
-    // Check if char1 is chosung
-    if (CHOSUNG_LIST.includes(char1) && char2 && JUNGSUNG_LIST.includes(char2)) {
-      // Try to compose with optional jongsung
-      if (char3 && JONGSUNG_LIST.includes(char3) && char3 !== '') {
-        const composed = composeJamo(char1, char2, char3)
-        if (composed) {
-          result.push(composed)
-          i += 3
-          continue
-        }
-      }
-      // Compose without jongsung
-      const composed = composeJamo(char1, char2, '')
-      if (composed) {
-        result.push(composed)
-        i += 2
-        continue
-      }
-    }
-
-    // If not composable, just add the character
-    result.push(char1)
-    i++
-  }
-
-  return result.join('')
+function Toggle({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={on}
+      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}
+    >
+      {label}
+    </button>
+  )
 }
 
 export default function KoreanSyllable() {
   const t = useTranslations('koreanSyllable')
-  const [mode, setMode] = useState<Mode>('chosung')
-  const [inputText, setInputText] = useState('')
-  const [composeInput, setComposeInput] = useState('')
+  const searchParams = useSearchParams()
+  const ready = useRef(false)
+
+  const [input, setInput] = useState(SAMPLE)
+  const [keepOther, setKeepOther] = useState(true)
+  const [splitCompound, setSplitCompound] = useState(false)
+  const [capitalize, setCapitalize] = useState(false)
+  const [composeMode, setComposeMode] = useState<'jamo' | 'keys'>('jamo')
+  const [composeInput, setComposeInput] = useState('ㅎㅏㄴㄱㅡㄹ ㄷㅏㄹㄱ')
+  const [word, setWord] = useState('서울')
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
+  // URL → 입력 (공유 링크·뒤로가기). 자기 replaceState로 돌아온 값은 같아서 무해
+  useEffect(() => {
+    const q = searchParams.get('t')
+    if (q !== null) setInput(q)
+  }, [searchParams])
+
+  // 입력 → URL (샘플이면 생략). 입력이 샘플에서 한 번 바뀌기 전엔 URL을 건드리지 않음(공유 링크 t 보존)
+  useEffect(() => {
+    if (!ready.current) { if (input === SAMPLE) return; ready.current = true }
+    const p = new URLSearchParams(window.location.search)
+    if (input && input !== SAMPLE) p.set('t', input)
+    else p.delete('t')
+    const qs = p.toString()
+    window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+  }, [input])
+
+  const copy = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text)
       } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
         document.execCommand('copy')
-        document.body.removeChild(textarea)
+        document.body.removeChild(ta)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* 권한 없음: 무시 */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const result = useMemo(() => {
-    if (mode === 'chosung') {
-      return extractChosung(inputText)
-    } else if (mode === 'decompose') {
-      return decomposeText(inputText)
-    } else {
-      return composeText(composeInput)
-    }
-  }, [mode, inputText, composeInput])
+  const CopyBtn = ({ text, id }: { text: string; id: string }) => (
+    <button
+      type="button"
+      onClick={() => copy(text, id)}
+      disabled={!text}
+      aria-label={t('copy')}
+      className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-soft hover:bg-subtle text-body rounded-lg text-sm disabled:opacity-40 transition-colors"
+    >
+      {copiedId === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+      <span>{copiedId === id ? t('copied') : t('copy')}</span>
+    </button>
+  )
 
-  const stats = useMemo(() => {
-    const charCount = inputText.length
-    const syllableCount = Array.from(inputText).filter(char => isHangulSyllable(char)).length
-    return { charCount, syllableCount }
-  }, [inputText])
+  const isNfd = input !== nfc(input)
+  const st = useMemo(() => textStats(input), [input])
 
-  const handleExampleClick = useCallback((text: string) => {
-    setInputText(text)
-  }, [])
+  const outputs = useMemo(() => [
+    { id: 'cho', label: t('out.chosung'), value: chosung(input, keepOther), big: true,
+      opt: <Toggle on={keepOther} onClick={() => setKeepOther((v) => !v)} label={t('opt.keepOther')} /> },
+    { id: 'jamo', label: t('out.jamo'), value: jamoString(input, splitCompound),
+      opt: <Toggle on={splitCompound} onClick={() => setSplitCompound((v) => !v)} label={t('opt.splitCompound')} /> },
+    { id: 'roman', label: t('out.roman'), value: romanize(input, capitalize), note: t('romanNote'),
+      opt: <Toggle on={capitalize} onClick={() => setCapitalize((v) => !v)} label={t('opt.capitalize')} /> },
+    { id: 'code', label: t('out.code'), value: codePoints(input), mono: true },
+    { id: 'nfd', label: t('out.nfd'), value: nfdEscaped(input), mono: true },
+  ], [input, keepOther, splitCompound, capitalize, t])
 
-  const handleReset = useCallback(() => {
-    setInputText('')
-    setComposeInput('')
-  }, [])
+  const rows = useMemo(() => Array.from(nfc(input)).filter((c) => c.trim()).slice(0, TABLE_MAX), [input])
+  const totalRows = useMemo(() => Array.from(nfc(input)).filter((c) => c.trim()).length, [input])
+
+  const composed = composeMode === 'jamo' ? composeJamo(composeInput) : composeKeys(composeInput)
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Mode Tabs */}
-      <div className={`${glassCard} ${glassInset} p-2`}>
-        <div className="grid grid-cols-3 gap-2">
-          <button
-            onClick={() => setMode('chosung')}
-            className={`px-4 py-3 rounded-lg font-medium transition-all ${
-              mode === 'chosung'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('mode.chosung')}
-          </button>
-          <button
-            onClick={() => setMode('decompose')}
-            className={`px-4 py-3 rounded-lg font-medium transition-all ${
-              mode === 'decompose'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('mode.decompose')}
-          </button>
-          <button
-            onClick={() => setMode('compose')}
-            className={`px-4 py-3 rounded-lg font-medium transition-all ${
-              mode === 'compose'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('mode.compose')}
-          </button>
-        </div>
-      </div>
-
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel: Input */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
+          <div className="ui-card p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-fg">
-                {t('input')}
-              </label>
-              <button
-                onClick={handleReset}
-                className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
+              <label htmlFor="ks-input" className="text-sm font-medium text-fg">{t('input')}</label>
+              <button type="button" onClick={() => setInput('')} aria-label={t('reset')} className="p-1 text-faint hover:text-body">
                 <RotateCcw className="w-4 h-4" />
               </button>
             </div>
-
-            {mode === 'compose' ? (
-              <textarea
-                value={composeInput}
-                onChange={(e) => setComposeInput(e.target.value)}
-                placeholder="ㅎㅏㄴㄱㅡㄹ"
-                rows={6}
-                className={`${glassInput} px-3 py-2 font-mono`}
-              />
-            ) : (
-              <textarea
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder={t('placeholder')}
-                rows={6}
-                className={`${glassInput} px-3 py-2`}
-              />
-            )}
-
-            {mode !== 'compose' && (
-              <>
-                <div>
-                  <p className="text-sm font-medium text-body mb-2">
-                    {t('examples')}
-                  </p>
-                  <div className="space-y-2">
-                    {['대한민국', '안녕하세요', '프로그래밍'].map((text, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleExampleClick(text)}
-                        className="w-full px-3 py-2 text-left text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                      >
-                        {text}
-                      </button>
-                    ))}
-                  </div>
+            <textarea
+              id="ks-input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={t('placeholder')}
+              rows={5}
+              className="ui-field w-full px-4 py-3 resize-y"
+            />
+            {isNfd && (
+              <div className="bg-amber-50 text-amber-800 rounded-xl p-3 text-sm space-y-2">
+                <p>{t('nfd.notice')}</p>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => setInput(nfc(input))} className="ui-btn px-3 py-1.5 text-sm">{t('nfd.fix')}</button>
+                  <CopyBtn text={nfc(input)} id="nfc" />
                 </div>
-
-                <div className="pt-4 border-t border-line">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-sub">{t('charCount')}</span>
-                    <span className="font-medium text-fg">{stats.charCount}</span>
-                  </div>
-                  <div className="flex justify-between text-sm mt-2">
-                    <span className="text-sub">{t('syllableCount')}</span>
-                    <span className="font-medium text-fg">{stats.syllableCount}</span>
-                  </div>
-                </div>
-              </>
+              </div>
             )}
+            <div>
+              <p className="text-sm text-sub mb-2">{t('examples')}</p>
+              <div className="flex flex-wrap gap-2">
+                {SAMPLES.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setInput(s)}
+                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${input === s ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <dl className="pt-4 border-t border-line grid grid-cols-3 gap-2 text-center">
+              {([['chars', st.chars], ['syllables', st.syllables], ['keystrokes', st.keystrokes]] as const).map(([k, v]) => (
+                <div key={k}>
+                  <dt className="text-xs text-muted">{t(`stats.${k}`)}</dt>
+                  <dd className="text-lg font-bold text-fg tabular-nums">{v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
 
-        {/* Right Panel: Result */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-fg">
-                {t('result')}
-              </h2>
-              {mode !== 'decompose' && (
-                <button
-                  onClick={() => copyToClipboard(typeof result === 'string' ? result : '', 'result')}
-                  disabled={!result || typeof result !== 'string'}
-                  className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {copiedId === 'result' ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span className="text-sm">{t('copied')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      <span className="text-sm">{t('copy')}</span>
-                    </>
-                  )}
-                </button>
-              )}
-            </div>
-
-            {mode === 'chosung' && (
-              <div className="bg-subtle rounded-xl p-6">
-                <p className="text-4xl font-bold text-fg break-all tracking-wider">
-                  {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="ui-card divide-y divide-line">
+            {outputs.map((o) => (
+              <div key={o.id} className="p-5 space-y-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-sm font-semibold text-sub">{o.label}</h2>
+                    {o.opt}
+                  </div>
+                  <CopyBtn text={o.value} id={o.id} />
+                </div>
+                <p className={`break-all text-fg ${o.big ? 'text-3xl font-bold tracking-wider' : o.mono ? 'font-mono text-sm' : 'text-lg'}`}>
+                  {o.value || <span className="text-faint text-base font-normal">{t('empty')}</span>}
                 </p>
+                {o.note && <p className="text-xs text-muted">{o.note}</p>}
               </div>
-            )}
+            ))}
+          </div>
 
-            {mode === 'compose' && (
-              <div className="bg-subtle rounded-xl p-6">
-                <p className="text-4xl font-bold text-fg break-all">
-                  {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
-                </p>
-              </div>
-            )}
-
-            {mode === 'decompose' && Array.isArray(result) && (
-              <div className="space-y-4">
-                {result.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
-                      <thead>
-                        <tr className="border-b-2 border-line-strong">
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-fg">
-                            {t('original')}
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-blue-700 dark:text-blue-400">
-                            {t('chosung')}
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-green-700 dark:text-green-400">
-                            {t('jungsung')}
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-orange-700 dark:text-orange-400">
-                            {t('jongsung')}
-                          </th>
+          {rows.length > 0 && (
+            <div className="ui-card p-5">
+              <h2 className="text-sm font-semibold text-sub mb-3">{t('table.title')}</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-line text-left text-muted">
+                      <th className="py-2 pr-3 font-medium">{t('table.char')}</th>
+                      <th className="py-2 pr-3 font-medium">{t('chosung')}</th>
+                      <th className="py-2 pr-3 font-medium">{t('jungsung')}</th>
+                      <th className="py-2 pr-3 font-medium">{t('jongsung')}</th>
+                      <th className="py-2 font-medium">{t('table.code')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((c, i) => {
+                      const d = decompose(c)
+                      return (
+                        <tr key={i} className="border-b border-line last:border-0">
+                          <td className="py-2 pr-3 text-xl font-bold text-fg">{c}</td>
+                          <td className="py-2 pr-3 text-lg text-fg">{d?.cho ?? '-'}</td>
+                          <td className="py-2 pr-3 text-lg text-fg">{d?.jung ?? '-'}</td>
+                          <td className="py-2 pr-3 text-lg text-fg">{d ? d.jong || <span className="text-faint text-sm">{t('table.none')}</span> : '-'}</td>
+                          <td className="py-2 font-mono text-xs text-sub">{codePoint(c)}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {result.map((item, idx) => (
-                          <tr key={idx} className="border-b border-line">
-                            <td className="px-4 py-3 text-2xl font-bold text-fg">
-                              {item.original}
-                            </td>
-                            <td className="px-4 py-3 text-2xl font-bold text-blue-700 dark:text-blue-400">
-                              {item.chosung || '-'}
-                            </td>
-                            <td className="px-4 py-3 text-2xl font-bold text-green-700 dark:text-green-400">
-                              {item.jungsung || '-'}
-                            </td>
-                            <td className="px-4 py-3 text-2xl font-bold text-orange-700 dark:text-orange-400">
-                              {item.jongsung || '-'}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <p className="text-muted text-center py-8">
-                    결과가 여기 표시됩니다
-                  </p>
-                )}
-
-                {result.length > 0 && (
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="flex flex-wrap gap-4 text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                        <span className="text-body">{t('chosung')}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-green-500 rounded"></div>
-                        <span className="text-body">{t('jungsung')}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-orange-500 rounded"></div>
-                        <span className="text-body">{t('jongsung')}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                      )
+                    })}
+                  </tbody>
+                </table>
               </div>
-            )}
-          </div>
+              {totalRows > TABLE_MAX && <p className="text-xs text-muted mt-2">{t('table.more', { n: TABLE_MAX })}</p>}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-
-        <div className="space-y-6">
+      {/* 자모 합치기 */}
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="ui-card p-6 space-y-4">
           <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.structure.title')}
-            </h3>
-            <ul className="list-disc list-inside space-y-2 text-body">
-              {(t.raw('guide.structure.items') as string[]).map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
+            <h2 className="text-lg font-semibold text-fg">{t('compose.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('compose.desc')}</p>
           </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              모드 안내
-            </h3>
-            <div className="space-y-4">
-              <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-fg mb-2">
-                  초성 추출
-                </h4>
-                <p className="text-fg text-sm mb-2">
-                  한글 텍스트에서 각 글자의 첫소리(초성)만 추출합니다.
-                </p>
-                <p className="text-sub text-sm font-mono">
-                  예: 대한민국 → ㄷㅎㅁㄱ
-                </p>
-              </div>
-
-              <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-fg mb-2">
-                  자모 분리
-                </h4>
-                <p className="text-fg text-sm mb-2">
-                  한글을 초성, 중성, 종성으로 완전히 분해하여 표시합니다.
-                </p>
-                <p className="text-sub text-sm font-mono">
-                  예: 한 → ㅎ(초성) + ㅏ(중성) + ㄴ(종성)
-                </p>
-              </div>
-
-              <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-fg mb-2">
-                  자모 합치기
-                </h4>
-                <p className="text-fg text-sm mb-2">
-                  자음과 모음을 입력하면 완성된 한글로 조합합니다.
-                </p>
-                <p className="text-sub text-sm font-mono">
-                  예: ㅎㅏㄴ → 한
-                </p>
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl" role="tablist">
+            {(['jamo', 'keys'] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                role="tab"
+                aria-selected={composeMode === m}
+                onClick={() => {
+                  setComposeMode(m)
+                  setComposeInput(m === 'jamo' ? 'ㅎㅏㄴㄱㅡㄹ ㄷㅏㄹㄱ' : 'dkssudgktpdy')
+                }}
+                className={`py-2 rounded-lg text-sm font-medium transition-colors ${composeMode === m ? 'bg-primary text-white' : 'text-body hover:bg-subtle'}`}
+              >
+                {t(`compose.${m}`)}
+              </button>
+            ))}
           </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.usage.title')}
-            </h3>
-            <ul className="list-disc list-inside space-y-2 text-body">
-              {(t.raw('guide.usage.items') as string[]).map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              한글 자모 구성
-            </h3>
-            <div className="bg-subtle rounded-lg p-4 space-y-2">
-              <p className="text-sm text-body">
-                한글은 유니코드 0xAC00 ~ 0xD7A3 범위에 11,172개의 완성형 글자가 정의되어 있습니다.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                <div className="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-fg mb-1">
-                    초성
-                  </p>
-                  <p className="text-xs text-fg font-mono">
-                    19개
-                  </p>
-                </div>
-                <div className="bg-green-100 dark:bg-green-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-fg mb-1">
-                    중성
-                  </p>
-                  <p className="text-xs text-fg font-mono">
-                    21개
-                  </p>
-                </div>
-                <div className="bg-orange-100 dark:bg-orange-900 rounded-lg p-3">
-                  <p className="text-xs font-semibold text-fg mb-1">
-                    종성
-                  </p>
-                  <p className="text-xs text-fg font-mono">
-                    28개 (없음 포함)
-                  </p>
-                </div>
-              </div>
-            </div>
+          <input
+            value={composeInput}
+            onChange={(e) => setComposeInput(e.target.value)}
+            aria-label={t(`compose.${composeMode}`)}
+            className="ui-field w-full px-4 py-3 font-mono"
+          />
+          <div className="bg-subtle rounded-2xl p-5 flex items-center justify-between gap-3">
+            <p className="text-2xl font-bold text-fg break-all">{composed || <span className="text-faint text-base font-normal">{t('empty')}</span>}</p>
+            <CopyBtn text={composed} id="compose" />
           </div>
         </div>
+
+        {/* 조사 자동 선택 */}
+        <div className="ui-card p-6 space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-fg">{t('josa.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('josa.desc')}</p>
+          </div>
+          <input
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            aria-label={t('josa.word')}
+            placeholder={t('josa.word')}
+            className="ui-field w-full px-4 py-3"
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {JOSA_PAIRS.map((p) => {
+              const w = `${word.trim()}${josa(word, p)}`
+              const id = `josa-${p[1]}`
+              return (
+                <button
+                  key={p[1]}
+                  type="button"
+                  onClick={() => copy(w, id)}
+                  disabled={!word.trim()}
+                  className="text-left px-3 py-2 rounded-xl bg-soft hover:bg-subtle transition-colors disabled:opacity-40"
+                >
+                  <span className="block text-xs text-muted">{p[0]}/{p[1]}</span>
+                  <span className="block text-base font-semibold text-fg break-all">{copiedId === id ? t('copied') : w}</span>
+                </button>
+              )
+            })}
+          </div>
+          <details className="bg-subtle rounded-2xl p-4">
+            <summary className="cursor-pointer text-sm font-medium text-body">{t('josa.snippet')}</summary>
+            <pre className="mt-3 text-xs font-mono text-body overflow-x-auto whitespace-pre">{JOSA_SNIPPET}</pre>
+            <div className="mt-2"><CopyBtn text={JOSA_SNIPPET} id="snippet" /></div>
+          </details>
+        </div>
       </div>
+
+      <GuideSection namespace="koreanSyllable" defaultOpen />
     </div>
   )
 }
