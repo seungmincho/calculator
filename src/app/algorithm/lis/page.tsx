@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-lis.png', width: 1200, height: 630, alt: 'LIS 최장 증가 부분수열 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'LIS 최장 증가 부분수열 시각화',
     description: 'LIS O(n²) DP vs O(n log n) 이진탐색 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-lis.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/lis',

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '부가세 계산기 - 부가가치세 10% 계산, 역산 | 툴허브',
   description: '부가세 계산기 - 공급가액에서 부가가치세(10%) 계산, 합계금액에서 부가세 역산. 세금계산서 작성, 사업자 부가세 신고에 유용.',
   keywords: '부가세 계산기, 부가가치세 계산, VAT 계산, 부가세 역산, 공급가액 계산, 세금계산서',
-  openGraph: { title: '부가세 계산기 | 툴허브', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '부가세 계산기 | 툴허브', description: '부가가치세 계산, 역산' },
+  openGraph: { title: '부가세 계산기 | 툴허브', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/vat-calculator.png', width: 1200, height: 630, alt: '부가세 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '부가세 계산기 | 툴허브', description: '부가가치세 계산, 역산', images: ['https://toolhub.ai.kr/og/vat-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/vat-calculator/' },
 }
 

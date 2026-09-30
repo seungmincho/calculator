@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/tax-season.png',
         width: 1200,
         height: 630,
         alt: '5월 종합소득세 신고 가이드',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: '5월 종합소득세 신고 가이드 | 툴허브',
     description:
       '5월 종합소득세 신고 기간 완벽 가이드. 신고 대상, 세율, 공제 항목, 신고 방법부터 절세 팁까지.',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/tax-season.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/tax-season/',

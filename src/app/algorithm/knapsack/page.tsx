@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-knapsack.png', width: 1200, height: 630, alt: '배낭 문제 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '배낭 문제 시각화',
     description: '0/1 Knapsack DP 테이블 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-knapsack.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/knapsack',

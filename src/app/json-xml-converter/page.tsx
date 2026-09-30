@@ -28,11 +28,13 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/json-xml-converter',
+    images: [{ url: 'https://toolhub.ai.kr/og/json-xml-converter.png', width: 1200, height: 630, alt: 'JSON/XML 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'JSON/XML 변환기 | 툴허브',
-    description: 'JSON을 XML로, XML을 JSON으로 상호 변환하는 개발자 도구'
+    description: 'JSON을 XML로, XML을 JSON으로 상호 변환하는 개발자 도구',
+    images: ['https://toolhub.ai.kr/og/json-xml-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/json-xml-converter/'

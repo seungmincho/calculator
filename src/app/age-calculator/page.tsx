@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/age-calculator.png', width: 1200, height: 630, alt: '나이 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '나이 계산기 | 툴허브',
     description: '만 나이, 한국 나이, 학년 정보, 생일 D-Day, 인생 타임라인 등 다양한 나이 정보를 한눈에 확인하세요',
+    images: ['https://toolhub.ai.kr/og/age-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/age-calculator/',

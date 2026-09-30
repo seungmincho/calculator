@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/html-entity-converter.png', width: 1200, height: 630, alt: 'HTML 엔티티 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'HTML 엔티티 변환기 | 툴허브',
     description: 'HTML 특수문자 인코딩·디코딩 도구.',
+    images: ['https://toolhub.ai.kr/og/html-entity-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/html-entity-converter/',

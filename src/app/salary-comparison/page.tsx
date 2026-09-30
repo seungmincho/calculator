@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/salary-comparison.png', width: 1200, height: 630, alt: '연봉 실수령액 비교기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '연봉 실수령액 비교기 | 툴허브',
     description: '연봉 2~4개를 나란히 비교! 4대보험, 소득세, 월 실수령액 차이를 한눈에 확인하세요.',
+    images: ['https://toolhub.ai.kr/og/salary-comparison.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/salary-comparison/',

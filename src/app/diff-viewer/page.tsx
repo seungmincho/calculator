@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/diff-viewer',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/diff-viewer.png', width: 1200, height: 630, alt: 'Diff 비교 도구' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Diff 비교 도구 - 텍스트/코드 비교',
     description: '두 텍스트나 코드를 붙여넣기만 하면 차이점을 즉시 시각화합니다. 추가·삭제·변경 부분을 색상으로 구분하고 줄·단어 단위 비교를 지원합니다.',
+    images: ['https://toolhub.ai.kr/og/diff-viewer.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/diff-viewer/',

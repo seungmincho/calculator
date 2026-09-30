@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/hash-generator',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/hash-generator.png', width: 1200, height: 630, alt: '해시 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '해시 생성기 - MD5, SHA-256, SHA-512 해시 변환',
     description: '텍스트와 파일의 해시값을 브라우저에서 바로 생성합니다. MD5, SHA-1, SHA-256, SHA-512 알고리즘을 지원하며 파일 무결성 검증에 활용하세요.',
+    images: ['https://toolhub.ai.kr/og/hash-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/hash-generator/',

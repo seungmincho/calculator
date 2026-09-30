@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/character-counter',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/character-counter.png', width: 1200, height: 630, alt: '글자수 세기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '글자수 세기 - 글자수, 단어수, 문장수 카운터',
     description: '텍스트의 글자수, 공백 제외 글자수, 단어수, 문장수, 단락수를 실시간으로 계산합니다. 트위터·인스타그램 SNS 글자 제한 확인에 유용합니다.',
+    images: ['https://toolhub.ai.kr/og/character-counter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/character-counter/',

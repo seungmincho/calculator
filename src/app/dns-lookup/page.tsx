@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/dns-lookup.png', width: 1200, height: 630, alt: 'DNS 조회 과정 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'DNS 조회 과정 시각화',
     description: '도메인 → IP 변환 과정을 인터랙티브 시각화로 학습',
+    images: ['https://toolhub.ai.kr/og/dns-lookup.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/dns-lookup/',

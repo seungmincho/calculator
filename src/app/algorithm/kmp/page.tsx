@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-kmp.png', width: 1200, height: 630, alt: 'KMP 패턴 매칭 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'KMP 패턴 매칭 시각화',
     description: 'KMP 실패 함수 + 문자열 검색 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-kmp.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/kmp',

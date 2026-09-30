@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/minesweeper.png', width: 1200, height: 630, alt: '지뢰찾기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '지뢰찾기 | 툴허브',
     description: '클래식 마인스위퍼를 온라인에서 즐기세요!',
+    images: ['https://toolhub.ai.kr/og/minesweeper.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/minesweeper/' },
 }

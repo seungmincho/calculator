@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/investment-calculator.png', width: 1200, height: 630, alt: '투자 수익률 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '투자 수익률 계산기 | 툴허브',
     description: 'CAGR, 적립식·거치식 투자 비교 계산기',
+    images: ['https://toolhub.ai.kr/og/investment-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/investment-calculator/',

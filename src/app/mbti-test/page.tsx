@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/mbti-test.png', width: 1200, height: 630, alt: 'MBTI 성격유형 검사 48문항' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'MBTI 성격유형 검사 | 툴허브',
     description: '48문항 상세 MBTI 검사로 나의 성격유형을 알아보세요',
+    images: ['https://toolhub.ai.kr/og/mbti-test.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/mbti-test/',

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/body-fat-calculator.png',
         width: 1200,
         height: 630,
         alt: '체지방률 계산기 - 툴허브',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '체지방률 계산기 | Navy, YMCA 공식으로 정확한 체지방 측정',
     description: 'Navy 공식, YMCA 공식을 사용해 허리, 목, 엉덩이 둘레로 체지방률을 계산하세요.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/body-fat-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/body-fat-calculator/',

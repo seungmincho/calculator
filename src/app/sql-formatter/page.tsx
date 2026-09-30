@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/sql-formatter',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/sql-formatter.png', width: 1200, height: 630, alt: 'SQL 포맷터' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SQL 포맷터 - SQL 쿼리 포맷팅, 검증, 최적화 도구',
     description: 'SQL 쿼리를 읽기 좋게 포맷팅하거나 한 줄로 압축하세요. MySQL, PostgreSQL, SQLite 방언을 지원하며 문법 검증까지 제공합니다.',
+    images: ['https://toolhub.ai.kr/og/sql-formatter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/sql-formatter/',

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '가스 요금 계산기 - 2026 도시가스 난방비 | 툴허브',
   description: '2026년 도시가스 주택용 요금(서울 22.5268원/MJ, 기본요금 1,250원)으로 이번 달 가스비를 계산합니다. 고지서 사용량(MJ·㎥) 또는 평수·보일러 시간으로 추정하고, 월별 난방비와 온도 1도 절약액까지 확인하세요.',
   keywords: '가스 요금 계산기, 도시가스 요금, 난방비 계산, 가스비 계산, 도시가스 MJ 단가, 보일러 가스비, 30평 난방비',
-  openGraph: { title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산', url: 'https://toolhub.ai.kr/gas-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산' },
+  openGraph: { title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산', url: 'https://toolhub.ai.kr/gas-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/gas-bill.png', width: 1200, height: 630, alt: '가스 요금 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산', images: ['https://toolhub.ai.kr/og/gas-bill.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/gas-bill/' },
 }
 

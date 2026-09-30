@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/dots-and-boxes',
     type: 'website',
     siteName: '툴허브',
+    images: [{ url: 'https://toolhub.ai.kr/og/dots-and-boxes.png', width: 1200, height: 630, alt: '온라인 도트앤박스' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/dots-and-boxes/'

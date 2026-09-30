@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/gradient-descent.png', width: 1200, height: 630, alt: '경사하강법 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '경사하강법 시각화 - 최적화 알고리즘 비교',
     description: 'SGD, Momentum, Adam, RMSProp을 2D 등고선 위에서 비교',
+    images: ['https://toolhub.ai.kr/og/gradient-descent.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/gradient-descent/',

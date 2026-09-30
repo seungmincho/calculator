@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/jeonse-loan.png', width: 1200, height: 630, alt: '전세대출 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '전세대출 계산기 2026 | 툴허브',
     description: '전세대출 금리·한도·월이자 자동계산',
+    images: ['https://toolhub.ai.kr/og/jeonse-loan.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/jeonse-loan/',

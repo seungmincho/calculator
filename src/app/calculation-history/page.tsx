@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/calculation-history.png',
         width: 1200,
         height: 630,
         alt: '계산 히스토리',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '계산 히스토리 - 저장된 계산 기록 | 툴허브',
     description: '모든 계산기에서 저장한 계산 기록을 한곳에서 확인하고 관리하세요',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/calculation-history.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/calculation-history/' },
 }

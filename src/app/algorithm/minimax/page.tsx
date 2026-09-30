@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-minimax.png', width: 1200, height: 630, alt: 'Minimax 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Minimax 시각화',
     description: '게임 AI 알고리즘 알파-베타 가지치기',
+    images: ['https://toolhub.ai.kr/og/algorithm-minimax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/minimax',

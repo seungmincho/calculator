@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/median-income',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/median-income.png',
         width: 1200,
         height: 630,
         alt: '기준 중위소득 조회',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '기준 중위소득 조회 - 2025년, 2026년 | 툴허브',
     description: '가구원수별, 비율별 기준 중위소득과 정부 복지사업 자격요건을 한눈에 확인하세요',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/median-income.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/median-income/',

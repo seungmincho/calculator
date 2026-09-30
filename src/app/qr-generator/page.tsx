@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/qr-generator.png', width: 1200, height: 630, alt: 'QR 코드 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'QR 코드 생성기 - 무료 QR 코드 제작 도구',
     description: '텍스트, URL, 연락처 정보를 QR 코드로 변환하세요.',
+    images: ['https://toolhub.ai.kr/og/qr-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/qr-generator/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/gif-maker.png', width: 1200, height: 630, alt: 'GIF 메이커' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'GIF 메이커 | 툴허브',
     description: '여러 이미지로 애니메이션 GIF를 무료로 만드세요.',
+    images: ['https://toolhub.ai.kr/og/gif-maker.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/gif-maker/',

@@ -14,8 +14,9 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/notepad.png', width: 1200, height: 630, alt: '온라인 메모장' }],
   },
-  twitter: { card: 'summary_large_image', title: '온라인 메모장 | 툴허브', description: '자동 저장 온라인 메모장' },
+  twitter: { card: 'summary_large_image', title: '온라인 메모장 | 툴허브', description: '자동 저장 온라인 메모장', images: ['https://toolhub.ai.kr/og/notepad.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/notepad/' },
 }
 

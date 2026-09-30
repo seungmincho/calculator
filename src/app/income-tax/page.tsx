@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/income-tax.png', width: 1200, height: 630, alt: '종합소득세 계산기 2026 (2025년 귀속)' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '종합소득세 계산기 2026 | 툴허브',
     description: '프리랜서·사업자 종합소득세 자동계산',
+    images: ['https://toolhub.ai.kr/og/income-tax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/income-tax/',

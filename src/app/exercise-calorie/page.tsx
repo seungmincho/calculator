@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/exercise-calorie.png', width: 1200, height: 630, alt: '운동 칼로리 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '운동 칼로리 계산기 | 툴허브',
     description: '운동별 소모 칼로리 MET 기반 계산.',
+    images: ['https://toolhub.ai.kr/og/exercise-calorie.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/exercise-calorie/',

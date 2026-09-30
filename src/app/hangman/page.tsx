@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/hangman.png', width: 1200, height: 630, alt: '단어 맞추기 (행맨)' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '단어 맞추기 (행맨) | 툴허브',
     description: '한글 자음과 모음으로 숨겨진 단어를 맞추는 행맨 게임',
+    images: ['https://toolhub.ai.kr/og/hangman.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/hangman/',

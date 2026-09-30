@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/url-encoder',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/url-encoder.png', width: 1200, height: 630, alt: 'URL 인코더/디코더' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'URL 인코더/디코더 - URL 인코딩/디코딩 변환기',
     description: 'URL 인코딩/디코딩 도구. URL 파라미터를 안전하게 인코딩하거나 인코딩된 URL을 원본으로 디코딩합니다.',
+    images: ['https://toolhub.ai.kr/og/url-encoder.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/url-encoder/',

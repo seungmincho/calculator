@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '택배비 계산기 2026 - 우체국·CJ·편의점 요금 비교 | 툴허브',
   description: '2026년 요금 기준, 무게·크기만 입력하면 우체국택배·CJ대한통운·한진·롯데·로젠과 CU·GS25·세븐일레븐 편의점택배 요금을 한 번에 비교. 제주·도서산간 요금 포함.',
   keywords: '배송비 계산기, 택배 요금 계산, 택배비 비교, shipping calculator, 배송료 계산',
-  openGraph: { title: '배송비 계산기 | 툴허브', description: '택배사별 배송 요금 비교 계산', url: 'https://toolhub.ai.kr/shipping-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '배송비 계산기 | 툴허브', description: '택배사별 배송 요금 비교 계산' },
+  openGraph: { title: '배송비 계산기 | 툴허브', description: '택배사별 배송 요금 비교 계산', url: 'https://toolhub.ai.kr/shipping-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/shipping-calculator.png', width: 1200, height: 630, alt: '배송비 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '배송비 계산기 | 툴허브', description: '택배사별 배송 요금 비교 계산', images: ['https://toolhub.ai.kr/og/shipping-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/shipping-calculator/' },
 }
 

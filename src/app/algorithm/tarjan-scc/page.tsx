@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-tarjan-scc.png', width: 1200, height: 630, alt: '타잔 SCC 강연결 요소 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '타잔 SCC 강연결 요소 시각화',
     description: 'DFS 기반 SCC 탐색 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-tarjan-scc.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/tarjan-scc',

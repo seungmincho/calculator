@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '이미지 워터마크 - 텍스트/이미지 워터마크 추가 | 툴허브',
   description: '이미지에 텍스트 또는 이미지 워터마크를 추가하세요. 위치, 크기, 투명도, 회전, 타일 반복 등 다양한 옵션을 지원합니다.',
   keywords: '이미지 워터마크, 사진 워터마크, 워터마크 넣기, watermark, 저작권 보호',
-  openGraph: { title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가', url: 'https://toolhub.ai.kr/image-watermark', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가' },
+  openGraph: { title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가', url: 'https://toolhub.ai.kr/image-watermark', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-watermark.png', width: 1200, height: 630, alt: '이미지 워터마크' }] },
+  twitter: { card: 'summary_large_image', title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가', images: ['https://toolhub.ai.kr/og/image-watermark.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-watermark/' },
 }
 

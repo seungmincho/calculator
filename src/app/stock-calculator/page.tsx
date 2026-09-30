@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/stock-calculator.png', width: 1200, height: 630, alt: '주식 수익률 계산기' }],
   },
   robots: {
     index: true,

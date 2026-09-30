@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/dday-calculator.png', width: 1200, height: 630, alt: '디데이 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '디데이 계산기 - D-Day 카운터 & 날짜 계산',
     description: 'D-Day 카운트다운, 날짜 차이, 영업일 계산을 한 곳에서.',
+    images: ['https://toolhub.ai.kr/og/dday-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/dday-calculator/',

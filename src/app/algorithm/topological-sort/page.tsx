@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-topological-sort.png', width: 1200, height: 630, alt: '위상정렬 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '위상정렬 시각화',
     description: 'DAG 의존성 정렬 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-topological-sort.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/topological-sort',

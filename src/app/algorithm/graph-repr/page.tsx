@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '그래프·인접행렬·인접리스트 3가지 뷰 실시간 동기화.',
     url: 'https://toolhub.ai.kr/algorithm/graph-repr',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-graph-repr.png', width: 1200, height: 630, alt: '그래프 표현 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '그래프 표현 시각화', description: '인접행렬·인접리스트 실시간 동기화' },
+  twitter: { card: 'summary_large_image', title: '그래프 표현 시각화', description: '인접행렬·인접리스트 실시간 동기화', images: ['https://toolhub.ai.kr/og/algorithm-graph-repr.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/graph-repr' },
 }
 

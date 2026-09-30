@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/nutrition-calculator.png', width: 1200, height: 630, alt: '영양소 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '영양소 계산기',
     description: '한국 음식 칼로리·탄단지 비율 계산',
+    images: ['https://toolhub.ai.kr/og/nutrition-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/nutrition-calculator/',

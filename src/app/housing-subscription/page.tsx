@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/housing-subscription.png', width: 1200, height: 630, alt: '청약가점 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '청약가점 계산기',
     description: '무주택기간·부양가족·청약통장 가입기간으로 청약가점 84점 만점 계산',
+    images: ['https://toolhub.ai.kr/og/housing-subscription.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/housing-subscription/',

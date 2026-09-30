@@ -14,8 +14,9 @@ export const metadata: Metadata = {
     description: '쿠팡·스마트스토어·11번가 카테고리별 수수료 비교',
     url: 'https://toolhub.ai.kr/sales-commission',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/sales-commission.png', width: 1200, height: 630, alt: '판매수수료 계산기' }],
   },
-  twitter: { card: 'summary_large_image', title: '판매수수료 계산기 | 툴허브', description: '오픈마켓 수수료 비교' },
+  twitter: { card: 'summary_large_image', title: '판매수수료 계산기 | 툴허브', description: '오픈마켓 수수료 비교', images: ['https://toolhub.ai.kr/og/sales-commission.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/sales-commission/' },
 }
 

@@ -17,11 +17,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/email-template.png', width: 1200, height: 630, alt: '비즈니스 이메일 템플릿 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '비즈니스 이메일 템플릿 생성기 | 툴허브',
     description: '8가지 카테고리, 3가지 톤으로 한국어·영어 비즈니스 이메일 자동 생성.',
+    images: ['https://toolhub.ai.kr/og/email-template.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/email-template/',

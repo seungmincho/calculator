@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/calorie-calculator.png',
         width: 1200,
         height: 630,
         alt: '칼로리 계산기 - 툴허브',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
     description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/calorie-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/calorie-calculator/',

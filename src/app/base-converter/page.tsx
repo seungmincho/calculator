@@ -14,8 +14,9 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/base-converter.png', width: 1200, height: 630, alt: '진법 변환기' }],
   },
-  twitter: { card: 'summary_large_image', title: '진법 변환기 | 툴허브', description: '2/8/10/16진수 실시간 변환' },
+  twitter: { card: 'summary_large_image', title: '진법 변환기 | 툴허브', description: '2/8/10/16진수 실시간 변환', images: ['https://toolhub.ai.kr/og/base-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/base-converter/' },
 }
 

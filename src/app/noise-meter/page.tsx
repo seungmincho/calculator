@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/noise-meter.png', width: 1200, height: 630, alt: '소음 측정기 (데시벨 미터)' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '소음 측정기 | 툴허브',
     description: '실시간 데시벨(dB) 소음 측정.',
+    images: ['https://toolhub.ai.kr/og/noise-meter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/noise-meter/',

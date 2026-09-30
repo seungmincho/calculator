@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: 'A*와 Dijkstra를 동일 맵에서 동시 비교 시각화.',
     url: 'https://toolhub.ai.kr/algorithm/pathfinding-compare',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-pathfinding-compare.png', width: 1200, height: 630, alt: '경로탐색 비교 A* vs Dijkstra' }],
   },
-  twitter: { card: 'summary_large_image', title: 'A* vs Dijkstra 비교', description: '두 경로탐색 알고리즘 동시 비교' },
+  twitter: { card: 'summary_large_image', title: 'A* vs Dijkstra 비교', description: '두 경로탐색 알고리즘 동시 비교', images: ['https://toolhub.ai.kr/og/algorithm-pathfinding-compare.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/pathfinding-compare' },
 }
 

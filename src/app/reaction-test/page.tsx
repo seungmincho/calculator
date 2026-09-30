@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '반응속도 테스트 - 반응 시간 측정 | 툴허브',
   description: '반응속도 테스트 - 화면이 초록색으로 변할 때 클릭하여 반응 속도를 측정합니다. 평균, 최고 기록 제공.',
   keywords: '반응속도 테스트, reaction time test, 반응 속도 측정, 반응 테스트, 클릭 속도',
-  openGraph: { title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트' },
+  openGraph: { title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/reaction-test.png', width: 1200, height: 630, alt: '반응속도 테스트' }] },
+  twitter: { card: 'summary_large_image', title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', images: ['https://toolhub.ai.kr/og/reaction-test.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/reaction-test/' },
 }
 

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: 'CSS 그라디언트 생성기 - 그라데이션 코드 생성 | 툴허브',
   description: 'CSS 그라디언트 생성기 - 선형, 방사형, 원뿔형 그라데이션 CSS 코드를 생성하세요. 색상, 방향, 위치 조절, 프리셋 제공.',
   keywords: 'CSS 그라디언트, CSS 그라데이션, gradient generator, CSS 배경, linear-gradient, 그라디언트 생성기',
-  openGraph: { title: 'CSS 그라디언트 생성기 | 툴허브', description: 'CSS 그라데이션 코드 생성', url: 'https://toolhub.ai.kr/css-gradient', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: 'CSS 그라디언트 생성기 | 툴허브', description: 'CSS 그라데이션 코드 생성' },
+  openGraph: { title: 'CSS 그라디언트 생성기 | 툴허브', description: 'CSS 그라데이션 코드 생성', url: 'https://toolhub.ai.kr/css-gradient', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/css-gradient.png', width: 1200, height: 630, alt: 'CSS 그라디언트 생성기' }] },
+  twitter: { card: 'summary_large_image', title: 'CSS 그라디언트 생성기 | 툴허브', description: 'CSS 그라데이션 코드 생성', images: ['https://toolhub.ai.kr/og/css-gradient.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/css-gradient/' },
 }
 

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/meeting-minutes.png', width: 1200, height: 630, alt: '회의록 작성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '회의록 작성기',
     description: '회의록 템플릿 & 내보내기',
+    images: ['https://toolhub.ai.kr/og/meeting-minutes.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/meeting-minutes/',

@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/image-scraper.png', width: 1200, height: 630, alt: '이미지 스크래퍼' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '이미지 스크래퍼',
     description: '웹페이지의 모든 이미지를 자동 수집하고 일괄 다운로드',
+    images: ['https://toolhub.ai.kr/og/image-scraper.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/image-scraper/',

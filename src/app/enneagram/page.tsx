@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/enneagram.png', width: 1200, height: 630, alt: '에니어그램 테스트' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '에니어그램 테스트 | 툴허브',
     description: '나의 에니어그램 유형을 알아보세요',
+    images: ['https://toolhub.ai.kr/og/enneagram.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/enneagram/',

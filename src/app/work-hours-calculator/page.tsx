@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/work-hours-calculator.png',
         width: 1200,
         height: 630,
         alt: '근무시간 계산기 - 툴허브',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '근무시간 계산기 | 알바비, 야근수당, 주휴수당 자동 계산',
     description: '근로기준법에 따른 정확한 알바비 계산! 기본급, 야근수당, 주휴수당 자동 계산.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/work-hours-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/work-hours-calculator/',

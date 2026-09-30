@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/json-formatter',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/json-formatter.png', width: 1200, height: 630, alt: 'JSON 포맷터 Pro' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'JSON 포맷터 Pro - 검증·포맷·압축',
     description: 'JSON 데이터를 검증하고 포맷팅하세요. 구문 강조 에디터, 인터랙티브 트리뷰, JSONPath 쿼리, JSON5/JSONC 지원, 통계 분석을 제공합니다.',
+    images: ['https://toolhub.ai.kr/og/json-formatter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/json-formatter/',

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '화면 비율 계산기 - 16:9·9:16·4:5 해상도 | 툴허브',
   description: '가로×세로를 넣으면 16:9 같은 비율이 바로 나오는 화면 비율 계산기. 유튜브·쇼츠·릴스·인스타 4:5 규격, 세이프존 미리보기, 내 이미지 자르기/여백 저장, 720p~8K 해상도 표.',
   keywords: '화면 비율 계산기, aspect ratio calculator, 종횡비, 해상도 계산, 16:9, 9:16, 4:5, 쇼츠 사이즈, 릴스 사이즈, 인스타 피드 사이즈, 유튜브 썸네일 크기',
-  openGraph: { title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산' },
+  openGraph: { title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/aspect-ratio.png', width: 1200, height: 630, alt: '화면 비율 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', images: ['https://toolhub.ai.kr/og/aspect-ratio.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/aspect-ratio/' },
 }
 

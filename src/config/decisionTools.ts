@@ -147,9 +147,9 @@ export function decisionMetadata(href: string): Metadata {
     keywords: p.keywords,
     openGraph: {
       title: p.title, description: p.description, url, siteName: '툴허브', locale: 'ko_KR', type: 'website',
-      images: [{ url: 'https://toolhub.ai.kr/og-image-1200x630.png', width: 1200, height: 630 }],
+      images: [{ url: `https://toolhub.ai.kr/og${href}.png`, width: 1200, height: 630 }],
     },
-    twitter: { card: 'summary_large_image', title: p.title, description: p.description },
+    twitter: { card: 'summary_large_image', title: p.title, description: p.description, images: [`https://toolhub.ai.kr/og${href}.png`] },
     alternates: { canonical: url },
   }
 }

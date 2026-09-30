@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: 'B-트리 삽입·삭제·분할을 단계별 애니메이션으로 배우세요.',
     url: 'https://toolhub.ai.kr/algorithm/b-tree',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-b-tree.png', width: 1200, height: 630, alt: 'B-트리 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: 'B-트리 시각화', description: 'B-트리 노드 분할과 검색 단계별 시각화' },
+  twitter: { card: 'summary_large_image', title: 'B-트리 시각화', description: 'B-트리 노드 분할과 검색 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-b-tree.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/b-tree' },
 }
 

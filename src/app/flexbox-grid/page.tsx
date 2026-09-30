@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/flexbox-grid.png', width: 1200, height: 630, alt: 'CSS Flexbox & Grid 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CSS Flexbox & Grid 생성기 | 툴허브',
     description: 'CSS Flexbox와 Grid 레이아웃을 시각적으로 만들고 CSS 코드를 복사하세요.',
+    images: ['https://toolhub.ai.kr/og/flexbox-grid.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/flexbox-grid/',

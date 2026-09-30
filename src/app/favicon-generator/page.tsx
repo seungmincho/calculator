@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/favicon-generator.png', width: 1200, height: 630, alt: '파비콘 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '파비콘 생성기 | 툴허브',
     description: '모든 플랫폼 파비콘 한 번에 생성',
+    images: ['https://toolhub.ai.kr/og/favicon-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/favicon-generator/',

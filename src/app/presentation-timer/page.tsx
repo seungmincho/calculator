@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/presentation-timer.png', width: 1200, height: 630, alt: '프레젠테이션 타이머' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '프레젠테이션 타이머 - 발표·회의용 카운트다운',
     description: '발표, 회의, 세미나에 최적화된 프레젠테이션 타이머. 경고/위험 단계 색상 변화, 전체화면 모드, 알림음 지원.',
+    images: ['https://toolhub.ai.kr/og/presentation-timer.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/presentation-timer/',

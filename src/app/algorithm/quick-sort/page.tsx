@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-quick-sort.png', width: 1200, height: 630, alt: '퀵정렬 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '퀵정렬 시각화',
     description: '분할정복 정렬 알고리즘 단계별 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-quick-sort.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/quick-sort',

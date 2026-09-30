@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/system-design.png', width: 1200, height: 630, alt: '시스템 디자인 면접' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '시스템 디자인 면접 - 10개 설계 문제',
     description: '10개 클래식 시스템 설계 문제와 아키텍처 해설로 면접 완벽 대비.',
+    images: ['https://toolhub.ai.kr/og/system-design.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/system-design',

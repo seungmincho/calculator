@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/tetris.png', width: 1200, height: 630, alt: '테트리스' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '테트리스 - 솔로 & 2인 대전',
     description: '클래식 블록 퍼즐 게임 + 실시간 멀티플레이',
+    images: ['https://toolhub.ai.kr/og/tetris.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/tetris/',

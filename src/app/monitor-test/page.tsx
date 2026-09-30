@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/monitor-test.png', width: 1200, height: 630, alt: '모니터 테스트' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '모니터 테스트 - 14가지 종합 검사 | 툴허브',
     description: '불량화소, 명암비, 감마, 번인 등 14가지 모니터 품질 테스트를 무료로 제공합니다.',
+    images: ['https://toolhub.ai.kr/og/monitor-test.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/monitor-test/',

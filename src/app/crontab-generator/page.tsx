@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/crontab-generator.png', width: 1200, height: 630, alt: 'Crontab 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Crontab 생성기 - 비주얼 크론 표현식 빌더',
     description: 'Crontab 표현식을 클릭 한 번으로 생성하세요.',
+    images: ['https://toolhub.ai.kr/og/crontab-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/crontab-generator/',

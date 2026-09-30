@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-trie.png', width: 1200, height: 630, alt: '트라이 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '트라이 시각화',
     description: 'Trie 삽입/탐색/자동완성 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-trie.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/trie',

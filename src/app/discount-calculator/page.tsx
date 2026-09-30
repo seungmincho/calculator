@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '할인 계산기 - 할인율, 할인가, 원가 계산 | 툴허브',
   description: '할인 계산기 - 할인율로 최종 가격 계산, 원가에서 할인 금액 확인, 중복 할인 계산. 쇼핑, 세일 시 유용한 할인 계산기.',
   keywords: '할인 계산기, 할인율 계산, 할인가 계산, 세일 계산, discount calculator, 퍼센트 할인',
-  openGraph: { title: '할인 계산기 | 툴허브', description: '할인율, 할인가, 원가 간편 계산', url: 'https://toolhub.ai.kr/discount-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '할인 계산기 | 툴허브', description: '할인율, 할인가 간편 계산' },
+  openGraph: { title: '할인 계산기 | 툴허브', description: '할인율, 할인가, 원가 간편 계산', url: 'https://toolhub.ai.kr/discount-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/discount-calculator.png', width: 1200, height: 630, alt: '할인 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '할인 계산기 | 툴허브', description: '할인율, 할인가 간편 계산', images: ['https://toolhub.ai.kr/og/discount-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/discount-calculator/' },
 }
 

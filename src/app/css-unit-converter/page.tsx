@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/css-unit-converter.png', width: 1200, height: 630, alt: 'CSS 단위 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환',
     description: 'CSS 단위를 즉시 변환. px, rem, em, vw, vh 등 10가지 단위 지원.',
+    images: ['https://toolhub.ai.kr/og/css-unit-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/css-unit-converter/',

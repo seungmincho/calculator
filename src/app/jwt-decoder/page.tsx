@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/jwt-decoder',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/jwt-decoder.png', width: 1200, height: 630, alt: 'JWT 디코더' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'JWT 디코더 - JWT 토큰 분석 및 검증 도구',
     description: 'JWT 토큰을 안전하게 디코드하고 분석하세요. Header, Payload, Signature를 명확히 분리하여 표시합니다.',
+    images: ['https://toolhub.ai.kr/og/jwt-decoder.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/jwt-decoder/',

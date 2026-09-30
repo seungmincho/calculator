@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/breakout-game.png', width: 1200, height: 630, alt: '벽돌깨기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '벽돌깨기',
     description: '클래식 아케이드 벽돌깨기 게임',
+    images: ['https://toolhub.ai.kr/og/breakout-game.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/breakout-game/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/car-maintenance.png', width: 1200, height: 630, alt: '자동차 유지비 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '자동차 유지비 계산기 | 툴허브',
     description: '보험, 세금, 주유비, 정비비, 감가상각까지 연간 차량 유지 비용을 한번에 계산하세요.',
+    images: ['https://toolhub.ai.kr/og/car-maintenance.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/car-maintenance/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/personal-color.png', width: 1200, height: 630, alt: '퍼스널컬러 자가진단' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '퍼스널컬러 자가진단 | 툴허브',
     description: '나에게 어울리는 컬러 톤을 찾아보세요',
+    images: ['https://toolhub.ai.kr/og/personal-color.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/personal-color/',

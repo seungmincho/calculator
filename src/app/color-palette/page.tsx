@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '색상 팔레트 생성기 - 조화로운 색상 조합 | 툴허브',
   description: '색상 팔레트 생성기 - 기준 색상에서 보색, 유사색, 삼색 등 조화로운 색상 조합을 자동 생성합니다. CSS/JSON/Tailwind 내보내기.',
   keywords: '색상 팔레트, color palette generator, 보색, 유사색, 색상 조합, 컬러 팔레트',
-  openGraph: { title: '색상 팔레트 생성기 | 툴허브', description: '조화로운 색상 조합 생성', url: 'https://toolhub.ai.kr/color-palette', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '색상 팔레트 생성기 | 툴허브', description: '조화로운 색상 조합 생성' },
+  openGraph: { title: '색상 팔레트 생성기 | 툴허브', description: '조화로운 색상 조합 생성', url: 'https://toolhub.ai.kr/color-palette', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/color-palette.png', width: 1200, height: 630, alt: '색상 팔레트 생성기' }] },
+  twitter: { card: 'summary_large_image', title: '색상 팔레트 생성기 | 툴허브', description: '조화로운 색상 조합 생성', images: ['https://toolhub.ai.kr/og/color-palette.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/color-palette/' },
 }
 

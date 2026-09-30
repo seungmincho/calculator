@@ -12,8 +12,9 @@ export const metadata: Metadata = {
     description: '이미지에서 색상을 추출하고 팔레트를 만드세요!',
     url: 'https://toolhub.ai.kr/color-extractor',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/color-extractor.png', width: 1200, height: 630, alt: '이미지 색상 추출기' }],
   },
-  twitter: { card: 'summary_large_image', title: '이미지 색상 추출기 | 툴허브', description: '이미지에서 색상을 추출하세요!' },
+  twitter: { card: 'summary_large_image', title: '이미지 색상 추출기 | 툴허브', description: '이미지에서 색상을 추출하세요!', images: ['https://toolhub.ai.kr/og/color-extractor.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/color-extractor/' },
 }
 

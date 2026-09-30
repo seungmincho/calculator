@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-fibonacci-dp.png', width: 1200, height: 630, alt: '피보나치 DP 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '피보나치 DP 시각화',
     description: '재귀 vs 메모이제이션 vs 테이블레이션 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-fibonacci-dp.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/fibonacci-dp',

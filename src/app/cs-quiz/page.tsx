@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cs-quiz.png', width: 1200, height: 630, alt: 'CS 기초 퀴즈' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CS 기초 퀴즈 - 자료구조·알고리즘·네트워크·OS·DB 125문제',
     description: '컴퓨터 과학 5대 핵심 분야를 문제 풀이로 학습하세요.',
+    images: ['https://toolhub.ai.kr/og/cs-quiz.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cs-quiz/',

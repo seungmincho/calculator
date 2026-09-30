@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-sliding-window.png', width: 1200, height: 630, alt: '슬라이딩 윈도우 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '슬라이딩 윈도우 시각화',
     description: '고정/가변 크기 슬라이딩 윈도우 기법 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-sliding-window.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/sliding-window',

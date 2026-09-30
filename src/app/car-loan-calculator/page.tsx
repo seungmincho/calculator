@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/car-loan-calculator/',
+    images: [{ url: 'https://toolhub.ai.kr/og/car-loan-calculator.png', width: 1200, height: 630, alt: '자동차 할부 계산기' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/car-loan-calculator/',

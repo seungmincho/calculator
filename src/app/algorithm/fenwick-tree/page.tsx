@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '펜윅 트리 업데이트·누적합 쿼리를 lowbit 연산과 함께 단계별 학습하세요.',
     url: 'https://toolhub.ai.kr/algorithm/fenwick-tree',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-fenwick-tree.png', width: 1200, height: 630, alt: '펜윅 트리 (BIT) 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '펜윅 트리 (BIT) 시각화', description: '누적합 업데이트·쿼리 O(log n) lowbit 단계별 시각화' },
+  twitter: { card: 'summary_large_image', title: '펜윅 트리 (BIT) 시각화', description: '누적합 업데이트·쿼리 O(log n) lowbit 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-fenwick-tree.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/fenwick-tree' },
 }
 

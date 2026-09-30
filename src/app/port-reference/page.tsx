@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/port-reference',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/port-reference.png', width: 1200, height: 630, alt: '포트 번호 레퍼런스' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '포트 번호 레퍼런스 - TCP/UDP 검색',
     description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. HTTP, SSH, MySQL 등 60개 이상의 주요 포트 번호 제공.',
+    images: ['https://toolhub.ai.kr/og/port-reference.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/port-reference/',

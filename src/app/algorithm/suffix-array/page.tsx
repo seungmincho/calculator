@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-suffix-array.png', width: 1200, height: 630, alt: '접미사 배열 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '접미사 배열 시각화',
     description: 'SA 구축 + LCP 분석 + 이진탐색 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-suffix-array.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/suffix-array',

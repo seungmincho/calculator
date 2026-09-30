@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/lorem-ipsum',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/lorem-ipsum.png', width: 1200, height: 630, alt: 'Lorem Ipsum 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lorem Ipsum 생성기 - 더미 텍스트 생성',
     description: '웹 디자인·개발 작업에 필요한 Lorem Ipsum 더미 텍스트를 생성합니다. 문단·문장·단어 단위 설정 가능, 한글 더미 텍스트도 지원합니다.',
+    images: ['https://toolhub.ai.kr/og/lorem-ipsum.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/lorem-ipsum/',

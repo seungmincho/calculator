@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '가중평균 계산기 - 산술·기하·조화 평균 | 툴허브',
   description: '가중평균(값×가중치)과 산술평균, 기하평균, 조화평균을 한 번에 계산합니다. 성적·학점·투자 비중 등 중요도가 다른 값의 평균과 분산·표준편차·중앙값까지 확인하세요.',
   keywords: '가중평균 계산기, 가중평균 구하는법, 산술가중, 산술평균 계산기, 가중치 평균, 평균 계산기, 학점 가중평균, 성적 가중평균, 기하평균, 조화평균, 표준편차, 분산, 중앙값',
-  openGraph: { title: '가중평균 계산기 - 산술·기하·조화 | 툴허브', description: '가중평균(값×가중치) + 4종 평균 + 기초 통계를 한 번에', url: 'https://toolhub.ai.kr/average-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '가중평균 계산기 | 툴허브', description: '가중평균 + 산술·기하·조화 평균 계산' },
+  openGraph: { title: '가중평균 계산기 - 산술·기하·조화 | 툴허브', description: '가중평균(값×가중치) + 4종 평균 + 기초 통계를 한 번에', url: 'https://toolhub.ai.kr/average-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/average-calculator.png', width: 1200, height: 630, alt: '가중평균 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '가중평균 계산기 | 툴허브', description: '가중평균 + 산술·기하·조화 평균 계산', images: ['https://toolhub.ai.kr/og/average-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/average-calculator/' },
 }
 

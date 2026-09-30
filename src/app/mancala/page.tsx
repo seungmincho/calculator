@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/mancala',
     type: 'website',
     siteName: '툴허브',
+    images: [{ url: 'https://toolhub.ai.kr/og/mancala.png', width: 1200, height: 630, alt: '온라인 만칼라' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/mancala/'

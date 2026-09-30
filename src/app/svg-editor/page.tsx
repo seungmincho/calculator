@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/svg-editor.png', width: 1200, height: 630, alt: 'SVG 편집기 & 최적화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SVG 편집기 & 최적화 | 툴허브',
     description: 'SVG 코드 편집, 최적화, PNG/JPEG 변환을 한번에',
+    images: ['https://toolhub.ai.kr/og/svg-editor.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/svg-editor/',

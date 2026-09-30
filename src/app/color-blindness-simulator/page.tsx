@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/color-blindness-simulator.png', width: 1200, height: 630, alt: '색맹 시뮬레이터' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '색맹 시뮬레이터 | 툴허브',
     description: '이미지에 7가지 색각이상 필터를 적용해 색맹·색약의 시야를 체험하세요',
+    images: ['https://toolhub.ai.kr/og/color-blindness-simulator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/color-blindness-simulator/',

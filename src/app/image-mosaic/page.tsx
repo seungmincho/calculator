@@ -12,8 +12,9 @@ export const metadata: Metadata = {
     description: '사진에 모자이크/블러를 간편하게 적용하세요!',
     url: 'https://toolhub.ai.kr/image-mosaic',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/image-mosaic.png', width: 1200, height: 630, alt: '사진 모자이크/블러' }],
   },
-  twitter: { card: 'summary_large_image', title: '사진 모자이크/블러 | 툴허브', description: '사진에 모자이크/블러를 적용하세요!' },
+  twitter: { card: 'summary_large_image', title: '사진 모자이크/블러 | 툴허브', description: '사진에 모자이크/블러를 적용하세요!', images: ['https://toolhub.ai.kr/og/image-mosaic.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-mosaic/' },
 }
 

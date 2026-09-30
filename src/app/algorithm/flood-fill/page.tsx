@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-flood-fill.png', width: 1200, height: 630, alt: '플러드필 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '플러드필 시각화',
     description: '영역 채우기 알고리즘 인터랙티브 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-flood-fill.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/flood-fill',

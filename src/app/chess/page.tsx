@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/chess/',
     type: 'website',
     siteName: '툴허브',
+    images: [{ url: 'https://toolhub.ai.kr/og/chess.png', width: 1200, height: 630, alt: '체스 (Chess)' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/chess/',

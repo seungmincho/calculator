@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '전기요금 계산기 - 한국 주택용 누진제 전기세 계산 | 툴허브',
   description: '전기요금 계산기 - 월 사용량(kWh)을 입력하면 한국 주택용 전기요금을 누진제 기준으로 계산합니다. 계절별 요금, 부가세, 기금까지 포함한 예상 금액.',
   keywords: '전기요금 계산기, 전기세 계산, 전기요금 누진제, 한전 전기요금, 전기세 계산기, electricity bill calculator',
-  openGraph: { title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산', url: 'https://toolhub.ai.kr/electricity-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산' },
+  openGraph: { title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산', url: 'https://toolhub.ai.kr/electricity-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/electricity-calculator.png', width: 1200, height: 630, alt: '전기요금 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산', images: ['https://toolhub.ai.kr/og/electricity-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/electricity-calculator/' },
 }
 

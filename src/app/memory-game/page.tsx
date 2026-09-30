@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/memory-game.png', width: 1200, height: 630, alt: '타일 매칭 게임' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '타일 매칭 게임 | 툴허브',
     description: '카드를 뒤집어 같은 짝을 찾으세요!',
+    images: ['https://toolhub.ai.kr/og/memory-game.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/memory-game/' },
 }

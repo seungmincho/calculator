@@ -12,8 +12,9 @@ export const metadata: Metadata = {
     description: '부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
     url: 'https://toolhub.ai.kr/acquisition-tax',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/acquisition-tax.png', width: 1200, height: 630, alt: '취득세 계산기 2026' }],
   },
-  twitter: { card: 'summary_large_image', title: '취득세 계산기 2026 | 툴허브', description: '부동산 취득세 자동계산' },
+  twitter: { card: 'summary_large_image', title: '취득세 계산기 2026 | 툴허브', description: '부동산 취득세 자동계산', images: ['https://toolhub.ai.kr/og/acquisition-tax.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/acquisition-tax/' },
 }
 

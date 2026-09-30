@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/time-converter',
     images: [
       {
-        url: '/logo.png',
+        url: 'https://toolhub.ai.kr/og/time-converter.png',
         width: 1200,
         height: 630,
         alt: '시간 변환기 - 툴허브',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '시간 변환기 - 전 세계 시간대 변환 도구',
     description: '타임존 변환부터 Unix 타임스탬프까지, 모든 시간 변환을 한 곳에서',
-    images: ['/logo.png'],
+    images: ['https://toolhub.ai.kr/og/time-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/time-converter/',

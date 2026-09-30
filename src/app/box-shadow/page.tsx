@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/box-shadow.png', width: 1200, height: 630, alt: 'CSS 박스 그림자 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CSS 박스 그림자 생성기 | 툴허브',
     description: 'CSS box-shadow 코드를 시각적으로 생성',
+    images: ['https://toolhub.ai.kr/og/box-shadow.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/box-shadow/',

@@ -17,12 +17,14 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/blood-sugar.png', width: 1200, height: 630, alt: '혈당 기록기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '혈당 기록기 | 툴허브',
     description:
       '혈당 수치를 기록하고 통계로 관리하세요. 측정 시점별 분류와 7일/30일 평균을 한눈에.',
+    images: ['https://toolhub.ai.kr/og/blood-sugar.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/blood-sugar/',

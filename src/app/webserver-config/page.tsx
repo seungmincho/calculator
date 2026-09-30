@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/webserver-config.png', width: 1200, height: 630, alt: '웹서버 설정 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '웹서버 설정 생성기',
     description: 'Nginx, Caddy 설정 파일을 상황별 베스트 프리셋으로 자동 생성',
+    images: ['https://toolhub.ai.kr/og/webserver-config.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/webserver-config/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/15-puzzle.png', width: 1200, height: 630, alt: '15퍼즐' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '15퍼즐 - 슬라이딩 타일 퍼즐 게임',
     description: '숫자 타일을 슬라이드하여 순서대로 정렬하는 클래식 퍼즐 게임',
+    images: ['https://toolhub.ai.kr/og/15-puzzle.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/15-puzzle/',

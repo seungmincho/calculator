@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/regex-engine.png', width: 1200, height: 630, alt: '정규표현식 엔진 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '정규표현식 엔진 시각화',
     description: 'regex 패턴 매칭 과정을 시각적으로 학습',
+    images: ['https://toolhub.ai.kr/og/regex-engine.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/regex-engine/',

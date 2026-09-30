@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/subnet-calculator.png', width: 1200, height: 630, alt: 'IP 서브넷 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'IP 서브넷 계산기 | 툴허브',
     description: 'CIDR·VLSM·경로 요약·IPv6 서브넷 계산.',
+    images: ['https://toolhub.ai.kr/og/subnet-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/subnet-calculator/',

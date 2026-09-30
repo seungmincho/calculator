@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/order-picker.png',
         width: 1200,
         height: 630,
         alt: '순서정하기 게임 - 툴허브',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '순서정하기 게임 - 무료 랜덤 순서 뽑기 | 툴허브',
     description: '참가자 이름 입력 → 랜덤 순서 뽑기. 발표·회식·게임 순서를 공정하게 결정.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/order-picker.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/order-picker/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/loan-schedule.png', width: 1200, height: 630, alt: '대출 상환 스케줄러' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '대출 상환 스케줄러 | 툴허브',
     description: '상환 방식별 상세 상환 계획표 생성 및 비교',
+    images: ['https://toolhub.ai.kr/og/loan-schedule.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/loan-schedule/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/voice-memo.png', width: 1200, height: 630, alt: '음성 메모' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '음성 메모 - 무료 온라인 음성 녹음기',
     description: '브라우저에서 바로 음성을 녹음하세요. 실시간 파형, 다운로드, 일시정지 지원.',
+    images: ['https://toolhub.ai.kr/og/voice-memo.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/voice-memo/',

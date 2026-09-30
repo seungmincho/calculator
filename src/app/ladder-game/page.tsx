@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/ladder-game.png',
         width: 1200,
         height: 630,
         alt: '사다리 타기 · 돌림판 · 순서뽑기 - 툴허브',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '사다리타기 게임 - 온라인 사다리 타기 | 툴허브',
     description: '참가자와 결과를 입력하면 바로 사다리타기. 블라인드 모드, 이미지 저장, 링크 공유.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/ladder-game.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/ladder-game/',

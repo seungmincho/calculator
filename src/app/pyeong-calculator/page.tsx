@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '평수 계산기 - 평↔제곱미터 면적 변환, 아파트 평수 | 툴허브',
   description: '평수 계산기 - 평(坪)과 제곱미터(m²) 간 면적 변환. 아파트 평수 계산, 부동산 면적 환산에 유용합니다. 평방피트(ft²) 변환도 지원.',
   keywords: '평수 계산기, 평 제곱미터 변환, 평수 계산, 아파트 평수, 면적 환산, pyeong calculator',
-  openGraph: { title: '평수 계산기 | 툴허브', description: '평↔m² 면적 변환, 아파트 평수 계산', url: 'https://toolhub.ai.kr/pyeong-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '평수 계산기 | 툴허브', description: '평↔m² 면적 변환' },
+  openGraph: { title: '평수 계산기 | 툴허브', description: '평↔m² 면적 변환, 아파트 평수 계산', url: 'https://toolhub.ai.kr/pyeong-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/pyeong-calculator.png', width: 1200, height: 630, alt: '평수 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '평수 계산기 | 툴허브', description: '평↔m² 면적 변환', images: ['https://toolhub.ai.kr/og/pyeong-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/pyeong-calculator/' },
 }
 

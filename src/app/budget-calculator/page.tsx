@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/budget-calculator.png', width: 1200, height: 630, alt: '생활비 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '생활비 계산기 - 월간 예산 관리',
     description: '카테고리별 월간 지출을 관리하고 예산을 계획하세요.',
+    images: ['https://toolhub.ai.kr/og/budget-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/budget-calculator/',

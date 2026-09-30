@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/neural-network.png', width: 1200, height: 630, alt: '신경망 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '신경망 시각화 | 툴허브',
     description: '순전파·역전파를 뉴런 단위로 시각화하는 인터랙티브 학습 도구',
+    images: ['https://toolhub.ai.kr/og/neural-network.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/neural-network/',

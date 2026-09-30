@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/decision-tree.png', width: 1200, height: 630, alt: '의사결정 트리 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '의사결정 트리 시각화',
     description: '엔트로피·정보이득·지니계수로 분류 트리 구축 과정 시각화',
+    images: ['https://toolhub.ai.kr/og/decision-tree.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/decision-tree/',

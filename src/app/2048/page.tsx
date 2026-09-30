@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/2048.png', width: 1200, height: 630, alt: '2048 게임' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '2048 게임 | 툴허브',
     description: '같은 숫자를 합쳐 2048을 만들어보세요!',
+    images: ['https://toolhub.ai.kr/og/2048.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/2048/' },
 }

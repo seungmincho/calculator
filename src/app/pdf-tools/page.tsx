@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/pdf-tools.png', width: 1200, height: 630, alt: 'PDF 도구' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PDF 도구',
     description: 'PDF 합치기, 분할, 회전, 변환',
+    images: ['https://toolhub.ai.kr/og/pdf-tools.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/pdf-tools/' },
 }

@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/savings-calculator.png', width: 1200, height: 630, alt: '적금 계산기' }],
   },
   robots: {
     index: true,

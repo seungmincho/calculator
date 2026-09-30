@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/kanban-board.png', width: 1200, height: 630, alt: '칸반보드' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '칸반보드',
     description: '드래그 앤 드롭 프로젝트 관리 도구',
+    images: ['https://toolhub.ai.kr/og/kanban-board.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/kanban-board/',

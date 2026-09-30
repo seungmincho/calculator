@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/lotto-generator.png',
         width: 1200,
         height: 630,
         alt: '로또번호 생성기 - 툴허브',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천',
     description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/lotto-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/lotto-generator/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/pomodoro.png', width: 1200, height: 630, alt: '포모도로 타이머' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '포모도로 타이머 - 25분 집중, 생산성 향상',
     description: '포모도로 기법으로 25분 집중 후 5분 휴식. 집중력과 생산성을 높이는 온라인 타이머.',
+    images: ['https://toolhub.ai.kr/og/pomodoro.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/pomodoro/',

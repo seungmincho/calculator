@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-euler-path.png', width: 1200, height: 630, alt: '오일러 경로/회로 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '오일러 경로 시각화',
     description: 'Hierholzer 알고리즘으로 오일러 경로 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-euler-path.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/euler-path',

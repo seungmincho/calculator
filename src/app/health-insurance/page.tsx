@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/health-insurance.png', width: 1200, height: 630, alt: '건강보험료 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '건강보험료 계산기 2026 | 툴허브',
     description: '직장/지역가입자 건강보험료 계산, 피부양자 판정',
+    images: ['https://toolhub.ai.kr/og/health-insurance.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/health-insurance/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/real-estate-calculator',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/real-estate-calculator.png', width: 1200, height: 630, alt: '부동산 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
     description: '전세자금대출, 주택담보대출 월 상환금액과 취득세를 정확하게 계산해보세요. LTV 계산 및 한국 부동산 세법 기준 적용.',
+    images: ['https://toolhub.ai.kr/og/real-estate-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/real-estate-calculator/',

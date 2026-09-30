@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/military-discharge.png', width: 1200, height: 630, alt: '전역일 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '전역일 계산기 | 툴허브',
     description: '군 복무 전역일, D-Day, 진급 일정을 한 번에 계산하세요.',
+    images: ['https://toolhub.ai.kr/og/military-discharge.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/military-discharge/',

@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/ev-subsidy.png', width: 1200, height: 630, alt: '전기차 보조금 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '전기차 보조금 계산기',
     description: '2026년 전기차 국비·지방비 보조금 자동 계산, 17개 지역 비교',
+    images: ['https://toolhub.ai.kr/og/ev-subsidy.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/ev-subsidy',

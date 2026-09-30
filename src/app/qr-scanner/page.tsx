@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: 'QR코드 스캔 - 카메라/이미지 QR코드 인식 | 툴허브',
   description: 'QR코드 스캔 - 카메라 또는 이미지 파일로 QR코드를 스캔하세요. URL, 텍스트, Wi-Fi, 연락처 등 다양한 QR코드 인식.',
   keywords: 'QR코드 스캔, QR 스캐너, QR코드 인식, QR코드 읽기, qr code scanner, QR 리더',
-  openGraph: { title: 'QR코드 스캔 | 툴허브', description: '카메라/이미지로 QR코드 스캔', url: 'https://toolhub.ai.kr/qr-scanner', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: 'QR코드 스캔 | 툴허브', description: 'QR코드 스캔, 인식, 복사' },
+  openGraph: { title: 'QR코드 스캔 | 툴허브', description: '카메라/이미지로 QR코드 스캔', url: 'https://toolhub.ai.kr/qr-scanner', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/qr-scanner.png', width: 1200, height: 630, alt: 'QR코드 스캔' }] },
+  twitter: { card: 'summary_large_image', title: 'QR코드 스캔 | 툴허브', description: 'QR코드 스캔, 인식, 복사', images: ['https://toolhub.ai.kr/og/qr-scanner.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/qr-scanner/' },
 }
 

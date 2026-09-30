@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/api-tester.png', width: 1200, height: 630, alt: 'API 테스터' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'API 테스터 - REST API 클라이언트',
     description: '브라우저에서 REST API를 테스트하고 코드를 생성하세요.',
+    images: ['https://toolhub.ai.kr/og/api-tester.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/api-tester/',

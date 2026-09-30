@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/llm-token-calculator.png', width: 1200, height: 630, alt: 'LLM 토큰 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'LLM 토큰 계산기',
     description: 'GPT, Claude, Gemini 등 LLM 모델별 토큰 수 추정 및 API 비용 계산',
+    images: ['https://toolhub.ai.kr/og/llm-token-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/llm-token-calculator/',

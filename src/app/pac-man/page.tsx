@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/pac-man.png', width: 1200, height: 630, alt: '팩맨' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '팩맨 - 클래식 아케이드 미로 게임',
     description: '미로를 돌아다니며 점을 먹고 유령을 피하는 클래식 팩맨 게임',
+    images: ['https://toolhub.ai.kr/og/pac-man.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/pac-man/',

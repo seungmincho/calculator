@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '시급 계산기 - 시급, 일급, 월급, 연봉 변환 | 툴허브',
   description: '시급 계산기 - 시급, 일급, 월급, 연봉을 상호 변환합니다. 2026년 최저시급 10,320원 비교, 주휴수당 포함 월급·세후 실수령액, 주 15·20·30·40시간 알바 환산.',
   keywords: '시급 계산기, 시급 계산, 일급 계산, 월급 시급 변환, hourly wage calculator, 최저시급',
-  openGraph: { title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환' },
+  openGraph: { title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/hourly-wage.png', width: 1200, height: 630, alt: '시급 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환', images: ['https://toolhub.ai.kr/og/hourly-wage.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/hourly-wage/' },
 }
 

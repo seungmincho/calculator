@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cagr-calculator.png', width: 1200, height: 630, alt: 'CAGR 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CAGR 계산기 | 툴허브',
     description: '연평균성장률(CAGR) 계산, 미래가치 예측, 투자 비교 분석',
+    images: ['https://toolhub.ai.kr/og/cagr-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cagr-calculator/',

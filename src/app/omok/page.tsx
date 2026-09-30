@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/omok.png',
         width: 1200,
         height: 630,
         alt: '온라인 오목 게임'
@@ -34,7 +34,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '온라인 오목 - 실시간 대전 게임 | 툴허브',
-    description: '친구와 실시간으로 오목 대전을 즐기세요. 19x19 바둑판에서 온라인 오목 게임!'
+    description: '친구와 실시간으로 오목 대전을 즐기세요. 19x19 바둑판에서 온라인 오목 게임!',
+    images: ['https://toolhub.ai.kr/og/omok.png'],
   },
   robots: {
     index: true,

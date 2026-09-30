@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/menu-roulette.png',
         width: 1200,
         height: 630,
         alt: '메뉴 추천 룰렛 - 툴허브',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '메뉴 추천 룰렛 - 오늘 뭐 먹지?',
     description: '점심·저녁 메뉴 고민을 룰렛으로 단번에 해결하세요.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/menu-roulette.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/menu-roulette/',

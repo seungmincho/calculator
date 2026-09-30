@@ -12,8 +12,9 @@ export const metadata: Metadata = {
     description: '회식비/모임비를 정확하게 나누세요! 균등분배 & 커스텀 정산.',
     url: 'https://toolhub.ai.kr/dutch-pay',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/dutch-pay.png', width: 1200, height: 630, alt: '더치페이 계산기' }],
   },
-  twitter: { card: 'summary_large_image', title: '더치페이 계산기 | 툴허브', description: '회식비를 정확하게 나누세요!' },
+  twitter: { card: 'summary_large_image', title: '더치페이 계산기 | 툴허브', description: '회식비를 정확하게 나누세요!', images: ['https://toolhub.ai.kr/og/dutch-pay.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/dutch-pay/' },
 }
 

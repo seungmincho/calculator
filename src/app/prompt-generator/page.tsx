@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/prompt-generator.png', width: 1200, height: 630, alt: 'AI 프롬프트 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI 프롬프트 생성기',
     description: 'AI 프롬프트를 역할·작업·톤·형식 선택으로 자동 생성',
+    images: ['https://toolhub.ai.kr/og/prompt-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/prompt-generator/',

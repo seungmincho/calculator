@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/kmeans-clustering.png', width: 1200, height: 630, alt: 'K-means 클러스터링 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'K-means 클러스터링 시각화',
     description: '군집 분석 알고리즘을 단계별 애니메이션으로 배우기',
+    images: ['https://toolhub.ai.kr/og/kmeans-clustering.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/kmeans-clustering/',

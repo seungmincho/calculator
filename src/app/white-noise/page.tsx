@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/white-noise.png', width: 1200, height: 630, alt: '백색소음 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '백색소음 생성기 | 툴허브',
     description: '수면·집중을 위한 백색소음 생성기',
+    images: ['https://toolhub.ai.kr/og/white-noise.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/white-noise/',

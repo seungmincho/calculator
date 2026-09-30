@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/government-subsidy.png', width: 1200, height: 630, alt: '정부지원금 자격 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '정부지원금 자격 계산기',
     description: '12개 정부지원금 수급 자격을 한번에 확인하세요',
+    images: ['https://toolhub.ai.kr/og/government-subsidy.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/government-subsidy',

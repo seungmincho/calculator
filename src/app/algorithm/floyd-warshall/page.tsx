@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-floyd-warshall.png', width: 1200, height: 630, alt: '플로이드-워셜 모든 쌍 최단경로 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '플로이드-워셜 모든 쌍 최단경로 시각화',
     description: '거리 행렬 DP 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-floyd-warshall.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/floyd-warshall',

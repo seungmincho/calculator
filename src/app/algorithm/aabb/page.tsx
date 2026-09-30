@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-aabb.png', width: 1200, height: 630, alt: 'AABB 충돌감지 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AABB 충돌감지 시각화',
     description: '축 정렬 바운딩 박스로 충돌 판정',
+    images: ['https://toolhub.ai.kr/og/algorithm-aabb.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/aabb',

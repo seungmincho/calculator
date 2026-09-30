@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/uuid-generator.png', width: 1200, height: 630, alt: 'UUID 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'UUID 생성기 - 개발자용 고유 식별자 생성 도구',
     description: '다양한 버전의 UUID를 안전하게 생성하는 개발자 도구입니다.',
+    images: ['https://toolhub.ai.kr/og/uuid-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/uuid-generator/',

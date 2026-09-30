@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/ovulation-calculator.png', width: 1200, height: 630, alt: '배란일 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '배란일 계산기 | 툴허브',
     description: '생리주기 기반 배란일·가임기 예측',
+    images: ['https://toolhub.ai.kr/og/ovulation-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/ovulation-calculator/',

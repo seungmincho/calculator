@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/percent-calculator.png', width: 1200, height: 630, alt: '퍼센트 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '퍼센트 계산기 | 툴허브',
     description: '퍼센트 계산, 비율 계산, 증감률, 할인율 등 다양한 퍼센트 계산을 한 곳에서 간편하게',
+    images: ['https://toolhub.ai.kr/og/percent-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/percent-calculator/',

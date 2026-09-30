@@ -29,11 +29,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/http-status.png', width: 1200, height: 630, alt: 'HTTP 상태코드 레퍼런스' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'HTTP 상태코드 레퍼런스 | 툴허브',
     description: '60개 이상 HTTP 상태코드의 의미, 원인, 해결 방법을 한국어로 검색하세요.',
+    images: ['https://toolhub.ai.kr/og/http-status.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/http-status/',

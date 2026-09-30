@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/env-editor.png', width: 1200, height: 630, alt: '환경변수(.env) 편집기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '환경변수(.env) 편집기 | 툴허브',
     description: '.env 파일 편집, 검증, 형식 변환. Docker, YAML, JSON 지원.',
+    images: ['https://toolhub.ai.kr/og/env-editor.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/env-editor/',

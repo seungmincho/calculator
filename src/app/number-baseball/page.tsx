@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/number-baseball.png', width: 1200, height: 630, alt: '숫자야구 게임' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '숫자야구',
     description: '숫자 맞추기 두뇌 게임',
+    images: ['https://toolhub.ai.kr/og/number-baseball.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/number-baseball/',

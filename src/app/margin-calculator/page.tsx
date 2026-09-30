@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/margin-calculator.png', width: 1200, height: 630, alt: '마진 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '마진 계산기 | 툴허브',
     description: '온라인 셀러 순이익·마진율 자동계산',
+    images: ['https://toolhub.ai.kr/og/margin-calculator.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/margin-calculator/' },
 }

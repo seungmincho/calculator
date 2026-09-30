@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/inheritance-gift-tax.png', width: 1200, height: 630, alt: '상속세 증여세 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '상속세 증여세 계산기 2026 | 툴허브',
     description: '상속세·증여세 간편 계산. 2025년 세율과 모든 공제를 반영.',
+    images: ['https://toolhub.ai.kr/og/inheritance-gift-tax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/inheritance-gift-tax/',

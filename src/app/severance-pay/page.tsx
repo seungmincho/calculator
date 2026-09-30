@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '퇴직금 계산기 - 법정 퇴직금, 평균임금 계산 | 툴허브',
   description: '퇴직금 계산기 - 입사일, 퇴사일, 월 기본급을 입력하면 법정 퇴직금을 계산합니다. 평균임금 기반 정확한 퇴직금 산출.',
   keywords: '퇴직금 계산기, 퇴직금 계산, 퇴직금 산출, severance pay calculator, 평균임금 계산',
-  openGraph: { title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산', url: 'https://toolhub.ai.kr/severance-pay', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산' },
+  openGraph: { title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산', url: 'https://toolhub.ai.kr/severance-pay', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/severance-pay.png', width: 1200, height: 630, alt: '퇴직금 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산', images: ['https://toolhub.ai.kr/og/severance-pay.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/severance-pay/' },
 }
 

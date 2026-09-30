@@ -18,12 +18,14 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/git-visualizer',
     siteName: '툴허브',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/git-visualizer.png', width: 1200, height: 630, alt: 'Git 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Git 시각화 - 인터랙티브 학습 | 툴허브',
     description:
       'Git branch, merge, rebase를 인터랙티브 커밋 그래프로 시각화하며 학습하세요.',
+    images: ['https://toolhub.ai.kr/og/git-visualizer.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/git-visualizer/',

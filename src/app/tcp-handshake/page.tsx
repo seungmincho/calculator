@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/tcp-handshake.png', width: 1200, height: 630, alt: 'TCP 핸드셰이크 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TCP 핸드셰이크 시각화',
     description: 'SYN → SYN-ACK → ACK 과정을 단계별 애니메이션으로 이해',
+    images: ['https://toolhub.ai.kr/og/tcp-handshake.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/tcp-handshake',

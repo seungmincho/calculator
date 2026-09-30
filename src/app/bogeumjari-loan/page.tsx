@@ -13,13 +13,12 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
-    images: [{ url: 'https://toolhub.ai.kr/og-image-1200x630.png', width: 1200, height: 630, alt: '보금자리론 계산기 2026' }],
+    images: [{ url: 'https://toolhub.ai.kr/og/bogeumjari-loan.png', width: 1200, height: 630, alt: '보금자리론 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '보금자리론 계산기 2026',
-    description: '유형별(생애최초·신혼·다자녀·일반) 한도·금리 즉시 계산',
-  },
+    description: '유형별(생애최초·신혼·다자녀·일반) 한도·금리 즉시 계산', images: ['https://toolhub.ai.kr/og/bogeumjari-loan.png'] },
   alternates: {
     canonical: 'https://toolhub.ai.kr/bogeumjari-loan/',
   },

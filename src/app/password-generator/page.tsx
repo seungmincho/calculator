@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/password-generator.png', width: 1200, height: 630, alt: '비밀번호 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '비밀번호 생성기 - 안전한 패스워드 생성 도구',
     description: '강력하고 안전한 비밀번호와 패스프레이즈를 생성하세요.',
+    images: ['https://toolhub.ai.kr/og/password-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/password-generator/',

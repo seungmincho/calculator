@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/linux-command',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/linux-command.png', width: 1200, height: 630, alt: 'Linux 명령어 빌더' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Linux 명령어 빌더 - 옵션 가이드 | 툴허브',
     description: 'Linux/Unix 명령어 옵션을 체크박스로 선택해 완성된 명령어를 자동 생성합니다.',
+    images: ['https://toolhub.ai.kr/og/linux-command.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/linux-command/',

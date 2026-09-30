@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/contrast-checker.png', width: 1200, height: 630, alt: '색상 대비 체커' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '색상 대비 체커',
     description: 'WCAG 접근성 색상 대비 검사',
+    images: ['https://toolhub.ai.kr/og/contrast-checker.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/contrast-checker/',

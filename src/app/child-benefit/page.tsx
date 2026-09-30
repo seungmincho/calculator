@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/child-benefit.png', width: 1200, height: 630, alt: '부모급여·아동수당 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '부모급여·아동수당 계산기',
     description: '2026년 부모급여·아동수당·양육수당 월 수령액 자동 계산',
+    images: ['https://toolhub.ai.kr/og/child-benefit.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/child-benefit',

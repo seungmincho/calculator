@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/freelancer-tax.png', width: 1200, height: 630, alt: '프리랜서 세금 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '프리랜서 세금 계산기 2026 | 툴허브',
     description: '3.3% 원천징수 vs 실제 종합소득세. 환급액 자동 계산.',
+    images: ['https://toolhub.ai.kr/og/freelancer-tax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/freelancer-tax/',

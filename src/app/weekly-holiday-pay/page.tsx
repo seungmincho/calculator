@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/weekly-holiday-pay.png', width: 1200, height: 630, alt: '주휴수당 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '주휴수당 계산기',
     description: '아르바이트 주휴수당 포함 급여 자동계산',
+    images: ['https://toolhub.ai.kr/og/weekly-holiday-pay.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/weekly-holiday-pay/',

@@ -31,11 +31,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/chmod-calculator.png', width: 1200, height: 630, alt: 'chmod 권한 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'chmod 권한 계산기 | 툴허브',
     description: 'Unix/Linux 파일 권한을 시각적으로 설정. rwxrwxrwx 체크박스로 chmod 숫자와 명령어 자동 생성',
+    images: ['https://toolhub.ai.kr/og/chmod-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/chmod-calculator/',

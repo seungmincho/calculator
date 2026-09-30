@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '사업자등록번호 검증기 - 유효성 확인, 형식 검증 | 툴허브',
   description: '사업자등록번호 검증기 - 10자리 사업자등록번호의 유효성을 검증합니다. 체크섬 알고리즘으로 올바른 번호인지 즉시 확인하세요.',
   keywords: '사업자등록번호 검증, 사업자번호 확인, 사업자등록번호 유효성, business number validator, 사업자번호 검증기',
-  openGraph: { title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증' },
+  openGraph: { title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/business-number.png', width: 1200, height: 630, alt: '사업자등록번호 검증기' }] },
+  twitter: { card: 'summary_large_image', title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', images: ['https://toolhub.ai.kr/og/business-number.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/business-number/' },
 }
 

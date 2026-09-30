@@ -13,13 +13,11 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/crossword',
     siteName: '툴허브',
     locale: 'ko_KR',
-    type: 'website',
-  },
+    type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/crossword.png', width: 1200, height: 630, alt: '십자말풀이' }] },
   twitter: {
     card: 'summary_large_image',
     title: '십자말풀이 | 툴허브',
-    description: '한국어 십자말풀이를 온라인에서 즐기세요!',
-  },
+    description: '한국어 십자말풀이를 온라인에서 즐기세요!', images: ['https://toolhub.ai.kr/og/crossword.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/crossword/' },
 }
 

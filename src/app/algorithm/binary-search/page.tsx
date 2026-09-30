@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-binary-search.png', width: 1200, height: 630, alt: '이진탐색 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '이진탐색 시각화',
     description: '분할정복으로 배열 검색하기',
+    images: ['https://toolhub.ai.kr/og/algorithm-binary-search.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/binary-search',

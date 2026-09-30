@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '글꼴 미리보기 - 폰트 테스트, 웹폰트 비교 | 툴허브',
   description: '글꼴 미리보기 - 다양한 한글/영문 웹폰트로 텍스트를 미리보세요. 크기, 굵기, 줄간격 조절, CSS 복사 기능.',
   keywords: '폰트 미리보기, 글꼴 테스트, 웹폰트 비교, font preview, 한글 폰트, 구글 폰트',
-  openGraph: { title: '글꼴 미리보기 | 툴허브', description: '다양한 폰트로 텍스트 미리보기', url: 'https://toolhub.ai.kr/font-preview', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '글꼴 미리보기 | 툴허브', description: '폰트 미리보기, 비교, CSS 복사' },
+  openGraph: { title: '글꼴 미리보기 | 툴허브', description: '다양한 폰트로 텍스트 미리보기', url: 'https://toolhub.ai.kr/font-preview', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/font-preview.png', width: 1200, height: 630, alt: '글꼴 미리보기' }] },
+  twitter: { card: 'summary_large_image', title: '글꼴 미리보기 | 툴허브', description: '폰트 미리보기, 비교, CSS 복사', images: ['https://toolhub.ai.kr/og/font-preview.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/font-preview/' },
 }
 

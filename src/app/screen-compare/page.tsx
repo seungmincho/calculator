@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/screen-compare.png', width: 1200, height: 630, alt: '화면 크기 비교' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '화면 크기 비교 | 툴허브',
     description: '스마트폰·태블릿·모니터 화면 크기 시각적 비교',
+    images: ['https://toolhub.ai.kr/og/screen-compare.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/screen-compare/',

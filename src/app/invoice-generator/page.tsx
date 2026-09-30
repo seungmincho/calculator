@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/invoice-generator.png', width: 1200, height: 630, alt: '견적서·세금계산서 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '견적서·세금계산서 생성기',
     description: '인보이스 작성 & PDF 출력',
+    images: ['https://toolhub.ai.kr/og/invoice-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/invoice-generator/',

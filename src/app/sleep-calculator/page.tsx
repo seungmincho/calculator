@@ -17,12 +17,14 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/sleep-calculator.png', width: 1200, height: 630, alt: '수면 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '수면 계산기 - 최적 취침·기상 시간 계산',
     description:
       '90분 수면 주기를 기반으로 최적의 취침 시간과 기상 시간을 계산합니다. 개운한 아침을 위한 수면 계산기.',
+    images: ['https://toolhub.ai.kr/og/sleep-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/sleep-calculator/',

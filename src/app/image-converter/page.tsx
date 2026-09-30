@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '이미지 변환기 - 포맷 변환 | 툴허브',
   description: '이미지 변환기 - JPEG, PNG, WebP, GIF 등 이미지 파일 형식을 변환합니다. 품질 조절, 미리보기, 일괄 변환 지원.',
   keywords: '이미지 변환기, 이미지 포맷 변환, JPEG PNG 변환, WebP 변환, image converter',
-  openGraph: { title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환' },
+  openGraph: { title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-converter.png', width: 1200, height: 630, alt: '이미지 변환기' }] },
+  twitter: { card: 'summary_large_image', title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', images: ['https://toolhub.ai.kr/og/image-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-converter/' },
 }
 

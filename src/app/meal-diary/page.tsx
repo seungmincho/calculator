@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/meal-diary.png', width: 1200, height: 630, alt: '식단/칼로리 일지' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '식단/칼로리 일지',
     description: '매일 식단 기록, 칼로리·영양소 트렌드 추적',
+    images: ['https://toolhub.ai.kr/og/meal-diary.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/meal-diary',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/sudoku.png', width: 1200, height: 630, alt: '스도쿠' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '스도쿠 | 툴허브',
     description: '4단계 난이도 스도쿠를 온라인에서 즐기세요!',
+    images: ['https://toolhub.ai.kr/og/sudoku.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/sudoku/' },
 }

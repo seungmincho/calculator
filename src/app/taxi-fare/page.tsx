@@ -14,8 +14,9 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/taxi-fare.png', width: 1200, height: 630, alt: '택시 요금 계산기' }],
   },
-  twitter: { card: 'summary_large_image', title: '택시 요금 계산기 | 툴허브', description: '지역별 심야·시외할증 자동 반영 예상 택시비 계산' },
+  twitter: { card: 'summary_large_image', title: '택시 요금 계산기 | 툴허브', description: '지역별 심야·시외할증 자동 반영 예상 택시비 계산', images: ['https://toolhub.ai.kr/og/taxi-fare.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/taxi-fare/' },
 }
 

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/chart-studio.png', width: 1200, height: 630, alt: '차트 스튜디오' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '차트 스튜디오',
     description: '데이터 시각화 & 차트 코드 생성기',
+    images: ['https://toolhub.ai.kr/og/chart-studio.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/chart-studio/',

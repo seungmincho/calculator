@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '연결 리스트 삽입·삭제·뒤집기 포인터 변경 시각화.',
     url: 'https://toolhub.ai.kr/algorithm/linked-list',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-linked-list.png', width: 1200, height: 630, alt: '연결 리스트 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '연결 리스트 시각화', description: 'Singly/Doubly Linked List 시각화' },
+  twitter: { card: 'summary_large_image', title: '연결 리스트 시각화', description: 'Singly/Doubly Linked List 시각화', images: ['https://toolhub.ai.kr/og/algorithm-linked-list.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/linked-list' },
 }
 

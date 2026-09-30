@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-voronoi.png', width: 1200, height: 630, alt: '보로노이 다이어그램 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '보로노이 다이어그램 시각화',
     description: '계산기하학 영역 분할 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-voronoi.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/voronoi',

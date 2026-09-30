@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-coin-change.png', width: 1200, height: 630, alt: '동전 교환 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '동전 교환 시각화',
     description: 'Coin Change DP 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-coin-change.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/coin-change',

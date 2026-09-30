@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-union-find.png', width: 1200, height: 630, alt: '유니온-파인드 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '유니온-파인드 시각화',
     description: '서로소 집합 자료구조 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-union-find.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/union-find',

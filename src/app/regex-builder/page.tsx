@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/regex-builder.png',
         width: 1200,
         height: 630,
         alt: '정규식 빌더 - 툴허브',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '정규식 빌더 - 비주얼 정규표현식 생성기 | 툴허브',
     description: '클릭 한 번으로 정규식을 만들고 테스트하세요. 실시간 하이라이팅, 패턴 라이브러리, 치환 기능 제공.',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/regex-builder.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/regex-builder/',

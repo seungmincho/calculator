@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/screen-recorder.png', width: 1200, height: 630, alt: '화면 녹화기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '화면 녹화기 | 툴허브',
     description: '무설치 무료 온라인 화면 녹화 도구',
+    images: ['https://toolhub.ai.kr/og/screen-recorder.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/screen-recorder/',

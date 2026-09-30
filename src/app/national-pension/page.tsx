@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/national-pension.png', width: 1200, height: 630, alt: '국민연금 수령액 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '국민연금 수령액 계산기',
     description: '국민연금 예상 수령액 계산, 조기/정상/연기 수령 비교',
+    images: ['https://toolhub.ai.kr/og/national-pension.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/national-pension',

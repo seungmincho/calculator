@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/exchange-calculator',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/exchange-calculator.png',
         width: 1200,
         height: 630,
         alt: '환율 계산기',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
     description: '원화·달러·유로·엔화 등 주요 통화를 실시간 환율로 즉시 환산',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/exchange-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/exchange-calculator/',

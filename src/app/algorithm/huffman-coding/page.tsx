@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-huffman-coding.png', width: 1200, height: 630, alt: '허프만 코딩 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '허프만 코딩 시각화',
     description: '탐욕 알고리즘 기반 데이터 압축 원리 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-huffman-coding.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/huffman-coding',

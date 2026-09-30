@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/korean-wordle.png', width: 1200, height: 630, alt: '한글 워들' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '한글 워들 | 툴허브',
     description: '매일 새로운 한국어 단어 맞추기 게임',
+    images: ['https://toolhub.ai.kr/og/korean-wordle.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/korean-wordle/',

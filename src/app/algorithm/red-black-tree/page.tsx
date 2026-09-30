@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '레드-블랙 트리 삽입·삭제·회전을 단계별 애니메이션으로 배우세요.',
     url: 'https://toolhub.ai.kr/algorithm/red-black-tree',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-red-black-tree.png', width: 1200, height: 630, alt: '레드-블랙 트리 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '레드-블랙 트리 시각화', description: '레드-블랙 트리 색상 규칙과 회전 단계별 시각화' },
+  twitter: { card: 'summary_large_image', title: '레드-블랙 트리 시각화', description: '레드-블랙 트리 색상 규칙과 회전 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-red-black-tree.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/red-black-tree' },
 }
 

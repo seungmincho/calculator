@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title,
     description,
     keywords: `연봉 ${man} 실수령액, 연봉 ${salaryLabel(man)} 실수령액, 연봉 ${man}만원 월급, 연봉 ${man} 세후, ${YEAR} 실수령액`,
-    openGraph: { title, description, url, siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-    twitter: { card: 'summary_large_image', title, description },
+    openGraph: { title, description, url, siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/salary-table.png', width: 1200, height: 630 }] },
+    twitter: { card: 'summary_large_image', title, description, images: ['https://toolhub.ai.kr/og/salary-table.png'] },
     alternates: { canonical: url },
   }
 }

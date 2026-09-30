@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/salary-rank.png', width: 1200, height: 630, alt: '내 연봉 상위 몇 %?' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '내 연봉 상위 몇 %?',
     description: '국세청 데이터 기반 연봉 순위 확인',
+    images: ['https://toolhub.ai.kr/og/salary-rank.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/salary-rank',

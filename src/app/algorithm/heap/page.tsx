@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '힙 삽입·추출·Heapify를 트리+배열로 동시 시각화.',
     url: 'https://toolhub.ai.kr/algorithm/heap',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-heap.png', width: 1200, height: 630, alt: '힙 / 우선순위 큐 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '힙 시각화', description: 'Min/Max Heap 트리+배열 이중 뷰 시각화' },
+  twitter: { card: 'summary_large_image', title: '힙 시각화', description: 'Min/Max Heap 트리+배열 이중 뷰 시각화', images: ['https://toolhub.ai.kr/og/algorithm-heap.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/heap' },
 }
 

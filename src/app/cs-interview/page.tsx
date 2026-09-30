@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cs-interview.png', width: 1200, height: 630, alt: 'CS 기술 면접' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CS 기술 면접 - 100문제 모범 답안',
     description: '10개 분야 100개 기술 면접 질문과 모범 답안으로 면접 완벽 대비.',
+    images: ['https://toolhub.ai.kr/og/cs-interview.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cs-interview',

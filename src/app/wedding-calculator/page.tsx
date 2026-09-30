@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/wedding-calculator.png', width: 1200, height: 630, alt: '결혼비용 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '결혼비용 계산기 | 툴허브',
     description: '결혼 총 비용 계획, 축의금 예상, 양가 분담 계산',
+    images: ['https://toolhub.ai.kr/og/wedding-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/wedding-calculator/',

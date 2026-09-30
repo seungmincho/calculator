@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   keywords: '연봉계산기, 실수령액계산, 월급계산기, 세후연봉, 4대보험계산, 소득세계산, 2026년연봉, 금융계산기, 대출계산기, 적금계산기, 세금계산기, BMI계산기, 개발도구, 정규식추출기',
   openGraph: {
     title: '연봉 실수령액 계산기 | 툴허브 - 종합 금융 도구',
-    description: '2026년 기준 정확한 연봉 실수령액 계산 + 대출, 적금, 세금 등 126+ 전문 도구 모음',
+    description: '2026년 4대보험·세율로 월 실수령액 계산. 국세청 기준 내 연봉 상위 %, 연봉 인상 시뮬레이션까지',
     url: 'https://toolhub.ai.kr/salary-calculator',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/salary-calculator.png',
         width: 1200,
         height: 630,
         alt: '툴허브 - 종합 계산기 도구',
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '연봉 실수령액 계산기 | 툴허브',
-    description: '2026년 기준 정확한 연봉 계산 + 126+ 전문 도구',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    description: '월 실수령액 + 국세청 기준 연봉 상위 %',
+    images: ['https://toolhub.ai.kr/og/salary-calculator.png'],
   },
   robots: {
     index: true,

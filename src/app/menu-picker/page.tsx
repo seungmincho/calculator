@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/menu-picker.png', width: 1200, height: 630, alt: '오늘 뭐 먹지? 메뉴 추천 룰렛' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '오늘 뭐 먹지? 메뉴 추천 룰렛',
     description: '메뉴 고르기 힘들 때! 룰렛을 돌려 오늘의 메뉴를 정해보세요.',
+    images: ['https://toolhub.ai.kr/og/menu-picker.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/menu-picker/',

@@ -433,6 +433,7 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 | 4 | `/src/app/sitemap.ts` | URL 추가 | 배열 끝에 추가 |
 | 5 | `/src/app/[tool-name]/page.tsx` | 페이지 생성 | 새 디렉토리 + page.tsx |
 | 6 | `/src/components/[ToolName].tsx` | 컴포넌트 생성 | 새 파일 |
+| 7 | `public/og/[slug].png` | SNS 공유 이미지 | `pnpm og [slug]` — 이미지 생성 + page.tsx openGraph/twitter에 images 자동 삽입 (page의 openGraph는 layout 이미지를 덮어쓰므로 필수) |
 
 **Header, ToolsShowcase, SearchDialog, GameHub는 menuConfig에서 자동 반영되므로 별도 수정 불필요.**
 

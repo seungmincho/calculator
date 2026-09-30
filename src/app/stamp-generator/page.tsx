@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/stamp-generator.png', width: 1200, height: 630, alt: '인감 도장 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '인감 도장 생성기 | 툴허브',
     description: '원형·사각·타원 도장을 무료로 만들고 PNG 다운로드.',
+    images: ['https://toolhub.ai.kr/og/stamp-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/stamp-generator/',

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '수도요금 계산기 2026 - 서울·부산 수도세 | 툴허브',
   description: '2026년 서울·부산 가정용 수도요금 계산기. 가구원 수와 월 사용량(㎥)으로 상수도·하수도·물이용부담금을 계산하고, 같은 인원 평균 가구와 비교하며 절약 팁별 절감액까지 확인하세요.',
   keywords: '수도요금 계산기, 수도세 계산, 2026 수도요금, 서울 수도요금, 부산 수도요금, 하수도 요금, 물이용부담금, 4인 가구 수도세',
-  openGraph: { title: '수도요금 계산기 2026 | 툴허브', description: '서울·부산 2026 요금 기준 수도세 계산 + 평균 가구 비교', url: 'https://toolhub.ai.kr/water-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '수도요금 계산기 2026 | 툴허브', description: '우리 집 수도세, 같은 인원 평균과 비교' },
+  openGraph: { title: '수도요금 계산기 2026 | 툴허브', description: '서울·부산 2026 요금 기준 수도세 계산 + 평균 가구 비교', url: 'https://toolhub.ai.kr/water-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/water-bill.png', width: 1200, height: 630, alt: '수도요금 계산기 2026' }] },
+  twitter: { card: 'summary_large_image', title: '수도요금 계산기 2026 | 툴허브', description: '우리 집 수도세, 같은 인원 평균과 비교', images: ['https://toolhub.ai.kr/og/water-bill.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/water-bill/' },
 }
 

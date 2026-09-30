@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '주민등록번호 검증기 - 유효성 검사, 생년월일 추출 | 툴허브',
   description: '주민등록번호 검증기 - 주민등록번호·외국인등록번호의 형식과 체크섬을 검사하고 생년월일, 만 나이, 성별, 내/외국인을 추출합니다. 2020년 10월 개편 번호 대응, 입력값은 전송·저장되지 않습니다.',
   keywords: '주민등록번호 검증, 주민번호 확인, 주민등록번호 유효성, resident number validator, 주민번호 검증기',
-  openGraph: { title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출', url: 'https://toolhub.ai.kr/resident-number', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출' },
+  openGraph: { title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출', url: 'https://toolhub.ai.kr/resident-number', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/resident-number.png', width: 1200, height: 630, alt: '주민등록번호 검증기' }] },
+  twitter: { card: 'summary_large_image', title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출', images: ['https://toolhub.ai.kr/og/resident-number.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/resident-number/' },
 }
 

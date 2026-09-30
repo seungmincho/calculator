@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '한영 타자 변환기 - 영타 한글 변환, 한타 영문 변환 | 툴허브',
   description: '한영키 안 누르고 친 글자를 바로 복구. 영타(dkssud)→한글(안녕), 한글 타자→영문 양방향 실시간 변환, 복사 한 번에.',
   keywords: '한영 타자 변환, 영타 한글 변환, 한타 영문 변환, dkssudgktpdy, keyboard converter',
-  openGraph: { title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환', url: 'https://toolhub.ai.kr/keyboard-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환' },
+  openGraph: { title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환', url: 'https://toolhub.ai.kr/keyboard-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/keyboard-converter.png', width: 1200, height: 630, alt: '한영 타자 변환기' }] },
+  twitter: { card: 'summary_large_image', title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환', images: ['https://toolhub.ai.kr/og/keyboard-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/keyboard-converter/' },
 }
 

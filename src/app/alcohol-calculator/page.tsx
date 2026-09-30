@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '혈중알코올 계산기 - 음주 후 BAC 농도 추정 | 툴허브',
   description: '혈중알코올 계산기 - 위드마크 공식으로 음주 후 혈중알코올 농도(BAC)를 추정합니다. 소주, 맥주, 와인 등 주류별 계산, 음주운전 기준 확인.',
   keywords: '혈중알코올 계산기, 음주 측정, BAC 계산, 혈중알코올 농도, 음주운전 기준, 위드마크 공식',
-  openGraph: { title: '혈중알코올 계산기 | 툴허브', description: '음주 후 혈중알코올 농도 추정', url: 'https://toolhub.ai.kr/alcohol-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '혈중알코올 계산기 | 툴허브', description: '음주 후 BAC 농도 추정' },
+  openGraph: { title: '혈중알코올 계산기 | 툴허브', description: '음주 후 혈중알코올 농도 추정', url: 'https://toolhub.ai.kr/alcohol-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/alcohol-calculator.png', width: 1200, height: 630, alt: '혈중알코올 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '혈중알코올 계산기 | 툴허브', description: '음주 후 BAC 농도 추정', images: ['https://toolhub.ai.kr/og/alcohol-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/alcohol-calculator/' },
 }
 

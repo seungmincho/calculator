@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '색약 테스트 - 색각 이상 검사, 이시하라 테스트 | 툴허브',
   description: '색약 테스트 - 이시하라 색각 검사를 통해 색각 이상 여부를 확인합니다. 적녹색약, 청황색약 판별.',
   keywords: '색약 테스트, 색맹 검사, 색각 이상, color blind test, 이시하라 테스트',
-  openGraph: { title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)' },
+  openGraph: { title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/color-blind-test.png', width: 1200, height: 630, alt: '색약 테스트' }] },
+  twitter: { card: 'summary_large_image', title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', images: ['https://toolhub.ai.kr/og/color-blind-test.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/color-blind-test/' },
 }
 

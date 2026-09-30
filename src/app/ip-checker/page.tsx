@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '내 IP 주소 확인 - 공인 IP, 위치, ISP 정보 조회 | 툴허브',
   description: '내 IP 주소 확인 - 공인 IP 주소, 위치 정보, ISP, 네트워크 정보를 한눈에 확인하세요. VPN 연결 확인, 서버 설정 시 유용합니다.',
   keywords: '내 아이피 확인, 내 IP 주소, IP 주소 조회, my ip address, 공인 IP 확인, 아이피 확인',
-  openGraph: { title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치, ISP 정보 조회', url: 'https://toolhub.ai.kr/ip-checker', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치 정보 확인' },
+  openGraph: { title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치, ISP 정보 조회', url: 'https://toolhub.ai.kr/ip-checker', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/ip-checker.png', width: 1200, height: 630, alt: '내 IP 주소 확인' }] },
+  twitter: { card: 'summary_large_image', title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치 정보 확인', images: ['https://toolhub.ai.kr/og/ip-checker.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/ip-checker/' },
 }
 

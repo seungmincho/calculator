@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/image-editor.png', width: 1200, height: 630, alt: '이미지 편집기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '이미지 편집기 | 툴허브',
     description: '브라우저에서 바로 이미지를 편집하고 다운로드하세요',
+    images: ['https://toolhub.ai.kr/og/image-editor.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/image-editor/',

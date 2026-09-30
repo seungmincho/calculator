@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-selection-sort.png', width: 1200, height: 630, alt: '선택정렬 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '선택정렬 시각화',
     description: '정렬 알고리즘 단계별 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-selection-sort.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/selection-sort',

@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-radix-sort.png', width: 1200, height: 630, alt: '래딕스정렬 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '래딕스정렬 시각화',
     description: '자릿수별 버킷 정렬 알고리즘 단계별 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-radix-sort.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/radix-sort',

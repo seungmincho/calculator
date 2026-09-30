@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '서명 생성기 - 전자 서명 만들기, 이미지 다운로드 | 툴허브',
   description: '서명 생성기 - 마우스나 터치로 전자 서명을 생성하고 PNG/SVG 이미지로 다운로드합니다. 투명 배경 지원.',
   keywords: '서명 생성기, 전자 서명, e-signature generator, 서명 이미지, 서명 만들기',
-  openGraph: { title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드' },
+  openGraph: { title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/signature-generator.png', width: 1200, height: 630, alt: '서명 생성기' }] },
+  twitter: { card: 'summary_large_image', title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', images: ['https://toolhub.ai.kr/og/signature-generator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/signature-generator/' },
 }
 

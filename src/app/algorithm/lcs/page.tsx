@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-lcs.png', width: 1200, height: 630, alt: 'LCS 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'LCS 시각화',
     description: '최장 공통 부분수열 DP 단계별 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-lcs.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/lcs',

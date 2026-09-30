@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-hash-table.png', width: 1200, height: 630, alt: '해시테이블 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '해시테이블 시각화',
     description: '해시 충돌 해결 방법을 단계별로 시각화',
+    images: ['https://toolhub.ai.kr/og/algorithm-hash-table.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/hash-table',

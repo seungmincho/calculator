@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/tips.png', width: 1200, height: 630, alt: '금융 꿀팁 모음' }],
   },
   robots: {
     index: true,

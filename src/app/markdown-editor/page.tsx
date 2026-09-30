@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/markdown-editor.png', width: 1200, height: 630, alt: '마크다운 에디터' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '마크다운 에디터 - 실시간 미리보기 | 툴허브',
     description: '실시간 분할 화면으로 마크다운을 편집하고 미리보세요.',
+    images: ['https://toolhub.ai.kr/og/markdown-editor.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/markdown-editor/',

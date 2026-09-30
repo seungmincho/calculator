@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/lotto-tax.png', width: 1200, height: 630, alt: '로또 당첨금 세금 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '로또 당첨금 세금 계산기',
     description: '로또·복권 당첨금 세금 자동 계산, 실수령액 확인',
+    images: ['https://toolhub.ai.kr/og/lotto-tax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/lotto-tax',

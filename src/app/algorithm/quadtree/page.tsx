@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-quadtree.png', width: 1200, height: 630, alt: '쿼드트리 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '쿼드트리 시각화',
     description: '공간 분할 자료구조의 원리와 범위 검색',
+    images: ['https://toolhub.ai.kr/og/algorithm-quadtree.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/quadtree',

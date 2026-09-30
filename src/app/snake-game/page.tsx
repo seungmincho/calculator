@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/snake-game.png', width: 1200, height: 630, alt: '스네이크 게임' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '스네이크 게임',
     description: '클래식 뱀 게임 - 3가지 모드, 4단계 난이도',
+    images: ['https://toolhub.ai.kr/og/snake-game.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/snake-game/',

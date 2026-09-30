@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/coding-patterns.png', width: 1200, height: 630, alt: '코딩 테스트 패턴' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '코딩 테스트 패턴 - 15개 핵심 패턴',
     description: '15개 코딩 테스트 핵심 패턴으로 알고리즘 문제 풀이 실력을 높이세요.',
+    images: ['https://toolhub.ai.kr/og/coding-patterns.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/coding-patterns' },
 }

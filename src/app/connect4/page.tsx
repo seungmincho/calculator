@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/connect4',
     type: 'website',
     siteName: '툴허브',
+    images: [{ url: 'https://toolhub.ai.kr/og/connect4.png', width: 1200, height: 630, alt: '온라인 커넥트4' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/connect4/'

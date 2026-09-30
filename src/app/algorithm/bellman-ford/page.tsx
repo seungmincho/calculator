@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-bellman-ford.png', width: 1200, height: 630, alt: '벨만-포드 최단경로 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '벨만-포드 최단경로 시각화',
     description: '음수 가중치 최단경로 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-bellman-ford.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/bellman-ford',

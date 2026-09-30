@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/moving-cost.png', width: 1200, height: 630, alt: '이사 비용 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '이사 비용 계산기 | 툴허브',
     description: '포장이사, 일반이사, 반포장이사 견적 비교',
+    images: ['https://toolhub.ai.kr/og/moving-cost.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/moving-cost/',

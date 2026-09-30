@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cs-hub.png', width: 1200, height: 630, alt: 'CS 학습 허브' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CS 학습 허브 - 올인원 CS 학습 플랫폼',
     description: '퀴즈·용어사전·면접·알고리즘·시각화 통합 CS 학습 대시보드',
+    images: ['https://toolhub.ai.kr/og/cs-hub.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cs-hub',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/fuel-calculator.png', width: 1200, height: 630, alt: '유류비 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '유류비 계산기 - 회사 업무용 차량 연료비 정산',
     description: '차종별 연비와 실시간 유가로 정확한 유류비를 계산하세요.',
+    images: ['https://toolhub.ai.kr/og/fuel-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/fuel-calculator/',

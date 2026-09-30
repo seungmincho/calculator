@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/unit-converter',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/unit-converter.png', width: 1200, height: 630, alt: '단위 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '단위 변환기 - 길이, 무게, 온도, CSS 단위 변환',
     description: '길이, 무게, 온도, 면적, 부피, 데이터, CSS 단위를 변환합니다. px/rem/em 변환, 평수 계산 등 실용적인 단위 변환 기능.',
+    images: ['https://toolhub.ai.kr/og/unit-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/unit-converter/',

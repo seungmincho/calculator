@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cs-dictionary.png', width: 1200, height: 630, alt: 'CS 용어 사전' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CS 용어 사전 - 200+ 핵심 용어',
     description: '10개 분야 200+ 컴퓨터 과학 핵심 용어를 검색하고 학습하세요.',
+    images: ['https://toolhub.ai.kr/og/cs-dictionary.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cs-dictionary',

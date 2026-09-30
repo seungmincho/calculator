@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/inquiry.png', width: 1200, height: 630, alt: '문의/건의하기' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/inquiry',

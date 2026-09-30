@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cron-tester.png', width: 1200, height: 630, alt: 'Cron 표현식 테스터' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Cron 표현식 테스터 - 크론 스케줄 검증 및 분석 도구',
     description: 'Cron 표현식을 실시간으로 테스트하고 분석하세요.',
+    images: ['https://toolhub.ai.kr/og/cron-tester.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cron-tester/',

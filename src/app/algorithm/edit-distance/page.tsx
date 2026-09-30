@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-edit-distance.png', width: 1200, height: 630, alt: '편집 거리(Levenshtein) 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '편집 거리 시각화',
     description: 'Levenshtein Distance DP 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-edit-distance.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/edit-distance',

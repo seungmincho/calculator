@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/parental-leave.png', width: 1200, height: 630, alt: '육아휴직급여 계산기 2026' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '육아휴직급여 계산기 2026 | 툴허브',
     description: '2025년 6+6 부모육아휴직제 반영 육아휴직급여 계산',
+    images: ['https://toolhub.ai.kr/og/parental-leave.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/parental-leave/',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/yaml-json-converter.png', width: 1200, height: 630, alt: 'YAML ↔ JSON 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'YAML ↔ JSON 변환기 | 툴허브',
     description: 'YAML과 JSON을 실시간으로 상호 변환. 파일 업로드, 다운로드 지원.',
+    images: ['https://toolhub.ai.kr/og/yaml-json-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/yaml-json-converter/',

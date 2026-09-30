@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-bfs-dfs.png', width: 1200, height: 630, alt: 'BFS/DFS 탐색 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'BFS/DFS 탐색 시각화',
     description: '너비우선·깊이우선 탐색 비교',
+    images: ['https://toolhub.ai.kr/og/algorithm-bfs-dfs.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/bfs-dfs',

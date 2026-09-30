@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '컴퓨터 소비전력 계산기 - PC 전기세·월 전기요금 | 툴허브',
   description: 'CPU·GPU·모니터 등 부품별 소비전력으로 PC 총 전력(W)과 하루 사용시간 기준 월·연간 전기요금을 계산. 게이밍 PC·사무용 PC·24시간 가동 전기세 비교.',
   keywords: '컴퓨터 전기세, PC 전기요금, 소비전력 계산, GPU 전력, CPU 전력, 전기요금 계산기, 게이밍 PC 전기세',
-  openGraph: { title: '컴퓨터 전기세 계산기 | 툴허브', description: 'PC 전력 소비·전기요금 계산', url: 'https://toolhub.ai.kr/pc-electricity', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '컴퓨터 전기세 계산기 | 툴허브' },
+  openGraph: { title: '컴퓨터 전기세 계산기 | 툴허브', description: 'PC 전력 소비·전기요금 계산', url: 'https://toolhub.ai.kr/pc-electricity', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/pc-electricity.png', width: 1200, height: 630, alt: '컴퓨터 전기세 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '컴퓨터 전기세 계산기 | 툴허브', images: ['https://toolhub.ai.kr/og/pc-electricity.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/pc-electricity/' },
 }
 

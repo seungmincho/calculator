@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-sat.png', width: 1200, height: 630, alt: 'SAT 충돌감지 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SAT 충돌감지 시각화',
     description: '분리축 정리로 두 다각형 충돌 판정',
+    images: ['https://toolhub.ai.kr/og/algorithm-sat.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/sat',

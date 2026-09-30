@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/json-csv-converter.png', width: 1200, height: 630, alt: 'JSON ↔ CSV 변환기' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/json-csv-converter/',

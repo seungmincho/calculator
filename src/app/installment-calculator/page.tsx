@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '카드 할부 계산기 - 할부 수수료, 월 납부금 계산 | 툴허브',
   description: '카드 할부 계산기 - 신용카드 할부 결제 시 월 납부금액과 수수료를 계산합니다. 무이자 할부, 납부 스케줄 제공.',
   keywords: '카드 할부 계산기, 할부 수수료 계산, 할부 이자 계산, installment calculator, 월 납부금',
-  openGraph: { title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산', url: 'https://toolhub.ai.kr/installment-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산' },
+  openGraph: { title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산', url: 'https://toolhub.ai.kr/installment-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/installment-calculator.png', width: 1200, height: 630, alt: '카드 할부 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산', images: ['https://toolhub.ai.kr/og/installment-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/installment-calculator/' },
 }
 

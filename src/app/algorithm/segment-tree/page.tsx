@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     description: '세그먼트 트리 빌드·쿼리·업데이트를 단계별 애니메이션으로 학습하세요.',
     url: 'https://toolhub.ai.kr/algorithm/segment-tree',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-segment-tree.png', width: 1200, height: 630, alt: '세그먼트 트리 시각화' }],
   },
-  twitter: { card: 'summary_large_image', title: '세그먼트 트리 시각화', description: '구간 합/최솟값/최댓값 쿼리 O(log n) 단계별 시각화' },
+  twitter: { card: 'summary_large_image', title: '세그먼트 트리 시각화', description: '구간 합/최솟값/최댓값 쿼리 O(log n) 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-segment-tree.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/algorithm/segment-tree' },
 }
 

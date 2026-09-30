@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/mbti-compatibility.png', width: 1200, height: 630, alt: 'MBTI 궁합 분석 16×16' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'MBTI 궁합 분석 | 툴허브',
     description: 'MBTI 유형별 연애 궁합을 상세히 분석합니다',
+    images: ['https://toolhub.ai.kr/og/mbti-compatibility.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/mbti-compatibility/',

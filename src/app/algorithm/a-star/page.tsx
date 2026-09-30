@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-a-star.png', width: 1200, height: 630, alt: 'A* 경로탐색 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'A* 경로탐색 시각화',
     description: '휴리스틱 기반 최단경로 탐색 알고리즘',
+    images: ['https://toolhub.ai.kr/og/algorithm-a-star.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/a-star',

@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/interior-calculator.png', width: 1200, height: 630, alt: '인테리어 면적 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '인테리어 면적 계산기 | 툴허브',
     description: '방 치수 입력만으로 페인트·벽지·타일 소요량과 비용을 즉시 계산',
+    images: ['https://toolhub.ai.kr/og/interior-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/interior-calculator/',

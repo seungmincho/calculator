@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/memory-management.png', width: 1200, height: 630, alt: '메모리 관리 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '메모리 관리 시각화 - FIFO, LRU, LFU, Optimal 비교',
     description: '페이지 교체 알고리즘을 프레임 테이블로 시각화하고 비트/폴트 통계를 비교하세요.',
+    images: ['https://toolhub.ai.kr/og/memory-management.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/memory-management/',

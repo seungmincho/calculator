@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/gpa-converter.png', width: 1200, height: 630, alt: '학점 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '학점 변환기 - 4.5·4.3·4.0·백분율 | 툴허브',
     description: '학점을 전 스케일로 한 번에 변환',
+    images: ['https://toolhub.ai.kr/og/gpa-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/gpa-converter/',

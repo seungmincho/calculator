@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/unemployment-benefit.png', width: 1200, height: 630, alt: '실업급여 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '실업급여 계산기',
     description: '고용보험 기준 실업급여 수급액 자동계산',
+    images: ['https://toolhub.ai.kr/og/unemployment-benefit.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/unemployment-benefit/',

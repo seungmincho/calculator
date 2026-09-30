@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/retirement-calculator',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/retirement-calculator.png',
         width: 1200,
         height: 630,
         alt: '퇴직금 계산기',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '퇴직금 계산기 | 툴허브',
     description: '평균임금·근무기간 입력으로 실수령 퇴직금과 세금 내역을 한눈에 확인',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/retirement-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/retirement-calculator/',

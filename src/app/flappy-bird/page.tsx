@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/flappy-bird.png', width: 1200, height: 630, alt: '플래피버드' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '플래피버드',
     description: '파이프 사이를 날아가는 캐주얼 게임',
+    images: ['https://toolhub.ai.kr/og/flappy-bird.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/flappy-bird/',

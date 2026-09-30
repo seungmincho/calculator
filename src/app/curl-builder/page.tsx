@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/curl-builder.png', width: 1200, height: 630, alt: 'cURL Command Builder' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'cURL Command Builder | 툴허브',
     description: 'cURL 명령어 생성 & 6가지 언어 코드 변환',
+    images: ['https://toolhub.ai.kr/og/curl-builder.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/curl-builder/',

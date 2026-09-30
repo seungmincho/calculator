@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cs-visualizer.png', width: 1200, height: 630, alt: 'CS 개념 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CS 개념 시각화 | 툴허브',
     description: '10개 CS 핵심 개념을 인터랙티브 시각화로 학습',
+    images: ['https://toolhub.ai.kr/og/cs-visualizer.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cs-visualizer',

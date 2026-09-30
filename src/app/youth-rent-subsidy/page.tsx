@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/youth-rent-subsidy.png', width: 1200, height: 630, alt: '청년월세지원 자격 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '청년월세지원 자격 계산기',
     description: '월 최대 20만원, 12개월 지원. 자격 여부를 바로 확인하세요.',
+    images: ['https://toolhub.ai.kr/og/youth-rent-subsidy.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/youth-rent-subsidy',

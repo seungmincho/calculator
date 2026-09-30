@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/bmi-calculator',
     siteName: '툴허브',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/bmi-calculator.png', width: 1200, height: 630, alt: 'BMI 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'BMI 계산기 - 체질량지수 계산 | 툴허브',
     description: 'BMI(체질량지수)를 계산하여 건강 상태를 확인해보세요.',
+    images: ['https://toolhub.ai.kr/og/bmi-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/bmi-calculator/',

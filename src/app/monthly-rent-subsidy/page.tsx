@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     type: 'website',
     images: [{
-      url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+      url: 'https://toolhub.ai.kr/og/monthly-rent-subsidy.png',
       width: 1200,
       height: 630,
       alt: 'LH 월세지원금 계산기'
@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'LH 월세지원금 계산기',
     description: '청년, 신혼부부, 일반가구 월세지원금을 정확하게 계산해보세요',
+    images: ['https://toolhub.ai.kr/og/monthly-rent-subsidy.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/monthly-rent-subsidy/',

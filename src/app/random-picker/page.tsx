@@ -15,8 +15,9 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/random-picker.png', width: 1200, height: 630, alt: '랜덤 뽑기' }],
   },
-  twitter: { card: 'summary_large_image', title: '랜덤 뽑기 | 툴허브', description: '랜덤 숫자, 이름 뽑기, 팀 나누기' },
+  twitter: { card: 'summary_large_image', title: '랜덤 뽑기 | 툴허브', description: '랜덤 숫자, 이름 뽑기, 팀 나누기', images: ['https://toolhub.ai.kr/og/random-picker.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/random-picker/' },
 }
 

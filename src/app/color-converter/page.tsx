@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/color-converter',
     locale: 'ko_KR',
+    images: [{ url: 'https://toolhub.ai.kr/og/color-converter.png', width: 1200, height: 630, alt: '색상 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환',
     description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
+    images: ['https://toolhub.ai.kr/og/color-converter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/color-converter/',

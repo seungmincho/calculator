@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-convex-hull.png', width: 1200, height: 630, alt: '볼록 껍질 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '볼록 껍질 시각화',
     description: '계산기하학 알고리즘 단계별 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-convex-hull.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/convex-hull',

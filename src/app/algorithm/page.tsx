@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm.png', width: 1200, height: 630, alt: '알고리즘 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '알고리즘 시각화 | 툴허브',
     description: '인터랙티브 알고리즘 교육 도구',
+    images: ['https://toolhub.ai.kr/og/algorithm.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm',

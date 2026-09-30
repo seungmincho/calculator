@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/jeonse-checklist.png', width: 1200, height: 630, alt: '전세사기 체크리스트' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '전세사기 체크리스트',
     description: '전세 계약 전 반드시 확인해야 할 16가지 체크리스트. 전세사기 예방을 위한 단계별 안전 점검.',
+    images: ['https://toolhub.ai.kr/og/jeonse-checklist.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/jeonse-checklist',

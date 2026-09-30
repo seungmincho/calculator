@@ -29,11 +29,13 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/barcode-generator',
+    images: [{ url: 'https://toolhub.ai.kr/og/barcode-generator.png', width: 1200, height: 630, alt: '바코드 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '바코드 생성기 | 툴허브',
-    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. 제품 관리, 재고 관리에 최적화'
+    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. 제품 관리, 재고 관리에 최적화',
+    images: ['https://toolhub.ai.kr/og/barcode-generator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/barcode-generator/'

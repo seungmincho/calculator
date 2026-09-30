@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/csat-grade.png', width: 1200, height: 630, alt: '수능 등급컷 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '수능 등급컷 계산기 | 툴허브',
     description: '수능 과목별 등급 판정 및 등급컷 확인',
+    images: ['https://toolhub.ai.kr/og/csat-grade.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/csat-grade/',

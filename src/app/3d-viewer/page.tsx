@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/3d-viewer.png', width: 1200, height: 630, alt: '3D 변환기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '3D 변환기 - 변환, 최적화, 프린팅 분석',
     description: 'GLB, OBJ, STL 변환 및 3D 프린팅 예상 시간/재료 분석',
+    images: ['https://toolhub.ai.kr/og/3d-viewer.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/3d-viewer/',

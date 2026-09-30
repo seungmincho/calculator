@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '연차 계산기 - 입사일 기준 연차 일수 계산 | 툴허브',
   description: '연차 계산기 - 입사일을 기준으로 발생한 연차 일수, 잔여 연차, 연차 발생 내역을 계산합니다. 근로기준법 기반 정확한 연차 계산.',
   keywords: '연차 계산기, 연차 일수 계산, 연차 발생, 잔여 연차, annual leave calculator',
-  openGraph: { title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산' },
+  openGraph: { title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/annual-leave.png', width: 1200, height: 630, alt: '연차 계산기' }] },
+  twitter: { card: 'summary_large_image', title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', images: ['https://toolhub.ai.kr/og/annual-leave.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/annual-leave/' },
 }
 

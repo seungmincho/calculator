@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/cpu-scheduling.png', width: 1200, height: 630, alt: 'CPU 스케줄링 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CPU 스케줄링 시각화',
     description: 'FCFS, SJF, SRTF, Round Robin, Priority 스케줄링 알고리즘을 간트 차트로 비교',
+    images: ['https://toolhub.ai.kr/og/cpu-scheduling.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/cpu-scheduling/',

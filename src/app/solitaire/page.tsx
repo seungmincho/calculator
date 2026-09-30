@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/solitaire.png', width: 1200, height: 630, alt: '카드 솔리테어' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '카드 솔리테어',
     description: '클래식 클론다이크 솔리테어 카드 게임',
+    images: ['https://toolhub.ai.kr/og/solitaire.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/solitaire/',

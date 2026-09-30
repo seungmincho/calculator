@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/bonus-calculator.png', width: 1200, height: 630, alt: '성과급 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '성과급 계산기 - 세후 실수령액',
     description: '성과급 세후 실수령액, 비율별 비교, 과세구간 분석',
+    images: ['https://toolhub.ai.kr/og/bonus-calculator.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/bonus-calculator',

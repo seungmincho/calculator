@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/dev-cheatsheet.png', width: 1200, height: 630, alt: '개발자 치트시트' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '개발자 치트시트 - 220개 필수 명령어',
     description: 'Git, Linux, Docker, SQL 등 8개 분야 개발 필수 명령어 모음',
+    images: ['https://toolhub.ai.kr/og/dev-cheatsheet.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/dev-cheatsheet',

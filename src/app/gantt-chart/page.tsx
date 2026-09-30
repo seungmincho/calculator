@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/gantt-chart.png', width: 1200, height: 630, alt: '간트 차트 생성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '간트 차트 생성기',
     description: '프로젝트 일정 시각화 및 진행률 관리',
+    images: ['https://toolhub.ai.kr/og/gantt-chart.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/gantt-chart/',

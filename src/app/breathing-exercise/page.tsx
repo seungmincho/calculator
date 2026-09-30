@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/breathing-exercise.png', width: 1200, height: 630, alt: '호흡 운동 가이드' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '호흡 운동 가이드 | 툴허브',
     description: '4-7-8, 박스 호흡 등 과학적 호흡법으로 스트레스 해소.',
+    images: ['https://toolhub.ai.kr/og/breathing-exercise.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/breathing-exercise/',

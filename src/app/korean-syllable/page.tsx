@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: '한글 초성 추출기 - 자음/모음 분리, 초성 검색 | 툴허브',
   description: '한글 초성 추출기 - 한글 텍스트의 초성, 중성, 종성을 분리합니다. 초성만 추출, 자모 분리, 자모 합치기 기능.',
   keywords: '초성 추출, 한글 자모 분리, 초성 변환, 한글 분리, korean syllable decompose, 자음 모음 분리',
-  openGraph: { title: '한글 초성 추출기 | 툴허브', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '한글 초성 추출기 | 툴허브', description: '한글 초성 추출, 자모 분리' },
+  openGraph: { title: '한글 초성 추출기 | 툴허브', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/korean-syllable.png', width: 1200, height: 630, alt: '한글 초성 추출기' }] },
+  twitter: { card: 'summary_large_image', title: '한글 초성 추출기 | 툴허브', description: '한글 초성 추출, 자모 분리', images: ['https://toolhub.ai.kr/og/korean-syllable.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/korean-syllable/' },
 }
 

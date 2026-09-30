@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/tax-calculator',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og/tax-calculator.png',
         width: 1200,
         height: 630,
         alt: '세금 계산기',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '세금 계산기 - 소득세, 부가세, 양도소득세 | 툴허브',
     description: '한국 기준 소득세, 부가가치세, 양도소득세를 정확하게 계산하세요',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og/tax-calculator.png'],
   },
   alternates: { canonical: 'https://toolhub.ai.kr/tax-calculator/' },
 }

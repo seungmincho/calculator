@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-raycasting.png', width: 1200, height: 630, alt: '레이캐스팅 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '레이캐스팅 시각화',
     description: '2.5D 렌더링 엔진 체험',
+    images: ['https://toolhub.ai.kr/og/algorithm-raycasting.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/raycasting',

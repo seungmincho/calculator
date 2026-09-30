@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/capital-gains-tax.png', width: 1200, height: 630, alt: '양도소득세 계산기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '양도소득세 계산기 | 툴허브',
     description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세, 다주택 중과세율 반영.',
+    images: ['https://toolhub.ai.kr/og/capital-gains-tax.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/capital-gains-tax/',

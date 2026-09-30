@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/algorithm-prim.png', width: 1200, height: 630, alt: '프림 MST 시각화' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '프림 MST 시각화',
     description: '최소 신장 트리 알고리즘 학습',
+    images: ['https://toolhub.ai.kr/og/algorithm-prim.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/algorithm/prim',

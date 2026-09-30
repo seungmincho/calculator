@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/battleship',
     type: 'website',
     siteName: '툴허브',
+    images: [{ url: 'https://toolhub.ai.kr/og/battleship.png', width: 1200, height: 630, alt: '온라인 배틀십' }],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/battleship/'
