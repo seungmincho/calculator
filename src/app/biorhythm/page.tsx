@@ -32,20 +32,21 @@ export default function BiorhythmPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '바이오리듬 계산기',
-    description: '생년월일 기반 바이오리듬 계산 - 신체·감성·지성 리듬 차트, 위험일, 호환성 분석',
+    description: '생년월일 기반 바이오리듬 계산 - 신체·감성·지성 리듬 차트, 위험일, 궁합(리듬 일치도)',
     url: 'https://toolhub.ai.kr/biorhythm/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '신체(23일)·감성(28일)·지성(33일) 바이오리듬 계산',
-      '인터랙티브 라인 차트',
-      '위험일(영점 통과일) 자동 표시',
-      '종합 컨디션 점수',
-      '캘린더 뷰로 한 달 리듬 확인',
-      '두 사람 호환성 분석',
-      'URL 공유 지원',
+      '신체(23일)·감성(28일)·지성(33일)·직관(38일) 바이오리듬 계산',
+      '기준일 앞뒤 15일 라인 차트',
+      '위험일(영점 통과일) 알림',
+      '종합 점수와 한 줄 해석',
+      '이번 달 좋은 날·쉬어갈 날',
+      '두 사람 궁합(리듬 일치도)',
+      '가족·친구 생년월일 저장',
+      '결과 이미지·링크 공유',
     ],
   }
 
@@ -66,7 +67,7 @@ export default function BiorhythmPage() {
         name: '바이오리듬의 위험일이란?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '위험일은 바이오리듬 곡선이 0을 지나는 날로, 리듬이 양에서 음으로 또는 음에서 양으로 전환되는 불안정한 시점입니다. 이 날에는 주의력이 떨어질 수 있다고 합니다.',
+          text: '위험일은 바이오리듬 곡선이 0을 지나는 날로, 리듬이 양에서 음으로 또는 음에서 양으로 바뀌는 시점입니다. 이론상 불안정한 날로 보지만 실제 사고·실수와의 관련은 확인되지 않았습니다.',
         },
       },
       {

@@ -1,1180 +1,339 @@
 'use client'
 
 /**
- * YearEndTaxCalculator - 연말정산 계산기 (2025년 귀속 / 2026년 신고)
- *
- * Translation namespace: yearEndTaxCalc
- *
- * === Used translation keys ===
- *
- * -- Top-level --
- * t('title')
- * t('description')
- * t('disclaimer')
- * t('calculate')
- * t('reset')
- * t('share')
- * t('copied')
- * t('won')
- * t('percent')
- *
- * -- Tabs --
- * t('tab.basic')
- * t('tab.incomeDeduction')
- * t('tab.taxCredit')
- * t('tab.result')
- *
- * -- Basic info tab --
- * t('grossSalary')
- * t('grossSalaryPlaceholder')
- * t('nonTaxableIncome')
- * t('mealAllowance')
- * t('mealAllowanceDesc')
- * t('drivingAllowance')
- * t('drivingAllowanceDesc')
- * t('childcareAllowance')
- * t('childcareAllowanceDesc')
- * t('dependentCount')
- * t('dependentCountDesc')
- * t('prepaidTax')
- * t('prepaidTaxDesc')
- *
- * -- Income deduction tab --
- * t('nationalPension')
- * t('nationalPensionDesc')
- * t('healthInsurance')
- * t('healthInsuranceDesc')
- * t('employmentInsurance')
- * t('employmentInsuranceDesc')
- * t('housingSubscription')
- * t('housingSubscriptionDesc')
- * t('creditCard')
- * t('creditCardDesc')
- * t('debitCard')
- * t('debitCardDesc')
- * t('cashReceipt')
- * t('cashReceiptDesc')
- * t('traditionalMarket')
- * t('traditionalMarketDesc')
- * t('publicTransport')
- * t('publicTransportDesc')
- * t('cardDeductionInfo')
- *
- * -- Tax credit tab --
- * t('childCount')
- * t('childCountDesc')
- * t('pensionSavings')
- * t('pensionSavingsDesc')
- * t('irp')
- * t('irpDesc')
- * t('insurancePremium')
- * t('insurancePremiumDesc')
- * t('medicalExpense')
- * t('medicalExpenseDesc')
- * t('medicalExpenseSelf')
- * t('medicalExpenseElderly')
- * t('medicalExpenseGeneral')
- * t('educationExpense')
- * t('educationExpenseDesc')
- * t('educationSelf')
- * t('educationChild')
- * t('educationChildLevel')
- * t('educationLevelElementary')
- * t('educationLevelUniversity')
- * t('donation')
- * t('donationDesc')
- * t('monthlyRent')
- * t('monthlyRentDesc')
- * t('marriageTaxCredit')
- * t('marriageTaxCreditDesc')
- *
- * -- Result tab (steps) --
- * t('step1.title')
- * t('step1.grossSalary')
- * t('step1.nonTaxable')
- * t('step1.totalSalary')
- *
- * t('step2.title')
- * t('step2.earnedIncomeDeduction')
- * t('step2.earnedIncome')
- *
- * t('step3.title')
- * t('step3.personalDeduction')
- * t('step3.nationalPension')
- * t('step3.healthEmployment')
- * t('step3.housingSubscription')
- * t('step3.cardDeduction')
- * t('step3.totalDeduction')
- * t('step3.taxBase')
- *
- * t('step4.title')
- * t('step4.taxRate')
- * t('step4.calculatedTax')
- *
- * t('step5.title')
- * t('step5.earnedIncomeCredit')
- * t('step5.childCredit')
- * t('step5.pensionCredit')
- * t('step5.insuranceCredit')
- * t('step5.medicalCredit')
- * t('step5.educationCredit')
- * t('step5.donationCredit')
- * t('step5.rentCredit')
- * t('step5.marriageCredit')
- * t('step5.totalCredit')
- *
- * t('step6.title')
- * t('step6.determinedTax')
- * t('step6.localIncomeTax')
- * t('step6.totalTax')
- * t('step6.prepaidTax')
- * t('step6.refundAmount')
- * t('step6.additionalPayment')
- *
- * t('result.refund')
- * t('result.additionalPayment')
- * t('result.breakeven')
- *
- * t('detailToggle')
+ * 연말정산 계산기 — 2026년 귀속 (2027년 1~2월 정산). 계산 로직: src/utils/yearEndTax.ts
+ * Translation namespace: yearEndTaxCalc (새 UI 키는 'yt.*', 가이드는 GuideSection이 'guide.*' 사용)
  */
 
-import { useState, useCallback, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Calculator, Share2, Check, ChevronRight, RotateCcw, BookOpen, AlertTriangle } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import { calculateNetSalary } from '@/utils/netSalary'
+import { calc, tips, autoInsurance, DEFAULT_INPUT, TAX_YEAR, type YetInput } from '@/utils/yearEndTax'
 
-// ────────────────────────────────────────
-// Types
-// ────────────────────────────────────────
-type TabId = 'basic' | 'incomeDeduction' | 'taxCredit' | 'result'
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const man = (n: number) => (Math.round(n / 10_000)).toLocaleString('ko-KR')
+const digits = (v: string) => v.replace(/[^0-9]/g, '').slice(0, 11)
 
-interface CalcResult {
-  // Step 1
-  grossSalary: number
-  nonTaxable: number
-  totalSalary: number
-  // Step 2
-  earnedIncomeDeduction: number
-  earnedIncome: number
-  // Step 3
-  personalDeduction: number
-  nationalPensionDeduction: number
-  healthEmploymentDeduction: number
-  housingSubscriptionDeduction: number
-  cardDeduction: number
-  cardDeductionDetail: {
-    minSpend: number
-    creditUsed: number
-    debitUsed: number
-    cashUsed: number
-    marketUsed: number
-    transportUsed: number
-    basicLimit: number
-    additionalLimit: number
-    total: number
-  }
-  totalIncomeDeduction: number
-  taxBase: number
-  // Step 4
-  taxRate: string
-  calculatedTax: number
-  // Step 5
-  earnedIncomeCredit: number
-  childCredit: number
-  pensionCredit: number
-  insuranceCredit: number
-  medicalCredit: number
-  educationCredit: number
-  donationCredit: number
-  rentCredit: number
-  marriageCredit: number
-  totalTaxCredit: number
-  // Step 6
-  determinedTax: number
-  localIncomeTax: number
-  totalTax: number
-  prepaidTax: number
-  refundAmount: number
-}
+type NumKey = Exclude<{ [K in keyof YetInput]: YetInput[K] extends number | undefined ? K : never }[keyof YetInput], undefined>
+type BoolKey = 'spouse' | 'marriage' | 'sme'
 
-// ────────────────────────────────────────
-// Helpers
-// ────────────────────────────────────────
-const parseNum = (v: string): number => {
-  const n = parseInt(v.replace(/,/g, ''), 10)
-  return isNaN(n) ? 0 : n
-}
+// URL 키 (개인 식별 정보 없음, 숫자만)
+const NUM_PARAMS: [NumKey, string][] = [
+  ['salary', 's'], ['children', 'ch'], ['kidsUnder8', 'u8'], ['others', 'ot'], ['elderly', 'el'], ['disabled', 'dis'], ['birth', 'bi'],
+  ['housingSub', 'hs'], ['leaseLoan', 'll'], ['credit', 'cc'], ['debit', 'dc'], ['culture', 'cu'], ['market', 'mk'], ['transport', 'tr'],
+  ['pensionSavings', 'ps'], ['irp', 'irp'], ['insurance', 'in'], ['special', 'ms'], ['general', 'mg'], ['premature', 'mp'], ['infertility', 'mi'],
+  ['eduSelf', 'es'], ['eduSchool', 'esc'], ['eduUniv', 'eu'], ['donation', 'dn'], ['hometown', 'ht'], ['rent', 'mr'],
+]
+const BOOL_PARAMS: [BoolKey, string][] = [['spouse', 'sp'], ['marriage', 'mc'], ['sme', 'sme']]
+// 수동 입력(비우면 자동): 국민연금·건강고용보험·기납부세액
+const OPT_PARAMS = [['pension', 'np'], ['healthEmp', 'he'], ['prepaid', 'pp']] as const
+type OptKey = (typeof OPT_PARAMS)[number][0]
 
-const fmtNum = (n: number): string => n.toLocaleString('ko-KR')
-
-const fmtInput = (v: string): string => {
-  const num = v.replace(/[^0-9]/g, '')
-  if (!num) return ''
-  return parseInt(num, 10).toLocaleString('ko-KR')
-}
-
-// ────────────────────────────────────────
-// Calculation engine
-// ────────────────────────────────────────
-function calculateEarnedIncomeDeduction(totalSalary: number): number {
-  let d = 0
-  if (totalSalary <= 5_000_000) {
-    d = totalSalary * 0.7
-  } else if (totalSalary <= 15_000_000) {
-    d = 3_500_000 + (totalSalary - 5_000_000) * 0.4
-  } else if (totalSalary <= 45_000_000) {
-    d = 7_500_000 + (totalSalary - 15_000_000) * 0.15
-  } else if (totalSalary <= 100_000_000) {
-    d = 12_000_000 + (totalSalary - 45_000_000) * 0.05
-  } else {
-    d = 14_750_000 + (totalSalary - 100_000_000) * 0.02
-  }
-  return Math.min(Math.floor(d), 20_000_000)
-}
-
-function calculateCardDeduction(
-  totalSalary: number,
-  credit: number,
-  debit: number,
-  cash: number,
-  market: number,
-  transport: number
-): CalcResult['cardDeductionDetail'] {
-  const minSpend = Math.floor(totalSalary * 0.25)
-  const totalSpend = credit + debit + cash + market + transport
-
-  let remaining = Math.max(0, totalSpend - minSpend)
-  if (remaining <= 0) {
-    return { minSpend, creditUsed: 0, debitUsed: 0, cashUsed: 0, marketUsed: 0, transportUsed: 0, basicLimit: 0, additionalLimit: 0, total: 0 }
-  }
-
-  // Apply spending in order: credit(15%) → debit(30%) → cash(30%) → market(40%) → transport(80%)
-  // First consume minimum spend from credit card first
-  let creditRemaining = credit
-  let debitRemaining = debit
-  let cashRemaining = cash
-  let marketRemaining = market
-  let transportRemaining = transport
-
-  let toConsume = minSpend
-  // Consume minimum spend from each in order
-  const consumeFrom = (available: number): number => {
-    const consumed = Math.min(available, toConsume)
-    toConsume -= consumed
-    return available - consumed
-  }
-  creditRemaining = consumeFrom(creditRemaining)
-  debitRemaining = consumeFrom(debitRemaining)
-  cashRemaining = consumeFrom(cashRemaining)
-  marketRemaining = consumeFrom(marketRemaining)
-  transportRemaining = consumeFrom(transportRemaining)
-
-  // Calculate deductions from remaining amounts
-  const creditDeduction = Math.floor(creditRemaining * 0.15)
-  const debitDeduction = Math.floor(debitRemaining * 0.30)
-  const cashDeduction = Math.floor(cashRemaining * 0.30)
-  const marketDeduction = Math.floor(marketRemaining * 0.40)
-  const transportDeduction = Math.floor(transportRemaining * 0.80)
-
-  const basicDeductionAmount = creditDeduction + debitDeduction + cashDeduction
-  const basicLimit = totalSalary <= 70_000_000 ? 3_000_000 : 2_500_000
-  const basicApplied = Math.min(basicDeductionAmount, basicLimit)
-
-  const additionalMarket = Math.min(marketDeduction, 1_000_000)
-  const additionalTransport = Math.min(transportDeduction, 1_000_000)
-  const additionalLimit = additionalMarket + additionalTransport
-
-  return {
-    minSpend,
-    creditUsed: creditDeduction,
-    debitUsed: debitDeduction,
-    cashUsed: cashDeduction,
-    marketUsed: marketDeduction,
-    transportUsed: transportDeduction,
-    basicLimit: basicApplied,
-    additionalLimit,
-    total: basicApplied + additionalLimit,
-  }
-}
-
-function calculateIncomeTax(taxBase: number): { tax: number; rate: string } {
-  if (taxBase <= 0) return { tax: 0, rate: '0%' }
-  if (taxBase <= 14_000_000) return { tax: Math.floor(taxBase * 0.06), rate: '6%' }
-  if (taxBase <= 50_000_000) return { tax: Math.floor(taxBase * 0.15 - 1_260_000), rate: '15%' }
-  if (taxBase <= 88_000_000) return { tax: Math.floor(taxBase * 0.24 - 5_760_000), rate: '24%' }
-  if (taxBase <= 150_000_000) return { tax: Math.floor(taxBase * 0.35 - 15_440_000), rate: '35%' }
-  if (taxBase <= 300_000_000) return { tax: Math.floor(taxBase * 0.38 - 19_940_000), rate: '38%' }
-  if (taxBase <= 500_000_000) return { tax: Math.floor(taxBase * 0.40 - 25_940_000), rate: '40%' }
-  if (taxBase <= 1_000_000_000) return { tax: Math.floor(taxBase * 0.42 - 35_940_000), rate: '42%' }
-  return { tax: Math.floor(taxBase * 0.45 - 65_940_000), rate: '45%' }
-}
-
-function calculateEarnedIncomeCredit(calculatedTax: number, totalSalary: number): number {
-  let credit = 0
-  if (calculatedTax <= 1_300_000) {
-    credit = Math.floor(calculatedTax * 0.55)
-  } else {
-    credit = 715_000 + Math.floor((calculatedTax - 1_300_000) * 0.30)
-  }
-
-  let limit = 0
-  if (totalSalary <= 33_000_000) {
-    limit = 740_000
-  } else if (totalSalary <= 70_000_000) {
-    limit = Math.max(Math.min(740_000 - Math.floor((totalSalary - 33_000_000) * 0.008), 740_000), 660_000)
-  } else if (totalSalary <= 120_000_000) {
-    limit = Math.max(Math.min(660_000 - Math.floor((totalSalary - 70_000_000) * 0.5 / 100), 660_000), 500_000)
-  } else {
-    limit = Math.max(Math.min(500_000 - Math.floor((totalSalary - 120_000_000) * 0.5 / 100), 500_000), 200_000)
-  }
-
-  return Math.min(credit, limit)
-}
-
-function runCalculation(inputs: {
-  grossSalary: number
-  mealAllowance: number
-  drivingAllowance: number
-  childcareAllowance: number
-  dependentCount: number
-  prepaidTax: number
-  nationalPension: number
-  healthInsurance: number
-  employmentInsurance: number
-  housingSubscription: number
-  creditCard: number
-  debitCard: number
-  cashReceipt: number
-  traditionalMarket: number
-  publicTransport: number
-  childCount: number
-  pensionSavings: number
-  irp: number
-  insurancePremium: number
-  medicalExpenseSelf: number
-  medicalExpenseElderly: number
-  medicalExpenseGeneral: number
-  educationSelf: number
-  educationChild: number
-  educationChildLevel: 'elementary' | 'university'
-  donation: number
-  monthlyRent: number
-  marriageTaxCredit: boolean
-}): CalcResult {
-  // Step 1: Total salary
-  const nonTaxable = inputs.mealAllowance + inputs.drivingAllowance + inputs.childcareAllowance
-  const totalSalary = Math.max(0, inputs.grossSalary - nonTaxable)
-
-  // Step 2: Earned income deduction
-  const earnedIncomeDeduction = calculateEarnedIncomeDeduction(totalSalary)
-  const earnedIncome = Math.max(0, totalSalary - earnedIncomeDeduction)
-
-  // Step 3: Tax base
-  const personalDeduction = inputs.dependentCount * 1_500_000
-  const nationalPensionDeduction = inputs.nationalPension
-  const healthEmploymentDeduction = inputs.healthInsurance + inputs.employmentInsurance
-  const housingSubscriptionDeduction = Math.min(Math.floor(inputs.housingSubscription * 0.4), 1_200_000)
-  const cardDetail = calculateCardDeduction(
-    totalSalary,
-    inputs.creditCard,
-    inputs.debitCard,
-    inputs.cashReceipt,
-    inputs.traditionalMarket,
-    inputs.publicTransport
-  )
-  const cardDeduction = cardDetail.total
-
-  const totalIncomeDeduction = personalDeduction + nationalPensionDeduction + healthEmploymentDeduction + housingSubscriptionDeduction + cardDeduction
-  const taxBase = Math.max(0, earnedIncome - totalIncomeDeduction)
-
-  // Step 4: Calculated tax
-  const { tax: calculatedTax, rate: taxRate } = calculateIncomeTax(taxBase)
-
-  // Step 5: Tax credits
-  const earnedIncomeCredit = calculateEarnedIncomeCredit(calculatedTax, totalSalary)
-
-  let childCredit = 0
-  if (inputs.childCount === 1) childCredit = 250_000
-  else if (inputs.childCount === 2) childCredit = 550_000
-  else if (inputs.childCount >= 3) childCredit = 550_000 + (inputs.childCount - 2) * 400_000
-
-  // Pension savings + IRP: combined limit 900만
-  const pensionIrpTotal = Math.min(inputs.pensionSavings + inputs.irp, 9_000_000)
-  const pensionRate = totalSalary <= 55_000_000 ? 0.165 : 0.132
-  const pensionCredit = Math.floor(pensionIrpTotal * pensionRate)
-
-  // Insurance premium: 12%, limit 100만
-  const insuranceCredit = Math.floor(Math.min(inputs.insurancePremium, 1_000_000) * 0.12)
-
-  // Medical expenses: excess over 3% of totalSalary × 15%
-  const medicalThreshold = Math.floor(totalSalary * 0.03)
-  const totalMedical = inputs.medicalExpenseSelf + inputs.medicalExpenseElderly + inputs.medicalExpenseGeneral
-  const medicalExcess = Math.max(0, totalMedical - medicalThreshold)
-  // Self + elderly: unlimited, general: 700만 limit
-  const generalMedicalDeductible = Math.min(inputs.medicalExpenseGeneral, 7_000_000)
-  const selfElderlyMedical = inputs.medicalExpenseSelf + inputs.medicalExpenseElderly
-  const medicalDeductibleTotal = selfElderlyMedical + generalMedicalDeductible
-  const medicalDeductibleExcess = Math.max(0, Math.min(medicalExcess, medicalDeductibleTotal - medicalThreshold + Math.max(0, totalMedical - medicalDeductibleTotal)))
-  // Simpler approach: total medical - threshold, then cap general portion
-  const medicalCreditBase = Math.max(0, totalMedical - medicalThreshold)
-  // But general is capped at 700만 within that
-  const generalOverLimit = Math.max(0, inputs.medicalExpenseGeneral - 7_000_000)
-  const adjustedMedicalBase = Math.max(0, medicalCreditBase - generalOverLimit)
-  const medicalCredit = Math.floor(adjustedMedicalBase * 0.15)
-
-  // Education: 15%, self unlimited, child elementary/middle/high 300만, university 900만
-  const educationSelfCredit = Math.floor(inputs.educationSelf * 0.15)
-  const childLimit = inputs.educationChildLevel === 'university' ? 9_000_000 : 3_000_000
-  const educationChildCredit = Math.floor(Math.min(inputs.educationChild, childLimit) * 0.15)
-  const educationCredit = educationSelfCredit + educationChildCredit
-
-  // Donation: 1000만 이하 15%, 초과 30%
-  let donationCredit = 0
-  if (inputs.donation <= 10_000_000) {
-    donationCredit = Math.floor(inputs.donation * 0.15)
-  } else {
-    donationCredit = 1_500_000 + Math.floor((inputs.donation - 10_000_000) * 0.30)
-  }
-
-  // Monthly rent: limit 1000만
-  const rentBase = Math.min(inputs.monthlyRent, 10_000_000)
-  let rentRate = 0
-  if (totalSalary <= 55_000_000) rentRate = 0.17
-  else if (totalSalary <= 80_000_000) rentRate = 0.15
-  const rentCredit = Math.floor(rentBase * rentRate)
-
-  // Marriage tax credit
-  const marriageCredit = inputs.marriageTaxCredit ? 500_000 : 0
-
-  const totalTaxCredit = earnedIncomeCredit + childCredit + pensionCredit + insuranceCredit +
-    medicalCredit + educationCredit + donationCredit + rentCredit + marriageCredit
-
-  // Step 6: Determined tax
-  const determinedTax = Math.max(0, calculatedTax - totalTaxCredit)
-  const localIncomeTax = Math.floor(determinedTax * 0.1)
-  const totalTax = determinedTax + localIncomeTax
-  const refundAmount = inputs.prepaidTax - totalTax
-
-  return {
-    grossSalary: inputs.grossSalary,
-    nonTaxable,
-    totalSalary,
-    earnedIncomeDeduction,
-    earnedIncome,
-    personalDeduction,
-    nationalPensionDeduction,
-    healthEmploymentDeduction,
-    housingSubscriptionDeduction,
-    cardDeduction,
-    cardDeductionDetail: cardDetail,
-    totalIncomeDeduction,
-    taxBase,
-    taxRate,
-    calculatedTax,
-    earnedIncomeCredit,
-    childCredit,
-    pensionCredit,
-    insuranceCredit,
-    medicalCredit,
-    educationCredit,
-    donationCredit,
-    rentCredit,
-    marriageCredit,
-    totalTaxCredit,
-    determinedTax,
-    localIncomeTax,
-    totalTax,
-    prepaidTax: inputs.prepaidTax,
-    refundAmount,
-  }
-}
-
-// ────────────────────────────────────────
-// Inner component (needs Suspense for useSearchParams)
-// ────────────────────────────────────────
-function YearEndTaxCalculatorContent() {
+export default function YearEndTaxCalculator() {
   const t = useTranslations('yearEndTaxCalc')
   const searchParams = useSearchParams()
+  const [inp, setInp] = useState<YetInput>(DEFAULT_INPUT)
+  const [opt, setOpt] = useState<Record<OptKey, string>>({ pension: '', healthEmp: '', prepaid: '' })
+  const set = <K extends keyof YetInput>(k: K, v: YetInput[K]) =>
+    setInp((p) => { const n = { ...p, [k]: v }; n.kidsUnder8 = Math.min(n.kidsUnder8, n.children); return n })
 
-  // Tab
-  const [activeTab, setActiveTab] = useState<TabId>('basic')
-
-  // Basic info
-  const [grossSalary, setGrossSalary] = useState('')
-  const [mealAllowance, setMealAllowance] = useState('')
-  const [drivingAllowance, setDrivingAllowance] = useState('')
-  const [childcareAllowance, setChildcareAllowance] = useState('')
-  const [dependentCount, setDependentCount] = useState('1')
-  const [prepaidTax, setPrepaidTax] = useState('')
-
-  // Income deduction
-  const [nationalPension, setNationalPension] = useState('')
-  const [healthInsurance, setHealthInsurance] = useState('')
-  const [employmentInsurance, setEmploymentInsurance] = useState('')
-  const [housingSubscription, setHousingSubscription] = useState('')
-  const [creditCard, setCreditCard] = useState('')
-  const [debitCard, setDebitCard] = useState('')
-  const [cashReceipt, setCashReceipt] = useState('')
-  const [traditionalMarket, setTraditionalMarket] = useState('')
-  const [publicTransport, setPublicTransport] = useState('')
-
-  // Tax credit
-  const [childCount, setChildCount] = useState('0')
-  const [pensionSavings, setPensionSavings] = useState('')
-  const [irp, setIrp] = useState('')
-  const [insurancePremium, setInsurancePremium] = useState('')
-  const [medicalExpenseSelf, setMedicalExpenseSelf] = useState('')
-  const [medicalExpenseElderly, setMedicalExpenseElderly] = useState('')
-  const [medicalExpenseGeneral, setMedicalExpenseGeneral] = useState('')
-  const [educationSelf, setEducationSelf] = useState('')
-  const [educationChild, setEducationChild] = useState('')
-  const [educationChildLevel, setEducationChildLevel] = useState<'elementary' | 'university'>('elementary')
-  const [donation, setDonation] = useState('')
-  const [monthlyRent, setMonthlyRent] = useState('')
-  const [marriageTaxCredit, setMarriageTaxCredit] = useState(false)
-
-  // Result
-  const [result, setResult] = useState<CalcResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-
-  // Load from URL on mount
+  // URL → 상태 (최초 1회)
+  const loaded = useRef(false)
   useEffect(() => {
-    const gs = searchParams.get('gs')
-    if (gs) setGrossSalary(fmtInput(gs))
-    const ma = searchParams.get('ma')
-    if (ma) setMealAllowance(fmtInput(ma))
-    const da = searchParams.get('da')
-    if (da) setDrivingAllowance(fmtInput(da))
-    const ca = searchParams.get('ca')
-    if (ca) setChildcareAllowance(fmtInput(ca))
-    const dc = searchParams.get('dc')
-    if (dc) setDependentCount(dc)
-    const pt = searchParams.get('pt')
-    if (pt) setPrepaidTax(fmtInput(pt))
+    if (loaded.current) return
+    loaded.current = true
+    const next = { ...DEFAULT_INPUT }
+    for (const [k, q] of NUM_PARAMS) { const v = searchParams.get(q); if (v && /^\d{1,11}$/.test(v)) next[k] = Number(v) }
+    for (const [k, q] of BOOL_PARAMS) { const v = searchParams.get(q); if (v === '1' || v === '0') next[k] = v === '1' }
+    const o = { pension: '', healthEmp: '', prepaid: '' }
+    for (const [k, q] of OPT_PARAMS) { const v = searchParams.get(q); if (v && /^\d{1,11}$/.test(v)) o[k] = v }
+    setInp(next); setOpt(o)
+  }, [searchParams])
 
-    const np = searchParams.get('np')
-    if (np) setNationalPension(fmtInput(np))
-    const hi = searchParams.get('hi')
-    if (hi) setHealthInsurance(fmtInput(hi))
-    const ei = searchParams.get('ei')
-    if (ei) setEmploymentInsurance(fmtInput(ei))
-    const hs = searchParams.get('hs')
-    if (hs) setHousingSubscription(fmtInput(hs))
-    const cc = searchParams.get('cc')
-    if (cc) setCreditCard(fmtInput(cc))
-    const dc2 = searchParams.get('dc2')
-    if (dc2) setDebitCard(fmtInput(dc2))
-    const cr = searchParams.get('cr')
-    if (cr) setCashReceipt(fmtInput(cr))
-    const tm = searchParams.get('tm')
-    if (tm) setTraditionalMarket(fmtInput(tm))
-    const pub = searchParams.get('pub')
-    if (pub) setPublicTransport(fmtInput(pub))
-
-    const ch = searchParams.get('ch')
-    if (ch) setChildCount(ch)
-    const ps = searchParams.get('ps')
-    if (ps) setPensionSavings(fmtInput(ps))
-    const irpParam = searchParams.get('irp')
-    if (irpParam) setIrp(fmtInput(irpParam))
-    const ip = searchParams.get('ip')
-    if (ip) setInsurancePremium(fmtInput(ip))
-    const ms = searchParams.get('ms')
-    if (ms) setMedicalExpenseSelf(fmtInput(ms))
-    const me = searchParams.get('me')
-    if (me) setMedicalExpenseElderly(fmtInput(me))
-    const mg = searchParams.get('mg')
-    if (mg) setMedicalExpenseGeneral(fmtInput(mg))
-    const es = searchParams.get('es')
-    if (es) setEducationSelf(fmtInput(es))
-    const ec = searchParams.get('ec')
-    if (ec) setEducationChild(fmtInput(ec))
-    const ecl = searchParams.get('ecl')
-    if (ecl === 'university') setEducationChildLevel('university')
-    const dn = searchParams.get('dn')
-    if (dn) setDonation(fmtInput(dn))
-    const mr = searchParams.get('mr')
-    if (mr) setMonthlyRent(fmtInput(mr))
-    const mc = searchParams.get('mc')
-    if (mc === '1') setMarriageTaxCredit(true)
-
-    // Auto-calculate if gross salary present
-    if (gs) {
-      setTimeout(() => {
-        // Will be triggered by the effect or the user pressing calculate
-      }, 100)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // Update URL
-  const updateURL = useCallback(() => {
+  // 상태 → URL (기본값과 다른 것만)
+  useEffect(() => {
+    if (!loaded.current) return
     const url = new URL(window.location.href)
-    const params: Record<string, string> = {
-      gs: String(parseNum(grossSalary)),
-      ma: String(parseNum(mealAllowance)),
-      da: String(parseNum(drivingAllowance)),
-      ca: String(parseNum(childcareAllowance)),
-      dc: dependentCount,
-      pt: String(parseNum(prepaidTax)),
-      np: String(parseNum(nationalPension)),
-      hi: String(parseNum(healthInsurance)),
-      ei: String(parseNum(employmentInsurance)),
-      hs: String(parseNum(housingSubscription)),
-      cc: String(parseNum(creditCard)),
-      dc2: String(parseNum(debitCard)),
-      cr: String(parseNum(cashReceipt)),
-      tm: String(parseNum(traditionalMarket)),
-      pub: String(parseNum(publicTransport)),
-      ch: childCount,
-      ps: String(parseNum(pensionSavings)),
-      irp: String(parseNum(irp)),
-      ip: String(parseNum(insurancePremium)),
-      ms: String(parseNum(medicalExpenseSelf)),
-      me: String(parseNum(medicalExpenseElderly)),
-      mg: String(parseNum(medicalExpenseGeneral)),
-      es: String(parseNum(educationSelf)),
-      ec: String(parseNum(educationChild)),
-      ecl: educationChildLevel,
-      dn: String(parseNum(donation)),
-      mr: String(parseNum(monthlyRent)),
-      mc: marriageTaxCredit ? '1' : '0',
-    }
-    Object.entries(params).forEach(([k, v]) => {
-      if (v && v !== '0') url.searchParams.set(k, v)
-      else url.searchParams.delete(k)
-    })
-    window.history.replaceState({}, '', url)
-  }, [grossSalary, mealAllowance, drivingAllowance, childcareAllowance, dependentCount, prepaidTax,
-    nationalPension, healthInsurance, employmentInsurance, housingSubscription,
-    creditCard, debitCard, cashReceipt, traditionalMarket, publicTransport,
-    childCount, pensionSavings, irp, insurancePremium,
-    medicalExpenseSelf, medicalExpenseElderly, medicalExpenseGeneral,
-    educationSelf, educationChild, educationChildLevel, donation, monthlyRent, marriageTaxCredit])
+    const put = (q: string, v: string | null) => { if (v === null) url.searchParams.delete(q); else url.searchParams.set(q, v) }
+    for (const [k, q] of NUM_PARAMS) put(q, inp[k] !== DEFAULT_INPUT[k] ? String(inp[k]) : null)
+    for (const [k, q] of BOOL_PARAMS) put(q, inp[k] !== DEFAULT_INPUT[k] ? (inp[k] ? '1' : '0') : null)
+    for (const [k, q] of OPT_PARAMS) put(q, opt[k] || null)
+    window.history.replaceState(window.history.state, '', url)
+  }, [inp, opt])
 
-  const handleCalculate = useCallback(() => {
-    const gs = parseNum(grossSalary)
-    if (gs <= 0) return
+  const heads = 1 + (inp.spouse ? 1 : 0) + inp.children + inp.others
+  const kids8 = Math.max(0, inp.children - inp.kidsUnder8)
+  // 기납부세액 자동 추정: netSalary(간이세액표와 같은 방식의 연 환산 소득세)
+  const autoPrepaid = useMemo(
+    () => calculateNetSalary(inp.salary, { nonTaxableMonthly: 0, dependents: heads, children: kids8 })?.deductions.incomeTax ?? 0,
+    [inp.salary, heads, kids8],
+  )
+  const auto = autoInsurance(inp.salary)
+  const full: YetInput = {
+    ...inp,
+    pension: opt.pension ? Number(opt.pension) : undefined,
+    healthEmp: opt.healthEmp ? Number(opt.healthEmp) : undefined,
+    prepaid: opt.prepaid ? Number(opt.prepaid) : autoPrepaid,
+  }
+  const r = calc(full)
+  const tipList = tips(full)
+  const gainTips = tipList.filter((x) => x.gain > 0)
 
-    const res = runCalculation({
-      grossSalary: gs,
-      mealAllowance: parseNum(mealAllowance),
-      drivingAllowance: parseNum(drivingAllowance),
-      childcareAllowance: parseNum(childcareAllowance),
-      dependentCount: parseInt(dependentCount) || 1,
-      prepaidTax: parseNum(prepaidTax),
-      nationalPension: parseNum(nationalPension),
-      healthInsurance: parseNum(healthInsurance),
-      employmentInsurance: parseNum(employmentInsurance),
-      housingSubscription: parseNum(housingSubscription),
-      creditCard: parseNum(creditCard),
-      debitCard: parseNum(debitCard),
-      cashReceipt: parseNum(cashReceipt),
-      traditionalMarket: parseNum(traditionalMarket),
-      publicTransport: parseNum(publicTransport),
-      childCount: parseInt(childCount) || 0,
-      pensionSavings: parseNum(pensionSavings),
-      irp: parseNum(irp),
-      insurancePremium: parseNum(insurancePremium),
-      medicalExpenseSelf: parseNum(medicalExpenseSelf),
-      medicalExpenseElderly: parseNum(medicalExpenseElderly),
-      medicalExpenseGeneral: parseNum(medicalExpenseGeneral),
-      educationSelf: parseNum(educationSelf),
-      educationChild: parseNum(educationChild),
-      educationChildLevel,
-      donation: parseNum(donation),
-      monthlyRent: parseNum(monthlyRent),
-      marriageTaxCredit,
-    })
+  const kind = r.refund > 0 ? 'refund' : r.refund < 0 ? 'pay' : 'zero'
+  const headline = kind === 'zero' ? t('yt.hero.zero') : t(`yt.hero.${kind}`, { amount: won(Math.abs(r.refund)) })
+  const effRate = r.salary ? (r.totalTax / r.salary) * 100 : 0
 
-    setResult(res)
-    setActiveTab('result')
-    updateURL()
-  }, [grossSalary, mealAllowance, drivingAllowance, childcareAllowance, dependentCount, prepaidTax,
-    nationalPension, healthInsurance, employmentInsurance, housingSubscription,
-    creditCard, debitCard, cashReceipt, traditionalMarket, publicTransport,
-    childCount, pensionSavings, irp, insurancePremium,
-    medicalExpenseSelf, medicalExpenseElderly, medicalExpenseGeneral,
-    educationSelf, educationChild, educationChildLevel, donation, monthlyRent, marriageTaxCredit, updateURL])
-
-  const handleReset = useCallback(() => {
-    setGrossSalary('')
-    setMealAllowance('')
-    setDrivingAllowance('')
-    setChildcareAllowance('')
-    setDependentCount('1')
-    setPrepaidTax('')
-    setNationalPension('')
-    setHealthInsurance('')
-    setEmploymentInsurance('')
-    setHousingSubscription('')
-    setCreditCard('')
-    setDebitCard('')
-    setCashReceipt('')
-    setTraditionalMarket('')
-    setPublicTransport('')
-    setChildCount('0')
-    setPensionSavings('')
-    setIrp('')
-    setInsurancePremium('')
-    setMedicalExpenseSelf('')
-    setMedicalExpenseElderly('')
-    setMedicalExpenseGeneral('')
-    setEducationSelf('')
-    setEducationChild('')
-    setEducationChildLevel('elementary')
-    setDonation('')
-    setMonthlyRent('')
-    setMarriageTaxCredit(false)
-    setResult(null)
-    setActiveTab('basic')
-    const url = new URL(window.location.href)
-    url.search = ''
-    window.history.replaceState({}, '', url)
-  }, [])
-
-  const handleShare = useCallback(async () => {
-    updateURL()
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-    } catch {
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-    }
-  }, [updateURL])
-
-  // ── Reusable input component ──
-  const MoneyInput = ({ label, desc, value, onChange, placeholder }: {
-    label: string; desc?: string; value: string; onChange: (v: string) => void; placeholder?: string
-  }) => (
+  const seg = (on: boolean) => `flex-1 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const W = t('yt.won')
+  const count = (k: NumKey, label: string, max = 6, min = 0) => (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-1.5">{label}</span>
+      <select value={inp[k]} onChange={(e) => set(k, Number(e.target.value))} className="ui-field w-full px-4 py-3 text-sm">
+        {Array.from({ length: max - min + 1 }, (_, i) => i + min).map((n) => <option key={n} value={n}>{t('yt.people', { n })}</option>)}
+      </select>
+    </label>
+  )
+  const money = (k: NumKey, hint?: string) => (
+    <Money label={t(`yt.in.${k}`)} value={inp[k] as number} onChange={(v) => set(k, v)} hint={hint} unit={W} />
+  )
+  const toggle = (k: BoolKey, label: string, hint: string) => (
     <div>
-      <label className="block text-sm font-medium text-body mb-1">
-        {label}
-      </label>
-      {desc && <p className="text-xs text-muted mb-1">{desc}</p>}
-      <div className="relative">
-        <input
-          type="text"
-          inputMode="numeric"
-          value={value}
-          onChange={(e) => onChange(fmtInput(e.target.value))}
-          placeholder={placeholder || '0'}
-          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8`}
-        />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('won')}</span>
+      <div className="text-sm font-medium text-body mb-1.5">{label}</div>
+      <div className="flex gap-1.5" role="radiogroup" aria-label={label}>
+        {[false, true].map((v) => (
+          <button key={String(v)} type="button" role="radio" aria-checked={inp[k] === v} onClick={() => set(k, v)} className={seg(inp[k] === v)}>
+            {t(v ? 'yt.yes' : 'yt.no')}
+          </button>
+        ))}
       </div>
+      <p className="text-xs text-muted mt-1.5">{hint}</p>
     </div>
   )
+  const optMoney = (k: OptKey, label: string, hint: string, placeholder: number) => (
+    <Money label={label} value={opt[k] ? Number(opt[k]) : null} onChange={(v) => setOpt((p) => ({ ...p, [k]: v ? String(v) : '' }))}
+      hint={hint} unit={W} placeholder={won(placeholder)} />
+  )
 
-  // ── Tabs ──
-  const tabs: { id: TabId; label: string }[] = [
-    { id: 'basic', label: t('tab.basic') },
-    { id: 'incomeDeduction', label: t('tab.incomeDeduction') },
-    { id: 'taxCredit', label: t('tab.taxCredit') },
-    { id: 'result', label: t('tab.result') },
-  ]
-
-  // ── Step row for result ──
-  const StepRow = ({ label, value, bold, highlight }: {
-    label: string; value: number; bold?: boolean; highlight?: 'blue' | 'red' | 'green'
-  }) => {
-    const colorClass = highlight === 'blue' ? 'text-blue-600 dark:text-blue-400'
-      : highlight === 'red' ? 'text-red-600 dark:text-red-400'
-      : highlight === 'green' ? 'text-green-600 dark:text-green-400'
-      : 'text-fg'
-    return (
-      <div className={`flex justify-between items-center py-2 ${bold ? 'font-bold border-t border-line pt-3 mt-1' : ''}`}>
-        <span className="text-sm text-sub">{label}</span>
-        <span className={`text-sm ${bold ? 'text-base' : ''} ${colorClass}`}>
-          {value < 0 ? '-' : ''}{fmtNum(Math.abs(value))}{t('won')}
-        </span>
-      </div>
-    )
-  }
+  const cr = r.cr
+  const creditRows: [string, number][] = r.standard
+    ? [['child', cr.child], ['pension', cr.pension], ['hometown', cr.hometown], ['marriage', cr.marriage]]
+    : [['child', cr.child], ['pension', cr.pension], ['insurance', cr.insurance], ['medical', cr.medical], ['education', cr.education],
+      ['donation', cr.donation], ['hometown', cr.hometown], ['rent', cr.rent], ['marriage', cr.marriage]]
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('yt.subtitle', { year: TAX_YEAR, next: TAX_YEAR + 1 })}</p>
       </div>
 
-      {/* Disclaimer */}
-      <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex gap-3">
-        <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-amber-800 dark:text-amber-200">{t('disclaimer')}</p>
-      </div>
-
-      {/* Tab navigation */}
-      <div className="overflow-x-auto -mx-4 px-4">
-        <div className="flex gap-1 min-w-max bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
-          {tabs.map((tab, idx) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
-                  : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
-              }`}
-            >
-              <span className="text-xs text-gray-400">{idx + 1}</span>
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Tab content */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-
-        {/* ── Basic info tab ── */}
-        {activeTab === 'basic' && (
-          <div className="space-y-5">
-            <MoneyInput
-              label={t('grossSalary')}
-              value={grossSalary}
-              onChange={setGrossSalary}
-              placeholder={t('grossSalaryPlaceholder')}
-            />
-
+      <div className="grid lg:grid-cols-5 gap-6">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="ui-card p-6 space-y-5">
+            <Money label={t('yt.in.salary')} value={inp.salary} onChange={(v) => set('salary', v)} hint={t('yt.in.salaryHint')} unit={W} />
             <div>
-              <h3 className="text-sm font-semibold text-body mb-3">{t('nonTaxableIncome')}</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <MoneyInput label={t('mealAllowance')} desc={t('mealAllowanceDesc')} value={mealAllowance} onChange={setMealAllowance} />
-                <MoneyInput label={t('drivingAllowance')} desc={t('drivingAllowanceDesc')} value={drivingAllowance} onChange={setDrivingAllowance} />
-                <MoneyInput label={t('childcareAllowance')} desc={t('childcareAllowanceDesc')} value={childcareAllowance} onChange={setChildcareAllowance} />
+              <div className="text-sm font-medium text-body mb-1.5">{t('yt.in.prepaid')}</div>
+              <div className="flex gap-1.5" role="radiogroup" aria-label={t('yt.in.prepaid')}>
+                <button type="button" role="radio" aria-checked={!opt.prepaid} onClick={() => setOpt((p) => ({ ...p, prepaid: '' }))} className={seg(!opt.prepaid)}>
+                  {t('yt.in.prepaidAuto')}
+                </button>
+                <button type="button" role="radio" aria-checked={!!opt.prepaid} onClick={() => setOpt((p) => ({ ...p, prepaid: String(autoPrepaid || 1) }))} className={seg(!!opt.prepaid)}>
+                  {t('yt.in.prepaidManual')}
+                </button>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('dependentCount')}
-                </label>
-                <p className="text-xs text-muted mb-1">{t('dependentCountDesc')}</p>
-                <input
-                  type="number"
-                  min="1"
-                  max="20"
-                  value={dependentCount}
-                  onChange={(e) => setDependentCount(e.target.value)}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-              <MoneyInput label={t('prepaidTax')} desc={t('prepaidTaxDesc')} value={prepaidTax} onChange={setPrepaidTax} />
-            </div>
-          </div>
-        )}
-
-        {/* ── Income deduction tab ── */}
-        {activeTab === 'incomeDeduction' && (
-          <div className="space-y-5">
-            <h3 className="text-sm font-semibold text-body">{t('tab.incomeDeduction')}</h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <MoneyInput label={t('nationalPension')} desc={t('nationalPensionDesc')} value={nationalPension} onChange={setNationalPension} />
-              <MoneyInput label={t('healthInsurance')} desc={t('healthInsuranceDesc')} value={healthInsurance} onChange={setHealthInsurance} />
-              <MoneyInput label={t('employmentInsurance')} desc={t('employmentInsuranceDesc')} value={employmentInsurance} onChange={setEmploymentInsurance} />
-            </div>
-
-            <MoneyInput label={t('housingSubscription')} desc={t('housingSubscriptionDesc')} value={housingSubscription} onChange={setHousingSubscription} />
-
-            <div>
-              <h3 className="text-sm font-semibold text-body mb-1">{t('creditCard')}</h3>
-              <p className="text-xs text-muted mb-3">{t('cardDeductionInfo')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <MoneyInput label={t('creditCard')} desc={t('creditCardDesc')} value={creditCard} onChange={setCreditCard} />
-                <MoneyInput label={t('debitCard')} desc={t('debitCardDesc')} value={debitCard} onChange={setDebitCard} />
-                <MoneyInput label={t('cashReceipt')} desc={t('cashReceiptDesc')} value={cashReceipt} onChange={setCashReceipt} />
-                <MoneyInput label={t('traditionalMarket')} desc={t('traditionalMarketDesc')} value={traditionalMarket} onChange={setTraditionalMarket} />
-                <MoneyInput label={t('publicTransport')} desc={t('publicTransportDesc')} value={publicTransport} onChange={setPublicTransport} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Tax credit tab ── */}
-        {activeTab === 'taxCredit' && (
-          <div className="space-y-5">
-            <h3 className="text-sm font-semibold text-body">{t('tab.taxCredit')}</h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('childCount')}
-                </label>
-                <p className="text-xs text-muted mb-1">{t('childCountDesc')}</p>
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={childCount}
-                  onChange={(e) => setChildCount(e.target.value)}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-body mb-3">{t('pensionSavings')}</h4>
-              <p className="text-xs text-muted mb-2">{t('pensionSavingsDesc')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <MoneyInput label={t('pensionSavings')} value={pensionSavings} onChange={setPensionSavings} />
-                <MoneyInput label={t('irp')} desc={t('irpDesc')} value={irp} onChange={setIrp} />
-              </div>
-            </div>
-
-            <MoneyInput label={t('insurancePremium')} desc={t('insurancePremiumDesc')} value={insurancePremium} onChange={setInsurancePremium} />
-
-            <div>
-              <h4 className="text-sm font-medium text-body mb-3">{t('medicalExpense')}</h4>
-              <p className="text-xs text-muted mb-2">{t('medicalExpenseDesc')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <MoneyInput label={t('medicalExpenseSelf')} value={medicalExpenseSelf} onChange={setMedicalExpenseSelf} />
-                <MoneyInput label={t('medicalExpenseElderly')} value={medicalExpenseElderly} onChange={setMedicalExpenseElderly} />
-                <MoneyInput label={t('medicalExpenseGeneral')} value={medicalExpenseGeneral} onChange={setMedicalExpenseGeneral} />
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-body mb-3">{t('educationExpense')}</h4>
-              <p className="text-xs text-muted mb-2">{t('educationExpenseDesc')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <MoneyInput label={t('educationSelf')} value={educationSelf} onChange={setEducationSelf} />
-                <div>
-                  <MoneyInput label={t('educationChild')} value={educationChild} onChange={setEducationChild} />
-                  <div className="mt-2">
-                    <label className="block text-xs text-muted mb-1">{t('educationChildLevel')}</label>
-                    <select
-                      value={educationChildLevel}
-                      onChange={(e) => setEducationChildLevel(e.target.value as 'elementary' | 'university')}
-                      className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
-                    >
-                      <option value="elementary">{t('educationLevelElementary')}</option>
-                      <option value="university">{t('educationLevelUniversity')}</option>
-                    </select>
-                  </div>
+              {opt.prepaid ? (
+                <div className="mt-2">
+                  <Money label="" value={Number(opt.prepaid)} onChange={(v) => setOpt((p) => ({ ...p, prepaid: String(Math.max(1, v)) }))} unit={W} />
                 </div>
-              </div>
-            </div>
-
-            <MoneyInput label={t('donation')} desc={t('donationDesc')} value={donation} onChange={setDonation} />
-            <MoneyInput label={t('monthlyRent')} desc={t('monthlyRentDesc')} value={monthlyRent} onChange={setMonthlyRent} />
-
-            <div className="flex items-center gap-3 pt-2">
-              <input
-                type="checkbox"
-                id="marriageTaxCredit"
-                checked={marriageTaxCredit}
-                onChange={(e) => setMarriageTaxCredit(e.target.checked)}
-                className="w-4 h-4 accent-blue-600 rounded"
-              />
-              <div>
-                <label htmlFor="marriageTaxCredit" className="text-sm font-medium text-body cursor-pointer">
-                  {t('marriageTaxCredit')}
-                </label>
-                <p className="text-xs text-muted">{t('marriageTaxCreditDesc')}</p>
-              </div>
+              ) : null}
+              <p className="text-xs text-muted mt-1.5">
+                {opt.prepaid ? t('yt.in.prepaidManualHint') : t('yt.in.prepaidAutoHint', { amount: won(autoPrepaid) })}
+              </p>
             </div>
           </div>
-        )}
 
-        {/* ── Result tab ── */}
-        {activeTab === 'result' && result && (
-          <div className="space-y-6">
-            {/* Final result highlight */}
-            <div className={`rounded-xl p-6 text-center ${
-              result.refundAmount > 0
-                ? 'bg-primary-soft text-primary border border-primary'
-                : result.refundAmount < 0
-                  ? 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
-                  : 'bg-subtle border border-line'
-            }`}>
-              <p className="text-sm text-sub mb-1">
-                {result.refundAmount > 0 ? t('result.refund') : result.refundAmount < 0 ? t('result.additionalPayment') : t('result.breakeven')}
-              </p>
-              <p className={`text-3xl font-bold ${
-                result.refundAmount > 0
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : result.refundAmount < 0
-                    ? 'text-red-600 dark:text-red-400'
-                    : 'text-fg'
-              }`}>
-                {result.refundAmount < 0 ? '-' : '+'}{fmtNum(Math.abs(result.refundAmount))}{t('won')}
-              </p>
+          <Section title={t('yt.sec.family')} badge={t('yt.people', { n: heads })} open>
+            {toggle('spouse', t('yt.in.spouse'), t('yt.in.spouseHint'))}
+            <div className="grid grid-cols-2 gap-3">
+              {count('children', t('yt.in.children'))}
+              {count('kidsUnder8', t('yt.in.kidsUnder8'), inp.children)}
+              {count('others', t('yt.in.others'))}
+              {count('elderly', t('yt.in.elderly'), heads)}
+              {count('disabled', t('yt.in.disabled'), heads)}
+              <label className="block">
+                <span className="block text-sm font-medium text-body mb-1.5">{t('yt.in.birth')}</span>
+                <select value={inp.birth} onChange={(e) => set('birth', Number(e.target.value))} className="ui-field w-full px-4 py-3 text-sm">
+                  {[0, 1, 2, 3].map((n) => <option key={n} value={n}>{t(`yt.birth.${n}`)}</option>)}
+                </select>
+              </label>
             </div>
+            <p className="text-xs text-muted">{t('yt.in.familyHint')}</p>
+          </Section>
 
-            {/* Step 1 */}
-            <details open className="group/s1">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s1:rotate-90" />
-                {t('step1.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <StepRow label={t('step1.grossSalary')} value={result.grossSalary} />
-                <StepRow label={`- ${t('step1.nonTaxable')}`} value={result.nonTaxable} />
-                <StepRow label={t('step1.totalSalary')} value={result.totalSalary} bold highlight="blue" />
-              </div>
-            </details>
+          <Section title={t('yt.sec.card')} badge={`${won(r.card.total)}${W}`} open>
+            {money('credit')}
+            {money('debit', t('yt.in.debitHint'))}
+            {money('transport')}
+            {money('market')}
+            {money('culture', t('yt.in.cultureHint'))}
+            <div className="bg-subtle rounded-2xl p-4 text-sm text-sub tabular-nums">
+              {r.card.shortfall > 0
+                ? t('yt.card.short', { threshold: won(r.card.threshold), amount: won(r.card.shortfall) })
+                : t('yt.card.over', { threshold: won(r.card.threshold), amount: won(r.card.spent - r.card.threshold) })}
+            </div>
+          </Section>
 
-            {/* Step 2 */}
-            <details open className="group/s2">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s2:rotate-90" />
-                {t('step2.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <StepRow label={`- ${t('step2.earnedIncomeDeduction')}`} value={result.earnedIncomeDeduction} />
-                <StepRow label={t('step2.earnedIncome')} value={result.earnedIncome} bold highlight="blue" />
-              </div>
-            </details>
+          <Section title={t('yt.sec.pension')} badge={`${won(cr.pension + cr.insurance)}${W}`}>
+            {money('pensionSavings', t('yt.in.pensionSavingsHint'))}
+            {money('irp', t('yt.in.irpHint'))}
+            {money('insurance', t('yt.in.insuranceHint'))}
+          </Section>
 
-            {/* Step 3 */}
-            <details open className="group/s3">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s3:rotate-90" />
-                {t('step3.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <StepRow label={`- ${t('step3.personalDeduction')}`} value={result.personalDeduction} />
-                <StepRow label={`- ${t('step3.nationalPension')}`} value={result.nationalPensionDeduction} />
-                <StepRow label={`- ${t('step3.healthEmployment')}`} value={result.healthEmploymentDeduction} />
-                <StepRow label={`- ${t('step3.housingSubscription')}`} value={result.housingSubscriptionDeduction} />
-                <StepRow label={`- ${t('step3.cardDeduction')}`} value={result.cardDeduction} />
+          <Section title={t('yt.sec.medical')} badge={`${won(cr.medical + cr.education)}${W}`}>
+            <p className="text-xs text-muted">{t('yt.in.medicalHint', { amount: won(Math.floor(r.salary * 0.03)) })}</p>
+            {money('special', t('yt.in.specialHint'))}
+            {money('general', t('yt.in.generalHint'))}
+            {money('infertility')}
+            {money('premature')}
+            {money('eduSelf')}
+            {money('eduSchool', t('yt.in.eduSchoolHint'))}
+            {money('eduUniv', t('yt.in.eduUnivHint'))}
+          </Section>
 
-                {result.cardDeduction > 0 && (
-                  <details className="ml-4 mt-1 mb-2">
-                    <summary className="cursor-pointer text-xs text-blue-600 dark:text-blue-400">{t('detailToggle')}</summary>
-                    <div className="bg-subtle rounded-lg p-3 mt-1 space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-muted">{t('creditCard')} (15%)</span>
-                        <span className="text-body">{fmtNum(result.cardDeductionDetail.creditUsed)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted">{t('debitCard')} (30%)</span>
-                        <span className="text-body">{fmtNum(result.cardDeductionDetail.debitUsed)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted">{t('cashReceipt')} (30%)</span>
-                        <span className="text-body">{fmtNum(result.cardDeductionDetail.cashUsed)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted">{t('traditionalMarket')} (40%)</span>
-                        <span className="text-body">{fmtNum(result.cardDeductionDetail.marketUsed)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted">{t('publicTransport')} (80%)</span>
-                        <span className="text-body">{fmtNum(result.cardDeductionDetail.transportUsed)}{t('won')}</span>
+          <Section title={t('yt.sec.housing')} badge={`${won(cr.rent)}${W}`}>
+            {money('rent', t('yt.in.rentHint'))}
+            {money('housingSub', t('yt.in.housingSubHint'))}
+            {money('leaseLoan', t('yt.in.leaseLoanHint'))}
+          </Section>
+
+          <Section title={t('yt.sec.etc')} badge={`${won(cr.donation + cr.hometown + cr.marriage)}${W}`}>
+            {money('hometown', t('yt.in.hometownHint'))}
+            {money('donation', t('yt.in.donationHint'))}
+            {toggle('marriage', t('yt.in.marriage'), t('yt.in.marriageHint'))}
+            {toggle('sme', t('yt.in.sme'), t('yt.in.smeHint'))}
+            {optMoney('pension', t('yt.in.pension'), t('yt.in.autoHint'), auto.pension)}
+            {optMoney('healthEmp', t('yt.in.healthEmp'), t('yt.in.autoHint'), auto.healthEmp)}
+          </Section>
+        </div>
+
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-3 space-y-6">
+          <div className="ui-hero p-6">
+            <div className="text-sm text-white/70">{t('yt.hero.label', { year: TAX_YEAR, salary: man(r.salary), salaryWon: won(r.salary) })}</div>
+            <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
+            <div className="text-sm text-white/80 mt-2 tabular-nums">
+              {t('yt.hero.vs', { tax: won(r.totalTax), paid: won(r.prepaid + r.prepaidLocal) })}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.rate', { rate: Math.round(r.rate * 100) })}</span>
+              <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.eff', { rate: effRate.toFixed(1) })}</span>
+              {!opt.prepaid && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.estimated')}</span>}
+              {r.standard && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.standard')}</span>}
+            </div>
+          </div>
+
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: t('yt.share.label', { salary: man(r.salary), salaryWon: won(r.salary) }),
+              headline,
+              sub: t('yt.share.sub', { year: TAX_YEAR }),
+              rows: [
+                { label: t('yt.row.determined'), value: `${won(r.totalTax)}${W}` },
+                { label: t('yt.row.prepaidAll'), value: `${won(r.prepaid + r.prepaidLocal)}${W}` },
+                { label: t('yt.row.taxBase'), value: `${won(r.taxBase)}${W}` },
+              ],
+            }}
+            text={t('yt.share.text', { salary: man(r.salary), salaryWon: won(r.salary), result: headline })}
+            fileName="toolhub-year-end-tax"
+          />
+
+          {/* 더 돌려받는 방법 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('yt.tip.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('yt.tip.desc')}</p>
+            {gainTips.length ? (
+              <ol className="mt-4 divide-y divide-line">
+                {gainTips.map((x, i) => (
+                  <li key={x.id} className="flex items-center justify-between gap-3 py-3">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <span className={`shrink-0 w-6 h-6 rounded-full text-xs font-semibold flex items-center justify-center ${i === 0 ? 'bg-primary text-white' : 'bg-soft text-sub'}`}>{i + 1}</span>
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium text-fg">{t(`yt.tip.${x.id}`, { amount: man(x.amount), amountWon: won(x.amount) })}</div>
+                        <div className="text-xs text-muted mt-0.5">{t(`yt.tip.${x.id}Hint`)}</div>
                       </div>
                     </div>
-                  </details>
-                )}
-
-                <StepRow label={t('step3.totalDeduction')} value={result.totalIncomeDeduction} />
-                <StepRow label={t('step3.taxBase')} value={result.taxBase} bold highlight="blue" />
-              </div>
-            </details>
-
-            {/* Step 4 */}
-            <details open className="group/s4">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s4:rotate-90" />
-                {t('step4.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-sm text-sub">{t('step4.taxRate')}</span>
-                  <span className="text-sm text-fg">{result.taxRate}</span>
-                </div>
-                <StepRow label={t('step4.calculatedTax')} value={result.calculatedTax} bold highlight="blue" />
-              </div>
-            </details>
-
-            {/* Step 5 */}
-            <details open className="group/s5">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s5:rotate-90" />
-                {t('step5.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <StepRow label={t('step5.earnedIncomeCredit')} value={result.earnedIncomeCredit} />
-                {result.childCredit > 0 && <StepRow label={t('step5.childCredit')} value={result.childCredit} />}
-                {result.pensionCredit > 0 && <StepRow label={t('step5.pensionCredit')} value={result.pensionCredit} />}
-                {result.insuranceCredit > 0 && <StepRow label={t('step5.insuranceCredit')} value={result.insuranceCredit} />}
-                {result.medicalCredit > 0 && <StepRow label={t('step5.medicalCredit')} value={result.medicalCredit} />}
-                {result.educationCredit > 0 && <StepRow label={t('step5.educationCredit')} value={result.educationCredit} />}
-                {result.donationCredit > 0 && <StepRow label={t('step5.donationCredit')} value={result.donationCredit} />}
-                {result.rentCredit > 0 && <StepRow label={t('step5.rentCredit')} value={result.rentCredit} />}
-                {result.marriageCredit > 0 && <StepRow label={t('step5.marriageCredit')} value={result.marriageCredit} />}
-                <StepRow label={t('step5.totalCredit')} value={result.totalTaxCredit} bold highlight="green" />
-              </div>
-            </details>
-
-            {/* Step 6 */}
-            <details open className="group/s6">
-              <summary className="cursor-pointer text-sm font-semibold text-body flex items-center gap-2 py-2">
-                <ChevronRight className="w-4 h-4 transition-transform group-open/s6:rotate-90" />
-                {t('step6.title')}
-              </summary>
-              <div className="ml-6 mt-2 space-y-0">
-                <StepRow label={t('step6.determinedTax')} value={result.determinedTax} />
-                <StepRow label={t('step6.localIncomeTax')} value={result.localIncomeTax} />
-                <StepRow label={t('step6.totalTax')} value={result.totalTax} bold />
-                <StepRow label={t('step6.prepaidTax')} value={result.prepaidTax} />
-                <StepRow
-                  label={result.refundAmount >= 0 ? t('step6.refundAmount') : t('step6.additionalPayment')}
-                  value={result.refundAmount}
-                  bold
-                  highlight={result.refundAmount >= 0 ? 'blue' : 'red'}
-                />
-              </div>
-            </details>
+                    <div className="shrink-0 text-right tabular-nums">
+                      <div className="text-base font-bold text-primary">+{won(x.gain)}{W}</div>
+                      {x.id !== 'debit' && x.id !== 'rent' && <div className="text-xs text-muted">{t('yt.tip.per', { rate: ((x.gain / x.amount) * 100).toFixed(1) })}</div>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <div className="bg-subtle rounded-2xl p-4 mt-4 text-sm text-sub">{r.determined === 0 ? t('yt.tip.noneZero') : t('yt.tip.none')}</div>
+            )}
           </div>
-        )}
 
-        {activeTab === 'result' && !result && (
-          <div className="text-center py-12">
-            <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-muted">{t('tab.basic')}</p>
+          {/* 계산 내역 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('yt.row.title')}</h2>
+            <dl className="space-y-2 text-sm tabular-nums">
+              <Row label={t('yt.row.salary')} value={won(r.salary)} />
+              <Row label={t('yt.row.eid')} value={`−${won(r.eid)}`} sub />
+              <Row label={t('yt.row.earnedIncome')} value={won(r.earnedIncome)} strong />
+              <Row label={t('yt.row.personal', { n: r.heads })} value={`−${won(r.personal)}`} sub />
+              <Row label={t('yt.row.pension')} value={`−${won(r.pension)}`} sub />
+              {!r.standard && <Row label={t('yt.row.healthEmp')} value={`−${won(r.healthEmp)}`} sub />}
+              {!r.standard && r.housing > 0 && <Row label={t('yt.row.housing')} value={`−${won(r.housing)}`} sub />}
+              <Row label={t('yt.row.card')} value={`−${won(r.card.total)}`} sub />
+              <Row label={t('yt.row.taxBase')} value={won(r.taxBase)} strong />
+              <Row label={t('yt.row.computed', { rate: Math.round(r.rate * 100) })} value={won(r.computedTax)} strong />
+              {r.reduction > 0 && <Row label={t('yt.row.sme')} value={`−${won(r.reduction)}`} sub />}
+              <Row label={t('yt.row.earnedCredit')} value={`−${won(r.credits.earned)}`} sub />
+              {creditRows.filter(([, v]) => v > 0).map(([k, v]) => <Row key={k} label={t(`yt.cr.${k}`)} value={`−${won(v)}`} sub />)}
+              {r.standard && <Row label={t('yt.cr.standard')} value={`−${won(130_000)}`} sub />}
+              <Row label={t('yt.row.determinedIncome')} value={won(r.determined)} strong />
+              <Row label={t('yt.row.local')} value={won(r.localTax)} sub />
+              <Row label={t('yt.row.prepaid')} value={won(r.prepaid)} sub />
+              <Row label={t('yt.row.prepaidLocal')} value={won(r.prepaidLocal)} sub />
+              <div className="border-t border-line pt-2">
+                <Row label={t(kind === 'pay' ? 'yt.row.pay' : 'yt.row.refund')} value={`${won(Math.abs(r.refund))}${W}`} strong />
+              </div>
+            </dl>
+            <p className="text-xs text-muted mt-4">
+              {r.standard ? t('yt.row.stdNote') : t('yt.row.specialNote', { amount: won(r.std.determined - r.special.determined) })}
+            </p>
+
+            {r.card.gross > 0 && (
+              <details className="mt-4 group">
+                <summary className="cursor-pointer text-sm font-medium text-primary list-none flex items-center gap-1">
+                  {t('yt.card.detail')} <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+                </summary>
+                <dl className="bg-subtle rounded-2xl p-4 mt-2 space-y-1.5 text-xs tabular-nums">
+                  {(['credit', 'debit', 'culture', 'market', 'transport'] as const).filter((k) => r.card.parts[k] > 0).map((k) => (
+                    <Row key={k} label={t(`yt.in.${k}`)} value={won(r.card.parts[k])} />
+                  ))}
+                  <Row label={t('yt.card.basic', { limit: man(r.card.limits.basic), limitWon: won(r.card.limits.basic) })} value={won(r.card.basic)} />
+                  <Row label={t('yt.card.extra', { limit: man(r.card.limits.extra), limitWon: won(r.card.limits.extra) })} value={won(r.card.extra)} />
+                </dl>
+              </details>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* Action buttons */}
-      <div className="flex flex-wrap gap-3">
-        <button
-          onClick={handleCalculate}
-          disabled={!grossSalary}
-          className="flex-1 sm:flex-none bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
-        >
-          <Calculator className="w-4 h-4" />
-          {t('calculate')}
-        </button>
-        <button
-          onClick={handleReset}
-          className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
-        >
-          <RotateCcw className="w-4 h-4" />
-          {t('reset')}
-        </button>
-        {result && (
-          <button
-            onClick={handleShare}
-            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 flex items-center gap-2 transition-all"
-          >
-            {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
-            {isCopied ? t('copied') : t('share')}
-          </button>
-        )}
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <p className="font-medium text-fg mb-2">{t('yt.scope.title')}</p>
+            <ul className="list-disc pl-5 space-y-1">
+              {(t.raw('yt.scope.items') as string[]).map((s, i) => <li key={i}>{s}</li>)}
+            </ul>
+            <p className="text-xs text-muted mt-3">{t('yt.sources')}</p>
+          </div>
+        </div>
       </div>
 
       <GuideSection namespace="yearEndTaxCalc" />
@@ -1182,13 +341,44 @@ function YearEndTaxCalculatorContent() {
   )
 }
 
-// ────────────────────────────────────────
-// Exported wrapper with Suspense
-// ────────────────────────────────────────
-export default function YearEndTaxCalculator() {
+function Section({ title, badge, open, children }: { title: string; badge: string; open?: boolean; children: ReactNode }) {
   return (
-    <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
-      <YearEndTaxCalculatorContent />
-    </Suspense>
+    <details className="ui-card group" open={open}>
+      <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-6 py-4">
+        <span className="font-semibold text-fg">{title}</span>
+        <span className="flex items-center gap-2 text-sm text-muted tabular-nums">
+          {badge}
+          <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+        </span>
+      </summary>
+      <div className="px-6 pb-6 space-y-4">{children}</div>
+    </details>
+  )
+}
+
+function Money({ label, value, onChange, hint, unit, placeholder }: {
+  label: string; value: number | null; onChange: (v: number) => void; hint?: string; unit: string; placeholder?: string
+}) {
+  const shown = value ? value.toLocaleString('ko-KR') : ''
+  return (
+    <label className="block">
+      {label && <span className="block text-sm font-medium text-body mb-1.5">{label}</span>}
+      <span className="relative block">
+        <input type="text" inputMode="numeric" value={shown} placeholder={placeholder ?? '0'}
+          onChange={(e) => onChange(Number(digits(e.target.value)) || 0)}
+          className="ui-field w-full px-4 py-3 pr-9 text-sm tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-faint">{unit}</span>
+      </span>
+      {hint && <span className="block text-xs text-muted mt-1.5">{hint}</span>}
+    </label>
+  )
+}
+
+function Row({ label, value, strong, sub }: { label: string; value: string; strong?: boolean; sub?: boolean }) {
+  return (
+    <div className={`flex justify-between gap-3 ${sub ? 'pl-4 text-muted' : strong ? 'font-semibold text-fg' : 'text-body'}`}>
+      <dt>{label}</dt>
+      <dd className="shrink-0">{value}</dd>
+    </div>
   )
 }

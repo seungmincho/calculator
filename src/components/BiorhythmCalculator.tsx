@@ -1,605 +1,459 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Calendar, Heart, Brain, Dumbbell, Users, ChevronLeft, ChevronRight, BookOpen, AlertTriangle, Info } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, ReferenceLine
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import { todayKST, isValidDate, weekday, addDays } from '@/utils/dday'
+import {
+  CYCLES, CLASSIC, type CycleKey, type DayPoint, type Profile, band, rising, dayPoint, series, monthPoints,
+  bestWorst, upcomingCritical, compatibility, daysAlive, sanitizeProfiles,
+} from '@/utils/biorhythm'
 
-// ── Constants ──
-const PHYSICAL_CYCLE = 23
-const EMOTIONAL_CYCLE = 28
-const INTELLECTUAL_CYCLE = 33
+const STORE_KEY = 'biorhythm.profiles'
+const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
+// 차트 계열 색 (데이터 구분용)
+const COLOR: Record<CycleKey, string> = { physical: '#f04452', emotional: '#03b26c', intellectual: 'var(--primary)', intuitive: '#f59f00' }
 
-// ── Utility functions ──
-function daysBetween(d1: Date, d2: Date): number {
-  const utc1 = Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate())
-  const utc2 = Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate())
-  return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24))
+const readProfiles = (): Profile[] => {
+  try { return sanitizeProfiles(JSON.parse(localStorage.getItem(STORE_KEY) || '[]')) } catch { return [] }
 }
-
-function biorhythmValue(days: number, cycle: number): number {
-  return Math.sin((2 * Math.PI * days) / cycle) * 100
+const writeProfiles = (list: Profile[]) => {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(list)) } catch { /* 시크릿 모드 등 */ }
 }
+const signed = (v: number) => (v > 0 ? `+${v}` : String(v))
+const md = (d: string) => `${+d.slice(5, 7)}/${+d.slice(8, 10)}`
+const compatBand = (v: number) => (v >= 80 ? 'high' : v >= 60 ? 'good' : v >= 40 ? 'mid' : 'low')
 
-function isCriticalDay(days: number, cycle: number): boolean {
-  const val = Math.abs(biorhythmValue(days, cycle))
-  return val < 5
-}
-
-function formatDate(date: Date): string {
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
-}
-
-function addDays(date: Date, days: number): Date {
-  const result = new Date(date)
-  result.setDate(result.getDate() + days)
-  return result
-}
-
-function getStatusLevel(value: number): 'high' | 'medium' | 'low' | 'critical' {
-  const abs = Math.abs(value)
-  if (abs < 5) return 'critical'
-  if (value > 50) return 'high'
-  if (value > -20) return 'medium'
-  return 'low'
-}
-
-function compatibilityScore(days1: number, days2: number, cycle: number): number {
-  const v1 = biorhythmValue(days1, cycle)
-  const v2 = biorhythmValue(days2, cycle)
-  // Phase difference approach: similarity = 100 - |v1 - v2| / 2
-  return Math.max(0, Math.min(100, 100 - Math.abs(v1 - v2) / 2))
-}
-
-// ── Component ──
 export default function BiorhythmCalculator() {
   const t = useTranslations('biorhythm')
+  const searchParams = useSearchParams()
 
-  // State
-  const [birthDate, setBirthDate] = useState('')
-  const [targetDate, setTargetDate] = useState(formatDate(new Date()))
-  const [period, setPeriod] = useState(30)
-  const [showCompatibility, setShowCompatibility] = useState(false)
-  const [birthDate2, setBirthDate2] = useState('')
-  const [calendarMonth, setCalendarMonth] = useState(() => {
-    const now = new Date()
-    return { year: now.getFullYear(), month: now.getMonth() }
-  })
+  const [today, setToday] = useState<string | null>(null)
+  const [mode, setMode] = useState<'single' | 'compat'>('single')
+  const [birthA, setBirthA] = useState('')
+  const [birthB, setBirthB] = useState('')
+  const [nameA, setNameA] = useState('')
+  const [nameB, setNameB] = useState('')
+  const [target, setTarget] = useState('')
+  const [intuitive, setIntuitive] = useState(false)
+  const [hideBirth, setHideBirth] = useState(false)
+  const [isExample, setIsExample] = useState(false)
+  const [compatCycle, setCompatCycle] = useState<CycleKey>('emotional')
+  const [profiles, setProfiles] = useState<Profile[]>([])
 
-  // URL state sync
+  // ── 초기화: URL → 예시 기본값 ──
+  const inited = useRef(false)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const bd = params.get('birthDate')
-    const td = params.get('targetDate')
-    const p = params.get('period')
-    const bd2 = params.get('birthDate2')
-    if (bd) setBirthDate(bd)
-    if (td) setTargetDate(td)
-    if (p) setPeriod(Number(p))
-    if (bd2) {
-      setBirthDate2(bd2)
-      setShowCompatibility(true)
-    }
-  }, [])
+    if (inited.current) return
+    inited.current = true
+    const now = todayKST()
+    const y = +now.slice(0, 4)
+    setToday(now)
+    setProfiles(readProfiles())
+    const a = searchParams.get('birthDate'), b = searchParams.get('birthDate2'), td = searchParams.get('targetDate')
+    setIsExample(!isValidDate(a))
+    setBirthA(isValidDate(a) ? a : `${y - 30}-03-15`)
+    setBirthB(isValidDate(b) ? b : `${y - 28}-07-20`)
+    setTarget(isValidDate(td) ? td : now)
+    setNameA((searchParams.get('name') ?? '').slice(0, 20))
+    setNameB((searchParams.get('name2') ?? '').slice(0, 20))
+    setIntuitive(searchParams.get('intuitive') === '1')
+    if (searchParams.get('mode') === 'compat' || isValidDate(b)) setMode('compat')
+  }, [searchParams])
 
-  const updateURL = useCallback((params: Record<string, string>) => {
-    const url = new URL(window.location.href)
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) url.searchParams.set(key, value)
-      else url.searchParams.delete(key)
-    })
-    window.history.replaceState({}, '', url)
-  }, [])
-
+  // ── URL 동기화 ──
   useEffect(() => {
-    updateURL({
-      birthDate,
-      targetDate,
-      period: String(period),
-      birthDate2: showCompatibility ? birthDate2 : '',
-    })
-  }, [birthDate, targetDate, period, birthDate2, showCompatibility, updateURL])
+    if (!today || !isValidDate(birthA)) return
+    const p = new URLSearchParams({ birthDate: birthA })
+    if (nameA.trim()) p.set('name', nameA.trim())
+    if (mode === 'compat') {
+      p.set('mode', 'compat')
+      if (isValidDate(birthB)) p.set('birthDate2', birthB)
+      if (nameB.trim()) p.set('name2', nameB.trim())
+    }
+    if (target && target !== today) p.set('targetDate', target)
+    if (intuitive) p.set('intuitive', '1')
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${p}`)
+  }, [today, mode, birthA, birthB, nameA, nameB, target, intuitive])
 
-  // Calculations
-  const target = useMemo(() => new Date(targetDate), [targetDate])
-  const birth = useMemo(() => birthDate ? new Date(birthDate) : null, [birthDate])
-  const birth2 = useMemo(() => birthDate2 ? new Date(birthDate2) : null, [birthDate2])
+  const fmt = (d: string) => t('dateFmt', { m: +d.slice(5, 7), d: +d.slice(8, 10), w: t(`calendar.${DAY_KEYS[weekday(d)]}`) })
+  const keys: CycleKey[] = intuitive ? [...CLASSIC, 'intuitive'] : CLASSIC
+  const ok = (b: string) => isValidDate(b) && isValidDate(target) && b <= target
+  const errA = birthA && isValidDate(target) && !ok(birthA) ? t('input.invalid') : ''
+  const errB = mode === 'compat' && birthB && isValidDate(target) && !ok(birthB) ? t('input.invalid') : ''
 
-  const todayDays = useMemo(() => {
-    if (!birth) return 0
-    return daysBetween(birth, target)
-  }, [birth, target])
-
-  const todayValues = useMemo(() => {
-    if (!birth) return { physical: 0, emotional: 0, intellectual: 0 }
+  const r = useMemo(() => {
+    if (!today || !ok(birthA)) return null
+    const now = dayPoint(birthA, target)
+    const month = monthPoints(birthA, target.slice(0, 7))
     return {
-      physical: biorhythmValue(todayDays, PHYSICAL_CYCLE),
-      emotional: biorhythmValue(todayDays, EMOTIONAL_CYCLE),
-      intellectual: biorhythmValue(todayDays, INTELLECTUAL_CYCLE),
+      now, chart: series(birthA, target), month: bestWorst(month),
+      monthCritical: month.filter(p => p.critical.length),
+      upcoming: upcomingCritical(birthA, target, 14),
     }
-  }, [birth, todayDays])
+  }, [today, birthA, target]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const overallScore = useMemo(() => {
-    return Math.round((todayValues.physical + todayValues.emotional + todayValues.intellectual) / 3)
-  }, [todayValues])
-
-  // Chart data
-  const chartData = useMemo(() => {
-    if (!birth) return []
-    const halfBefore = Math.floor(period / 3)
-    const data = []
-    for (let i = -halfBefore; i <= period - halfBefore; i++) {
-      const date = addDays(target, i)
-      const days = daysBetween(birth, date)
-      const days2 = birth2 ? daysBetween(birth2, date) : 0
-      const entry: Record<string, string | number> = {
-        date: formatDate(date),
-        label: `${date.getMonth() + 1}/${date.getDate()}`,
-        physical: Math.round(biorhythmValue(days, PHYSICAL_CYCLE) * 10) / 10,
-        emotional: Math.round(biorhythmValue(days, EMOTIONAL_CYCLE) * 10) / 10,
-        intellectual: Math.round(biorhythmValue(days, INTELLECTUAL_CYCLE) * 10) / 10,
-      }
-      if (birth2 && showCompatibility) {
-        entry.physical2 = Math.round(biorhythmValue(days2, PHYSICAL_CYCLE) * 10) / 10
-        entry.emotional2 = Math.round(biorhythmValue(days2, EMOTIONAL_CYCLE) * 10) / 10
-        entry.intellectual2 = Math.round(biorhythmValue(days2, INTELLECTUAL_CYCLE) * 10) / 10
-      }
-      data.push(entry)
-    }
-    return data
-  }, [birth, birth2, target, period, showCompatibility])
-
-  // Compatibility scores
-  const compatibility = useMemo(() => {
-    if (!birth || !birth2) return null
-    const days1 = daysBetween(birth, target)
-    const days2 = daysBetween(birth2, target)
-    const phys = compatibilityScore(days1, days2, PHYSICAL_CYCLE)
-    const emot = compatibilityScore(days1, days2, EMOTIONAL_CYCLE)
-    const intl = compatibilityScore(days1, days2, INTELLECTUAL_CYCLE)
+  const c = useMemo(() => {
+    if (mode !== 'compat' || !r || !ok(birthB)) return null
+    const sa = r.chart, sb = series(birthB, target)
     return {
-      physical: Math.round(phys),
-      emotional: Math.round(emot),
-      intellectual: Math.round(intl),
-      overall: Math.round((phys + emot + intl) / 3),
+      ...compatibility(birthA, birthB),
+      nowB: dayPoint(birthB, target),
+      chart: sa.map((p, i) => ({ date: p.date, a: p[compatCycle], b: sb[i][compatCycle] })),
     }
-  }, [birth, birth2, target])
+  }, [mode, r, birthA, birthB, target, compatCycle]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Calendar data
-  const calendarDays = useMemo(() => {
-    if (!birth) return []
-    const { year, month } = calendarMonth
-    const firstDay = new Date(year, month, 1)
-    const lastDay = new Date(year, month + 1, 0)
-    const startPad = firstDay.getDay()
+  // ── 프로필 ──
+  const saveProfile = (name: string, date: string) => {
+    if (!isValidDate(date)) return
+    const nm = name.trim() || t('profiles.defaultName', { n: profiles.length + 1 })
+    const list = [...profiles.filter(p => !(p.date === date && p.name === nm)), { id: Date.now().toString(36), name: nm, date }].slice(-20)
+    setProfiles(list); writeProfiles(list)
+  }
+  const removeProfile = (id: string) => { const list = profiles.filter(p => p.id !== id); setProfiles(list); writeProfiles(list) }
+  const loadA = (p: Profile) => { setBirthA(p.date); setNameA(p.name); setIsExample(false) }
+  const loadB = (p: Profile) => { setBirthB(p.date); setNameB(p.name) }
 
-    const days: Array<{
-      date: Date | null
-      physical: number
-      emotional: number
-      intellectual: number
-      isToday: boolean
-      isCritical: boolean
-    }> = []
+  const segBtn = (active: boolean) => `flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${active ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+  const chipBtn = (active: boolean) => `px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const critNames = (ks: CycleKey[]) => ks.map(k => t(k)).join('·')
+  const tDate = isValidDate(target) ? fmt(target) : ''
+  const heroLabel = nameA.trim() ? t('hero.labelNamed', { name: nameA.trim(), date: tDate }) : t('hero.label', { date: tDate })
+  const pair = { a: nameA.trim() || t('compat.me'), b: nameB.trim() || t('compat.partner') }
+  const rootUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : undefined
 
-    // Padding for start of week
-    for (let i = 0; i < startPad; i++) {
-      days.push({ date: null, physical: 0, emotional: 0, intellectual: 0, isToday: false, isCritical: false })
+  const shareCard = mode === 'compat'
+    ? c && {
+      tool: t('title'),
+      label: t('compat.label', pair),
+      headline: `${c.overall}%`,
+      sub: t(`compat.band.${compatBand(c.overall)}`),
+      rows: CLASSIC.map(k => ({ label: t(k), value: `${c[k as 'physical']}%` })),
     }
-
-    for (let d = 1; d <= lastDay.getDate(); d++) {
-      const date = new Date(year, month, d)
-      const dayCount = daysBetween(birth, date)
-      const phys = biorhythmValue(dayCount, PHYSICAL_CYCLE)
-      const emot = biorhythmValue(dayCount, EMOTIONAL_CYCLE)
-      const intl = biorhythmValue(dayCount, INTELLECTUAL_CYCLE)
-      const isToday = formatDate(date) === targetDate
-      const isCritical = isCriticalDay(dayCount, PHYSICAL_CYCLE) ||
-        isCriticalDay(dayCount, EMOTIONAL_CYCLE) ||
-        isCriticalDay(dayCount, INTELLECTUAL_CYCLE)
-      days.push({ date, physical: phys, emotional: emot, intellectual: intl, isToday, isCritical })
+    : r && {
+      tool: t('title'),
+      label: heroLabel,
+      headline: t('share.headline', { v: signed(r.now.composite) }),
+      sub: t(`band.composite.${band(r.now.composite / 100)}`),
+      rows: keys.map(k => ({ label: t(k), value: `${signed(r.now[k])} · ${t(`bandName.${band(r.now[k] / 100)}`)}` })),
     }
-
-    return days
-  }, [birth, calendarMonth, targetDate])
-
-  const rhythmColor = (value: number) => {
-    if (value > 50) return 'text-green-600 dark:text-green-400'
-    if (value > 0) return 'text-blue-600 dark:text-blue-400'
-    if (value > -50) return 'text-yellow-600 dark:text-yellow-400'
-    return 'text-red-600 dark:text-red-400'
-  }
-
-  const dotColor = (value: number) => {
-    if (value > 30) return 'bg-green-500'
-    if (value > -30) return 'bg-yellow-400'
-    return 'bg-red-500'
-  }
-
-  const statusKey = (value: number): string => {
-    const level = getStatusLevel(value)
-    return `status.${level}`
-  }
-
-  const gaugeBar = (value: number, color: string, label: string, icon: React.ReactNode) => {
-    const pct = (value + 100) / 2
-    const isCrit = Math.abs(value) < 5
-    return (
-      <div className="space-y-1">
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1.5">
-            {icon}
-            <span className="font-medium text-body">{label}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {isCrit && (
-              <span className="flex items-center gap-0.5 text-xs text-amber-600 dark:text-amber-400 font-medium">
-                <AlertTriangle className="w-3 h-3" />
-                {t('criticalDay')}
-              </span>
-            )}
-            <span className={`font-bold ${rhythmColor(value)}`}>{Math.round(value)}%</span>
-          </div>
-        </div>
-        <div className="relative h-4 bg-track rounded-full overflow-hidden">
-          <div className="absolute top-0 left-1/2 w-px h-full bg-gray-400 dark:bg-gray-500 z-10" />
-          <div
-            className={`absolute top-0 h-full rounded-full transition-all duration-500 ${color}`}
-            style={{
-              left: value >= 0 ? '50%' : `${pct}%`,
-              width: `${Math.abs(value) / 2}%`,
-            }}
-          />
-        </div>
-        <p className="text-xs text-muted">{t(statusKey(value))}</p>
-      </div>
-    )
-  }
-
-  const periodOptions = [7, 14, 30, 60, 90]
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const ChartTip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
     return (
-      <div className="bg-surface border border-line rounded-lg shadow-lg p-3 text-sm">
-        <p className="font-medium text-fg mb-1">{label}</p>
-        {payload.map((entry: { color: string; name: string; value: number }, idx: number) => (
-          <p key={idx} style={{ color: entry.color }} className="flex justify-between gap-4">
-            <span>{entry.name}</span>
-            <span className="font-medium">{entry.value}%</span>
+      <div className="bg-surface border border-line rounded-xl shadow-lg p-3 text-sm">
+        <p className="font-semibold text-fg mb-1">{fmt(label)}</p>
+        {payload.map((e: { color: string; name: string; value: number }) => (
+          <p key={e.name} className="flex justify-between gap-4 text-body">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: e.color }} />{e.name}</span>
+            <span className="font-semibold tabular-nums">{signed(e.value)}</span>
           </p>
         ))}
       </div>
     )
   }
 
-  const prevMonth = () => {
-    setCalendarMonth(prev => {
-      if (prev.month === 0) return { year: prev.year - 1, month: 11 }
-      return { ...prev, month: prev.month - 1 }
-    })
-  }
-  const nextMonth = () => {
-    setCalendarMonth(prev => {
-      if (prev.month === 11) return { year: prev.year + 1, month: 0 }
-      return { ...prev, month: prev.month + 1 }
-    })
-  }
+  const chartFrame = (data: object[], lines: React.ReactNode) => (
+    <div className="h-72">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 16, right: 8, left: -20, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
+          <XAxis dataKey="date" tickFormatter={md} tick={{ fontSize: 11, fill: 'var(--muted)' }} interval={4} stroke="var(--line)" />
+          <YAxis domain={[-100, 100]} ticks={[-100, -50, 0, 50, 100]} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
+          <Tooltip content={<ChartTip />} />
+          <ReferenceLine y={0} stroke="var(--line-strong)" />
+          {today && today !== target && <ReferenceLine x={today} stroke="var(--muted)" strokeDasharray="3 3" label={{ value: t('today'), position: 'top', fontSize: 11, fill: 'var(--muted)' }} />}
+          <ReferenceLine x={target} stroke="var(--fg)" strokeDasharray="3 3" label={{ value: target === today ? t('today') : t('chart.selected'), position: 'top', fontSize: 11, fill: 'var(--fg)' }} />
+          {lines}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  )
 
-  const weekDays = [t('calendar.sun'), t('calendar.mon'), t('calendar.tue'), t('calendar.wed'), t('calendar.thu'), t('calendar.fri'), t('calendar.sat')]
+  const legend = (items: { name: string; color: string; dashed?: boolean }[]) => (
+    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-sub mb-3">
+      {items.map(i => (
+        <span key={i.name} className="flex items-center gap-1.5">
+          <span className="w-4 h-0 border-t-2" style={{ borderColor: i.color, borderStyle: i.dashed ? 'dashed' : 'solid' }} />{i.name}
+        </span>
+      ))}
+    </div>
+  )
+
+  const dayList = (list: DayPoint[]) => (
+    <ul className="space-y-1.5">
+      {list.map(p => (
+        <li key={p.date}>
+          <button onClick={() => setTarget(p.date)} className="w-full flex justify-between text-sm hover:text-primary">
+            <span className="text-body">{fmt(p.date)}</span>
+            <span className="font-semibold text-fg tabular-nums">{signed(p.composite)}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Input Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('inputTitle')}
-            </h2>
-
-            {/* Birth date */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('birthDate')}
-              </label>
-              <input
-                type="date"
-                value={birthDate}
-                onChange={e => setBirthDate(e.target.value)}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                max={targetDate}
-              />
+          <div className="ui-card p-6 space-y-5">
+            <div className="flex gap-1 p-1 bg-soft rounded-2xl" role="tablist">
+              <button role="tab" aria-selected={mode === 'single'} onClick={() => setMode('single')} className={segBtn(mode === 'single')}>{t('mode.single')}</button>
+              <button role="tab" aria-selected={mode === 'compat'} onClick={() => setMode('compat')} className={segBtn(mode === 'compat')}>{t('mode.compat')}</button>
             </div>
 
-            {/* Target date */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('targetDate')}
-              </label>
-              <input
-                type="date"
-                value={targetDate}
-                onChange={e => setTargetDate(e.target.value)}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
-            </div>
-
-            {/* Period */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('periodLabel')}
-              </label>
-              <select
-                value={period}
-                onChange={e => setPeriod(Number(e.target.value))}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              >
-                {periodOptions.map(p => (
-                  <option key={p} value={p}>{t('periodDays', { days: p })}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Days lived info */}
-            {birth && (
-              <div className="bg-subtle rounded-lg p-3 text-sm">
-                <p className="text-sub">
-                  {t('daysLived', { days: todayDays.toLocaleString() })}
-                </p>
+            {[
+              { id: 'a', label: t('birthDate'), name: nameA, setName: setNameA, birth: birthA, setBirth: (v: string) => { setBirthA(v); setIsExample(false) }, err: errA },
+              ...(mode === 'compat' ? [{ id: 'b', label: t('compatibility.birthDate2'), name: nameB, setName: setNameB, birth: birthB, setBirth: setBirthB, err: errB }] : []),
+            ].map(f => (
+              <div key={f.id} className="space-y-2">
+                <label className="block text-sm font-medium text-body" htmlFor={`bio-birth-${f.id}`}>{f.label}</label>
+                <div className="flex gap-2">
+                  <input id={`bio-birth-${f.id}`} type="date" value={f.birth} min="1900-01-01" max={target || undefined}
+                    onChange={e => f.setBirth(e.target.value)} className="ui-field px-4 py-3 flex-1 min-w-0" />
+                  <input aria-label={t('input.name')} value={f.name} maxLength={20} onChange={e => f.setName(e.target.value)}
+                    placeholder={f.id === 'a' ? t('input.namePlaceholder') : t('compat.partner')} className="ui-field px-3 py-3 w-24" />
+                </div>
+                {f.err && <p className="text-sm text-red-600" role="alert">{f.err}</p>}
+                {f.id === 'a' && isExample && <p className="text-xs text-muted">{t('input.example')}</p>}
+                {f.id === 'a' && r && <p className="text-xs text-muted">{t('daysLived', { days: r.now.days.toLocaleString('ko-KR') })}</p>}
+                <button onClick={() => saveProfile(f.name, f.birth)} disabled={!isValidDate(f.birth)} className="text-sm font-medium text-primary disabled:text-faint">{t('profiles.save')}</button>
               </div>
-            )}
+            ))}
+
+            <div>
+              <label className="block text-sm font-medium text-body mb-1.5" htmlFor="bio-target">{t('targetDate')}</label>
+              <div className="flex gap-2">
+                <button onClick={() => setTarget(addDays(target, -1))} disabled={!isValidDate(target)} className="ui-btn-soft px-3 py-2 shrink-0" aria-label={t('chart.prev')}><ChevronLeft className="w-4 h-4" /></button>
+                <input id="bio-target" type="date" value={target} onChange={e => setTarget(e.target.value)} className="ui-field px-4 py-3 flex-1 min-w-0" />
+                <button onClick={() => setTarget(addDays(target, 1))} disabled={!isValidDate(target)} className="ui-btn-soft px-3 py-2 shrink-0" aria-label={t('chart.next')}><ChevronRight className="w-4 h-4" /></button>
+              </div>
+              {today && target !== today && (
+                <button onClick={() => setTarget(today)} className="mt-2 text-sm font-medium text-primary">{t('input.backToday')}</button>
+              )}
+            </div>
+
+            <label className="flex items-center gap-2 text-sm text-body">
+              <input type="checkbox" checked={intuitive} onChange={e => { setIntuitive(e.target.checked); if (!e.target.checked && compatCycle === 'intuitive') setCompatCycle('emotional') }} className="w-4 h-4 accent-[var(--primary)]" />
+              {t('input.showIntuitive')}
+            </label>
           </div>
 
-          {/* Compatibility toggle */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                {t('compatibility.title')}
-              </h2>
-              <button
-                onClick={() => setShowCompatibility(!showCompatibility)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showCompatibility ? 'bg-purple-600' : 'bg-gray-300 dark:bg-gray-600'}`}
-              >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showCompatibility ? 'translate-x-6' : 'translate-x-1'}`} />
-              </button>
-            </div>
-
-            {showCompatibility && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('compatibility.birthDate2')}
-                </label>
-                <input
-                  type="date"
-                  value={birthDate2}
-                  onChange={e => setBirthDate2(e.target.value)}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                  max={targetDate}
-                />
-              </div>
+          {/* 저장한 사람 */}
+          <div className="ui-card p-6">
+            <h2 className="text-base font-semibold text-fg mb-3">{t('profiles.title')}</h2>
+            {profiles.length === 0 ? (
+              <p className="text-sm text-muted">{t('profiles.empty')}</p>
+            ) : (
+              <ul className="space-y-2">
+                {profiles.map(p => (
+                  <li key={p.id} className="flex items-center gap-2 text-sm">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-fg truncate">{p.name}</p>
+                      <p className="text-xs text-muted tabular-nums">{p.date}</p>
+                    </div>
+                    {mode === 'compat' ? (
+                      <>
+                        <button onClick={() => loadA(p)} className={chipBtn(birthA === p.date && nameA === p.name)}>{t('profiles.asA')}</button>
+                        <button onClick={() => loadB(p)} className={chipBtn(birthB === p.date && nameB === p.name)}>{t('profiles.asB')}</button>
+                      </>
+                    ) : (
+                      <button onClick={() => loadA(p)} className={chipBtn(birthA === p.date && nameA === p.name)}>{t('profiles.load')}</button>
+                    )}
+                    <button onClick={() => removeProfile(p.id)} className="p-1.5 text-faint hover:text-red-600" aria-label={t('profiles.remove')}><Trash2 className="w-4 h-4" /></button>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>
 
-        {/* Results Panel */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {!birth ? (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <Calendar className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-muted">{t('emptyState')}</p>
-            </div>
-          ) : (
-            <>
-              {/* Today's Biorhythm Card */}
-              <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-fg">{t('todayTitle')}</h2>
-                  <div className="text-right">
-                    <p className="text-xs text-muted">{t('overallCondition')}</p>
-                    <p className={`text-2xl font-bold ${rhythmColor(overallScore)}`}>{overallScore}%</p>
+          {!r ? (
+            <div className="ui-card p-12 text-center text-muted">{today ? (errA || t('emptyState')) : null}</div>
+          ) : mode === 'compat' ? (
+            c ? (
+              <>
+                <div className="ui-hero p-6 sm:p-8">
+                  <p className="text-sm text-white/70">{t('compat.label', pair)}</p>
+                  <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{c.overall}%</p>
+                  <p className="mt-2 text-white/90">{t(`compat.band.${compatBand(c.overall)}`)}</p>
+                  <div className="mt-6 grid grid-cols-3 gap-3">
+                    {CLASSIC.map(k => (
+                      <div key={k} className="rounded-2xl bg-white/15 p-4">
+                        <p className="text-xs text-white/70">{t(k)}</p>
+                        <p className="text-2xl font-bold tabular-nums">{c[k as 'physical']}%</p>
+                      </div>
+                    ))}
                   </div>
+                  <p className="mt-4 text-xs text-white/70">{t('hero.fun')}</p>
                 </div>
 
-                {gaugeBar(todayValues.physical, 'bg-red-500', t('physical'), <Dumbbell className="w-4 h-4 text-red-500" />)}
-                {gaugeBar(todayValues.emotional, 'bg-green-500', t('emotional'), <Heart className="w-4 h-4 text-green-500" />)}
-                {gaugeBar(todayValues.intellectual, 'bg-blue-500', t('intellectual'), <Brain className="w-4 h-4 text-blue-500" />)}
-              </div>
+                {shareCard && (
+                  <div className="space-y-2">
+                    <ShareResult card={shareCard} url={hideBirth ? rootUrl : undefined} text={t('share.textCompat', { v: c.overall })} fileName="biorhythm-match" />
+                    <label className="flex items-center gap-2 text-sm text-sub">
+                      <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                      {t('share.hideBirth')}
+                    </label>
+                  </div>
+                )}
 
-              {/* Chart */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4">{t('chartTitle')}</h2>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        dataKey="label"
-                        tick={{ fontSize: 11 }}
-                        interval={period <= 14 ? 0 : period <= 30 ? 2 : period <= 60 ? 5 : 8}
-                      />
-                      <YAxis domain={[-100, 100]} tick={{ fontSize: 11 }} />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="4 4" />
-                      <ReferenceLine
-                        x={`${target.getMonth() + 1}/${target.getDate()}`}
-                        stroke="#6b7280"
-                        strokeDasharray="4 4"
-                        label={{ value: t('today'), position: 'top', fontSize: 11 }}
-                      />
-                      <Line type="monotone" dataKey="physical" name={t('physical')} stroke="#ef4444" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-                      <Line type="monotone" dataKey="emotional" name={t('emotional')} stroke="#22c55e" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-                      <Line type="monotone" dataKey="intellectual" name={t('intellectual')} stroke="#3b82f6" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-                      {showCompatibility && birth2 && (
-                        <>
-                          <Line type="monotone" dataKey="physical2" name={`${t('physical')}(2)`} stroke="#ef4444" strokeWidth={1.5} strokeDasharray="5 5" dot={false} />
-                          <Line type="monotone" dataKey="emotional2" name={`${t('emotional')}(2)`} stroke="#22c55e" strokeWidth={1.5} strokeDasharray="5 5" dot={false} />
-                          <Line type="monotone" dataKey="intellectual2" name={`${t('intellectual')}(2)`} stroke="#3b82f6" strokeWidth={1.5} strokeDasharray="5 5" dot={false} />
-                        </>
-                      )}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Compatibility Scores */}
-              {showCompatibility && compatibility && (
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                    {t('compatibility.resultTitle')}
-                  </h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {[
-                      { key: 'overall', value: compatibility.overall, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-subtle' },
-                      { key: 'physical', value: compatibility.physical, color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-950' },
-                      { key: 'emotional', value: compatibility.emotional, color: 'text-green-600 dark:text-green-400', bg: 'bg-subtle' },
-                      { key: 'intellectual', value: compatibility.intellectual, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-subtle' },
-                    ].map(item => (
-                      <div key={item.key} className={`${item.bg} rounded-xl p-4 text-center`}>
-                        <p className="text-xs text-muted mb-1">
-                          {item.key === 'overall' ? t('compatibility.overall') : t(item.key)}
-                        </p>
-                        <p className={`text-2xl font-bold ${item.color}`}>{item.value}%</p>
+                <div className="ui-card p-6 space-y-3">
+                  <h2 className="text-base font-semibold text-fg">{t('compat.howTitle')}</h2>
+                  <p className="bg-subtle rounded-2xl p-4 text-sm text-body font-medium">{t('compat.formula')}</p>
+                  <p className="text-sm text-sub">{t('compat.formulaNote', { n: c.gap.toLocaleString('ko-KR') })}</p>
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    {[{ n: pair.a, p: r.now }, { n: pair.b, p: c.nowB }].map(x => (
+                      <div key={x.n} className="bg-subtle rounded-2xl p-4">
+                        <p className="text-xs text-muted">{t('compat.todayOf', { name: x.n, date: fmt(target) })}</p>
+                        <p className="text-2xl font-bold text-fg tabular-nums">{signed(x.p.composite)}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-              )}
 
-              {/* Calendar View */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-fg">{t('calendarTitle')}</h2>
-                  <div className="flex items-center gap-2">
-                    <button onClick={prevMonth} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <ChevronLeft className="w-4 h-4 text-sub" />
-                    </button>
-                    <span className="text-sm font-medium text-body min-w-[100px] text-center">
-                      {calendarMonth.year}.{String(calendarMonth.month + 1).padStart(2, '0')}
-                    </span>
-                    <button onClick={nextMonth} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <ChevronRight className="w-4 h-4 text-sub" />
-                    </button>
+                <div className="ui-card p-6">
+                  <h2 className="text-base font-semibold text-fg mb-3">{t('compat.chartTitle')}</h2>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {keys.map(k => <button key={k} onClick={() => setCompatCycle(k)} className={chipBtn(compatCycle === k)}>{t(k)}</button>)}
                   </div>
+                  {legend([{ name: pair.a, color: 'var(--primary)' }, { name: pair.b, color: '#f04452', dashed: true }])}
+                  {chartFrame(c.chart, [
+                    <Line key="a" type="monotone" dataKey="a" name={pair.a} stroke="var(--primary)" strokeWidth={2.5} dot={false} />,
+                    <Line key="b" type="monotone" dataKey="b" name={pair.b} stroke="#f04452" strokeWidth={2} strokeDasharray="5 4" dot={false} />,
+                  ])}
+                  <p className="mt-2 text-xs text-muted">{t('chart.hint')}</p>
                 </div>
-
-                {/* Legend */}
-                <div className="flex items-center gap-4 mb-3 text-xs text-muted">
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />{t('physical')}</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" />{t('emotional')}</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" />{t('intellectual')}</span>
-                  <span className="flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-amber-500" />{t('criticalDay')}</span>
-                </div>
-
-                <div className="grid grid-cols-7 gap-1">
-                  {/* Week day headers */}
-                  {weekDays.map(day => (
-                    <div key={day} className="text-center text-xs font-medium text-muted py-1">{day}</div>
-                  ))}
-                  {/* Calendar cells */}
-                  {calendarDays.map((day, idx) => (
-                    <div
-                      key={idx}
-                      className={`relative text-center py-1.5 rounded-lg text-sm ${
-                        !day.date ? '' :
-                        day.isToday ? 'bg-blue-100 dark:bg-blue-900 font-bold' :
-                        day.isCritical ? 'bg-amber-50 dark:bg-amber-950' : ''
-                      }`}
-                    >
-                      {day.date && (
-                        <>
-                          <span className={`${day.isToday ? 'text-sub' : 'text-body'}`}>
-                            {day.date.getDate()}
-                          </span>
-                          <div className="flex justify-center gap-0.5 mt-0.5">
-                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor(day.physical)}`} />
-                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor(day.emotional)}`} />
-                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor(day.intellectual)}`} />
-                          </div>
-                          {day.isCritical && (
-                            <span className="absolute top-0 right-0.5 text-amber-500 text-[8px]">!</span>
-                          )}
-                        </>
-                      )}
+              </>
+            ) : (
+              <div className="ui-card p-12 text-center text-muted">{errB || t('compat.needB')}</div>
+            )
+          ) : (
+            <>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{heroLabel}</p>
+                <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{t('share.headline', { v: signed(r.now.composite) })}</p>
+                <p className="mt-2 text-white/90">{t(`band.composite.${band(r.now.composite / 100)}`)}</p>
+                {r.now.critical.length > 0 && (
+                  <p className="mt-3 inline-block rounded-xl bg-white/20 px-3 py-1.5 text-sm font-semibold">{t('crit.todayShort', { list: critNames(r.now.critical) })}</p>
+                )}
+                <div className={`mt-6 grid gap-3 ${keys.length === 4 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-1 sm:grid-cols-3'}`}>
+                  {keys.map(k => (
+                    <div key={k} className="rounded-2xl bg-white/15 p-4">
+                      <div className="flex items-baseline justify-between">
+                        <p className="text-xs text-white/70">{t(k)} · {t('cycleDays', { n: CYCLES[k] })}</p>
+                        <p className="text-xs text-white/70">{t(rising(r.now.days, CYCLES[k]) ? 'hero.rising' : 'hero.falling')}</p>
+                      </div>
+                      <p className="text-2xl font-bold tabular-nums">{signed(r.now[k])}</p>
+                      <p className="text-xs text-white/90 mt-1">{t(`band.${k}.${band(r.now[k] / 100)}`)}</p>
                     </div>
                   ))}
                 </div>
+                <p className="mt-4 text-xs text-white/70">{t('hero.fun')}</p>
+              </div>
+
+              {shareCard && (
+                <div className="space-y-2">
+                  <ShareResult card={shareCard} url={hideBirth ? rootUrl : undefined} text={t('share.text', { v: signed(r.now.composite) })} fileName="biorhythm" />
+                  <label className="flex items-center gap-2 text-sm text-sub">
+                    <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                    {t('share.hideBirth')}
+                  </label>
+                </div>
+              )}
+
+              {/* 위험일 */}
+              <div className="ui-card p-6 space-y-3">
+                <h2 className="text-base font-semibold text-fg">{t('crit.title')}</h2>
+                {r.now.critical.length > 0
+                  ? <p className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('crit.today', { list: critNames(r.now.critical) })}</p>
+                  : <p className="text-sm text-sub">{t('crit.none')}</p>}
+                <p className="text-sm font-medium text-body pt-1">{t('crit.upcoming')}</p>
+                {r.upcoming.length ? (
+                  <ul className="flex flex-wrap gap-2">
+                    {r.upcoming.map(u => (
+                      <li key={u.date}>
+                        <button onClick={() => setTarget(u.date)} className="px-3 py-1.5 rounded-full bg-soft text-sm text-body hover:bg-subtle">
+                          {fmt(u.date)} <span className="text-muted">{critNames(u.keys)}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : <p className="text-sm text-muted">{t('crit.noneUpcoming')}</p>}
+              </div>
+
+              {/* 차트 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg mb-3">{t('chartTitle')}</h2>
+                {legend(keys.map(k => ({ name: t(k), color: COLOR[k], dashed: k === 'intuitive' })))}
+                {chartFrame(r.chart, keys.map(k => (
+                  <Line key={k} type="monotone" dataKey={k} name={t(k)} stroke={COLOR[k]} strokeWidth={2}
+                    strokeDasharray={k === 'intuitive' ? '5 4' : undefined} dot={false} activeDot={{ r: 4 }} />
+                )))}
+                <p className="mt-2 text-xs text-muted">{t('chart.hint')}</p>
+              </div>
+
+              {/* 이번 달 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg mb-4">{t('month.title', { m: +target.slice(5, 7) })}</h2>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm font-medium text-primary mb-2">{t('month.best')}</p>
+                    {dayList(r.month.best)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-sub mb-2">{t('month.worst')}</p>
+                    {dayList(r.month.worst)}
+                  </div>
+                </div>
+                {r.monthCritical.length > 0 && (
+                  <p className="mt-5 text-sm text-sub">
+                    <span className="font-medium text-body">{t('month.critical', { n: r.monthCritical.length })}</span>{' '}
+                    {r.monthCritical.map(p => `${md(p.date)}(${critNames(p.critical)})`).join(', ')}
+                  </p>
+                )}
               </div>
             </>
           )}
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-
+      {/* 가이드 */}
+      <div className="ui-card p-6">
         <div className="grid md:grid-cols-2 gap-6">
-          {/* What is biorhythm */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-fg">{t('guide.what.title')}</h3>
-            <div className="text-sm text-sub space-y-2">
-              {(t.raw('guide.what.items') as string[]).map((item, i) => (
-                <p key={i}>{item}</p>
-              ))}
+          {(['rhythms', 'critical'] as const).map(s => (
+            <div key={s} className="space-y-3">
+              <h3 className="font-medium text-fg">{t(`guide.${s}.title`)}</h3>
+              <ul className="text-sm text-sub space-y-2">
+                {(t.raw(`guide.${s}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
             </div>
-          </div>
-
-          {/* Rhythm meanings */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-fg">{t('guide.rhythms.title')}</h3>
-            <ul className="text-sm text-sub space-y-2">
-              {(t.raw('guide.rhythms.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${i === 0 ? 'bg-red-500' : i === 1 ? 'bg-green-500' : 'bg-blue-500'}`} />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Critical days */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-fg flex items-center gap-2">
-              {t('guide.critical.title')}
-            </h3>
-            <div className="text-sm text-sub space-y-2">
-              {(t.raw('guide.critical.items') as string[]).map((item, i) => (
-                <p key={i}>{item}</p>
-              ))}
-            </div>
-          </div>
-
-          {/* Disclaimer */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-fg flex items-center gap-2">
-              {t('guide.disclaimer.title')}
-            </h3>
-            <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-300 space-y-2">
-              {(t.raw('guide.disclaimer.items') as string[]).map((item, i) => (
-                <p key={i}>{item}</p>
-              ))}
+          ))}
+          <div className="space-y-3 md:col-span-2">
+            <h3 className="font-medium text-fg">{t('guide.disclaimer.title')}</h3>
+            <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+              {(t.raw('guide.disclaimer.items') as string[]).map((item, i) => <p key={i}>{item}</p>)}
             </div>
           </div>
         </div>
       </div>
+      <GuideSection namespace="biorhythm" />
     </div>
   )
 }

@@ -1,519 +1,494 @@
 'use client'
 
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, Upload, Trash2, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Copy, Check, Upload, Trash2, ExternalLink } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import {
+  MODELS, VENDORS, VENDOR_IDS, FX_DEFAULT, textStats, estimateTokens, scenarioCost, contextFit, compareModels,
+  fmtUSD, fmtKRW, fmtTokens, toMarkdown, type LlmModel, type VendorId, type Scenario, type Tokenizer,
+} from '@/utils/llmPricing'
 
-// ── 모델 데이터 ──
-interface LlmModel {
-  id: string
-  name: string
-  provider: string
-  contextWindow: number
-  inputPricePer1M: number   // USD per 1M input tokens
-  outputPricePer1M: number  // USD per 1M output tokens
-  // 토큰 추정 계수: 한국어 글자당 토큰, 영어 글자당 토큰
-  koreanCharPerToken: number
-  englishCharPerToken: number
-}
+const seg = (on: boolean) =>
+  `px-3 py-2 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+const chip = (on: boolean) =>
+  `px-3 py-1 text-xs rounded-full transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`
 
-const MODELS: LlmModel[] = [
-  // OpenAI
-  { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', contextWindow: 128000, inputPricePer1M: 2.50, outputPricePer1M: 10.00, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'gpt-4o-mini', name: 'GPT-4o mini', provider: 'OpenAI', contextWindow: 128000, inputPricePer1M: 0.15, outputPricePer1M: 0.60, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'gpt-4.1', name: 'GPT-4.1', provider: 'OpenAI', contextWindow: 1047576, inputPricePer1M: 2.00, outputPricePer1M: 8.00, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'gpt-4.1-mini', name: 'GPT-4.1 mini', provider: 'OpenAI', contextWindow: 1047576, inputPricePer1M: 0.40, outputPricePer1M: 1.60, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'gpt-4.1-nano', name: 'GPT-4.1 nano', provider: 'OpenAI', contextWindow: 1047576, inputPricePer1M: 0.10, outputPricePer1M: 0.40, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'o1', name: 'o1', provider: 'OpenAI', contextWindow: 200000, inputPricePer1M: 15.00, outputPricePer1M: 60.00, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'o3', name: 'o3', provider: 'OpenAI', contextWindow: 200000, inputPricePer1M: 2.00, outputPricePer1M: 8.00, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'o3-mini', name: 'o3 mini', provider: 'OpenAI', contextWindow: 200000, inputPricePer1M: 1.10, outputPricePer1M: 4.40, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  { id: 'o4-mini', name: 'o4-mini', provider: 'OpenAI', contextWindow: 200000, inputPricePer1M: 1.10, outputPricePer1M: 4.40, koreanCharPerToken: 0.7, englishCharPerToken: 4.0 },
-  // Anthropic
-  { id: 'claude-opus-4', name: 'Claude Opus 4', provider: 'Anthropic', contextWindow: 200000, inputPricePer1M: 15.00, outputPricePer1M: 75.00, koreanCharPerToken: 1.2, englishCharPerToken: 4.0 },
-  { id: 'claude-sonnet-4', name: 'Claude Sonnet 4', provider: 'Anthropic', contextWindow: 200000, inputPricePer1M: 3.00, outputPricePer1M: 15.00, koreanCharPerToken: 1.2, englishCharPerToken: 4.0 },
-  { id: 'claude-haiku-3.5', name: 'Claude 3.5 Haiku', provider: 'Anthropic', contextWindow: 200000, inputPricePer1M: 0.80, outputPricePer1M: 4.00, koreanCharPerToken: 1.2, englishCharPerToken: 4.0 },
-  // Google
-  { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'Google', contextWindow: 1048576, inputPricePer1M: 1.25, outputPricePer1M: 10.00, koreanCharPerToken: 1.0, englishCharPerToken: 4.0 },
-  { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', provider: 'Google', contextWindow: 1048576, inputPricePer1M: 0.15, outputPricePer1M: 0.60, koreanCharPerToken: 1.0, englishCharPerToken: 4.0 },
-  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', provider: 'Google', contextWindow: 1048576, inputPricePer1M: 0.10, outputPricePer1M: 0.40, koreanCharPerToken: 1.0, englishCharPerToken: 4.0 },
-  // Meta
-  { id: 'llama-4-maverick', name: 'Llama 4 Maverick', provider: 'Meta', contextWindow: 1048576, inputPricePer1M: 0.20, outputPricePer1M: 0.60, koreanCharPerToken: 0.8, englishCharPerToken: 4.0 },
-  { id: 'llama-4-scout', name: 'Llama 4 Scout', provider: 'Meta', contextWindow: 10485760, inputPricePer1M: 0.15, outputPricePer1M: 0.40, koreanCharPerToken: 0.8, englishCharPerToken: 4.0 },
-  { id: 'llama-3.3-70b', name: 'Llama 3.3 70B', provider: 'Meta', contextWindow: 128000, inputPricePer1M: 0.18, outputPricePer1M: 0.40, koreanCharPerToken: 0.8, englishCharPerToken: 4.0 },
-]
+const TOKENIZERS: Tokenizer[] = ['openai', 'claude', 'claudeLegacy', 'gemini', 'deepseek']
+const DEFAULT_MODEL = 'claude-sonnet-5-5'
 
-const PROVIDERS = ['OpenAI', 'Anthropic', 'Google', 'Meta'] as const
+interface State { m: string; rpd: number; in: number; out: number; pre: number; hit: number; b: boolean; fx: number }
+const DEFAULTS: State = { m: DEFAULT_MODEL, rpd: 1000, in: 2000, out: 500, pre: 50, hit: 80, b: false, fx: FX_DEFAULT.rate }
 
-const PROVIDER_COLORS: Record<string, string> = {
-  OpenAI: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  Anthropic: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  Google: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  Meta: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-}
-
-// ── 한국어/영어 비율 분석 ──
-function analyzeText(text: string) {
-  const koreanRegex = /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uD7B0-\uD7FF]/g
-  const koreanChars = (text.match(koreanRegex) || []).length
-  const totalChars = text.replace(/\s/g, '').length
-  const englishChars = totalChars - koreanChars
-  const koreanRatio = totalChars > 0 ? koreanChars / totalChars : 0
-
-  const words = text.trim().split(/\s+/).filter(Boolean).length
-  const lines = text.split('\n').length
-
-  return { koreanChars, englishChars, totalChars, koreanRatio, words, lines, charCount: text.length }
-}
-
-// ── 토큰 수 추정 ──
-function estimateTokens(text: string, model: LlmModel): number {
-  if (!text) return 0
-  const { koreanChars, englishChars } = analyzeText(text)
-  const koreanTokens = koreanChars / model.koreanCharPerToken
-  const englishTokens = englishChars / model.englishCharPerToken
-  // 공백/줄바꿈 등도 토큰으로 처리
-  const whitespaceChars = text.length - text.replace(/\s/g, '').length
-  const whitespaceTokens = whitespaceChars / 4
-  return Math.ceil(koreanTokens + englishTokens + whitespaceTokens)
-}
-
-// ── 비용 계산 ──
-function calculateCost(inputTokens: number, outputTokens: number, model: LlmModel) {
-  const inputCostUSD = (inputTokens / 1_000_000) * model.inputPricePer1M
-  const outputCostUSD = (outputTokens / 1_000_000) * model.outputPricePer1M
-  return { inputCostUSD, outputCostUSD, totalCostUSD: inputCostUSD + outputCostUSD }
-}
-
-function formatNumber(n: number): string {
-  return n.toLocaleString()
-}
-
-function formatContext(n: number): string {
-  if (n >= 10_000_000) return `${(n / 1_000_000).toFixed(0)}M`
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
-  return `${(n / 1_000).toFixed(0)}K`
-}
-
-function formatUSD(n: number): string {
-  if (n < 0.0001 && n > 0) return '< $0.0001'
-  if (n < 0.01) return `$${n.toFixed(4)}`
-  return `$${n.toFixed(4)}`
-}
-
-function formatKRW(usd: number, rate: number): string {
-  const krw = usd * rate
-  if (krw < 1 && krw > 0) return '< ₩1'
-  return `₩${Math.round(krw).toLocaleString()}`
+function decode(sp: URLSearchParams): State {
+  const num = (k: string, d: number, max = Infinity) => {
+    const v = Number(sp.get(k))
+    return sp.has(k) && Number.isFinite(v) && v >= 0 ? Math.min(v, max) : d
+  }
+  const m = sp.get('m') ?? ''
+  return {
+    m: MODELS.some((x) => x.id === m) ? m : DEFAULTS.m,
+    rpd: num('rpd', DEFAULTS.rpd), in: num('in', DEFAULTS.in), out: num('out', DEFAULTS.out),
+    pre: num('pre', DEFAULTS.pre, 100), hit: num('hit', DEFAULTS.hit, 100), b: sp.get('b') === '1',
+    fx: num('fx', DEFAULTS.fx) || DEFAULTS.fx,
+  }
 }
 
 export default function LlmTokenCalculator() {
   const t = useTranslations('llmTokenCalculator')
+  const searchParams = useSearchParams()
+  const [s, setS] = useState<State>(() => decode(searchParams))
+  const set = <K extends keyof State>(k: K, v: State[K]) => setS((p) => ({ ...p, [k]: v }))
   const [text, setText] = useState('')
-  const [selectedModelId, setSelectedModelId] = useState('gpt-4o')
-  const [outputTokenCount, setOutputTokenCount] = useState(500)
-  const [exchangeRate, setExchangeRate] = useState(1380)
+  const [src, setSrc] = useState<'text' | 'manual'>('manual')
+  const [vendor, setVendor] = useState<VendorId | 'all'>('all')
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showGuide, setShowGuide] = useState(false)
-  const [filterProvider, setFilterProvider] = useState<string>('all')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const selectedModel = MODELS.find(m => m.id === selectedModelId) || MODELS[0]
+  const model = MODELS.find((x) => x.id === s.m) ?? MODELS[0]
+  const stats = useMemo(() => textStats(text), [text])
+  const useText = src === 'text' && stats.chars > 0
+  const inTokOf = useCallback(
+    (m: LlmModel) => (useText ? estimateTokens(stats, m.tok).mid : s.in),
+    [useText, stats, s.in],
+  )
+  const inTok = inTokOf(model)
 
-  const textAnalysis = useMemo(() => analyzeText(text), [text])
-  const inputTokens = useMemo(() => estimateTokens(text, selectedModel), [text, selectedModel])
-  const cost = useMemo(
-    () => calculateCost(inputTokens, outputTokenCount, selectedModel),
-    [inputTokens, outputTokenCount, selectedModel]
+  // URL 동기화: 텍스트 모드면 선택 모델 추정치를 in으로 기록 (공유 링크는 직접 입력으로 재현)
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const q: Record<string, string> = {
+      m: s.m, rpd: String(s.rpd), in: String(inTok), out: String(s.out), pre: String(s.pre), hit: String(s.hit), b: s.b ? '1' : '0', fx: String(s.fx),
+    }
+    for (const [k, v] of Object.entries(q)) url.searchParams.set(k, v)
+    window.history.replaceState({}, '', url)
+  }, [s, inTok])
+
+  const scenario: Scenario = { rpd: s.rpd, inTok, outTok: s.out, prefixPct: s.pre, hitPct: s.hit, batch: s.b }
+  const cost = scenarioCost(model, scenario)
+  const fit = contextFit(model, inTok, s.out)
+  const rows = useMemo(
+    () => compareModels(vendor === 'all' ? MODELS : MODELS.filter((m) => m.vendor === vendor), scenario, inTokOf),
+    [vendor, JSON.stringify(scenario), inTokOf], // eslint-disable-line react-hooks/exhaustive-deps
   )
 
-  // 모델별 비교 데이터
-  const comparisonData = useMemo(() => {
-    const filtered = filterProvider === 'all' ? MODELS : MODELS.filter(m => m.provider === filterProvider)
-    return filtered.map(m => {
-      const tokens = estimateTokens(text, m)
-      const c = calculateCost(tokens, outputTokenCount, m)
-      return { model: m, tokens, cost: c }
-    })
-  }, [text, outputTokenCount, filterProvider])
+  const krw = (usd: number) => fmtKRW(usd, s.fx)
+  const nf = (n: number) => Math.round(n).toLocaleString('ko-KR')
+  const per1M = (n: number) => `$${+n.toFixed(4)}`
 
-  const copyToClipboard = useCallback(async (value: string, id: string) => {
+  const copy = useCallback(async (value: string, id: string) => {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = value
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(value)
+      else {
+        const ta = document.createElement('textarea')
+        ta.value = value
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
         document.execCommand('copy')
-        document.body.removeChild(textarea)
+        document.body.removeChild(ta)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* 권한 없음 */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const handleFileUpload = useCallback((file: File) => {
+  const loadFile = useCallback((file: File) => {
     const reader = new FileReader()
     reader.onload = (e) => {
-      const content = e.target?.result as string
-      if (content) setText(content)
+      const content = e.target?.result
+      if (typeof content === 'string') { setText(content); setSrc('text') }
     }
     reader.readAsText(file, 'UTF-8')
   }, [])
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
-    if (file) handleFileUpload(file)
-  }, [handleFileUpload])
+  const markdown = () =>
+    toMarkdown(
+      [t('modelName'), t('cmp.inTok'), t('cmp.perReq'), t('cmp.daily'), t('cmp.monthly'), t('cmp.monthlyKrw'), t('cmp.fit')],
+      rows.map((r) => [
+        r.model.name, nf(r.inTok), fmtUSD(r.cost.perReq.total), fmtUSD(r.cost.daily.total), fmtUSD(r.cost.monthly.total),
+        krw(r.cost.monthly.total), r.fit.ok ? t('fit.ok') : t('fit.over'),
+      ]),
+    ) + `\n\n${t('share.sub', { rpd: nf(s.rpd), in: nf(inTok), out: nf(s.out) })} · ${t('prefix')} ${s.pre}% · ${t('hit')} ${s.hit}% · ${s.b ? t('mode.batch') : t('mode.realtime')} · $1=₩${s.fx}`
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-  }, [])
+  const numField = (k: 'rpd' | 'out' | 'fx', label: string, hint?: string) => (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-1">{label}</span>
+      <input
+        type="number" min={0} step={k === 'fx' ? 0.1 : 1} inputMode="decimal" value={s[k]}
+        onChange={(e) => { const v = Number(e.target.value); set(k, Number.isFinite(v) && v >= 0 ? v : 0) }}
+        className="ui-field w-full px-4 py-3 tabular-nums"
+      />
+      {hint && <span className="block text-xs text-muted mt-1">{hint}</span>}
+    </label>
+  )
+  const pctField = (k: 'pre' | 'hit', label: string, hint: string) => (
+    <label className="block">
+      <span className="flex justify-between text-sm font-medium text-body mb-1">
+        <span>{label}</span><span className="tabular-nums text-primary">{s[k]}%</span>
+      </span>
+      <input type="range" min={0} max={100} step={5} value={s[k]} onChange={(e) => set(k, Number(e.target.value))} className="w-full accent-blue-600" />
+      <span className="block text-xs text-muted">{hint}</span>
+    </label>
+  )
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* 왼쪽: 입력 + 설정 */}
+        {/* 설정 */}
         <div className="lg:col-span-1 space-y-6">
-          {/* 모델 선택 */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <label className="block text-sm font-medium text-body">
-              {t('selectedModel')}
+          <div className="ui-card p-6 space-y-5">
+            <label className="block">
+              <span className="block text-sm font-medium text-body mb-1">{t('selectedModel')}</span>
+              <select value={s.m} onChange={(e) => set('m', e.target.value)} className="ui-field w-full px-4 py-3">
+                {VENDOR_IDS.map((v) => (
+                  <optgroup key={v} label={VENDORS[v].name}>
+                    {MODELS.filter((m) => m.vendor === v).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+                  </optgroup>
+                ))}
+              </select>
             </label>
-            <select
-              value={selectedModelId}
-              onChange={(e) => setSelectedModelId(e.target.value)}
-              className={`${glassInput} px-3 py-2`}
-            >
-              {PROVIDERS.map(provider => (
-                <optgroup key={provider} label={provider}>
-                  {MODELS.filter(m => m.provider === provider).map(m => (
-                    <option key={m.id} value={m.id}>{m.name}</option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
 
-            {/* 모델 정보 */}
-            <div className="text-xs text-muted space-y-1">
-              <div className="flex justify-between">
-                <span>{t('contextWindow')}</span>
-                <span className="font-mono">{formatContext(selectedModel.contextWindow)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('inputPrice')}</span>
-                <span className="font-mono">${selectedModel.inputPricePer1M.toFixed(2)} {t('perMillionTokens')}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('outputPrice')}</span>
-                <span className="font-mono">${selectedModel.outputPricePer1M.toFixed(2)} {t('perMillionTokens')}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* 출력 토큰 + 환율 설정 */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('outputTokensLabel')}
-              </label>
-              <input
-                type="number"
-                value={outputTokenCount}
-                onChange={(e) => setOutputTokenCount(Math.max(0, parseInt(e.target.value) || 0))}
-                placeholder={t('outputTokensPlaceholder')}
-                className={`${glassInput} px-3 py-2`}
-              />
+              <span className="block text-sm font-medium text-body mb-2">{t('src.label')}</span>
+              <div className="grid grid-cols-2 gap-2">
+                <button type="button" onClick={() => setSrc('text')} className={seg(src === 'text')}>{t('src.text')}</button>
+                <button type="button" onClick={() => setSrc('manual')} className={seg(src === 'manual')}>{t('src.manual')}</button>
+              </div>
             </div>
+
+            <label className="block">
+              <span className="block text-sm font-medium text-body mb-1">{t('inTok')}</span>
+              <input
+                type="number" min={0} inputMode="numeric" value={inTok}
+                onChange={(e) => { const v = Number(e.target.value); setSrc('manual'); set('in', Number.isFinite(v) && v >= 0 ? Math.round(v) : 0) }}
+                className="ui-field w-full px-4 py-3 tabular-nums"
+              />
+              <span className="block text-xs text-muted mt-1">{useText ? t('est.fromText', { model: model.name }) : t('inTokHint')}</span>
+            </label>
+            {numField('out', t('outputTokensLabel'))}
+            {numField('rpd', t('rpd'))}
+            {pctField('pre', t('prefix'), t('prefixHint'))}
+            {pctField('hit', t('hit'), t('hitHint'))}
+
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('exchangeRate')} (USD → KRW)
-              </label>
-              <input
-                type="number"
-                value={exchangeRate}
-                onChange={(e) => setExchangeRate(Math.max(1, parseInt(e.target.value) || 1))}
-                className={`${glassInput} px-3 py-2`}
-              />
+              <span className="block text-sm font-medium text-body mb-2">{t('mode.label')}</span>
+              <div className="grid grid-cols-2 gap-2">
+                <button type="button" onClick={() => set('b', false)} className={seg(!s.b)}>{t('mode.realtime')}</button>
+                <button type="button" onClick={() => set('b', true)} className={seg(s.b)}>{t('mode.batch')}</button>
+              </div>
             </div>
+            {numField('fx', `${t('exchangeRate')} (USD/KRW)`, t('fxHint', { rate: FX_DEFAULT.rate.toLocaleString('ko-KR'), date: FX_DEFAULT.date }))}
           </div>
-
-          {/* 결과 카드 */}
-          {text.length > 0 && (
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg">{t('estimatedCost')}</h2>
-
-              {/* 토큰 수 */}
-              <div className="bg-subtle rounded-lg p-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                    {formatNumber(inputTokens)}
-                  </div>
-                  <div className="text-sm text-muted">{t('inputTokens')}</div>
-                </div>
-              </div>
-
-              {/* 텍스트 통계 */}
-              <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="bg-subtle rounded-lg p-2">
-                  <div className="font-bold text-fg">{formatNumber(textAnalysis.charCount)}</div>
-                  <div className="text-muted">{t('charCount')}</div>
-                </div>
-                <div className="bg-subtle rounded-lg p-2">
-                  <div className="font-bold text-fg">{formatNumber(textAnalysis.words)}</div>
-                  <div className="text-muted">{t('wordCount')}</div>
-                </div>
-                <div className="bg-subtle rounded-lg p-2">
-                  <div className="font-bold text-fg">{formatNumber(textAnalysis.lines)}</div>
-                  <div className="text-muted">{t('lineCount')}</div>
-                </div>
-              </div>
-
-              {/* 한국어 비율 */}
-              {textAnalysis.koreanRatio > 0 && (
-                <div className="text-xs">
-                  <div className="flex justify-between mb-1 text-sub">
-                    <span>한국어 {(textAnalysis.koreanRatio * 100).toFixed(1)}%</span>
-                    <span>English {((1 - textAnalysis.koreanRatio) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-blue-500 rounded-full transition-all"
-                      style={{ width: `${textAnalysis.koreanRatio * 100}%` }}
-                    />
-                  </div>
-                  <p className="text-muted mt-1 text-xs">{t('koreanNote')}</p>
-                </div>
-              )}
-
-              {/* 비용 */}
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-sub">
-                  <span>{t('inputCost')}</span>
-                  <span>{formatUSD(cost.inputCostUSD)} ({formatKRW(cost.inputCostUSD, exchangeRate)})</span>
-                </div>
-                <div className="flex justify-between text-sub">
-                  <span>{t('outputCost')}</span>
-                  <span>{formatUSD(cost.outputCostUSD)} ({formatKRW(cost.outputCostUSD, exchangeRate)})</span>
-                </div>
-                <div className="flex justify-between font-bold text-fg border-t border-line pt-2">
-                  <span>{t('totalCost')}</span>
-                  <span>{formatUSD(cost.totalCostUSD)} ({formatKRW(cost.totalCostUSD, exchangeRate)})</span>
-                </div>
-              </div>
-
-              {/* 복사 버튼 */}
-              <button
-                onClick={() => copyToClipboard(
-                  `${selectedModel.name}: ${formatNumber(inputTokens)} tokens, ${formatUSD(cost.totalCostUSD)}`,
-                  'result'
-                )}
-                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 text-sm transition-colors"
-              >
-                {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copiedId === 'result' ? t('copied') : t('copy')}
-              </button>
-            </div>
-          )}
         </div>
 
-        {/* 오른쪽: 텍스트 입력 + 비교 테이블 */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {/* 텍스트 입력 */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-body">
-                {t('inputLabel')}
-              </label>
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{t('hero.label', { model: model.name })}</p>
+            <p className="text-3xl font-bold tabular-nums mt-1">{krw(cost.monthly.total)}</p>
+            <p className="text-sm text-white/70 mt-1 tabular-nums">
+              {fmtUSD(cost.monthly.total)} · {t('hero.note', { days: 30, rpd: nf(s.rpd) })}
+            </p>
+            <div className="grid grid-cols-3 gap-4 mt-5 pt-4 border-t border-white/20">
+              <div>
+                <p className="text-xs text-white/70">{t('hero.daily')}</p>
+                <p className="text-lg font-semibold tabular-nums">{krw(cost.daily.total)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-white/70">{t('hero.perReq')}</p>
+                <p className="text-lg font-semibold tabular-nums">{fmtUSD(cost.perReq.total)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-white/70">{t('hero.saved')}</p>
+                <p className="text-lg font-semibold tabular-nums">{krw(cost.savedMonthly)}</p>
+              </div>
+            </div>
+          </div>
+
+          {s.b && model.batch == null && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('noBatch')}</div>}
+          {!fit.ok && (
+            <div className="bg-red-50 text-red-700 rounded-2xl p-4 text-sm">
+              {fit.outOver ? t('fit.outOver', { max: fmtTokens(model.maxOutput) }) : t('fit.overMsg', { model: model.name, limit: fmtTokens(fit.inLimit) })}
+            </div>
+          )}
+
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: t('hero.label', { model: model.name }),
+              headline: krw(cost.monthly.total),
+              sub: t('share.sub', { rpd: nf(s.rpd), in: nf(inTok), out: nf(s.out) }),
+              rows: [
+                { label: t('hero.daily'), value: krw(cost.daily.total) },
+                { label: t('hero.perReq'), value: fmtUSD(cost.perReq.total) },
+                { label: t('hero.saved'), value: krw(cost.savedMonthly) },
+              ],
+            }}
+            fileName="llm-cost"
+          />
+
+          {/* 텍스트 → 토큰 추정 */}
+          <div className="ui-card p-6 space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-lg font-semibold text-fg">{t('inputLabel')}</h2>
               <div className="flex gap-2">
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg px-3 py-1.5 transition-colors"
-                >
-                  <Upload className="w-3 h-3" />
-                  {t('fileUpload')}
+                <button type="button" onClick={() => fileInputRef.current?.click()} className="ui-btn-soft px-3 py-1.5 text-xs flex items-center gap-1">
+                  <Upload className="w-3 h-3" />{t('fileUpload')}
                 </button>
                 {text && (
-                  <button
-                    onClick={() => setText('')}
-                    className="flex items-center gap-1 text-xs bg-red-50 dark:bg-red-950 hover:bg-red-100 dark:hover:bg-red-900 text-red-600 dark:text-red-400 rounded-lg px-3 py-1.5 transition-colors"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                    {t('clear')}
+                  <button type="button" onClick={() => setText('')} className="ui-btn-soft px-3 py-1.5 text-xs flex items-center gap-1">
+                    <Trash2 className="w-3 h-3" />{t('clear')}
                   </button>
                 )}
               </div>
             </div>
             <input
-              ref={fileInputRef}
-              type="file"
+              ref={fileInputRef} type="file" className="hidden"
               accept=".txt,.md,.json,.csv,.xml,.html,.css,.js,.ts,.py,.java,.c,.cpp,.go,.rs,.yaml,.yml,.toml,.log"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) handleFileUpload(file)
-              }}
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) loadFile(f); e.target.value = '' }}
             />
-            <div
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              className="relative"
-            >
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder={t('inputPlaceholder')}
-                rows={16}
-                className={`${glassInput} px-4 py-3 font-mono text-sm resize-y`}
-              />
-              {!text && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="text-center text-faint">
-                    <Upload className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-xs">{t('fileUploadDesc')}</p>
-                  </div>
+            <textarea
+              value={text}
+              onChange={(e) => { setText(e.target.value); setSrc('text') }}
+              onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f) }}
+              onDragOver={(e) => e.preventDefault()}
+              placeholder={`${t('inputPlaceholder')}\n${t('fileUploadDesc')}`}
+              rows={8}
+              className="ui-field w-full px-4 py-3 font-mono text-sm resize-y"
+            />
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs">
+              {([
+                [t('charCount'), stats.chars], [t('wordCount'), stats.words], [t('lineCount'), stats.lines],
+                [t('stats.hangul'), stats.hangul], [t('stats.ascii'), stats.ascii], [t('stats.other'), stats.cjk + stats.other],
+              ] as const).map(([label, v]) => (
+                <div key={label} className="bg-subtle rounded-xl p-2">
+                  <div className="font-bold text-fg tabular-nums">{nf(v)}</div>
+                  <div className="text-muted">{label}</div>
                 </div>
-              )}
+              ))}
             </div>
-            {!text && (
-              <p className="text-sm text-faint text-center">{t('noText')}</p>
+            {stats.chars > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-line text-muted text-xs">
+                      <th className="text-left py-2 pr-2">{t('est.family')}</th>
+                      <th className="text-right py-2 pr-2">{t('est.mid')}</th>
+                      <th className="text-right py-2 pr-2">{t('est.range')}</th>
+                      <th className="py-2 w-8" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {TOKENIZERS.map((k) => {
+                      const e = estimateTokens(stats, k)
+                      return (
+                        <tr key={k} className="border-b border-line">
+                          <td className="py-2 pr-2 text-body">{t(`tok.${k}`)}</td>
+                          <td className="py-2 pr-2 text-right font-semibold text-fg tabular-nums">{nf(e.mid)}</td>
+                          <td className="py-2 pr-2 text-right text-sub tabular-nums">{nf(e.low)}–{nf(e.high)}</td>
+                          <td className="py-2 text-right">
+                            <button type="button" onClick={() => copy(String(e.mid), `tok-${k}`)} aria-label={t('copy')} className="text-faint hover:text-primary">
+                              {copiedId === `tok-${k}` ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+                <p className="text-xs text-muted mt-2">{t('est.note')}</p>
+              </div>
             )}
           </div>
 
-          {/* 모델 비교 테이블 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-fg">{t('modelComparison')}</h2>
-              <div className="flex gap-1">
-                <button
-                  onClick={() => setFilterProvider('all')}
-                  className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                    filterProvider === 'all'
-                      ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                      : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {t('allModels')}
-                </button>
-                {PROVIDERS.map(p => (
-                  <button
-                    key={p}
-                    onClick={() => setFilterProvider(p)}
-                    className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                      filterProvider === p
-                        ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {p}
-                  </button>
-                ))}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* 컨텍스트 적합성 */}
+            <div className="ui-card p-6">
+              <h3 className="text-lg font-semibold text-fg mb-1">{t('fit.title')}</h3>
+              <p className="text-sm text-muted mb-4">{model.name} · {t('contextWindow')} {fmtTokens(model.ctx)}</p>
+              <div className="h-2 bg-track rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${fit.ok ? 'bg-primary' : 'bg-red-500'}`} style={{ width: `${Math.min(100, fit.usedPct)}%` }} />
               </div>
+              <p className="text-sm text-sub mt-2 tabular-nums">
+                {t('fit.used', { used: nf(inTok + s.out), limit: nf(model.ctx), pct: fit.usedPct.toFixed(1) })}
+              </p>
+              <p className={`text-sm font-semibold mt-1 ${fit.ok ? 'text-primary' : 'text-red-600'}`}>{fit.ok ? t('fit.ok') : t('fit.over')}</p>
+            </div>
+
+            {/* 캐싱 절감액 */}
+            <div className="ui-card p-6">
+              <h3 className="text-lg font-semibold text-fg mb-4">{t('cache.title')}</h3>
+              {s.pre > 0 ? (
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between text-sub"><span>{t('cache.without')}</span><span className="tabular-nums">{krw(cost.noCacheMonthly)}</span></div>
+                  <div className="flex justify-between text-sub"><span>{t('cache.with')}</span><span className="tabular-nums">{krw(cost.monthly.total)}</span></div>
+                  <div className="flex justify-between font-bold text-fg border-t border-line pt-2">
+                    <span>{t('cache.saved')}</span>
+                    <span className="tabular-nums text-primary">
+                      {krw(cost.savedMonthly)} ({cost.noCacheMonthly > 0 ? ((cost.savedMonthly / cost.noCacheMonthly) * 100).toFixed(1) : '0'}%)
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-3 text-xs">
+                    {(['input', 'cacheRead', 'cacheWrite', 'output'] as const).map((k) => (
+                      <div key={k} className="bg-subtle rounded-xl p-2">
+                        <div className="text-muted">{t(`cache.part.${k}`)}</div>
+                        <div className="font-semibold text-fg tabular-nums">{krw(cost.monthly[k])}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-muted">{t('cache.off')}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 모델별 비교 */}
+      <div className="ui-card p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-semibold text-fg">{t('cmp.title')}</h2>
+          <button type="button" onClick={() => copy(markdown(), 'md')} className="ui-btn-soft px-3 py-1.5 text-xs flex items-center gap-1">
+            {copiedId === 'md' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            {copiedId === 'md' ? t('copied') : t('cmp.copyMd')}
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-1 mb-4">
+          <button type="button" onClick={() => setVendor('all')} className={chip(vendor === 'all')}>{t('allModels')}</button>
+          {VENDOR_IDS.map((v) => (
+            <button type="button" key={v} onClick={() => setVendor(v)} className={chip(vendor === v)}>{VENDORS[v].name}</button>
+          ))}
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-line text-muted text-xs">
+                <th className="text-left py-2 pr-2">{t('modelName')}</th>
+                <th className="text-right py-2 pr-2">{t('cmp.inTok')}</th>
+                <th className="text-right py-2 pr-2">{t('cmp.perReq')}</th>
+                <th className="text-right py-2 pr-2">{t('cmp.daily')}</th>
+                <th className="text-right py-2 pr-2">{t('cmp.monthly')}</th>
+                <th className="text-right py-2 pr-2">{t('cmp.monthlyKrw')}</th>
+                <th className="text-right py-2">{t('cmp.fit')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => {
+                const on = r.model.id === s.m
+                return (
+                  <tr
+                    key={r.model.id}
+                    onClick={() => set('m', r.model.id)}
+                    className={`border-b border-line cursor-pointer transition-colors ${on ? 'bg-primary-soft' : 'hover:bg-subtle'}`}
+                  >
+                    <td className={`py-2 pr-2 font-medium whitespace-nowrap ${on ? 'text-primary' : 'text-fg'}`}>
+                      {r.model.name}
+                      <span className="block text-xs font-normal text-muted">{VENDORS[r.model.vendor].name}{s.b && r.model.batch == null ? ` · ${t('prices.noBatch')}` : ''}</span>
+                    </td>
+                    <td className="py-2 pr-2 text-right tabular-nums text-sub">{nf(r.inTok)}</td>
+                    <td className="py-2 pr-2 text-right tabular-nums text-sub">{fmtUSD(r.cost.perReq.total)}</td>
+                    <td className="py-2 pr-2 text-right tabular-nums text-sub">{fmtUSD(r.cost.daily.total)}</td>
+                    <td className="py-2 pr-2 text-right tabular-nums font-semibold text-fg">{fmtUSD(r.cost.monthly.total)}</td>
+                    <td className="py-2 pr-2 text-right tabular-nums text-fg whitespace-nowrap">{krw(r.cost.monthly.total)}</td>
+                    <td className={`py-2 text-right text-xs ${r.fit.ok ? 'text-sub' : 'text-red-600 font-semibold'}`}>{r.fit.ok ? t('fit.ok') : t('fit.over')}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        {useText && <p className="text-xs text-muted mt-2">{t('cmp.textNote')}</p>}
+      </div>
+
+      {/* 단가표 */}
+      <div className="ui-card p-6 space-y-6">
+        <div>
+          <h2 className="text-lg font-semibold text-fg">{t('prices.title')}</h2>
+          <p className="text-xs text-muted mt-1">{t('disclaimer')}</p>
+        </div>
+        {VENDOR_IDS.map((v) => (
+          <div key={v}>
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+              <h3 className="font-semibold text-fg">{VENDORS[v].name}</h3>
+              <a href={VENDORS[v].url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1 hover:underline">
+                {t('prices.checked', { date: VENDORS[v].checked })} · {t('prices.source')}<ExternalLink className="w-3 h-3" />
+              </a>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-line text-muted text-xs">
                     <th className="text-left py-2 pr-2">{t('modelName')}</th>
-                    <th className="text-left py-2 pr-2">{t('provider')}</th>
                     <th className="text-right py-2 pr-2">{t('contextWindow')}</th>
                     <th className="text-right py-2 pr-2">{t('inputPrice')}</th>
+                    <th className="text-right py-2 pr-2">{t('prices.cached')}</th>
+                    <th className="text-right py-2 pr-2">{t('prices.cacheWrite')}</th>
                     <th className="text-right py-2 pr-2">{t('outputPrice')}</th>
-                    {text && <th className="text-right py-2 pr-2">{t('tokenCount')}</th>}
-                    {text && <th className="text-right py-2">{t('estCost')}</th>}
+                    <th className="text-right py-2 pr-2">{t('prices.batch')}</th>
+                    <th className="text-left py-2">{t('prices.note')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {comparisonData.map(({ model: m, tokens, cost: c }) => (
-                    <tr
-                      key={m.id}
-                      onClick={() => setSelectedModelId(m.id)}
-                      className={`border-b border-line cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-750 ${
-                        m.id === selectedModelId ? 'bg-primary-soft text-primary' : ''
-                      }`}
-                    >
-                      <td className="py-2 pr-2 font-medium text-fg whitespace-nowrap">
-                        {m.name}
-                      </td>
-                      <td className="py-2 pr-2">
-                        <span className={`inline-block px-2 py-0.5 text-xs rounded-full ${PROVIDER_COLORS[m.provider]}`}>
-                          {m.provider}
-                        </span>
-                      </td>
-                      <td className="py-2 pr-2 text-right font-mono text-sub">
-                        {formatContext(m.contextWindow)}
-                      </td>
-                      <td className="py-2 pr-2 text-right font-mono text-sub">
-                        ${m.inputPricePer1M.toFixed(2)}
-                      </td>
-                      <td className="py-2 pr-2 text-right font-mono text-sub">
-                        ${m.outputPricePer1M.toFixed(2)}
-                      </td>
-                      {text && (
-                        <td className="py-2 pr-2 text-right font-mono font-bold text-blue-600 dark:text-blue-400">
-                          {formatNumber(tokens)}
+                  {MODELS.filter((m) => m.vendor === v).map((m) => {
+                    const notes = [
+                      m.long && t('prices.long', { over: fmtTokens(m.long.over), input: per1M(m.long.input), output: per1M(m.long.output) }),
+                      m.promoUntil && t('prices.promo', { date: m.promoUntil }),
+                      m.preview && t('prices.preview'),
+                    ].filter(Boolean)
+                    return (
+                      <tr key={m.id} className="border-b border-line">
+                        <td className="py-2 pr-2 font-medium text-fg whitespace-nowrap">{m.name}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub">{fmtTokens(m.ctx)}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub">{per1M(m.price.input)}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub">{per1M(m.price.cached)}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub">{m.price.cacheWrite != null ? per1M(m.price.cacheWrite) : '—'}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub">{per1M(m.price.output)}</td>
+                        <td className="py-2 pr-2 text-right tabular-nums text-sub whitespace-nowrap">
+                          {m.batch == null ? t('prices.noBatch') : `${per1M(m.price.input * m.batch)} / ${per1M(m.price.output * m.batch)}`}
                         </td>
-                      )}
-                      {text && (
-                        <td className="py-2 text-right font-mono text-fg whitespace-nowrap">
-                          {formatUSD(c.totalCostUSD)}
-                          <span className="text-xs text-gray-400 ml-1">({formatKRW(c.totalCostUSD, exchangeRate)})</span>
-                        </td>
-                      )}
-                    </tr>
-                  ))}
+                        <td className="py-2 text-xs text-muted">{notes.join(' · ')}</td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
+            <p className="text-xs text-muted mt-2">{t(`vendorNote.${v}`)}</p>
           </div>
-        </div>
+        ))}
       </div>
 
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="flex items-center justify-between w-full text-left"
-        >
-          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
-        </button>
-
-        {showGuide && (
-          <div className="mt-6 grid md:grid-cols-3 gap-6">
-            {(['whatIsToken', 'koreanTokens', 'costTips'] as const).map((section) => (
-              <div key={section} className="bg-subtle rounded-xl p-4">
-                <h3 className="font-semibold text-fg mb-3">
-                  {t(`guide.${section}.title`)}
-                </h3>
-                <ul className="space-y-2">
-                  {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                      <span className="text-blue-500 mt-0.5 shrink-0">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* 가이드 */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {(['whatIsToken', 'koreanTokens', 'costTips'] as const).map((sec) => (
+            <div key={sec} className="bg-subtle rounded-2xl p-5">
+              <h3 className="font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="space-y-2 list-disc pl-4 text-sm text-sub">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <h3 className="font-semibold text-fg mt-8 mb-3">{t('faq.title')}</h3>
+        <div className="space-y-2">
+          {(t.raw('faq.items') as { q: string; a: string }[]).map((f, i) => (
+            <details key={i} className="bg-subtle rounded-2xl p-4">
+              <summary className="font-medium text-fg cursor-pointer">{f.q}</summary>
+              <p className="text-sm text-sub mt-2">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </div>
   )

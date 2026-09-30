@@ -22747,8 +22747,98 @@
     ]
   },
   "investmentCalculator": {
+    "mode": {
+      "goal": "Goal solver"
+    },
+    "f": {
+      "target": "Target amount",
+      "unitMan": "×10k KRW",
+      "growth": "Annual contribution increase",
+      "growthHint": "Raise the monthly contribution by this much every year",
+      "compounding": "Return basis",
+      "annual": "Annual return",
+      "monthly": "Monthly (rate÷12)",
+      "annualHint": "7% means exactly 7% after one year — right for stocks and funds",
+      "monthlyHint": "Annual rate ÷ 12 compounded monthly — deposit-style, slightly higher",
+      "realToggle": "Show inflation-adjusted (real) values"
+    },
+    "hero": {
+      "rate": "{r}%/yr",
+      "monthlyPlan": "{m}/mo × {y} yrs",
+      "lumpPlan": "{a} lump sum, {y} yrs",
+      "after": "Estimated value after {y} years (pre-tax)",
+      "real": "In today's money at {inf}% inflation: {v}",
+      "goalLabel": "Target {target} · {y} yrs · {r}%/yr",
+      "needMonthly": "Required monthly contribution",
+      "needRate": "Return needed with {m}/mo for {y} yrs",
+      "needYears": "Time needed with {m}/mo at {r}%",
+      "achieved": "Already reached",
+      "unreachable": "Not reachable",
+      "yearsOnly": "{y}y",
+      "yearsMonths": "{y}y {m}m"
+    },
+    "share": {
+      "headline": "≈ {v}"
+    },
+    "warn": {
+      "invalid": "Enter a period and an initial or monthly amount."
+    },
+    "sc": {
+      "title": "Return scenarios",
+      "desc": "Conservative/aggressive = your rate ∓{d}%p",
+      "cons": "Conservative",
+      "base": "Base",
+      "agg": "Aggressive"
+    },
+    "chart": {
+      "principal": "Principal",
+      "profit": "Gain"
+    },
+    "tbl": {
+      "profit": "Total gain"
+    },
+    "wd": {
+      "title": "Monthly income after {y} years",
+      "desc": "Drawing down {v} (pre-tax)",
+      "over": "{y} yrs",
+      "payout": "Spread over {y} yrs (invested at conservative {r}%)",
+      "realNote": "About {v} in today's money",
+      "rule4": "4% rule (preserve principal)",
+      "rule4Desc": "Withdraw 4% of assets in year one. A rule of thumb from past US returns, not a guarantee."
+    },
+    "tax": {
+      "title": "After-tax by account",
+      "desc": "Same investment, different account taxes (pre-tax {v}, Korean 2026 rules)",
+      "isaLow": "ISA low-income type",
+      "lowIncome": "Salary ≤ 55M KRW",
+      "age": "Pension start age",
+      "age55": "55–69",
+      "age70": "70–79",
+      "age80": "80+",
+      "account": "Account",
+      "value": "Pre-tax",
+      "tax": "Tax",
+      "credit": "Tax credit",
+      "net": "After-tax total",
+      "general": "Regular account",
+      "generalRule": "Interest/dividends 15.4%",
+      "isa": "ISA (brokerage)",
+      "isaRule": "2M (low-income 4M) tax-free, then 9.9%",
+      "pension": "Pension savings + IRP",
+      "pensionRule": "Credit 13.2–16.5%, 3.3–5.5% on payout",
+      "overflow": "{v} above the limit counted in a regular account",
+      "best": "{name} leaves {v} more than a regular account after tax.",
+      "isaShort": "ISA tax benefits require holding at least 3 years.",
+      "notes": [
+        "Regular account assumes all gains are interest/dividends. Korean listed stock gains are tax-free; foreign stock gains are taxed 22% above 2.5M KRW/yr.",
+        "ISA: up to 20M KRW/yr (unused rolls over), 100M total, 3-year minimum. Assumes one account held to the end. Proposed expansions (e.g. 5M tax-free) have not passed and are not applied.",
+        "Pension savings + IRP: up to 18M KRW/yr, credit on up to 9M. Rates assume payout from 55 over 10+ years; early termination is taxed 16.5%. Private pension over 15M KRW/yr: comprehensive tax or 16.5% separate tax.",
+        "Tax credits are added without reinvestment. Comprehensive taxation of financial income over 20M KRW/yr is not modeled."
+      ]
+    },
+    "disclaimer": "This is a simple simulation assuming a constant annual return — not investment advice. Real returns vary and principal can be lost; fees and tax law changes will alter results.",
     "title": "Investment Return Calculator",
-    "description": "Calculate CAGR, compare lump sum vs DCA investments, and inflation-adjusted real returns",
+    "description": "Future value of monthly or lump-sum investing, goal solver, conservative/base/aggressive scenarios, and after-tax comparison of regular, ISA and pension accounts",
     "lumpSum": "Lump Sum",
     "dca": "DCA (Monthly)",
     "comparison": "Compare",
@@ -22805,10 +22895,10 @@
       "formulas": {
         "title": "Formulas",
         "items": [
-          "Compound: FV = PV × (1 + r/12)^(12×n)",
-          "DCA: FV = PMT × ((1+r/12)^(12n) - 1) / (r/12)",
-          "CAGR = (Final/Initial)^(1/years) - 1",
-          "Real Return = (1+Nominal)/(1+Inflation) - 1"
+          "Lump sum: FV = PV × (1 + r)^n (annual return basis)",
+          "Monthly (paid at start of month): FV = PMT × ((1+i)^N − 1) / i × (1+i), i = monthly rate",
+          "Monthly rate i: annual basis (1+r)^(1/12) − 1, monthly compounding r/12",
+          "Real value = nominal ÷ (1 + inflation)^n"
         ]
       },
       "tips": {
@@ -22869,16 +22959,20 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "What's the difference between CAGR and simple return?",
-            "a": "Simple return compares only start and end values. CAGR expresses the compound annual growth rate — how much the investment grew per year on average. CAGR becomes more meaningful over longer investment periods."
+            "q": "What does 500k KRW a month for 20 years become?",
+            "a": "At a steady 7% a year, 120M KRW of principal grows to about 260M KRW. At 4% it is about 180M; at 10% about 360M."
+          },
+          {
+            "q": "ISA or pension savings first?",
+            "a": "Pension savings/IRP give a 13.2–16.5% tax credit up front but must be drawn as a pension after 55. ISA needs only a 3-year hold and gains up to 2M KRW (4M low-income) are tax-free. Check the after-tax table."
           },
           {
             "q": "Why does real return matter?",
-            "a": "A 7% nominal return with 3% inflation means only ~4% actual purchasing power growth. Long-term investment performance must always be evaluated using real (inflation-adjusted) returns."
+            "a": "A 7% nominal return with 2% inflation is about 4.9% in purchasing power. 260M KRW in 20 years is about 170M in today's money."
           },
           {
-            "q": "Which is better: lump-sum or installment investing?",
-            "a": "Lump-sum generally outperforms in steadily rising markets; installment investing (dollar-cost averaging) is advantageous in volatile markets. Compare both directly with this calculator."
+            "q": "What is the 4% rule?",
+            "a": "A rule of thumb from past US data: withdrawing 4% of assets in year one, then adjusting for inflation, historically lasted about 30 years. Not a guarantee."
           }
         ]
       }
@@ -27005,8 +27099,125 @@
     }
   },
   "llmTokenCalculator": {
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "Are the token counts exact?",
+          "a": "They are heuristic estimates by character type; Korean in particular is shown as a range. Use each vendor's token counting API for exact numbers and enter them manually."
+        },
+        {
+          "q": "How do I pick a cache hit rate?",
+          "a": "If requests with the same prefix keep arriving within the cache lifetime (5 minutes by default on Anthropic), most will hit. Use a lower rate for sparse traffic. Misses are billed at the cache write rate."
+        },
+        {
+          "q": "How current are the prices?",
+          "a": "They were checked on each vendor's official pricing page on the date shown in the price table. Prices change often, so re-check the linked page before committing."
+        }
+      ]
+    },
+    "src": {
+      "label": "Input tokens from",
+      "text": "Estimate from text",
+      "manual": "Enter manually"
+    },
+    "inTok": "Input tokens per request",
+    "inTokHint": "For exact counts, use each vendor's token counting API",
+    "rpd": "Requests per day",
+    "prefix": "Cacheable fixed prompt",
+    "prefixHint": "Share of input identical in every request (system prompt, docs)",
+    "hit": "Cache hit rate",
+    "hitHint": "Misses are billed at the cache write rate",
+    "mode": {
+      "label": "Processing",
+      "realtime": "Real-time",
+      "batch": "Batch API"
+    },
+    "fxHint": "Default ₩{rate} ({date}, ECB reference rate)",
+    "hero": {
+      "label": "{model} monthly cost",
+      "note": "{days} days · {rpd} requests/day",
+      "daily": "Daily",
+      "perReq": "Per request",
+      "saved": "Cache savings/mo"
+    },
+    "noBatch": "This model has no Batch API, so real-time prices are used.",
+    "est": {
+      "family": "Tokenizer",
+      "mid": "Estimate",
+      "range": "Range",
+      "fromText": "Estimated from text for {model} (editable)",
+      "note": "Heuristic estimate by character type. Korean varies a lot between tokenizers, so a range is shown."
+    },
+    "stats": {
+      "hangul": "Hangul",
+      "ascii": "Latin/digits",
+      "other": "Other"
+    },
+    "tok": {
+      "openai": "OpenAI GPT-6",
+      "claude": "Claude 4.7+",
+      "claudeLegacy": "Claude Haiku 4.5",
+      "gemini": "Gemini",
+      "deepseek": "DeepSeek"
+    },
+    "fit": {
+      "title": "Context window fit",
+      "ok": "Fits",
+      "over": "Exceeds",
+      "used": "{used} / {limit} tokens ({pct}%)",
+      "overMsg": "Exceeds the {model} input limit of {limit} tokens. Split the document or pick a longer-context model.",
+      "outOver": "Output tokens exceed this model's max output of {max}."
+    },
+    "cache": {
+      "title": "Prompt caching savings",
+      "without": "Without caching (mo)",
+      "with": "With caching (mo)",
+      "saved": "Monthly savings",
+      "off": "Set the cacheable fixed prompt above 0% to see savings.",
+      "part": {
+        "input": "Regular input",
+        "cacheRead": "Cache reads",
+        "cacheWrite": "Cache writes",
+        "output": "Output"
+      }
+    },
+    "cmp": {
+      "title": "Monthly cost by model (cheapest first)",
+      "inTok": "Input tokens",
+      "perReq": "Per request",
+      "daily": "Daily",
+      "monthly": "Monthly (USD)",
+      "monthlyKrw": "Monthly (KRW)",
+      "fit": "Context",
+      "copyMd": "Copy Markdown",
+      "textNote": "Input tokens are estimated separately with each model's tokenizer."
+    },
+    "prices": {
+      "title": "Model prices (USD / 1M tokens)",
+      "cached": "Cache read",
+      "cacheWrite": "Cache write",
+      "batch": "Batch in/out",
+      "note": "Notes",
+      "checked": "As of {date}",
+      "source": "Official pricing",
+      "long": "{input}/{output} when input > {over}",
+      "promo": "Promo price until {date}",
+      "preview": "Preview",
+      "noBatch": "No batch"
+    },
+    "vendorNote": {
+      "anthropic": "Cache write uses the 5-minute cache (1-hour cache is 2x input). 4.7+ models use a new tokenizer that yields about 30% more tokens for the same text.",
+      "openai": "If input exceeds 272K tokens, long-context prices apply to the whole request. Max input 922K.",
+      "google": "Paid Standard tier. Explicit caching adds an hourly storage fee.",
+      "deepseek": "Peak-hour prices; off-peak is 50% off. No Batch API."
+    },
+    "disclaimer": "Prices checked on each vendor's official pricing page on the stated date. Excludes tax, data-residency uplifts and tool-call fees.",
+    "share": {
+      "sub": "{rpd} requests/day · {in} in / {out} out tokens"
+    },
     "title": "LLM Token Calculator",
-    "description": "Estimate LLM token counts and calculate API call costs.",
+    "description": "Estimate tokens, daily/monthly API cost and prompt caching savings with official Claude, GPT, Gemini and DeepSeek prices.",
     "inputLabel": "Text Input",
     "inputPlaceholder": "Enter or paste text to calculate token count...",
     "fileUpload": "File Upload",
@@ -27044,30 +27255,30 @@
     "guide": {
       "title": "User Guide",
       "whatIsToken": {
-        "title": "What is a Token?",
+        "title": "What is a token?",
         "items": [
-          "Tokens are the basic units LLMs use to process text",
-          "In English, ~4 characters ≈ 1 token; in Korean, ~1-2 characters ≈ 1 token",
-          "The same text may have different token counts depending on the model's tokenizer",
-          "Special characters, spaces, and line breaks also count as tokens"
+          "The unit LLMs split text into; API pricing is per token",
+          "In English, roughly 4 characters make 1 token",
+          "The same text gives different counts with different tokenizers",
+          "For exact counts, use each vendor's token counting API or the usage field in responses"
         ]
       },
       "koreanTokens": {
-        "title": "Korean Token Characteristics",
+        "title": "Korean tokens",
         "items": [
-          "Korean is less token-efficient than English, consuming more tokens",
-          "Claude has relatively good Korean token efficiency",
-          "Frequently used Korean words require fewer tokens",
-          "Mixing English can reduce overall token count"
+          "Hangul takes about 0.5–1.3 tokens per character, more than English",
+          "Tokenizers differ a lot on Korean, so the same text gives different counts per model",
+          "Claude 4.7+ models use a new tokenizer that yields about 30% more tokens (per Anthropic)",
+          "If cost matters, count real prompts and use Enter manually"
         ]
       },
       "costTips": {
-        "title": "Cost Saving Tips",
+        "title": "Cost-saving tips",
         "items": [
-          "Writing concise prompts reduces input token usage",
-          "System prompts consume tokens on every request — optimize them",
-          "Setting appropriate max_tokens saves unnecessary output costs",
-          "Batch APIs can save up to 50% on costs (OpenAI, Anthropic)"
+          "Put fixed system prompts and documents first and use prompt caching to cut input cost",
+          "Use the Batch API for non-urgent work to get 50% off input and output",
+          "Output costs 4–6x input, so cap responses with max_tokens",
+          "Long-context prices apply above 272K input on OpenAI and 200K on Gemini 3.1 Pro"
         ]
       },
       "guide": {
@@ -30003,6 +30214,177 @@
     ]
   },
   "yearEndTaxCalc": {
+    "yt": {
+      "subtitle": "Tax year {year} (settled Jan–Feb {next}) — the more you enter, the more accurate",
+      "won": " KRW",
+      "people": "{n}",
+      "yes": "Yes",
+      "no": "No",
+      "in": {
+        "salary": "Total salary",
+        "salaryHint": "Excluding non-taxable pay (line 21 of the withholding receipt)",
+        "prepaid": "Tax already withheld",
+        "prepaidAuto": "Estimate",
+        "prepaidManual": "Enter",
+        "prepaidAutoHint": "Estimated at about {amount} KRW income tax (simplified table, 100%)",
+        "prepaidManualHint": "Income tax withheld by current employer (excluding local tax)",
+        "spouse": "Spouse deduction",
+        "spouseHint": "Spouse income ≤ 1M KRW (or salary ≤ 5M KRW)",
+        "children": "Children",
+        "kidsUnder8": "Of which under 8",
+        "others": "Other dependents",
+        "elderly": "Aged 70+",
+        "disabled": "Disabled",
+        "birth": "Birth/adoption this year",
+        "familyHint": "1.5M KRW per person · 70+ +1M · disabled +2M. Child credit only for age 8+",
+        "credit": "Credit card",
+        "debit": "Debit card / cash receipt",
+        "debitHint": "30% rate (twice credit card)",
+        "transport": "Public transit",
+        "market": "Traditional markets",
+        "culture": "Books, shows, gyms",
+        "cultureHint": "Incl. gyms and pools; 30% only if salary ≤ 70M KRW",
+        "pensionSavings": "Pension savings",
+        "pensionSavingsHint": "Limit 6M KRW",
+        "irp": "IRP / retirement pension",
+        "irpHint": "9M KRW combined; 15% if salary ≤ 55M KRW, else 12%",
+        "insurance": "Protection insurance",
+        "insuranceHint": "12%, limit 1M KRW",
+        "medicalHint": "Only medical costs above 3% of salary ({amount} KRW) get 15%",
+        "special": "Medical — self, 65+, under 6, disabled",
+        "specialHint": "No limit",
+        "general": "Medical — other dependents",
+        "generalHint": "Limit 7M KRW",
+        "infertility": "Infertility treatment (30%)",
+        "premature": "Premature/congenital (20%)",
+        "eduSelf": "Education — self",
+        "eduSchool": "Education — K-12 children",
+        "eduSchoolHint": "3M KRW per child",
+        "eduUniv": "Education — college children",
+        "eduUnivHint": "9M KRW per child",
+        "rent": "Annual rent",
+        "rentHint": "Salary ≤ 80M KRW, no home. 17% (≤ 55M) / 15%, limit 10M KRW",
+        "housingSub": "Housing subscription savings",
+        "housingSubHint": "Salary ≤ 70M KRW household head, 3M × 40%",
+        "leaseLoan": "Jeonse loan repayments",
+        "leaseLoanHint": "40% deduction, 4M KRW combined with subscription",
+        "hometown": "Hometown donation",
+        "hometownHint": "Full credit up to 100K, 40% up to 200K, then 15%",
+        "donation": "Other donations",
+        "donationHint": "15% (30% above 10M KRW)",
+        "marriage": "Marriage credit",
+        "marriageHint": "Married 2024–2026, 500K KRW each (once)",
+        "sme": "SME employee reduction",
+        "smeHint": "90% income tax cut for youth etc., up to 2M KRW/yr",
+        "pension": "National pension paid",
+        "healthEmp": "Health, care & employment insurance",
+        "autoHint": "Leave blank to use 2026 rates"
+      },
+      "birth": {
+        "0": "None",
+        "1": "1st child",
+        "2": "2nd child",
+        "3": "3rd+"
+      },
+      "sec": {
+        "family": "Family",
+        "card": "Card spending",
+        "pension": "Pension & insurance",
+        "medical": "Medical & education",
+        "housing": "Rent & housing",
+        "etc": "Donations & other"
+      },
+      "card": {
+        "short": "Deductions start after 25% of salary ({threshold} KRW). {amount} KRW to go",
+        "over": "You passed the 25% threshold ({threshold} KRW) by {amount} KRW. Debit/cash is better from here",
+        "detail": "Card deduction details",
+        "basic": "Basic (limit {limitWon} KRW)",
+        "extra": "Additional (limit {limitWon} KRW)"
+      },
+      "hero": {
+        "label": "Tax year {year} · salary {salaryWon} KRW",
+        "refund": "{amount} KRW refund",
+        "pay": "{amount} KRW to pay",
+        "zero": "No refund or payment",
+        "vs": "Final tax {tax} KRW · withheld {paid} KRW (incl. local tax)",
+        "rate": "{rate}% bracket",
+        "eff": "Effective {rate}%",
+        "estimated": "Withholding estimated",
+        "standard": "Standard credit used"
+      },
+      "share": {
+        "label": "Year-end refund on {salaryWon} KRW salary",
+        "sub": "Tax year {year} estimate",
+        "text": "Salary {salaryWon} KRW, year-end settlement: {result}"
+      },
+      "tip": {
+        "title": "Ways to get more back",
+        "desc": "Extra refund from changing one thing (incl. local tax)",
+        "per": "{rate}% of amount",
+        "none": "Nothing left to improve with these inputs.",
+        "noneZero": "Your final tax is already 0, so more deductions won't raise the refund.",
+        "pension100": "Add {amountWon} KRW to pension/IRP",
+        "pension100Hint": "Counts if paid by Dec 31",
+        "pensionMax": "Fill pension limit (+{amountWon} KRW)",
+        "pensionMaxHint": "Savings 6M + IRP, 9M total",
+        "debit": "Move {amountWon} KRW from credit to debit",
+        "debitHint": "Double rate above the 25% threshold",
+        "hometown": "Hometown donation {amountWon} KRW",
+        "hometownHint": "Fully credited up to 100K KRW + gift",
+        "housingSub": "Fill subscription to 3M (+{amountWon} KRW)",
+        "housingSubHint": "Household head, salary ≤ 70M KRW",
+        "rent": "Claim rent credit (assume 500K/month)",
+        "rentHint": "Missed it? Amend within 5 years"
+      },
+      "row": {
+        "title": "Calculation",
+        "salary": "Total salary",
+        "eid": "Earned income deduction",
+        "earnedIncome": "Earned income",
+        "personal": "Personal deduction ({n} + extras)",
+        "pension": "National pension",
+        "healthEmp": "Health & employment ins.",
+        "housing": "Housing subscription / jeonse loan",
+        "card": "Card deduction",
+        "taxBase": "Tax base",
+        "computed": "Computed tax ({rate}%)",
+        "sme": "SME reduction",
+        "earnedCredit": "Earned income credit",
+        "determinedIncome": "Final tax (income)",
+        "local": "Local income tax (10%)",
+        "prepaid": "Income tax withheld",
+        "prepaidLocal": "Local tax withheld",
+        "refund": "Estimated refund",
+        "pay": "Amount due",
+        "determined": "Final tax",
+        "prepaidAll": "Tax withheld",
+        "stdNote": "The 130K KRW standard credit beats itemized credits here, so it was applied.",
+        "specialNote": "Itemizing saves {amount} KRW more than the 130K KRW standard credit."
+      },
+      "cr": {
+        "child": "Child & birth credit",
+        "pension": "Pension accounts",
+        "insurance": "Insurance",
+        "medical": "Medical",
+        "education": "Education",
+        "donation": "Donations",
+        "hometown": "Hometown donation",
+        "rent": "Rent",
+        "marriage": "Marriage credit",
+        "standard": "Standard credit"
+      },
+      "scope": {
+        "title": "Not covered",
+        "items": [
+          "Salary income only. Other income is combined in the May comprehensive tax filing",
+          "Foreigners' flat 19% rate and previous-employer income are not included",
+          "Mortgage interest, political funds, ESOP/venture investments and donation carry-forwards excluded",
+          "Child education limits use children × per-child cap; SME reduction assumes a full eligible year",
+          "The withholding estimate is approximate — check your payslip or withholding receipt"
+        ]
+      },
+      "sources": "Basis: Income Tax Act §47, §55, §59–59-4; Restriction of Special Taxation Act §30, 58, 87, 92, 95-2, 126-2 (as amended Dec 2025, as of 2026-10-01). 2026 insurance rates."
+    },
     "title": "Year-End Tax Settlement Calculator",
     "description": "Automatically calculate your 2025 tax year (2026 filing) year-end settlement refund",
     "disclaimer": "This calculator is for reference only. Please consult the NTS Hometax or a tax advisor for actual filing.",
@@ -30156,12 +30538,13 @@
         ]
       },
       "tips": {
-        "title": "Tax Saving Tips",
+        "title": "Tax-saving tips",
         "items": [
-          "Spending over 25% of salary: debit cards/cash receipts get 2x rate (30%)",
-          "Pension savings + IRP: up to 9M eligible for tax credit",
-          "Medical expenses: only amount exceeding 3% of salary is deductible—concentrate in one year",
-          "Traditional markets and public transport each have separate additional 1M limit"
+          "Use credit cards up to 25% of salary, then debit/cash receipts (30% rate).",
+          "Markets, transit (40%) and books/shows/gyms (30%) share an extra 3M KRW limit (2M above 70M salary).",
+          "Pension/IRP contributions count if paid by Dec 31 (up to 9M KRW, 15% or 12%).",
+          "Medical costs only count above 3% of salary — dual earners should use the lower earner.",
+          "If your final tax is already 0, extra deductions add nothing — give dependents to the higher-tax spouse."
         ]
       },
       "whatIs": {
@@ -30169,12 +30552,12 @@
         "description": "This tool estimates your year-end tax settlement refund (or additional payment). Enter gross salary, personal deductions, social insurance, card spending, pension savings, medical/education expenses to calculate your final tax and refund amount."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Enter basic info: gross salary, non-taxable income, dependents, prepaid tax.",
-          "Enter income deductions: social insurance, housing savings, credit/debit card spending.",
-          "Enter tax credits: pension savings/IRP, medical, education, and donation amounts.",
-          "Review taxable income, final tax amount, and estimated refund."
+          "Enter just your salary to see a result with realistic defaults (single, card spending).",
+          "Open family, cards, pension, medical and other sections as needed — results update instantly.",
+          "For accuracy, enter the income tax withheld from your payslips or withholding receipt.",
+          "Check 'Ways to get more back' for moves you can still make before Dec 31."
         ]
       },
       "savingTips": {
@@ -31574,6 +31957,119 @@
     "loss": "You Lose!"
   },
   "biorhythm": {
+    "intuitive": "Intuitive",
+    "cycleDays": "{n}d",
+    "dateFmt": "{m}/{d} ({w})",
+    "mode": {
+      "single": "My rhythm",
+      "compat": "Match"
+    },
+    "input": {
+      "name": "Name",
+      "namePlaceholder": "Name (optional)",
+      "example": "This is a sample birth date. Change it to yours.",
+      "invalid": "Birth date must be before the target date.",
+      "backToday": "Back to today",
+      "showIntuitive": "Also show intuitive rhythm (38 days)"
+    },
+    "hero": {
+      "label": "Biorhythm for {date}",
+      "labelNamed": "{name}'s biorhythm for {date}",
+      "fun": "Just for fun. Biorhythm theory has no scientific support.",
+      "rising": "rising",
+      "falling": "falling"
+    },
+    "bandName": {
+      "high": "Good",
+      "up": "OK",
+      "down": "Careful",
+      "low": "Low"
+    },
+    "band": {
+      "composite": {
+        "high": "All three rhythms are up. Great day to tackle that task",
+        "up": "A smooth day. Your usual pace is enough",
+        "down": "Slightly low flow. Leave room in your schedule",
+        "low": "Recharge day. Go easy on yourself"
+      },
+      "physical": {
+        "high": "Feeling light. Good day to work out",
+        "up": "Energy is fine. Move a little",
+        "down": "You may tire easily. Start with a stretch",
+        "low": "Low battery. Sleep early"
+      },
+      "emotional": {
+        "high": "Clear mood. Reach out first",
+        "up": "Feeling fairly steady",
+        "down": "Small things may sting",
+        "low": "Emotional low. Treat yourself"
+      },
+      "intellectual": {
+        "high": "Sharp mind. Study or plan today",
+        "up": "Focus is fine. Follow your list",
+        "down": "Watch for mistakes. Double-check",
+        "low": "Heavy thinking day. Big decisions tomorrow"
+      },
+      "intuitive": {
+        "high": "Good hunches. Trust first impressions",
+        "up": "Intuition is fine",
+        "down": "Check before trusting your gut",
+        "low": "Fuzzy instincts. Look for evidence"
+      }
+    },
+    "crit": {
+      "title": "Critical days",
+      "todayShort": "Critical today: {list}",
+      "today": "Today your {list} rhythm crosses zero (critical day). Take it slow and double-check.",
+      "none": "Today is not a critical day.",
+      "upcoming": "Next 2 weeks",
+      "noneUpcoming": "No critical days in the next 2 weeks."
+    },
+    "chart": {
+      "selected": "Selected",
+      "hint": "Tap or hover the chart to see that day's values. ±15 days around the target date.",
+      "prev": "Previous day",
+      "next": "Next day"
+    },
+    "month": {
+      "title": "Best & rest days in month {m}",
+      "best": "Best days",
+      "worst": "Rest days",
+      "critical": "{n} critical days"
+    },
+    "compat": {
+      "label": "{a} & {b} biorhythm match",
+      "me": "Me",
+      "partner": "Partner",
+      "needB": "Enter your partner's birth date.",
+      "band": {
+        "high": "Almost in sync. You rise and rest together",
+        "good": "Good match. Similar energy timing",
+        "mid": "Half and half. You complement each other",
+        "low": "Out of sync. When one is tired, the other is up"
+      },
+      "howTitle": "How the match is calculated",
+      "formula": "Match = (1 + cos(2π × birthday gap ÷ cycle)) ÷ 2",
+      "formulaNote": "Birthday gap: {n} days. It never changes over time. 100% means the curves overlap exactly, 0% means opposite; overall is the average of three rhythms.",
+      "todayOf": "{name} · {date} overall",
+      "chartTitle": "Rhythm comparison"
+    },
+    "share": {
+      "headline": "Overall {v}",
+      "text": "My biorhythm today: overall {v}",
+      "textCompat": "Our biorhythm match: {v}%",
+      "hideBirth": "Don't include birth dates in the share link"
+    },
+    "profiles": {
+      "title": "Saved people",
+      "save": "Save this birth date",
+      "empty": "Save family and friends' birthdays to load them quickly. (Stored on this device only)",
+      "load": "Load",
+      "asA": "Me",
+      "asB": "Partner",
+      "remove": "Delete",
+      "defaultName": "Person {n}"
+    },
     "title": "Biorhythm Calculator",
     "description": "Physical, emotional, and intellectual rhythm charts with compatibility analysis",
     "inputTitle": "Basic Info",
@@ -31634,9 +32130,9 @@
       "critical": {
         "title": "What are Critical Days?",
         "items": [
-          "Critical days are when the biorhythm curve crosses zero, transitioning from positive to negative or vice versa.",
-          "During these times, physical, emotional, or intellectual stability may decrease, potentially increasing the chance of accidents or mistakes.",
-          "Days marked with (!) in the calendar are critical days."
+          "A critical day is when a curve crosses zero, switching from + to − (or back).",
+          "The theory says your state is unstable on these days, but no link to real accidents or mistakes has been shown.",
+          "Tap a date in 'Critical days' or the monthly list to view that day."
         ]
       },
       "disclaimer": {
@@ -31695,10 +32191,10 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your date of birth.",
-          "2. Set the date range you want to view (default: ±30 days from today).",
-          "3. Review the charts for all three rhythms.",
-          "4. For compatibility analysis, enter a second person's birth date to compare rhythm similarity."
+          "1. Enter a birth date (a sample date is shown at first).",
+          "2. Pick a target date to see a ±15-day chart plus that month's best and rest days.",
+          "3. In the Match tab, add a second birth date to see the match per rhythm.",
+          "4. Save people you check often, and share results as an image or link."
         ]
       },
       "tips": {
@@ -31723,7 +32219,7 @@
           },
           {
             "q": "Does a high compatibility score mean two people are truly well-matched?",
-            "a": "The compatibility score reflects the mathematical similarity of two people's rhythm cycles. Real-life compatibility is determined by personality, values, and communication—treat the score as a fun reference only."
+            "a": "No. The match is just the phase gap between two curves, set by the birthday difference, expressed as (1 + cos gap) ÷ 2. Real relationships depend on personality, values and communication, so treat it as fun."
           }
         ]
       }
