@@ -1,282 +1,120 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Flame, MapPin, Thermometer, BookOpen, Copy, Check, Share2, Home, ChevronDown, Zap, Droplets } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import {
+  REGION_RATES, WHOLESALE_UNIT, MJ_PER_M3, calcBill, toMJ, estimateMJ, heatingMJ, hotWaterMJ, yearlyMJ, pctChange, savings,
+  type RegionKey, type Insulation,
+} from '@/utils/gasBill'
 
-type Region = 'seoul' | 'gyeonggi' | 'incheon' | 'busan' | 'daegu' | 'gwangju' | 'daejeon' | 'ulsan' | 'sejong' | 'gangwon' | 'chungbuk' | 'chungnam' | 'jeonbuk' | 'jeonnam' | 'gyeongbuk' | 'gyeongnam' | 'jeju'
-type Season = 'spring' | 'summer' | 'autumn' | 'winter'
-type Insulation = 'good' | 'average' | 'poor'
-
-interface RateData {
-  basicCharge: number
-  springRate: number
-  summerRate: number
-  autumnRate: number
-  winterRate: number
-}
-
-interface TierInfo {
-  label: string
-  min: number
-  max: number
-  rate: number
-  usage: number
-  charge: number
-}
-
-const REGION_RATES: Record<Region, RateData> = {
-  seoul:     { basicCharge: 1430, springRate: 17.50, summerRate: 15.89, autumnRate: 17.80, winterRate: 19.66 },
-  gyeonggi:  { basicCharge: 1420, springRate: 17.46, summerRate: 15.85, autumnRate: 17.76, winterRate: 19.62 },
-  incheon:   { basicCharge: 1410, springRate: 17.42, summerRate: 15.82, autumnRate: 17.72, winterRate: 19.58 },
-  busan:     { basicCharge: 1380, springRate: 17.35, summerRate: 15.75, autumnRate: 17.65, winterRate: 19.50 },
-  daegu:     { basicCharge: 1390, springRate: 17.38, summerRate: 15.78, autumnRate: 17.68, winterRate: 19.53 },
-  gwangju:   { basicCharge: 1370, springRate: 17.32, summerRate: 15.72, autumnRate: 17.62, winterRate: 19.47 },
-  daejeon:   { basicCharge: 1400, springRate: 17.40, summerRate: 15.80, autumnRate: 17.70, winterRate: 19.55 },
-  ulsan:     { basicCharge: 1360, springRate: 17.30, summerRate: 15.70, autumnRate: 17.60, winterRate: 19.45 },
-  sejong:    { basicCharge: 1405, springRate: 17.41, summerRate: 15.81, autumnRate: 17.71, winterRate: 19.56 },
-  gangwon:   { basicCharge: 1440, springRate: 17.53, summerRate: 15.92, autumnRate: 17.83, winterRate: 19.69 },
-  chungbuk:  { basicCharge: 1415, springRate: 17.44, summerRate: 15.84, autumnRate: 17.74, winterRate: 19.60 },
-  chungnam:  { basicCharge: 1425, springRate: 17.48, summerRate: 15.87, autumnRate: 17.78, winterRate: 19.63 },
-  jeonbuk:   { basicCharge: 1385, springRate: 17.36, summerRate: 15.76, autumnRate: 17.66, winterRate: 19.51 },
-  jeonnam:   { basicCharge: 1375, springRate: 17.33, summerRate: 15.73, autumnRate: 17.63, winterRate: 19.48 },
-  gyeongbuk: { basicCharge: 1395, springRate: 17.39, summerRate: 15.79, autumnRate: 17.69, winterRate: 19.54 },
-  gyeongnam: { basicCharge: 1365, springRate: 17.31, summerRate: 15.71, autumnRate: 17.61, winterRate: 19.46 },
-  jeju:      { basicCharge: 1450, springRate: 17.55, summerRate: 15.95, autumnRate: 17.85, winterRate: 19.72 },
-}
-
-// Progressive rate tiers (MJ-based)
-const RATE_TIERS = [
-  { min: 0, max: 50, multiplier: 0.85 },
-  { min: 50, max: 150, multiplier: 1.0 },
-  { min: 150, max: 300, multiplier: 1.15 },
-  { min: 300, max: Infinity, multiplier: 1.35 },
-]
-
-// Monthly typical usage patterns (MJ) for an average household
-const MONTHLY_USAGE_PATTERN = [
-  350, // Jan (winter)
-  300, // Feb (winter)
-  180, // Mar (spring)
-  120, // Apr (spring)
-  80,  // May (spring)
-  50,  // Jun (summer)
-  40,  // Jul (summer)
-  45,  // Aug (summer)
-  90,  // Sep (autumn)
-  160, // Oct (autumn)
-  250, // Nov (autumn)
-  320, // Dec (winter)
-]
-
-const MONTH_SEASONS: Season[] = [
-  'winter', 'winter', 'spring', 'spring', 'spring',
-  'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter',
-]
-
-// Boiler consumption: MJ per pyeong per hour by insulation
-const BOILER_CONSUMPTION: Record<Insulation, number> = {
-  good: 0.8,
-  average: 1.2,
-  poor: 1.7,
-}
-
-function getSeasonRate(rateData: RateData, season: Season): number {
-  switch (season) {
-    case 'spring': return rateData.springRate
-    case 'summer': return rateData.summerRate
-    case 'autumn': return rateData.autumnRate
-    case 'winter': return rateData.winterRate
-  }
-}
-
-function calcTiers(usage: number, baseRate: number): TierInfo[] {
-  const tierLabels = ['tier1', 'tier2', 'tier3', 'tier4']
-  let remaining = usage
-  return RATE_TIERS.map((tier, i) => {
-    const range = tier.max === Infinity ? Infinity : tier.max - tier.min
-    const usedInTier = Math.min(remaining, range)
-    remaining = Math.max(0, remaining - usedInTier)
-    const rate = Math.round(baseRate * tier.multiplier * 100) / 100
-    return {
-      label: tierLabels[i],
-      min: tier.min,
-      max: tier.max,
-      rate,
-      usage: usedInTier,
-      charge: Math.round(usedInTier * rate),
-    }
-  })
-}
-
-function calcBill(usage: number, region: Region, season: Season) {
-  if (!usage || usage <= 0) return null
-  const rateData = REGION_RATES[region]
-  const baseRate = getSeasonRate(rateData, season)
-  const basicCharge = rateData.basicCharge
-  const tiers = calcTiers(usage, baseRate)
-  const usageCharge = tiers.reduce((sum, t) => sum + t.charge, 0)
-  const subtotal = basicCharge + usageCharge
-  const vat = Math.round(subtotal * 0.1)
-  const total = subtotal + vat
-  return { basicCharge, usageCharge, subtotal, vat, total, unitPrice: baseRate, tiers }
-}
+const REGIONS: RegionKey[] = ['seoul', 'gyeonggi', 'daegu', 'other', 'custom']
+const INSULATIONS: Insulation[] = ['good', 'average', 'poor']
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const num = (v: string | null, d: number) => { const n = parseFloat(v ?? ''); return Number.isFinite(n) ? n : d }
+const seg = (on: boolean) =>
+  `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
 export default function GasBill() {
   const t = useTranslations('gasBill')
   const searchParams = useSearchParams()
+  const ready = useRef(false)
 
-  const [usage, setUsage] = useState<number>(0)
-  const [region, setRegion] = useState<Region>('seoul')
-  const [season, setSeason] = useState<Season>('winter')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-
-  // Boiler simulation
-  const [houseSize, setHouseSize] = useState<number>(25)
+  const [mode, setMode] = useState<'estimate' | 'usage'>('estimate')
+  const [region, setRegion] = useState<RegionKey>('seoul')
+  const [customUnit, setCustomUnit] = useState(REGION_RATES.seoul.unit)
+  const [customBasic, setCustomBasic] = useState(REGION_RATES.seoul.basic)
+  const [usage, setUsage] = useState(3000)
+  const [unit, setUnit] = useState<'mj' | 'm3'>('mj')
+  const [pyeong, setPyeong] = useState(30)
   const [insulation, setInsulation] = useState<Insulation>('average')
-  const [heatingHours, setHeatingHours] = useState<number>(8)
-  const [showBoilerSim, setShowBoilerSim] = useState(false)
+  const [hours, setHours] = useState(8)
+  const [temp, setTemp] = useState(22)
+  const [month, setMonth] = useState(1)
+  const [prev, setPrev] = useState(0)
+  const [lastYear, setLastYear] = useState(0)
 
-  // Utility consolidation
-  const [electricityBill, setElectricityBill] = useState<number>(0)
-  const [waterBill, setWaterBill] = useState<number>(0)
-  const [internetBill, setInternetBill] = useState<number>(0)
-  const [showUtility, setShowUtility] = useState(false)
-
-  // URL param sync on mount
+  // URL → 상태 (한 번)
   useEffect(() => {
-    const u = searchParams.get('usage')
-    const r = searchParams.get('region')
-    const s = searchParams.get('season')
-    if (u) setUsage(parseFloat(u) || 0)
-    if (r && r in REGION_RATES) setRegion(r as Region)
-    if (s && ['spring', 'summer', 'autumn', 'winter'].includes(s)) setSeason(s as Season)
+    if (ready.current) return
+    const g = (k: string) => searchParams.get(k)
+    if (g('mode') === 'u') setMode('usage')
+    const r = g('r') as RegionKey | null
+    if (r && REGIONS.includes(r)) setRegion(r)
+    setCustomUnit(num(g('cu'), REGION_RATES.seoul.unit))
+    setCustomBasic(num(g('cb'), REGION_RATES.seoul.basic))
+    setUsage(Math.max(0, num(g('u'), 3000)))
+    if (g('unit') === 'm3') setUnit('m3')
+    setPyeong(Math.min(200, Math.max(1, num(g('py'), 30))))
+    const ins = g('ins') as Insulation | null
+    if (ins && INSULATIONS.includes(ins)) setInsulation(ins)
+    setHours(Math.min(24, Math.max(0, num(g('h'), 8))))
+    setTemp(Math.min(28, Math.max(16, num(g('tp'), 22))))
+    const m = Math.round(num(g('m'), 1))
+    setMonth(m >= 1 && m <= 12 ? m : 1)
+    setPrev(Math.max(0, num(g('prev'), 0)))
+    setLastYear(Math.max(0, num(g('ly'), 0)))
+    ready.current = true
   }, [searchParams])
 
-  const updateURL = useCallback((params: Record<string, string | number>) => {
-    const url = new URL(window.location.href)
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.set(key, String(value))
-    })
-    window.history.replaceState({}, '', url)
-  }, [])
+  // 상태 → URL (공유 링크가 결과를 재현)
+  useEffect(() => {
+    if (!ready.current) return
+    const p = new URLSearchParams({ r: region, m: String(month) })
+    if (mode === 'usage') { p.set('mode', 'u'); p.set('u', String(usage)); if (unit === 'm3') p.set('unit', 'm3') }
+    p.set('py', String(pyeong)); p.set('ins', insulation); p.set('h', String(hours)); p.set('tp', String(temp))
+    if (region === 'custom') { p.set('cu', String(customUnit)); p.set('cb', String(customBasic)) }
+    if (prev > 0) p.set('prev', String(prev))
+    if (lastYear > 0) p.set('ly', String(lastYear))
+    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+  }, [mode, region, customUnit, customBasic, usage, unit, pyeong, insulation, hours, temp, month, prev, lastYear])
 
-  const handleUsageChange = useCallback((val: number) => {
-    setUsage(val)
-    updateURL({ usage: val, region, season })
-  }, [region, season, updateURL])
+  const rate = region === 'custom'
+    ? { unit: customUnit, basic: customBasic, verified: true as const }
+    : REGION_RATES[region]
+  const est = { pyeong, insulation, hours, temp, month }
+  const modelMJ = estimateMJ(est)
+  const mj = mode === 'usage' ? toMJ(usage, unit) : modelMJ
+  const bill = calcBill(mj, rate)
+  const scale = mode === 'usage' && modelMJ > 0 ? mj / modelMJ : 1
 
-  const handleRegionChange = useCallback((val: Region) => {
-    setRegion(val)
-    updateURL({ usage, region: val, season })
-  }, [usage, season, updateURL])
+  const year = useMemo(() => {
+    const mjs = yearlyMJ({ pyeong, insulation, hours, temp, month }, mode === 'usage' ? mj : undefined)
+    return mjs.map((m) => calcBill(m, rate).total)
+  }, [pyeong, insulation, hours, temp, month, mode, mj, rate.unit, rate.basic]) // eslint-disable-line react-hooks/exhaustive-deps
+  const maxYear = Math.max(...year, 1)
+  const avg = (ms: number[]) => Math.round(ms.reduce((s, m) => s + year[m - 1], 0) / ms.length)
+  const winterAvg = avg([12, 1, 2])
+  const summerAvg = avg([6, 7, 8])
+  const annual = year.reduce((s, v) => s + v, 0)
 
-  const handleSeasonChange = useCallback((val: Season) => {
-    setSeason(val)
-    updateURL({ usage, region, season: val })
-  }, [usage, region, updateURL])
+  const save = savings(est, rate.unit, scale)
+  const heatingNow = heatingMJ(est) > 0
+  const breakdown = { heat: Math.round(heatingMJ(est) * scale), water: Math.round(hotWaterMJ(month) * scale) }
 
-  const result = useMemo(() => calcBill(usage, region, season), [usage, region, season])
+  const regionLabel = t(`regions.${region}`)
+  const heroLabel = t('hero.label', { region: regionLabel, month })
+  const compareRows = [
+    { key: 'prev', label: t('compare.prev'), before: prev },
+    { key: 'ly', label: t('compare.lastYear'), before: lastYear },
+  ].map((c) => ({ ...c, pct: pctChange(bill.total, c.before) }))
+  const pctText = (p: number) =>
+    Math.abs(p) < 0.05 ? t('compare.same') : t(p > 0 ? 'compare.up' : 'compare.down', { pct: Math.abs(p).toFixed(1) })
 
-  // Boiler simulation result
-  const boilerEstimate = useMemo(() => {
-    const dailyMJ = houseSize * BOILER_CONSUMPTION[insulation] * heatingHours
-    const monthlyMJ = Math.round(dailyMJ * 30)
-    return monthlyMJ
-  }, [houseSize, insulation, heatingHours])
-
-  // Monthly cost chart data
-  const monthlyData = useMemo(() => {
-    const rateData = REGION_RATES[region]
-    return MONTHLY_USAGE_PATTERN.map((mUsage, i) => {
-      const mSeason = MONTH_SEASONS[i]
-      const rate = getSeasonRate(rateData, mSeason)
-      const tiers = calcTiers(mUsage, rate)
-      const usageCharge = tiers.reduce((sum, t) => sum + t.charge, 0)
-      const sub = rateData.basicCharge + usageCharge
-      const total = sub + Math.round(sub * 0.1)
-      return { month: i + 1, usage: mUsage, total, season: mSeason }
-    })
-  }, [region])
-
-  // Utility total
-  const utilityTotal = useMemo(() => {
-    const gasCost = result?.total ?? 0
-    return gasCost + electricityBill + waterBill + internetBill
-  }, [result, electricityBill, waterBill, internetBill])
-
-  const handleReset = () => {
-    setUsage(0)
-    setRegion('seoul')
-    setSeason('winter')
-    const url = new URL(window.location.href)
-    url.search = ''
-    window.history.replaceState({}, '', url)
+  const reset = () => {
+    setMode('estimate'); setRegion('seoul'); setUsage(3000); setUnit('mj'); setPyeong(30); setInsulation('average')
+    setHours(8); setTemp(22); setMonth(1); setPrev(0); setLastYear(0)
   }
 
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const shareLink = useCallback(() => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('usage', String(usage))
-    url.searchParams.set('region', region)
-    url.searchParams.set('season', season)
-    const shareUrl = url.toString()
-    if (navigator.share) {
-      navigator.share({ title: t('title'), url: shareUrl }).catch(() => {
-        copyToClipboard(shareUrl, 'share')
-      })
-    } else {
-      copyToClipboard(shareUrl, 'share')
-    }
-  }, [usage, region, season, t, copyToClipboard])
-
-  const applyBoilerEstimate = useCallback(() => {
-    setUsage(boilerEstimate)
-    updateURL({ usage: boilerEstimate, region, season })
-  }, [boilerEstimate, region, season, updateURL])
-
-  const regions: Region[] = [
-    'seoul', 'gyeonggi', 'incheon', 'busan', 'daegu', 'gwangju', 'daejeon',
-    'ulsan', 'sejong', 'gangwon', 'chungbuk', 'chungnam', 'jeonbuk', 'jeonnam',
-    'gyeongbuk', 'gyeongnam', 'jeju',
-  ]
-
-  const seasonOptions: Season[] = ['spring', 'summer', 'autumn', 'winter']
-
-  const maxMonthly = Math.max(...monthlyData.map(d => d.total))
-
-  const tierColors = ['bg-green-500', 'bg-blue-500', 'bg-yellow-500', 'bg-red-500']
-  const tierBgColors = ['bg-green-100 dark:bg-green-900', 'bg-blue-100 dark:bg-blue-900', 'bg-yellow-100 dark:bg-yellow-900', 'bg-red-100 dark:bg-red-900']
-
-  const seasonBarColors: Record<Season, string> = {
-    spring: 'bg-green-400',
-    summer: 'bg-orange-400',
-    autumn: 'bg-amber-500',
-    winter: 'bg-blue-500',
+  const switchMode = (m: 'estimate' | 'usage') => {
+    if (m === 'usage' && mode === 'estimate') { setUnit('mj'); setUsage(modelMJ) }
+    setMode(m)
   }
+
+  const shareLabel = mode === 'estimate'
+    ? t('share.labelEstimate', { region: regionLabel, pyeong, month })
+    : t('share.labelUsage', { region: regionLabel, mj: won(mj), month })
 
   return (
     <div className="space-y-8">
@@ -286,424 +124,259 @@ export default function GasBill() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('usage')}
-              </label>
-              <input
-                type="number"
-                value={usage || ''}
-                onChange={(e) => handleUsageChange(parseFloat(e.target.value) || 0)}
-                placeholder={t('usagePlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-              />
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
+            <div className="grid grid-cols-2 gap-2">
+              <button className={seg(mode === 'estimate')} onClick={() => switchMode('estimate')}>{t('mode.estimate')}</button>
+              <button className={seg(mode === 'usage')} onClick={() => switchMode('usage')}>{t('mode.usage')}</button>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('region')}
-              </label>
-              <select
-                value={region}
-                onChange={(e) => handleRegionChange(e.target.value as Region)}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-              >
-                {regions.map((r) => (
-                  <option key={r} value={r}>{t(`regions.${r}`)}</option>
-                ))}
+              <label htmlFor="gb-region" className="block text-sm font-medium text-body mb-2">{t('region')}</label>
+              <select id="gb-region" value={region} onChange={(e) => setRegion(e.target.value as RegionKey)} className="ui-field w-full px-4 py-3">
+                {REGIONS.map((r) => <option key={r} value={r}>{t(`regions.${r}`)}</option>)}
               </select>
+              {region === 'custom' && (
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <label className="text-xs text-sub">{t('customUnit')}
+                    <input type="number" step="0.0001" min={0} value={customUnit} onChange={(e) => setCustomUnit(Math.max(0, parseFloat(e.target.value) || 0))} className="ui-field w-full px-3 py-2 mt-1 text-sm" />
+                  </label>
+                  <label className="text-xs text-sub">{t('customBasic')}
+                    <input type="number" min={0} value={customBasic} onChange={(e) => setCustomBasic(Math.max(0, parseFloat(e.target.value) || 0))} className="ui-field w-full px-3 py-2 mt-1 text-sm" />
+                  </label>
+                </div>
+              )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('season')}
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {seasonOptions.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => handleSeasonChange(s)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      season === s
-                        ? 'bg-primary hover:bg-blue-700 text-white'
-                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                    }`}
-                  >
-                    {t(`seasons.${s}`)}
-                  </button>
+              <span className="block text-sm font-medium text-body mb-2">{t('month')}</span>
+              <div className="grid grid-cols-6 gap-1.5">
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                  <button key={m} className={seg(month === m).replace("px-3", "px-0")} onClick={() => setMonth(m)}>{t('monthN', { n: m })}</button>
                 ))}
               </div>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={handleReset}
-                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
-                {t('reset')}
-              </button>
-              <button
-                onClick={shareLink}
-                className="flex items-center justify-center gap-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-                title={t('shareLink')}
-              >
-                {copiedId === 'share' ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-
-          {/* Boiler Simulation Toggle */}
-          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-            <button
-              onClick={() => setShowBoilerSim(!showBoilerSim)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
-              <span className="flex items-center gap-2 font-medium text-fg">
-                <Home className="w-4 h-4" />
-                {t('boilerSim.title')}
-              </span>
-              <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showBoilerSim ? 'rotate-180' : ''}`} />
-            </button>
-            {showBoilerSim && (
-              <div className="px-4 pb-4 space-y-3 border-t border-line pt-3">
-                <div>
-                  <label className="block text-xs font-medium text-sub mb-1">
-                    {t('boilerSim.houseSize')}
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      value={houseSize}
-                      onChange={(e) => setHouseSize(parseFloat(e.target.value) || 0)}
-                      className={`flex-1 px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                    />
-                    <span className="text-sm text-muted">{t('boilerSim.pyeong')}</span>
-                  </div>
+            {mode === 'usage' ? (
+              <div>
+                <label htmlFor="gb-usage" className="block text-sm font-medium text-body mb-2">{t('usage')}</label>
+                <div className="flex gap-2">
+                  <input id="gb-usage" type="number" min={0} value={usage || ''} onChange={(e) => setUsage(Math.max(0, parseFloat(e.target.value) || 0))}
+                    placeholder={t('usagePlaceholder')} className="ui-field flex-1 min-w-0 px-4 py-3" />
+                  <button className={seg(unit === 'mj')} onClick={() => setUnit('mj')}>MJ</button>
+                  <button className={seg(unit === 'm3')} onClick={() => setUnit('m3')}>㎥</button>
                 </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-sub mb-1">
-                    {t('boilerSim.insulation')}
-                  </label>
-                  <select
-                    value={insulation}
-                    onChange={(e) => setInsulation(e.target.value as Insulation)}
-                    className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                  >
-                    <option value="good">{t('boilerSim.insulationGood')}</option>
-                    <option value="average">{t('boilerSim.insulationAverage')}</option>
-                    <option value="poor">{t('boilerSim.insulationPoor')}</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-sub mb-1">
-                    {t('boilerSim.heatingHours')}
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="range"
-                      min={1}
-                      max={24}
-                      value={heatingHours}
-                      onChange={(e) => setHeatingHours(parseInt(e.target.value))}
-                      className="flex-1 accent-blue-600"
-                    />
-                    <span className="text-sm font-medium text-fg w-16 text-right">
-                      {heatingHours}{t('boilerSim.hoursPerDay')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="bg-subtle rounded-lg p-3">
-                  <div className="text-xs text-sub">{t('boilerSim.estimatedUsage')}</div>
-                  <div className="text-xl font-bold text-fg">{boilerEstimate.toLocaleString('ko-KR')} MJ</div>
-                </div>
-
-                <button
-                  onClick={applyBoilerEstimate}
-                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
-                >
-                  {t('boilerSim.apply')}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Result Panel */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            {result ? (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-line pb-3">
-                  <h2 className="text-xl font-semibold text-fg">
-                    {t('result.title')}
-                  </h2>
-                  <button
-                    onClick={() => {
-                      const text = `${t('result.total')}: ${result.total.toLocaleString('ko-KR')}${t('result.won')} (${usage}MJ, ${t(`regions.${region}`)}, ${t(`seasons.${season}`)})`
-                      copyToClipboard(text, 'result')
-                    }}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-                  >
-                    {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    <span>{copiedId === 'result' ? t('copied') : t('copyResult')}</span>
-                  </button>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-sm text-sub">{t('result.basicCharge')}</div>
-                    <div className="text-2xl font-bold text-fg mt-1">
-                      {result.basicCharge.toLocaleString('ko-KR')} {t('result.won')}
-                    </div>
-                  </div>
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-sm text-sub">{t('result.usageCharge')}</div>
-                    <div className="text-2xl font-bold text-fg mt-1">
-                      {result.usageCharge.toLocaleString('ko-KR')} {t('result.won')}
-                    </div>
-                  </div>
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-sm text-sub">{t('result.subtotal')}</div>
-                    <div className="text-2xl font-bold text-fg mt-1">
-                      {result.subtotal.toLocaleString('ko-KR')} {t('result.won')}
-                    </div>
-                  </div>
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-sm text-sub">{t('result.vat')}</div>
-                    <div className="text-2xl font-bold text-fg mt-1">
-                      {result.vat.toLocaleString('ko-KR')} {t('result.won')}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-primary rounded-xl p-6 text-white">
-                  <div className="text-sm opacity-90">{t('result.total')}</div>
-                  <div className="text-4xl font-bold mt-2">
-                    {result.total.toLocaleString('ko-KR')} {t('result.won')}
-                  </div>
-                  <div className="text-sm opacity-75 mt-3">
-                    {t('result.unitPrice')}: {result.unitPrice.toFixed(2)} {t('result.won')}/MJ
-                  </div>
-                </div>
-
-                {/* Tiered Rate Breakdown */}
-                <div>
-                  <h3 className="text-lg font-semibold text-fg mb-3">
-                    {t('tierBreakdown.title')}
-                  </h3>
-                  <div className="space-y-2">
-                    {result.tiers.map((tier, i) => {
-                      const maxCharge = Math.max(...result.tiers.map(t => t.charge))
-                      const pct = maxCharge > 0 ? (tier.charge / maxCharge) * 100 : 0
-                      return (
-                        <div key={i} className={`${tierBgColors[i]} rounded-lg p-3`}>
-                          <div className="flex items-center justify-between text-sm mb-1">
-                            <span className="font-medium text-fg">
-                              {t(`tierBreakdown.${tier.label}`)} ({tier.min}~{tier.max === Infinity ? '∞' : tier.max} MJ)
-                            </span>
-                            <span className="text-body">
-                              {tier.usage.toLocaleString('ko-KR')} MJ × {tier.rate}{t('result.won')}/MJ
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="flex-1 h-5 bg-surface rounded-full overflow-hidden">
-                              <div
-                                className={`h-full ${tierColors[i]} rounded-full transition-all duration-500`}
-                                style={{ width: `${Math.max(pct, 2)}%` }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold text-fg w-24 text-right">
-                              {tier.charge.toLocaleString('ko-KR')}{t('result.won')}
-                            </span>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* Average Usage Reference */}
-                <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-fg mb-2">
-                    {t('averageUsage.title')}
-                  </h3>
-                  <div className="text-sm text-sub space-y-1">
-                    <div>{t('averageUsage.spring')}</div>
-                    <div>{t('averageUsage.summer')}</div>
-                    <div>{t('averageUsage.autumn')}</div>
-                    <div>{t('averageUsage.winter')}</div>
-                    <div className="text-xs mt-2">{t('averageUsage.description')}</div>
-                  </div>
-                </div>
+                {unit === 'm3' && <p className="text-xs text-muted mt-1.5">{t('m3Note', { k: MJ_PER_M3, mj: won(mj) })}</p>}
               </div>
             ) : (
-              <div className="text-center py-12 text-faint">
-                <Flame className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>{t('calculate')}</p>
+              <>
+                <div>
+                  <label htmlFor="gb-py" className="block text-sm font-medium text-body mb-2">{t('boilerSim.houseSize')}</label>
+                  <div className="flex items-center gap-2">
+                    <input id="gb-py" type="number" min={1} max={200} value={pyeong} onChange={(e) => setPyeong(Math.min(200, Math.max(0, parseFloat(e.target.value) || 0)))} className="ui-field flex-1 min-w-0 px-4 py-3" />
+                    <span className="text-sm text-muted">{t('boilerSim.pyeong')}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {[18, 25, 30, 34, 45].map((p) => <button key={p} className={seg(pyeong === p)} onClick={() => setPyeong(p)}>{p}{t('boilerSim.pyeong')}</button>)}
+                  </div>
+                </div>
+                <div>
+                  <span className="block text-sm font-medium text-body mb-2">{t('boilerSim.insulation')}</span>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {INSULATIONS.map((i) => (
+                      <button key={i} className={seg(insulation === i)} onClick={() => setInsulation(i)}>
+                        {t(`insulationShort.${i}`)}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted mt-1.5">{t(`boilerSim.insulation${i18nIns(insulation)}`)}</p>
+                </div>
+                <div>
+                  <label htmlFor="gb-h" className="flex justify-between text-sm font-medium text-body mb-2">
+                    <span>{t('boilerSim.heatingHours')}</span><span className="text-fg tabular-nums">{hours}{t('boilerSim.hoursPerDay')}</span>
+                  </label>
+                  <input id="gb-h" type="range" min={0} max={24} value={hours} onChange={(e) => setHours(parseInt(e.target.value))} className="w-full accent-[var(--primary)]" />
+                </div>
+                <div>
+                  <label htmlFor="gb-tp" className="flex justify-between text-sm font-medium text-body mb-2">
+                    <span>{t('temp')}</span><span className="text-fg tabular-nums">{temp}℃</span>
+                  </label>
+                  <input id="gb-tp" type="range" min={16} max={28} value={temp} onChange={(e) => setTemp(parseInt(e.target.value))} className="w-full accent-[var(--primary)]" />
+                </div>
+                <p className="text-xs text-muted">{t('modelNote')}</p>
+              </>
+            )}
+
+            <details className="group">
+              <summary className="cursor-pointer text-sm font-medium text-body">{t('compare.title')} <span className="text-faint">({t('compare.optional')})</span></summary>
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                <label className="text-xs text-sub">{t('compare.prev')}
+                  <input type="number" min={0} value={prev || ''} onChange={(e) => setPrev(Math.max(0, parseFloat(e.target.value) || 0))} className="ui-field w-full px-3 py-2 mt-1 text-sm" />
+                </label>
+                <label className="text-xs text-sub">{t('compare.lastYear')}
+                  <input type="number" min={0} value={lastYear || ''} onChange={(e) => setLastYear(Math.max(0, parseFloat(e.target.value) || 0))} className="ui-field w-full px-3 py-2 mt-1 text-sm" />
+                </label>
+              </div>
+            </details>
+
+            <button onClick={reset} className="ui-btn-soft w-full px-4 py-2">{t('reset')}</button>
+          </div>
+        </div>
+
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-hero p-6">
+            <div className="text-sm text-white/70">{heroLabel}</div>
+            <div className="text-4xl font-bold mt-2 tabular-nums">{won(bill.total)}{t('result.won')}</div>
+            <div className="text-sm text-white/70 mt-2">{t('hero.sub', { mj: won(mj) })}</div>
+            {compareRows.some((c) => c.pct != null) && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {compareRows.filter((c) => c.pct != null).map((c) => (
+                  <span key={c.key} className="rounded-full bg-white/15 px-3 py-1 text-sm">
+                    {c.label} {pctText(c.pct!)} ({bill.total - c.before >= 0 ? '+' : '-'}{won(Math.abs(bill.total - c.before))}{t('result.won')})
+                  </span>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Monthly Cost Chart */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-fg mb-4">
-              {t('monthlyChart.title')}
-            </h3>
-            <p className="text-xs text-muted mb-4">{t('monthlyChart.description')}</p>
-            <div className="flex items-end gap-1 sm:gap-2 h-48">
-              {monthlyData.map((d) => (
-                <div key={d.month} className="flex-1 flex flex-col items-center justify-end h-full">
-                  <div className="text-xs text-sub mb-1 hidden sm:block">
-                    {(d.total / 10000).toFixed(1)}
-                  </div>
-                  <div
-                    className={`w-full ${seasonBarColors[d.season]} rounded-t-sm transition-all duration-300 min-h-[4px]`}
-                    style={{ height: `${(d.total / maxMonthly) * 100}%` }}
-                    title={`${d.month}${t('monthlyChart.monthSuffix')}: ${d.total.toLocaleString('ko-KR')}${t('result.won')}`}
-                  />
-                  <div className="text-xs text-muted mt-1">
-                    {d.month}{t('monthlyChart.monthLabel')}
-                  </div>
-                </div>
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: shareLabel,
+              headline: `${won(bill.total)}${t('result.won')}`,
+              sub: t('hero.sub', { mj: won(mj) }),
+              rows: [
+                { label: t('yearly.winterAvg'), value: `${won(winterAvg)}${t('result.won')}` },
+                { label: t('yearly.summerAvg'), value: `${won(summerAvg)}${t('result.won')}` },
+                ...(heatingNow ? [{ label: t('save.tempDown1'), value: t('save.perMonth', { won: won(save.tempDown1) }) }] : []),
+              ],
+            }}
+            text={t('share.text', { month, total: won(bill.total) })}
+            fileName="gas-bill"
+          />
+
+          <div className="ui-card p-6">
+            <dl className="divide-y divide-line text-sm">
+              <Row label={t('result.basicCharge')} value={`${won(bill.basic)}${t('result.won')}`} />
+              <Row label={t('result.usageCharge')} hint={`${won(mj)} MJ × ${rate.unit.toFixed(4)}`} value={`${won(bill.usageCharge)}${t('result.won')}`} />
+              <Row label={t('result.vat')} value={`${won(bill.vat)}${t('result.won')}`} />
+              <Row label={t('result.total')} value={`${won(bill.total)}${t('result.won')}`} strong />
+            </dl>
+            {breakdown.heat + breakdown.water > 0 && (
+              <p className="text-xs text-muted mt-3">{t('breakdown', { heat: won(breakdown.heat), water: won(breakdown.water) })}</p>
+            )}
+            <div className="bg-subtle rounded-2xl p-4 mt-4 text-sm text-sub space-y-1">
+              <div>
+                {t('rateInfo', { unit: rate.unit.toFixed(4), basic: won(rate.basic) })}
+                {'since' in rate && rate.since ? ` · ${t('since', { date: rate.since })}` : ''}
+              </div>
+              {'source' in rate && rate.source && rate.url ? (
+                <div>{t('sourceLabel')}: <a href={rate.url} target="_blank" rel="noopener noreferrer" className="text-primary underline">{rate.source}</a></div>
+              ) : null}
+              {!rate.verified && <div className="text-amber-700 dark:text-amber-400">{t('estimatedNote', { wholesale: WHOLESALE_UNIT })}</div>}
+              <div className="text-xs text-muted">{t('basis')}</div>
+            </div>
+          </div>
+
+          {/* 월별 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('monthlyChart.title')}</h2>
+            <p className="text-xs text-muted mt-1 mb-4">{t('monthlyChart.description')}</p>
+            <div className="flex items-end gap-1 sm:gap-2 h-44">
+              {year.map((v, i) => (
+                <button key={i} onClick={() => setMonth(i + 1)} className="flex-1 flex flex-col items-center justify-end h-full group"
+                  aria-label={`${t('monthN', { n: i + 1 })} ${won(v)}${t('result.won')}`}>
+                  <span className="text-[10px] text-sub mb-1 hidden sm:block tabular-nums">{(v / 10000).toFixed(1)}</span>
+                  <span className={`w-full rounded-t-md min-h-[3px] transition-all ${i + 1 === month ? 'bg-primary' : 'bg-primary/30 group-hover:bg-primary/50'}`}
+                    style={{ height: `${(v / maxYear) * 100}%` }} />
+                  <span className={`text-xs mt-1 ${i + 1 === month ? 'text-primary font-semibold' : 'text-muted'}`}>{i + 1}</span>
+                </button>
               ))}
             </div>
-            <div className="flex flex-wrap gap-3 mt-4 justify-center">
-              {(['spring', 'summer', 'autumn', 'winter'] as Season[]).map((s) => (
-                <div key={s} className="flex items-center gap-1 text-xs text-sub">
-                  <div className={`w-3 h-3 rounded-sm ${seasonBarColors[s]}`} />
-                  {t(`seasons.${s}`)}
-                </div>
-              ))}
+            <p className="text-xs text-faint mt-2 text-right">{t('chartUnit')}</p>
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              <Stat label={t('yearly.winterAvg')} value={`${won(winterAvg)}${t('result.won')}`} />
+              <Stat label={t('yearly.summerAvg')} value={`${won(summerAvg)}${t('result.won')}`} />
+              <Stat label={t('yearly.annual')} value={`${won(annual)}${t('result.won')}`} />
             </div>
+          </div>
+
+          {/* 절약 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('save.title')}</h2>
+            <ul className="divide-y divide-line text-sm">
+              {heatingNow && <SaveRow label={t('save.tempDown1')} value={t('save.perMonth', { won: won(save.tempDown1) })} />}
+              {heatingNow && hours > 0 && <SaveRow label={t('save.hourDown1')} value={t('save.perMonth', { won: won(save.hourDown1) })} />}
+              <SaveRow label={t('save.water10')} value={t('save.perMonth', { won: won(save.water10) })} />
+            </ul>
+            {!heatingNow && <p className="text-sm text-sub mt-3">{t('save.noHeating')}</p>}
+            <div className="bg-subtle rounded-2xl p-4 mt-4">
+              <div className="text-sm font-semibold text-fg">{t('save.awayTitle')}</div>
+              <p className="text-sm text-sub mt-1">{t('save.awayTip')}</p>
+            </div>
+            <p className="text-xs text-muted mt-3">{t('save.note')}</p>
           </div>
         </div>
       </div>
 
-      {/* Utility Consolidation */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          onClick={() => setShowUtility(!showUtility)}
-          className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <span className="flex items-center gap-2 text-lg font-semibold text-fg">
-            <Zap className="w-5 h-5" />
-            {t('utility.title')}
-          </span>
-          <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${showUtility ? 'rotate-180' : ''}`} />
-        </button>
-        {showUtility && (
-          <div className="px-6 pb-6 border-t border-line pt-4">
-            <p className="text-sm text-muted mb-4">{t('utility.description')}</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-subtle rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
-                  <Flame className="w-4 h-4" />
-                  {t('utility.gas')}
-                </div>
-                <div className="text-xl font-bold text-fg">
-                  {(result?.total ?? 0).toLocaleString('ko-KR')} {t('result.won')}
-                </div>
-                <div className="text-xs text-muted mt-1">{t('utility.gasAuto')}</div>
-              </div>
-
-              <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
-                  <Zap className="w-4 h-4" />
-                  {t('utility.electricity')}
-                </div>
-                <input
-                  type="number"
-                  value={electricityBill || ''}
-                  onChange={(e) => setElectricityBill(parseFloat(e.target.value) || 0)}
-                  placeholder={t('utility.enterAmount')}
-                  className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                />
-              </div>
-
-              <div className="bg-subtle rounded-xl p-4">
-                <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
-                  <Droplets className="w-4 h-4" />
-                  {t('utility.water')}
-                </div>
-                <input
-                  type="number"
-                  value={waterBill || ''}
-                  onChange={(e) => setWaterBill(parseFloat(e.target.value) || 0)}
-                  placeholder={t('utility.enterAmount')}
-                  className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                />
-              </div>
-
-              <div className="bg-subtle rounded-xl p-4">
-                <div className="text-sm font-medium text-body mb-2">
-                  {t('utility.internet')}
-                </div>
-                <input
-                  type="number"
-                  value={internetBill || ''}
-                  onChange={(e) => setInternetBill(parseFloat(e.target.value) || 0)}
-                  placeholder={t('utility.enterAmount')}
-                  className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                />
-              </div>
-            </div>
-
-            <div className="mt-4 bg-primary rounded-xl p-5 text-white">
-              <div className="text-sm opacity-90">{t('utility.totalLabel')}</div>
-              <div className="text-3xl font-bold mt-1">
-                {utilityTotal.toLocaleString('ko-KR')} {t('result.won')}
-              </div>
-              <div className="flex flex-wrap gap-3 mt-3 text-sm opacity-80">
-                <span>{t('utility.gas')}: {(result?.total ?? 0).toLocaleString('ko-KR')}</span>
-                {electricityBill > 0 && <span>| {t('utility.electricity')}: {electricityBill.toLocaleString('ko-KR')}</span>}
-                {waterBill > 0 && <span>| {t('utility.water')}: {waterBill.toLocaleString('ko-KR')}</span>}
-                {internetBill > 0 && <span>| {t('utility.internet')}: {internetBill.toLocaleString('ko-KR')}</span>}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      {/* 가이드 */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="space-y-6">
+          {(['structure', 'tips'] as const).map((k) => (
+            <div key={k}>
+              <h3 className="text-lg font-semibold text-fg mb-3">{t(`guide.${k}.title`)}</h3>
+              <ul className="space-y-2 list-disc pl-5 text-sub">
+                {(t.raw(`guide.${k}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
           <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.structure.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.structure.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+            <div className="space-y-3">
+              {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+                <details key={i} className="bg-subtle rounded-2xl p-4">
+                  <summary className="cursor-pointer font-medium text-fg">{f.q}</summary>
+                  <p className="text-sm text-sub mt-2">{f.a}</p>
+                </details>
               ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+const i18nIns = (i: Insulation) => (i === 'good' ? 'Good' : i === 'poor' ? 'Poor' : 'Average')
+
+function Row({ label, value, hint, strong }: { label: string; value: string; hint?: string; strong?: boolean }) {
+  return (
+    <div className="flex items-center justify-between py-2.5">
+      <dt className={strong ? 'font-semibold text-fg' : 'text-sub'}>
+        {label}{hint && <span className="block text-xs text-faint tabular-nums">{hint}</span>}
+      </dt>
+      <dd className={`tabular-nums ${strong ? 'text-lg font-bold text-fg' : 'text-body'}`}>{value}</dd>
+    </div>
+  )
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-subtle rounded-2xl p-3">
+      <div className="text-xs text-sub">{label}</div>
+      <div className="text-sm sm:text-base font-bold text-fg tabular-nums mt-1">{value}</div>
+    </div>
+  )
+}
+
+function SaveRow({ label, value }: { label: string; value: string }) {
+  return (
+    <li className="flex items-center justify-between py-2.5">
+      <span className="text-body">{label}</span>
+      <span className="font-semibold text-primary tabular-nums">{value}</span>
+    </li>
   )
 }

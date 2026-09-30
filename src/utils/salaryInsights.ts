@@ -6,7 +6,7 @@ import { calculateNetSalary, type NetSalaryInput } from './netSalary'
 
 /**
  * 국세청 근로소득 백분위 (2023년 귀속, 2024 공개) — 연간 총급여(만원) 이하인 비율.
- * ponytail: SalaryRank.tsx의 INCOME_PERCENTILES와 같은 값의 복사본. 수정 시 둘 다 고치거나 SalaryRank가 이걸 import하게 합칠 것.
+ * 연봉 계산기(SalaryCalculator)와 연봉 순위(SalaryRank)가 같이 쓰는 단일 출처. 매년 갱신 시 여기만 수정.
  */
 export const NTS_INCOME_PERCENTILES: [number, number][] = [
   [10, 800], [20, 1500], [25, 1800], [30, 2200], [40, 2800], [50, 3500], [60, 4200],
@@ -14,19 +14,35 @@ export const NTS_INCOME_PERCENTILES: [number, number][] = [
 ]
 export const NTS_SOURCE_YEAR = 2023
 
-/** 연 총급여(원) → 상위 몇 %인지 (0.1 단위, 최소 0.1). SalaryRank와 같은 선형 보간 */
-export function topPercent(grossAnnual: number): number {
+/** 연 총급여(원)가 분포표에서 하위 몇 %인지 (선형 보간). 표 최상단 초과 = 남은 구간의 중간 */
+export function percentileBelow(grossAnnual: number, table: [number, number][] = NTS_INCOME_PERCENTILES): number {
   const man = grossAnnual / 10000
-  const p = NTS_INCOME_PERCENTILES
-  let below: number
-  if (man <= p[0][1]) below = p[0][0] * (man / p[0][1])
-  else if (man >= p[p.length - 1][1]) below = 99.95
-  else {
-    const i = p.findIndex(([, v], k) => man >= v && man <= p[k + 1][1])
-    const [pl, vl] = p[i], [ph, vh] = p[i + 1]
-    below = pl + ((man - vl) / (vh - vl)) * (ph - pl)
-  }
-  return Math.max(0.1, Math.round((100 - below) * 10) / 10)
+  const p = table
+  if (man <= p[0][1]) return p[0][0] * (Math.max(0, man) / p[0][1])
+  const [lp, lv] = p[p.length - 1]
+  if (man >= lv) return lp + (100 - lp) / 2
+  const i = p.findIndex(([, v], k) => man >= v && man <= p[k + 1][1])
+  const [pl, vl] = p[i], [ph, vh] = p[i + 1]
+  return pl + ((man - vl) / (vh - vl)) * (ph - pl)
+}
+
+/** 하위 % → 상위 % (0.1 단위, 최소 0.1) */
+export const toTop = (below: number) => Math.max(0.1, Math.round((100 - below) * 10) / 10)
+
+/** 연 총급여(원) → 국세청 기준 상위 몇 % */
+export function topPercent(grossAnnual: number): number {
+  return toTop(percentileBelow(grossAnnual))
+}
+
+/** 다음 국세청 구간까지: gap원 더 벌면 상위 top%. 표 최상단 이상이면 null */
+export function nextMilestone(grossAnnual: number): { gap: number; top: number } | null {
+  const row = NTS_INCOME_PERCENTILES.find(([, v]) => v * 10000 > grossAnnual)
+  return row ? { gap: row[1] * 10000 - grossAnnual, top: toTop(row[0]) } : null
+}
+
+/** [a,b) 만원 구간에 속한 근로자 비율(%) — 분포 곡선용. 같은 보간표에서 파생 */
+export function shareBetween(aMan: number, bMan: number): number {
+  return percentileBelow(bMan * 10000) - percentileBelow(aMan * 10000)
 }
 
 /** 월 소정근로시간 (주 40시간 + 주휴 8시간) × 4.345주 ≈ 209시간 */

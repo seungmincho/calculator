@@ -9692,9 +9692,71 @@
     }
   },
   "waterBill": {
+    "hero": {
+      "label": "{region} · {people}-person household · {usage}㎥/month",
+      "sub": "About {bimonthly} won per 2-month bill · {yearly} won/year"
+    },
+    "region": {
+      "seoul": "Seoul",
+      "busan": "Busan",
+      "custom": "Custom"
+    },
+    "input": {
+      "region": "Region",
+      "regionNote": "Seoul and Busan use official 2026 tariffs. For other regions, choose 'Custom' and enter the rates on your bill.",
+      "peopleNote": "Choosing household size fills in the average usage (6㎥ per person per month).",
+      "usageNote": "Enter the usage on your bill. If you are billed every 2 months, use half."
+    },
+    "custom": {
+      "note": "Enter the residential rates from your bill or local water utility (flat rate).",
+      "cw": "Water (won/㎥)",
+      "cs": "Sewerage (won/㎥)",
+      "cb": "Base fee (won/month)",
+      "cl": "Water use levy (won/㎥)"
+    },
+    "breakdown": {
+      "title": "Breakdown",
+      "basic": "Base fee (15mm)",
+      "water": "Water usage",
+      "sewer": "Sewerage",
+      "levy": "Water use levy",
+      "perM3": "Average {won} won per ㎥ excluding base fee",
+      "noVat": "Tap water and sewerage are VAT-exempt. Actual bills may differ by a few dozen won due to rounding."
+    },
+    "compare": {
+      "title": "You vs average {people}-person household",
+      "mine": "Your home",
+      "avgLabel": "{people}-person average",
+      "less": "{won} won/month less than similar households (using {pct}% less)",
+      "more": "{won} won/month more than similar households (using {pct}% more)",
+      "similar": "About the same as similar households",
+      "note": "Average is based on 6㎥ per person per month, as used by Seoul and Busan in their tariff notices."
+    },
+    "tips": {
+      "title": "If all {people} of you do this",
+      "shower": "Shower 1 minute shorter every day",
+      "toilet": "Flush one time less per day",
+      "brush": "Use a cup when brushing teeth",
+      "detail": "Saves about {liters}L per person per day → {m3}㎥/month",
+      "perMonth": "{won} won/mo",
+      "perYear": "{won} won/yr"
+    },
+    "share": {
+      "text": "Our {people}-person household in {region} pays {total} won/month for water"
+    },
+    "source": {
+      "title": "Rates & sources",
+      "seoul": "Seoul (2026): water 580 won/㎥, sewerage 480 won/㎥ (from Jan 1, 2026), levy 170 won/㎥, base fee 1,080 won (15mm) — no tiers for households",
+      "busan": "Busan (bills from Feb 2026): water 920 won/㎥, sewerage 580/750/790/1,110 won/㎥ (10㎥ tiers), levy 149.8 won/㎥, base fee 1,200 won (15mm)",
+      "others": "Other regions are not offered because their official tariffs have not been verified yet. Use 'Custom' with the rates on your bill.",
+      "link": {
+        "seoul": "Seoul Arisu tariffs",
+        "busan": "Busan Water tariffs"
+      }
+    },
     "title": "Water Bill Calculator",
-    "description": "Calculate water bill based on monthly usage (m³) with progressive rates.",
-    "usage": "Monthly Usage (m³)",
+    "description": "Calculate your monthly water bill with official 2026 Seoul/Busan tariffs and compare it with similar households.",
+    "usage": "Monthly usage (㎥)",
     "householdSize": "Household Size",
     "persons": "persons",
     "waterType": "Water Type",
@@ -9744,15 +9806,15 @@
       },
       "whatIs": {
         "title": "What is the Water Bill Calculator?",
-        "description": "A tool that estimates your monthly water bill by applying the progressive tariff structure of your local municipality based on your monthly water consumption in m³. It accounts for water supply charges, sewage charges, the water usage levy, and VAT to provide a realistic estimate aligned with your actual bill."
+        "description": "Estimates your bill from household size and monthly usage (㎥): base fee, water usage, sewerage and the water use levy. Seoul and Busan use official 2026 tariffs; for other regions enter the rates from your bill. Water bills are VAT-exempt."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select your region (city/district) — rates and tier thresholds vary by municipality.",
-          "2. Select the usage category (residential/commercial etc.) and enter your monthly consumption (m³).",
-          "3. Click Calculate to see the breakdown: water supply, sewage, levy, VAT, and total.",
-          "4. Drag the usage slider to see in real time how increasing or decreasing consumption changes your bill."
+          "1. Choose your region. Outside Seoul/Busan, choose 'Custom' and enter the rates from your bill.",
+          "2. Pick household size to fill in the average usage.",
+          "3. Adjust usage with the slider or input; the bill updates instantly. If billed every 2 months, enter half.",
+          "4. Check the comparison with average households and savings per tip, then share as an image or link."
         ]
       },
       "tips": {
@@ -9767,16 +9829,16 @@
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Why does the water bill vary by region?",
-            "a": "Water tariffs are set independently by each local government, so rates and tier thresholds differ by city, county, and district. Select the correct region for an accurate estimate."
+            "q": "Why do water rates differ by region?",
+            "a": "Each local government sets its own rates by ordinance. In 2026 Seoul charges flat 580 won (water) and 480 won (sewerage) per ㎥, while Busan charges 920 won for water with tiered sewerage rates."
           },
           {
-            "q": "What is the average monthly water use for a family of four?",
-            "a": "The national average for a 4-person household is about 20–25 m³/month. Reducing usage to below 15 m³ through conservation measures can lower your progressive tier and significantly cut costs."
+            "q": "How much water does a family of four use?",
+            "a": "Seoul and Busan use about 6㎥ per person per month as the reference, so about 24㎥ for four people — roughly 30,600 won in Seoul."
           },
           {
-            "q": "Why can the sewage charge be higher than the water supply charge in some areas?",
-            "a": "Sewage charges reflect wastewater treatment costs, which in some regions are comparable to or exceed supply costs. The variation depends on local infrastructure and treatment facility expenses."
+            "q": "Why can sewerage cost more than water?",
+            "a": "Sewerage fees cover sewer pipes and treatment plants, and many cities are raising them to replace aging facilities. Seoul will raise them every year for five years from 2026."
           }
         ]
       }
@@ -11227,12 +11289,71 @@
     }
   },
   "gasBill": {
+    "mode": {
+      "estimate": "Estimate by size",
+      "usage": "Enter bill usage"
+    },
+    "month": "Month",
+    "monthN": "{n}",
+    "temp": "Boiler set temperature",
+    "insulationShort": {
+      "good": "Good",
+      "average": "Average",
+      "poor": "Poor"
+    },
+    "customUnit": "Unit price (KRW/MJ, excl. VAT)",
+    "customBasic": "Base charge (KRW/month)",
+    "m3Note": "Converted at about {k} MJ per ㎥ → {mj} MJ (estimate). Enter the MJ figure from your bill for accuracy.",
+    "modelNote": "Estimate for a 3–4 person apartment. If you have a bill, 'Enter bill usage' is more accurate.",
+    "hero": {
+      "label": "{region} · estimated gas bill for month {month}",
+      "sub": "{mj} MJ used · VAT included"
+    },
+    "breakdown": "Heating ~{heat} MJ + hot water/cooking ~{water} MJ (estimated split)",
+    "rateInfo": "Unit price {unit} KRW/MJ · base charge {basic} KRW/month",
+    "since": "effective {date}",
+    "sourceLabel": "Source",
+    "estimatedNote": "No official tariff was verified for this region, so the price is estimated as the national wholesale rate {wholesale} KRW + an average retail margin. Use 'Enter unit price' with your bill for accuracy.",
+    "basis": "Residential gas has one price for cooking and heating with no seasonal difference. VAT 10% extra, fractions of a won truncated.",
+    "chartUnit": "Unit: 10,000 KRW · tap a bar to use that month",
+    "yearly": {
+      "winterAvg": "Winter (Dec–Feb) avg",
+      "summerAvg": "Summer (Jun–Aug) avg",
+      "annual": "Yearly total"
+    },
+    "compare": {
+      "title": "Compare with past bills",
+      "optional": "optional",
+      "prev": "Last month (KRW)",
+      "lastYear": "Same month last year (KRW)",
+      "up": "up {pct}%",
+      "down": "down {pct}%",
+      "same": "no change"
+    },
+    "save": {
+      "title": "How much can you save per month",
+      "tempDown1": "Lower boiler temp by 1℃",
+      "hourDown1": "Heat 1 hour less per day",
+      "water10": "Use 10% less hot water (shorter showers)",
+      "perMonth": "{won} KRW/mo",
+      "noHeating": "No heating this month, so hot water and cooking are where you can save.",
+      "awayTitle": "Away mode vs turning off",
+      "awayTip": "For a few hours out, lower the setting by 2–3℃ instead of switching off; reheating a cold floor and pipes can use more gas. For a day or longer, turning off is usually better, but keep away mode on in a cold snap to prevent frozen pipes. (General advice; varies by home)",
+      "note": "Based on an estimate model (about 7% per 1℃); actual savings vary by home."
+    },
+    "share": {
+      "labelEstimate": "{region} {pyeong} pyeong · month {month} gas bill",
+      "labelUsage": "{region} {mj} MJ · month {month} gas bill",
+      "text": "Our estimated gas bill for month {month}: {total} KRW. How about yours?"
+    },
     "title": "Gas Bill Calculator",
-    "description": "Calculate monthly gas bill based on city gas usage (MJ).",
-    "usage": "Usage (MJ)",
-    "usagePlaceholder": "Enter usage",
+    "description": "Calculate this month's city gas bill and winter heating cost with the 2026 residential tariff. No bill? Estimate from home size and boiler hours.",
+    "usage": "Usage",
+    "usagePlaceholder": "Usage from your bill",
     "region": "Region",
     "regions": {
+      "other": "Other regions (estimate)",
+      "custom": "Enter unit price from bill",
       "seoul": "Seoul",
       "gyeonggi": "Gyeonggi",
       "incheon": "Incheon",
@@ -11266,10 +11387,10 @@
     "result": {
       "title": "Gas Bill Result",
       "basicCharge": "Basic Charge",
-      "usageCharge": "Usage Charge",
+      "usageCharge": "Usage charge",
       "subtotal": "Subtotal",
       "vat": "VAT (10%)",
-      "total": "Total",
+      "total": "Estimated bill",
       "won": "KRW",
       "unitPrice": "Unit Price (KRW/MJ)"
     },
@@ -11289,8 +11410,8 @@
       "insulationGood": "Good (New, High Insulation)",
       "insulationAverage": "Average (Standard Apartment)",
       "insulationPoor": "Poor (Old Housing)",
-      "heatingHours": "Daily Heating Hours",
-      "hoursPerDay": "hrs/day",
+      "heatingHours": "Boiler hours per day",
+      "hoursPerDay": "h",
       "estimatedUsage": "Estimated Monthly Usage",
       "apply": "Calculate with This Usage"
     },
@@ -11302,8 +11423,8 @@
       "tier4": "Tier 4"
     },
     "monthlyChart": {
-      "title": "Monthly Estimated Gas Cost",
-      "description": "Estimated costs based on average household usage patterns.",
+      "title": "Estimated monthly gas bill",
+      "description": "12-month estimate under the same conditions. If you enter bill usage, the curve is scaled to that month.",
       "monthSuffix": "Month",
       "monthLabel": "M"
     },
@@ -11323,48 +11444,49 @@
       "structure": {
         "title": "Fee Structure",
         "items": [
-          "Basic charge + Usage charge + VAT (10%)",
-          "Rates vary by region and season",
-          "Winter (Oct-Mar) rates are higher than summer",
-          "City gas usage is measured in MJ (megajoules)"
+          "Bill = base charge + usage (MJ) × unit price, plus 10% VAT",
+          "Residential gas has one price for cooking and heating and no seasonal price difference; winter bills are higher because usage rises",
+          "Unit price = nationwide wholesale rate (KOGAS) + retail supply cost set by each province/city",
+          "Meters read ㎥, bills use MJ: MJ = ㎥ × correction factor × heat value (about 42–43 MJ/㎥)"
         ]
       },
       "tips": {
         "title": "Saving Tips",
         "items": [
-          "Use boiler away mode to reduce heating costs",
-          "Reduce hot water usage (shorter showers)",
-          "Insulation prevents heat loss",
-          "Check gas bill statement for accurate usage"
+          "Lower the boiler setting by 1℃: about 7% less heating energy",
+          "For short trips out, lower the temperature by 2–3℃ instead of switching off",
+          "Seal window gaps with insulation tape and draft stoppers",
+          "Hot water is year-round base usage, so shorter showers save every month",
+          "Enter the MJ from your bill to project next month's cost"
         ]
       },
       "whatIs": {
         "title": "What is the Gas Bill Calculator?",
-        "description": "The gas bill calculator estimates your monthly city gas bill by applying the current tiered rate structure to your monthly consumption (in MJ or m³). It factors in seasonal rate variations and progressive pricing to help you predict winter heating costs and plan energy-saving strategies. Rates are based on the latest 2025 city gas tariffs."
+        "description": "This calculator applies the residential city gas tariff (base charge + price per MJ + 10% VAT) to estimate your monthly bill. Enter bill usage (MJ or ㎥) or estimate it from home size, insulation, boiler hours and set temperature, then see a 12-month chart and how much 1℃ lower saves. Seoul, Gyeonggi and Daegu use official 2026 tariffs; other regions use an estimate, or you can enter the unit price from your bill."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select your region (Seoul, Gyeonggi, etc.) and usage type (residential/commercial).",
-          "2. Enter your monthly gas consumption from your bill in MJ or m³.",
-          "3. The base charge and usage charge are automatically calculated and the estimated bill is displayed.",
-          "4. Adjust the consumption slider to see real-time savings from reducing usage."
+          "1. Pick your region and month.",
+          "2. With a bill, choose 'Enter bill usage' and type the usage (MJ or ㎥).",
+          "3. Without one, estimate from home size, insulation, daily boiler hours and set temperature.",
+          "4. Add last month's or last year's bill to see the change. Share the result as a link or image."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What is the difference between MJ and m³?",
-            "a": "MJ (megajoules) is a unit of energy, while m³ is a unit of volume. Depending on the gas heating value, 1 m³ equals approximately 43–46 MJ. Just enter whichever unit appears on your bill."
+            "q": "What's the difference between MJ and ㎥?",
+            "a": "㎥ is the volume on your meter; the bill is charged in MJ (energy). MJ = ㎥ × correction factor × heat value (about 42–43 MJ/㎥), so using the MJ on your bill is most accurate."
           },
           {
-            "q": "Do gas rates differ by region?",
-            "a": "Yes. Each regional gas company sets its own unit price. Rates for major regions including Seoul, Gyeonggi, and Busan are included."
+            "q": "Do prices differ by region?",
+            "a": "Yes. The wholesale rate (20.8495 KRW/MJ as of 2026-10-01) is nationwide, but the retail supply cost is set by each province/city. Seoul 22.5268, Gyeonggi 22.6226, Daegu 23.3459 KRW/MJ (excl. VAT)."
           },
           {
-            "q": "How can I reduce my winter gas bill?",
-            "a": "Lowering your boiler temperature by 1–2°C or using 'away mode' can save 10–20%. Sealing window gaps with draft-proof tape is also highly effective."
+            "q": "How can I cut my winter gas bill?",
+            "a": "Lowering the setting by 1℃ is commonly said to cut heating energy by about 7%. Check the savings section for your home's figure. For short trips out, lowering the temperature beats switching off."
           }
         ]
       }
@@ -19339,11 +19461,50 @@
     }
   },
   "presentationTimer": {
+    "nMin": "{n} min",
+    "durMS": "{m}m {s}s",
+    "durS": "{s}s",
+    "target": "Target {n} min",
+    "resume": "Resume",
+    "statusReady": "Ready",
+    "statusRunning": "Running",
+    "statusPaused": "Paused",
+    "phaseWarning": "Time to wrap up",
+    "wakeLockOn": "Screen kept awake",
+    "resultLine": "Talk {dur} · {delta} vs target",
+    "segRemaining": "{name}: {time} left",
+    "nextSeg": "Next: {name}",
+    "speakerMode": "Speaker mode",
+    "exitSpeaker": "Exit speaker mode",
+    "tapToToggle": "Tap the time to start or pause",
+    "sound": "Sound",
+    "vibration": "Vibration",
+    "shortcutsLine": "Space start/pause · R reset · F speaker mode · ↑↓ ±1 min",
+    "splitPreset": "Talk {talk} + Q&A {qna} min",
+    "agendaPreset": "Intro·Main·Q&A {n} min",
+    "segTalk": "Talk",
+    "segQna": "Q&A",
+    "segIntro": "Intro",
+    "segBody": "Main",
+    "segments": "Sections",
+    "segmentsHint": "Add sections to see time left per section and the next one, with a short chime at each change.",
+    "segName": "Section name",
+    "segNamePlaceholder": "Section {n}",
+    "segMinutes": "Section length (min)",
+    "addSegment": "Add section",
+    "removeSegment": "Remove section",
+    "warningHint": "When this much time is left the timer turns yellow and alerts you. Set 0 to turn the warning off.",
+    "shareSetupLabel": "Presentation timer setup",
+    "shareWarning": "Warning {n} min before end",
+    "shareResultLabel": "Result for a {target} talk",
+    "shareDelta": "{delta} vs target",
+    "shareTextSetup": "Here's a {total} presentation timer link. Open it to start with the same setup.",
+    "shareTextResult": "Talk {dur} · {delta} vs target",
     "title": "Presentation Timer",
-    "description": "Countdown timer optimized for presentations, meetings, and lectures",
+    "description": "Countdown timer for talks, meetings and classes — speaker mode, section timer, overtime count and shareable setup links",
     "settings": "Settings",
     "totalTime": "Total Time",
-    "warningTime": "Warning Time",
+    "warningTime": "Warning (minutes before end)",
     "dangerTime": "Danger Time",
     "minutes": "min",
     "start": "Start",
@@ -19369,30 +19530,30 @@
       "howto": {
         "title": "How to Use",
         "items": [
-          "Set your presentation time in minutes",
-          "Configure warning and danger times for color changes",
-          "Click Start to begin the countdown",
-          "Use fullscreen mode for visibility during presentations",
-          "Adjust time on the fly with +1/-1 minute buttons"
+          "Pick a length from the presets or type the minutes",
+          "Split into sections like Intro / Main / Q&A to see time left per section",
+          "Start and pause with the button, by tapping the time, or with Space",
+          "Open speaker mode (F key) to show the time full screen",
+          "Adjust the current section by a minute with ↑↓ or the ±1 buttons"
         ]
       },
       "features": {
-        "title": "Features",
+        "title": "Key Features",
         "items": [
-          "Circular progress ring: Visual time remaining indicator",
-          "Color phases: Green (normal) → Yellow (warning) → Red (danger)",
-          "Sound alerts: Audio notifications at warning, danger, and end",
-          "Overtime counter: Keeps counting after time expires",
-          "Fullscreen: Full-screen display using Fullscreen API"
+          "Color stages: normal → yellow (wrap-up warning) → red (overtime, counting up)",
+          "Sound and vibration at the warning, section changes and the end",
+          "Keeps the screen awake while the timer runs",
+          "Accurate even if you switch tabs",
+          "Setup is saved in the URL, so a moderator can share it as a link"
         ]
       },
       "tips": {
         "title": "Presentation Tips",
         "items": [
-          "Allocate 80% of time to content and 20% to Q&A",
-          "Set warning at 20% and danger at 10% of total time",
-          "Use quick presets for commonly used durations",
-          "Practice with the timer to develop time awareness"
+          "Spend about 70–80% of the time on content and the rest on Q&A",
+          "Warn 2 minutes before the end for a 10-minute talk, 3 minutes for 20+",
+          "On a microphone, turn sound off and rely on vibration and color",
+          "Save the result card after rehearsals to compare against your target"
         ]
       },
       "guide": {
@@ -19426,16 +19587,16 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I hide the timer from the audience?",
-            "a": "In full-screen mode on a dual-monitor setup, the presenter can see the timer while the audience sees only the presentation. Alternatively, open the timer on a separate smartphone screen for personal monitoring."
+            "q": "Can I keep the timer hidden from the audience?",
+            "a": "Open speaker mode on a laptop or phone in front of you. The audience sees only your slides while you see the time left in large type."
           },
           {
             "q": "What happens when time runs out?",
-            "a": "The display turns red and begins counting up (overtime), showing how much over time you've gone. Useful for tracking how long over schedule a presentation runs."
+            "a": "The screen turns red and keeps counting overtime like +01:23. When you stop, it shows your result, e.g. '+1m 23s vs target'."
           },
           {
-            "q": "Are sound alerts supported?",
-            "a": "Yes, sound alerts can be set for remaining time milestones (e.g., 5 minutes, 1 minute). During a live presentation, visual warnings or vibration are recommended to avoid disrupting the audience."
+            "q": "Does it have sound alerts?",
+            "a": "Yes. It chimes at the warning point, section changes and the end, and vibrates on phones. If sound would distract, turn it off and rely on vibration and color."
           }
         ]
       }
@@ -29453,6 +29614,32 @@
     }
   },
   "salaryRank": {
+    "unitMan": "만",
+    "unitEok": "억",
+    "heroLabel": "A salary of {salary} among Korean wage earners",
+    "topValue": "Top {top}%",
+    "groupTop": "Top {top}% among {group}",
+    "nextMilestone": "Earn {gap} KRW more to reach the top {top}%",
+    "topOfTable": "You're in the highest bracket of the NTS statistics",
+    "shareText": "My salary of {salary} is in the top {top}% of Korean wage earners",
+    "cardLabel": "A salary of {salary} is",
+    "cardSub": "Among Korean wage earners · NTS {year} income year",
+    "rowSalary": "Salary",
+    "rowGroup": "Rank among {group}",
+    "rowMonthly": "Monthly take-home (approx.)",
+    "curveTitle": "Where you sit in Korea's income distribution",
+    "curveYou": "You",
+    "curveNote": "Blue area = the {top}% earning more than you · above 150M KRW omitted",
+    "monthlyNet": "Monthly take-home approx.",
+    "monthlyNetLink": "See take-home details",
+    "estimate": "Estimate",
+    "sourceLine": "NTS Statistical Yearbook, wage income percentiles ({year} income year). Values between brackets are linear-interpolated estimates.",
+    "caveats": [
+      "Based on pre-tax gross pay excluding tax-free income",
+      "Age/gender/industry ranks use estimated distributions built from published medians/averages — for reference only",
+      "No public age×gender cross-tab exists, so they are shown separately",
+      "Community stats are self-reported by participants and differ from official data"
+    ],
     "title": "My Salary Rank - Top %?",
     "description": "See where your salary ranks in Korea based on official data",
     "annualSalary": "Annual Gross Salary (Pre-tax)",
@@ -29498,7 +29685,7 @@
     "yourSalary": "Your Salary",
     "overallRank": "Among all Korean workers",
     "top": "Top",
-    "beatsPercent": "Higher than {percent}% of all workers",
+    "beatsPercent": "You earn more than {percent}% of all wage earners",
     "share": "Share",
     "ageComparison": "Same Age Group",
     "genderComparison": "Same Gender",
@@ -29509,12 +29696,13 @@
     "workerPercent": "Worker %",
     "chartNote": "Blue bar = Your position · Source: NTS 2023 Income Statistics",
     "contributeTitle": "Contribute Anonymous Data",
-    "contributeDesc": "Share your salary anonymously to help build more accurate community statistics",
+    "contributeDesc": "Send the salary you entered anonymously to make community stats more accurate",
     "contributeBtn": "Contribute",
     "contributed": "Thank you!",
     "contributeAlready": "Already submitted today",
     "contributeError": "An error occurred. Please try again later.",
     "community": {
+      "note": "Based on anonymous self-reported values (not official statistics)",
       "title": "Community Live Statistics",
       "realtime": "Live",
       "participants": "Participants",
@@ -29541,10 +29729,10 @@
       "dataExplain": {
         "title": "About the Data",
         "items": [
-          "NTS Income Percentiles: Based on year-end tax filing gross salary distribution",
-          "Statistics Korea: Age and gender income distribution surveys",
-          "MOEL Employment Survey: Industry-specific wage data",
-          "Data is based on 2023 tax year (published 2024), updated annually"
+          "NTS wage income percentiles: gross pay distribution of year-end tax filers (used for the overall rank)",
+          "Values between brackets and the distribution curve are linear-interpolated estimates from this table",
+          "Age/gender/industry ranks are estimated distributions built from published medians/averages",
+          "Data is based on the 2023 income year (published 2024), updated annually"
         ]
       },
       "tips": {

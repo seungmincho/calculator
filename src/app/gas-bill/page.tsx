@@ -4,23 +4,23 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '가스 요금 계산기 - 도시가스 사용량별 요금 계산 | 툴허브',
-  description: '가스 요금 계산기 - 도시가스 사용량(MJ)을 입력하면 지역별, 계절별 가스 요금을 계산합니다. 기본요금, 사용요금, 부가세 포함.',
-  keywords: '가스 요금 계산기, 도시가스 요금, 가스비 계산, 가스 사용량, gas bill calculator',
-  openGraph: { title: '가스 요금 계산기 | 툴허브', description: '도시가스 사용량별 요금 계산', url: 'https://toolhub.ai.kr/gas-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '가스 요금 계산기 | 툴허브', description: '도시가스 사용량별 요금 계산' },
+  title: '가스 요금 계산기 - 2026 도시가스 난방비 | 툴허브',
+  description: '2026년 도시가스 주택용 요금(서울 22.5268원/MJ, 기본요금 1,250원)으로 이번 달 가스비를 계산합니다. 고지서 사용량(MJ·㎥) 또는 평수·보일러 시간으로 추정하고, 월별 난방비와 온도 1도 절약액까지 확인하세요.',
+  keywords: '가스 요금 계산기, 도시가스 요금, 난방비 계산, 가스비 계산, 도시가스 MJ 단가, 보일러 가스비, 30평 난방비',
+  openGraph: { title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산', url: 'https://toolhub.ai.kr/gas-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
+  twitter: { card: 'summary_large_image', title: '가스 요금 계산기 | 툴허브', description: '우리 집 이번 달 가스비·겨울 난방비 계산' },
   alternates: { canonical: 'https://toolhub.ai.kr/gas-bill/' },
 }
 
 export default function GasBillPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '가스 요금 계산기', description: '도시가스 사용량별 요금 계산', url: 'https://toolhub.ai.kr/gas-bill', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['도시가스 요금', '지역별 단가', '계절별 요금', '부가세 포함'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '가스 요금 계산기', description: '도시가스 주택용 요금·난방비 계산', url: 'https://toolhub.ai.kr/gas-bill', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['2026 도시가스 주택용 단가', '고지서 사용량(MJ·㎥) 계산', '평수·보일러 시간으로 추정', '월별 난방비', '온도 1도 절약액', '지난달·작년 비교'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
-      { '@type': 'Question', name: '도시가스 요금 체계는 어떻게 되나요?', acceptedAnswer: { '@type': 'Answer', text: '도시가스 요금은 기본요금 + 사용요금(MJ 단위) + 부가가치세(10%)로 구성됩니다. 사용요금은 계절(하절기/동절기)과 지역(서울, 경기, 인천 등)에 따라 단가가 다릅니다. 난방용은 보통 MJ당 15~20원 수준이며, 동절기(11~3월)에는 사용량이 급증하여 요금이 크게 올라갑니다.' } },
-      { '@type': 'Question', name: '겨울철 가스비를 절약하는 방법은?', acceptedAnswer: { '@type': 'Answer', text: '가스비 절약 팁: ① 보일러 온도 설정 18~20도 유지 ② 외출 시 외출 모드 사용(완전 끄지 말 것) ③ 내복 착용으로 체감 온도 상승 ④ 창문 틈새 단열 시공 ⑤ 보일러 배관 청소(연 1회) ⑥ 난방텐트/전기장판 병행 사용. 보일러 온도를 1도 낮추면 약 5~7%의 가스비를 절약할 수 있습니다.' } },
-      { '@type': 'Question', name: '도시가스 사용량 MJ는 어떻게 확인하나요?', acceptedAnswer: { '@type': 'Answer', text: 'MJ(메가줄)은 도시가스 열량 단위입니다. 가스 계량기에는 m³(입방미터) 단위로 표시되며, 이를 MJ로 환산합니다. 환산식은 사용량(m³) × 총발열량(MJ/m³)이며, 일반 도시가스(LNG) 총발열량은 약 43.0 MJ/m³입니다. 고지서나 도시가스 앱에서 MJ 사용량을 직접 확인할 수 있습니다.' } },
+      { '@type': 'Question', name: '도시가스 요금은 어떻게 계산하나요?', acceptedAnswer: { '@type': 'Answer', text: '주택용 도시가스 요금은 기본요금 + 사용열량(MJ) × 단가에 부가가치세 10%를 더합니다. 서울은 2026년 9월 1일 기준 기본요금 월 1,250원, 단가 22.5268원/MJ(도매 20.8495원 + 소매 1.6773원)입니다. 주택용은 취사·난방 단가가 같고 계절별 단가 차이가 없어, 겨울 요금이 오르는 이유는 사용량 증가 때문입니다.' } },
+      { '@type': 'Question', name: '겨울철 가스비를 절약하는 방법은?', acceptedAnswer: { '@type': 'Answer', text: '보일러 설정 온도를 1도 낮추면 난방 에너지가 약 7% 줄어드는 것으로 흔히 알려져 있습니다. 서울 30평 아파트 1월 기준으로는 월 약 9천원 수준입니다(추정). 짧은 외출은 보일러를 끄기보다 온도를 2~3도만 낮추고, 창문 틈새 단열과 온수 사용 줄이기를 함께 하면 효과가 큽니다.' } },
+      { '@type': 'Question', name: '도시가스 사용량 MJ는 어떻게 확인하나요?', acceptedAnswer: { '@type': 'Answer', text: '계량기는 ㎥(부피)로 표시되고 요금은 MJ(열량)로 매깁니다. 고지서의 사용열량(MJ) = 사용량(㎥) × 보정계수 × 단위열량(약 42~43MJ/㎥)입니다. 고지서나 도시가스 앱에 MJ가 적혀 있으면 그 값을 그대로 입력하는 것이 가장 정확합니다.' } },
     ],
   }
   return (
@@ -29,29 +29,34 @@ export default function GasBillPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><GasBill />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <GasBill />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
         <div className="mt-12 border-t border-line pt-8">
-          <h2 className="text-xl font-bold text-fg mb-4">
-            가스 요금 계산기란?
-          </h2>
+          <h2 className="text-xl font-bold text-fg mb-4">가스 요금 계산기란?</h2>
           <p className="text-body leading-relaxed mb-6">
-            가스 요금 계산기는 도시가스 사용량(MJ)을 입력하면 지역별·계절별 단가를 적용하여 기본요금·사용요금·부가가치세를 합산한 월 가스비를 계산합니다. 서울·경기·인천 등 지역마다 도시가스 단가가 다르고, 동절기(11~3월)에는 난방 수요 증가로 요금이 올라가므로, 계절별 요금 변동을 미리 파악하여 가스비를 효율적으로 관리할 수 있습니다.
+            가스 요금 계산기는 도시가스 주택용 요금표(기본요금 + MJ당 단가 + 부가세 10%)로 이번 달 가스비를 계산합니다. 고지서의 사용량(MJ 또는 ㎥)을 넣거나, 평수·단열·보일러 가동 시간·설정 온도로 사용량을 추정할 수 있습니다. 주택용 단가는 계절과 관계없이 같으므로 겨울 가스비가 높은 이유는 난방 사용량 때문이며, 월별 그래프로 겨울과 여름 요금 차이를 한눈에 볼 수 있습니다.
           </p>
-          <h3 className="text-lg font-semibold text-fg mb-3">
-            가스비 절약 팁
-          </h3>
+          <h3 className="text-lg font-semibold text-fg mb-3">2026년 주택용 도시가스 요금 (부가세 별도)</h3>
+          <ul className="list-disc list-inside space-y-2 text-body mb-6">
+            <li><strong>서울:</strong> 22.5268원/MJ, 기본요금 월 1,250원 (2026-09-01 적용, 서울시 물가정보)</li>
+            <li><strong>경기:</strong> 22.6226원/MJ, 기본요금 월 1,250원 (코원에너지서비스 요금안내)</li>
+            <li><strong>대구:</strong> 23.3459원/MJ, 기본요금 월 900원 (2026-08-01 적용)</li>
+            <li><strong>도매요금(전국 동일):</strong> 20.8495원/MJ (한국가스공사, 2026-10-01 기준)</li>
+          </ul>
+          <h3 className="text-lg font-semibold text-fg mb-3">가스비 절약 팁</h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>보일러 온도 설정:</strong> 난방 온도를 1도 낮추면 가스비를 5~7% 절약할 수 있습니다. 18~20도를 권장 설정 온도로 유지하세요.</li>
-            <li><strong>외출 모드 활용:</strong> 외출 시 보일러를 완전히 끄지 말고 외출 모드로 설정하면 동파 방지와 재가열 비용 절감을 동시에 달성합니다.</li>
-            <li><strong>단열 보강:</strong> 창문 틈새 단열 테이프, 문풍지 시공으로 열 손실을 줄이면 같은 온도에서 가스 소비량을 20% 이상 줄일 수 있습니다.</li>
-            <li><strong>보일러 정기 점검:</strong> 연 1회 배관 청소와 점검으로 보일러 효율을 최적 상태로 유지하면 장기적으로 가스비 절감 효과가 있습니다.</li>
+            <li><strong>보일러 온도 1도 낮추기:</strong> 난방 에너지가 약 7% 줄어듭니다. 계산기에서 우리 집 기준 월 절약액을 확인하세요.</li>
+            <li><strong>외출모드 vs 끄기:</strong> 몇 시간 외출이면 끄지 말고 온도를 2~3도만 낮추는 편이 재가열 부담이 적습니다. 오래 비울 때는 동파에 주의하세요.</li>
+            <li><strong>단열 보강:</strong> 창문 틈새 단열 테이프와 문풍지로 열 손실을 줄입니다.</li>
+            <li><strong>온수 줄이기:</strong> 온수·취사는 여름에도 쓰는 기본 사용량이라 샤워 시간을 줄이면 1년 내내 효과가 있습니다.</li>
           </ul>
         </div>
       </section>

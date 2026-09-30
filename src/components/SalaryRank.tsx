@@ -1,47 +1,25 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Download, Share2, Trophy, Users, TrendingUp, BarChart3, Loader2, AlertCircle } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts'
+import { Check, RotateCcw, BookOpen, ChevronDown, ChevronUp, Loader2, AlertCircle, ChevronRight } from 'lucide-react'
+import { AreaChart, Area, XAxis, ResponsiveContainer, ReferenceLine } from 'recharts'
+import ShareResult from '@/components/ShareResult'
 import { submitSalarySurvey, getCommunityStats, getCommunityRank, type CommunityStats, type CommunityRank } from '@/utils/salarySurvey'
+import { percentileBelow, toTop, topPercent, nextMilestone, shareBetween, NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
+import { calculateNetSalary } from '@/utils/netSalary'
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// 공식 데이터: 국세청 근로소득 백분위 (2023 귀속, 2024 공개)
-// 출처: 국세청 국세통계포털 (TASIS), 통계청 경제활동인구조사
+// 전체 순위는 salaryInsights.ts의 국세청 백분위표(연봉 계산기와 공유)를 쓴다.
+// 아래 연령·성별·직업군 표는 공개 통계의 중위/평균값을 바탕으로 만든 **추정 분포** — 화면에 '추정'으로 표시.
+// 연령×성별 교차 통계는 없으므로 합쳐서 계산하지 않는다.
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// 연간 총급여 기준 누적 분포 (만원) — 이 금액 이하인 사람이 해당 %
-const INCOME_PERCENTILES: [number, number][] = [
-  [10, 800],    // 하위 10%: 800만원 이하
-  [20, 1500],
-  [25, 1800],   // 하위 25% (1분위)
-  [30, 2200],
-  [40, 2800],
-  [50, 3500],   // 중위: 3,500만원
-  [60, 4200],
-  [70, 5000],
-  [75, 5600],   // 상위 25%
-  [80, 6300],
-  [90, 8500],
-  [95, 11000],  // 상위 5%
-  [99, 20000],  // 상위 1%
-  [99.9, 50000], // 상위 0.1%
-]
+// 연령대별 중위연봉 (만원)
+const AGE_MEDIAN: Record<string, number> = { '20s': 2800, '30s': 4000, '40s': 4800, '50s': 4200, '60s': 2600 }
 
-// 연령대별 중위연봉 (만원) — 통계청 2024
-const AGE_MEDIAN: Record<string, number> = {
-  '20s': 2800,
-  '30s': 4000,
-  '40s': 4800,
-  '50s': 4200,
-  '60s': 2600,
-}
-
-// 연령대별 소득 분포 보정 계수 (중위 대비)
 const AGE_PERCENTILES: Record<string, [number, number][]> = {
   '20s': [[10, 500], [25, 1200], [50, 2800], [75, 4000], [90, 5500], [95, 7000], [99, 12000]],
   '30s': [[10, 1200], [25, 2400], [50, 4000], [75, 5800], [90, 8000], [95, 10500], [99, 18000]],
@@ -50,35 +28,19 @@ const AGE_PERCENTILES: Record<string, [number, number][]> = {
   '60s': [[10, 500], [25, 1200], [50, 2600], [75, 4500], [90, 7000], [95, 10000], [99, 18000]],
 }
 
-// 성별 중위연봉 (만원) — 통계청 2024
-const GENDER_MEDIAN: Record<string, number> = {
-  male: 4200,
-  female: 2800,
-}
+const GENDER_MEDIAN: Record<string, number> = { male: 4200, female: 2800 }
 
-// 성별 소득 분포
 const GENDER_PERCENTILES: Record<string, [number, number][]> = {
   male: [[10, 1200], [25, 2400], [50, 4200], [75, 6200], [90, 9000], [95, 12000], [99, 22000]],
   female: [[10, 600], [25, 1500], [50, 2800], [75, 4200], [90, 6000], [95, 8500], [99, 16000]],
 }
 
-// 직업군별 평균연봉 (만원) — 고용노동부 고용형태별근로실태조사 2024
+// 직업군별 평균연봉 (만원)
 const INDUSTRY_AVG: Record<string, number> = {
-  it: 5800,
-  finance: 7200,
-  medical: 5500,
-  civil: 5000,
-  education: 4600,
-  manufacturing: 4200,
-  construction: 3800,
-  service: 2800,
-  selfEmployed: 3200,
-  logistics: 3500,
-  media: 4500,
-  legal: 8000,
+  it: 5800, finance: 7200, medical: 5500, civil: 5000, education: 4600, manufacturing: 4200,
+  construction: 3800, service: 2800, selfEmployed: 3200, logistics: 3500, media: 4500, legal: 8000,
 }
 
-// 직업군별 소득 분포
 const INDUSTRY_PERCENTILES: Record<string, [number, number][]> = {
   it: [[10, 2800], [25, 4000], [50, 5800], [75, 8000], [90, 12000], [95, 15000], [99, 30000]],
   finance: [[10, 3500], [25, 5000], [50, 7200], [75, 10000], [90, 15000], [95, 20000], [99, 40000]],
@@ -94,630 +56,411 @@ const INDUSTRY_PERCENTILES: Record<string, [number, number][]> = {
   legal: [[10, 3000], [25, 5000], [50, 8000], [75, 12000], [90, 18000], [95, 25000], [99, 50000]],
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// 계산 로직
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function interpolatePercentile(salary: number, percentiles: [number, number][]): number {
-  const salaryMan = salary / 10000 // 원 → 만원
-
-  if (salaryMan <= percentiles[0][1]) {
-    return percentiles[0][0] * (salaryMan / percentiles[0][1])
-  }
-  if (salaryMan >= percentiles[percentiles.length - 1][1]) {
-    const last = percentiles[percentiles.length - 1]
-    return Math.min(99.99, last[0] + (100 - last[0]) * 0.5)
-  }
-
-  for (let i = 0; i < percentiles.length - 1; i++) {
-    const [pctLow, valLow] = percentiles[i]
-    const [pctHigh, valHigh] = percentiles[i + 1]
-    if (salaryMan >= valLow && salaryMan <= valHigh) {
-      const ratio = (salaryMan - valLow) / (valHigh - valLow)
-      return pctLow + ratio * (pctHigh - pctLow)
-    }
-  }
-  return 50
-}
-
-function getTopPercent(percentile: number): number {
-  return Math.max(0.01, Math.round((100 - percentile) * 100) / 100)
-}
-
-interface RankResult {
-  overall: { percentile: number; topPercent: number }
-  byAge: { percentile: number; topPercent: number; median: number } | null
-  byGender: { percentile: number; topPercent: number; median: number } | null
-  byIndustry: { percentile: number; topPercent: number; avg: number } | null
-}
-
-function calculateRank(
-  annualSalary: number,
-  ageGroup?: string,
-  gender?: string,
-  industry?: string
-): RankResult {
-  const overallPct = interpolatePercentile(annualSalary, INCOME_PERCENTILES)
-
-  let byAge = null
-  if (ageGroup && AGE_PERCENTILES[ageGroup]) {
-    const pct = interpolatePercentile(annualSalary, AGE_PERCENTILES[ageGroup])
-    byAge = { percentile: pct, topPercent: getTopPercent(pct), median: AGE_MEDIAN[ageGroup] * 10000 }
-  }
-
-  let byGender = null
-  if (gender && GENDER_PERCENTILES[gender]) {
-    const pct = interpolatePercentile(annualSalary, GENDER_PERCENTILES[gender])
-    byGender = { percentile: pct, topPercent: getTopPercent(pct), median: GENDER_MEDIAN[gender] * 10000 }
-  }
-
-  let byIndustry = null
-  if (industry && INDUSTRY_PERCENTILES[industry]) {
-    const pct = interpolatePercentile(annualSalary, INDUSTRY_PERCENTILES[industry])
-    byIndustry = { percentile: pct, topPercent: getTopPercent(pct), avg: INDUSTRY_AVG[industry] * 10000 }
-  }
-
-  return {
-    overall: { percentile: overallPct, topPercent: getTopPercent(overallPct) },
-    byAge,
-    byGender,
-    byIndustry,
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Supabase 기반 커뮤니티 데이터 수집
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// 유틸
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function formatKRW(value: number): string {
-  if (value >= 100_000_000) {
-    const eok = Math.floor(value / 100_000_000)
-    const man = Math.floor((value % 100_000_000) / 10_000)
-    return man > 0 ? `${eok}억 ${man.toLocaleString()}만` : `${eok}억`
-  }
-  if (value >= 10_000) return `${Math.floor(value / 10_000).toLocaleString()}만`
-  return value.toLocaleString()
-}
-
-function getRankEmoji(topPercent: number): string {
-  if (topPercent <= 1) return '👑'
-  if (topPercent <= 5) return '💎'
-  if (topPercent <= 10) return '🏆'
-  if (topPercent <= 25) return '⭐'
-  if (topPercent <= 50) return '👍'
-  return '💪'
-}
-
-function getRankColor(topPercent: number): string {
-  if (topPercent <= 1) return 'from-yellow-400 to-amber-500'
-  if (topPercent <= 5) return 'from-purple-500 to-indigo-600'
-  if (topPercent <= 10) return 'from-blue-500 to-cyan-500'
-  if (topPercent <= 25) return 'from-green-500 to-emerald-500'
-  if (topPercent <= 50) return 'from-teal-400 to-green-400'
-  return 'from-gray-400 to-gray-500'
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// 컴포넌트
-// ═══════════════════════════════════════════════════════════════════════════════
-
 const AGE_GROUPS = ['20s', '30s', '40s', '50s', '60s'] as const
 const GENDERS = ['male', 'female'] as const
 const INDUSTRIES = ['it', 'finance', 'medical', 'civil', 'education', 'manufacturing', 'construction', 'service', 'selfEmployed', 'logistics', 'media', 'legal'] as const
 
+// 첫 화면 기본값 (30대 중위연봉 근처)
+const DEFAULTS = { salary: '40000000', age: '30s', gender: 'male', industry: '' }
+
+// 분포 곡선: 0 ~ 1억5천 (만원), 500만 구간
+const CURVE_MAX = 15000
+const CURVE_STEP = 500
+
+function group(below: number, extra: number) {
+  return { below, top: toTop(below), extra: extra * 10000 }
+}
+
 export default function SalaryRank() {
   const t = useTranslations('salaryRank')
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const resultRef = useRef<HTMLDivElement>(null)
 
-  const [salaryInput, setSalaryInput] = useState('')
-  const [ageGroup, setAgeGroup] = useState('')
-  const [gender, setGender] = useState('')
-  const [industry, setIndustry] = useState('')
-  const [result, setResult] = useState<RankResult | null>(null)
-  const [linkCopied, setLinkCopied] = useState(false)
+  const [salaryInput, setSalaryInput] = useState(DEFAULTS.salary)
+  const [ageGroup, setAgeGroup] = useState(DEFAULTS.age)
+  const [gender, setGender] = useState(DEFAULTS.gender)
+  const [industry, setIndustry] = useState(DEFAULTS.industry)
+  // 사용자가 직접 입력을 바꿨는지 — 기본값/공유 링크 값이 익명 통계에 들어가지 않게, URL도 이때만 갱신
+  const [touched, setTouched] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
-  const [showContribute, setShowContribute] = useState(false)
   const [contributed, setContributed] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'already' | 'error'>('idle')
   const [communityStats, setCommunityStats] = useState<CommunityStats | null>(null)
   const [communityRank, setCommunityRank] = useState<CommunityRank | null>(null)
-  const [statsLoading, setStatsLoading] = useState(false)
-  const [isDark, setIsDark] = useState(false)
+  const restored = useRef(false)
 
-  // Dark mode detection
+  const salary = Number(salaryInput) || 0
+
+  // ── 포맷: 만/억 단위 ──
+  const formatMan = useCallback((won: number) => {
+    const eok = Math.floor(won / 100_000_000)
+    const man = Math.floor((won % 100_000_000) / 10_000)
+    if (eok > 0) return man > 0 ? `${eok}${t('unitEok')} ${man.toLocaleString()}${t('unitMan')}` : `${eok}${t('unitEok')}`
+    if (won >= 10_000) return `${man.toLocaleString()}${t('unitMan')}`
+    return won.toLocaleString()
+  }, [t])
+
+  // ── URL 복원 (공유 링크) ──
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const check = () => setIsDark(document.documentElement.classList.contains('dark') || mq.matches)
-    check()
-    const observer = new MutationObserver(check)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    mq.addEventListener('change', check)
-    return () => { observer.disconnect(); mq.removeEventListener('change', check) }
-  }, [])
-
-  const updateURL = useCallback((params: Record<string, string>) => {
-    const p = new URLSearchParams(searchParams)
-    Object.entries(params).forEach(([k, v]) => {
-      if (v) p.set(k, v); else p.delete(k)
-    })
-    router.replace(`?${p.toString()}`, { scroll: false })
-  }, [router, searchParams])
-
-  // Fetch community stats
-  const fetchStats = useCallback(async (salary?: number) => {
-    setStatsLoading(true)
-    try {
-      const [stats, rank] = await Promise.all([
-        getCommunityStats(),
-        salary ? getCommunityRank(salary) : Promise.resolve(null),
-      ])
-      setCommunityStats(stats)
-      setCommunityRank(rank)
-    } catch { /* ignore */ }
-    setStatsLoading(false)
-  }, [])
-
-  // Restore from URL
-  useEffect(() => {
+    if (restored.current) return
+    restored.current = true
     const s = searchParams.get('salary')
-    if (!s) { fetchStats(); return }
-    setSalaryInput(s)
+    if (!s || !/^\d{1,12}$/.test(s)) return
     const a = searchParams.get('age') || ''
     const g = searchParams.get('gender') || ''
     const i = searchParams.get('industry') || ''
-    if (a) setAgeGroup(a)
-    if (g) setGender(g)
-    if (i) setIndustry(i)
-    if (/^\d+$/.test(s)) {
-      setResult(calculateRank(Number(s), a, g, i))
-      fetchStats(Number(s))
-    } else {
-      fetchStats()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    setSalaryInput(s)
+    setAgeGroup((AGE_GROUPS as readonly string[]).includes(a) ? a : '')
+    setGender((GENDERS as readonly string[]).includes(g) ? g : '')
+    setIndustry((INDUSTRIES as readonly string[]).includes(i) ? i : '')
+  }, [searchParams])
 
-  const handleCalculate = useCallback(() => {
-    const salary = Number(salaryInput.replace(/,/g, ''))
-    if (!salary || salary < 0) return
-    const res = calculateRank(salary, ageGroup, gender, industry)
-    setResult(res)
-    setContributed(false)
-    setSubmitStatus('idle')
-    setShowContribute(true)
-    updateURL({ salary: String(salary), age: ageGroup, gender, industry })
-    fetchStats(salary)
-    setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
-  }, [salaryInput, ageGroup, gender, industry, updateURL, fetchStats])
+  // ── 사용자가 바꾼 뒤에만 URL 갱신 ──
+  useEffect(() => {
+    if (!touched) return
+    const p = new URLSearchParams()
+    if (salary) p.set('salary', String(salary))
+    if (ageGroup) p.set('age', ageGroup)
+    if (gender) p.set('gender', gender)
+    if (industry) p.set('industry', industry)
+    const qs = p.toString()
+    window.history.replaceState(window.history.state, '', qs ? `?${qs}` : window.location.pathname)
+  }, [touched, salary, ageGroup, gender, industry])
+
+  // ── 커뮤니티 통계 (Supabase, 오프라인·미설정이면 null → 섹션 숨김) ──
+  useEffect(() => {
+    getCommunityStats().then(setCommunityStats).catch(() => {})
+  }, [])
+  useEffect(() => {
+    if (!salary) { setCommunityRank(null); return }
+    const id = setTimeout(() => { getCommunityRank(salary).then(setCommunityRank).catch(() => {}) }, 600)
+    return () => clearTimeout(id)
+  }, [salary])
+
+  // ── 결과 (입력 즉시 계산) ──
+  const result = useMemo(() => {
+    if (!salary) return null
+    const below = percentileBelow(salary)
+    return {
+      below,
+      top: topPercent(salary),
+      milestone: nextMilestone(salary),
+      netMonthly: calculateNetSalary(salary)?.netMonthly ?? 0,
+      byAge: AGE_PERCENTILES[ageGroup] ? group(percentileBelow(salary, AGE_PERCENTILES[ageGroup]), AGE_MEDIAN[ageGroup]) : null,
+      byGender: GENDER_PERCENTILES[gender] ? group(percentileBelow(salary, GENDER_PERCENTILES[gender]), GENDER_MEDIAN[gender]) : null,
+      byIndustry: INDUSTRY_PERCENTILES[industry] ? group(percentileBelow(salary, INDUSTRY_PERCENTILES[industry]), INDUSTRY_AVG[industry]) : null,
+    }
+  }, [salary, ageGroup, gender, industry])
+
+  // 분포 곡선: 500만 구간별 근로자 비율(국세청 표에서 파생). mine = 내 연봉 이상(상위 N%) 영역
+  const curve = useMemo(() => {
+    const you = Math.min(salary / 10000, CURVE_MAX)
+    const pts: { x: number; all: number; mine: number | null }[] = []
+    for (let a = 0; a < CURVE_MAX; a += CURVE_STEP) {
+      const x = a + CURVE_STEP / 2
+      const all = Math.round(shareBetween(a, a + CURVE_STEP) * 100) / 100
+      pts.push({ x, all, mine: x >= you ? all : null })
+      // 내 연봉 지점을 곡선에 끼워 넣어 색칠 영역이 기준선에서 정확히 시작하게
+      if (you >= a && (you < a + CURVE_STEP || a + CURVE_STEP === CURVE_MAX) && you !== x) pts.push({ x: you, all, mine: all })
+    }
+    return pts.sort((p, q) => p.x - q.x)
+  }, [salary])
+
+  const edit = <T,>(set: (v: T) => void) => (v: T) => { set(v); setTouched(true) }
 
   const handleContribute = useCallback(async () => {
-    const salary = Number(salaryInput.replace(/,/g, ''))
     if (!salary) return
     setSubmitStatus('loading')
     const { success, error } = await submitSalarySurvey({ salary, ageGroup, gender, industry })
     if (success) {
       setContributed(true)
       setSubmitStatus('idle')
-      fetchStats(salary) // refresh stats after contribution
-    } else if (error === 'already_submitted') {
-      setSubmitStatus('already')
-    } else {
-      setSubmitStatus('error')
-    }
-  }, [salaryInput, ageGroup, gender, industry, fetchStats])
+      getCommunityStats().then(setCommunityStats).catch(() => {})
+      getCommunityRank(salary).then(setCommunityRank).catch(() => {})
+    } else setSubmitStatus(error === 'already_submitted' ? 'already' : 'error')
+  }, [salary, ageGroup, gender, industry])
 
   const handleReset = useCallback(() => {
-    setSalaryInput('')
-    setAgeGroup('')
-    setGender('')
-    setIndustry('')
-    setResult(null)
-    setContributed(false)
-    setShowContribute(false)
-    setSubmitStatus('idle')
-    setCommunityRank(null)
-    updateURL({ salary: '', age: '', gender: '', industry: '' })
-  }, [updateURL])
-
-  const copyLink = useCallback(async () => {
-    try { await navigator.clipboard.writeText(window.location.href) } catch { /* */ }
-    setLinkCopied(true)
-    setTimeout(() => setLinkCopied(false), 2000)
+    setSalaryInput(DEFAULTS.salary)
+    setAgeGroup(DEFAULTS.age)
+    setGender(DEFAULTS.gender)
+    setIndustry(DEFAULTS.industry)
+    setTouched(false)
+    window.history.replaceState(window.history.state, '', window.location.pathname)
   }, [])
 
-  const shareResult = useCallback(async () => {
-    if (!result) return
-    const text = `내 연봉은 한국 전체 상위 ${result.overall.topPercent}%! ${getRankEmoji(result.overall.topPercent)}\n${window.location.href}`
-    if (navigator.share) {
-      try { await navigator.share({ title: t('title'), text, url: window.location.href }) } catch { /* */ }
-    } else {
-      try { await navigator.clipboard.writeText(text) } catch { /* */ }
-      setLinkCopied(true)
-      setTimeout(() => setLinkCopied(false), 2000)
-    }
-  }, [result, t])
+  const shareUrl = useMemo(() => {
+    if (typeof window === 'undefined' || !salary) return undefined
+    const p = new URLSearchParams({ salary: String(salary) })
+    if (ageGroup) p.set('age', ageGroup)
+    if (gender) p.set('gender', gender)
+    if (industry) p.set('industry', industry)
+    return `${window.location.origin}${window.location.pathname}?${p}`
+  }, [salary, ageGroup, gender, industry])
 
-  // Distribution chart data
-  const distributionData = useMemo(() => {
-    const brackets = [
-      { label: '~1천만', min: 0, max: 10_000_000, pct: 10 },
-      { label: '1~2천만', min: 10_000_000, max: 20_000_000, pct: 15 },
-      { label: '2~3천만', min: 20_000_000, max: 30_000_000, pct: 18 },
-      { label: '3~4천만', min: 30_000_000, max: 40_000_000, pct: 16 },
-      { label: '4~5천만', min: 40_000_000, max: 50_000_000, pct: 13 },
-      { label: '5~6천만', min: 50_000_000, max: 60_000_000, pct: 9 },
-      { label: '6~8천만', min: 60_000_000, max: 80_000_000, pct: 9 },
-      { label: '8천~1억', min: 80_000_000, max: 100_000_000, pct: 5 },
-      { label: '1~2억', min: 100_000_000, max: 200_000_000, pct: 4 },
-      { label: '2억+', min: 200_000_000, max: Infinity, pct: 1 },
-    ]
-    const salary = Number(salaryInput.replace(/,/g, '')) || 0
-    return brackets.map(b => ({
-      ...b,
-      isYou: salary >= b.min && salary < b.max,
-    }))
-  }, [salaryInput])
+  const salaryText = `${formatMan(salary)}${t('won')}`
+  const groupLines = result ? [
+    result.byAge && t('groupTop', { group: t(`ages.${ageGroup}`), top: result.byAge.top }),
+    result.byGender && t('groupTop', { group: t(`genders.${gender}`), top: result.byGender.top }),
+  ].filter(Boolean) as string[] : []
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleCalculate()
-  }, [handleCalculate])
+  const chip = (on: boolean) => `py-1.5 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0">
-          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          {linkCopied ? t('linkCopied') : t('copyLink')}
-        </button>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Input Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1 space-y-4">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            {/* Annual salary */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('annualSalary')}</label>
+              <label htmlFor="salary-rank-input" className="block text-sm font-medium text-body mb-2">{t('annualSalary')}</label>
               <div className="relative">
                 <input
+                  id="salary-rank-input"
                   type="text"
-                  value={salaryInput ? Number(salaryInput.replace(/,/g, '')).toLocaleString() : ''}
-                  onChange={e => setSalaryInput(e.target.value.replace(/,/g, '').replace(/[^\d]/g, ''))}
-                  onKeyDown={handleKeyDown}
+                  inputMode="numeric"
+                  value={salary ? salary.toLocaleString() : ''}
+                  onChange={e => edit(setSalaryInput)(e.target.value.replace(/[^\d]/g, '').slice(0, 12))}
                   placeholder={t('salaryPlaceholder')}
-                  className={`${glassInput} px-4 py-3 pr-12 text-lg font-bold`}
+                  className="ui-field w-full px-4 py-3 pr-12 text-lg font-bold tabular-nums"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{t('won')}</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-faint text-sm">{t('won')}</span>
               </div>
-              {salaryInput && Number(salaryInput) > 0 && (
-                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">= {formatKRW(Number(salaryInput))}{t('won')}</p>
-              )}
+              {salary > 0 && <p className="text-xs text-primary mt-1">= {salaryText}</p>}
               <p className="text-xs text-faint mt-1">{t('salaryHint')}</p>
             </div>
 
-            {/* Quick amounts */}
             <div className="grid grid-cols-4 gap-1.5">
               {[2000, 3000, 4000, 5000, 6000, 8000, 10000, 15000].map(v => (
-                <button key={v} onClick={() => setSalaryInput(String(v * 10000))}
-                  className="px-2 py-1.5 text-xs font-medium bg-soft hover:bg-blue-100 dark:hover:bg-blue-900 text-body rounded-lg transition-colors">
-                  {v >= 10000 ? `${v / 10000}억` : `${v.toLocaleString()}만`}
+                <button key={v} onClick={() => edit(setSalaryInput)(String(v * 10000))}
+                  className={`${chip(salary === v * 10000)} px-1 text-xs`}>
+                  {formatMan(v * 10000)}
                 </button>
               ))}
             </div>
 
-            {/* Age group */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('ageGroup')}</label>
+              <p className="text-sm font-medium text-body mb-2">{t('ageGroup')}</p>
               <div className="flex flex-wrap gap-1.5">
                 {AGE_GROUPS.map(ag => (
-                  <button key={ag} onClick={() => setAgeGroup(ageGroup === ag ? '' : ag)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                      ageGroup === ag
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}>
+                  <button key={ag} onClick={() => edit(setAgeGroup)(ageGroup === ag ? '' : ag)} className={`px-3 ${chip(ageGroup === ag)}`} aria-pressed={ageGroup === ag}>
                     {t(`ages.${ag}`)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Gender */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('gender')}</label>
+              <p className="text-sm font-medium text-body mb-2">{t('gender')}</p>
               <div className="flex gap-2">
                 {GENDERS.map(g => (
-                  <button key={g} onClick={() => setGender(gender === g ? '' : g)}
-                    className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      gender === g
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}>
+                  <button key={g} onClick={() => edit(setGender)(gender === g ? '' : g)} className={`flex-1 px-3 ${chip(gender === g)}`} aria-pressed={gender === g}>
                     {t(`genders.${g}`)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Industry */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('industry')}</label>
-              <select value={industry} onChange={e => setIndustry(e.target.value)}
-                className={`${glassInput} px-3 py-2 text-sm`}>
+              <label htmlFor="salary-rank-industry" className="block text-sm font-medium text-body mb-2">{t('industry')}</label>
+              <select id="salary-rank-industry" value={industry} onChange={e => edit(setIndustry)(e.target.value)} className="ui-field w-full px-3 py-2.5 text-sm">
                 <option value="">{t('industryAll')}</option>
-                {INDUSTRIES.map(i => (
-                  <option key={i} value={i}>{t(`industries.${i}`)}</option>
-                ))}
+                {INDUSTRIES.map(i => <option key={i} value={i}>{t(`industries.${i}`)}</option>)}
               </select>
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2">
-              <button onClick={handleCalculate} disabled={!salaryInput}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-                <BarChart3 className="w-5 h-5" />
-                {t('calculate')}
-              </button>
-              <button onClick={handleReset} className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors">
-                <RotateCcw className="w-5 h-5" />
-              </button>
-            </div>
+            <button onClick={handleReset} className="ui-btn-soft w-full px-4 py-2.5 inline-flex items-center justify-center gap-1.5 text-sm">
+              <RotateCcw className="w-4 h-4" /> {t('reset')}
+            </button>
           </div>
 
-          {/* Data source note */}
-          <div className="bg-subtle rounded-xl p-4">
-            <p className="text-xs text-sub font-medium mb-1">{t('dataSource')}</p>
-            <p className="text-xs text-blue-600 dark:text-blue-400">{t('dataSourceDesc')}</p>
+          {/* 출처·한계 */}
+          <div className="bg-subtle rounded-2xl p-5 space-y-2">
+            <p className="text-xs font-semibold text-sub">{t('dataSource')}</p>
+            <p className="text-xs text-sub">{t('sourceLine', { year: NTS_SOURCE_YEAR })}</p>
+            <ul className="space-y-1">
+              {(t.raw('caveats') as string[]).map((c, i) => <li key={i} className="text-xs text-muted">· {c}</li>)}
+            </ul>
           </div>
         </div>
 
-        {/* Result Panel */}
-        <div className="lg:col-span-2 space-y-4" ref={resultRef}>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-4">
           {!result ? (
-            <div className={`${glassCard} ${glassInset} p-16 text-center`}>
-              <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+            <div className="ui-card p-16 text-center">
               <p className="text-faint text-lg">{t('enterSalary')}</p>
             </div>
           ) : (
             <>
-              {/* Main result card */}
-              <div className={`bg-gradient-to-br ${getRankColor(result.overall.topPercent)} rounded-2xl shadow-xl p-8 text-center text-white relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-white/5" />
-                <div className="relative z-10">
-                  <p className="text-6xl mb-2">{getRankEmoji(result.overall.topPercent)}</p>
-                  <p className="text-sm opacity-80 mb-1">{t('yourSalary')}</p>
-                  <p className="text-xl font-bold mb-4">{formatKRW(Number(salaryInput))}{t('won')}</p>
-                  <p className="text-sm opacity-80">{t('overallRank')}</p>
-                  <p className="text-6xl sm:text-7xl font-black my-2">
-                    {t('top')} {result.overall.topPercent}%
-                  </p>
-                  <p className="text-sm opacity-80">
-                    {t('beatsPercent', { percent: result.overall.percentile.toFixed(1) })}
-                  </p>
-
-                  {/* Share buttons */}
-                  <div className="flex justify-center gap-3 mt-6">
-                    <button onClick={shareResult} className="flex items-center gap-1.5 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors">
-                      <Share2 className="w-4 h-4" />{t('share')}
-                    </button>
-                    <button onClick={copyLink} className="flex items-center gap-1.5 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors">
-                      <Link className="w-4 h-4" />{t('copyLink')}
-                    </button>
-                  </div>
-                </div>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm opacity-90">{t('heroLabel', { salary: salaryText })}</p>
+                <p className="text-5xl sm:text-6xl font-bold my-2 tabular-nums">{t('topValue', { top: result.top })}</p>
+                {groupLines.length > 0 && <p className="text-base font-semibold">{groupLines.join(' · ')}</p>}
+                <p className="text-sm opacity-90 mt-3">
+                  {result.milestone
+                    ? t('nextMilestone', { gap: formatMan(result.milestone.gap), top: result.milestone.top })
+                    : t('topOfTable')}
+                </p>
               </div>
 
-              {/* Detailed comparison cards */}
-              <div className="grid sm:grid-cols-3 gap-3">
-                {result.byAge && (
-                  <div className={`${glassCard} ${glassInset} p-4`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Users className="w-4 h-4 text-blue-500" />
-                      <p className="text-sm font-semibold text-body">{t('ageComparison')}</p>
-                    </div>
-                    <p className="text-2xl font-black text-fg">{t('top')} {result.byAge.topPercent}%</p>
-                    <p className="text-xs text-muted mt-1">{t('ages.' + ageGroup)} {t('median')}: {formatKRW(result.byAge.median)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${result.byAge.percentile}%` }} />
-                    </div>
-                  </div>
-                )}
-                {result.byGender && (
-                  <div className={`${glassCard} ${glassInset} p-4`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <TrendingUp className="w-4 h-4 text-purple-500" />
-                      <p className="text-sm font-semibold text-body">{t('genderComparison')}</p>
-                    </div>
-                    <p className="text-2xl font-black text-fg">{t('top')} {result.byGender.topPercent}%</p>
-                    <p className="text-xs text-muted mt-1">{t('genders.' + gender)} {t('median')}: {formatKRW(result.byGender.median)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
-                      <div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${result.byGender.percentile}%` }} />
-                    </div>
-                  </div>
-                )}
-                {result.byIndustry && (
-                  <div className={`${glassCard} ${glassInset} p-4`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <BarChart3 className="w-4 h-4 text-green-500" />
-                      <p className="text-sm font-semibold text-body">{t('industryComparison')}</p>
-                    </div>
-                    <p className="text-2xl font-black text-fg">{t('top')} {result.byIndustry.topPercent}%</p>
-                    <p className="text-xs text-muted mt-1">{t('industries.' + industry)} {t('average')}: {formatKRW(result.byIndustry.avg)}{t('won')}</p>
-                    <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
-                      <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${result.byIndustry.percentile}%` }} />
-                    </div>
-                  </div>
-                )}
-              </div>
+              <ShareResult
+                fileName="toolhub-salary-rank"
+                url={shareUrl}
+                text={t('shareText', { salary: salaryText, top: result.top })}
+                card={{
+                  tool: t('title'),
+                  label: t('cardLabel', { salary: salaryText }),
+                  headline: t('topValue', { top: result.top }),
+                  sub: t('cardSub', { year: NTS_SOURCE_YEAR }),
+                  rows: [
+                    { label: t('rowSalary'), value: salaryText },
+                    ...(result.byAge ? [{ label: t('rowGroup', { group: t(`ages.${ageGroup}`) }), value: t('topValue', { top: result.byAge.top }) }] : []),
+                    ...(result.byGender ? [{ label: t('rowGroup', { group: t(`genders.${gender}`) }), value: t('topValue', { top: result.byGender.top }) }] : []),
+                    ...(result.netMonthly ? [{ label: t('rowMonthly'), value: `${result.netMonthly.toLocaleString()}${t('won')}` }] : []),
+                  ],
+                }}
+              />
 
-              {/* Distribution chart */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
-                  {t('distributionChart')}
-                </h3>
-                <div className="h-64">
+              {/* 분포 곡선 + 월 실수령 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg mb-1">{t('curveTitle')}</h2>
+                <p className="text-xs text-muted mb-4">{t('beatsPercent', { percent: result.below.toFixed(1) })}</p>
+                <div className="h-56">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={distributionData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#374151' : '#e5e7eb'} />
-                      <XAxis dataKey="label" tick={{ fontSize: 10, fill: isDark ? '#9ca3af' : '#6b7280' }} />
-                      <YAxis tick={{ fontSize: 10, fill: isDark ? '#9ca3af' : '#6b7280' }} unit="%" />
-                      <Tooltip
-                        formatter={(value) => `${value}%`}
-                        contentStyle={{ backgroundColor: isDark ? '#1f2937' : '#fff', border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`, borderRadius: '8px', color: isDark ? '#f3f4f6' : '#111827' }}
-                      />
-                      <Bar dataKey="pct" name={t('workerPercent')} radius={[4, 4, 0, 0]}>
-                        {distributionData.map((entry, i) => (
-                          <Cell key={i} fill={entry.isYou ? '#3b82f6' : (isDark ? '#4b5563' : '#d1d5db')} />
-                        ))}
-                      </Bar>
-                      {result && (
-                        <ReferenceLine x={distributionData.find(d => d.isYou)?.label} stroke="#ef4444" strokeWidth={2} strokeDasharray="4 4" />
-                      )}
-                    </BarChart>
+                    <AreaChart data={curve} margin={{ top: 20, right: 12, left: 12, bottom: 0 }}>
+                      <XAxis dataKey="x" type="number" domain={[0, CURVE_MAX]} ticks={[0, 3000, 6000, 9000, 12000, 15000]}
+                        tickFormatter={(v: number) => (v ? formatMan(v * 10000) : '0')} tick={{ fontSize: 11, fill: 'var(--muted)' }}
+                        stroke="var(--line)" tickLine={false} />
+                      <Area type="monotone" dataKey="all" stroke="var(--line-strong)" fill="var(--track)" fillOpacity={1} isAnimationActive={false} />
+                      <Area type="monotone" dataKey="mine" stroke="var(--primary)" strokeWidth={2} fill="var(--primary)" fillOpacity={0.85} isAnimationActive={false} />
+                      <ReferenceLine x={Math.min(salary / 10000, CURVE_MAX)} stroke="var(--fg)" strokeDasharray="4 3"
+                        label={{ value: t('curveYou'), position: 'top', fill: 'var(--fg)', fontSize: 12, fontWeight: 700 }} />
+                    </AreaChart>
                   </ResponsiveContainer>
                 </div>
-                <p className="text-xs text-center text-faint mt-2">{t('chartNote')}</p>
+                <p className="text-xs text-faint mt-2">{t('curveNote', { top: result.top })}</p>
+
+                {result.netMonthly > 0 && (
+                  <Link href={`/salary-calculator/?salary=${salary}`}
+                    className="mt-4 flex items-center justify-between gap-3 bg-subtle rounded-2xl px-5 py-4 hover:bg-soft transition-colors">
+                    <span className="text-sm text-body">{t('monthlyNet')} <b className="text-fg tabular-nums">{result.netMonthly.toLocaleString()}{t('won')}</b></span>
+                    <span className="text-sm text-primary font-medium inline-flex items-center shrink-0">{t('monthlyNetLink')}<ChevronRight className="w-4 h-4" /></span>
+                  </Link>
+                )}
               </div>
 
-              {/* Data contribution */}
-              {showContribute && (
-                <div className="bg-subtle rounded-xl p-4">
-                  <div className="flex items-center justify-between">
+              {/* 그룹 비교 (추정) */}
+              {(result.byAge || result.byGender || result.byIndustry) && (
+                <div className="grid sm:grid-cols-3 gap-3">
+                  {([
+                    result.byAge && { key: 'age', title: t('ageComparison'), g: result.byAge, name: t(`ages.${ageGroup}`), ref: t('median') },
+                    result.byGender && { key: 'gender', title: t('genderComparison'), g: result.byGender, name: t(`genders.${gender}`), ref: t('median') },
+                    result.byIndustry && { key: 'industry', title: t('industryComparison'), g: result.byIndustry, name: t(`industries.${industry}`), ref: t('average') },
+                  ].filter(Boolean) as { key: string; title: string; g: ReturnType<typeof group>; name: string; ref: string }[]).map(c => (
+                    <div key={c.key} className="ui-card p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-semibold text-body">{c.title}</p>
+                        <span className="text-[11px] text-muted bg-soft rounded px-1.5 py-0.5">{t('estimate')}</span>
+                      </div>
+                      <p className="text-2xl font-bold text-fg tabular-nums">{t('topValue', { top: c.g.top })}</p>
+                      <p className="text-xs text-muted mt-1">{c.name} {c.ref}: {formatMan(c.g.extra)}{t('won')}</p>
+                      <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: `${c.g.below}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 익명 기여 — 사용자가 직접 입력한 값만 (기본값·남의 공유 링크 값은 제외) */}
+              {touched && (
+                <div className="bg-subtle rounded-2xl p-5">
+                  <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-semibold text-fg">{t('contributeTitle')}</p>
-                      <p className="text-xs text-green-600 dark:text-green-400 mt-0.5">{t('contributeDesc')}</p>
+                      <p className="text-xs text-muted mt-0.5">{t('contributeDesc')}</p>
                     </div>
                     {contributed ? (
-                      <span className="flex items-center gap-1 text-sm text-green-600 dark:text-green-400 font-medium">
-                        <Check className="w-4 h-4" /> {t('contributed')}
-                      </span>
+                      <span className="flex items-center gap-1 text-sm text-primary font-medium shrink-0"><Check className="w-4 h-4" /> {t('contributed')}</span>
                     ) : submitStatus === 'already' ? (
-                      <span className="flex items-center gap-1 text-sm text-amber-600 dark:text-amber-400 font-medium">
-                        <AlertCircle className="w-4 h-4" /> {t('contributeAlready')}
-                      </span>
+                      <span className="flex items-center gap-1 text-sm text-amber-700 font-medium shrink-0"><AlertCircle className="w-4 h-4" /> {t('contributeAlready')}</span>
                     ) : (
                       <button onClick={handleContribute} disabled={submitStatus === 'loading'}
-                        className="px-4 py-2 bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5">
+                        className="ui-btn px-4 py-2 text-sm shrink-0 inline-flex items-center gap-1.5 disabled:opacity-50">
                         {submitStatus === 'loading' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                         {t('contributeBtn')}
                       </button>
                     )}
                   </div>
-                  {submitStatus === 'error' && (
-                    <p className="text-xs text-red-500 mt-2">{t('contributeError')}</p>
-                  )}
+                  {submitStatus === 'error' && <p className="text-xs text-red-600 mt-2">{t('contributeError')}</p>}
                 </div>
               )}
 
-              {/* Community Stats */}
+              {/* 커뮤니티 통계 (자가 입력, 5명 이상일 때만) */}
               {communityStats && communityStats.totalCount >= 5 && (
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
-                    {t('community.title')}
-                    <span className="text-xs font-normal text-faint">({t('community.realtime')})</span>
-                  </h3>
+                <div className="ui-card p-6">
+                  <h2 className="text-base font-semibold text-fg mb-1">{t('community.title')}</h2>
+                  <p className="text-xs text-muted mb-4">{t('community.note')}</p>
 
-                  {/* Summary stats */}
                   <div className="grid grid-cols-3 gap-3 mb-5">
-                    <div className="bg-subtle rounded-lg p-3 text-center">
-                      <p className="text-xs text-indigo-600 dark:text-indigo-400">{t('community.participants')}</p>
-                      <p className="text-lg font-bold text-sub">{communityStats.totalCount.toLocaleString()}{t('community.people')}</p>
-                    </div>
-                    <div className="bg-subtle rounded-lg p-3 text-center">
-                      <p className="text-xs text-blue-600 dark:text-blue-400">{t('community.avgSalary')}</p>
-                      <p className="text-lg font-bold text-sub">{formatKRW(communityStats.avgSalary)}</p>
-                    </div>
-                    <div className="bg-subtle rounded-lg p-3 text-center">
-                      <p className="text-xs text-purple-600 dark:text-purple-400">{t('community.medianSalary')}</p>
-                      <p className="text-lg font-bold text-sub">{formatKRW(communityStats.medianSalary)}</p>
-                    </div>
+                    {[
+                      [t('community.participants'), `${communityStats.totalCount.toLocaleString()}${t('community.people')}`],
+                      [t('community.avgSalary'), formatMan(communityStats.avgSalary)],
+                      [t('community.medianSalary'), formatMan(communityStats.medianSalary)],
+                    ].map(([label, value]) => (
+                      <div key={label} className="bg-subtle rounded-xl p-3 text-center">
+                        <p className="text-xs text-muted">{label}</p>
+                        <p className="text-lg font-bold text-fg tabular-nums">{value}</p>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Community rank */}
                   {communityRank && communityRank.total > 0 && (
-                    <div className="bg-subtle rounded-lg p-4 mb-5">
+                    <div className="bg-subtle rounded-xl p-4 mb-5">
                       <div className="flex items-center justify-between">
                         <p className="text-sm text-sub">{t('community.yourRank')}</p>
-                        <p className="text-xl font-black text-sub">
-                          {t('top')} {Math.max(0.1, Math.round((100 - communityRank.percentile) * 10) / 10)}%
-                        </p>
+                        <p className="text-xl font-bold text-fg tabular-nums">{t('topValue', { top: toTop(communityRank.percentile) })}</p>
                       </div>
-                      <div className="mt-2 h-2.5 bg-indigo-200 dark:bg-indigo-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-indigo-500 rounded-full transition-all" style={{ width: `${communityRank.percentile}%` }} />
+                      <div className="mt-2 h-2.5 bg-track rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: `${communityRank.percentile}%` }} />
                       </div>
-                      <p className="text-xs text-indigo-500 dark:text-indigo-400 mt-1.5">
+                      <p className="text-xs text-muted mt-1.5">
                         {t('community.rankDesc', { below: communityRank.below.toLocaleString(), total: communityRank.total.toLocaleString() })}
                       </p>
                     </div>
                   )}
 
-                  {/* Age group breakdown */}
-                  {Object.keys(communityStats.byAge).length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-xs font-semibold text-sub mb-2">{t('community.byAge')}</p>
-                      <div className="space-y-1.5">
-                        {AGE_GROUPS.filter(ag => communityStats.byAge[ag]).map(ag => {
-                          const d = communityStats.byAge[ag]
-                          const maxAvg = Math.max(...Object.values(communityStats.byAge).map(v => v.avg))
-                          return (
-                            <div key={ag} className="flex items-center gap-2 text-xs">
-                              <span className="w-10 text-muted shrink-0">{t(`ages.${ag}`)}</span>
+                  {([
+                    ['byAge', AGE_GROUPS, communityStats.byAge, 'ages'],
+                    ['byIndustry', INDUSTRIES, communityStats.byIndustry, 'industries'],
+                  ] as const).map(([key, keys, data, ns]) => {
+                    const rows = (keys as readonly string[]).filter(k => data?.[k])
+                    if (!rows.length) return null
+                    const maxAvg = Math.max(...rows.map(k => data[k].avg))
+                    return (
+                      <div key={key} className="mb-4 last:mb-0">
+                        <p className="text-xs font-semibold text-sub mb-2">{t(`community.${key}`)}</p>
+                        <div className="space-y-1.5">
+                          {rows.map(k => (
+                            <div key={k} className="flex items-center gap-2 text-xs">
+                              <span className="w-16 text-muted truncate shrink-0">{t(`${ns}.${k}`)}</span>
                               <div className="flex-1 h-5 bg-soft rounded overflow-hidden">
-                                <div className="h-full bg-blue-400 dark:bg-blue-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
-                                  style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
-                                  {formatKRW(d.avg)}
+                                <div className="h-full bg-primary rounded flex items-center px-1.5 text-white font-medium whitespace-nowrap"
+                                  style={{ width: `${(data[k].avg / maxAvg) * 100}%`, minWidth: '3rem' }}>
+                                  {formatMan(data[k].avg)}
                                 </div>
                               </div>
-                              <span className="w-12 text-faint text-right shrink-0">{d.count}{t('community.people')}</span>
+                              <span className="w-12 text-faint text-right shrink-0">{data[k].count}{t('community.people')}</span>
                             </div>
-                          )
-                        })}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-
-                  {/* Industry breakdown */}
-                  {Object.keys(communityStats.byIndustry).length > 0 && (
-                    <div>
-                      <p className="text-xs font-semibold text-sub mb-2">{t('community.byIndustry')}</p>
-                      <div className="space-y-1.5">
-                        {INDUSTRIES.filter(ind => communityStats.byIndustry[ind]).map(ind => {
-                          const d = communityStats.byIndustry[ind]
-                          const maxAvg = Math.max(...Object.values(communityStats.byIndustry).map(v => v.avg))
-                          return (
-                            <div key={ind} className="flex items-center gap-2 text-xs">
-                              <span className="w-16 text-muted truncate shrink-0">{t(`industries.${ind}`)}</span>
-                              <div className="flex-1 h-5 bg-soft rounded overflow-hidden">
-                                <div className="h-full bg-green-400 dark:bg-green-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
-                                  style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
-                                  {formatKRW(d.avg)}
-                                </div>
-                              </div>
-                              <span className="w-12 text-faint text-right shrink-0">{d.count}{t('community.people')}</span>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {statsLoading && (
-                    <div className="flex items-center justify-center gap-2 py-4 text-gray-400">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span className="text-xs">{t('community.loading')}</span>
-                    </div>
-                  )}
+                    )
+                  })}
                 </div>
               )}
             </>
@@ -725,15 +468,15 @@ export default function SalaryRank() {
         </div>
       </div>
 
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
+      {/* 가이드 */}
+      <div className="ui-card overflow-hidden">
         <button onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          className="w-full flex items-center justify-between p-4 text-left hover:bg-subtle transition-colors"
           aria-expanded={showGuide}>
           <span className="flex items-center gap-2 font-semibold text-fg">
             <BookOpen className="w-5 h-5" /> {t('guide.title')}
           </span>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+          {showGuide ? <ChevronUp className="w-5 h-5 text-faint" /> : <ChevronDown className="w-5 h-5 text-faint" />}
         </button>
         {showGuide && (
           <div className="px-4 pb-4 space-y-4">
@@ -743,7 +486,7 @@ export default function SalaryRank() {
                 <ul className="space-y-1">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
                     <li key={i} className="text-sm text-sub flex items-start gap-2">
-                      <span className="text-blue-500 mt-0.5">•</span><span>{item}</span>
+                      <span className="text-primary mt-0.5">•</span><span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -754,17 +497,15 @@ export default function SalaryRank() {
       </div>
 
       {/* FAQ */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
+      <div className="ui-card p-6">
         <h2 className="text-lg font-semibold text-fg mb-4">{t('faqTitle')}</h2>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <details key={i} className="group">
-              <summary className="cursor-pointer font-medium text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <summary className="cursor-pointer font-medium text-body hover:text-primary transition-colors">
                 {t(`faq.q${i}.question`)}
               </summary>
-              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-line">
-                {t(`faq.q${i}.answer`)}
-              </p>
+              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-line">{t(`faq.q${i}.answer`)}</p>
             </details>
           ))}
         </div>
