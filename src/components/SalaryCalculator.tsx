@@ -22,7 +22,7 @@ const SalaryCalculatorContent = () => {
   const glassCard = 'bg-surface border border-line rounded-[28px] shadow-[0_24px_80px_rgba(59,130,246,0.12)]'
   const glassInset = 'shadow-[inset_1px_1px_10px_rgba(255,255,255,0.30),inset_0_-1px_10px_rgba(255,255,255,0.10)]'
   const glassInput = 'w-full rounded-2xl border border-line bg-surface text-fg placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 transition-all'
-  const [salary, setSalary] = useState('');
+  const [salary, setSalary] = useState('50,000,000'); // 첫 화면부터 결과 표시 (URL ?salary= 가 있으면 덮어씀)
   const [salaryType, setSalaryType] = useState<'annual' | 'monthly'>('annual');
   const [nonTaxableAmount, setNonTaxableAmount] = useState('0');
   const [dependents, setDependents] = useState('1');
@@ -313,14 +313,14 @@ const SalaryCalculatorContent = () => {
               <label className="block text-sm font-medium text-body mb-3">
                 {t('input.salaryType')}
               </label>
-              <div className="flex p-1 rounded-2xl bg-surface border border-line">
+              <div className="flex p-1 rounded-2xl bg-soft">
                 {(['annual', 'monthly'] as const).map((type) => (
                   <button
                     key={type}
                     onClick={() => { setSalaryType(type); updateURL({ type }); }}
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                       salaryType === type
-                        ? 'bg-white dark:bg-white/[0.20] text-indigo-700 dark:text-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.4)]'
+                        ? 'bg-primary text-white shadow-sm'
                         : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                     }`}
                   >
@@ -530,31 +530,29 @@ const SalaryCalculatorContent = () => {
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className="relative overflow-hidden bg-[#191f28] dark:bg-soft rounded-2xl p-6 sm:p-8">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.08] via-transparent to-blue-500/[0.05] pointer-events-none rounded-2xl" />
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
+              <div className="relative overflow-hidden ui-hero p-6 sm:p-8">
                 <div className="relative">
                   <div className="flex items-start justify-between gap-4 mb-1">
-                    <p className="text-gray-400 text-sm">{t('result.monthlyTakeHome')}</p>
-                    <TrendingUp className="w-5 h-5 shrink-0 text-emerald-400" />
+                    <p className="text-white/80 text-sm font-medium">{t('result.monthlyTakeHome')}</p>
+                    <TrendingUp className="w-5 h-5 shrink-0 text-white/80" />
                   </div>
                   <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-5">
-                    {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-gray-400">원</span>
+                    {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">원</span>
                   </div>
                   <div className="grid grid-cols-2 gap-3 mb-5">
-                    <div className="rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3">
-                      <div className="text-xs text-gray-400 mb-1">{t('result.annualTakeHome')}</div>
+                    <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
+                      <div className="text-xs text-white/70 mb-1">{t('result.annualTakeHome')}</div>
                       <div className="text-base font-semibold text-white">{formatNumber(result.netAnnual)}원</div>
                     </div>
-                    <div className="rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3">
-                      <div className="text-xs text-gray-400 mb-1">{t('result.effectiveTaxRate')}</div>
-                      <div className="text-base font-semibold text-emerald-400">{result.taxInfo?.effectiveTaxRate.toFixed(1)}%</div>
+                    <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
+                      <div className="text-xs text-white/70 mb-1">{t('result.effectiveTaxRate')}</div>
+                      <div className="text-base font-semibold text-white">{result.taxInfo?.effectiveTaxRate.toFixed(1)}%</div>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={handleShare}
-                      className="inline-flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.10] px-4 py-2 rounded-xl text-gray-300 hover:text-white text-sm transition-colors"
+                      className="inline-flex items-center gap-2 bg-white/[0.16] hover:bg-white/[0.24] px-4 py-2 rounded-xl text-white text-sm font-medium transition-colors"
                     >
                       {isCopied ? (
                         <>
@@ -571,7 +569,7 @@ const SalaryCalculatorContent = () => {
                     {showSaveButton && (
                       <button
                         onClick={handleSaveCalculation}
-                        className="inline-flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.10] px-4 py-2 rounded-xl text-gray-300 hover:text-white text-sm transition-colors"
+                        className="inline-flex items-center gap-2 bg-white/[0.16] hover:bg-white/[0.24] px-4 py-2 rounded-xl text-white text-sm font-medium transition-colors"
                       >
                         <Save className="w-4 h-4" />
                         <span>{tc('save')}</span>

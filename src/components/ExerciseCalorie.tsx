@@ -287,7 +287,7 @@ export default function ExerciseCalorie() {
                         <button
                           key={m}
                           onClick={() => updateEntry(entry.id, 'duration', m)}
-                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-soft text-sub' : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
+                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-primary-soft text-primary' : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
                         >
                           {m}
                         </button>

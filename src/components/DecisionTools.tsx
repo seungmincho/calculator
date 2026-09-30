@@ -494,7 +494,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               onClick={() => setActiveTab(tab)}
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab
-                  ? 'bg-surface text-fg shadow'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
               }`}
             >

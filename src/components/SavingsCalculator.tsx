@@ -491,7 +491,7 @@ const SavingsCalculatorContent = () => {
             onClick={() => setActiveTab('calculator')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'calculator'
-                ? 'bg-surface text-fg shadow'
+                ? 'bg-primary text-white shadow-sm'
                 : 'text-sub'
             }`}
           >
@@ -502,7 +502,7 @@ const SavingsCalculatorContent = () => {
             onClick={() => setActiveTab('goal')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'goal'
-                ? 'bg-surface text-fg shadow'
+                ? 'bg-primary text-white shadow-sm'
                 : 'text-sub'
             }`}
           >
@@ -513,7 +513,7 @@ const SavingsCalculatorContent = () => {
             onClick={() => setActiveTab('comparison')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'comparison'
-                ? 'bg-surface text-fg shadow'
+                ? 'bg-primary text-white shadow-sm'
                 : 'text-sub'
             }`}
           >
@@ -585,7 +585,7 @@ const SavingsCalculatorContent = () => {
                       }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'year'
-                          ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'text-sub'
                       }`}
                     >
@@ -599,7 +599,7 @@ const SavingsCalculatorContent = () => {
                       }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'month'
-                          ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'text-sub'
                       }`}
                     >

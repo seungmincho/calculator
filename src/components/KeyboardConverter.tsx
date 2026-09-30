@@ -100,7 +100,7 @@ export default function KeyboardConverter() {
                 onClick={() => setMode(m)}
                 aria-pressed={mode === m}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  mode === m ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-fg'
+                  mode === m ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-fg'
                 }`}
               >
                 {t(m)}

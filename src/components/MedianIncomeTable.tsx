@@ -408,7 +408,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                       key={benefit}
                       className={`flex justify-between items-center p-3 rounded-lg ${
                         eligible
-                          ? 'bg-subtle border border-line'
+                          ? 'bg-primary-soft text-primary border border-primary'
                           : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
                       }`}
                     >
@@ -643,7 +643,7 @@ const MedianIncomeTable = () => {
                     <tr
                       key={percentage}
                       className={`
-                        ${isHighlighted ? 'bg-subtle' : ''}
+                        ${isHighlighted ? 'bg-primary-soft text-primary' : ''}
                         hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors
                       `}
                     >
@@ -717,7 +717,7 @@ const MedianIncomeTable = () => {
               return (
                 <div
                   key={percentage}
-                  className={`${isHighlighted ? 'bg-subtle' : ''}`}
+                  className={`${isHighlighted ? 'bg-primary-soft text-primary' : ''}`}
                 >
                   <button
                     onClick={() => setExpandedRow(isExpanded ? null : percentage)}

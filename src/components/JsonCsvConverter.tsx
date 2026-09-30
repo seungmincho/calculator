@@ -667,7 +667,7 @@ const JsonCsvConverter = () => {
                     onClick={() => setViewMode('text')}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                       viewMode === 'text'
-                        ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                        ? 'bg-primary text-white shadow-sm'
                         : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                     }`}
                   >
@@ -678,7 +678,7 @@ const JsonCsvConverter = () => {
                     onClick={() => setViewMode('table')}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                       viewMode === 'table'
-                        ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                        ? 'bg-primary text-white shadow-sm'
                         : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                     }`}
                   >

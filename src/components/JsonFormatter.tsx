@@ -785,7 +785,7 @@ const JsonFormatter = () => {
               onClick={() => setMode(key)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                 mode === key
-                  ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
               }`}
             >

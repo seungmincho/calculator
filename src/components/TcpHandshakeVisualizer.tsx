@@ -648,7 +648,7 @@ export default function TcpHandshakeVisualizer() {
                     key={state}
                     className={`flex gap-2 px-2 py-1.5 rounded text-xs transition-colors ${
                       isActive
-                        ? 'bg-subtle ring-1 ring-blue-200 dark:ring-blue-800'
+                        ? 'bg-primary-soft text-primary'
                         : ''
                     }`}
                   >

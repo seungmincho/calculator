@@ -640,7 +640,7 @@ export default function ComprehensivePropertyTax() {
                                 key={idx}
                                 className={`border-b border-line ${
                                   idx === result.appliedBracketIndex
-                                    ? 'bg-subtle font-semibold'
+                                    ? 'bg-primary-soft text-primary font-semibold'
                                     : ''
                                 }`}
                               >
@@ -711,7 +711,7 @@ function StepItem({
 }) {
   return (
     <div className={`flex items-start gap-3 p-3 rounded-lg ${
-      highlight ? 'bg-subtle border border-line' : 'bg-subtle'
+      highlight ? 'bg-primary-soft text-primary border border-primary' : 'bg-subtle'
     }`}>
       <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
         highlight ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-600 text-body'
@@ -724,7 +724,7 @@ function StepItem({
           {badge && (
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               badgeColor === 'green'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-soft text-sub'
             }`}>
               {badge}

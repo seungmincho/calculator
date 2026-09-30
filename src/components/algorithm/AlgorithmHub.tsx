@@ -130,7 +130,7 @@ export default function AlgorithmHub() {
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'list'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
             title={t('view.list')}
@@ -141,7 +141,7 @@ export default function AlgorithmHub() {
             onClick={() => setViewMode('card')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'card'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
             title={t('view.card')}

@@ -1005,14 +1005,14 @@ export default function ApiTester() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => setResponseViewMode('pretty')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                           >
                             <Eye size={12} className="inline mr-1" />
                             {t('prettyView')}
                           </button>
                           <button
                             onClick={() => setResponseViewMode('raw')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                           >
                             <Code size={12} className="inline mr-1" />
                             {t('rawView')}
@@ -1020,7 +1020,7 @@ export default function ApiTester() {
                           {isHtmlResponse(response.headers) && (
                             <button
                               onClick={() => setResponseViewMode('preview')}
-                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                             >
                               <Globe size={12} className="inline mr-1" />
                               {t('previewView')}
@@ -1083,7 +1083,7 @@ export default function ApiTester() {
                               onClick={() => setCodeGenLang(lang)}
                               className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                                 codeGenLang === lang
-                                  ? 'bg-soft text-sub'
+                                  ? 'bg-primary-soft text-primary'
                                   : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                               }`}
                             >
@@ -1128,7 +1128,7 @@ export default function ApiTester() {
                       onClick={() => setCodeGenLang(lang)}
                       className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                         codeGenLang === lang
-                          ? 'bg-soft text-sub'
+                          ? 'bg-primary-soft text-primary'
                           : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >

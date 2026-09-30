@@ -430,7 +430,7 @@ export default function CsatGrade() {
               <span
                 className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                   subject.isAbsolute
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-soft text-sub'
                 }`}
               >

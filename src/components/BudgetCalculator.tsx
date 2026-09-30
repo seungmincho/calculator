@@ -586,9 +586,9 @@ export default function BudgetCalculator() {
                         <span
                           className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                             expense.budgetType === 'need'
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : expense.budgetType === 'saving'
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : 'bg-soft text-sub'
                           }`}
                         >

@@ -764,7 +764,7 @@ export default function GitVisualizer() {
                   onClick={() => executeCommand(`checkout ${name}`)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm flex items-center justify-between transition-colors ${
                     name === repo.head
-                      ? 'bg-subtle text-sub font-semibold'
+                      ? 'bg-primary-soft text-primary font-semibold'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                   }`}
                 >
@@ -787,7 +787,7 @@ export default function GitVisualizer() {
               {logs.map((log, i) => (
                 <div key={i} className={`p-2 rounded-lg ${
                   log.type === 'error' ? 'bg-red-50 dark:bg-red-900/20' :
-                  log.type === 'success' ? 'bg-subtle' :
+                  log.type === 'success' ? 'bg-primary-soft text-primary' :
                   'bg-subtle'
                 }`}>
                   <div className="font-mono text-xs text-muted">$ {log.command}</div>

@@ -388,7 +388,7 @@ export default function HashTableVisualizer() {
                     onClick={() => setStrategy(opt.value)}
                     className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
                       strategy === opt.value
-                        ? 'bg-subtle border-line'
+                        ? 'bg-primary-soft text-primary border-primary'
                         : 'bg-white/50 dark:bg-gray-700/30 border-line hover:bg-white/80 dark:hover:bg-gray-700/50'
                     }`}
                   >
@@ -485,7 +485,7 @@ export default function HashTableVisualizer() {
                         onClick={() => setCurrentStep(idx)}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${
                           idx === currentStep
-                            ? 'bg-subtle border border-line'
+                            ? 'bg-primary-soft text-primary border border-primary'
                             : idx < currentStep
                               ? 'bg-gray-50 dark:bg-gray-700/30 opacity-60'
                               : 'bg-white/40 dark:bg-gray-700/20'

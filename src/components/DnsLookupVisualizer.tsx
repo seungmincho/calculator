@@ -984,7 +984,7 @@ export default function DnsLookupVisualizer() {
                     }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2 ${
                       i === currentStep
-                        ? 'bg-subtle border border-line'
+                        ? 'bg-primary-soft text-primary border border-primary'
                         : i < currentStep
                           ? 'bg-subtle text-muted'
                           : 'text-faint'

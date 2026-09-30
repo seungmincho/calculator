@@ -526,7 +526,7 @@ export default function PyeongCalculator() {
                         }}
                         className={`border-b border-line cursor-pointer transition-colors ${
                           isActive
-                            ? 'bg-subtle'
+                            ? 'bg-primary-soft text-primary'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                       >

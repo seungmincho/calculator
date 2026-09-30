@@ -209,7 +209,7 @@ export default function VatCalculator() {
           onClick={() => setActiveTab('single')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
             activeTab === 'single'
-              ? 'bg-surface text-fg shadow'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >
@@ -220,7 +220,7 @@ export default function VatCalculator() {
           onClick={() => setActiveTab('batch')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
             activeTab === 'batch'
-              ? 'bg-surface text-fg shadow'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-sub hover:text-gray-900 dark:hover:text-white'
           }`}
         >

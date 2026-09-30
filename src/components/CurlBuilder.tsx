@@ -1472,7 +1472,7 @@ export default function CurlBuilder() {
                         onClick={() => setConfig(prev => ({ ...prev, auth: { ...prev.auth, type } }))}
                         className={`px-3 py-1.5 text-sm rounded-lg ${
                           config.auth.type === type
-                            ? 'bg-soft text-sub font-medium'
+                            ? 'bg-primary-soft text-primary font-medium'
                             : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
@@ -1546,7 +1546,7 @@ export default function CurlBuilder() {
                       onClick={() => setConfig(prev => ({ ...prev, body: { ...prev.body, type } }))}
                       className={`px-3 py-1.5 text-sm rounded-lg ${
                         config.body.type === type
-                          ? 'bg-soft text-sub font-medium'
+                          ? 'bg-primary-soft text-primary font-medium'
                           : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -1731,7 +1731,7 @@ export default function CurlBuilder() {
                     onClick={() => setExportFormat(f.key)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                       exportFormat === f.key
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >

@@ -389,7 +389,7 @@ export default function MilitaryDischarge() {
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
                           m.isPast
-                            ? 'bg-soft text-sub'
+                            ? 'bg-primary-soft text-primary'
                             : 'bg-soft text-gray-400'
                         }`}>
                           {i + 1}

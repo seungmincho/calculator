@@ -442,7 +442,7 @@ export default function StackQueueVisualizer() {
                       <div className="mt-2 flex gap-2">
                         <span className={`px-2 py-0.5 text-xs rounded-full font-mono ${
                           currentStep.target === 'stack'
-                            ? 'bg-soft text-sub'
+                            ? 'bg-primary-soft text-primary'
                             : 'bg-soft text-sub'
                         }`}>
                           {currentStep.action.toUpperCase()}

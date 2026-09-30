@@ -229,7 +229,7 @@ export default function DiceRoller() {
                   { label: t('min'), value: min },
                   { label: t('average'), value: avg },
                 ].map(({ label, value, highlight }) => (
-                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-subtle' : 'bg-subtle'}`}>
+                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-primary-soft text-primary' : 'bg-subtle'}`}>
                     <div className="text-xs text-muted mb-1">{label}</div>
                     <div className={`text-2xl font-bold ${highlight ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}`}>
                       {value}

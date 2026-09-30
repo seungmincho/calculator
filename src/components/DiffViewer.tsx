@@ -260,7 +260,7 @@ export default function DiffViewer() {
                   key={idx}
                   className={`flex ${
                     line.type === 'added'
-                      ? 'bg-subtle'
+                      ? 'bg-primary-soft text-primary'
                       : line.type === 'removed'
                       ? 'bg-red-50 dark:bg-red-900/20'
                       : ''

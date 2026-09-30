@@ -655,7 +655,7 @@ export default function ParentalLeaveCalculator() {
                       </thead>
                       <tbody>
                         {individualResult.months.map((m) => (
-                          <tr key={m.month} className={`border-b border-line ${m.isEnhanced ? 'bg-subtle' : ''}`}>
+                          <tr key={m.month} className={`border-b border-line ${m.isEnhanced ? 'bg-primary-soft text-primary' : ''}`}>
                             <th scope="row" className="py-2 px-2 text-fg font-medium">
                               {m.month}{t('results.monthUnit')}
                             </th>

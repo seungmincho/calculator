@@ -796,10 +796,10 @@ export default function Crossword() {
                         ${cellSize} relative border border-line-strong cursor-pointer select-none
                         ${isBlack ? 'bg-gray-800 dark:bg-gray-950 cursor-default' : ''}
                         ${!isBlack && isSelected ? 'ring-2 ring-blue-500 ring-inset z-10 bg-blue-100 dark:bg-blue-800' : ''}
-                        ${!isBlack && !isSelected && isInWord ? 'bg-subtle' : ''}
+                        ${!isBlack && !isSelected && isInWord ? 'bg-primary-soft text-primary' : ''}
                         ${!isBlack && !isSelected && !isInWord ? 'bg-surface' : ''}
                         ${isWrong ? 'bg-red-100 dark:bg-red-900/50' : ''}
-                        ${isRevealed && !isSelected ? 'bg-subtle' : ''}
+                        ${isRevealed && !isSelected ? 'bg-primary-soft text-primary' : ''}
                       `}
                       onClick={() => !isBlack && handleCellClick(r, c)}
                       role="gridcell"

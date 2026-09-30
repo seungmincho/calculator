@@ -826,7 +826,7 @@ export default function HealthInsuranceCalculator() {
                   {/* Result header */}
                   <div className={`flex items-center gap-3 mb-6 p-4 rounded-xl ${
                     dependentResult.eligible
-                      ? 'bg-subtle'
+                      ? 'bg-primary-soft text-primary'
                       : 'bg-red-50 dark:bg-red-950'
                   }`}>
                     {dependentResult.eligible ? (
@@ -992,7 +992,7 @@ export default function HealthInsuranceCalculator() {
                     const annualDiff = diff * 12
 
                     return (
-                      <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950'}`}>
+                      <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-primary-soft text-primary' : 'bg-red-50 dark:bg-red-950'}`}>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
                             <div className="text-sm font-medium text-body">{t('comparison.difference')}</div>
@@ -1166,7 +1166,7 @@ function PremiumRow({ label, employee, employer, t }: {
 
 function ConditionRow({ pass, label, detail }: { pass: boolean; label: string; detail: string }) {
   return (
-    <div className={`flex items-start gap-2 p-3 rounded-lg ${pass ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950/50'}`}>
+    <div className={`flex items-start gap-2 p-3 rounded-lg ${pass ? 'bg-primary-soft text-primary' : 'bg-red-50 dark:bg-red-950/50'}`}>
       {pass ? (
         <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
       ) : (

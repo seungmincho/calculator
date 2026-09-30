@@ -389,7 +389,7 @@ export default function SalesCommissionCalculator() {
                   <tr
                     key={ck}
                     className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                      ck === category ? 'bg-subtle' : ''
+                      ck === category ? 'bg-primary-soft text-primary' : ''
                     }`}
                   >
                     <td className="py-2.5 px-2 text-fg font-medium">

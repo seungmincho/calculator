@@ -671,7 +671,7 @@ export default function AgeCalculator() {
                           key={idx}
                           className={`relative flex items-start gap-4 py-3 pl-10 pr-3 rounded-lg transition-colors ${
                             milestone.isCurrent
-                              ? 'bg-subtle'
+                              ? 'bg-primary-soft text-primary'
                               : milestone.isPast
                                 ? 'opacity-60'
                                 : ''

@@ -42,7 +42,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
           <div className="flex items-center gap-2 text-xs">
             <span className={`px-2 py-0.5 rounded-full ${
               activeAxis.sourcePolygon === 'A'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400'
             }`}>
               {t('projection.fromEdge', { polygon: activeAxis.sourcePolygon })}
@@ -86,7 +86,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
           {/* Overlap indicator */}
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-500 ${
             activeAxis.isSeparating
-              ? 'bg-soft text-sub'
+              ? 'bg-primary-soft text-primary'
               : 'bg-red-100/80 dark:bg-red-900/30 text-red-700 dark:text-red-400'
           }`}>
             {activeAxis.isSeparating ? (
@@ -126,7 +126,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
                 : ''
             } ${
               axis.isSeparating
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-red-200 dark:bg-red-800/50 text-red-700 dark:text-red-400'
             }`}
           >

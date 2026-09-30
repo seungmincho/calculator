@@ -335,7 +335,7 @@ export default function SATVisualizer() {
                           <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                             i <= currentStep
                               ? axis.isSeparating
-                                ? 'bg-soft text-sub'
+                                ? 'bg-primary-soft text-primary'
                                 : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                               : 'bg-track text-gray-500'
                           }`}>
@@ -347,7 +347,7 @@ export default function SATVisualizer() {
                           {i <= currentStep && (
                             <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                               axis.isSeparating
-                                ? 'bg-soft text-sub'
+                                ? 'bg-primary-soft text-primary'
                                 : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                             }`}>
                               {axis.isSeparating ? t('stepsGuide.separated') : t('stepsGuide.overlapping')}

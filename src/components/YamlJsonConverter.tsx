@@ -295,7 +295,7 @@ export default function YamlJsonConverter() {
             />
             <button
               onClick={() => setShowOptions(!showOptions)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-soft text-sub' : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'}`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-primary-soft text-primary' : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'}`}
               aria-expanded={showOptions}
             >
               <Settings className="w-4 h-4" />

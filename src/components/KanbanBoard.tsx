@@ -848,7 +848,7 @@ export default function KanbanBoard() {
               {/* Cards area */}
               <div
                 className={`flex-1 bg-subtle rounded-b-xl p-2 space-y-2 min-h-[4rem] transition-colors ${
-                  isDropTarget ? 'bg-subtle' : ''
+                  isDropTarget ? 'bg-primary-soft text-primary' : ''
                 }`}
               >
                 {col.cards.map((card) => (

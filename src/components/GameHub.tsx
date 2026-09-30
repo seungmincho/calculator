@@ -312,7 +312,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 닉네임 바 (compact) */}
       <div className={`rounded-xl px-4 py-2.5 border flex items-center gap-3 ${
         globalNickname.trim()
-          ? 'bg-subtle border-line'
+          ? 'bg-primary-soft text-primary border-primary'
           : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
       }`}>
         <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -381,7 +381,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
           >
             <span>{label}</span>
             <span className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${
-              modeFilter === key ? 'bg-soft text-sub' : 'bg-track text-gray-500'
+              modeFilter === key ? 'bg-primary-soft text-primary' : 'bg-track text-gray-500'
             }`}>{count}</span>
             {sub && <span className="block text-xs text-faint mt-0.5">{sub}</span>}
           </button>

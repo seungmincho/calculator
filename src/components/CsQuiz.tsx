@@ -466,7 +466,7 @@ export default function CsQuiz() {
             <div className="mt-6 space-y-3">
               <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${
                 ans.correct
-                  ? 'bg-soft text-sub'
+                  ? 'bg-primary-soft text-primary'
                   : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
               }`}>
                 {ans.correct ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}

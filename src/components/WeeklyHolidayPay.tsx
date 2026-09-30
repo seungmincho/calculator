@@ -321,7 +321,7 @@ function WeeklyHolidayPayInner() {
             {/* 주간 근무시간 요약 */}
             <div className={`rounded-lg p-3 text-sm font-medium text-center ${
               result.eligible
-                ? 'bg-subtle text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
             }`}>
               {t('result.weeklyHours')}: {result.weeklyHours}{t('input.hoursUnit')} &nbsp;|&nbsp;
@@ -557,7 +557,7 @@ function WeeklyHolidayPayInner() {
                     key={s.hours}
                     className={`border-b border-line transition-colors ${
                       isCurrent
-                        ? 'bg-subtle'
+                        ? 'bg-primary-soft text-primary'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
                     }`}
                   >
@@ -570,7 +570,7 @@ function WeeklyHolidayPayInner() {
                     <td className="py-3 px-3 text-right">
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                         s.eligible
-                          ? 'bg-soft text-sub'
+                          ? 'bg-primary-soft text-primary'
                           : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'
                       }`}>
                         {s.eligible ? t('eligible') : t('notEligible')}

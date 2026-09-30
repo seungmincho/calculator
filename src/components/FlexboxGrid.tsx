@@ -863,7 +863,7 @@ export default function FlexboxGrid() {
                     onClick={() => setPreviewWidth(key)}
                     className={`p-1.5 rounded-md transition-colors ${
                       previewWidth === key
-                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                        ? 'bg-primary text-white shadow-sm'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
                     }`}
                     title={t(key)}

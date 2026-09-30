@@ -443,7 +443,7 @@ export default function LlmTokenCalculator() {
                       key={m.id}
                       onClick={() => setSelectedModelId(m.id)}
                       className={`border-b border-line cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-750 ${
-                        m.id === selectedModelId ? 'bg-subtle' : ''
+                        m.id === selectedModelId ? 'bg-primary-soft text-primary' : ''
                       }`}
                     >
                       <td className="py-2 pr-2 font-medium text-fg whitespace-nowrap">

@@ -327,7 +327,7 @@ export default function FreelancerTax() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {(Object.entries(INDUSTRY_RATES) as [IndustryCode, ExpenseRates][]).map(([code, rates]) => (
-                    <tr key={code} className={industry === code ? 'bg-subtle' : ''}>
+                    <tr key={code} className={industry === code ? 'bg-primary-soft text-primary' : ''}>
                       <td className="px-2 py-1.5 text-body">{t(`industries.${code}`)}</td>
                       <td className="px-2 py-1.5 text-right text-fg">{rates.simple}%</td>
                       <td className="px-2 py-1.5 text-right text-fg">{rates.standard}%</td>
@@ -358,7 +358,7 @@ export default function FreelancerTax() {
 
                 {/* 환급/추납 강조 카드 */}
                 <div className={`rounded-xl p-5 mb-6 text-center ${result.refund >= 0
-                  ? 'bg-subtle border border-line'
+                  ? 'bg-primary-soft text-primary border border-primary'
                   : 'bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800'
                 }`}>
                   <p className={`text-sm mb-1 ${result.refund >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
@@ -434,7 +434,7 @@ export default function FreelancerTax() {
                       {INCOME_BRACKETS.map((b, i) => {
                         const prev = i > 0 ? INCOME_BRACKETS[i - 1].upTo : 0
                         return (
-                          <tr key={i} className={result.bracketIdx === i ? 'bg-subtle' : ''}>
+                          <tr key={i} className={result.bracketIdx === i ? 'bg-primary-soft text-primary' : ''}>
                             <td className="px-3 py-2 text-fg">
                               {b.upTo === Infinity
                                 ? `${formatNumber(prev)}원 초과`

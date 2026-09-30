@@ -215,7 +215,7 @@ export default function AABBVisualizer() {
                   {visible && (
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${
                       step.isSeparating
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                     }`}>
                       {step.isSeparating ? t('projection.gap') : `${t('projection.overlap')} ${fmt(step.overlap)}px`}
@@ -310,7 +310,7 @@ export default function AABBVisualizer() {
                         <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                           currentStep >= 0
                             ? fullResult.steps[0].isSeparating
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                             : 'bg-track text-gray-500'
                         }`}>
@@ -322,7 +322,7 @@ export default function AABBVisualizer() {
                         {currentStep >= 0 && (
                           <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                             fullResult.steps[0].isSeparating
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                           }`}>
                             {fullResult.steps[0].isSeparating ? t('stepsGuide.xSeparated') : t('stepsGuide.xOverlap')}
@@ -346,7 +346,7 @@ export default function AABBVisualizer() {
                         <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                           currentStep >= 1
                             ? fullResult.steps[1].isSeparating
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                             : 'bg-track text-gray-500'
                         }`}>
@@ -358,7 +358,7 @@ export default function AABBVisualizer() {
                         {currentStep >= 1 && (
                           <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                             fullResult.steps[1].isSeparating
-                              ? 'bg-soft text-sub'
+                              ? 'bg-primary-soft text-primary'
                               : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                           }`}>
                             {fullResult.steps[1].isSeparating ? t('stepsGuide.ySeparated') : t('stepsGuide.yOverlap')}

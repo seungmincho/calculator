@@ -814,7 +814,7 @@ const FuelCalculator = () => {
                       type="button"
                       onClick={() => setRoundTrip(rt)}
                       aria-pressed={roundTrip === rt}
-                      className={`py-2 text-sm font-medium rounded-lg transition-colors ${roundTrip === rt ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-body'}`}
+                      className={`py-2 text-sm font-medium rounded-lg transition-colors ${roundTrip === rt ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-body'}`}
                     >
                       {rt ? t('trip.roundTrip') : t('trip.oneWay')}
                     </button>
@@ -1442,7 +1442,7 @@ const FuelCalculator = () => {
                       onClick={() => setDateFilter(f)}
                       aria-pressed={dateFilter === f}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                        dateFilter === f ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-body'
+                        dateFilter === f ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-body'
                       }`}
                     >
                       {t(`drivingLog.filter.${f}`)}

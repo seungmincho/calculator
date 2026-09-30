@@ -244,8 +244,8 @@ export default function FloydWarshallVisualizer() {
                               key={nj.id}
                               onClick={() => { setSelectedI(i); setSelectedJ(j) }}
                               className={`px-2 py-1 text-center font-mono cursor-pointer transition-colors ${
-                                isUpdated ? 'bg-soft text-sub font-bold' :
-                                isSelected ? 'bg-soft text-sub font-bold' :
+                                isUpdated ? 'bg-primary-soft text-primary font-bold' :
+                                isSelected ? 'bg-primary-soft text-primary font-bold' :
                                 isKRow ? 'bg-amber-50 dark:bg-amber-900/20' :
                                 i === j ? 'bg-gray-100 dark:bg-gray-700/30' : ''
                               } ${val === Infinity ? 'text-gray-400' : 'text-body'}`}

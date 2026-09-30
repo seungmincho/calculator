@@ -75,7 +75,7 @@ export default function LeaderboardPanel({ leaderboard, className = '' }: Leader
                   key={`${entry.player_id}-${index}`}
                   className={`grid grid-cols-12 gap-2 items-center px-3 py-2.5 rounded-lg transition-colors ${
                     isMe
-                      ? 'bg-subtle ring-1 ring-blue-200 dark:ring-blue-800'
+                      ? 'bg-primary-soft text-primary'
                       : rank <= 3
                         ? 'bg-subtle'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'

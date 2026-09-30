@@ -373,7 +373,7 @@ export default function PasswordGenerator() {
           onClick={() => { setMode('password'); setResults([]); setError(null) }}
           className={`flex-1 flex items-center justify-center space-x-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             mode === 'password'
-              ? 'bg-surface text-fg shadow-sm'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
@@ -384,7 +384,7 @@ export default function PasswordGenerator() {
           onClick={() => { setMode('passphrase'); setResults([]); setError(null) }}
           className={`flex-1 flex items-center justify-center space-x-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             mode === 'passphrase'
-              ? 'bg-surface text-fg shadow-sm'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >

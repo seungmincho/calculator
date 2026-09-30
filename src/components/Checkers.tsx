@@ -651,7 +651,7 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
 
           {/* 턴/캡처 표시 */}
           {!gameState.winner && (
-            <div className={`text-center py-2 px-4 rounded-xl ${gameState.currentTurn === myColor ? 'bg-soft text-sub' : 'bg-soft text-sub'}`}>
+            <div className={`text-center py-2 px-4 rounded-xl ${gameState.currentTurn === myColor ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}
               {gameState.mustCapture && gameState.currentTurn === myColor && (
                 <span className="ml-2 text-amber-600 font-medium">({t('mustContinueCapture') || 'Continue capturing!'})</span>

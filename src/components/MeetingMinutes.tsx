@@ -692,7 +692,7 @@ export default function MeetingMinutes() {
                 <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('attendees')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {data.attendees.map(a => (
-                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-soft text-sub' : 'bg-soft text-sub'}`}>
+                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
                       {a.name}{a.role ? ` · ${a.role}` : ''}
                     </span>
                   ))}

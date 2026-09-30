@@ -1365,7 +1365,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           <button
             onClick={() => setShowChat(!showChat)}
             className={`relative p-2 rounded-lg transition-all ${
-              showChat ? 'bg-soft text-sub' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              showChat ? 'bg-primary-soft text-primary' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >
             <MessageCircle className="w-5 h-5" />

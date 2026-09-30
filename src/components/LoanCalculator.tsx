@@ -432,7 +432,7 @@ const LoanCalculatorContent = () => {
             onClick={() => setActiveTab('calculator')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'calculator'
-                ? 'bg-surface text-fg shadow'
+                ? 'bg-primary text-white shadow-sm'
                 : 'text-sub'
             }`}
           >
@@ -443,7 +443,7 @@ const LoanCalculatorContent = () => {
             onClick={() => setActiveTab('CompassIcon')}
             className={`px-6 py-2 rounded-md transition-colors ${
               activeTab === 'CompassIcon'
-                ? 'bg-surface text-fg shadow'
+                ? 'bg-primary text-white shadow-sm'
                 : 'text-sub'
             }`}
           >

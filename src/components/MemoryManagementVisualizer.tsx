@@ -221,8 +221,8 @@ function FrameTable({ pages, result, currentStep, label, color }: {
     : color === 'amber' ? 'border-amber-400 dark:border-amber-600'
     : 'border-emerald-400 dark:border-emerald-600'
 
-  const headerBg = color === 'blue' ? 'bg-soft text-sub'
-    : color === 'purple' ? 'bg-soft text-sub'
+  const headerBg = color === 'blue' ? 'bg-primary-soft text-primary'
+    : color === 'purple' ? 'bg-primary-soft text-primary'
     : color === 'amber' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200'
     : 'bg-soft text-sub'
 
@@ -597,7 +597,7 @@ export default function MemoryManagementVisualizer() {
                   const best = Math.min(...Object.values(results).map(v => v.faults))
                   const isBest = r.faults === best
                   return (
-                    <tr key={algo} className={`border-b border-line ${isBest ? 'bg-subtle' : ''}`}>
+                    <tr key={algo} className={`border-b border-line ${isBest ? 'bg-primary-soft text-primary' : ''}`}>
                       <td className="py-2 px-3 font-medium text-fg">
                         {ALGO_NAMES[algo]}
                         {isBest && <span className="ml-2 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">최소 폴트</span>}

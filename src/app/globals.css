@@ -177,6 +177,13 @@
     box-shadow: 0 0 0 3px rgb(49 130 246 / 0.18);
   }
 
+  /* 핵심 결과 카드 (토스식 파랑 카드). 안쪽 보조 텍스트는 text-white/70 */
+  .ui-hero {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 20px;
+  }
+
   .ui-btn {
     display: inline-flex;
     align-items: center;

@@ -279,9 +279,9 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
                 key={ship.id}
                 className={`px-3 py-1 rounded text-sm ${
                   index < currentShipIndex
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : index === currentShipIndex
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-soft text-muted'
                 }`}
               >
@@ -325,7 +325,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
       {!gameState.winner && (
         <div className={`text-center py-2 px-4 rounded-xl ${
           isPlayerTurn
-            ? 'bg-soft text-sub'
+            ? 'bg-primary-soft text-primary'
             : 'bg-soft text-sub'
         }`}>
           {isThinking ? (

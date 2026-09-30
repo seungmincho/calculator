@@ -477,7 +477,7 @@ function MergeSortStepsList({
           icon = isLeftPick ? '⬅️' : '➡️'
           label = t('stepsGuide.mergePlace', { idx: String(step.placing ?? '') })
           colorClass = isLeftPick
-            ? 'bg-soft text-sub'
+            ? 'bg-primary-soft text-primary'
             : 'bg-soft text-sub'
         } else if (step.action === 'merge-complete') {
           icon = '✅'

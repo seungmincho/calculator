@@ -461,7 +461,7 @@ export default function MbtiTest() {
                   i === currentQ
                     ? 'bg-purple-600 text-white scale-110'
                     : answers[q.id]
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-gray-200 dark:bg-gray-600 text-muted'
                 }`}
                 title={`Q${i + 1}`}

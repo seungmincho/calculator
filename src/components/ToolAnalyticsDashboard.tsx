@@ -220,7 +220,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
               onClick={() => setActiveCategory('all')}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 activeCategory === 'all'
-                  ? 'bg-fg text-canvas'
+                  ? 'bg-primary text-white'
                   : 'bg-soft text-sub hover:text-fg'
               }`}
             >
@@ -232,7 +232,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                 onClick={() => setActiveCategory(key)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   activeCategory === key
-                    ? 'bg-fg text-canvas'
+                    ? 'bg-primary text-white'
                     : 'bg-soft text-sub hover:text-fg'
                 }`}
               >

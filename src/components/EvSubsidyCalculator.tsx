@@ -366,7 +366,7 @@ export default function EvSubsidyCalculator() {
                     key={i}
                     className={`text-xs px-2 py-0.5 rounded-full ${
                       i === 0
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : i === 1
                         ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
                         : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
@@ -524,7 +524,7 @@ export default function EvSubsidyCalculator() {
                   <span
                     className={`font-semibold text-sm px-3 py-1 rounded-full ${
                       result.priceGateRatio === 100
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : result.priceGateRatio === 50
                         ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
                         : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
@@ -604,7 +604,7 @@ export default function EvSubsidyCalculator() {
                         key={row.region}
                         className={`transition ${
                           row.region === region
-                            ? 'bg-subtle'
+                            ? 'bg-primary-soft text-primary'
                             : idx % 2 === 0
                             ? 'bg-surface'
                             : 'bg-gray-50 dark:bg-gray-750'

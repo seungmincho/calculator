@@ -783,7 +783,7 @@ export default function SnakeGame() {
                     onClick={() => setMode(m)}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                       mode === m
-                        ? 'bg-soft text-sub font-semibold'
+                        ? 'bg-primary-soft text-primary font-semibold'
                         : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -803,7 +803,7 @@ export default function SnakeGame() {
                       onClick={() => setDifficulty(d)}
                       className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         difficulty === d
-                          ? 'bg-soft text-sub'
+                          ? 'bg-primary-soft text-primary'
                           : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -823,7 +823,7 @@ export default function SnakeGame() {
                       onClick={() => setSkin(s)}
                       className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         skin === s
-                          ? 'bg-soft text-sub'
+                          ? 'bg-primary-soft text-primary'
                           : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >

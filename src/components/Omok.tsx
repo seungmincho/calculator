@@ -767,7 +767,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack, joinPeer
                 onClick={() => setShowChat(!showChat)}
                 className={`relative p-2 rounded-lg transition-all ${
                   showChat
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
@@ -854,7 +854,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack, joinPeer
           {!gameState.winner && (
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myColor
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}

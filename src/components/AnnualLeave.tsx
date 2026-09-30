@@ -333,7 +333,7 @@ export default function AnnualLeave() {
                   onClick={() => setCalcBasis('joinDate')}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     calcBasis === 'joinDate'
-                      ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                      ? 'bg-primary text-white shadow-sm'
                       : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                   }`}
                 >
@@ -343,7 +343,7 @@ export default function AnnualLeave() {
                   onClick={() => setCalcBasis('fiscalYear')}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     calcBasis === 'fiscalYear'
-                      ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                      ? 'bg-primary text-white shadow-sm'
                       : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
                   }`}
                 >

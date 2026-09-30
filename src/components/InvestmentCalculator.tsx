@@ -360,7 +360,7 @@ export default function InvestmentCalculator() {
           <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('finalAmount')}</p>
           <p className="text-lg font-bold text-fg">{formatKRW(res.finalAmount)}<span className="text-sm font-normal">{t('won')}</span></p>
         </div>
-        <div className={`rounded-xl p-4 ${res.profit >= 0 ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950'}`}>
+        <div className={`rounded-xl p-4 ${res.profit >= 0 ? 'bg-primary-soft text-primary' : 'bg-red-50 dark:bg-red-950'}`}>
           <p className={`text-xs mb-1 ${res.profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{t('profit')}</p>
           <p className={`text-lg font-bold flex items-center gap-1 ${res.profit >= 0 ? 'text-fg' : 'text-red-900 dark:text-red-100'}`}>
             {res.profit >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}

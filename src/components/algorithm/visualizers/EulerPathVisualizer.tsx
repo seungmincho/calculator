@@ -217,8 +217,8 @@ export default function EulerPathVisualizer() {
               </span>
               {eulerType && (
                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                  eulerType === 'circuit' ? 'bg-soft text-sub' :
-                  eulerType === 'path' ? 'bg-soft text-sub' :
+                  eulerType === 'circuit' ? 'bg-primary-soft text-primary' :
+                  eulerType === 'path' ? 'bg-primary-soft text-primary' :
                   'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                 }`}>
                   {t('eulerType')}: {eulerType === 'circuit' ? t('circuit') : eulerType === 'path' ? t('path') : t('none')}

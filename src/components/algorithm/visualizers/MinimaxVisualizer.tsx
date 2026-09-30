@@ -559,11 +559,11 @@ export default function MinimaxVisualizer() {
           <div className="xl:sticky xl:top-20 space-y-4">
             {/* ── Explanation box (always visible) ── */}
             <div className={`rounded-2xl p-4 border-2 transition-colors ${
-              explanation.color === 'blue' ? 'bg-subtle border-line' :
-              explanation.color === 'emerald' ? 'bg-subtle border-line' :
+              explanation.color === 'blue' ? 'bg-primary-soft text-primary border-primary' :
+              explanation.color === 'emerald' ? 'bg-primary-soft text-primary border-primary' :
               explanation.color === 'red' ? 'bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-700' :
               explanation.color === 'amber' ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700' :
-              explanation.color === 'indigo' ? 'bg-subtle border-line' :
+              explanation.color === 'indigo' ? 'bg-primary-soft text-primary border-primary' :
               'bg-subtle border-line'
             }`}>
               <div className="flex items-start gap-3">

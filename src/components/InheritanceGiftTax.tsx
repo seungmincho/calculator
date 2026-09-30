@@ -277,13 +277,13 @@ export default function InheritanceGiftTax() {
         <div className="flex flex-1 bg-soft rounded-lg p-1">
           <button
             onClick={() => setTaxType('inheritance')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
           >
             {t('inheritanceTab')}
           </button>
           <button
             onClick={() => setTaxType('gift')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
           >
             {t('giftTab')}
           </button>
@@ -597,7 +597,7 @@ export default function InheritanceGiftTax() {
                           ? false : false // We'll use bracket index
                         const prev = i > 0 ? TAX_BRACKETS[i - 1].upTo : 0
                         return (
-                          <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-subtle' : ''}>
+                          <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-primary-soft text-primary' : ''}>
                             <td className="px-3 py-2 text-fg">
                               {b.upTo === Infinity
                                 ? `${formatNumber(prev)}원 초과`

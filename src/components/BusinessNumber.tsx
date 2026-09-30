@@ -259,7 +259,7 @@ export default function BusinessNumber() {
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
                 result.isValid
-                  ? 'bg-subtle border-2 border-line'
+                  ? 'bg-primary-soft text-primary border-2 border-primary'
                   : 'bg-red-50 dark:bg-red-950 border-2 border-red-200 dark:border-red-800'
               }`}>
                 {result.isValid ? (

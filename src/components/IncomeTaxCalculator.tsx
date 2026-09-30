@@ -1020,7 +1020,7 @@ function IncomeTaxContent() {
                   </div>
 
                   {/* Final result */}
-                  <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-subtle' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-subtle'}`}>
+                  <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-primary-soft text-primary' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-subtle'}`}>
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-fg">{t('finalResult')}</span>
                       <span className={`text-xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>

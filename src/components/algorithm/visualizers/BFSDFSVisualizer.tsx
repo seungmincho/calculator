@@ -637,9 +637,9 @@ function StepsList({
             <div className="flex items-center gap-2">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                 isPath
-                  ? 'bg-soft text-sub'
+                  ? 'bg-primary-soft text-primary'
                   : isActive
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-track text-gray-500'
               }`}>
                 {isPath ? '→' : step.visitedCount}

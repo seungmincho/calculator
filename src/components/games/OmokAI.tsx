@@ -274,7 +274,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
       {!gameState.winner && (
         <div className={`text-center py-2 px-4 rounded-xl ${
           isPlayerTurn
-            ? 'bg-soft text-sub'
+            ? 'bg-primary-soft text-primary'
             : 'bg-soft text-sub'
         }`}>
           {isThinking ? (

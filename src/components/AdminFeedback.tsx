@@ -322,7 +322,7 @@ export default function AdminFeedback() {
               onClick={() => setFilterTab(tab)}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 filterTab === tab
-                  ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
               }`}
             >
@@ -379,7 +379,7 @@ export default function AdminFeedback() {
                 <React.Fragment key={inquiry.id}>
                   <tr
                     className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer ${
-                      !inquiry.is_read ? 'bg-subtle' : ''
+                      !inquiry.is_read ? 'bg-primary-soft text-primary' : ''
                     }`}
                     onClick={() => setExpandedId(expandedId === inquiry.id ? null : inquiry.id)}
                   >

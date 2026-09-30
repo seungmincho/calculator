@@ -442,7 +442,7 @@ export default function PdfTools() {
         <div
           className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
             status.type === 'success'
-              ? 'bg-subtle text-sub'
+              ? 'bg-primary-soft text-primary'
               : status.type === 'error'
               ? 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
               : 'bg-subtle text-sub'

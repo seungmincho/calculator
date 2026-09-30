@@ -729,7 +729,7 @@ function BonusCalculatorContent() {
                               key={row.ratio}
                               className={`border-b border-line ${
                                 row.isCurrent
-                                  ? 'bg-subtle font-semibold'
+                                  ? 'bg-primary-soft text-primary font-semibold'
                                   : ''
                               }`}
                             >

@@ -349,14 +349,14 @@ export default function CsDictionary() {
           <div className="flex items-center gap-1 ml-auto">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-soft text-sub' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-primary-soft text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
               title={t('view.list')}
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('card')}
-              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-soft text-sub' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-primary-soft text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
               title={t('view.card')}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -649,7 +649,7 @@ function TermDetail({
           onClick={onToggleLearned}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             learned
-              ? 'bg-soft text-sub'
+              ? 'bg-primary-soft text-primary'
               : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >

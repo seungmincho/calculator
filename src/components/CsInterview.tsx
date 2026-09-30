@@ -549,7 +549,7 @@ export default function CsInterview() {
                   onClick={() => { setPracticeFilter(f); setPracticeIndex(0); setAnswerRevealed(false) }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     practiceFilter === f
-                      ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                      ? 'bg-primary text-white shadow-sm'
                       : 'text-muted'
                   }`}
                 >
@@ -788,7 +788,7 @@ export default function CsInterview() {
                                   onClick={() => handleMastered(q.id)}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                                     masteredIds.has(q.id)
-                                      ? 'bg-soft text-sub border-line'
+                                      ? 'bg-primary-soft text-primary border-primary'
                                       : 'bg-field text-sub border-line hover:border-green-300 hover:text-green-600'
                                   }`}
                                 >

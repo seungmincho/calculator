@@ -281,7 +281,7 @@ export default function ChmodCalculator() {
                     key={i}
                     className={`w-7 h-7 flex items-center justify-center rounded text-sm ${
                       ch !== '-'
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : 'bg-soft text-faint'
                     }`}
                   >

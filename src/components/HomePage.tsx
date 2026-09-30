@@ -119,7 +119,7 @@ export default function HomePage() {
 
   const chip = (active: boolean) =>
     `shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-      active ? 'bg-fg text-canvas' : 'bg-soft text-sub hover:text-fg'
+      active ? 'bg-primary text-white' : 'bg-soft text-sub hover:text-fg'
     }`
 
   return (

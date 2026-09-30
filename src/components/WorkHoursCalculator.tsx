@@ -289,7 +289,7 @@ export default function WorkHoursCalculator() {
 
   const presetKeys = ['presetConvenience', 'presetCafe', 'presetRestaurant', 'presetOffice', 'presetLogistics'] as const
   const chip = 'px-2.5 py-1 rounded-full text-xs font-medium bg-soft text-sub hover:bg-subtle transition-colors'
-  const segBtn = (active: boolean) => `flex-1 py-2 rounded-lg text-xs font-medium transition-all ${active ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-fg'}`
+  const segBtn = (active: boolean) => `flex-1 py-2 rounded-lg text-xs font-medium transition-all ${active ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-fg'}`
 
   // ─── 결과 패널 ─────────────────────────────────────────
   const renderResult = () => {
@@ -425,7 +425,7 @@ export default function WorkHoursCalculator() {
       <div className="flex gap-1 bg-soft rounded-xl p-1 w-fit">
         {(['daily', 'conversion'] as TabType[]).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-surface text-fg shadow-sm' : 'text-sub hover:text-fg'}`}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-primary text-white shadow-sm' : 'text-sub hover:text-fg'}`}
           >
             {t(`tabs.${tab}`)}
           </button>
@@ -504,7 +504,7 @@ export default function WorkHoursCalculator() {
                     const dim = d.on ? '' : 'opacity-40'
                     return [
                       <button key={`d${i}`} onClick={() => updateSlot(i, { on: !d.on })} aria-pressed={d.on}
-                        className={`h-9 rounded-lg text-xs font-bold transition-colors ${d.on ? 'bg-fg text-canvas' : `bg-soft ${WEEKDAY_COLORS[i]} opacity-60`}`}>
+                        className={`h-9 rounded-lg text-xs font-bold transition-colors ${d.on ? 'bg-primary text-white' : `bg-soft ${WEEKDAY_COLORS[i]} opacity-60`}`}>
                         {WEEKDAY_LABELS[i]}
                       </button>,
                       <input key={`s${i}`} type="time" value={d.start} disabled={!d.on} aria-label={`${WEEKDAY_LABELS[i]} ${t('input.startTime')}`}
@@ -543,7 +543,7 @@ export default function WorkHoursCalculator() {
                   <div className="flex gap-1">
                     {WEEKDAY_LABELS.map((d, i) => (
                       <button key={d} onClick={() => toggleWeekday(i)} aria-pressed={selectedWeekdays[i]}
-                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? 'bg-fg text-canvas' : 'bg-soft text-faint'}`}
+                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? 'bg-primary text-white' : 'bg-soft text-faint'}`}
                       >{d}</button>
                     ))}
                   </div>

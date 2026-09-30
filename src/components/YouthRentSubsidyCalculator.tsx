@@ -609,7 +609,7 @@ export default function YouthRentSubsidyCalculator() {
                       key={item.key}
                       className={`flex items-start gap-3 p-3 rounded-lg border ${
                         item.pass
-                          ? 'bg-subtle border-line'
+                          ? 'bg-primary-soft text-primary border-primary'
                           : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800'
                       }`}
                     >

@@ -240,7 +240,7 @@ export default function AspectRatio() {
                 onClick={handleLockToggle}
                 className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                   isRatioLocked
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >

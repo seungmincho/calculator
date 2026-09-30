@@ -394,7 +394,7 @@ export default function SleepCalculator() {
                   key={i}
                   className={`border-b border-line ${
                     row.age === t('ageAdult')
-                      ? 'bg-subtle font-medium'
+                      ? 'bg-primary-soft text-primary font-medium'
                       : ''
                   }`}
                 >

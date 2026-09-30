@@ -441,7 +441,7 @@ function HeapStepsList({ steps, currentIndex, onStepClick }: {
         return (
           <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(i)}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
-              isCurrent ? 'bg-subtle border-line'
+              isCurrent ? 'bg-primary-soft text-primary border-primary'
                 : i <= currentIndex ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
             <div className="flex items-center gap-2">

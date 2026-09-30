@@ -780,11 +780,11 @@ function StepsList({
             <div className="flex items-center gap-2">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
                 isPath
-                  ? 'bg-soft text-sub'
+                  ? 'bg-primary-soft text-primary'
                   : isUpdate
                     ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                     : isActive
-                      ? 'bg-soft text-sub'
+                      ? 'bg-primary-soft text-primary'
                       : 'bg-track text-gray-500'
               }`}>
                 {isPath ? '→' : isUpdate ? '↻' : step.closedSetSize}

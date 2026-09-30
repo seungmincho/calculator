@@ -395,7 +395,7 @@ export default function SystemDesign() {
                 onClick={() => setActiveTab(tab)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   activeTab === tab
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >

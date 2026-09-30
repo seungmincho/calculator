@@ -36,7 +36,7 @@ export default function StepNavigator({ steps, currentStep, onStepClick }: StepN
                 isActive
                   ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
                   : isPast
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-gray-100/50 dark:bg-gray-800/50 text-muted hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
               }`}
               title={step.description}

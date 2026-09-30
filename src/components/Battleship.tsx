@@ -810,9 +810,9 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                     key={ship.id}
                     className={`px-3 py-1 rounded-lg text-sm ${
                       idx < currentShipIndex
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : idx === currentShipIndex
-                        ? 'bg-soft text-sub'
+                        ? 'bg-primary-soft text-primary'
                         : 'bg-soft text-gray-500'
                     }`}
                   >
@@ -879,7 +879,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                 onClick={() => setShowChat(!showChat)}
                 className={`relative p-2 rounded-lg transition-all ${
                   showChat
-                    ? 'bg-soft text-sub'
+                    ? 'bg-primary-soft text-primary'
                     : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
@@ -965,7 +965,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           {!gameState.winner && (
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myRole
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myRole ? t('yourTurn') : t('opponentTurn')}

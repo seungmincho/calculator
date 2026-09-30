@@ -357,7 +357,7 @@ export default function SubnetCalculator() {
                     }
                     setInputMode('cidr')
                   }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'cidr' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'cidr' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
                 >
                   CIDR (/24)
                 </button>
@@ -371,7 +371,7 @@ export default function SubnetCalculator() {
                     }
                     setInputMode('mask')
                   }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'mask' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'mask' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
                 >
                   {t('subnetMask')}
                 </button>
@@ -437,7 +437,7 @@ export default function SubnetCalculator() {
                           setCidrInput(String(row.cidr))
                           setInputMode('cidr')
                         }}
-                        className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-subtle font-semibold' : ''}`}
+                        className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-primary-soft text-primary font-semibold' : ''}`}
                       >
                         <td className="px-2 py-1 font-mono text-fg">/{row.cidr}</td>
                         <td className="px-2 py-1 font-mono text-sub">{row.mask}</td>
@@ -716,7 +716,7 @@ export default function SubnetCalculator() {
                       !r.validIp
                         ? 'bg-red-50 dark:bg-red-950/20'
                         : r.matches.length > 0
-                          ? 'bg-subtle'
+                          ? 'bg-primary-soft text-primary'
                           : 'bg-subtle'
                     }`}
                   >

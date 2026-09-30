@@ -272,9 +272,9 @@ export default function ContrastChecker() {
 
   const gradeBg =
     wcag.grade === 'AAA'
-      ? 'bg-subtle border-line'
+      ? 'bg-primary-soft text-primary border-primary'
       : wcag.grade === 'AA'
-      ? 'bg-subtle border-line'
+      ? 'bg-primary-soft text-primary border-primary'
       : wcag.grade === 'AA Large'
       ? 'bg-yellow-50 dark:bg-yellow-950 border-yellow-200 dark:border-yellow-800'
       : 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800'

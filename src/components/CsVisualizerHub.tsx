@@ -109,7 +109,7 @@ export default function CsVisualizerHub() {
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'list'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
@@ -119,7 +119,7 @@ export default function CsVisualizerHub() {
             onClick={() => setViewMode('card')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'card'
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >

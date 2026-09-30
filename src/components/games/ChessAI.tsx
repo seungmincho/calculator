@@ -245,7 +245,7 @@ export default function ChessAI({ difficulty, onBack }: ChessAIProps) {
           gameState.inCheck
             ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
             : isPlayerTurn
-              ? 'bg-soft text-sub'
+              ? 'bg-primary-soft text-primary'
               : 'bg-soft text-sub'
         }`}>
           {isThinking ? (

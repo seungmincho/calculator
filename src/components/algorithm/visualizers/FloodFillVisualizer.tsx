@@ -571,9 +571,9 @@ function StepsList({
         const isFill = step.action === 'fill'
 
         const actionColor = isDone
-          ? 'bg-soft text-sub'
+          ? 'bg-primary-soft text-primary'
           : isFill
-            ? 'bg-soft text-sub'
+            ? 'bg-primary-soft text-primary'
             : 'bg-soft text-sub'
 
         return (

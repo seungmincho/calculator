@@ -647,7 +647,7 @@ export default function ImageCompressor() {
                           <div
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
-                                ? 'bg-subtle'
+                                ? 'bg-primary-soft text-primary'
                                 : 'bg-subtle'
                             }`}
                           >
@@ -665,7 +665,7 @@ export default function ImageCompressor() {
                           <div
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
-                                ? 'bg-subtle'
+                                ? 'bg-primary-soft text-primary'
                                 : 'bg-subtle'
                             }`}
                           >

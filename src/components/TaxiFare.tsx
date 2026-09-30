@@ -422,7 +422,7 @@ export default function TaxiFare() {
                   {String(hour).padStart(2, '0')}{t('hourUnit')}
                 </span>
               </div>
-              <div className={`text-xs font-medium px-2 py-1 rounded inline-block ${activeNightRate > 0 ? 'bg-soft text-sub' : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'}`}>
+              <div className={`text-xs font-medium px-2 py-1 rounded inline-block ${activeNightRate > 0 ? 'bg-primary-soft text-primary' : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'}`}>
                 {activeNightRate > 0 ? `${t('tier.night')} +${Math.round(activeNightRate * 100)}%` : t('tier.day')}
               </div>
             </div>
@@ -541,9 +541,9 @@ export default function TaxiFare() {
                 </div>
               )}
 
-              <div className="flex justify-between items-center py-4 bg-[#191f28] dark:bg-soft rounded-xl px-4 mt-4">
+              <div className="flex justify-between items-center py-4 ui-hero !rounded-xl px-4 mt-4">
                 <span className="text-xl font-bold text-white">{t('result.total')}</span>
-                <span className="text-3xl font-bold text-emerald-400">
+                <span className="text-3xl font-bold text-white">
                   {fare.total.toLocaleString()} {t('result.won')}
                 </span>
               </div>

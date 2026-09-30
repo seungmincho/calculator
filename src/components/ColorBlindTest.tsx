@@ -233,7 +233,7 @@ export default function ColorBlindTest() {
                     isSkipped
                       ? 'bg-subtle'
                       : isCorrect
-                      ? 'bg-subtle'
+                      ? 'bg-primary-soft text-primary'
                       : 'bg-red-50 dark:bg-red-950'
                   }`}
                 >

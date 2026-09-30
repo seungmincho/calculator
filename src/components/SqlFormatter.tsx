@@ -482,7 +482,7 @@ const SqlFormatter = () => {
                   onClick={() => setMode(key as 'format' | 'minify' | 'analyze')}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     mode === key
-                      ? 'bg-white dark:bg-gray-600 text-fg shadow-sm'
+                      ? 'bg-primary text-white shadow-sm'
                       : 'text-sub hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >

@@ -994,7 +994,7 @@ function YearEndTaxCalculatorContent() {
             {/* Final result highlight */}
             <div className={`rounded-xl p-6 text-center ${
               result.refundAmount > 0
-                ? 'bg-subtle border border-line'
+                ? 'bg-primary-soft text-primary border border-primary'
                 : result.refundAmount < 0
                   ? 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
                   : 'bg-subtle border border-line'

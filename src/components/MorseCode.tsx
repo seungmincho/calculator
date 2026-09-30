@@ -275,7 +275,7 @@ export default function MorseCode() {
                     onClick={() => setSpeed(s)}
                     className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       speed === s
-                        ? 'bg-soft text-sub border border-line'
+                        ? 'bg-primary-soft text-primary border border-primary'
                         : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >

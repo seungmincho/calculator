@@ -512,7 +512,7 @@ export default function DueDateCalculator() {
                     <tr
                       key={w}
                       className={`border-b border-line transition-colors ${
-                        isCurrentRow ? 'bg-subtle font-medium' : ''
+                        isCurrentRow ? 'bg-primary-soft text-primary font-medium' : ''
                       }`}
                     >
                       <td className="py-2 pr-4 text-body">{w}주</td>
@@ -689,7 +689,7 @@ export default function DueDateCalculator() {
                     {(['underweight', 'normal', 'overweight', 'obese'] as BmiCategory[]).map((cat) => (
                       <tr
                         key={cat}
-                        className={`border-b border-line ${bmiData.cat === cat ? 'bg-subtle font-semibold' : ''}`}
+                        className={`border-b border-line ${bmiData.cat === cat ? 'bg-primary-soft text-primary font-semibold' : ''}`}
                       >
                         <td className="py-2 pr-4 text-body">
                           {t(`weightGain.${cat}` as Parameters<typeof t>[0])}

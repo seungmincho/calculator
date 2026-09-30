@@ -701,7 +701,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
           {!gameState.winner && (
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myColor
-                ? 'bg-soft text-sub'
+                ? 'bg-primary-soft text-primary'
                 : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}

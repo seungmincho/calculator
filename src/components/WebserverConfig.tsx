@@ -869,7 +869,7 @@ export default function WebserverConfig() {
                       key={i}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${
                         item.status === 'good'
-                          ? 'bg-subtle'
+                          ? 'bg-primary-soft text-primary'
                           : item.status === 'warn'
                             ? 'bg-yellow-50 dark:bg-yellow-950/20'
                             : 'bg-subtle'
@@ -937,7 +937,7 @@ export default function WebserverConfig() {
                 </button>
                 <button
                   onClick={() => updateOption('serverType', 'caddy')}
-                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'caddy' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'caddy' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
                 >
                   Caddy
                 </button>

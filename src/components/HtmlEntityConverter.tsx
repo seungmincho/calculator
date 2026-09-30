@@ -179,13 +179,13 @@ export default function HtmlEntityConverter() {
       <div className="flex bg-soft rounded-lg p-1">
         <button
           onClick={() => setMode('encode')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
         >
           {t('encodeTab')}
         </button>
         <button
           onClick={() => setMode('decode')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-surface text-blue-600 dark:text-blue-400 shadow' : 'text-sub'}`}
+          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
         >
           {t('decodeTab')}
         </button>
