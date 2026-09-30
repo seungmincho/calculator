@@ -9,10 +9,9 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type InputType = 'hourly' | 'daily' | 'monthly' | 'yearly'
 
-const MINIMUM_WAGE_2025 = 9860   // 2025년 최저임금 (시급) — task spec
-const MINIMUM_WAGE_2026 = 10320  // 2026년 최저임금 (시급) — currently displayed
-// Use 2025 for the new comparison bar as specified in the task
-const MIN_WAGE_COMPARE = MINIMUM_WAGE_2025
+// 2026년 최저임금 시급 10,320원 (고용노동부 고시)
+const MINIMUM_WAGE_2026 = 10320
+const MIN_WAGE_COMPARE = MINIMUM_WAGE_2026
 const AVG_ANNUAL_SALARY_KR = 42_000_000 // 한국 근로자 평균 연봉 약 4,200만원 (2024 기준)
 
 function HourlyWageInner() {

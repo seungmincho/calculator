@@ -1,145 +1,55 @@
 'use client'
 
-import { useState, useCallback, ChangeEvent } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Shield, AlertCircle, CheckCircle, Copy, Check, BookOpen } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { formatRrn, onlyDigits, parseRrn, type RrnResult } from '@/utils/residentNumber'
 
-interface ValidationResult {
-  isValid: boolean
-  birthDate: string
-  gender: string
-  regionCode: string
+// 개인정보: 입력값은 컴포넌트 state에만 존재. 네트워크 요청·localStorage·URL·히스토리·클립보드 사용 없음.
+const MASK_STYLE = { WebkitTextSecurity: 'disc' } as CSSProperties
+
+const STATUS_STYLE: Record<RrnResult['status'], string> = {
+  valid: 'bg-subtle text-fg',
+  checksumMismatch: 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200',
+  invalidDate: 'bg-red-50 text-red-800 dark:bg-red-950/40 dark:text-red-200',
+  futureDate: 'bg-red-50 text-red-800 dark:bg-red-950/40 dark:text-red-200',
 }
+
+const pad = (n: number) => String(n).padStart(2, '0')
 
 export default function ResidentNumber() {
   const t = useTranslations('residentNumber')
   const [input, setInput] = useState('')
-  const [result, setResult] = useState<ValidationResult | null>(null)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [masked, setMasked] = useState(false)
 
-  const formatInput = (value: string) => {
-    const digits = value.replace(/\D/g, '').slice(0, 13)
-    if (digits.length <= 6) return digits
-    return `${digits.slice(0, 6)}-${digits.slice(6)}`
-  }
+  const digits = onlyDigits(input)
+  const result = parseRrn(digits)
+  const hasDetails = result && (result.status === 'valid' || result.status === 'checksumMismatch')
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatInput(e.target.value)
-    setInput(formatted)
-    setResult(null)
-  }
+  const statusDesc = (r: RrnResult) =>
+    r.status === 'checksumMismatch' && r.afterReform
+      ? t('status.checksumMismatchAfterReform')
+      : t(`status.${r.status}Desc`)
 
-  const validateResidentNumber = (number: string): ValidationResult | null => {
-    const digits = number.replace(/-/g, '')
-    if (digits.length !== 13 || !/^\d{13}$/.test(digits)) {
-      return null
-    }
-
-    const mm = digits.slice(2, 4)
-    const dd = digits.slice(4, 6)
-    const genderCode = parseInt(digits[6])
-    const regionCode = digits.slice(7, 11)
-    const checkDigit = parseInt(digits[12])
-    const yy = digits.slice(0, 2)
-
-    const monthNum = parseInt(mm)
-    const dayNum = parseInt(dd)
-    if (monthNum < 1 || monthNum > 12 || dayNum < 1 || dayNum > 31) {
-      return null
-    }
-
-    if (genderCode < 1 || genderCode > 4) {
-      return null
-    }
-
-    const weights = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5]
-    let sum = 0
-    for (let i = 0; i < 12; i++) {
-      sum += parseInt(digits[i]) * weights[i]
-    }
-    const calculatedCheck = (11 - (sum % 11)) % 10
-
-    const isValid = calculatedCheck === checkDigit
-
-    const century = (genderCode === 1 || genderCode === 2) ? '19' : '20'
-    const birthDate = `${century}${yy}.${mm}.${dd}`
-
-    const gender = (genderCode % 2 === 1) ? t('info.male') : t('info.female')
-
-    return {
-      isValid,
-      birthDate,
-      gender,
-      regionCode,
-    }
-  }
-
-  const handleVerify = () => {
-    const validationResult = validateResidentNumber(input)
-    if (validationResult) {
-      setResult(validationResult)
-    } else {
-      setResult({
-        isValid: false,
-        birthDate: '',
-        gender: '',
-        regionCode: '',
-      })
-    }
-  }
-
-  const handleReset = () => {
-    setInput('')
-    setResult(null)
-  }
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const maskNumber = (number: string) => {
-    const digits = number.replace(/-/g, '')
-    if (digits.length !== 13) return number
-    return `${digits.slice(0, 6)}-${'*'.repeat(6)}${digits.slice(12)}`
-  }
+  const rows: [string, string][] = hasDetails
+    ? [
+        [t('info.number'), `${digits.slice(0, 6)}-${digits[6]}******`],
+        [t('info.birthDate'), `${result.year}.${pad(result.month)}.${pad(result.day)}`],
+        [t('info.age'), t('info.ageValue', { age: result.age })],
+        [t('info.gender'), result.male ? t('info.male') : t('info.female')],
+        [t('info.type'), result.foreigner ? t('info.foreigner') : t('info.korean')],
+        [t('info.century'), t('info.centuryValue', { century: Math.floor(result.year / 100) * 100 })],
+        [t('info.checksum'), result.status === 'valid' ? t('info.checksumOk') : t('info.checksumNo')],
+      ]
+    : []
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Shield className="w-6 h-6" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="bg-subtle border border-line rounded-xl p-4">
-        <p className="text-sm text-fg flex items-center gap-2">
-          <Shield className="w-4 h-4" />
-          {t('privacy')}
-        </p>
-      </div>
-
-      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
+      <div className="ui-card p-6 space-y-4">
         <div>
           <label htmlFor="resident-input" className="block text-sm font-medium text-body mb-2">
             {t('inputLabel')}
@@ -147,126 +57,84 @@ export default function ResidentNumber() {
           <input
             id="resident-input"
             type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            spellCheck={false}
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => setInput(formatRrn(e.target.value))}
             placeholder={t('inputPlaceholder')}
-            className={`${glassInput} px-3 py-2`}
+            className="ui-field px-4 py-3 w-full font-mono text-lg tabular-nums tracking-wider"
+            style={masked ? MASK_STYLE : undefined}
             maxLength={14}
           />
+          <div className="flex items-center justify-between mt-2 text-sm">
+            <label className="flex items-center gap-2 text-body cursor-pointer">
+              <input type="checkbox" checked={masked} onChange={(e) => setMasked(e.target.checked)} className="accent-blue-600" />
+              {t('mask')}
+            </label>
+            <span className="text-muted tabular-nums">{t('status.incomplete', { count: digits.length })}</span>
+          </div>
         </div>
 
-        <div className="flex gap-3">
-          <button
-            onClick={handleVerify}
-            disabled={input.replace(/-/g, '').length !== 13}
-            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-          >
-            {t('verify')}
-          </button>
-          <button
-            onClick={handleReset}
-            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-all"
-          >
-            {t('reset')}
-          </button>
-        </div>
+        <p className="text-sm text-muted">{t('privacyNote')}</p>
+
+        <button
+          onClick={() => setInput('')}
+          disabled={!input}
+          className="ui-btn-soft px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {t('reset')}
+        </button>
       </div>
 
-      {!!result && (
-        <div className={`rounded-xl shadow-lg p-6 ${
-          result.isValid
-            ? 'bg-subtle border border-line'
-            : 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
-        }`}>
-          <div className="flex items-center gap-3 mb-4">
-            {result.isValid ? (
-              <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-            ) : (
-              <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
-            )}
-            <h2 className={`text-xl font-semibold ${
-              result.isValid
-                ? 'text-fg'
-                : 'text-red-900 dark:text-red-100'
-            }`}>
-              {result.isValid ? t('valid') : t('invalid')}
-            </h2>
+      {result && (
+        <div className="ui-card p-6 space-y-4" aria-live="polite">
+          <div className={`rounded-2xl p-5 ${STATUS_STYLE[result.status]}`}>
+            <h2 className="text-xl font-semibold">{t(`status.${result.status}`)}</h2>
+            <p className="text-sm mt-1">{statusDesc(result)}</p>
           </div>
 
-          <p className={`text-sm mb-4 ${
-            result.isValid
-              ? 'text-fg'
-              : 'text-red-800 dark:text-red-200'
-          }`}>
-            {result.isValid ? t('validMessage') : t('invalidMessage')}
-          </p>
-
-          {result.isValid && (
-            <div className="space-y-3 bg-surface rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">
-                  {t('inputLabel')}
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-fg font-mono">
-                    {maskNumber(input)}
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(input, 'number')}
-                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                    title={t('copy')}
-                  >
-                    {copiedId === 'number' ? (
-                      <Check className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4 text-gray-500" />
-                    )}
-                  </button>
+          {hasDetails && (
+            <dl className="divide-y divide-line">
+              {rows.map(([k, v]) => (
+                <div key={k} className="flex items-center justify-between py-3 text-sm">
+                  <dt className="text-body">{k}</dt>
+                  <dd className="text-fg font-medium tabular-nums">{v}</dd>
                 </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">{t('info.birthDate')}</span>
-                <span className="text-sm text-fg">{result.birthDate}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">{t('info.gender')}</span>
-                <span className="text-sm text-fg">{result.gender}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">{t('info.region')}</span>
-                <span className="text-sm text-fg font-mono">{result.regionCode}</span>
-              </div>
-            </div>
+              ))}
+            </dl>
           )}
         </div>
       )}
 
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-medium text-fg mb-3">{t('guide.structure.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.structure.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+            <ul className="list-disc pl-5 space-y-2 text-body">
+              {(t.raw('guide.structure.items') as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-fg mb-3">{t('guide.codes.title')}</h3>
+            <ul className="list-disc pl-5 space-y-2 text-body">
+              <li>{t('guide.codes.c1900')}</li>
+              <li>{t('guide.codes.c2000')}</li>
+              <li>{t('guide.codes.foreigner')}</li>
+              <li>{t('guide.codes.c1800')}</li>
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-medium text-fg mb-3">{t('guide.validation.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.validation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+            <ul className="list-disc pl-5 space-y-2 text-body">
+              {(t.raw('guide.validation.items') as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              <li>{t('guide.foreignerNote')}</li>
             </ul>
+          </div>
+          <div className="bg-subtle rounded-2xl p-5 text-sub text-sm">
+            <p className="font-medium text-fg mb-1">{t('guide.reform.title')}</p>
+            <p>{t('guide.reform.body')}</p>
           </div>
         </div>
       </div>

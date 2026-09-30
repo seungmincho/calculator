@@ -70,7 +70,7 @@ export default function UnemploymentBenefitPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>수급 자격 조건:</strong> 이직일 이전 18개월 내 고용보험 피보험 단위기간이 180일 이상이어야 하며, 비자발적 이직이어야 합니다.</li>
-            <li><strong>1일 구직급여액:</strong> 이직 전 평균임금의 60%이며, 상한액(2026년 기준 66,000원/일)과 하한액(최저임금의 80%)이 적용됩니다.</li>
+            <li><strong>1일 구직급여액:</strong> 이직 전 평균임금의 60%이며, 상한액(2026년 기준 68,100원/일)과 하한액(최저임금의 80%)이 적용됩니다.</li>
             <li><strong>신청 시기:</strong> 이직 다음 날부터 12개월 이내에 신청해야 하며, 수급기간이 남아도 12개월이 경과하면 소멸됩니다.</li>
             <li><strong>구직 활동 의무:</strong> 수급 중 매주 구직 활동(입사지원, 취업특강 수강 등)을 하고 고용센터에 실업 인정을 받아야 급여가 지급됩니다.</li>
           </ul>

@@ -26,7 +26,7 @@ export default function GpaCalculatorPage() {
     url: 'https://toolhub.ai.kr/gpa-calculator', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['4.5/4.3 만점제 지원', '학기별 평점 계산', '누적 평점 계산', '과목 추가/삭제'],
+    featureList: ['4.5/4.3 만점제 지원', '학기별·누적 평점 계산', '전공 평점 계산', 'P/F 과목 처리', '재수강 성적 대체', '성적표 붙여넣기 입력', '목표 평점 역산'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',

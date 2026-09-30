@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '주민등록번호 검증기 - 유효성 검사, 생년월일 추출 | 툴허브',
-  description: '주민등록번호 검증기 - 주민등록번호의 유효성을 검사하고 생년월일, 성별, 지역 정보를 추출합니다. 개인정보 보호 처리.',
+  description: '주민등록번호 검증기 - 주민등록번호·외국인등록번호의 형식과 체크섬을 검사하고 생년월일, 만 나이, 성별, 내/외국인을 추출합니다. 2020년 10월 개편 번호 대응, 입력값은 전송·저장되지 않습니다.',
   keywords: '주민등록번호 검증, 주민번호 확인, 주민등록번호 유효성, resident number validator, 주민번호 검증기',
   openGraph: { title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출', url: 'https://toolhub.ai.kr/resident-number', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '주민등록번호 검증기 | 툴허브', description: '주민등록번호 유효성 검사 및 정보 추출' },
@@ -13,13 +13,13 @@ export const metadata: Metadata = {
 }
 
 export default function ResidentNumberPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '주민등록번호 검증기', description: '주민등록번호 유효성 검사 및 정보 추출', url: 'https://toolhub.ai.kr/resident-number', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주민번호 검증', '생년월일 추출', '성별 확인', '지역 정보'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '주민등록번호 검증기', description: '주민등록번호 유효성 검사 및 정보 추출', url: 'https://toolhub.ai.kr/resident-number', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주민번호 검증', '생년월일 추출', '만 나이·성별 확인', '외국인등록번호 검증', '2020년 개편 번호 대응'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
-      { '@type': 'Question', name: '주민등록번호 뒷자리 첫째 숫자의 의미는?', acceptedAnswer: { '@type': 'Answer', text: '주민등록번호 뒷자리 첫 숫자는 성별과 출생 세기를 나타냅니다. 1: 1900년대 남성, 2: 1900년대 여성, 3: 2000년대 남성, 4: 2000년대 여성입니다. 외국인은 5(1900년대 남), 6(1900년대 여), 7(2000년대 남), 8(2000년대 여)을 사용합니다. 뒷자리 나머지 숫자는 출생신고 지역코드와 검증번호입니다.' } },
-      { '@type': 'Question', name: '주민등록번호 유효성 검증 원리는?', acceptedAnswer: { '@type': 'Answer', text: '주민등록번호 13자리 중 마지막 1자리가 검증번호입니다. 앞 12자리에 가중치(2,3,4,5,6,7,8,9,2,3,4,5)를 곱한 합계를 11로 나눈 나머지를 11에서 뺀 값의 일의 자리가 검증번호와 일치해야 유효합니다. 이 알고리즘으로 단순 입력 오류를 감지할 수 있습니다.' } },
+      { '@type': 'Question', name: '주민등록번호 뒷자리 첫째 숫자의 의미는?', acceptedAnswer: { '@type': 'Answer', text: '주민등록번호 뒷자리 첫 숫자는 성별과 출생 세기를 나타냅니다. 1: 1900년대 남성, 2: 1900년대 여성, 3: 2000년대 남성, 4: 2000년대 여성입니다. 외국인은 5(1900년대 남), 6(1900년대 여), 7(2000년대 남), 8(2000년대 여)을 사용합니다. 9·0은 1800년대 출생자입니다. 2020년 10월 이전 번호는 이어지는 자리가 지역코드·일련번호·검증번호였지만, 이후 새로 부여되거나 변경된 번호는 나머지 6자리가 임의번호입니다.' } },
+      { '@type': 'Question', name: '주민등록번호 유효성 검증 원리는?', acceptedAnswer: { '@type': 'Answer', text: '주민등록번호 13자리 중 마지막 1자리가 검증번호입니다. 앞 12자리에 가중치(2,3,4,5,6,7,8,9,2,3,4,5)를 곱한 합계를 11로 나눈 나머지를 11에서 뺀 값의 일의 자리가 검증번호와 일치해야 유효합니다. 단, 2020년 10월 부여체계 개편 이후 신규·변경 발급된 번호는 뒷자리가 임의번호라 이 공식이 적용되지 않으므로, 체크섬이 맞지 않아도 정상 번호일 수 있습니다.' } },
       { '@type': 'Question', name: '주민등록번호 수집 제한은 어떻게 되나요?', acceptedAnswer: { '@type': 'Answer', text: '2014년 주민등록법 개정 이후, 법률에 근거 없이 주민등록번호를 수집하는 것이 금지되었습니다. 온라인에서는 본인확인기관(NICE, KCB 등)을 통한 본인인증으로 대체합니다. 주민번호 유출 시 주민센터에서 변경 신청이 가능하며, 개인정보보호위원회에 신고할 수 있습니다. 이 도구는 형식 검증만 수행하며 번호를 저장하지 않습니다.' } },
     ],
   }
@@ -49,7 +49,7 @@ export default function ResidentNumberPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>개발 테스트용 활용:</strong> 실제 주민등록번호 대신 유효한 형식의 테스트용 번호를 생성·검증하면 개인정보 침해 없이 시스템을 개발하고 테스트할 수 있습니다.</li>
-            <li><strong>검증 알고리즘 이해:</strong> 검증번호 계산 원리(가중치 곱의 합계 mod 11)를 이해하면 자체 유효성 검사 코드를 직접 구현하는 데 도움이 됩니다.</li>
+            <li><strong>검증 알고리즘 이해:</strong> 검증번호 계산 원리(가중치 곱의 합계 mod 11)는 2020년 10월 이전 발급 번호에만 적용됩니다. 자체 검증 코드에서 체크섬 불일치를 곧바로 오류 처리하면 개편 후 발급된 정상 번호를 거부하게 되니 주의하세요.</li>
             <li><strong>성별 및 연령 정보 추출:</strong> 뒷자리 첫 번째 숫자로 성별과 출생 세기를 파악해 사용자 정보를 자동으로 채울 수 있는 폼 자동완성 기능 구현에 참고하세요.</li>
             <li><strong>개인정보 보호 주의:</strong> 이 도구는 형식 검증만 수행하며 번호를 저장하지 않습니다. 실제 타인의 주민등록번호를 무단으로 사용하는 것은 법으로 금지되어 있습니다.</li>
           </ul>

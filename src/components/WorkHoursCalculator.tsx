@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Clock, Calculator, DollarSign, Users, Share2, Check, Save, Zap, TrendingUp, Shield, CalendarRange, CalendarDays, RefreshCw, Info } from 'lucide-react'
+import { Share2, Check, Save, Info } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
 import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
-import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
+import { INSURANCE } from '@/utils/insuranceRates'
+import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, type Shift } from '@/utils/workHours'
 
 // ─── 상수 ─────────────────────────────────────────────
-const MIN_WAGE_2026 = 10320
 const INSURANCE_RATES = {
   nationalPension: INSURANCE.pensionRate,
   healthInsurance: INSURANCE.healthRate,
@@ -28,17 +28,13 @@ const PRESETS = [
 
 const WEEKDAY_LABELS = ['월', '화', '수', '목', '금', '토', '일']
 const WEEKDAY_COLORS = ['text-body', 'text-body', 'text-body', 'text-body', 'text-body', 'text-blue-600 dark:text-blue-400', 'text-red-500']
+const BREAK_OPTIONS = [0, 30, 60, 90]
 
 // ─── 타입 ─────────────────────────────────────────────
-interface WorkHoursResult {
-  basicPay: number; overtimePay: number; nightPay: number
-  holidayPay: number; weeklyHolidayPay: number; totalPay: number
-  totalHours: number; overtimeHours: number; nightHours: number; holidayHours: number
-  workDayCount: number; weekCount: number
-}
 interface DayWork {
   date: string; startTime: string; endTime: string; breakTime: number; isHoliday: boolean
 }
+interface DaySlot { on: boolean; start: string; end: string; brk: number; hol: boolean }
 interface ConversionResult {
   daily: number; weekly: number; weeklyWithHoliday: number
   monthly: number; monthlyWithHoliday: number; yearly: number; yearlyWithHoliday: number
@@ -47,57 +43,31 @@ interface ConversionResult {
   netMonthly: number
 }
 type TabType = 'daily' | 'conversion'
-type InputMode = 'period' | 'individual'
+type InputMode = 'weekly' | 'period' | 'individual'
 
-// ─── 계산 로직 ─────────────────────────────────────────
-function calcWorkHours(dailyWork: DayWork[], wage: number, weeklyStdHours: number): WorkHoursResult {
-  let totalHours = 0, overtimeHours = 0, nightHours = 0, holidayHours = 0, workDays = 0
+// ─── 주간 스케줄 ───────────────────────────────────────
+const makeWeek = (days: number[], start: string, end: string, brk: number): DaySlot[] =>
+  WEEKDAY_LABELS.map((_, i) => ({ on: days.includes(i), start, end, brk, hol: false }))
 
-  dailyWork.forEach(day => {
-    if (!day.date || !day.startTime || !day.endTime) return
-    const start = new Date(`${day.date}T${day.startTime}`)
-    const end = new Date(`${day.date}T${day.endTime}`)
-    if (end <= start) end.setDate(end.getDate() + 1)
-    const dayHours = ((end.getTime() - start.getTime()) / 60000 - day.breakTime) / 60
-    if (dayHours <= 0) return
+const WEEK_PRESETS = [
+  { key: 'fullTime', week: () => makeWeek([0, 1, 2, 3, 4], '09:00', '18:00', 60) },
+  { key: 'part3',    week: () => makeWeek([0, 2, 4], '10:00', '14:30', 30) },
+  { key: 'weekend',  week: () => makeWeek([5, 6], '10:00', '19:00', 60) },
+  { key: 'night',    week: () => makeWeek([0, 1, 2, 3, 4], '22:00', '07:00', 60) },
+] as const
 
-    workDays++
-    totalHours += dayHours
-
-    if (day.isHoliday) {
-      holidayHours += dayHours
-    } else {
-      if (dayHours > 8) overtimeHours += dayHours - 8
-    }
-
-    // 야간근로 22:00~06:00
-    const nightStart = new Date(`${day.date}T22:00`)
-    const nightEnd = new Date(`${day.date}T06:00`)
-    nightEnd.setDate(nightEnd.getDate() + 1)
-    const os = Math.max(start.getTime(), nightStart.getTime())
-    const oe = Math.min(end.getTime(), nightEnd.getTime())
-    if (oe > os) nightHours += (oe - os) / 3600000
+// URL: 요일별 'HHMMHHMM{휴게}[h]', 쉬는 날은 빈 문자열, '_'로 구분
+const encodeWeek = (w: DaySlot[]) =>
+  w.map(d => d.on ? `${d.start.replace(':', '')}${d.end.replace(':', '')}${d.brk}${d.hol ? 'h' : ''}` : '').join('_')
+function decodeWeek(v: string | null): DaySlot[] | null {
+  if (!v) return null
+  const parts = v.split('_')
+  if (parts.length !== 7) return null
+  const base = makeWeek([], '09:00', '18:00', 60)
+  return parts.map((p, i) => {
+    const m = p.match(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{1,3})(h?)$/)
+    return m ? { on: true, start: `${m[1]}:${m[2]}`, end: `${m[3]}:${m[4]}`, brk: Number(m[5]), hol: m[6] === 'h' } : base[i]
   })
-
-  if (totalHours > weeklyStdHours) overtimeHours = Math.max(overtimeHours, totalHours - weeklyStdHours)
-
-  const basicHours = Math.max(0, totalHours - overtimeHours - holidayHours)
-  const basicPay = basicHours * wage
-  const overtimePay = overtimeHours * wage * 1.5
-  const nightPay = nightHours * wage * 0.5
-  const holidayPay = holidayHours * wage * 1.5
-
-  let weeklyHolidayPay = 0
-  if (totalHours >= 15) {
-    const whHours = Math.min((totalHours / weeklyStdHours) * 8, 8)
-    weeklyHolidayPay = whHours * wage
-  }
-
-  const weekCount = Math.ceil(workDays / 7) || (workDays > 0 ? 1 : 0)
-
-  return { basicPay, overtimePay, nightPay, holidayPay, weeklyHolidayPay,
-    totalPay: basicPay + overtimePay + nightPay + holidayPay + weeklyHolidayPay,
-    totalHours, overtimeHours, nightHours, holidayHours, workDayCount: workDays, weekCount }
 }
 
 // 기간 + 요일 → DayWork[] 생성
@@ -107,20 +77,13 @@ function generateDaysFromPeriod(
   startTime: string, endTime: string, breakTime: number
 ): DayWork[] {
   if (!startDate || !endDate) return []
-  const start = new Date(startDate + 'T12:00')
-  const end = new Date(endDate + 'T12:00')
-  if (start > end) return []
-
+  const cur = new Date(startDate + 'T00:00:00Z')
+  const end = new Date(endDate + 'T00:00:00Z')
   const days: DayWork[] = []
-  const cur = new Date(start)
-  while (cur <= end) {
-    const dow = cur.getDay() // 0=Sun,1=Mon,...,6=Sat
-    const idx = dow === 0 ? 6 : dow - 1 // Mon=0,...,Sun=6
-    if (selectedWeekdays[idx]) {
-      const dateStr = cur.toISOString().split('T')[0]
-      days.push({ date: dateStr, startTime, endTime, breakTime, isHoliday: false })
-    }
-    cur.setDate(cur.getDate() + 1)
+  while (cur <= end && days.length < 400) {
+    const idx = (cur.getUTCDay() + 6) % 7 // Mon=0,...,Sun=6
+    if (selectedWeekdays[idx]) days.push({ date: cur.toISOString().slice(0, 10), startTime, endTime, breakTime, isHoliday: false })
+    cur.setUTCDate(cur.getUTCDate() + 1)
   }
   return days
 }
@@ -137,12 +100,15 @@ export default function WorkHoursCalculator() {
   })
   const [inputMode, setInputMode] = useState<InputMode>(() => {
     const v = searchParams.get('mode')
-    return v === 'individual' ? 'individual' : 'period'
+    return v === 'individual' || v === 'period' ? v : 'weekly'
   })
 
-  // 시급 / 소정근로시간
   const [hourlyWage, setHourlyWage] = useState(() => searchParams.get('wage') || String(MIN_WAGE_2026))
-  const [weeklyHours, setWeeklyHours] = useState(() => searchParams.get('hours') || '40')
+  const [autoBreak, setAutoBreak] = useState(() => searchParams.get('auto') === '1')
+  const [smallBiz, setSmallBiz] = useState(() => searchParams.get('small') === '1')
+
+  // 주간 스케줄 모드
+  const [schedule, setSchedule] = useState<DaySlot[]>(() => decodeWeek(searchParams.get('ws')) || WEEK_PRESETS[0].week())
 
   // 기간 입력 모드
   const [periodStart, setPeriodStart] = useState(() => searchParams.get('start') || '')
@@ -161,8 +127,6 @@ export default function WorkHoursCalculator() {
     { date: '', startTime: '09:00', endTime: '18:00', breakTime: 60, isHoliday: false }
   ])
 
-  const [result, setResult] = useState<WorkHoursResult | null>(null)
-  const [generatedDays, setGeneratedDays] = useState<DayWork[]>([])
   const [isCopied, setIsCopied] = useState(false)
   const [showSaveButton, setShowSaveButton] = useState(false)
 
@@ -174,33 +138,27 @@ export default function WorkHoursCalculator() {
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('workHours')
 
-  // ─── 기간 모드 자동 계산 ───────────────────────────────
-  const runPeriodCalc = useCallback(() => {
-    const wage = parseFloat(hourlyWage)
-    const wh = parseFloat(weeklyHours)
-    if (!wage || wage <= 0 || !periodStart || !periodEnd) { setResult(null); return }
-    const days = generateDaysFromPeriod(periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime)
-    if (days.length === 0) { setResult(null); return }
-    setGeneratedDays(days)
-    setResult(calcWorkHours(days, wage, wh))
-    setShowSaveButton(true)
-  }, [hourlyWage, weeklyHours, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime])
+  // ─── 근무일 계산 ───────────────────────────────────────
+  const generatedDays = useMemo(
+    () => generateDaysFromPeriod(periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime),
+    [periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime])
 
-  useEffect(() => {
-    if (inputMode === 'period') runPeriodCalc()
-  }, [inputMode, runPeriodCalc])
-
-  // ─── 날짜별 모드 자동 계산 ─────────────────────────────
-  useEffect(() => {
-    if (inputMode === 'individual') {
-      const wage = parseFloat(hourlyWage)
-      const wh = parseFloat(weeklyHours)
-      if (!wage || wage <= 0) { setResult(null); return }
-      if (!dailyWork.some(d => d.date && d.startTime && d.endTime)) { setResult(null); return }
-      setResult(calcWorkHours(dailyWork, wage, wh))
-      setShowSaveButton(true)
+  const wageNum = parseFloat(hourlyWage) || 0
+  const result = useMemo(() => {
+    if (wageNum <= 0) return null
+    const brk = (b: number) => autoBreak ? -1 : b
+    let shifts: Shift[]
+    if (inputMode === 'weekly') {
+      shifts = schedule.filter(d => d.on).map(d => ({ week: 'w', start: d.start, end: d.end, breakMin: brk(d.brk), holiday: d.hol }))
+    } else {
+      const days = inputMode === 'period' ? generatedDays : dailyWork.filter(d => d.date && d.startTime && d.endTime)
+      shifts = days.map(d => ({ week: weekOf(d.date), start: d.startTime, end: d.endTime, breakMin: brk(d.breakTime), holiday: d.isHoliday }))
     }
-  }, [inputMode, hourlyWage, weeklyHours, dailyWork])
+    const r = calcPay(shifts, wageNum, smallBiz)
+    return r.workDayCount > 0 ? r : null
+  }, [wageNum, autoBreak, smallBiz, inputMode, schedule, generatedDays, dailyWork])
+
+  useEffect(() => { if (result) setShowSaveButton(true) }, [result])
 
   // ─── 시급 환산 ─────────────────────────────────────────
   useEffect(() => {
@@ -215,7 +173,7 @@ export default function WorkHoursCalculator() {
     const whHours = isEligible ? Math.min((wh / 40) * 8, 8) : 0
     const weeklyHolidayPay = whHours * wage
 
-    const wpm = 365 / 7 / 12
+    const wpm = WEEKS_PER_MONTH
     const weekly = wh * wage
     const weeklyWithHoliday = weekly + weeklyHolidayPay
     const monthly = wh * wpm * wage
@@ -241,41 +199,49 @@ export default function WorkHoursCalculator() {
     if (typeof window === 'undefined') return
     const url = new URL(window.location.href)
     const s = url.searchParams
+    const dailyKeys = ['mode', 'wage', 'auto', 'small', 'ws', 'start', 'end', 'days', 'st', 'et', 'break']
+    ;[...dailyKeys, 'hours', 'cwage', 'chours', 'cdays'].forEach(k => s.delete(k))
     s.set('tab', activeTab)
     if (activeTab === 'daily') {
       s.set('mode', inputMode)
       s.set('wage', hourlyWage)
-      s.set('hours', weeklyHours)
+      if (autoBreak) s.set('auto', '1')
+      if (smallBiz) s.set('small', '1')
+      if (inputMode === 'weekly') s.set('ws', encodeWeek(schedule))
       if (inputMode === 'period') {
-        if (periodStart) s.set('start', periodStart); else s.delete('start')
-        if (periodEnd) s.set('end', periodEnd); else s.delete('end')
+        if (periodStart) s.set('start', periodStart)
+        if (periodEnd) s.set('end', periodEnd)
         s.set('days', selectedWeekdays.map(b => b ? '1' : '0').join(''))
         s.set('st', periodStartTime)
         s.set('et', periodEndTime)
         s.set('break', String(periodBreakTime))
       }
-      // conversion 파라미터 제거
-      s.delete('cwage'); s.delete('chours'); s.delete('cdays')
     } else {
       s.set('cwage', convWage)
       s.set('chours', convWeeklyHours)
       s.set('cdays', convDaysPerWeek)
-      // daily 파라미터 제거
-      s.delete('mode'); s.delete('wage'); s.delete('hours')
-      s.delete('start'); s.delete('end'); s.delete('days')
-      s.delete('st'); s.delete('et'); s.delete('break')
     }
     window.history.replaceState({}, '', url)
-  }, [activeTab, inputMode, hourlyWage, weeklyHours, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime, convWage, convWeeklyHours, convDaysPerWeek])
+  }, [activeTab, inputMode, hourlyWage, autoBreak, smallBiz, schedule, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime, convWage, convWeeklyHours, convDaysPerWeek])
 
   // ─── 헬퍼 ─────────────────────────────────────────────
   const fmt = (n: number) => new Intl.NumberFormat('ko-KR').format(Math.round(n))
-  const fmtH = (h: number) => h.toFixed(1)
+  const fmtH = (h: number) => String(Math.round(h * 10) / 10)
+
+  const updateSlot = (i: number, patch: Partial<DaySlot>) =>
+    setSchedule(prev => prev.map((d, j) => j === i ? { ...d, ...patch } : d))
+
+  const copyToAll = () => {
+    const src = schedule.find(d => d.on)
+    if (src) setSchedule(prev => prev.map(d => d.on ? { ...d, start: src.start, end: src.end, brk: src.brk } : d))
+  }
 
   const applyPreset = (presetId: string) => {
     const p = PRESETS.find(x => x.id === presetId)
     if (!p) return
-    if (inputMode === 'period') {
+    if (inputMode === 'weekly') {
+      setSchedule(prev => prev.map(d => d.on ? { ...d, start: p.startTime, end: p.endTime, brk: p.breakTime } : d))
+    } else if (inputMode === 'period') {
       setPeriodStartTime(p.startTime); setPeriodEndTime(p.endTime); setPeriodBreakTime(p.breakTime)
     } else {
       const updated = [...dailyWork]
@@ -315,109 +281,122 @@ export default function WorkHoursCalculator() {
   const handleSave = () => {
     if (!result) return
     saveCalculation(
-      { hourlyWage: parseFloat(hourlyWage), weeklyHours: parseFloat(weeklyHours), totalHours: result.totalHours },
-      { basicPay: result.basicPay, overtimePay: result.overtimePay, nightPay: result.nightPay, holidayPay: result.holidayPay, weeklyHolidayPay: result.weeklyHolidayPay, totalPay: result.totalPay }
+      { hourlyWage: wageNum, totalHours: result.totalHours },
+      { basicPay: result.basicPay, overtimePay: result.overtimePay, nightPay: result.nightPay, holidayPay: result.holidayPay + result.holidayOverPay, weeklyHolidayPay: result.weeklyHolidayPay, totalPay: result.totalPay }
     )
     setShowSaveButton(false)
   }
 
   const presetKeys = ['presetConvenience', 'presetCafe', 'presetRestaurant', 'presetOffice', 'presetLogistics'] as const
-  const presetBtnCls = [
-    'bg-soft text-sub hover:bg-purple-200',
-    'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-200',
-    'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200',
-    'bg-soft text-sub hover:bg-blue-200',
-    'bg-soft text-body hover:bg-gray-200',
-  ]
-  const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
-  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
-  const glassSoft = 'bg-surface border border-line'
+  const chip = 'px-2.5 py-1 rounded-full text-xs font-medium bg-soft text-sub hover:bg-subtle transition-colors'
+  const segBtn = (active: boolean) => `flex-1 py-2 rounded-lg text-xs font-medium transition-all ${active ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-fg'}`
 
   // ─── 결과 패널 ─────────────────────────────────────────
-  const ResultPanel = () => result ? (
-    <>
-      <div className="bg-primary rounded-2xl shadow-lg p-6 text-white">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base font-semibold opacity-90 flex items-center gap-2">
-            {t('result.title')}
-          </h3>
-          <div className="flex gap-2">
-            <button onClick={handleShare} className="flex items-center gap-1 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs transition-colors">
-              {isCopied ? <><Check className="w-3 h-3" />{tCommon('copied')}</> : <><Share2 className="w-3 h-3" />{t('result.shareResult')}</>}
-            </button>
-            {showSaveButton && (
-              <button onClick={handleSave} className="flex items-center gap-1 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs transition-colors">
-                <Save className="w-3 h-3" />{tCommon('save')}
+  const renderResult = () => {
+    if (!result) return (
+      <div className="ui-card p-10 text-center">
+        <p className="text-sm text-muted">{t('placeholder')}</p>
+      </div>
+    )
+    const wk = result.weeks
+    const over52 = !smallBiz && wk.some(w => w.over52)
+    const maxWeekH = Math.max(...wk.map(w => w.hours))
+    const rows = [
+      { label: t('result.basicPay'), h: result.basicHours, v: result.basicPay, plus: false },
+      { label: t('result.overtimePay'), h: result.overtimeHours, v: result.overtimePay, plus: true },
+      { label: t('result.nightPay'), h: result.nightHours, v: result.nightPay, plus: true },
+      { label: t('result.holidayPay'), h: result.holidayHours, v: result.holidayPay, plus: true },
+      { label: t('result.holidayOverPay'), h: result.holidayOver8Hours, v: result.holidayOverPay, plus: true },
+      { label: t('result.weeklyHolidayPay'), h: wk.reduce((a, w) => a + w.weeklyHolidayHours, 0), v: result.weeklyHolidayPay, plus: true },
+    ]
+    return (
+      <>
+        <div className="ui-card p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-base font-semibold text-fg">
+              {inputMode === 'weekly' ? t('result.weeklyTitle') : t('result.title')}
+            </h3>
+            <div className="flex gap-2">
+              <button onClick={handleShare} className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs">
+                {isCopied ? <><Check className="w-3 h-3" />{tCommon('copied')}</> : <><Share2 className="w-3 h-3" />{t('result.shareResult')}</>}
               </button>
-            )}
+              {showSaveButton && (
+                <button onClick={handleSave} className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs">
+                  <Save className="w-3 h-3" />{tCommon('save')}
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="text-3xl font-bold text-fg tabular-nums">{fmt(result.totalPay)}원</div>
+          <div className="text-sm text-muted mt-1">
+            {t('result.totalHours')} {fmtH(result.totalHours)}{t('result.hours')} · {result.workDayCount}{t('result.days')}
+            {wk.length > 1 && ` · ${t('result.weeksCount', { count: wk.length })}`}
+          </div>
+          <div className="grid grid-cols-2 gap-3 mt-5 pt-4 border-t border-line">
+            <div>
+              <div className="text-xs text-muted mb-1">{t('result.monthlyAvg')}</div>
+              <div className="text-lg font-bold text-fg tabular-nums">{fmt(result.monthlyPay)}원</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted mb-1">{t('result.yearlyAvg')}</div>
+              <div className="text-lg font-bold text-fg tabular-nums">{fmt(result.monthlyPay * 12)}원</div>
+            </div>
           </div>
         </div>
-        <div className="text-center mb-4">
-          <div className="text-4xl font-bold mb-1">{fmt(result.totalPay)}<span className="text-2xl">원</span></div>
-          <div className="text-sm opacity-80">{t('result.totalHours')}: {fmtH(result.totalHours)}{t('result.hours')} · {result.workDayCount}일</div>
-        </div>
-        <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/20">
-          <div className="text-center">
-            <div className="text-xs opacity-70 mb-1">{t('result.monthlyEstimate')}</div>
-            <div className="text-lg font-bold">{fmt(result.totalPay * 4)}원</div>
-          </div>
-          <div className="text-center">
-            <div className="text-xs opacity-70 mb-1">{t('result.yearlyEstimate')}</div>
-            <div className="text-lg font-bold">{fmt(result.totalPay * 52)}원</div>
-          </div>
-        </div>
-      </div>
 
-      <div className={`${glassCard} ${glassInset} p-5`}>
-        <h4 className="text-sm font-bold text-fg mb-3">{t('result.breakdown')}</h4>
-        <div className="divide-y divide-gray-100 dark:divide-gray-700">
-          <div className="flex justify-between py-2">
-            <span className="text-sm text-sub">{t('result.basicPay')}</span>
-            <span className="font-semibold text-sm">{fmt(result.basicPay)}원</span>
+        {(over52 || wageNum < MIN_WAGE_2026 || (!autoBreak && result.breakShortDays > 0)) && (
+          <div className="rounded-2xl p-4 bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200 text-sm space-y-1">
+            {over52 && <p>{t('warn.over52', { hours: fmtH(maxWeekH) })}</p>}
+            {wageNum < MIN_WAGE_2026 && <p>{t('warn.belowMin', { min: fmt(MIN_WAGE_2026) })}</p>}
+            {!autoBreak && result.breakShortDays > 0 && <p>{t('warn.breakShort', { count: result.breakShortDays })}</p>}
           </div>
-          {result.overtimePay > 0 && (
-            <div className="flex justify-between py-2">
-              <span className="text-sm text-sub">{t('result.overtimePay')} <span className="text-xs text-orange-500">({fmtH(result.overtimeHours)}{t('result.hours')})</span></span>
-              <span className="font-semibold text-sm text-orange-600">+{fmt(result.overtimePay)}원</span>
-            </div>
-          )}
-          {result.nightPay > 0 && (
-            <div className="flex justify-between py-2">
-              <span className="text-sm text-sub">{t('result.nightPay')} <span className="text-xs text-purple-500">({fmtH(result.nightHours)}{t('result.hours')})</span></span>
-              <span className="font-semibold text-sm text-purple-600">+{fmt(result.nightPay)}원</span>
-            </div>
-          )}
-          {result.holidayPay > 0 && (
-            <div className="flex justify-between py-2">
-              <span className="text-sm text-sub">{t('result.holidayPay')} <span className="text-xs text-red-500">({fmtH(result.holidayHours)}{t('result.hours')})</span></span>
-              <span className="font-semibold text-sm text-red-600">+{fmt(result.holidayPay)}원</span>
-            </div>
-          )}
-          {result.weeklyHolidayPay > 0 && (
-            <div className="flex justify-between py-2">
-              <span className="text-sm text-sub">
-                <span className="inline-flex items-center gap-1">
-                  {t('result.weeklyHolidayPay')}
-                  <span className="relative group">
-                    <Info className="w-3.5 h-3.5 text-gray-400 cursor-help" />
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-48 text-xs bg-gray-900 text-white rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 text-center">
-                      주 15시간 이상 근무 시 지급
-                    </span>
-                  </span>
-                </span>
-              </span>
-              <span className="font-semibold text-sm text-green-600">+{fmt(result.weeklyHolidayPay)}원</span>
-            </div>
-          )}
+        )}
+
+        <div className="ui-card p-5">
+          <h4 className="text-sm font-bold text-fg mb-3">{t('result.breakdown')}</h4>
+          <div className="divide-y divide-line">
+            {rows.filter((r, i) => i === 0 || r.v > 0).map(r => (
+              <div key={r.label} className="flex justify-between py-2 text-sm">
+                <span className="text-sub">{r.label} <span className="text-xs text-muted">({fmtH(r.h)}{t('result.hours')})</span></span>
+                <span className="font-semibold text-fg tabular-nums">{r.plus ? '+' : ''}{fmt(r.v)}원</span>
+              </div>
+            ))}
+          </div>
+          {smallBiz && <p className="text-xs text-muted mt-3">{t('result.smallBizNote')}</p>}
         </div>
-      </div>
-    </>
-  ) : (
-    <div className={`${glassSoft} rounded-2xl p-10 text-center flex flex-col items-center gap-3`}>
-      <Clock className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-      <p className="text-sm text-muted">{t('placeholder')}</p>
-    </div>
-  )
+
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <h4 className="font-semibold text-fg">{t('weeklyHoliday.title')}</h4>
+          {wk.length === 1 ? (
+            <p>{wk[0].eligible
+              ? t('weeklyHoliday.eligible', { contract: fmtH(wk[0].contractHours), hours: fmtH(wk[0].weeklyHolidayHours) })
+              : t('weeklyHoliday.notEligible', { contract: fmtH(wk[0].contractHours) })}</p>
+          ) : (
+            <>
+              <p>{t('weeklyHoliday.summary', { eligible: wk.filter(w => w.eligible).length, total: wk.length })}</p>
+              <table className="w-full text-xs tabular-nums">
+                <thead><tr className="text-muted text-left">
+                  <th className="font-medium py-1">{t('weeklyHoliday.weekOf')}</th>
+                  <th className="font-medium py-1 text-right">{t('weeklyHoliday.workHours')}</th>
+                  <th className="font-medium py-1 text-right">{t('weeklyHoliday.paidHours')}</th>
+                </tr></thead>
+                <tbody>
+                  {wk.map(w => (
+                    <tr key={w.week} className="border-t border-line">
+                      <td className="py-1">{w.week.slice(5).replace('-', '/')}~</td>
+                      <td className={`py-1 text-right ${!smallBiz && w.over52 ? 'text-red-600 dark:text-red-400 font-semibold' : ''}`}>{fmtH(w.hours)}</td>
+                      <td className="py-1 text-right">{fmtH(w.weeklyHolidayHours)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+          <p className="text-xs text-muted">{t('weeklyHoliday.note')}</p>
+        </div>
+      </>
+    )
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -431,7 +410,7 @@ export default function WorkHoursCalculator() {
           histories={histories} isLoading={false}
           onLoadHistory={(id) => {
             const inp = loadFromHistory(id)
-            if (inp) { setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026)); setWeeklyHours(inp.weeklyHours?.toString() || '40') }
+            if (inp) setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026))
           }}
           onRemoveHistory={removeHistory} onClearHistories={clearHistories}
           formatResult={(result: Record<string, unknown>) => {
@@ -443,10 +422,10 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* 탭 */}
-      <div className="flex gap-1 bg-surface border border-line rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-soft rounded-xl p-1 w-fit">
         {(['daily', 'conversion'] as TabType[]).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-sub hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-surface text-fg shadow-sm' : 'text-sub hover:text-fg'}`}
           >
             {t(`tabs.${tab}`)}
           </button>
@@ -456,60 +435,94 @@ export default function WorkHoursCalculator() {
       {/* ═══ 탭 1: 근무일 계산 ═══ */}
       {activeTab === 'daily' && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            {/* 시급 + 소정근로시간 */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>
-                <div className="relative">
-                  <input type="number" value={hourlyWage} onChange={e => setHourlyWage(e.target.value)}
-                    className="w-full pl-3 pr-8 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
+          <div className="ui-card p-6 space-y-5">
+            {/* 시급 */}
+            <div>
+              <label className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <input type="number" inputMode="numeric" value={hourlyWage} onChange={e => setHourlyWage(e.target.value)}
+                    className="ui-field w-full pl-3 pr-8 py-2.5 text-sm" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">원</span>
                 </div>
-                <p className="text-[10px] text-gray-400 mt-1">{t('input.hourlyWageNote')}</p>
+                <button onClick={() => setHourlyWage(String(MIN_WAGE_2026))} className="ui-btn-soft px-3 py-2 text-xs whitespace-nowrap">
+                  {t('input.useMinWage')}
+                </button>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-muted mb-1.5">{t('input.weeklyHours')}</label>
-                <div className="flex gap-1">
-                  {[40, 35, 30, 20].map(h => (
-                    <button key={h} onClick={() => setWeeklyHours(String(h))}
-                      className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-colors border ${weeklyHours === String(h) ? 'bg-blue-600 text-white border-blue-600' : 'border-line-strong text-sub hover:border-blue-400'}`}
-                    >{h}</button>
-                  ))}
-                </div>
-              </div>
+              <p className="text-xs text-muted mt-1">{t('input.hourlyWageNote')}</p>
+            </div>
+
+            {/* 옵션 */}
+            <div className="space-y-2">
+              <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={autoBreak} onChange={e => setAutoBreak(e.target.checked)} className="accent-blue-600 mt-0.5" />
+                <span>{t('input.autoBreak')}<span className="block text-xs text-muted">{t('input.autoBreakNote')}</span></span>
+              </label>
+              <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={smallBiz} onChange={e => setSmallBiz(e.target.checked)} className="accent-blue-600 mt-0.5" />
+                <span>{t('input.smallBusiness')}<span className="block text-xs text-muted">{t('input.smallBusinessNote')}</span></span>
+              </label>
             </div>
 
             {/* 입력 방식 전환 */}
             <div className="flex gap-1 bg-soft rounded-xl p-1">
-              <button onClick={() => setInputMode('period')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'period' ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-muted hover:text-gray-700'}`}
-              >
-                <CalendarRange className="w-3.5 h-3.5" />{t('input.periodMode')}
-              </button>
-              <button onClick={() => setInputMode('individual')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${inputMode === 'individual' ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm' : 'text-muted hover:text-gray-700'}`}
-              >
-                <CalendarDays className="w-3.5 h-3.5" />{t('input.individualMode')}
-              </button>
+              {(['weekly', 'period', 'individual'] as InputMode[]).map(m => (
+                <button key={m} onClick={() => setInputMode(m)} className={segBtn(inputMode === m)}>
+                  {t(`input.${m}Mode`)}
+                </button>
+              ))}
             </div>
 
-            {/* 빠른 입력 프리셋 */}
+            {/* 빠른 입력 */}
             <div>
-              <p className="text-[10px] font-medium text-gray-400 mb-2 flex items-center gap-1">
-                <Zap className="w-3 h-3" />{t('input.presets')}
-              </p>
+              <p className="text-xs font-medium text-muted mb-2">{t('input.presets')}</p>
               <div className="flex flex-wrap gap-1.5">
+                {inputMode === 'weekly' && WEEK_PRESETS.map(p => (
+                  <button key={p.key} onClick={() => setSchedule(p.week())} className={chip}>{t(`weekPreset.${p.key}`)}</button>
+                ))}
                 {presetKeys.map((key, i) => (
-                  <button key={key} onClick={() => applyPreset(PRESETS[i].id)}
-                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors ${presetBtnCls[i]}`}
-                  >
-                    {t(`input.${key}`)}
-                  </button>
+                  <button key={key} onClick={() => applyPreset(PRESETS[i].id)} className={chip}>{t(`input.${key}`)}</button>
                 ))}
               </div>
             </div>
+
+            {/* ── 주간 스케줄 모드 ── */}
+            {inputMode === 'weekly' && (
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="text-xs font-medium text-muted">{t('input.weeklySchedule')}</label>
+                  <button onClick={copyToAll} className="text-xs text-primary hover:underline">{t('input.copyToAll')}</button>
+                </div>
+                <div className="grid grid-cols-[2.25rem_1fr_1fr_4.25rem_2.5rem] gap-x-1.5 gap-y-1.5 items-center text-sm">
+                  <span />
+                  <span className="text-xs text-muted">{t('input.startTime')}</span>
+                  <span className="text-xs text-muted">{t('input.endTime')}</span>
+                  <span className="text-xs text-muted">{t('input.breakTime')}</span>
+                  <span className="text-xs text-muted text-center">{t('input.holidayShort')}</span>
+                  {schedule.map((d, i) => {
+                    const span = (() => { const a = toMin(d.start); let b = toMin(d.end); if (b <= a) b += 1440; return b - a })()
+                    const dim = d.on ? '' : 'opacity-40'
+                    return [
+                      <button key={`d${i}`} onClick={() => updateSlot(i, { on: !d.on })} aria-pressed={d.on}
+                        className={`h-9 rounded-lg text-xs font-bold transition-colors ${d.on ? 'bg-fg text-canvas' : `bg-soft ${WEEKDAY_COLORS[i]} opacity-60`}`}>
+                        {WEEKDAY_LABELS[i]}
+                      </button>,
+                      <input key={`s${i}`} type="time" value={d.start} disabled={!d.on} aria-label={`${WEEKDAY_LABELS[i]} ${t('input.startTime')}`}
+                        onChange={e => updateSlot(i, { start: e.target.value || d.start })} className={`ui-field w-full min-w-0 px-2 py-1.5 text-sm ${dim}`} />,
+                      <input key={`e${i}`} type="time" value={d.end} disabled={!d.on} aria-label={`${WEEKDAY_LABELS[i]} ${t('input.endTime')}`}
+                        onChange={e => updateSlot(i, { end: e.target.value || d.end })} className={`ui-field w-full min-w-0 px-2 py-1.5 text-sm ${dim}`} />,
+                      <select key={`b${i}`} value={autoBreak ? legalMinBreak(span) : d.brk} disabled={!d.on || autoBreak} aria-label={`${WEEKDAY_LABELS[i]} ${t('input.breakTime')}`}
+                        onChange={e => updateSlot(i, { brk: Number(e.target.value) })} className={`ui-field w-full px-1.5 py-1.5 text-sm ${dim}`}>
+                        {BREAK_OPTIONS.map(m => <option key={m} value={m}>{m}분</option>)}
+                      </select>,
+                      <input key={`h${i}`} type="checkbox" checked={d.hol} disabled={!d.on} aria-label={`${WEEKDAY_LABELS[i]} ${t('input.holiday')}`}
+                        onChange={e => updateSlot(i, { hol: e.target.checked })} className={`accent-blue-600 w-4 h-4 justify-self-center ${dim}`} />,
+                    ]
+                  })}
+                </div>
+                <p className="text-xs text-muted mt-2">{t('input.weeklyScheduleNote')}</p>
+              </div>
+            )}
 
             {/* ── 기간 입력 모드 ── */}
             {inputMode === 'period' && (
@@ -521,9 +534,7 @@ export default function WorkHoursCalculator() {
                     <CustomDatePicker value={periodEnd} onChange={setPeriodEnd} placeholder={t('input.endDate')} />
                   </div>
                   {periodStart && periodEnd && generatedDays.length > 0 && (
-                    <p className="text-[11px] text-green-600 dark:text-green-400 mt-1.5 flex items-center gap-1">
-                      <Check className="w-3 h-3" />{t('input.totalWorkDays', { count: generatedDays.length })}
-                    </p>
+                    <p className="text-xs text-sub mt-1.5">{t('input.totalWorkDays', { count: generatedDays.length })}</p>
                   )}
                 </div>
 
@@ -531,8 +542,8 @@ export default function WorkHoursCalculator() {
                   <label className="block text-xs font-medium text-muted mb-2">{t('input.workDays')}</label>
                   <div className="flex gap-1">
                     {WEEKDAY_LABELS.map((d, i) => (
-                      <button key={d} onClick={() => toggleWeekday(i)}
-                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? (i === 5 ? 'bg-blue-600 text-white' : i === 6 ? 'bg-red-500 text-white' : 'bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900') : 'bg-soft text-faint'}`}
+                      <button key={d} onClick={() => toggleWeekday(i)} aria-pressed={selectedWeekdays[i]}
+                        className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${selectedWeekdays[i] ? 'bg-fg text-canvas' : 'bg-soft text-faint'}`}
                       >{d}</button>
                     ))}
                   </div>
@@ -542,24 +553,26 @@ export default function WorkHoursCalculator() {
                   <label className="block text-xs font-medium text-muted mb-2">{t('input.workTime')}</label>
                   <div className="grid grid-cols-2 gap-2 mb-2">
                     <div>
-                      <p className="text-[10px] text-gray-400 mb-1">{t('input.startTime')}</p>
+                      <p className="text-xs text-muted mb-1">{t('input.startTime')}</p>
                       <CustomTimePicker value={periodStartTime} onChange={setPeriodStartTime} />
                     </div>
                     <div>
-                      <p className="text-[10px] text-gray-400 mb-1">{t('input.endTime')}</p>
+                      <p className="text-xs text-muted mb-1">{t('input.endTime')}</p>
                       <CustomTimePicker value={periodEndTime} onChange={setPeriodEndTime} />
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label className="text-[10px] text-gray-400">{t('input.breakTime')}</label>
-                    <div className="flex gap-1">
-                      {[0, 30, 60, 90].map(m => (
-                        <button key={m} onClick={() => setPeriodBreakTime(m)}
-                          className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${periodBreakTime === m ? 'bg-blue-600 text-white' : 'bg-soft text-sub hover:bg-gray-200'}`}
-                        >{m}분</button>
-                      ))}
+                  {!autoBreak && (
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs text-muted">{t('input.breakTime')}</label>
+                      <div className="flex gap-1">
+                        {BREAK_OPTIONS.map(m => (
+                          <button key={m} onClick={() => setPeriodBreakTime(m)}
+                            className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${periodBreakTime === m ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}
+                          >{m}분</button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
@@ -569,44 +582,44 @@ export default function WorkHoursCalculator() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <label className="text-xs font-medium text-muted">{t('input.workSchedule')}</label>
-                  <button onClick={addWorkDay} className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition-colors">
-                    {t('input.addDay')}
-                  </button>
+                  <button onClick={addWorkDay} className="ui-btn px-3 py-1 text-xs">{t('input.addDay')}</button>
                 </div>
                 <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
                   {dailyWork.map((day, idx) => (
-                    <div key={idx} className="p-3 border border-line rounded-xl bg-subtle">
+                    <div key={idx} className="p-3 rounded-xl bg-subtle">
                       <div className="mb-2">
-                        <p className="text-[10px] text-gray-400 mb-1">{t('input.date')}</p>
+                        <p className="text-xs text-muted mb-1">{t('input.date')}</p>
                         <CustomDatePicker value={day.date} onChange={v => updateWorkDay(idx, 'date', v)} placeholder={t('input.date')} />
                       </div>
                       <div className="grid grid-cols-2 gap-2 mb-2">
                         <div>
-                          <p className="text-[10px] text-gray-400 mb-1">{t('input.startTime')}</p>
+                          <p className="text-xs text-muted mb-1">{t('input.startTime')}</p>
                           <CustomTimePicker value={day.startTime} onChange={v => updateWorkDay(idx, 'startTime', v)} />
                         </div>
                         <div>
-                          <p className="text-[10px] text-gray-400 mb-1">{t('input.endTime')}</p>
+                          <p className="text-xs text-muted mb-1">{t('input.endTime')}</p>
                           <CustomTimePicker value={day.endTime} onChange={v => updateWorkDay(idx, 'endTime', v)} />
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1">
-                          <span className="text-[10px] text-gray-400">{t('input.breakTime')}</span>
-                          <div className="flex gap-1">
-                            {[0, 30, 60].map(m => (
-                              <button key={m} onClick={() => updateWorkDay(idx, 'breakTime', m)}
-                                className={`px-2 py-0.5 rounded text-[10px] transition-colors ${day.breakTime === m ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-sub'}`}
-                              >{m}분</button>
-                            ))}
+                      <div className="flex flex-wrap items-center gap-3">
+                        {!autoBreak && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-muted">{t('input.breakTime')}</span>
+                            <div className="flex gap-1">
+                              {BREAK_OPTIONS.map(m => (
+                                <button key={m} onClick={() => updateWorkDay(idx, 'breakTime', m)}
+                                  className={`px-2 py-0.5 rounded text-xs transition-colors ${day.breakTime === m ? 'bg-primary text-white' : 'bg-soft text-sub'}`}
+                                >{m}분</button>
+                              ))}
+                            </div>
                           </div>
-                        </div>
+                        )}
                         <label className="flex items-center gap-1 cursor-pointer ml-auto">
-                          <input type="checkbox" checked={day.isHoliday} onChange={e => updateWorkDay(idx, 'isHoliday', e.target.checked)} className="accent-red-500 w-3 h-3" />
-                          <span className="text-[10px] text-sub">{t('input.holiday')}</span>
+                          <input type="checkbox" checked={day.isHoliday} onChange={e => updateWorkDay(idx, 'isHoliday', e.target.checked)} className="accent-blue-600 w-3.5 h-3.5" />
+                          <span className="text-xs text-sub">{t('input.holiday')}</span>
                         </label>
                         {dailyWork.length > 1 && (
-                          <button onClick={() => removeWorkDay(idx)} className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-500 rounded text-[10px] hover:bg-red-200 transition-colors">
+                          <button onClick={() => removeWorkDay(idx)} className="px-2 py-0.5 bg-soft text-red-600 dark:text-red-400 rounded text-xs hover:bg-subtle transition-colors">
                             삭제
                           </button>
                         )}
@@ -619,31 +632,28 @@ export default function WorkHoursCalculator() {
           </div>
 
           {/* 결과 */}
-          <div className="space-y-4"><ResultPanel /></div>
+          <div className="space-y-4">{renderResult()}</div>
         </div>
       )}
 
       {/* ═══ 탭 2: 시급 환산 ═══ */}
       {activeTab === 'conversion' && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-bold text-fg flex items-center gap-2">
-              {t('conversion.title')}
-            </h2>
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-bold text-fg">{t('conversion.title')}</h2>
             <p className="text-xs text-muted">{t('conversion.description')}</p>
 
             <div>
               <label className="block text-xs font-medium text-muted mb-2">{t('conversion.hourlyWage')}</label>
               <div className="relative mb-2">
                 <input type="number" value={convWage} onChange={e => setConvWage(e.target.value)}
-                  className="w-full pl-3 pr-8 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
+                  className="ui-field w-full pl-3 pr-8 py-2.5" />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">원</span>
               </div>
               <div className="flex gap-2 flex-wrap">
                 {[MIN_WAGE_2026, 12000, 15000, 20000].map(w => (
                   <button key={w} onClick={() => setConvWage(String(w))}
-                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${convWage === String(w) ? 'bg-green-600 text-white border-green-600' : 'border-line-strong text-sub hover:border-green-500'}`}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${convWage === String(w) ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}
                   >{fmt(w)}원</button>
                 ))}
               </div>
@@ -653,15 +663,14 @@ export default function WorkHoursCalculator() {
               <div>
                 <label className="block text-xs font-medium text-muted mb-2">{t('conversion.weeklyWorkHours')}</label>
                 <input type="number" value={convWeeklyHours} onChange={e => setConvWeeklyHours(e.target.value)} min="1" max="68"
-                  className="w-full px-3 py-2.5 border border-line-strong rounded-xl focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                />
+                  className="ui-field w-full px-3 py-2.5" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-muted mb-2">{t('conversion.workDaysPerWeek')}</label>
                 <div className="flex gap-1">
                   {[3, 4, 5, 6].map(d => (
                     <button key={d} onClick={() => setConvDaysPerWeek(String(d))}
-                      className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${convDaysPerWeek === String(d) ? 'bg-green-600 text-white' : 'bg-soft text-sub hover:bg-gray-200'}`}
+                      className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${convDaysPerWeek === String(d) ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}
                     >{d}일</button>
                   ))}
                 </div>
@@ -669,9 +678,9 @@ export default function WorkHoursCalculator() {
             </div>
 
             {convResult && (
-              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-subtle text-sub' : 'bg-subtle text-gray-500'}`}>
+              <div className="p-3 rounded-xl text-xs bg-subtle text-sub">
                 {convResult.isEligibleWeeklyHoliday
-                  ? `✅ ${t('conversion.eligibleWeeklyHoliday')} — 주휴수당 ${fmt(convResult.weeklyHolidayPay)}원/주`
+                  ? `${t('conversion.eligibleWeeklyHoliday')} — 주휴수당 ${fmt(convResult.weeklyHolidayPay)}원/주`
                   : '주 15시간 미만 — 주휴수당 미발생'}
               </div>
             )}
@@ -679,55 +688,51 @@ export default function WorkHoursCalculator() {
 
           {convResult && (
             <div className="space-y-4">
-              <div className={`${glassCard} ${glassInset} p-5`}>
-                <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
-                  {t('conversion.wageTable')}
-                </h3>
-                <div className="divide-y divide-gray-100 dark:divide-gray-700">
+              <div className="ui-card p-5">
+                <h3 className="text-sm font-bold text-fg mb-4">{t('conversion.wageTable')}</h3>
+                <div className="divide-y divide-line">
                   {[
-                    { label: t('conversion.daily'), value: convResult.daily, color: '' },
-                    { label: `${t('conversion.weekly')} ${t('conversion.withoutHoliday')}`, value: convResult.weekly, color: '' },
-                    convResult.isEligibleWeeklyHoliday ? { label: `${t('conversion.weekly')} ${t('conversion.withHoliday')}`, value: convResult.weeklyWithHoliday, color: 'text-blue-600 font-bold' } : null,
-                    { label: `${t('conversion.monthly')} ${t('conversion.withHoliday')}`, value: convResult.monthlyWithHoliday, color: convResult.isEligibleWeeklyHoliday ? 'text-blue-600 font-bold' : '' },
-                    { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: convResult.yearlyWithHoliday, color: 'text-green-600 font-bold text-base', big: true },
+                    { label: t('conversion.daily'), value: convResult.daily, strong: false },
+                    { label: `${t('conversion.weekly')} ${t('conversion.withoutHoliday')}`, value: convResult.weekly, strong: false },
+                    convResult.isEligibleWeeklyHoliday ? { label: `${t('conversion.weekly')} ${t('conversion.withHoliday')}`, value: convResult.weeklyWithHoliday, strong: true } : null,
+                    { label: `${t('conversion.monthly')} ${t('conversion.withHoliday')}`, value: convResult.monthlyWithHoliday, strong: true },
+                    { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: convResult.yearlyWithHoliday, strong: true, big: true },
                   ].filter(Boolean).map((row, i) => row && (
                     <div key={i} className={`flex justify-between items-center py-3 ${row.big ? 'bg-subtle px-3 rounded-lg mt-1' : ''}`}>
                       <span className="text-sm text-sub">{row.label}</span>
-                      <span className={`font-semibold text-sm text-fg ${row.color}`}>{fmt(row.value)}원</span>
+                      <span className={`text-sm text-fg tabular-nums ${row.strong ? 'font-bold' : 'font-semibold'}`}>{fmt(row.value)}원</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className={`${glassCard} ${glassInset} p-5`}>
-                <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
-                  {t('conversion.insuranceTitle')}
-                </h3>
-                <div className="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
+              <div className="ui-card p-5">
+                <h3 className="text-sm font-bold text-fg mb-4">{t('conversion.insuranceTitle')}</h3>
+                <div className="divide-y divide-line text-sm">
                   {[
-                    { label: t('conversion.nationalPension'), value: convResult.deductions.nationalPension, c: 'text-blue-600' },
-                    { label: t('conversion.healthInsurance'), value: convResult.deductions.healthInsurance, c: 'text-teal-600' },
-                    { label: t('conversion.longTermCare'), value: convResult.deductions.longTermCare, c: 'text-teal-500' },
-                    { label: t('conversion.employmentInsurance'), value: convResult.deductions.employmentInsurance, c: 'text-orange-600' },
+                    { label: t('conversion.nationalPension'), value: convResult.deductions.nationalPension },
+                    { label: t('conversion.healthInsurance'), value: convResult.deductions.healthInsurance },
+                    { label: t('conversion.longTermCare'), value: convResult.deductions.longTermCare },
+                    { label: t('conversion.employmentInsurance'), value: convResult.deductions.employmentInsurance },
                   ].map((r, i) => (
                     <div key={i} className="flex justify-between py-2">
                       <span className="text-sub">{r.label}</span>
-                      <span className={`font-medium ${r.c}`}>-{fmt(r.value)}원</span>
+                      <span className="font-medium text-body tabular-nums">-{fmt(r.value)}원</span>
                     </div>
                   ))}
                   <div className="flex justify-between py-2 font-semibold">
                     <span className="text-body">{t('conversion.totalDeduction')}</span>
-                    <span className="text-red-600">-{fmt(convResult.deductions.total)}원</span>
+                    <span className="text-fg tabular-nums">-{fmt(convResult.deductions.total)}원</span>
                   </div>
                   <div className="flex justify-between items-center py-3 bg-subtle px-3 rounded-lg mt-1">
                     <div>
                       <span className="font-bold text-fg">{t('conversion.netMonthly')}</span>
                       <div className="text-xs text-muted">(4대보험 공제 후 예상액)</div>
                     </div>
-                    <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{fmt(convResult.netMonthly)}원</span>
+                    <span className="text-xl font-bold text-fg tabular-nums">{fmt(convResult.netMonthly)}원</span>
                   </div>
                 </div>
-                <p className="text-[10px] text-gray-400 mt-3">{t('conversion.insuranceNote')}</p>
+                <p className="text-xs text-muted mt-3">{t('conversion.insuranceNote')}</p>
               </div>
             </div>
           )}
@@ -735,27 +740,25 @@ export default function WorkHoursCalculator() {
       )}
 
       {/* ═══ 2026 최저임금 ═══ */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-bold text-fg mb-5 flex items-center gap-2">
-          {t('minimumWage.title')}
-        </h3>
-        <div className="grid grid-cols-3 gap-4">
+      <div className="ui-card p-6">
+        <h3 className="text-lg font-bold text-fg mb-5">{t('minimumWage.title')}</h3>
+        <div className="grid grid-cols-3 gap-3">
           {[
-            { val: '10,320원', label: t('minimumWage.2026'), bg: 'bg-subtle', c: 'text-green-600', lc: 'text-sub' },
-            { val: '2,156,880원', label: t('minimumWage.monthly'), bg: 'bg-subtle', c: 'text-blue-600', lc: 'text-sub' },
-            { val: '209시간', label: t('minimumWage.monthlyHours'), bg: 'bg-subtle', c: 'text-purple-600', lc: 'text-sub' },
+            { val: `${fmt(MIN_WAGE_2026)}원`, label: t('minimumWage.2026') },
+            { val: `${fmt(MIN_WAGE_2026 * 209)}원`, label: t('minimumWage.monthly') },
+            { val: '209시간', label: t('minimumWage.monthlyHours') },
           ].map((item, i) => (
-            <div key={i} className={`text-center p-4 ${item.bg} rounded-xl`}>
-              <div className={`text-xl font-bold ${item.c} mb-1`}>{item.val}</div>
-              <div className={`text-xs ${item.lc}`}>{item.label}</div>
+            <div key={i} className="text-center p-4 bg-subtle rounded-xl">
+              <div className="text-lg sm:text-xl font-bold text-fg tabular-nums mb-1">{item.val}</div>
+              <div className="text-xs text-sub">{item.label}</div>
             </div>
           ))}
         </div>
-        <p className="text-xs text-gray-400 mt-4 text-center">{t('minimumWage.note')}</p>
+        <p className="text-xs text-muted mt-4 text-center">{t('minimumWage.note')}</p>
       </div>
 
       {/* ═══ 근로기준법 가이드 ═══ */}
-      <div className="bg-gradient-to-br from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] border border-line rounded-2xl p-6 shadow-[0_18px_50px_rgba(99,102,241,0.10)]">
+      <div className="ui-card p-6">
         <h3 className="text-lg font-bold text-fg mb-5">{t('guide.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
@@ -771,10 +774,13 @@ export default function WorkHoursCalculator() {
             </ul>
           </div>
         </div>
+        <p className="flex items-start gap-1.5 text-xs text-muted mt-5">
+          <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />{t('guide.legalNote')}
+        </p>
       </div>
 
       {/* ═══ 근로자 권리 ═══ */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
+      <div className="ui-card p-6">
         <h3 className="text-lg font-bold text-fg mb-5">{t('rights.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>

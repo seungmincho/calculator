@@ -122,7 +122,7 @@ export default function SalaryCalculatorPage() {
         name: '2026년 최저임금은 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 최저임금은 시간당 10,030원이며, 주 40시간 기준 월 환산액은 약 2,096,270원입니다.',
+          text: '2026년 최저임금은 시간당 10,320원이며, 주 40시간 기준 월 환산액은 2,156,880원(월 209시간)입니다.',
         },
       },
     ],

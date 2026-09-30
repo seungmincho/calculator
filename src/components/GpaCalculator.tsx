@@ -1,231 +1,199 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
+import NextLink from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { GraduationCap, Plus, Trash2, BookOpen, RotateCcw, ChevronDown, ChevronUp, Link, Check, Target } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Trash2, ChevronDown, ChevronUp, Check } from 'lucide-react'
+import {
+  type Course, type Semester as BaseSemester, type GpaScale,
+  GRADE_VALUES, computeStats, supersededIds, normalizeGrade, requiredAverage, minGradeFor, parseCourses,
+} from '@/utils/gpa'
 
-interface Course {
-  id: string
-  name: string
-  credits: number
-  grade: string
-}
-
-interface Semester {
-  id: string
-  courses: Course[]
+interface Semester extends BaseSemester {
   isExpanded: boolean
 }
 
-type GpaScale = '4.5' | '4.3'
+const STORAGE_KEY = 'gpa-calculator-v2'
+const CREDIT_OPTIONS = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6]
 
-const GRADE_VALUES_45: Record<string, number> = {
-  'A+': 4.5,
-  'A': 4.0,
-  'B+': 3.5,
-  'B': 3.0,
-  'C+': 2.5,
-  'C': 2.0,
-  'D+': 1.5,
-  'D': 1.0,
-  'F': 0.0,
-}
+let seq = 0
+const uid = () => `${Date.now().toString(36)}-${(seq++).toString(36)}`
+const emptyCourse = (): Course => ({ id: uid(), name: '', credits: 3, grade: '' })
 
-const GRADE_VALUES_43: Record<string, number> = {
-  'A+': 4.3,
-  'A': 4.0,
-  'A-': 3.7,
-  'B+': 3.3,
-  'B': 3.0,
-  'B-': 2.7,
-  'C+': 2.3,
-  'C': 2.0,
-  'C-': 1.7,
-  'D+': 1.3,
-  'D': 1.0,
-  'D-': 0.7,
-  'F': 0.0,
-}
+// 첫 방문 시 결과가 바로 보이도록 예시 학기 (초기화하면 빈 학기로). id 고정 = hydration 일치
+const sampleSemesters = (): Semester[] => [
+  {
+    id: 'sample-1', isExpanded: true, courses: [
+      { id: 'sample-2', name: '대학글쓰기', credits: 2, grade: 'A0' },
+      { id: 'sample-3', name: '미적분학', credits: 3, grade: 'B+' },
+      { id: 'sample-4', name: '프로그래밍기초', credits: 3, grade: 'A+', major: true },
+      { id: 'sample-5', name: '일반물리학', credits: 3, grade: 'B0' },
+      { id: 'sample-6', name: '체육', credits: 1, grade: 'P' },
+    ],
+  },
+  {
+    id: 'sample-7', isExpanded: true, courses: [
+      { id: 'sample-8', name: '자료구조', credits: 3, grade: 'A0', major: true },
+      { id: 'sample-9', name: '이산수학', credits: 3, grade: 'B+', major: true },
+      { id: 'sample-10', name: '영어회화', credits: 2, grade: 'A+' },
+      { id: 'sample-11', name: '미적분학', credits: 3, grade: 'A0', retake: true },
+    ],
+  },
+]
+
+const fmt = (n: number) => n.toFixed(2)
 
 export default function GpaCalculator() {
   const t = useTranslations('gpaCalculator')
-  const searchParams = useSearchParams()
-  const router = useRouter()
 
-  const initialScale = (searchParams.get('scale') as GpaScale) ?? '4.5'
-  const initialTarget = searchParams.get('target') ?? ''
-
-  const [scale, setScale] = useState<GpaScale>(initialScale)
-  const [semesters, setSemesters] = useState<Semester[]>([
-    {
-      id: '1',
-      courses: [{ id: '1', name: '', credits: 3, grade: '' }],
-      isExpanded: true,
-    },
-  ])
-
-  // Target GPA reverse calculator state
-  const [targetGpa, setTargetGpa] = useState(initialTarget)
+  const [scale, setScale] = useState<GpaScale>('4.5')
+  const [semesters, setSemesters] = useState<Semester[]>(sampleSemesters)
+  const [isSample, setIsSample] = useState(true)
+  const [targetGpa, setTargetGpa] = useState('')
   const [remainingCredits, setRemainingCredits] = useState('')
+  const [pasteText, setPasteText] = useState('')
+  const [pasteMsg, setPasteMsg] = useState('')
   const [copiedLink, setCopiedLink] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const [focusId, setFocusId] = useState<string | null>(null)
 
-  const gradeValues = scale === '4.5' ? GRADE_VALUES_45 : GRADE_VALUES_43
+  // 복원: localStorage → URL(scale/target) 순으로 덮어씀
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const urlScale = params.get('scale')
+    let nextScale: GpaScale = urlScale === '4.3' ? '4.3' : '4.5'
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      if (saved && Array.isArray(saved.semesters) && saved.semesters.length) {
+        if (!urlScale && saved.scale === '4.3') nextScale = '4.3'
+        setSemesters(saved.semesters.map((s: Semester) => ({
+          ...s,
+          isExpanded: s.isExpanded !== false,
+          courses: (s.courses || []).map(c => ({ ...c, credits: Number(c.credits) || 0, grade: normalizeGrade(c.grade || '', nextScale) })),
+        })))
+        setIsSample(false)
+        if (saved.targetGpa) setTargetGpa(String(saved.targetGpa))
+        if (saved.remainingCredits) setRemainingCredits(String(saved.remainingCredits))
+      }
+    } catch { /* 저장소 차단/손상 → 예시 데이터 유지 */ }
+    if (params.get('target')) setTargetGpa(params.get('target') as string)
+    setScale(nextScale)
+    setLoaded(true)
+  }, [])
+
+  // 저장 + URL 동기화 (예시 데이터는 저장하지 않음)
+  useEffect(() => {
+    if (!loaded) return
+    if (!isSample) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ scale, semesters, targetGpa, remainingCredits }))
+      } catch { /* quota/차단 무시 */ }
+    }
+    const url = new URL(window.location.href)
+    url.searchParams.set('scale', scale)
+    if (targetGpa) url.searchParams.set('target', targetGpa)
+    else url.searchParams.delete('target')
+    window.history.replaceState(window.history.state, '', url)
+  }, [loaded, isSample, scale, semesters, targetGpa, remainingCredits])
+
+  // Enter로 추가한 새 줄에 포커스
+  useEffect(() => {
+    if (!focusId) return
+    document.getElementById(`gpa-course-${focusId}`)?.focus()
+    setFocusId(null)
+  }, [focusId, semesters])
+
+  const gradeValues = GRADE_VALUES[scale]
   const gradeOptions = Object.keys(gradeValues)
   const maxScale = scale === '4.5' ? 4.5 : 4.3
 
-  // Sync scale + targetGpa to URL params
-  useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('scale', scale)
-    if (targetGpa) params.set('target', targetGpa)
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }, [scale, targetGpa, router])
-
-  const calculateSemesterGPA = useCallback((courses: Course[]) => {
-    const validCourses = courses.filter(c => c.grade && c.credits > 0)
-    if (validCourses.length === 0) return { gpa: 0, credits: 0 }
-
-    const totalPoints = validCourses.reduce((sum, course) => {
-      return sum + (gradeValues[course.grade] || 0) * course.credits
-    }, 0)
-    const totalCredits = validCourses.reduce((sum, course) => sum + course.credits, 0)
-
-    return {
-      gpa: totalCredits > 0 ? totalPoints / totalCredits : 0,
-      credits: totalCredits,
-    }
-  }, [gradeValues])
-
-  const cumulativeStats = useMemo(() => {
-    let totalPoints = 0
-    let totalCredits = 0
-    let totalCourses = 0
-
-    semesters.forEach(semester => {
-      semester.courses.forEach(course => {
-        if (course.grade && course.credits > 0) {
-          totalPoints += (gradeValues[course.grade] || 0) * course.credits
-          totalCredits += course.credits
-          totalCourses++
-        }
-      })
-    })
-
-    return {
-      gpa: totalCredits > 0 ? totalPoints / totalCredits : 0,
-      credits: totalCredits,
-      courses: totalCourses,
-    }
-  }, [semesters, gradeValues])
-
-  // Reverse calculator: required GPA for remaining credits
-  const reverseResult = useMemo(() => {
-    const target = parseFloat(targetGpa)
-    const remaining = parseFloat(remainingCredits)
-    const current = cumulativeStats.gpa
-    const earned = cumulativeStats.credits
-
-    if (!targetGpa || !remainingCredits || isNaN(target) || isNaN(remaining) || remaining <= 0) {
-      return null
-    }
-
-    // (earned * current + remaining * required) / (earned + remaining) = target
-    // => required = (target * (earned + remaining) - earned * current) / remaining
-    const required = (target * (earned + remaining) - earned * current) / remaining
-
-    return {
-      required,
-      feasible: required <= maxScale,
-      impossible: required < 0,
-    }
-  }, [targetGpa, remainingCredits, cumulativeStats, maxScale])
-
-  const addSemester = useCallback(() => {
-    const newId = String(Date.now())
-    setSemesters(prev => [
-      ...prev,
-      {
-        id: newId,
-        courses: [{ id: `${newId}-1`, name: '', credits: 3, grade: '' }],
-        isExpanded: true,
-      },
-    ])
-  }, [])
-
-  const removeSemester = useCallback((semesterId: string) => {
-    setSemesters(prev => prev.filter(s => s.id !== semesterId))
-  }, [])
-
-  const toggleSemester = useCallback((semesterId: string) => {
-    setSemesters(prev =>
-      prev.map(s =>
-        s.id === semesterId ? { ...s, isExpanded: !s.isExpanded } : s
-      )
-    )
-  }, [])
-
-  const addCourse = useCallback((semesterId: string) => {
-    setSemesters(prev =>
-      prev.map(s =>
-        s.id === semesterId
-          ? {
-              ...s,
-              courses: [
-                ...s.courses,
-                {
-                  id: `${semesterId}-${Date.now()}`,
-                  name: '',
-                  credits: 3,
-                  grade: '',
-                },
-              ],
-            }
-          : s
-      )
-    )
-  }, [])
-
-  const removeCourse = useCallback((semesterId: string, courseId: string) => {
-    setSemesters(prev =>
-      prev.map(s =>
-        s.id === semesterId
-          ? { ...s, courses: s.courses.filter(c => c.id !== courseId) }
-          : s
-      )
-    )
-  }, [])
-
-  const updateCourse = useCallback(
-    (semesterId: string, courseId: string, field: keyof Course, value: string | number) => {
-      setSemesters(prev =>
-        prev.map(s =>
-          s.id === semesterId
-            ? {
-                ...s,
-                courses: s.courses.map(c =>
-                  c.id === courseId ? { ...c, [field]: value } : c
-                ),
-              }
-            : s
-        )
-      )
-    },
-    []
+  const excluded = useMemo(() => supersededIds(semesters), [semesters])
+  const cumulative = useMemo(
+    () => computeStats(semesters.flatMap(s => s.courses), scale, excluded),
+    [semesters, scale, excluded]
+  )
+  const semesterStats = useMemo(
+    // 학기 평점은 학교 성적표처럼 그 학기 성적 그대로 (재수강 대체는 누적에만 반영)
+    () => semesters.map(s => computeStats(s.courses, scale)),
+    [semesters, scale]
   )
 
+  const reverseResult = useMemo(() => {
+    const required = requiredAverage(cumulative.gpa, cumulative.gpaCredits, parseFloat(targetGpa), parseFloat(remainingCredits))
+    if (required === null || !targetGpa) return null
+    return {
+      required,
+      alreadyAchieved: required <= 0,
+      feasible: required <= maxScale,
+      minGrade: minGradeFor(required, scale),
+    }
+  }, [targetGpa, remainingCredits, cumulative, maxScale, scale])
+
+  const edit = useCallback((fn: (prev: Semester[]) => Semester[]) => {
+    setIsSample(false)
+    setSemesters(fn)
+  }, [])
+
+  const changeScale = useCallback((next: GpaScale) => {
+    setScale(next)
+    // 4.3 → 4.5 전환 시 A- 같은 등급이 F로 계산되던 문제 방지: 새 만점제 등급으로 변환
+    setSemesters(prev => prev.map(s => ({ ...s, courses: s.courses.map(c => ({ ...c, grade: normalizeGrade(c.grade, next) })) })))
+  }, [])
+
+  const addSemester = useCallback(() => {
+    edit(prev => [...prev, { id: uid(), isExpanded: true, courses: [emptyCourse()] }])
+  }, [edit])
+
+  const removeSemester = useCallback((semesterId: string) => {
+    edit(prev => prev.filter(s => s.id !== semesterId))
+  }, [edit])
+
+  const toggleSemester = useCallback((semesterId: string) => {
+    setSemesters(prev => prev.map(s => (s.id === semesterId ? { ...s, isExpanded: !s.isExpanded } : s)))
+  }, [])
+
+  const addCourse = useCallback((semesterId: string, afterId?: string) => {
+    const course = emptyCourse()
+    edit(prev => prev.map(s => {
+      if (s.id !== semesterId) return s
+      const idx = afterId ? s.courses.findIndex(c => c.id === afterId) : -1
+      const courses = [...s.courses]
+      courses.splice(idx >= 0 ? idx + 1 : courses.length, 0, course)
+      return { ...s, courses }
+    }))
+    setFocusId(course.id)
+  }, [edit])
+
+  const removeCourse = useCallback((semesterId: string, courseId: string) => {
+    edit(prev => prev.map(s => (s.id === semesterId ? { ...s, courses: s.courses.filter(c => c.id !== courseId) } : s)))
+  }, [edit])
+
+  const updateCourse = useCallback((semesterId: string, courseId: string, patch: Partial<Course>) => {
+    edit(prev => prev.map(s => (
+      s.id === semesterId ? { ...s, courses: s.courses.map(c => (c.id === courseId ? { ...c, ...patch } : c)) } : s
+    )))
+  }, [edit])
+
+  const importPasted = useCallback(() => {
+    const parsed = parseCourses(pasteText, scale)
+    if (!parsed.length) {
+      setPasteMsg(t('paste.none'))
+      return
+    }
+    const newSemester: Semester = { id: uid(), isExpanded: true, courses: parsed.map(c => ({ ...c, id: uid() })) }
+    // 예시 데이터 상태에서 붙여넣으면 예시는 버리고 새로 시작
+    setSemesters(prev => (isSample ? [newSemester] : [...prev.filter(s => s.courses.some(c => c.name || c.grade)), newSemester]))
+    setIsSample(false)
+    setPasteText('')
+    setPasteMsg(t('paste.result', { count: parsed.length }))
+  }, [pasteText, scale, isSample, t])
+
   const reset = useCallback(() => {
-    setSemesters([
-      {
-        id: '1',
-        courses: [{ id: '1', name: '', credits: 3, grade: '' }],
-        isExpanded: true,
-      },
-    ])
+    setSemesters([{ id: uid(), isExpanded: true, courses: [emptyCourse()] }])
+    setIsSample(false)
     setTargetGpa('')
     setRemainingCredits('')
+    setPasteMsg('')
   }, [])
 
   const copyLink = useCallback(async () => {
@@ -243,140 +211,108 @@ export default function GpaCalculator() {
         document.execCommand('copy')
         document.body.removeChild(textarea)
       }
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    } catch {
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    }
+    } catch { /* ignore */ }
+    setCopiedLink(true)
+    setTimeout(() => setCopiedLink(false), 2000)
   }, [])
+
+  const segBtn = (active: boolean) =>
+    `flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'}`
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <GraduationCap className="w-7 h-7" />
-            {t('title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button
           onClick={copyLink}
-          className="shrink-0 flex items-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
-          title={t('copyLink')}
+          className="shrink-0 ui-btn-soft px-3 py-2 text-sm font-medium flex items-center gap-1.5"
         >
-          {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          <span className="hidden sm:inline">{copiedLink ? t('copied') : t('copyLink')}</span>
+          {copiedLink && <Check className="w-4 h-4" />}
+          {copiedLink ? t('copied') : t('copyLink')}
         </button>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel: Settings & Guide */}
+        {/* Left Panel */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Scale Selection */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              {t('scale')}
-            </h2>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setScale('4.5')}
-                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
-                  scale === '4.5'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                }`}
-              >
-                {t('scale45')}
-              </button>
-              <button
-                onClick={() => setScale('4.3')}
-                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
-                  scale === '4.3'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
-                }`}
-              >
-                {t('scale43')}
-              </button>
+          {/* Scale */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('scale')}</h2>
+            <div className="flex gap-2">
+              <button onClick={() => changeScale('4.5')} className={segBtn(scale === '4.5')}>{t('scale45')}</button>
+              <button onClick={() => changeScale('4.3')} className={segBtn(scale === '4.3')}>{t('scale43')}</button>
             </div>
-            <button
-              onClick={reset}
-              className="w-full mt-4 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
-            >
-              <RotateCcw className="w-4 h-4" />
+            <button onClick={reset} className="w-full mt-3 ui-btn-soft px-4 py-2 font-medium">
               {t('reset')}
             </button>
+            <p className="text-xs text-muted mt-3">{t('savedNotice')}</p>
+            <NextLink href="/gpa-converter/" className="block text-sm text-primary mt-2 hover:underline">
+              {t('converterLink')}
+            </NextLink>
           </div>
 
-          {/* Target GPA Reverse Calculator */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-1 flex items-center gap-2">
-              {t('reverse.title')}
-            </h2>
+          {/* Target GPA */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-1">{t('reverse.title')}</h2>
             <p className="text-xs text-muted mb-4">{t('reverse.description')}</p>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('reverse.currentGpa')}
-                </label>
-                <div className="w-full px-3 py-2 border border-line rounded-lg bg-subtle text-body text-sm">
-                  {cumulativeStats.gpa.toFixed(2)} ({cumulativeStats.credits} {t('credits')})
+                <div className="block text-sm font-medium text-body mb-1">{t('reverse.currentGpa')}</div>
+                <div className="w-full px-3 py-2 rounded-xl bg-subtle text-body text-sm tabular-nums">
+                  {fmt(cumulative.gpa)} ({cumulative.gpaCredits} {t('credits')})
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('reverse.targetGpa')}
-                </label>
+              <label className="block">
+                <span className="block text-sm font-medium text-body mb-1">{t('reverse.targetGpa')}</span>
                 <input
                   type="number"
+                  inputMode="decimal"
                   value={targetGpa}
                   onChange={e => setTargetGpa(e.target.value)}
                   placeholder={`0.00 ~ ${maxScale}`}
                   min={0}
                   max={maxScale}
                   step={0.01}
-                  className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  className="w-full px-3 py-2 ui-field text-sm"
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('reverse.remainingCredits')}
-                </label>
+              </label>
+              <label className="block">
+                <span className="block text-sm font-medium text-body mb-1">{t('reverse.remainingCredits')}</span>
                 <input
                   type="number"
+                  inputMode="numeric"
                   value={remainingCredits}
                   onChange={e => setRemainingCredits(e.target.value)}
-                  placeholder="예: 30"
+                  placeholder="30"
                   min={1}
-                  className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  className="w-full px-3 py-2 ui-field text-sm"
                 />
-              </div>
+                <span className="block text-xs text-muted mt-1">{t('reverse.remainingHint')}</span>
+              </label>
 
               {reverseResult && (
-                <div className={`rounded-lg p-4 text-sm ${
-                  reverseResult.impossible
-                    ? 'bg-subtle text-sub'
-                    : reverseResult.feasible
-                    ? 'bg-subtle text-fg'
-                    : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
+                <div className={`rounded-xl p-4 text-sm ${
+                  !reverseResult.alreadyAchieved && !reverseResult.feasible
+                    ? 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
+                    : 'bg-subtle text-fg'
                 }`}>
-                  {reverseResult.impossible ? (
+                  {reverseResult.alreadyAchieved ? (
                     <p>{t('reverse.alreadyAchieved')}</p>
-                  ) : reverseResult.feasible ? (
-                    <>
-                      <p className="font-semibold mb-1">{t('reverse.requiredGpa')}</p>
-                      <p className="text-2xl font-bold">{reverseResult.required.toFixed(2)}</p>
-                      <p className="mt-1 text-xs opacity-80">{t('reverse.feasible')}</p>
-                    </>
                   ) : (
                     <>
                       <p className="font-semibold mb-1">{t('reverse.requiredGpa')}</p>
-                      <p className="text-2xl font-bold">{reverseResult.required.toFixed(2)}</p>
-                      <p className="mt-1 text-xs opacity-80">{t('reverse.impossible', { max: maxScale })}</p>
+                      <p className="text-2xl font-bold tabular-nums">{fmt(reverseResult.required)}</p>
+                      {reverseResult.feasible ? (
+                        <p className="mt-1 text-xs text-sub">
+                          {reverseResult.minGrade ? t('reverse.minGrade', { grade: reverseResult.minGrade }) : t('reverse.feasible')}
+                        </p>
+                      ) : (
+                        <p className="mt-1 text-xs">{t('reverse.impossible', { max: maxScale })}</p>
+                      )}
                     </>
                   )}
                 </div>
@@ -384,158 +320,209 @@ export default function GpaCalculator() {
             </div>
           </div>
 
-          {/* Quick Guide */}
-          <div className="bg-subtle rounded-xl p-6">
-            <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
-              {t('guide.howToUse.title')}
-            </h3>
-            <ul className="space-y-2 text-sm text-fg">
-              {(t.raw('guide.howToUse.items') as string[]).map((step, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">•</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ul>
+          {/* Paste import */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-1">{t('paste.title')}</h2>
+            <p className="text-xs text-muted mb-3">{t('paste.description')}</p>
+            <textarea
+              value={pasteText}
+              onChange={e => { setPasteText(e.target.value); setPasteMsg('') }}
+              rows={5}
+              placeholder={t('paste.placeholder')}
+              className="w-full px-3 py-2 ui-field text-sm font-mono"
+            />
+            <button
+              onClick={importPasted}
+              disabled={!pasteText.trim()}
+              className="w-full mt-2 ui-btn px-4 py-2.5 font-medium"
+            >
+              {t('paste.add')}
+            </button>
+            {pasteMsg && <p className="text-xs text-sub mt-2" role="status">{pasteMsg}</p>}
           </div>
         </div>
 
-        {/* Right Panel: Semesters & Results */}
+        {/* Right Panel */}
         <div className="lg:col-span-2 space-y-6">
           {/* Cumulative Results */}
-          <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-            <h2 className="text-lg font-semibold mb-4">{t('result.cumulativeGpa')}</h2>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white/20 rounded-lg p-4">
-                <div className="text-sm opacity-90 mb-1">{t('result.cumulativeGpa')}</div>
-                <div className="text-3xl font-bold">
-                  {cumulativeStats.gpa.toFixed(2)}
-                </div>
-              </div>
-              <div className="bg-white/20 rounded-lg p-4">
-                <div className="text-sm opacity-90 mb-1">{t('result.totalCredits')}</div>
-                <div className="text-3xl font-bold">{cumulativeStats.credits}</div>
-              </div>
-              <div className="bg-white/20 rounded-lg p-4">
-                <div className="text-sm opacity-90 mb-1">{t('result.totalCourses')}</div>
-                <div className="text-3xl font-bold">{cumulativeStats.courses}</div>
-              </div>
+          <div className="ui-card p-6">
+            <div className="flex items-baseline justify-between gap-3 mb-4">
+              <h2 className="text-lg font-semibold text-fg">{t('result.cumulativeGpa')}</h2>
+              {isSample && <span className="text-xs text-muted">{t('sampleNotice')}</span>}
             </div>
+            <div className="flex items-baseline gap-2 mb-5">
+              <span className="text-4xl font-bold text-fg tabular-nums">{fmt(cumulative.gpa)}</span>
+              <span className="text-muted">/ {maxScale}</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                [t('majorGpa'), cumulative.majorCredits ? fmt(cumulative.majorGpa) : '-'],
+                [t('earnedCredits'), cumulative.earnedCredits],
+                [t('gpaCredits'), cumulative.gpaCredits],
+                [t('result.totalCourses'), cumulative.courses],
+              ].map(([label, value]) => (
+                <div key={String(label)} className="bg-subtle rounded-xl p-3">
+                  <div className="text-xs text-muted mb-1">{label}</div>
+                  <div className="text-xl font-bold text-fg tabular-nums">{value}</div>
+                </div>
+              ))}
+            </div>
+            {semesters.length > 1 && (
+              <table className="w-full mt-5 text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-muted border-b border-line">
+                    <th className="py-2 font-medium">{t('semester')}</th>
+                    <th className="py-2 font-medium text-right">{t('result.semesterGpa')}</th>
+                    <th className="py-2 font-medium text-right">{t('majorGpa')}</th>
+                    <th className="py-2 font-medium text-right">{t('earnedCredits')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {semesterStats.map((st, i) => (
+                    <tr key={semesters[i].id} className="border-b border-line last:border-0 text-body tabular-nums">
+                      <td className="py-2">{i + 1}{t('semester')}</td>
+                      <td className="py-2 text-right font-semibold text-fg">{st.gpaCredits ? fmt(st.gpa) : '-'}</td>
+                      <td className="py-2 text-right">{st.majorCredits ? fmt(st.majorGpa) : '-'}</td>
+                      <td className="py-2 text-right">{st.earnedCredits}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           {/* Semesters */}
           <div className="space-y-4">
+            <p className="text-xs text-muted">{t('enterHint')}</p>
             {semesters.map((semester, semesterIdx) => {
-              const semesterStats = calculateSemesterGPA(semester.courses)
+              const st = semesterStats[semesterIdx]
               return (
-                <div key={semester.id} className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  {/* Semester Header */}
-                  <div
-                    className="flex items-center justify-between p-4 bg-subtle cursor-pointer"
-                    onClick={() => toggleSemester(semester.id)}
-                  >
-                    <div className="flex items-center gap-3">
-                      <button className="text-sub">
-                        {semester.isExpanded ? (
-                          <ChevronUp className="w-5 h-5" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5" />
-                        )}
-                      </button>
-                      <h3 className="font-semibold text-fg">
-                        {semesterIdx + 1}{t('semester')}
-                      </h3>
-                      <div className="text-sm text-muted">
-                        {t('result.semesterGpa')}: <span className="font-semibold text-blue-600 dark:text-blue-400">{semesterStats.gpa.toFixed(2)}</span>
-                        {' '}({semesterStats.credits} {t('credits')})
-                      </div>
-                    </div>
+                <div key={semester.id} className="ui-card overflow-hidden">
+                  <div className="flex items-center justify-between gap-3 px-4 py-3 bg-subtle">
+                    <button
+                      type="button"
+                      onClick={() => toggleSemester(semester.id)}
+                      aria-expanded={semester.isExpanded}
+                      className="flex items-center gap-3 min-w-0 text-left"
+                    >
+                      {semester.isExpanded ? <ChevronUp className="w-5 h-5 text-sub shrink-0" /> : <ChevronDown className="w-5 h-5 text-sub shrink-0" />}
+                      <span className="font-semibold text-fg">{semesterIdx + 1}{t('semester')}</span>
+                      <span className="text-sm text-muted truncate">
+                        {t('result.semesterGpa')} <span className="font-semibold text-fg tabular-nums">{fmt(st.gpa)}</span>
+                        {' '}({st.earnedCredits} {t('credits')})
+                      </span>
+                    </button>
                     {semesters.length > 1 && (
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          removeSemester(semester.id)
-                        }}
-                        className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                        onClick={() => removeSemester(semester.id)}
+                        aria-label={t('removeSemester')}
+                        title={t('removeSemester')}
+                        className="text-muted hover:text-red-600 shrink-0"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
                     )}
                   </div>
 
-                  {/* Semester Body */}
                   {semester.isExpanded && (
-                    <div className="p-6 space-y-4">
-                      {/* Course Headers */}
-                      <div className="grid grid-cols-12 gap-3 text-xs font-semibold text-sub uppercase">
-                        <div className="col-span-5">{t('courseName')}</div>
-                        <div className="col-span-3">{t('credits')}</div>
-                        <div className="col-span-3">{t('grade')}</div>
-                        <div className="col-span-1"></div>
+                    <div className="p-4 sm:p-6 space-y-3">
+                      <div className="hidden sm:grid grid-cols-12 gap-2 text-xs font-medium text-muted">
+                        <div className="col-span-4">{t('courseName')}</div>
+                        <div className="col-span-2">{t('credits')}</div>
+                        <div className="col-span-2">{t('grade')}</div>
+                        <div className="col-span-3">{t('major')} / {t('retake')}</div>
+                        <div className="col-span-1" />
                       </div>
 
-                      {/* Courses */}
-                      {semester.courses.map((course) => (
-                        <div key={course.id} className="grid grid-cols-12 gap-3 items-center">
-                          <div className="col-span-5">
-                            <input
-                              type="text"
-                              value={course.name}
-                              onChange={(e) =>
-                                updateCourse(semester.id, course.id, 'name', e.target.value)
-                              }
-                              placeholder="예: 자료구조론"
-                              className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                            />
-                          </div>
-                          <div className="col-span-3">
-                            <select
-                              value={course.credits}
-                              onChange={(e) =>
-                                updateCourse(semester.id, course.id, 'credits', Number(e.target.value))
-                              }
-                              className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                            >
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                            </select>
-                          </div>
-                          <div className="col-span-3">
-                            <select
-                              value={course.grade}
-                              onChange={(e) =>
-                                updateCourse(semester.id, course.id, 'grade', e.target.value)
-                              }
-                              className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                            >
-                              <option value="">성적 선택</option>
-                              {gradeOptions.map(grade => (
-                                <option key={grade} value={grade}>
-                                  {grade} ({gradeValues[grade].toFixed(1)})
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="col-span-1 flex justify-center">
-                            {semester.courses.length > 1 && (
-                              <button
-                                onClick={() => removeCourse(semester.id, course.id)}
-                                className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                      {semester.courses.map(course => {
+                        const isOld = excluded.has(course.id)
+                        return (
+                          <div key={course.id} className={`grid grid-cols-12 gap-2 items-center ${isOld ? 'opacity-50' : ''}`}>
+                            <div className="col-span-12 sm:col-span-4">
+                              <input
+                                id={`gpa-course-${course.id}`}
+                                type="text"
+                                value={course.name}
+                                onChange={e => updateCourse(semester.id, course.id, { name: e.target.value })}
+                                onKeyDown={e => {
+                                  if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+                                    e.preventDefault()
+                                    addCourse(semester.id, course.id)
+                                  }
+                                }}
+                                placeholder={t('coursePlaceholder')}
+                                aria-label={t('courseName')}
+                                className={`w-full px-3 py-2 ui-field text-sm ${isOld ? 'line-through' : ''}`}
+                              />
+                            </div>
+                            <div className="col-span-3 sm:col-span-2">
+                              <select
+                                value={course.credits}
+                                onChange={e => updateCourse(semester.id, course.id, { credits: Number(e.target.value) })}
+                                aria-label={t('credits')}
+                                className="w-full px-2 py-2 ui-field text-sm"
                               >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
+                                {(CREDIT_OPTIONS.includes(course.credits) ? CREDIT_OPTIONS : [...CREDIT_OPTIONS, course.credits]).map(v => (
+                                  <option key={v} value={v}>{v}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="col-span-4 sm:col-span-2">
+                              <select
+                                value={course.grade}
+                                onChange={e => updateCourse(semester.id, course.id, { grade: e.target.value })}
+                                aria-label={t('grade')}
+                                className="w-full px-2 py-2 ui-field text-sm"
+                              >
+                                <option value="">{t('selectGrade')}</option>
+                                {gradeOptions.map(g => (
+                                  <option key={g} value={g}>{g} ({gradeValues[g].toFixed(1)})</option>
+                                ))}
+                                <option value="P">P</option>
+                                <option value="NP">NP</option>
+                              </select>
+                            </div>
+                            <div className="col-span-4 sm:col-span-3 flex items-center gap-3 text-xs text-body">
+                              <label className="flex items-center gap-1 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={!!course.major}
+                                  onChange={e => updateCourse(semester.id, course.id, { major: e.target.checked })}
+                                  className="accent-blue-600"
+                                />
+                                {t('major')}
+                              </label>
+                              <label className="flex items-center gap-1 cursor-pointer" title={t('retakeHint')}>
+                                <input
+                                  type="checkbox"
+                                  checked={!!course.retake}
+                                  onChange={e => updateCourse(semester.id, course.id, { retake: e.target.checked })}
+                                  className="accent-blue-600"
+                                />
+                                {t('retake')}
+                              </label>
+                            </div>
+                            <div className="col-span-1 flex justify-center">
+                              {semester.courses.length > 1 && (
+                                <button
+                                  onClick={() => removeCourse(semester.id, course.id)}
+                                  aria-label={t('remove')}
+                                  title={t('remove')}
+                                  className="text-muted hover:text-red-600"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+                            {isOld && <p className="col-span-12 text-xs text-muted -mt-1">{t('superseded')}</p>}
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
 
-                      {/* Add Course Button */}
                       <button
                         onClick={() => addCourse(semester.id)}
-                        className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+                        className="w-full ui-btn-soft px-4 py-2 font-medium"
                       >
-                        <Plus className="w-4 h-4" />
                         {t('addCourse')}
                       </button>
                     </div>
@@ -544,86 +531,51 @@ export default function GpaCalculator() {
               )
             })}
 
-            {/* Add Semester Button */}
-            <button
-              onClick={addSemester}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
-            >
-              <Plus className="w-5 h-5" />
+            <button onClick={addSemester} className="w-full ui-btn px-4 py-3 font-medium">
               {t('addSemester')}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Comprehensive Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      {/* Guide */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="space-y-6">
-          {/* How to Use */}
           <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.howToUse.title')}
-            </h3>
-            <ul className="space-y-2 text-body">
-              {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 font-bold mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.howToUse.title')}</h3>
+            <ul className="space-y-2 text-body list-disc list-inside">
+              {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
           </div>
 
-          {/* Scale Info */}
           <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              학점 기준표
-            </h3>
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('scaleTable')}</h3>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-fg mb-2">
-                  {t('scale45')}
-                </h4>
-                <div className="text-sm text-body space-y-1">
-                  {Object.entries(GRADE_VALUES_45).map(([grade, value]) => (
-                    <div key={grade} className="flex justify-between">
-                      <span>{grade}</span>
-                      <span className="font-semibold">{value.toFixed(1)}</span>
+              {(['4.5', '4.3'] as GpaScale[]).map(sc => (
+                <div key={sc} className="bg-subtle rounded-xl p-4">
+                  <h4 className="font-semibold text-fg mb-2">{sc === '4.5' ? t('scale45') : t('scale43')}</h4>
+                  <div className="text-sm text-body space-y-1">
+                    {Object.entries(GRADE_VALUES[sc]).map(([grade, value]) => (
+                      <div key={grade} className="flex justify-between tabular-nums">
+                        <span>{grade}</span>
+                        <span className="font-semibold">{value.toFixed(1)}</span>
+                      </div>
+                    ))}
+                    <div className="flex justify-between text-muted pt-1 border-t border-line">
+                      <span>P / NP</span>
+                      <span>{t('passExcluded')}</span>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-              <div className="bg-subtle rounded-lg p-4">
-                <h4 className="font-semibold text-fg mb-2">
-                  {t('scale43')}
-                </h4>
-                <div className="text-sm text-body space-y-1">
-                  {Object.entries(GRADE_VALUES_43).map(([grade, value]) => (
-                    <div key={grade} className="flex justify-between">
-                      <span>{grade}</span>
-                      <span className="font-semibold">{value.toFixed(1)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Tips */}
           <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2 text-body">
-              {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 font-bold mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+            <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
+            <ul className="space-y-2 text-body list-disc list-inside">
+              {(t.raw('guide.tips.items') as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
           </div>
         </div>

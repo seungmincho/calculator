@@ -49,7 +49,7 @@ function WeeklyHolidayPayInner() {
   // Parse initial state from URL params
   const [hourlyWage, setHourlyWage] = useState(() => {
     const v = searchParams.get('wage')
-    return v ? Number(v) : 10030
+    return v ? Number(v) : 10320
   })
   const [workDays, setWorkDays] = useState(() => {
     const v = searchParams.get('days')

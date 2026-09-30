@@ -2981,6 +2981,27 @@
     "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
   },
   "workHours": {
+    "weekPreset": {
+      "fullTime": "Mon-Fri 9-6",
+      "part3": "Part-time 3 days",
+      "weekend": "Weekend shift",
+      "night": "Night shift 5 days"
+    },
+    "weeklyHoliday": {
+      "title": "Weekly holiday pay",
+      "eligible": "{contract} scheduled hours/week (15h or more) → {hours}h of weekly holiday pay",
+      "notEligible": "{contract} scheduled hours/week (under 15h) → no weekly holiday pay",
+      "summary": "Weekly holiday pay in {eligible} of {total} weeks",
+      "weekOf": "Week of (Mon)",
+      "workHours": "Hours worked",
+      "paidHours": "Holiday pay hours",
+      "note": "Paid when all scheduled days are worked. Formula: weekly scheduled hours ÷ 40 × 8h (max 8h)"
+    },
+    "warn": {
+      "over52": "{hours}h this week — exceeds the 52-hour weekly limit (40 regular + 12 overtime).",
+      "belowMin": "The hourly wage is below the 2026 minimum wage of {min} KRW.",
+      "breakShort": "{count} day(s) have less than the legal minimum break (30 min per 4h, 1h per 8h)."
+    },
     "title": "Work Hours Calculator",
     "description": "Calculate part-time wages based on 2026 minimum wage: basic pay, overtime, night shift, weekly holiday pay",
     "tabs": {
@@ -2988,6 +3009,16 @@
       "conversion": "Wage Converter"
     },
     "input": {
+      "useMinWage": "Min. wage",
+      "autoBreak": "Apply legal minimum break",
+      "autoBreakNote": "30 min for 4h, 1h for 8h of work (Labor Standards Act Art. 54)",
+      "smallBusiness": "Workplace with fewer than 5 employees",
+      "smallBusinessNote": "No overtime/night/holiday premiums; weekly holiday pay still applies",
+      "weeklyMode": "Weekly schedule",
+      "weeklySchedule": "Schedule by day",
+      "copyToAll": "Copy first day's hours to all days",
+      "holidayShort": "Holiday",
+      "weeklyScheduleNote": "Tap a day to toggle it. If the end time is earlier than the start, it counts as ending the next day. Check 'Holiday' for work on a weekly rest day or public holiday.",
       "title": "Work Information",
       "hourlyWage": "Hourly Wage (KRW)",
       "hourlyWageNote": "2026 Minimum Wage: 10,320 KRW",
@@ -3019,6 +3050,13 @@
       "totalWorkDays": "Total {count} days"
     },
     "result": {
+      "weeklyTitle": "Weekly pay",
+      "days": " days",
+      "weeksCount": "{count} weeks",
+      "monthlyAvg": "Monthly (weekly avg × 4.345)",
+      "yearlyAvg": "Yearly",
+      "holidayOverPay": "Holiday work over 8h (2x)",
+      "smallBizNote": "Fewer than 5 employees: all hours are paid at 1x the hourly wage.",
       "title": "Salary Result",
       "totalHours": "Total Hours",
       "hours": "hrs",
@@ -3058,6 +3096,7 @@
       "eligibleWeeklyHoliday": "Eligible for weekly holiday pay (15+ hrs/week)"
     },
     "guide": {
+      "legalNote": "Holiday work earns a 50% premium up to 8h and 100% beyond 8h. Workplaces with fewer than 5 employees are exempt from premiums and the 52-hour cap, but minimum wage and weekly holiday pay still apply. Results are estimates.",
       "title": "Labor Standards Act Guide",
       "overtimeTitle": "Overtime and Night Work",
       "overtime": {
@@ -3069,7 +3108,7 @@
       "allowanceTitle": "Various Allowances and Leave",
       "allowance": {
         "0": "Weekly holiday pay: 1 paid holiday guaranteed for 15+ hours/week",
-        "1": "Holiday work: 1.5x pay for work on legal holidays",
+        "1": "Holiday work: 1.5x pay up to 8 hours, 2x beyond 8 hours",
         "2": "Annual leave: 15 days after 1 year, +1 day for perfect attendance",
         "3": "4 major insurances: Mandatory for 60+ hours/month workers"
       },
@@ -3099,7 +3138,7 @@
         "items": [
           {
             "q": "What is the 2026 minimum wage?",
-            "a": "The 2026 minimum wage is ₩10,030 per hour. Paying below this amount is a violation of the Minimum Wage Act."
+            "a": "The 2026 minimum wage is ₩10,320 per hour. Paying below this amount is a violation of the Minimum Wage Act."
           },
           {
             "q": "Do premium allowances apply equally at workplaces with fewer than 5 employees?",
@@ -7613,6 +7652,29 @@
     }
   },
   "gpaCalculator": {
+    "majorGpa": "Major GPA",
+    "earnedCredits": "Earned credits",
+    "gpaCredits": "GPA credits",
+    "major": "Major",
+    "retake": "Retake",
+    "retakeHint": "When checked, earlier courses with the same name are dropped from the cumulative GPA",
+    "superseded": "Replaced by retake, excluded from cumulative GPA",
+    "selectGrade": "Grade",
+    "coursePlaceholder": "e.g. Data Structures",
+    "enterHint": "Press Enter in a course name to add a new row below",
+    "sampleNotice": "Sample data. Reset to enter your own courses",
+    "savedNotice": "Your courses are saved automatically in this browser",
+    "converterLink": "Convert between 4.5 / 4.3 / 4.0 scales in the GPA converter",
+    "scaleTable": "Grade point table",
+    "passExcluded": "Excluded from GPA (P counts toward credits)",
+    "paste": {
+      "title": "Paste transcript",
+      "description": "Copy the grade table from your school portal and paste it; course name, credits and grade are detected and added as a new semester",
+      "placeholder": "Data Structures\t3\tA+\nWriting\t2\tB0\nPE\t1\tP",
+      "add": "Add as new semester",
+      "result": "Added {count} courses",
+      "none": "No courses recognized. Each line needs a course name, credits and a grade"
+    },
     "title": "GPA Calculator",
     "description": "Enter courses with credits and grades to calculate your GPA",
     "scale": "Scale",
@@ -7705,6 +7767,8 @@
     "copyLink": "Copy Link",
     "copied": "Copied",
     "reverse": {
+      "remainingHint": "Credits you will still take (excluding P/F)",
+      "minGrade": "Achievable with an average of {grade} or higher",
       "title": "Target GPA Calculator",
       "description": "Calculates the required GPA for remaining credits to reach your target",
       "currentGpa": "Current Cumulative GPA",
@@ -10438,7 +10502,7 @@
           "1. Enter the pay amount you already know — hourly rate, daily, monthly salary, or annual income.",
           "2. Set your daily working hours (default 8 hours) and weekly working days (default 5 days).",
           "3. All other pay units are instantly calculated and displayed in real time.",
-          "4. Compare your wage against the 2025 minimum wage (₩10,030/hr) to see how you measure up."
+          "4. Compare your wage against the 2026 minimum wage (₩10,320/hr) to see how you measure up."
         ]
       },
       "faq": {
@@ -11718,6 +11782,20 @@
     }
   },
   "residentNumber": {
+    "privacyNote": "The number is processed only in this browser. It is never sent to a server and is not stored in the URL, history or local storage.",
+    "mask": "Hide number",
+    "status": {
+      "incomplete": "{count}/13 digits",
+      "valid": "Format and checksum OK",
+      "validDesc": "Both the birth date and the check digit follow the rules. Whether the number was actually issued cannot be verified.",
+      "checksumMismatch": "Checksum mismatch",
+      "checksumMismatchDesc": "Numbers issued or changed since October 2020 use 6 random trailing digits, so the checksum does not apply and the number may still be valid. For older numbers this is likely a typo.",
+      "checksumMismatchAfterReform": "People born after October 2020 receive numbers under the new scheme, which has no checksum. If the birth date and gender digit are right, the number can be considered valid.",
+      "invalidDate": "Date does not exist",
+      "invalidDateDesc": "The first 6 digits are not a real calendar date (e.g. Feb 30, month 13).",
+      "futureDate": "Birth date in the future",
+      "futureDateDesc": "The birth date is after today. Check the 7th digit (century code)."
+    },
     "title": "Resident Registration Number Validator",
     "description": "Validate Korean resident registration numbers (13 digits). Format validation only, no data is stored.",
     "inputLabel": "Resident Registration Number",
@@ -11729,6 +11807,17 @@
     "validMessage": "This number passes the checksum validation.",
     "invalidMessage": "Invalid format. Please check the number.",
     "info": {
+      "number": "Number",
+      "age": "Age",
+      "ageValue": "{age} years",
+      "type": "Type",
+      "korean": "Korean citizen (RRN)",
+      "foreigner": "Foreign resident (ARN)",
+      "century": "Birth century",
+      "centuryValue": "{century}s",
+      "checksum": "Checksum",
+      "checksumOk": "Match",
+      "checksumNo": "Mismatch",
       "birthDate": "Birth Date",
       "gender": "Gender",
       "male": "Male",
@@ -11739,6 +11828,18 @@
     "copy": "Copy",
     "copied": "Copied!",
     "guide": {
+      "codes": {
+        "title": "7th digit codes",
+        "c1900": "1/2: Korean male/female born in the 1900s",
+        "c2000": "3/4: Korean male/female born in the 2000s",
+        "foreigner": "5/6: foreign male/female born in the 1900s, 7/8: in the 2000s",
+        "c1800": "9/0: Korean male/female born in the 1800s"
+      },
+      "foreignerNote": "Alien registration numbers use a different check formula, (13 − sum mod 11) mod 10. This tool picks the formula automatically from the 7th digit.",
+      "reform": {
+        "title": "October 2020 numbering reform",
+        "body": "Since October 2020, newly assigned or changed resident registration numbers have 6 random digits after the birth date and gender digit. The region code and check digit rules no longer apply, so a checksum mismatch alone does not mean a number is fake. Existing numbers are unchanged."
+      },
       "title": "Resident Number Guide",
       "structure": {
         "title": "Number Structure",
@@ -11761,7 +11862,7 @@
       "guide": {
         "whatIs": {
           "title": "What is the Resident Number Validator?",
-          "description": "The Resident Number Validator checks whether a 13-digit Korean Resident Registration Number (주민등록번호) is structurally valid according to official formatting rules. It verifies the date of birth, gender code, region code, and checksum logic. No data is sent to a server — all validation is performed entirely within your browser."
+          "description": "The Resident Number Validator checks the birth date, gender/century code and check digit of a 13-digit Korean Resident Registration Number, reflecting the October 2020 numbering reform. Nothing is sent to a server or stored; all validation runs in your browser."
         },
         "howToUse": {
           "title": "How to Use",
@@ -11788,19 +11889,19 @@
               "a": "No. All validation is handled by JavaScript in your browser. No data is ever transmitted to a server."
             },
             {
-              "q": "Why does a correctly formatted number show as invalid?",
-              "a": "The last digit of a resident number is a checksum calculated from the preceding 12 digits. If the format is correct but the checksum doesn't match, the number is considered invalid."
+              "q": "Why might a correctly formatted number fail the checksum?",
+              "a": "For numbers assigned before October 2020 the last digit is a check digit computed from the first 12 digits. Numbers assigned or changed since October 2020 end in 6 random digits, so the check-digit formula no longer applies and a mismatch alone does not make a number invalid."
             },
             {
               "q": "Can I also validate foreigner registration numbers?",
-              "a": "Foreigner registration numbers share a similar format but follow slightly different rules. This tool validates based on resident number rules, so foreigner registration numbers may need separate verification."
+              "a": "Yes. Foreigner registration numbers have 5–8 as the 7th digit and use a different check formula, (13 − sum mod 11) mod 10. This tool detects them automatically from the 7th digit."
             }
           ]
         }
       },
       "whatIs": {
         "title": "What is the Resident Number Validator?",
-        "description": "The Resident Number Validator checks whether a 13-digit Korean Resident Registration Number (주민등록번호) is structurally valid according to official formatting rules. It verifies the date of birth, gender code, region code, and checksum logic. No data is sent to a server — all validation is performed entirely within your browser."
+        "description": "The Resident Number Validator checks the birth date, gender/century code and check digit of a 13-digit Korean Resident Registration Number, reflecting the October 2020 numbering reform. Nothing is sent to a server or stored; all validation runs in your browser."
       },
       "howToUse": {
         "title": "How to Use",
@@ -11827,12 +11928,12 @@
             "a": "No. All validation is handled by JavaScript in your browser. No data is ever transmitted to a server."
           },
           {
-            "q": "Why does a correctly formatted number show as invalid?",
-            "a": "The last digit of a resident number is a checksum calculated from the preceding 12 digits. If the format is correct but the checksum doesn't match, the number is considered invalid."
+            "q": "Why might a correctly formatted number fail the checksum?",
+            "a": "For numbers assigned before October 2020 the last digit is a check digit computed from the first 12 digits. Numbers assigned or changed since October 2020 end in 6 random digits, so the check-digit formula no longer applies and a mismatch alone does not make a number invalid."
           },
           {
             "q": "Can I also validate foreigner registration numbers?",
-            "a": "Foreigner registration numbers share a similar format but follow slightly different rules. This tool validates based on resident number rules, so foreigner registration numbers may need separate verification."
+            "a": "Yes. Foreigner registration numbers have 5–8 as the 7th digit and use a different check formula, (13 − sum mod 11) mod 10. This tool detects them automatically from the 7th digit."
           }
         ]
       }
@@ -17949,8 +18050,33 @@
     ]
   },
   "stampGenerator": {
+    "labelName": "Name",
+    "labelCenterText": "Title (center text)",
+    "labelRing": "Company name (outer ring)",
+    "charCount": "{count} characters on seal",
+    "labelSuffix": "Ending",
+    "suffixes": {
+      "none": "None",
+      "in": "인 (seal)",
+      "jiin": "지인 (seal of)"
+    },
+    "shapes": {
+      "circle": "Round",
+      "oval": "Oval",
+      "square": "Square seal",
+      "corporate": "Corporate seal"
+    },
+    "defaultRing": "주식회사 툴허브",
+    "defaultCorporateText": "대표이사",
+    "labelInk": "Ink texture (realistic)",
+    "buttonRestamp": "Re-stamp",
+    "infoExport": "PNG resolution",
+    "buttonDownloadSvg": "Download SVG",
+    "buttonShare": "Copy link",
+    "buttonShareCopied": "Link copied",
+    "legalNote": "Generated stamp images are not registered seals (인감) and have no legal effect. Use your registered physical seal for contracts or registrations that require a seal certificate.",
     "title": "Stamp Generator",
-    "description": "Create circle, square, or oval Korean name stamps for free and download as PNG.",
+    "description": "Create Korean name seals, square company seals and corporate seals, then save as transparent PNG or SVG.",
     "labelText": "Stamp Text (1–4 characters)",
     "placeholderText": "e.g. 홍길동",
     "labelShape": "Stamp Shape",
@@ -17977,24 +18103,24 @@
     "infoShape": "Shape",
     "infoSize": "Size",
     "infoColor": "Color",
-    "buttonDownload": "Download PNG",
+    "buttonDownload": "Download transparent PNG",
     "buttonCopy": "Copy to Clipboard",
     "buttonCopied": "Copied!",
     "tipsTitle": "Tips",
     "tipsList": [
-      "Optimized for Korean names of 2–3 characters.",
-      "Circle and oval stamps arrange characters vertically.",
-      "Square stamps arrange characters in a grid.",
-      "Downloaded PNG has a transparent background for direct use in documents.",
-      "Lower opacity gives a natural ink-stamp appearance."
+      "Adding '인' to a 3-letter name makes 4 characters, laid out neatly in a 2x2 grid.",
+      "Characters read top-to-bottom, starting from the right column, like a real seal.",
+      "A corporate seal puts the company name on the outer ring and '대표이사인' in the center.",
+      "Save PNG at 1000px or more for crisp printing.",
+      "Don't like the ink pattern? Click 'Re-stamp' to regenerate it."
     ],
     "guideTitle": "Stamp Creation Guide",
     "guideShapesTitle": "Stamp Shape Features",
     "guideShapesItems": [
-      "Circle: The most common seal shape. Best for 1–3 characters.",
-      "Square: Often used for corporate seals. Accommodates more characters.",
-      "Oval: Great for personal signature stamps. Wider feel, soft look.",
-      "Add a double border for a premium appearance."
+      "Round: the most common personal seal; name + '인' (4 characters) fits well.",
+      "Oval: a tall personal seal, good for 3-4 character names.",
+      "Square seal: common for companies and organizations; up to 12 characters in a grid.",
+      "Corporate seal: company name on the outer ring, '대표이사인' in the inner circle."
     ],
     "guideUsageTitle": "Usage Ideas",
     "guideUsageItems": [
@@ -19091,8 +19217,8 @@
       "per30days": "Per 30 days",
       "totalBenefit": "Total Benefits",
       "totalLabel": "Total for entire period",
-      "capNotice": "60% of average wage exceeds the daily cap (₩66,000). The cap amount has been applied.",
-      "floorNotice": "60% of average wage is below the daily floor (₩63,104). The floor amount has been applied."
+      "capNotice": "60% of average wage exceeds the daily cap (₩68,100). The cap amount has been applied.",
+      "floorNotice": "60% of average wage is below the daily floor (₩66,048). The floor amount has been applied."
     },
     "chart": {
       "title": "Monthly Benefit Breakdown",
@@ -19178,7 +19304,7 @@
             },
             {
               "q": "Is there a daily benefit cap?",
-              "a": "As of 2026, the maximum daily benefit is 66,000 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
+              "a": "As of 2026, the maximum daily benefit is 68,100 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
             },
             {
               "q": "What happens to remaining benefit days after reemployment?",
@@ -19217,7 +19343,7 @@
           },
           {
             "q": "Is there a daily benefit cap?",
-            "a": "As of 2026, the maximum daily benefit is 66,000 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
+            "a": "As of 2026, the maximum daily benefit is 68,100 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
           },
           {
             "q": "What happens to remaining benefit days after reemployment?",
@@ -19238,7 +19364,7 @@
     "input": {
       "title": "Work Information",
       "hourlyWage": "Hourly Wage",
-      "hourlyWageHint": "2026 minimum wage: ₩10,030",
+      "hourlyWageHint": "2026 minimum wage: ₩10,320",
       "workDays": "Working Days per Week",
       "daysUnit": " days",
       "dailyHours": "Daily Working Hours",

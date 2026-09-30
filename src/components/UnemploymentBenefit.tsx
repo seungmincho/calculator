@@ -10,8 +10,9 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 // ── 2026 상수 ──
-const DAILY_BENEFIT_CAP = 66_000          // 일일 상한액
-const DAILY_BENEFIT_FLOOR = 63_104        // 일일 하한액 (최저임금 10,030원 × 80% × 8h)
+// 2026.1.1 이후 이직자 기준. 출처: https://shiftee.io/ko/blog/article/2026-unemployment-benefits-changes-and-employment-insurance-allowance-upper-limit
+const DAILY_BENEFIT_CAP = 68_100          // 일일 상한액 (2026 인상: 66,000 → 68,100)
+const DAILY_BENEFIT_FLOOR = 66_048        // 일일 하한액 (최저임금 10,320원 × 80% × 8h)
 const BENEFIT_RATE = 0.6                  // 평균임금 60%
 
 // 구직급여 지급 기간 (일수) 테이블
