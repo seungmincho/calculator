@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /offline/
-Disallow: /_next/
 
 Sitemap: https://toolhub.ai.kr/sitemap.xml
