@@ -14237,8 +14237,121 @@
     }
   },
   "dutchPay": {
+    "modeLabel": "Split type",
+    "mode": {
+      "s": "One person paid",
+      "t": "Several people paid (trip)"
+    },
+    "modeHint": {
+      "s": "The organizer paid everything. Shows how much each person sends to the organizer.",
+      "t": "Different people paid for lodging, car and meals. Computes net balances and minimizes the number of transfers."
+    },
+    "eventTitle": "Event name",
+    "eventTitlePlaceholder": "e.g. Jeju trip, team dinner",
+    "people": "People",
+    "countN": "{n}",
+    "personName": "Name",
+    "personN": "Person {n}",
+    "weight": "Share weight",
+    "weightX": "{w}x",
+    "leader": "Organizer",
+    "leaderHint": "Organizer = the one who paid. Rounding leftovers are absorbed by the organizer. Set seniors to 1.5x to have them pay more.",
+    "weightHint": "A 1.5x person pays 1.5 times what a 1x person pays for the same item.",
+    "items": "Items",
+    "expenses": "Expenses",
+    "itemName": "Item name",
+    "itemN": "Item {n}",
+    "amount": "Amount",
+    "removeItem": "Remove item",
+    "paidBy": "Paid by",
+    "among": "Split among (tap to exclude)",
+    "amongEmpty": "Nobody is selected, so this item is ignored.",
+    "addItem": "Add item (drinks, 2nd round…)",
+    "addExpense": "Add expense",
+    "rounding": {
+      "title": "Rounding",
+      "unit": "Unit",
+      "dir": "Method",
+      "exact": "Exact",
+      "unitN": "{n} KRW",
+      "note": "Everyone except the organizer sends a rounded amount; the organizer absorbs the difference. The total always matches exactly."
+    },
+    "dir": {
+      "ceil": "Round up",
+      "floor": "Round down",
+      "round": "Nearest"
+    },
+    "hero": {
+      "perPerson": "Each person sends",
+      "perPersonRange": "Each person sends (varies by item/weight)",
+      "transfersLabel": "Settlement",
+      "transfersN": "Done in {n} transfers",
+      "summary": "Total {total} KRW · {n} people"
+    },
+    "leaderMore": "Because of rounding, organizer {name} pays {amount} KRW more.",
+    "leaderLess": "Because of rounding, organizer {name} pays {amount} KRW less.",
+    "table": {
+      "title": "Per-person breakdown",
+      "person": "Name",
+      "share": "Share",
+      "pay": "Pays",
+      "paid": "Paid",
+      "net": "Receive(+)/Send(−)",
+      "noteSimple": "Share is the exact weighted amount; Pays is the rounded amount.",
+      "noteTrip": "Paid − Share = amount to receive (+) or send (−). Leftover won per item are assigned 1 KRW at a time so totals match."
+    },
+    "notice": {
+      "title": "Group chat notice",
+      "copy": "Copy notice",
+      "account": "Bank account (optional)",
+      "accountPlaceholder": "e.g. KakaoBank 3333-00-0000000 Hong Gildong",
+      "accountNote": "Saved on this device only. Never included in share links.",
+      "transferNote": "Use the copy button next to each amount and paste it into your banking or payment app."
+    },
+    "copyLink": "Copy settlement link",
+    "share": {
+      "label": "{n} people · {total} KRW split",
+      "labelTitled": "{title} · {n} people"
+    },
+    "readOnly": {
+      "banner": "Shared settlement (view only).",
+      "edit": "Copy and edit this settlement"
+    },
+    "recent": {
+      "title": "Saved settlements",
+      "save": "Save on this device",
+      "saved": "Saved",
+      "delete": "Delete"
+    },
+    "text": {
+      "header": "[{title}] Settlement",
+      "untitled": "Group",
+      "summary": "Total {total} KRW · {n} people",
+      "items": "■ Items",
+      "paidBy": "paid by {name}",
+      "excluded": "excl. {names}",
+      "shares": "■ Per person",
+      "rounding": "({dir} to {unit} KRW, difference covered by organizer {name})",
+      "transfers": "■ Transfers",
+      "account": "■ Account: {account}",
+      "link": "Details: {url}"
+    },
+    "defaults": {
+      "names": [
+        "Minsu",
+        "Jihyun",
+        "Seojun",
+        "Haeun"
+      ],
+      "item1": "Dinner",
+      "item2": "Drinks",
+      "trip1": "Lodging",
+      "trip2": "Rental car",
+      "trip3": "BBQ dinner",
+      "trip4": "Cafe"
+    },
     "title": "Dutch Pay Calculator",
-    "description": "Split bills accurately with Dutch Pay calculator. Supports equal split and custom settlement based on individual amounts.",
+    "description": "Split group dinners and trips, see who sends how much to whom, and get a ready-to-paste group chat notice. Supports rounding to 100/1,000 KRW, excluding non-drinkers and weighted shares.",
     "totalAmount": "Total Amount",
     "numberOfPeople": "Number of People",
     "perPerson": "Per Person",
@@ -14254,26 +14367,36 @@
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "noTransfers": "No transfers needed",
-    "won": "KRW",
+    "noTransfers": "Nothing to send",
+    "won": " KRW",
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Each item is split among its participants by share weight. E.g. 35,000 KRW at 1.5x/1x/1x = 15,000/10,000/10,000.",
+          "Leftover won from division are assigned 1 KRW at a time (largest remainder first) so each item sums exactly.",
+          "When one person paid, everyone else's amount is rounded to the chosen unit and the organizer absorbs the difference.",
+          "When several paid, net balance = paid − share; the largest debtor is matched with the largest creditor repeatedly (at most people − 1 transfers)."
+        ]
+      },
       "title": "User Guide",
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Equal Split: Enter total amount and number of people to calculate per-person cost",
-          "Custom Split: Enter each participant's paid and consumed amounts",
-          "Differences are automatically calculated showing who owes whom",
-          "Copy the result to share via messaging apps"
+          "Pick \"One person paid\" if the organizer paid everything, or \"Several people paid\" for trips.",
+          "Enter names and raise the share weight (1.5x, 2x) for people who should pay more.",
+          "Add items (dinner, drinks…) and tap names to exclude people, e.g. non-drinkers.",
+          "Choose 100/1,000 KRW rounding so everyone except the organizer gets a clean amount.",
+          "Tap \"Copy notice\" and paste it into the group chat: items, transfers, account and link in one message."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Custom split is useful when people order different items",
-          "Optimizes settlement with minimum number of transfers",
-          "Enter participant names for easier result identification",
-          "Copy the entire settlement result to share at once"
+          "People who open the settlement link see the same result in view-only mode.",
+          "Your bank account stays on this device and is never put in the link.",
+          "With several payers, netting balances first means at most (people − 1) transfers.",
+          "Save recurring groups on this device and just change the amounts next time."
         ]
       },
       "guide": {
@@ -14301,22 +14424,26 @@
       },
       "whatIs": {
         "title": "What is the Dutch Pay Calculator?",
-        "description": "The Dutch Pay Calculator helps groups fairly split shared expenses such as meals, trips, or group events. Beyond simple equal splits, it calculates the minimum number of transfers needed to settle all balances when each person has already paid different amounts. Works great without needing any payment app integration."
+        "description": "A settlement tool for splitting group dinners, gatherings and trips. From a simple split where one organizer paid, to trips where several people paid, it tells you who sends how much to whom and writes a notice you can paste into the group chat."
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Can some people pay a different share?",
-            "a": "Yes. You can set custom contribution ratios or fixed amounts per person to handle cases like seniority-based splits."
+            "q": "Can seniors pay more?",
+            "a": "Set their share weight to 1.5x or 2x and every item is split with that weight."
           },
           {
-            "q": "Can I share the results?",
-            "a": "Yes. Copy the settlement summary as text and share it via KakaoTalk, SMS, or any messaging app."
+            "q": "How do I exclude non-drinkers?",
+            "a": "Add a separate drinks item and tap their name under \"Split among\" to exclude them."
           },
           {
-            "q": "How are rounding differences handled?",
-            "a": "Amounts below ₩1 are rounded automatically. Any rounding difference is assigned to the host or the last participant."
+            "q": "What happens to the rounding leftover?",
+            "a": "Everyone else sends the rounded amount and the organizer pays the difference (less when rounding up, more when rounding down). The total always matches."
+          },
+          {
+            "q": "Is there a Toss/KakaoPay send button?",
+            "a": "There is no officially documented transfer link format, so we don't add one. Copy the amount and paste it into your payment app."
           }
         ]
       }
@@ -16752,8 +16879,103 @@
     }
   },
   "carMaintenance": {
+    "tabs": {
+      "cost": "Annual cost",
+      "schedule": "Maintenance schedule"
+    },
+    "m": {
+      "unnamedCar": "My car {n}",
+      "months": "{n} mo",
+      "or": " or ",
+      "noneDue": "Nothing scheduled",
+      "overdue": "Overdue",
+      "kmLeft": "~{km} km left",
+      "kmOver": "{km} km over",
+      "icsTitle": "Replace {item} ({car})",
+      "icsKm": "Due at {km} km",
+      "icsInterval": "Recommended interval: {interval}",
+      "disclaimer": "Intervals and costs are general recommendations and reference examples only. They vary by model, year and engine - always follow your owner's manual and your mechanic's inspection.",
+      "myCars": "Saved cars",
+      "carName": "Car name (optional)",
+      "carNamePlaceholder": "e.g. Commuter SUV",
+      "condition": "Driving conditions",
+      "normal": "Normal",
+      "severe": "Severe",
+      "severeHelp": "Severe: repeated short trips, frequent traffic jams/idling, unpaved or dusty roads, frequent hills, towing or roof cargo, taxi/commercial use. Oil and filter intervals drop to about half.",
+      "currentKm": "Current odometer",
+      "monthlyKm": "Average km per month",
+      "reg": "First registration (year-month)",
+      "autoSaved": "Saved - auto-updates",
+      "saveCar": "Save as my car",
+      "newCar": "Add new car",
+      "deleteCar": "Delete this car",
+      "storageNote": "Saved cars and service records stay in this browser only. Share links contain mileage only - no car name or service dates.",
+      "heroLabel": "Next service",
+      "heroOverdueLabel": "Service needed now",
+      "yearlyCost": "Yearly consumables (example)",
+      "overdueCount": "Overdue items",
+      "countUnit": "{n}",
+      "shareTool": "Car maintenance schedule",
+      "exportIcs": "Download calendar (.ics)",
+      "timeline": "Service timeline",
+      "timelineNote": "Whichever comes first: distance or time. Items without a record assume replacement on schedule (estimate).",
+      "warning": "Warning",
+      "estimated": "Estimate",
+      "nextDue": "Next",
+      "interval": "Interval",
+      "src": {
+        "hmg": "Per Hyundai Motor Group guide",
+        "general": "General guideline"
+      },
+      "costEach": "Example cost",
+      "last": "Last replaced",
+      "doneToday": "Replaced today",
+      "editRecord": "Enter record",
+      "lastKm": "Odometer at last replacement",
+      "lastDate": "Last replacement date",
+      "clearRecord": "Clear record",
+      "recordHelp": "Either field is enough. Leave blank to estimate from your monthly mileage.",
+      "yearlyTitle": "Yearly consumables cost (example)",
+      "yearlyNote": "Based on {km} km/year: replacements per year x example cost. Labor, parts grade and shop vary widely.",
+      "perYear": "Per year",
+      "costNote": "Car tax follows the Local Tax Act (5% off per year from vehicle age 3, max 50%, incl. 30% education tax); insurance and depreciation are class averages. Maintenance uses the same basis as the schedule tab.",
+      "goSchedule": "See my car's schedule",
+      "guide": {
+        "severe": {
+          "title": "What are severe conditions?",
+          "items": [
+            "Repeated short trips before the engine warms up",
+            "Heavy city traffic, frequent idling and stop-and-go",
+            "Dusty areas, unpaved/gravel/snowy roads",
+            "Frequent hills, high speeds or hard acceleration/braking",
+            "Towing, camping use, roof cargo",
+            "Taxi, police or commercial use"
+          ]
+        },
+        "sources": {
+          "title": "Basis for intervals",
+          "items": [
+            "Hyundai Motor Group consumables guide: engine oil & filter 15,000 km/12 mo (severe 7,500 km/6 mo), coolant first at 200,000 km/10 yr then 40,000 km/2 yr, brake fluid 50,000 km, spark plugs 160,000 km",
+            "Hyundai owner's manual severe schedule: automatic transmission fluid 100,000 km (many models need none under normal use)",
+            "Air filter, cabin filter, tires, battery, wipers and brake pads use general industry guidelines - large variation by model",
+            "LPG spark plugs use a shorter general guideline of about 40,000 km",
+            "EVs have no engine oil, spark plugs, air cleaner or transmission oil; follow the maker's guide for reducer oil"
+          ]
+        },
+        "tips": {
+          "title": "Maintenance tips",
+          "items": [
+            "Tap 'Replaced today' after service to update the schedule instantly",
+            "Download the .ics to get a reminder 3 days before in your phone calendar",
+            "Check tire tread (1.6 mm limit) and 5-year age regardless of mileage",
+            "Check the battery whenever winter starts feel weak",
+            "During warranty, follow the maker's schedule to keep warranty coverage"
+          ]
+        }
+      }
+    },
     "title": "Car Maintenance Calculator",
-    "description": "Calculate annual vehicle ownership costs including insurance, tax, fuel, maintenance, and depreciation all at once",
+    "description": "Calculate yearly car ownership cost (insurance, tax, fuel, maintenance, depreciation) and track consumable replacement schedules in one place",
     "vehicleInfo": "Vehicle Info",
     "vehicleType": "Vehicle Type",
     "vehicleTypes": {
@@ -16824,12 +17046,13 @@
     "scheduleAnnualCost": "Annual Cost",
     "months": " months",
     "maintenanceItems": {
+      "tireRotation": "Tire rotation",
       "engineOil": "Engine Oil",
       "oilFilter": "Oil Filter",
       "airFilter": "Air Filter",
       "cabinFilter": "Cabin Filter",
       "brakePads": "Brake Pads",
-      "tires": "Tires",
+      "tires": "Tire replacement",
       "battery": "Battery",
       "coolant": "Coolant",
       "transmissionFluid": "Transmission Fluid",
@@ -16840,15 +17063,15 @@
     "placeholderTitle": "Enter your vehicle info",
     "placeholderDescription": "Enter vehicle details and cost items in the left panel, then click Calculate to see your annual maintenance costs.",
     "guide": {
-      "title": "Car Maintenance Guide",
+      "title": "Car cost & maintenance guide",
       "taxSection": {
         "title": "Korean Auto Tax",
         "items": [
-          "Non-commercial cars: 80 KRW/cc (up to 1000cc), 140 KRW/cc (up to 1600cc), 200 KRW/cc (over 1600cc)",
-          "30% education tax is added",
-          "5% annual discount after 3 years of age (max 50%)",
-          "Electric vehicles: flat 130,000 KRW/year",
-          "Prepay in January or March for ~10% discount"
+          "Private passenger cars: up to 1000cc 80 KRW/cc, up to 1600cc 140 KRW/cc, over 1600cc 200 KRW/cc",
+          "Plus 30% local education tax",
+          "5% reduction per year from vehicle age 3, up to 50% at age 12+",
+          "EVs pay a flat 130,000 KRW/yr (incl. education tax)",
+          "Paying the full year in January saves about 4.6% (2026 annual-payment rate 5%, prorated)"
         ]
       },
       "savingsSection": {
@@ -16864,10 +17087,10 @@
       "maintenanceSection": {
         "title": "Maintenance Tips",
         "items": [
-          "Change engine oil every 10,000km or 6 months",
+          "Engine oil: 15,000 km/12 mo normally, 7,500 km/6 mo under severe conditions (Hyundai Motor Group)",
           "Check tire pressure regularly",
-          "Inspect brake pad wear limit lines",
-          "Replace cabin air filter annually",
+          "Check brake pad wear indicators",
+          "Replace the cabin filter yearly",
           "Check coolant antifreeze ratio before winter"
         ]
       },
@@ -18553,8 +18776,187 @@
     }
   },
   "exerciseCalorie": {
+    "tab": {
+      "calc": "Exercise → Calories",
+      "food": "Burn this food",
+      "steps": "Steps",
+      "week": "Weekly plan"
+    },
+    "pick": "Choose an activity",
+    "searchPlaceholder": "Search activities (e.g. running, swimming, yoga)",
+    "all": "All",
+    "noMatch": "No matching activities.",
+    "sex": "Sex",
+    "male": "Male",
+    "female": "Female",
+    "age": "Age",
+    "ageUnit": "yrs",
+    "height": "Height",
+    "weightNote": "Weight is calculated within 20–300 kg.",
+    "netLabel": "Net burn (excluding resting 1 MET)",
+    "formula": "Formula: MET {met} × {w} kg × {h} h = {kcal} kcal",
+    "source": "MET source: 2024 Compendium of Physical Activities (code {code})",
+    "fmt": {
+      "min": "{m} min",
+      "hm": "{h} h {m} min",
+      "g": "~{g} g"
+    },
+    "hero": {
+      "label": "{w} kg · {act} for {min} min",
+      "value": "~{kcal} kcal",
+      "sub": "{perMin} kcal/min · MET {met} · net ~{net} kcal"
+    },
+    "eq": {
+      "title": "In food terms (approx.)",
+      "note": "Food calories are rough per-serving values and vary widely by product and recipe. MET estimates are for an average adult; individual results can differ by ±20% or more."
+    },
+    "adv": {
+      "show": "+ Adjust for sex, age and height (advanced)",
+      "hide": "− Close advanced adjustment",
+      "note": "Estimates your resting metabolic rate (RMR) with the Harris-Benedict equation to compute a corrected MET and your personal net burn.",
+      "rmr": "Resting metabolic rate (Harris-Benedict)",
+      "rmrValue": "{kcal} kcal/day · {ml} ml/kg/min",
+      "corrMet": "Your corrected MET",
+      "personalNet": "Personal net burn (gross − your RMR)",
+      "explain": "Standard METs assume a resting rate of 3.5 ml/kg/min. If your actual RMR is lower (common for women, older adults and heavier people), the same activity is a higher intensity for you (corrected MET), and the calories burned on top of rest are closer to gross burn minus your own RMR."
+    },
+    "act": {
+      "walkStroll": "Strolling (under 3 km/h)",
+      "walkSlow": "Slow walking (3.2–3.9 km/h)",
+      "walkModerate": "Walking, moderate (4.5–5.5 km/h)",
+      "walkBrisk": "Brisk walking (5.6–6.3 km/h)",
+      "walkVeryBrisk": "Very brisk walking (6.4–7.1 km/h)",
+      "walkPower": "Power walking (7.2–7.9 km/h)",
+      "walkNordic": "Nordic walking (5.8–7.1 km/h)",
+      "walkUphill": "Uphill walking (6–10% grade)",
+      "stairs": "Stair climbing (general)",
+      "stairsFast": "Stair climbing, fast",
+      "jogging": "Jogging (self-selected pace)",
+      "run65": "Running 6.5 km/h",
+      "run75": "Running 7.5 km/h",
+      "run8": "Running 8 km/h",
+      "run9": "Running 9 km/h",
+      "run10": "Running 10 km/h",
+      "run11": "Running 11 km/h",
+      "run12": "Running 12 km/h",
+      "run13": "Running 13 km/h",
+      "run16": "Running 16 km/h",
+      "bikeLeisure": "Cycling, leisure (under 16 km/h)",
+      "bike17": "Cycling 16–19 km/h",
+      "bike21": "Cycling 19–22 km/h",
+      "bike24": "Cycling 22–26 km/h",
+      "bike28": "Cycling 26–31 km/h",
+      "bikeStationary": "Stationary bike (general)",
+      "spinning": "Spinning class",
+      "swimLeisure": "Leisure swimming (not laps)",
+      "freestyleSlow": "Freestyle, slow",
+      "freestyleMedium": "Freestyle, medium",
+      "freestyleFast": "Freestyle, fast",
+      "backstroke": "Backstroke (recreational)",
+      "breaststroke": "Breaststroke (recreational)",
+      "butterfly": "Butterfly",
+      "waterAerobics": "Water aerobics",
+      "weightLight": "Weight training (multiple exercises, 8–15 reps)",
+      "gymGeneral": "Gym workout (general)",
+      "weightHeavy": "Heavy weights / bodybuilding",
+      "circuit": "Bodyweight circuit training",
+      "calisthenics": "Calisthenics (push-ups, lunges)",
+      "hiit": "HIIT / Tabata (burpees etc.)",
+      "jumpRope": "Jump rope",
+      "stairMill": "Stair mill (StepMill)",
+      "elliptical": "Elliptical (moderate)",
+      "rowing": "Rowing machine (moderate)",
+      "aerobics": "Aerobics",
+      "yoga": "Yoga",
+      "pilates": "Pilates",
+      "stretching": "Stretching",
+      "zumba": "Zumba class",
+      "danceRecreational": "Ballroom dance (waltz, cha-cha)",
+      "danceVigorous": "Vigorous dancing (club, line dance)",
+      "balletJazz": "Ballet / jazz dance class",
+      "badminton": "Badminton",
+      "tennis": "Tennis",
+      "tableTennis": "Table tennis",
+      "soccer": "Soccer (casual)",
+      "futsal": "Futsal",
+      "basketball": "Basketball",
+      "volleyball": "Volleyball (casual)",
+      "baseball": "Baseball / softball",
+      "golfWalk": "Golf (walking, carrying clubs)",
+      "golfCart": "Golf (using a cart)",
+      "bowling": "Bowling",
+      "boxing": "Boxing (punching bag)",
+      "taekwondo": "Taekwondo / martial arts (moderate)",
+      "climbing": "Rock climbing",
+      "hiking": "Hiking (normal pace)",
+      "hikingSteep": "Steep hill climbing (11–20% grade)",
+      "skiing": "Skiing / snowboarding (moderate)",
+      "cleaning": "House cleaning (moderate)",
+      "vacuum": "Vacuuming",
+      "mopping": "Mopping",
+      "dishes": "Washing dishes",
+      "playKids": "Running around with kids",
+      "groceriesStairs": "Carrying groceries upstairs"
+    },
+    "foodName": {
+      "rice": "Bowl of rice",
+      "ramen": "Pack of ramyeon",
+      "chicken": "Piece of fried chicken",
+      "pizza": "Slice of pizza",
+      "jajangmyeon": "Bowl of jajangmyeon",
+      "tteokbokki": "Serving of tteokbokki",
+      "samgyeopsal": "Samgyeopsal (200 g)",
+      "gimbap": "Roll of gimbap",
+      "burger": "Hamburger",
+      "soju": "Bottle of soju",
+      "beer": "Beer 500 ml",
+      "latte": "Cafe latte",
+      "cola": "Can of cola",
+      "cake": "Slice of cake",
+      "banana": "Banana"
+    },
+    "food": {
+      "pick": "Pick a food",
+      "approx": "~{kcal} kcal",
+      "custom": "Custom",
+      "customLabel": "Enter calories",
+      "heroLabel": "To burn {food} ({kcal} kcal) · {w} kg",
+      "heroValue": "{act}: {time}",
+      "heroSub": "{act}: {time}",
+      "tableTitle": "Time needed by activity",
+      "shareText": "To burn {food}: {act} for {time}"
+    },
+    "steps": {
+      "count": "Steps",
+      "unit": "steps",
+      "preset": "{n}",
+      "pace": "Walking pace",
+      "heroLabel": "{n} steps · {w} kg",
+      "heroSub": "~{km} km · {time}",
+      "stride": "Stride (estimated from height)",
+      "distance": "Distance",
+      "time": "Time",
+      "perThousand": "Per 1,000 steps",
+      "note": "Stride = height × 0.415 (men) / 0.413 (women); time = distance ÷ {kmh} km/h; calories = MET {met} × weight × time. Real stride varies with speed, leg length and terrain, and pedometers also count slow everyday steps, so this can overestimate.",
+      "shareText": "{n} steps ≈ {kcal} kcal"
+    },
+    "week": {
+      "title": "Weekly exercise plan",
+      "minutes": "Minutes per session",
+      "times": "Times per week",
+      "timesUnit": "×",
+      "rowDetail": "{m} min × {n}/week",
+      "heroLabel": "{n} sessions/week · {time} total · {w} kg",
+      "heroSub": "~{month} kcal per month ≈ {fat} kg of body fat",
+      "fatCaveat": "1 kg of body fat ≈ 7,700 kcal is a rough conversion. Actual loss is often smaller due to appetite changes, metabolic adaptation and water shifts — use it as a guide alongside your diet.",
+      "shareText": "This week's workouts burn ~{kcal} kcal — ~{fat} kg of fat a month"
+    },
+    "share": {
+      "text": "{act} for {min} min = ~{kcal} kcal ({w} kg)",
+      "sub": "MET {met} · 2024 Compendium"
+    },
     "title": "Exercise Calorie Calculator",
-    "description": "Calculate calories burned during exercise based on MET (Metabolic Equivalent of Task).",
+    "description": "Calculate calories burned from weight and duration — 70+ activities with 2024 Compendium METs, food burn-off, steps and a weekly plan.",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "inputTitle": "Basic Info",
@@ -18565,6 +18967,7 @@
     "duration": "Duration",
     "minutes": "min",
     "categories": {
+      "dance": "Dance",
       "walking": "Walking",
       "running": "Running",
       "cycling": "Cycling",
@@ -18627,6 +19030,24 @@
     "metDescription": "MET (Metabolic Equivalent of Task) measures exercise intensity. Resting energy expenditure = 1 MET. Calories = MET × weight(kg) × time(h). Source: Compendium of Physical Activities.",
     "inputPrompt": "Enter your weight and add exercises to calculate calories burned.",
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Gross calories (kcal) = MET × weight (kg) × time (h). 1 MET is the energy of sitting quietly (3.5 ml O₂/kg/min, about 1 kcal/kg/h).",
+          "MET values come from the 2024 Adult Compendium of Physical Activities (Herrmann et al., 2024). E.g. running 8 km/h (12030) 8.5, brisk walking (17200) 4.8, rope skipping (02068) 11.0.",
+          "Net burn = (MET − 1) × weight × time: the extra calories on top of what you would have burned at rest.",
+          "Advanced: your resting rate is estimated with Harris-Benedict and corrected MET = MET × 3.5 ÷ your RMR (ml/kg/min), following the Compendium's 'Corrected METs' method.",
+          "Steps mode estimates stride from height (height × 0.415), derives distance and time, then applies the walking MET for the chosen pace."
+        ]
+      },
+      "comparison": {
+        "title": "Versus smartwatches and gym machines",
+        "items": [
+          "Smartwatches use heart rate, age and sex, so values for the same workout can differ; heart-rate data reflects your condition better.",
+          "Treadmill/bike displays use a default weight unless you enter yours, so they can be far off.",
+          "MET estimates are a standard anyone can use without a device — good for comparing activities and planning."
+        ]
+      },
       "title": "User Guide",
       "formula": {
         "title": "Calorie Formula",
@@ -18680,15 +19101,16 @@
       },
       "whatIs": {
         "title": "What is the Exercise Calorie Calculator?",
-        "description": "A tool that calculates precise calorie burn by inputting your body weight and exercise duration, using the MET (Metabolic Equivalent of Task) formula. It supports 40+ exercises including walking, running, swimming, and cycling, and accounts for how heavier individuals burn more calories for the same activity. Use it for diet planning or tracking daily activity levels."
+        "description": "A tool that estimates calories burned from your weight and exercise time using the MET formula. MET values come from the 2024 Adult Compendium of Physical Activities and cover 70+ activities: walking and running by speed, cycling, swimming strokes, gym work, ball sports, dance and housework. It also shows how long it takes to burn off a food, converts steps to distance and calories, and totals a weekly plan with a body-fat estimate."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your body weight (kg) — heavier people burn more calories for the same exercise.",
-          "2. Select or search for the exercise type (e.g., walking, running, swimming, yoga).",
-          "3. Enter the duration in minutes.",
-          "4. View the calorie burn result and the estimated fat burned (in grams)."
+          "1. Enter your body weight (kg) — heavier people burn more for the same activity.",
+          "2. Search or use the category chips to pick an activity, then set the time with the slider. Results update instantly.",
+          "3. In 'Burn this food', pick a food (or enter kcal) to compare the time needed per activity.",
+          "4. 'Steps' estimates stride from height and converts steps to distance, time and calories.",
+          "5. 'Weekly plan' totals several sessions into weekly and monthly burn plus a body-fat estimate. Share via link or image."
         ]
       },
       "faq": {
@@ -18696,15 +19118,15 @@
         "items": [
           {
             "q": "What is a MET value?",
-            "a": "MET stands for Metabolic Equivalent of Task. Resting energy expenditure (3.5 ml O₂/kg/min) is defined as 1 MET. Light walking is about MET 3.5; running at 10 km/h is about MET 10."
+            "a": "Resting oxygen use (3.5 ml/kg/min) is defined as 1 MET, and activity intensity is expressed as a multiple of it. In the 2024 Compendium, moderate walking (4.5–5.5 km/h) is 3.8, running at 10 km/h is 9.3 and rope skipping is 11.0."
           },
           {
             "q": "Why does the result differ from my smartwatch?",
-            "a": "Smartwatches incorporate heart rate, age, gender, and proprietary algorithms. MET-based calculations are standardized estimates with ±10–15% variance."
+            "a": "Smartwatches use heart rate, age and sex and apply their own algorithms. MET estimates are for an average adult and can differ by about ±20%. Turn on the advanced adjustment (sex, age, height) to see net burn based on your own resting rate."
           },
           {
-            "q": "How much exercise is needed to burn 1 kg of fat?",
-            "a": "1 kg of fat equals approximately 7,700 kcal. For example, a 70 kg person running (burning ~6 kcal/min) would need about 21 hours. Combining exercise with dietary control is far more efficient."
+            "q": "How much exercise does it take to lose 1 kg of fat?",
+            "a": "1 kg of body fat is roughly 7,700 kcal. A 70 kg person running at 8 km/h (MET 8.5, about 9.9 kcal/min) would need about 13 hours. Real-world loss is often smaller due to appetite and metabolic adaptation, so combine exercise with diet."
           }
         ]
       }
@@ -24700,8 +25122,131 @@
     ]
   },
   "militaryDischarge": {
+    "name": "Name (optional)",
+    "namePlaceholder": "e.g. Boyfriend, Brother",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "dateFormat": "{m}/{d}/{y} ({w})",
+    "won": "KRW {n}",
+    "monthsUnit": "{n} months",
+    "invalidDate": "Please enter a valid enlistment date",
+    "branches": {
+      "army": "Army",
+      "marines": "Marine Corps",
+      "navy": "Navy",
+      "airForce": "Air Force",
+      "katusa": "KATUSA",
+      "reserveDuty": "Full-time Reservist",
+      "socialService": "Social Service Agent",
+      "industrialActive": "Industrial Technical (active)",
+      "industrialReserve": "Industrial Technical (reserve)",
+      "researchAgent": "Technical Research Personnel"
+    },
+    "hero": {
+      "label": "Until discharge",
+      "labelNamed": "{name}: until discharge",
+      "before": "Until enlistment",
+      "beforeNamed": "{name}: until enlistment",
+      "done": "Discharged",
+      "pct": "Service completed"
+    },
+    "todayLine": {
+      "serving": "Day {served} of service, {weeks} weeks {days} days to go",
+      "last": "Discharge day today. Well done!",
+      "done": "All {total} days served. Discharged {n} days ago",
+      "before": "{n} days until enlistment"
+    },
+    "stats": {
+      "rank": "Current rank",
+      "nextPromo": "{rank} on {date}",
+      "noPromo": "Sergeant reached",
+      "pay": "This month's pay",
+      "payMatch": "+ savings match up to {n}",
+      "next": "Next up"
+    },
+    "rank": {
+      "pvt": "Private",
+      "pfc": "Private First Class",
+      "cpl": "Corporal",
+      "sgt": "Sergeant"
+    },
+    "milestonesTitle": "Service timeline",
+    "ms": {
+      "enlist": "Enlistment",
+      "day100": "Day 100",
+      "half": "50% served",
+      "left100": "D-100 to discharge",
+      "left30": "D-30 to discharge",
+      "discharge": "Discharge",
+      "pfc": "Promotion to PFC",
+      "cpl": "Promotion to Corporal",
+      "sgt": "Promotion to Sergeant"
+    },
+    "msDone": "Passed",
+    "promoNote": "Promotions are issued on the 1st of the month, counting the enlistment month as one month. Actual dates depend on promotion review.",
+    "people": {
+      "title": "Saved people",
+      "save": "Save this person",
+      "update": "Save changes",
+      "saved": "Saved",
+      "add": "New",
+      "remove": "Delete {name}",
+      "hint": "Save several people (boyfriend, brother...) to see them next time. Stored only in this browser."
+    },
+    "share": {
+      "title": "Share",
+      "desc": "Save the D-day card as an image or wallpaper, or send it. The link reproduces the same result.",
+      "sub": "Discharge {date}",
+      "text": "{label} {headline} (discharge {date})"
+    },
+    "pay": {
+      "title": "2026 enlisted pay",
+      "rank": "Rank",
+      "base": "Monthly pay",
+      "withMatch": "+ savings match (max)",
+      "current": "now",
+      "note": "Monthly pay is paid each month. The government savings match equals what the soldier saves in the Soldier Tomorrow Savings (up to KRW 550,000/month) and is paid at discharge. The often-quoted 'KRW 2.05M for sergeants' is KRW 1.5M pay plus the KRW 550K match. Source: MND 2026 budget."
+    },
+    "guide": {
+      "periodTitle": "Service period by branch (2026, MMA)",
+      "ruleTitle": "How it's calculated",
+      "ruleItems": [
+        "Service counts from the enlistment date (day 1).",
+        "Discharge date is the day before the same date N months later. e.g. Army enlisted Mar 10, 2026 → Sep 9, 2027",
+        "If that date doesn't exist (e.g. Feb 31), the last day of that month is the discharge date (Civil Act Art. 160).",
+        "Progress = days served ÷ total days; 100% on discharge day.",
+        "Minimum time in grade: PVT 2, PFC 6, CPL 6 months, so sergeant in month 14."
+      ],
+      "faqTitle": "FAQ",
+      "faq": [
+        {
+          "q": "Does final leave move the discharge date earlier?",
+          "a": "No. The discharge date stays the same; leave taken right before it just means leaving the unit earlier."
+        },
+        {
+          "q": "What if discharge falls on a weekend or holiday?",
+          "a": "The service end date follows the calendar and is not shifted. Ceremony times vary by unit."
+        },
+        {
+          "q": "Is sergeant pay really KRW 2.05M?",
+          "a": "Base pay is KRW 1.5M in 2026. Adding the savings match (max KRW 550K/month) gives 2.05M, but the match is paid at discharge and only for what was saved."
+        },
+        {
+          "q": "What if a promotion is delayed?",
+          "a": "Enlisted promotions are reviewed, so a delay pushes the date and pay back. This tool assumes on-time promotions."
+        }
+      ],
+      "sources": "Sources: MMA service periods, Military Service Act Enforcement Decree Art. 27 and Civil Act Art. 160, Enforcement Rule of the Military Personnel Management Act Art. 32 and enlisted personnel directive (promotion on the 1st), MND 2026 budget (pay, savings match). Confirm the exact date with the unit."
+    },
     "title": "Military Discharge Calculator",
-    "description": "Select your enlistment date and branch to calculate your discharge date and remaining service",
+    "description": "Enter enlistment date and branch to see discharge date, D-day, progress, promotions and this month's pay",
     "enlistmentDate": "Enlistment Date",
     "branch": "Branch",
     "army": "Army",
@@ -24764,10 +25309,10 @@
     ],
     "guideCautionTitle": "Notes",
     "guideCautionItems": [
-      "Service durations are based on 2025 regulations and may change",
-      "Discharge date is calculated inclusive of the enlistment date",
-      "Actual discharge date may vary due to leave and awards",
-      "Early discharge days can account for award leave etc."
+      "Periods are as of 2026 and may change with law revisions. No service reduction applies to current enlistees.",
+      "Disciplinary measures or unexcused absence can extend service and delay discharge.",
+      "Industrial/research personnel count from their assignment date; rank and pay are not shown for alternative service.",
+      "Confirm your exact discharge date with your unit or the MMA."
     ]
   },
   "capitalGainsTax": {
