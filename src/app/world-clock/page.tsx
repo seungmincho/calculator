@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function WorldClockPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 시간', '시차 확인', '도시 추가', '12/24시간 형식'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 실시간 시계', '서울 기준 시차·오늘/내일 표시', '서머타임(DST) 자동 반영', '해외 미팅 시간 플래너(업무시간 겹침)', '미국·한국 증시 정규장 한국시간', '도시 목록 저장·링크 공유'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -42,10 +42,12 @@ export default function WorldClockPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><WorldClock />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <WorldClock />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
 
@@ -65,7 +67,8 @@ export default function WorldClockPage() {
             <li><strong>주요 시차 기준:</strong> 한국(KST)은 UTC+9입니다. 뉴욕(EST)은 한국보다 14시간, 런던(GMT)은 9시간, 파리(CET)는 8시간 느립니다. 서머타임 기간에는 1시간씩 달라집니다.</li>
             <li><strong>글로벌 팀 미팅:</strong> 서울 오후 2시에 미팅 시 뉴욕은 새벽 1시, 런던은 오전 6시입니다. 모든 참가자가 업무 시간인 황금 시간대를 찾는 데 세계 시계를 활용하세요.</li>
             <li><strong>서머타임 자동 반영:</strong> 미국·유럽은 봄·가을에 서머타임 전환으로 시차가 1시간 변동됩니다. 세계 시계는 이를 자동으로 반영하여 정확한 현지 시간을 표시합니다.</li>
-            <li><strong>도시 추가:</strong> 기본 제공 도시 외에 원하는 도시를 추가하여 자주 확인하는 시간대를 맞춤 설정할 수 있습니다.</li>
+            <li><strong>도시 추가:</strong> 한글·영문 도시명이나 국가명으로 검색해 추가하고, 순서를 바꾸면 맨 위 도시가 시차 계산의 기준이 됩니다. 목록은 브라우저에 저장되고 링크로 공유할 수 있습니다.</li>
+            <li><strong>미국 주식 장 시간:</strong> 뉴욕 증시(NYSE·NASDAQ) 정규장은 현지 09:30~16:00으로, 한국시간으로는 서머타임 기간 22:30~05:00, 그 외 기간 23:30~06:00입니다.</li>
           </ul>
         </div>
       </section>

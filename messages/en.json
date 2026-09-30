@@ -1779,16 +1779,110 @@
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
   "characterCounter": {
+    "tabs": {
+      "aria": "Essay questions",
+      "label": "Q{n}",
+      "titlePlaceholder": "Question {n} title (optional, e.g. Motivation)",
+      "titleAria": "Question title"
+    },
+    "target": {
+      "basisLabel": "Count by",
+      "basis": {
+        "chars": "With spaces",
+        "charsNoSpace": "Without spaces",
+        "bytesKr": "Bytes (Korean 2)",
+        "x": "X weighted"
+      },
+      "unit": {
+        "chars": " chars",
+        "charsNoSpace": " chars",
+        "bytesKr": " bytes",
+        "x": ""
+      },
+      "limit": "Target (max)",
+      "remaining": "{n}{unit} left",
+      "over": "{n}{unit} over",
+      "overWarn": "You are over the target. Most application forms will not accept the extra text, so trim it before submitting.",
+      "presets": "Common limits",
+      "presetNames": {
+        "essay500": "Essay 500",
+        "essay1000": "Essay 1,000",
+        "essay1500": "Essay 1,500",
+        "x": "X 280",
+        "threads": "Threads 500",
+        "instagram": "Instagram caption 2,200",
+        "instagramBio": "Instagram bio 150",
+        "youtubeTitle": "YouTube title 100",
+        "youtubeDesc": "YouTube description 5,000",
+        "sms": "SMS 90 bytes",
+        "lms": "LMS 2,000 bytes"
+      },
+      "presetNote": "Based on each service's official limits. Essay rules (with/without spaces, bytes) differ by company, so check the application form."
+    },
+    "tools": {
+      "title": "Clean up text",
+      "tidy": "Trim lines & blank lines",
+      "collapse": "Collapse spaces",
+      "joinLines": "Join broken lines",
+      "stripSpecial": "Remove special characters",
+      "upper": "UPPERCASE",
+      "lower": "lowercase",
+      "undo": "Undo",
+      "spell": "Check Korean spelling",
+      "spellHint": "Copies this question's text and opens Bareun Hangul (formerly the Pusan National University spell checker) in a new tab. Paste with Ctrl+V."
+    },
+    "words": {
+      "title": "Most repeated words",
+      "hint": "Top 10 words used twice or more (common Korean particles are stripped). Click to highlight them in the text.",
+      "empty": "No word is repeated yet.",
+      "times": "×{n}",
+      "marks": "Words to highlight",
+      "marksPlaceholder": "e.g. passion, best, effort (comma-separated)",
+      "preview": "Highlight preview · {n} found",
+      "clearMarks": "Clear highlights"
+    },
+    "save": {
+      "autosaved": "All questions are auto-saved in this browser",
+      "clearAll": "Delete all saved questions",
+      "confirmClear": "Clear this question? You can restore it with Undo.",
+      "confirmClearAll": "Delete the title, text and target of all 5 questions? This cannot be undone."
+    },
+    "rules": {
+      "title": "How we count",
+      "items": [
+        "With/without spaces: counts visible characters (Unicode graphemes). Family emoji, flags and combining marks count as one.",
+        "Bytes (Korean = 2): same as the JobKorea/Saramin counters. Non-ASCII characters are 2 bytes; letters, digits, spaces and line breaks are 1 byte; emoji are 4 bytes.",
+        "UTF-8 bytes: Korean 3 bytes, ASCII 1 byte, emoji 4 bytes. Useful for server/database storage limits.",
+        "Sentences split after . ! ? … followed by a space or a line break (numbers like 3.14 are not split). Paragraphs are separated by blank lines.",
+        "Manuscript: simplified 200-cell Korean manuscript paper (20 × 10). Each line break starts a paragraph with one indent cell; two lowercase letters or digits share a cell. Fine rules such as end-of-line punctuation are skipped, so results may be off by a few cells.",
+        "Reading/speaking time: estimated at 500 / 250 Korean characters per minute and 238 / 150 English words per minute.",
+        "X weighted length: follows X's official twitter-text (v3) rules — Latin letters and digits 1, Korean/CJK and emoji 2, links starting with http 23. The limit is 280."
+      ]
+    },
     "title": "Character Counter",
-    "description": "Real-time analysis of character count, word count, and sentence count. Useful for blog posts, SNS posting, and report writing.",
+    "description": "Counts characters with/without spaces, JobKorea/Saramin-style bytes and manuscript sheets for essays, reports and social posts in real time. Per-question targets and auto-save included.",
     "meta": {
       "title": "Character Counter - Characters, Words, Sentences Counter",
       "description": "Real-time calculation of character count, without spaces, word count, sentence count, and paragraph count. Useful for checking SNS character limits."
     },
     "input": {
+      "aria": "Text to count",
       "placeholder": "Enter or paste your text here..."
     },
     "stats": {
+      "chars": "With spaces",
+      "charsNoSpace": "Without spaces",
+      "bytesKr": "Bytes (Korean = 2)",
+      "bytesKrHint": "{n} bytes w/o spaces · JobKorea/Saramin rule",
+      "bytesUtf8": "UTF-8 bytes",
+      "manuscript": "Manuscript (200-cell)",
+      "manuscriptValue": "{sheets} sheets",
+      "manuscriptHint": "{rows} rows · {pages} page(s) needed (approx.)",
+      "read": "Reading time",
+      "speak": "Speaking time",
+      "duration": "{m}m {s}s",
+      "x": "X weighted length",
+      "siteNote": "Because of emoji or decomposed jamo, JobKorea/Saramin counters may show {n} characters ({m} without spaces). This tool counts visible characters.",
       "characters": "Characters",
       "withoutSpaces": "Without Spaces",
       "words": "Words",
@@ -1798,9 +1892,9 @@
       "bytes": "Bytes"
     },
     "actions": {
-      "copy": "Copy Text",
-      "clear": "Clear Text",
-      "copied": "Copied!"
+      "copy": "Copy",
+      "clear": "Clear",
+      "copied": "Copied"
     },
     "guide": {
       "title": "Character Counter Guide",
@@ -1808,11 +1902,11 @@
         "usage": {
           "title": "Usage Examples",
           "items": [
-            "Twitter: 280 characters limit",
-            "Instagram Bio: 150 characters",
-            "YouTube Title: 100 characters",
-            "Blog SEO Meta Description: 155-160 characters",
-            "SMS: 160 characters"
+            "X (Twitter): 280 weighted (140 Korean characters)",
+            "Instagram caption 2,200 · bio 150",
+            "YouTube title 100 · description 5,000",
+            "Korean SMS 90 bytes (45 Korean chars), LMS 2,000 bytes",
+            "Job essays: the company's with/without-spaces or byte rule"
           ]
         },
         "counting": {
@@ -1826,39 +1920,41 @@
       },
       "whatIs": {
         "title": "What is the Character Counter?",
-        "description": "The Character Counter analyzes text in real time, showing character count, word count, sentence count, line count, and whitespace count. It's particularly useful when writing content with length limits — blog posts, social media captions, cover letters, academic abstracts, and more. You can toggle between counting with or without spaces to match whatever standard applies."
+        "description": "The character counter shows characters with and without spaces, bytes, words, sentences, paragraphs, lines, manuscript sheets and reading time as you type. Keep five essay questions separately, each with its own target, so you always know whether you are over the limit. Your text never leaves this browser."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Paste or type your text into the input area.",
-          "2. Character count (with/without spaces), word count, sentence count, and line count are displayed in real time.",
-          "3. Set a maximum character target to track your progress visually.",
-          "4. Use the Clear button to reset and start analyzing a new piece of text."
+          "1. Pick a question tab (Q1–Q5) and optionally give it a title.",
+          "2. Paste or type your text; counts, bytes and manuscript sheets update instantly.",
+          "3. Choose the counting rule (with/without spaces, bytes, X) and a target, or tap a common limit.",
+          "4. Click repeated words to find them, then tidy the text and run a spell check.",
+          "5. Everything is auto-saved, so you can close the tab and continue later."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Naver Blog typically counts characters including spaces, while academic papers often use character counts excluding spaces — check the submission guidelines of wherever you're submitting.",
-          "Platform character limits: X (Twitter) 280, Instagram caption 2,200, KakaoStory 600.",
-          "For cover letters, paste each section separately to manage the character count for each part individually."
+          "Companies differ on with/without spaces or bytes. Match the target to the wording on the application form.",
+          "Byte limits usually count Korean as 2 bytes, so 1,000 bytes is about 500 Korean characters. ASCII letters, digits and spaces are 1 byte.",
+          "If lines broke when copying from a PDF or HWP file, use 'Join broken lines' to restore paragraphs.",
+          "A word used more than three times feels repetitive. Click it in the repeated-words list to see where it appears."
         ]
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "How are emojis counted?",
-            "a": "Emojis can count as 1 or 2 characters depending on their Unicode code point. Some platforms count emojis as 2 characters, so leave some buffer when writing near the limit."
+            "q": "How are emoji counted?",
+            "a": "This tool counts each emoji as one visible character (including family and flag emoji). JobKorea/Saramin count an emoji as 2 characters and 4 bytes and X counts it as 2, so when emoji are present we also show the site-style count."
           },
           {
-            "q": "How is the word count calculated?",
-            "a": "Words are delimited by spaces or punctuation. For Korean, spacing units are used; for English, spaces are used as separators."
+            "q": "Why do byte counts differ between sites?",
+            "a": "Some count a Korean character as 2 bytes (JobKorea, Saramin, SMS) while UTF-8 uses 3 bytes. We show both so you can use whichever your destination requires."
           },
           {
-            "q": "Can I load text from a file?",
-            "a": "The current version supports paste-in input. You can open your file, select all with Ctrl+A, and paste it in."
+            "q": "Is my text saved or uploaded?",
+            "a": "Text is auto-saved only in this browser (localStorage) and is never sent to a server. On a shared PC, click 'Delete all saved questions' when you are done."
           }
         ]
       }
@@ -6360,15 +6456,182 @@
     }
   },
   "unitConverter": {
+    "searchPlaceholder": "Search units (e.g. inch, pyeong, pound, KiB)",
+    "clear": "Clear",
+    "noMatch": "No matching unit",
+    "value": "Value",
+    "invalid": "Enter a number (e.g. 1,234.5 or 1e-9)",
+    "precision": "Precision",
+    "sigDigits": "{n} significant digits",
+    "remBase": "Base font (px)",
+    "recent": "Recent conversions",
+    "clearRecent": "Clear all",
+    "copy": "Copy",
+    "input": "Input",
+    "allUnits": "{v} {unit} in every unit",
+    "tradTitle": "{v} Korean traditional units to metric",
+    "pyeongLink": "Open the Pyeong Calculator for exclusive/supply area →",
+    "formula": {
+      "temperature": "°F = °C × 9/5 + 32 · K = °C + 273.15 · °R = K × 9/5",
+      "fuel": "L/100km = 100 ÷ (km/L) · km/L = mpg(US) × 0.4251"
+    },
+    "notes": {
+      "length": "Inch, foot, yard and mile use the 1959 international definitions (1 in = 2.54 cm exactly). Ja = 10/33 m (≈30.3 cm).",
+      "weight": "1 lb = 0.45359237 kg (exact). A geun depends on the item: 600 g for meat, 375 g for produce. 1 don = 3.75 g, 1 nyang = 10 don.",
+      "area": "1 pyeong = 400/121 m² (≈3.3058 m²). Korea has required m² legally since 2007. 1 danbo = 300 pyeong, 1 jeongbo = 3,000 pyeong.",
+      "volume": "US gallon (3.785 L) and UK gallon (4.546 L) differ. Doe/hop/mal follow the traditional system (1 doe ≈ 1.804 L); market measures may differ.",
+      "temperature": "Temperatures are converted with formulas, not factors. Absolute zero = 0 K = -273.15 °C = -459.67 °F.",
+      "speed": "1 knot = 1 nautical mile per hour = 1.852 km/h. 1 mph = 1.609344 km/h.",
+      "data": "KB, MB, GB are powers of 1000 (SI); KiB, MiB, GiB are powers of 1024 (IEC). That is why a 1 TB disk shows as about 931 GB in Windows. 100 Mbps = 12.5 MB/s.",
+      "time": "1 month = 30.436875 days and 1 year = 365.2425 days (Gregorian averages). Use the D-Day calculator for actual date differences.",
+      "pressure": "Tire pressure 35 psi ≈ 241 kPa ≈ 2.46 kgf/cm². 1 atm = 101,325 Pa (exact).",
+      "energy": "Food kcal uses the thermochemical calorie: 1 kcal = 4.184 kJ. 1 kWh = 3.6 MJ.",
+      "fuel": "For L/100km, lower is better (it is the reciprocal). Korea uses km/L, Europe L/100km, the US mpg.",
+      "cooking": "A Korean recipe cup is 200 mL, a US cup about 236.6 mL (240 mL on nutrition labels), a metric cup 250 mL. Tablespoon 15 mL, teaspoon 5 mL.",
+      "traditional": "Traditional Korean units are not legal units since the 1961 Measures Act, but remain common for real estate (pyeong), gold (don) and meat (geun). Tap a row to open its category.",
+      "css": "rem is relative to the root (html) font size, em to the parent element. In CSS 1in = 96px and 1pt = 4/3px."
+    },
+    "u": {
+      "nm": "Nanometer",
+      "um": "Micrometer",
+      "mm": "Millimeter",
+      "cm": "Centimeter",
+      "m": "Meter",
+      "km": "Kilometer",
+      "inch": "Inch",
+      "ft": "Foot",
+      "yd": "Yard",
+      "mi": "Mile",
+      "nmi": "Nautical mile",
+      "chi": "Chi (Korean inch)",
+      "ja": "Ja (Korean foot)",
+      "gan": "Gan (6 ja)",
+      "mg": "Milligram",
+      "g": "Gram",
+      "kg": "Kilogram",
+      "t": "Metric ton",
+      "ct": "Carat",
+      "oz": "Ounce",
+      "lb": "Pound",
+      "st": "Stone",
+      "shortTon": "US short ton",
+      "longTon": "UK long ton",
+      "don": "Don (3.75 g)",
+      "nyang": "Nyang (37.5 g)",
+      "geunMeat": "Geun, meat (600 g)",
+      "geunVeg": "Geun, produce (375 g)",
+      "gwan": "Gwan (3.75 kg)",
+      "mm2": "Square millimeter",
+      "cm2": "Square centimeter",
+      "m2": "Square meter",
+      "a": "Are",
+      "ha": "Hectare",
+      "km2": "Square kilometer",
+      "in2": "Square inch",
+      "ft2": "Square foot",
+      "yd2": "Square yard",
+      "acre": "Acre",
+      "mi2": "Square mile",
+      "pyeong": "Pyeong",
+      "danbo": "Danbo (300 pyeong)",
+      "jeongbo": "Jeongbo (3,000 pyeong)",
+      "mL": "Milliliter",
+      "L": "Liter",
+      "m3": "Cubic meter",
+      "in3": "Cubic inch",
+      "ft3": "Cubic foot",
+      "usFlOz": "US fluid ounce",
+      "ukFlOz": "UK fluid ounce",
+      "usPint": "US pint",
+      "usQt": "US quart",
+      "usGal": "US gallon",
+      "ukGal": "UK gallon",
+      "bbl": "Barrel (oil)",
+      "hop": "Hop (0.1 doe)",
+      "doe": "Doe (≈1.8 L)",
+      "mal": "Mal (10 doe)",
+      "degC": "Celsius",
+      "degF": "Fahrenheit",
+      "K": "Kelvin",
+      "degR": "Rankine",
+      "mps": "Meter per second",
+      "kmh": "Kilometer per hour",
+      "mph": "Mile per hour",
+      "knot": "Knot",
+      "fps": "Foot per second",
+      "bit": "Bit",
+      "byte": "Byte",
+      "kbit": "Kilobit",
+      "Mbit": "Megabit",
+      "Gbit": "Gigabit",
+      "kB": "Kilobyte (1000)",
+      "MB": "Megabyte",
+      "GB": "Gigabyte",
+      "TB": "Terabyte",
+      "PB": "Petabyte",
+      "KiB": "Kibibyte (1024)",
+      "MiB": "Mebibyte",
+      "GiB": "Gibibyte",
+      "TiB": "Tebibyte",
+      "PiB": "Pebibyte",
+      "ms": "Millisecond",
+      "s": "Second",
+      "min": "Minute",
+      "h": "Hour",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month (average)",
+      "year": "Year (average)",
+      "Pa": "Pascal",
+      "hPa": "Hectopascal",
+      "kPa": "Kilopascal",
+      "MPa": "Megapascal",
+      "bar": "Bar",
+      "atm": "Atmosphere",
+      "psi": "Pound per square inch",
+      "kgfcm2": "Kilogram-force per cm²",
+      "mmHg": "Millimeter of mercury",
+      "inHg": "Inch of mercury",
+      "J": "Joule",
+      "kJ": "Kilojoule",
+      "MJ": "Megajoule",
+      "cal": "Calorie",
+      "kcal": "Kilocalorie",
+      "Wh": "Watt-hour",
+      "kWh": "Kilowatt-hour",
+      "BTU": "British thermal unit",
+      "eV": "Electronvolt",
+      "kmL": "Kilometers per liter",
+      "L100km": "Liters per 100 km",
+      "mpgUS": "Miles per gallon (US)",
+      "mpgUK": "Miles per gallon (UK)",
+      "tsp": "Teaspoon",
+      "tbsp": "Tablespoon",
+      "cupKr": "Cup (Korea, 200 mL)",
+      "cupMetric": "Metric cup (250 mL)",
+      "cupUs": "US cup (≈236.6 mL)",
+      "px": "Pixel",
+      "pt": "Point",
+      "pc": "Pica",
+      "rem": "rem (root font size)",
+      "em": "em (parent font = base)"
+    },
     "title": "Unit Converter",
-    "description": "Convert length, weight, temperature, area, volume, data, and CSS units.",
-    "from": "Value to Convert",
-    "to": "Conversion Result",
+    "description": "Convert length, weight, area (pyeong), volume, temperature, speed, data, fuel economy, cooking and more: every unit at once.",
+    "from": "From unit",
+    "to": "To unit",
     "swap": "Swap Units",
     "copyResult": "Copy Result",
     "copied": "Copied!",
     "quickConversions": "All Unit Conversions",
     "categories": {
+      "speed": "Speed",
+      "time": "Time",
+      "pressure": "Pressure",
+      "energy": "Energy",
+      "fuel": "Fuel economy",
+      "cooking": "Cooking",
+      "traditional": "Korean traditional",
       "length": "Length",
       "weight": "Weight",
       "temperature": "Temperature",
@@ -6378,6 +6641,15 @@
       "css": "CSS Units"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Linear units convert to a base unit (m, kg, m², L...) and then to the target.",
+          "Exact definitions: 1 in = 0.0254 m, 1 lb = 0.45359237 kg, 1 US gal = 3.785411784 L, 1 pyeong = 400/121 m².",
+          "Temperature goes through kelvin with formulas; L/100km is the reciprocal of km/L.",
+          "Very large or small values are shown in scientific notation (× 10ⁿ)."
+        ]
+      },
       "title": "Unit Conversion Guide",
       "supported": {
         "title": "Supported Units",
@@ -6392,40 +6664,46 @@
         ]
       },
       "tips": {
-        "title": "Useful Tips",
+        "title": "Tips",
         "items": [
-          "Real estate: 1 pyeong ≈ 3.3m²",
-          "CSS: 1rem = 16px (default)",
-          "Data: 1KB = 1024B"
+          "84 m² apartment ≈ 25.4 pyeong",
+          "1 geun of meat = 600 g, of produce = 375 g",
+          "1 don of gold = 3.75 g",
+          "A 1 TB disk ≈ 931 GiB",
+          "Korean cup = 200 mL, US cup ≈ 236.6 mL"
         ]
       },
       "whatIs": {
         "title": "What is the Unit Converter?",
-        "description": "A tool for converting between a wide variety of measurement units — length, weight, temperature, area, volume, data size, and CSS units. It covers everyday use cases like cooking and travel as well as developer-specific conversions such as CSS px, rem, em, and vw. Conversion formulas are shown alongside results to help with learning."
+        "description": "Enter one value and see it in every unit of the same kind at once. International units use NIST/SI definitions; Korean traditional units (pyeong, geun, don) follow the traditional system. Temperature and L/100km are converted with formulas rather than factors."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Select a category: length, weight, temperature, area, volume, data, or CSS.",
-          "2. Enter the source unit and value.",
-          "3. Select the target unit to see the converted value immediately.",
-          "4. For CSS unit conversion, set the base font size (reference value for rem)."
+          "1. Search a unit (inch, pyeong, pound...) or pick a category tab.",
+          "2. Type a value and every unit in the category updates instantly.",
+          "3. Tap a row to make it the target unit; use the copy button to copy just the number.",
+          "4. Adjust precision (significant digits); share the URL to reopen the same conversion."
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "What is the formula for Celsius–Fahrenheit conversion?",
-            "a": "°F to °C: (°F − 32) × 5/9. °C to °F: (°C × 9/5) + 32. Body temperature 37°C = 98.6°F; water boiling point 100°C = 212°F."
+            "q": "How many m² is one pyeong?",
+            "a": "1 pyeong = 6 ja × 6 ja with 1 ja = 10/33 m, so 400/121 m² ≈ 3.3058 m². m² to pyeong is × 0.3025."
           },
           {
-            "q": "What is the base value for CSS rem to px conversion?",
-            "a": "The browser's default font size is 16px, so 1rem = 16px by default. If you've changed the font-size on the HTML element, update the base value accordingly."
+            "q": "Is 1 GB 1000 MB or 1024 MB?",
+            "a": "SI: 1 GB = 1000 MB. IEC: 1 GiB = 1024 MiB. Drive makers use 1000; Windows shows 1024-based values labeled GB."
           },
           {
-            "q": "Is 1 GB equal to 1000 MB or 1024 MB?",
-            "a": "Under the SI standard, 1 GB = 1000 MB (gigabyte). In binary notation, 1 GiB = 1024 MiB (gibibyte). Hard drives typically use SI units; operating systems typically display binary units."
+            "q": "Why do meat and vegetable geun differ?",
+            "a": "By custom, 1 geun of meat is 600 g and of produce 375 g (1/10 gwan). It has not been a legal unit since 1961."
+          },
+          {
+            "q": "How do I convert L/100km to km/L?",
+            "a": "Divide 100 by it: 5 L/100km = 20 km/L. For US mpg, multiply by 0.4251 to get km/L."
           }
         ]
       }
@@ -8285,8 +8563,104 @@
     }
   },
   "baseConverter": {
+    "baseN": "base {n}",
+    "customBase": "Base {n}",
+    "bits": "{n}-bit",
+    "invalid": "Contains characters that are not valid in base {n}",
+    "samples": "Examples",
+    "options": {
+      "prefix": "Show prefixes (0b · 0o · 0x)",
+      "group": "Digit grouping",
+      "group0": "Off",
+      "group4": "4 bits",
+      "group8": "8 bits (byte)",
+      "custom": "Extra base"
+    },
+    "fraction": {
+      "repeating": "Digits in parentheses ( ) repeat forever. e.g. 0.1₁₀ = 0.0(0011)₂ — you can type the parenthesized form back and it is parsed exactly.",
+      "truncated": "… means digits after {n} fractional places were omitted (the repeating part is longer than {n} digits or it does not terminate)."
+    },
+    "share": {
+      "label": "Decimal {v} in binary",
+      "text": "{v} = {b}₂ — see the step-by-step conversion"
+    },
+    "steps": {
+      "title": "Step-by-step",
+      "subtitle": "Shows the by-hand method used in exams and CS classes",
+      "div": "Decimal → base N (division)",
+      "place": "Base N → decimal (place values)",
+      "group": "Binary ↔ octal/hex (grouping)",
+      "base": "Target base",
+      "empty": "Enter a valid value above to see the steps",
+      "negative": "For a negative number, work with the absolute value and add the − sign at the end",
+      "intPart": "Integer part: divide until the quotient is 0",
+      "remainder": "remainder",
+      "tooMany": "Too many steps — only part of them is shown",
+      "readUp": "Read the remainders from bottom to top →",
+      "fracPart": "Fractional part: multiply until the fraction is 0",
+      "take": "integer part",
+      "repeatFrom": "The same fraction repeats from step {n} → a repeating fraction (cannot be written exactly with finite digits)",
+      "fracLimit": "Only the first {n} steps are shown (non-terminating or very long fraction)",
+      "readDown": "Read the integer parts from top to bottom →",
+      "sum": "Add them all up (decimal) →",
+      "placeNote": "A repeating or long fraction is summed only up to its first 12 digits",
+      "toHex": "Binary → hex: group 4 bits from the right",
+      "toOct": "Binary → octal: group 3 bits from the right",
+      "groupNote": "Pad missing leading digits with 0. In reverse, expand each hex/octal digit into 4/3 bits to get binary (integer part)."
+    },
+    "signedInt": {
+      "title": "Signed integers · bits",
+      "range": "{w}-bit — signed range {min} to {max}, unsigned range 0 to {umax}",
+      "intOnly": "(fraction dropped, using integer part {v})",
+      "overflow": "Out of {w}-bit range (overflow). Keeping only the low {w} bits gives {v} in two's complement.",
+      "twos": "Two's complement",
+      "ones": "Ones' complement",
+      "signMag": "Sign-magnitude",
+      "unsigned": "Unsigned",
+      "na": "Not representable in this width",
+      "bitView": "Bit view",
+      "bitHint": "Click a bit to flip it; the value updates instantly. Numbers are bit indices (0 = LSB).",
+      "bitLabel": "Bit {i} (currently {v})",
+      "msbNote": "The leftmost bit (MSB) is the sign bit. Negative values are re-read as two's complement, positive ones as unsigned.",
+      "interpret": "Four readings of the same bit pattern"
+    },
+    "ieee": {
+      "title": "IEEE 754 floating point",
+      "subtitle": "See how a real number is stored as float/double: sign, exponent and mantissa",
+      "f32": "float32 (single)",
+      "f64": "float64 (double)",
+      "input": "Decimal number",
+      "invalid": "Enter a number, Infinity or NaN (e.g. 0.1, -2.5, 1e-3)",
+      "useCurrent": "Use value above",
+      "sign": "Sign",
+      "exponent": "Exponent",
+      "mantissa": "Mantissa",
+      "kind": "Class",
+      "hex": "Hex bit pattern",
+      "expCalc": "{raw} − {bias} (bias) = {e}",
+      "expSub": "Subnormal: exponent fixed at {e}, no implicit leading 1",
+      "formula": "value = (−1)^sign × mantissa × 2^exponent",
+      "stored": "Exact stored value (decimal)",
+      "inexact": "Not exactly the value you typed — it has no finite binary expansion, so it was rounded to the nearest representable value. This is why 0.1 + 0.2 ≠ 0.3.",
+      "kinds": {
+        "zero": "Zero (signed zero)",
+        "subnormal": "Subnormal",
+        "normal": "Normal",
+        "inf": "Infinity",
+        "nan": "NaN (not a number)"
+      }
+    },
+    "text": {
+      "title": "Text ↔ binary/hex (UTF-8)",
+      "toBytes": "Text → bytes",
+      "fromBytes": "Bytes → text",
+      "bytes": "{n} bytes",
+      "badBytes": "Invalid byte format (2 hex digits or 8 binary digits each)",
+      "badUtf8": "Not a valid UTF-8 byte sequence",
+      "note": "Latin letters and digits take 1 byte (same as ASCII); Korean Hangul takes 3 bytes. Spaces, commas and 0x separators are all accepted."
+    },
     "title": "Base Converter",
-    "description": "Convert between binary, octal, decimal, and hexadecimal in real-time",
+    "description": "Convert binary, octal, decimal, hex and any base 2–36 at once — with fractions, two's complement, IEEE 754 and step-by-step work",
     "decimal": "Decimal (Base 10)",
     "binary": "Binary (Base 2)",
     "octal": "Octal (Base 8)",
@@ -8302,41 +8676,63 @@
     "unsigned": "Unsigned integer",
     "commonValues": "Common Values",
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Decimal → base N: divide the integer part by N repeatedly and read remainders bottom-up; multiply the fraction by N repeatedly and read integer parts top-down.",
+          "Base N → decimal: sum each digit × N^position. The first place after the point is N^-1.",
+          "Binary ↔ hex converts directly by grouping 4 bits, binary ↔ octal by grouping 3 bits.",
+          "Two's complement of a negative number = invert all bits (ones' complement) + 1. The n-bit range is −2^(n−1) to 2^(n−1)−1.",
+          "IEEE 754 float32 = 1 sign + 8 exponent (bias 127) + 23 mantissa bits; float64 = 1 + 11 (bias 1023) + 52 bits."
+        ]
+      },
       "title": "User Guide",
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Enter a value in any base field and others will auto-convert",
-          "Hexadecimal uses characters 0-9 and A-F",
-          "Use the copy button to copy results to clipboard"
+          "Type in any base field and all others update instantly. Negative numbers (-42), fractions (13.625), prefixes (0xFF, 0b1010) and separators (1010_1101) are accepted",
+          "'Step-by-step' shows the division, place-value and grouping methods for exams and classes",
+          "Pick 8/16/32/64 bits under 'Signed integers' to see two's complement, ones' complement, sign-magnitude and overflow; click bits to change the value",
+          "Enter a real number in the IEEE 754 section to see the float32/float64 sign, exponent, mantissa and exact stored value",
+          "Your inputs are saved in the page URL, so sharing the link opens the same view"
         ]
       },
       "tips": {
         "title": "Notes",
         "items": [
-          "Binary: The 0 and 1 number system computers actually process",
-          "Octal: Used for Unix file permissions (chmod 755)",
-          "Hex: Used for color codes (#FF0000), memory addresses, etc."
+          "Binary: the 0-and-1 system computers actually use. One hex digit = 4 bits",
+          "Octal: used for Unix file permissions (chmod 755 = rwxr-xr-x)",
+          "Hexadecimal: used for color codes (#FF0000), memory addresses and byte dumps",
+          "Decimal 0.1 repeats forever in binary as 0.0(0011) — the source of floating-point error",
+          "The 8-bit two's complement range is −128 to 127; −128 cannot be written in ones' complement or sign-magnitude"
         ]
       },
       "whatIs": {
         "title": "What is the Number Base Converter?",
-        "description": "A developer tool that converts in real time between binary (Base 2), octal (Base 8), decimal (Base 10), and hexadecimal (Base 16). Essential for computer science study, network subnet calculations, memory address analysis, color code (HEX) processing, and bitwise operations."
+        "description": "A real-time converter between binary, octal, decimal, hexadecimal and any base from 2 to 36. It converts arbitrarily large integers and fractions (including repeating fractions) exactly, and shows two's/ones' complement and sign-magnitude, the IEEE 754 floating-point layout, by-hand solution steps and UTF-8 bytes of text on one screen."
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Why is hexadecimal so commonly used in computing?",
-            "a": "Hexadecimal can represent 4 binary bits as a single digit, making it concise for memory addresses, color codes, hash values, and more. It uses digits 0–9 and letters A–F (representing 10–15)."
+            "q": "Why is hexadecimal so common in computing?",
+            "a": "One hex digit maps exactly to 4 binary bits, so memory addresses, color codes and hash values stay short. It uses digits 0–9 and letters A–F (10–15)."
           },
           {
-            "q": "Are negative numbers and decimals supported?",
-            "a": "The current version supports positive integer conversion. Negative numbers require two's complement, and decimal fractions require a separate conversion approach."
+            "q": "Are negative numbers and fractions supported?",
+            "a": "Yes. Prefix a minus sign (-42) for negatives, and see 8–64-bit two's complement, ones' complement and sign-magnitude under 'Signed integers'. Fractions like 13.625 convert too; values that never terminate in binary, like 0.1, show the repeating part in parentheses: 0.0(0011)."
+          },
+          {
+            "q": "How do I compute two's complement?",
+            "a": "Invert every bit of the positive binary value (ones' complement), then add 1. e.g. 8-bit 5 = 00000101 → inverted 11111010 → +1 = 11111011 = −5. Try it in the bit view."
+          },
+          {
+            "q": "Why is 0.1 + 0.2 not 0.3?",
+            "a": "0.1 repeats forever in binary, so float64 stores the nearest value (0.1000000000000000055…). Enter 0.1 in the IEEE 754 section to see the exact stored value."
           },
           {
             "q": "Can I convert an IP address to binary?",
-            "a": "Yes — enter each octet (0–255) individually into the decimal field to convert it to binary. For example: 192 → 11000000, 168 → 10101000."
+            "a": "Enter each octet (0–255) into the decimal field to get its 8-bit binary form. e.g. 192 → 11000000, 168 → 10101000."
           }
         ]
       }
@@ -10181,6 +10577,37 @@
     }
   },
   "worldClock": {
+    "baseCity": "Base city · {city}",
+    "resetDefault": "Reset to defaults",
+    "searchPlaceholder": "Search city or country (e.g. New York, 파리, Vietnam)",
+    "noResults": "No results",
+    "base": "Base",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday",
+    "day": "Day",
+    "night": "Night",
+    "durH": "{h}h",
+    "durHM": "{h}h {m}m",
+    "sameAsBase": "Same time as {city}",
+    "diffAhead": "{dur} ahead of {city}",
+    "diffBehind": "{dur} behind {city}",
+    "nextDay": "next day",
+    "prevDay": "previous day",
+    "relatedTimeConverter": "For Unix timestamps or converting a specific time between zones,",
+    "timeConverterLink": "use the Time Converter",
+    "markets": {
+      "title": "Stock market regular hours ({city} time)",
+      "nyse": "US NYSE·NASDAQ",
+      "krx": "Korea KRX",
+      "open": "Open",
+      "closed": "Closed",
+      "session": "Current session",
+      "nextSession": "Next session",
+      "note": "Regular sessions only (NYSE·NASDAQ 09:30–16:00 local, KRX 09:00–15:30). Exchange holidays, early closes, pre/after-market and Nextrade hours are not reflected."
+    },
     "title": "World Clock",
     "description": "View current time in major cities around the world at a glance.",
     "currentTime": "Current Time",
@@ -10231,6 +10658,16 @@
       "saoPaulo": "São Paulo"
     },
     "guide": {
+      "howToUse": {
+        "title": "How to use",
+        "items": [
+          "Search a city or country in Korean or English to add it. Cities not in the list can be found by IANA zone name (e.g. Atlantic/Reykjavik).",
+          "Reorder with the arrows. The top city is the base for time differences and today/tomorrow labels.",
+          "In the meeting planner, pick a date and tap a slot to see every city's local time. The blue bar marks slots where everyone is in working hours.",
+          "'Copy text' produces a line like \"10/15(Thu) 21:00 Seoul = 08:00 New York\" for messengers.",
+          "Your city list is saved in the browser; copy the link to share the same cities and selected time."
+        ]
+      },
       "title": "World Clock Guide",
       "usage": {
         "title": "How to Use",
@@ -10279,15 +10716,25 @@
     "dst": "DST active",
     "standardTime": "Standard time",
     "meetingPlanner": {
+      "date": "Date ({city})",
+      "now": "Now",
+      "hint": "Tap or drag across the slots to pick a time. Numbers are each city's local hour.",
+      "night": "Night (22–07)",
+      "overlapRanges": "{ranges} ({city} time)",
+      "weekendNote": "Local Saturdays and Sundays are excluded from working hours.",
+      "selected": "Selected time",
+      "copyText": "Copy text",
+      "share": "Copy text + link",
+      "shareLabel": "Meeting time",
       "title": "Meeting Planner",
-      "description": "Find the overlap window where all selected cities are within working hours.",
+      "description": "Splits the base city's day into 1-hour slots and shows every city's local time side by side. Slots where everyone is in working hours get a blue bar on top.",
       "workStart": "Work start",
       "workEnd": "Work end",
-      "overlap": "Full overlap (best meeting time)",
+      "overlap": "Everyone working",
       "workingHours": "Working hours",
       "offHours": "Off hours",
-      "overlapFound": "{hours} hours of overlap found",
-      "noOverlap": "No overlap in working hours across selected cities",
+      "overlapFound": "{hours}h overlap",
+      "noOverlap": "No slot on this date where all cities are in working hours. Try widening the hours.",
       "noCities": "Add cities to enable the meeting planner"
     }
   },

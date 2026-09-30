@@ -1,666 +1,459 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, usePathname } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Globe, Plus, X, Clock, BookOpen, Sun, Moon, Link, Check, Users } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { X, ChevronUp, ChevronDown, Sun, Moon, Link2, Check, Copy, Search } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  type City, DEFAULT_IDS, resolveCity, searchCities, localParts, offsetMin, isDST, fmtOffset, dayDiff,
+  isNight, hm, ymd, mdw, daySlots, inWork, overlap, ranges, shareLine, MARKETS, marketSession,
+} from '@/utils/worldClock'
 
-interface City {
-  id: string
-  timezone: string
-  flag: string
+const LS_KEY = 'worldClock.cities'
+
+async function copyText(text: string) {
+  try {
+    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return }
+  } catch { /* fallback */ }
+  const ta = document.createElement('textarea')
+  ta.value = text
+  ta.style.position = 'fixed'
+  ta.style.left = '-999999px'
+  document.body.appendChild(ta)
+  ta.select()
+  document.execCommand('copy')
+  document.body.removeChild(ta)
 }
 
-const ALL_CITIES: City[] = [
-  { id: 'seoul', timezone: 'Asia/Seoul', flag: '🇰🇷' },
-  { id: 'tokyo', timezone: 'Asia/Tokyo', flag: '🇯🇵' },
-  { id: 'beijing', timezone: 'Asia/Shanghai', flag: '🇨🇳' },
-  { id: 'newYork', timezone: 'America/New_York', flag: '🇺🇸' },
-  { id: 'losAngeles', timezone: 'America/Los_Angeles', flag: '🇺🇸' },
-  { id: 'london', timezone: 'Europe/London', flag: '🇬🇧' },
-  { id: 'paris', timezone: 'Europe/Paris', flag: '🇫🇷' },
-  { id: 'berlin', timezone: 'Europe/Berlin', flag: '🇩🇪' },
-  { id: 'moscow', timezone: 'Europe/Moscow', flag: '🇷🇺' },
-  { id: 'dubai', timezone: 'Asia/Dubai', flag: '🇦🇪' },
-  { id: 'singapore', timezone: 'Asia/Singapore', flag: '🇸🇬' },
-  { id: 'sydney', timezone: 'Australia/Sydney', flag: '🇦🇺' },
-  { id: 'toronto', timezone: 'America/Toronto', flag: '🇨🇦' },
-  { id: 'chicago', timezone: 'America/Chicago', flag: '🇺🇸' },
-  { id: 'honolulu', timezone: 'Pacific/Honolulu', flag: '🇺🇸' },
-  { id: 'bangkok', timezone: 'Asia/Bangkok', flag: '🇹🇭' },
-  { id: 'mumbai', timezone: 'Asia/Kolkata', flag: '🇮🇳' },
-  { id: 'istanbul', timezone: 'Europe/Istanbul', flag: '🇹🇷' },
-  { id: 'cairo', timezone: 'Africa/Cairo', flag: '🇪🇬' },
-  { id: 'saoPaulo', timezone: 'America/Sao_Paulo', flag: '🇧🇷' },
-]
-
-const DEFAULT_CITY_IDS = ['seoul', 'tokyo', 'newYork', 'london', 'paris', 'sydney']
-
-// DST detection: compare Jan and Jul UTC offsets
-function getTimezoneOffsetMinutes(timezone: string, date: Date): number {
-  const jan = new Date(date.getFullYear(), 0, 1)
-  const jul = new Date(date.getFullYear(), 6, 1)
-
-  const getOffset = (d: Date) => {
-    const utc = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0)
-    const local = new Date(
-      new Intl.DateTimeFormat('en-US', {
-        timeZone: timezone,
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).format(new Date(utc))
-    )
-    return (new Date(utc).getTime() - local.getTime()) / 60000
-  }
-
-  const janOffset = getOffset(jan)
-  const julOffset = getOffset(jul)
-  const currentOffset = getOffset(date)
-
-  // DST is active when offset differs from max (more negative = summer in northern hemisphere)
-  const maxOffset = Math.max(janOffset, julOffset)
-  return currentOffset < maxOffset ? currentOffset : maxOffset
-}
-
-function isInDST(timezone: string, date: Date): boolean {
-  const jan = new Date(date.getFullYear(), 0, 15)
-  const jul = new Date(date.getFullYear(), 6, 15)
-
-  const fmt = (d: Date) =>
-    new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone,
-      timeZoneName: 'short',
-    }).format(d)
-
-  const janStr = fmt(jan)
-  const julStr = fmt(jul)
-  const nowStr = fmt(date)
-
-  // If Jan and Jul produce different tz abbreviations, DST exists
-  if (janStr === julStr) return false
-
-  // In northern hemisphere DST: summer (Jul) has lighter offset
-  // In southern hemisphere DST: winter (Jan) has lighter offset
-  // "now" matching the non-standard offset means DST active
-  const stdStr = janStr < julStr ? janStr : julStr // lexicographic fallback; real check below
-  void stdStr
-
-  // Simpler: get numeric offset for jan, jul, now
-  const getOffsetMin = (d: Date) => {
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone,
-      timeZoneName: 'shortOffset',
-    }).formatToParts(d)
-    const off = parts.find(p => p.type === 'timeZoneName')?.value ?? 'GMT'
-    const m = off.replace('GMT', '')
-    if (!m) return 0
-    const sign = m[0] === '+' ? 1 : -1
-    const [h, mn] = m.slice(1).split(':').map(Number)
-    return sign * (h * 60 + (mn || 0))
-  }
-
-  const janOff = getOffsetMin(jan)
-  const julOff = getOffsetMin(jul)
-  const nowOff = getOffsetMin(date)
-
-  const stdOff = Math.min(janOff, julOff) // standard time = smaller UTC+ offset
-  return nowOff !== stdOff
-}
-
-function getLocalHourFloat(timezone: string, date: Date): number {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: timezone,
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: false,
-  }).formatToParts(date)
-  const h = parseInt(parts.find(p => p.type === 'hour')?.value ?? '0', 10)
-  const m = parseInt(parts.find(p => p.type === 'minute')?.value ?? '0', 10)
-  const s = parseInt(parts.find(p => p.type === 'second')?.value ?? '0', 10)
-  return h + m / 60 + s / 3600
-}
+const parseIds = (s: string | null) => (s ?? '').split(',').filter(id => resolveCity(id))
 
 export default function WorldClock() {
   const t = useTranslations('worldClock')
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const weekdays = useMemo(() => {
+    const d = t.raw('days') as Record<string, string>
+    return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map(k => d[k])
+  }, [t])
 
-  // Initialize selectedCities from URL param
-  const [selectedCities, setSelectedCities] = useState<string[]>(() => {
-    const param = searchParams.get('cities')
-    if (param) {
-      const ids = param.split(',').filter(id => ALL_CITIES.some(c => c.id === id))
-      if (ids.length > 0) return ids
+  const [ids, setIds] = useState<string[]>(DEFAULT_IDS)
+  const [ready, setReady] = useState(false)
+  const [now, setNow] = useState<number | null>(null)
+  const [is24h, setIs24h] = useState(true)
+  const [query, setQuery] = useState('')
+  const [copied, setCopied] = useState<string | null>(null)
+  // 미팅 플래너
+  const [date, setDate] = useState('')
+  const [sel, setSel] = useState<number | null>(null)
+  const [workStart, setWorkStart] = useState(9)
+  const [workEnd, setWorkEnd] = useState(18)
+  const dragging = useRef(false)
+
+  const cities = useMemo(() => ids.map(resolveCity).filter((c): c is City => !!c), [ids])
+  const base = cities[0]
+  const name = (c: City) => c.ko
+
+  // 1초 틱 (서버/첫 렌더는 null → hydration 안전)
+  useEffect(() => {
+    setNow(Date.now())
+    const iv = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(iv)
+  }, [])
+
+  // 초기화: URL(cities, at) > localStorage > 기본값. 한 번만.
+  useEffect(() => {
+    if (ready) return
+    const fromUrl = parseIds(searchParams.get('cities'))
+    let init = fromUrl
+    if (!init.length) {
+      try { init = parseIds(localStorage.getItem(LS_KEY)) } catch { /* 저장소 차단 */ }
     }
-    return DEFAULT_CITY_IDS
+    if (init.length) setIds(init)
+    const baseTz = resolveCity((init.length ? init : DEFAULT_IDS)[0])!.tz
+    const at = Number(searchParams.get('at'))
+    const ref = at > 0 ? at * 1000 : Date.now()
+    const l = localParts(baseTz, ref)
+    setDate(ymd(l))
+    setSel(at > 0 ? l.h : null)
+    setReady(true)
+  }, [searchParams, ready])
+
+  // 저장 + URL 동기화 (초기화 이후 변경분만)
+  useEffect(() => {
+    if (!ready) return
+    try { localStorage.setItem(LS_KEY, ids.join(',')) } catch { /* 저장소 차단 */ }
+    const url = new URL(window.location.href)
+    url.searchParams.set('cities', ids.join(','))
+    window.history.replaceState(window.history.state, '', url)
+  }, [ids, ready])
+
+  const flash = (key: string) => { setCopied(key); setTimeout(() => setCopied(null), 2000) }
+
+  const allTz = useMemo(() => {
+    try { return (Intl as unknown as { supportedValuesOf: (k: string) => string[] }).supportedValuesOf('timeZone') } catch { return [] }
+  }, [])
+  const results = useMemo(() => searchCities(query, ids, allTz), [query, ids, allTz])
+
+  const add = (id: string) => { setIds(v => (v.includes(id) ? v : [...v, id])); setQuery('') }
+  const remove = (id: string) => setIds(v => v.filter(x => x !== id))
+  const move = (i: number, d: -1 | 1) => setIds(v => {
+    const j = i + d
+    if (j < 0 || j >= v.length) return v
+    const n = [...v];[n[i], n[j]] = [n[j], n[i]]
+    return n
   })
 
-  const [is24h, setIs24h] = useState(true)
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [selectedCityToAdd, setSelectedCityToAdd] = useState<string>('')
-  const [copiedLink, setCopiedLink] = useState(false)
+  const durText = (min: number) => {
+    const a = Math.abs(min), h = Math.floor(a / 60), m = a % 60
+    return m ? t('durHM', { h, m }) : t('durH', { h })
+  }
 
-  // Meeting planner state
-  const [meetingStart, setMeetingStart] = useState(9)
-  const [meetingEnd, setMeetingEnd] = useState(18)
-  const [showMeetingPlanner, setShowMeetingPlanner] = useState(false)
+  const fmtClock = useCallback((tz: string, ms: number) =>
+    new Intl.DateTimeFormat('ko-KR', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24h }).format(ms),
+  [is24h])
 
-  // Update time every second
+  // ── 미팅 플래너 ──
+  const slots = useMemo(() => (base && date ? daySlots(base.tz, date) : []), [base, date])
+  const overlapFlags = useMemo(() => overlap(cities.map(c => c.tz), slots, workStart, workEnd), [cities, slots, workStart, workEnd])
+  const overlapRanges = useMemo(() => ranges(overlapFlags), [overlapFlags])
+  const grid = useMemo(() => cities.map(c => slots.map(ms => {
+    const l = localParts(c.tz, ms)
+    return { l, work: inWork(c.tz, ms, workStart, workEnd), night: l.h < 7 || l.h >= 22 }
+  })), [cities, slots, workStart, workEnd])
+
+  // 선택 칸 기본값: 첫 겹침 구간 → 없으면 오전 9시
+  const selIdx = sel ?? (overlapRanges[0]?.[0] ?? 9)
+  const selMs = slots[selIdx]
+  const line = selMs != null ? shareLine(selMs, cities.map(c => ({ tz: c.tz, name: name(c) })), weekdays) : ''
+  const shareUrl = () => {
+    const u = new URL(window.location.href)
+    u.searchParams.set('cities', ids.join(','))
+    if (selMs != null) u.searchParams.set('at', String(Math.floor(selMs / 1000)))
+    return u.toString()
+  }
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-    return () => clearInterval(interval)
+    const up = () => { dragging.current = false }
+    window.addEventListener('pointerup', up)
+    return () => window.removeEventListener('pointerup', up)
   }, [])
 
-  // Sync selectedCities to URL
-  useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('cities', selectedCities.join(','))
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
-  }, [selectedCities, pathname, router])
-
-  // Available cities to add
-  const availableCities = useMemo(() => {
-    return ALL_CITIES.filter(city => !selectedCities.includes(city.id))
-  }, [selectedCities])
-
-  // Get city data by id
-  const getCityById = useCallback((id: string): City | undefined => {
-    return ALL_CITIES.find(city => city.id === id)
-  }, [])
-
-  // Format time for a timezone
-  const formatTime = useCallback((timezone: string) => {
-    const formatter = new Intl.DateTimeFormat('ko-KR', {
-      timeZone: timezone,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: !is24h,
-    })
-    return formatter.format(currentTime)
-  }, [currentTime, is24h])
-
-  // Format date for a timezone
-  const formatDate = useCallback((timezone: string) => {
-    const formatter = new Intl.DateTimeFormat('ko-KR', {
-      timeZone: timezone,
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    })
-    return formatter.format(currentTime)
-  }, [currentTime])
-
-  // Calculate time difference in hours
-  const getTimeDifference = useCallback((timezone: string) => {
-    const localOffset = currentTime.getTimezoneOffset()
-    const targetFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone,
-      timeZoneName: 'shortOffset',
-    })
-    const targetParts = targetFormatter.formatToParts(currentTime)
-    const offsetPart = targetParts.find(part => part.type === 'timeZoneName')
-
-    if (!offsetPart || offsetPart.value === 'GMT') {
-      const targetTime = new Date(currentTime.toLocaleString('en-US', { timeZone: timezone }))
-      const localTime = new Date(currentTime.toLocaleString('en-US'))
-      const diffMs = targetTime.getTime() - localTime.getTime()
-      return Math.round(diffMs / (1000 * 60 * 60))
-    }
-
-    const offsetStr = offsetPart.value.replace('GMT', '')
-    if (!offsetStr) return 0
-
-    const sign = offsetStr[0] === '+' ? 1 : -1
-    const [hours, minutes] = offsetStr.slice(1).split(':').map(Number)
-    const targetOffsetMinutes = sign * (hours * 60 + (minutes || 0))
-
-    const diffMinutes = targetOffsetMinutes + localOffset
-    return Math.round(diffMinutes / 60)
-  }, [currentTime])
-
-  // Add city
-  const handleAddCity = useCallback(() => {
-    if (selectedCityToAdd && !selectedCities.includes(selectedCityToAdd)) {
-      setSelectedCities([...selectedCities, selectedCityToAdd])
-      setSelectedCityToAdd('')
-    }
-  }, [selectedCityToAdd, selectedCities])
-
-  // Remove city
-  const handleRemoveCity = useCallback((cityId: string) => {
-    setSelectedCities(selectedCities.filter(id => id !== cityId))
-  }, [selectedCities])
-
-  // Copy shareable link
-  const handleCopyLink = useCallback(async () => {
-    const url = `${window.location.origin}${pathname}?cities=${selectedCities.join(',')}`
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url)
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = url
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch {
-      // ignore
-    }
-    setCopiedLink(true)
-    setTimeout(() => setCopiedLink(false), 2000)
-  }, [selectedCities, pathname])
-
-  // Meeting planner: find overlap window where all selected cities are within working hours
-  const meetingData = useMemo(() => {
-    if (selectedCities.length === 0) return null
-
-    const cities = selectedCities.map(id => getCityById(id)).filter(Boolean) as City[]
-
-    // For each hour of the day (0..23) check if ALL cities fall within [meetingStart, meetingEnd)
-    const overlapHours: boolean[] = Array.from({ length: 24 }, (_, h) => {
-      // h is UTC hour — convert to local hour for each city
-      const refDate = new Date(currentTime)
-      refDate.setUTCHours(h, 0, 0, 0)
-      return cities.every(city => {
-        const localH = getLocalHourFloat(city.timezone, refDate)
-        // handle midnight wrap
-        const norm = ((localH % 24) + 24) % 24
-        return norm >= meetingStart && norm < meetingEnd
-      })
-    })
-
-    // For each city: compute its local hour for each of the 24 UTC hours
-    const cityHours = cities.map(city => {
-      return Array.from({ length: 24 }, (_, h) => {
-        const refDate = new Date(currentTime)
-        refDate.setUTCHours(h, 0, 0, 0)
-        return getLocalHourFloat(city.timezone, refDate)
-      })
-    })
-
-    return { cities, overlapHours, cityHours }
-  }, [selectedCities, getCityById, meetingStart, meetingEnd, currentTime])
-
-  // For the bar: each segment is 1 hour (UTC), total 24
-  // We display local working range [meetingStart, meetingEnd)
-  const BAR_HOURS = 24
+  const rangeText = (r: [number, number]) => {
+    const a = localParts(base.tz, slots[r[0]])
+    const endMs = slots[r[1] - 1] + 3600000
+    const b = localParts(base.tz, endMs)
+    return `${hm(a)}–${b.h === 0 && b.mi === 0 ? '24:00' : hm(b)}`
+  }
+  const overlapHours = overlapFlags.filter(Boolean).length
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* 헤더 */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <Globe className="w-8 h-8" />
-            {t('title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        {/* Copy Link Button */}
-        <button
-          onClick={handleCopyLink}
-          className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors text-sm"
-          title={t('copyLink')}
-        >
-          {copiedLink ? (
-            <>
-              <Check className="w-4 h-4 text-green-500" />
-              <span className="text-green-600 dark:text-green-400">{t('copied')}</span>
-            </>
-          ) : (
-            <>
-              <Link className="w-4 h-4" />
-              <span>{t('copyLink')}</span>
-            </>
+        <div className="flex rounded-xl bg-soft p-1 text-sm">
+          {[false, true].map(v => (
+            <button key={String(v)} onClick={() => setIs24h(v)}
+              className={`px-3 py-1.5 rounded-lg font-medium ${is24h === v ? 'bg-primary text-white' : 'text-body'}`}>
+              {v ? t('format24h') : t('format12h')}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 기준 도시 */}
+      {base && (
+        <div className="ui-hero p-6 sm:p-8">
+          <div className="text-sm text-white/70">{t('baseCity', { city: name(base) })}</div>
+          <div className="text-5xl font-bold tabular-nums mt-2" suppressHydrationWarning>
+            {now ? fmtClock(base.tz, now) : '--:--:--'}
+          </div>
+          <div className="text-white/70 mt-2 text-sm">
+            {now ? `${ymd(localParts(base.tz, now))} (${weekdays[localParts(base.tz, now).wd]}) · ${fmtOffset(offsetMin(base.tz, now))}` : ' '}
+          </div>
+        </div>
+      )}
+
+      {/* 도시 추가 */}
+      <div className="ui-card p-6 space-y-3">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <h2 className="text-lg font-semibold text-fg">{t('addCity')}</h2>
+          <div className="flex gap-2">
+            <button onClick={() => setIds(DEFAULT_IDS)} className="ui-btn-soft px-3 py-1.5 text-sm">{t('resetDefault')}</button>
+            <button onClick={async () => { await copyText(window.location.href); flash('link') }} className="ui-btn-soft px-3 py-1.5 text-sm">
+              {copied === 'link' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
+              {copied === 'link' ? t('copied') : t('copyLink')}
+            </button>
+          </div>
+        </div>
+        <div className="relative">
+          <Search className="w-4 h-4 text-faint absolute left-4 top-1/2 -translate-y-1/2" aria-hidden />
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && results[0]) add(results[0].id); if (e.key === 'Escape') setQuery('') }}
+            placeholder={t('searchPlaceholder')}
+            aria-label={t('search')}
+            className="ui-field w-full pl-10 pr-4 py-3"
+          />
+          {query.trim() && (
+            <ul className="absolute z-20 mt-2 w-full bg-surface border border-line rounded-xl shadow-lg max-h-72 overflow-auto">
+              {results.length ? results.map(c => (
+                <li key={c.id}>
+                  <button onClick={() => add(c.id)} className="w-full text-left px-4 py-2.5 hover:bg-soft flex justify-between gap-3">
+                    <span className="text-fg">{c.ko} <span className="text-muted text-sm">{c.en !== c.ko ? c.en : ''}</span></span>
+                    <span className="text-xs text-faint tabular-nums shrink-0">{now ? fmtOffset(offsetMin(c.tz, now)) : c.tz}</span>
+                  </button>
+                </li>
+              )) : <li className="px-4 py-3 text-sm text-muted">{t('noResults')}</li>}
+            </ul>
           )}
-        </button>
-      </div>
-
-      {/* My Local Time */}
-      <div className="bg-subtle rounded-xl shadow-lg p-8">
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-fg">
-              {t('myTime')}
-            </h2>
-          </div>
-          <div className="text-5xl font-bold font-mono text-fg">
-            {formatTime(Intl.DateTimeFormat().resolvedOptions().timeZone)}
-          </div>
-          <div className="text-lg text-sub">
-            {formatDate(Intl.DateTimeFormat().resolvedOptions().timeZone)}
-          </div>
-          <div className="flex items-center justify-center gap-4 mt-4">
-            <button
-              onClick={() => setIs24h(false)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                !is24h
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-field text-body hover:bg-gray-100 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t('format12h')}
-            </button>
-            <button
-              onClick={() => setIs24h(true)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                is24h
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-field text-body hover:bg-gray-100 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t('format24h')}
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Add City */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-          {t('addCity')}
-        </h2>
-        <div className="flex gap-3">
-          <select
-            value={selectedCityToAdd}
-            onChange={(e) => setSelectedCityToAdd(e.target.value)}
-            className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-          >
-            <option value="">{t('selectCity')}</option>
-            {availableCities.map(city => (
-              <option key={city.id} value={city.id}>
-                {city.flag} {t(`cities.${city.id}`)}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={handleAddCity}
-            disabled={!selectedCityToAdd}
-            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-          >
-            {t('add')}
-          </button>
-        </div>
-      </div>
-
-      {/* City Cards Grid */}
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-        {selectedCities.map(cityId => {
-          const city = getCityById(cityId)
-          if (!city) return null
-
-          const timeDiff = getTimeDifference(city.timezone)
-          const diffText = timeDiff === 0
-            ? t('same')
-            : timeDiff > 0
-            ? `${Math.abs(timeDiff)}${t('hours')} ${t('ahead')}`
-            : `${Math.abs(timeDiff)}${t('hours')} ${t('behind')}`
-
-          const diffColor = timeDiff === 0
-            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-            : timeDiff > 0
-            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-            : 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
-
-          const dst = isInDST(city.timezone, currentTime)
-          const localH = getLocalHourFloat(city.timezone, currentTime)
-          const isNight = localH < 6 || localH >= 20
-
+      {/* 도시 카드 */}
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
+        {cities.map((c, i) => {
+          const l = now ? localParts(c.tz, now) : null
+          const off = now ? offsetMin(c.tz, now) : 0
+          const diff = now && base ? off - offsetMin(base.tz, now) : 0
+          const dd = now && base ? dayDiff(c.tz, base.tz, now) : 0
+          const night = l ? isNight(l.h) : false
           return (
-            <div
-              key={city.id}
-              className={`${glassCard} ${glassInset} p-6 relative`}
-            >
-              {/* Remove Button */}
-              <button
-                onClick={() => handleRemoveCity(city.id)}
-                className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                aria-label={t('removeCity')}
-              >
-                <X className="w-5 h-5 text-muted" />
-              </button>
-
-              {/* Flag and City Name */}
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">{city.flag}</span>
-                <div>
-                  <h3 className="text-xl font-bold text-fg">
-                    {t(`cities.${city.id}`)}
+            <div key={c.id} className={`ui-card p-5 ${i === 0 ? 'border-primary' : ''}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <h3 className="text-lg font-bold text-fg truncate">
+                    {name(c)}
+                    {i === 0 && <span className="ml-2 align-middle text-xs font-medium px-2 py-0.5 rounded-full bg-primary-soft text-primary">{t('base')}</span>}
                   </h3>
-                  {/* DST Indicator */}
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    {isNight ? (
-                      <Moon className="w-3.5 h-3.5 text-indigo-400" />
-                    ) : (
-                      <Sun className="w-3.5 h-3.5 text-yellow-500" />
-                    )}
-                    {dst && (
-                      <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
-                        {t('dst')}
-                      </span>
-                    )}
-                    {!dst && (
-                      <span className="text-xs text-faint">
-                        {t('standardTime')}
-                      </span>
-                    )}
-                  </div>
+                  <div className="text-xs text-faint truncate">{c.country}</div>
+                </div>
+                <div className="flex items-center shrink-0 -mr-1">
+                  <button onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('moveUp')} className="p-1 rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronUp className="w-4 h-4" /></button>
+                  <button onClick={() => move(i, 1)} disabled={i === cities.length - 1} aria-label={t('moveDown')} className="p-1 rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronDown className="w-4 h-4" /></button>
+                  <button onClick={() => remove(c.id)} aria-label={t('removeCity')} className="p-1 rounded-lg hover:bg-soft text-muted"><X className="w-4 h-4" /></button>
                 </div>
               </div>
 
-              {/* Time */}
-              <div className="text-3xl font-bold font-mono text-fg mb-2">
-                {formatTime(city.timezone)}
+              <div className="text-3xl font-bold text-fg tabular-nums mt-3" suppressHydrationWarning>
+                {now ? fmtClock(c.tz, now) : '--:--:--'}
               </div>
-
-              {/* Date */}
-              <div className="text-sm text-muted mb-3">
-                {formatDate(city.timezone)}
+              <div className="text-sm text-sub mt-1 flex items-center gap-2 flex-wrap">
+                <span>{l ? `${l.mo}/${l.d} (${weekdays[l.wd]})` : ' '}</span>
+                {l && i > 0 && (
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${dd === 0 ? 'bg-soft text-sub' : 'bg-primary-soft text-primary'}`}>
+                    {dd === 0 ? t('today') : dd > 0 ? t('tomorrow') : t('yesterday')}
+                  </span>
+                )}
+                {l && (
+                  <span className="inline-flex items-center gap-1 text-xs text-muted">
+                    {night ? <Moon className="w-3.5 h-3.5" aria-hidden /> : <Sun className="w-3.5 h-3.5" aria-hidden />}
+                    {night ? t('night') : t('day')}
+                  </span>
+                )}
               </div>
-
-              {/* Time Difference Badge */}
-              <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${diffColor}`}>
-                {diffText}
-              </div>
+              {l && (
+                <div className="mt-3 pt-3 border-t border-line text-xs text-muted flex flex-wrap gap-x-3 gap-y-1">
+                  <span className="tabular-nums">{fmtOffset(off)}</span>
+                  <span className={isDST(c.tz, now!) ? 'text-amber-700 dark:text-amber-400 font-medium' : ''}>
+                    {isDST(c.tz, now!) ? t('dst') : t('standardTime')}
+                  </span>
+                  {i > 0 && base && (
+                    <span className="text-body">
+                      {diff === 0 ? t('sameAsBase', { city: name(base) })
+                        : diff > 0 ? t('diffAhead', { city: name(base), dur: durText(diff) })
+                          : t('diffBehind', { city: name(base), dur: durText(diff) })}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           )
         })}
       </div>
+      {!cities.length && <p className="text-sm text-muted">{t('meetingPlanner.noCities')}</p>}
 
-      {/* Meeting Planner */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          onClick={() => setShowMeetingPlanner(v => !v)}
-          className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            {t('meetingPlanner.title')}
-          </h2>
-          <span className="text-sm text-muted">
-            {showMeetingPlanner ? '▲' : '▼'}
-          </span>
-        </button>
+      {/* 미팅 플래너 */}
+      {base && date && (
+        <div className="ui-card p-6 space-y-5">
+          <div>
+            <h2 className="text-lg font-semibold text-fg">{t('meetingPlanner.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('meetingPlanner.description')}</p>
+          </div>
 
-        {showMeetingPlanner && (
-          <div className="px-6 pb-6 space-y-5 border-t border-line pt-4">
-            <p className="text-sm text-muted">
-              {t('meetingPlanner.description')}
-            </p>
+          <div className="flex flex-wrap gap-4 items-end">
+            <label className="text-sm text-body space-y-1">
+              <span className="block">{t('meetingPlanner.date', { city: name(base) })}</span>
+              <input type="date" value={date} onChange={e => { if (e.target.value) { setDate(e.target.value); setSel(null) } }} className="ui-field px-3 py-2" />
+            </label>
+            <label className="text-sm text-body space-y-1">
+              <span className="block">{t('meetingPlanner.workStart')}</span>
+              <select value={workStart} onChange={e => setWorkStart(Number(e.target.value))} className="ui-field px-3 py-2">
+                {Array.from({ length: 24 }, (_, h) => <option key={h} value={h} disabled={h >= workEnd}>{String(h).padStart(2, '0')}:00</option>)}
+              </select>
+            </label>
+            <label className="text-sm text-body space-y-1">
+              <span className="block">{t('meetingPlanner.workEnd')}</span>
+              <select value={workEnd} onChange={e => setWorkEnd(Number(e.target.value))} className="ui-field px-3 py-2">
+                {Array.from({ length: 24 }, (_, h) => h + 1).map(h => <option key={h} value={h} disabled={h <= workStart}>{String(h).padStart(2, '0')}:00</option>)}
+              </select>
+            </label>
+            <button onClick={() => { if (!now) return; const l = localParts(base.tz, now); setDate(ymd(l)); setSel(l.h) }} className="ui-btn-soft px-4 py-2 text-sm">
+              {t('meetingPlanner.now')}
+            </button>
+          </div>
 
-            {/* Working hours range */}
-            <div className="flex flex-wrap gap-6 items-center">
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-body whitespace-nowrap">
-                  {t('meetingPlanner.workStart')}
-                </label>
-                <select
-                  value={meetingStart}
-                  onChange={e => setMeetingStart(Number(e.target.value))}
-                  className={`px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
-                >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i} value={i}>{String(i).padStart(2, '0')}:00</option>
+          <p className="text-xs text-muted">{t('meetingPlanner.hint')}</p>
+
+          {/* 타임라인: 행 = 도시, 열 = 기준 도시의 1시간 */}
+          <div className="overflow-x-auto -mx-2 px-2">
+            <div className="min-w-[720px] select-none" onPointerLeave={() => { dragging.current = false }}>
+              <div className="flex items-end gap-2 mb-1">
+                <div className="w-24 shrink-0" />
+                <div className="flex-1 grid grid-cols-24 gap-px">
+                  {overlapFlags.map((f, i) => (
+                    <div key={i} className={`h-1.5 rounded-full ${f ? 'bg-primary' : 'bg-transparent'}`} title={f ? t('meetingPlanner.overlap') : undefined} />
                   ))}
-                </select>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-body whitespace-nowrap">
-                  {t('meetingPlanner.workEnd')}
-                </label>
-                <select
-                  value={meetingEnd}
-                  onChange={e => setMeetingEnd(Number(e.target.value))}
-                  className={`px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
-                >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i} value={i + 1}>{String(i + 1).padStart(2, '0')}:00</option>
-                  ))}
-                </select>
-              </div>
+              {cities.map((c, ci) => (
+                <div key={c.id} className="flex items-center gap-2 mb-1">
+                  <div className="w-24 shrink-0 text-sm font-medium text-body truncate">{name(c)}</div>
+                  <div className="flex-1 grid grid-cols-24 gap-px">
+                    {grid[ci]?.map((cell, i) => {
+                      const selected = i === selIdx
+                      const cls = selected ? 'bg-primary text-white'
+                        : cell.work ? 'bg-primary-soft text-primary'
+                          : cell.night ? 'bg-subtle text-faint' : 'bg-soft text-sub'
+                      return (
+                        <button key={i} type="button"
+                          onPointerDown={() => { dragging.current = true; setSel(i) }}
+                          onPointerEnter={() => { if (dragging.current) setSel(i) }}
+                          onClick={() => setSel(i)}
+                          aria-label={`${name(c)} ${hm(cell.l)}`}
+                          aria-pressed={selected}
+                          className={`h-9 rounded text-[11px] leading-none tabular-nums flex flex-col items-center justify-center ${cls}`}>
+                          <span>{cell.l.mi ? `${cell.l.h}:${String(cell.l.mi).padStart(2, '0')}` : cell.l.h}</span>
+                          {cell.l.h === 0 && cell.l.mi === 0 && <span className="text-[9px] opacity-80">{cell.l.mo}/{cell.l.d}</span>}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Gantt-style bar visualization */}
-            {meetingData && meetingData.cities.length > 0 ? (
-              <div className="space-y-3">
-                {/* Hour labels */}
-                <div className="flex text-xs text-faint pl-24 pr-2">
-                  {Array.from({ length: BAR_HOURS + 1 }, (_, i) => (
-                    <div
-                      key={i}
-                      className="flex-shrink-0 text-right pr-0.5"
-                      style={{ width: `${100 / BAR_HOURS}%` }}
-                    >
-                      {i % 6 === 0 ? `${String(i).padStart(2, '0')}` : ''}
-                    </div>
-                  ))}
-                </div>
+          <div className="flex flex-wrap gap-4 text-xs text-sub">
+            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-primary" />{t('meetingPlanner.overlap')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-primary-soft border border-line" />{t('meetingPlanner.workingHours')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-soft border border-line" />{t('meetingPlanner.offHours')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-subtle border border-line" />{t('meetingPlanner.night')}</span>
+          </div>
 
-                {/* City rows */}
-                {meetingData.cities.map((city, ci) => (
-                  <div key={city.id} className="flex items-center gap-2">
-                    {/* City label */}
-                    <div className="w-24 flex-shrink-0 flex items-center gap-1.5 text-sm font-medium text-body truncate">
-                      <span className="text-base leading-none">{city.flag}</span>
-                      <span className="truncate">{t(`cities.${city.id}`)}</span>
-                    </div>
+          <div className={`rounded-2xl p-4 text-sm ${overlapHours ? 'bg-subtle text-body' : 'bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}`}>
+            {overlapHours
+              ? <>{t('meetingPlanner.overlapFound', { hours: overlapHours })} · {t('meetingPlanner.overlapRanges', { city: name(base), ranges: overlapRanges.map(rangeText).join(', ') })}</>
+              : t('meetingPlanner.noOverlap')}
+            <div className="text-xs text-muted mt-1">{t('meetingPlanner.weekendNote')}</div>
+          </div>
 
-                    {/* Bar */}
-                    <div className="flex-1 flex h-7 rounded overflow-hidden border border-line">
-                      {Array.from({ length: BAR_HOURS }, (_, utcH) => {
-                        const localH = meetingData.cityHours[ci][utcH]
-                        const norm = ((localH % 24) + 24) % 24
-                        const isWork = norm >= meetingStart && norm < meetingEnd
-                        const isOverlap = meetingData.overlapHours[utcH]
-
-                        let bg = 'bg-soft' // off hours
-                        if (isWork && isOverlap) bg = 'bg-green-400 dark:bg-green-500'
-                        else if (isWork) bg = 'bg-blue-200 dark:bg-blue-800'
-
-                        return (
-                          <div
-                            key={utcH}
-                            className={`${bg} flex-1 transition-colors`}
-                            title={`UTC ${String(utcH).padStart(2, '0')}:00 → ${t(`cities.${city.id}`)} ${String(Math.floor(((norm % 24) + 24) % 24)).padStart(2, '0')}:00`}
-                          />
-                        )
-                      })}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Legend */}
-                <div className="flex flex-wrap gap-4 pt-2 text-xs text-sub">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded bg-green-400 dark:bg-green-500" />
-                    <span>{t('meetingPlanner.overlap')}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded bg-blue-200 dark:bg-blue-800" />
-                    <span>{t('meetingPlanner.workingHours')}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded bg-soft border border-line" />
-                    <span>{t('meetingPlanner.offHours')}</span>
-                  </div>
-                </div>
-
-                {/* Overlap summary */}
-                {(() => {
-                  const overlapCount = meetingData.overlapHours.filter(Boolean).length
+          {/* 선택한 시간 */}
+          {selMs != null && (
+            <div className="bg-subtle rounded-2xl p-5 space-y-3">
+              <div className="text-sm text-muted">{t('meetingPlanner.selected')}</div>
+              <ul className="divide-y divide-line">
+                {cities.map(c => {
+                  const l = localParts(c.tz, selMs)
+                  const work = inWork(c.tz, selMs, workStart, workEnd)
+                  const dd = dayDiff(c.tz, base.tz, selMs)
                   return (
-                    <div className={`rounded-lg px-4 py-3 text-sm font-medium ${
-                      overlapCount > 0
-                        ? 'bg-primary-soft text-primary'
-                        : 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
-                    }`}>
-                      {overlapCount > 0
-                        ? t('meetingPlanner.overlapFound', { hours: overlapCount })
-                        : t('meetingPlanner.noOverlap')}
-                    </div>
+                    <li key={c.id} className="flex items-center justify-between gap-3 py-2">
+                      <span className="text-body">{name(c)}</span>
+                      <span className="text-right">
+                        <span className="text-lg font-bold text-fg tabular-nums">{hm(l)}</span>
+                        <span className="text-xs text-muted ml-2">{mdw(l, weekdays)}{dd !== 0 && ` · ${dd > 0 ? t('nextDay') : t('prevDay')}`}</span>
+                        <span className={`ml-2 text-xs ${work ? 'text-primary font-medium' : 'text-faint'}`}>
+                          {work ? t('meetingPlanner.workingHours') : l.h < 7 || l.h >= 22 ? t('meetingPlanner.night') : t('meetingPlanner.offHours')}
+                        </span>
+                      </span>
+                    </li>
                   )
-                })()}
+                })}
+              </ul>
+              <div className="ui-field px-4 py-3 text-sm text-body break-keep">{line}</div>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={async () => { await copyText(line); flash('line') }} className="ui-btn px-4 py-2.5 text-sm">
+                  {copied === 'line' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied === 'line' ? t('copied') : t('meetingPlanner.copyText')}
+                </button>
+                <button onClick={async () => { await copyText(`${line}\n${shareUrl()}`); flash('share') }} className="ui-btn-soft px-4 py-2.5 text-sm">
+                  {copied === 'share' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
+                  {copied === 'share' ? t('copied') : t('meetingPlanner.share')}
+                </button>
               </div>
-            ) : (
-              <p className="text-sm text-faint italic">
-                {t('meetingPlanner.noCities')}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.usage.title')}
-            </h3>
-            <ul className="space-y-2 text-sub">
-              {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2 text-sub">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('meetingPlanner.shareLabel'),
+                  headline: `${mdw(localParts(base.tz, selMs), weekdays)} ${hm(localParts(base.tz, selMs))}`,
+                  sub: name(base),
+                  rows: cities.slice(1, 6).map(c => ({ label: name(c), value: `${mdw(localParts(c.tz, selMs), weekdays)} ${hm(localParts(c.tz, selMs))}` })),
+                }}
+                text={line}
+                url={typeof window !== 'undefined' ? shareUrl() : undefined}
+                fileName="world-clock"
+              />
+            </div>
+          )}
         </div>
-      </div>
+      )}
+
+      {/* 증시 정규장 */}
+      {base && (
+        <div className="ui-card p-6 space-y-4">
+          <h2 className="text-lg font-semibold text-fg">{t('markets.title', { city: name(base) })}</h2>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {MARKETS.map(m => {
+              const s = now ? marketSession(m, now) : null
+              const o = s && localParts(base.tz, s.open), cl = s && localParts(base.tz, s.close)
+              return (
+                <div key={m.id} className="bg-subtle rounded-2xl p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-fg">{t(`markets.${m.id}`)}</span>
+                    {s && (
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.isOpen ? 'bg-primary text-white' : 'bg-soft text-sub'}`}>
+                        {s.isOpen ? t('markets.open') : t('markets.closed')}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-2xl font-bold text-fg tabular-nums mt-2">
+                    {o && cl ? `${hm(o)} – ${hm(cl)}` : ' '}
+                  </div>
+                  <div className="text-xs text-muted mt-1">
+                    {o && cl && s && `${s.isOpen ? t('markets.session') : t('markets.nextSession')}: ${mdw(o, weekdays)} ${hm(o)} ~ ${mdw(cl, weekdays)} ${hm(cl)}`}
+                    {m.id === 'nyse' && now && ` · ${isDST(m.tz, now) ? t('dst') : t('standardTime')}`}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <p className="text-xs text-muted">{t('markets.note')}</p>
+        </div>
+      )}
+
+      <p className="text-sm text-muted">
+        {t('relatedTimeConverter')}{' '}
+        <Link href="/time-converter/" className="text-primary font-medium hover:underline">{t('timeConverterLink')}</Link>
+      </p>
+
+      <GuideSection namespace="worldClock" />
     </div>
   )
 }
