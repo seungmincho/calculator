@@ -1,6 +1,6 @@
 // 퇴직금·퇴직소득세 회귀 체크: node scripts/check-retirement.ts
 import {
-  addMonths, serviceDays, fullYears, taxServiceYears, serviceDeduction, convertedDeduction, retirementTax, calcRetirement, isDate,
+  addMonths, serviceDays, fullYears, taxServiceYears, serviceDeduction, convertedDeduction, retirementTax, calcRetirement, isDate, periodSegments, delaySimulation,
 } from '../src/utils/retirementPay.ts'
 
 let fail = 0
@@ -72,6 +72,39 @@ eq(calcRetirement({ start: '2026-01-02', end: '2026-01-01', monthly: 1, bonus: 0
 // IRP 연금수령 감면
 const t = calcRetirement({ start: '2016-03-02', end: '2026-03-02', monthly: 5_000_000, bonus: 6_000_000, leave: 0 })!
 eq(t.irp70 <= t.totalTax * 0.7 && t.irp60 < t.irp70, true, 'IRP 30%/40% 감면')
+
+eq(t.irp50 < t.irp60, true, 'IRP 20년 초과 50% 감면')
+
+// 산정기간 3구간 (일수 자동)
+eq(periodSegments('2026-10-01'), [
+  { from: '2026-07-01', to: '2026-07-31', days: 31 },
+  { from: '2026-08-01', to: '2026-08-31', days: 31 },
+  { from: '2026-09-01', to: '2026-09-30', days: 30 },
+], '7~9월 구간')
+eq(periodSegments('2026-03-15').map((x) => x.days), [31, 31, 28], '12/15~3/14 구간')
+eq(periodSegments('2026-03-15').reduce((a, x) => a + x.days, 0), serviceDays('2025-12-15', '2026-03-15'), '구간 합 = 산정기간')
+
+// 상세 입력: 3구간 합계가 monthly×3 대신 사용
+const d = calcRetirement({ start: '2021-03-02', end: '2026-03-02', monthly: 0, bonus: 0, leave: 0, months3: [3_000_000, 3_000_000, 3_000_000] })!
+eq(d.pay, r.pay, '3구간 합계 = 월급×3')
+
+// 통상임금이 평균임금보다 크면 통상임금 적용 (근로기준법 제2조 ②)
+const o = calcRetirement({ start: '2021-03-02', end: '2026-03-02', monthly: 2_000_000, bonus: 0, leave: 0, ordinary: 3_000_000 })!
+eq(o.usedOrdinary, true, '통상임금 적용')
+eq(o.dailyWage, 3_000_000 * 8 / 209, '1일 통상임금 = 월액×8/209')
+const o2 = calcRetirement({ start: '2021-03-02', end: '2026-03-02', monthly: 3_000_000, bonus: 0, leave: 0, ordinary: 2_000_000 })!
+eq([o2.usedOrdinary, o2.pay], [false, r.pay], '평균임금이 크면 그대로')
+
+// 1년 미만: 남은 일수
+eq([s.oneYearEnd, s.daysToEligible], ['2027-01-02', 2], '1년까지 2일')
+
+// 퇴직일 늦추기 시뮬레이션: 5년 정확히 → +1개월이면 세법 근속연수 6년(공제 구간 변경)
+const sim = delaySimulation({ start: '2021-03-02', end: '2026-03-02', monthly: 3_000_000, bonus: 0, leave: 0 }, [0, 1, 12])
+eq(sim.map((x) => x.r.taxYears), [5, 6, 6], '근속연수 끝수 올림')
+eq(sim.map((x) => [x.yearUp, x.bracketUp]), [[false, false], [true, true], [false, false]], '구간 변경 표시')
+eq(sim[1].r.pay > sim[0].r.pay && sim[2].r.pay > sim[1].r.pay, true, '늦출수록 퇴직금 증가')
+const sim2 = delaySimulation({ start: '2026-01-02', end: '2026-12-31', monthly: 3_000_000, bonus: 0, leave: 0 }, [0, 1])
+eq(sim2.map((x) => x.r.eligible), [false, true], '1개월 늦추면 퇴직금 발생')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-retirement: all passed')

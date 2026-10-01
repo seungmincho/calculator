@@ -75,6 +75,30 @@ export interface RetirementInput {
   monthly: number // 퇴직 전 3개월 월평균 임금(세전, 기본급+고정수당)
   bonus: number // 직전 1년 상여금 총액
   leave: number // 직전 1년 연차수당 총액
+  months3?: number[] // 상세 입력: 산정기간 3구간별 임금(있으면 monthly×3 대신 합계 사용)
+  ordinary?: number // 월 통상임금(선택). 1일 통상임금 = 월액 × 8 ÷ 209 (근로기준법 시행령 제6조, 주 40시간)
+}
+
+/** 평균임금 산정기간(퇴직일 전 3개월)을 달 단위 3구간으로: [{from, to(포함), days}] */
+export function periodSegments(end: string) {
+  return [3, 2, 1].map((k) => {
+    const from = addMonths(end, -k), next = addMonths(end, -k + 1)
+    return { from, to: isoOf(toMs(next) - DAY), days: serviceDays(from, next) }
+  })
+}
+
+const bracket = (y: number) => (y <= 5 ? 0 : y <= 10 ? 1 : y <= 20 ? 2 : 3)
+
+/** 퇴직일을 n개월 늦출 때(임금 동일 가정) 퇴직금·세금 변화. 근속연수 +1, 공제 구간 변경 표시 */
+export function delaySimulation(x: RetirementInput, ns: number[]) {
+  let prev: RetirementResult | null = null
+  return ns.flatMap((n) => {
+    const r = calcRetirement({ ...x, end: addMonths(x.end, n) })
+    if (!r) return []
+    const row = { n, end: addMonths(x.end, n), r, yearUp: !!prev && r.taxYears > prev.taxYears, bracketUp: !!prev && bracket(r.taxYears) > bracket(prev.taxYears) }
+    prev = r
+    return [row]
+  })
 }
 
 export function calcRetirement(x: RetirementInput) {
@@ -88,19 +112,28 @@ export function calcRetirement(x: RetirementInput) {
   const periodStart = addMonths(x.end, -3)
   const periodDays = serviceDays(periodStart, x.end)
   // 상여금·연차수당은 직전 12개월분 × 3/12 가산 (고용노동부 평균임금 산정 지침)
-  const wages3m = x.monthly * 3 + (x.bonus * 3) / 12 + (x.leave * 3) / 12
-  const dailyWage = wages3m / periodDays
+  const base3m = x.months3?.length ? x.months3.reduce((a, b) => a + b, 0) : x.monthly * 3
+  const wages3m = base3m + (x.bonus * 3) / 12 + (x.leave * 3) / 12
+  const avgDaily = wages3m / periodDays
+  // 평균임금이 통상임금보다 적으면 통상임금을 평균임금으로 (근로기준법 제2조 ②)
+  const ordinaryDaily = ((x.ordinary ?? 0) * 8) / 209
+  const usedOrdinary = ordinaryDaily > avgDaily
+  const dailyWage = usedOrdinary ? ordinaryDaily : avgDaily
   const pay = eligible ? Math.floor(dailyWage * 30 * (days / 365)) : 0 // 근로자퇴직급여 보장법 제8조 ①
+  // 1년 미만: 1년 되는 퇴직일과 남은 일수
+  const oneYearEnd = addMonths(x.start, 12)
+  const daysToEligible = eligible ? 0 : serviceDays(x.end, oneYearEnd)
   const taxYears = taxServiceYears(x.start, x.end)
   const tax = retirementTax(pay, taxYears)
-  // IRP 이전 후 연금수령: 연금소득세 = 이연퇴직소득세 × 70%(실수령 10년차까지) / 60%(11년차~) (소득세법 제129조 ①5호)
-  const irp70 = floor10(tax.tax * 0.7) + floor10(tax.localTax * 0.7)
-  const irp60 = floor10(tax.tax * 0.6) + floor10(tax.localTax * 0.6)
+  // IRP 이전 후 연금수령: 연금소득세 = 이연퇴직소득세 × 70%(실수령 10년차까지) / 60%(11~20년차) / 50%(20년 초과, 2026.1.1~) (소득세법 제129조 ①5호)
+  const irpAt = (k: number) => floor10(tax.tax * k) + floor10(tax.localTax * k)
+  const irp70 = irpAt(0.7), irp60 = irpAt(0.6), irp50 = irpAt(0.5)
   return {
-    days, years, months, eligible, periodStart, periodDays, wages3m: Math.floor(wages3m), dailyWage,
+    days, years, months, eligible, oneYearEnd, daysToEligible, periodStart, periodDays,
+    base3m, wages3m: Math.floor(wages3m), avgDaily, ordinaryDaily, usedOrdinary, dailyWage,
     pay, taxYears, ...tax, net: pay - tax.totalTax,
     effRate: pay > 0 ? (tax.totalTax / pay) * 100 : 0,
-    irp70, irp60,
+    irp70, irp60, irp50,
   }
 }
 export type RetirementResult = NonNullable<ReturnType<typeof calcRetirement>>

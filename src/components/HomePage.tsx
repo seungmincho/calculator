@@ -77,7 +77,7 @@ export default function HomePage() {
   ], [])
   const popular: MenuItem[] = popularTools.length > 0 ? popularTools : fallbackPopular
   const recommended = useMemo(
-    () => ['/loan-calculator', '/severance-pay', '/json-formatter', '/image-compressor', '/bmi-calculator']
+    () => ['/loan-calculator', '/retirement-calculator', '/json-formatter', '/image-compressor', '/bmi-calculator']
       .map(href => categoryKeys.flatMap(k => menuConfig[k].items).find(i => i.href === href))
       .filter((i): i is MenuItem => !!i),
     [],

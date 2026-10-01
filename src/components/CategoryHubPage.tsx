@@ -26,7 +26,7 @@ const COPY: Record<HubKey, {
       '월급명세서부터 내 집 마련까지, 돈 계산이 필요한 순간에 쓰는 계산기를 한곳에 모았습니다. 4대보험 요율·소득세율·취득세율 등은 2026년 개정 기준을 반영하며, 요율이 바뀌면 관련 계산기가 한 번에 갱신됩니다.',
       '모든 계산기는 입력값이 URL에 저장되어 결과를 링크 하나로 공유할 수 있고, 계산 근거(법령·요율·공식)를 결과 아래에 함께 보여줍니다.',
     ],
-    popular: ['/salary-calculator', '/salary-table', '/severance-pay', '/loan-calculator', '/annual-leave', '/unemployment-benefit', '/capital-gains-tax', '/rent-converter'],
+    popular: ['/salary-calculator', '/salary-table', '/retirement-calculator', '/loan-calculator', '/annual-leave', '/unemployment-benefit', '/capital-gains-tax', '/rent-converter'],
     faq: [
       { q: '계산 결과는 얼마나 정확한가요?', a: '4대보험·소득세는 2026년 확정 요율(국민연금 4.75%, 건강보험 3.595%, 고용보험 0.9%)과 누진세율을 적용합니다. 실제 급여는 회사의 비과세 항목·연말정산 결과에 따라 달라질 수 있으니 참고용으로 활용하세요.' },
       { q: '입력한 금액이 서버로 전송되나요?', a: '아니요. 모든 계산은 브라우저 안에서만 실행되며 입력값은 저장되지 않습니다. 공유 링크에는 사용자가 입력한 값만 포함됩니다.' },

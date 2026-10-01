@@ -223,7 +223,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
               {[
                 ['/salary-calculator', '💰 연봉 계산기 — 부양가족·비과세·성과급 직접 입력'],
                 ['/salary-comparison', '⚖️ 연봉 비교기 — 이직 제안 2~4개 나란히 비교'],
-                ['/severance-pay', '🏦 퇴직금 계산기 — 이 연봉으로 근속 시 퇴직금'],
+                ['/retirement-calculator', '🏦 퇴직금 계산기 — 이 연봉으로 근속 시 퇴직금'],
                 ['/bonus-calculator', '🎯 성과급 계산기 — 상여금 세후 금액'],
                 ['/hourly-wage', '⏱️ 시급 계산기 — 연봉을 시급으로 환산'],
                 ['/salary-rank', '📊 내 연봉 상위 몇 %? — 연령·업종별 순위'],

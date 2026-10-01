@@ -30,7 +30,7 @@ const priorityOverrides: Record<string, number> = {
   '/pyeong-calculator': 0.9,
   '/vat-calculator': 0.9,
   '/hourly-wage': 0.9,
-  '/severance-pay': 0.9,
+  '/retirement-calculator': 0.9,
   '/annual-leave': 0.9,
   '/taxi-fare': 0.9,
   '/rent-converter': 0.9,

@@ -130,6 +130,11 @@ const menuItems = [
   { href: '/interior-calculator', labelKey: 'footer.links.interiorCalc' },
   { href: '/investment-calculator', labelKey: 'footer.links.investmentCalculator' },
   { href: '/invoice-generator', labelKey: 'footer.links.invoiceGenerator' },
+  { href: '/iou-generator', labelKey: 'footer.links.iouGenerator' },
+  { href: '/resignation-letter', labelKey: 'footer.links.resignationLetter' },
+  { href: '/power-of-attorney', labelKey: 'footer.links.powerOfAttorney' },
+  { href: '/certified-letter', labelKey: 'footer.links.certifiedLetter' },
+  { href: '/employment-contract', labelKey: 'footer.links.employmentContract' },
   { href: '/ip-checker', labelKey: 'footer.links.ipChecker' },
   { href: '/jeonse-checklist', labelKey: 'footer.links.jeonseChecklist' },
   { href: '/jeonse-loan', labelKey: 'footer.links.jeonseLoan' },
@@ -215,7 +220,6 @@ const menuItems = [
   { href: '/screen-compare', labelKey: 'footer.links.screenCompare' },
   { href: '/screen-info', labelKey: 'footer.links.screenInfo' },
   { href: '/screen-recorder', labelKey: 'footer.links.screenRecorder' },
-  { href: '/severance-pay', labelKey: 'footer.links.severancePay' },
   { href: '/shipping-calculator', labelKey: 'footer.links.shippingCalc' },
   { href: '/signature-generator', labelKey: 'footer.links.signatureGenerator' },
   { href: '/sleep-calculator', labelKey: 'footer.links.sleepCalculator' },
@@ -344,7 +348,12 @@ staticRoutes.forEach(h => allHrefSet.add(h));
 const allSorted = [...allHrefSet].sort();
 
 // Generate _redirects
-const redirectLines = allSorted.map(h => h + '  ' + h + '/  301');
+// 통합·이전된 도구: 옛 URL → 새 URL (쿼리스트링은 Cloudflare가 그대로 넘김)
+const movedRoutes = { '/severance-pay': '/retirement-calculator/' };
+const redirectLines = [
+  ...Object.entries(movedRoutes).flatMap(([from, to]) => [from + '  ' + to + '  301', from + '/  ' + to + '  301']),
+  ...allSorted.map(h => h + '  ' + h + '/  301'),
+];
 fs.writeFileSync('C:/projects/salary-calculator/public/_redirects', redirectLines.join('\n') + '\n');
 console.log('_redirects: ' + allSorted.length + ' rules written');
 

@@ -976,11 +976,55 @@
   },
   "retirement": {
     "rc": {
-      "subtitle": "Enter your start date, retirement date and pay for the last 3 months to get statutory severance, retirement income tax (2023+ rules) and your take-home amount.",
+      "mode": {
+        "label": "How to enter pay",
+        "simple": "Monthly pay",
+        "detail": "3-month detail"
+      },
+      "none": {
+        "label": "No severance yet",
+        "daysLeft": "{n} days to 1 year",
+        "ifStay": "Work through {last} and you will earn about {pay} KRW in severance (pre-tax)."
+      },
+      "nextDay": "Moving your retirement date one day later to {date} makes your tax service years {y}, cutting tax by {n} KRW (any fraction of a year counts as a full year).",
+      "sim": {
+        "title": "What if you leave later?",
+        "desc": "Assuming the same pay, see how severance, tax and take-home change if you stay longer. Rows are tagged when service years increase or cross a deduction bracket (5/10/20 years).",
+        "range": "Up to",
+        "months": "{n} mo",
+        "now": "Leave now",
+        "plus": "+{n} months",
+        "col": {
+          "end": "Retirement date",
+          "years": "Tax service years",
+          "pay": "Severance (pre-tax)",
+          "tax": "Tax",
+          "net": "Take-home"
+        },
+        "eligible": "Severance starts",
+        "yearUp": "Service +1 yr",
+        "bracketUp": "Higher deduction bracket",
+        "note": "Estimate only; raises and bonus changes are not included. For tax, any fraction of a year counts as a full year, so passing N full years by a single day raises the deduction."
+      },
+      "sources": {
+        "title": "Laws and official sources",
+        "retirementAct": "Employee Retirement Benefit Security Act (Art. 3, 4, 8, 9) — National Law Information Center",
+        "laborAct": "Labor Standards Act (Art. 2 average/ordinary wage, Art. 37 late interest) — National Law Information Center",
+        "taxAct": "Income Tax Act (Art. 48, 55, 129) — National Law Information Center",
+        "moel": "Ministry of Employment and Labor severance calculator",
+        "hometax": "NTS Hometax (retirement income tax calculation)"
+      },
+      "subtitle": "Enter your start and retirement dates plus monthly pay (or 3-month detail) to get statutory severance, average daily wage, retirement income tax (2023+ rules), take-home pay and the IRP tax-deferral effect.",
       "won": " KRW",
       "period": "{y} yr {m} mo of service ({d} days)",
       "historyItem": "Net severance {net} KRW ({y} yr {m} mo)",
       "in": {
+        "months3": "Pay for the last 3 months (pre-tax)",
+        "months3Hint": "Enter what you actually received in each period (base pay + allowances, including overtime). Periods and day counts follow your retirement date automatically.",
+        "segment": "{from} – {to} ({n} days)",
+        "segmentTotal": "Total {n} days",
+        "ordinary": "Monthly ordinary wage (optional)",
+        "ordinaryHint": "Base pay plus fixed allowances paid regularly and uniformly. If the daily ordinary wage (monthly × 8 ÷ 209, 40-hour week) is higher than the daily average wage, severance uses the ordinary wage (Labor Standards Act Art. 2(2)). Since the December 2024 Supreme Court ruling, regular bonuses conditional on employment can count as ordinary wage.",
         "start": "Start date",
         "end": "Retirement date",
         "endHint": "The retirement date is the day after your last working day. If you worked through Sep 30, enter Oct 1.",
@@ -1011,6 +1055,9 @@
         "irp": "Tax if taken as IRP pension"
       },
       "pay": {
+        "base3m": "Sum of the 3 periods",
+        "ordinaryDaily": "Daily ordinary wage (monthly × 8 ÷ 209)",
+        "usedOrdinary": "The daily average wage was lower than the daily ordinary wage, so the ordinary wage was used (Labor Standards Act Art. 2(2)).",
         "title": "Severance breakdown",
         "formula": "Severance = average daily wage × 30 days × days of service ÷ 365 (Employee Retirement Benefit Security Act, Art. 8)",
         "periodRange": "Average-wage period {from} – {to}",
@@ -1036,15 +1083,29 @@
         "local": "Local income tax (10%)"
       },
       "irp": {
-        "title": "If you move it to an IRP and draw a pension",
-        "desc": "Severance paid into an IRP (individual retirement pension) is transferred without withholding the retirement income tax (tax deferral). Drawing it later as a pension cuts that tax by 30–40%.",
+        "lumpNote": "Tax of {n} KRW withheld now",
+        "transfer": "If moved to an IRP",
+        "transferNote": "0 KRW tax now; the full amount goes into the IRP",
+        "to20": "Pension years 11–20 (40% off)",
+        "over20": "Pension year 21+ (50% off)",
+        "col": {
+          "way": "How you take it",
+          "tax": "Tax paid",
+          "saving": "Saved vs lump sum"
+        },
+        "title": "Lump sum vs IRP transfer (tax deferral)",
+        "desc": "Move your severance into an IRP and no retirement income tax is withheld now; the full amount is deposited (tax deferral). Take it as a pension after 55 and that tax drops by 30–50%.",
         "lump": "Lump sum",
-        "to10": "Pension years 1–10",
+        "to10": "Pension years 1–10 (30% off)",
         "from11": "Pension year 11+",
         "saving": "Save {n} KRW",
-        "note": "Pension tax = deferred retirement tax × 70% (up to the 10th year actually drawn) or 60% (from year 11) (Income Tax Act Art. 129). Withdrawals above the annual pension limit or early withdrawals are taxed at the original retirement tax. Retiring before age 55 generally requires transfer to an IRP."
+        "note": "Tax on pension withdrawals = deferred retirement income tax × 70% (up to year 10), 60% (years 11–20), 50% (beyond year 20, for payments from Jan 1, 2026) (Income Tax Act Art. 129). The table assumes the whole amount is withdrawn in that pension year. Withdrawals above the annual limit or early lump-sum withdrawals are taxed at the original rate. Since April 14, 2022, workers retiring before 55 generally receive severance into an IRP (Retirement Benefit Security Act Art. 9(2))."
       },
       "next": {
+        "yearEnd": {
+          "title": "Year-end tax after quitting",
+          "desc": "Check your refund for the year you leave"
+        },
         "title": "What to check next",
         "dc": {
           "title": "DB vs DC pension",
@@ -1092,54 +1153,78 @@
       "title": "Severance Pay Calculator Guide",
       "whatIs": {
         "title": "What is the Severance Pay Calculator?",
-        "description": "Uses your start date, retirement date and pay for the last 3 months to compute statutory severance, then subtracts retirement income tax (service-years and converted-pay deductions, 2023+ rules) and local tax to show your net amount. It also shows how much tax you save by moving the money to an IRP and drawing a pension."
+        "description": "Calculates statutory severance and the daily average wage from your dates and last-3-month pay (using the ordinary wage if higher), then subtracts retirement income tax (2023+ deductions) and local tax to show take-home pay. It also shows how much an IRP pension saves in tax and how severance grows if you leave a few months later."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Pick your start date and retirement date (the day after your last working day).",
-          "2. Enter your average monthly pay over the last 3 months (gross base pay + fixed allowances).",
-          "3. Add bonuses and unused leave pay from the past year, if any. Only 3/12 of each goes into the average wage.",
-          "4. Review net severance, the severance breakdown and each step of the tax calculation.",
-          "5. Share or save the result; the link reopens with the same inputs."
+          "1. Pick your start date and retirement date (the day after your last working day). Under 1 year, it shows how many days remain and the expected severance at 1 year.",
+          "2. The default is 'Monthly pay': enter your average monthly pre-tax pay (base + fixed allowances) for the last 3 months.",
+          "3. If pay varied by month, choose '3-month detail'. The period is split into three monthly segments with day counts, and an optional monthly ordinary wage is compared against the average wage.",
+          "4. Add bonuses and annual-leave pay received in the last year, if any. Only 3/12 of each is added.",
+          "5. Review take-home pay, the tax steps, lump sum vs IRP and the 'leave later' table, then share or save the result."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "Severance must be paid within 14 days of retirement unless both parties agree to extend it (Employee Retirement Benefit Security Act Art. 9).",
-          "Partial years count as a full year for tax, so 5 years and 1 day is treated as 6 years, which increases the deduction.",
-          "Periods such as business suspension, parental leave or probation within the last 3 months are excluded along with their pay (Enforcement Decree of the Labor Standards Act Art. 2), so actual severance can be higher than this estimate.",
-          "Drawing IRP severance as a pension after age 55 cuts the retirement tax by 30% (40% from year 11).",
-          "Under a DC pension plan the employer contributes at least 1/12 of annual pay and the result depends on investment returns, so it can differ from statutory severance."
+          "Severance must be paid within 14 days of retirement; the parties may agree to extend this in special cases (Retirement Benefit Security Act Art. 9). Late payment accrues 20% annual interest (Labor Standards Act Art. 37).",
+          "For tax, any fraction of a year counts as a full year, so 5 years and 1 day is treated as 6 years, increasing the deduction.",
+          "If the last 3 months include business suspension, parental leave or probation, those days and wages are excluded (LSA Enforcement Decree Art. 2), so actual severance may be higher.",
+          "Taking IRP severance as a pension after 55 cuts the retirement tax by 30% (40% from year 11, 50% from year 21).",
+          "Under a DC pension plan the employer contributes at least 1/12 of annual pay and the result depends on investment returns, so it may differ from the statutory severance (severance/DB basis) shown here."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "How long must I work to get severance?",
-            "a": "At least 1 year of continuous service averaging 15+ contractual hours per week over 4 weeks, regardless of full-time, contract or part-time status (Employee Retirement Benefit Security Act Art. 4)."
+            "q": "How long do I need to work to get severance?",
+            "a": "At least 1 year of continuous service and an average of 15+ contractual hours per week over 4 weeks, regardless of full-time, contract or part-time status (Retirement Benefit Security Act Art. 4(1)). Even one day short of a year means no statutory severance."
+          },
+          {
+            "q": "Do workplaces with fewer than 5 employees have to pay severance?",
+            "a": "Yes. The Act applies to every workplace with at least one employee (Art. 3). It has applied to workplaces with 4 or fewer since December 2010, in full since 2013. Only businesses employing just cohabiting relatives and domestic workers are excluded."
+          },
+          {
+            "q": "What if I work fewer than 15 hours a week?",
+            "a": "Workers averaging under 15 contractual hours per week over 4 weeks are excluded (Art. 4(1) proviso). If actual hours average 15 or more, you may qualify, so keep records."
+          },
+          {
+            "q": "When must severance be paid?",
+            "a": "Within 14 days of retirement, extendable by mutual agreement in special cases (Art. 9(1)). Late payment accrues 20% annual interest (Labor Standards Act Art. 37), and non-payment is punishable by up to 3 years in prison or a 30 million KRW fine (Art. 44). You can file a petition with the Ministry of Employment and Labor."
           },
           {
             "q": "Is the retirement date my last working day?",
-            "a": "No. It is the day employment ends, usually the day after your last working day. If you worked through Sep 30, the retirement date is Oct 1 and the average-wage period is Jul 1 – Sep 30."
+            "a": "No. It is the day the employment ends, usually the day after your last working day. If you worked through Sep 30, the retirement date is Oct 1 and the average-wage period is Jul 1–Sep 30 (92 days)."
+          },
+          {
+            "q": "How is the average wage calculated?",
+            "a": "Total pay for the 3 months before retirement plus 3/12 of last year's bonuses and annual-leave pay, divided by the calendar days in those 3 months (89–92) (Labor Standards Act Art. 2(1)6). Severance = daily average wage × 30 × service days ÷ 365 (Retirement Benefit Security Act Art. 8)."
+          },
+          {
+            "q": "What if my ordinary wage is higher than my average wage?",
+            "a": "If the daily average wage is lower than the daily ordinary wage, the ordinary wage is used (Labor Standards Act Art. 2(2)). For monthly pay, daily ordinary wage = monthly ordinary wage ÷ 209 hours × 8 hours (40-hour week)."
           },
           {
             "q": "How is retirement income tax calculated?",
-            "a": "Subtract the service-years deduction from severance, multiply by 12 and divide by years of service to get converted pay, then subtract the converted-pay deduction for the tax base. Apply basic rates, divide by 12 and multiply by years of service; local tax adds 10%. The 2023 reform greatly raised the service-years deduction."
+            "a": "Subtract the service-years deduction, multiply by 12 and divide by service years to get converted pay; subtract the converted-pay deduction, apply the basic rates, divide by 12 and multiply by service years. Local tax adds 10% (Income Tax Act Art. 48, 55). The 2023 deductions remain unchanged in 2026."
           },
           {
-            "q": "Are bonuses and leave pay included?",
-            "a": "Yes. 3/12 of bonuses paid in the past year and 3/12 of unused leave pay that became payable in that year are added to the 3-month wages. Leave pay that arises only because you retire is excluded."
+            "q": "Are bonuses and annual-leave pay included?",
+            "a": "Yes. 3/12 of bonuses received in the last year and 3/12 of unused annual-leave pay that became payable in the last year are added to the 3-month total. Leave pay that arises only on retirement is excluded."
           },
           {
-            "q": "What happens to tax if I take it via an IRP?",
-            "a": "The full amount moves to the IRP without withholding (tax deferral). Drawn as a pension after 55, you pay 70% of the original tax (60% from year 11); lump-sum withdrawals pay the original retirement tax."
+            "q": "How is an IRP taxed?",
+            "a": "Moving severance into an IRP defers the retirement tax entirely. Taken as a pension after 55, you pay 70% of the original tax (60% from year 11, 50% from year 21 starting 2026); withdrawing a lump sum early triggers the original tax (Income Tax Act Art. 129)."
+          },
+          {
+            "q": "What is the difference between DB and DC pensions?",
+            "a": "DB (defined benefit) guarantees at least the statutory severance and the employer bears investment risk. DC (defined contribution) means the employer deposits at least 1/12 of annual pay into your account each year (Art. 20) and the payout depends on your returns. DB suits steadily rising pay; DC suits returns above wage growth. This calculator uses the severance/DB basis."
           },
           {
             "q": "Can I get an interim severance settlement?",
-            "a": "Generally no, except for statutory reasons such as buying a first home or paying a lease deposit, 6+ months of medical care for yourself or family, bankruptcy or rehabilitation, or a wage-peak system (Enforcement Decree Art. 3)."
+            "a": "Generally no, except for statutory reasons such as buying a home as a non-homeowner, a jeonse deposit (once per employment), 6+ months of medical care exceeding 12.5% of annual pay, bankruptcy or rehabilitation within 5 years, wage peak systems, reduced working hours, or disasters (Enforcement Decree Art. 3). Service years restart after settlement."
           }
         ]
       }
@@ -1846,7 +1931,7 @@
       "loanCalculator": "Loan Calculator",
       "savingsCalculator": "Savings Calculator",
       "stockCalculator": "Stock Calculator",
-      "retirementCalculator": "Retirement Calculator",
+      "retirementCalculator": "Severance Pay Calculator",
       "nationalPension": "National Pension Calculator",
       "taxCalculator": "Tax Calculator",
       "exchangeCalculator": "Exchange Calculator",
@@ -2007,6 +2092,11 @@
       "promptGenerator": "AI Prompt Generator",
       "ganttChart": "Gantt Chart Generator",
       "invoiceGenerator": "Invoice Generator",
+      "iouGenerator": "Promissory Note (IOU) Generator",
+      "resignationLetter": "Resignation Letter Generator",
+      "powerOfAttorney": "Power of Attorney Generator",
+      "certifiedLetter": "Certified Letter Generator",
+      "employmentContract": "Employment Contract Generator",
       "kanbanBoard": "Kanban Board",
       "meetingMinutes": "Meeting Minutes",
       "menuPicker": "What to Eat",
@@ -5728,8 +5818,8 @@
         "description": "Calculate maturity amount and interest"
       },
       "retirement": {
-        "title": "Retirement Calculator",
-        "description": "Plan your retirement savings"
+        "title": "Severance Pay Calculator",
+        "description": "Statutory severance pay, average wage, retirement income tax, take-home and IRP savings"
       },
       "nationalPension": {
         "title": "National Pension Calculator",
@@ -6374,6 +6464,26 @@
       "invoiceGenerator": {
         "title": "Invoice Generator",
         "description": "Create invoices with auto VAT calculation, PDF export"
+      },
+      "iouGenerator": {
+        "title": "Promissory Note (IOU) Generator",
+        "description": "Korean IOU form with amount in words, interest cap check, repayment schedule, PDF"
+      },
+      "resignationLetter": {
+        "title": "Resignation Letter Generator",
+        "description": "Korean resignation letter with reason templates, notice-period guide, stamp & PDF"
+      },
+      "powerOfAttorney": {
+        "title": "Power of Attorney Generator",
+        "description": "Korean power of attorney by purpose (civil office, car, bank, real estate), PDF"
+      },
+      "certifiedLetter": {
+        "title": "Certified Letter Generator",
+        "description": "Korean certified letter templates (deposit return, payment demand, termination)"
+      },
+      "employmentContract": {
+        "title": "Employment Contract Generator",
+        "description": "Korean standard employment contract with minimum wage & weekly holiday pay checks"
       },
       "kanbanBoard": {
         "title": "Kanban Board",
@@ -46696,5 +46806,11 @@
         "note": "Exam date, timetable and score release follow the 2027 CSAT basic plan. The packing list and Period 4 breakdown follow previous years' guidelines; check again once announced."
       }
     }
-  }
+  },
+  "documentGenerator": {},
+  "iouGenerator": {},
+  "resignationLetter": {},
+  "powerOfAttorney": {},
+  "certifiedLetter": {},
+  "employmentContract": {}
 }
