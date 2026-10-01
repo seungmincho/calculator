@@ -1,748 +1,476 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Calculator, AlertTriangle, CheckCircle, Info, Link, Check } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Check, X, ExternalLink } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import DatePicker from '@/components/ui/DatePicker'
+import { calcCgt, reportDue, simulate, isDate, fullMonths, ymd, BRACKETS, generalLthd, oneHouseLthd, type Kind, type CgtInput } from '@/utils/capitalGainsTax'
+import { calcTax } from '@/utils/acquisitionTax'
+import { saleFee } from '@/utils/brokerageFee'
 
-interface CalcResult {
-  transferProfit: number        // 양도차익
-  lthdRate: number              // 장기보유특별공제율
-  lthdAmount: number            // 장기보유특별공제액
-  transferIncome: number        // 양도소득금액
-  basicDeduction: number        // 기본공제
-  taxBase: number               // 과세표준
-  baseRate: number              // 기본세율
-  surchargeRate: number         // 중과세율 추가분
-  appliedRate: number           // 적용세율
-  progressiveDeduction: number  // 누진공제
-  calculatedTax: number         // 산출세액
-  localIncomeTax: number        // 지방소득세
-  totalTax: number              // 총 납부세액
-  effectiveRate: number         // 실효세율
-  isExempt: boolean             // 1세대1주택 비과세
-  exemptAmount: number          // 비과세 적용 금액
-  taxableRatio: number          // 과세 비율 (12억 초과분)
-  holdingYears: number          // 보유기간(년)
-  residenceYears: number        // 거주기간(년)
-}
-
-function formatWon(value: number): string {
-  return Math.round(value).toLocaleString('ko-KR')
-}
-
-function parseNumber(str: string): number {
-  return Number(str.replace(/,/g, '')) || 0
-}
-
-function formatInput(str: string): string {
-  const num = str.replace(/[^\d]/g, '')
-  if (!num) return ''
-  return Number(num).toLocaleString('ko-KR')
-}
-
-// 연도 차이 계산
-function yearsBetween(from: string, to: string): number {
-  if (!from || !to) return 0
-  const d1 = new Date(from)
-  const d2 = new Date(to)
-  const diff = (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24 * 365.25)
-  return Math.max(0, diff)
-}
-
-// 장기보유특별공제율 - 일반 부동산
-function getGeneralLTHDRate(years: number): number {
-  if (years < 3) return 0
-  const brackets = [
-    [15, 0.30], [14, 0.28], [13, 0.26], [12, 0.24],
-    [11, 0.22], [10, 0.20], [9, 0.18], [8, 0.16],
-    [7, 0.14], [6, 0.12], [5, 0.10], [4, 0.08], [3, 0.06],
-  ]
-  for (const [yr, rate] of brackets) {
-    if (years >= yr) return rate as number
-  }
-  return 0
-}
-
-// 장기보유특별공제율 - 1세대1주택 (보유 + 거주 합산)
-function getOneHouseLTHDRate(holdYears: number, residYears: number): { holdRate: number; residRate: number; total: number } {
-  function bracketRate(years: number): number {
-    if (years < 3) return 0
-    const r = Math.min(Math.floor(years - 3) * 0.04 + 0.12, 0.40)
-    return r
-  }
-  const holdRate = bracketRate(holdYears)
-  const residRate = bracketRate(residYears)
-  return { holdRate, residRate, total: Math.min(holdRate + residRate, 0.80) }
-}
-
-// 누진세율 계산
-function calcProgressiveTax(taxBase: number): { rate: number; deduction: number; tax: number } {
-  const brackets = [
-    { limit: 14_000_000, rate: 0.06, deduction: 0 },
-    { limit: 50_000_000, rate: 0.15, deduction: 1_260_000 },
-    { limit: 88_000_000, rate: 0.24, deduction: 5_760_000 },
-    { limit: 150_000_000, rate: 0.35, deduction: 15_440_000 },
-    { limit: 300_000_000, rate: 0.38, deduction: 19_940_000 },
-    { limit: 500_000_000, rate: 0.40, deduction: 25_940_000 },
-    { limit: 1_000_000_000, rate: 0.42, deduction: 35_940_000 },
-    { limit: Infinity, rate: 0.45, deduction: 65_940_000 },
-  ]
-  for (const b of brackets) {
-    if (taxBase <= b.limit) {
-      return { rate: b.rate, deduction: b.deduction, tax: taxBase * b.rate - b.deduction }
-    }
-  }
-  return { rate: 0.45, deduction: 65_940_000, tax: taxBase * 0.45 - 65_940_000 }
+const KINDS: readonly Kind[] = ['house', 'land', 'nonbiz', 'presale']
+const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+const pct = (v: number) => `${+(v * 100).toFixed(2)}%`
+const num = (s: string | null) => Number((s ?? '').replace(/[^\d]/g, '')) || 0
+/** 15억 3,000만 */
+function eok(v: number): string {
+  const e = Math.floor(v / 1e8), m = Math.floor((v % 1e8) / 1e4)
+  return [e ? `${e}억` : '', m ? `${m.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
 }
 
 export default function CapitalGainsTax() {
   const t = useTranslations('capitalGainsTax')
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
+  const legacy = sp.get('sp') !== null // 예전 공유 링크 (ia 하나로 조정지역 표시)
 
-  // inputs — initialise from URL params if present
-  const [salePrice, setSalePrice] = useState(() => {
-    const v = searchParams.get('sp')
-    return v ? Number(v).toLocaleString('ko-KR') : ''
+  const [kind, setKind] = useState<Kind>(() => {
+    const k = sp.get('k') as Kind
+    return KINDS.includes(k) ? k : sp.get('pt') === 'general' ? 'land' : 'house'
   })
-  const [acqPrice, setAcqPrice] = useState(() => {
-    const v = searchParams.get('ap')
-    return v ? Number(v).toLocaleString('ko-KR') : ''
-  })
-  const [expenses, setExpenses] = useState(() => {
-    const v = searchParams.get('ex')
-    return v ? Number(v).toLocaleString('ko-KR') : ''
-  })
-  const [acqDate, setAcqDate] = useState(() => searchParams.get('ad') ?? '')
-  const [saleDate, setSaleDate] = useState(() => searchParams.get('sd') ?? '')
-  const [propertyType, setPropertyType] = useState<'general' | 'house'>(() => {
-    const v = searchParams.get('pt')
-    return v === 'general' ? 'general' : 'house'
-  })
-  const [houseCount, setHouseCount] = useState<'1' | '2' | '3plus'>(() => {
-    const v = searchParams.get('hc')
-    return (v === '2' || v === '3plus') ? v : '1'
-  })
-  const [isAdjusted, setIsAdjusted] = useState(() => searchParams.get('ia') === '1')
-  const [residenceYears, setResidenceYears] = useState(() => searchParams.get('ry') ?? '')
-  // 2026.5.10부터 다주택 중과 유예 종료 → 기본 적용. URL as=0 이면 미적용(유예 경과규정 대상)
-  const [applySurcharge, setApplySurcharge] = useState(() => searchParams.get('as') !== '0')
+  const [sale, setSale] = useState(() => num(sp.get('sp')) || 15e8)
+  const [acq, setAcq] = useState(() => num(sp.get('ap')) || 8e8)
+  const [expense, setExpense] = useState(() => (sp.get('ex') !== null ? num(sp.get('ex')) : legacy ? 0 : 30_000_000))
+  const [acqDate, setAcqDate] = useState(() => sp.get('ad') ?? '2018-06-01')
+  const [saleDate, setSaleDate] = useState(() => sp.get('sd') ?? '')
+  useEffect(() => { if (!saleDate) setSaleDate(ymd(new Date())) }, []) // eslint-disable-line react-hooks/exhaustive-deps -- 오늘 날짜는 클라이언트에서 (하이드레이션 불일치 방지)
+  const [houses, setHouses] = useState<1 | 2 | 3>(() => { const h = sp.get('hc'); return h === '2' ? 2 : h === '3' || h === '3plus' ? 3 : 1 })
+  const [temp, setTemp] = useState(() => sp.get('tp') === '1')
+  const [newAcqDate, setNewAcqDate] = useState(() => sp.get('nd') ?? '')
+  const [newAdjusted, setNewAdjusted] = useState(() => sp.get('na') === '1')
+  const [adjusted, setAdjusted] = useState(() => sp.get('ia') === '1')
+  const [acqAdjusted, setAcqAdjusted] = useState(() => (sp.get('aa') !== null ? sp.get('aa') === '1' : legacy ? sp.get('ia') === '1' : true))
+  const [residence, setResidence] = useState(() => sp.get('ry') ?? (legacy ? '' : '5'))
+  const [live, setLive] = useState(() => sp.get('lv') !== '0')
+  const [grace, setGrace] = useState(() => sp.get('gr') === '1' || sp.get('as') === '0')
 
-  // URL sync
   useEffect(() => {
-    const params = new URLSearchParams()
-    if (salePrice)        params.set('sp', String(parseNumber(salePrice)))
-    if (acqPrice)         params.set('ap', String(parseNumber(acqPrice)))
-    if (expenses)         params.set('ex', String(parseNumber(expenses)))
-    if (acqDate)          params.set('ad', acqDate)
-    if (saleDate)         params.set('sd', saleDate)
-    if (propertyType !== 'house') params.set('pt', propertyType)
-    if (houseCount !== '1') params.set('hc', houseCount)
-    if (isAdjusted)       params.set('ia', '1')
-    if (residenceYears)   params.set('ry', residenceYears)
-    if (!applySurcharge)  params.set('as', '0')
-    const qs = params.toString()
-    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname)
-  }, [salePrice, acqPrice, expenses, acqDate, saleDate, propertyType, houseCount, isAdjusted, residenceYears, applySurcharge])
-
-  // Copy link state
-  const [linkCopied, setLinkCopied] = useState(false)
-  const copyLink = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-    } catch {
-      const ta = document.createElement('textarea')
-      ta.value = window.location.href
-      ta.style.position = 'fixed'; ta.style.left = '-999999px'
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy')
-      document.body.removeChild(ta)
+    const q = new URLSearchParams()
+    if (kind !== 'house') q.set('k', kind)
+    q.set('sp', String(sale)); q.set('ap', String(acq)); q.set('ex', String(expense))
+    q.set('ad', acqDate)
+    if (saleDate) q.set('sd', saleDate)
+    if (kind === 'house') {
+      if (houses !== 1) q.set('hc', String(houses))
+      if (houses === 2 && temp) { q.set('tp', '1'); if (newAcqDate) q.set('nd', newAcqDate); if (newAdjusted) q.set('na', '1') }
+      if (adjusted) q.set('ia', '1')
+      q.set('aa', acqAdjusted ? '1' : '0')
+      if (residence) q.set('ry', residence)
+      if (!live) q.set('lv', '0')
+      if (grace) q.set('gr', '1')
     }
-    setLinkCopied(true)
-    setTimeout(() => setLinkCopied(false), 2000)
-  }, [])
+    window.history.replaceState(null, '', `?${q}`)
+  }, [kind, sale, acq, expense, acqDate, saleDate, houses, temp, newAcqDate, newAdjusted, adjusted, acqAdjusted, residence, live, grace])
 
-  const salePriceNum = parseNumber(salePrice)
-  const acqPriceNum = parseNumber(acqPrice)
-  const expensesNum = parseNumber(expenses)
-  const residYears = Number(residenceYears) || 0
+  const house = kind === 'house'
+  const ready = sale > 0 && isDate(acqDate) && isDate(saleDate) && saleDate >= acqDate
+  const input: CgtInput = {
+    kind, sale, acq, expense, acqDate, saleDate,
+    houses: house ? houses : 1, temp: house && houses === 2 && temp, newAcqDate, newAdjusted,
+    adjusted: house && adjusted, acqAdjusted: house && acqAdjusted, residence: house ? Number(residence) || 0 : 0,
+    grace: house && grace,
+  }
+  const r = ready ? calcCgt(input) : null
+  const sim = useMemo(() => (ready ? simulate(input, live) : []), [ready, JSON.stringify(input), live]) // eslint-disable-line react-hooks/exhaustive-deps
+  const proposal = r && r.surcharge > 0 && r.hold >= 2
+    ? calcCgt({ ...input, surchargeOverride: { two: 0.05, three: 0.1 } }) : null
+  const due = ready ? reportDue(saleDate) : ''
+  const oneHouseLike = house && (houses === 1 || (houses === 2 && temp))
+  const showGrace = house && houses >= 2 && adjusted && saleDate > '2026-05-09' && (r?.hold ?? 0) >= 2 && !(r && (r.exempt === 'full' || r.exempt === 'partial'))
 
-  const result = useMemo<CalcResult | null>(() => {
-    if (!salePriceNum || !acqPriceNum) return null
+  // 보유기간 표시: N년 M개월
+  const holdM = ready ? fullMonths(acqDate, saleDate) : 0
+  const holdLabel = ready ? t('input.holdShow', { y: Math.floor(holdM / 12), m: holdM % 12 }) : ''
 
-    const holdYears = yearsBetween(acqDate, saleDate)
+  const estimate = () => {
+    const tk = kind === 'house' ? 'house' : 'building'
+    const acqTax = kind === 'presale' ? 0 : calcTax({
+      mode: 'buy', kind: tk, price: acq, over85: false, adjusted: false, owner: '1', under1eok: false,
+      relief: 'none', inheritSole: false, giftStd3eok: true, giftFromSingle: false,
+    }).total
+    const prop = kind === 'house' || kind === 'presale' ? 'house' : 'nonHouse'
+    setExpense(Math.round(acqTax + saleFee(acq, prop) + saleFee(sale, prop)))
+  }
 
-    // 1. 양도차익
-    const transferProfit = Math.max(0, salePriceNum - acqPriceNum - expensesNum)
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const check = (id: string, on: boolean, set: (v: boolean) => void, label: string, hint?: string) => (
+    <label htmlFor={id} className="flex items-start gap-2.5 cursor-pointer">
+      <input id={id} type="checkbox" checked={on} onChange={(e) => set(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+      <span className="text-sm text-body">{label}{hint && <span className="block text-xs text-muted mt-0.5">{hint}</span>}</span>
+    </label>
+  )
+  const money = (id: string, label: string, v: number, set: (n: number) => void, extra?: React.ReactNode) => (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <label htmlFor={id} className="text-sm font-medium text-body">{label}</label>
+        {extra}
+      </div>
+      <input id={id} inputMode="numeric" value={v ? v.toLocaleString('ko-KR') : ''} placeholder="0"
+        onChange={(e) => set(num(e.target.value))} className="ui-field w-full px-4 py-3 tabular-nums" />
+      {v > 0 && <p className="text-xs text-muted mt-1">{eok(v)}{t('wonUnit')}</p>}
+    </div>
+  )
 
-    // 2. 1세대1주택 비과세 확인
-    const isOneHouse = propertyType === 'house' && houseCount === '1'
-    const residenceMet = isOneHouse && holdYears >= 2 && (isAdjusted ? residYears >= 2 : true)
-    const EXEMPT_THRESHOLD = 1_200_000_000 // 12억
+  const verdict = !r ? '' : r.exempt === 'full' ? t('verdict.full') : r.exempt === 'partial' ? t('verdict.partial', { p: pct(r.taxableRatio) })
+    : r.exempt === 'none' ? t('verdict.none') : t(`verdict.${r.surcharge > 0 ? 'surcharge' : r.shortRate ? 'short' : 'taxable'}`)
+  const rateText = !r ? '' : r.base <= 0 ? '-' : r.rate.type === 'flat' ? t('rate.flat', { r: pct(r.rate.rate) })
+    : t(r.rate.add ? 'rate.progAdd' : 'rate.prog', { r: pct(r.rate.rate), a: pct(r.rate.add), d: won(r.rate.deduction) })
 
-    let isExempt = false
-    let exemptAmount = 0
-    let taxableRatio = 1
-
-    if (residenceMet && transferProfit > 0) {
-      if (salePriceNum <= EXEMPT_THRESHOLD) {
-        isExempt = true
-        exemptAmount = transferProfit
-        taxableRatio = 0
-      } else {
-        // 초과분만 과세: 과세 비율 = (양도가 - 12억) / 양도가
-        taxableRatio = (salePriceNum - EXEMPT_THRESHOLD) / salePriceNum
-        exemptAmount = transferProfit * (1 - taxableRatio)
-        isExempt = false
-      }
-    }
-
-    const taxableProfit = transferProfit * taxableRatio
-
-    if (taxableProfit <= 0) {
-      return {
-        transferProfit, lthdRate: 0, lthdAmount: 0,
-        transferIncome: 0, basicDeduction: 2_500_000, taxBase: 0,
-        baseRate: 0, surchargeRate: 0, appliedRate: 0, progressiveDeduction: 0,
-        calculatedTax: 0, localIncomeTax: 0, totalTax: 0,
-        effectiveRate: 0, isExempt, exemptAmount, taxableRatio, holdingYears: holdYears,
-        residenceYears: residYears,
-      }
-    }
-
-    // 3. 장기보유특별공제
-    let lthdRate = 0
-
-    // 다주택자 조정지역: 공제 배제
-    const excludeLTHD = propertyType === 'house' && houseCount !== '1' && isAdjusted && applySurcharge
-
-    if (!excludeLTHD) {
-      if (isOneHouse && residenceMet) {
-        const rates = getOneHouseLTHDRate(holdYears, residYears)
-        lthdRate = rates.total
-      } else if (propertyType === 'general' || houseCount !== '1') {
-        lthdRate = getGeneralLTHDRate(holdYears)
-      } else if (propertyType === 'house') {
-        lthdRate = getGeneralLTHDRate(holdYears)
-      }
-    }
-
-    const lthdAmount = taxableProfit * lthdRate
-
-    // 4. 양도소득금액
-    const transferIncome = taxableProfit - lthdAmount
-
-    // 5. 기본공제 250만
-    const basicDeduction = 2_500_000
-
-    // 6. 과세표준
-    const taxBase = Math.max(0, transferIncome - basicDeduction)
-
-    if (taxBase <= 0) {
-      return {
-        transferProfit, lthdRate, lthdAmount, transferIncome,
-        basicDeduction, taxBase: 0, baseRate: 0, surchargeRate: 0, appliedRate: 0,
-        progressiveDeduction: 0, calculatedTax: 0, localIncomeTax: 0, totalTax: 0,
-        effectiveRate: 0, isExempt, exemptAmount, taxableRatio, holdingYears: holdYears,
-        residenceYears: residYears,
-      }
-    }
-
-    // 7. 세율 계산
-    const { rate: baseRate, deduction: progressiveDeduction } = calcProgressiveTax(taxBase)
-
-    let surchargeRate = 0
-    if (applySurcharge && isAdjusted && propertyType === 'house') {
-      if (houseCount === '2') surchargeRate = 0.20
-      else if (houseCount === '3plus') surchargeRate = 0.30
-    }
-
-    const appliedRate = Math.min(baseRate + surchargeRate, 0.75) // 최대 75% (theoretical)
-    let calculatedTax: number
-
-    if (surchargeRate > 0) {
-      // 중과: 과세표준 × (기본세율 + 중과세율) - 누진공제
-      calculatedTax = taxBase * appliedRate - progressiveDeduction
-    } else {
-      calculatedTax = taxBase * baseRate - progressiveDeduction
-    }
-    calculatedTax = Math.max(0, calculatedTax)
-
-    const localIncomeTax = calculatedTax * 0.10
-    const totalTax = calculatedTax + localIncomeTax
-    const effectiveRate = salePriceNum > 0 ? totalTax / salePriceNum : 0
-
-    return {
-      transferProfit, lthdRate, lthdAmount, transferIncome,
-      basicDeduction, taxBase, baseRate, surchargeRate, appliedRate,
-      progressiveDeduction, calculatedTax, localIncomeTax, totalTax,
-      effectiveRate, isExempt, exemptAmount, taxableRatio,
-      holdingYears: holdYears, residenceYears: residYears,
-    }
-  }, [salePriceNum, acqPriceNum, expensesNum, acqDate, saleDate, propertyType, houseCount, isAdjusted, residYears, applySurcharge])
-
-  const handleSalePrice = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSalePrice(formatInput(e.target.value))
-  }, [])
-  const handleAcqPrice = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAcqPrice(formatInput(e.target.value))
-  }, [])
-  const handleExpenses = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpenses(formatInput(e.target.value))
-  }, [])
-
-  const holdYearsDisplay = acqDate && saleDate ? yearsBetween(acqDate, saleDate) : 0
+  const steps = r ? [
+    { label: t('salePrice'), v: sale },
+    { label: `(−) ${t('acqPrice')}`, v: acq },
+    { label: `(−) ${t('expenses')}`, v: expense },
+    { label: t('transferProfitLabel'), v: r.profit, strong: true },
+    ...(r.exemptProfit > 0 ? [{ label: `(−) ${t('step.exempt')}`, v: r.exemptProfit }] : []),
+    { label: `(−) ${t('lthdLabel')} ${r.lthdTable === 'excluded' ? t('step.lthdExcluded') : `(${pct(r.lthdRate)})`}`, v: r.lthd },
+    { label: t('transferIncomeLabel'), v: r.income, strong: true },
+    { label: `(−) ${t('basicDeductionLabel')}`, v: r.basic },
+    { label: t('taxBaseLabel'), v: r.base, strong: true },
+  ] : []
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <Calculator className="w-7 h-7 text-blue-600" />
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button
-          onClick={copyLink}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border border-line-strong bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          title="링크 복사"
-        >
-          {linkCopied
-            ? <><Check className="w-4 h-4 text-green-500" /><span className="text-green-600 dark:text-green-400">복사됨</span></>
-            : <><Link className="w-4 h-4" /><span>링크 복사</span></>
-          }
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* 메인 그리드 */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* 입력 패널 */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg">{t('inputTitle')}</h2>
-
-            {/* 양도가액 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('salePrice')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={salePrice}
-                onChange={handleSalePrice}
-                placeholder={t('salePricePlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-              />
+              <p className="text-sm font-medium text-body mb-2">{t('propertyType')}</p>
+              <div className="grid grid-cols-2 gap-1.5">
+                {KINDS.map((k) => <button key={k} type="button" onClick={() => setKind(k)} className={seg(kind === k)}>{t(`kind.${k}`)}</button>)}
+              </div>
             </div>
 
-            {/* 취득가액 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('acqPrice')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={acqPrice}
-                onChange={handleAcqPrice}
-                placeholder={t('acqPricePlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-              />
-            </div>
+            {money('cgt-sale', t('salePrice'), sale, setSale)}
+            {money('cgt-acq', t('acqPrice'), acq, setAcq)}
+            {money('cgt-exp', t('expenses'), expense, setExpense,
+              <button type="button" onClick={estimate} className="text-xs text-primary font-medium hover:underline">{t('input.estimate')}</button>)}
+            <p className="text-xs text-muted -mt-3">{t('input.expenseHint')}</p>
 
-            {/* 필요경비 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('expenses')} <span className="text-gray-400 text-xs">({t('wonUnit')})</span>
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={expenses}
-                onChange={handleExpenses}
-                placeholder={t('expensesPlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-              />
-              <p className="text-xs text-faint mt-1">{t('expensesHint')}</p>
-            </div>
-
-            {/* 취득일 / 양도일 */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('acqDate')}</label>
-                <input
-                  type="date"
-                  value={acqDate}
-                  onChange={e => setAcqDate(e.target.value)}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
-                />
+                <p className="text-sm font-medium text-body mb-1">{t('acqDate')}</p>
+                <DatePicker value={acqDate} onChange={setAcqDate} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('saleDate')}</label>
-                <input
-                  type="date"
-                  value={saleDate}
-                  onChange={e => setSaleDate(e.target.value)}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
-                />
+                <p className="text-sm font-medium text-body mb-1">{t('saleDate')}</p>
+                <DatePicker value={saleDate} onChange={setSaleDate} />
               </div>
             </div>
+            {holdLabel && <p className="text-sm text-sub -mt-2">{t('holdingPeriod')} <strong className="text-fg">{holdLabel}</strong></p>}
 
-            {holdYearsDisplay > 0 && (
-              <p className="text-sm text-blue-600 dark:text-blue-400">
-                {t('holdingPeriod')}: <strong>{holdYearsDisplay.toFixed(1)}{t('yearsUnit')}</strong>
-              </p>
-            )}
+            {house && (
+              <>
+                <div>
+                  <p className="text-sm font-medium text-body mb-2">{t('houseCount')}</p>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {([1, 2, 3] as const).map((h) => <button key={h} type="button" onClick={() => setHouses(h)} className={seg(houses === h)}>{t(`input.houses${h}`)}</button>)}
+                  </div>
+                  <p className="text-xs text-muted mt-1">{t('input.housesHint')}</p>
+                </div>
 
-            {/* 부동산 유형 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('propertyType')}</label>
-              <div className="flex gap-4">
-                {(['general', 'house'] as const).map(type => (
-                  <label key={type} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      value={type}
-                      checked={propertyType === type}
-                      onChange={() => setPropertyType(type)}
-                      className="accent-blue-600"
-                    />
-                    <span className="text-sm text-body">
-                      {type === 'general' ? t('propertyGeneral') : t('propertyHouse')}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
+                {houses === 2 && (
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button type="button" onClick={() => setTemp(true)} className={seg(temp)}>{t('input.temp')}</button>
+                    <button type="button" onClick={() => setTemp(false)} className={seg(!temp)}>{t('input.notTemp')}</button>
+                  </div>
+                )}
+                {houses === 2 && temp && (
+                  <div className="bg-subtle rounded-2xl p-4 space-y-3">
+                    <div>
+                      <p className="text-sm font-medium text-body mb-1">{t('input.newAcqDate')}</p>
+                      <DatePicker value={newAcqDate} onChange={setNewAcqDate} />
+                    </div>
+                    {check('cgt-na', newAdjusted, setNewAdjusted, t('input.newAdjusted'))}
+                  </div>
+                )}
 
-            {/* 주택 수 */}
-            {propertyType === 'house' && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('houseCount')}</label>
-                <select
-                  value={houseCount}
-                  onChange={e => setHouseCount(e.target.value as '1' | '2' | '3plus')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  <option value="1">{t('houseCount1')}</option>
-                  <option value="2">{t('houseCount2')}</option>
-                  <option value="3plus">{t('houseCount3plus')}</option>
-                </select>
-              </div>
-            )}
+                {check('cgt-ia', adjusted, setAdjusted, t('input.adjusted'), t('input.adjustedHint'))}
+                {oneHouseLike && check('cgt-aa', acqAdjusted, setAcqAdjusted, t('input.acqAdjusted'), t('input.acqAdjustedHint'))}
 
-            {/* 조정대상지역 */}
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isAdjusted}
-                onChange={e => setIsAdjusted(e.target.checked)}
-                className="accent-blue-600 w-4 h-4"
-              />
-              <span className="text-sm text-body">{t('isAdjusted')}</span>
-            </label>
+                {oneHouseLike && (
+                  <div>
+                    <label htmlFor="cgt-ry" className="block text-sm font-medium text-body mb-1">{t('residenceYears')} ({t('yearsUnit')})</label>
+                    <input id="cgt-ry" type="number" min="0" max="50" step="0.5" value={residence} placeholder="0"
+                      onChange={(e) => setResidence(e.target.value)} className="ui-field w-full px-4 py-3 tabular-nums" />
+                    <div className="mt-2">{check('cgt-lv', live, setLive, t('input.live'))}</div>
+                  </div>
+                )}
 
-            {/* 거주기간 (1주택 비과세용) */}
-            {propertyType === 'house' && houseCount === '1' && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('residenceYears')} <span className="text-gray-400 text-xs">({t('yearsUnit')})</span>
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="50"
-                  value={residenceYears}
-                  onChange={e => setResidenceYears(e.target.value)}
-                  placeholder="0"
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-            )}
-
-            {/* 중과 적용 여부 토글 */}
-            {propertyType === 'house' && houseCount !== '1' && isAdjusted && (
-              <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-3 space-y-2">
-                <p className="text-xs text-amber-700 dark:text-amber-300 flex items-start gap-1">
-                  <Info className="w-3 h-3 mt-0.5 shrink-0" />
-                  {t('surchargeNote')}
-                </p>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={applySurcharge}
-                    onChange={e => setApplySurcharge(e.target.checked)}
-                    className="accent-amber-600 w-4 h-4"
-                  />
-                  <span className="text-sm text-body">{t('applySurcharge')}</span>
-                </label>
-              </div>
+                {showGrace && (
+                  <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 space-y-2">
+                    <p className="text-xs">{t('input.graceNote')}</p>
+                    {check('cgt-gr', grace, setGrace, t('input.grace'))}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
 
-        {/* 결과 패널 */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-4">
-          {result ? (
+          {!r ? (
+            <div className="ui-card p-12 text-center text-muted">{t('emptyState')}</div>
+          ) : (
             <>
-              {/* 비과세 뱃지 */}
-              {result.isExempt ? (
-                <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-sub">{t('exemptBadge')}</p>
-                    <p className="text-sm text-green-700 dark:text-green-400">{t('exemptDesc')}</p>
-                  </div>
-                </div>
-              ) : result.taxableRatio < 1 && result.taxableRatio > 0 ? (
-                <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
-                  <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-sub">{t('partialExemptBadge')}</p>
-                    <p className="text-sm text-blue-700 dark:text-blue-400">
-                      {t('partialExemptDesc')} ({(result.taxableRatio * 100).toFixed(1)}% {t('taxableRatioLabel')})
-                    </p>
-                  </div>
-                </div>
-              ) : null}
+              <div className="ui-card p-6">
+                <p className="text-sm text-muted">{t('result.totalLabel')}</p>
+                <p className="text-4xl font-bold text-fg tabular-nums mt-1">{won(r.total)}<span className="text-xl ml-1">{t('wonUnit')}</span></p>
+                <p className="text-sm font-medium text-primary mt-2">{verdict}</p>
 
-              {/* 총 납부세액 요약 */}
-              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-                <p className="text-blue-200 text-sm font-medium">{t('totalTaxLabel')}</p>
-                <p className="text-4xl font-bold mt-1">
-                  {formatWon(result.totalTax)}<span className="text-xl ml-1">{t('wonUnit')}</span>
-                </p>
-                <div className="flex flex-wrap gap-4 mt-4 text-sm">
-                  <span className="text-blue-200">
-                    {t('calculatedTaxLabel')}: <strong className="text-white">{formatWon(result.calculatedTax)}{t('wonUnit')}</strong>
-                  </span>
-                  <span className="text-blue-200">
-                    {t('localTaxLabel')}: <strong className="text-white">{formatWon(result.localIncomeTax)}{t('wonUnit')}</strong>
-                  </span>
-                  <span className="text-blue-200">
-                    {t('effectiveRateLabel')}: <strong className="text-white">{(result.effectiveRate * 100).toFixed(2)}%</strong>
-                  </span>
-                </div>
-              </div>
+                {r.checks.length > 0 && (
+                  <ul className="mt-4 grid sm:grid-cols-2 gap-2">
+                    {r.checks.map((c) => (
+                      <li key={c.key} className="flex items-start gap-2 text-sm text-body">
+                        {c.ok ? <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" aria-label="ok" /> : <X className="w-4 h-4 text-red-600 mt-0.5 shrink-0" aria-label="no" />}
+                        <span>{t(`check.${c.key}`, { d: c.value ?? '', y: r.tempPeriod })}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-              {/* 단계별 계산 상세 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-fg mb-4">{t('breakdownTitle')}</h3>
-                <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-700">
+                <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
                   {[
-                    { label: t('salePrice'), value: salePriceNum, highlight: false },
-                    { label: `(-)  ${t('acqPrice')}`, value: acqPriceNum, highlight: false },
-                    { label: `(-)  ${t('expenses')}`, value: expensesNum, highlight: false },
-                    { label: t('transferProfitLabel'), value: result.transferProfit, highlight: true },
-                    ...(result.exemptAmount > 0 ? [{ label: `(-)  ${t('exemptAmountLabel')}`, value: result.exemptAmount, highlight: false }] : []),
-                    { label: `(-)  ${t('lthdLabel')} (${(result.lthdRate * 100).toFixed(0)}%)`, value: result.lthdAmount, highlight: false },
-                    { label: t('transferIncomeLabel'), value: result.transferIncome, highlight: true },
-                    { label: `(-)  ${t('basicDeductionLabel')}`, value: result.basicDeduction, highlight: false },
-                    { label: t('taxBaseLabel'), value: result.taxBase, highlight: true },
-                  ].map((row, i) => (
-                    <div key={i} className={`flex justify-between items-center py-2.5 ${row.highlight ? 'font-semibold' : ''}`}>
-                      <span className={`text-sm ${row.highlight ? 'text-fg' : 'text-sub'}`}>
-                        {row.label}
-                      </span>
-                      <span className={`text-sm tabular-nums ${row.highlight ? 'text-blue-600 dark:text-blue-400' : 'text-body'}`}>
-                        {formatWon(row.value)}{t('wonUnit')}
-                      </span>
+                    [t('calculatedTaxLabel'), `${won(r.tax)}${t('wonUnit')}`],
+                    [t('localTaxLabel'), `${won(r.local)}${t('wonUnit')}`],
+                    [t('result.effective'), r.profit ? pct(r.total / r.profit) : '-'],
+                    [t('result.afterTax'), `${eok(Math.max(0, r.profit - r.total))}${t('wonUnit')}`],
+                  ].map(([k, v]) => (
+                    <div key={k} className="bg-subtle rounded-xl p-3">
+                      <dt className="text-xs text-muted">{k}</dt>
+                      <dd className="text-sm font-semibold text-fg tabular-nums mt-0.5">{v}</dd>
                     </div>
                   ))}
-
-                  {/* 세율 행 */}
-                  <div className="py-2.5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-sub">
-                        {t('taxRateLabel')}
-                      </span>
-                      <span className="text-sm text-body tabular-nums">
-                        {(result.baseRate * 100).toFixed(0)}%
-                        {result.surchargeRate > 0 && (
-                          <span className="text-amber-600 dark:text-amber-400 ml-1">
-                            (+{(result.surchargeRate * 100).toFixed(0)}% {t('surchargeLabel')})
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center mt-1">
-                      <span className="text-sm text-sub">(-)  {t('progressiveDeductionLabel')}</span>
-                      <span className="text-sm text-body tabular-nums">
-                        {formatWon(result.progressiveDeduction)}{t('wonUnit')}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center py-2.5 font-semibold">
-                    <span className="text-sm text-fg">{t('calculatedTaxLabel')}</span>
-                    <span className="text-sm text-blue-600 dark:text-blue-400 tabular-nums">
-                      {formatWon(result.calculatedTax)}{t('wonUnit')}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2.5">
-                    <span className="text-sm text-sub">(+)  {t('localTaxLabel')} (10%)</span>
-                    <span className="text-sm text-body tabular-nums">
-                      {formatWon(result.localIncomeTax)}{t('wonUnit')}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-3 font-bold bg-subtle rounded-lg px-2 mt-1">
-                    <span className="text-base text-fg">{t('totalTaxLabel')}</span>
-                    <span className="text-base text-sub tabular-nums">
-                      {formatWon(result.totalTax)}{t('wonUnit')}
-                    </span>
-                  </div>
-                </div>
+                </dl>
               </div>
 
-              {/* 장기보유특별공제 시각화 */}
-              {result.lthdRate > 0 && (
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-base font-semibold text-fg mb-3">{t('lthdVisualTitle')}</h3>
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 bg-track rounded-full h-4 overflow-hidden">
-                      <div
-                        className="h-4 rounded-full bg-primary transition-all duration-500"
-                        style={{ width: `${(result.lthdRate * 100).toFixed(0)}%` }}
-                      />
+              <ShareResult
+                card={{
+                  tool: t('title'), label: t('result.totalLabel'), headline: `${won(r.total)}${t('wonUnit')}`, sub: verdict,
+                  rows: [
+                    { label: t('transferProfitLabel'), value: `${eok(r.profit)}${t('wonUnit')}` },
+                    { label: t('holdingPeriod'), value: holdLabel },
+                    { label: t('taxRateLabel'), value: rateText },
+                  ],
+                }}
+                text={t('share.text', { v: won(r.total) })}
+                fileName="capital-gains-tax"
+              />
+
+              {/* 신고 기한 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg">{t('due.title')}</h2>
+                <p className="text-2xl font-bold text-fg tabular-nums mt-2">{due}</p>
+                <p className="text-sm text-sub mt-1">{t('due.desc')}</p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener noreferrer" className="ui-btn px-4 py-2 text-sm inline-flex items-center gap-1.5">
+                    {t('due.hometax')} <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener noreferrer" className="ui-btn-soft px-4 py-2 text-sm inline-flex items-center gap-1.5">
+                    {t('due.wetax')} <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+                <p className="text-xs text-muted mt-3">{t('due.penalty')}</p>
+              </div>
+
+              {/* 단계별 계산 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg mb-3">{t('breakdownTitle')}</h2>
+                <div className="divide-y divide-line">
+                  {steps.map((s, i) => (
+                    <div key={i} className={`flex justify-between gap-3 py-2.5 text-sm ${s.strong ? 'font-semibold text-fg' : 'text-sub'}`}>
+                      <span>{s.label}</span><span className="tabular-nums">{won(s.v)}{t('wonUnit')}</span>
                     </div>
-                    <span className="text-lg font-bold text-green-600 dark:text-green-400 w-12 text-right">
-                      {(result.lthdRate * 100).toFixed(0)}%
-                    </span>
+                  ))}
+                  <div className="flex justify-between gap-3 py-2.5 text-sm text-sub">
+                    <span>{t('taxRateLabel')}</span><span className="text-right">{rateText}</span>
                   </div>
-                  <p className="text-xs text-muted mt-2">
-                    {t('lthdVisualDesc')} {formatWon(result.lthdAmount)}{t('wonUnit')} {t('lthdVisualDeducted')}
-                  </p>
-                  {result.holdingYears > 0 && (
-                    <p className="text-xs text-muted mt-1">
-                      {t('holdingPeriod')}: {result.holdingYears.toFixed(1)}{t('yearsUnit')}
-                      {result.residenceYears > 0 && ` / ${t('residenceYears')}: ${result.residenceYears}${t('yearsUnit')}`}
-                    </p>
-                  )}
+                  <div className="flex justify-between gap-3 py-2.5 text-sm font-semibold text-fg">
+                    <span>{t('calculatedTaxLabel')}</span><span className="tabular-nums">{won(r.tax)}{t('wonUnit')}</span>
+                  </div>
+                  <div className="flex justify-between gap-3 py-2.5 text-sm text-sub">
+                    <span>(+) {t('localTaxLabel')} (10%)</span><span className="tabular-nums">{won(r.local)}{t('wonUnit')}</span>
+                  </div>
+                  <div className="flex justify-between gap-3 py-3 text-base font-bold text-fg">
+                    <span>{t('totalTaxLabel')}</span><span className="tabular-nums">{won(r.total)}{t('wonUnit')}</span>
+                  </div>
+                </div>
+                {r.lthdTable === 'oneHouse' && (
+                  <p className="text-xs text-muted mt-2">{t('step.lthdSplit', { h: pct(r.lthdHoldRate), r: pct(r.lthdResRate) })}</p>
+                )}
+              </div>
+
+              {/* 더 보유·거주하면 */}
+              <div className="ui-card p-6">
+                <h2 className="text-base font-semibold text-fg">{t('sim.title')}</h2>
+                <p className="text-xs text-muted mt-1">{t(oneHouseLike && live ? 'sim.assumeLive' : 'sim.assume')}</p>
+                {sim.length === 0 ? (
+                  <p className="text-sm text-sub mt-4">{t('sim.none')}</p>
+                ) : (
+                  <div className="overflow-x-auto mt-3">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-muted text-xs">
+                          <th className="py-2 font-medium">{t('sim.when')}</th>
+                          <th className="py-2 font-medium text-right">{t('sim.tax')}</th>
+                          <th className="py-2 font-medium text-right">{t('sim.saving')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sim.map((s) => (
+                          <tr key={s.date} className="border-t border-line">
+                            <td className="py-2.5 text-body">{t('sim.after', { m: s.months })}<span className="block text-xs text-muted">{s.date}</span></td>
+                            <td className="py-2.5 text-right tabular-nums text-fg">{won(s.total)}{t('wonUnit')}</td>
+                            <td className="py-2.5 text-right tabular-nums font-semibold text-primary">−{won(s.saving)}{t('wonUnit')}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {proposal && (
+                <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+                  <p className="font-semibold text-fg mb-1">{t('proposal.title')}</p>
+                  <p>{t('proposal.desc', { v: won(proposal.total), d: won(r.total - proposal.total) })}</p>
                 </div>
               )}
 
-              {/* 주의사항 */}
-              <div className="bg-amber-50 dark:bg-amber-950 rounded-xl p-5 border border-amber-200 dark:border-amber-800">
-                <div className="flex items-start gap-2 mb-3">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
-                  <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-300">{t('cautionTitle')}</h3>
-                </div>
-                <ul className="space-y-1.5">
-                  {(t.raw('cautionItems') as string[]).map((item, i) => (
-                    <li key={i} className="text-xs text-amber-700 dark:text-amber-400 flex items-start gap-1.5">
-                      <span className="shrink-0 mt-0.5">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-5">
+                <p className="text-sm font-semibold mb-2">{t('cautionTitle')}</p>
+                <ul className="space-y-1 text-xs list-disc pl-4">
+                  {(t.raw('cautionItems') as string[]).map((c, i) => <li key={i}>{c}</li>)}
                 </ul>
               </div>
             </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
-              <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
-              <p className="text-muted">{t('emptyState')}</p>
-            </div>
           )}
         </div>
       </div>
 
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guideTitle')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* 계산 순서 */}
-          <div className="bg-subtle rounded-xl p-5">
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guideTitle')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-subtle rounded-2xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guideStepsTitle')}</h3>
-            <ol className="space-y-2">
-              {(t.raw('guideSteps') as string[]).map((step, i) => (
-                <li key={i} className="text-sm text-sub flex gap-2">
-                  <span className="font-bold shrink-0">{i + 1}.</span>
-                  <span>{step}</span>
-                </li>
-              ))}
+            <ol className="space-y-1.5 text-sm text-sub list-decimal pl-5">
+              {(t.raw('guideSteps') as string[]).map((s, i) => <li key={i}>{s}</li>)}
             </ol>
           </div>
-
-          {/* 1세대1주택 비과세 */}
-          <div className="bg-subtle rounded-xl p-5">
+          <div className="bg-subtle rounded-2xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guideExemptTitle')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guideExemptItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-1.5">
-                  <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
+            <ul className="space-y-1.5 text-sm text-sub list-disc pl-5">
+              {(t.raw('guideExemptItems') as string[]).map((s, i) => <li key={i}>{s}</li>)}
             </ul>
           </div>
-
-          {/* 장기보유특별공제 */}
-          <div className="bg-subtle rounded-xl p-5">
+          <div className="bg-subtle rounded-2xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guideLthdTitle')}</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="text-purple-700 dark:text-purple-400">
-                    <th className="text-left py-1">{t('guideLthdPeriod')}</th>
-                    <th className="text-right py-1">{t('guideLthdGeneral')}</th>
-                    <th className="text-right py-1">{t('guideLthdOneHouse')}</th>
-                  </tr>
-                </thead>
-                <tbody className="text-sub">
-                  {[
-                    ['3~4년', '6%', '12%'],
-                    ['5~6년', '10%', '20%'],
-                    ['7~8년', '14%', '28%'],
-                    ['9~10년', '18%', '36%'],
-                    ['10년+', '20%', '최대 80%'],
-                    ['15년+', '30%', '최대 80%'],
-                  ].map(([period, gen, one], i) => (
-                    <tr key={i} className="border-t border-line">
-                      <td className="py-1">{period}</td>
-                      <td className="text-right py-1">{gen}</td>
-                      <td className="text-right py-1">{one}</td>
+            <table className="w-full text-xs text-sub">
+              <thead>
+                <tr className="text-muted">
+                  <th className="text-left py-1 font-medium">{t('guideLthdPeriod')}</th>
+                  <th className="text-right py-1 font-medium">{t('guideLthdGeneral')}</th>
+                  <th className="text-right py-1 font-medium">{t('guide.lthdHold')}</th>
+                  <th className="text-right py-1 font-medium">{t('guide.lthdRes')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[2, 3, 4, 5, 6, 8, 10, 15].map((y) => {
+                  const one = oneHouseLthd(y, y)
+                  return (
+                    <tr key={y} className="border-t border-line">
+                      <td className="py-1">{t('guide.years', { y })}</td>
+                      <td className="text-right py-1 tabular-nums">{pct(generalLthd(y))}</td>
+                      <td className="text-right py-1 tabular-nums">{pct(one.hold)}</td>
+                      <td className="text-right py-1 tabular-nums">{pct(one.res)}</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  )
+                })}
+              </tbody>
+            </table>
+            <p className="text-xs text-muted mt-2">{t('guide.lthdNote')}</p>
           </div>
-
-          {/* 세율표 */}
-          <div className="bg-subtle rounded-xl p-5">
+          <div className="bg-subtle rounded-2xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guideTaxRateTitle')}</h3>
+            <table className="w-full text-xs text-sub">
+              <thead>
+                <tr className="text-muted">
+                  <th className="text-left py-1 font-medium">{t('guideTaxRateBase')}</th>
+                  <th className="text-right py-1 font-medium">{t('guideTaxRateRate')}</th>
+                  <th className="text-right py-1 font-medium">{t('progressiveDeductionLabel')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {BRACKETS.map((b, i) => (
+                  <tr key={i} className="border-t border-line">
+                    <td className="py-1">{b.upTo === Infinity ? t('guide.over', { v: eok(BRACKETS[i - 1].upTo) }) : t('guide.upTo', { v: eok(b.upTo) })}</td>
+                    <td className="text-right py-1 tabular-nums">{pct(b.rate)}</td>
+                    <td className="text-right py-1 tabular-nums">{b.ded ? eok(b.ded) : '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-subtle rounded-2xl p-5 md:col-span-2">
+            <h3 className="font-semibold text-fg mb-3">{t('guide.shortTitle')}</h3>
             <div className="overflow-x-auto">
-              <table className="w-full text-xs">
+              <table className="w-full text-xs text-sub min-w-[420px]">
                 <thead>
-                  <tr className="text-orange-700 dark:text-orange-400">
-                    <th className="text-left py-1">{t('guideTaxRateBase')}</th>
-                    <th className="text-right py-1">{t('guideTaxRateRate')}</th>
+                  <tr className="text-muted">
+                    {(t.raw('guide.shortHead') as string[]).map((h, i) => <th key={i} className={`py-1 font-medium ${i ? 'text-right' : 'text-left'}`}>{h}</th>)}
                   </tr>
                 </thead>
-                <tbody className="text-sub">
-                  {[
-                    ['1,400만 이하', '6%'],
-                    ['1,400~5,000만', '15%'],
-                    ['5,000~8,800만', '24%'],
-                    ['8,800만~1.5억', '35%'],
-                    ['1.5~3억', '38%'],
-                    ['3~5억', '40%'],
-                    ['5~10억', '42%'],
-                    ['10억 초과', '45%'],
-                  ].map(([range, rate], i) => (
+                <tbody>
+                  {(t.raw('guide.shortRows') as string[][]).map((row, i) => (
                     <tr key={i} className="border-t border-line">
-                      <td className="py-1">{range}</td>
-                      <td className="text-right py-1 font-medium">{rate}</td>
+                      {row.map((c, j) => <td key={j} className={`py-1 ${j ? 'text-right' : ''}`}>{c}</td>)}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <p className="text-xs text-muted mt-2">{t('guide.shortNote')}</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-fg mb-3">{t('faq.title')}</h3>
+          <div className="space-y-2">
+            {(t.raw('faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <details key={i} className="bg-subtle rounded-xl p-4">
+                <summary className="text-sm font-medium text-fg cursor-pointer">{f.q}</summary>
+                <p className="text-sm text-sub mt-2">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h3 className="font-semibold text-fg mb-2">{t('sources.title')}</h3>
+            <ul className="space-y-1 text-sm">
+              {(t.raw('sources.items') as { label: string; url: string }[]).map((s) => (
+                <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted mt-2">{t('sources.asOf')}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-fg mb-2">{t('related.title')}</h3>
+            <ul className="space-y-1 text-sm">
+              {(t.raw('related.items') as { label: string; href: string }[]).map((s) => (
+                <li key={s.href}><a href={s.href} className="text-primary hover:underline">{s.label}</a></li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

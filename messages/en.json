@@ -31243,8 +31243,238 @@
     ]
   },
   "capitalGainsTax": {
+    "kind": {
+      "house": "House / right",
+      "land": "Land / building",
+      "nonbiz": "Non-business land",
+      "presale": "Pre-sale right"
+    },
+    "input": {
+      "estimate": "Estimate",
+      "expenseHint": "Acquisition tax, brokerage, legal fees, capital improvements (not repairs). 'Estimate' = acquisition tax (current 1-house rate) + max brokerage for buying and selling",
+      "holdShow": "{y}y {m}m",
+      "houses1": "1 house",
+      "houses2": "2 houses",
+      "houses3": "3+ houses",
+      "housesHint": "Houses owned by the whole household, including the one sold",
+      "temp": "Moving (temporary 2)",
+      "notTemp": "Plain 2 houses",
+      "newAcqDate": "New home acquired on",
+      "newAdjusted": "New home is also in an adjusted area",
+      "adjusted": "Sold home is now in an adjusted area",
+      "adjustedHint": "All of Seoul + 12 Gyeonggi areas since 2025-10-16 (surcharge, temp. 2-house deadline)",
+      "acqAdjusted": "Was in an adjusted area when bought",
+      "acqAdjustedHint": "Bought in an adjusted area after 2017-08-03 → 2 years of residence required",
+      "live": "I still live here (used in simulation)",
+      "graceNote": "The multi-home surcharge is back from 2026-05-10. Exception: contract signed by 2026-05-09 and sale closed within 4 months (Gangnam, Seocho, Songpa, Yongsan) or 6 months (areas designated after 2025-10-16).",
+      "grace": "Covered by the pre-5/9 contract rule"
+    },
+    "verdict": {
+      "full": "1-house exemption — no tax due",
+      "partial": "High-value home over ₩1.2B — only {p} of the gain is taxed",
+      "none": "1-house exemption not met — taxable",
+      "surcharge": "Multi-home surcharge (adjusted area)",
+      "short": "Short-term holding rate",
+      "taxable": "Taxable"
+    },
+    "check": {
+      "hold2": "Held 2+ years",
+      "res2": "Lived 2+ years (adjusted at purchase)",
+      "under12": "Sale price ≤ ₩1.2B",
+      "tempGap": "New home bought 1+ year after the old one",
+      "tempDeadline": "Sold within {y} years of new purchase (by {d})"
+    },
+    "rate": {
+      "flat": "Flat {r}",
+      "prog": "Basic {r} (deduction ₩{d})",
+      "progAdd": "Basic {r} + {a}p (deduction ₩{d})"
+    },
+    "step": {
+      "exempt": "Exempt gain (portion up to ₩1.2B)",
+      "lthdExcluded": "(excluded by surcharge)",
+      "lthdSplit": "1-house rate = holding {h} + residence {r}"
+    },
+    "result": {
+      "totalLabel": "Total tax (capital gains + local income tax)",
+      "effective": "Of the gain",
+      "afterTax": "Gain after tax"
+    },
+    "share": {
+      "text": "Capital gains tax result: ₩{v}"
+    },
+    "due": {
+      "title": "Filing & payment deadline",
+      "desc": "Two months from the end of the month of sale (earlier of balance payment or registration). High-value homes over ₩1.2B must file even if partly exempt.",
+      "hometax": "File on Hometax",
+      "wetax": "Local tax on Wetax",
+      "penalty": "Late filing adds a 20% (40% if fraudulent) penalty plus 0.022% per day late payment. Local income tax is filed separately on Wetax."
+    },
+    "sim": {
+      "title": "How much less if I hold or live longer?",
+      "assume": "Same sale price, later sale date (2028 deduction reform under review not applied)",
+      "assumeLive": "Same sale price, assuming you keep living there (2028 deduction reform under review not applied)",
+      "none": "Waiting up to 16 years does not lower the tax.",
+      "when": "Sell",
+      "tax": "Tax",
+      "saving": "vs now",
+      "after": "In {m} months"
+    },
+    "proposal": {
+      "title": "If the 2026 tax reform bill passes (under review)",
+      "desc": "From filings on or after 2027-01-01, the surcharge on adjusted-area homes held 2+ years drops to +5%p (2 houses) / +10%p (3+), then +10/15%p in 2028 and back in 2029. Same case: about ₩{v}, ₩{d} less (deduction exclusion assumed to remain)."
+    },
+    "guide": {
+      "lthdHold": "1-house hold",
+      "lthdRes": "1-house live",
+      "years": "{y} yrs",
+      "lthdNote": "The 1-house rate (holding + residence, up to 80%) applies to homes over ₩1.2B held 3+ and lived in 2+ years; otherwise the general rate (up to 30%). No deduction for surcharged homes or pre-sale rights.",
+      "over": "Over {v}",
+      "upTo": "Up to {v}",
+      "shortTitle": "Rates by holding period and asset (Income Tax Act Art. 104)",
+      "shortHead": [
+        "Asset",
+        "< 1 yr",
+        "1–2 yrs",
+        "2+ yrs"
+      ],
+      "shortRows": [
+        [
+          "House / union right",
+          "70%",
+          "60%",
+          "Basic"
+        ],
+        [
+          "Pre-sale right",
+          "70%",
+          "60%",
+          "60%"
+        ],
+        [
+          "Land / building",
+          "50%",
+          "40%",
+          "Basic"
+        ],
+        [
+          "Non-business land",
+          "50% vs basic+10%p",
+          "40% vs basic+10%p",
+          "Basic+10%p"
+        ],
+        [
+          "Adjusted 2 houses (2026-05-10~)",
+          "70% vs basic+20%p",
+          "60% vs basic+20%p",
+          "Basic+20%p"
+        ],
+        [
+          "Adjusted 3+ houses (2026-05-10~)",
+          "70% vs basic+30%p",
+          "60% vs basic+30%p",
+          "Basic+30%p"
+        ]
+      ],
+      "shortNote": "When two rates apply, the higher tax wins. Unregistered transfers: 70%. Local income tax of 10% is added."
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "When must I file?",
+          "a": "Within two months from the end of the month of sale (earlier of balance payment or registration). E.g. a March 15 closing is due May 31 (next business day if a holiday). Multiple sales in a year are combined in the May final return."
+        },
+        {
+          "q": "What are the 1-house exemption rules?",
+          "a": "The household owns only one home on the sale date and has held it 2+ years; 2 years of residence are also required if it was in an adjusted area when bought (after 2017-08-03). Up to ₩1.2B fully exempt; above that only (price − ₩1.2B) / price of the gain is taxed."
+        },
+        {
+          "q": "I briefly own two homes while moving. What is the deadline?",
+          "a": "Buy the new home at least 1 year after the old one and sell the old home within 3 years of buying the new one. Since 2026-10-01 it is 2 years if both homes are in adjusted areas and the new home was acquired on or after 2026-08-04 (contracts by 2026-08-03 keep 3 years)."
+        },
+        {
+          "q": "Is the multi-home surcharge applied now?",
+          "a": "Yes. The deferral ended on 2026-05-09, so from 05-10 adjusted-area sales get +20%p (2 houses) or +30%p (3+) and no long-term deduction. Contracts signed by 05-09 and closed within 4 or 6 months are excepted. The 2026 reform bill proposes temporary relief for 2027–2028 but has not passed."
+        },
+        {
+          "q": "Which expenses count?",
+          "a": "Acquisition tax, brokerage, legal fees and capital improvements such as window frames, balcony extension or built-in AC. Repairs like wallpaper, flooring or boiler fixes do not count. Keep receipts."
+        },
+        {
+          "q": "Who gets the 80% long-term deduction?",
+          "a": "Owners of a 1-house-exempt home over ₩1.2B held 3+ and lived in 2+ years: 4% per year held (max 40%) + 4% per year lived (8% for 2–3 years, max 40%)."
+        },
+        {
+          "q": "How is the holding period counted?",
+          "a": "From acquisition (earlier of balance payment or registration) to sale. Selling on the same date 2 years later counts as 2 years. Inherited homes count from the decedent's purchase for rate purposes; gifted homes from the gift registration."
+        },
+        {
+          "q": "What about joint ownership?",
+          "a": "Each owner is taxed separately. Split prices and expenses by share and calculate each. Each owner also gets the ₩2.5M basic deduction."
+        }
+      ]
+    },
+    "sources": {
+      "title": "Legal basis & sources",
+      "asOf": "Law in force as of 2026-10-01. The 2026 tax reform bill under review is not applied.",
+      "items": [
+        {
+          "label": "Income Tax Act Art. 89 (1-house exemption)",
+          "url": "https://www.law.go.kr/법령/소득세법/제89조"
+        },
+        {
+          "label": "Income Tax Act Art. 95 (long-term deduction)",
+          "url": "https://www.law.go.kr/법령/소득세법/제95조"
+        },
+        {
+          "label": "Income Tax Act Art. 104 (rates)",
+          "url": "https://www.law.go.kr/법령/소득세법/제104조"
+        },
+        {
+          "label": "Income Tax Act Art. 105 (preliminary return)",
+          "url": "https://www.law.go.kr/법령/소득세법/제105조"
+        },
+        {
+          "label": "Enforcement Decree Art. 154 (exemption)",
+          "url": "https://www.law.go.kr/법령/소득세법시행령/제154조"
+        },
+        {
+          "label": "Enforcement Decree Art. 155 (temporary 2 houses)",
+          "url": "https://www.law.go.kr/법령/소득세법시행령/제155조"
+        },
+        {
+          "label": "Korea.kr: surcharge deferral ends 5/9",
+          "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148959488"
+        },
+        {
+          "label": "National Tax Service",
+          "url": "https://www.nts.go.kr"
+        }
+      ]
+    },
+    "related": {
+      "title": "Related calculators",
+      "items": [
+        {
+          "label": "Acquisition tax calculator",
+          "href": "/acquisition-tax/"
+        },
+        {
+          "label": "Brokerage fee calculator",
+          "href": "/brokerage-fee/"
+        },
+        {
+          "label": "Comprehensive property tax",
+          "href": "/comprehensive-property-tax/"
+        },
+        {
+          "label": "Inheritance & gift tax",
+          "href": "/inheritance-gift-tax/"
+        }
+      ]
+    },
     "title": "Capital Gains Tax Calculator",
-    "description": "Auto-calculate Korean real estate capital gains tax (2025) — long-term deduction, 1-house exemption, and multi-home surcharge included",
+    "description": "As of Oct 2026 — 1-house exemption and ₩1.2B rule, long-term deduction, short-term and multi-home surcharge rates (from 2026-05-10), temporary 2-house deadline",
     "inputTitle": "Transaction Details",
     "salePrice": "Sale Price",
     "salePricePlaceholder": "500,000,000",
@@ -31294,38 +31524,35 @@
     "emptyState": "Enter sale price and acquisition price to calculate capital gains tax",
     "cautionTitle": "Disclaimer",
     "cautionItems": [
-      "This calculator is for reference only; actual tax may differ",
-      "Always consult a tax accountant or local tax office before filing",
-      "Based on 2025 tax law; results may change with future amendments",
-      "The multi-home surcharge is currently suspended — verify actual applicability",
-      "Long-term holding deductions apply only when capital gain is positive",
-      "No tax is owed if there is no gain or if a loss occurred"
+      "For reference only. Check with a tax accountant or NTS (126) before filing.",
+      "House-count exceptions (cheap regional homes, inherited or rental homes), surcharge exceptions and special-act reductions are not applied.",
+      "Joint owners are taxed separately — enter amounts by share.",
+      "The 2026 tax reform bill under review (2027–28 surcharge relief, ₩25M basic deduction in 2027, 2028 deduction reform) is not applied.",
+      "Local income tax is 10% of the capital gains tax."
     ],
     "guideTitle": "How Capital Gains Tax is Calculated",
     "guideStepsTitle": "Calculation Steps",
     "guideSteps": [
-      "Capital Gain = Sale Price − Acquisition Price − Expenses",
-      "Apply long-term holding deduction (if held 3+ years)",
-      "Taxable Gain = Capital Gain − Long-Term Deduction",
-      "Subtract basic deduction of KRW 2,500,000",
-      "Tax Base = Taxable Gain − Basic Deduction",
-      "Calculated Tax = Tax Base × Rate − Progressive Deduction",
-      "Local Income Tax = Calculated Tax × 10%",
-      "Total Tax = Calculated Tax + Local Income Tax"
+      "Gain = sale price − acquisition price − expenses",
+      "1-house exemption: fully exempt up to ₩1.2B, otherwise only (price − ₩1.2B)/price is taxed",
+      "Long-term holding deduction for 3+ years (not for surcharged homes or pre-sale rights)",
+      "Gain income − ₩2.5M basic deduction = tax base",
+      "Tax base × rate − progressive deduction = tax (highest of basic, short-term, surcharge)",
+      "Tax + 10% local income tax = total"
     ],
     "guideExemptTitle": "1-Home Tax Exemption",
     "guideExemptItems": [
-      "Held for 2+ years (required)",
-      "Regulated area: also requires 2+ years of actual residence",
-      "Sale price ≤ KRW 1.2 billion: fully exempt",
-      "Sale price > KRW 1.2 billion: only the excess portion is taxed",
-      "Only applies when a household owns exactly one home"
+      "The household owns one domestic home on the sale date (temporary 2-house etc. included)",
+      "Held 2+ years — from the same date 2 years after purchase",
+      "2+ years of residence if in an adjusted area when bought (after 2017-08-03)",
+      "Fully exempt up to ₩1.2B, otherwise the excess ratio is taxed",
+      "All of Seoul + 12 Gyeonggi areas became adjusted on 2025-10-16 — later purchases need residence"
     ],
     "guideLthdTitle": "Long-Term Holding Deduction Rates",
     "guideLthdPeriod": "Holding Period",
     "guideLthdGeneral": "General",
     "guideLthdOneHouse": "1-Home (max)",
-    "guideTaxRateTitle": "2025 Progressive Tax Rates",
+    "guideTaxRateTitle": "Basic capital gains tax rates (2026)",
     "guideTaxRateBase": "Tax Base",
     "guideTaxRateRate": "Rate"
   },
