@@ -1,4 +1,15 @@
-# NEXT-SESSION (2026-10-02, main 푸시·배포 완료 a695f91 + handoff)
+# NEXT-SESSION (2026-10-02 오후, main 푸시·배포 완료)
+
+## 2026-10-02 오후 — 웹 조사 기반 신규 5종 + 양도세 + 소득세 버그
+- 선정 근거: 비즈폼 실시간 인기 검색어(영수증·부동산임대차계약서·인사말·급여·위임장), 메뉴에 없던 고검색 계산기(복비·연간 자동차세)
+- 신규: /brokerage-fee(요율표 `src/utils/brokerageFee.ts`, acquisitionTax.brokerFee가 재사용), /annual-car-tax(연납 공제 일할 — 1월 ≈4.58%), /pay-slip, /receipt-generator, /lease-contract(표준계약서 2023.10, 전세사기 예방 특약 11종)
+- 고도화: /capital-gains-tax 재작성(단기세율 누락 버그, 중과 유예 2026.5.9 종료, 일시적 2주택 2년 단축 2026.10.1)
+- **중요 버그 수정(512741a)**: `netSalary.ts` 월 소득세가 간이세액표보다 월 7~12만원 과대(연봉 4천 1인 156,300 vs 84,620). 이제 `src/utils/wageTaxTable.ts`(2026.2.27 간이세액표 원문 646행×11열) 사용. 연간 결정세액 추정은 `taxInfo.annualTaxEstimate`(연봉 계산기 참고 행, 성과급 final 기준). SalaryComparison 중복 로직 제거
+  - 간이세액표 개정 시(보통 2~3월) wageTaxTable.ts 교체 + `node scripts/check-pay-slip.ts`
+- 확인 필요: 자동차세 영업용 승합·화물 정액, 6·9월 연납 할인율 소수점, 양도세 일시적 2주택 시행령 원문, 임대차 신고 대상 지역(강원·전북 군), 영수증 가산세 조문 번호
+- 다음 후보: 비즈폼 인기 "인사말"(연말·신년 인사말 생성기 — 12월 시즌 전에), 재직·경력증명서, 합의서·각서, health-insurance·national-pension 고도화
+
+## (이전) 2026-10-02 오전 a695f91
 
 ## 2026-10-02 — 구글 유입 대비: 계산기 8개 고도화 + 문서 양식 5종 신규
 - 배경: popular_tools 클릭 데이터는 구글 색인 전(네이버·내부 이동 위주)이라 **정리(삭제)는 10/29 GSC 확인 후**. 기준: 색인 2개월+ 노출≈0 & 방문≤10 → 301 병합. 1순위 후보 cs-*/dev-* 학습 페이지 9개. 결정 도구 9개는 9/30 분리라 판단 보류
@@ -73,7 +84,7 @@
 - 병합: `python scripts/merge-i18n.py <ns> new.json` → `... over.json --overwrite` → node로 키 확인. 기존 키와 충돌하는 "새" 키는 병합 안 되니 over로 다시 넣을 것
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
-- 배포: SW 버전 bump(public/sw.js, 현재 v4.29.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+- 배포: SW 버전 bump(public/sw.js, 현재 v4.30.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
 
 ## 4. 재개 프롬프트
 "docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
