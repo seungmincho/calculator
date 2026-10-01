@@ -49034,6 +49034,329 @@
       ]
     }
   },
-  "certifiedLetter": {},
+  "certifiedLetter": {
+    "title": "Certified Letter Writer",
+    "description": "Pick a purpose and the subject and body are drafted for you. 7 templates (deposit return, unpaid invoices, unpaid wages and more), deadline checks, A4 PDF/print and postal fees.",
+    "won": "KRW",
+    "confirmPurpose": "Changing the purpose replaces your edited subject and body with a new draft. Continue?",
+    "section": {
+      "purpose": "What are you demanding?",
+      "sender": "Sender",
+      "receiver": "Recipient",
+      "contract": "Contract details",
+      "demand": "Demand and deadline",
+      "body": "Subject and body",
+      "send": "How to send and cost"
+    },
+    "sectionHint": {
+      "purpose": "Choosing one drafts the subject and body. Every sentence can be edited below.",
+      "sender": "Your name and address. It is registered mail, so an address is needed for returns and re-certification.",
+      "receiver": "The other party's name and an address where they actually receive mail. The post office cannot accept it without an address.",
+      "body": "The draft follows the inputs above. Each line becomes a numbered item."
+    },
+    "purposes": {
+      "deposit": "Deposit return",
+      "terminate": "Termination / non-renewal",
+      "payment": "Unpaid invoice",
+      "loan": "Money lent",
+      "wage": "Unpaid wages",
+      "defect": "Defect repair",
+      "custom": "Write your own"
+    },
+    "purposeHint": {
+      "deposit": "Demand return of a jeonse/monthly-rent deposit. Before expiry it also includes a non-renewal notice.",
+      "terminate": "Notify non-renewal of a lease or termination of a contract. It takes effect once it reaches the other party.",
+      "payment": "Demand payment for goods, services or construction you were not paid for.",
+      "loan": "Demand repayment of money you lent. You can import what you saved in the IOU generator.",
+      "wage": "Demand unpaid wages or severance. Sending it before a labor office complaint leaves a record.",
+      "defect": "Demand repair of defects in a home, construction work or goods.",
+      "custom": "Write your own demand without a template."
+    },
+    "termKind": "Notice type",
+    "termKinds": {
+      "renewal": "Lease non-renewal",
+      "contract": "Contract termination"
+    },
+    "fields": {
+      "deposit": {
+        "contractDate": "Lease date",
+        "baseDate": "Lease end date",
+        "amount": "Deposit",
+        "property": "Rented home address",
+        "account": "Account for the refund"
+      },
+      "terminate": {
+        "contractDate": "Contract date",
+        "baseDate": "End / termination date",
+        "property": "Subject (address or contract)",
+        "item": "Reason (for termination)"
+      },
+      "payment": {
+        "contractDate": "Supply date",
+        "baseDate": "Agreed payment date",
+        "amount": "Unpaid amount",
+        "item": "Goods or services supplied",
+        "account": "Account for payment"
+      },
+      "loan": {
+        "contractDate": "Date lent",
+        "baseDate": "Due date",
+        "amount": "Amount lent",
+        "account": "Account for repayment"
+      },
+      "wage": {
+        "contractDate": "Start date",
+        "baseDate": "Leaving date",
+        "amount": "Total unpaid",
+        "item": "What is unpaid",
+        "account": "Account for payment"
+      },
+      "defect": {
+        "contractDate": "Contract or handover date",
+        "property": "Subject (address, work or item)",
+        "item": "Defect",
+        "amount": "Repair estimate (optional)"
+      }
+    },
+    "placeholder": {
+      "deposit": {
+        "property": "1 World Cup-ro, Mapo-gu, Seoul, #101-1001"
+      },
+      "terminate": {
+        "property": "1 World Cup-ro, Mapo-gu, Seoul, #101-1001",
+        "item": "you have been in arrears on rent for over 2 months"
+      },
+      "payment": {
+        "item": "20 sets of office furniture"
+      },
+      "wage": {
+        "item": "Aug–Sep 2026 salary and severance"
+      },
+      "defect": {
+        "property": "1 World Cup-ro, Mapo-gu, Seoul, #101-1001",
+        "item": "bathroom ceiling leak and mold"
+      }
+    },
+    "accountPlaceholder": "Bank 000-000000-00000 (holder: Hong Gildong)",
+    "hasIou": "I have an IOU",
+    "hasIouHint": "Adds a sentence that the borrower signed and handed over an IOU.",
+    "iouLoad": "Import from IOU",
+    "iouNone": "No IOU is saved in this browser. Write one in the IOU generator first.",
+    "deadline": "Deadline",
+    "deadlineText": "Appears in the body as 'by {date}'.",
+    "deadlineIn": "In {n} days",
+    "demand": "Additional demands (optional)",
+    "demandPlaceholder": "e.g. Please also let me know the key return schedule and the maintenance fee settlement.",
+    "demandPlaceholderCustom": "e.g. Please remove the air-conditioner outdoor unit you installed by October 31, 2026.",
+    "demandHint": "One item per line; each becomes a numbered paragraph.",
+    "actionsLabel": "If not done by the deadline",
+    "actions": {
+      "leaseReg": "Lease registration order",
+      "paymentOrder": "Payment order",
+      "smallClaims": "Small claims",
+      "lawsuit": "Civil lawsuit",
+      "provisional": "Provisional attachment",
+      "laborOffice": "Labor office complaint",
+      "damages": "Damages claim",
+      "interest": "Late interest and legal costs"
+    },
+    "actionHints": {
+      "leaseReg": "When you must move out without the deposit. Keeps your priority rights.",
+      "paymentOrder": "Paper-only procedure with stamp duty at 1/10 of a lawsuit. Moves to a lawsuit if contested.",
+      "smallClaims": "Monetary claims up to KRW 30M go through the simpler small-claims procedure.",
+      "provisional": "Freezes the other party's assets if they might disappear.",
+      "lawsuit": "Sue when a payment order is contested or the dispute is large.",
+      "laborOffice": "File an unpaid-wage complaint with the Ministry of Employment and Labor; the confirmation lets you apply for substitute payment.",
+      "damages": "Claim losses caused by defects or breach.",
+      "interest": "States that late interest and legal costs will also be claimed."
+    },
+    "written": "Date written (sent)",
+    "subject": "Subject",
+    "subjectHint": "Leave blank to use a subject matching the purpose.",
+    "body": "Body",
+    "bodyReset": "Back to auto draft",
+    "bodyAutoHint": "This is the auto draft. Once you start editing, your text is kept as is.",
+    "bodyManualHint": "You edited the body, so changes above no longer update it. Press 'Back to auto draft' to apply them again.",
+    "send": {
+      "fee": "Post office fee (A4 × {pages}, approx.)",
+      "postage": "Postage",
+      "registered": "Registered mail fee",
+      "cert": "Certification fee ({pages} pages)",
+      "proof": "With proof of delivery",
+      "feeNote": "Based on Korea Post rates effective May/July 2026. May vary with envelope weight or online submission.",
+      "steps": [
+        "Save as PDF or print 3 identical copies (recipient, post office, you).",
+        "Sign or seal each copy. For multiple pages, seal across page joins.",
+        "Hand the 3 copies and an addressed envelope to a post office counter, or submit the file online via ePost.",
+        "Add proof of delivery to certify the date it arrived.",
+        "Keep the returned copy and receipt. The post office keeps its copy for 3 years from the day after sending."
+      ],
+      "epost": "Open ePost certified mail"
+    },
+    "insight": {
+      "noReceiverAddress": "Recipient address is empty. Certified mail is registered, so the post office cannot accept it without an address.",
+      "noReceiverName": "Recipient name is empty. For a company, enter the business name and representative.",
+      "noSenderAddress": "Sender address is empty. The post office also needs it for returns and re-certification.",
+      "deadlineBeforeWritten": "The deadline ({deadline}) is before the date written ({written}). Set it after the date written.",
+      "deadlineShort": "The deadline is {days} days after writing. Mail takes a few days to arrive, so 7–14 days is typical.",
+      "depositAfter": "If the lease ended and you have not got the deposit back, get a lease registration order registered before moving out to keep your priority rights.",
+      "depositBefore": "Sent before the end date ({end}), so a non-renewal notice is included. A tenant's non-renewal must reach the landlord by 2 months before expiry ({two}) (Housing Lease Protection Act Art. 6). {days} days left.",
+      "renewalLate": "The 2-months-before date ({two}) has passed. If no non-renewal reached the landlord by then, the lease may have renewed automatically. The tenant can still give notice anytime; it ends 3 months after the landlord receives it (Art. 6-2).",
+      "depositDeadline": "The deposit is returned in exchange for vacating, so it cannot be demanded before the end date ({end}). Set the deadline after it.",
+      "renewal": {
+        "ok": "Within the notice window. Landlords: 6 months ({six}) to 2 months ({two}) before expiry; tenants: by 2 months before ({two}). Add proof of delivery.",
+        "late": "The 2-months-before date ({two}) has passed. Without notice by then, the lease renews on the same terms (Art. 6). After that the tenant can still terminate with 3 months' notice.",
+        "early": "A landlord can refuse renewal only from 6 months before expiry ({six}). If you are the landlord, send it again after {six}. Tenants may send now.",
+        "expired": "The end date ({end}) has passed. Use a termination notice or a deposit-return demand instead."
+      },
+      "prescription": {
+        "soon": "The {years}-year limitation period ends on {expire}. A demand letter only extends it by 6 months; file a payment order, lawsuit or attachment within that time (Civil Act Art. 174).",
+        "past": "The {years}-year limitation period may have ended on {expire}. If the other party raises it, the claim is hard to enforce. Partial payment or acknowledgment restarts it, so consult a professional."
+      },
+      "smallClaimsOver": "Small claims covers only monetary claims up to KRW 30M. Use a regular lawsuit or payment order for this amount.",
+      "wage": "Wages and severance must be paid within 14 days of leaving; after that 20% annual late interest applies (Labor Standards Act Art. 37). Wage claims expire after 3 years."
+    },
+    "guide": {
+      "title": "Certified letters in a nutshell",
+      "intro": "A certified letter (naeyong jeungmyeong) is registered mail where the post office certifies what was sent, by whom, to whom and when. It cannot force payment by itself, but it records your demand and its date as solid evidence and is the first step before legal action.",
+      "sections": [
+        {
+          "title": "What it does",
+          "items": [
+            "The post office certifies the content and sending date (Postal Act Enforcement Rules Art. 25).",
+            "It is not enforceable by itself; ignoring it does not allow seizure.",
+            "It is strong evidence of your demand and signals that legal action may follow.",
+            "Ideal for notices that take effect on arrival, such as termination or non-renewal. Add proof of delivery to certify the arrival date."
+          ]
+        },
+        {
+          "title": "Interrupting the limitation period",
+          "items": [
+            "Demanding performance by certified letter is a 'peremptory notice' under the Civil Act.",
+            "It only interrupts the period if you file a lawsuit, payment order, attachment or injunction within 6 months (Civil Act Art. 174).",
+            "If the period is about to end, follow up with a payment order or lawsuit within 6 months.",
+            "Typical periods: personal loans 10 years, goods/construction payments 3 years, wages and severance 3 years."
+          ]
+        },
+        {
+          "title": "Writing tips",
+          "items": [
+            "State when, what and how much with exact dates and amounts.",
+            "State the demand and deadline clearly; 7–14 days after arrival is typical.",
+            "Avoid insults, threats or exaggeration; they can backfire legally.",
+            "Use an address where the recipient actually gets mail; returned mail is hard to prove as delivered."
+          ]
+        },
+        {
+          "title": "Sending and cost",
+          "items": [
+            "Prepare 3 identical copies: recipient, post office and you.",
+            "Submit at a post office counter or upload the file on ePost.",
+            "2026 rates: postage KRW 500 + registered KRW 2,400 + certification KRW 1,300 (KRW 650 per extra page). About KRW 4,200 for one page.",
+            "Add proof of delivery (KRW 1,600). The post office keeps its copy for 3 years and can re-certify within that time."
+          ]
+        },
+        {
+          "title": "If it still is not resolved",
+          "items": [
+            "Payment order: when the other party is unlikely to contest. Paper-only, stamp duty 1/10 of a lawsuit.",
+            "Small claims: monetary claims up to KRW 30M, quick hearings.",
+            "Lease registration order: when moving out without the deposit; keeps priority rights (Housing Lease Protection Act Art. 3-3).",
+            "Unpaid wages: file a labor office complaint and apply for substitute payment."
+          ]
+        },
+        {
+          "title": "Lease non-renewal deadlines",
+          "items": [
+            "Landlord: from 6 months to 2 months before expiry (Housing Lease Protection Act Art. 6(1)).",
+            "Tenant: by 2 months before expiry.",
+            "Without notice the lease renews on the same terms; the tenant can then terminate with 3 months' notice (Art. 6-2).",
+            "If the tenant exercises the renewal right, the landlord needs a statutory reason such as moving in (Art. 6-3). Commercial leases use 6 to 1 month."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What happens if the recipient ignores it?",
+            "a": "A certified letter is not enforceable by itself, so ignoring it has no immediate penalty. But the demand and its date remain as evidence, and the sender can proceed with a payment order, lawsuit or lease registration order. If you disagree, reply with your own certified letter."
+          },
+          {
+            "q": "Does it stop the limitation period?",
+            "a": "It counts as a peremptory notice under the Civil Act, which only interrupts the period if you file a lawsuit, payment order, attachment or injunction within 6 months (Civil Act Art. 174)."
+          },
+          {
+            "q": "Can I send it before my lease ends?",
+            "a": "Yes. Before expiry, combine a non-renewal notice with a demand to return the deposit on the end date. A tenant's notice must arrive by 2 months before expiry; a landlord's between 6 and 2 months before (Housing Lease Protection Act Art. 6). If you must move out without the deposit, apply for a lease registration order first."
+          },
+          {
+            "q": "How much does it cost?",
+            "a": "Under 2026 Korea Post rates, one A4 page costs about KRW 4,200: postage KRW 500, registered fee KRW 2,400 and certification fee KRW 1,300. Each extra page adds KRW 650, and proof of delivery adds KRW 1,600."
+          },
+          {
+            "q": "Can I send it online?",
+            "a": "Yes. Upload the document on ePost and the post office prints, sends it by registered mail and keeps a copy. The final fee is shown on the submission screen. Otherwise bring 3 copies and an envelope to a post office counter."
+          },
+          {
+            "q": "What if the recipient does not accept it?",
+            "a": "Keep returned mail unopened. Courts may treat an unjustified refusal as delivery. Resend to another address or also send the content by text or email; in court, the court's service procedures can be used."
+          },
+          {
+            "q": "Does it need to come from a lawyer?",
+            "a": "The legal effect is the same either way. Clear facts, demands, a deadline and consequences are enough in your own name. For large or complex disputes, consult a lawyer."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "IOU generator",
+          "href": "/iou-generator/"
+        },
+        {
+          "label": "Jeonse checklist",
+          "href": "/jeonse-checklist/"
+        },
+        {
+          "label": "Rent converter",
+          "href": "/rent-converter/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Postal Act Enforcement Rules Art. 25 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/우편법시행규칙/제25조"
+        },
+        {
+          "label": "Civil Act Art. 174 (peremptory notice)",
+          "url": "https://www.law.go.kr/법령/민법/제174조"
+        },
+        {
+          "label": "Housing Lease Protection Act Art. 6 (renewal)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법/제6조"
+        },
+        {
+          "label": "Housing Lease Protection Act Art. 3-3 (lease registration order)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법/제3조의3"
+        },
+        {
+          "label": "Labor Standards Act Art. 36 (settlement)",
+          "url": "https://www.law.go.kr/법령/근로기준법/제36조"
+        },
+        {
+          "label": "Korea Post domestic postage and fees (2026)",
+          "url": "https://www.koreapost.go.kr/site/kpost/download/%EA%B5%AD%EB%82%B4%ED%86%B5%EC%83%81%EC%9A%B0%ED%8E%B8%EC%9A%94%EA%B8%88%EB%B0%8F%EC%9A%B0%ED%8E%B8%EC%9D%B4%EC%9A%A9%EC%97%90%EA%B4%80%ED%95%9C%EC%88%98%EC%88%98%EB%A3%8C.pdf"
+        },
+        {
+          "label": "ePost certified mail",
+          "url": "https://service.epost.go.kr/econprf.RetrieveEConprfReqSend.postal"
+        },
+        {
+          "label": "Supreme Court e-litigation",
+          "url": "https://ecfs.scourt.go.kr"
+        }
+      ]
+    }
+  },
   "employmentContract": {}
 }
