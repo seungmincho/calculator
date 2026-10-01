@@ -26,3 +26,10 @@
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
 - 배포: SW 버전 bump(public/sw.js, 현재 v4.24.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+
+## 4. 재개 프롬프트
+"docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
+
+## 5. 확인 대기
+- 번역 파일(ko.json 2.1MB)을 도구별로 나눠 로딩하는 작업을 도구 개선보다 먼저 할까요?
+- 사업자번호 상태조회용 `NTS_API_KEY`를 Cloudflare에 넣으셨나요?
