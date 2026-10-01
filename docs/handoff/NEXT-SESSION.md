@@ -1,5 +1,12 @@
 # NEXT-SESSION (2026-10-01 저녁, main 푸시·배포 완료 8cf7483)
 
+## 2026-10-01 밤 — 수능 시즌 콘텐츠 (b9907fc)
+- 신규 `/csat-dday/` (수능 D-day·시간표·준비물·가채점표·응원 카드·대입 일정). 준비물·4교시 세부·문항 수는 "예년 기준" 표기 → **2027 수험생 유의사항 공고 후 `src/utils/csatDday.ts`/i18n 확인**
+- `/csat-grade` health → calculators 이동
+- 예약 작업: 11/20 09:00 가채점 컷 초안, 12/11 13:00 확정 컷 초안 (scheduled-tasks, 로컬 커밋까지만 하고 배포 여부 질문)
+- 새 i18n 네임스페이스는 merge-i18n.py가 못 만듦 → 파일 끝에 `"ns": {}` 스텁 추가 후 병합
+- SW v4.28.0
+
 ## 2026-10-01 저녁 — 배치 3~8 (24개 도구) + Impeccable 디자인 정리, 한 번에 배포
 - 3: emoji-picker, retirement-calculator(퇴직금 — 2023~ 퇴직소득세로 재작성), image-ocr, image-compressor
 - 4: color-blindness-simulator, notepad, roman-numeral, loan-calculator
@@ -49,7 +56,7 @@
 - 병합: `python scripts/merge-i18n.py <ns> new.json` → `... over.json --overwrite` → node로 키 확인. 기존 키와 충돌하는 "새" 키는 병합 안 되니 over로 다시 넣을 것
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
-- 배포: SW 버전 bump(public/sw.js, 현재 v4.27.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+- 배포: SW 버전 bump(public/sw.js, 현재 v4.28.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
 
 ## 4. 재개 프롬프트
 "docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
