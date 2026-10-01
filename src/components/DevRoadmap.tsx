@@ -360,7 +360,7 @@ export default function DevRoadmap() {
                 <div className={`absolute left-5 top-14 bottom-0 w-0.5 ${colors.progressBg}`} />
               )}
 
-              <div className={`bg-surface rounded-xl shadow-lg border-l-4 ${colors.border} overflow-hidden`}>
+              <div className={`bg-surface rounded-xl border border-line overflow-hidden`}>
                 {/* Section header */}
                 <button
                   onClick={() => toggleSection(section.id)}

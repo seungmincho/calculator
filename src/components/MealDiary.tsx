@@ -528,7 +528,7 @@ export default function MealDiary() {
                 <input type="number" value={manualCarbs} onChange={e => setManualCarbs(e.target.value)} placeholder={`${t('carbs')} (g)`} className={`${glassInput} px-3 py-2 text-sm`} />
               </div>
               <div className="flex gap-2">
-                <button onClick={addManualEntry} className="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-700 hover:to-emerald-700">
+                <button onClick={addManualEntry} className="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
                   {t('addFood')}
                 </button>
                 <button onClick={() => setShowManual(false)} className="bg-gray-200 dark:bg-gray-600 text-body px-4 py-2 rounded-lg text-sm">

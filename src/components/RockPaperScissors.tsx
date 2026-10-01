@@ -173,7 +173,6 @@ export default function RockPaperScissors() {
 
   return (
     <div className="relative min-h-[600px]">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 via-purple-500/10 to-fuchsia-500/20 dark:from-violet-900/30 dark:via-purple-900/20 dark:to-fuchsia-900/30 rounded-3xl" />
       <div className="relative z-10 p-4 sm:p-6 space-y-6">
 
         {/* Header */}
@@ -368,7 +367,7 @@ export default function RockPaperScissors() {
                   </div>
                 )}
                 <button onClick={startTournament} disabled={players.length < 2}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-500/40 to-fuchsia-500/40 border border-violet-400/30 text-white font-medium hover:from-violet-500/60 hover:to-fuchsia-500/60 transition-all disabled:opacity-50">
+                  className="ui-btn w-full py-3">
                   {t('startTournament')}
                 </button>
               </div>

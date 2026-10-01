@@ -566,7 +566,7 @@ export default function PersonalColor() {
             <button
               onClick={handleNext}
               disabled={answers[currentQ] === null}
-              className="flex items-center gap-1 px-6 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-1 px-6 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               {currentQ === 11 ? t('resultTitle') : t('nextButton')}
               <ChevronRight className="w-4 h-4" />
@@ -732,14 +732,14 @@ export default function PersonalColor() {
         <div className="flex flex-wrap justify-center gap-3">
           <button
             onClick={handleSaveImage}
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all"
           >
             <Download className="w-4 h-4" />
             {t('saveImageButton')}
           </button>
           <button
             onClick={handleShare}
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 font-medium transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all"
           >
             <Share2 className="w-4 h-4" />
             {t('shareButton')}

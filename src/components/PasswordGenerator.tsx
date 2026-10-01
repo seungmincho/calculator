@@ -637,7 +637,7 @@ export default function PasswordGenerator() {
             {/* Generate Button */}
             <button
               onClick={handleGenerate}
-              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
               <RefreshCw className="w-5 h-5" />
               <span>{t('generate')}</span>

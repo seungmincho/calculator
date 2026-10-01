@@ -736,7 +736,7 @@ function IncomeTaxContent() {
             {/* Next tab button */}
             <button
               onClick={() => setActiveTab('deduction')}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
             >
               {t('tabDeduction')} →
             </button>
@@ -896,7 +896,7 @@ function IncomeTaxContent() {
               </button>
               <button
                 onClick={() => setActiveTab('result')}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {t('tabResult')} →
               </button>

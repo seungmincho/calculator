@@ -427,7 +427,7 @@ export default function QrScanner() {
                 <button
                   onClick={startCamera}
                   disabled={!isBrowserSupported}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {t('startCamera')}
                 </button>

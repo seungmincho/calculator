@@ -411,7 +411,7 @@ export default function Sudoku() {
             </select>
             <button
               onClick={startNewGame}
-              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2 text-sm"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-all flex items-center gap-2 text-sm"
             >
               <Play size={16} />
               {t('newGame')}

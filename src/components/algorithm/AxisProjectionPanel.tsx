@@ -12,7 +12,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
 
   if (!satResult || satResult.axes.length === 0) {
     return (
-      <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl p-4">
+      <div className="bg-subtle rounded-xl p-4">
         <p className="text-sm text-muted">{t('projection.dragToStart')}</p>
       </div>
     )
@@ -31,7 +31,7 @@ export default function AxisProjectionPanel({ satResult, currentStep }: AxisProj
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl p-4 space-y-3">
+    <div className="bg-subtle rounded-xl p-4 space-y-3">
       <h3 className="text-sm font-semibold text-body">
         {t('projection.title')}
       </h3>

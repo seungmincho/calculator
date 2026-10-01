@@ -435,7 +435,7 @@ export default function MemoryGame() {
           {/* Start button */}
           <button
             onClick={startGame}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 text-lg font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl active:scale-[0.98]"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 text-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-[0.98]"
           >
             {t('startGame')}
           </button>
@@ -569,7 +569,7 @@ export default function MemoryGame() {
             <div className="flex gap-3">
               <button
                 onClick={startGame}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-[0.98]"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold transition-all duration-200 active:scale-[0.98]"
               >
                 {t('playAgain')}
               </button>

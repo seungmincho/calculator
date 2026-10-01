@@ -490,7 +490,7 @@ export default function YouthRentSubsidyCalculator() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={calculate}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-emerald-700 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
               >
                 <ShieldCheck className="w-5 h-5" />
                 {t('checkButton')}

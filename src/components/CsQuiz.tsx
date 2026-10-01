@@ -367,7 +367,7 @@ export default function CsQuiz() {
           <button
             onClick={startQuiz}
             disabled={!selectedCategory || !selectedDifficulty || questionCount === 0}
-            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-lg"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-all text-lg"
           >
             {t('startQuiz')} {questionCount > 0 && `(${questionCount}${t('questionsUnit')})`}
           </button>
@@ -513,7 +513,7 @@ export default function CsQuiz() {
             {isLast ? (
               <button
                 onClick={showResults}
-                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700 transition-all"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 text-sm font-medium transition-all"
               >
                 {t('showResult')}
               </button>
@@ -656,7 +656,7 @@ export default function CsQuiz() {
           </button>
           <button
             onClick={shareResult}
-            className="flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-all"
           >
             {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
             {copied ? t('copied') : t('share')}

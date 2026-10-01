@@ -187,7 +187,7 @@ export default function DiceRoller() {
               <button
                 onClick={roll}
                 disabled={isRolling}
-                className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all text-lg"
+                className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-semibold disabled:opacity-60 disabled:cursor-not-allowed transition-all text-lg"
               >
                 {isRolling ? t('rolling') : t('rollButton')} {diceCount}D{sides}
               </button>

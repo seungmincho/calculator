@@ -230,7 +230,7 @@ export default function Notepad() {
             {/* New Note Button */}
             <button
               onClick={createNote}
-              className="w-full px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
+              className="w-full px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
               {t('newNote')}

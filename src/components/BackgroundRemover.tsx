@@ -340,7 +340,7 @@ export default function BackgroundRemover() {
               {hasResult && (
                 <button
                   onClick={handleDownload}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm hover:from-green-700 hover:to-emerald-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors"
                 >
                   <Download className="h-4 w-4" />
                   {t('download')}

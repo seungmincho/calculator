@@ -797,7 +797,7 @@ export default function ApiTester() {
             <button
               onClick={sendRequest}
               disabled={!url.trim()}
-              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
             >
               <Send size={16} />
               {t('send')}

@@ -516,7 +516,7 @@ export default function MahjongSolitaire() {
             </button>
             <button
               onClick={initGame}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
               title={t('newGame')}
             >
               <RotateCw className="w-4 h-4" />
@@ -622,7 +622,7 @@ export default function MahjongSolitaire() {
           )}
           <button
             onClick={initGame}
-            className="mt-2 px-6 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
+            className="mt-2 px-6 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium"
           >
             {t('playAgain')}
           </button>
@@ -650,7 +650,7 @@ export default function MahjongSolitaire() {
             </button>
             <button
               onClick={initGame}
-              className="px-5 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
+              className="px-5 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium"
             >
               {t('newGame')}
             </button>

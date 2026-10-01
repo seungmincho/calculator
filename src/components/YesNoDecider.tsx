@@ -181,7 +181,7 @@ export default function YesNoDecider() {
               <button
                 onClick={askQuestion}
                 disabled={!question.trim() || isAsking}
-                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {isAsking ? t('asking') : t('askButton')}
               </button>

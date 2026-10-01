@@ -517,7 +517,7 @@ export default function BudgetCalculator() {
               />
               <button
                 onClick={handleSavePreset}
-                className="flex items-center gap-1 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-1 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 <Save className="w-4 h-4" />
                 {t('actions.save')}

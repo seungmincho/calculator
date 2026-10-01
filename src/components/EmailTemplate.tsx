@@ -772,7 +772,7 @@ export default function EmailTemplate() {
             <div className="flex flex-wrap gap-3 mt-4">
               <button
                 onClick={() => copyToClipboard(fullEmail, 'full')}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all text-sm"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-all text-sm"
               >
                 {copiedId === 'full' ? (
                   <Check className="w-4 h-4" />

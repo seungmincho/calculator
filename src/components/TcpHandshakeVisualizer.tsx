@@ -525,7 +525,7 @@ export default function TcpHandshakeVisualizer() {
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
               >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 {isPlaying ? '일시정지' : '자동 재생'}

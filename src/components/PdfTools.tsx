@@ -526,7 +526,7 @@ export default function PdfTools() {
           <button
             onClick={mergePdfs}
             disabled={status.type === 'processing'}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {status.type === 'processing' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -637,7 +637,7 @@ export default function PdfTools() {
               <button
                 onClick={splitPdf}
                 disabled={status.type === 'processing'}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -734,7 +734,7 @@ export default function PdfTools() {
               <button
                 onClick={savePdfWithRotation}
                 disabled={status.type === 'processing'}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -848,7 +848,7 @@ export default function PdfTools() {
               <button
                 onClick={convertImagesToPdf}
                 disabled={status.type === 'processing'}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

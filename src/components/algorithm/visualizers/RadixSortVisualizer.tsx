@@ -234,14 +234,14 @@ export default function RadixSortVisualizer() {
               <button
                 onClick={handleRandom}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
               >
                 🎲 {t('controls.random')}
               </button>
               <button
                 onClick={handleSameDigits}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-orange-600 hover:to-red-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
               >
                 🔢 {t('controls.sameDigits')}
               </button>

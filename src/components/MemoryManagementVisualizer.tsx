@@ -486,13 +486,13 @@ export default function MemoryManagementVisualizer() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => { setCompareMode(false); runSimulation() }}
-            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2.5 font-medium transition-colors text-sm"
           >
             실행
           </button>
           <button
             onClick={() => { setCompareMode(true); setTimeout(runSimulation, 0) }}
-            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-emerald-700 hover:to-teal-700 transition-colors text-sm"
+            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-colors text-sm"
           >
             <BarChart3 className="w-4 h-4" />
             4개 비교

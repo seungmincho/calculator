@@ -1063,7 +1063,7 @@ export default function PomodoroTimer() {
               </button>
               <button
                 onClick={handleSaveSettings}
-                className="flex-1 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium hover:from-red-600 hover:to-rose-700"
+                className="flex-1 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium"
               >
                 {t('save')}
               </button>

@@ -897,7 +897,7 @@ export default function MyChart() {
                 <div className="flex flex-wrap gap-3 mt-4">
                   <button
                     onClick={handleExportPNG}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
                   >
                     <Image className="w-4 h-4" />
                     {t('export.png')}

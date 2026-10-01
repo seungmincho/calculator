@@ -378,7 +378,7 @@ export default function OvulationCalculator() {
         <div className="flex gap-3">
           <button
             onClick={handleCalculate}
-            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-purple-600 transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             {t('calculate')}

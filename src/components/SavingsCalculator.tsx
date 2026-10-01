@@ -926,13 +926,13 @@ const SavingsCalculatorContent = () => {
         <h2 className="text-2xl font-semibold mb-6 text-fg">적금 상품 안내</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <div className="border-l-4 border-blue-500 pl-4">
+            <div>
               <h3 className="font-semibold text-fg">정기적금</h3>
               <p className="text-sm text-sub">
                 매월 일정한 금액을 납입하는 가장 기본적인 적금 상품
               </p>
             </div>
-            <div className="border-l-4 border-green-500 pl-4">
+            <div>
               <h3 className="font-semibold text-fg">자유적금</h3>
               <p className="text-sm text-sub">
                 납입금액과 횟수를 자유롭게 조절할 수 있는 유연한 적금 상품
@@ -940,13 +940,13 @@ const SavingsCalculatorContent = () => {
             </div>
           </div>
           <div className="space-y-4">
-            <div className="border-l-4 border-purple-500 pl-4">
+            <div>
               <h3 className="font-semibold text-fg">목표적금</h3>
               <p className="text-sm text-sub">
                 목표 금액을 설정하고 이를 달성하기 위한 월 납입액을 계산
               </p>
             </div>
-            <div className="border-l-4 border-orange-500 pl-4">
+            <div>
               <h3 className="font-semibold text-fg">복리적금</h3>
               <p className="text-sm text-sub">
                 매월 이자가 원금에 더해져 복리 효과를 누리는 적금 상품

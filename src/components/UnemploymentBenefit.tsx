@@ -362,7 +362,7 @@ export default function UnemploymentBenefit() {
               <button
                 onClick={handleCalculate}
                 disabled={!avgDailyWageStr || isVoluntary}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {t('form.calculate')}
               </button>

@@ -914,7 +914,7 @@ export default function SnakeGame() {
                   <p className="text-sm text-gray-200 max-w-xs">{t('startHint')}</p>
                   <button
                     onClick={startGame}
-                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-3 font-bold text-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-3 font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     {t('startGame')}
                   </button>
@@ -930,7 +930,7 @@ export default function SnakeGame() {
                   <h2 className="text-2xl font-bold text-white">{t('paused')}</h2>
                   <button
                     onClick={togglePause}
-                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium hover:from-blue-600 hover:to-indigo-700 transition-all"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium transition-all"
                   >
                     {t('resume')}
                   </button>
@@ -958,7 +958,7 @@ export default function SnakeGame() {
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={startGame}
-                      className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium hover:from-green-600 hover:to-emerald-700 transition-all"
+                      className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium transition-all"
                     >
                       {t('playAgain')}
                     </button>

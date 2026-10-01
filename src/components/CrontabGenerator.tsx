@@ -499,7 +499,7 @@ export default function CrontabGenerator() {
           </div>
           <button
             onClick={copyToClipboard}
-            className="flex items-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shrink-0"
+            className="flex items-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all shrink-0"
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {copied ? '복사됨!' : '복사'}

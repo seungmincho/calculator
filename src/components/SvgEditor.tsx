@@ -719,7 +719,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleOptimize}
                 disabled={!svgCode.trim()}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Minimize2 className="w-4 h-4 inline mr-2" />
                 {t('optimize')}
@@ -913,7 +913,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleExport}
                 disabled={!isValidSvg}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Download className="w-4 h-4 inline mr-2" />
                 {t('download')} {exportFormat.toUpperCase()}
@@ -995,7 +995,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleColorReplace}
                 disabled={!findColor.trim() || !isValidSvg}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Replace className="w-4 h-4 inline mr-2" />
                 {t('replaceAll')}

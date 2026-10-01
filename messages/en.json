@@ -761,8 +761,94 @@
     }
   },
   "retirement": {
+    "rc": {
+      "subtitle": "Enter your start date, retirement date and pay for the last 3 months to get statutory severance, retirement income tax (2023+ rules) and your take-home amount.",
+      "won": " KRW",
+      "period": "{y} yr {m} mo of service ({d} days)",
+      "historyItem": "Net severance {net} KRW ({y} yr {m} mo)",
+      "in": {
+        "start": "Start date",
+        "end": "Retirement date",
+        "endHint": "The retirement date is the day after your last working day. If you worked through Sep 30, enter Oct 1.",
+        "pay": "Average monthly pay (gross)",
+        "payHint": "Monthly average of base pay and fixed allowances over the last 3 months, including regular meal or transport allowances.",
+        "bonus": "Annual bonus",
+        "bonusHint": "Total bonuses paid in the year before retirement. 3/12 of it is added to the average wage.",
+        "leave": "Unused leave pay",
+        "leaveHint": "Unused annual-leave pay that became payable in the year before retirement. 3/12 is added; leave pay arising only because you retire is excluded."
+      },
+      "invalid": "Check the dates. The retirement date must be after the start date.",
+      "hero": {
+        "label": "Net severance pay",
+        "sub": "Gross {pay} KRW − tax {tax} KRW",
+        "eff": "Effective rate {rate}%"
+      },
+      "save": "Save",
+      "saved": "Saved",
+      "underOneYear": "Continuous service is under 1 year, so statutory severance does not apply (Employee Retirement Benefit Security Act, Art. 4). You may still receive it if your company rules or contract provide for it.",
+      "share": {
+        "label": "{y} yr {m} mo of service · net severance",
+        "text": "My net severance pay is {net} KRW"
+      },
+      "row": {
+        "pay": "Gross severance",
+        "totalTax": "Retirement income tax + local tax",
+        "daily": "Average daily wage",
+        "irp": "Tax if taken as IRP pension"
+      },
+      "pay": {
+        "title": "Severance breakdown",
+        "formula": "Severance = average daily wage × 30 days × days of service ÷ 365 (Employee Retirement Benefit Security Act, Art. 8)",
+        "periodRange": "Average-wage period {from} – {to}",
+        "wages3m": "3-month wage total",
+        "base": "Monthly pay × 3",
+        "bonusAdd": "Bonus × 3/12",
+        "leaveAdd": "Leave pay × 3/12",
+        "daily": "Average daily wage (wage total ÷ days in period)",
+        "days": "Days of service"
+      },
+      "days": "{n} days",
+      "tax": {
+        "title": "Retirement income tax",
+        "basis": "Rules for retirements on or after Jan 1, 2023 (Income Tax Act Arts. 48, 55). No changes as of 2026.",
+        "years": "Years of service (partial year counts as 1)",
+        "yearsValue": "{n} yr",
+        "serviceDed": "Service-years deduction",
+        "converted": "Converted pay (severance − deduction) × 12 ÷ years",
+        "convertedDed": "Converted-pay deduction",
+        "base": "Tax base",
+        "convertedTax": "Converted tax (basic rates 6–45%)",
+        "tax": "Retirement income tax (converted tax ÷ 12 × {n})",
+        "local": "Local income tax (10%)"
+      },
+      "irp": {
+        "title": "If you move it to an IRP and draw a pension",
+        "desc": "Severance paid into an IRP (individual retirement pension) is transferred without withholding the retirement income tax (tax deferral). Drawing it later as a pension cuts that tax by 30–40%.",
+        "lump": "Lump sum",
+        "to10": "Pension years 1–10",
+        "from11": "Pension year 11+",
+        "saving": "Save {n} KRW",
+        "note": "Pension tax = deferred retirement tax × 70% (up to the 10th year actually drawn) or 60% (from year 11) (Income Tax Act Art. 129). Withdrawals above the annual pension limit or early withdrawals are taxed at the original retirement tax. Retiring before age 55 generally requires transfer to an IRP."
+      },
+      "next": {
+        "title": "What to check next",
+        "dc": {
+          "title": "DB vs DC pension",
+          "desc": "Severance by years of service and IRP guide"
+        },
+        "unemployment": {
+          "title": "Unemployment benefit",
+          "desc": "Check benefits if you were laid off or your contract ended"
+        },
+        "pension": {
+          "title": "National pension estimate",
+          "desc": "Plan retirement income alongside your severance"
+        }
+      },
+      "disclaimer": "This is an estimate based on statutory severance. Actual amounts vary with company rules, DB/DC pension plans, prior interim settlements and executive severance limits. Confirm with your HR team or the Hometax retirement income tax calculator."
+    },
     "title": "Retirement Pay Calculator",
-    "description": "Calculate retirement pay and retirement income tax based on Korean labor law.",
+    "description": "Calculate statutory severance pay, retirement income tax under the 2023+ rules and your take-home amount.",
     "input": {
       "averageWage": "Average Monthly Wage",
       "workPeriod": "Work Period",
@@ -778,28 +864,40 @@
       "netRetirementPay": "Net Retirement Pay"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it is calculated",
+        "items": [
+          "Average-wage period: the calendar days in the 3 months before the retirement date (89–92 days). Retiring on Oct 1 means Jul 1 – Sep 30, 92 days.",
+          "Average daily wage = (3-month wages + annual bonus × 3/12 + leave pay × 3/12) ÷ days in the period. If this is below the ordinary wage, the ordinary wage is used (Labor Standards Act Art. 2(2)).",
+          "Severance = average daily wage × 30 days × days of service ÷ 365. Days beyond full years are prorated.",
+          "Retirement tax: subtract the service-years deduction, multiply by 12 and divide by years of service to get converted pay. Apply basic rates (6–45%) to converted pay minus the converted-pay deduction, then divide by 12 and multiply by years of service.",
+          "Service-years deduction (2023+): up to 5 yrs 1M × years; up to 10 yrs 5M + 2M × (years−5); up to 20 yrs 15M + 2.5M × (years−10); over 20 yrs 40M + 3M × (years−20) KRW.",
+          "Converted-pay deduction: up to 8M in full; up to 70M 8M + 60% of excess; up to 100M 45.2M + 55%; up to 300M 61.7M + 45%; over 300M 151.7M + 35%. Local income tax is 10% of the retirement income tax."
+        ]
+      },
       "title": "Severance Pay Calculator Guide",
       "whatIs": {
         "title": "What is the Severance Pay Calculator?",
-        "description": "A calculator that accurately computes severance pay, retirement income tax, and net take-home amount per Korean Labor Standards Act. It uses the 3-month average wage and years of service to compute statutory severance, then applies the retirement income deduction and annual-division method."
+        "description": "Uses your start date, retirement date and pay for the last 3 months to compute statutory severance, then subtracts retirement income tax (service-years and converted-pay deductions, 2023+ rules) and local tax to show your net amount. It also shows how much tax you save by moving the money to an IRP and drawing a pension."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your employment start date and retirement date (or years of service).",
-          "2. Enter your average monthly wage for the 3 months preceding retirement.",
-          "3. Click 'Calculate' — severance pay, tax, and net amount are computed automatically.",
-          "4. Review the step-by-step deduction breakdown on the results screen."
+          "1. Pick your start date and retirement date (the day after your last working day).",
+          "2. Enter your average monthly pay over the last 3 months (gross base pay + fixed allowances).",
+          "3. Add bonuses and unused leave pay from the past year, if any. Only 3/12 of each goes into the average wage.",
+          "4. Review net severance, the severance breakdown and each step of the tax calculation.",
+          "5. Share or save the result; the link reopens with the same inputs."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "Severance = daily average wage × 30 × years of service. Under 1 year is prorated monthly.",
-          "Receiving severance as an annuity grants an additional 30% deduction on retirement income tax.",
-          "Employees with 10+ years can use mid-career settlement to reduce the overall tax burden.",
-          "Transferring to an IRP keeps investment earnings tax-free with greater tax benefits after age 55.",
-          "With DC-type pensions, 1/12 of annual salary is deposited yearly — benefits grow with pay raises."
+          "Severance must be paid within 14 days of retirement unless both parties agree to extend it (Employee Retirement Benefit Security Act Art. 9).",
+          "Partial years count as a full year for tax, so 5 years and 1 day is treated as 6 years, which increases the deduction.",
+          "Periods such as business suspension, parental leave or probation within the last 3 months are excluded along with their pay (Enforcement Decree of the Labor Standards Act Art. 2), so actual severance can be higher than this estimate.",
+          "Drawing IRP severance as a pension after age 55 cuts the retirement tax by 30% (40% from year 11).",
+          "Under a DC pension plan the employer contributes at least 1/12 of annual pay and the result depends on investment returns, so it can differ from statutory severance."
         ]
       },
       "faq": {
@@ -807,19 +905,27 @@
         "items": [
           {
             "q": "How long must I work to get severance?",
-            "a": "Employers must pay severance to employees who have worked continuously for at least 1 year averaging 15+ hours per week."
+            "a": "At least 1 year of continuous service averaging 15+ contractual hours per week over 4 weeks, regardless of full-time, contract or part-time status (Employee Retirement Benefit Security Act Art. 4)."
           },
           {
-            "q": "What is the annual-division method?",
-            "a": "The taxable base is divided by 12, tax rate applied, then multiplied by 12. This prevents disproportionately high tax on lump-sum payments."
+            "q": "Is the retirement date my last working day?",
+            "a": "No. It is the day employment ends, usually the day after your last working day. If you worked through Sep 30, the retirement date is Oct 1 and the average-wage period is Jul 1 – Sep 30."
           },
           {
-            "q": "Severance pay vs DB/DC pensions?",
-            "a": "Traditional severance is funded by the employer directly. DB pensions are managed by financial institutions. DC pensions deposit 1/12 of annual salary into an employee-controlled account."
+            "q": "How is retirement income tax calculated?",
+            "a": "Subtract the service-years deduction from severance, multiply by 12 and divide by years of service to get converted pay, then subtract the converted-pay deduction for the tax base. Apply basic rates, divide by 12 and multiply by years of service; local tax adds 10%. The 2023 reform greatly raised the service-years deduction."
           },
           {
-            "q": "How much retirement income tax should I expect?",
-            "a": "Tax is calculated by deducting the retirement income deduction then applying the annual-division method. Longer tenure means higher deductions and lower effective rates."
+            "q": "Are bonuses and leave pay included?",
+            "a": "Yes. 3/12 of bonuses paid in the past year and 3/12 of unused leave pay that became payable in that year are added to the 3-month wages. Leave pay that arises only because you retire is excluded."
+          },
+          {
+            "q": "What happens to tax if I take it via an IRP?",
+            "a": "The full amount moves to the IRP without withholding (tax deferral). Drawn as a pension after 55, you pay 70% of the original tax (60% from year 11); lump-sum withdrawals pay the original retirement tax."
+          },
+          {
+            "q": "Can I get an interim severance settlement?",
+            "a": "Generally no, except for statutory reasons such as buying a first home or paying a lease deposit, 6+ months of medical care for yourself or family, bankruptcy or rehabilitation, or a wage-peak system (Enforcement Decree Art. 3)."
           }
         ]
       }
@@ -9367,9 +9473,73 @@
     }
   },
   "emojiPicker": {
+    "tabs": {
+      "emoji": "Emoji",
+      "chars": "Symbols",
+      "kaomoji": "Kaomoji"
+    },
+    "charGroups": {
+      "popular": "Popular",
+      "shapes": "Shapes",
+      "arrows": "Arrows",
+      "check": "Check",
+      "circled": "Circled",
+      "brackets": "Brackets",
+      "punct": "Punctuation",
+      "math": "Math",
+      "units": "Units & currency",
+      "numbers": "Numbers & fractions",
+      "lines": "Box drawing",
+      "greek": "Greek"
+    },
+    "kaomojiGroups": {
+      "korean": "Korean & text",
+      "happy": "Happy",
+      "love": "Love",
+      "sad": "Sad",
+      "angry": "Angry",
+      "surprise": "Surprised",
+      "greet": "Greeting",
+      "etc": "Shrug & more",
+      "animals": "Animals"
+    },
+    "skinTone": "Skin tone",
+    "skinTones": [
+      "Default",
+      "Light",
+      "Medium-light",
+      "Medium",
+      "Medium-dark",
+      "Dark"
+    ],
+    "mode": {
+      "label": "On tap",
+      "copy": "Copy now",
+      "collect": "Collect"
+    },
+    "tray": {
+      "label": "Collected characters",
+      "placeholder": "Tapped emojis pile up here",
+      "copyAll": "Copy all",
+      "clear": "Clear",
+      "copiedAll": "{n} characters copied"
+    },
+    "detail": {
+      "title": "Selected",
+      "unicode": "Unicode",
+      "html": "HTML",
+      "js": "JS",
+      "copy": "Copy"
+    },
+    "count": "{n}",
+    "added": "Added",
+    "typoFixed": "Showing results for '{to}' (typed '{from}' with the Korean keyboard off)",
+    "clearSearch": "Clear search",
+    "clearRecent": "Clear",
+    "imeHint": "Korean IME: type {key} then press the Hanja key to get these",
     "title": "Emoji Picker",
-    "description": "Search and copy emojis with a single click",
-    "searchPlaceholder": "Search emojis...",
+    "description": "Search emojis, symbols and kaomoji, then copy with one tap",
+    "searchPlaceholder": "heart, smile, party, star, arrow…",
     "categories": {
       "all": "All",
       "smileys": "Smileys",
@@ -9383,7 +9553,7 @@
       "flags": "Flags"
     },
     "copied": "Copied!",
-    "clickToCopy": "Click to copy",
+    "clickToCopy": "Shows the Unicode and HTML code of the character you tapped",
     "recentlyUsed": "Recently Used",
     "noResults": "No results found",
     "totalEmojis": "emojis",
@@ -9392,37 +9562,39 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Click an emoji to automatically copy it to clipboard",
-          "Search by keyword in English",
-          "Use category tabs to quickly find what you need"
+          "Type a keyword (heart, party, cry) to search emojis, symbols and kaomoji at once. Korean keywords work too",
+          "Tap an item to copy it. To build a string, switch to 'Collect', tap several items, then press 'Copy all'",
+          "Pick a skin tone and person/hand emojis are copied in that tone",
+          "The Symbols tab is grouped like the Korean IME consonant + Hanja key lists",
+          "The 'Selected' panel shows the Unicode code points and HTML entity with copy buttons"
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Recently used emojis appear at the top",
-          "Paste copied emojis into messages, notes, social media, etc.",
-          "Emoji appearance may vary across different OS and devices"
+          "Recently used items stay at the top so you never search twice",
+          "Share a link with ?q=heart to open the same search",
+          "Emoji designs differ by OS and device; older devices may show an empty box (□)"
         ]
       },
       "whatIs": {
         "title": "What is the Emoji Picker?",
-        "description": "A tool to quickly find any of thousands of Unicode emojis by browsing categories or searching by keyword, then copy them to your clipboard with a single click. Perfect for crafting social media posts, messages, or documents without having to open your keyboard's emoji panel."
+        "description": "Find about 650 popular emojis, symbols (★ ♥ → ① ℃ ㎡ ₩) and kaomoji (¯\\_(ツ)_/¯) in one place and copy them with a single tap. Includes skin tones, a collect-and-copy tray, and Unicode/HTML codes for each character."
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
             "q": "Can I search in both Korean and English?",
-            "a": "Yes. Keywords like '웃음', '하트' in Korean and 'smile', 'heart' in English both work. Matches are made against emoji names and tags."
+            "a": "Yes. Korean ('하트'), English ('heart') and Korean initial consonants ('ㅎㅌ') all work. You can also paste an emoji to see its code points."
           },
           {
             "q": "Why do some copied emojis look different or broken in other apps?",
-            "a": "While emojis follow the Unicode standard, each platform (Apple, Google, Samsung, etc.) renders them differently. Older devices may not support newer emoji codepoints and display an empty box (□) instead."
+            "a": "Emojis follow the Unicode standard, but Apple, Google, Samsung and Microsoft draw them differently. If the receiving OS or app does not support an emoji, it may show an empty box (□) or a separate skin-tone swatch."
           },
           {
-            "q": "Are the latest emojis (e.g., Emoji 15.0) included?",
-            "a": "We include emoji data based on the latest Unicode standard available. However, whether an emoji displays correctly depends on your browser and OS support. Chrome on Windows 11 / macOS Ventura or later offers the best coverage."
+            "q": "How do I type symbols from the keyboard?",
+            "a": "On Windows with the Korean IME, type a consonant (ㅁ, ㅇ, ㄴ…) and press the Hanja key to get a symbol list: ㅁ for shapes (★♥※), ㅇ for circled characters (①㉠), ㄹ for units (℃㎡₩), ㄴ for brackets (「」【】)."
           }
         ]
       }
@@ -16370,11 +16542,50 @@
     }
   },
   "imageOcr": {
+    "privacy": "Images never leave your device — everything is processed in your browser.",
+    "camera": "Take a photo",
+    "queue": "{n} image(s)",
+    "remove": "Remove image",
+    "prep": {
+      "title": "Image enhancement",
+      "off": "Off",
+      "gray": "Grayscale",
+      "binary": "Black & white",
+      "offHint": "Recognizes the original image as is. Use only if enhancement makes results worse.",
+      "grayHint": "Grayscale + contrast boost, 2x upscale for small images, auto-invert dark backgrounds. Recommended for most images.",
+      "binaryHint": "Splits text and background into pure black and white (Otsu). Great for scans and screenshots; may struggle with shadowed photos."
+    },
+    "cleanup": {
+      "title": "Text cleanup",
+      "fixKoreanSpaces": "Remove spurious spaces between Korean syllables (e.g. 대 한 민 국 → 대한민국)",
+      "joinLines": "Join line breaks within paragraphs (better for pasting)"
+    },
+    "rerun": "Recognize again",
+    "rerunAll": "Recognize all again",
+    "rerunHint": "Recognition starts as soon as you add an image. After changing language, enhancement or rotation, press Recognize again.",
+    "stages": {
+      "init": "Preparing",
+      "download": "Loading language data",
+      "recognize": "Recognizing text"
+    },
+    "imageOf": "image {n}/{total}",
+    "modelNote": "Language data (a few MB per language) is downloaded only the first time, then cached in your browser for instant starts.",
+    "view": {
+      "prepared": "Enhanced",
+      "original": "Original"
+    },
+    "previewAlt": "Preview of the image to recognize",
+    "staleHint": "Settings changed since this result. Press Recognize again to update it.",
+    "copyAll": "Copy all",
+    "avgConfidence": "Average confidence",
+    "lowCount": "{n} word(s) to review",
+    "lowWordsHint": "Low-confidence words. Compare them with the yellow boxes on the image and fix as needed.",
+    "error": "Recognition failed. Try another image or change the enhancement option.",
     "title": "Image OCR",
     "description": "Extract text from images automatically. Supports Korean, English, Japanese, and Chinese.",
     "upload": "Upload Image",
-    "uploadDragDrop": "Drag & drop or click to upload",
-    "pasteHint": "Paste from clipboard with Ctrl+V",
+    "uploadDragDrop": "Drag & drop or click to upload (multiple allowed)",
+    "pasteHint": "Paste a screenshot with Ctrl+V · drop anywhere on the page",
     "language": "Recognition Language",
     "languages": {
       "kor": "Korean",
@@ -16394,7 +16605,7 @@
     "copied": "Copied!",
     "download": "Download",
     "downloadTxt": "Download TXT",
-    "showConfidence": "Show Confidence",
+    "showConfidence": "Highlight low confidence",
     "confidence": "Confidence",
     "noImage": "Please upload an image first",
     "noResult": "No text recognized",
@@ -16404,20 +16615,22 @@
       "features": {
         "title": "Features",
         "items": [
-          "Korean, English, Japanese, and Chinese text recognition",
-          "Select multiple languages for mixed-language documents",
-          "Paste images directly from clipboard (Ctrl+V)",
-          "Edit, copy, or download recognized text as TXT",
-          "Word-level confidence score display"
+          "Korean, English, Japanese and Chinese (Simplified/Traditional), multiple languages at once",
+          "Automatic pre-processing: grayscale, contrast boost, 2x upscale for small text, auto-invert dark-mode screenshots",
+          "Cleans up spurious spaces between Korean syllables; optional line joining",
+          "Batch processing of multiple images, copy all and TXT download",
+          "Low-confidence words highlighted on the image for quick review",
+          "Runs entirely in your browser — images are never uploaded"
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Higher resolution and clearer images yield better results",
-          "Great for scanned documents, receipts, and business cards",
-          "Select all relevant languages for mixed-language documents",
-          "First run may take time to download language data"
+          "For small text, zoom in before taking the screenshot. Accuracy improves greatly with text 20px or taller.",
+          "Use 'Black & white' for screenshots and scans, 'Grayscale' for photos with shadows.",
+          "Crop out unrelated areas (menus, ads) before uploading for better accuracy.",
+          "Select only the languages you need — extra languages can increase misrecognition.",
+          "The first run downloads language data; later runs start instantly."
         ]
       },
       "guide": {
@@ -16459,26 +16672,34 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Upload the image containing text or drag and drop it.",
-          "2. Select the language(s) to recognize (Korean, English, Japanese, Chinese, etc.).",
-          "3. If the image is rotated, use the rotation option to correct it.",
-          "4. Click the Extract Text button, wait for processing, then copy the extracted text."
+          "Upload images or paste a screenshot with Ctrl+V. On mobile, you can take a photo directly.",
+          "Recognition (Korean + English) starts right away. Multiple images are processed in order.",
+          "Fix tilted images with the rotate buttons; if accuracy is low, change the enhancement mode and recognize again.",
+          "Review the low-confidence words marked with yellow boxes, then copy or save as TXT."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "How can I improve recognition accuracy?",
-            "a": "Higher resolution (300 dpi or more recommended) and strong contrast between text and background improves accuracy significantly. Fix blurry or tilted images before processing."
+            "q": "How can I improve accuracy?",
+            "a": "Larger, sharper text with strong contrast works best. Rotate tilted images, and try a different enhancement mode. Printed sans-serif fonts are recognized most reliably."
+          },
+          {
+            "q": "Why are there odd spaces between Korean characters?",
+            "a": "The OCR engine (Tesseract) often inserts spaces between Korean syllables. Enable 'Remove spurious spaces between Korean syllables' to join them automatically."
+          },
+          {
+            "q": "Are my images uploaded to a server?",
+            "a": "No. Recognition runs in your browser and neither images nor results are uploaded. The network is used only to download language data the first time."
           },
           {
             "q": "Can it recognize handwriting?",
-            "a": "Clean, consistent handwriting can be recognized to some extent, though accuracy is lower than for printed text. Complex handwriting may yield poor results."
+            "a": "Accuracy is lower than for printed text. Neat handwriting may work, but always review the result for cursive writing."
           },
           {
-            "q": "Why is processing slow?",
-            "a": "OCR is computationally intensive. The first run requires downloading the language model, which takes time. Subsequent runs are faster."
+            "q": "Why is the first run slow?",
+            "a": "The first time, recognition data for the selected languages (a few MB each) must be downloaded. It is then cached in your browser, so later runs start instantly."
           }
         ]
       }
@@ -23258,16 +23479,65 @@
     }
   },
   "imageCompressor": {
+    "privacyNote": "Photos never leave your device — everything is processed locally. Saved files have EXIF metadata such as GPS location and camera info removed.",
+    "skippedFiles": "{n} file(s) were skipped (not an image or over 50MB).",
+    "presetsTitle": "Quick presets",
+    "preset": {
+      "doc": "Documents",
+      "docDesc": "Under 500KB · JPG",
+      "mail": "Email·Forums",
+      "mailDesc": "Under 1MB · JPG",
+      "blog": "Blog·Shop",
+      "blogDesc": "1920px · 80% quality",
+      "sns": "Messenger·SNS",
+      "snsDesc": "1080px · 85% quality"
+    },
+    "modeTitle": "Compression mode",
+    "modeQuality": "By quality",
+    "modeTarget": "Target file size",
+    "targetTitle": "Keep under",
+    "targetCustom": "Custom",
+    "targetHint": "Automatically finds the highest quality that fits, and reduces resolution if it still doesn't. 1KB is counted as 1,000 bytes so the file passes any site's limit.",
+    "formatHint": {
+      "original": "Keeps the original format. HEIC, GIF, BMP, etc. are saved as JPG.",
+      "jpeg": "Best compatibility — accepted almost everywhere.",
+      "webp": "25–35% smaller than JPG, but some sites don't accept it.",
+      "avif": "Smallest files, but few sites and apps support it.",
+      "png": "Lossless — quality doesn't apply and photos may get larger."
+    },
+    "avifUnsupported": "This browser can't save AVIF.",
+    "pngHint": "PNG is lossless, so it barely shrinks. For photos, choose JPG or WebP.",
+    "maxSideTitle": "Max size (long edge)",
+    "sideOriginal": "Original",
+    "sideCustom": "Custom",
+    "maxSideHint": "Scales the longer side down, keeping the aspect ratio. Small images are never enlarged.",
+    "heroLabel": "{n} image(s) compressed",
+    "heroTarget": "Under {kb}: {ok}/{n}",
+    "downloadZip": "Download all as ZIP ({n})",
+    "targetMissed": "{n} image(s) couldn't reach the target size and were saved at the smallest possible size. Try a larger target or WebP.",
+    "compareTitle": "Before / after",
+    "before": "Original",
+    "after": "Compressed",
+    "compareHint": "Drag the slider to compare quality. Tap another photo in the list to switch.",
+    "emptyHint": "Add photos and they're compressed right away. Add many at once, or paste with Ctrl+V.",
+    "listTitle": "{n} photo(s)",
+    "qualityUsed": "Quality {q}%",
+    "rowMissed": "Target not reached — saved at the smallest size",
+    "rowLarger": "Larger than the original. Lower the quality or choose JPG/WebP.",
+    "errHeic": "This browser can't open HEIC (iPhone photos). Open this page in Safari, or set iPhone Settings > Camera > Formats > Most Compatible.",
+    "errFormat": "This browser can't save in the selected format. Choose another output format.",
+    "errDecode": "Couldn't open this image. The file may be damaged or unsupported.",
+    "waiting": "Waiting",
     "title": "Image Compressor",
-    "description": "Compress JPG, PNG, WebP images. Adjust quality, convert formats, and batch process multiple files.",
-    "dropzone": "Drag images or click to upload",
-    "dropzoneHint": "JPG, PNG, WebP supported",
+    "description": "Shrink photos to exactly what you need: hit a target size like 'under 500KB', batch compress with ZIP download, convert to JPG/WebP/AVIF, and downscale — all in your browser.",
+    "dropzone": "Drop photos here or click to choose",
+    "dropzoneHint": "JPG·PNG·WebP·HEIC (Safari) · multiple files · paste with Ctrl+V",
     "maxFileSize": "Max 50MB per file",
     "settings": "Compression Settings",
     "quality": "Quality",
     "qualityLow": "Low (smaller size)",
     "qualityHigh": "High (better quality)",
-    "format": "Output Format",
+    "format": "Output format",
     "formatOriginal": "Keep Original",
     "maxWidth": "Max Width (px)",
     "maxHeight": "Max Height (px)",
@@ -23279,7 +23549,7 @@
     "removeAll": "Remove All",
     "reset": "Reset",
     "processing": "Compressing...",
-    "noImages": "Upload images to get started",
+    "noImages": "No photos yet",
     "formatLabel": "Format",
     "summary": "Summary",
     "totalImages": "Total Images",
@@ -23288,6 +23558,16 @@
     "compressionRatio": "Ratio",
     "savings": "Savings",
     "guide": {
+      "uses": {
+        "title": "Recommended settings",
+        "items": [
+          "Government forms & document uploads: target 200–500KB, JPG",
+          "Email & forums: target 1MB, JPG",
+          "Blogs & online store pages: long edge 1920px, quality 80%",
+          "Messengers & Instagram: long edge 1080px, quality 85%",
+          "Your own website: WebP at 75–80% (lightest)"
+        ]
+      },
       "title": "Image Compression Guide",
       "features": {
         "title": "Features",
@@ -23300,20 +23580,23 @@
         ]
       },
       "formats": {
-        "title": "Format Comparison",
+        "title": "Formats",
         "items": [
-          "JPEG: Best for photos, high compression, no transparency",
-          "PNG: Supports transparency, ideal for logos and icons",
-          "WebP: Next-gen format, 25-35% smaller than JPEG"
+          "JPG: the safe choice for photos, accepted everywhere. Transparency becomes white.",
+          "WebP: 25–35% smaller than JPG. Great for websites, but some sites reject it.",
+          "AVIF: smallest, but limited support and some browsers can't save it.",
+          "PNG: lossless with transparency. For logos and screenshots; photos barely shrink.",
+          "HEIC (iPhone): only Safari can open it. Compressed output is saved as JPG."
         ]
       },
       "tips": {
-        "title": "Compression Tips",
+        "title": "Tips",
         "items": [
-          "70-85% quality is optimal for web images",
-          "Converting PNG to WebP gives significant size savings",
-          "Max width of 1200px is sufficient for social media",
-          "Always keep backup copies of original files"
+          "If there's a size limit, use 'Target file size' — it finds the quality for you.",
+          "Phone photos (4000px+) shrink 70–90% just by limiting the long edge to 1920px.",
+          "Quality 70–85% is hard to tell apart by eye. Check with the before/after slider.",
+          "Compression removes GPS location, so photos of your home don't reveal where you live.",
+          "Lossy compression can't be undone — keep your originals."
         ]
       },
       "guide": {
@@ -23355,26 +23638,34 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Drag and drop image files or click 'Select Files' to upload (multiple files supported).",
-          "2. Adjust the compression quality (0–100%) — around 80% is a good balance of quality and size.",
-          "3. Select the output format (keep original, convert to WebP, etc.).",
-          "4. Click 'Compress', review the before/after results, and download."
+          "1. Drop photos, click to choose, or paste with Ctrl+V (multiple files supported).",
+          "2. Pick a quick preset, or choose 'By quality' / 'Target file size'.",
+          "3. Optionally change the output format and max size (long edge). Changes re-compress instantly.",
+          "4. Check quality with the before/after slider, then save one by one or all as a ZIP."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Is WebP supported in all browsers?",
-            "a": "Most modern browsers support WebP — Chrome, Firefox, Edge, and Safari 14+. IE and some older browsers don't support it. For public websites, consider providing JPG fallbacks."
+            "q": "How do I get a photo under 500KB?",
+            "a": "Choose 'Target file size' → 500KB and add your photo. It finds the highest quality that fits and lowers the resolution step by step if quality alone isn't enough. Keep the output as JPG if the site requires it."
           },
           {
-            "q": "Can I restore the original after compression?",
-            "a": "Lossy compression (JPG, WebP) is irreversible. Always keep a backup of originals before compressing important files."
+            "q": "Are my photos uploaded to a server?",
+            "a": "No. Everything runs inside your browser and nothing is sent anywhere."
           },
           {
-            "q": "Which compresses better: PNG or JPG?",
-            "a": "For photos, JPG/WebP compress much smaller. For images with text, logos, or transparent backgrounds, PNG preserves quality without loss. Choose the right format for your use case."
+            "q": "Is EXIF (location) data removed?",
+            "a": "Yes. The image is redrawn and re-encoded, so GPS location, camera model and capture time are not kept. Orientation is applied from EXIF so the photo stays upright."
+          },
+          {
+            "q": "My iPhone HEIC photo won't open.",
+            "a": "Chrome, Edge and most Android browsers can't open HEIC. Open this page in Safari on your iPhone to compress HEIC straight to JPG, or set Settings > Camera > Formats > Most Compatible."
+          },
+          {
+            "q": "The compressed file got bigger.",
+            "a": "Re-saving an already compressed photo at high quality, or saving a photo as PNG, can increase size. Lower the quality, choose JPG/WebP, or reduce the resolution."
           }
         ]
       }

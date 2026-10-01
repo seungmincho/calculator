@@ -96,7 +96,7 @@ export default function GameLobby({
 
       {/* 실시간 통계 */}
       {stats.total > 0 && (
-        <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 rounded-2xl p-4">
+        <div className="bg-subtle rounded-2xl p-4">
           <div className="flex items-center justify-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <Gamepad2 className="w-4 h-4 text-green-500" />
@@ -201,7 +201,7 @@ export default function GameLobby({
               <button
                 onClick={handleCreateRoom}
                 disabled={!hostName.trim() || isCreating}
-                className="flex-1 py-3 px-6 bg-primary hover:bg-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-xl transition-all disabled:cursor-not-allowed"
+                className="flex-1 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all disabled:cursor-not-allowed"
               >
                 {isCreating ? t('creating') : t('create')}
               </button>

@@ -958,7 +958,7 @@ export default function LadderGame() {
             <button
               onClick={() => generateLadder()}
               disabled={isPlaying}
-              className="w-full bg-primary hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg shadow-green-200 dark:shadow-none"
+              className="w-full bg-primary hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg shadow-green-200 dark:shadow-none"
             >
               <div className="flex items-center justify-center gap-2">
                 <RefreshCw className="w-5 h-5" />
@@ -1191,7 +1191,7 @@ export default function LadderGame() {
                     <button
                       onClick={() => playLadder()}
                       disabled={buttonsDisabled}
-                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
+                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
                     >
                       {isPlaying ? (
                         <><RefreshCw className="w-4 h-4 animate-spin" /><span>{t('playing')}</span></>
@@ -1202,7 +1202,7 @@ export default function LadderGame() {
                     <button
                       onClick={showResultsOnly}
                       disabled={buttonsDisabled}
-                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm hover:from-purple-600 hover:to-indigo-600 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
+                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
                     >
                       <Zap className="w-4 h-4" /><span>{t('showResultsOnly')}</span>
                     </button>

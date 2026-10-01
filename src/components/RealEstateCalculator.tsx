@@ -1016,21 +1016,18 @@ const RealEstateCalculatorContent = () => {
       const taxResult = result as TaxResult;
       
       let titleText = '총 세금';
-      let gradientClass = 'from-purple-500 to-pink-600';
       
       if (activeTab === 'property-tax') {
         titleText = '종합부동산세';
-        gradientClass = 'from-blue-500 to-purple-600';
       } else if (activeTab === 'capital-gains-tax') {
         titleText = '양도소득세';
-        gradientClass = 'from-red-500 to-orange-600';
       } else {
         titleText = '취득세';
       }
 
       return (
         <div className="space-y-6">
-          <div className={`text-center p-6 bg-gradient-to-br ${gradientClass} rounded-xl text-white`}>
+          <div className="text-center p-6 ui-hero">
             <div className="text-sm opacity-90 mb-1">{titleText}</div>
             <div className="text-3xl font-bold">{formatNumber(taxResult.totalTax)}원</div>
             <button

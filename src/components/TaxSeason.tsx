@@ -170,7 +170,7 @@ export default function TaxSeason() {
         <div className="flex flex-wrap justify-center gap-3">
           <Link
             href="/income-tax"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-md hover:shadow-lg"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-all shadow-md hover:shadow-lg"
           >
             <Calculator className="w-4 h-4" />
             {t('hero.ctaPrimary')}

@@ -293,7 +293,7 @@ export default function BloomFilterVisualizer() {
                 <button
                   onClick={handleInsert}
                   disabled={!insertValue.trim()}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40"
+                  className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
                 >
                   {t('insert')}
                 </button>
@@ -310,14 +310,14 @@ export default function BloomFilterVisualizer() {
                 <button
                   onClick={handleCheck}
                   disabled={!checkValue.trim()}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-amber-600 hover:to-orange-600 disabled:opacity-40"
+                  className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
                 >
                   {t('check')}
                 </button>
               </div>
               <button
                 onClick={handleNewFilter}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-purple-600 hover:to-pink-600"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white"
               >
                 {t('controls.newFilter')}
               </button>

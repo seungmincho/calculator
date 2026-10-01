@@ -637,7 +637,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={spin}
                   disabled={isSpinning || rouletteItems.length < 2}
-                  className="w-full max-w-xs bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-bold text-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
+                  className="w-full max-w-xs bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-bold text-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
                 >
                   {isSpinning ? '돌아가는 중...' : '🎡 돌리기!'}
                 </button>
@@ -726,7 +726,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={startOrder}
                   disabled={isShuffling || isRevealing || orderItems.length < 2}
-                  className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow active:scale-95"
                 >
                   <Shuffle size={18} />
                   {isShuffling ? '섞는 중...' : '뽑기!'}

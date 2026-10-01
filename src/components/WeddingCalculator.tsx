@@ -1096,7 +1096,7 @@ export default function WeddingCalculator() {
                   <div className="text-sm opacity-80">{t('dashboard.congratulatoryMoney')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(totalCongratulatoryMoney)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>
-                <div className={`bg-gradient-to-br ${netBurden > 0 ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600'} rounded-xl p-5 text-white`}>
+                <div className="ui-hero p-5">
                   <div className="text-sm opacity-80">{t('dashboard.netBurden')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(netBurden)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>
@@ -1228,7 +1228,7 @@ export default function WeddingCalculator() {
                 </button>
                 <button
                   onClick={handlePdfExport}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
                   <FileDown size={16} />
                   {t('actions.savePdf')}

@@ -308,8 +308,6 @@ export default function GameTimer() {
   return (
     <div className={containerClass}>
       <div className="relative min-h-[600px] w-full max-w-3xl mx-auto">
-        {/* Background gradient blob */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-green-500/10 to-teal-500/20 dark:from-emerald-900/30 dark:via-green-900/20 dark:to-teal-900/30 rounded-3xl" />
 
         {cdFlash && (
           <div className="absolute inset-0 rounded-3xl animate-pulse bg-red-500/30 z-20 pointer-events-none" />

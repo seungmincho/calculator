@@ -601,7 +601,7 @@ export default function CsInterview() {
               {!answerRevealed ? (
                 <button
                   onClick={() => setAnswerRevealed(true)}
-                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
                 >
                   <Eye className="w-5 h-5" />
                   {t('practice.showAnswer')}

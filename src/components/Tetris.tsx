@@ -831,7 +831,7 @@ export default function Tetris() {
                 <p className="text-white text-2xl font-bold">TETRIS</p>
                 <button
                   onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all"
                 >
                   {t('newGame')}
                 </button>
@@ -844,7 +844,7 @@ export default function Tetris() {
                 <p className="text-white text-2xl font-bold">{t('paused')}</p>
                 <button
                   onClick={togglePause}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all flex items-center gap-2"
                 >
                   <Play className="w-4 h-4" />{t('resume')}
                 </button>
@@ -867,7 +867,7 @@ export default function Tetris() {
                 )}
                 <button
                   onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all flex items-center gap-2"
                 >
                   <RotateCcw className="w-4 h-4" />{t('newGame')}
                 </button>

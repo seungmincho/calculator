@@ -199,12 +199,12 @@ export default function CsHub() {
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white shadow-lg shadow-blue-500/25">
                 <GraduationCap className="w-6 h-6" />
               </div>
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 text-sub">
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-primary-soft text-primary">
                 {t('badge')}
               </span>
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
-              <span className="bg-clip-text text-transparent bg-primary dark:via-indigo-400 dark:to-purple-400">
+              <span className="bg-clip-text text-transparent bg-primary">
                 {t('title')}
               </span>
             </h1>
@@ -275,12 +275,11 @@ export default function CsHub() {
                 className={`group relative bg-surface rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl`}
               >
                 {/* Top gradient bar */}
-                <div className={`h-1.5 bg-gradient-to-r ${card.themeGradient}`} />
 
                 <div className="p-6">
                   {/* Icon + Stats */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${card.themeGradient} text-white shadow-md`}>
+                    <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-soft text-body`}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${card.themeBg} ${card.themeAccent}`}>

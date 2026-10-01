@@ -327,7 +327,7 @@ export default function LinkedListVisualizer() {
                 </div>
               )}
               <button onClick={executeOperation}
-                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
                 {t('controls.execute')}
               </button>
             </div>

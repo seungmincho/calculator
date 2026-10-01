@@ -137,7 +137,6 @@ export default function RandomNumberPicker() {
 
   return (
     <div className="relative min-h-[600px]">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-teal-500/20 dark:from-cyan-900/30 dark:via-blue-900/20 dark:to-teal-900/30 rounded-3xl" />
       <div className="relative z-10 p-4 sm:p-6 space-y-6">
 
         {/* Title */}

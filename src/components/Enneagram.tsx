@@ -460,7 +460,7 @@ export default function Enneagram() {
         <div className="text-center">
           <button
             onClick={() => setPhase('test')}
-            className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-4 text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+            className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-4 text-lg font-semibold transition-all shadow-lg hover:shadow-xl"
           >
             테스트 시작하기
           </button>
@@ -683,7 +683,7 @@ export default function Enneagram() {
           </button>
           <button
             onClick={shareResult}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-indigo-700 hover:to-purple-700 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white transition-all"
           >
             <Share2 className="w-4 h-4" /> 공유하기
           </button>

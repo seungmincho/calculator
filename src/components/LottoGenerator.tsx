@@ -723,7 +723,7 @@ export default function LottoGenerator() {
           <button
             onClick={generateLottoNumbers}
             disabled={isGenerating}
-            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex flex-col items-center gap-1"
           >
             {isGenerating ? (
               <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -745,7 +745,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(hotNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <Zap className="w-6 h-6" />
             <span className="text-sm">{t('hotNumbers')}</span>
@@ -763,7 +763,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(coldNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <Shield className="w-6 h-6" />
             <span className="text-sm">{t('coldNumbers')}</span>
@@ -781,7 +781,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(balancedNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <BarChart3 className="w-6 h-6" />
             <span className="text-sm">{t('generateBalanced')}</span>
@@ -1007,7 +1007,7 @@ export default function LottoGenerator() {
             <button
               onClick={checkWinningNumbers}
               disabled={checkNumbers.filter(n => n !== '').length !== 6}
-              className="bg-primary hover:bg-blue-700 text-white py-2.5 px-5 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold transition-all whitespace-nowrap"
+              className="bg-primary hover:bg-blue-700 text-white py-2.5 px-5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold transition-all whitespace-nowrap"
             >
               <Target className="w-4 h-4" />
               {t('winChecker.checkButton')}

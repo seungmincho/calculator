@@ -185,7 +185,7 @@ export default function LotteryDraw() {
 
           <button
             onClick={handleStart}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium flex items-center justify-center gap-2"
           >
             <Play size={18} />
             {t('startDraw')}
@@ -240,7 +240,7 @@ export default function LotteryDraw() {
         {mode === 'allAtOnce' && !allRevealed && (
           <button
             onClick={revealAll}
-            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium"
           >
             {t('revealAll')}
           </button>

@@ -783,7 +783,7 @@ export default function PromptGenerator() {
               <button
                 type="button"
                 onClick={() => copyToClipboard(generatedPrompt, 'prompt')}
-                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-colors"
               >
                 {copiedId === 'prompt' ? (
                   <>

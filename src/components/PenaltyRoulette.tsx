@@ -155,8 +155,6 @@ export default function PenaltyRoulette() {
 
   return (
     <div className="relative min-h-[600px]">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-orange-500/10 to-red-500/20 dark:from-amber-900/30 dark:via-orange-900/20 dark:to-red-900/30 rounded-3xl" />
 
       {/* Particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-20">

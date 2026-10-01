@@ -360,7 +360,7 @@ export default function ChildBenefitCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={!allValid}
-                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Calculator className="w-4 h-4" />
                 {t('calculate')}

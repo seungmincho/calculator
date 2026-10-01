@@ -192,7 +192,7 @@ export default function RaycastingVisualizer() {
                 {editMode ? '🔒 ' + t('controls.stopEdit') : '✏️ ' + t('controls.editMap')}
               </button>
               <button onClick={handleResetMap}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-gray-600 hover:to-gray-700">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white">
                 🔄 {t('controls.resetMap')}
               </button>
             </div>

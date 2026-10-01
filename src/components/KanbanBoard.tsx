@@ -285,7 +285,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
-              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-all"
             >
               {t('save')}
             </button>
@@ -349,7 +349,7 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-all"
             >
               {t('save')}
             </button>
@@ -748,7 +748,7 @@ export default function KanbanBoard() {
           <input ref={importRef} type="file" accept=".json" className="hidden" onChange={importBoard} />
           <button
             onClick={() => setColModal({})}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg transition-all"
           >
             <Plus size={15} />
             {t('addColumn')}

@@ -314,7 +314,7 @@ export default function SlidingWindowVisualizer() {
               )}
               <div className="flex items-end">
                 <button onClick={runAlgorithm}
-                  className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-sky-700 hover:to-blue-700 transition-colors">
+                  className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
                   {t('run')}
                 </button>
               </div>

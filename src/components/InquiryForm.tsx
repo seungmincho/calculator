@@ -177,7 +177,7 @@ export default function InquiryForm() {
             setContact('')
             setCategory('suggestion')
           }}
-          className="mt-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700"
+          className="mt-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium"
         >
           {t('success.another')}
         </button>
@@ -313,7 +313,7 @@ export default function InquiryForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-opacity"
+          className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-opacity"
         >
           {submitting ? (
             <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />

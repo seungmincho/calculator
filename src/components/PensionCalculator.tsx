@@ -314,7 +314,7 @@ export default function PensionCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={!isValidInput}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {t('calculate')}
               </button>

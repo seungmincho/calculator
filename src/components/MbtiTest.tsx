@@ -300,7 +300,7 @@ export default function MbtiTest() {
 
           <button
             onClick={() => setScreen('test')}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 font-semibold text-lg transition-all shadow-md hover:shadow-lg"
           >
             {t('startTest')} →
           </button>
@@ -431,7 +431,7 @@ export default function MbtiTest() {
           {allAnswered ? (
             <button
               onClick={handleSeeResult}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold transition-all shadow-md"
             >
               {t('seeResult')} 🎉
             </button>

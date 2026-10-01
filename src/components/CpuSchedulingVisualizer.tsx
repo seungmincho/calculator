@@ -634,7 +634,7 @@ export default function CpuSchedulingVisualizer() {
             )}
 
             <button onClick={runSimulation} disabled={processes.length === 0}
-              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all">
+              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium disabled:opacity-50 transition-all">
               <Play size={16} /> 실행
             </button>
           </div>

@@ -318,7 +318,7 @@ export default function SystemDesign() {
             {!practicing ? (
               <button
                 onClick={startPractice}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors"
               >
                 <Play className="w-4 h-4" />
                 {t('practice.start')}

@@ -17,7 +17,7 @@
   --body: #333d4b;
   --sub: #4e5968;
   --muted: #6b7684;
-  --faint: #a3acb7;
+  --faint: #8b95a1; /* 3:1 (#a3acb7은 2.3:1로 안내문에 쓰기엔 대비 부족) */
   --primary: #3182f6;
   --primary-hover: #1b64da;
   --primary-soft: #e8f3ff;

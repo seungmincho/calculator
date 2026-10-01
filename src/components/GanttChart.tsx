@@ -528,7 +528,7 @@ export default function GanttChart() {
             <button
               onClick={addOrUpdateTask}
               disabled={!taskName.trim() || !startDate || !endDate}
-              className="flex-1 flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="flex-1 flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {editingId ? (
                 <><Check className="w-4 h-4" />{t('actions.update')}</>

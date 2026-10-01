@@ -907,7 +907,7 @@ export default function GovernmentSubsidyCalculator() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleCalculate}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
                 {t('input.calculate')}

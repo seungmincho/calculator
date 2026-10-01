@@ -689,7 +689,7 @@ export default function MeetingMinutes() {
 
             {data.attendees.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('attendees')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2">{t('attendees')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {data.attendees.map(a => (
                     <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
@@ -702,7 +702,7 @@ export default function MeetingMinutes() {
 
             {data.agenda.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('agenda')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2">{t('agenda')}</h2>
                 <ol className="space-y-2 list-decimal list-inside">
                   {data.agenda.map((a, i) => (
                     <li key={a.id} className="text-sm text-body">
@@ -717,7 +717,7 @@ export default function MeetingMinutes() {
 
             {data.discussions.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('discussion')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2">{t('discussion')}</h2>
                 <ol className="space-y-1.5 list-decimal list-inside">
                   {data.discussions.map(d => (
                     <li key={d.id} className="text-sm text-body">
@@ -730,14 +730,14 @@ export default function MeetingMinutes() {
 
             {data.decisions && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('decisions')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2">{t('decisions')}</h2>
                 <p className="text-sm text-body whitespace-pre-wrap">{data.decisions}</p>
               </div>
             )}
 
             {data.actions.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('actionItems')}</h2>
+                <h2 className="text-base font-semibold text-body mb-2">{t('actionItems')}</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
                     <thead>
@@ -769,14 +769,14 @@ export default function MeetingMinutes() {
 
             {data.nextMeeting && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-1 border-l-4 border-blue-600 pl-3">{t('nextMeeting')}</h2>
+                <h2 className="text-base font-semibold text-body mb-1">{t('nextMeeting')}</h2>
                 <p className="text-sm text-body">{data.nextMeeting}</p>
               </div>
             )}
 
             {data.notes && (
               <div>
-                <h2 className="text-base font-semibold text-body mb-1 border-l-4 border-blue-600 pl-3">{t('extraNotes')}</h2>
+                <h2 className="text-base font-semibold text-body mb-1">{t('extraNotes')}</h2>
                 <p className="text-sm text-body whitespace-pre-wrap">{data.notes}</p>
               </div>
             )}

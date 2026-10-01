@@ -378,7 +378,7 @@ export default function NameCompatibility() {
 
               <button
                 onClick={calculate}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-red-600 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
               >
                 <Heart className="w-5 h-5" />
                 {t('startButton')}

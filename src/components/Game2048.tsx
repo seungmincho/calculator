@@ -379,7 +379,7 @@ export default function Game2048() {
             </button>
             <button
               onClick={initializeGame}
-              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-all"
             >
               {t('newGame')}
             </button>
@@ -440,7 +440,7 @@ export default function Game2048() {
                   {won && !gameOver && (
                     <button
                       onClick={() => setKeepPlayingAfterWin(true)}
-                      className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                      className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all"
                     >
                       {t('keepPlaying')}
                     </button>

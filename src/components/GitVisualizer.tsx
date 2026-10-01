@@ -728,7 +728,7 @@ export default function GitVisualizer() {
               />
               <button
                 onClick={() => executeCommand(commandInput)}
-                className="px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-colors"
+                className="px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 <Play className="w-4 h-4" />
               </button>
@@ -933,7 +933,7 @@ export default function GitVisualizer() {
                     a: 'HEAD는 현재 체크아웃된 브랜치(또는 커밋)를 가리키는 특별한 포인터입니다. 새 커밋을 만들면 HEAD가 가리키는 브랜치가 새 커밋을 가리키도록 업데이트됩니다.',
                   },
                 ].map((faq, i) => (
-                  <div key={i} className="border-l-4 border-emerald-400 dark:border-emerald-600 pl-4">
+                  <div key={i}>
                     <p className="font-semibold text-fg text-sm mb-1">Q. {faq.q}</p>
                     <p className="text-body text-sm leading-relaxed">{faq.a}</p>
                   </div>

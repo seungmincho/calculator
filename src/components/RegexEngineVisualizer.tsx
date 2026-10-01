@@ -557,7 +557,7 @@ export default function RegexEngineVisualizer() {
           <button
             onClick={handleTogglePlay}
             disabled={!isValid || !pattern || !testStr}
-            className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {isPlaying ? <Pause size={16} /> : <Play size={16} />}
             {currentStep === -1 ? '매칭 시작' : isPlaying ? '일시정지' : '재생'}

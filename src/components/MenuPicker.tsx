@@ -1006,7 +1006,7 @@ export default function MenuPicker() {
               ) : (
                 <button
                   onClick={startTournament}
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-lg transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 >
                   <Trophy className="w-5 h-5" />
                   {t('start')}
@@ -1134,7 +1134,7 @@ export default function MenuPicker() {
                       setTournamentPhase('setup')
                       setTournamentWinner(null)
                     }}
-                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-purple-600 hover:to-indigo-600 transition-all text-sm"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium transition-all text-sm"
                   >
                     <RotateCcw className="w-4 h-4" />
                     {t('playAgain')}
@@ -1250,7 +1250,7 @@ export default function MenuPicker() {
           <div className="flex justify-center gap-3">
             <button
               onClick={drawTop3}
-              className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
+              className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-bold transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
             >
               <Shuffle className="w-4 h-4" />
               {top3Selected ? t('redraw') : t('drawNew')}
@@ -1343,7 +1343,7 @@ function ResultCard({
         <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={onRespin}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all text-sm"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium transition-all text-sm"
           >
             <RotateCcw className="w-4 h-4" />
             {t('respin')}

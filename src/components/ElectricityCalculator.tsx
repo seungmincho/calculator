@@ -724,7 +724,7 @@ export default function ElectricityCalculator() {
               <button
                 onClick={applyApplianceUsage}
                 disabled={applianceMonthlyKwh === 0}
-                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
                 {t('simulator.apply')} ({Math.round(applianceMonthlyKwh)} kWh)
               </button>

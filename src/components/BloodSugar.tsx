@@ -388,7 +388,7 @@ export default function BloodSugar() {
             <div className="flex gap-2">
               <button
                 onClick={handleSubmit}
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-3 font-medium hover:from-red-700 hover:to-pink-700 transition-all"
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-3 font-medium transition-all"
               >
                 {t('submit')}
               </button>

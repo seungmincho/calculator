@@ -1349,7 +1349,7 @@ export default function CurlBuilder() {
           <div className="flex gap-3">
             <button
               onClick={handleParse}
-              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors"
             >
               <Play className="w-4 h-4" />
               {t('parse.parseButton')}
@@ -1705,7 +1705,7 @@ export default function CurlBuilder() {
               <button
                 onClick={() => config.url.trim() && saveToHistory(config)}
                 disabled={!config.url.trim() || !isValidUrl}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Clock className="w-4 h-4" />
                 {t('history.title')}

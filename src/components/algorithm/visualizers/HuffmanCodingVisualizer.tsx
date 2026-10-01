@@ -242,7 +242,7 @@ export default function HuffmanCodingVisualizer() {
             </div>
 
             <button onClick={runAlgorithm}
-              className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-amber-700 hover:to-orange-700 transition-colors">
+              className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
               {t('encode')}
             </button>
           </div>

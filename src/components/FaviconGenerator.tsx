@@ -813,7 +813,7 @@ export const metadata: Metadata = {
           <button
             onClick={generateFavicons}
             disabled={!sourceImage || isGenerating}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             <Image className="w-5 h-5" />
             {isGenerating ? t('generating') : t('generate')}
@@ -831,7 +831,7 @@ export const metadata: Metadata = {
                   </h2>
                   <button
                     onClick={downloadAll}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all font-medium text-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg transition-all font-medium text-sm"
                   >
                     <Download className="w-4 h-4" />
                     {t('result.downloadAll')}

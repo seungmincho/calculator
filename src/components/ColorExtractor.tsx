@@ -386,7 +386,7 @@ export default function ColorExtractor() {
             <p className="text-lg text-sub mb-4">{t('dragDrop')}</p>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium transition-colors"
             >
               {t('upload')}
             </button>

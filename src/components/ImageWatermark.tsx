@@ -588,7 +588,7 @@ export default function ImageWatermark() {
                 <div className="border-t border-line pt-4 space-y-2">
                   <button
                     onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     {t('download')}

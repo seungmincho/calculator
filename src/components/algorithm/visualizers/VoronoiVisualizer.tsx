@@ -201,11 +201,11 @@ export default function VoronoiVisualizer() {
           <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-2">
               <button onClick={handleRandom} disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40">
                 🎲 {t('controls.random')}
               </button>
               <button onClick={handleGrid} disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40">
                 📐 {t('controls.grid')}
               </button>
             </div>

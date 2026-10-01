@@ -269,7 +269,7 @@ export default function KnapsackVisualizer() {
                   className="w-full accent-cyan-600" />
               </div>
               <button onClick={runAlgorithm}
-                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-cyan-700 hover:to-blue-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
                 {t('controls.run')}
               </button>
             </div>

@@ -1227,7 +1227,7 @@ export default function BreakoutGame() {
               {gameState === 'idle' && (
                 <button
                   onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('start')}
@@ -1247,7 +1247,7 @@ export default function BreakoutGame() {
               {gameState === 'paused' && (
                 <button
                   onClick={togglePause}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('resume')}
@@ -1257,7 +1257,7 @@ export default function BreakoutGame() {
               {gameState === 'gameover' && (
                 <button
                   onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {t('restart')}
@@ -1267,7 +1267,7 @@ export default function BreakoutGame() {
               {gameState === 'levelclear' && (
                 <button
                   onClick={nextLevel}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('nextLevel')}

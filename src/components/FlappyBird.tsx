@@ -607,7 +607,7 @@ export default function FlappyBird() {
           <div className="mt-4 flex justify-center">
             <button
               onClick={startOver}
-              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all"
             >
               <RotateCcw className="w-4 h-4" />
               {t('retry')}

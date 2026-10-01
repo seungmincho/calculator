@@ -292,7 +292,7 @@ export default function AllCalculationHistory() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2.5 text-sm font-medium transition-all"
           >
             <RotateCcw className="w-4 h-4" />
             {t('goToCalculators')}

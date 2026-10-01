@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
                 this.setState({ hasError: false })
                 window.location.reload()
               }}
-              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 font-medium transition-all"
             >
               새로고침
             </button>

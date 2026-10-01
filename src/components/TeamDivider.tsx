@@ -271,7 +271,7 @@ export default function TeamDivider() {
             <button
               onClick={handleDivide}
               disabled={isDividing || validNames.length < teamCount}
-              className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
             >
               <Shuffle className={`w-4 h-4 ${isDividing ? 'animate-spin' : ''}`} />
               {isDividing ? t('dividing') : t('divide')}

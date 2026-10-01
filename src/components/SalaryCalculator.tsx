@@ -754,13 +754,13 @@ const SalaryCalculatorContent = () => {
       <div className={`mt-12 ui-card p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-fg">{t('tips.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-surface border-l-4 border-emerald-400/70 border border-line rounded-2xl p-6">
+          <div className="bg-subtle rounded-2xl p-6">
             <h3 className="font-semibold text-fg mb-2">{t('tips.yearEndTax.title')}</h3>
             <p className="text-sub text-sm">
               {t('tips.yearEndTax.content')}
             </p>
           </div>
-          <div className="bg-surface border-l-4 border-amber-400/70 border border-line rounded-2xl p-6">
+          <div className="bg-subtle rounded-2xl p-6">
             <h3 className="font-semibold text-fg mb-2">{t('tips.taxSaving.title')}</h3>
             <p className="text-sub text-sm">
               {t('tips.taxSaving.content')}
@@ -1093,7 +1093,7 @@ const SalaryCalculatorContent = () => {
                 {t('insurance.health.title')}
               </h4>
               <div className="space-y-4">
-                <div className="border-l-4 border-blue-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-blue-600">{t('insurance.health.healthInsurance.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.healthInsurance.description')}</p>
                   <div className="mt-2 text-xs text-blue-500 space-y-1">
@@ -1102,7 +1102,7 @@ const SalaryCalculatorContent = () => {
                     ))}
                   </div>
                 </div>
-                <div className="border-l-4 border-green-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-green-600">{t('insurance.health.longTermCare.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.longTermCare.description')}</p>
                   <div className="mt-2 text-xs text-green-500 space-y-1">
@@ -1120,7 +1120,7 @@ const SalaryCalculatorContent = () => {
                 {t('insurance.pension.title')}
               </h4>
               <div className="space-y-4">
-                <div className="border-l-4 border-purple-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-purple-600">{t('insurance.pension.nationalPension.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.nationalPension.description')}</p>
                   <div className="mt-2 text-xs text-purple-500 space-y-1">
@@ -1129,7 +1129,7 @@ const SalaryCalculatorContent = () => {
                     ))}
                   </div>
                 </div>
-                <div className="border-l-4 border-orange-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-orange-600">{t('insurance.pension.employment.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.employment.description')}</p>
                   <div className="mt-2 text-xs text-orange-500 space-y-1">
@@ -1229,15 +1229,15 @@ const SalaryCalculatorContent = () => {
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.incomeDeduction.title')}</h4>
               </div>
               <div className="space-y-3">
-                <div className="border-l-4 border-green-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.creditCard.description')}</p>
                 </div>
-                <div className="border-l-4 border-green-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.housing.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.housing.description')}</p>
                 </div>
-                <div className="border-l-4 border-green-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.childcare.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.childcare.description')}</p>
                 </div>
@@ -1252,15 +1252,15 @@ const SalaryCalculatorContent = () => {
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.taxCredit.title')}</h4>
               </div>
               <div className="space-y-3">
-                <div className="border-l-4 border-blue-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.medical.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.medical.description')}</p>
                 </div>
-                <div className="border-l-4 border-blue-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.education.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.education.description')}</p>
                 </div>
-                <div className="border-l-4 border-blue-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.donation.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.donation.description')}</p>
                 </div>
@@ -1275,15 +1275,15 @@ const SalaryCalculatorContent = () => {
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.pension.title')}</h4>
               </div>
               <div className="space-y-3">
-                <div className="border-l-4 border-purple-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.pensionFund.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.pensionFund.description')}</p>
                 </div>
-                <div className="border-l-4 border-purple-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.irp.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.irp.description')}</p>
                 </div>
-                <div className="border-l-4 border-purple-400 pl-4">
+                <div>
                   <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.isa.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.isa.description')}</p>
                 </div>

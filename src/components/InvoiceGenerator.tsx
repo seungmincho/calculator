@@ -620,7 +620,7 @@ export default function InvoiceGenerator() {
           </button>
           <button
             onClick={exportPDF}
-            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 text-sm transition-colors"
+            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 font-medium text-sm transition-colors"
           >
             <Download className="w-4 h-4" />
             {t('exportPDF')}

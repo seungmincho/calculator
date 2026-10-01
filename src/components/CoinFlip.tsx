@@ -126,7 +126,7 @@ export default function CoinFlip() {
         <button
           onClick={flip}
           disabled={isFlipping || gameOver}
-          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {isFlipping ? t('flipping') : t('flipButton')}
         </button>

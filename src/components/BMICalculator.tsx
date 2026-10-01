@@ -623,19 +623,19 @@ export default function BMICalculator() {
             {t('healthTips.title')}
           </h3>
           <div className="space-y-4">
-            <div className="p-4 bg-subtle rounded-lg border-l-4 border-green-500">
+            <div className="p-4 bg-subtle rounded-xl">
               <h4 className="font-semibold text-green-800 dark:text-green-400 mb-2">{t('healthTips.diet.title')}</h4>
               <p className="text-sub text-sm">{t('healthTips.diet.content')}</p>
             </div>
-            <div className="p-4 bg-subtle rounded-lg border-l-4 border-blue-500">
+            <div className="p-4 bg-subtle rounded-xl">
               <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">‍♂️ {t('healthTips.exercise.title')}</h4>
               <p className="text-sub text-sm">{t('healthTips.exercise.content')}</p>
             </div>
-            <div className="p-4 bg-subtle rounded-lg border-l-4 border-purple-500">
+            <div className="p-4 bg-subtle rounded-xl">
               <h4 className="font-semibold text-purple-800 dark:text-purple-400 mb-2">{t('healthTips.sleep.title')}</h4>
               <p className="text-sub text-sm">{t('healthTips.sleep.content')}</p>
             </div>
-            <div className="p-4 bg-subtle rounded-lg border-l-4 border-orange-500">
+            <div className="p-4 bg-subtle rounded-xl">
               <h4 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">{t('healthTips.water.title')}</h4>
               <p className="text-sub text-sm">{t('healthTips.water.content')}</p>
             </div>

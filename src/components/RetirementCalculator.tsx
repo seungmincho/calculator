@@ -1,462 +1,273 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
-import { glassCard, glassInset, glassInput } from '@/lib/glass';
-import { useCalculationHistory } from '@/hooks/useCalculationHistory';
-import CalculationHistory from '@/components/CalculationHistory';
-import GuideSection from '@/components/GuideSection';
+import { useState, useEffect, useMemo, useRef } from 'react'
+import Link from 'next/link'
+import { AlertCircle, Save, Check } from 'lucide-react'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { useTranslations } from '@/lib/i18n'
+import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import CalculationHistory from '@/components/CalculationHistory'
+import GuideSection from '@/components/GuideSection'
+import ShareResult from '@/components/ShareResult'
+import { calcRetirement, addMonths, isDate, isoOf } from '@/utils/retirementPay'
 
-const RetirementCalculatorContent = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [avgSalary, setAvgSalary] = useState('');
-  const [workYears, setWorkYears] = useState('');
-  const [workMonths, setWorkMonths] = useState('');
-  const [result, setResult] = useState<ReturnType<typeof calculateRetirement>>(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [showSaveButton, setShowSaveButton] = useState(false);
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const digits = (s: string) => s.replace(/\D/g, '').slice(0, 12)
+const num = (s: string) => Number(s) || 0
+const today = () => { const d = new Date(); return isoOf(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())) }
+const prevDay = (iso: string) => isoOf(Date.parse(iso) - 86_400_000)
 
-  // 계산 이력 관리
-  const {
-    histories,
-    isLoading: historyLoading,
-    saveCalculation,
-    removeHistory,
-    clearHistories,
-    loadFromHistory
-  } = useCalculationHistory('retirement');
+export default function RetirementCalculator() {
+  const t = useTranslations('retirement')
+  const searchParams = useSearchParams()
 
-  // 퇴직금 계산 함수 (근로기준법 기준)
-  const calculateRetirement = (avgSalaryStr: string, yearsStr: string, monthsStr: string) => {
-    const avgSal = parseInt(avgSalaryStr.replace(/,/g, ''));
-    const years = parseInt(yearsStr) || 0;
-    const months = parseInt(monthsStr) || 0;
-    
-    if (!avgSal || avgSal <= 0 || (years === 0 && months === 0)) return null;
+  // 기본값: 5년 근속, 월 350만원, 상여 연 400만원, 연차수당 연 50만원 (첫 화면에 결과 표시)
+  const [start, setStart] = useState('2021-10-01')
+  const [end, setEnd] = useState('2026-10-01')
+  const [pay, setPay] = useState('3500000')
+  const [bonus, setBonus] = useState('4000000')
+  const [leave, setLeave] = useState('500000')
+  const [saved, setSaved] = useState(false)
 
-    // 총 근무일수 계산 (1년 = 365일)
-    const totalDays = (years * 365) + (months * 30);
-    const totalYears = totalDays / 365;
-    
-    // 퇴직금 계산: 1일 평균임금 × 30일 × 재직연수
-    // 1일 평균임금 = 연봉 ÷ 12개월 ÷ 30일
-    const dailyWage = Math.floor(avgSal / 12 / 30);
-    const retirementPay = Math.floor(dailyWage * 30 * totalYears);
-    
-    // 퇴직소득세 계산 (2025년 기준)
-    let tax = 0;
-    
-    if (totalYears >= 1) {
-      // 퇴직소득공제 계산
-      let deduction = 0;
-      if (totalYears <= 5) {
-        deduction = totalYears * 3000000; // 5년 이하: 연 300만원
-      } else if (totalYears <= 10) {
-        deduction = 15000000 + (totalYears - 5) * 4500000; // 6~10년: 5년분 + 연 450만원
-      } else if (totalYears <= 20) {
-        deduction = 37500000 + (totalYears - 10) * 6000000; // 11~20년: 10년분 + 연 600만원
-      } else {
-        deduction = 97500000 + (totalYears - 20) * 7500000; // 21년 이상: 20년분 + 연 750만원
-      }
-      
-      const taxableAmount = Math.max(0, retirementPay - deduction);
-      const taxableBase = Math.floor(taxableAmount / 12); // 연분연승법 (12등분)
-      
-      // 종합소득세율 적용
-      let monthlyTax = 0;
-      if (taxableBase <= 14000000) {
-        monthlyTax = Math.floor(taxableBase * 0.06);
-      } else if (taxableBase <= 50000000) {
-        monthlyTax = Math.floor(840000 + (taxableBase - 14000000) * 0.15);
-      } else if (taxableBase <= 88000000) {
-        monthlyTax = Math.floor(6240000 + (taxableBase - 50000000) * 0.24);
-      } else if (taxableBase <= 150000000) {
-        monthlyTax = Math.floor(15360000 + (taxableBase - 88000000) * 0.35);
-      } else if (taxableBase <= 300000000) {
-        monthlyTax = Math.floor(37060000 + (taxableBase - 150000000) * 0.38);
-      } else if (taxableBase <= 500000000) {
-        monthlyTax = Math.floor(94060000 + (taxableBase - 300000000) * 0.40);
-      } else {
-        monthlyTax = Math.floor(174060000 + (taxableBase - 500000000) * 0.42);
-      }
-      
-      tax = monthlyTax * 12; // 연분연승법으로 계산된 세액에 12를 곱함
-    }
-    
-    const localTax = Math.floor(tax * 0.1); // 지방소득세
-    const totalTax = tax + localTax;
-    const netRetirementPay = retirementPay - totalTax;
-    
-    return {
-      avgSalary: avgSal,
-      dailyWage,
-      totalDays,
-      totalYears: Math.round(totalYears * 100) / 100,
-      retirementPay,
-      tax,
-      localTax,
-      totalTax,
-      netRetirementPay
-    };
-  };
+  const { histories, isLoading, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('retirement')
 
-  const handleCalculate = React.useCallback(() => {
-    const calculation = calculateRetirement(avgSalary, workYears, workMonths);
-    setResult(calculation);
-    setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
-  }, [avgSalary, workYears, workMonths]);
-
-  const formatNumber = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
-  const handleShare = async () => {
-    try {
-      const currentUrl = window.location.href;
-      
-      // Modern clipboard API
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = currentUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-      // 복사 실패시에도 사용자에게 피드백
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
-    }
-  };
-
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams);
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    });
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-
-  // 계산 결과 저장
-  const handleSaveCalculation = () => {
-    if (!result) return;
-
-    const inputs = {
-      avgSalary,
-      workYears,
-      workMonths
-    };
-
-    const success = saveCalculation(inputs, result);
-    if (success) {
-      setShowSaveButton(false);
-      // 저장 성공 피드백 (선택사항)
-    }
-  };
-
-  // 이력에서 불러오기
-  const handleLoadFromHistory = (historyId: string) => {
-    const inputs = loadFromHistory(historyId);
-    if (inputs) {
-      setAvgSalary(inputs.avgSalary || '');
-      setWorkYears(inputs.workYears || '');
-      setWorkMonths(inputs.workMonths || '');
-      
-      // URL도 업데이트
-      updateURL({
-        salary: inputs.avgSalary?.replace(/,/g, '') || '',
-        years: inputs.workYears || '',
-        months: inputs.workMonths || ''
-      });
-    }
-  };
-
-  // 이력 결과 포맷팅
-  const formatHistoryResult = (result: Record<string, unknown>) => {
-    if (!result) return '';
-    return `퇴직금 ${formatNumber(result.netRetirementPay as number)}원 (${result.totalYears as number}년 근무)`;
-  };
-
-  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/,/g, '');
-    if (/^\d*$/.test(value)) {
-      const formattedValue = formatNumber(Number(value));
-      setAvgSalary(formattedValue);
-      updateURL({ salary: value });
-    }
-  };
-
-  const handleYearsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value) && Number(value) <= 50) {
-      setWorkYears(value);
-      updateURL({ years: value });
-    }
-  };
-
-  const handleMonthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value) && Number(value) <= 11) {
-      setWorkMonths(value);
-      updateURL({ months: value });
-    }
-  };
-
-  // URL에서 초기값 로드
+  // URL → 상태 (최초 1회). 날짜 기본값은 마운트 후 오늘 기준으로 (정적 빌드 날짜와 hydration 불일치 방지)
+  const loaded = useRef(false)
   useEffect(() => {
-    const salaryParam = searchParams.get('salary');
-    const yearsParam = searchParams.get('years');
-    const monthsParam = searchParams.get('months');
+    if (loaded.current) return
+    loaded.current = true
+    const g = (k: string) => searchParams.get(k)
+    const n = (k: string, set: (v: string) => void) => { const v = g(k); if (v && /^\d{1,12}$/.test(v)) set(v) }
+    n('pay', setPay); n('bonus', setBonus); n('leave', setLeave)
+    const s = g('s'), e = g('e')
+    if (isDate(s) && isDate(e)) { setStart(s); setEnd(e); return }
+    const end0 = today()
+    // 예전 링크 호환: ?salary=연봉&years=&months=
+    const sal = g('salary'), ys = Number(g('years')) || 0, ms = Number(g('months')) || 0
+    if (sal && /^\d{1,12}$/.test(sal)) { setPay(String(Math.round(Number(sal) / 12))); setBonus('0'); setLeave('0') }
+    setEnd(end0)
+    setStart(addMonths(end0, -(ys || ms ? Math.min(600, ys * 12 + ms) : 60)))
+  }, [searchParams])
 
-    if (salaryParam && /^\d+$/.test(salaryParam)) {
-      setAvgSalary(formatNumber(Number(salaryParam)));
-    }
-    if (yearsParam && /^\d+$/.test(yearsParam) && Number(yearsParam) <= 50) {
-      setWorkYears(yearsParam);
-    }
-    if (monthsParam && /^\d+$/.test(monthsParam) && Number(monthsParam) <= 11) {
-      setWorkMonths(monthsParam);
-    }
-  }, [searchParams]);
-
+  // 상태 → URL
   useEffect(() => {
-    if (avgSalary && (workYears || workMonths)) {
-      handleCalculate();
-    } else {
-      setResult(null);
-    }
-  }, [avgSalary, workYears, workMonths, handleCalculate]);
+    if (!loaded.current) return
+    const url = new URL(window.location.href)
+    for (const k of ['salary', 'years', 'months']) url.searchParams.delete(k)
+    const q = { s: start, e: end, pay, bonus, leave }
+    for (const [k, v] of Object.entries(q)) { if (v) url.searchParams.set(k, v); else url.searchParams.delete(k) }
+    window.history.replaceState(window.history.state, '', url)
+    setSaved(false)
+  }, [start, end, pay, bonus, leave])
+
+  const r = useMemo(
+    () => calcRetirement({ start, end, monthly: num(pay), bonus: num(bonus), leave: num(leave) }),
+    [start, end, pay, bonus, leave],
+  )
+
+  const W = t('rc.won')
+  const period = r ? t('rc.period', { y: r.years, m: r.months, d: won(r.days) }) : ''
+
+  const handleSave = () => {
+    if (!r) return
+    if (saveCalculation({ start, end, pay, bonus, leave, workYears: String(r.years), workMonths: String(r.months) }, { net: r.net, pay: r.pay, years: r.years, months: r.months })) setSaved(true)
+  }
+  const handleLoad = (id: string) => {
+    const x = loadFromHistory(id) as Record<string, string> | null
+    if (!x || !isDate(x.start) || !isDate(x.end)) return
+    setStart(x.start); setEnd(x.end); setPay(digits(x.pay ?? '')); setBonus(digits(x.bonus ?? '')); setLeave(digits(x.leave ?? ''))
+  }
+  const formatHistory = (res: Record<string, unknown>) =>
+    typeof res.net === 'number' ? t('rc.historyItem', { net: won(res.net), y: String(res.years), m: String(res.months) }) : ''
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-fg">퇴직금 계산기</h1>
-          <p className="text-sm text-muted mt-1">
-            평균임금과 근무기간을 입력하여 퇴직금과 퇴직소득세를 계산하세요
-          </p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('rc.subtitle')}</p>
         </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={historyLoading}
-          onLoadHistory={handleLoadFromHistory}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={formatHistoryResult}
-        />
+        <CalculationHistory histories={histories} isLoading={isLoading} onLoadHistory={handleLoad}
+          onRemoveHistory={removeHistory} onClearHistories={clearHistories} formatResult={formatHistory} />
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Input Section */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">퇴직금 정보 입력</h2>
-          
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                평균임금 (연봉)
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={avgSalary}
-                  onChange={handleSalaryChange}
-                  placeholder="예: 50,000,000"
-                  className={`${glassInput} px-4 py-3`}
-                />
-                <span className="absolute right-3 top-3 text-muted">원</span>
-              </div>
-              <p className="text-sm text-muted mt-1">
-                퇴직 전 3개월 평균임금 기준
-              </p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
+            <div className="grid grid-cols-2 gap-2">
+              <DateField id="rc-s" label={t('rc.in.start')} value={start} onChange={setStart} />
+              <DateField id="rc-e" label={t('rc.in.end')} value={end} onChange={setEnd} />
+              <p className="col-span-2 text-xs text-muted">{t('rc.in.endHint')}</p>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  근무 년수
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={workYears}
-                    onChange={handleYearsChange}
-                    placeholder="0"
-                    className={`${glassInput} px-4 py-3`}
-                  />
-                  <span className="absolute right-3 top-3 text-muted">년</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  근무 개월수
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={workMonths}
-                    onChange={handleMonthsChange}
-                    placeholder="0"
-                    className={`${glassInput} px-4 py-3`}
-                  />
-                  <span className="absolute right-3 top-3 text-muted">개월</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-subtle p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-fg mb-2">
-                계산 기준
-              </h3>
-              <ul className="text-sm text-sub space-y-1">
-                <li>• 퇴직금 = 1일 평균임금 × 30일 × 재직연수</li>
-                <li>• 1년 미만 근무시 월할 계산</li>
-                <li>• 퇴직소득공제: 5년 이하 연300만원, 이후 단계별 증가</li>
-                <li>• 연분연승법 적용 (과세표준÷12)</li>
-              </ul>
-            </div>
+            {r && <p className="text-sm text-body bg-subtle rounded-xl px-4 py-3 tabular-nums">{period}</p>}
+            <Money label={t('rc.in.pay')} hint={t('rc.in.payHint')} value={pay} onChange={setPay} unit={W} />
+            <Money label={t('rc.in.bonus')} hint={t('rc.in.bonusHint')} value={bonus} onChange={setBonus} unit={W} />
+            <Money label={t('rc.in.leave')} hint={t('rc.in.leaveHint')} value={leave} onChange={setLeave} unit={W} />
           </div>
         </div>
 
-        {/* Result Section */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
-          
-          {result ? (
-            <div className="space-y-6">
-              <div className="text-center p-6 bg-primary rounded-xl text-white">
-                <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
-                <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
-                <div className="flex space-x-2 mt-4">
-                  <button
-                    onClick={handleShare}
-                    className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                  >
-                    {isCopied ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        <span>복사됨!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Share2 className="w-4 h-4" />
-                        <span>결과 공유</span>
-                      </>
-                    )}
-                  </button>
-                  
-                  {showSaveButton && (
-                    <button
-                      onClick={handleSaveCalculation}
-                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                    >
-                      <Save className="w-4 h-4" />
-                      <span>저장</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-subtle p-4 rounded-lg">
-                  <div className="text-sm text-sub">1일 평균임금</div>
-                  <div className="text-lg font-semibold text-fg">
-                    {formatNumber(result.dailyWage)}원
-                  </div>
-                </div>
-                <div className="bg-subtle p-4 rounded-lg">
-                  <div className="text-sm text-sub">총 근무기간</div>
-                  <div className="text-lg font-semibold text-fg">
-                    {result.totalYears}년
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">세전 퇴직금</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(result.retirementPay)}원
-                  </span>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-sub">퇴직소득세</span>
-                    <span className="text-red-600 dark:text-red-400">
-                      -{formatNumber(result.tax)}원
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-sub">지방소득세</span>
-                    <span className="text-red-600 dark:text-red-400">
-                      -{formatNumber(result.localTax)}원
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
-                  <span className="text-fg">실수령 퇴직금</span>
-                  <span className="text-orange-600 dark:text-orange-400">
-                    {formatNumber(result.netRetirementPay)}원
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-subtle p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-fg mb-2">
-                  참고사항
-                </h3>
-                <ul className="text-sm text-sub space-y-1">
-                  <li>• 실제 퇴직금은 회사 규정에 따라 다를 수 있습니다</li>
-                  <li>• 중간정산을 받은 경우 별도 계산이 필요합니다</li>
-                  <li>• 퇴직연금 가입시 산정 방식이 다를 수 있습니다</li>
-                </ul>
-              </div>
-            </div>
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-6">
+          {!r ? (
+            <div className="ui-card p-6 text-sm text-muted">{t('rc.invalid')}</div>
           ) : (
-            <div className="text-center py-12">
-              <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">
-                평균임금과 근무기간을 입력하면<br />
-                퇴직금을 계산해드립니다.
-              </p>
-            </div>
+            <>
+              <div className="ui-hero p-6">
+                <div className="text-sm text-white/70">{t('rc.hero.label')}</div>
+                <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{won(r.net)}{W}</div>
+                <div className="text-sm text-white/80 mt-2 tabular-nums">
+                  {t('rc.hero.sub', { pay: won(r.pay), tax: won(r.totalTax) })}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{period}</span>
+                  <span className="rounded-full bg-white/15 px-3 py-1 text-sm tabular-nums">{t('rc.hero.eff', { rate: r.effRate.toFixed(1) })}</span>
+                  <button type="button" onClick={handleSave} disabled={saved}
+                    className="inline-flex items-center gap-1 rounded-full bg-white/15 hover:bg-white/25 px-3 py-1 text-sm">
+                    {saved ? <Check className="w-4 h-4" aria-hidden="true" /> : <Save className="w-4 h-4" aria-hidden="true" />}
+                    {saved ? t('rc.saved') : t('rc.save')}
+                  </button>
+                </div>
+              </div>
+
+              {!r.eligible && (
+                <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
+                  <p className="text-sm">{t('rc.underOneYear')}</p>
+                </div>
+              )}
+
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('rc.share.label', { y: r.years, m: r.months }),
+                  headline: `${won(r.net)}${W}`,
+                  sub: t('rc.hero.sub', { pay: won(r.pay), tax: won(r.totalTax) }),
+                  rows: [
+                    { label: t('rc.row.pay'), value: `${won(r.pay)}${W}` },
+                    { label: t('rc.row.totalTax'), value: `${won(r.totalTax)}${W}` },
+                    { label: t('rc.row.daily'), value: `${won(Math.floor(r.dailyWage))}${W}` },
+                    { label: t('rc.row.irp'), value: `${won(r.irp70)}${W}` },
+                  ],
+                }}
+                text={t('rc.share.text', { net: won(r.net) })}
+                fileName="retirement-pay"
+              />
+
+              {/* 퇴직금 산정 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('rc.pay.title')}</h2>
+                <p className="text-xs text-muted mt-1">{t('rc.pay.formula')}</p>
+                <dl className="mt-4 space-y-2 text-sm tabular-nums">
+                  <Row label={t('rc.pay.periodRange', { from: r.periodStart, to: prevDay(end) })} value={t('rc.days', { n: r.periodDays })} />
+                  <Row label={t('rc.pay.wages3m')} value={`${won(r.wages3m)}${W}`} />
+                  <Row sub label={t('rc.pay.base')} value={`${won(num(pay) * 3)}${W}`} />
+                  <Row sub label={t('rc.pay.bonusAdd')} value={`${won(Math.floor(num(bonus) * 3 / 12))}${W}`} />
+                  <Row sub label={t('rc.pay.leaveAdd')} value={`${won(Math.floor(num(leave) * 3 / 12))}${W}`} />
+                  <Row label={t('rc.pay.daily')} value={`${r.dailyWage.toLocaleString('ko-KR', { maximumFractionDigits: 2 })}${W}`} />
+                  <Row label={t('rc.pay.days')} value={t('rc.days', { n: won(r.days) })} />
+                  <div className="border-t border-line pt-2">
+                    <Row strong label={t('rc.row.pay')} value={`${won(r.pay)}${W}`} />
+                  </div>
+                </dl>
+              </div>
+
+              {/* 퇴직소득세 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('rc.tax.title')}</h2>
+                <p className="text-xs text-muted mt-1">{t('rc.tax.basis')}</p>
+                <dl className="mt-4 space-y-2 text-sm tabular-nums">
+                  <Row label={t('rc.tax.years')} value={t('rc.tax.yearsValue', { n: r.taxYears })} />
+                  <Row label={t('rc.tax.serviceDed')} value={`-${won(r.serviceDed)}${W}`} />
+                  <Row label={t('rc.tax.converted')} value={`${won(r.converted)}${W}`} />
+                  <Row label={t('rc.tax.convertedDed')} value={`-${won(r.convertedDed)}${W}`} />
+                  <Row label={t('rc.tax.base')} value={`${won(r.base)}${W}`} />
+                  <Row label={t('rc.tax.convertedTax')} value={`${won(r.convertedTax)}${W}`} />
+                  <Row label={t('rc.tax.tax', { n: r.taxYears })} value={`${won(r.tax)}${W}`} />
+                  <Row label={t('rc.tax.local')} value={`${won(r.localTax)}${W}`} />
+                  <div className="border-t border-line pt-2 space-y-2">
+                    <Row strong label={t('rc.row.totalTax')} value={`${won(r.totalTax)}${W}`} />
+                    <Row strong label={t('rc.hero.label')} value={`${won(r.net)}${W}`} />
+                  </div>
+                </dl>
+              </div>
+
+              {/* IRP 연금수령 비교 */}
+              {r.totalTax > 0 && (
+                <div className="ui-card p-6">
+                  <h2 className="text-lg font-semibold text-fg">{t('rc.irp.title')}</h2>
+                  <p className="text-sm text-sub mt-1">{t('rc.irp.desc')}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4 tabular-nums">
+                    <Tile label={t('rc.irp.lump')} value={`${won(r.totalTax)}${W}`} />
+                    <Tile active label={t('rc.irp.to10')} value={`${won(r.irp70)}${W}`} note={t('rc.irp.saving', { n: won(r.totalTax - r.irp70) })} />
+                    <Tile active label={t('rc.irp.from11')} value={`${won(r.irp60)}${W}`} note={t('rc.irp.saving', { n: won(r.totalTax - r.irp60) })} />
+                  </div>
+                  <p className="text-xs text-muted mt-3">{t('rc.irp.note')}</p>
+                </div>
+              )}
+            </>
           )}
+
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('rc.next.title')}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+              {([['/severance-pay', 'dc'], ['/unemployment-benefit', 'unemployment'], ['/national-pension', 'pension']] as const).map(([href, k]) => (
+                <Link key={href} href={`${href}/`} className="bg-subtle hover:bg-soft rounded-xl px-4 py-3 text-sm">
+                  <span className="block font-medium text-fg">{t(`rc.next.${k}.title`)}</span>
+                  <span className="block text-xs text-muted mt-0.5">{t(`rc.next.${k}.desc`)}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <GuideSection namespace="retirement" />
-
+      <GuideSection namespace="retirement" defaultOpen />
+      <p className="text-xs text-muted">{t('rc.disclaimer')}</p>
     </div>
-  );
-};
+  )
+}
 
-const RetirementCalculator = () => {
+function DateField({ id, label, value, onChange }: { id: string; label: string; value: string; onChange: (v: string) => void }) {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600"></div></div>}>
-      <RetirementCalculatorContent />
-    </Suspense>
-  );
-};
+    <div className="min-w-0">
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-1.5">{label}</label>
+      <input id={id} type="date" value={value} min="1960-01-01" max="2100-12-31"
+        onChange={(e) => onChange(e.target.value)} className="ui-field w-full min-w-0 px-3 py-3 text-sm tabular-nums" />
+    </div>
+  )
+}
 
-export default RetirementCalculator;
+function Money({ label, value, onChange, hint, unit }: { label: string; value: string; onChange: (v: string) => void; hint?: string; unit: string }) {
+  return (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-1.5">{label}</span>
+      <span className="relative block">
+        <input type="text" inputMode="numeric" value={value ? num(value).toLocaleString('ko-KR') : ''}
+          onChange={(e) => onChange(digits(e.target.value))} placeholder="0"
+          className="ui-field w-full px-4 py-3 pr-9 text-sm tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-faint">{unit}</span>
+      </span>
+      {hint && <span className="block text-xs text-muted mt-1.5">{hint}</span>}
+    </label>
+  )
+}
+
+function Row({ label, value, strong, sub }: { label: string; value: string; strong?: boolean; sub?: boolean }) {
+  return (
+    <div className={`flex justify-between gap-3 ${sub ? 'pl-4 text-xs text-muted' : strong ? 'font-semibold text-fg' : 'text-body'}`}>
+      <dt className="min-w-0">{label}</dt>
+      <dd className="shrink-0">{value}</dd>
+    </div>
+  )
+}
+
+function Tile({ label, value, note, active }: { label: string; value: string; note?: string; active?: boolean }) {
+  return (
+    <div className={`rounded-xl px-4 py-3 ${active ? 'bg-primary-soft' : 'bg-subtle'}`}>
+      <div className="text-xs text-muted">{label}</div>
+      <div className={`text-lg font-bold mt-1 ${active ? 'text-primary' : 'text-fg'}`}>{value}</div>
+      {note && <div className="text-xs text-sub mt-0.5">{note}</div>}
+    </div>
+  )
+}

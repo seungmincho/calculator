@@ -240,7 +240,7 @@ export default function MbtiCompatibility() {
               </div>
               <button
                 onClick={handleAnalyze}
-                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-pink-700 hover:to-purple-700 transition-all"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all"
               >
                 {t('analyze')}
               </button>

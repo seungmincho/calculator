@@ -376,7 +376,7 @@ export default function ColorPalette() {
             {/* Random Button */}
             <button
               onClick={randomColor}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-purple-700 hover:to-pink-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
             >
               <Shuffle className="w-5 h-5" />
               {t('random')}
@@ -442,7 +442,7 @@ export default function ColorPalette() {
             {/* Save Palette */}
             <button
               onClick={savePalette}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
             >
               <Save className="w-5 h-5" />
               {t('savePalette')}

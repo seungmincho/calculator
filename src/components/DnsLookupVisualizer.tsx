@@ -797,7 +797,7 @@ export default function DnsLookupVisualizer() {
             {/* Action button */}
             <button
               onClick={startSimulation}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-violet-700 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
             >
               <Zap className="w-4 h-4" />
               {isStarted ? '다시 시작' : '조회 시작'}

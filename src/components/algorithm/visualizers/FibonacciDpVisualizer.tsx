@@ -233,7 +233,7 @@ export default function FibonacciDpVisualizer() {
                 <div className="text-center text-sm font-bold text-cyan-600 dark:text-cyan-400">fib({Math.min(n, mode === 'naive' ? 10 : 15)})</div>
               </div>
               <button onClick={runAlgorithm}
-                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-cyan-700 hover:to-blue-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
                 {t('controls.run')}
               </button>
             </div>

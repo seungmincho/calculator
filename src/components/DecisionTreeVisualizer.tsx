@@ -789,7 +789,7 @@ export default function DecisionTreeVisualizer() {
           {/* Action buttons */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <button onClick={handleBuild}
-              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-colors">
+              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors">
               <Play className="w-4 h-4" /> 트리 생성
             </button>
             <button onClick={handleStepBuild}

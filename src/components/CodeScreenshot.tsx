@@ -1006,7 +1006,7 @@ export default function CodeScreenshot() {
               {/* Download PNG */}
               <button
                 onClick={downloadPNG}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all"
               >
                 <Download className="w-4 h-4" />
                 {t('exportPng')}
@@ -1015,7 +1015,7 @@ export default function CodeScreenshot() {
               {/* Copy to Clipboard */}
               <button
                 onClick={copyImageToClipboard}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all"
               >
                 {copiedId === 'image' ? (
                   <>

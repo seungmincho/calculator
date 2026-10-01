@@ -328,7 +328,7 @@ export default function BreathingExercise() {
               {!isRunning ? (
                 <button
                   onClick={startSession}
-                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium transition-all"
                 >
                   <Play className="w-5 h-5" />
                   {t('start')}

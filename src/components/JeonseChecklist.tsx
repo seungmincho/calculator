@@ -319,16 +319,9 @@ function CategorySection({ category, states, onChange, t }: CategorySectionProps
     (i) => states[i.key] === 'checked' || states[i.key] === 'na'
   ).length
 
-  const catBg: Record<string, string> = {
-    registry: 'border-l-blue-500',
-    landlord: 'border-l-purple-500',
-    property: 'border-l-green-500',
-    contract: 'border-l-orange-500',
-    insurance: 'border-l-teal-500',
-  }
 
   return (
-    <div className={`${glassCard} ${glassInset} border-l-4 ${catBg[category.key] ?? 'border-l-blue-500'}`}>
+    <div className={`${glassCard} ${glassInset}`}>
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-xl"
@@ -608,7 +601,7 @@ export default function JeonseChecklist() {
       <div className="flex flex-wrap gap-3">
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+          className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
         >
           <Share2 className="w-4 h-4" />
           {copied ? t('copiedLabel') : t('shareLabel')}

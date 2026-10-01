@@ -444,7 +444,7 @@ export default function FifteenPuzzle() {
             </p>
             <button
               onClick={() => startNewGame()}
-              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold transition-all flex items-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('newGame')}
@@ -509,7 +509,7 @@ export default function FifteenPuzzle() {
       <div className="flex justify-center">
         <button
           onClick={() => startNewGame()}
-          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2 shadow-md"
+          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold transition-all flex items-center gap-2 shadow-md"
         >
           <RotateCcw className="w-4 h-4" />
           {t('newGame')}

@@ -348,7 +348,7 @@ const UuidGenerator = () => {
             <button
               onClick={generateUuids}
               disabled={isGenerating}
-              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {isGenerating ? (
                 <RefreshCw className="w-5 h-5 animate-spin" />

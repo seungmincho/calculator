@@ -645,15 +645,15 @@ export default function NeuralNetworkVisualizer() {
           {/* Action Buttons */}
           <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
             <button onClick={runForward}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors">
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
               <ArrowRight size={16} /> 순전파
             </button>
             <button onClick={runBackward}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-purple-700 hover:to-violet-700 transition-colors">
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
               <ArrowLeft size={16} /> 역전파
             </button>
             <button onClick={runEpoch}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-colors">
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
               <Zap size={16} /> 50 에포크
             </button>
             <button onClick={resetNetwork}

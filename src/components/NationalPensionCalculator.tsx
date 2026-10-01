@@ -357,7 +357,7 @@ export default function NationalPensionCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={isUnderMinContribution || incomeNum <= 0}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Calculator className="w-5 h-5" />
                 {t('calculate')}

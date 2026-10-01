@@ -445,14 +445,14 @@ export default function QuadTreeVisualizer() {
               <button
                 onClick={handleGenerateRandom}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-cyan-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
               >
                 🎲 {t('controls.random')}
               </button>
               <button
                 onClick={handleGenerateClustered}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white disabled:opacity-40"
               >
                 🫧 {t('controls.clustered')}
               </button>

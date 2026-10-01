@@ -589,7 +589,7 @@ export default function ScreenRecorder() {
                 <div className="flex flex-wrap gap-3">
                   <button
                     onClick={downloadRecording}
-                    className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center gap-2"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all duration-200 flex items-center gap-2"
                   >
                     <Download className="w-5 h-5" />
                     {t('download')}

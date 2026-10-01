@@ -240,7 +240,7 @@ export default function ImageConverter() {
             <div className="space-y-2">
               <button
                 onClick={handleConvert}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <ImageIcon className="w-5 h-5" />
                 {t('convert')}
@@ -267,7 +267,7 @@ export default function ImageConverter() {
               {images.length > 1 && (
                 <button
                   onClick={downloadAll}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors flex items-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   {t('downloadAll')}
@@ -349,7 +349,7 @@ export default function ImageConverter() {
                     {/* Download Button */}
                     <button
                       onClick={() => downloadImage(image)}
-                      className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       {t('download')}
