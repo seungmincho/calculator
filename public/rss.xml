@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Thu, 01 Oct 2026 08:07:15 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 01 Oct 2026 16:11:14 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[15퍼즐]]></title>
@@ -41,6 +41,11 @@
     <title><![CDATA[알고리즘 시각화]]></title>
     <link>https://toolhub.ai.kr/algorithm/</link>
     <guid>https://toolhub.ai.kr/algorithm/</guid>
+  </item>
+  <item>
+    <title><![CDATA[자동차세 계산기]]></title>
+    <link>https://toolhub.ai.kr/annual-car-tax/</link>
+    <guid>https://toolhub.ai.kr/annual-car-tax/</guid>
   </item>
   <item>
     <title><![CDATA[연차 계산기]]></title>
@@ -136,6 +141,11 @@
     <title><![CDATA[호흡 운동 가이드]]></title>
     <link>https://toolhub.ai.kr/breathing-exercise/</link>
     <guid>https://toolhub.ai.kr/breathing-exercise/</guid>
+  </item>
+  <item>
+    <title><![CDATA[중개수수료 계산기]]></title>
+    <link>https://toolhub.ai.kr/brokerage-fee/</link>
+    <guid>https://toolhub.ai.kr/brokerage-fee/</guid>
   </item>
   <item>
     <title><![CDATA[생활비 계산기]]></title>
@@ -688,6 +698,11 @@
     <guid>https://toolhub.ai.kr/ladder-game/</guid>
   </item>
   <item>
+    <title><![CDATA[부동산 임대차계약서 작성기]]></title>
+    <link>https://toolhub.ai.kr/lease-contract/</link>
+    <guid>https://toolhub.ai.kr/lease-contract/</guid>
+  </item>
+  <item>
     <title><![CDATA[Linux 명령어 빌더]]></title>
     <link>https://toolhub.ai.kr/linux-command/</link>
     <guid>https://toolhub.ai.kr/linux-command/</guid>
@@ -903,6 +918,11 @@
     <guid>https://toolhub.ai.kr/password-generator/</guid>
   </item>
   <item>
+    <title><![CDATA[급여명세서 작성기]]></title>
+    <link>https://toolhub.ai.kr/pay-slip/</link>
+    <guid>https://toolhub.ai.kr/pay-slip/</guid>
+  </item>
+  <item>
     <title><![CDATA[컴퓨터 전기세 계산기]]></title>
     <link>https://toolhub.ai.kr/pc-electricity/</link>
     <guid>https://toolhub.ai.kr/pc-electricity/</guid>
@@ -996,6 +1016,11 @@
     <title><![CDATA[부동산 계산기]]></title>
     <link>https://toolhub.ai.kr/real-estate-calculator/</link>
     <guid>https://toolhub.ai.kr/real-estate-calculator/</guid>
+  </item>
+  <item>
+    <title><![CDATA[영수증 작성기]]></title>
+    <link>https://toolhub.ai.kr/receipt-generator/</link>
+    <guid>https://toolhub.ai.kr/receipt-generator/</guid>
   </item>
   <item>
     <title><![CDATA[정규식 빌더]]></title>

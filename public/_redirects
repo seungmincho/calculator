@@ -62,6 +62,7 @@
 /algorithm/trie  /algorithm/trie/  301
 /algorithm/union-find  /algorithm/union-find/  301
 /algorithm/voronoi  /algorithm/voronoi/  301
+/annual-car-tax  /annual-car-tax/  301
 /annual-leave  /annual-leave/  301
 /api-tester  /api-tester/  301
 /aspect-ratio  /aspect-ratio/  301
@@ -81,6 +82,7 @@
 /box-shadow  /box-shadow/  301
 /breakout-game  /breakout-game/  301
 /breathing-exercise  /breathing-exercise/  301
+/brokerage-fee  /brokerage-fee/  301
 /budget-calculator  /budget-calculator/  301
 /business-number  /business-number/  301
 /cagr-calculator  /cagr-calculator/  301
@@ -199,6 +201,7 @@
 /korean-syllable  /korean-syllable/  301
 /korean-wordle  /korean-wordle/  301
 /ladder-game  /ladder-game/  301
+/lease-contract  /lease-contract/  301
 /linux-command  /linux-command/  301
 /llm-token-calculator  /llm-token-calculator/  301
 /loan-calculator  /loan-calculator/  301
@@ -246,6 +249,7 @@
 /parental-leave  /parental-leave/  301
 /parking-fee  /parking-fee/  301
 /password-generator  /password-generator/  301
+/pay-slip  /pay-slip/  301
 /pc-electricity  /pc-electricity/  301
 /pdf-tools  /pdf-tools/  301
 /penalty-roulette  /penalty-roulette/  301
@@ -265,6 +269,7 @@
 /random-picker  /random-picker/  301
 /reaction-test  /reaction-test/  301
 /real-estate-calculator  /real-estate-calculator/  301
+/receipt-generator  /receipt-generator/  301
 /regex-builder  /regex-builder/  301
 /regex-engine  /regex-engine/  301
 /regex-extractor  /regex-extractor/  301
