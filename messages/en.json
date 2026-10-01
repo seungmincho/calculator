@@ -50445,7 +50445,279 @@
       }
     }
   },
-  "paySlip": {},
+  "paySlip": {
+    "title": "Pay Slip Generator",
+    "description": "Create a Korean wage statement with every legally required item. Overtime, night and holiday pay, social insurance and income tax (2026 withholding table) are calculated automatically, and you can save it as an A4 PDF.",
+    "hourUnit": "h",
+    "won": " KRW",
+    "personUnit": "",
+    "summary": {
+      "net": "Net pay",
+      "gross": "Total pay",
+      "taxFree": "Tax-free portion",
+      "deductions": "Total deductions",
+      "ordinary": "Ordinary hourly wage"
+    },
+    "section": {
+      "info": "Basic info",
+      "setup": "Employment type",
+      "pay": "Earnings",
+      "ded": "Deductions"
+    },
+    "sectionHint": {
+      "info": "Name and date of birth or employee number are mandatory.",
+      "ded": {
+        "ins": "Social insurance and income tax are calculated automatically. Edit an amount to override it.",
+        "biz": "Withholds 3.3% business income tax (3% + 0.3% local)."
+      }
+    },
+    "company": "Company",
+    "companyPlaceholder": "e.g. ToolHub Cafe",
+    "ceo": "Representative",
+    "ceoPlaceholder": "Hong Gildong",
+    "worker": "Employee name",
+    "workerPlaceholder": "Kim Minji",
+    "birth": "Date of birth",
+    "empNo": "Employee no.",
+    "empNoPlaceholder": "Optional",
+    "dept": "Department",
+    "position": "Position",
+    "month": "Pay period",
+    "payDate": "Pay date",
+    "mode": "Deduction type",
+    "modes": {
+      "ins": "Employee (4 insurances)",
+      "biz": "3.3% contractor"
+    },
+    "modeHint": {
+      "ins": "Deducts pension, health, long-term care, employment insurance and wage income tax.",
+      "biz": "Only for freelance (business income) contracts. A person working under your direction is legally an employee."
+    },
+    "wageType": "Wage type",
+    "wageTypes": {
+      "monthly": "Monthly",
+      "hourly": "Hourly"
+    },
+    "small": "Fewer than 5 regular workers",
+    "smallHint": "The 50% overtime/night/holiday premium does not apply.",
+    "baseLabel": {
+      "monthly": "Monthly base pay",
+      "hourly": "Hourly wage"
+    },
+    "workHours": "Hours worked this month",
+    "holidayHours": "Paid weekly-holiday hours",
+    "monthHours": "Monthly base hours",
+    "ordinary": "Ordinary hourly wage",
+    "ordinaryAuto": "Leave empty to use base pay ÷ base hours = {value} KRW",
+    "ordinaryManual": "Using your ordinary hourly wage. Clear it to calculate automatically.",
+    "hoursHint": {
+      "monthly": "40 hours a week = 209 hours (incl. weekly holiday). If fixed allowances are part of ordinary wages, enter the ordinary hourly wage yourself.",
+      "hourly": "Weekly-holiday hours = weekly contract hours ÷ 40 × 8 × weeks in the month. Zero under 15 hours a week."
+    },
+    "premiumTitle": "Overtime, night and holiday hours (monthly total)",
+    "ot": "Overtime",
+    "night": "Night (10pm-6am)",
+    "hol": "Holiday (up to 8h)",
+    "hol8": "Holiday (over 8h)",
+    "premiumHint": "Overtime and holiday 1.5x, holiday over 8h 2x, night adds a 0.5x premium. Overtime at night goes in both fields.",
+    "premiumHintSmall": "Under 5 workers: overtime and holiday hours at 1x, no night premium.",
+    "rows": "Allowances & bonus",
+    "rowsEmpty": "Add a meal allowance, bonus and more with the buttons below.",
+    "rowName": "Item",
+    "rowAmount": "Amount",
+    "rowRemove": "Remove",
+    "rowMethod": "Calculation / basis",
+    "rowMethodPlaceholder": "e.g. fixed monthly, 3 years × 10,000 KRW",
+    "rowTaxFree": "Tax-free",
+    "rowTaxFreeLimit": "Tax-free (up to {limit} KRW/month)",
+    "rowTypes": {
+      "meal": "Meal",
+      "car": "Car allowance",
+      "child": "Childcare",
+      "bonus": "Bonus",
+      "other": "Other allowance"
+    },
+    "dependents": "Dependents (incl. self)",
+    "children": "Of which children aged 8-20",
+    "dependentsHint": "Count yourself and your spouse as 1 each. Children reduce the tax by 20,830 KRW (1) or 45,830 KRW (2).",
+    "taxPct": "Withholding rate",
+    "insBase": "Social insurance base",
+    "insBaseAuto": "Leave empty to use taxable base pay and fixed allowances = {value} KRW (overtime and bonus only affect employment insurance)",
+    "insBaseManual": "Pension and health insurance use the base you entered.",
+    "ded": {
+      "pension": "National pension",
+      "health": "Health insurance",
+      "care": "Long-term care",
+      "employment": "Employment insurance",
+      "incomeTax": "Income tax",
+      "localTax": "Local income tax"
+    },
+    "dedBiz": {
+      "incomeTax": "Business income tax (3%)",
+      "localTax": "Local income tax (0.3%)"
+    },
+    "dedManual": "Manual amount — press reset to calculate automatically",
+    "dedNone": "Not applicable",
+    "dedReset": "Reset to automatic",
+    "extraDeds": "Other deductions",
+    "extraAdd": "Add deduction",
+    "extraName": "Deduction",
+    "extraNamePlaceholder": "e.g. advance, dormitory",
+    "insight": {
+      "noName": "Enter the employee's name. It is a mandatory item.",
+      "noId": "Enter a date of birth or employee number so the employee can be identified.",
+      "noPayDate": "Enter the pay date. It is a mandatory item.",
+      "negative": "Deductions exceed total pay. Please check the amounts.",
+      "minWageOk": "Hourly equivalent {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
+      "minWageOkHourly": "Hourly wage {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
+      "minWageLow": "Below minimum wage: at least {required} KRW is required for {hours} hours a month, {short} KRW short (hourly {hourly} < {min} KRW).",
+      "minWageLowHourly": "Hourly wage {hourly} KRW is below the 2026 minimum wage of {min} KRW.",
+      "taxFreeOver": "{name} is tax-free only up to {limit} KRW a month, so the extra {excess} KRW is treated as taxable.",
+      "noMethod": "Missing calculation method: {names}. Add the payment basis (e.g. fixed monthly).",
+      "pensionCap": "The insurance base exceeds the national pension cap of {cap} KRW, so the cap is used.",
+      "pensionFloor": "The insurance base is below the national pension floor of {floor} KRW, so the floor is used. Part-timers under 60 hours a month are usually not covered — set it to 0.",
+      "otOver": "{hours} overtime hours may exceed the 12-hours-a-week limit (about 52 a month).",
+      "small": "Under 5 workers: calculated without premiums. The pay slip obligation still applies.",
+      "biz": "3.3% contractors are not employees, so no social insurance or wage income tax. If the person follows your working hours and instructions, they are an employee and must be enrolled.",
+      "manual": "Some deductions were edited manually. Compare them with the automatic values next month."
+    },
+    "guide": {
+      "title": "Pay slips: what you need to know",
+      "intro": "If you employ even one person in Korea, you must issue a wage statement every payday. This tool fills in every legally required item and calculates overtime, night and holiday pay, social insurance and income tax for 2026. Your input stays in this browser.",
+      "sections": [
+        {
+          "title": "Obligation and fines",
+          "items": [
+            "Required every payday since Nov 19, 2021 (Labor Standards Act Art. 48(2))",
+            "Applies to businesses of any size, including part-time and daily workers",
+            "Not issued: KRW 300,000 / 500,000 / 1,000,000 per worker for the 1st / 2nd / 3rd+ violation (max 5 million)",
+            "Missing or false items: KRW 200,000 / 300,000 / 500,000"
+          ]
+        },
+        {
+          "title": "Mandatory items (Decree Art. 27-2)",
+          "items": [
+            "Name, date of birth or employee number",
+            "Pay date and total wages",
+            "Amount of each item: base pay, allowances, bonus",
+            "Calculation method for hour-based items, including overtime, night and holiday hours",
+            "Each deduction and the total"
+          ]
+        },
+        {
+          "title": "Tax-free items (2026)",
+          "items": [
+            "Meal allowance up to KRW 200,000/month (when no free meals are provided)",
+            "Car allowance up to KRW 200,000/month (own car used for work)",
+            "Childbirth/childcare allowance up to KRW 200,000/month (children aged 6 or under)",
+            "Amounts above the limit are taxable for tax and insurance"
+          ]
+        },
+        {
+          "title": "Premium pay",
+          "items": [
+            "Ordinary hourly wage = monthly ordinary wage ÷ 209 hours (40h week)",
+            "Overtime: hourly × hours × 1.5",
+            "Night (10pm-6am): hourly × hours × 0.5 premium",
+            "Holiday: 1.5x up to 8 hours, 2x beyond",
+            "Businesses with 4 or fewer workers pay 1x (Decree Annex 1)"
+          ]
+        },
+        {
+          "title": "Insurance and tax (employee share, 2026)",
+          "items": [
+            "National pension 4.75% (base KRW 410,000-6,590,000)",
+            "Health insurance 3.595%, long-term care = health premium × 13.14%",
+            "Employment insurance 0.9%",
+            "Income tax: simplified withholding table (revised Feb 27, 2026); local tax 10% of income tax",
+            "3.3% contractors: 3% income tax + 0.3% local tax"
+          ]
+        },
+        {
+          "title": "How to deliver",
+          "items": [
+            "Print it, or send the PDF by email, KakaoTalk or text (electronic documents are valid)",
+            "Keep proof of delivery (sent log or signature)",
+            "Keep wage records for 3 years (Labor Standards Act Art. 42)",
+            "2026 minimum wage: KRW 10,320/hour, 2,156,880/month (209 hours)"
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What happens if an employer doesn't issue a pay slip?",
+            "a": "Since November 19, 2021, Korean employers must issue a wage statement (paper or electronic) every time wages are paid (Labor Standards Act Art. 48(2)). Failure is subject to a fine of up to KRW 5 million; under Enforcement Decree Annex 7 it is KRW 300,000 / 500,000 / 1,000,000 per worker for the 1st / 2nd / 3rd+ violation. Missing or false items start at KRW 200,000."
+          },
+          {
+            "q": "Do businesses with fewer than 5 workers or part-timers need one?",
+            "a": "Yes. The obligation applies to every employer with at least one worker, including part-time and daily workers. Businesses with 4 or fewer regular workers are exempt only from the 50% overtime/night/holiday premium, so extra hours are paid at 1x."
+          },
+          {
+            "q": "Can I send it via KakaoTalk or email?",
+            "a": "Yes. Electronic documents are allowed, so email, text, KakaoTalk or an intranet are fine. Save a PDF here and send it, and keep the sent record as proof."
+          },
+          {
+            "q": "What items are mandatory?",
+            "a": "Under Enforcement Decree Art. 27-2: name and date of birth or employee number, pay date, total wages, amount of each item (base pay, allowances, bonus), the calculation method for items that depend on days or hours worked (including overtime, night and holiday hours), and each deduction and the total."
+          },
+          {
+            "q": "Is the KRW 200,000 meal allowance also excluded from social insurance?",
+            "a": "A qualifying meal allowance up to KRW 200,000 a month is excluded from income tax and from the pension, health and employment insurance base. The excess is taxable. Car allowances and childcare allowances (children aged 6 or under) are also tax-free up to KRW 200,000 each."
+          },
+          {
+            "q": "How is income tax calculated?",
+            "a": "It is looked up in the NTS simplified withholding table (Income Tax Enforcement Decree Annex 2, revised Feb 2026) using monthly taxable pay and the number of dependents, minus KRW 20,830 for one child aged 8-20 or KRW 45,830 for two. Workers may choose 80% or 120%. Local income tax is 10% of income tax. You can override any amount, e.g. in bonus months."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Salary Calculator",
+          "href": "/salary-calculator/"
+        },
+        {
+          "label": "Employment Contract",
+          "href": "/employment-contract/"
+        },
+        {
+          "label": "Weekly Holiday Pay",
+          "href": "/weekly-holiday-pay/"
+        },
+        {
+          "label": "Hourly Wage Calculator",
+          "href": "/hourly-wage/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "근로기준법 제48조 (임금대장 및 임금명세서)",
+          "url": "https://www.law.go.kr/법령/근로기준법/제48조"
+        },
+        {
+          "label": "근로기준법 시행령 제27조의2 (임금명세서의 기재사항)",
+          "url": "https://www.law.go.kr/법령/근로기준법시행령/제27조의2"
+        },
+        {
+          "label": "고용노동부 — 임금명세서 교부 등 개정 근로기준법 설명자료",
+          "url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20211101053"
+        },
+        {
+          "label": "고용노동부 — 임금명세서 작성 프로그램",
+          "url": "https://www.moel.go.kr/wageCal.do"
+        },
+        {
+          "label": "국세청 — 근로소득 원천징수방법(간이세액표)",
+          "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862"
+        },
+        {
+          "label": "소득세법 시행령 [별표 2] 근로소득 간이세액표 (2026.2.27 개정)",
+          "url": "https://www.law.go.kr/법령/소득세법시행령"
+        }
+      ]
+    }
+  },
   "receiptGenerator": {
     "title": "Receipt Generator",
     "description": "Rent, club dues, second-hand sales or money received between individuals: fill in the blanks and get a simple Korean receipt with the amount in Korean words, two copies with a cut line, a seal and PDF export.",
