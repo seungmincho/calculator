@@ -1841,6 +1841,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "csatDday": "CSAT D-day & Timetable",
       "salaryCalculator": "Salary Calculator",
       "loanCalculator": "Loan Calculator",
       "savingsCalculator": "Savings Calculator",
@@ -5710,6 +5711,10 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "csatDday": {
+        "title": "CSAT D-day, Timetable & Checklist",
+        "description": "2027 CSAT countdown, period timetable, packing checklist and answer sheet"
+      },
       "salary": {
         "title": "Salary Calculator",
         "description": "Net salary and insurance calculation"
@@ -46432,5 +46437,264 @@
     "copyLink": "Copy link",
     "copied": "Copied",
     "cta": "Try it yourself →"
+  },
+  "csatDday": {
+    "title": "CSAT D-day · Timetable · Checklist",
+    "description": "Countdown to the 2027 CSAT (Thu, Nov 19, 2026), the period timetable, a packing checklist, an answer sheet for self-scoring, and the admissions schedule after the exam.",
+    "md": "{w} {m}/{d}",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "hero": {
+      "label": "2027 College Scholastic Ability Test (CSAT)",
+      "calculating": "Calculating D-day",
+      "unit": {
+        "d": "days",
+        "h": "hrs",
+        "m": "min",
+        "s": "sec"
+      },
+      "during": "CSAT in progress",
+      "after": "CSAT is over! Great job",
+      "ctaGrade": "Check your estimated grades",
+      "ctaTimeline": "See what comes next",
+      "date": "Exam {exam} · Period 1 starts {time} · Scores released {score}"
+    },
+    "cheer": {
+      "banner": "Cheering for {name}! See how much time is left until the CSAT.",
+      "title": "Cheer card",
+      "desc": "Enter a name to make a cheer card and link. Anyone who opens the link sees your message.",
+      "placeholder": "Name to cheer for (optional)",
+      "headline": "CSAT {dday}",
+      "doneHeadline": "CSAT done!",
+      "sub": "Good luck to every test taker!",
+      "subNamed": "Good luck, {name}!",
+      "done": "Well done, every test taker",
+      "doneNamed": "Well done, {name}",
+      "cardLabel": "Until the 2027 CSAT",
+      "rowExam": "Exam day",
+      "rowScore": "Scores released"
+    },
+    "schedule": {
+      "title": "CSAT timetable",
+      "desc": "You must be seated by 8:10 AM. On exam day the current period is highlighted.",
+      "practiceStart": "Start practice run",
+      "practiceStop": "Stop practice",
+      "practiceOn": "Practice run: now counts as the start of Period 1 and the same timetable runs from here. Times in the table shift accordingly.",
+      "statusNow": "{name} in progress · {n} min left",
+      "statusNext": "Next: {name} · starts in {n} min",
+      "statusDone": "All periods are over",
+      "colPeriod": "Period",
+      "colTime": "Time",
+      "colMin": "Min",
+      "slots": {
+        "arrive": "Be seated",
+        "kor": "P1 Korean",
+        "math": "P2 Math",
+        "lunch": "Lunch",
+        "eng": "P3 English",
+        "inq": "P4 Korean History · Electives",
+        "lang2": "P5 2nd Foreign Language / Classical Chinese"
+      },
+      "by": "by {time}",
+      "lang2Note": "Period 5 is only for students who chose a second foreign language or Classical Chinese.",
+      "inqTitle": "Period 4 breakdown",
+      "inqNote": "Based on previous years. Confirm with the 2027 test-taker guidelines.",
+      "inq": {
+        "hist": "Korean History",
+        "swap": "History papers collected · elective papers handed out",
+        "inq1": "1st elective",
+        "inq2": "2nd elective"
+      }
+    },
+    "checklist": {
+      "title": "Packing checklist",
+      "verifyNote": "Based on previous years' test-taker guidelines. Check again once the 2027 guidelines are announced.",
+      "reset": "Reset",
+      "progress": "{done}/{total} ready",
+      "groups": {
+        "required": "Required",
+        "personal": "You may bring",
+        "extra": "Nice to have"
+      },
+      "items": {
+        "admitCard": "Admission ticket",
+        "idCard": "Photo ID",
+        "pencil": "Black pencil",
+        "eraser": "Eraser",
+        "lead": "Pencil lead (0.5mm black)",
+        "watch": "Analog watch (hour/minute (second) hands only, no communication, payment or electronic display)",
+        "lunch": "Packed lunch (12:10–13:00)",
+        "water": "Water or a warm drink",
+        "blanket": "Lap blanket",
+        "outer": "Warm outer layer",
+        "mask": "Spare mask",
+        "tissue": "Tissues · basic medicine"
+      },
+      "providedTitle": "Provided at the test site",
+      "provided": "Computer sign pen · mechanical pencil · correction tape",
+      "penNote": "From the 2027 CSAT the computer sign pen is provided on site, but you may also bring your own.",
+      "bannedTitle": "Prohibited items",
+      "banned": [
+        "Mobile phone",
+        "Smartwatch",
+        "Digital camera",
+        "Electronic dictionary",
+        "MP3 player",
+        "Camera pen",
+        "Electronic calculator",
+        "Radio",
+        "Watch with payment/communication features or an LCD/LED display",
+        "Bluetooth earphones",
+        "E-cigarette"
+      ],
+      "bannedNote": "If you brought any, hand them to the proctor before Period 1 starts. Merely having one during the exam counts as cheating.",
+      "tips": [
+        "Lost your admission ticket? Bring one photo and your ID to the test site's management office to get it reissued.",
+        "In Period 4, solve electives in the order you chose. Looking at another subject's paper during a slot counts as cheating."
+      ]
+    },
+    "sheet": {
+      "title": "Answer sheet",
+      "desc": "After the exam, copy your answers here and they are saved. Printing outputs only this sheet on white paper.",
+      "print": "Print",
+      "clear": "Clear all",
+      "clearConfirm": "Clear all answers and elective names?",
+      "warn": "You can't use this sheet during the exam. The 2027 CSAT allows recording answers for self-scoring, so follow KICE's instructions (e.g. the back of the admission ticket) during the exam and copy them here afterwards.",
+      "subjects": {
+        "kor": "Korean",
+        "math": "Math",
+        "eng": "English",
+        "hist": "Korean History",
+        "inq1": "Elective 1",
+        "inq2": "Elective 2",
+        "lang2": "2nd Language"
+      },
+      "info": {
+        "kor": "45 questions · multiple choice",
+        "math": "30 questions · common 1–22, elective 23–30 · short answer 16–22, 29–30",
+        "eng": "45 questions · multiple choice",
+        "hist": "20 questions · multiple choice",
+        "inq1": "20 questions · multiple choice",
+        "inq2": "20 questions · multiple choice",
+        "lang2": "30 questions · multiple choice"
+      },
+      "filled": "{n}/{total} filled",
+      "selectPlaceholder": "Elective subject (e.g. Language & Media)",
+      "selectLabel": "Elective",
+      "shortQ": "{q} SA",
+      "qLabel": "Answer {q}",
+      "countNote": "Question counts are based on previous years. * marks short-answer questions.",
+      "printTitle": "2027 CSAT answer sheet",
+      "printName": "Name",
+      "printFoot": "ToolHub toolhub.ai.kr/csat-dday · grades toolhub.ai.kr/csat-grade"
+    },
+    "timeline": {
+      "title": "After the CSAT",
+      "desc": "Key 2027 admissions dates, from score release to additional recruitment.",
+      "lateFeb": "Late February",
+      "until": "by {date}",
+      "past": "Past",
+      "ongoing": "Now",
+      "items": {
+        "exam": "CSAT",
+        "score": "Scores released",
+        "susiResult": "Early admission results",
+        "susiReg": "Early admission registration",
+        "susiExtra": "Early admission waitlist",
+        "jeongsiApply": "Regular admission applications (3+ days per university)",
+        "jeongsiResult": "Regular admission results",
+        "jeongsiReg": "Regular admission registration",
+        "jeongsiExtra": "Regular admission waitlist",
+        "addRecruit": "Additional recruitment"
+      },
+      "note": "Based on the 2027 admissions implementation plan. Check each university's guidelines for exact dates.",
+      "linkGrade": "CSAT grade calculator",
+      "linkDday": "D-day calculator"
+    },
+    "guide": {
+      "title": "CSAT guide",
+      "whatIs": {
+        "title": "The 2027 CSAT at a glance",
+        "desc": "The 2027 College Scholastic Ability Test is on Thursday, November 19, 2026, and scores are released on Friday, December 11. It is the last CSAT with the common + elective structure for Korean and Math. From this year the computer sign pen is provided on site (bringing your own is also allowed), and recording answers for self-scoring is permitted."
+      },
+      "dayBefore": {
+        "title": "The day before",
+        "items": [
+          "On the preliminary gathering day (the day before the exam in previous years), pick up your admission ticket and check the test site location, route and travel time.",
+          "Put your admission ticket and ID in your bag in advance.",
+          "Make sure your analog watch works and has no prohibited features.",
+          "Pack a lunch you usually eat and digest easily.",
+          "Go to bed at your usual time."
+        ]
+      },
+      "examDay": {
+        "title": "On exam day",
+        "items": [
+          "Be seated by 8:10 AM. Leave early to allow for traffic.",
+          "Hand prohibited items such as phones to the proctor before Period 1 starts.",
+          "Keep the order of your Period 4 electives.",
+          "Lunch is 12:10–13:00. Even if a subject went badly, focus on the next period."
+        ]
+      },
+      "tips": {
+        "title": "Making the most of the time left",
+        "items": [
+          "Use the practice run button to take mock exams on the real timetable.",
+          "The exam starts at 8:40 AM, so start shifting your wake-up time now.",
+          "The checklist is saved in this browser, so reopen it the night before.",
+          "After the exam, copy your answers into the answer sheet and check estimated grades with the grade calculator."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When is the 2027 CSAT?",
+            "a": "Thursday, November 19, 2026. Scores are released on Friday, December 11, 2026. You must be seated by 8:10 AM."
+          },
+          {
+            "q": "Can I bring my own computer sign pen?",
+            "a": "From the 2027 CSAT the pen is provided at the test site, but you may also use your own. Mechanical pencils and correction tape are provided too."
+          },
+          {
+            "q": "What if I brought my phone?",
+            "a": "Hand it to the proctor before Period 1 starts. Merely having a prohibited item such as a phone or smartwatch during the exam counts as cheating."
+          },
+          {
+            "q": "I lost my admission ticket.",
+            "a": "Bring one photo and your ID to the test site's management office to have it reissued (based on previous years' guidelines)."
+          },
+          {
+            "q": "How do I self-score?",
+            "a": "During the exam, record your answers the way KICE instructs (e.g. the back of the admission ticket), then copy them into this page's answer sheet afterwards. Once the answer key is out, check estimated grades in the CSAT grade calculator."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Korea Institute for Curriculum and Evaluation (KICE)",
+            "url": "https://www.kice.re.kr"
+          },
+          {
+            "label": "CSAT official site (KICE)",
+            "url": "https://www.suneung.re.kr"
+          },
+          {
+            "label": "Adiga admissions portal (KCUE)",
+            "url": "https://www.adiga.kr"
+          }
+        ],
+        "note": "Exam date, timetable and score release follow the 2027 CSAT basic plan. The packing list and Period 4 breakdown follow previous years' guidelines; check again once announced."
+      }
+    }
   }
 }

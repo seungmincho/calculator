@@ -73,6 +73,7 @@ const menuItems = [
   { href: '/cs-quiz', labelKey: 'footer.links.csQuiz' },
   { href: '/cs-visualizer', labelKey: 'footer.links.csVisualizer' },
   { href: '/csat-grade', labelKey: 'footer.links.csatGrade' },
+  { href: '/csat-dday', labelKey: 'footer.links.csatDday' },
   { href: '/css-gradient', labelKey: 'footer.links.cssGradient' },
   { href: '/css-unit-converter', labelKey: 'footer.links.cssUnitConverter' },
   { href: '/curl-builder', labelKey: 'footer.links.curlBuilder' },

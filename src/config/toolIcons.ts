@@ -252,6 +252,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/personal-color': Palette,
   '/ovulation-calculator': Flower2,
   '/csat-grade': BookOpenCheck,
+  '/csat-dday': CalendarClock,
   '/enneagram': Hexagon,
 
   // 게임
