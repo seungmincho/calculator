@@ -3109,8 +3109,124 @@
     }
   },
   "calorie": {
+    "saved": "Saved",
+    "unit": {
+      "age": "yrs"
+    },
+    "form": {
+      "age": "Age",
+      "height": "Height",
+      "weight": "Weight",
+      "teenNote": "BMR equations are built for adults. Teens need extra energy for growth, so treat the result as a rough reference.",
+      "pace": "Pace",
+      "paceKg": "{kg} kg/week",
+      "paceNoteLose": "Uses the ~7,700 kcal per kg approximation. 0.5–1 kg per week (under 1% of body weight) is the usual recommendation.",
+      "paceNoteGain": "For mostly lean gain, 0.25–0.5 kg per week is plenty — pair it with strength training.",
+      "target": "Target weight",
+      "targetBmi": "Target BMI {bmi}",
+      "bodyFat": "Body fat % (optional)",
+      "optional": "Optional",
+      "bodyFatNote": "Enter it to unlock the lean-mass-based Katch-McArdle equation."
+    },
+    "act": {
+      "sedentary": {
+        "name": "Sedentary",
+        "desc": "Desk job, little or no exercise"
+      },
+      "light": {
+        "name": "Lightly active",
+        "desc": "Light exercise 1–3 days a week"
+      },
+      "moderate": {
+        "name": "Moderately active",
+        "desc": "Moderate exercise 3–5 days a week"
+      },
+      "active": {
+        "name": "Very active",
+        "desc": "Hard exercise 6–7 days a week"
+      },
+      "veryActive": {
+        "name": "Extremely active",
+        "desc": "Physical job + daily training, or twice-a-day training"
+      },
+      "note": "Most office workers who work out are still 'lightly active'. Overestimating activity inflates calories and stalls weight loss."
+    },
+    "formula": {
+      "mifflin": "Mifflin-St Jeor",
+      "harris": "Harris-Benedict (1984 revised)",
+      "katch": "Katch-McArdle",
+      "katchNeedsBf": "Katch-McArdle needs body fat %, so Mifflin-St Jeor is used for now."
+    },
+    "goal": {
+      "lose": "Lose",
+      "maintain": "Maintain",
+      "gain": "Gain"
+    },
+    "hero": {
+      "label": {
+        "lose": "To lose {pace} kg a week, eat per day",
+        "gain": "To gain {pace} kg a week, eat per day"
+      },
+      "labelMaintain": "To maintain your weight, eat per day",
+      "sub": "Maintenance {tdee} kcal {delta} kcal",
+      "subMaintain": "BMR {bmr} kcal × activity factor"
+    },
+    "plan": {
+      "eta": "About {weeks} weeks to {kg} kg",
+      "etaDate": "About {weeks} weeks to {kg} kg · around {date}",
+      "date": "{y}-{m}-{d}"
+    },
+    "warn": {
+      "clamped": "The math gives {raw} kcal, which is below the safety floor of {floor} kcal, so the floor is used. Your realistic pace is about {pace} kg a week. To go faster, move more rather than eat less.",
+      "floor": "Your maintenance calories ({tdee} kcal) are below the safety floor ({floor} kcal), so dieting alone won't work well. Increase activity or talk to a professional.",
+      "underweight": "Your target weight is BMI {bmi}, in the underweight range (below 18.5). Please double-check your goal.",
+      "direction": {
+        "lose": "Set a target weight below your current weight to see the timeline.",
+        "gain": "Set a target weight above your current weight to see the timeline."
+      },
+      "tooLong": "At this pace you won't reach the target within 3 years. Try adjusting pace or activity."
+    },
+    "share": {
+      "eta": "To {kg} kg",
+      "weeks": "~{weeks} weeks"
+    },
+    "breakdown": {
+      "title": "Breakdown",
+      "adjust": "Goal adjustment",
+      "floor": "Safety floor (higher of BMR and {min} kcal)",
+      "pace": "Expected pace",
+      "eer": "Reference: Korean estimated energy requirement (age {range})",
+      "note": "Estimated energy requirements come from the 2020 Dietary Reference Intakes for Koreans (Ministry of Health and Welfare) and assume a reference body size, so they can differ from your personal maintenance calories."
+    },
+    "chart": {
+      "title": "Projected weight",
+      "note": "Recalculating calories each week for your new weight (solid) keeps the planned pace; eating today's calories unchanged (dashed) slows down as your metabolism drops. Based on the 7,700 kcal/kg approximation, so real results vary.",
+      "plan": "Recalculated weekly",
+      "fixed": "Today's calories kept",
+      "target": "Target",
+      "week": "wk {w}"
+    },
+    "compare": {
+      "title": "BMR by equation",
+      "formula": "Equation",
+      "needBf": "Needs body fat %",
+      "note": "In the American Dietetic Association review (2005), Mifflin-St Jeor predicted measured resting metabolism within ±10% for the most adults. If you are very muscular or know your body fat accurately, Katch-McArdle may fit better."
+    },
+    "macro": {
+      "title": "Macros for your goal",
+      "basis": "Protein {gkg} g per kg × {kg} kg (range {lo}–{hi} g/kg), fat {fat}%, carbs make up the rest",
+      "kdri": "KDRI {lo}–{hi}%",
+      "note": "While cutting, protein is raised to protect muscle, so it can exceed the Korean DRI energy ratio (7–20%). For weight loss, protein is based on target weight. If you have kidney disease, talk to your doctor before a high-protein diet. For food-by-food macros, see the"
+    },
+    "links": {
+      "title": "Related tools",
+      "nutrition": "Nutrition calculator",
+      "exercise": "Exercise calorie calculator",
+      "bmi": "BMI calculator",
+      "bodyFat": "Body fat calculator"
+    },
     "title": "Calorie Calculator",
-    "description": "Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) to set healthy weight management goals",
+    "description": "Use your BMR and maintenance calories (TDEE) to get daily calories for weight loss, the date you'll reach your target weight, and macros",
     "input": {
       "title": "Body Information & Goal Setting",
       "height": "Height (cm)",
@@ -3143,7 +3259,7 @@
       "targetWeight": "Target Weight (kg, optional)",
       "targetWeightPlaceholder": "65",
       "targetWeightNote": "Enter to calculate time to goal",
-      "bmrFormula": "BMR Calculation Formula",
+      "bmrFormula": "BMR equation",
       "formulas": {
         "mifflin": "Mifflin-St Jeor (Recommended)",
         "harris": "Harris-Benedict (Traditional)"
@@ -3152,7 +3268,7 @@
     "result": {
       "title": "Calorie Calculation Result",
       "bmr": "Basal Metabolic Rate (BMR)",
-      "tdee": "Total Daily Energy Expenditure (TDEE)",
+      "tdee": "Maintenance calories (TDEE)",
       "goalCalories": "Daily Calorie Goal",
       "weightChangePerWeek": "Weight Change Per Week",
       "timeToGoal": "Estimated Time to Goal",
@@ -3167,6 +3283,18 @@
       "fat": "Fat"
     },
     "guide": {
+      "formulas": {
+        "title": "How it's calculated",
+        "items": [
+          "Mifflin-St Jeor (default): 10×weight + 6.25×height − 5×age + 5 (men) / −161 (women)",
+          "Harris-Benedict, 1984 revision: men 88.362 + 13.397×weight + 4.799×height − 5.677×age; women 447.593 + 9.247×weight + 3.098×height − 4.330×age",
+          "Katch-McArdle: 370 + 21.6×lean body mass (weight×(1−body fat))",
+          "Maintenance (TDEE) = BMR × activity factor 1.2 / 1.375 / 1.55 / 1.725 / 1.9",
+          "Target = TDEE ∓ pace (kg/week)×7,700÷7. Weight loss never goes below the higher of BMR and the sex minimum (1,200 women / 1,500 men kcal)"
+        ]
+      },
+      "sources": "Sources: Mifflin MD et al., Am J Clin Nutr 1990 · Roza AM & Shizgal HM, Am J Clin Nutr 1984 · Frankenfield D et al., J Am Diet Assoc 2005 · Ministry of Health and Welfare & Korean Nutrition Society, 2020 Dietary Reference Intakes for Koreans.",
+      "disclaimer": "This calculator gives general estimates and is not a medical diagnosis or prescription. If you are pregnant or breastfeeding, have a condition such as diabetes or kidney disease, or have a history of eating disorders, consult a doctor or registered dietitian. The minimum calorie levels (1,200 women / 1,500 men kcal) are general guidance, not medical standards.",
       "title": "Understanding Calories and Metabolism",
       "bmrTitle": "What is Basal Metabolic Rate (BMR)?",
       "bmr": {
@@ -3177,10 +3305,10 @@
       },
       "calorieTitle": "Healthy Weight Management",
       "calorie": {
-        "0": "Approximately 7700 kcal deficit needed to lose 1kg",
-        "1": "Healthy weight loss is 0.5-1kg per week",
-        "2": "Combining exercise and diet control is most effective",
-        "3": "Consult professionals considering individual differences"
+        "0": "About 7,700 kcal per kg of body weight is a common approximation (based on fat tissue; early weight loss is often faster due to water)",
+        "1": "0.5–1 kg per week (under 1% of body weight) is the usual recommended pace",
+        "2": "Maintenance calories drop as you lose weight, so recalculate every 2–4 weeks",
+        "3": "Combine diet with strength training to limit muscle loss"
       },
       "whatIs": {
         "title": "What is the Calorie Calculator?",
@@ -3189,10 +3317,10 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your gender, age, height (cm), and weight (kg).",
-          "2. Select your activity level (sedentary / light / moderate / active / very active).",
-          "3. Choose your goal: lose weight, maintain, or gain weight.",
-          "4. Your BMR, TDEE, and recommended daily calories for your goal are displayed."
+          "1. Enter sex, age, height and weight, and pick your usual activity level.",
+          "2. Choose lose, maintain or gain, and a weekly pace (0.25–1 kg).",
+          "3. Enter a target weight to see how long it takes, the expected date and a weight chart.",
+          "4. If you know your body fat %, enter it to compare with Katch-McArdle, and check your macro targets."
         ]
       },
       "tips": {
@@ -3207,16 +3335,20 @@
         "title": "Frequently Asked Questions",
         "items": [
           {
+            "q": "How many calories should I eat a day to lose weight?",
+            "a": "Subtract about 550 kcal from your maintenance calories (TDEE) for 0.5 kg a week, or about 1,100 kcal for 1 kg a week (using 1 kg ≈ 7,700 kcal). General guidance is not to go below your BMR or 1,200 (women) / 1,500 (men) kcal, so this calculator uses that floor and shows the realistic pace instead."
+          },
+          {
             "q": "What is the difference between BMR and TDEE?",
-            "a": "BMR (Basal Metabolic Rate) is the minimum energy your body needs at complete rest. TDEE (Total Daily Energy Expenditure) is your actual daily calorie burn — BMR multiplied by an activity factor."
+            "a": "BMR (basal metabolic rate) is the minimum energy your body uses at complete rest. TDEE (maintenance calories) is BMR multiplied by an activity factor (1.2–1.9) — what you actually burn in a day."
           },
           {
-            "q": "Which formula is more accurate?",
-            "a": "The Mifflin-St Jeor formula is considered more accurate for modern populations. The Harris-Benedict formula is older (developed in 1919). This calculator defaults to Mifflin-St Jeor."
+            "q": "Which equation is more accurate?",
+            "a": "For most adults Mifflin-St Jeor (1990) is rated closest to measured values, so it is the default. Harris-Benedict uses the 1984 revision of the 1919 original, and if you know your body fat % you can compare with the lean-mass-based Katch-McArdle."
           },
           {
-            "q": "Do I need to follow the calculated calories exactly?",
-            "a": "The result is an estimate. Individual metabolism, hormones, and health conditions all vary, so use it as a reference and adjust based on actual weight changes."
+            "q": "I'm eating the calculated amount but not losing weight.",
+            "a": "Results are estimates and individuals can differ by ±10% or more. Watch your 2–3 week average weight; if it isn't moving, cut 100–200 kcal a day or add activity."
           }
         ]
       }
@@ -3265,8 +3397,135 @@
     "placeholder": "Calorie calculation results will appear when you enter body information"
   },
   "bodyFat": {
+    "u": {
+      "age": "Age",
+      "unitAge": "yrs",
+      "height": "Height",
+      "weight": "Weight",
+      "howToMeasure": "How to measure",
+      "neck": "Neck",
+      "neckNote": "Just below the larynx, tape sloping slightly down at the front",
+      "waist": "Waist",
+      "waistNoteMale": "Horizontal at navel level, after a relaxed exhale",
+      "waistNoteFemale": "Horizontal at the narrowest point, after a relaxed exhale",
+      "hip": "Hip",
+      "hipNote": "Horizontal at the widest point of the buttocks",
+      "headlineMethod": "Headline method",
+      "m": {
+        "navy": {
+          "name": "US Navy",
+          "uses": "Height, neck, waist (+ hip for women)",
+          "note": "Most widely validated tape method"
+        },
+        "rfm": {
+          "name": "RFM",
+          "uses": "Height, waist",
+          "note": "Woolcott 2018, simple height-to-waist"
+        },
+        "bmi": {
+          "name": "BMI-based",
+          "uses": "Height, weight, age (Deurenberg 1991)",
+          "note": "Overestimates if muscular; tends to underestimate in Asians"
+        },
+        "ymca": {
+          "name": "YMCA",
+          "uses": "Waist, weight",
+          "note": "Little validation; reference only"
+        }
+      },
+      "invalid": "Can't calculate with these inputs. Check height, weight, age and circumferences. Waist must be larger than neck.",
+      "heroLabel": "Estimated body fat ({method})",
+      "heroRange": "true value likely {lo}–{hi}%",
+      "fatMass": "Fat mass",
+      "leanMass": "Lean mass",
+      "fallback": "{method} can't be calculated with these inputs, so another method is shown.",
+      "share": {
+        "label": "My body fat by {method}",
+        "text": "My estimated body fat is {bf}% ({category})"
+      },
+      "compareTitle": "Results by method",
+      "compareNote": "The same body gives different numbers by formula. The light band is each method's approximate error range. Tap to change the headline value.",
+      "errNote": "error about ±{err} pts",
+      "spreadWarn": "Methods differ by {spread} pts. Re-measure, and if you are very muscular or very lean, trust the tape methods (Navy, RFM) more.",
+      "classTitle": "Where you stand",
+      "aceTitle": "ACE categories ({sex})",
+      "aceSource": "Source: American Council on Exercise (ACE). Not age-adjusted.",
+      "ageRange": "Healthy range, age {band}",
+      "hs": {
+        "under": "Below healthy range",
+        "healthy": "Within healthy range",
+        "over": "Above healthy range (overweight)",
+        "obese": "Obese range"
+      },
+      "ageSource": "Source: Gallagher et al. 2000 (AJCN), Western samples.",
+      "ageUnder20": "Adult ranges may not apply under 20.",
+      "waistKr": "Abdominal obesity (waist ≥ {cut}cm, Korea)",
+      "abdYes": "Yes",
+      "abdNo": "No",
+      "whtr": "Waist-to-height ratio (watch ≥ 0.5)",
+      "bmiKr": "BMI (Korean cut-offs)",
+      "bmiClass": {
+        "under": "Underweight",
+        "normal": "Normal",
+        "pre": "Pre-obese",
+        "obese1": "Obesity class 1",
+        "obese2": "Obesity class 2",
+        "obese3": "Obesity class 3"
+      },
+      "krSource": "Waist and BMI cut-offs: Korean Society for the Study of Obesity, 2022 guideline.",
+      "goalTitle": "Reaching a goal body fat",
+      "goalNote": "Assumes you keep your lean mass (muscle, bone) and lose only fat.",
+      "goalLabel": "Goal body fat",
+      "targetWeight": "Target weight",
+      "fatToLose": "Fat to lose",
+      "weightToGain": "Weight to gain",
+      "weeks": "At a 500 kcal/day deficit",
+      "weeksValue": "about {n} wks",
+      "goalTooLow": "This goal is below the athlete range and may be unhealthy. Talk to a professional.",
+      "nextSteps": "Plan your diet next:",
+      "linkCalorie": "Calorie calculator",
+      "linkBmi": "BMI calculator",
+      "logTitle": "My log",
+      "logNote": "Measure under the same conditions (morning, before eating) to see real change. Saved on this device only.",
+      "logSave": "Save today",
+      "logEmpty": "No entries yet. Save today's value to start.",
+      "logDelete": "Delete entry",
+      "delta": {
+        "bf": "Body fat change",
+        "fatKg": "Fat mass change",
+        "leanKg": "Lean mass change",
+        "w": "Weight change"
+      },
+      "chartBf": "Body fat",
+      "svgAlt": "Where to measure neck, waist and hip",
+      "neckShort": "Neck",
+      "waistShort": "Waist",
+      "hipShort": "Hip",
+      "tips": {
+        "neck": [
+          "Just below the larynx (Adam's apple)",
+          "Slope the tape slightly downward at the front",
+          "Look straight ahead, shoulders relaxed"
+        ],
+        "waist": [
+          "Men: horizontal at navel level",
+          "Women: at the narrowest point",
+          "Read at the end of a relaxed exhale (don't suck in)"
+        ],
+        "hip": [
+          "Women only (Navy method)",
+          "At the widest protrusion of the buttocks",
+          "Stand with feet together, tape level"
+        ]
+      },
+      "commonTitle": "General tips:",
+      "common": "Keep the tape snug on the skin without compressing it, level with the floor. Measure 2–3 times, average, and round to 0.5cm. A 1cm difference can shift the result by almost 1 point. The Korean abdominal obesity check measures midway between the lowest rib and the top of the hip bone; the difference is small, so the same value is used here.",
+      "inbodyTitle": "Why it differs from InBody:",
+      "inbody": "Bioelectrical impedance scales like InBody depend on body water. Meals, exercise, alcohol or the menstrual cycle can move them 2–3 points, so a 3–5 point gap with this calculator is common. Whatever you use, measuring the same way over time is what matters.",
+      "disclaimer": "These are formula-based estimates, not a medical diagnosis. For accurate measurement use clinical tests such as DXA, and consult a doctor about your health."
+    },
     "title": "Body Fat Calculator",
-    "description": "Calculate accurate body fat percentage using Navy and YMCA formulas and analyze your body composition",
+    "description": "Estimate body fat from neck, waist and hip tape measurements. Compare Navy, RFM, BMI-based and YMCA formulas side by side with error ranges, lean mass and a goal weight.",
     "input": {
       "title": "Body Information & Measurements",
       "height": "Height (cm)",
@@ -3332,6 +3591,25 @@
       "note": "Ideal body fat ranges may vary by age group. Consult with a professional for accurate diagnosis."
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "US Navy: BF% = 495 ÷ (1.0324 − 0.19077·log₁₀(waist−neck) + 0.15456·log₁₀(height)) − 450 (men, cm). Women use waist+hip−neck with different coefficients.",
+          "RFM: 64 − 20 × height ÷ waist (women start at 76). Derived in 2018 from US NHANES DXA data.",
+          "BMI-based (Deurenberg 1991): 1.2 × BMI + 0.23 × age − 10.8 × sex (male 1, female 0) − 5.4.",
+          "YMCA: a quick formula using only waist (inches) and weight (lb).",
+          "Fat mass = weight × BF%, lean mass = weight − fat mass, target weight = lean mass ÷ (1 − goal BF%)."
+        ]
+      },
+      "comparison": {
+        "title": "Which result to trust",
+        "items": [
+          "With careful measurements, the Navy method is the safest choice; typical error is about ±3–4 points.",
+          "RFM needs only height and waist, and studies found it tracks body fat better than BMI.",
+          "BMI-based estimates overrate muscular people and tend to underrate Asians, who carry more fat at the same BMI.",
+          "Bioimpedance (InBody) is sensitive to hydration; DXA is accurate but needs a clinic."
+        ]
+      },
       "title": "Body Fat Management Guide",
       "measurementTitle": "Tips for Accurate Measurement",
       "measurement": {
@@ -3349,39 +3627,43 @@
       },
       "whatIs": {
         "title": "What is the Body Fat Calculator?",
-        "description": "The Body Fat Calculator estimates your body fat percentage from body measurements (waist, neck, hip circumference, etc.) using the Navy and YMCA formulas. It helps you understand your body composition — the ratio of fat to muscle — beyond what a scale can tell you, enabling more specific health and fitness goals. No special equipment needed."
+        "description": "It estimates the share of your weight that is fat, from tape measurements plus height, weight and age. It shows four formulas side by side (US Navy, RFM, BMI-based Deurenberg, YMCA) with each one's approximate error range, and calculates fat mass, lean mass and the weight matching a goal body fat."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Select your gender (measurement sites differ for men and women).",
-          "2. Enter height, weight, neck circumference, and waist circumference (plus hip circumference for women).",
-          "3. Body fat percentage and classification are shown using both the Navy and YMCA formulas.",
-          "4. Lean mass (muscle, bone, etc.) and fat mass are displayed in kilograms."
+          "1. Enter sex, age, height and weight.",
+          "2. Measure and enter neck and waist (women also hip). See the diagram below for where to measure.",
+          "3. Read the headline body fat with its error range, and compare formulas.",
+          "4. Move the goal slider to see target weight and fat to lose, and save entries to track change."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "For consistent tracking, measure in the morning on an empty stomach under the same conditions each time.",
-          "Measure waist circumference at navel height while exhaling, using a flexible tape measure.",
-          "Healthy body fat targets: men 10–20%, women 18–28%. Athletes often maintain lower percentages."
+          "Measure in the morning before eating, same posture and same spots, so entries are comparable.",
+          "Read the range across formulas, not one number. ±3–5 points of error is normal.",
+          "If weight stays the same but your waist shrinks, you likely lost fat and gained muscle."
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "Which formula is more accurate — Navy or YMCA?",
-            "a": "The Navy formula uses more measurements and is generally considered more accurate. The YMCA formula only uses waist circumference, making it simpler but somewhat less precise."
+            "q": "Which formula is most accurate?",
+            "a": "With careful measurements, the US Navy method is the most widely validated tape method, at about ±3–4 points. RFM does similarly with only height and waist. BMI-based estimates can't tell muscle from fat, so their error is larger."
           },
           {
-            "q": "Why might the result differ from an InBody scan?",
-            "a": "InBody uses bioelectrical impedance for a more direct measurement. This tool provides an estimate based on body circumference — the margin of error is typically 2–4%."
+            "q": "Why does it differ from InBody?",
+            "a": "InBody estimates fat via body water using bioelectrical impedance, so meals, exercise and hydration change the reading. A 3–5 point gap is common; measuring the same way over time matters most."
+          },
+          {
+            "q": "What is a healthy body fat?",
+            "a": "Per Gallagher (2000), the healthy range at age 20–39 is 8–19% for men and 21–32% for women, rising slightly with age. ACE classifies 25%+ (men) and 32%+ (women) as obese."
           },
           {
             "q": "Can body fat be too low?",
-            "a": "Yes. Body fat is essential for hormone production and organ protection. Health problems can arise when body fat drops below about 3–5% for men or 10–13% for women."
+            "a": "Fat is needed for hormones, temperature and organ protection. ACE puts essential fat at 2–5% for men and 10–13% for women; going below that can cause health problems."
           }
         ]
       }
@@ -7030,8 +7312,103 @@
     }
   },
   "textConverter": {
+    "stats": "{chars} chars · {words} words · {lines} lines",
+    "cases": {
+      "title": "Title Case",
+      "hint": "Multi-line input is converted line by line. Acronyms and numbers are split correctly (XMLHttpRequest2 → xml_http_request2).",
+      "upper": "UPPER CASE",
+      "lower": "lower case",
+      "sentence": "Sentence case",
+      "camel": "camelCase",
+      "pascal": "PascalCase",
+      "snake": "snake_case",
+      "screaming": "SCREAMING_SNAKE",
+      "kebab": "kebab-case",
+      "train": "Train-Case",
+      "dot": "dot.case",
+      "path": "path/case"
+    },
+    "groups": {
+      "lines": "Lines",
+      "space": "Whitespace & line breaks",
+      "chars": "Characters",
+      "case": "Case"
+    },
+    "ops": {
+      "sortAsc": "Sort (natural)",
+      "sortDesc": "Sort descending",
+      "sortLength": "Sort by length",
+      "reverseLines": "Reverse line order",
+      "shuffle": "Shuffle",
+      "dedupe": "Remove duplicate lines",
+      "removeEmpty": "Remove empty lines",
+      "trimLines": "Trim each line",
+      "numberLines": "Number lines",
+      "collapseSpaces": "Collapse spaces",
+      "joinLines": "Line breaks → space",
+      "spaceToLines": "Spaces → line breaks",
+      "commaToLines": "Commas → line breaks",
+      "tabsToSpaces": "Tab → 4 spaces",
+      "spacesToTabs": "4 spaces → tab",
+      "removeSpaces": "Remove all spaces",
+      "toHalf": "Full-width → half-width",
+      "toFull": "Half-width → full-width",
+      "reverseText": "Reverse characters"
+    },
+    "steps": {
+      "replace": "{find} → {repl}",
+      "affix": "Wrap {prefix}…{suffix}"
+    },
+    "list": {
+      "title": "Join into a list",
+      "hint": "One item per line. Empty lines are skipped; if every item is a number, no quotes are added (leading zeros stay strings).",
+      "sqlIn": "SQL IN ('a', 'b')",
+      "jsArray": "JS array ['a', 'b']",
+      "json": "JSON [\"a\", \"b\"]",
+      "comma": "Comma list a, b"
+    },
+    "replace": {
+      "title": "Find & replace",
+      "find": "Find",
+      "repl": "Replace with (empty = delete)",
+      "regex": "Regex",
+      "ignoreCase": "Ignore case",
+      "multiline": "^ $ per line (m)",
+      "dotAll": ". matches newline (s)",
+      "plainHint": "Finds the exact text and replaces every occurrence.",
+      "regexHint": "In the replacement you can use $1·$2 (groups), $& (whole match), \\n (newline), \\t (tab). Regex steps are skipped when the input exceeds {max} characters."
+    },
+    "affix": {
+      "title": "Add prefix / suffix to each line",
+      "prefix": "Prefix (e.g. - )",
+      "suffix": "Suffix (e.g. ;)",
+      "hint": "Empty lines are left alone."
+    },
+    "addStep": "Add step",
+    "pipeline": {
+      "title": "Clean up lines & whitespace — step by step",
+      "hint": "Each button adds a step in order and the result updates instantly. e.g. Trim → Remove empty lines → Remove duplicates → SQL IN.",
+      "steps": "{n} steps applied",
+      "undo": "Undo",
+      "reset": "Clear all",
+      "remove": "Remove this step",
+      "empty": "No steps yet. Tap a button to add one. The output currently shows your input unchanged."
+    },
+    "errors": {
+      "badRegex": "Invalid regex — this step is skipped.",
+      "tooLong": "Input exceeds {max} characters, so the regex step is skipped."
+    },
+    "shortcut": "Shortcut: Ctrl/⌘ + Enter copies the result. Shared links keep only the selected steps, never your text.",
+    "related": {
+      "title": "Related tools",
+      "characterCounter": "Character counter",
+      "koreanSyllable": "Korean initials / jamo / romanization",
+      "keyboardConverter": "Korean–English keyboard fix",
+      "fancyText": "Fancy text",
+      "regexExtractor": "Regex extractor"
+    },
     "title": "Text Converter",
-    "description": "Convert text case, coding style, and formatting in various ways.",
+    "description": "Paste once to see 12 case styles side by side (UPPER, Title Case, camelCase, snake_case and more), then chain line tools: sort, dedupe, find & replace, and an SQL IN list builder.",
     "categories": {
       "case": "Case",
       "coding": "Coding Conventions",
@@ -7060,11 +7437,12 @@
       "numberLines": "Number Lines"
     },
     "input": {
+      "sample": "Load sample",
       "label": "Input",
       "placeholder": "Enter text to convert..."
     },
     "output": {
-      "label": "Output"
+      "label": "Result"
     },
     "preview": {
       "title": "Quick Preview"
@@ -7075,6 +7453,16 @@
       "clear": "Clear"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How words are split",
+        "items": [
+          "At separators such as space, _, -, . and /: user_id-name → user, id, name",
+          "At a lowercase-to-uppercase change: getUserName → get, User, Name",
+          "Runs of capitals (acronyms) stay together and split before the next capitalized word: XMLHttpRequest → XML, Http, Request",
+          "Digits stick to the preceding word: Request2Parser → request2, parser / HTML5Parser → html5, parser",
+          "Scripts without case (e.g. Korean) are kept as-is and split where they meet Latin letters: 주문Id → 주문, Id"
+        ]
+      },
       "title": "Text Conversion Guide",
       "caseConversions": {
         "title": "Case Conversion Examples"
@@ -7090,23 +7478,25 @@
       },
       "whatIs": {
         "title": "What is the Text Converter?",
-        "description": "A developer tool offering a variety of text format transformations: case conversion (upper/lower), naming-convention styles (camelCase, PascalCase, snake_case, kebab-case, etc.), whitespace cleanup, and line break handling. Use it for standardizing variable naming conventions, processing CSV data, or cleaning up document text."
+        "description": "Paste text once and see UPPER, lower, Title Case, Sentence case, camelCase, PascalCase, snake_case, SCREAMING_SNAKE, kebab-case, Train-Case, dot.case and path/case all at the same time, then copy the one you need. The step tools below let you chain line sorting, de-duplication, empty-line removal, find & replace (regex), full/half-width conversion and SQL IN / JS array generation."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Paste the text you want to transform into the input area.",
-          "2. Select the desired conversion: uppercase, lowercase, camelCase, PascalCase, snake_case, etc.",
-          "3. The converted result is displayed immediately.",
-          "4. Use the copy button to save the result to your clipboard."
+          "Paste your text into the input. Multi-line input is converted line by line.",
+          "In 'Every case at once', press the copy button next to the format you need.",
+          "For cleanup, press the buttons below to stack steps. Steps run in the order you add them and can be undone or removed individually.",
+          "Copy the result with the button or Ctrl/⌘ + Enter. Sharing the URL reopens the same steps (your text is not included)."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Useful for batch-converting API response field names from snake_case to JavaScript's camelCase.",
-          "Easily convert SQL column names (UPPER_CASE) to code variable names, or vice versa.",
-          "Try the join-lines feature to merge multiple lines into one, or replace line breaks with a custom delimiter."
+          "IDs copied from a spreadsheet → Trim → Remove empty lines → Remove duplicates → SQL IN gives you a ready-made WHERE id IN (...) clause.",
+          "Paste several snake_case API field names and copy the camelCase versions in one go.",
+          "Sorting is natural, so file2 comes before file10.",
+          "Use 'Line breaks → space' for text copied from PDFs, and 'Full-width → half-width' for ＡＢＣ１２３ from CJK documents.",
+          "With regex on (m flag), replacing ^ with '- ' turns every line into a bullet."
         ]
       },
       "faq": {
@@ -7114,15 +7504,23 @@
         "items": [
           {
             "q": "What is the difference between camelCase and PascalCase?",
-            "a": "camelCase starts with a lowercase letter and capitalizes subsequent words (e.g., myVariable). PascalCase capitalizes every word (e.g., MyClass). PascalCase is typically used for class names; camelCase for variables and functions."
+            "a": "camelCase starts lowercase and capitalizes later words (myVariable). PascalCase capitalizes every word (MyClass). Variables and functions usually use camelCase; classes and components use PascalCase."
           },
           {
             "q": "Does it work with Korean text?",
-            "a": "Case conversion only applies to Latin characters. In mixed text, only the English parts are converted while Korean characters remain unchanged."
+            "a": "Korean has no letter case, so characters are kept and only word separators change (사용자 이름 → 사용자_이름). Sorting follows Korean order, and character reversal works on whole graphemes so Hangul and emoji never break. For initial-consonant extraction or romanization, use the Korean initials / jamo / romanization tool."
           },
           {
             "q": "What rules does Title Case follow?",
-            "a": "Title Case capitalizes the first letter of each word. Handling of articles (a, an, the) and conjunctions (and, or) may vary depending on settings."
+            "a": "Every word is capitalized except articles, short prepositions and conjunctions (a, an, the, and, or, of, to, in, on, at…) that are neither the first nor the last word. Words that already mix cases, like NASA or iPhone, are preserved unless most of the line is in capitals."
+          },
+          {
+            "q": "How are names with acronyms and numbers split?",
+            "a": "XMLHttpRequest2Parser is split into XML / Http / Request2 / Parser, so snake_case gives xml_http_request2_parser. Digits stay attached to the preceding word."
+          },
+          {
+            "q": "Is my text sent to a server?",
+            "a": "No. Everything runs in your browser, and shared links contain only the names of the selected steps, never your text."
           }
         ]
       }
@@ -35206,8 +35604,126 @@
     }
   },
   "screenCompare": {
+    "scenarios": "Popular comparisons",
+    "slot": "Screen {n}",
+    "custom": "Custom",
+    "kinds": {
+      "monitor": "Monitor",
+      "tv": "TV",
+      "laptop": "Laptop",
+      "tablet": "Tablet",
+      "phone": "Phone"
+    },
+    "ratioPick": "Set aspect ratio",
+    "scaleLabel": "Scaling",
+    "scaleAuto": "Auto scaling ({s}%)",
+    "scaleN": "Scaling {s}%",
+    "invalid": "Enter a size and resolution",
+    "rotate": "Rotate",
+    "hero": {
+      "single": "Actual size of {name}",
+      "size": "{w} × {h} cm",
+      "bigger": "{b} has {p}% more screen area than {a}",
+      "smaller": "{b} has {p}% less screen area than {a}",
+      "sameArea": "Both screens have almost the same area",
+      "sharper": "{b} has {p}% higher pixel density (PPI), so it looks sharper",
+      "blurrier": "{b} has {p}% lower pixel density (PPI)",
+      "samePpi": "Pixel density (PPI) is almost the same, so sharpness is similar",
+      "ppiOne": "{ppi} PPI · pixels become indistinguishable beyond {d}",
+      "workspace": "Workspace (with scaling): A {a}× → B {b}× of FHD"
+    },
+    "share": {
+      "text": "{a} vs {b}: {b} screen area {area}, PPI {pa} → {pb}"
+    },
+    "card": {
+      "label": "{b} vs {a}",
+      "area": "Area {v}"
+    },
+    "align": {
+      "bl": "Bottom-left",
+      "center": "Centered",
+      "side": "Side by side"
+    },
+    "visualNote": "All screens are drawn to the same scale (real cm proportions). Line styles also tell them apart. Active display area only, excluding bezels and stands.",
+    "table": {
+      "size": "Width × height",
+      "vsA": "{p} vs A",
+      "dotPitch": "Pixel pitch",
+      "scale": "Scaling (Windows)",
+      "auto": "auto",
+      "pcOnly": "PC screens only",
+      "workspace": "Workspace (scaled)",
+      "fhd": "{x}× FHD",
+      "distSmpte": "Viewing distance · SMPTE 30°",
+      "distThx": "Viewing distance · THX 40°",
+      "distRetina": "Retina distance (1 arcmin)",
+      "note": "SMPTE 30° and THX 40° are distances at which the screen width fills that horizontal viewing angle (width ÷ (2 × tan(angle/2))). Retina distance is where one pixel subtends 1 arcminute (1/60°, the limit of 20/20 vision); beyond it pixels can't be told apart. Scaling is estimated Windows-style (96 PPI = 100%) so the effective PPI is 120 or less, and can be changed per screen. Workspace is the area multiple of FHD (1920×1080 at 100%)."
+    },
+    "guide": {
+      "title": "Screen Size Comparison Guide",
+      "whatIs": {
+        "title": "Why inches alone don't tell you the size",
+        "description": "Screen size in inches is the diagonal, so screens with different aspect ratios have different widths, heights and areas even at the same size. This tool turns diagonal and resolution into real width and height (cm), area difference, PPI, scaled workspace and recommended viewing distance, and draws every screen to the same scale."
+      },
+      "formulas": {
+        "title": "How it's calculated",
+        "items": [
+          "Width = diagonal × width px ÷ √(width px² + height px²), height likewise (1 inch = 2.54 cm). A 27\" 16:9 screen is 59.8 × 33.6 cm.",
+          "Area grows with the square of the diagonal. At 16:9, a 32\" screen is (32 ÷ 27)² ≈ 1.40×, i.e. 40% larger than 27\".",
+          "PPI = √(width px² + height px²) ÷ diagonal (in), pixel pitch (mm) = 25.4 ÷ PPI.",
+          "Workspace = resolution ÷ scaling. A 32\" 4K at 125% gives 3072×1728, about 2.56× the content of FHD at 100%.",
+          "At the same diagonal, wider ratios like 21:9 or 32:9 are shorter and have less area. A 34\" 21:9 is about 33.4 cm tall — almost the same as a 27\" 16:9 (33.6 cm)."
+        ]
+      },
+      "distance": {
+        "title": "Reading the viewing distances",
+        "items": [
+          "SMPTE 30°: the screen width fills 30° of your view — a common TV guideline. About 2.7 m for a 65\" 16:9.",
+          "THX 40°: a more immersive, cinema-like distance. About 2.0 m for a 65\" 16:9.",
+          "Retina distance: where one pixel subtends 1 arcminute (the 20/20 limit). You need to sit closer than this to notice the extra resolution. About 1.3 m for a 65\" 4K, about 80 cm for a 27\" QHD.",
+          "Monitors are usually viewed at 60–80 cm, so a 27\" QHD (retina ≈ 80 cm) is borderline while a 27\" 4K (≈ 54 cm) shows no visible pixels."
+        ]
+      },
+      "tips": {
+        "title": "Buying tips",
+        "items": [
+          "Going from 27\" QHD to 32\" 4K gives 40% more area and 27% higher PPI. At 125% scaling you also get 1.44× the workspace.",
+          "For a TV, measure the distance to your sofa and pick a size between the SMPTE and THX distances. At 2.5 m that's roughly 60–80\".",
+          "For phones the aspect ratio matters more than inches. A 6.3\" 19.5:9 phone (iPhone 17) is only about 6.7 cm wide.",
+          "Use Rotate to compare portrait monitors or phones, and share the link to reopen the exact same comparison."
+        ]
+      },
+      "ppiNote": "Perceived sharpness depends on distance. For 20/20 vision, pixels disappear at about 290 PPI for a phone (~30 cm), 110–145 PPI for a monitor (60–80 cm), and only about 30 PPI for a TV at 3 m.",
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "27\" QHD vs 32\" 4K — which is bigger and sharper?",
+            "a": "The 32\" 4K is 70.8 × 39.8 cm, about 40% more area than the 27\" QHD (59.8 × 33.6 cm). Its PPI is also higher (138 vs 109), so text looks sharper at the same distance. A 4K screen is usually used at 125–150% scaling for comfortable text size."
+          },
+          {
+            "q": "How big is a 65\" TV really?",
+            "a": "A 16:9 65\" panel is about 143.9 cm wide and 80.9 cm tall, excluding bezels. The SMPTE 30° viewing distance is about 2.7 m, the THX 40° distance about 2.0 m, and 4K pixels stop being distinguishable at about 1.3 m."
+          },
+          {
+            "q": "Is a screen twice the inches twice as big?",
+            "a": "No. At the same ratio, area grows with the square of the diagonal, so twice the inches means four times the area. Going from 55\" to 65\" is 18% more diagonal but about 40% more area."
+          },
+          {
+            "q": "Why do two 34\" screens differ in size?",
+            "a": "Aspect ratio. A 21:9 34\" (3440×1440) is 79.7 × 33.4 cm — wider but shorter than a 16:9 34\" (75.3 × 42.3 cm), with about 17% less area."
+          },
+          {
+            "q": "Why does scaling matter?",
+            "a": "High-resolution screens at 100% make text tiny, so they're used at 125–200%. The visible workspace then becomes resolution ÷ scaling. A 27\" 4K at 150% gives 2560×1440 — the same workspace as a 27\" QHD, just sharper."
+          }
+        ]
+      },
+      "linkScreenInfo": "Check my screen resolution & PPI",
+      "linkAspectRatio": "Aspect ratio calculator"
+    },
     "title": "Screen Size Comparison",
-    "description": "Visually compare screen sizes of smartphones, tablets, laptops, and monitors at accurate proportions",
+    "description": "Compare monitors, TVs, laptops and phones by size and resolution: real width and height (cm), area difference, PPI, scaled workspace and recommended viewing distance.",
     "category": {
       "all": "All",
       "phone": "Phone",
@@ -35227,9 +35743,9 @@
     "cancel": "Cancel",
     "remove": "Remove",
     "addDevice": "Add device",
-    "visualTitle": "Visual Size Comparison",
+    "visualTitle": "Overlay at the same scale",
     "scaleNote": "* Displayed at proportional scale — not actual size",
-    "specsTitle": "Specs Comparison",
+    "specsTitle": "Detailed comparison",
     "spec": "Spec",
     "specCategory": "Category",
     "specDiagonal": "Screen size",
@@ -35243,7 +35759,7 @@
       "retina": "Retina-class ultra-high resolution",
       "sharp": "Sharp high resolution",
       "normal": "Standard resolution",
-      "low": "Low resolution (visible pixels)"
+      "low": "Low density (pixels visible up close; fine for TVs viewed from afar)"
     }
   },
   "mahjongSolitaire": {

@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
-  description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요. 음식 칼로리와 운동 소모 칼로리도 함께 확인할 수 있습니다.',
+  description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요. 목표 체중 도달 예상일, 안전 하한선, 탄단지 권장량까지 함께 보여 줍니다.',
   keywords: [
     '칼로리 계산기',
     '기초대사율',

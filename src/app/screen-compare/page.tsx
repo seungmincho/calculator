@@ -6,7 +6,7 @@ import RelatedTools from '@/components/RelatedTools'
 export const metadata: Metadata = {
   title: '화면 크기 비교 - 디바이스 비교 | 툴허브',
   description: '스마트폰, 태블릿, 노트북, 모니터 등 다양한 디바이스의 화면 크기를 비율에 맞게 시각적으로 비교하세요. PPI, 해상도, 화면 넓이 등 상세 스펙 비교 제공.',
-  keywords: '화면 크기 비교, 디바이스 비교, 스마트폰 화면 비교, 모니터 크기 비교, PPI 계산, 해상도 비교, 아이폰 갤럭시 비교, 화면 인치 비교',
+  keywords: '화면 크기 비교, 디바이스 비교, 스마트폰 화면 비교, 모니터 크기 비교, PPI 계산, 해상도 비교, 아이폰 갤럭시 비교, 화면 인치 비교, TV 크기 비교, 65인치 TV 크기, 모니터 크기 비교 cm, 27인치 32인치 비교, TV 시청거리',
   openGraph: {
     title: '화면 크기 비교 | 툴허브',
     description: '스마트폰·태블릿·모니터 화면 크기 시각적 비교',
@@ -38,7 +38,7 @@ export default function ScreenComparePage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['화면 크기 시각적 비교', 'PPI 계산', '해상도 비교', '최대 4개 디바이스 동시 비교', '커스텀 크기 입력'],
+    featureList: ['모니터·TV·노트북·폰 크기 비교(최대 4개)', '같은 비율로 겹쳐 그리기', '실제 가로·세로 cm와 면적 차이 %', 'PPI·도트 피치 비교', 'Windows 배율 적용 작업 공간 비교', '권장 시청거리(SMPTE·THX·레티나)', '링크·이미지로 비교 결과 공유'],
   }
 
   const faqJsonLd = {

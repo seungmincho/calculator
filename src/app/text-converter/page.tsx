@@ -38,7 +38,7 @@ export default function TextConverterPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['대소문자 변환', 'camelCase 변환', 'snake_case 변환', 'kebab-case 변환', 'URI 인코딩']
+    featureList: ['12가지 케이스 한 번에 변환(camelCase·snake_case·kebab-case 등)', '줄 정렬·중복 제거·빈 줄 제거', '찾아 바꾸기(정규식 지원)', '줄마다 앞뒤 문자 추가', 'SQL IN·JS 배열 목록 만들기', '전각↔반각 변환', '변환 단계 이어 붙이기']
   }
 
   const faqJsonLd = {
@@ -55,10 +55,10 @@ export default function TextConverterPage() {
       },
       {
         '@type': 'Question',
-        name: '한글 초성 추출은 어떻게 하나요?',
+        name: '여러 줄을 SQL IN 목록이나 배열로 바꿀 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: "한글 유니코드는 0xAC00부터 시작하며, 각 글자는 초성(19개) × 중성(21개) × 종성(28개) = 11,172개로 구성됩니다. 초성 인덱스 = (글자코드 - 0xAC00) ÷ 588. 예: '한'(0xD55C)의 초성은 ㅎ(인덱스 18). 초성 목록: ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ. 검색 자동완성, 주소록 필터링 등에 활용됩니다.",
+          text: '네. 한 줄에 하나씩 값을 붙여 넣고 목록 만들기에서 SQL IN, JS 배열, JSON 배열, 쉼표 목록 중 하나를 고르면 따옴표와 쉼표를 자동으로 붙여 줍니다. 모든 값이 숫자면 따옴표 없이, 앞자리 0이 있는 값은 문자열로 처리합니다.',
         },
       },
       {
@@ -99,9 +99,9 @@ export default function TextConverterPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>언어별 케이스 규칙:</strong> JavaScript·TypeScript 변수명은 camelCase, 클래스명은 PascalCase, Python·DB 컬럼은 snake_case, CSS 클래스·URL은 kebab-case를 사용하는 것이 표준입니다.</li>
-            <li><strong>URL 슬러그 생성:</strong> 한글 제목을 영문 kebab-case로 변환하면 SEO 친화적인 URL 슬러그를 만들 수 있습니다. 공백은 하이픈으로 자동 변환됩니다.</li>
+            <li><strong>URL 슬러그 생성:</strong> 영문 제목을 kebab-case로 바꾸면 SEO 친화적인 URL 슬러그를 만들 수 있습니다. 공백과 특수문자는 하이픈으로 정리됩니다.</li>
             <li><strong>상수명 변환:</strong> SCREAMING_SNAKE_CASE(전체 대문자 + 밑줄)는 프로그램 상수(MAX_VALUE, API_KEY)에 주로 사용되며, 변환 후 바로 코드에 복사할 수 있습니다.</li>
-            <li><strong>한글 초성 추출:</strong> 한글 텍스트에서 초성만 추출하는 기능은 주소록 정렬, 검색 자동완성 구현, 단어 퀴즈 제작 등에 활용할 수 있습니다.</li>
+            <li><strong>목록 정리:</strong> 엑셀에서 복사한 값 목록의 중복과 빈 줄을 지우고 가나다순으로 정렬한 뒤 SQL IN 조건이나 배열로 바로 바꿀 수 있습니다. 한글 초성 추출은 한글 자모 분리 도구를 이용하세요.</li>
           </ul>
         </div>
       </section>

@@ -1,789 +1,433 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Activity, Calculator, Target, Users, Share2, Check, Save } from 'lucide-react'
-import CalculationHistory from './CalculationHistory'
-import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
+import { AlertTriangle, Trash2 } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  METHODS, ERR, ACE, CATEGORIES, ABDOMINAL, estimate, category, healthyRange, healthyStatus, composition, targetWeight,
+  weeksToLose, abdominalObese, whtr, bmi, bmiClass, parseMethod, sanitizeLog, upsertLog, logDelta, LOG_KEY,
+  type Sex, type Method, type LogEntry,
+} from '@/utils/bodyFat'
 
-interface BodyFatResult {
-  bodyFatPercentage: number // 체지방률 (%)
-  fatMass: number // 체지방량 (kg)
-  leanMass: number // 근육량 (kg)
-  category: string // 체지방률 분류
-  healthRisk: string // 건강 위험도
-  idealRange: { min: number; max: number } // 이상적인 체지방률 범위
-  visceralFatLevel: number // 내장지방 레벨 추정
+const f1 = (n: number) => (Math.round(n * 10) / 10).toFixed(1)
+const signed = (n: number) => `${n > 0 ? '+' : ''}${f1(n)}`
+/** URL 값 → 범위 안이면 문자열, 아니면 기본값 */
+const pick = (v: string | null, min: number, max: number, def: string) => {
+  const n = parseFloat(v ?? '')
+  return n >= min && n <= max ? String(n) : def
 }
-
-type Gender = 'male' | 'female'
-type Formula = 'navy' | 'ymca' | 'covert-bailey'
-type AgeGroup = 'young' | 'adult' | 'senior' // 20-39, 40-59, 60+
+const todayStr = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
 export default function BodyFatCalculator() {
   const t = useTranslations('bodyFat')
-  const tCommon = useTranslations('common')
-  const [height, setHeight] = useState<string>('')
-  const [weight, setWeight] = useState<string>('')
-  const [age, setAge] = useState<string>('')
-  const [gender, setGender] = useState<Gender>('male')
-  const [formula, setFormula] = useState<Formula>('navy')
-  
-  // Navy 공식용 측정값
-  const [waist, setWaist] = useState<string>('')
-  const [neck, setNeck] = useState<string>('')
-  const [hip, setHip] = useState<string>('') // 여성용
-  
-  const [result, setResult] = useState<BodyFatResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-  const [showSaveButton, setShowSaveButton] = useState(false)
-  
-  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('bodyFat')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  const calculateBodyFat = () => {
-    const h = parseFloat(height)
-    const w = parseFloat(weight)
-    const a = parseFloat(age)
-    const waistCm = parseFloat(waist)
-    const neckCm = parseFloat(neck)
-    const hipCm = parseFloat(hip)
-
-    if (!h || !w || !a || !waistCm || !neckCm || h <= 0 || w <= 0 || a <= 0 || waistCm <= 0 || neckCm <= 0) return
-    if (gender === 'female' && (!hipCm || hipCm <= 0)) return
-
-    let bodyFatPercentage: number
-
-    if (formula === 'navy') {
-      // Navy 공식 (가장 정확)
-      if (gender === 'male') {
-        // 남성: 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450
-        const log10WaistMinusNeck = Math.log10(waistCm - neckCm)
-        const log10Height = Math.log10(h)
-        bodyFatPercentage = 495 / (1.0324 - 0.19077 * log10WaistMinusNeck + 0.15456 * log10Height) - 450
-      } else {
-        // 여성: 495 / (1.29579 - 0.35004 * log10(waist + hip - neck) + 0.22100 * log10(height)) - 450
-        const log10WaistPlusHipMinusNeck = Math.log10(waistCm + hipCm - neckCm)
-        const log10Height = Math.log10(h)
-        bodyFatPercentage = 495 / (1.29579 - 0.35004 * log10WaistPlusHipMinusNeck + 0.22100 * log10Height) - 450
-      }
-    } else if (formula === 'ymca') {
-      // YMCA 공식 (간단하지만 덜 정확)
-      const bmi = w / ((h / 100) * (h / 100))
-      if (gender === 'male') {
-        bodyFatPercentage = 1.61 * bmi + 0.13 * a - 12.1
-      } else {
-        bodyFatPercentage = 1.48 * bmi + 0.16 * a - 7.0
-      }
-    } else {
-      // Covert Bailey 공식
-      const bmi = w / ((h / 100) * (h / 100))
-      if (gender === 'male') {
-        bodyFatPercentage = 1.61 * bmi + 0.13 * a - 12.1
-      } else {
-        bodyFatPercentage = 1.48 * bmi + 0.16 * a - 7.0
-      }
-    }
-
-    // 범위 제한
-    bodyFatPercentage = Math.max(3, Math.min(50, bodyFatPercentage))
-
-    // 체지방량과 근육량 계산
-    const fatMass = (bodyFatPercentage / 100) * w
-    const leanMass = w - fatMass
-
-    // 연령대 구분
-    const ageGroup: AgeGroup = a < 40 ? 'young' : a < 60 ? 'adult' : 'senior'
-
-    // 체지방률 분류 및 이상적인 범위
-    let category: string
-    let healthRisk: string
-    let idealRange: { min: number; max: number }
-
-    if (gender === 'male') {
-      idealRange = ageGroup === 'young' ? { min: 10, max: 18 } : 
-                   ageGroup === 'adult' ? { min: 12, max: 20 } : 
-                   { min: 14, max: 22 }
-      
-      if (bodyFatPercentage < 6) {
-        category = 'essential'
-        healthRisk = t('healthRisks.essential')
-      } else if (bodyFatPercentage < idealRange.min) {
-        category = 'athletic'
-        healthRisk = t('healthRisks.athletic')
-      } else if (bodyFatPercentage <= idealRange.max) {
-        category = 'fitness'
-        healthRisk = t('healthRisks.fitness')
-      } else if (bodyFatPercentage < 25) {
-        category = 'average'
-        healthRisk = t('healthRisks.average')
-      } else if (bodyFatPercentage < 30) {
-        category = 'overweight'
-        healthRisk = t('healthRisks.overweight')
-      } else {
-        category = 'obese'
-        healthRisk = t('healthRisks.obese')
-      }
-    } else {
-      idealRange = ageGroup === 'young' ? { min: 16, max: 24 } : 
-                   ageGroup === 'adult' ? { min: 18, max: 26 } : 
-                   { min: 20, max: 28 }
-      
-      if (bodyFatPercentage < 10) {
-        category = 'essential'
-        healthRisk = t('healthRisks.essential')
-      } else if (bodyFatPercentage < idealRange.min) {
-        category = 'athletic'
-        healthRisk = t('healthRisks.athletic')
-      } else if (bodyFatPercentage <= idealRange.max) {
-        category = 'fitness'
-        healthRisk = t('healthRisks.fitness')
-      } else if (bodyFatPercentage < 32) {
-        category = 'average'
-        healthRisk = t('healthRisks.average')
-      } else if (bodyFatPercentage < 38) {
-        category = 'overweight'
-        healthRisk = t('healthRisks.overweight')
-      } else {
-        category = 'obese'
-        healthRisk = t('healthRisks.obese')
-      }
-    }
-
-    // 내장지방 레벨 추정 (허리둘레 기반)
-    let visceralFatLevel: number
-    if (gender === 'male') {
-      visceralFatLevel = Math.max(1, Math.min(30, (waistCm - 70) / 3))
-    } else {
-      visceralFatLevel = Math.max(1, Math.min(30, (waistCm - 60) / 3))
-    }
-
-    const calculationResult = {
-      bodyFatPercentage,
-      fatMass,
-      leanMass,
-      category,
-      healthRisk,
-      idealRange,
-      visceralFatLevel
-    }
-
-    setResult(calculationResult)
-    setShowSaveButton(true)
-  }
+  const [sex, setSex] = useState<Sex>(() => (sp.get('gender') === 'female' ? 'female' : 'male'))
+  const [age, setAge] = useState(() => pick(sp.get('age'), 10, 100, '35'))
+  const [height, setHeight] = useState(() => pick(sp.get('height'), 100, 250, '175'))
+  const [weight, setWeight] = useState(() => pick(sp.get('weight'), 25, 300, '75'))
+  const [neck, setNeck] = useState(() => pick(sp.get('neck'), 15, 80, '38'))
+  const [waist, setWaist] = useState(() => pick(sp.get('waist'), 40, 200, '85'))
+  const [hip, setHip] = useState(() => pick(sp.get('hip'), 50, 200, '96'))
+  const [method, setMethod] = useState<Method>(() => parseMethod(sp.get('formula')))
+  const [goalIn, setGoalIn] = useState<number | null>(() => {
+    const g = parseFloat(sp.get('goal') ?? '')
+    return g >= 5 && g <= 40 ? g : null
+  })
+  const [log, setLog] = useState<LogEntry[]>([])
 
   useEffect(() => {
-    if (height && weight && age && waist && neck) {
-      if (gender === 'male' || (gender === 'female' && hip)) {
-        calculateBodyFat()
-        updateURL({
-          height,
-          weight,
-          age,
-          gender,
-          formula,
-          waist,
-          neck,
-          hip: gender === 'female' ? hip : '0'
-        })
-      }
-    }
-  }, [height, weight, age, gender, formula, waist, neck, hip])
-
-  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
-  useEffect(() => {
-    const heightParam = searchParams.get('height')
-    if (!heightParam) return
-
-    const weightParam = searchParams.get('weight')
-    const ageParam = searchParams.get('age')
-    const genderParam = searchParams.get('gender')
-    const formulaParam = searchParams.get('formula')
-    const waistParam = searchParams.get('waist')
-    const neckParam = searchParams.get('neck')
-    const hipParam = searchParams.get('hip')
-
-    if (heightParam && /^\d+(\.\d+)?$/.test(heightParam)) {
-      setHeight(heightParam)
-    }
-    if (weightParam && /^\d+(\.\d+)?$/.test(weightParam)) {
-      setWeight(weightParam)
-    }
-    if (ageParam && /^\d+$/.test(ageParam)) {
-      setAge(ageParam)
-    }
-    if (genderParam && ['male', 'female'].includes(genderParam)) {
-      setGender(genderParam as Gender)
-    }
-    if (formulaParam && ['navy', 'ymca', 'covert-bailey'].includes(formulaParam)) {
-      setFormula(formulaParam as Formula)
-    }
-    if (waistParam && /^\d+(\.\d+)?$/.test(waistParam)) {
-      setWaist(waistParam)
-    }
-    if (neckParam && /^\d+(\.\d+)?$/.test(neckParam)) {
-      setNeck(neckParam)
-    }
-    if (hipParam && /^\d+(\.\d+)?$/.test(hipParam) && hipParam !== '0') {
-      setHip(hipParam)
-    }
+    try { setLog(sanitizeLog(JSON.parse(localStorage.getItem(LOG_KEY) ?? '[]'))) } catch { /* 없음 */ }
   }, [])
-
-  const formatNumber = (num: number, decimals: number = 1) => {
-    return num.toFixed(decimals)
+  const saveLog = (next: LogEntry[]) => {
+    setLog(next)
+    try { localStorage.setItem(LOG_KEY, JSON.stringify(next)) } catch { /* 저장 불가 */ }
   }
 
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value !== '0') {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
-    })
-    router.replace(`?${params.toString()}`, { scroll: false })
+  const goal = goalIn ?? (sex === 'male' ? 15 : 23)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const set = { gender: sex, age, height, weight, neck, waist, formula: method } as Record<string, string>
+    Object.entries(set).forEach(([k, v]) => url.searchParams.set(k, v))
+    if (sex === 'female') url.searchParams.set('hip', hip)
+    else url.searchParams.delete('hip')
+    if (goalIn != null) url.searchParams.set('goal', String(goalIn))
+    else url.searchParams.delete('goal')
+    window.history.replaceState({}, '', url)
+  }, [sex, age, height, weight, neck, waist, hip, method, goalIn])
+
+  const input = useMemo(() => ({
+    sex, age: Number(age) || 0, heightCm: Number(height) || 0, weightKg: Number(weight) || 0,
+    waistCm: Number(waist) || 0, neckCm: Number(neck) || 0, hipCm: Number(hip) || 0,
+  }), [sex, age, height, weight, waist, neck, hip])
+
+  const est = useMemo(() => estimate(input), [input])
+  // 고른 방법이 계산 불가(예: 목 ≥ 허리)면 계산되는 첫 방법으로
+  const used: Method | null = est[method] != null ? method : (METHODS.find((m) => est[m] != null) ?? null)
+  const bf = used ? est[used]! : null
+  const values = METHODS.map((m) => est[m]).filter((v): v is number => v != null)
+  const spread = values.length > 1 ? Math.max(...values) - Math.min(...values) : 0
+
+  const comp = bf != null ? composition(input.weightKg, bf) : null
+  const cat = bf != null ? category(sex, bf) : null
+  const range = healthyRange(sex, input.age)
+  const hs = bf != null ? healthyStatus(sex, input.age, bf) : null
+  const b = input.heightCm > 0 && input.weightKg > 0 ? bmi(input.heightCm, input.weightKg) : 0
+  const ratio = input.heightCm > 0 ? whtr(input.waistCm, input.heightCm) : 0
+  const abdominal = abdominalObese(sex, input.waistCm)
+  const target = comp ? targetWeight(comp.leanKg, goal) : 0
+  const toLose = comp ? input.weightKg - target : 0
+  const delta = logDelta(log)
+
+  const lo = bf != null && used ? Math.max(2, bf - ERR[used]) : 0
+  const hi = bf != null && used ? bf + ERR[used] : 0
+
+  const addLog = () => {
+    if (bf == null || !used) return
+    saveLog(upsertLog(log, { d: todayStr(), bf: Math.round(bf * 10) / 10, w: input.weightKg, waist: input.waistCm, m: used }))
   }
 
-  const handleShare = async () => {
-    if (!result) return
-    
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const numField = (label: string, value: string, set: (v: string) => void, unit: string, note?: string) => (
+    <div>
+      <label className="block text-sm font-medium text-body mb-1.5">
+        {label} <span className="text-faint font-normal">({unit})</span>
+        <input type="number" inputMode="decimal" step="0.1" min="0" value={value} onChange={(e) => set(e.target.value)}
+          className="ui-field px-3 py-3 mt-1.5 tabular-nums font-normal" />
+      </label>
+      {note && <p className="text-xs text-muted mt-1">{note}</p>}
+    </div>
+  )
 
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(currentUrl)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        const textArea = document.createElement('textarea')
-        textArea.value = currentUrl
-        document.body.appendChild(textArea)
-        textArea.select()
-        try {
-          document.execCommand('copy')
-          setIsCopied(true)
-          setTimeout(() => setIsCopied(false), 2000)
-        } catch (fallbackErr) {
-          console.error('Fallback copy failed: ', fallbackErr)
-        }
-        document.body.removeChild(textArea)
-      }
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
-
-  const handleSaveCalculation = () => {
-    if (!result) return
-    
-    const h = parseFloat(height)
-    const w = parseFloat(weight)
-    const a = parseFloat(age)
-    const waistCm = parseFloat(waist)
-    const neckCm = parseFloat(neck)
-    const hipCm = parseFloat(hip) || 0
-    
-    saveCalculation(
-      {
-        height: h,
-        weight: w,
-        age: a,
-        gender,
-        formula,
-        waist: waistCm,
-        neck: neckCm,
-        hip: hipCm
-      },
-      {
-        bodyFatPercentage: result.bodyFatPercentage,
-        fatMass: result.fatMass,
-        leanMass: result.leanMass,
-        category: result.category,
-        healthRisk: result.healthRisk,
-        idealRange: result.idealRange,
-        visceralFatLevel: result.visceralFatLevel
-      }
-    )
-    
-    setShowSaveButton(false)
-  }
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'essential': return 'text-red-600'
-      case 'athletic': return 'text-blue-600'
-      case 'fitness': return 'text-green-600'
-      case 'average': return 'text-yellow-600'
-      case 'overweight': return 'text-orange-600'
-      case 'obese': return 'text-red-600'
-      default: return 'text-gray-600'
-    }
-  }
-
-  const getCategoryBgColor = (category: string) => {
-    switch (category) {
-      case 'essential': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      case 'athletic': return 'bg-blue-100 dark:bg-blue-900/30 border-line'
-      case 'fitness': return 'bg-green-100 dark:bg-green-900/30 border-line'
-      case 'average': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
-      case 'overweight': return 'bg-orange-100 dark:bg-orange-900/30 border-line'
-      case 'obese': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
-    }
-  }
-
-  const getVisceralFatColor = (level: number) => {
-    if (level < 10) return 'text-green-600'
-    if (level < 15) return 'text-yellow-600'
-    if (level < 20) return 'text-orange-600'
-    return 'text-red-600'
-  }
+  const aceRows = CATEGORIES.map((c, i) => {
+    const lower = ACE[sex][c]
+    const next = CATEGORIES[i + 1]
+    const label = next ? `${lower}~${ACE[sex][next] - 1}%` : `${lower}%+`
+    return { c, label }
+  })
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={false}
-          onLoadHistory={(historyId) => {
-            const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setHeight(inputs.height?.toString() || '')
-              setWeight(inputs.weight?.toString() || '')
-              setAge(inputs.age?.toString() || '')
-              setGender(inputs.gender || 'male')
-              setFormula(inputs.formula || 'navy')
-              setWaist(inputs.waist?.toString() || '')
-              setNeck(inputs.neck?.toString() || '')
-              setHip(inputs.hip?.toString() || '')
-            }
-          }}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={(result: Record<string, unknown>) => {
-            const bodyFatPercentage = Number(result.bodyFatPercentage) || 0
-            const category = String(result.category || 'average')
-            return t('history.format', {
-              bodyFatPercentage: formatNumber(bodyFatPercentage, 1),
-              category: t(`categories.${category}`)
-            })
-          }}
-        />
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 폼 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            {t('input.title')}
-          </h2>
-
-          <div className="space-y-6">
-            {/* 기본 정보 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.height')}
-                </label>
-                <input
-                  type="number"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  placeholder={t('input.heightPlaceholder')}
-                  step="0.1"
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.weight')}
-                </label>
-                <input
-                  type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder={t('input.weightPlaceholder')}
-                  step="0.1"
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.age')}
-                </label>
-                <input
-                  type="number"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  placeholder={t('input.agePlaceholder')}
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-            </div>
-
-            {/* 성별 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.gender')}
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'male'}
-                    onChange={() => setGender('male')}
-                    className="mr-2"
-                  />
-                  {t('input.male')}
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'female'}
-                    onChange={() => setGender('female')}
-                    className="mr-2"
-                  />
-                  {t('input.female')}
-                </label>
+              <label className="block text-sm font-medium text-body mb-2">{t('input.gender')}</label>
+              <div className="grid grid-cols-2 gap-2">
+                {(['male', 'female'] as const).map((g) => (
+                  <button key={g} type="button" onClick={() => setSex(g)} aria-pressed={sex === g}
+                    className={`py-2.5 rounded-xl font-medium transition-colors ${sex === g ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                    {t(`input.${g}`)}
+                  </button>
+                ))}
               </div>
             </div>
-
-            {/* 계산 공식 선택 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.formula')}
-              </label>
-              <select
-                value={formula}
-                onChange={(e) => setFormula(e.target.value as Formula)}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              >
-                <option value="navy">{t('input.formulas.navy')}</option>
-                <option value="ymca">{t('input.formulas.ymca')}</option>
-              </select>
+            <div className="grid grid-cols-3 gap-3">
+              {numField(t('u.age'), age, setAge, t('u.unitAge'))}
+              {numField(t('u.height'), height, setHeight, 'cm')}
+              {numField(t('u.weight'), weight, setWeight, 'kg')}
             </div>
-
-            {/* 둘레 측정값 */}
-            <div className="border-t border-line pt-6">
-              <h3 className="text-lg font-medium text-fg mb-4">
-                {t('input.measurements')}
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('input.waist')}
-                  </label>
-                  <input
-                    type="number"
-                    value={waist}
-                    onChange={(e) => setWaist(e.target.value)}
-                    placeholder={t('input.waistPlaceholder')}
-                    step="0.1"
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t('input.waistNote')}
-                  </p>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('input.neck')}
-                  </label>
-                  <input
-                    type="number"
-                    value={neck}
-                    onChange={(e) => setNeck(e.target.value)}
-                    placeholder={t('input.neckPlaceholder')}
-                    step="0.1"
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t('input.neckNote')}
-                  </p>
-                </div>
+            <div className="border-t border-line pt-5 space-y-4">
+              <div className="flex items-baseline justify-between">
+                <h2 className="text-sm font-semibold text-fg">{t('input.measurements')}</h2>
+                <a href="#measure" className="text-xs text-primary">{t('u.howToMeasure')}</a>
               </div>
-
-              {/* 여성의 경우 엉덩이 둘레 추가 */}
-              {gender === 'female' && (
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('input.hip')}
-                  </label>
-                  <input
-                    type="number"
-                    value={hip}
-                    onChange={(e) => setHip(e.target.value)}
-                    placeholder={t('input.hipPlaceholder')}
-                    step="0.1"
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t('input.hipNote')}
-                  </p>
-                </div>
-              )}
+              {numField(t('u.neck'), neck, setNeck, 'cm', t('u.neckNote'))}
+              {numField(t('u.waist'), waist, setWaist, 'cm', t(sex === 'male' ? 'u.waistNoteMale' : 'u.waistNoteFemale'))}
+              {sex === 'female' && numField(t('u.hip'), hip, setHip, 'cm', t('u.hipNote'))}
+            </div>
+            <div className="border-t border-line pt-5">
+              <label className="block text-sm font-medium text-body mb-2">{t('u.headlineMethod')}</label>
+              <div className="grid grid-cols-2 gap-2">
+                {METHODS.map((m) => (
+                  <button key={m} type="button" onClick={() => setMethod(m)} aria-pressed={method === m}
+                    className={`py-2 px-2 rounded-xl text-sm font-medium transition-colors ${method === m ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                    {t(`u.m.${m}.name`)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 결과 */}
-        <div className="space-y-6">
-          {result && (
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-6">
+          {bf == null || !used || !comp || !cat ? (
+            <div className="bg-amber-50 text-amber-800 rounded-2xl p-5 flex gap-3">
+              <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+              <p className="text-sm">{t('u.invalid')}</p>
+            </div>
+          ) : (
             <>
-              {/* 주요 결과 */}
-              <div className={`rounded-2xl shadow-lg p-8 border-2 ${getCategoryBgColor(result.category)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  {t('result.title')}
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div className={`text-4xl font-bold ${getCategoryColor(result.category)}`}>
-                      {formatNumber(result.bodyFatPercentage, 1)}%
-                    </div>
-                    <div className={`text-lg font-semibold mt-2 ${getCategoryColor(result.category)}`}>
-                      {t(`categories.${result.category}`)}
-                    </div>
-                    <div className="text-sm text-body mt-1">
-                      {result.healthRisk}
-                    </div>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{t('u.heroLabel', { method: t(`u.m.${used}.name`) })}</p>
+                <p className="text-5xl font-bold mt-1 tabular-nums">{f1(bf)}%</p>
+                <p className="text-sm text-white/80 mt-2">
+                  {t(`categories.${cat}`)} · {t('u.heroRange', { lo: f1(lo), hi: f1(hi) })}
+                </p>
+                <div className="grid grid-cols-3 gap-4 mt-6 text-sm">
+                  <div>
+                    <p className="text-white/70">{t('u.fatMass')}</p>
+                    <p className="text-xl font-bold tabular-nums">{f1(comp.fatKg)}kg</p>
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="text-center p-4 bg-field rounded-lg">
-                      <div className="text-xl font-bold text-red-500">
-                        {formatNumber(result.fatMass, 1)}kg
-                      </div>
-                      <div className="text-sm text-sub">{t('result.fatMass')}</div>
-                    </div>
-                    <div className="text-center p-4 bg-field rounded-lg">
-                      <div className="text-xl font-bold text-blue-500">
-                        {formatNumber(result.leanMass, 1)}kg
-                      </div>
-                      <div className="text-sm text-sub">{t('result.leanMass')}</div>
-                    </div>
+                  <div>
+                    <p className="text-white/70">{t('u.leanMass')}</p>
+                    <p className="text-xl font-bold tabular-nums">{f1(comp.leanKg)}kg</p>
                   </div>
+                  <div>
+                    <p className="text-white/70">BMI</p>
+                    <p className="text-xl font-bold tabular-nums">{f1(b)}</p>
+                  </div>
+                </div>
+                {used !== method && <p className="mt-4 text-xs text-white/80">{t('u.fallback', { method: t(`u.m.${method}.name`) })}</p>}
+              </div>
 
-                  <div className="border-t border-line-strong pt-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-body">{t('result.idealRange')}</span>
-                      <span className="font-semibold text-fg">
-                        {formatNumber(result.idealRange.min, 0)} - {formatNumber(result.idealRange.max, 0)}%
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-body">{t('result.visceralFat')}</span>
-                      <span className={`font-semibold ${getVisceralFatColor(result.visceralFatLevel)}`}>
-                        {formatNumber(result.visceralFatLevel, 0)} {t('result.visceralFatUnit')}
-                      </span>
-                    </div>
-                  </div>
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('u.share.label', { method: t(`u.m.${used}.name`) }),
+                  headline: `${f1(bf)}%`,
+                  sub: `${t(`categories.${cat}`)} · ${t('u.heroRange', { lo: f1(lo), hi: f1(hi) })}`,
+                  rows: [
+                    { label: t('u.fatMass'), value: `${f1(comp.fatKg)}kg` },
+                    { label: t('u.leanMass'), value: `${f1(comp.leanKg)}kg` },
+                    ...METHODS.filter((m) => m !== used && est[m] != null).map((m) => ({ label: t(`u.m.${m}.name`), value: `${f1(est[m]!)}%` })),
+                  ],
+                }}
+                text={t('u.share.text', { bf: f1(bf), category: t(`categories.${cat}`) })}
+                fileName="body-fat"
+              />
 
-                  {/* 공유/저장 버튼 */}
-                  <div className="flex space-x-2 mt-4">
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>{tCommon('copied')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>{t('result.shareResult')}</span>
-                        </>
-                      )}
-                    </button>
-                    
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>{tCommon('save')}</span>
+              {/* 방법별 비교 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('u.compareTitle')}</h2>
+                <p className="text-xs text-muted mt-1">{t('u.compareNote')}</p>
+                <div className="mt-4 space-y-2">
+                  {METHODS.map((m) => {
+                    const v = est[m]
+                    const sel = m === used
+                    return (
+                      <button key={m} type="button" onClick={() => setMethod(m)}
+                        className={`w-full text-left rounded-xl border p-3 sm:p-4 transition-colors ${sel ? 'bg-primary-soft border-primary' : 'border-line hover:bg-subtle'}`}>
+                        <div className="flex items-baseline justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className={`font-semibold ${sel ? 'text-primary' : 'text-fg'}`}>{t(`u.m.${m}.name`)}</p>
+                            <p className="text-xs text-muted mt-0.5">{t(`u.m.${m}.uses`)}</p>
+                          </div>
+                          <p className={`text-xl font-bold tabular-nums shrink-0 ${sel ? 'text-primary' : 'text-fg'}`}>
+                            {v != null ? `${f1(v)}%` : '-'}
+                          </p>
+                        </div>
+                        {v != null && (
+                          <div className="mt-3">
+                            {/* 0~50% 막대 위에 ±오차 구간 */}
+                            <div className="relative h-2 rounded-full bg-track">
+                              <div className="absolute h-2 rounded-full bg-primary/30"
+                                style={{ left: `${Math.max(0, v - ERR[m]) * 2}%`, width: `${Math.min(100, (v + ERR[m]) * 2) - Math.max(0, v - ERR[m]) * 2}%` }} />
+                              <div className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 -ml-[5px] rounded-full bg-primary" style={{ left: `${Math.min(100, v * 2)}%` }} />
+                            </div>
+                            <p className="text-xs text-muted mt-1.5 tabular-nums">
+                              {t('u.errNote', { err: ERR[m] })} · {t(`u.m.${m}.note`)}
+                            </p>
+                          </div>
+                        )}
                       </button>
-                    )}
+                    )
+                  })}
+                </div>
+                {spread >= 6 && (
+                  <div className="mt-4 bg-amber-50 text-amber-800 rounded-xl p-4 text-sm">
+                    {t('u.spreadWarn', { spread: f1(spread) })}
+                  </div>
+                )}
+              </div>
+
+              {/* 분류 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('u.classTitle')}</h2>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm font-medium text-body mb-2">{t('u.aceTitle', { sex: t(`input.${sex}`) })}</p>
+                    <div className="space-y-1">
+                      {aceRows.map(({ c, label }) => (
+                        <div key={c} className={`flex justify-between rounded-lg px-3 py-2 text-sm ${c === cat ? 'bg-primary-soft text-primary font-semibold' : 'text-body'}`}>
+                          <span>{t(`categories.${c}`)}</span>
+                          <span className="tabular-nums">{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted mt-2">{t('u.aceSource')}</p>
+                  </div>
+                  <div className="space-y-4 text-sm">
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-muted">{t('u.ageRange', { band: range.band })}</p>
+                      <p className="text-lg font-bold text-fg tabular-nums mt-0.5">{range.min}~{range.max}%</p>
+                      <p className="text-body mt-1">{t(`u.hs.${hs}`)}</p>
+                      <p className="text-xs text-muted mt-1">{t('u.ageSource')}{input.age < 20 ? ` ${t('u.ageUnder20')}` : ''}</p>
+                    </div>
+                    <div className="bg-subtle rounded-xl p-4 space-y-1.5">
+                      <div className="flex justify-between gap-2">
+                        <span className="text-muted">{t('u.waistKr', { cut: ABDOMINAL[sex] })}</span>
+                        <span className={`font-semibold ${abdominal ? 'text-amber-700' : 'text-fg'}`}>{t(abdominal ? 'u.abdYes' : 'u.abdNo')}</span>
+                      </div>
+                      <div className="flex justify-between gap-2">
+                        <span className="text-muted">{t('u.whtr')}</span>
+                        <span className={`font-semibold tabular-nums ${ratio >= 0.5 ? 'text-amber-700' : 'text-fg'}`}>{ratio.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between gap-2">
+                        <span className="text-muted">{t('u.bmiKr')}</span>
+                        <span className="font-semibold text-fg tabular-nums">{f1(b)} · {t(`u.bmiClass.${bmiClass(b)}`)}</span>
+                      </div>
+                      <p className="text-xs text-muted pt-1">{t('u.krSource')}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* 체지방률 분류표 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-fg mb-4">
-                  {t('classification.title')}
-                </h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-red-600 font-medium">{t('categories.essential')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '< 6%' : '< 10%'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.essential')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-blue-600 font-medium">{t('categories.athletic')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '6-13%' : '14-20%'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.athletic')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-green-600 font-medium">{t('categories.fitness')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '14-17%' : '21-24%'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.fitness')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-yellow-600 font-medium">{t('categories.average')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '18-24%' : '25-31%'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.average')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-orange-600 font-medium">{t('categories.overweight')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '25-29%' : '32-37%'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.overweight')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-red-600 font-medium">{t('categories.obese')}</span>
-                      <span className="text-gray-500 text-xs ml-2">
-                        ({gender === 'male' ? '30%+' : '38%+'})
-                      </span>
-                    </div>
-                    <span className="text-body font-medium">{t('categoryLabels.obese')}</span>
-                  </div>
-                  <p className="text-xs text-sub mt-3 pt-2 border-t border-line">
-                    {t('classification.note')}
-                  </p>
+              {/* 목표 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('u.goalTitle')}</h2>
+                <p className="text-xs text-muted mt-1">{t('u.goalNote')}</p>
+                <div className="mt-4 flex items-center gap-4">
+                  <input type="range" min={5} max={40} step={1} value={goal} onChange={(e) => setGoalIn(Number(e.target.value))}
+                    aria-label={t('u.goalLabel')} className="flex-1 accent-[var(--primary)]" />
+                  <span className="text-lg font-bold text-primary tabular-nums w-14 text-right">{goal}%</span>
                 </div>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <p className="text-xs text-muted">{t('u.targetWeight')}</p>
+                    <p className="text-2xl font-bold text-fg tabular-nums">{f1(target)}kg</p>
+                  </div>
+                  <div className="bg-subtle rounded-xl p-4">
+                    <p className="text-xs text-muted">{toLose >= 0 ? t('u.fatToLose') : t('u.weightToGain')}</p>
+                    <p className="text-2xl font-bold text-fg tabular-nums">{f1(Math.abs(toLose))}kg</p>
+                  </div>
+                  <div className="bg-subtle rounded-xl p-4">
+                    <p className="text-xs text-muted">{t('u.weeks')}</p>
+                    <p className="text-2xl font-bold text-fg tabular-nums">{toLose > 0 ? t('u.weeksValue', { n: Math.ceil(weeksToLose(toLose)) }) : '-'}</p>
+                  </div>
+                </div>
+                {goal < ACE[sex].athletic && (
+                  <p className="mt-3 bg-amber-50 text-amber-800 rounded-xl p-3 text-sm">{t('u.goalTooLow')}</p>
+                )}
+                <p className="text-sm text-body mt-4">
+                  {t('u.nextSteps')}{' '}
+                  <Link href="/calorie-calculator/" className="text-primary font-medium">{t('u.linkCalorie')}</Link>
+                  {' · '}
+                  <Link href="/bmi-calculator/" className="text-primary font-medium">{t('u.linkBmi')}</Link>
+                </p>
+              </div>
+
+              {/* 기록 */}
+              <div className="ui-card p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg font-semibold text-fg">{t('u.logTitle')}</h2>
+                    <p className="text-xs text-muted mt-1">{t('u.logNote')}</p>
+                  </div>
+                  <button type="button" onClick={addLog} className="ui-btn px-4 py-2 text-sm shrink-0">{t('u.logSave')}</button>
+                </div>
+                {log.length === 0 ? (
+                  <p className="text-sm text-muted mt-4">{t('u.logEmpty')}</p>
+                ) : (
+                  <>
+                    {delta && (
+                      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                        {([['bf', '%p'], ['fatKg', 'kg'], ['leanKg', 'kg'], ['w', 'kg']] as const).map(([k, unit]) => (
+                          <div key={k} className="bg-subtle rounded-xl p-3">
+                            <p className="text-xs text-muted">{t(`u.delta.${k}`)}</p>
+                            <p className="font-bold text-fg tabular-nums">{signed(delta[k])}{unit}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {log.length > 1 && (
+                      <div className="h-48 mt-4">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={log} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                            <XAxis dataKey="d" tickFormatter={(d: string) => d.slice(5)} tick={{ fontSize: 11, fill: 'var(--muted)' }} />
+                            <YAxis domain={['dataMin - 2', 'dataMax + 2']} tickFormatter={(v: number) => String(Math.round(v))} tick={{ fontSize: 11, fill: 'var(--muted)' }} />
+                            <Tooltip formatter={(v) => [`${Number(v ?? 0).toFixed(1)}%`, t('u.chartBf')]} />
+                            <Line type="monotone" dataKey="bf" stroke="var(--primary)" strokeWidth={2.5} dot={{ r: 3 }} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+                    <ul className="mt-4 divide-y divide-line text-sm">
+                      {[...log].reverse().slice(0, 10).map((e) => (
+                        <li key={e.d} className="flex items-center justify-between gap-2 py-2">
+                          <span className="text-muted tabular-nums">{e.d}</span>
+                          <span className="text-body tabular-nums flex-1 text-right">{f1(e.bf)}% · {f1(e.w)}kg · {t(`u.m.${e.m}.name`)}</span>
+                          <button type="button" onClick={() => saveLog(log.filter((x) => x.d !== e.d))} aria-label={t('u.logDelete')}
+                            className="p-1.5 rounded-lg text-faint hover:text-body hover:bg-soft">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             </>
           )}
-
-          {!result && (
-            <div className="bg-subtle rounded-2xl p-8 text-center">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-sub">
-                {t('placeholder')}
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* 체지방률 가이드 */}
-      <div className="bg-subtle rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-fg mb-6">
-          {t('guide.title')}
-        </h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.measurementTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.measurement.0')}</li>
-              <li>• {t('guide.measurement.1')}</li>
-              <li>• {t('guide.measurement.2')}</li>
-              <li>• {t('guide.measurement.3')}</li>
-            </ul>
+      {/* 측정 방법 */}
+      <div id="measure" className="ui-card p-6 scroll-mt-24">
+        <h2 className="text-xl font-semibold text-fg">{t('measurementGuide.title')}</h2>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <svg viewBox="0 0 200 270" className="w-full max-w-[220px] mx-auto text-faint" role="img" aria-label={t('u.svgAlt')}>
+            <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+              <circle cx="80" cy="30" r="20" />
+              <path d="M72 50 V62 L46 70 Q38 73 40 84 L50 120 Q55 140 53 150 Q45 172 50 192 L58 262 M88 50 V62 L114 70 Q122 73 120 84 L110 120 Q105 140 107 150 Q115 172 110 192 L102 262 M80 205 V262" />
+            </g>
+            <g className="text-primary" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4 3">
+              <line x1="66" y1="57" x2="94" y2="58" />
+              <line x1="46" y1="140" x2="114" y2="140" />
+              <line x1="42" y1="172" x2="118" y2="172" />
+            </g>
+            <g className="text-body" fill="currentColor" fontSize="12">
+              <text x="128" y="61">{t('u.neckShort')}</text>
+              <text x="128" y="144">{t('u.waistShort')}</text>
+              <text x="128" y="176">{t('u.hipShort')}</text>
+            </g>
+          </svg>
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {(['neck', 'waist', 'hip'] as const).map((k) => (
+              <div key={k}>
+                <h3 className="font-semibold text-fg mb-2">{t(`measurementGuide.${k}`)}</h3>
+                <ul className="space-y-1.5 text-sm text-body list-disc pl-4">
+                  {(t.raw(`u.tips.${k}`) as string[]).map((s) => <li key={s}>{s}</li>)}
+                </ul>
+              </div>
+            ))}
           </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.managementTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.management.0')}</li>
-              <li>• {t('guide.management.1')}</li>
-              <li>• {t('guide.management.2')}</li>
-              <li>• {t('guide.management.3')}</li>
-            </ul>
-          </div>
+        </div>
+        <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p><strong className="text-fg">{t('u.commonTitle')}</strong> {t('u.common')}</p>
+          <p><strong className="text-fg">{t('u.inbodyTitle')}</strong> {t('u.inbody')}</p>
         </div>
       </div>
 
-      {/* 측정 방법 가이드 */}
-      <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          {t('measurementGuide.title')}
-        </h3>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.waist')}</h4>
-            <div className="space-y-2 text-sm text-body">
-              <p>• {t('measurementGuide.waistTips.0')}</p>
-              <p>• {t('measurementGuide.waistTips.1')}</p>
-              <p>• {t('measurementGuide.waistTips.2')}</p>
-              <p>• {t('measurementGuide.waistTips.3')}</p>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.neck')}</h4>
-            <div className="space-y-2 text-sm text-body">
-              <p>• {t('measurementGuide.neckTips.0')}</p>
-              <p>• {t('measurementGuide.neckTips.1')}</p>
-              <p>• {t('measurementGuide.neckTips.2')}</p>
-              <p>• {t('measurementGuide.neckTips.3')}</p>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('measurementGuide.hip')}</h4>
-            <div className="space-y-2 text-sm text-body">
-              <p>• {t('measurementGuide.hipTips.0')}</p>
-              <p>• {t('measurementGuide.hipTips.1')}</p>
-              <p>• {t('measurementGuide.hipTips.2')}</p>
-              <p>• {t('measurementGuide.hipTips.3')}</p>
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 p-4 bg-subtle rounded-lg">
-          <p className="text-sm text-sub">
-            💡 <strong>{t('measurementGuide.measurementTip')}</strong> {t('measurementGuide.measurementTipText')}
-          </p>
-        </div>
-      </div>
+      <GuideSection namespace="bodyFat" defaultOpen />
+
+      <p className="text-xs text-muted">{t('u.disclaimer')}</p>
     </div>
   )
 }

@@ -1,507 +1,399 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useMemo, useEffect, useCallback, type ReactNode } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { Plus, Trash2, Monitor, Smartphone, Tablet, Laptop } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Plus, Trash2, RotateCw } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import { resolutionName } from '@/utils/screenInfo'
+import {
+  screenGeom, screenRatioLabel, applyRatio, autoScale, pctMore, serializeScreens, parseScreens, layoutBoxes, findPreset,
+  PRESETS, SCENARIOS, RATIOS, SCALES, type Align, type Kind, type Screen, type Geom,
+} from '@/utils/screenCompare'
 
-// ── Device Database ──────────────────────────────────────────────────────────
-
-type DeviceCategory = 'phone' | 'tablet' | 'monitor' | 'laptop'
-
-interface Device {
-  id: string
-  name: string
-  category: DeviceCategory
-  diagonal: number   // inches
-  width: number      // pixels (landscape long side)
-  height: number     // pixels (landscape short side)
-}
-
-const DEVICES: Device[] = [
-  // Phones
-  { id: 'iphone-16-pro-max', name: 'iPhone 16 Pro Max', category: 'phone', diagonal: 6.9, width: 2868, height: 1320 },
-  { id: 'iphone-16-pro', name: 'iPhone 16 Pro', category: 'phone', diagonal: 6.3, width: 2622, height: 1206 },
-  { id: 'iphone-16', name: 'iPhone 16', category: 'phone', diagonal: 6.1, width: 2556, height: 1179 },
-  { id: 'iphone-se', name: 'iPhone SE (3rd)', category: 'phone', diagonal: 4.7, width: 1334, height: 750 },
-  { id: 'galaxy-s24-ultra', name: 'Galaxy S24 Ultra', category: 'phone', diagonal: 6.8, width: 3120, height: 1440 },
-  { id: 'galaxy-s24', name: 'Galaxy S24', category: 'phone', diagonal: 6.2, width: 2340, height: 1080 },
-  { id: 'galaxy-z-fold6-inner', name: 'Galaxy Z Fold 6 (inner)', category: 'phone', diagonal: 7.6, width: 2160, height: 1856 },
-  { id: 'galaxy-z-flip6', name: 'Galaxy Z Flip 6', category: 'phone', diagonal: 6.7, width: 2640, height: 1080 },
-  { id: 'pixel-9-pro', name: 'Pixel 9 Pro', category: 'phone', diagonal: 6.3, width: 2856, height: 1280 },
-  // Tablets
-  { id: 'ipad-pro-13', name: 'iPad Pro 13"', category: 'tablet', diagonal: 13.0, width: 2752, height: 2064 },
-  { id: 'ipad-pro-11', name: 'iPad Pro 11"', category: 'tablet', diagonal: 11.0, width: 2420, height: 1668 },
-  { id: 'ipad-air', name: 'iPad Air (M2)', category: 'tablet', diagonal: 10.9, width: 2360, height: 1640 },
-  { id: 'ipad-mini', name: 'iPad mini (6th)', category: 'tablet', diagonal: 8.3, width: 2266, height: 1488 },
-  { id: 'galaxy-tab-s9-ultra', name: 'Galaxy Tab S9 Ultra', category: 'tablet', diagonal: 14.6, width: 2960, height: 1848 },
-  { id: 'galaxy-tab-s9', name: 'Galaxy Tab S9', category: 'tablet', diagonal: 11.0, width: 2560, height: 1600 },
-  // Monitors
-  { id: 'monitor-24-fhd', name: '24" FHD Monitor', category: 'monitor', diagonal: 24.0, width: 1920, height: 1080 },
-  { id: 'monitor-27-qhd', name: '27" QHD Monitor', category: 'monitor', diagonal: 27.0, width: 2560, height: 1440 },
-  { id: 'monitor-27-4k', name: '27" 4K Monitor', category: 'monitor', diagonal: 27.0, width: 3840, height: 2160 },
-  { id: 'monitor-32-4k', name: '32" 4K Monitor', category: 'monitor', diagonal: 32.0, width: 3840, height: 2160 },
-  { id: 'monitor-34-ultrawide', name: '34" Ultrawide Monitor', category: 'monitor', diagonal: 34.0, width: 3440, height: 1440 },
-  // Laptops
-  { id: 'macbook-air-13', name: 'MacBook Air 13"', category: 'laptop', diagonal: 13.6, width: 2560, height: 1664 },
-  { id: 'macbook-pro-14', name: 'MacBook Pro 14"', category: 'laptop', diagonal: 14.2, width: 3024, height: 1964 },
-  { id: 'macbook-pro-16', name: 'MacBook Pro 16"', category: 'laptop', diagonal: 16.2, width: 3456, height: 2234 },
-  { id: 'dell-xps-15', name: 'Dell XPS 15', category: 'laptop', diagonal: 15.6, width: 3456, height: 2160 },
-  { id: 'surface-laptop-5', name: 'Surface Laptop 5 (15")', category: 'laptop', diagonal: 15.0, width: 2496, height: 1664 },
+// 색만으로 구분하지 않도록 선 모양도 다르게
+const STYLES = [
+  { stroke: 'var(--primary)', dash: undefined },
+  { stroke: 'var(--fg)', dash: '16 10' },
+  { stroke: 'var(--muted)', dash: '4 8' },
+  { stroke: 'var(--sub)', dash: '24 8 4 8' },
 ]
+const LETTERS = ['A', 'B', 'C', 'D']
+const KINDS: Kind[] = ['monitor', 'tv', 'laptop', 'tablet', 'phone']
+const ALIGNS: Align[] = ['bl', 'center', 'side']
+const DEFAULT = '27_2560_1440-32_3840_2160'
 
-// ── Calculation helpers ──────────────────────────────────────────────────────
+type Slot = { d: string; w: string; h: string; scale: number }
+const toSlot = (s: Screen): Slot => ({ d: String(s.d), w: String(s.w), h: String(s.h), scale: s.scale })
+const toScreen = (s: Slot): Screen => ({ d: parseFloat(s.d) || 0, w: parseInt(s.w) || 0, h: parseInt(s.h) || 0, scale: s.scale })
 
-function calcPPI(w: number, h: number, diag: number): number {
-  return Math.round(Math.sqrt(w * w + h * h) / diag)
+const nameOf = (s: { d: number; w: number; h: number }) => {
+  const p = findPreset(s)
+  if (p?.name) return p.name
+  return `${s.d}" ${resolutionName(s.w, s.h) ?? `${s.w}×${s.h}`}${p?.kind === 'tv' ? ' TV' : ''}`
 }
+const signed = (p: number) => `${p >= 0 ? '+' : '−'}${Math.abs(Math.round(p))}%`
+const cm = (n: number) => n.toFixed(1)
+const dist = (c: number) => (c >= 100 ? `${(c / 100).toFixed(2)} m` : `${Math.round(c)} cm`)
+const seg = (on: boolean) =>
+  `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
-function calcAspectRatio(w: number, h: number): string {
-  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b))
-  const g = gcd(w, h)
-  const rw = w / g
-  const rh = h / g
-  // Simplify very large ratios
-  if (rw > 40 || rh > 40) {
-    const ratio = w / h
-    return `${ratio.toFixed(2)}:1`
-  }
-  return `${rw}:${rh}`
+function Swatch({ i }: { i: number }) {
+  return (
+    <svg width="28" height="8" viewBox="0 0 28 8" aria-hidden="true" className="shrink-0">
+      <line x1="0" y1="4" x2="28" y2="4" stroke={STYLES[i].stroke} strokeWidth="2.5"
+        strokeDasharray={STYLES[i].dash ? STYLES[i].dash.split(' ').map(n => +n / 3).join(' ') : undefined} />
+    </svg>
+  )
 }
-
-function calcAreaSqIn(diag: number, w: number, h: number): number {
-  // Physical width and height in inches from diagonal + pixel ratio
-  const pixelRatio = w / h
-  const physH = diag / Math.sqrt(1 + pixelRatio * pixelRatio)
-  const physW = physH * pixelRatio
-  return physW * physH
-}
-
-// ── Category colors ──────────────────────────────────────────────────────────
-
-const CATEGORY_COLORS: Record<DeviceCategory, { bg: string; border: string; text: string; label: string }> = {
-  phone:   { bg: 'bg-blue-100 dark:bg-blue-900',   border: 'border-blue-400',   text: 'text-sub',   label: 'bg-blue-500' },
-  tablet:  { bg: 'bg-purple-100 dark:bg-purple-900', border: 'border-purple-400', text: 'text-sub', label: 'bg-purple-500' },
-  monitor: { bg: 'bg-green-100 dark:bg-green-900',  border: 'border-green-400',  text: 'text-sub',  label: 'bg-green-500' },
-  laptop:  { bg: 'bg-orange-100 dark:bg-orange-900', border: 'border-orange-400', text: 'text-sub', label: 'bg-orange-500' },
-}
-
-const SLOT_COLORS = [
-  { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-blue-400 dark:border-blue-500', rect: 'bg-blue-200 dark:bg-blue-800', rectBorder: 'border-blue-500' },
-  { bg: 'bg-rose-100 dark:bg-rose-900/40', border: 'border-rose-400 dark:border-rose-500', rect: 'bg-rose-200 dark:bg-rose-800', rectBorder: 'border-rose-500' },
-  { bg: 'bg-emerald-100 dark:bg-emerald-900/40', border: 'border-emerald-400 dark:border-emerald-500', rect: 'bg-emerald-200 dark:bg-emerald-800', rectBorder: 'border-emerald-500' },
-  { bg: 'bg-amber-100 dark:bg-amber-900/40', border: 'border-amber-400 dark:border-amber-500', rect: 'bg-amber-200 dark:bg-amber-800', rectBorder: 'border-amber-500' },
-]
-
-// ── Custom device form ───────────────────────────────────────────────────────
-
-interface CustomDevice {
-  name: string
-  diagonal: string
-  width: string
-  height: string
-  category: DeviceCategory
-}
-
-// ── Main component ───────────────────────────────────────────────────────────
-
-type FilterCat = 'all' | DeviceCategory
 
 export default function ScreenCompare() {
   const t = useTranslations('screenCompare')
+  const sp = useSearchParams()
+  const [slots, setSlots] = useState<Slot[]>(() => (parseScreens(sp.get('s')) ?? parseScreens(DEFAULT)!).map(toSlot))
+  const [align, setAlign] = useState<Align>(() => {
+    const v = sp.get('v') as Align
+    return ALIGNS.includes(v) ? v : 'bl'
+  })
 
-  const [selectedIds, setSelectedIds] = useState<(string | null)[]>(['iphone-16-pro', 'galaxy-s24'])
-  const [filterCat, setFilterCat] = useState<FilterCat>('all')
-  const [showCustomForm, setShowCustomForm] = useState<number | null>(null)
-  const [customForms, setCustomForms] = useState<Record<number, CustomDevice>>({})
-
-  // All devices including any custom ones stored per-slot
-  const [customDevices, setCustomDevices] = useState<Device[]>([])
-
-  const allDevices = useMemo(() => [...DEVICES, ...customDevices], [customDevices])
-
-  const filteredDevices = useMemo(() => {
-    if (filterCat === 'all') return allDevices
-    return allDevices.filter(d => d.category === filterCat)
-  }, [allDevices, filterCat])
-
-  const selectedDevices = useMemo(
-    () => selectedIds.map(id => (id ? allDevices.find(d => d.id === id) ?? null : null)),
-    [selectedIds, allDevices]
+  const screens = useMemo(() => slots.map(toScreen), [slots])
+  const geoms = useMemo(() => screens.map(screenGeom), [screens])
+  const valid = useMemo(
+    () => screens.map((s, i) => ({ s, g: geoms[i], i })).filter((x): x is { s: Screen; g: Geom; i: number } => !!x.g),
+    [screens, geoms],
   )
 
-  // Scale for visual comparison
-  const visualScale = useMemo(() => {
-    const MAX_PX = 200 // max diagonal pixels in display
-    const validDevices = selectedDevices.filter(Boolean) as Device[]
-    if (validDevices.length === 0) return 10
-    const maxDiag = Math.max(...validDevices.map(d => d.diagonal))
-    return MAX_PX / maxDiag
-  }, [selectedDevices])
+  // URL 동기화 (공유 링크)
+  useEffect(() => {
+    if (!valid.length) return
+    const id = setTimeout(() => {
+      const p = new URLSearchParams({ s: serializeScreens(valid.map(v => v.s)) })
+      if (align !== 'bl') p.set('v', align)
+      window.history.replaceState(null, '', `${window.location.pathname}?${p.toString()}`)
+    }, 300)
+    return () => clearTimeout(id)
+  }, [valid, align])
 
-  const addSlot = useCallback(() => {
-    if (selectedIds.length < 4) {
-      setSelectedIds(prev => [...prev, null])
-    }
-  }, [selectedIds.length])
-
-  const removeSlot = useCallback((idx: number) => {
-    setSelectedIds(prev => prev.filter((_, i) => i !== idx))
-    setShowCustomForm(prev => (prev === idx ? null : prev))
+  const update = useCallback((i: number, patch: Partial<Slot>) => {
+    setSlots(prev => prev.map((s, j) => (j === i ? { ...s, ...patch } : s)))
   }, [])
-
-  const setSlotDevice = useCallback((idx: number, id: string | null) => {
-    setSelectedIds(prev => prev.map((v, i) => (i === idx ? id : v)))
-  }, [])
-
-  const initCustomForm = useCallback((idx: number) => {
-    setCustomForms(prev => ({
-      ...prev,
-      [idx]: prev[idx] ?? { name: '', diagonal: '', width: '', height: '', category: 'phone' },
-    }))
-    setShowCustomForm(idx)
-  }, [])
-
-  const updateCustomForm = useCallback((idx: number, field: keyof CustomDevice, value: string) => {
-    setCustomForms(prev => ({ ...prev, [idx]: { ...prev[idx], [field]: value } }))
-  }, [])
-
-  const addCustomDevice = useCallback((idx: number) => {
-    const form = customForms[idx]
-    if (!form) return
-    const diag = parseFloat(form.diagonal)
-    const w = parseInt(form.width)
-    const h = parseInt(form.height)
-    if (!form.name || isNaN(diag) || isNaN(w) || isNaN(h) || diag <= 0 || w <= 0 || h <= 0) return
-    const id = `custom-${Date.now()}`
-    const newDev: Device = { id, name: form.name, category: form.category, diagonal: diag, width: w, height: h }
-    setCustomDevices(prev => [...prev, newDev])
-    setSelectedIds(prev => prev.map((v, i) => (i === idx ? id : v)))
-    setShowCustomForm(null)
-  }, [customForms])
-
-  const catIcon = (cat: DeviceCategory) => {
-    switch (cat) {
-      case 'phone': return <Smartphone size={14} className="inline mr-1" />
-      case 'tablet': return <Tablet size={14} className="inline mr-1" />
-      case 'monitor': return <Monitor size={14} className="inline mr-1" />
-      case 'laptop': return <Laptop size={14} className="inline mr-1" />
-    }
+  const pickPreset = (i: number, id: string) => {
+    const p = PRESETS.find(x => x.id === id)
+    if (p) update(i, { d: String(p.d), w: String(p.w), h: String(p.h) })
   }
+  const pickRatio = (i: number, label: string) => {
+    const r = RATIOS.find(x => x[0] === label)
+    const s = screens[i]
+    if (!r || !(s.w > 0 && s.h > 0)) return
+    const [w, h] = applyRatio(s.w, s.h, r[1], r[2])
+    update(i, { w: String(w), h: String(h) })
+  }
+  const loadScenario = (ids: string[]) =>
+    setSlots(ids.map(id => PRESETS.find(p => p.id === id)!).map(p => toSlot({ d: p.d, w: p.w, h: p.h, scale: 0 })))
 
-  const catLabel = (cat: DeviceCategory) => t(`category.${cat}`)
+  // ── 핵심 비교 (A vs B) ──
+  const A = valid[0]
+  const B = valid[1]
+  const nA = A ? nameOf(A.s) : ''
+  const nB = B ? nameOf(B.s) : ''
+  const areaP = A && B ? pctMore(A.g.areaCm2, B.g.areaCm2) : 0
+  const ppiP = A && B ? pctMore(A.g.ppi, B.g.ppi) : 0
+  const areaText = !B ? t('hero.size', { w: cm(A?.g.widthCm ?? 0), h: cm(A?.g.heightCm ?? 0) })
+    : Math.abs(areaP) < 1 ? t('hero.sameArea')
+      : t(areaP > 0 ? 'hero.bigger' : 'hero.smaller', { a: nA, b: nB, p: Math.abs(Math.round(areaP)) })
+  const ppiText = !B ? t('hero.ppiOne', { ppi: Math.round(A?.g.ppi ?? 0), d: dist(A?.g.distRetinaCm ?? 0) })
+    : Math.abs(ppiP) < 1 ? t('hero.samePpi')
+      : t(ppiP > 0 ? 'hero.sharper' : 'hero.blurrier', { b: nB, p: Math.abs(Math.round(ppiP)) })
+  const wsText = A?.g.workspaceVsFhd && B?.g.workspaceVsFhd
+    ? t('hero.workspace', { a: A.g.workspaceVsFhd.toFixed(2), b: B.g.workspaceVsFhd.toFixed(2) })
+    : null
+
+  // ── 그림 ──
+  const drawn = useMemo(() => {
+    const L = layoutBoxes(valid.map(v => ({ w: v.g.widthCm, h: v.g.heightCm })), align)
+    const k = 1000 / Math.max(L.vbW, L.vbH, 1e-9)
+    return { ...L, k, pad: 12 }
+  }, [valid, align])
+
+  const cell = 'py-2.5 px-3 text-body tabular-nums whitespace-nowrap'
+  const row = (label: string, f: (g: Geom, s: Screen, i: number) => ReactNode) => (
+    <tr className="border-b border-line last:border-0">
+      <td className="py-2.5 pr-3 text-sub whitespace-nowrap">{label}</td>
+      {screens.map((s, i) => <td key={i} className={cell}>{geoms[i] ? f(geoms[i]!, s, i) : '—'}</td>)}
+    </tr>
+  )
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Category filter */}
-      <div className="flex flex-wrap gap-2">
-        {(['all', 'phone', 'tablet', 'monitor', 'laptop'] as const).map(cat => (
-          <button
-            key={cat}
-            onClick={() => setFilterCat(cat)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              filterCat === cat
-                ? 'bg-blue-600 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
-          >
-            {cat === 'all' ? t('category.all') : (
-              <>{catIcon(cat as DeviceCategory)}{catLabel(cat as DeviceCategory)}</>
-            )}
-          </button>
-        ))}
+      {/* 자주 비교하는 조합 */}
+      <div>
+        <div className="text-sm text-sub mb-2">{t('scenarios')}</div>
+        <div className="flex flex-wrap gap-2">
+          {SCENARIOS.map(ids => {
+            const label = ids.map(id => nameOf(PRESETS.find(p => p.id === id)!)).join(' vs ')
+            const on = serializeScreens(valid.map(v => v.s)) === ids.map(id => {
+              const p = PRESETS.find(x => x.id === id)!
+              return `${p.d}_${p.w}_${p.h}`
+            }).join('-')
+            return <button key={label} onClick={() => loadScenario(ids)} className={seg(on)}>{label}</button>
+          })}
+        </div>
       </div>
 
-      {/* Device selectors */}
+      {/* 화면 입력 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {selectedIds.map((selId, idx) => {
-          const dev = selId ? allDevices.find(d => d.id === selId) : null
-          const color = SLOT_COLORS[idx]
+        {slots.map((slot, i) => {
+          const s = screens[i]
+          const preset = findPreset(s)
           return (
-            <div key={idx} className={`rounded-xl border-2 p-4 ${color.border} ${color.bg} space-y-3`}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-muted">
-                  {t('deviceN', { n: idx + 1 })}
-                </span>
-                {selectedIds.length > 1 && (
-                  <button
-                    onClick={() => removeSlot(idx)}
-                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-                    title={t('remove')}
-                  >
-                    <Trash2 size={14} />
+            <div key={i} className="ui-card p-4 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Swatch i={i} />
+                  <span className="text-sm font-semibold text-fg">{t('slot', { n: LETTERS[i] })}</span>
+                </div>
+                {slots.length > 1 && (
+                  <button onClick={() => setSlots(prev => prev.filter((_, j) => j !== i))}
+                    className="p-1.5 rounded-lg text-faint hover:text-body hover:bg-soft" aria-label={t('remove')} title={t('remove')}>
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 )}
               </div>
-
-              <select
-                value={selId ?? ''}
-                onChange={e => setSlotDevice(idx, e.target.value || null)}
-                className={`${glassInput} px-2 py-2 text-sm`}
-              >
-                <option value="">{t('selectDevice')}</option>
-                {filteredDevices.map(d => (
-                  <option key={d.id} value={d.id}>{d.name}</option>
+              <select value={preset?.id ?? ''} onChange={e => pickPreset(i, e.target.value)}
+                className="ui-field w-full px-3 py-2.5 text-sm" aria-label={t('selectDevice')}>
+                <option value="">{t('custom')}</option>
+                {KINDS.map(k => (
+                  <optgroup key={k} label={t(`kinds.${k}`)}>
+                    {PRESETS.filter(p => p.kind === k).map(p => <option key={p.id} value={p.id}>{nameOf(p)}</option>)}
+                  </optgroup>
                 ))}
               </select>
-
-              {dev && (
-                <div className="text-xs space-y-1 text-sub">
-                  <div className="flex items-center gap-1">
-                    <span className={`inline-block w-2 h-2 rounded-full ${CATEGORY_COLORS[dev.category].label}`} />
-                    <span>{catLabel(dev.category)}</span>
-                  </div>
-                  <div>{dev.diagonal}" · {dev.width}×{dev.height}</div>
-                  <div>PPI: {calcPPI(dev.width, dev.height, dev.diagonal)}</div>
-                </div>
-              )}
-
-              <button
-                onClick={() => initCustomForm(idx)}
-                className="w-full text-xs px-2 py-1.5 rounded-lg bg-field border border-line-strong text-sub hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-              >
-                {t('customSize')}
-              </button>
-
-              {/* Custom device form */}
-              {showCustomForm === idx && (
-                <div className="space-y-2 pt-2 border-t border-line-strong">
-                  <p className="text-xs font-semibold text-body">{t('customTitle')}</p>
-                  <input
-                    type="text"
-                    placeholder={t('customName')}
-                    value={customForms[idx]?.name ?? ''}
-                    onChange={e => updateCustomForm(idx, 'name', e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
-                  />
-                  <select
-                    value={customForms[idx]?.category ?? 'phone'}
-                    onChange={e => updateCustomForm(idx, 'category', e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
-                  >
-                    <option value="phone">{t('category.phone')}</option>
-                    <option value="tablet">{t('category.tablet')}</option>
-                    <option value="monitor">{t('category.monitor')}</option>
-                    <option value="laptop">{t('category.laptop')}</option>
-                  </select>
-                  <input
-                    type="number"
-                    placeholder={t('customDiagonal')}
-                    value={customForms[idx]?.diagonal ?? ''}
-                    onChange={e => updateCustomForm(idx, 'diagonal', e.target.value)}
-                    step="0.1"
-                    className="w-full px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
-                  />
-                  <div className="flex gap-1">
-                    <input
-                      type="number"
-                      placeholder={t('customWidth')}
-                      value={customForms[idx]?.width ?? ''}
-                      onChange={e => updateCustomForm(idx, 'width', e.target.value)}
-                      className="w-1/2 px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
-                    />
-                    <input
-                      type="number"
-                      placeholder={t('customHeight')}
-                      value={customForms[idx]?.height ?? ''}
-                      onChange={e => updateCustomForm(idx, 'height', e.target.value)}
-                      className="w-1/2 px-2 py-1.5 text-xs border border-line-strong rounded bg-field text-fg"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => addCustomDevice(idx)}
-                      className="flex-1 px-2 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-                    >
-                      {t('add')}
-                    </button>
-                    <button
-                      onClick={() => setShowCustomForm(null)}
-                      className="px-2 py-1.5 text-xs bg-gray-200 dark:bg-gray-600 text-body rounded hover:bg-gray-300 dark:hover:bg-gray-500"
-                    >
-                      {t('cancel')}
-                    </button>
-                  </div>
-                </div>
-              )}
+              <label className="block">
+                <span className="text-xs text-muted">{t('customDiagonal')}</span>
+                <input type="number" inputMode="decimal" min="1" step="0.1" value={slot.d}
+                  onChange={e => update(i, { d: e.target.value })} className="ui-field w-full px-3 py-2 text-sm mt-1 tabular-nums" />
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <label className="block min-w-0">
+                  <span className="text-xs text-muted">{t('customWidth')}</span>
+                  <input type="number" inputMode="numeric" min="1" value={slot.w}
+                    onChange={e => update(i, { w: e.target.value })} className="ui-field w-full px-3 py-2 text-sm mt-1 tabular-nums" />
+                </label>
+                <label className="block min-w-0">
+                  <span className="text-xs text-muted">{t('customHeight')}</span>
+                  <input type="number" inputMode="numeric" min="1" value={slot.h}
+                    onChange={e => update(i, { h: e.target.value })} className="ui-field w-full px-3 py-2 text-sm mt-1 tabular-nums" />
+                </label>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <select value="" onChange={e => pickRatio(i, e.target.value)} className="ui-field w-full px-2 py-2 text-xs" aria-label={t('ratioPick')}>
+                  <option value="">{t('ratioPick')}</option>
+                  {RATIOS.map(([l]) => <option key={l} value={l}>{l}</option>)}
+                </select>
+                <select value={slot.scale} onChange={e => update(i, { scale: +e.target.value })}
+                  className="ui-field w-full px-2 py-2 text-xs" aria-label={t('scaleLabel')}>
+                  <option value={0}>{t('scaleAuto', { s: geoms[i] ? autoScale(geoms[i]!.ppi) : 100 })}</option>
+                  {SCALES.map(v => <option key={v} value={v}>{t('scaleN', { s: v })}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center justify-between gap-2 text-xs text-muted">
+                <span className="tabular-nums truncate">{geoms[i] ? `${screenRatioLabel(s.w, s.h)} · ${cm(geoms[i]!.widthCm)}×${cm(geoms[i]!.heightCm)} cm` : t('invalid')}</span>
+                <button onClick={() => update(i, { w: slot.h, h: slot.w })} className="ui-btn-soft px-2 py-1 text-xs inline-flex items-center gap-1 shrink-0">
+                  <RotateCw className="w-3.5 h-3.5" />{t('rotate')}
+                </button>
+              </div>
             </div>
           )
         })}
-
-        {/* Add device slot */}
-        {selectedIds.length < 4 && (
-          <button
-            onClick={addSlot}
-            className="rounded-xl border-2 border-dashed border-line-strong p-4 flex flex-col items-center justify-center gap-2 text-faint hover:border-blue-400 hover:text-blue-500 transition-colors min-h-[140px]"
-          >
-            <Plus size={24} />
+        {slots.length < 4 && (
+          <button onClick={() => setSlots(prev => [...prev, toSlot({ d: 24, w: 1920, h: 1080, scale: 0 })])}
+            className="rounded-2xl border border-dashed border-line-strong p-4 flex flex-col items-center justify-center gap-2 text-muted hover:text-primary hover:border-primary transition-colors min-h-[140px]">
+            <Plus className="w-6 h-6" />
             <span className="text-sm">{t('addDevice')}</span>
           </button>
         )}
       </div>
 
-      {/* Visual comparison */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-fg mb-6">{t('visualTitle')}</h2>
-        <div className="flex flex-wrap items-end justify-center gap-8 min-h-[220px]">
-          {selectedDevices.map((dev, idx) => {
-            if (!dev) return (
-              <div key={idx} className="flex items-center justify-center text-gray-400 dark:text-gray-600 text-sm border-2 border-dashed border-line-strong rounded-lg w-24 h-32">
-                {t('empty')}
-              </div>
-            )
-            const color = SLOT_COLORS[idx]
-            // Physical pixel ratio for display
-            const physRatio = dev.width / dev.height
-            // Landscape: long side is width
-            const dispW = dev.diagonal * visualScale * Math.sin(Math.atan(physRatio))
-            const dispH = dev.diagonal * visualScale * Math.cos(Math.atan(physRatio))
-
-            return (
-              <div key={idx} className="flex flex-col items-center gap-2">
-                <div
-                  className={`relative rounded-lg border-4 ${color.rectBorder} ${color.rect} flex items-center justify-center`}
-                  style={{ width: Math.round(dispW) + 'px', height: Math.round(dispH) + 'px' }}
-                >
-                  <div className="text-center px-1">
-                    <div className="text-xs font-bold text-body leading-tight truncate max-w-full">
-                      {dev.diagonal}"
-                    </div>
-                    <div className="text-xs text-muted leading-tight">
-                      {calcAspectRatio(dev.width, dev.height)}
-                    </div>
+      {/* 핵심 답 */}
+      {A && (
+        <div className="space-y-3">
+          <div className="ui-hero p-6">
+            <div className="text-sm text-white/70">{B ? `${nA} vs ${nB}` : t('hero.single', { name: nA })}</div>
+            <div className="text-2xl sm:text-3xl font-bold mt-1 leading-snug">{areaText}</div>
+            <div className="text-sm text-white/85 mt-2 space-y-1">
+              <div>{ppiText}</div>
+              {wsText && <div>{wsText}</div>}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/20">
+              {[A, B].filter(Boolean).map(v => (
+                <div key={v!.i} className="min-w-0">
+                  <div className="text-xs text-white/70 truncate">{LETTERS[v!.i]} · {nameOf(v!.s)}</div>
+                  <div className="text-lg font-semibold tabular-nums">{cm(v!.g.widthCm)} × {cm(v!.g.heightCm)} cm</div>
+                  <div className="text-sm text-white/85 tabular-nums">
+                    {Math.round(v!.g.areaCm2).toLocaleString()} cm² · {Math.round(v!.g.ppi)} PPI
                   </div>
                 </div>
-                <p className="text-xs font-medium text-body text-center max-w-[120px] leading-tight">
-                  {dev.name}
-                </p>
-              </div>
-            )
-          })}
-        </div>
-        <p className="text-xs text-faint text-center mt-4">{t('scaleNote')}</p>
-      </div>
-
-      {/* Specs table */}
-      {selectedDevices.some(Boolean) && (
-        <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-          <h2 className="text-lg font-semibold text-fg mb-4">{t('specsTitle')}</h2>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-line">
-                <th className="text-left py-2 pr-4 text-muted font-medium w-36">{t('spec')}</th>
-                {selectedDevices.map((dev, idx) => {
-                  const color = SLOT_COLORS[idx]
-                  return (
-                    <th key={idx} className={`py-2 px-3 text-left font-medium rounded-t ${color.bg}`}>
-                      <span className="text-body text-xs">
-                        {dev ? dev.name : `${t('deviceN', { n: idx + 1 })}`}
-                      </span>
-                    </th>
-                  )
-                })}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-              {/* Category */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specCategory')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? (
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white ${CATEGORY_COLORS[dev.category].label}`}>
-                        {catIcon(dev.category)}{catLabel(dev.category)}
-                      </span>
-                    ) : '—'}
-                  </td>
-                ))}
-              </tr>
-              {/* Diagonal */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specDiagonal')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? `${dev.diagonal}"` : '—'}
-                  </td>
-                ))}
-              </tr>
-              {/* Resolution */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specResolution')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? `${dev.width}×${dev.height}` : '—'}
-                  </td>
-                ))}
-              </tr>
-              {/* PPI */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">PPI</td>
-                {selectedDevices.map((dev, idx) => {
-                  if (!dev) return <td key={idx} className="py-2 px-3 text-body">—</td>
-                  const ppi = calcPPI(dev.width, dev.height, dev.diagonal)
-                  const quality = ppi >= 400 ? 'text-green-600 dark:text-green-400' : ppi >= 250 ? 'text-blue-600 dark:text-blue-400' : ppi >= 100 ? 'text-body' : 'text-orange-600 dark:text-orange-400'
-                  return (
-                    <td key={idx} className={`py-2 px-3 font-semibold ${quality}`}>
-                      {ppi}
-                    </td>
-                  )
-                })}
-              </tr>
-              {/* Aspect ratio */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specAspect')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? calcAspectRatio(dev.width, dev.height) : '—'}
-                  </td>
-                ))}
-              </tr>
-              {/* Screen area */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specArea')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? `${calcAreaSqIn(dev.diagonal, dev.width, dev.height).toFixed(2)} in²` : '—'}
-                  </td>
-                ))}
-              </tr>
-              {/* Total pixels */}
-              <tr>
-                <td className="py-2 pr-4 text-muted">{t('specTotalPixels')}</td>
-                {selectedDevices.map((dev, idx) => (
-                  <td key={idx} className="py-2 px-3 text-body">
-                    {dev ? `${(dev.width * dev.height / 1_000_000).toFixed(1)} MP` : '—'}
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
+              ))}
+            </div>
+          </div>
+          <ShareResult
+            fileName="screen-compare"
+            text={B ? t('share.text', { a: nA, b: nB, area: signed(areaP), pa: Math.round(A.g.ppi), pb: Math.round(B.g.ppi) }) : `${nA} ${areaText}`}
+            card={{
+              tool: t('title'),
+              label: B ? t('card.label', { a: nA, b: nB }) : nA,
+              headline: B ? t('card.area', { v: signed(areaP) }) : `${cm(A.g.widthCm)}×${cm(A.g.heightCm)} cm`,
+              sub: ppiText,
+              rows: valid.slice(0, 4).map(v => ({
+                label: `${LETTERS[v.i]} ${nameOf(v.s)}`,
+                value: `${cm(v.g.widthCm)}×${cm(v.g.heightCm)} cm · ${Math.round(v.g.ppi)} PPI`,
+              })),
+            }}
+          />
         </div>
       )}
 
-      {/* PPI guide */}
-      <div className="bg-subtle rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-fg mb-4">{t('ppiGuide.title')}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[
-            { range: '400+ PPI', label: t('ppiGuide.retina'), color: 'bg-green-500' },
-            { range: '250–400 PPI', label: t('ppiGuide.sharp'), color: 'bg-blue-500' },
-            { range: '100–250 PPI', label: t('ppiGuide.normal'), color: 'bg-gray-500' },
-            { range: '< 100 PPI', label: t('ppiGuide.low'), color: 'bg-orange-500' },
-          ].map(item => (
-            <div key={item.range} className="flex items-center gap-3">
-              <span className={`w-3 h-3 rounded-full flex-shrink-0 ${item.color}`} />
-              <span className="text-sm font-mono text-body min-w-[100px]">{item.range}</span>
-              <span className="text-sm text-sub">{item.label}</span>
-            </div>
+      {/* 실제 비율로 겹쳐 보기 */}
+      <div className="ui-card p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-semibold text-fg">{t('visualTitle')}</h2>
+          <div className="flex flex-wrap gap-1.5">
+            {ALIGNS.map(a => <button key={a} onClick={() => setAlign(a)} className={seg(align === a)}>{t(`align.${a}`)}</button>)}
+          </div>
+        </div>
+        {valid.length > 0 ? (
+          <svg
+            viewBox={`${-drawn.pad} ${-drawn.pad} ${drawn.vbW * drawn.k + drawn.pad * 2} ${drawn.vbH * drawn.k + drawn.pad * 2}`}
+            className="w-full h-auto max-h-[440px]" role="img"
+            aria-label={valid.map(v => `${LETTERS[v.i]} ${nameOf(v.s)} ${cm(v.g.widthCm)}×${cm(v.g.heightCm)} cm`).join(', ')}
+          >
+            {drawn.boxes.map((b, j) => {
+              const i = valid[j].i
+              return (
+                <g key={i}>
+                  <rect x={b.x * drawn.k} y={b.y * drawn.k} width={b.w * drawn.k} height={b.h * drawn.k}
+                    fill={i === 0 ? 'var(--primary-soft)' : 'none'} fillOpacity={i === 0 ? 0.6 : undefined}
+                    stroke={STYLES[i].stroke} strokeWidth="4" strokeDasharray={STYLES[i].dash} rx="4" />
+                  <text x={b.x * drawn.k + 12 + (align === 'side' ? 0 : j * 30)} y={b.y * drawn.k + 34}
+                    fontSize="26" fontWeight="700" fill={STYLES[i].stroke}>{LETTERS[i]}</text>
+                </g>
+              )
+            })}
+          </svg>
+        ) : <div className="text-sm text-faint py-8 text-center">{t('invalid')}</div>}
+        <ul className="mt-4 space-y-1.5">
+          {valid.map(v => (
+            <li key={v.i} className="flex items-center gap-2 text-sm min-w-0">
+              <Swatch i={v.i} />
+              <span className="font-semibold text-fg">{LETTERS[v.i]}</span>
+              <span className="text-body truncate min-w-0">{nameOf(v.s)}</span>
+              <span className="text-muted tabular-nums ml-auto shrink-0">{cm(v.g.widthCm)}×{cm(v.g.heightCm)} cm</span>
+            </li>
           ))}
+        </ul>
+        <p className="text-xs text-muted mt-3">{t('visualNote')}</p>
+      </div>
+
+      {/* 상세 비교 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('specsTitle')}</h2>
+        <div className="overflow-x-auto -mx-2 px-2">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="text-left py-2 pr-3 text-muted font-medium">{t('spec')}</th>
+                {screens.map((s, i) => (
+                  <th key={i} className="text-left py-2 px-3 font-semibold text-fg whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5"><Swatch i={i} />{LETTERS[i]}</span>
+                    <div className="text-xs font-normal text-muted">{geoms[i] ? nameOf(s) : '—'}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {row(t('specDiagonal'), (g, s) => `${s.d}" (${cm(g.diagCm)} cm)`)}
+              {row(t('specResolution'), (_, s) => `${s.w}×${s.h}${resolutionName(s.w, s.h) ? ` ${resolutionName(s.w, s.h)}` : ''}`)}
+              {row(t('specAspect'), (_, s) => screenRatioLabel(s.w, s.h))}
+              {row(t('table.size'), g => `${cm(g.widthCm)} × ${cm(g.heightCm)} cm`)}
+              {row(t('specArea'), (g, _, i) => (
+                <>
+                  {Math.round(g.areaCm2).toLocaleString()} cm²
+                  {A && A.i !== i && <span className="text-muted"> ({t('table.vsA', { p: signed(pctMore(A.g.areaCm2, g.areaCm2)) })})</span>}
+                </>
+              ))}
+              {row('PPI', (g, _, i) => (
+                <>
+                  <span className="font-semibold text-fg">{Math.round(g.ppi)}</span>
+                  {A && A.i !== i && <span className="text-muted"> ({t('table.vsA', { p: signed(pctMore(A.g.ppi, g.ppi)) })})</span>}
+                </>
+              ))}
+              {row(t('table.dotPitch'), g => `${g.dotPitchMm.toFixed(3)} mm`)}
+              {row(t('specTotalPixels'), g => `${g.megapixels.toFixed(1)} MP`)}
+              {row(t('table.scale'), g => (g.workspace ? `${g.scale}%${g.autoScale ? ` (${t('table.auto')})` : ''}` : t('table.pcOnly')))}
+              {row(t('table.workspace'), g => (g.workspace
+                ? <>{g.workspace[0]}×{g.workspace[1]} <span className="text-muted">({t('table.fhd', { x: g.workspaceVsFhd!.toFixed(2) })})</span></>
+                : '—'))}
+              {row(t('table.distSmpte'), g => dist(g.distSmpteCm))}
+              {row(t('table.distThx'), g => dist(g.distThxCm))}
+              {row(t('table.distRetina'), g => dist(g.distRetinaCm))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-muted mt-4 leading-relaxed">{t('table.note')}</p>
+      </div>
+
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div>
+          <h3 className="text-base font-bold text-fg mb-2">{t('guide.whatIs.title')}</h3>
+          <p className="text-body leading-relaxed">{t('guide.whatIs.description')}</p>
+        </div>
+        {(['formulas', 'distance', 'tips'] as const).map(k => (
+          <div key={k}>
+            <h3 className="text-base font-bold text-fg mb-2">{t(`guide.${k}.title`)}</h3>
+            <ul className="space-y-2 text-body list-disc pl-5 leading-relaxed">
+              {(t.raw(`guide.${k}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+        <div>
+          <h3 className="text-base font-bold text-fg mb-2">{t('ppiGuide.title')}</h3>
+          <div className="bg-subtle rounded-2xl p-5 space-y-2">
+            {[
+              ['400+ PPI', t('ppiGuide.retina')],
+              ['250–400 PPI', t('ppiGuide.sharp')],
+              ['100–250 PPI', t('ppiGuide.normal')],
+              ['< 100 PPI', t('ppiGuide.low')],
+            ].map(([range, label]) => (
+              <div key={range} className="flex gap-3 text-sm">
+                <span className="font-semibold text-fg tabular-nums w-28 shrink-0">{range}</span>
+                <span className="text-sub">{label}</span>
+              </div>
+            ))}
+            <p className="text-xs text-muted pt-1">{t('guide.ppiNote')}</p>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-base font-bold text-fg mb-3">{t('guide.faq.title')}</h3>
+          <div className="space-y-4">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i}>
+                <div className="font-semibold text-fg">{f.q}</div>
+                <p className="text-body mt-1 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/screen-info/" className="ui-btn-soft px-4 py-2 text-sm">{t('guide.linkScreenInfo')}</Link>
+          <Link href="/aspect-ratio/" className="ui-btn-soft px-4 py-2 text-sm">{t('guide.linkAspectRatio')}</Link>
         </div>
       </div>
     </div>

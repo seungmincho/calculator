@@ -1,818 +1,520 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import dynamic from 'next/dynamic'
-import { Activity, Calculator, Target, Utensils, Zap, Share2, Check, Save, TrendingUp } from 'lucide-react'
-
-const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
+import { useState, useEffect, useMemo, useRef } from 'react'
+import Link from 'next/link'
+import { Save } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import CalculationHistory from './CalculationHistory'
+import ShareResult from '@/components/ShareResult'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import {
+  ACTIVITIES, ACTIVITY_FACTOR, FORMULAS, GOALS, PACES, MIN_KCAL, PROTEIN_G_PER_KG, FAT_PCT, LEGACY_GOAL,
+  bmrAll, plan, macros, eer, bmi, dailyDelta, clampNum,
+  type Sex, type Activity, type Formula, type Goal,
+} from '@/utils/calorie'
 
-interface CalorieResult {
-  bmr: number // 기초대사율
-  tdee: number // 활동대사율
-  goalCalories: number // 목표 칼로리
-  weightChangePerWeek: number // 주당 체중 변화량
-  timeToGoal: number // 목표 달성까지 주수
+const DEF = { age: 30, h: 175, w: 75, tw: 70, pace: 0.5 }
+const n0 = (n: number) => Math.round(n).toLocaleString('en-US')
+const n1 = (n: number) => (Math.round(n * 10) / 10).toLocaleString('en-US')
+const seg = (on: boolean) =>
+  `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+
+// 히스토리 제목(localStorage.ts)은 예전 goal 값으로 라벨을 만듦
+const legacyGoal = (g: Goal, pace: number) =>
+  g === 'maintain' ? 'maintain'
+    : g === 'lose' ? (pace >= 1 ? 'loseFast' : pace >= 0.75 ? 'loseModerate' : 'loseSlow')
+      : (pace >= 0.5 ? 'gainModerate' : 'gainSlow')
+
+function NumField({ id, label, value, onChange, unit, min, max, step = 1, placeholder }: {
+  id: string; label: string; value: number; onChange: (n: number) => void; unit: string; min: number; max: number; step?: number; placeholder?: string
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-1.5">{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="number" inputMode="decimal" min={min} max={max} step={step} placeholder={placeholder}
+          value={value || ''}
+          onChange={(e) => onChange(Number(e.target.value) || 0)}
+          className="ui-field px-3 py-2.5 pr-10 tabular-nums"
+        />
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint">{unit}</span>
+      </div>
+    </div>
+  )
 }
-
-type Gender = 'male' | 'female'
-type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'veryActive'
-type Goal = 'loseFast' | 'loseModerate' | 'loseSlow' | 'maintain' | 'gainSlow' | 'gainModerate' | 'gainFast'
-type BMRFormula = 'mifflin' | 'harris'
 
 export default function CalorieCalculator() {
   const t = useTranslations('calorie')
   const tCommon = useTranslations('common')
-  const [height, setHeight] = useState<string>('')
-  const [weight, setWeight] = useState<string>('')
-  const [age, setAge] = useState<string>('')
-  const [gender, setGender] = useState<Gender>('male')
-  const [activityLevel, setActivityLevel] = useState<ActivityLevel>('moderate')
-  const [goal, setGoal] = useState<Goal>('maintain')
-  const [bmrFormula, setBmrFormula] = useState<BMRFormula>('mifflin')
-  const [targetWeight, setTargetWeight] = useState<string>('')
-  const [result, setResult] = useState<CalorieResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-  const [showSaveButton, setShowSaveButton] = useState(false)
-  
-  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('calorie')
-  const router = useRouter()
   const searchParams = useSearchParams()
+  const ready = useRef(false)
 
-  const calculateCalories = () => {
-    const h = parseFloat(height)
-    const w = parseFloat(weight)
-    const a = parseFloat(age)
-    const tw = parseFloat(targetWeight) || w
+  const [sex, setSex] = useState<Sex>('male')
+  const [age, setAge] = useState(DEF.age)
+  const [height, setHeight] = useState(DEF.h)
+  const [weight, setWeight] = useState(DEF.w)
+  const [bodyFat, setBodyFat] = useState(0) // 0 = 미입력
+  const [activity, setActivity] = useState<Activity>('light')
+  const [formula, setFormula] = useState<Formula>('mifflin')
+  const [goal, setGoal] = useState<Goal>('lose')
+  const [pace, setPace] = useState(DEF.pace)
+  const [target, setTarget] = useState(DEF.tw)
+  const [today, setToday] = useState<Date | null>(null)
+  const [saved, setSaved] = useState(false)
 
-    if (!h || !w || !a || h <= 0 || w <= 0 || a <= 0) return
+  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('calorie')
 
-    // BMR 계산 (Mifflin-St Jeor vs Harris-Benedict)
-    let bmr: number
-    if (bmrFormula === 'mifflin') {
-      // Mifflin-St Jeor 공식 (더 정확)
-      if (gender === 'male') {
-        bmr = 10 * w + 6.25 * h - 5 * a + 5
-      } else {
-        bmr = 10 * w + 6.25 * h - 5 * a - 161
-      }
-    } else {
-      // Harris-Benedict 공식
-      if (gender === 'male') {
-        bmr = 88.362 + (13.397 * w) + (4.799 * h) - (5.677 * a)
-      } else {
-        bmr = 447.593 + (9.247 * w) + (3.098 * h) - (4.330 * a)
-      }
-    }
+  useEffect(() => { setToday(new Date()) }, [])
 
-    // 활동 수준에 따른 TDEE 계산
-    const activityMultipliers = {
-      sedentary: 1.2,     // 거의 운동 안함
-      light: 1.375,       // 가벼운 운동 (주 1-3회)
-      moderate: 1.55,     // 보통 운동 (주 3-5회)
-      active: 1.725,      // 활발한 운동 (주 6-7회)
-      veryActive: 1.9     // 매우 활발 (하루 2회 또는 강도 높은 운동)
-    }
-
-    const tdee = bmr * activityMultipliers[activityLevel]
-
-    // 목표에 따른 칼로리 조정
-    const goalAdjustments = {
-      loseFast: -1000,     // 주당 1kg 감량
-      loseModerate: -750,  // 주당 0.75kg 감량
-      loseSlow: -500,      // 주당 0.5kg 감량
-      maintain: 0,         // 체중 유지
-      gainSlow: 300,       // 주당 0.5kg 증량
-      gainModerate: 500,   // 주당 0.75kg 증량
-      gainFast: 750        // 주당 1kg 증량
-    }
-
-    const goalCalories = tdee + goalAdjustments[goal]
-
-    // 주당 체중 변화량 (kg)
-    const weightChangePerWeek = Math.abs(goalAdjustments[goal]) / 1000
-
-    // 목표 달성까지 예상 기간 (주)
-    const weightDifference = Math.abs(tw - w)
-    const timeToGoal = weightChangePerWeek > 0 ? weightDifference / weightChangePerWeek : 0
-
-    const calculationResult = {
-      bmr,
-      tdee,
-      goalCalories,
-      weightChangePerWeek,
-      timeToGoal
-    }
-
-    setResult(calculationResult)
-    setShowSaveButton(true)
+  const applyGoal = (gRaw: string | null | undefined, pRaw: unknown) => {
+    const legacy = gRaw ? LEGACY_GOAL[gRaw] : undefined
+    const g = GOALS.find((x) => x === gRaw) ?? legacy?.[0]
+    if (!g) return
+    setGoal(g)
+    const p = Number(pRaw)
+    setPace(PACES[g].includes(p) ? p : legacy?.[1] ?? DEF.pace)
   }
 
+  // URL → 상태 (한 번). 예전 링크(height/weight/age/gender/activityLevel/goal=loseSlow…/bmrFormula/targetWeight)도 읽음
   useEffect(() => {
-    if (height && weight && age) {
-      calculateCalories()
-      updateURL({
-        height,
-        weight,
-        age,
-        gender,
-        activityLevel,
-        goal,
-        bmrFormula,
-        targetWeight: targetWeight || '0'
-      })
-    }
-  }, [height, weight, age, gender, activityLevel, goal, bmrFormula, targetWeight])
+    if (ready.current) return
+    const g = (k: string) => searchParams.get(k)
+    if (g('gender') === 'female') setSex('female')
+    setAge(clampNum(g('age'), 15, 100, DEF.age))
+    setHeight(clampNum(g('height'), 100, 230, DEF.h))
+    setWeight(clampNum(g('weight'), 25, 300, DEF.w))
+    setBodyFat(clampNum(g('bf'), 0, 60, 0))
+    const a = ACTIVITIES.find((x) => x === g('activityLevel')); if (a) setActivity(a)
+    const f = FORMULAS.find((x) => x === g('bmrFormula')); if (f) setFormula(f)
+    applyGoal(g('goal'), g('pace'))
+    const tw = clampNum(g('targetWeight'), 0, 300, 0); if (tw >= 25) setTarget(tw)
+    ready.current = true
+  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
+  // 상태 → URL
   useEffect(() => {
-    const heightParam = searchParams.get('height')
-    if (!heightParam) return
-
-    const weightParam = searchParams.get('weight')
-    const ageParam = searchParams.get('age')
-    const genderParam = searchParams.get('gender')
-    const activityParam = searchParams.get('activityLevel')
-    const goalParam = searchParams.get('goal')
-    const formulaParam = searchParams.get('bmrFormula')
-    const targetWeightParam = searchParams.get('targetWeight')
-
-    if (heightParam && /^\d+(\.\d+)?$/.test(heightParam)) {
-      setHeight(heightParam)
-    }
-    if (weightParam && /^\d+(\.\d+)?$/.test(weightParam)) {
-      setWeight(weightParam)
-    }
-    if (ageParam && /^\d+$/.test(ageParam)) {
-      setAge(ageParam)
-    }
-    if (genderParam && ['male', 'female'].includes(genderParam)) {
-      setGender(genderParam as Gender)
-    }
-    if (activityParam && ['sedentary', 'light', 'moderate', 'active', 'veryActive'].includes(activityParam)) {
-      setActivityLevel(activityParam as ActivityLevel)
-    }
-    if (goalParam && ['loseFast', 'loseModerate', 'loseSlow', 'maintain', 'gainSlow', 'gainModerate', 'gainFast'].includes(goalParam)) {
-      setGoal(goalParam as Goal)
-    }
-    if (formulaParam && ['mifflin', 'harris'].includes(formulaParam)) {
-      setBmrFormula(formulaParam as BMRFormula)
-    }
-    if (targetWeightParam && /^\d+(\.\d+)?$/.test(targetWeightParam) && targetWeightParam !== '0') {
-      setTargetWeight(targetWeightParam)
-    }
-  }, [])
-
-  const formatNumber = (num: number, decimals: number = 0) => {
-    return num.toFixed(decimals)
-  }
-
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value !== '0') {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
+    if (!ready.current) return
+    const p = new URLSearchParams({
+      gender: sex, age: String(age), height: String(height), weight: String(weight),
+      activityLevel: activity, bmrFormula: formula, goal,
     })
-    router.replace(`?${params.toString()}`, { scroll: false })
+    if (goal !== 'maintain') { p.set('pace', String(pace)); p.set('targetWeight', String(target)) }
+    if (bodyFat) p.set('bf', String(bodyFat))
+    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+    setSaved(false)
+  }, [sex, age, height, weight, bodyFat, activity, formula, goal, pace, target])
+
+  // ── 계산 (입력은 범위로 정리) ──
+  const body = {
+    sex,
+    age: clampNum(age, 15, 100, DEF.age),
+    height: clampNum(height, 100, 230, DEF.h),
+    weight: clampNum(weight, 25, 300, DEF.w),
+    bodyFat: bodyFat >= 3 && bodyFat <= 60 ? bodyFat : null,
   }
+  const tw = clampNum(target, 25, 300, DEF.tw)
+  const useFormula: Formula = formula === 'katch' && body.bodyFat == null ? 'mifflin' : formula
+  const res = useMemo(
+    () => plan({ ...body, activity, formula: useFormula, goal, pace }, goal === 'maintain' ? null : tw),
+    [body.sex, body.age, body.height, body.weight, body.bodyFat, activity, useFormula, goal, pace, tw], // eslint-disable-line react-hooks/exhaustive-deps
+  )
+  const all = bmrAll(body)
+  const basisKg = goal === 'lose' && res.reason !== 'direction' ? tw : body.weight
+  const mac = macros(res.kcal, basisKg, goal)
+  const ref = eer(sex, body.age)
+  const targetBmi = bmi(tw, body.height)
+  const weeks = res.weeks == null ? null : Math.ceil(res.weeks)
+  const eta = today && weeks != null ? new Date(today.getTime() + weeks * 7 * 86_400_000) : null
+  const fmtDate = (d: Date) => t('plan.date', { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() })
+  const delta = res.kcal - res.tdee
 
-  const handleShare = async () => {
-    if (!result) return
-    
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const heroLabel = goal === 'maintain' ? t('hero.labelMaintain') : t(`hero.label.${goal}`, { pace })
+  const heroSub = goal === 'maintain'
+    ? t('hero.subMaintain', { bmr: n0(res.bmr) })
+    : t('hero.sub', { tdee: n0(res.tdee), delta: `${delta < 0 ? '−' : '+'}${n0(Math.abs(delta))}` })
+  const etaText = res.reason === 'ok' && weeks != null
+    ? (eta ? t('plan.etaDate', { kg: n1(tw), weeks, date: fmtDate(eta) }) : t('plan.eta', { kg: n1(tw), weeks }))
+    : null
 
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(currentUrl)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        const textArea = document.createElement('textarea')
-        textArea.value = currentUrl
-        document.body.appendChild(textArea)
-        textArea.select()
-        try {
-          document.execCommand('copy')
-          setIsCopied(true)
-          setTimeout(() => setIsCopied(false), 2000)
-        } catch (fallbackErr) {
-          console.error('Fallback copy failed: ', fallbackErr)
-        }
-        document.body.removeChild(textArea)
-      }
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
-
-  const handleSaveCalculation = () => {
-    if (!result) return
-    
-    const h = parseFloat(height)
-    const w = parseFloat(weight)
-    const a = parseFloat(age)
-    const tw = parseFloat(targetWeight) || 0
-    
+  const handleSave = () => {
     saveCalculation(
-      {
-        height: h,
-        weight: w,
-        age: a,
-        gender,
-        activityLevel,
-        goal,
-        bmrFormula,
-        targetWeight: tw
-      },
-      {
-        bmr: result.bmr,
-        tdee: result.tdee,
-        goalCalories: result.goalCalories,
-        weightChangePerWeek: result.weightChangePerWeek,
-        timeToGoal: result.timeToGoal
-      }
+      { height: body.height, weight: body.weight, age: body.age, gender: sex, activityLevel: activity, goal: legacyGoal(goal, pace), goalV2: goal, pace, bmrFormula: formula, targetWeight: tw, bodyFat },
+      { bmr: res.bmr, tdee: res.tdee, goalCalories: res.kcal, weightChangePerWeek: res.effPace, timeToGoal: res.weeks ?? 0 },
     )
-    
-    setShowSaveButton(false)
+    setSaved(true)
   }
 
-  const getGoalColor = (goalType: Goal) => {
-    if (goalType.includes('lose')) return 'text-blue-600'
-    if (goalType.includes('gain')) return 'text-orange-600'
-    return 'text-green-600'
-  }
+  const chartData = res.series.length > 1 ? res.series.map((s) => ({ week: s.week, plan: Math.round(s.plan * 10) / 10, fixed: Math.round(s.fixed * 10) / 10 })) : null
 
-  const getGoalBgColor = (goalType: Goal) => {
-    if (goalType.includes('lose')) return 'bg-blue-100 dark:bg-blue-900/30 border-line'
-    if (goalType.includes('gain')) return 'bg-orange-100 dark:bg-orange-900/30 border-line'
-    return 'bg-green-100 dark:bg-green-900/30 border-line'
-  }
-
-  const macroChartOption = useMemo(() => {
-    if (!result || result.goalCalories <= 0) return null
-
-    const cal = result.goalCalories
-    const carbsCal = Math.round(cal * 0.5)
-    const proteinCal = Math.round(cal * 0.3)
-    const fatCal = Math.round(cal * 0.2)
-    const carbsGram = Math.round(carbsCal / 4)
-    const proteinGram = Math.round(proteinCal / 4)
-    const fatGram = Math.round(fatCal / 9)
-
-    return {
-      tooltip: {
-        trigger: 'item' as const,
-        formatter: '{b}: {c}kcal ({d}%)'
-      },
-      legend: {
-        bottom: 0,
-        textStyle: { fontSize: 12 }
-      },
-      series: [{
-        type: 'pie' as const,
-        radius: ['40%', '70%'],
-        center: ['50%', '45%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: true,
-          formatter: (params: { name: string; value: number; percent?: number }) =>
-            `${params.name}\n${params.value}kcal\n(${Math.round(params.percent ?? 0)}%)`,
-          fontSize: 12
-        },
-        data: [
-          {
-            value: carbsCal,
-            name: `${t('result.carbs')} ${carbsGram}g`,
-            itemStyle: { color: '#3B82F6' }
-          },
-          {
-            value: proteinCal,
-            name: `${t('result.protein')} ${proteinGram}g`,
-            itemStyle: { color: '#EF4444' }
-          },
-          {
-            value: fatCal,
-            name: `${t('result.fat')} ${fatGram}g`,
-            itemStyle: { color: '#F59E0B' }
-          }
-        ]
-      }]
-    }
-  }, [result, t])
+  const goalBtn = (g: Goal) => (
+    <button key={g} type="button" onClick={() => { setGoal(g); if (!PACES[g].includes(pace)) setPace(PACES[g][1] ?? PACES[g][0] ?? DEF.pace) }}
+      className={`flex-1 ${seg(goal === g)}`} aria-pressed={goal === g}>
+      {t(`goal.${g}`)}
+    </button>
+  )
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <CalculationHistory
           histories={histories}
           isLoading={false}
-          onLoadHistory={(historyId) => {
-            const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setHeight(inputs.height?.toString() || '')
-              setWeight(inputs.weight?.toString() || '')
-              setAge(inputs.age?.toString() || '')
-              setGender(inputs.gender || 'male')
-              setActivityLevel(inputs.activityLevel || 'moderate')
-              setGoal(inputs.goal || 'maintain')
-              setBmrFormula(inputs.bmrFormula || 'mifflin')
-              setTargetWeight(inputs.targetWeight?.toString() || '')
-            }
+          onLoadHistory={(id) => {
+            const i = loadFromHistory(id)
+            if (!i) return
+            setHeight(Number(i.height) || DEF.h)
+            setWeight(Number(i.weight) || DEF.w)
+            setAge(Number(i.age) || DEF.age)
+            setSex(i.gender === 'female' ? 'female' : 'male')
+            const a = ACTIVITIES.find((x) => x === i.activityLevel); if (a) setActivity(a)
+            const f = FORMULAS.find((x) => x === i.bmrFormula); if (f) setFormula(f)
+            applyGoal(typeof i.goalV2 === 'string' ? i.goalV2 : String(i.goal ?? ''), i.pace)
+            if (Number(i.targetWeight) >= 25) setTarget(Number(i.targetWeight))
+            setBodyFat(Number(i.bodyFat) || 0)
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(result: Record<string, unknown>) => {
-            const goalCalories = Number(result.goalCalories) || 0
-            if (!goalCalories) return t('history.empty')
-            return `${formatNumber(goalCalories, 0)} kcal`
+          formatResult={(r: Record<string, unknown>) => {
+            const k = Number(r.goalCalories) || 0
+            return k ? `${n0(k)} kcal` : t('history.empty')
           }}
         />
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 폼 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            {t('input.title')}
-          </h2>
-
-          <div className="space-y-6">
-            {/* 기본 정보 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.height')}
-                </label>
-                <input
-                  type="number"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  placeholder={t('input.heightPlaceholder')}
-                  step="0.1"
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.weight')}
-                </label>
-                <input
-                  type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder={t('input.weightPlaceholder')}
-                  step="0.1"
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('input.age')}
-                </label>
-                <input
-                  type="number"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  placeholder={t('input.agePlaceholder')}
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-            </div>
-
-            {/* 성별 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.gender')}
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'male'}
-                    onChange={() => setGender('male')}
-                    className="mr-2"
-                  />
-                  {t('input.male')}
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'female'}
-                    onChange={() => setGender('female')}
-                    className="mr-2"
-                  />
-                  {t('input.female')}
-                </label>
-              </div>
-            </div>
-
-            {/* 활동 수준 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.activityLevel')}
-              </label>
-              <select
-                value={activityLevel}
-                onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              >
-                <option value="sedentary">{t('input.activities.sedentary')}</option>
-                <option value="light">{t('input.activities.light')}</option>
-                <option value="moderate">{t('input.activities.moderate')}</option>
-                <option value="active">{t('input.activities.active')}</option>
-                <option value="veryActive">{t('input.activities.veryActive')}</option>
-              </select>
-            </div>
-
-            {/* 목표 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.goal')}
-              </label>
-              <select
-                value={goal}
-                onChange={(e) => setGoal(e.target.value as Goal)}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              >
-                <option value="loseFast">{t('input.goals.loseFast')}</option>
-                <option value="loseModerate">{t('input.goals.loseModerate')}</option>
-                <option value="loseSlow">{t('input.goals.loseSlow')}</option>
-                <option value="maintain">{t('input.goals.maintain')}</option>
-                <option value="gainSlow">{t('input.goals.gainSlow')}</option>
-                <option value="gainModerate">{t('input.goals.gainModerate')}</option>
-                <option value="gainFast">{t('input.goals.gainFast')}</option>
-              </select>
-            </div>
-
-            {/* 목표 체중 (선택사항) */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.targetWeight')}
-              </label>
-              <input
-                type="number"
-                value={targetWeight}
-                onChange={(e) => setTargetWeight(e.target.value)}
-                placeholder={t('input.targetWeightPlaceholder')}
-                step="0.1"
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {t('input.targetWeightNote')}
-              </p>
-            </div>
-
-            {/* BMR 공식 선택 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.bmrFormula')}
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={bmrFormula === 'mifflin'}
-                    onChange={() => setBmrFormula('mifflin')}
-                    className="mr-2"
-                  />
-                  {t('input.formulas.mifflin')}
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={bmrFormula === 'harris'}
-                    onChange={() => setBmrFormula('harris')}
-                    className="mr-2"
-                  />
-                  {t('input.formulas.harris')}
-                </label>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-2 ui-card p-6 space-y-6">
+          <div>
+            <p className="text-sm font-medium text-body mb-1.5">{t('input.gender')}</p>
+            <div className="flex gap-2">
+              {(['male', 'female'] as Sex[]).map((s) => (
+                <button key={s} type="button" onClick={() => setSex(s)} className={`flex-1 ${seg(sex === s)}`} aria-pressed={sex === s}>
+                  {t(`input.${s}`)}
+                </button>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* 결과 */}
-        <div className="space-y-6">
-          {result && (
+          <div className="grid grid-cols-3 gap-3">
+            <NumField id="cal-age" label={t('form.age')} value={age} onChange={setAge} unit={t('unit.age')} min={15} max={100} />
+            <NumField id="cal-h" label={t('form.height')} value={height} onChange={setHeight} unit="cm" min={100} max={230} step={0.1} />
+            <NumField id="cal-w" label={t('form.weight')} value={weight} onChange={setWeight} unit="kg" min={25} max={300} step={0.1} />
+          </div>
+          {body.age < 19 && <p className="text-xs text-muted -mt-3">{t('form.teenNote')}</p>}
+
+          <div>
+            <p className="text-sm font-medium text-body mb-1.5">{t('input.activityLevel')}</p>
+            <div className="space-y-2">
+              {ACTIVITIES.map((a) => (
+                <button key={a} type="button" onClick={() => setActivity(a)} aria-pressed={activity === a}
+                  className={`w-full text-left rounded-xl border px-4 py-3 transition-colors ${activity === a ? 'bg-primary-soft text-primary border-primary' : 'border-line hover:bg-subtle'}`}>
+                  <span className="flex items-center justify-between gap-2">
+                    <span className={`text-sm font-semibold ${activity === a ? 'text-primary' : 'text-fg'}`}>{t(`act.${a}.name`)}</span>
+                    <span className="text-xs tabular-nums text-muted">× {ACTIVITY_FACTOR[a]}</span>
+                  </span>
+                  <span className="block text-xs text-muted mt-0.5">{t(`act.${a}.desc`)}</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-muted mt-2">{t('act.note')}</p>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-body mb-1.5">{t('input.goal')}</p>
+            <div className="flex gap-2">{GOALS.map(goalBtn)}</div>
+          </div>
+
+          {goal !== 'maintain' && (
             <>
-              {/* 주요 결과 */}
-              <div className={`rounded-2xl shadow-lg p-8 border-2 ${getGoalBgColor(goal)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  {t('result.title')}
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-field rounded-lg">
-                      <div className="text-2xl font-bold text-orange-600">
-                        {formatNumber(result.bmr, 0)}
-                      </div>
-                      <div className="text-sm text-sub">{t('result.bmr')}</div>
-                    </div>
-                    <div className="text-center p-4 bg-field rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">
-                        {formatNumber(result.tdee, 0)}
-                      </div>
-                      <div className="text-sm text-sub">{t('result.tdee')}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-center p-6 bg-field rounded-lg">
-                    <div className={`text-3xl font-bold ${getGoalColor(goal)}`}>
-                      {formatNumber(result.goalCalories, 0)}
-                    </div>
-                    <div className="text-lg font-semibold text-fg mt-2">
-                      {t('result.goalCalories')}
-                    </div>
-                    <div className="text-sm text-sub mt-1">
-                      {t(`input.goals.${goal}`)}
-                    </div>
-                  </div>
-
-                  {result.timeToGoal > 0 && targetWeight && (
-                    <div className="border-t border-line-strong pt-4">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-body">{t('result.weightChangePerWeek')}</span>
-                        <span className="font-semibold text-fg">
-                          {formatNumber(result.weightChangePerWeek, 1)}kg
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-body">{t('result.timeToGoal')}</span>
-                        <span className="font-semibold text-fg">
-                          {formatNumber(result.timeToGoal, 0)}주
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 공유/저장 버튼 */}
-                  <div className="flex space-x-2 mt-4">
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>{tCommon('copied')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>{t('result.shareResult')}</span>
-                        </>
-                      )}
+              <div>
+                <p className="text-sm font-medium text-body mb-1.5">{t('form.pace')}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {PACES[goal].map((p) => (
+                    <button key={p} type="button" onClick={() => setPace(p)} aria-pressed={pace === p}
+                      className={`${seg(pace === p)} flex flex-col items-center leading-tight`}>
+                      <span>{t('form.paceKg', { kg: p })}</span>
+                      <span className={`text-xs ${pace === p ? 'text-white/70' : 'text-muted'}`}>
+                        {goal === 'lose' ? '−' : '+'}{n0(dailyDelta(p))} kcal
+                      </span>
                     </button>
-                    
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>{tCommon('save')}</span>
-                      </button>
-                    )}
-                  </div>
+                  ))}
                 </div>
+                <p className="text-xs text-muted mt-2">{t(goal === 'lose' ? 'form.paceNoteLose' : 'form.paceNoteGain')}</p>
               </div>
-
-              {/* 상세 정보 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-fg mb-4">
-                  {t('result.details')}
-                </h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-body">{t('result.bmrFormula')}</span>
-                    <span className="text-body font-medium">
-                      {t(`input.formulas.${bmrFormula}`)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-body">{t('result.activityMultiplier')}</span>
-                    <span className="text-body font-medium">
-                      {t(`input.activities.${activityLevel}`)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-body">{t('result.calorieAdjustment')}</span>
-                    <span className="text-body font-medium">
-                      {goal.includes('lose') ? '-' : goal === 'maintain' ? '±' : '+'}{Math.abs(result.goalCalories - result.tdee)} kcal/일
-                    </span>
-                  </div>
-                </div>
+              <div>
+                <NumField id="cal-tw" label={t('form.target')} value={target} onChange={setTarget} unit="kg" min={25} max={300} step={0.1} />
+                <p className="text-xs text-muted mt-1.5">{t('form.targetBmi', { bmi: n1(targetBmi) })}</p>
               </div>
-
-              {/* 영양소 비율 도넛 차트 */}
-              {macroChartOption && (
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h4 className="text-lg font-bold text-fg mb-4 flex items-center">
-                    <Zap className="w-5 h-5 mr-2 text-yellow-500" />
-                    {t('result.macroChartTitle')}
-                  </h4>
-                  <ReactECharts
-                    option={macroChartOption}
-                    style={{ height: 320 }}
-                    opts={{ renderer: 'svg' }}
-                  />
-                </div>
-              )}
             </>
           )}
 
-          {!result && (
-            <div className="bg-subtle rounded-2xl p-8 text-center">
-              <Utensils className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-sub">
-                {t('placeholder')}
+          <div className="border-t border-line pt-5 space-y-4">
+            <div>
+              <NumField id="cal-bf" label={t('form.bodyFat')} value={bodyFat} onChange={setBodyFat} unit="%" min={3} max={60} step={0.1} placeholder={t('form.optional')} />
+              <p className="text-xs text-muted mt-1.5">
+                {t('form.bodyFatNote')}{' '}
+                <Link href="/body-fat-calculator/" className="text-primary underline">{t('links.bodyFat')}</Link>
               </p>
             </div>
+            <div>
+              <p className="text-sm font-medium text-body mb-1.5">{t('input.bmrFormula')}</p>
+              <div className="flex flex-wrap gap-2">
+                {FORMULAS.map((f) => {
+                  const off = f === 'katch' && body.bodyFat == null
+                  return (
+                    <button key={f} type="button" disabled={off} onClick={() => setFormula(f)} aria-pressed={useFormula === f}
+                      className={`${seg(useFormula === f)} disabled:opacity-40 disabled:cursor-not-allowed`}>
+                      {t(`formula.${f}`)}
+                    </button>
+                  )
+                })}
+              </div>
+              {formula === 'katch' && body.bodyFat == null && <p className="text-xs text-muted mt-2">{t('formula.katchNeedsBf')}</p>}
+            </div>
+          </div>
+        </div>
+
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-3 space-y-4 min-w-0">
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{heroLabel}</p>
+            <p className="text-4xl font-bold tabular-nums mt-1">{n0(res.kcal)} kcal</p>
+            <p className="text-sm text-white/70 mt-2">{heroSub}</p>
+            {etaText && <p className="text-sm font-medium mt-3">{etaText}</p>}
+          </div>
+
+          {res.clamped && res.reason !== 'floor' && (
+            <p className="rounded-2xl bg-amber-50 text-amber-800 p-4 text-sm">
+              {t('warn.clamped', { raw: n0(res.raw), floor: n0(res.floor), pace: (Math.round(res.effPace * 100) / 100).toString() })}
+            </p>
           )}
+          {res.reason === 'floor' && (
+            <p className="rounded-2xl bg-amber-50 text-amber-800 p-4 text-sm">{t('warn.floor', { floor: n0(res.floor), tdee: n0(res.tdee) })}</p>
+          )}
+          {goal !== 'maintain' && targetBmi < 18.5 && (
+            <p className="rounded-2xl bg-amber-50 text-amber-800 p-4 text-sm">{t('warn.underweight', { bmi: n1(targetBmi) })}</p>
+          )}
+          {res.reason === 'direction' && <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t(`warn.direction.${goal}`)}</p>}
+          {res.reason === 'tooLong' && <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('warn.tooLong')}</p>}
+
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: heroLabel,
+              headline: `${n0(res.kcal)} kcal`,
+              sub: heroSub,
+              rows: [
+                { label: t('result.bmr'), value: `${n0(res.bmr)} kcal` },
+                { label: t('result.tdee'), value: `${n0(res.tdee)} kcal` },
+                ...(etaText ? [{ label: t('share.eta', { kg: n1(tw) }), value: t('share.weeks', { weeks: weeks ?? 0 }) }] : []),
+                { label: t('result.protein'), value: `${n0(mac.protein.g)} g` },
+              ],
+            }}
+            text={`${heroLabel} ${n0(res.kcal)} kcal`}
+            fileName="calorie-plan"
+          />
+
+          {/* 내역 */}
+          <div className="ui-card p-6">
+            <h2 className="text-base font-semibold text-fg">{t('breakdown.title')}</h2>
+            <dl className="divide-y divide-line text-sm mt-3">
+              <div className="flex justify-between gap-3 py-2.5">
+                <dt className="text-sub">{t('result.bmr')} <span className="text-faint">· {t(`formula.${useFormula}`)}</span></dt>
+                <dd className="font-semibold text-fg tabular-nums">{n0(res.bmr)} kcal</dd>
+              </div>
+              <div className="flex justify-between gap-3 py-2.5">
+                <dt className="text-sub">{t('result.tdee')} <span className="text-faint">· × {ACTIVITY_FACTOR[activity]}</span></dt>
+                <dd className="font-semibold text-fg tabular-nums">{n0(res.tdee)} kcal</dd>
+              </div>
+              {goal !== 'maintain' && (
+                <div className="flex justify-between gap-3 py-2.5">
+                  <dt className="text-sub">{t('breakdown.adjust')}</dt>
+                  <dd className="font-semibold text-fg tabular-nums">{delta < 0 ? '−' : '+'}{n0(Math.abs(delta))} kcal</dd>
+                </div>
+              )}
+              {goal === 'lose' && (
+                <div className="flex justify-between gap-3 py-2.5">
+                  <dt className="text-sub">{t('breakdown.floor', { min: n0(MIN_KCAL[sex]) })}</dt>
+                  <dd className="font-semibold text-fg tabular-nums">{n0(res.floor)} kcal</dd>
+                </div>
+              )}
+              {goal !== 'maintain' && (
+                <div className="flex justify-between gap-3 py-2.5">
+                  <dt className="text-sub">{t('breakdown.pace')}</dt>
+                  <dd className="font-semibold text-fg tabular-nums">{t('form.paceKg', { kg: (Math.round(res.effPace * 100) / 100).toString() })}</dd>
+                </div>
+              )}
+              {ref && (
+                <div className="flex justify-between gap-3 py-2.5">
+                  <dt className="text-sub">{t('breakdown.eer', { range: ref.to ? `${ref.from}~${ref.to}` : `${ref.from}+` })}</dt>
+                  <dd className="font-semibold text-fg tabular-nums">{n0(ref.kcal)} kcal</dd>
+                </div>
+              )}
+            </dl>
+            <p className="text-xs text-muted mt-3">{t('breakdown.note')}</p>
+            <button type="button" onClick={handleSave} disabled={saved} className="ui-btn-soft px-4 py-2 mt-4 text-sm inline-flex items-center gap-2 disabled:opacity-50">
+              <Save className="w-4 h-4" />{saved ? t('saved') : tCommon('save')}
+            </button>
+          </div>
+
+          {/* 체중 변화 예상 */}
+          {chartData && (
+            <div className="ui-card p-6">
+              <h2 className="text-base font-semibold text-fg">{t('chart.title')}</h2>
+              <p className="text-xs text-muted mt-1">{t('chart.note')}</p>
+              <div className="h-60 mt-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData} margin={{ top: 10, right: 12, left: -12, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                    <XAxis dataKey="week" type="number" domain={[0, 'dataMax']} tick={{ fontSize: 11, fill: 'var(--muted)' }}
+                      tickFormatter={(w: number) => t('chart.week', { w })} />
+                    <YAxis domain={['auto', 'auto']} tick={{ fontSize: 11, fill: 'var(--muted)' }} tickFormatter={(v: number) => `${v}`} />
+                    <Tooltip
+                      contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, fontSize: 12, color: 'var(--fg)' }}
+                      labelFormatter={(w) => t('chart.week', { w: Number(w ?? 0) })}
+                      formatter={(v, name) => [`${Number(v ?? 0).toFixed(1)} kg`, name === 'plan' ? t('chart.plan') : t('chart.fixed')]}
+                    />
+                    <ReferenceLine y={tw} stroke="var(--fg)" strokeDasharray="2 3" label={{ value: t('chart.target'), position: 'insideTopRight', fontSize: 10, fill: 'var(--fg)' }} />
+                    <Line type="monotone" dataKey="plan" stroke="var(--primary)" strokeWidth={2.5} dot={false} />
+                    <Line type="monotone" dataKey="fixed" stroke="var(--faint)" strokeWidth={1.5} strokeDasharray="5 4" dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-sub mt-3">
+                <span className="inline-flex items-center gap-1.5"><span className="w-4 h-0.5 bg-primary" />{t('chart.plan')}</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-4 border-t border-dashed border-line-strong" />{t('chart.fixed')}</span>
+              </div>
+            </div>
+          )}
+
+          {/* 공식 비교 */}
+          <div className="ui-card p-6">
+            <h2 className="text-base font-semibold text-fg">{t('compare.title')}</h2>
+            <div className="mt-3 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-muted">
+                    <th className="py-2 font-medium">{t('compare.formula')}</th>
+                    <th className="py-2 font-medium text-right">{t('result.bmr')}</th>
+                    <th className="py-2 font-medium text-right">{t('result.tdee')}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line">
+                  {FORMULAS.map((f) => {
+                    const v = all[f]
+                    return (
+                      <tr key={f} className={useFormula === f ? 'text-primary font-semibold' : 'text-body'}>
+                        <td className="py-2.5">{t(`formula.${f}`)}</td>
+                        <td className="py-2.5 text-right tabular-nums">{v == null ? '—' : n0(v)}</td>
+                        <td className="py-2.5 text-right tabular-nums">{v == null ? t('compare.needBf') : n0(v * ACTIVITY_FACTOR[activity])}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-muted mt-3">{t('compare.note')}</p>
+          </div>
+
+          {/* 탄단지 */}
+          <div className="ui-card p-6">
+            <h2 className="text-base font-semibold text-fg">{t('macro.title')}</h2>
+            <p className="text-xs text-muted mt-1">
+              {t('macro.basis', { kg: n1(basisKg), lo: PROTEIN_G_PER_KG[goal][1], hi: PROTEIN_G_PER_KG[goal][2], gkg: PROTEIN_G_PER_KG[goal][0], fat: FAT_PCT })}
+            </p>
+            <div className="grid grid-cols-3 gap-2 mt-4">
+              {(['protein', 'fat', 'carbs'] as const).map((k) => {
+                const m = mac[k]
+                const out = m.pct < m.range[0] || m.pct > m.range[1]
+                return (
+                  <div key={k} className="bg-subtle rounded-xl p-3">
+                    <p className="text-xs text-sub">{t(`result.${k}`)}</p>
+                    <p className="text-lg font-bold text-fg tabular-nums">{n0(m.g)} g</p>
+                    <p className="text-xs text-muted tabular-nums">{n0(m.kcal)} kcal · {n0(m.pct)}%</p>
+                    <p className={`text-xs mt-1 tabular-nums ${out ? 'text-amber-700' : 'text-faint'}`}>
+                      {t('macro.kdri', { lo: m.range[0], hi: m.range[1] })}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-muted mt-3">
+              {t('macro.note')}{' '}
+              <Link href="/nutrition-calculator/" className="text-primary underline">{t('links.nutrition')}</Link>
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* 칼로리 가이드 */}
-      <div className="bg-subtle rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-fg mb-6">
-          {t('guide.title')}
-        </h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
+      {/* ── 가이드 (항상 표시) ── */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.bmrTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.bmr.0')}</li>
-              <li>• {t('guide.bmr.1')}</li>
-              <li>• {t('guide.bmr.2')}</li>
-              <li>• {t('guide.bmr.3')}</li>
+            <h3 className="text-base font-semibold text-fg mb-2">{t('guide.bmrTitle')}</h3>
+            <ul className="space-y-1.5 text-sm text-body list-disc pl-5">
+              {[0, 1, 2, 3].map((i) => <li key={i}>{t(`guide.bmr.${i}`)}</li>)}
             </ul>
           </div>
-          
           <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.calorieTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.calorie.0')}</li>
-              <li>• {t('guide.calorie.1')}</li>
-              <li>• {t('guide.calorie.2')}</li>
-              <li>• {t('guide.calorie.3')}</li>
+            <h3 className="text-base font-semibold text-fg mb-2">{t('guide.calorieTitle')}</h3>
+            <ul className="space-y-1.5 text-sm text-body list-disc pl-5">
+              {[0, 1, 2, 3].map((i) => <li key={i}>{t(`guide.calorie.${i}`)}</li>)}
             </ul>
           </div>
         </div>
-      </div>
 
-      {/* 음식 칼로리 참고표 */}
-      <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          {t('foodCalories.title')}
-        </h3>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.staples')}</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.rice')}</span>
-                <span className="font-medium">300 kcal</span>
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.formulas.title')}</h3>
+          <ul className="space-y-1.5 text-sm text-body list-disc pl-5">
+            {(t.raw('guide.formulas.items') as string[]).map((x, i) => <li key={i}>{x}</li>)}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.howToUse.title')}</h3>
+          <ol className="space-y-1.5 text-sm text-body">
+            {(t.raw('guide.howToUse.items') as string[]).map((x, i) => <li key={i}>{x}</li>)}
+          </ol>
+        </div>
+
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
+          <ul className="space-y-1.5 text-sm text-body list-disc pl-5">
+            {(t.raw('guide.tips.items') as string[]).map((x, i) => <li key={i}>{x}</li>)}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <dl className="space-y-3 text-sm">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((x, i) => (
+              <div key={i}>
+                <dt className="font-semibold text-fg">{x.q}</dt>
+                <dd className="text-body mt-1">{x.a}</dd>
               </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.ramen')}</span>
-                <span className="font-medium">500 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.kimbap')}</span>
-                <span className="font-medium">550 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.bread')}</span>
-                <span className="font-medium">80 kcal</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.proteins')}</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.chicken')}</span>
-                <span className="font-medium">165 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.egg')}</span>
-                <span className="font-medium">70 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.tofu')}</span>
-                <span className="font-medium">80 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.milk')}</span>
-                <span className="font-medium">130 kcal</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('foodCalories.snacks')}</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.apple')}</span>
-                <span className="font-medium">80 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.banana')}</span>
-                <span className="font-medium">90 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.almond')}</span>
-                <span className="font-medium">60 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('foodCalories.items.chocolate')}</span>
-                <span className="font-medium">50 kcal</span>
-              </div>
-            </div>
+            ))}
+          </dl>
+        </div>
+
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('links.title')}</h3>
+          <div className="flex flex-wrap gap-2">
+            {([['/nutrition-calculator/', 'nutrition'], ['/exercise-calorie/', 'exercise'], ['/bmi-calculator/', 'bmi'], ['/body-fat-calculator/', 'bodyFat']] as const).map(([href, k]) => (
+              <Link key={href} href={href} className="ui-btn-soft px-4 py-2 text-sm">{t(`links.${k}`)}</Link>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* 운동 칼로리 소모표 */}
-      <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          {t('exerciseCalories.title')}
-        </h3>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('exerciseCalories.cardio')}</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.walking')}</span>
-                <span className="font-medium">150 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.jogging')}</span>
-                <span className="font-medium">300 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.cycling')}</span>
-                <span className="font-medium">250 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.swimming')}</span>
-                <span className="font-medium">350 kcal</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-fg mb-3">{t('exerciseCalories.strength')}</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.weight')}</span>
-                <span className="font-medium">180 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.yoga')}</span>
-                <span className="font-medium">120 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.stairs')}</span>
-                <span className="font-medium">300 kcal</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('exerciseCalories.items.jumprope')}</span>
-                <span className="font-medium">400 kcal</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="text-xs text-muted mt-4">
-          {t('exerciseCalories.note')}
-        </p>
+        <p className="bg-subtle rounded-2xl p-5 text-xs text-sub">{t('guide.sources')} {t('guide.disclaimer')}</p>
       </div>
     </div>
   )
