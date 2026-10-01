@@ -47400,8 +47400,275 @@
       }
     }
   },
-  "documentGenerator": {},
-  "iouGenerator": {},
+  "documentGenerator": {
+    "reset": "Reset",
+    "resetConfirm": "Clear everything you entered and start over?",
+    "copyLink": "Copy form link",
+    "linkCopied": "Copied",
+    "print": "Print",
+    "pdf": "Save PDF",
+    "pdfBusy": "Creating…",
+    "pdfError": "Couldn't create the PDF. Click Print and choose 'Save as PDF' instead.",
+    "view": {
+      "edit": "Edit",
+      "preview": "Preview"
+    },
+    "previewNote": "The preview is a scaled-down A4 page. Print and PDF use the actual size.",
+    "privacyNote": "Your entries are saved only in this browser and never sent to a server. Only the first 6 digits and the first back digit of the resident registration number are collected — write the full number by hand if needed. On a shared PC, press Reset when you're done.",
+    "stamp": {
+      "title": "Seal",
+      "auto": "Auto name seal",
+      "image": "Seal image",
+      "none": "None (sign by hand)",
+      "change": "Change image",
+      "make": "Make a seal image",
+      "mainSigner": "the first signer",
+      "hint": {
+        "auto": "A seal made from each person's name is placed over (인). For stronger evidence, sign or stamp by hand after printing.",
+        "image": "The uploaded seal is placed on {name}'s signature line. White backgrounds become transparent.",
+        "none": "Signature lines stay blank with (인). Sign or stamp after printing."
+      }
+    },
+    "party": {
+      "name": "Name",
+      "namePlaceholder": "Hong Gildong",
+      "id": "Resident reg. no. (first 6 + first back digit)",
+      "idBack1": "First digit of the back part",
+      "address": "Address",
+      "addressPlaceholder": "Street address, building, unit",
+      "phone": "Phone"
+    },
+    "related": "Related tools",
+    "sources": "Legal basis & sources",
+    "disclaimer": "This tool provides a general template and is not legal advice. For large amounts or expected disputes, consult a lawyer."
+  },
+  "iouGenerator": {
+    "title": "IOU (Loan Agreement) Generator",
+    "description": "Fill in the blanks to create a Korean IOU (차용증) — amount in Korean words, interest cap check, repayment schedule, seal and PDF.",
+    "won": "KRW",
+    "section": {
+      "loan": "Loan and repayment terms",
+      "debtor": "Debtor (borrower)",
+      "creditor": "Creditor (lender)",
+      "guarantor": "Joint guarantor (optional)",
+      "clauses": "Special terms",
+      "schedule": "Repayment schedule"
+    },
+    "sectionHint": {
+      "debtor": "The person who receives the money and must repay it.",
+      "creditor": "The person who lends the money and gets it back.",
+      "guarantor": "Must repay if the debtor can't. Up to 3."
+    },
+    "amount": "Loan amount",
+    "loanDate": "Loan date (money received)",
+    "dueDate": "Due date (fully repaid)",
+    "writtenDate": "Date written",
+    "rate": "Interest rate (annual)",
+    "rateHint": "0 for interest-free. Max {max}% between individuals",
+    "payDay": "Payment day",
+    "payDayUnit": "th",
+    "method": "Repayment method",
+    "methods": {
+      "bullet": "Lump sum at maturity",
+      "annuity": "Equal installments",
+      "equalPrincipal": "Equal principal"
+    },
+    "methodHint": {
+      "bullet": "Pay interest monthly and the principal at once on the due date.",
+      "annuity": "Pay the same amount (principal + interest) every month.",
+      "equalPrincipal": "Pay equal principal plus interest on the balance; payments decrease."
+    },
+    "receive": "How the money was received",
+    "receives": {
+      "transfer": "Bank transfer",
+      "cash": "Cash"
+    },
+    "account": "Repayment account (creditor's)",
+    "accountPlaceholder": "Bank, account number (holder)",
+    "accountHint": "Using bank transfers leaves a record of every payment.",
+    "family": "This is a loan between family members",
+    "familyHint": "Between related parties, also check the gift-tax rule (deemed rate {fair}% a year).",
+    "guarantorAdd": "Add guarantor",
+    "guarantorRemove": "Remove guarantor",
+    "guarantorN": "Joint guarantor {n}",
+    "clause": {
+      "acceleration": "Acceleration",
+      "accelerationHint": "If payments are missed twice or seizure/bankruptcy occurs, the full balance becomes due.",
+      "late": "Late payment damages",
+      "lateHint": "Add default interest after the due date. Cap {max}% a year.",
+      "lateRate": "Late rate (annual)",
+      "prepay": "Allow prepayment",
+      "prepayHint": "States that early repayment carries no fee.",
+      "court": "Competent court",
+      "courtHint": "Agree in advance on which court handles disputes.",
+      "courtName": "Court",
+      "extra": "Other terms",
+      "extraPlaceholder": "e.g. The debtor notifies the creditor within 7 days of any address change."
+    },
+    "summary": {
+      "total": "Total repayment",
+      "principal": "Principal",
+      "interest": "Total interest",
+      "firstPayment": "First payment",
+      "monthlyInterest": "Monthly interest",
+      "count": "Payments",
+      "countUnit": "{n}"
+    },
+    "schedule": {
+      "attach": "Attach schedule to the document",
+      "attachHint": "Adds a page with principal and interest per payment.",
+      "show": "Show schedule ({n} payments)",
+      "no": "No.",
+      "date": "Date",
+      "principal": "Principal",
+      "interest": "Interest",
+      "payment": "Total",
+      "balance": "Balance",
+      "empty": "Enter the amount and period to see the schedule."
+    },
+    "insight": {
+      "noAmount": "Enter the loan amount.",
+      "dueBeforeLoan": "The due date is on or before the loan date. Please check the dates.",
+      "rateOver": "{rate}% exceeds the legal maximum of {max}% under the Interest Limitation Act. The excess is void and must be applied to principal or returned.",
+      "lateOver": "A late rate of {rate}% exceeds the {max}% cap. The excess is void.",
+      "withholding": "Total interest on this loan is {interest} KRW. Interest between individuals is subject to 27.5% withholding (25% income tax + 2.5% local tax), about {tax} KRW, withheld by the payer and filed by the 10th of the next month.",
+      "giftTaxable": "Family loan: the gap against the deemed rate of {fair}% is {gap} KRW a year — 10 million KRW or more, so gift tax may apply. Raise the rate or keep the principal at or below {limit} KRW.",
+      "giftOk": "Family loan: the gap against the deemed rate of {fair}% is {gap} KRW a year — under 10 million KRW, so no gift tax on the low rate (up to {limit} KRW at this rate). Without records of actual repayment, the principal itself may be treated as a gift.",
+      "giftFair": "Family loan: the rate is at or above the deemed rate of {fair}%, so no gift tax on the interest gap. Keep bank records of interest actually paid."
+    },
+    "guide": {
+      "title": "IOU essentials",
+      "intro": "A Korean IOU (차용증) has no fixed format. It is valid if it clearly states who lent how much to whom, until when and on what terms, and the debtor signs or seals it. Keep it together with records of the money actually transferred.",
+      "sections": [
+        {
+          "title": "Validity",
+          "items": [
+            "A printed document is valid once signed or sealed.",
+            "Include both parties, the amount (in words and figures), loan date, due date and interest.",
+            "Make two copies, sign both and keep one each.",
+            "If anything is corrected, both parties should seal next to the correction."
+          ]
+        },
+        {
+          "title": "Stronger evidence",
+          "items": [
+            "Transfer money by bank rather than cash to leave a record.",
+            "The debtor should use a registered seal and attach a seal certificate.",
+            "Pay interest and installments to the account on the agreed dates.",
+            "Write the full resident registration number by hand after printing."
+          ]
+        },
+        {
+          "title": "When to notarize",
+          "items": [
+            "For large or long-term loans, make a notarial deed for a loan for consumption.",
+            "With a consent-to-execution clause, you can enforce without a lawsuit.",
+            "A simple notarial certification proves the signing only and is not enforceable.",
+            "Notary fees depend on the amount; ask the notary office."
+          ]
+        },
+        {
+          "title": "Interest and tax",
+          "items": [
+            "The maximum rate between individuals is 20% a year; the excess is void.",
+            "Interest received is subject to 27.5% withholding.",
+            "For family loans, gift tax applies if the gap against 4.6% is 10 million KRW or more a year.",
+            "Interest-free, that threshold is a principal of about 217.39 million KRW."
+          ]
+        },
+        {
+          "title": "If you aren't repaid",
+          "items": [
+            "Personal loan claims expire 10 years after the due date (Civil Act Art. 162).",
+            "Send a certified letter demanding repayment first.",
+            "Small claims (up to 30 million KRW) or a payment order are fast and cheap.",
+            "If assets may disappear, consider a provisional attachment first."
+          ]
+        },
+        {
+          "title": "Joint guarantors",
+          "items": [
+            "A joint guarantor can be claimed against directly, without the debtor first.",
+            "A guarantee must be in writing signed by the guarantor (Civil Act Art. 428-2).",
+            "Guarantors should also use a registered seal and certificate."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is a printed IOU valid?",
+            "a": "Yes. An IOU has no required format, so a printed one is valid when it lists the parties, amount, loan date, due date and interest and the debtor signs or seals it. Bank transfer records strengthen it."
+          },
+          {
+            "q": "What is the maximum interest rate between individuals?",
+            "a": "20% a year under the Interest Limitation Act (contracts from July 7, 2021). The excess is void and must be applied to principal or returned. The same cap applies to late damages."
+          },
+          {
+            "q": "Does an IOU avoid gift tax on family loans?",
+            "a": "Only with records of actually paying the agreed interest and principal. For interest-free or low-rate loans, gift tax applies when the gap against the deemed rate of 4.6% is 10 million KRW or more a year — about 217.39 million KRW of principal when interest-free."
+          },
+          {
+            "q": "Is interest income taxed?",
+            "a": "Yes. Interest between individuals is non-business lending income, subject to 27.5% withholding (25% income tax + 2.5% local tax), withheld by the payer and filed by the 10th of the following month."
+          },
+          {
+            "q": "Do I need to notarize it?",
+            "a": "Not required, but a notarial deed with a consent-to-execution clause lets you enforce without a lawsuit. Recommended for large or long-term loans."
+          },
+          {
+            "q": "How long can I claim repayment?",
+            "a": "10 years from the due date for personal loans (Civil Act Art. 162); 5 years for commercial claims. Interrupt the period with a payment order, lawsuit or attachment."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Number to Korean amount",
+          "href": "/number-to-korean/"
+        },
+        {
+          "label": "Seal maker",
+          "href": "/stamp-generator/"
+        },
+        {
+          "label": "Loan calculator",
+          "href": "/loan-calculator/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Interest Limitation Act Art. 2 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/이자제한법/제2조"
+        },
+        {
+          "label": "Enforcement Decree of the Interest Limitation Act (20%)",
+          "url": "https://www.law.go.kr/법령/이자제한법시행령"
+        },
+        {
+          "label": "Inheritance and Gift Tax Act Art. 41-4",
+          "url": "https://www.law.go.kr/법령/상속세및증여세법/제41조의4"
+        },
+        {
+          "label": "Enforcement Rule Art. 10-5 (deemed rate 4.6%)",
+          "url": "https://www.law.go.kr/법령/상속세및증여세법시행규칙/제10조의5"
+        },
+        {
+          "label": "Income Tax Act Art. 129 (withholding rates)",
+          "url": "https://www.law.go.kr/법령/소득세법/제129조"
+        },
+        {
+          "label": "Civil Act Art. 162 (10-year prescription)",
+          "url": "https://www.law.go.kr/법령/민법/제162조"
+        },
+        {
+          "label": "Civil Act Art. 598 (loan for consumption)",
+          "url": "https://www.law.go.kr/법령/민법/제598조"
+        }
+      ]
+    }
+  },
   "resignationLetter": {},
   "powerOfAttorney": {},
   "certifiedLetter": {},
