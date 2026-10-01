@@ -59,7 +59,7 @@ export default function ColorBlindnessSimulatorPage() {
         name: '색맹과 색약의 차이는 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '색맹(Dichromacy)은 특정 원뿔세포가 완전히 없어 해당 색을 전혀 구분하지 못하는 상태이고, 색약(Anomalous Trichromacy)은 원뿔세포가 있지만 기능이 저하되어 색 구분이 어려운 상태입니다. 색약이 색맹보다 훨씬 흔하며, 남성의 약 8%가 어떤 형태든 색각이상을 가지고 있습니다.',
+          text: '색맹(Dichromacy)은 특정 원뿔세포가 완전히 없어 해당 색을 전혀 구분하지 못하는 상태이고, 색약(Anomalous Trichromacy)은 원뿔세포가 있지만 기능이 저하되어 색 구분이 어려운 상태입니다. 색약이 색맹보다 훨씬 흔하며, 서양 남성의 약 8%, 한국 남성의 약 6%가 어떤 형태든 색각이상을 가지고 있습니다.',
         },
       },
       {
