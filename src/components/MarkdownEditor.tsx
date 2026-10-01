@@ -3,376 +3,91 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import GuideSection from '@/components/GuideSection'
-import { glassCard, glassInset } from '@/lib/glass'
-
-// ── Markdown-to-HTML converter (no external libraries) ──────────────────────
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-function processInline(text: string): string {
-  // Images before links (both start with !)
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="md-img" />')
-  // Links
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="md-link" target="_blank" rel="noopener noreferrer">$1</a>')
-  // Bold+italic combo ***
-  text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-  // Bold
-  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-  // Italic
-  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>')
-  // Strikethrough
-  text = text.replace(/~~(.+?)~~/g, '<del>$1</del>')
-  // Inline code (done last among formatting to avoid double-escaping)
-  text = text.replace(/`([^`]+)`/g, '<code class="md-code-inline">$1</code>')
-  return text
-}
-
-function markdownToHtml(md: string): string {
-  if (!md.trim()) return ''
-
-  const lines = md.split('\n')
-  const output: string[] = []
-  let i = 0
-
-  while (i < lines.length) {
-    const raw = lines[i]
-
-    // ── Fenced code block ────────────────────────────────────────────────────
-    const fenceMatch = raw.match(/^```(\w*)/)
-    if (fenceMatch) {
-      const lang = fenceMatch[1] || 'text'
-      const codeLines: string[] = []
-      i++
-      while (i < lines.length && !lines[i].startsWith('```')) {
-        codeLines.push(escapeHtml(lines[i]))
-        i++
-      }
-      i++ // consume closing ```
-      output.push(
-        `<pre class="md-pre"><code class="md-code-block language-${lang}">${codeLines.join('\n')}</code></pre>`
-      )
-      continue
-    }
-
-    const line = escapeHtml(raw)
-
-    // ── Blank line ───────────────────────────────────────────────────────────
-    if (raw.trim() === '') {
-      output.push('<div class="md-spacer"></div>')
-      i++
-      continue
-    }
-
-    // ── Headings ─────────────────────────────────────────────────────────────
-    const headingMatch = line.match(/^(#{1,6})\s+(.+)$/)
-    if (headingMatch) {
-      const level = headingMatch[1].length
-      const text = processInline(headingMatch[2])
-      const id = headingMatch[2]
-        .toLowerCase()
-        .replace(/[^a-z0-9가-힣\s]/g, '')
-        .trim()
-        .replace(/\s+/g, '-')
-      output.push(`<h${level} id="${id}" class="md-h${level}">${text}</h${level}>`)
-      i++
-      continue
-    }
-
-    // ── Horizontal rule ──────────────────────────────────────────────────────
-    if (/^[-*_]{3,}$/.test(raw.trim())) {
-      output.push('<hr class="md-hr" />')
-      i++
-      continue
-    }
-
-    // ── Blockquote ───────────────────────────────────────────────────────────
-    if (raw.startsWith('> ') || raw === '>') {
-      const quoteLines: string[] = []
-      while (i < lines.length && (lines[i].startsWith('> ') || lines[i] === '>')) {
-        quoteLines.push(processInline(escapeHtml(lines[i].replace(/^>\s?/, ''))))
-        i++
-      }
-      output.push(`<blockquote class="md-blockquote">${quoteLines.join('<br />')}</blockquote>`)
-      continue
-    }
-
-    // ── Table ────────────────────────────────────────────────────────────────
-    if (raw.includes('|') && i + 1 < lines.length && /^\|?\s*[-:]+[-|\s:]*$/.test(lines[i + 1])) {
-      const tableRows: string[][] = []
-      // Header row
-      const headerCells = raw
-        .replace(/^\|/, '')
-        .replace(/\|$/, '')
-        .split('|')
-        .map((c) => c.trim())
-      tableRows.push(headerCells)
-      // Separator
-      const sepLine = lines[i + 1]
-        .replace(/^\|/, '')
-        .replace(/\|$/, '')
-        .split('|')
-        .map((c) => c.trim())
-      const aligns = sepLine.map((s) => {
-        if (s.startsWith(':') && s.endsWith(':')) return 'center'
-        if (s.endsWith(':')) return 'right'
-        return 'left'
-      })
-      i += 2
-      // Data rows
-      while (i < lines.length && lines[i].includes('|') && !lines[i].startsWith('|---')) {
-        const cells = lines[i]
-          .replace(/^\|/, '')
-          .replace(/\|$/, '')
-          .split('|')
-          .map((c) => c.trim())
-        tableRows.push(cells)
-        i++
-      }
-      let tableHtml = '<div class="md-table-wrap"><table class="md-table"><thead><tr>'
-      headerCells.forEach((cell, idx) => {
-        const align = aligns[idx] || 'left'
-        tableHtml += `<th class="md-th" style="text-align:${align}">${processInline(cell)}</th>`
-      })
-      tableHtml += '</tr></thead><tbody>'
-      for (let r = 1; r < tableRows.length; r++) {
-        tableHtml += '<tr>'
-        tableRows[r].forEach((cell, idx) => {
-          const align = aligns[idx] || 'left'
-          tableHtml += `<td class="md-td" style="text-align:${align}">${processInline(cell)}</td>`
-        })
-        tableHtml += '</tr>'
-      }
-      tableHtml += '</tbody></table></div>'
-      output.push(tableHtml)
-      continue
-    }
-
-    // ── Unordered list (with task list support) ──────────────────────────────
-    if (/^[-*+]\s/.test(raw)) {
-      const listItems: string[] = []
-      while (i < lines.length && /^[-*+]\s/.test(lines[i])) {
-        const itemRaw = lines[i].replace(/^[-*+]\s/, '')
-        const taskDone = /^\[x\]\s/i.test(itemRaw)
-        const taskTodo = /^\[ \]\s/.test(itemRaw)
-        let itemText: string
-        if (taskDone) {
-          itemText = `<input type="checkbox" checked disabled class="md-checkbox" /> <span class="md-task-done">${processInline(escapeHtml(itemRaw.replace(/^\[x\]\s/i, '')))}</span>`
-        } else if (taskTodo) {
-          itemText = `<input type="checkbox" disabled class="md-checkbox" /> ${processInline(escapeHtml(itemRaw.replace(/^\[ \]\s/, '')))}`
-        } else {
-          itemText = processInline(escapeHtml(itemRaw))
-        }
-        listItems.push(`<li class="md-li">${itemText}</li>`)
-        i++
-      }
-      output.push(`<ul class="md-ul">${listItems.join('')}</ul>`)
-      continue
-    }
-
-    // ── Ordered list ─────────────────────────────────────────────────────────
-    if (/^\d+\.\s/.test(raw)) {
-      const listItems: string[] = []
-      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
-        const itemText = processInline(escapeHtml(lines[i].replace(/^\d+\.\s/, '')))
-        listItems.push(`<li class="md-li">${itemText}</li>`)
-        i++
-      }
-      output.push(`<ol class="md-ol">${listItems.join('')}</ol>`)
-      continue
-    }
-
-    // ── Paragraph ────────────────────────────────────────────────────────────
-    const paraLines: string[] = []
-    while (
-      i < lines.length &&
-      lines[i].trim() !== '' &&
-      !lines[i].match(/^#{1,6}\s/) &&
-      !lines[i].startsWith('```') &&
-      !lines[i].startsWith('> ') &&
-      !lines[i].includes('|') &&
-      !/^[-*+]\s/.test(lines[i]) &&
-      !/^\d+\.\s/.test(lines[i]) &&
-      !/^[-*_]{3,}$/.test(lines[i].trim())
-    ) {
-      paraLines.push(processInline(escapeHtml(lines[i])))
-      i++
-    }
-    if (paraLines.length > 0) {
-      output.push(`<p class="md-p">${paraLines.join('<br />')}</p>`)
-    }
-  }
-
-  return output.join('\n')
-}
-
-// ── Default sample content ───────────────────────────────────────────────────
-
-const DEFAULT_CONTENT = `# 마크다운 에디터 사용 가이드
-
-마크다운 에디터에 오신 것을 환영합니다! 왼쪽에서 편집하면 오른쪽에 실시간으로 미리보기가 표시됩니다.
-
-## 텍스트 서식
-
-**볼드 텍스트**는 \`**텍스트**\`로 작성합니다.
-*이탤릭 텍스트*는 \`*텍스트*\`로 작성합니다.
-***볼드+이탤릭***은 \`***텍스트***\`로 작성합니다.
-~~취소선~~은 \`~~텍스트~~\`로 작성합니다.
-인라인 코드는 \`백틱\`으로 감쌉니다.
-
-## 제목 (H1 ~ H6)
-
-# H1 제목
-## H2 제목
-### H3 제목
-#### H4 제목
-##### H5 제목
-###### H6 제목
-
-## 목록
-
-### 순서 없는 목록
-- 항목 1
-- 항목 2
-- 항목 3
-
-### 순서 있는 목록
-1. 첫 번째 단계
-2. 두 번째 단계
-3. 세 번째 단계
-
-### 체크리스트 (Task List)
-- [x] 완료된 작업
-- [ ] 미완료 작업
-- [x] 또 다른 완료 작업
-
-## 링크와 이미지
-
-[툴허브 바로가기](https://toolhub.ai.kr)
-
-![이미지 예시](https://via.placeholder.com/400x200?text=Sample+Image)
-
-## 인용문
-
-> 마크다운은 2004년 존 그루버가 만든 경량 마크업 언어입니다.
-> 일반 텍스트로 서식 있는 문서를 쉽게 작성할 수 있습니다.
-
-## 코드 블록
-
-\`\`\`javascript
-function greet(name) {
-  const message = \`Hello, \${name}!\`;
-  console.log(message);
-  return message;
-}
-
-greet('ToolHub');
-\`\`\`
-
-\`\`\`python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n - 1) + fibonacci(n - 2)
-
-print(fibonacci(10))
-\`\`\`
-
-## 표 (Table)
-
-| 기능 | 단축키 | 설명 |
-|:-----|:------:|-----:|
-| 볼드 | Ctrl+B | 텍스트 굵게 |
-| 이탤릭 | Ctrl+I | 텍스트 기울임 |
-| 저장 | Ctrl+S | 파일 저장 |
-
-## 수평선
-
----
-
-## 마치며
-
-이 에디터로 GitHub README, 기술 블로그, 회의록 등 다양한 마크다운 문서를 작성해 보세요!
-`
-
-// ── Component ─────────────────────────────────────────────────────────────────
+import { renderMarkdown, textStats, htmlDocument, plain, MD_CSS } from '@/utils/markdown'
 
 type ViewMode = 'split' | 'editor' | 'preview'
 
+const DRAFT_KEY = 'toolhub-markdown-draft'
+const MAX_IMAGE_BYTES = 2 * 1024 * 1024 // base64로 문서에 박히고 localStorage(약 5MB)에 저장되므로 제한
+
+const fileBase = (title: string) => (title.replace(/[\\/:*?"<>|\n]/g, '').trim().slice(0, 40) || 'document')
+
 export default function MarkdownEditor() {
   const t = useTranslations('markdownEditor')
-  const [markdown, setMarkdown] = useState(DEFAULT_CONTENT)
+  const sample = t('sample')
+  const [markdown, setMarkdown] = useState(sample)
   const [viewMode, setViewMode] = useState<ViewMode>('split')
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showHeadingMenu, setShowHeadingMenu] = useState(false)
   const [showToc, setShowToc] = useState(false)
+  const [saveState, setSaveState] = useState<'idle' | 'saved' | 'failed'>('idle')
+  const [notice, setNotice] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const previewRef = useRef<HTMLDivElement>(null)
   const headingMenuRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const loaded = useRef(false)
 
-  // Close heading dropdown on outside click
+  // ── 마운트: 초안 복원 + 모바일은 편집/미리보기 탭 방식 ──
+  useEffect(() => {
+    try {
+      const draft = localStorage.getItem(DRAFT_KEY)
+      if (draft !== null) setMarkdown(draft)
+    } catch { /* storage 차단 */ }
+    if (!window.matchMedia('(min-width: 1024px)').matches) setViewMode('editor')
+    loaded.current = true
+  }, [])
+
+  // ── 자동 저장 (예제 그대로면 저장 안 함) ──
+  useEffect(() => {
+    if (!loaded.current) return
+    const id = setTimeout(() => {
+      try {
+        if (markdown === sample) localStorage.removeItem(DRAFT_KEY)
+        else localStorage.setItem(DRAFT_KEY, markdown)
+        setSaveState(markdown === sample ? 'idle' : 'saved')
+      } catch {
+        setSaveState('failed')
+      }
+    }, 600)
+    return () => clearTimeout(id)
+  }, [markdown, sample])
+
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (headingMenuRef.current && !headingMenuRef.current.contains(e.target as Node)) {
-        setShowHeadingMenu(false)
-      }
+      if (headingMenuRef.current && !headingMenuRef.current.contains(e.target as Node)) setShowHeadingMenu(false)
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  // Parsed HTML (memoised)
-  const parsedHtml = useMemo(() => markdownToHtml(markdown), [markdown])
+  useEffect(() => {
+    if (!isFullscreen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsFullscreen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isFullscreen])
 
-  // Word and char counts
-  const charCount = markdown.length
-  const wordCount = markdown.trim() === '' ? 0 : markdown.trim().split(/\s+/).length
+  useEffect(() => {
+    if (!notice) return
+    const id = setTimeout(() => setNotice(''), 4000)
+    return () => clearTimeout(id)
+  }, [notice])
 
-  // ── TOC extraction ──────────────────────────────────────────────────────────
-  const tocItems = useMemo(() => {
-    const headings: { level: number; text: string; id: string }[] = []
-    const lines = markdown.split('\n')
-    for (const line of lines) {
-      const match = line.match(/^(#{1,6})\s+(.+)$/)
-      if (match) {
-        const level = match[1].length
-        const text = match[2].replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').replace(/`(.+?)`/g, '$1')
-        const id = text
-          .toLowerCase()
-          .replace(/[^a-z0-9가-힣\s]/g, '')
-          .trim()
-          .replace(/\s+/g, '-')
-        headings.push({ level, text, id })
-      }
-    }
-    return headings
-  }, [markdown])
+  const { html, headings } = useMemo(() => renderMarkdown(markdown), [markdown])
+  const stats = useMemo(() => textStats(markdown), [markdown])
+  const docTitle = headings[0]?.text || plain(markdown.split('\n').find((l) => l.trim()) ?? '') || 'document'
 
-  // ── File upload handler ─────────────────────────────────────────────────────
-  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const content = ev.target?.result as string
-      if (content) setMarkdown(content)
-    }
-    reader.readAsText(file)
-    e.target.value = ''
+  const flash = useCallback((id: string) => {
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  // ── Clipboard helper ───────────────────────────────────────────────────────
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
+  const copyText = useCallback(async (text: string, id: string) => {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text)
+      else {
         const ta = document.createElement('textarea')
         ta.value = text
         ta.style.position = 'fixed'
@@ -382,207 +97,237 @@ export default function MarkdownEditor() {
         document.execCommand('copy')
         document.body.removeChild(ta)
       }
-    } catch {
-      // ignore
-    }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
+    } catch { /* ignore */ }
+    flash(id)
+  }, [flash])
 
-  // ── Download .md ───────────────────────────────────────────────────────────
-  const downloadMd = useCallback(() => {
-    const blob = new Blob([markdown], { type: 'text/markdown' })
+  // 블로그·노션·구글문서에 붙여넣으면 서식이 유지되는 복사 (text/html + text/plain)
+  const copyRich = useCallback(async () => {
+    try {
+      if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            'text/html': new Blob([html], { type: 'text/html' }),
+            'text/plain': new Blob([markdown], { type: 'text/plain' }),
+          }),
+        ])
+      } else {
+        const div = document.createElement('div')
+        div.innerHTML = html
+        div.style.position = 'fixed'
+        div.style.left = '-999999px'
+        document.body.appendChild(div)
+        const range = document.createRange()
+        range.selectNodeContents(div)
+        const sel = window.getSelection()
+        sel?.removeAllRanges()
+        sel?.addRange(range)
+        document.execCommand('copy')
+        sel?.removeAllRanges()
+        document.body.removeChild(div)
+      }
+    } catch { /* ignore */ }
+    flash('rich')
+  }, [html, markdown, flash])
+
+  const download = useCallback((content: string, ext: 'md' | 'html') => {
+    const blob = new Blob([content], { type: ext === 'md' ? 'text/markdown;charset=utf-8' : 'text/html;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `document-${Date.now()}.md`
+    a.download = `${fileBase(docTitle)}.${ext}`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [markdown])
+  }, [docTitle])
+  const downloadMd = useCallback(() => download(markdown, 'md'), [download, markdown])
+  const downloadHtml = useCallback(() => download(htmlDocument(docTitle, html), 'html'), [download, docTitle, html])
 
-  // ── Insert markdown syntax at cursor ──────────────────────────────────────
-  const insertMarkdown = useCallback(
-    (before: string, after = '', placeholder = '') => {
-      const ta = textareaRef.current
-      if (!ta) return
-      const start = ta.selectionStart
-      const end = ta.selectionEnd
-      const selected = ta.value.substring(start, end)
-      const inserted = before + (selected || placeholder) + after
-      const newValue = ta.value.substring(0, start) + inserted + ta.value.substring(end)
-      setMarkdown(newValue)
-      setTimeout(() => {
-        const newStart = start + before.length
-        const newEnd = newStart + (selected || placeholder).length
-        ta.setSelectionRange(newStart, newEnd)
-        ta.focus()
-      }, 0)
-    },
-    []
-  )
+  // ── 편집: execCommand('insertText')로 넣어 Ctrl+Z 실행 취소가 살아있게 ──
+  const replaceRange = useCallback((start: number, end: number, text: string, selStart?: number, selEnd?: number) => {
+    const ta = textareaRef.current
+    if (!ta) return
+    ta.focus()
+    ta.setSelectionRange(start, end)
+    let ok = false
+    try { ok = document.execCommand('insertText', false, text) } catch { /* 미지원 */ }
+    if (!ok) {
+      ta.setRangeText(text, start, end, 'end')
+      setMarkdown(ta.value)
+    }
+    const s = selStart ?? start + text.length
+    ta.setSelectionRange(s, selEnd ?? s)
+  }, [])
 
-  // ── Insert block at start of line ─────────────────────────────────────────
-  const insertBlock = useCallback(
-    (prefix: string, placeholder = '') => {
-      const ta = textareaRef.current
-      if (!ta) return
-      const start = ta.selectionStart
-      // Find line start
-      const before = ta.value.substring(0, start)
-      const lineStart = before.lastIndexOf('\n') + 1
-      const newValue =
-        ta.value.substring(0, lineStart) +
-        prefix +
-        (ta.value.substring(lineStart) || placeholder)
-      setMarkdown(newValue)
-      setTimeout(() => {
-        ta.setSelectionRange(lineStart + prefix.length, lineStart + prefix.length + (ta.value.substring(lineStart) || placeholder).length)
-        ta.focus()
-      }, 0)
-    },
-    []
-  )
+  const wrap = useCallback((before: string, after: string, placeholder: string) => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: s, selectionEnd: e } = ta
+    const sel = ta.value.slice(s, e) || placeholder
+    replaceRange(s, e, before + sel + after, s + before.length, s + before.length + sel.length)
+  }, [replaceRange])
 
-  // ── Insert template at cursor ─────────────────────────────────────────────
+  const linePrefix = useCallback((prefix: string, placeholder: string) => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const v = ta.value
+    const ls = v.lastIndexOf('\n', ta.selectionStart - 1) + 1
+    const le = v.indexOf('\n', ls)
+    const line = v.slice(ls, le < 0 ? undefined : le)
+    if (line.trim()) replaceRange(ls, ls, prefix, ta.selectionStart + prefix.length, ta.selectionEnd + prefix.length)
+    else replaceRange(ls, ls + line.length, prefix + placeholder, ls + prefix.length, ls + prefix.length + placeholder.length)
+  }, [replaceRange])
+
   const insertAtCursor = useCallback((text: string) => {
     const ta = textareaRef.current
     if (!ta) return
-    const start = ta.selectionStart
-    const newValue = ta.value.substring(0, start) + text + ta.value.substring(ta.selectionEnd)
-    setMarkdown(newValue)
-    setTimeout(() => {
-      ta.setSelectionRange(start + text.length, start + text.length)
-      ta.focus()
-    }, 0)
+    replaceRange(ta.selectionStart, ta.selectionEnd, text)
+  }, [replaceRange])
+
+  const embedImage = useCallback((file: File) => {
+    if (file.size > MAX_IMAGE_BYTES) { setNotice(t('imageTooLarge')); return }
+    const reader = new FileReader()
+    reader.onload = () => {
+      const alt = file.name.replace(/\.[^.]+$/, '').replace(/[[\]]/g, '') || 'image'
+      insertAtCursor(`![${alt}](${reader.result})`)
+    }
+    reader.readAsDataURL(file)
+  }, [insertAtCursor, t])
+
+  const loadTextFile = useCallback((file: File) => {
+    const reader = new FileReader()
+    reader.onload = () => { if (typeof reader.result === 'string') setMarkdown(reader.result) }
+    reader.readAsText(file)
   }, [])
 
-  // ── Toolbar button styles ─────────────────────────────────────────────────
-  const btnCls =
-    'px-2 py-1.5 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded transition-colors select-none'
-  const btnActiveCls = 'px-2 py-1.5 text-xs font-medium bg-blue-600 text-white rounded transition-colors select-none'
+  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) loadTextFile(file)
+    e.target.value = ''
+  }, [loadTextFile])
 
-  const viewBtnCls = (mode: ViewMode) =>
-    viewMode === mode ? btnActiveCls : btnCls
+  const handlePaste = useCallback((e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    // 워드·엑셀 복사는 텍스트와 함께 그림도 실어 보내므로, 텍스트가 있으면 평소대로 붙여넣기
+    const file = Array.from(e.clipboardData.files).find((f) => f.type.startsWith('image/'))
+    if (!file || e.clipboardData.getData('text/plain')) return
+    e.preventDefault()
+    embedImage(file)
+  }, [embedImage])
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLTextAreaElement>) => {
+    const file = e.dataTransfer.files[0]
+    if (!file) return
+    if (file.type.startsWith('image/')) { e.preventDefault(); embedImage(file) }
+    else if (/\.(md|markdown|txt)$/i.test(file.name)) { e.preventDefault(); loadTextFile(file) }
+  }, [embedImage, loadTextFile])
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.nativeEvent.isComposing) return // 한글 조합 중 Enter/단축키 무시
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey) {
+      const k = e.key.toLowerCase()
+      if (k === 'b') { e.preventDefault(); wrap('**', '**', t('bold')) }
+      else if (k === 'i') { e.preventDefault(); wrap('*', '*', t('italic')) }
+      else if (k === 'k') { e.preventDefault(); wrap('[', '](https://)', t('insert.linkText')) }
+      else if (k === 's') { e.preventDefault(); downloadMd() }
+      return
+    }
+    // 목록에서 Enter → 다음 항목 기호 자동 입력, 빈 항목에서 Enter → 목록 끝내기
+    if (e.key === 'Enter' && !e.shiftKey && !e.altKey) {
+      const ta = e.currentTarget
+      if (ta.selectionStart !== ta.selectionEnd) return
+      const v = ta.value
+      const ls = v.lastIndexOf('\n', ta.selectionStart - 1) + 1
+      const m = v.slice(ls, ta.selectionStart).match(/^(\s*)([-*+]|(\d+)([.)]))[ \t]+(\[[ xX]\][ \t]+)?/)
+      if (!m) return
+      e.preventDefault()
+      if (v.slice(ls, ta.selectionStart).trim() === m[0].trim()) {
+        replaceRange(ls, ta.selectionStart, '')
+        return
+      }
+      const marker = m[3] ? `${Number(m[3]) + 1}${m[4]}` : m[2]
+      insertAtCursor(`\n${m[1]}${marker} ${m[5] ? '[ ] ' : ''}`)
+    }
+  }, [wrap, t, downloadMd, replaceRange, insertAtCursor])
+
+  // 편집기 스크롤 → 미리보기 비례 스크롤 (분할 보기)
+  const syncScroll = useCallback(() => {
+    const ta = textareaRef.current
+    const pv = previewRef.current
+    if (!ta || !pv || viewMode !== 'split') return
+    const ratio = ta.scrollTop / Math.max(1, ta.scrollHeight - ta.clientHeight)
+    pv.scrollTop = ratio * (pv.scrollHeight - pv.clientHeight)
+  }, [viewMode])
+
+  const newDoc = () => { if (!markdown.trim() || window.confirm(t('confirmNew'))) setMarkdown('') }
+  const loadSample = () => { if (markdown === sample || !markdown.trim() || window.confirm(t('confirmSample'))) setMarkdown(sample) }
+
+  const btnCls = 'px-2.5 py-1.5 text-xs font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors select-none whitespace-nowrap'
+  const segCls = (on: boolean) =>
+    `px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+  const paneH = isFullscreen ? 'flex-1 min-h-0' : 'h-[65vh] min-h-[360px]'
+  const sep = <div className="w-px h-5 bg-line" />
 
   return (
-    <div
-      className={
-        isFullscreen
-          ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col'
-          : 'flex flex-col'
-      }
-    >
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className={`${glassCard} ${glassInset} p-4 mb-3 flex flex-wrap items-center gap-3`}>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-bold text-fg leading-tight">
-            {t('title')}
-          </h1>
-          <p className="text-xs text-muted mt-0.5">{t('description')}</p>
+    <div className="space-y-6">
+      <div className={isFullscreen ? 'fixed inset-0 z-50 bg-canvas p-3 flex flex-col gap-3' : 'flex flex-col gap-3'}>
+        {/* ── 헤더 ── */}
+        <div className="ui-card p-4 flex flex-wrap items-center gap-3">
+          <div className="flex-1 min-w-[200px]">
+            <h1 className="text-xl font-bold text-fg leading-tight">{t('title')}</h1>
+            <p className="text-xs text-muted mt-0.5">{t('description')}</p>
+          </div>
+
+          <div className="flex items-center gap-0.5 bg-soft rounded-lg p-1" role="tablist" aria-label={t('preview')}>
+            <button role="tab" aria-selected={viewMode === 'split'} className={`${segCls(viewMode === 'split')} hidden lg:inline-block`} onClick={() => setViewMode('split')}>
+              {t('split')}
+            </button>
+            <button role="tab" aria-selected={viewMode === 'editor'} className={segCls(viewMode === 'editor')} onClick={() => setViewMode('editor')}>
+              {t('editorOnly')}
+            </button>
+            <button role="tab" aria-selected={viewMode === 'preview'} className={segCls(viewMode === 'preview')} onClick={() => setViewMode('preview')}>
+              {t('previewOnly')}
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-1.5">
+            <input ref={fileInputRef} type="file" accept=".md,.txt,.markdown" onChange={handleFileUpload} className="hidden" />
+            <button onClick={newDoc} className={btnCls}>{t('newDoc')}</button>
+            <button onClick={() => fileInputRef.current?.click()} className={btnCls}>{t('upload')}</button>
+            <button onClick={loadSample} className={btnCls}>{t('loadSample')}</button>
+            <button
+              onClick={() => setShowToc((v) => !v)}
+              aria-pressed={showToc}
+              className={`${showToc ? 'px-2.5 py-1.5 text-xs font-medium bg-primary text-white rounded-lg' : btnCls} hidden lg:inline-block`}
+            >
+              {t('toc')}
+            </button>
+            <button onClick={() => setIsFullscreen((f) => !f)} className={btnCls}>
+              {isFullscreen ? t('exitFullscreen') : t('fullscreen')}
+            </button>
+          </div>
         </div>
 
-        {/* View mode toggles */}
-        <div className="flex items-center gap-1 bg-soft rounded-lg p-1">
-          <button className={viewBtnCls('split')} onClick={() => setViewMode('split')}>
-            {t('split')}
-          </button>
-          <button className={viewBtnCls('editor')} onClick={() => setViewMode('editor')}>
-            {t('editorOnly')}
-          </button>
-          <button className={viewBtnCls('preview')} onClick={() => setViewMode('preview')}>
-            {t('previewOnly')}
-          </button>
-        </div>
-
-        {/* File upload */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".md,.txt,.markdown"
-          onChange={handleFileUpload}
-          className="hidden"
-        />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className={btnCls}
-          title={t('upload')}
-        >
-          {t('upload')}
-        </button>
-
-        {/* TOC */}
-        <button
-          onClick={() => setShowToc((v) => !v)}
-          className={showToc ? btnActiveCls : btnCls}
-          title={t('toc')}
-        >
-          {t('toc')}
-        </button>
-
-        {/* Fullscreen */}
-        <button
-          onClick={() => setIsFullscreen((f) => !f)}
-          className={btnCls}
-          title={isFullscreen ? t('exitFullscreen') : t('fullscreen')}
-        >
-          {isFullscreen ? (
-            <span>{t('exitFullscreen')}</span>
-          ) : (
-            <span>{t('fullscreen')}</span>
-          )}
-        </button>
-      </div>
-
-      {/* ── Toolbar ────────────────────────────────────────────────────────── */}
-      {(viewMode === 'split' || viewMode === 'editor') && (
-        <div className={`${glassCard} ${glassInset} px-4 py-3 mb-3`}>
-          <div className="flex flex-wrap gap-1.5 items-center">
-            {/* Bold */}
-            <button
-              className={`${btnCls} font-bold`}
-              title={t('bold')}
-              onClick={() => insertMarkdown('**', '**', t('bold'))}
-            >
-              B
-            </button>
-            {/* Italic */}
-            <button
-              className={`${btnCls} italic`}
-              title={t('italic')}
-              onClick={() => insertMarkdown('*', '*', t('italic'))}
-            >
-              I
-            </button>
-            {/* Strikethrough */}
-            <button
-              className={`${btnCls} line-through`}
-              title={t('strikethrough')}
-              onClick={() => insertMarkdown('~~', '~~', t('strikethrough'))}
-            >
-              S
-            </button>
-
-            <div className="w-px h-5 bg-gray-300 dark:bg-gray-600" />
-
-            {/* Heading dropdown */}
+        {/* ── 서식 도구 ── */}
+        {viewMode !== 'preview' && (
+          <div className="ui-card px-3 py-2.5 flex flex-wrap gap-1.5 items-center">
+            <button className={`${btnCls} font-bold`} title={`${t('bold')} (Ctrl+B)`} aria-label={t('bold')} onClick={() => wrap('**', '**', t('bold'))}>B</button>
+            <button className={`${btnCls} italic`} title={`${t('italic')} (Ctrl+I)`} aria-label={t('italic')} onClick={() => wrap('*', '*', t('italic'))}>I</button>
+            <button className={`${btnCls} line-through`} title={t('strikethrough')} aria-label={t('strikethrough')} onClick={() => wrap('~~', '~~', t('strikethrough'))}>S</button>
+            {sep}
             <div className="relative" ref={headingMenuRef}>
-              <button
-                className={btnCls}
-                title={t('heading')}
-                onClick={() => setShowHeadingMenu((v) => !v)}
-              >
+              <button className={btnCls} aria-haspopup="menu" aria-expanded={showHeadingMenu} onClick={() => setShowHeadingMenu((v) => !v)}>
                 {t('heading')} ▾
               </button>
               {showHeadingMenu && (
-                <div className="absolute top-full left-0 mt-1 z-20 bg-surface border border-line rounded-lg shadow-lg overflow-hidden">
+                <div role="menu" className="absolute top-full left-0 mt-1 z-20 bg-surface border border-line rounded-xl shadow-lg overflow-hidden min-w-[96px]">
                   {[1, 2, 3, 4, 5, 6].map((level) => (
                     <button
                       key={level}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-body"
+                      role="menuitem"
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-soft text-body"
                       onClick={() => {
-                        insertBlock('#'.repeat(level) + ' ', `H${level} ${t('insert.heading')}`)
+                        linePrefix('#'.repeat(level) + ' ', `H${level} ${t('insert.heading')}`)
                         setShowHeadingMenu(false)
                       }}
                     >
@@ -592,318 +337,154 @@ export default function MarkdownEditor() {
                 </div>
               )}
             </div>
-
-            <div className="w-px h-5 bg-gray-300 dark:bg-gray-600" />
-
-            {/* Unordered list */}
+            {sep}
+            <button className={btnCls} onClick={() => linePrefix('- ', t('insert.listItem'))}>{t('unorderedList')}</button>
+            <button className={btnCls} onClick={() => linePrefix('1. ', t('insert.listItem'))}>{t('orderedList')}</button>
+            <button className={btnCls} onClick={() => linePrefix('- [ ] ', t('insert.taskItem'))}>{t('taskList')}</button>
+            {sep}
+            <button className={btnCls} title={`${t('link')} (Ctrl+K)`} onClick={() => wrap('[', '](https://)', t('insert.linkText'))}>{t('link')}</button>
+            <button className={btnCls} onClick={() => wrap('![', '](https://)', t('insert.imageAlt'))}>{t('image')}</button>
+            <button className={btnCls} onClick={() => wrap('`', '`', 'code')}>{t('codeInline')}</button>
+            <button className={btnCls} onClick={() => insertAtCursor(`\n\`\`\`javascript\n${t('insert.codeContent')}\n\`\`\`\n`)}>{t('codeBlock')}</button>
+            {sep}
+            <button className={btnCls} onClick={() => linePrefix('> ', t('insert.quoteContent'))}>{t('quote')}</button>
+            <button className={btnCls} onClick={() => insertAtCursor('\n---\n')}>{t('horizontalRule')}</button>
             <button
               className={btnCls}
-              title={t('unorderedList')}
-              onClick={() => insertBlock('- ', t('insert.listItem'))}
-            >
-              {t('unorderedList')}
-            </button>
-            {/* Ordered list */}
-            <button
-              className={btnCls}
-              title={t('orderedList')}
-              onClick={() => insertBlock('1. ', t('insert.listItem'))}
-            >
-              {t('orderedList')}
-            </button>
-            {/* Task list */}
-            <button
-              className={btnCls}
-              title={t('taskList')}
-              onClick={() => insertBlock('- [ ] ', t('insert.taskItem'))}
-            >
-              {t('taskList')}
-            </button>
-
-            <div className="w-px h-5 bg-gray-300 dark:bg-gray-600" />
-
-            {/* Link */}
-            <button
-              className={btnCls}
-              title={t('link')}
-              onClick={() => insertMarkdown('[', '](https://)', t('insert.linkText'))}
-            >
-              {t('link')}
-            </button>
-            {/* Image */}
-            <button
-              className={btnCls}
-              title={t('image')}
-              onClick={() => insertMarkdown('![', '](https://)', t('insert.imageAlt'))}
-            >
-              {t('image')}
-            </button>
-            {/* Code inline */}
-            <button
-              className={btnCls}
-              title={t('codeInline')}
-              onClick={() => insertMarkdown('`', '`', 'code')}
-            >
-              {t('codeInline')}
-            </button>
-            {/* Code block */}
-            <button
-              className={btnCls}
-              title={t('codeBlock')}
-              onClick={() =>
-                insertAtCursor(`\`\`\`javascript\n${t('insert.codeContent')}\n\`\`\`\n`)
-              }
-            >
-              {t('codeBlock')}
-            </button>
-
-            <div className="w-px h-5 bg-gray-300 dark:bg-gray-600" />
-
-            {/* Quote */}
-            <button
-              className={btnCls}
-              title={t('quote')}
-              onClick={() => insertBlock('> ', t('insert.quoteContent'))}
-            >
-              {t('quote')}
-            </button>
-            {/* Horizontal rule */}
-            <button
-              className={btnCls}
-              title={t('horizontalRule')}
-              onClick={() => insertAtCursor('\n---\n')}
-            >
-              {t('horizontalRule')}
-            </button>
-            {/* Table */}
-            <button
-              className={btnCls}
-              title={t('table')}
-              onClick={() =>
-                insertAtCursor(
-                  `\n| ${t('insert.tableHeader')}1 | ${t('insert.tableHeader')}2 | ${t('insert.tableHeader')}3 |\n|-------|-------|-------|\n| ${t('insert.tableCell')}1 | ${t('insert.tableCell')}2 | ${t('insert.tableCell')}3 |\n| ${t('insert.tableCell')}4 | ${t('insert.tableCell')}5 | ${t('insert.tableCell')}6 |\n`
-                )
-              }
+              onClick={() => {
+                const h = t('insert.tableHeader')
+                const c = t('insert.tableCell')
+                insertAtCursor(`\n| ${h}1 | ${h}2 | ${h}3 |\n| --- | --- | --- |\n| ${c}1 | ${c}2 | ${c}3 |\n| ${c}4 | ${c}5 | ${c}6 |\n`)
+              }}
             >
               {t('table')}
             </button>
+            <button className={btnCls} onClick={() => insertAtCursor(`[^1]\n\n[^1]: ${t('insert.footnote')}\n`)}>{t('footnote')}</button>
+          </div>
+        )}
+
+        {/* ── 본문 ── */}
+        <div className={`flex gap-3 ${isFullscreen ? 'flex-1 min-h-0' : ''}`}>
+          {showToc && (
+            <div className="w-56 flex-shrink-0 ui-card overflow-hidden hidden lg:flex flex-col">
+              <div className="bg-subtle px-4 py-2.5 border-b border-line">
+                <span className="text-sm font-semibold text-body">{t('toc')}</span>
+              </div>
+              <nav className="flex-1 overflow-y-auto p-3">
+                {headings.length === 0 ? (
+                  <p className="text-xs text-faint">{t('tocEmpty')}</p>
+                ) : (
+                  <ul className="space-y-1">
+                    {headings.map((h) => (
+                      <li key={h.id}>
+                        <button
+                          onClick={() => {
+                            if (viewMode === 'editor') setViewMode('split')
+                            setTimeout(() => previewRef.current?.querySelector(`#${CSS.escape(h.id)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0)
+                          }}
+                          className="text-left w-full text-xs text-sub hover:text-primary truncate transition-colors"
+                          style={{ paddingLeft: `${(h.level - 1) * 12}px` }}
+                        >
+                          {h.text}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </nav>
+            </div>
+          )}
+
+          <div className={`grid gap-3 flex-1 min-w-0 grid-cols-1 ${viewMode === 'split' ? 'lg:grid-cols-2' : ''} ${isFullscreen ? 'min-h-0 grid-rows-1' : ''}`}>
+            {viewMode !== 'preview' && (
+              <div className="ui-card overflow-hidden flex flex-col min-w-0 min-h-0">
+                <div className="bg-subtle px-4 py-2.5 border-b border-line flex items-center justify-between gap-2">
+                  <span className="text-sm font-semibold text-body">{t('editor')}</span>
+                  <span className={`text-xs ${saveState === 'failed' ? 'text-amber-600' : 'text-faint'}`} aria-live="polite">
+                    {saveState === 'saved' ? t('autosaved') : saveState === 'failed' ? t('saveFailed') : ''}
+                  </span>
+                </div>
+                <textarea
+                  ref={textareaRef}
+                  value={markdown}
+                  onChange={(e) => setMarkdown(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onPaste={handlePaste}
+                  onDrop={handleDrop}
+                  onScroll={syncScroll}
+                  className={`w-full p-4 font-mono text-sm leading-relaxed text-fg bg-surface resize-none focus:outline-none ${paneH}`}
+                  spellCheck={false}
+                  placeholder={t('placeholder')}
+                  aria-label={t('editor')}
+                />
+              </div>
+            )}
+
+            {viewMode !== 'editor' && (
+              <div className="ui-card overflow-hidden flex flex-col min-w-0 min-h-0">
+                <div className="bg-subtle px-4 py-2.5 border-b border-line">
+                  <span className="text-sm font-semibold text-body">{t('preview')}</span>
+                </div>
+                <div
+                  ref={previewRef}
+                  className={`p-5 overflow-auto md-body ${paneH}`}
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
+              </div>
+            )}
           </div>
         </div>
-      )}
 
-      {/* ── Main pane ──────────────────────────────────────────────────────── */}
-      <div className={`flex gap-3 ${isFullscreen ? 'flex-1 overflow-hidden' : ''}`}>
-        {/* TOC sidebar */}
-        {showToc && (
-          <div className={`w-56 flex-shrink-0 ${glassCard} ${glassInset} overflow-hidden flex flex-col hidden lg:flex`}>
-            <div className="bg-subtle px-4 py-2.5 border-b border-line">
-              <span className="text-sm font-semibold text-body">{t('toc')}</span>
-            </div>
-            <nav className="flex-1 overflow-y-auto p-3">
-              {tocItems.length === 0 ? (
-                <p className="text-xs text-faint">{t('tocEmpty')}</p>
-              ) : (
-                <ul className="space-y-1">
-                  {tocItems.map((item, idx) => (
-                    <li key={idx}>
-                      <button
-                        onClick={() => {
-                          const el = document.getElementById(item.id)
-                          el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                        }}
-                        className="text-left w-full text-xs text-sub hover:text-blue-600 dark:hover:text-blue-400 truncate transition-colors"
-                        style={{ paddingLeft: `${(item.level - 1) * 12}px` }}
-                      >
-                        {item.text}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </nav>
+        {/* ── 상태 + 내보내기 ── */}
+        <div className="ui-card px-4 py-3 space-y-3">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted tabular-nums">
+            <span>{t('charCount')} <b className="font-semibold text-body">{stats.chars.toLocaleString()}</b></span>
+            <span>{t('charNoSpace')} <b className="font-semibold text-body">{stats.charsNoSpace.toLocaleString()}</b></span>
+            <span>{t('wordCount')} <b className="font-semibold text-body">{stats.words.toLocaleString()}</b></span>
+            <span>{t('lineCount')} <b className="font-semibold text-body">{stats.lines.toLocaleString()}</b></span>
+            <span>{t('readTime', { n: stats.readMin })}</span>
           </div>
-        )}
-
-        {/* Editor + Preview */}
-        <div
-          className={`flex gap-3 flex-1 min-w-0 ${
-            viewMode === 'split'
-              ? 'flex-col lg:flex-row'
-              : 'flex-col'
-          }`}
-        >
-        {/* Editor */}
-        {(viewMode === 'split' || viewMode === 'editor') && (
-          <div
-            className={`${glassCard} ${glassInset} overflow-hidden flex flex-col ${
-              viewMode === 'split' ? 'flex-1' : 'w-full'
-            } ${isFullscreen ? 'overflow-hidden' : ''}`}
-          >
-            <div className="bg-subtle px-4 py-2.5 border-b border-line flex items-center">
-              <span className="text-sm font-semibold text-body">
-                {t('editor')}
-              </span>
-            </div>
-            <textarea
-              ref={textareaRef}
-              value={markdown}
-              onChange={(e) => setMarkdown(e.target.value)}
-              className={`flex-1 w-full p-4 font-mono text-sm text-fg bg-surface resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset ${
-                isFullscreen ? 'h-full' : 'min-h-[400px]'
-              }`}
-              spellCheck={false}
-              placeholder={t('placeholder')}
-              aria-label={t('editor')}
-            />
+          <div className="flex flex-wrap items-center gap-2">
+            <button onClick={copyRich} className="ui-btn px-4 py-2 text-sm">
+              {copiedId === 'rich' ? t('copied') : t('copyRich')}
+            </button>
+            <button onClick={() => copyText(markdown, 'md')} className="ui-btn-soft px-3 py-2 text-sm">
+              {copiedId === 'md' ? t('copied') : t('copyMarkdown')}
+            </button>
+            <button onClick={() => copyText(html, 'html')} className="ui-btn-soft px-3 py-2 text-sm">
+              {copiedId === 'html' ? t('copied') : t('copyHtml')}
+            </button>
+            <button onClick={downloadMd} className="ui-btn-soft px-3 py-2 text-sm">{t('exportMd')}</button>
+            <button onClick={downloadHtml} className="ui-btn-soft px-3 py-2 text-sm">{t('exportHtml')}</button>
           </div>
-        )}
-
-        {/* Preview */}
-        {(viewMode === 'split' || viewMode === 'preview') && (
-          <div
-            className={`${glassCard} ${glassInset} overflow-hidden flex flex-col ${
-              viewMode === 'split' ? 'flex-1' : 'w-full'
-            } ${isFullscreen ? 'overflow-hidden' : ''}`}
-          >
-            <div className="bg-subtle px-4 py-2.5 border-b border-line flex items-center">
-              <span className="text-sm font-semibold text-body">
-                {t('preview')}
-              </span>
-            </div>
-            <div
-              className={`flex-1 p-4 md-preview overflow-auto ${
-                isFullscreen ? 'h-full' : 'min-h-[400px]'
-              }`}
-              dangerouslySetInnerHTML={{ __html: parsedHtml }}
-            />
-          </div>
-        )}
+          {notice ? (
+            <p className="text-xs text-amber-600" role="alert">{notice}</p>
+          ) : (
+            <p className="text-xs text-faint">{t('shortcutsHint')}</p>
+          )}
         </div>
       </div>
 
-      {/* ── Status bar + export ─────────────────────────────────────────────── */}
-      <div className={`${glassCard} ${glassInset} px-4 py-3 mt-3 flex flex-wrap items-center justify-between gap-3`}>
-        {/* Counts */}
-        <div className="flex items-center gap-4 text-xs text-muted">
-          <span>{t('wordCount')}: <span className="font-medium text-body">{wordCount.toLocaleString()}</span></span>
-          <span>{t('charCount')}: <span className="font-medium text-body">{charCount.toLocaleString()}</span></span>
-        </div>
-
-        {/* Export buttons */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <button
-            onClick={downloadMd}
-            className="px-3 py-1.5 text-xs font-medium bg-orange-100 dark:bg-orange-900/40 hover:bg-orange-200 dark:hover:bg-orange-800/60 text-sub rounded-lg transition-colors"
-          >
-            {t('exportMd')}
-          </button>
-          <button
-            onClick={() => copyToClipboard(markdown, 'md')}
-            className="px-3 py-1.5 text-xs font-medium bg-green-100 dark:bg-green-900/40 hover:bg-green-200 dark:hover:bg-green-800/60 text-sub rounded-lg transition-colors"
-          >
-            {copiedId === 'md' ? t('copied') : t('copyMarkdown')}
-          </button>
-          <button
-            onClick={() => copyToClipboard(parsedHtml, 'html')}
-            className="px-3 py-1.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/40 hover:bg-blue-200 dark:hover:bg-blue-800/60 text-sub rounded-lg transition-colors"
-          >
-            {copiedId === 'html' ? t('copied') : t('copyHtml')}
-          </button>
+      {/* ── 문법 요약 ── */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg mb-4">{t('cheatsheet')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {(['syntax', 'advanced'] as const).map((k) => (
+            <div key={k} className="bg-subtle rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-fg mb-2">{t(`guide.${k}.title`)}</h3>
+              <ul className="space-y-1.5">
+                {(t.raw(`guide.${k}.items`) as string[]).map((item) => (
+                  <li key={item} className="text-sm text-sub font-mono break-words">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ── Preview styles ──────────────────────────────────────────────────── */}
-      <style jsx global>{`
-        .md-preview { color: inherit; line-height: 1.7; }
+      <GuideSection namespace="markdownEditor" defaultOpen />
 
-        .md-preview .md-h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
-        .md-preview .md-h2 { font-size: 1.5rem; font-weight: 700; margin: 1.25rem 0 0.75rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.375rem; }
-        .md-preview .md-h3 { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
-        .md-preview .md-h4 { font-size: 1.125rem; font-weight: 600; margin: 0.875rem 0 0.5rem; }
-        .md-preview .md-h5 { font-size: 1rem; font-weight: 600; margin: 0.75rem 0 0.375rem; }
-        .md-preview .md-h6 { font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0 0.375rem; color: #6b7280; }
-
-        .dark .md-preview .md-h1,
-        .dark .md-preview .md-h2 { border-color: #374151; }
-
-        .md-preview .md-p { margin: 0.75rem 0; }
-        .md-preview .md-spacer { margin: 0.5rem 0; }
-
-        .md-preview .md-blockquote {
-          border-left: 4px solid #6366f1;
-          padding: 0.5rem 1rem;
-          margin: 1rem 0;
-          color: #6b7280;
-          font-style: italic;
-          background: #f5f3ff;
-          border-radius: 0 0.5rem 0.5rem 0;
-        }
-        .dark .md-preview .md-blockquote {
-          background: rgba(99,102,241,0.1);
-          color: #9ca3af;
-        }
-
-        .md-preview .md-pre {
-          background: #1f2937;
-          color: #f9fafb;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          overflow-x: auto;
-          margin: 1rem 0;
-          font-size: 0.875rem;
-          line-height: 1.6;
-        }
-        .md-preview .md-code-inline {
-          background: #f3f4f6;
-          color: #dc2626;
-          padding: 0.1rem 0.35rem;
-          border-radius: 0.25rem;
-          font-family: ui-monospace, monospace;
-          font-size: 0.875em;
-        }
-        .dark .md-preview .md-code-inline {
-          background: #374151;
-          color: #f87171;
-        }
-
-        .md-preview .md-ul { list-style: disc; padding-left: 1.75rem; margin: 0.75rem 0; }
-        .md-preview .md-ol { list-style: decimal; padding-left: 1.75rem; margin: 0.75rem 0; }
-        .md-preview .md-li { margin: 0.25rem 0; }
-        .md-preview .md-checkbox { margin-right: 0.4rem; accent-color: #6366f1; }
-        .md-preview .md-task-done { text-decoration: line-through; color: #9ca3af; }
-
-        .md-preview .md-table-wrap { overflow-x: auto; margin: 1rem 0; }
-        .md-preview .md-table { width: 100%; border-collapse: collapse; }
-        .md-preview .md-th,
-        .md-preview .md-td {
-          border: 1px solid #d1d5db;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.875rem;
-        }
-        .md-preview .md-th {
-          background: #f9fafb;
-          font-weight: 600;
-        }
-        .dark .md-preview .md-th { background: #374151; }
-        .dark .md-preview .md-th,
-        .dark .md-preview .md-td { border-color: #4b5563; }
-
-        .md-preview .md-link { color: #6366f1; text-decoration: underline; }
-        .md-preview .md-link:hover { color: #4f46e5; }
-
-        .md-preview .md-img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 0.75rem 0; display: block; }
-
-        .md-preview .md-hr {
-          border: none;
-          height: 2px;
-          background: #e5e7eb;
-          margin: 1.5rem 0;
-          border-radius: 1px;
-        }
-        .dark .md-preview .md-hr { background: #374151; }
-      `}</style>
-
-      <GuideSection namespace="markdownEditor" />
+      <style dangerouslySetInnerHTML={{ __html: MD_CSS }} />
     </div>
   )
 }

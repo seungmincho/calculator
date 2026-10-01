@@ -9171,13 +9171,88 @@
     }
   },
   "screenInfo": {
+    "hero": {
+      "label": "Your screen resolution (CSS pixels)",
+      "physical": "About {w} × {h} physical pixels · {dpr}x scale",
+      "loading": "Reading device info…",
+      "viewport": "Viewport (browser window)",
+      "dpr": "DPR (pixel ratio)",
+      "ratio": "Aspect ratio",
+      "refresh": "Refresh rate (est.)",
+      "zoomNote": "CSS pixels = physical pixels ÷ scale. Browser zoom (Ctrl +/-) or OS display scaling changes resolution, viewport and DPR together. The viewport updates live as you resize the window."
+    },
+    "actions": {
+      "copyJson": "Copy JSON"
+    },
+    "share": {
+      "text": "My screen resolution is {res} (viewport {vp}, DPR {dpr}x)"
+    },
+    "display": {
+      "title": "Display & input features",
+      "measuring": "Measuring…",
+      "remeasure": "Re-measure refresh rate",
+      "refreshRate": "Refresh rate (est.)",
+      "hdr": "HDR support",
+      "gamut": "Color gamut",
+      "colorScheme": "Preferred theme",
+      "scheme": {
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "reducedMotion": "Reduced motion",
+      "pointer": "Primary input",
+      "pointerType": {
+        "fine": "Mouse/trackpad (fine)",
+        "coarse": "Touch (finger)",
+        "none": "None"
+      },
+      "hover": "Hover capable",
+      "hzNote": "Browsers don't expose the refresh rate, so it is estimated from frame intervals (requestAnimationFrame). Power saving, variable refresh rate (VRR) or background tabs can make it read lower than the real value."
+    },
+    "breakpoints": {
+      "title": "Active responsive breakpoints",
+      "desc": "Based on a viewport width of {w}px (min-width). Updates as you resize.",
+      "tailwind": "Tailwind CSS",
+      "bootstrap": "Bootstrap 5"
+    },
+    "ppi": {
+      "title": "PPI & screen size calculator",
+      "desc": "Enter a resolution and diagonal (inches) to get PPI, dot pitch and physical width × height.",
+      "width": "Width (px)",
+      "height": "Height (px)",
+      "diagonal": "Diagonal (inches)",
+      "useMine": "Use my physical pixels ({w} × {h})",
+      "ppi": "Pixel density",
+      "dotPitch": "Dot pitch",
+      "size": "Width × height",
+      "ratio": "Ratio",
+      "invalid": "Enter width, height and diagonal greater than 0.",
+      "note": "Browsers can't know your screen's physical size. Use the diagonal and panel resolution from the product spec for an accurate result."
+    },
+    "ref": {
+      "title": "Common device resolutions (reference)",
+      "desc": "Reference values at default settings. Actual values vary with display scaling, zoom and exact model. Rows matching your screen are highlighted.",
+      "device": "Device",
+      "viewport": "Screen (CSS px)",
+      "physical": "Physical pixels",
+      "mine": "Matches yours",
+      "kind": {
+        "phone": "Phone",
+        "tablet": "Tablet",
+        "laptop": "Laptop",
+        "monitor": "Monitor"
+      }
+    },
     "title": "Screen/Device Info",
-    "description": "Check your device's screen size, resolution, and browser info",
+    "description": "Instantly check your screen resolution, physical pixels, viewport size, DPR and refresh rate",
     "screen": {
+      "physical": "Physical pixels (est.)",
+      "aspectRatio": "Aspect ratio",
+      "extended": "Extended display (multi-monitor)",
       "title": "Screen Info",
-      "resolution": "Screen Resolution",
+      "resolution": "Screen resolution (CSS px)",
       "viewport": "Viewport Size",
-      "availableSize": "Available Size",
+      "availableSize": "Available area (excl. taskbar)",
       "colorDepth": "Color Depth",
       "pixelRatio": "Pixel Ratio (DPR)",
       "orientation": "Orientation",
@@ -9198,7 +9273,7 @@
       "title": "Device Info",
       "platform": "Platform",
       "cores": "CPU Cores",
-      "memory": "Memory (GB)",
+      "memory": "Memory (browser approximation)",
       "connection": "Network Type",
       "maxTouchPoints": "Touch Points",
       "deviceType": "Device Type",
@@ -9209,7 +9284,7 @@
     "common": {
       "copy": "Copy",
       "copied": "Copied!",
-      "copyAll": "Copy All",
+      "copyAll": "Copy all (text)",
       "yes": "Yes",
       "no": "No",
       "unknown": "Unknown",
@@ -9218,6 +9293,16 @@
       "refresh": "Refresh"
     },
     "guide": {
+      "terms": {
+        "title": "Key terms",
+        "items": [
+          "Screen resolution (CSS pixels): screen.width × screen.height as reported by the browser. Layouts and media queries use this unit.",
+          "Physical pixels: screen resolution × DPR. If Windows at 150% shows 1280 × 720, the panel is about 1920 × 1080.",
+          "DPR (device pixel ratio): physical pixels per CSS pixel. Retina/high-res phones are 2–3; a typical FHD monitor at 100% is 1.",
+          "Viewport: the inner size of the browser window including scrollbars (innerWidth × innerHeight). Responsive breakpoints are based on it.",
+          "PPI: pixels per inch. Roughly 90–110 for desktop monitors, 140–230 for laptops, 400+ for smartphones."
+        ]
+      },
       "title": "User Guide",
       "features": {
         "title": "Available Info",
@@ -9237,40 +9322,45 @@
         ]
       },
       "whatIs": {
-        "title": "What is the Screen & Device Info Tool?",
-        "description": "A tool that instantly displays detailed information about the device you are currently using: screen resolution, browser viewport dimensions, device pixel ratio (DPR), operating system, browser version, and network connection type. Web developers and designers can use it to debug responsive layouts, verify media query breakpoints, and understand the user's rendering environment without writing any code."
+        "title": "What is the screen resolution checker?",
+        "description": "Shows your screen resolution (CSS pixels), physical pixels, browser viewport, device pixel ratio (DPR), aspect ratio, estimated refresh rate, HDR/color gamut and input type (touch/mouse) at a glance. It also shows the active Tailwind/Bootstrap breakpoint, a PPI calculator and a reference table of common device resolutions. Everything is read in your browser and never sent to a server."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Open the page — all device and browser information is detected automatically. No input required.",
-          "2. Compare the physical screen resolution (px) with the browser viewport size to understand how your device scales content.",
-          "3. Resize the browser window to see viewport values update in real time, making it easy to identify exact responsive breakpoints.",
-          "4. Click the copy button to copy all device info to your clipboard and paste it into bug reports or support tickets."
+          "1. Open the page — the blue card at the top shows your screen resolution, physical pixels, viewport and DPR immediately.",
+          "2. Resize the window or rotate the device to see the viewport and breakpoints update in real time.",
+          "3. For your monitor's PPI, press 'Use my physical pixels' in the PPI calculator and enter the diagonal from the product spec.",
+          "4. For bug reports or support tickets, use 'Copy all (text)' or 'Copy JSON' and paste the environment info."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "Use alongside Chrome DevTools' device simulation to quickly validate actual viewport values at specific resolutions.",
-          "On Retina displays (DPR ≥ 2), CSS pixels differ from physical pixels. Always check DPR when debugging blurry image issues.",
-          "The network connection type (4G/Wi-Fi/offline) is shown, helping you verify real connectivity conditions during performance testing on slower networks."
+          "If Windows shows a smaller resolution than your monitor's spec, display scaling (125%, 150%) is the reason. The 'physical pixels' value is close to the panel resolution.",
+          "Browser zoom changes DPR and resolution. Reset to 100% with Ctrl+0 and refresh for an accurate reading.",
+          "On screens with DPR 2 or higher, serve images/icons at 2x (srcset, SVG) to avoid blurriness.",
+          "The refresh rate is an estimate. Power saving or background tabs can lower it — use 'Re-measure refresh rate' to check again."
         ]
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Why are the screen resolution and viewport size different?",
-            "a": "Physical screen resolution is the actual pixel count of the display. The viewport is the area the browser uses to render web content. A device with DPR 2 and a 1920×1080 display may show a 960×540 viewport for CSS purposes."
+            "q": "My monitor is 1920×1080, so why does it show 1280×720 or 1536×864?",
+            "a": "Browsers report resolution in CSS pixels. With 150% display scaling, 1920 ÷ 1.5 = 1280; at 125% it is 1536. DPR then reads 1.5 or 1.25, and resolution × DPR = physical pixels."
+          },
+          {
+            "q": "What is the difference between screen resolution and viewport size?",
+            "a": "Screen resolution is the whole display; the viewport is the inside of the browser window, excluding the address bar, tabs and taskbar. Responsive layouts change based on viewport width."
+          },
+          {
+            "q": "Can it tell my exact refresh rate and screen size in inches?",
+            "a": "No. Browsers don't expose refresh rate or physical size. The refresh rate is estimated from frame intervals, and inch-based size needs the diagonal from your product spec entered into the PPI calculator."
           },
           {
             "q": "Is my device information sent to any server?",
-            "a": "No. All information is read locally by JavaScript in your browser and is never transmitted or stored on any server."
-          },
-          {
-            "q": "Will I see different items on mobile vs. desktop?",
-            "a": "Yes. Mobile-specific items such as touch screen support, accelerometer, and orientation sensor are only shown on mobile devices. Desktop shows mouse/hover capability instead."
+            "a": "No. All information is read locally by JavaScript in your browser and is never transmitted or stored."
           }
         ]
       }
@@ -14034,8 +14124,68 @@
     }
   },
   "morseCode": {
+    "tab": {
+      "convert": "Convert",
+      "practice": "Listening practice"
+    },
+    "unsupported": "Unsupported characters (skipped): {chars}",
+    "alphabetLabel": "Decode as",
+    "alphabetEn": "Latin / International",
+    "alphabetKo": "Korean (SKATS)",
+    "tapKey": "Tap it out with a straight key",
+    "tapKeyPress": "Press and hold to sound",
+    "tapKeyHint": "A short press is a dot, a long press (3x a dot) is a dash. A short pause ends the letter, a longer pause ends the word. You can also focus the key and use the space bar. Lower the WPM if it feels too fast.",
+    "backspace": "Delete one",
+    "wordSpace": "Word space",
+    "swap": "Use result as input",
+    "resultMorse": "Morse code",
+    "resultText": "Decoded text",
+    "summary": "{n} characters · {s}s · {wpm} WPM",
+    "downloadWav": "Save WAV",
+    "flash": "Light signal",
+    "vibrate": "Vibration",
+    "breakdown": "Character by character",
+    "unknownHint": "□ marks a code that isn't in the table. Check the dots and dashes or the Decode as setting (Latin/Korean).",
+    "wpm": "Character speed",
+    "farnsworth": "Effective speed",
+    "farnsworthOff": "Off",
+    "farnsworthHint": "Set the effective (Farnsworth) speed below the character speed to keep each letter fast while stretching the gaps between letters and words — the best way to learn letters as sound patterns.",
+    "tone": "Tone",
+    "length": "Duration",
+    "seconds": "{n}s",
+    "playChar": "Play {ch}",
+    "refHint": "Tap any cell to hear it.",
+    "punctuation": "Punctuation",
+    "koConsonants": "Korean consonants",
+    "koVowels": "Korean vowels",
+    "koCompoundNote": "Jamo not in the table are sent as two codes: ㄲ=ㄱㄱ, ㄸ=ㄷㄷ, ㅃ=ㅂㅂ, ㅆ=ㅅㅅ, ㅉ=ㅈㅈ / ㅘ=ㅗㅏ, ㅙ=ㅗㅐ, ㅚ=ㅗㅣ, ㅝ=ㅜㅓ, ㅞ=ㅜㅔ, ㅟ=ㅜㅣ, ㅢ=ㅡㅣ, ㅒ=ㅑㅣ, ㅖ=ㅕㅣ / final clusters ㄳ=ㄱㅅ, ㄺ=ㄹㄱ, ㅄ=ㅂㅅ …",
+    "prosigns": "Prosigns (sent without letter gaps)",
+    "prosign": {
+      "AR": "End of message (same as +)",
+      "AS": "Wait (same as &)",
+      "BT": "Break / new paragraph (same as =)",
+      "KN": "Named station only (same as opening parenthesis)",
+      "SK": "End of contact",
+      "SOS": "Distress signal",
+      "HH": "Error, correct last word"
+    },
+    "practice": {
+      "desc": "Koch method: start with just 2 letters at full character speed and copy them; once you're above 90% accuracy, add one letter. You learn each letter as a sound rhythm instead of counting dots and dashes.",
+      "level": "Letters in play",
+      "speedHint": "Recommended: 18–20 WPM character speed. If it's too hard, lower the effective speed on the Convert tab.",
+      "start": "Play new group",
+      "replay": "Replay",
+      "empty": "Press ‘Play new group’ to hear 5 random letters.",
+      "answer": "Type what you heard",
+      "answerPlaceholder": "e.g. KMMRK",
+      "check": "Check",
+      "correctAnswer": "Answer",
+      "score": "Accuracy",
+      "rounds": "{c} of {n} letters correct",
+      "levelUp": "90% reached! Add ‘{ch}’"
+    },
     "title": "Morse Code Converter",
-    "description": "Convert text to Morse code and Morse code to text.",
+    "description": "Convert Latin letters, digits, punctuation and Korean (SKATS) to Morse code and back. Listen at any WPM and tone, see light/vibration signals, save WAV, tap it out with a straight key and practice listening.",
     "mode": {
       "textToMorse": "Text → Morse",
       "morseToText": "Morse → Text"
@@ -14043,12 +14193,12 @@
     "textInput": "Text Input",
     "textPlaceholder": "Enter text to convert",
     "morseInput": "Morse Input",
-    "morsePlaceholder": "Enter Morse code (use · ─ /)",
+    "morsePlaceholder": "e.g. ... --- ...  (dot . dash - · space between letters · / between words)",
     "result": "Result",
     "copy": "Copy",
     "copied": "Copied!",
     "clear": "Clear",
-    "play": "Play Sound",
+    "play": "Play",
     "stop": "Stop",
     "speed": "Speed",
     "slow": "Slow",
@@ -14058,36 +14208,47 @@
     "letters": "Letters",
     "numbers": "Numbers",
     "guide": {
+      "korean": {
+        "title": "Korean Morse code (SKATS)",
+        "items": [
+          "Korean Morse code assigns one code to each of 14 consonants and 12 vowels; each syllable is split into jamo and sent in order. Example: 사랑 = ㅅ ㅏ ㄹ ㅏ ㅇ",
+          "Tense consonants are sent as the same consonant twice (ㄲ = ㄱ ㄱ), compound vowels as their parts (ㅘ = ㅗ ㅏ, ㅢ = ㅡ ㅣ, ㅒ = ㅑ ㅣ, ㅖ = ㅕ ㅣ), and final clusters as two consonants (ㄳ = ㄱ ㅅ).",
+          "Korean codes overlap with Latin ones (ㅏ = E, ㄱ = L), so choose 'Korean' when decoding. Digits and punctuation use the international codes.",
+          "Syllable boundaries are not transmitted, so the decoder attaches final consonants first (먹고, 있습니다). A tense consonant between vowels, as in 아까, may read back as 악가."
+        ]
+      },
       "title": "Morse Code Guide",
       "basics": {
         "title": "Basic Rules",
         "items": [
-          "· (dot): Short signal",
-          "─ (dash): Long signal (3x dot length)",
-          "Between letters: 1 space",
-          "Between words: / (slash)"
+          "Dot (·) = 1 unit, dash (−) = 3 units. The gap between dots and dashes within a letter is 1 unit.",
+          "Between letters = 3 units (type a single space)",
+          "Between words = 7 units (type / or three spaces / a new line)",
+          "Speed (WPM) is how many times 'PARIS' (50 units) is sent per minute. 1 unit = 1.2 ÷ WPM seconds (60 ms at 20 WPM)."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "SOS = ··· ─── ···",
-          "Supports English letters and numbers",
-          "Play sound to learn Morse code",
-          "Use SOS signal in emergencies"
+          "SOS (··· −−− ···) is really one continuous distress signal sent without letter gaps. You can send the same rhythm with a flashlight or whistle.",
+          "Don't count dots and dashes — learn each letter as a sound rhythm. 18–20 WPM character speed with a 5–10 WPM effective speed is a great start.",
+          "Tap any cell in the code table to hear that character.",
+          "Vibration only works in browsers that support the Vibration API, such as Android Chrome (not iPhone Safari).",
+          "WAV files make great props for escape rooms, quizzes and video sound effects."
         ]
       },
       "whatIs": {
         "title": "What is the Morse Code Converter?",
-        "description": "The Morse code converter instantly translates plain text (letters and numbers) into international Morse code, and decodes Morse code back into text. Consisting of dots (.) and dashes (-), Morse code is used in amateur radio (HAM), military communications, emergency signaling, and often appears in quizzes and escape room puzzles. An audio playback feature lets you hear the actual Morse code sounds."
+        "description": "The Morse code converter turns text into international (ITU) Morse code and decodes Morse back into text. It covers letters, digits, punctuation and prosigns, plus Korean Morse code (SKATS), which is encoded jamo by jamo and reassembled into syllables when decoding. Adjust the character speed (WPM), Farnsworth effective speed and tone; the code being played is highlighted and also shown as a light or vibration signal. Save the audio as a WAV file, tap Morse out with a straight key, or learn it with Koch-method listening practice."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Type text (letters/numbers) in the text field to automatically convert it to Morse code.",
-          "2. Type dots (.) and dashes (-) separated by spaces in the Morse field to decode back to text.",
-          "3. Click the Play button to hear the converted Morse code as audio beeps.",
-          "4. Use the Copy button to instantly copy the result to your clipboard."
+          "1. In 'Text → Morse', type Latin, Korean or digits and the Morse code appears instantly. Check each character under 'Character by character'.",
+          "2. In 'Morse → Text', enter dots (.) and dashes (-) with a space between letters and / between words. For Korean Morse, switch 'Decode as' to Korean.",
+          "3. Press Play to hear it; the current code is highlighted and also shown as a light signal or vibration (on supported devices). Use the sliders for character speed, effective speed and tone.",
+          "4. 'Save WAV' downloads the audio; Share or Copy link sends your exact input and settings.",
+          "5. Tap the straight key short/long to send by hand, and use the 'Listening practice' tab to copy random letters and build speed."
         ]
       },
       "faq": {
@@ -14095,15 +14256,23 @@
         "items": [
           {
             "q": "What is SOS in Morse code?",
-            "a": "SOS is ... --- ... — S is three dots (···), O is three dashes (---), and S again is three dots. It is the universal distress signal."
+            "a": "SOS is ··· −−− ···. It was never three separate letters but one continuous signal (a prosign); 'Save Our Souls' is a later backronym. It was chosen as the international distress signal because its rhythm is simple to send and recognize."
           },
           {
             "q": "Can Korean (Hangul) be converted to Morse code?",
-            "a": "International standard Morse code is based on the Latin alphabet and numerals. Korean characters are not directly supported — transliterate to romanized letters first."
+            "a": "Yes. Korean is converted jamo by jamo using the Korean Morse table (SKATS); for example 사랑해 is sent as ㅅ ㅏ ㄹ ㅏ ㅇ ㅎ ㅐ. Korean codes overlap with Latin ones, so set 'Decode as' to Korean when decoding to reassemble the jamo into syllables."
           },
           {
-            "q": "How are dots, dashes, and separators entered?",
-            "a": "Use a period (.) for dots and a hyphen (-) for dashes. Separate letters with one space and words with three spaces (or a slash /)."
+            "q": "How are dots, dashes and separators entered?",
+            "a": "Dots can be . · • and dashes - − _. Separate letters with one space and words with / or three spaces / a new line. You can also tap them out with the straight key button."
+          },
+          {
+            "q": "What are WPM and Farnsworth speed?",
+            "a": "WPM is how many times the standard word 'PARIS' is sent per minute. Farnsworth timing sends each character at the faster character speed but stretches the gaps between characters and words to lower the overall (effective) speed, using the ARRL formula."
+          },
+          {
+            "q": "How does Koch-method practice work?",
+            "a": "Start by copying just two letters (K and M) at full speed. Once you're above 90% accuracy, add one letter at a time until you know all 40. The 'Listening practice' tab supports both the Latin Koch order and Korean jamo."
           }
         ]
       }
@@ -21273,15 +21442,44 @@
     "disclaimer": "Readings are uncalibrated phone/PC microphone estimates, not legal measurements. For official assessment of floor-noise disputes, contact the Floor Noise Neighbor Center (1661-2642) or an accredited measurement firm."
   },
   "spiritLevel": {
+    "edgeMode": "Edge Level",
+    "surfaceHint": "Lay the phone screen-up on the surface. The bubble moves to the high side.",
+    "edgeHint": "Stand the phone up and hold its long or short edge against the surface (shelf, frame, door). Portrait/landscape is detected automatically.",
+    "compassHint": "Hold the phone flat and read the heading the top of the screen points to.",
+    "heading": "Heading",
+    "compassUnavailable": "This device/browser does not provide a true-north heading. Tilt measurement still works.",
+    "compassFlat": "The phone is tilted a lot. Hold it flat for an accurate heading.",
+    "totalTilt": "Total tilt",
+    "edgeTilt": "Edge tilt",
+    "edgeNotUpright": "The phone is lying flat. Stand it up and hold an edge against the surface.",
+    "slope": "Slope",
+    "rise": "Rise per 1 m",
+    "heldNote": "Reading held. You can lift the phone and read it.",
+    "highRight": "Right side high",
+    "highLeft": "Left side high",
+    "highTop": "Top side high",
+    "highBottom": "Bottom side high",
+    "calibrate": "Calibrate",
+    "calCapture2": "Second reading",
+    "calCancel": "Cancel",
+    "calReset": "Reset calibration",
+    "calHint": "If readings look off, calibrate. It works even on a surface that is not level.",
+    "calibrated": "Calibration applied (saved on this device)",
+    "calStep2": "Turn the phone 180° in the same spot, wait until it settles, then tap 'Second reading'.",
+    "calMismatch": "The two readings were taken in different positions. Keep the same position on the same surface and try again.",
+    "calTooFar": "The two readings differ too much. Turn the phone exactly 180° in the same spot and try again.",
+    "calDone": "Calibrated. Corrected a {deg}° sensor offset for this position.",
+    "insecure": "Browsers block motion sensors without a secure (https) connection. Please open the https address.",
+    "desktopHint": "Computers have no tilt sensor. Open this page on your smartphone.",
     "title": "Spirit Level & Compass",
-    "description": "Measure tilt and direction in real-time using your smartphone sensors.",
+    "description": "Lay your phone on a surface or hold it against an edge to measure tilt to 0.1°. Slope (%), rise per meter, and a compass too.",
     "mobileFriendly": "Mobile Only",
-    "levelMode": "Spirit Level",
+    "levelMode": "Surface",
     "compassMode": "Compass",
     "start": "Start",
     "stop": "Stop",
-    "lock": "Lock",
-    "unlock": "Unlock",
+    "lock": "Hold",
+    "unlock": "Release",
     "levelOk": "Level",
     "notLevel": "Not level",
     "leftRight": "Left/Right Tilt",
@@ -21289,8 +21487,8 @@
     "permissionDenied": "Sensor access was denied. Please allow sensor permission in your browser settings.",
     "noSensor": "Gyroscope/accelerometer sensor not detected on this device. Please use a smartphone.",
     "sensorError": "Cannot access sensors. Please try on a smartphone.",
-    "iosHint": "On iOS, enable Settings > Safari > Motion & Orientation Access.",
-    "startHint": "Press Start to activate device sensors.",
+    "iosHint": "On iPhone, tap Allow on the 'Motion & Orientation Access' prompt after tapping Start. If you denied it, fully close Safari, reopen it and try again.",
+    "startHint": "Tap Start to turn on the sensors. The screen stays on while measuring.",
     "directions": {
       "north": "North (N)",
       "northeast": "Northeast (NE)",
@@ -21302,23 +21500,34 @@
       "northwest": "Northwest (NW)"
     },
     "guide": {
+      "calibration": {
+        "title": "How to Calibrate",
+        "items": [
+          "Every phone sensor has its own offset of about 0.5–2°, so calibrate once for precise work.",
+          "Place the phone in the position you will measure in (flat or standing on an edge) and tap 'Calibrate'.",
+          "Turn the phone 180° in the same spot and tap 'Second reading'. The average of the two is the sensor offset, so it works even if the surface is not level.",
+          "Calibration is saved on this device separately for flat and upright positions; clear it with 'Reset calibration'.",
+          "Check: after calibrating, turning the phone 180° in the same spot should show the same angle with only the high side swapped."
+        ]
+      },
       "title": "User Guide",
       "level": {
-        "title": "Spirit Level Usage",
+        "title": "Using the Level",
         "items": [
-          "Place your smartphone on the surface you want to measure.",
-          "When the green circle is centered, the surface is level.",
-          "Left/right and front/back tilt angles are shown in real-time.",
-          "Use the lock button to freeze the current reading."
+          "Surface: lay the phone screen-up on the surface. Like a real bubble, it moves to the high side, and the high side is also shown in text.",
+          "Edge: stand the phone up and hold an edge against a shelf, frame or door frame. Portrait/landscape is detected automatically.",
+          "Within ±0.2° the display turns blue and says 'Level'; Android phones also give a short vibration.",
+          "Slope (%) is tan(angle)×100 and rise per meter (mm) is tan(angle)×1000. Example: 1° ≈ 1.7% ≈ 17.5 mm/m.",
+          "To measure a ramp or roof angle, lay the phone on it in Surface mode, read 'Total tilt', and use 'Hold' to read it after lifting the phone."
         ]
       },
       "compass": {
         "title": "Compass Usage",
         "items": [
-          "Hold your smartphone horizontally.",
-          "The red needle points north.",
-          "Heading angle and direction are shown below.",
-          "Keep away from magnets and electronics for accuracy."
+          "Hold the phone flat to see the heading and direction the top of the screen points to.",
+          "The blue N mark and needle point to magnetic north.",
+          "Browsers that do not provide a true-north heading show a notice instead of a heading.",
+          "Keep away from magnets, metal and electronics for accuracy."
         ]
       },
       "guide": {
@@ -21377,8 +21586,9 @@
       "tips": {
         "title": "Pro Tips",
         "items": [
+          "Phones with a camera bump may sit tilted; use a case or calibrate once in Surface mode.",
+          "Measure several points along a long shelf or door frame in Edge mode to check for sagging.",
           "Keep the compass away from metal objects and electronics for more accurate bearing readings.",
-          "Thick phone cases or cases with magnets may reduce compass accuracy.",
           "Use the level while taking photos to get a straight horizon without tilted shots."
         ]
       },
@@ -21387,15 +21597,15 @@
         "items": [
           {
             "q": "Does it work on both iOS and Android?",
-            "a": "Yes, it works on most smartphones with a gyroscope and magnetometer. Some budget devices may lack sensors, limiting compass functionality."
+            "a": "Yes. On iPhone you must allow Motion & Orientation Access after tapping Start, and it only works over https. The compass appears only when the device/browser provides a true-north heading."
           },
           {
             "q": "How accurate is the level reading?",
-            "a": "Typically ±1–2 degrees depending on the device. Sufficient for DIY tasks; use a professional laser level for precision construction work."
+            "a": "It displays 0.1° steps, but without calibration phones can be off by 1–2°. Reversal calibration (two readings in the same spot, turned 180°) usually brings this within 0.5°. Use a professional level for precision construction."
           },
           {
             "q": "What if the sensor gives erratic readings?",
-            "a": "Refresh the page or place the phone on a flat surface and restart. For compass errors, calibrate by slowly rotating the phone in a figure-8 pattern."
+            "a": "Refresh the page and start again. If level readings look off, use Calibrate; for compass errors, slowly move the phone in a figure-8 to recalibrate the phone's own compass."
           }
         ]
       }
@@ -26300,13 +26510,28 @@
     }
   },
   "markdownEditor": {
+    "sample": "# Project Name\n\nWrite a one-line intro. The preview on the right updates as you type, and your draft is **autosaved in this browser**.\n\n> [!TIP]\n> When you're done, click **Copy rich text** below to paste into a blog or Notion, or save as .md / .html.\n\n## Text formatting\n\n**Bold**, *italic*, ~~strikethrough~~, `inline code`, <kbd>Ctrl</kbd>+<kbd>B</kbd>\nWrite links like [ToolHub](https://toolhub.ai.kr), or just paste a URL: https://toolhub.ai.kr\n\n## Lists\n\n- Bullet list\n  - Indent two spaces for a sub-item\n- Press Enter and the next bullet is added for you\n\n1. Install\n2. Configure\n3. Run\n\n- [x] Write the draft\n- [ ] Paste an image (Ctrl+V)\n\n## Code\n\n```javascript\n// syntax highlighting\nfunction greet(name) {\n  return `Hello, ${name}!`\n}\n```\n\n## Table\n\n| Feature | Shortcut | Note |\n|:--------|:--------:|-----:|\n| Bold | Ctrl+B | Wraps the selection |\n| Link | Ctrl+K | `[text](URL)` |\n| Save | Ctrl+S | Downloads .md |\n\n## Footnotes\n\nMarkdown was created by John Gruber in 2004[^1].\n\n[^1]: The extended syntax used on GitHub is called GFM (GitHub Flavored Markdown).\n",
+    "newDoc": "New",
+    "confirmNew": "Clear the current document and start a new one?",
+    "loadSample": "Sample",
+    "confirmSample": "Replace the current content with the sample? Your text will be lost.",
+    "copyRich": "Copy rich text (blog/Notion)",
+    "exportHtml": "Download HTML",
+    "charNoSpace": "No spaces",
+    "readTime": "~{n} min read",
+    "autosaved": "Autosaved in this browser",
+    "saveFailed": "Autosave failed: storage full (shrink large images)",
+    "imageTooLarge": "Images over 2MB cannot be embedded. Resize it or insert it by URL instead.",
+    "shortcutsHint": "Ctrl+B bold · Ctrl+I italic · Ctrl+K link · Ctrl+S save .md · paste (Ctrl+V) or drop images to embed",
+    "cheatsheet": "Syntax cheat sheet",
+    "footnote": "Footnote",
     "title": "Markdown Editor",
-    "description": "Markdown editor with live preview.",
+    "description": "Write README, blog and Notion drafts with live preview, then copy with formatting or save as .md/.html. Autosaved.",
     "editor": "Editor",
     "preview": "Preview",
     "split": "Split",
-    "editorOnly": "Editor Only",
-    "previewOnly": "Preview Only",
+    "editorOnly": "Edit",
+    "previewOnly": "Preview",
     "bold": "Bold",
     "italic": "Italic",
     "strikethrough": "Strikethrough",
@@ -26335,6 +26560,7 @@
     "tocEmpty": "No headings found",
     "placeholder": "Enter markdown here...",
     "insert": {
+      "footnote": "Footnote text",
       "heading": "Heading",
       "listItem": "Item",
       "taskItem": "Task",
@@ -26348,42 +26574,49 @@
     "guide": {
       "title": "Markdown Guide",
       "syntax": {
-        "title": "Basic Syntax",
+        "title": "Basic syntax",
         "items": [
           "# Heading 1 ~ ###### Heading 6",
-          "**Bold**, *Italic*, ~~Strikethrough~~",
-          "- List, 1. Ordered list, - [ ] Task list",
-          "[Link](URL), ![Image](URL)"
+          "**bold**  *italic*  ~~strike~~  `code`",
+          "- list (indent two spaces for a sub-list)",
+          "1. numbered list   - [ ] task list",
+          "[link](https://url)   ![image](url)",
+          "> quote   --- divider"
         ]
       },
       "advanced": {
-        "title": "Advanced Syntax",
+        "title": "GitHub (GFM) extensions",
         "items": [
-          "```language for code blocks",
-          "| Col1 | Col2 | for tables",
-          "> Blockquote, --- Horizontal rule",
-          "Empty lines separate paragraphs"
+          "```lang … ``` code block (syntax highlighting)",
+          "| col1 | col2 |  then |:--|--:| for tables & alignment",
+          "text[^1]  /  [^1]: footnote text",
+          "> [!NOTE]  > [!WARNING] alert boxes",
+          "Bare https://… URLs become links",
+          "<kbd>Ctrl</kbd>  <sub>  <sup>  <mark>  <br> are allowed"
         ]
       },
       "whatIs": {
         "title": "What is this tool?",
-        "description": "The Markdown Editor lets you write Markdown with real-time preview. It includes a formatting toolbar, auto-generated table of contents (TOC), and file upload support for quickly creating GitHub READMEs, blog posts, and technical documentation."
+        "description": "A Markdown editor for drafting GitHub READMEs, tech blog posts and Notion pages with an instant preview. It supports GitHub (GFM) syntax such as tables, task lists, footnotes and alert boxes, plus code syntax highlighting, and autosaves your draft in this browser. Copy the result with formatting into a blog or Notion, or download it as .md or .html. Everything runs in your browser; nothing is sent to a server."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Write Markdown text in the left editor panel. Use toolbar buttons for bold, italic, links, etc.",
-          "View the real-time rendered output in the right preview panel.",
-          "Use the TOC feature to auto-generate a heading-based table of contents.",
-          "Copy the Markdown source or HTML when done."
+          "Type Markdown in the editor and the preview updates instantly. On mobile, switch with the Edit/Preview tabs at the top.",
+          "Use the toolbar or shortcuts (Ctrl+B bold, Ctrl+I italic, Ctrl+K link) to wrap the selected text.",
+          "Paste a screenshot with Ctrl+V or drop an image file to embed it in the document.",
+          "Open the table of contents to jump to a heading in the preview.",
+          "When finished, choose Copy rich text (blog/Notion), copy Markdown/HTML, or download .md/.html."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Wrap code in triple backticks with a language name for syntax highlighting.",
-          "Upload existing .md files to edit them directly.",
-          "Use checkboxes (- [ ]) and tables (| | |) for well-structured GitHub READMEs."
+          "Add a language after the fence (```python) to color keywords, strings and comments.",
+          "Press Enter on a list line to add the next marker (-, 2., - [ ]) automatically; press Enter on an empty item to end the list.",
+          "README badges are written as [![name](badge image URL)](link URL).",
+          "Use Copy rich text for Notion; for blogs use Copy rich text or paste Copy HTML into the HTML mode.",
+          "Pasted images are embedded as base64 and make the file large. For blog posts, upload images in the blog editor instead."
         ]
       },
       "faq": {
@@ -26391,15 +26624,23 @@
         "items": [
           {
             "q": "What is Markdown?",
-            "a": "Markdown is a lightweight markup language using simple symbols (#, *, - etc.) for formatting. It's widely used on GitHub, Notion, blogs, and more."
+            "a": "A lightweight markup language that formats text with simple symbols like #, * and -. It is widely used on GitHub, Notion, Slack and many blogs."
           },
           {
-            "q": "Is content auto-saved?",
-            "a": "Auto-save is not currently available. Please copy or download your work regularly."
+            "q": "Is my writing saved automatically?",
+            "a": "Yes. When you pause typing, the draft is saved to this browser (localStorage) and restored next time. It is not shared with other devices or browsers and is removed if you clear site data, so download important documents as .md."
           },
           {
-            "q": "Can I insert images?",
-            "a": "Yes, use ![alt text](image URL) syntax with externally hosted image URLs."
+            "q": "Can I add images?",
+            "a": "Paste a screenshot with Ctrl+V or drop an image file to embed it directly (base64, up to 2MB). For hosted images, use ![description](image URL)."
+          },
+          {
+            "q": "Is my text sent to a server?",
+            "a": "No. Rendering, saving and exporting all happen in your browser. The preview is rendered safely, blocking scripts and dangerous links such as javascript:."
+          },
+          {
+            "q": "Line breaks look different from GitHub.",
+            "a": "This preview turns every single line break into a new line, like a blog or notes app. In a GitHub README, separate paragraphs with a blank line or end a line with two spaces to force a break."
           }
         ]
       }
