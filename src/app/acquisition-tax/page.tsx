@@ -5,8 +5,8 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '취득세 계산기 2026 - 부동산 취득세·농특세·지방교육세 | 툴허브',
-  description: '2026년 기준 부동산 취득세를 자동 계산합니다. 주택·토지·상가 취득세, 다주택 중과세율, 농어촌특별세, 지방교육세까지 한눈에 확인하세요.',
-  keywords: '취득세 계산기, 부동산 취득세, 주택 취득세, 다주택 취득세, 농어촌특별세, 지방교육세, 취득세 중과, 조정대상지역, 2025 취득세',
+  description: '2026년 기준 부동산 취득세를 자동 계산합니다. 주택·토지·상가·상속·증여 취득세, 지역 선택으로 다주택 중과 자동 판단, 생애최초·출산 감면, 농특세·지방교육세와 신고기한까지 한눈에 확인하세요.',
+  keywords: '취득세 계산기, 부동산 취득세, 주택 취득세, 다주택 취득세, 농어촌특별세, 지방교육세, 취득세 중과, 조정대상지역, 2026 취득세, 생애최초 취득세 감면, 증여 취득세, 상속 취득세, 취득세 신고기한',
   openGraph: {
     title: '취득세 계산기 2026 | 툴허브',
     description: '부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
@@ -26,21 +26,21 @@ export default function AcquisitionTaxPage() {
     url: 'https://toolhub.ai.kr/acquisition-tax/',
     applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['주택·토지·상가 취득세', '다주택 중과세율', '6억~9억 선형 보간', '농어촌특별세·지방교육세', '실효세율 표시'],
+    featureList: ['주택·토지·상가 취득세', '다주택 중과세율', '6억~9억 선형 보간', '농어촌특별세·지방교육세', '실효세율 표시', '상속·증여 취득세', '생애최초·출산 감면', '조정대상지역 자동 판단', '집 살 때 총비용(중개보수·채권)', '신고기한·가산세', '주택 수별 비교'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: [
       { '@type': 'Question', name: '주택 취득세율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '1주택 기준 취득가 6억원 이하 1%, 6~9억원 1~3%(선형 보간), 9억원 초과 3%입니다. 조정대상지역 2주택 8%, 3주택 이상 12%, 법인 12%가 적용됩니다.' } },
-      { '@type': 'Question', name: '취득세 외에 추가 세금이 있나요?', acceptedAnswer: { '@type': 'Answer', text: '취득세 외에 농어촌특별세(전용 85㎡ 초과 시 취득세의 10%)와 지방교육세(취득세의 10%)가 별도로 부과됩니다.' } },
-      { '@type': 'Question', name: '다주택 중과세율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '조정대상지역 2주택 8%, 3주택 이상 12%입니다. 비조정지역은 2주택 1~3%, 3주택 이상 8%입니다. 법인은 지역 무관 12%입니다.' } },
+      { '@type': 'Question', name: '취득세 외에 추가 세금이 있나요?', acceptedAnswer: { '@type': 'Answer', text: '취득세 외에 농어촌특별세(전용 85㎡ 초과 시 취득가의 0.2%, 중과 시 0.6~1.0%)와 지방교육세(1~3% 주택은 취득세의 10%, 중과 시 0.4%)가 별도로 부과됩니다.' } },
+      { '@type': 'Question', name: '다주택 중과세율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '조정대상지역 2주택 8%, 3주택 이상 12%입니다. 비조정지역은 2주택 1~3%, 3주택 8%, 4주택 이상 12%입니다. 법인은 지역 무관 12%입니다.' } },
     ],
   }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: '취득세 계산하는 방법',
-    description: '부동산 유형과 취득 가격을 입력하면 취득세, 농특세, 지방교육세를 계산합니다.',
+    description: '매매·상속·증여와 부동산 유형, 취득 가격, 지역, 주택 수를 입력하면 감면을 반영한 취득세, 농특세, 지방교육세를 계산합니다.',
     step: [
       { '@type': 'HowToStep', name: '부동산 유형 선택', text: '주택, 토지, 상가 등 취득하려는 부동산 유형을 선택합니다.' },
       { '@type': 'HowToStep', name: '취득 정보 입력', text: '취득 가격, 보유 주택 수, 조정대상지역 여부를 입력합니다.' },

@@ -32236,6 +32236,354 @@
     }
   },
   "acquisitionTaxCalc": {
+    "u": {
+      "subtitle": "Based on 2026 Korean Local Tax Act. Purchase, inheritance and gift, multi-home surcharge, first-home and childbirth relief, plus total buying cost including brokerage.",
+      "mode": {
+        "buy": "Purchase",
+        "inherit": "Inherit",
+        "gift": "Gift"
+      },
+      "kind": {
+        "house": "Housing",
+        "building": "Land/Retail/Officetel",
+        "farmland": "Farmland"
+      },
+      "kindHint": {
+        "building": "Non-housing property (incl. officetel). Purchase 4%, inheritance 2.8%, gift 3.5%",
+        "farmland": "Paddies, fields, orchards. Purchase 3%, inheritance 2.3%, gift 3.5%"
+      },
+      "priceLabel": {
+        "buy": "Purchase price (actual)",
+        "inherit": "Inherited value (standard value)",
+        "gift": "Gift value (market value)"
+      },
+      "addButtons": [
+        "+10M",
+        "+50M",
+        "+100M"
+      ],
+      "areaPyeong": "about {py} pyeong",
+      "over85": "Over 85㎡ — rural special tax applies",
+      "under85": "85㎡ or less — no rural special tax",
+      "region": {
+        "label": "Location",
+        "groupAdj": "Adjustment target areas (as of 2026-07-01)",
+        "groupNon": "Non-adjustment areas",
+        "isAdj": "Adjustment area — surcharge from 2nd home",
+        "isNon": "Non-adjustment area — surcharge from 3rd home",
+        "seoul": "Seoul (all 25 districts)",
+        "gwacheon": "Gwacheon, Gyeonggi",
+        "gwangmyeong": "Gwangmyeong, Gyeonggi",
+        "seongnam": "Seongnam (Bundang, Sujeong, Jungwon)",
+        "suwon": "Suwon (Yeongtong, Jangan, Paldal)",
+        "anyangDongan": "Anyang Dongan-gu",
+        "yonginSuji": "Yongin Suji-gu",
+        "yonginGiheung": "Yongin Giheung-gu",
+        "uiwang": "Uiwang, Gyeonggi",
+        "hanam": "Hanam, Gyeonggi",
+        "hwaseongDongtan": "Hwaseong Dongtan-gu",
+        "guri": "Guri, Gyeonggi",
+        "metroCity": "Metropolitan cities (Busan, Daegu, Incheon…)",
+        "other": "Elsewhere (incl. rest of Gyeonggi)"
+      },
+      "owner": {
+        "label": "Homes owned after purchase",
+        "hint": "Household total including this home (pre-sale rights and residential officetels count)",
+        "1": "1 home",
+        "2temp": "Temporary 2",
+        "2": "2 homes",
+        "3": "3 homes",
+        "4": "4+ homes",
+        "corp": "Corporation"
+      },
+      "under1eok": "Officially assessed value ≤ ₩100M",
+      "under1eokHint": "Excluded from surcharge unless in a redevelopment zone",
+      "relief": {
+        "label": "Tax relief",
+        "none": "No relief",
+        "first": "First-time home buyer",
+        "firstHint": "Neither spouse ever owned a home, price ≤ ₩1.2B — up to ₩2M",
+        "firstSmall": "First-time (small home / depopulating area)",
+        "firstSmallHint": "≤60㎡ small home (≤₩600M capital area, ≤₩300M elsewhere) or depopulating area — up to ₩3M",
+        "birth": "Childbirth household",
+        "birthHint": "Child born 2024–2028, bought 1 year before to 5 years after birth, ≤ ₩1.2B single home — up to ₩5M"
+      },
+      "inheritSole": "Single inherited home, homeless household",
+      "inheritSoleHint": "0.8% instead of 2.8% if the heir's household owns no home (no rural tax)",
+      "giftStd3eok": "Assessed value ₩300M or more",
+      "giftStd3eokHint": "Gifts of such homes in adjustment areas are taxed at 12%",
+      "giftFromSingle": "Donor is a single-home household gifting to spouse/lineal family",
+      "giftFromSingleHint": "Exempt from the surcharge (3.5%)",
+      "resultLabel": "Taxes on a ₩{price} acquisition",
+      "nongExempt": "Exempt (85㎡ or less, etc.)",
+      "rateOfPrice": "of price",
+      "reliefApplied": "{name} relief saves ₩{amount} (incl. proportional education tax). Clawed back if sold, gifted or rented within 3 years.",
+      "heavyWarn": "Multi-home surcharge rate {rate} applies. Choose 'Temporary 2' if you will sell your old home within 3 years.",
+      "reliefBlocked": {
+        "price": "Price exceeds ₩1.2B, so relief does not apply.",
+        "owner": "Relief applies only when you own one home after purchase.",
+        "mode": "Relief applies only to home purchases."
+      },
+      "share": {
+        "label": "Acquisition tax on a ₩{price} home",
+        "text": "Buying a ₩{price} home costs ₩{tax} in acquisition taxes (effective {rate}%)"
+      },
+      "cost": {
+        "title": "Total cost of buying",
+        "desc": "Acquisition taxes plus brokerage, housing bond, stamp duty and legal fees due at closing",
+        "grand": "Total needed",
+        "extraSum": "₩{amount} on top of the price ({pct}% of price)",
+        "price": "Purchase price",
+        "tax": "Acquisition, rural & education tax",
+        "broker": "Brokerage fee (legal cap)",
+        "brokerVat": "VAT on brokerage (10%)",
+        "bond": "Housing bond discount (approx.)",
+        "stamp": "Stamp duty (buyer's half)",
+        "legal": "Legal & registration (approx.)",
+        "noteHouse": "Brokerage caps: <₩50M 0.6% (max ₩250k), <₩200M 0.5% (max ₩800k), <₩900M 0.4%, <₩1.2B 0.5%, <₩1.5B 0.6%, ₩1.5B+ 0.7% — negotiable. Housing bond assumes assessed value = 70% of price and a 5% immediate-sale discount; legal fees assumed ₩600k.",
+        "noteOther": "Non-housing brokerage cap 0.9% (+VAT). Housing bond assumes standard value = 70% of price and a 5% discount; legal fees assumed ₩600k."
+      },
+      "compare": {
+        "title": "Same home, by number of homes owned",
+        "desc": "Tax for this home in {region} ({status}) depending on homes owned (no relief)",
+        "adj": "adjustment area",
+        "non": "non-adjustment area",
+        "rate": "Rate",
+        "diff": "vs 1 home"
+      },
+      "chart": {
+        "title": "Tax by purchase price",
+        "desc": "1% up to ₩600M, rising about 0.67%p per ₩100M between ₩600M and ₩900M, 3% above. Same conditions, price varied.",
+        "price": "Price",
+        "now": "Input"
+      },
+      "due": {
+        "title": "Filing deadline",
+        "rule": {
+          "buy": "Within 60 days of the closing date (or registration, if earlier). Weekends/holidays roll to the next business day.",
+          "inherit": "Within 6 months from the end of the month of death (9 months if heirs live abroad).",
+          "gift": "Within 3 months from the end of the month of the gift contract."
+        },
+        "date": {
+          "buy": "Closing date",
+          "inherit": "Date of death",
+          "gift": "Gift contract date"
+        },
+        "deadline": "Deadline",
+        "lateLabel": "If paid late (days)",
+        "lateResult": "Non-filing penalty ₩{report} + late payment ₩{delay} = ₩{total}",
+        "lateNote": "Non-filing 20% (under-reporting 10%), late payment 0.022%/day (max 75%) — Framework Act on Local Taxes Art. 53, 55. Approximate."
+      },
+      "disclaimer": "For reference only. Home counting, temporary two-home and relief rules depend on individual circumstances — confirm with your local tax office or Wetax before filing.",
+      "rateTable": {
+        "head": [
+          "Case",
+          "Acq. tax",
+          "Education",
+          "Rural",
+          "Total (≤85㎡ / >85㎡)"
+        ],
+        "rows": [
+          [
+            "1 home ≤ ₩600M",
+            "1%",
+            "0.1%",
+            "0.2%*",
+            "1.1% / 1.3%"
+          ],
+          [
+            "1 home ₩600M–900M",
+            "1–3%",
+            "0.1–0.3%",
+            "0.2%*",
+            "1.1–3.3% / 1.3–3.5%"
+          ],
+          [
+            "1 home > ₩900M",
+            "3%",
+            "0.3%",
+            "0.2%*",
+            "3.3% / 3.5%"
+          ],
+          [
+            "2 homes (adj.) · 3 homes (non-adj.)",
+            "8%",
+            "0.4%",
+            "0.6%*",
+            "8.4% / 9.0%"
+          ],
+          [
+            "3+ (adj.) · 4+ (non-adj.) · corporation",
+            "12%",
+            "0.4%",
+            "1.0%*",
+            "12.4% / 13.4%"
+          ],
+          [
+            "Land/retail/officetel purchase",
+            "4%",
+            "0.4%",
+            "0.2%",
+            "4.6%"
+          ],
+          [
+            "Farmland purchase",
+            "3%",
+            "0.2%",
+            "0.2%",
+            "3.4%"
+          ],
+          [
+            "Inheritance",
+            "2.8%",
+            "0.16%",
+            "0.2%*",
+            "2.96% / 3.16%"
+          ],
+          [
+            "Inherited single home, homeless household",
+            "0.8%",
+            "0.16%",
+            "-",
+            "0.96%"
+          ],
+          [
+            "Gift",
+            "3.5%",
+            "0.3%",
+            "0.2%*",
+            "3.8% / 4.0%"
+          ],
+          [
+            "Gift of ≥₩300M home in adj. area",
+            "12%",
+            "0.4%",
+            "1.0%*",
+            "12.4% / 13.4%"
+          ]
+        ],
+        "note": "* For housing, rural special tax applies only above 85㎡. Land and buildings: 0.2% regardless of size."
+      },
+      "guide": {
+        "heavy": {
+          "title": "Multi-home surcharge (Local Tax Act Art. 13-2)",
+          "items": [
+            "Homes are counted per household including the one being bought; pre-sale rights acquired after 2020-08-12 and residential officetels count.",
+            "Adjustment areas: 2 homes 8%, 3+ 12%. Elsewhere: up to 2 homes 1–3%, 3 homes 8%, 4+ 12%. Corporations: 12%.",
+            "Temporary two homes: sell the old home within 3 years and the 1–3% rate applies; otherwise the difference plus penalties is collected.",
+            "Homes assessed at ₩100M or less (outside redevelopment zones) are excluded from the surcharge.",
+            "Contracts signed (with proven deposit) before an area was designated are treated as non-adjustment."
+          ]
+        },
+        "relief": {
+          "title": "Relief (Restriction of Special Local Taxation Act)",
+          "items": [
+            "First home (Art. 36-3): neither spouse ever owned a home, price ≤ ₩1.2B, owner-occupied — up to ₩2M off. No income test. Through 2028-12-31.",
+            "Small homes (≤60㎡, ≤₩600M capital area / ≤₩300M elsewhere, non-apartment) or depopulating areas: up to ₩3M.",
+            "Childbirth (Art. 36-5): child born 2024–2028, home bought 1 year before to 5 years after birth, ≤ ₩1.2B, single home — up to ₩5M. Not combinable with first-home relief.",
+            "Move in within 3 months; selling, gifting or renting within 3 years triggers clawback.",
+            "The August 2026 reform proposal (₩3M cap for under-40s, residential officetels) has not yet passed (planned for 2027)."
+          ]
+        },
+        "tax": {
+          "title": "Surtaxes",
+          "items": [
+            "Local education tax: 10% of acquisition tax for 1–3% homes, 0.4% for surcharged homes, otherwise (rate − 2%) × 20%.",
+            "Rural special tax: 0.2%; 0.6% at 8%, 1.0% at 12%. Exempt for homes of 85㎡ or less.",
+            "Relief reduces education tax proportionally.",
+            "₩600M–900M rate = (price × 2/₩300M − 3)%, to four decimals. E.g. ₩800M → 2.3333%."
+          ]
+        },
+        "tips": {
+          "title": "Money-saving notes",
+          "items": [
+            "There is no cliff at ₩600M/₩900M (linear since 2020), but brokerage caps rise from 0.4% to 0.5% above ₩900M.",
+            "Over 85㎡ adds 0.2% rural tax (₩2M on ₩1B).",
+            "Acquisition date is the earlier of closing or registration.",
+            "File and pay on Wetax (wetax.go.kr) by card, or have your legal scrivener do it with registration."
+          ]
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What are the 2026 home acquisition tax rates?",
+            "a": "For one home: 1% up to ₩600M, 1–3% from ₩600M to ₩900M, 3% above. Adjustment areas: 8% for 2 homes, 12% for 3+. Elsewhere: 8% for 3, 12% for 4+. Corporations 12%. Education tax and (above 85㎡) rural tax are added."
+          },
+          {
+            "q": "Which areas are adjustment target areas?",
+            "a": "As of 2026-07-01: all of Seoul plus Gwacheon, Gwangmyeong, Seongnam (Bundang, Sujeong, Jungwon), Suwon (Yeongtong, Jangan, Paldal), Anyang Dongan, Yongin Suji and Giheung, Uiwang, Hanam, Hwaseong Dongtan and Guri."
+          },
+          {
+            "q": "Do temporary two-home owners pay 8%?",
+            "a": "No. If the old home is sold within 3 years, the 1–3% rate applies; otherwise the difference and penalties are collected."
+          },
+          {
+            "q": "How much is first-home relief?",
+            "a": "Up to ₩2M (₩3M for small homes or depopulating areas) off acquisition tax, with education tax reduced proportionally, for homes ≤ ₩1.2B through 2028."
+          },
+          {
+            "q": "Is there relief for new parents?",
+            "a": "Households with a child born 2024–2028 buying a single home ≤ ₩1.2B from 1 year before to 5 years after birth get up to ₩5M off. Not combinable with first-home relief."
+          },
+          {
+            "q": "What is the tax on a gifted home?",
+            "a": "3.5% (3.8–4.0% with surtaxes) on market value. Homes assessed ≥ ₩300M in adjustment areas are taxed at 12%, unless the donor is a single-home household gifting to a spouse or lineal relative."
+          },
+          {
+            "q": "What about officetels?",
+            "a": "4% (4.6% with surtaxes) at purchase, even if residential. Residential officetels count as homes for later purchases."
+          },
+          {
+            "q": "What if I file late?",
+            "a": "Deadlines: 60 days for purchases, 3 months after month-end for gifts, 6 months after month-end for inheritance. Penalties: 20% non-filing (10% under-reporting) plus 0.022% per day late (max 75%)."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Legal basis & official sites",
+        "items": [
+          {
+            "label": "Local Tax Act Art. 11 (rates)",
+            "url": "https://www.law.go.kr/법령/지방세법/제11조"
+          },
+          {
+            "label": "Local Tax Act Art. 13-2 (surcharge)",
+            "url": "https://www.law.go.kr/법령/지방세법/제13조의2"
+          },
+          {
+            "label": "Special Local Taxation Act Art. 36-3 (first home)",
+            "url": "https://www.law.go.kr/법령/지방세특례제한법/제36조의3"
+          },
+          {
+            "label": "Special Local Taxation Act Art. 36-5 (childbirth)",
+            "url": "https://www.law.go.kr/법령/지방세특례제한법/제36조의5"
+          },
+          {
+            "label": "Licensed Real Estate Agents Act Enforcement Rule (brokerage caps)",
+            "url": "https://www.law.go.kr/법령/공인중개사법시행규칙"
+          },
+          {
+            "label": "Wetax — file & pay",
+            "url": "https://www.wetax.go.kr"
+          },
+          {
+            "label": "MOLIT — adjustment area notices",
+            "url": "https://www.molit.go.kr"
+          }
+        ],
+        "asOf": "As of October 2026. First-home base cap ₩{limit}; adjustment areas through the 2026-07-01 designation."
+      },
+      "links": {
+        "dsr-calculator": "DSR calculator",
+        "bogeumjari-loan": "Bogeumjari loan",
+        "real-estate-calculator": "Real estate calculator",
+        "comprehensive-property-tax": "Comprehensive property tax",
+        "capital-gains-tax": "Capital gains tax",
+        "inheritance-gift-tax": "Inheritance & gift tax"
+      }
+    },
     "title": "Acquisition Tax Calculator",
     "description": "Auto-calculate real estate acquisition tax, special tax, and education tax (2025)",
     "propertyType": {
