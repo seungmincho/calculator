@@ -25940,8 +25940,224 @@
     }
   },
   "unemploymentBenefit": {
+    "u": {
+      "won": "KRW",
+      "yes": "Yes",
+      "no": "No",
+      "daysN": "{n} days",
+      "wage": {
+        "label": "Pay before leaving (gross)",
+        "mode": {
+          "month": "Monthly",
+          "year": "Annual",
+          "day": "Daily"
+        },
+        "hint": {
+          "month": "Average monthly pay over the last 3 months. Add 3/12 of annual bonuses and leave allowances for accuracy.",
+          "year": "Annual salary ÷ 12 is used as monthly pay, divided by the days in the last 3 months.",
+          "day": "Enter the base daily wage (average daily wage) given by the job center."
+        }
+      },
+      "leave": "Last working day",
+      "age": {
+        "label": "Age on leaving",
+        "under50": "Under 50",
+        "over50": "50+ / disabled"
+      },
+      "period": {
+        "label": "Insured period (all jobs combined)",
+        "under1": "< 1 yr",
+        "1to3": "1–3 yrs",
+        "3to5": "3–5 yrs",
+        "5to10": "5–10 yrs",
+        "over10": "10+ yrs"
+      },
+      "hours": {
+        "label": "Scheduled hours per day",
+        "option": "{h} h",
+        "hint": "For part-timers the minimum benefit is prorated by hours (the 4-hour minimum rule was abolished in Dec 2023)."
+      },
+      "elig": {
+        "title": "Eligibility check",
+        "insured": "Do you have 180+ insured (paid) days in the 18 months before leaving?",
+        "insuredHint": "Insured days count paid days (incl. weekly paid holidays), not calendar days. With a 5-day week this takes roughly 7+ months.",
+        "reason": "Reason for leaving"
+      },
+      "reason": {
+        "involuntary": "Employer reason / contract end",
+        "just": "Quit with justified reason",
+        "voluntary": "Quit for personal reasons"
+      },
+      "reasonHint": {
+        "involuntary": "Dismissal, redundancy, contract expiry, closure, retirement age, etc.",
+        "just": "Check the reasons that apply (Enforcement Rule, Annex 2)",
+        "voluntary": "Personal reasons such as a job change, study or starting a business are generally not eligible"
+      },
+      "just": {
+        "title": "Justified reasons (check all that apply)",
+        "items": [
+          "Unpaid wages: 2+ months of full or 30%+ unpaid wages within the last year, or pay below minimum wage",
+          "Working conditions worse than promised at hiring",
+          "Overtime above the 52-hour weekly limit for 2+ months within the last year",
+          "Workplace harassment or sexual harassment",
+          "Commute of 3+ hours round trip due to relocation, transfer or moving to live with a spouse",
+          "Illness, injury or lack of stamina and the employer refused leave or reassignment (medical note needed)",
+          "A family member needs 30+ days of care and leave was refused",
+          "Pregnancy, childbirth or childcare (child aged 8 or under) leave was refused",
+          "Company closure is certain or mass layoffs are planned"
+        ]
+      },
+      "status": {
+        "likely": "Likely eligible",
+        "check": "Eligible with proof",
+        "unlikely": "Not eligible under current answers"
+      },
+      "statusDesc": {
+        "likely": "You meet the 180-day and involuntary-leave requirements. Just check the reason code on the separation certificate.",
+        "check": "The job center decides on justified reasons. Prepare pay slips, medical notes, commute proof, etc. Amounts below assume approval.",
+        "unlikely": "Under 180 insured days or quitting for personal reasons is generally not eligible. If you had a justified reason, choose that option and check the items. Amounts below assume eligibility."
+      },
+      "result": {
+        "totalLabel": "Estimated total ({days} days)",
+        "daily": "Daily benefit",
+        "dailySub": "60% of average wage",
+        "applied": {
+          "cap": "Capped (60% exceeds 68,100 KRW)",
+          "floor": "Minimum applied (80% of minimum wage)"
+        },
+        "days": "Benefit days",
+        "daysSub": "about {m} months",
+        "per4w": "Paid every 4 weeks",
+        "per4wSub": "One recognition (28 days)"
+      },
+      "basis": {
+        "title": "Show calculation",
+        "avgDaily": "Average daily wage",
+        "avgDailyCalc": "{total} ÷ {days} days = {v}",
+        "raw": "× 60%",
+        "cap": "Daily cap (2026)",
+        "floor": "Daily minimum ({h} h)",
+        "daily": "Daily benefit applied",
+        "note": "If the average wage is below the ordinary wage, the ordinary wage is used. Rounding may cause small differences."
+      },
+      "share": {
+        "label": "My unemployment benefit ({days} days)",
+        "sub": "{daily} per day",
+        "text": "My unemployment benefit: {total} over {days} days"
+      },
+      "sched": {
+        "title": "Estimated payment schedule",
+        "leave": "Last working day",
+        "apply": "Earliest application",
+        "start": "Benefits start (after 7-day wait)",
+        "end": "Last benefit day",
+        "listTitle": "Recognition dates & payments ({n})",
+        "colN": "No.",
+        "colDate": "Recognition date",
+        "colDays": "Days",
+        "colAmount": "Payment",
+        "colCum": "Cumulative",
+        "nth": "#{n}",
+        "note": "Assumes you apply the day after leaving. The 1st recognition is set 2 weeks after applying, then every 4 weeks; the job center sets the actual dates (weekends/holidays move to the next business day). Payment usually arrives within a few days. The benefit period is 12 months from the day after leaving (until the day before {expire}), so applying late can forfeit remaining days."
+      },
+      "early": {
+        "title": "Early re-employment allowance",
+        "desc": "If you get a job with at least half of your benefit days left and stay 12+ months, you receive half of the remaining benefit as a lump sum. With current inputs you must be re-employed by benefit day {last} (around {date}).",
+        "slider": "Re-employed after {n} benefit days (around {date})",
+        "received": "Benefits received",
+        "bonus": "Early re-employment allowance",
+        "remain": "Half of the remaining {n} days",
+        "notEligible": "Less than half remaining — not eligible",
+        "total": "Total",
+        "plusSalary": "Plus your new salary",
+        "note": "You must be re-employed after the 7-day waiting period and apply after 12 months of employment. Re-hiring by your former employer does not qualify."
+      },
+      "table": {
+        "title": "Benefit days table",
+        "desc": "Determined by age on leaving and insured period (Employment Insurance Act Art. 50, Annex 1). Your selection is highlighted.",
+        "head": "Age / insured period"
+      },
+      "steps": {
+        "title": "How to apply",
+        "items": [
+          "Check on Work24 that your employer filed the separation certificate and loss-of-coverage report, and that the reason code matches.",
+          "Register as a job seeker on Work24 (work24.go.kr).",
+          "Complete the online orientation for benefit applicants on Work24.",
+          "Visit your local job center with ID and apply for eligibility.",
+          "The first 7 days are an unpaid waiting period; attend the 1st recognition date set by the center.",
+          "Then report job-search activity about every 4 weeks (online available) and get paid within a few days."
+        ]
+      },
+      "know": {
+        "title": "Key facts",
+        "items": [
+          "Daily benefit = 60% of the average wage over the last 3 months. 2026 cap 68,100 KRW, minimum 66,048 KRW (8 h).",
+          "Benefit days range from 120 to 270. Those 50+ or disabled get 30 more days with 1+ year of coverage.",
+          "You need 180 insured days within 18 months; multiple jobs are combined.",
+          "The benefit period is 12 months from the day after leaving; applying late loses remaining days.",
+          "Job-seeking benefits are not subject to income tax."
+        ]
+      },
+      "extended": {
+        "title": "Additional benefits",
+        "items": [
+          "Early re-employment allowance: half of remaining benefits if re-employed with half or more left and kept 12 months",
+          "Training extension: up to 2 years at 100% during job-center-directed training",
+          "Individual extension: up to 60 days at 70% for severe hardship",
+          "Special extension: up to 60 days at 70% when designated by the Minister during mass unemployment",
+          "Wide-area job search and relocation expenses"
+        ]
+      },
+      "caution": {
+        "title": "Cautions",
+        "items": [
+          "Report any part-time or short-term work at recognition. Hiding it is fraud: repayment plus up to a 5x surcharge and criminal penalties.",
+          "Those newly hired after age 65 (unless continuously employed since before 65) are not covered.",
+          "Dismissal for serious misconduct may restrict benefits.",
+          "Reductions for repeat recipients (3+ claims in 5 years) are a pending bill and not in effect as of October 2026.",
+          "This calculator is for reference; the job center's decision is final."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can I get benefits after a recommended resignation?",
+            "a": "Yes, if it was due to business reasons such as downsizing. Check that the separation reason code is 23 (business necessity/downsizing, incl. dismissal and recommended resignation). Resignation or dismissal due to your own fault (26) may be restricted."
+          },
+          {
+            "q": "Where can I see my separation reason code?",
+            "a": "Log in to Work24 and check your insured-status history. Common codes: 11 personal reasons, 12 quit due to changed conditions or unpaid wages, 22 closure, 23 business necessity, 26 dismissal for fault, 31 retirement age, 32 contract end. If incorrect, ask the employer to correct it or submit proof to the job center."
+          },
+          {
+            "q": "Who files the separation certificate?",
+            "a": "The employer files it with the job center within 10 days of the center's request. Asking your employer to file early speeds things up."
+          },
+          {
+            "q": "Am I eligible when my fixed-term contract ends?",
+            "a": "Yes, contract expiry is involuntary. But refusing a renewal offer on equal or better terms may be treated as voluntary."
+          },
+          {
+            "q": "Do I need to apply right away?",
+            "a": "The benefit period is 12 months from the day after leaving. Days not received within it are forfeited, so apply as soon as possible."
+          },
+          {
+            "q": "Has the repeat-recipient reduction started?",
+            "a": "A bill to cut benefits by up to 50% for 3+ claims in 5 years is pending but had not passed as of October 2026."
+          }
+        ]
+      },
+      "links": {
+        "title": "Official sites & laws",
+        "work24": "Work24 (apply)",
+        "law": "Employment Insurance Act",
+        "decree": "Enforcement Decree",
+        "moel": "Ministry of Employment and Labor",
+        "note": "2026: daily cap 68,100 KRW (Enforcement Decree Art. 68, for those leaving on/after 2026-01-01), minimum {floor8} (minimum wage 10,320 × 80% × 8 h, Act Art. 46). Helpline: 1350."
+      }
+    },
     "title": "Unemployment Benefits Calculator",
-    "description": "Calculate unemployment benefits (구직급여) based on 2026 Korean employment insurance law",
+    "description": "Calculate 2026 unemployment benefits: daily amount, benefit days, total, eligibility, payment schedule and early re-employment allowance",
     "voluntaryWarning": "Voluntary resignation generally does not qualify for unemployment benefits. However, if you had justifiable cause (unpaid wages, labor law violations, etc.), you may still be eligible.",
     "voluntaryBlocked": "Voluntary resignation is not eligible for benefits. Please change the separation reason.",
     "placeholder": "Enter your information on the left and click Calculate",
