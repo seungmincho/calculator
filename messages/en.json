@@ -49358,5 +49358,287 @@
       ]
     }
   },
-  "employmentContract": {}
+  "employmentContract": {
+    "title": "Employment Contract Generator",
+    "description": "Fill in the blanks of Korea's official standard employment contract. Automatic checks for minimum wage, break time and the 52-hour limit, weekly holiday pay, seals and PDF export.",
+    "won": "KRW",
+    "hourUnit": "h",
+    "dayUnit": "th",
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "dayN": "{day}",
+    "section": {
+      "kind": "Contract type",
+      "employer": "Employer",
+      "worker": "Employee",
+      "guardian": "Parent / guardian",
+      "term": "Term, workplace and duties",
+      "time": "Working hours and days",
+      "wage": "Wages",
+      "insurance": "Social insurance",
+      "etc": "Special terms and date"
+    },
+    "sectionHint": {
+      "worker": "We check the age from the ID number and warn you if the employee is under 18.",
+      "guardian": "For workers under 18, a parental consent form is generated as the second page. A parent cannot sign the contract on the minor's behalf.",
+      "insurance": "Industrial accident insurance is mandatory even for one employee. Checked items are marked ■ on the contract."
+    },
+    "kind": "Employee type",
+    "kinds": {
+      "regular": "Permanent",
+      "fixed": "Fixed-term",
+      "part": "Part-time",
+      "minor": "Under 18"
+    },
+    "kindHint": {
+      "regular": "Open-ended employment contract (MOEL standard form)",
+      "fixed": "Fixed-term contract. Using a fixed-term worker for more than 2 years converts them to open-ended employment (Fixed-term Act Art. 4).",
+      "part": "Worker with shorter contractual hours than full-time staff. Working days and hours per day must be stated (Fixed-term Act Art. 17).",
+      "minor": "Standard contract for young workers: max 7 h/day and 35 h/week; family relation certificate and parental consent must be kept on file."
+    },
+    "small": "Workplace with fewer than 5 regular employees",
+    "smallHint": "Overtime/night/holiday premiums, annual leave and the 52-hour cap do not apply. Weekly holiday pay, breaks and minimum wage still apply.",
+    "employer": {
+      "company": "Business name",
+      "companyPlaceholder": "ABC Cafe",
+      "ceo": "Representative",
+      "ceoPlaceholder": "Kim",
+      "bizNo": "Business registration no. (optional)",
+      "phone": "Business phone",
+      "address": "Business address"
+    },
+    "relation": "Relationship to the minor",
+    "relationPlaceholder": "Father, mother",
+    "fixedTerm": "Fixed contract term",
+    "fixedTermHint": "Check this if the job has an end date, e.g. a vacation job.",
+    "start": "Start date",
+    "startFixed": "Contract start",
+    "end": "Contract end",
+    "place": "Workplace",
+    "placePlaceholder": "Main store (address)",
+    "job": "Duties",
+    "jobPlaceholder": "Sales, drink preparation, inventory",
+    "workDays": "Working days",
+    "perDay": "Hours differ by day",
+    "perDayHint": "For part-time workers, start, end and break times per day should be listed in a table.",
+    "time": {
+      "start": "Start",
+      "end": "End",
+      "bStart": "Break from",
+      "bEnd": "Break to"
+    },
+    "breakHint": "Leave the break fields empty if there is no break. At least 30 min per 4 hours and 1 hour per 8 hours of work.",
+    "holiday": "Weekly paid holiday",
+    "summary": {
+      "weekly": "Hours per week",
+      "maxDay": "Max per day",
+      "contract": "Contractual hours / week",
+      "overtime": "Overtime / week",
+      "holidayHours": "Paid weekly holiday",
+      "none": "None (under 15 h/week)",
+      "monthlyHours": "Paid hours / month",
+      "monthlyPay": "Estimated monthly pay (gross)",
+      "hourly": "Hourly equivalent",
+      "minWage": "2026 minimum wage",
+      "weeklyHolidayPay": "Weekly holiday pay",
+      "overtimePay": "Overtime pay / month",
+      "payNote": "Monthly figures use 365÷7÷12 ≈ 4.345 weeks. Bonuses, allowances and taxes are excluded."
+    },
+    "wageType": "Pay basis",
+    "wageTypes": {
+      "hourly": "Hourly",
+      "monthly": "Monthly"
+    },
+    "wageLabel": {
+      "hourly": "Hourly wage",
+      "monthly": "Monthly base pay"
+    },
+    "bonus": "Bonus",
+    "bonusText": "Bonus details",
+    "bonusPlaceholder": "Twice a year, 50% of base pay",
+    "allowances": "Other allowances",
+    "allowanceAdd": "Add allowance",
+    "allowanceEmpty": "Add meal, transport or position allowances if any.",
+    "allowanceName": "Name",
+    "allowanceNamePlaceholder": "Meals",
+    "allowanceAmount": "Monthly amount",
+    "allowanceRemove": "Remove allowance",
+    "payDay": "Payday (monthly)",
+    "payMethod": "Payment method",
+    "payMethods": {
+      "transfer": "Bank transfer",
+      "direct": "Paid directly"
+    },
+    "ins": {
+      "employment": "Employment insurance",
+      "accident": "Industrial accident insurance",
+      "pension": "National pension",
+      "health": "Health insurance"
+    },
+    "extra": "Special terms (optional)",
+    "extraPlaceholder": "3-month probation (same pay during probation)",
+    "written": "Date signed",
+    "insight": {
+      "noDays": "Enter working days and hours.",
+      "noWage": "Enter the wage.",
+      "minWageOk": "Hourly {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
+      "minWageHourly": "Minimum wage violation: {hourly} KRW/h is below the 2026 minimum of {min} KRW. The shortfall is void and the minimum wage must be paid.",
+      "minWageMonthly": "Minimum wage violation: monthly pay ÷ {hours} paid hours = {hourly} KRW/h. It must be at least {required} KRW ({short} KRW short).",
+      "minWageAllowance": "Base pay alone is {hourly} KRW/h, below the {min} KRW minimum. Regular monthly allowances make up the difference, but re-check if some allowances (e.g. overtime pay) don't count toward minimum wage.",
+      "holidayPay": "{weekly} contractual hours/week → {hours} h of paid weekly holiday, {pay} KRW per week with full attendance. Added to the wage clause.",
+      "holidayIncluded": "{weekly} contractual hours/week → the monthly pay covers {hours} h including weekly holidays. Stated on the contract.",
+      "under15": "{weekly} contractual hours/week is under 15, so weekly holiday pay and annual leave do not apply (LSA Art. 18(3)).",
+      "breakShort": "Insufficient break ({days}): at least 30 min for 4 h and 1 h for 8 h of work, given during working hours (LSA Art. 54).",
+      "over52": "Over 52 hours: {week} h/week. Only 40 statutory hours plus 12 overtime hours are allowed (LSA Art. 53).",
+      "over52Small": "{week} h/week. The 52-hour cap does not apply to workplaces under 5 employees, but watch for overwork.",
+      "overtime": "{hours} h beyond 8 h/day or 40 h/week is overtime. It requires agreement and a 50% premium (about {pay} KRW/month).",
+      "overtimeSmall": "{hours} h beyond 8 h/day or 40 h/week is overtime. No 50% premium is required under 5 employees, but the hours must be paid (about {pay} KRW/month).",
+      "minorOver": "Over the limit for minors: up to {day} h/day and {week} h/week. Even with agreement, 8 h/day and 40 h/week cannot be exceeded (LSA Art. 69).",
+      "minorConsent": "Minors are limited to 7 h/day and 35 h/week. At {day} h/day and {week} h/week, agreement is required (max +1 h/day, +5 h/week).",
+      "minorNight": "Night work (10 pm–6 am) and holiday work by minors require their consent and MOEL authorization (LSA Art. 70).",
+      "holidayOnWorkday": "The weekly holiday ({day}) is set on a working day. Choose a day off.",
+      "shortInsurance": "About {hours} contractual hours/month (under 60). Pension, health and employment insurance generally don't apply, with exceptions (e.g. employment insurance after 3+ months). Industrial accident insurance always applies.",
+      "termOrder": "The end date is before the start date.",
+      "termOver2y": "The term exceeds 2 years. A fixed-term worker used for more than 2 years is deemed open-ended (Fixed-term Act Art. 4, with exceptions).",
+      "noAccident": "Industrial accident insurance is mandatory once you employ anyone, including part-time and short-term workers.",
+      "ageMinor": "The employee is {age}. If under 18, choose the 'Under 18' type to add parental consent and hour limits.",
+      "ageAdult": "The employee is {age}, i.e. 18 or older. A regular type can be used.",
+      "under15Age": "The employee is {age}. Children under 15 need an employment permit from MOEL (LSA Art. 64).",
+      "minorDocs": "When employing a minor, keep a family relation certificate and parental consent at the workplace (LSA Art. 66). The consent form is generated as page 2.",
+      "smallNote": "Under 5 employees: annual leave is marked as not applicable. The duty to issue a written contract and its penalties still apply."
+    },
+    "guide": {
+      "title": "Employment contract essentials",
+      "intro": "Every Korean employer — including those hiring part-timers, trainees or short-term staff — must issue a written employment contract to the employee. This generator follows the Ministry of Employment and Labor's standard form and flags minimum wage, break and working-hour violations as you type.",
+      "sections": [
+        {
+          "title": "Required terms (LSA Art. 17)",
+          "items": [
+            "Wages: components, calculation and payment method",
+            "Contractual working hours and breaks",
+            "Weekly paid holiday",
+            "Annual paid leave",
+            "Workplace, duties and contract term (fixed-term)",
+            "Wages, hours, holidays and leave must be given in writing; electronic documents are allowed."
+          ]
+        },
+        {
+          "title": "Penalties",
+          "items": [
+            "Failure to state and issue terms in writing: fine up to 5 million KRW (LSA Art. 114)",
+            "For fixed-term/part-time workers, an administrative fine up to 5 million KRW per worker may also apply (Fixed-term Act Art. 24)",
+            "If wages or hours change, the new terms must be issued in writing again",
+            "Issue a copy even if not requested, and keep a signed receipt"
+          ]
+        },
+        {
+          "title": "Part-time workers",
+          "items": [
+            "Working days and hours per day must be stated (Fixed-term Act Art. 17)",
+            "15+ hours/week earns weekly holiday pay and annual leave; under 15 earns neither",
+            "Work beyond contractual hours needs consent, max 12 h/week, 50% premium (5+ employees)",
+            "2026 minimum wage 10,320 KRW/h; 2,156,880 KRW/month for 40 h/week (209 h)"
+          ]
+        },
+        {
+          "title": "Workers under 18",
+          "items": [
+            "Max 7 h/day and 35 h/week, +1 h/day and +5 h/week by agreement (LSA Art. 69)",
+            "Keep a family relation certificate and parental consent on file (Art. 66)",
+            "Parents cannot sign on the minor's behalf; the minor claims wages directly (Arts. 67–68)",
+            "Night (10 pm–6 am) and holiday work require consent and MOEL authorization (Art. 70)",
+            "Under 15 requires an employment permit (Art. 64)"
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Do part-time jobs need a written contract?",
+            "a": "Yes. One-day jobs, trainees and all employees must receive a written contract. Not issuing wages, hours, holidays and leave in writing can lead to a fine up to 5 million KRW (LSA Art. 114), and part-time workers can also trigger an administrative fine up to 5 million KRW under the Fixed-term Act."
+          },
+          {
+            "q": "When must the contract be signed?",
+            "a": "When the employment begins, before work starts, with a copy handed to the employee right away. If wages or hours change, issue the new terms in writing again."
+          },
+          {
+            "q": "How do I check minimum wage for monthly pay?",
+            "a": "Divide base pay plus regular monthly allowances by monthly contractual hours plus weekly holiday hours. For 40 h/week that is 209 hours, so the 2026 monthly minimum is 10,320 × 209 = 2,156,880 KRW. This tool calculates it from the hours you enter."
+          },
+          {
+            "q": "Should weekly holiday pay be written in the contract?",
+            "a": "With 15+ contractual hours a week and full attendance, a paid weekly holiday arises. For hourly pay it is often paid separately, so stating the amount prevents disputes; for monthly pay it is usually stated as included. This tool fills it in automatically."
+          },
+          {
+            "q": "Do workplaces with fewer than 5 employees need contracts?",
+            "a": "Yes. The written contract duty, minimum wage, weekly holidays and breaks apply. Overtime/night/holiday premiums, annual leave and the 52-hour cap do not."
+          },
+          {
+            "q": "What documents are needed to hire a student under 18?",
+            "a": "The young worker standard contract, a family relation certificate and parental consent. Hours are limited to 7 h/day and 35 h/week, and under-15s need an employment permit. Choosing 'Under 18' generates the consent form as page 2."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Weekly holiday pay",
+          "href": "/weekly-holiday-pay/"
+        },
+        {
+          "label": "Hourly wage calculator",
+          "href": "/hourly-wage/"
+        },
+        {
+          "label": "Work hours calculator",
+          "href": "/work-hours-calculator/"
+        },
+        {
+          "label": "Salary calculator",
+          "href": "/salary-calculator/"
+        },
+        {
+          "label": "Annual leave calculator",
+          "href": "/annual-leave/"
+        },
+        {
+          "label": "Seal maker",
+          "href": "/stamp-generator/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Labor Standards Act Art. 17 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/근로기준법/제17조"
+        },
+        {
+          "label": "Labor Standards Act Art. 114 (penalties)",
+          "url": "https://www.law.go.kr/법령/근로기준법/제114조"
+        },
+        {
+          "label": "Fixed-term and Part-time Workers Act Art. 17",
+          "url": "https://www.law.go.kr/법령/기간제및단시간근로자보호등에관한법률/제17조"
+        },
+        {
+          "label": "Labor Standards Act Art. 69 (hours for minors)",
+          "url": "https://www.law.go.kr/법령/근로기준법/제69조"
+        },
+        {
+          "label": "MOEL — revised standard employment contract (Mar 2025)",
+          "url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20250300356"
+        },
+        {
+          "label": "MOEL — 2026 minimum wage notice (10,320 KRW/h)",
+          "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144"
+        }
+      ]
+    }
+  }
 }
