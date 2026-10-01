@@ -2,1045 +2,652 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Trophy, RotateCcw, Pause, Play, Gamepad2 } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import {
+  Trophy, RotateCcw, RotateCw, Pause, Play, ArrowLeft, ArrowRight, ArrowDown, ChevronsDown, Volume2, VolumeX,
+} from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import GameConfetti from '@/components/GameConfetti'
+import ShareResult from '@/components/ShareResult'
+import {
+  COLS, ROWS, HIDDEN, LOCK_DELAY, newGame, step, move, rotate, hardDrop, holdPiece, softDropOne,
+  cells, previewCells, dropDistance, onGround, type Game, type PieceType, type ClearInfo,
+} from '@/utils/tetrisEngine'
 
-// ── Types ──────────────────────────────────────────────────────────────────
-type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
-type GameState = 'idle' | 'playing' | 'paused' | 'gameover'
-type Grid = (string | null)[][]
+// ── 게임 콘텐츠 색 (가이드라인 표준색) ───────────────────────────────────
+const COLORS: Record<PieceType, string> = {
+  I: '#22d3ee', O: '#facc15', T: '#a855f7', S: '#22c55e', Z: '#ef4444', J: '#3b82f6', L: '#f97316',
+}
+const BOARD_BG = '#111827'
+const GRID_LINE = '#1f2937'
+const VIS = ROWS - HIDDEN
+const CELL = 32 // 캔버스 내부 해상도(px). CSS로 화면에 맞춰 축소/확대
+const NEXT_SHOWN = 5
+const DEFAULT_HANDLING = { das: 170, arr: 50 }
 
-interface Piece {
-  type: TetrominoType
-  x: number
-  y: number
-  rotation: number
+type Status = 'idle' | 'playing' | 'paused' | 'over'
+type Action = 'left' | 'right' | 'down' | 'cw' | 'ccw' | 'hard' | 'hold'
+interface Hud { score: number; lines: number; level: number; hold: PieceType | null; canHold: boolean; queue: PieceType[] }
+interface Result {
+  score: number; lines: number; level: number; pieces: number; tetrises: number; tspins: number
+  maxCombo: number; ms: number; newBest: boolean
+}
+interface Saved { games: number; totalLines: number; bestLines: number }
+
+const KEYMAP: Record<string, Action> = {
+  ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down',
+  ArrowUp: 'cw', KeyX: 'cw', KeyZ: 'ccw', ControlLeft: 'ccw', ControlRight: 'ccw',
+  Space: 'hard', KeyC: 'hold', ShiftLeft: 'hold', ShiftRight: 'hold',
 }
 
-// ── Constants ──────────────────────────────────────────────────────────────
-const COLS = 10
-const ROWS = 20
-const NEXT_COUNT = 3
+const hudOf = (g: Game): Hud => ({
+  score: g.score, lines: g.lines, level: g.level, hold: g.hold, canHold: g.canHold, queue: g.queue.slice(0, NEXT_SHOWN),
+})
+const fmtTime = (ms: number) => `${Math.floor(ms / 60000)}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`
 
-const TETROMINOS: Record<TetrominoType, number[][][]> = {
-  I: [
-    [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
-    [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],
-    [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],
-    [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]],
-  ],
-  O: [
-    [[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],
-    [[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],
-    [[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],
-    [[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],
-  ],
-  T: [
-    [[0,1,0],[1,1,1],[0,0,0]],
-    [[0,1,0],[0,1,1],[0,1,0]],
-    [[0,0,0],[1,1,1],[0,1,0]],
-    [[0,1,0],[1,1,0],[0,1,0]],
-  ],
-  S: [
-    [[0,1,1],[1,1,0],[0,0,0]],
-    [[0,1,0],[0,1,1],[0,0,1]],
-    [[0,0,0],[0,1,1],[1,1,0]],
-    [[1,0,0],[1,1,0],[0,1,0]],
-  ],
-  Z: [
-    [[1,1,0],[0,1,1],[0,0,0]],
-    [[0,0,1],[0,1,1],[0,1,0]],
-    [[0,0,0],[1,1,0],[0,1,1]],
-    [[0,1,0],[1,1,0],[1,0,0]],
-  ],
-  J: [
-    [[1,0,0],[1,1,1],[0,0,0]],
-    [[0,1,1],[0,1,0],[0,1,0]],
-    [[0,0,0],[1,1,1],[0,0,1]],
-    [[0,1,0],[0,1,0],[1,1,0]],
-  ],
-  L: [
-    [[0,0,1],[1,1,1],[0,0,0]],
-    [[0,1,0],[0,1,0],[0,1,1]],
-    [[0,0,0],[1,1,1],[1,0,0]],
-    [[1,1,0],[0,1,0],[0,1,0]],
-  ],
+function MiniPiece({ type, dim }: { type: PieceType; dim?: boolean }) {
+  const { cells: cs, w, h } = previewCells(type)
+  return (
+    <div className="grid gap-px" style={{ gridTemplateColumns: `repeat(${w}, 1fr)`, opacity: dim ? 0.35 : 1 }}>
+      {Array.from({ length: w * h }, (_, i) => {
+        const on = cs.some(([x, y]) => x === i % w && y === Math.floor(i / w))
+        return <div key={i} className="w-2 h-2 sm:w-3 sm:h-3 rounded-[2px]" style={{ backgroundColor: on ? COLORS[type] : 'transparent' }} />
+      })}
+    </div>
+  )
 }
 
-const COLORS: Record<TetrominoType, string> = {
-  I: '#06b6d4', // cyan-500
-  O: '#eab308', // yellow-500
-  T: '#a855f7', // purple-500
-  S: '#22c55e', // green-500
-  Z: '#ef4444', // red-500
-  J: '#3b82f6', // blue-500
-  L: '#f97316', // orange-500
-}
-
-const DARK_COLORS: Record<TetrominoType, string> = {
-  I: '#0891b2',
-  O: '#ca8a04',
-  T: '#9333ea',
-  S: '#16a34a',
-  Z: '#dc2626',
-  J: '#2563eb',
-  L: '#ea580c',
-}
-
-// Score table: lines cleared → points (×level)
-const SCORE_TABLE = [0, 100, 300, 500, 800]
-
-// Drop interval (ms) by level
-const getDropInterval = (level: number) => Math.max(100, 1000 - (level - 1) * 80)
-
-// SRS wall kick offsets for J, L, T, S, Z
-const WALL_KICKS_JLTSZ: Record<string, [number, number][]> = {
-  '0>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
-  '1>0': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
-  '1>2': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
-  '2>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
-  '2>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
-  '3>2': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
-  '3>0': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
-  '0>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
-}
-
-// SRS wall kick offsets for I
-const WALL_KICKS_I: Record<string, [number, number][]> = {
-  '0>1': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
-  '1>0': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
-  '1>2': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
-  '2>1': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
-  '2>3': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
-  '3>2': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
-  '3>0': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
-  '0>3': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
-}
-
-// ── Helpers ────────────────────────────────────────────────────────────────
-function createBag(): TetrominoType[] {
-  const pieces: TetrominoType[] = ['I','O','T','S','Z','J','L']
-  for (let i = pieces.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pieces[i], pieces[j]] = [pieces[j], pieces[i]]
-  }
-  return pieces
-}
-
-function createEmptyGrid(): Grid {
-  return Array.from({ length: ROWS }, () => Array(COLS).fill(null))
-}
-
-function getShape(type: TetrominoType, rotation: number): number[][] {
-  return TETROMINOS[type][rotation % TETROMINOS[type].length]
-}
-
-function isValidPosition(grid: Grid, type: TetrominoType, x: number, y: number, rotation: number): boolean {
-  const shape = getShape(type, rotation)
-  for (let row = 0; row < shape.length; row++) {
-    for (let col = 0; col < shape[row].length; col++) {
-      if (!shape[row][col]) continue
-      const nx = x + col
-      const ny = y + row
-      if (nx < 0 || nx >= COLS || ny >= ROWS) return false
-      if (ny >= 0 && grid[ny][nx]) return false
-    }
-  }
-  return true
-}
-
-function placePieceOnGrid(grid: Grid, type: TetrominoType, x: number, y: number, rotation: number): Grid {
-  const newGrid = grid.map(row => [...row])
-  const shape = getShape(type, rotation)
-  for (let row = 0; row < shape.length; row++) {
-    for (let col = 0; col < shape[row].length; col++) {
-      if (!shape[row][col]) continue
-      const ny = y + row
-      const nx = x + col
-      if (ny >= 0 && ny < ROWS && nx >= 0 && nx < COLS) {
-        newGrid[ny][nx] = type
-      }
-    }
-  }
-  return newGrid
-}
-
-function clearLines(grid: Grid): { newGrid: Grid; linesCleared: number } {
-  const newGrid = grid.filter(row => row.some(cell => cell === null))
-  const linesCleared = ROWS - newGrid.length
-  const emptyRows = Array.from({ length: linesCleared }, () => Array(COLS).fill(null))
-  return { newGrid: [...emptyRows, ...newGrid], linesCleared }
-}
-
-function getGhostY(grid: Grid, type: TetrominoType, x: number, y: number, rotation: number): number {
-  let ghostY = y
-  while (isValidPosition(grid, type, x, ghostY + 1, rotation)) {
-    ghostY++
-  }
-  return ghostY
-}
-
-function getSpawnPosition(type: TetrominoType): { x: number; y: number } {
-  // Center piece horizontally
-  const shape = getShape(type, 0)
-  const width = shape[0].length
-  return { x: Math.floor((COLS - width) / 2), y: -1 }
-}
-
-function tryRotate(
-  grid: Grid,
-  piece: Piece,
-  dir: 1 | -1
-): Piece | null {
-  const numRotations = TETROMINOS[piece.type].length
-  const newRotation = ((piece.rotation + dir) % numRotations + numRotations) % numRotations
-  const key = `${piece.rotation}>${newRotation}`
-  const kicks = piece.type === 'I' ? WALL_KICKS_I[key] : (piece.type === 'O' ? [[0,0]] as [number,number][] : WALL_KICKS_JLTSZ[key])
-  if (!kicks) return null
-  for (const [dx, dy] of kicks) {
-    const nx = piece.x + dx
-    const ny = piece.y - dy // SRS uses inverted y
-    if (isValidPosition(grid, piece.type, nx, ny, newRotation)) {
-      return { ...piece, x: nx, y: ny, rotation: newRotation }
-    }
-  }
-  return null
-}
-
-// ── Component ──────────────────────────────────────────────────────────────
 export default function Tetris() {
   const t = useTranslations('tetris')
+  const tSounds = useTranslations('gameSounds')
 
-  const [gameState, setGameState] = useState<GameState>('idle')
-  const [grid, setGrid] = useState<Grid>(createEmptyGrid())
-  const [currentPiece, setCurrentPiece] = useState<Piece | null>(null)
-  const [holdPiece, setHoldPiece] = useState<TetrominoType | null>(null)
-  const [canHold, setCanHold] = useState(true)
-  const [nextPieces, setNextPieces] = useState<TetrominoType[]>([])
-  const [score, setScore] = useState(0)
-  const [level, setLevel] = useState(1)
-  const [lines, setLines] = useState(0)
-  const [bestScore, setBestScore] = useState(0)
-  const [clearingRows, setClearingRows] = useState<number[]>([])
+  const [status, setStatus] = useState<Status>('idle')
+  const [hud, setHud] = useState<Hud>({ score: 0, lines: 0, level: 1, hold: null, canHold: true, queue: [] })
+  const [best, setBest] = useState(0)
+  const [saved, setSaved] = useState<Saved>({ games: 0, totalLines: 0, bestLines: 0 })
+  const [handling, setHandling] = useState(DEFAULT_HANDLING)
+  const [popup, setPopup] = useState<{ id: number; main: string; sub: string; pts: number } | null>(null)
+  const [result, setResult] = useState<Result | null>(null)
+  const [showNameModal, setShowNameModal] = useState(false)
 
-  // Refs for game loop (avoid stale closures)
-  const gridRef = useRef<Grid>(createEmptyGrid())
-  const currentPieceRef = useRef<Piece | null>(null)
-  const holdPieceRef = useRef<TetrominoType | null>(null)
-  const canHoldRef = useRef(true)
-  const nextPiecesRef = useRef<TetrominoType[]>([])
-  const bagRef = useRef<TetrominoType[]>([])
-  const scoreRef = useRef(0)
-  const levelRef = useRef(1)
-  const linesRef = useRef(0)
-  const gameStateRef = useRef<GameState>('idle')
+  const gameRef = useRef<Game | null>(null)
+  const statusRef = useRef<Status>('idle')
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const areaRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef<number | null>(null)
-  const lastDropRef = useRef<number>(0)
-  const softDropRef = useRef(false)
-
-  // Touch refs
-  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
+  const lastTsRef = useRef(0)
+  const playMsRef = useRef(0)
+  const heldRef = useRef({ left: false, right: false, down: false })
+  const dirRef = useRef<0 | 1 | -1>(0)
+  const dasRef = useRef({ t: 0, arr: 0 })
+  const handlingRef = useRef(DEFAULT_HANDLING)
+  const bestRef = useRef(0)
+  const savedRef = useRef(saved)
+  const hudKeyRef = useRef('')
+  const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const gestRef = useRef<{ x0: number; y0: number; lx: number; ly: number; t0: number; moved: boolean } | null>(null)
 
   const leaderboard = useLeaderboard('tetris', undefined)
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
-  const resultRecordedRef = useRef(false)
-  const [showNameModal, setShowNameModal] = useState(false)
-  const gameStartTimeRef = useRef<number>(Date.now())
+  const sounds = useGameSounds()
+  const gameStartRef = useRef(0)
+  const showNameModalRef = useRef(false)
+  showNameModalRef.current = showNameModal
 
-  // Load best score
+  // ── 저장값 로드 (마운트 후) ─────────────────────────────────────────────
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('tetris-best-score')
-      if (saved) setBestScore(parseInt(saved, 10))
-    } catch {}
+      const b = parseInt(localStorage.getItem('tetris-best-score') ?? '0', 10) || 0
+      bestRef.current = b; setBest(b)
+      const s = JSON.parse(localStorage.getItem('tetris-stats') ?? 'null')
+      if (s && typeof s.games === 'number') { savedRef.current = s; setSaved(s) }
+      const h = JSON.parse(localStorage.getItem('tetris-handling') ?? 'null')
+      if (h && typeof h.das === 'number' && typeof h.arr === 'number') { handlingRef.current = h; setHandling(h) }
+    } catch { /* 저장소 차단: 기본값 */ }
   }, [])
 
-  // ── Piece bag ──────────────────────────────────────────────────────────
-  const dequeue = useCallback((): TetrominoType => {
-    if (bagRef.current.length === 0) bagRef.current = createBag()
-    const piece = bagRef.current.shift()!
-    // Refill preview
-    while (bagRef.current.length < NEXT_COUNT + 1) {
-      bagRef.current = [...bagRef.current, ...createBag()]
+  const updateHandling = (h: typeof DEFAULT_HANDLING) => {
+    handlingRef.current = h; setHandling(h)
+    try { localStorage.setItem('tetris-handling', JSON.stringify(h)) } catch { /* noop */ }
+  }
+
+  // ── 그리기 ──────────────────────────────────────────────────────────────
+  const draw = useCallback(() => {
+    const ctx = canvasRef.current?.getContext('2d')
+    if (!ctx) return
+    const g = gameRef.current
+    ctx.fillStyle = BOARD_BG
+    ctx.fillRect(0, 0, COLS * CELL, VIS * CELL)
+    ctx.strokeStyle = GRID_LINE
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    for (let x = 1; x < COLS; x++) { ctx.moveTo(x * CELL + 0.5, 0); ctx.lineTo(x * CELL + 0.5, VIS * CELL) }
+    for (let y = 1; y < VIS; y++) { ctx.moveTo(0, y * CELL + 0.5); ctx.lineTo(COLS * CELL, y * CELL + 0.5) }
+    ctx.stroke()
+    if (!g) return
+    const block = (x: number, y: number, color: string, alpha = 1) => {
+      if (y < HIDDEN) return
+      const px = x * CELL, py = (y - HIDDEN) * CELL
+      ctx.globalAlpha = alpha
+      ctx.fillStyle = color
+      ctx.fillRect(px + 1, py + 1, CELL - 2, CELL - 2)
+      ctx.fillStyle = 'rgba(255,255,255,0.22)'
+      ctx.fillRect(px + 1, py + 1, CELL - 2, 4)
+      ctx.globalAlpha = 1
     }
-    return piece
+    g.board.forEach((row, y) => row.forEach((c, x) => { if (c) block(x, y, COLORS[c]) }))
+    const p = g.piece
+    if (!p) return
+    const d = dropDistance(g.board, p)
+    if (d > 0) {
+      ctx.strokeStyle = COLORS[p.type]
+      ctx.lineWidth = 2
+      for (const [x, y] of cells(p.type, p.rot, p.x, p.y + d)) {
+        if (y < HIDDEN) continue
+        ctx.globalAlpha = 0.18
+        ctx.fillStyle = COLORS[p.type]
+        ctx.fillRect(x * CELL + 1, (y - HIDDEN) * CELL + 1, CELL - 2, CELL - 2)
+        ctx.globalAlpha = 0.6
+        ctx.strokeRect(x * CELL + 2, (y - HIDDEN) * CELL + 2, CELL - 4, CELL - 4)
+      }
+      ctx.globalAlpha = 1
+    }
+    // 바닥에 닿아 굳어가는 동안 살짝 흐려짐 → 락 딜레이가 눈에 보임
+    const fade = onGround(g) ? 1 - 0.45 * Math.min(g.lockMs / LOCK_DELAY, 1) : 1
+    for (const [x, y] of cells(p.type, p.rot, p.x, p.y)) block(x, y, COLORS[p.type], fade)
   }, [])
 
-  const initBag = useCallback(() => {
-    bagRef.current = [...createBag(), ...createBag()]
-    // Pre-fill nextPieces
-    const next: TetrominoType[] = []
-    for (let i = 0; i < NEXT_COUNT; i++) next.push(bagRef.current[i])
-    return next
+  // ── 한 판 종료 처리 ─────────────────────────────────────────────────────
+  const finish = (g: Game) => {
+    statusRef.current = 'over'
+    setStatus('over')
+    heldRef.current = { left: false, right: false, down: false }
+    dirRef.current = 0
+    const newBest = g.score > bestRef.current
+    if (newBest) {
+      bestRef.current = g.score; setBest(g.score)
+      try { localStorage.setItem('tetris-best-score', String(g.score)) } catch { /* noop */ }
+    }
+    const s = savedRef.current
+    const ns: Saved = { games: s.games + 1, totalLines: s.totalLines + g.lines, bestLines: Math.max(s.bestLines, g.lines) }
+    savedRef.current = ns; setSaved(ns)
+    try { localStorage.setItem('tetris-stats', JSON.stringify(ns)) } catch { /* noop */ }
+    setResult({
+      score: g.score, lines: g.lines, level: g.level, pieces: g.stats.pieces, tetrises: g.stats.tetrises,
+      tspins: g.stats.tspins, maxCombo: g.stats.maxCombo, ms: playMsRef.current, newBest,
+    })
+    recordGameResult({ gameType: 'tetris', result: g.lines >= 10 ? 'win' : 'loss', difficulty: 'normal', moves: g.lines })
+    if (leaderboard.checkQualifies(g.score)) setShowNameModal(true)
+    leaderboard.fetchLeaderboard()
+  }
+
+  const showClear = (c: ClearInfo) => {
+    const lineKey = ['', 'single', 'double', 'triple', 'tetris'][c.lines]
+    const main = [
+      c.b2b ? t('action.b2b') : '',
+      c.tspin === 'full' ? t('action.tspin') : c.tspin === 'mini' ? t('action.tspinMini') : '',
+      lineKey ? t(`action.${lineKey}`) : '',
+    ].filter(Boolean).join(' ')
+    setPopup({ id: Date.now(), main, sub: c.combo > 0 ? t('action.combo', { n: c.combo }) : '', pts: c.points })
+    if (popupTimerRef.current) clearTimeout(popupTimerRef.current)
+    popupTimerRef.current = setTimeout(() => setPopup(null), 1200)
+  }
+
+  // 엔진 이벤트 → 소리·HUD·팝업·그리기. 매 입력/프레임 후 호출
+  const sync = () => {
+    const g = gameRef.current
+    if (!g) return
+    const ev = g.events
+    if (ev.length) {
+      g.events = []
+      if (ev.includes('gameover')) sounds.playLose()
+      else if (ev.includes('tetris') || ev.includes('tspin') || ev.includes('levelup')) sounds.playWin()
+      else if (ev.includes('clear')) sounds.playCapture()
+      else if (ev.includes('lock')) sounds.playMove()
+    }
+    if (g.lastClear) { showClear(g.lastClear); g.lastClear = null }
+    const h = hudOf(g)
+    const key = JSON.stringify(h)
+    if (key !== hudKeyRef.current) { hudKeyRef.current = key; setHud(h) }
+    draw()
+    if (g.over && statusRef.current === 'playing') finish(g)
+  }
+  const syncRef = useRef(sync)
+  syncRef.current = sync
+
+  // ── 입력 (키보드·버튼·제스처 공용) ─────────────────────────────────────
+  const press = useCallback((a: Action) => {
+    const g = gameRef.current
+    if (!g || statusRef.current !== 'playing') return
+    switch (a) {
+      case 'left': case 'right': {
+        const dir = a === 'left' ? -1 : 1
+        heldRef.current[a] = true
+        dirRef.current = dir
+        dasRef.current = { t: 0, arr: 0 }
+        move(g, dir)
+        break
+      }
+      case 'down': heldRef.current.down = true; softDropOne(g); break
+      case 'cw': rotate(g, 1); break
+      case 'ccw': rotate(g, -1); break
+      case 'hard': hardDrop(g); break
+      case 'hold': holdPiece(g); break
+    }
+    syncRef.current()
   }, [])
 
-  // ── Spawn piece ────────────────────────────────────────────────────────
-  const spawnPiece = useCallback((type: TetrominoType): Piece => {
-    const { x, y } = getSpawnPosition(type)
-    return { type, x, y, rotation: 0 }
+  const release = useCallback((a: Action) => {
+    const h = heldRef.current
+    if (a === 'down') h.down = false
+    if (a !== 'left' && a !== 'right') return
+    h[a] = false
+    // 반대 방향을 아직 누르고 있으면 그쪽으로 이어감
+    dirRef.current = h.left ? -1 : h.right ? 1 : 0
+    dasRef.current = { t: 0, arr: 0 }
   }, [])
 
-  // ── Lock piece & clear lines ───────────────────────────────────────────
-  const lockPiece = useCallback(() => {
-    const piece = currentPieceRef.current
-    if (!piece) return
+  // ── 시작/일시정지 ───────────────────────────────────────────────────────
+  const start = useCallback(() => {
+    gameRef.current = newGame()
+    heldRef.current = { left: false, right: false, down: false }
+    dirRef.current = 0
+    playMsRef.current = 0
+    gameStartRef.current = Date.now()
+    setResult(null)
+    setPopup(null)
+    statusRef.current = 'playing'
+    setStatus('playing')
+    syncRef.current()
+    areaRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [])
 
-    const newGrid = placePieceOnGrid(gridRef.current, piece.type, piece.x, piece.y, piece.rotation)
-    const { newGrid: clearedGrid, linesCleared } = clearLines(newGrid)
+  const pause = useCallback(() => {
+    if (statusRef.current !== 'playing') return
+    statusRef.current = 'paused'
+    setStatus('paused')
+    heldRef.current = { left: false, right: false, down: false }
+    dirRef.current = 0
+  }, [])
 
-    // Find cleared row indices for animation
-    const clearedIndices: number[] = []
-    if (linesCleared > 0) {
-      for (let r = 0; r < ROWS; r++) {
-        if (newGrid[r].every(cell => cell !== null)) {
-          clearedIndices.push(r)
+  const resume = useCallback(() => {
+    if (statusRef.current !== 'paused') return
+    statusRef.current = 'playing'
+    setStatus('playing')
+  }, [])
+
+  // ── 게임 루프 (플레이 중에만) ──────────────────────────────────────────
+  useEffect(() => {
+    if (status !== 'playing') return
+    lastTsRef.current = performance.now()
+    const frame = (ts: number) => {
+      const g = gameRef.current
+      if (!g || statusRef.current !== 'playing') return
+      const dt = Math.min(ts - lastTsRef.current, 100)
+      lastTsRef.current = ts
+      playMsRef.current += dt
+      // DAS/ARR: 누르는 순간 1칸, DAS 후 1칸, 이후 ARR 간격 (ARR 0 = 벽까지 즉시)
+      const dir = dirRef.current
+      if (dir) {
+        const d = dasRef.current, { das, arr } = handlingRef.current
+        const before = d.t
+        d.t += dt
+        if (d.t >= das) {
+          if (arr === 0) { while (move(g, dir)) { /* 벽까지 */ } }
+          else if (before < das) { move(g, dir); d.arr = 0 }
+          else { d.arr += dt; while (d.arr >= arr) { d.arr -= arr; if (!move(g, dir)) { d.arr = 0; break } } }
         }
       }
-      setClearingRows(clearedIndices)
-      setTimeout(() => setClearingRows([]), 300)
+      step(g, dt, heldRef.current.down)
+      syncRef.current()
+      rafRef.current = requestAnimationFrame(frame)
     }
+    rafRef.current = requestAnimationFrame(frame)
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+  }, [status])
 
-    const newLines = linesRef.current + linesCleared
-    const newLevel = Math.floor(newLines / 10) + 1
-    const pointsGained = (SCORE_TABLE[linesCleared] ?? 0) * levelRef.current
-    const newScore = scoreRef.current + pointsGained
+  // 일시정지/종료 화면도 한 번 그려 둠
+  useEffect(() => { draw() }, [status, draw])
 
-    gridRef.current = clearedGrid
-    linesRef.current = newLines
-    levelRef.current = newLevel
-    scoreRef.current = newScore
-
-    setGrid(clearedGrid)
-    setLines(newLines)
-    setLevel(newLevel)
-    setScore(newScore)
-
-    if (newScore > bestScore) {
-      setBestScore(newScore)
-      try { localStorage.setItem('tetris-best-score', String(newScore)) } catch {}
-    }
-
-    // Spawn next piece
-    const nextType = bagRef.current[0]
-    bagRef.current.shift()
-    if (bagRef.current.length < NEXT_COUNT + 1) {
-      bagRef.current = [...bagRef.current, ...createBag()]
-    }
-
-    const next = bagRef.current.slice(0, NEXT_COUNT) as TetrominoType[]
-    nextPiecesRef.current = next
-    setNextPieces([...next])
-
-    const newPiece = spawnPiece(nextType)
-
-    // Check game over
-    if (!isValidPosition(clearedGrid, newPiece.type, newPiece.x, newPiece.y, newPiece.rotation)) {
-      gameStateRef.current = 'gameover'
-      setGameState('gameover')
-      currentPieceRef.current = null
-      setCurrentPiece(null)
-      return
-    }
-
-    currentPieceRef.current = newPiece
-    setCurrentPiece(newPiece)
-    canHoldRef.current = true
-    setCanHold(true)
-    lastDropRef.current = performance.now()
-  }, [bestScore, spawnPiece])
-
-  // ── Move helpers ───────────────────────────────────────────────────────
-  const movePiece = useCallback((dx: number, dy: number): boolean => {
-    const piece = currentPieceRef.current
-    if (!piece) return false
-    const nx = piece.x + dx
-    const ny = piece.y + dy
-    if (isValidPosition(gridRef.current, piece.type, nx, ny, piece.rotation)) {
-      const newPiece = { ...piece, x: nx, y: ny }
-      currentPieceRef.current = newPiece
-      setCurrentPiece(newPiece)
-      return true
-    }
-    return false
-  }, [])
-
-  const rotatePiece = useCallback((dir: 1 | -1) => {
-    const piece = currentPieceRef.current
-    if (!piece) return
-    const rotated = tryRotate(gridRef.current, piece, dir)
-    if (rotated) {
-      currentPieceRef.current = rotated
-      setCurrentPiece(rotated)
-    }
-  }, [])
-
-  const hardDrop = useCallback(() => {
-    const piece = currentPieceRef.current
-    if (!piece) return
-    const ghostY = getGhostY(gridRef.current, piece.type, piece.x, piece.y, piece.rotation)
-    // Add hard drop bonus (2 per row)
-    const dropDistance = ghostY - piece.y
-    scoreRef.current += dropDistance * 2
-    setScore(scoreRef.current)
-    currentPieceRef.current = { ...piece, y: ghostY }
-    setCurrentPiece({ ...piece, y: ghostY })
-    lockPiece()
-  }, [lockPiece])
-
-  const holdCurrentPiece = useCallback(() => {
-    if (!canHoldRef.current) return
-    const piece = currentPieceRef.current
-    if (!piece) return
-
-    const prevHold = holdPieceRef.current
-    holdPieceRef.current = piece.type
-    setHoldPiece(piece.type)
-    canHoldRef.current = false
-    setCanHold(false)
-
-    let nextType: TetrominoType
-    if (prevHold !== null) {
-      nextType = prevHold
-    } else {
-      nextType = bagRef.current[0]
-      bagRef.current.shift()
-      if (bagRef.current.length < NEXT_COUNT + 1) {
-        bagRef.current = [...bagRef.current, ...createBag()]
-      }
-      const next = bagRef.current.slice(0, NEXT_COUNT) as TetrominoType[]
-      nextPiecesRef.current = next
-      setNextPieces([...next])
-    }
-
-    const newPiece = spawnPiece(nextType)
-    currentPieceRef.current = newPiece
-    setCurrentPiece(newPiece)
-    lastDropRef.current = performance.now()
-  }, [spawnPiece])
-
-  // ── Game loop ──────────────────────────────────────────────────────────
-  const gameLoop = useCallback((timestamp: number) => {
-    if (gameStateRef.current !== 'playing') return
-
-    const interval = softDropRef.current
-      ? Math.min(50, getDropInterval(levelRef.current))
-      : getDropInterval(levelRef.current)
-
-    if (timestamp - lastDropRef.current > interval) {
-      lastDropRef.current = timestamp
-      const moved = movePiece(0, 1)
-      if (!moved) {
-        lockPiece()
-      }
-    }
-
-    rafRef.current = requestAnimationFrame(gameLoop)
-  }, [movePiece, lockPiece])
-
-  // ── Start / Restart ────────────────────────────────────────────────────
-  const startGame = useCallback(() => {
-    const emptyGrid = createEmptyGrid()
-    gridRef.current = emptyGrid
-    scoreRef.current = 0
-    levelRef.current = 1
-    linesRef.current = 0
-    holdPieceRef.current = null
-    canHoldRef.current = true
-    bagRef.current = []
-
-    const nextList = initBag()
-
-    // Pop first piece
-    const firstType = bagRef.current[0]
-    bagRef.current.shift()
-    const next = bagRef.current.slice(0, NEXT_COUNT) as TetrominoType[]
-
-    nextPiecesRef.current = next
-    setNextPieces([...next])
-
-    const firstPiece = spawnPiece(firstType)
-    currentPieceRef.current = firstPiece
-
-    setGrid(emptyGrid)
-    setScore(0)
-    setLevel(1)
-    setLines(0)
-    setHoldPiece(null)
-    setCanHold(true)
-    setCurrentPiece(firstPiece)
-    setNextPieces([...next])
-    setClearingRows([])
-    gameStateRef.current = 'playing'
-    setGameState('playing')
-    lastDropRef.current = performance.now()
-    softDropRef.current = false
-    resultRecordedRef.current = false
-    gameStartTimeRef.current = Date.now()
-
-    if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    rafRef.current = requestAnimationFrame(gameLoop)
-    // suppress unused warning
-    void nextList
-  }, [initBag, spawnPiece, gameLoop])
-
-  const togglePause = useCallback(() => {
-    if (gameStateRef.current === 'playing') {
-      gameStateRef.current = 'paused'
-      setGameState('paused')
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    } else if (gameStateRef.current === 'paused') {
-      gameStateRef.current = 'playing'
-      setGameState('playing')
-      lastDropRef.current = performance.now()
-      rafRef.current = requestAnimationFrame(gameLoop)
-    }
-  }, [gameLoop])
-
-  // ── Keyboard ───────────────────────────────────────────────────────────
+  // 탭 전환·창 포커스 잃으면 자동 일시정지
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameStateRef.current !== 'playing' && e.key !== 'p' && e.key !== 'P') return
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault()
-          movePiece(-1, 0)
-          break
-        case 'ArrowRight':
-          e.preventDefault()
-          movePiece(1, 0)
-          break
-        case 'ArrowDown':
-          e.preventDefault()
-          softDropRef.current = true
-          if (movePiece(0, 1)) {
-            scoreRef.current += 1
-            setScore(scoreRef.current)
-          }
-          break
-        case 'ArrowUp':
-          e.preventDefault()
-          rotatePiece(1)
-          break
-        case 'z':
-        case 'Z':
-          rotatePiece(-1)
-          break
-        case ' ':
-          e.preventDefault()
-          hardDrop()
-          break
-        case 'c':
-        case 'C':
-          holdCurrentPiece()
-          break
-        case 'p':
-        case 'P':
-          if (gameStateRef.current === 'playing' || gameStateRef.current === 'paused') {
-            togglePause()
-          }
-          break
-        default:
-          break
-      }
-    }
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') {
-        softDropRef.current = false
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
+    const onHide = () => { if (document.hidden) pause() }
+    window.addEventListener('blur', pause)
+    document.addEventListener('visibilitychange', onHide)
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
+      window.removeEventListener('blur', pause)
+      document.removeEventListener('visibilitychange', onHide)
     }
-  }, [movePiece, rotatePiece, hardDrop, holdCurrentPiece, togglePause])
+  }, [pause])
 
-  // ── Touch controls ─────────────────────────────────────────────────────
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (gameStateRef.current !== 'playing') return
-    e.preventDefault()
-    const touch = e.touches[0]
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() }
-  }, [])
+  useEffect(() => () => { if (popupTimerRef.current) clearTimeout(popupTimerRef.current) }, [])
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (gameStateRef.current !== 'playing') return
-    e.preventDefault()
-    if (!touchStartRef.current) return
-    const touch = e.changedTouches[0]
-    const dx = touch.clientX - touchStartRef.current.x
-    const dy = touch.clientY - touchStartRef.current.y
-    const dt = Date.now() - touchStartRef.current.time
-    const absDx = Math.abs(dx)
-    const absDy = Math.abs(dy)
-
-    const SWIPE_THRESHOLD = 30
-    const TAP_THRESHOLD = 10
-
-    if (absDx < TAP_THRESHOLD && absDy < TAP_THRESHOLD) {
-      // Tap → rotate
-      rotatePiece(1)
-    } else if (absDx > absDy && absDx > SWIPE_THRESHOLD) {
-      // Horizontal swipe → move
-      movePiece(dx > 0 ? 1 : -1, 0)
-    } else if (dy > SWIPE_THRESHOLD) {
-      // Swipe down → soft drop (multiple rows based on distance)
-      const steps = Math.floor(absDy / 20)
-      for (let i = 0; i < Math.max(1, steps); i++) {
-        if (!movePiece(0, 1)) {
-          lockPiece()
-          break
-        }
-        scoreRef.current += 1
-        setScore(scoreRef.current)
-      }
-    } else if (dy < -SWIPE_THRESHOLD && dt < 300) {
-      // Fast swipe up → hard drop
-      hardDrop()
-    }
-
-    touchStartRef.current = null
-  }, [movePiece, rotatePiece, hardDrop, lockPiece])
-
-  // Cleanup on unmount
+  // ── 키보드 ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    const isTyping = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null
+      return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)
     }
-  }, [])
+    const down = (e: KeyboardEvent) => {
+      if (isTyping(e)) return
+      const st = statusRef.current
+      if (e.code === 'KeyP' || e.code === 'Escape') {
+        if (st === 'playing') { e.preventDefault(); pause() } else if (st === 'paused') { e.preventDefault(); resume() }
+        return
+      }
+      if ((e.code === 'Enter' || e.code === 'NumpadEnter') && (st === 'idle' || st === 'over') && !showNameModalRef.current) {
+        e.preventDefault(); start(); return
+      }
+      const a = KEYMAP[e.code]
+      if (!a || st !== 'playing') return
+      e.preventDefault()
+      if (!e.repeat) press(a) // 반복은 DAS/ARR가 처리
+    }
+    const up = (e: KeyboardEvent) => { const a = KEYMAP[e.code]; if (a) release(a) }
+    window.addEventListener('keydown', down)
+    window.addEventListener('keyup', up)
+    return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up) }
+  }, [press, release, pause, resume, start])
+  // ── 보드 제스처: 탭=회전, 좌우 드래그=칸 단위 이동, 아래 드래그=소프트, 아래로 튕기기=하드, 위로 튕기기=홀드 ─
+  const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (statusRef.current !== 'playing') return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    gestRef.current = { x0: e.clientX, y0: e.clientY, lx: e.clientX, ly: e.clientY, t0: performance.now(), moved: false }
+  }
+  const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const s = gestRef.current, g = gameRef.current
+    if (!s || !g || statusRef.current !== 'playing') return
+    const cell = e.currentTarget.getBoundingClientRect().width / COLS
+    let changed = false
+    while (Math.abs(e.clientX - s.lx) >= cell) {
+      const dir = e.clientX > s.lx ? 1 : -1
+      move(g, dir); s.lx += dir * cell; s.moved = changed = true
+    }
+    while (e.clientY - s.ly >= cell * 1.2) { softDropOne(g); s.ly += cell * 1.2; s.moved = changed = true }
+    if (changed) syncRef.current()
+  }
+  const onPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const s = gestRef.current, g = gameRef.current
+    gestRef.current = null
+    if (!s || !g || statusRef.current !== 'playing') return
+    const dx = e.clientX - s.x0, dy = e.clientY - s.y0, dt = performance.now() - s.t0
+    if (!s.moved && Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 350) rotate(g, 1)
+    else if (dt < 300 && dy > 50 && dy > Math.abs(dx) * 1.5) hardDrop(g)
+    else if (dt < 300 && dy < -50 && -dy > Math.abs(dx) * 1.5) holdPiece(g)
+    syncRef.current()
+  }
 
-  // Leaderboard & achievements: detect game over
-  useEffect(() => {
-    if (gameState === 'gameover') {
-      if (!resultRecordedRef.current) {
-        resultRecordedRef.current = true
-        const clearedLines = linesRef.current
-        recordGameResult({
-          gameType: 'tetris',
-          result: clearedLines >= 10 ? 'win' : 'loss',
-          difficulty: 'normal',
-          moves: clearedLines,
-        })
-      }
-      if (leaderboard.checkQualifies(score)) {
-        setShowNameModal(true)
-      }
-      leaderboard.fetchLeaderboard()
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameState])
+  // 화면 버튼: 꾹 누르면 DAS/ARR·소프트 드롭 연속
+  const pad = (a: Action) => ({
+    onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      e.currentTarget.setPointerCapture?.(e.pointerId)
+      press(a)
+    },
+    onPointerUp: () => release(a),
+    onPointerCancel: () => release(a),
+    onLostPointerCapture: () => release(a),
+    onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+    style: { touchAction: 'manipulation' as const },
+  })
 
   const handleLeaderboardSubmit = useCallback(async (name: string) => {
-    const duration = Date.now() - gameStartTimeRef.current
-    await leaderboard.submitScore(score, name, duration)
+    await leaderboard.submitScore(hud.score, name, Date.now() - gameStartRef.current)
     leaderboard.savePlayerName(name)
     setShowNameModal(false)
-  }, [leaderboard, score])
+  }, [leaderboard, hud.score])
 
-  // ── Render helpers ─────────────────────────────────────────────────────
-  const isDarkMode = typeof window !== 'undefined'
-    ? document.documentElement.classList.contains('dark')
-    : false
-
-  const getColor = (type: TetrominoType): string => isDarkMode ? DARK_COLORS[type] : COLORS[type]
-
-  // Build display grid (board + current piece + ghost)
-  const buildDisplayGrid = (): (string | null)[][] => {
-    const display: (string | null)[][] = grid.map(row => [...row])
-    const piece = currentPiece
-
-    if (piece) {
-      const shape = getShape(piece.type, piece.rotation)
-      const ghostY = getGhostY(grid, piece.type, piece.x, piece.y, piece.rotation)
-
-      // Draw ghost
-      for (let row = 0; row < shape.length; row++) {
-        for (let col = 0; col < shape[row].length; col++) {
-          if (!shape[row][col]) continue
-          const ny = ghostY + row
-          const nx = piece.x + col
-          if (ny >= 0 && ny < ROWS && nx >= 0 && nx < COLS && !display[ny][nx]) {
-            display[ny][nx] = `ghost-${piece.type}`
-          }
-        }
-      }
-
-      // Draw current piece
-      for (let row = 0; row < shape.length; row++) {
-        for (let col = 0; col < shape[row].length; col++) {
-          if (!shape[row][col]) continue
-          const ny = piece.y + row
-          const nx = piece.x + col
-          if (ny >= 0 && ny < ROWS && nx >= 0 && nx < COLS) {
-            display[ny][nx] = piece.type
-          }
-        }
-      }
-    }
-
-    return display
-  }
-
-  // Mini grid for next/hold panels
-  const MiniPiece = ({ type }: { type: TetrominoType }) => {
-    const shape = getShape(type, 0)
-    const rows = shape.length
-    const cols = shape[0].length
-    const color = COLORS[type]
-
-    return (
-      <div className="flex items-center justify-center p-2">
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: '1px' }}>
-          {Array.from({ length: rows }).map((_, r) =>
-            Array.from({ length: cols }).map((_, c) => (
-              <div
-                key={`${r}-${c}`}
-                style={{
-                  width: 14,
-                  height: 14,
-                  backgroundColor: shape[r][c] ? color : 'transparent',
-                  borderRadius: shape[r][c] ? 2 : 0,
-                  border: shape[r][c] ? `1px solid ${color}cc` : 'none',
-                }}
-              />
-            ))
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  const displayGrid = buildDisplayGrid()
+  const pps = result && result.ms > 0 ? (result.pieces / (result.ms / 1000)).toFixed(2) : '0'
+  const padBtn = 'ui-btn-soft h-14 rounded-xl flex items-center justify-center select-none text-sm font-medium'
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Gamepad2 className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+      {/* 헤더 */}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => sounds.setEnabled(!sounds.enabled)}
+          title={sounds.enabled ? tSounds('disabled') : tSounds('enabled')}
+          aria-label={sounds.enabled ? tSounds('disabled') : tSounds('enabled')}
+          className="ui-btn-soft p-2.5 rounded-xl shrink-0"
+        >
+          {sounds.enabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+        </button>
       </div>
 
-      {/* Main game area */}
-      <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
-
-        {/* Left panel: Hold + Stats (desktop) */}
-        <div className="hidden lg:flex flex-col gap-4 w-36">
-          {/* Hold */}
-          <div className={`${glassCard} ${glassInset} p-3`}>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">{t('hold')}</p>
-            <div className="h-16 flex items-center justify-center bg-subtle rounded-lg">
-              {holdPiece ? (
-                <MiniPiece type={holdPiece} />
-              ) : (
-                <div className="w-full h-full" />
-              )}
+      {/* 플레이 영역 */}
+      <div ref={areaRef} className="space-y-3">
+        {/* 점수 줄 */}
+        <div className="grid grid-cols-4 gap-2 max-w-md mx-auto">
+          {[
+            { label: t('score'), value: hud.score.toLocaleString() },
+            { label: t('level'), value: hud.level },
+            { label: t('lines'), value: hud.lines },
+            { label: t('bestScore'), value: best.toLocaleString() },
+          ].map(({ label, value }) => (
+            <div key={label} className="ui-card px-2 py-2 text-center">
+              <p className="text-xs text-muted truncate">{label}</p>
+              <p className="text-sm sm:text-base font-bold text-fg tabular-nums truncate">{value}</p>
             </div>
-            {!canHold && holdPiece && (
-              <p className="text-xs text-gray-400 text-center mt-1">{t('holdUsed')}</p>
-            )}
-          </div>
-
-          {/* Score */}
-          <div className={`${glassCard} ${glassInset} p-3 space-y-3`}>
-            <div>
-              <p className="text-xs text-muted">{t('score')}</p>
-              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{score.toLocaleString()}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted">{t('level')}</p>
-              <p className="text-lg font-bold text-purple-600 dark:text-purple-400">{level}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted">{t('lines')}</p>
-              <p className="text-lg font-bold text-green-600 dark:text-green-400">{lines}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted flex items-center gap-1">
-                <Trophy className="w-3 h-3" />{t('bestScore')}
-              </p>
-              <p className="text-sm font-semibold text-yellow-600 dark:text-yellow-400">{bestScore.toLocaleString()}</p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Game board */}
-        <div className="relative">
-          <div
-            className="relative bg-gray-900 rounded-xl overflow-hidden shadow-2xl border-2 border-gray-700"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            style={{ touchAction: 'none' }}
-          >
-            {/* Grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(${COLS}, 1fr)`,
-                gap: 1,
-                padding: 4,
-                backgroundColor: '#111827',
-              }}
-            >
-              {displayGrid.map((row, rowIdx) =>
-                row.map((cell, colIdx) => {
-                  const isGhost = cell?.startsWith('ghost-')
-                  const type = isGhost ? cell!.replace('ghost-', '') as TetrominoType : cell as TetrominoType | null
-                  const isClearing = clearingRows.includes(rowIdx)
-
-                  return (
-                    <div
-                      key={`${rowIdx}-${colIdx}`}
-                      style={{
-                        width: 28,
-                        height: 28,
-                        backgroundColor: isGhost
-                          ? `${COLORS[type!]}33`
-                          : type
-                            ? COLORS[type!]
-                            : '#1f2937',
-                        borderRadius: 2,
-                        border: isGhost
-                          ? `1px solid ${COLORS[type!]}66`
-                          : type
-                            ? `1px solid ${COLORS[type!]}aa`
-                            : '1px solid #374151',
-                        transition: isClearing ? 'background-color 0.15s ease' : undefined,
-                        ...(isClearing && type ? { backgroundColor: '#fff', border: '1px solid #fff' } : {}),
-                      }}
-                    />
-                  )
-                })
-              )}
+        <div className="flex justify-center items-start gap-2 sm:gap-4">
+          {/* 홀드 */}
+          <div className="w-14 sm:w-24 shrink-0">
+            <div className="ui-card p-1.5 sm:p-3">
+              <p className="text-xs font-semibold text-muted mb-1.5 text-center">{t('hold')}</p>
+              <div className="h-10 sm:h-14 flex items-center justify-center bg-subtle rounded-lg">
+                {hud.hold && <MiniPiece type={hud.hold} dim={!hud.canHold} />}
+              </div>
             </div>
+          </div>
 
-            {/* Idle overlay */}
-            {gameState === 'idle' && (
-              <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-4 rounded-xl">
+          {/* 보드 */}
+          <div className="relative flex-1 min-w-0" style={{ maxWidth: 'min(320px, 42vh)' }}>
+            <canvas
+              ref={canvasRef}
+              width={COLS * CELL}
+              height={VIS * CELL}
+              className="block w-full h-auto rounded-xl select-none"
+              style={{ touchAction: 'none', backgroundColor: BOARD_BG }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={() => { gestRef.current = null }}
+              onContextMenu={e => e.preventDefault()}
+              aria-label={t('title')}
+            />
+
+            {popup && (
+              <div key={popup.id} className="pointer-events-none absolute inset-x-0 top-1/4 text-center text-white">
+                {popup.main && <p className="text-lg sm:text-2xl font-extrabold tracking-wide drop-shadow">{popup.main}</p>}
+                {popup.sub && <p className="text-sm sm:text-base font-bold text-yellow-300">{popup.sub}</p>}
+                {popup.pts > 0 && <p className="text-sm font-semibold tabular-nums">+{popup.pts.toLocaleString()}</p>}
+              </div>
+            )}
+
+            {status === 'idle' && (
+              <div className="absolute inset-0 bg-black/70 rounded-xl flex flex-col items-center justify-center gap-4 p-4 text-center">
                 <p className="text-white text-2xl font-bold">TETRIS</p>
-                <button
-                  onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all"
-                >
-                  {t('newGame')}
-                </button>
+                <button type="button" onClick={start} className="ui-btn px-6 py-3">{t('newGame')}</button>
+                <p className="text-xs text-gray-300 hidden lg:block">{t('idleHintKeys')}</p>
+                <p className="text-xs text-gray-300 lg:hidden">{t('idleHintTouch')}</p>
               </div>
             )}
-
-            {/* Paused overlay */}
-            {gameState === 'paused' && (
-              <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-4 rounded-xl">
+            {status === 'paused' && (
+              <div className="absolute inset-0 rounded-xl flex flex-col items-center justify-center gap-4" style={{ backgroundColor: BOARD_BG }}>
                 <p className="text-white text-2xl font-bold">{t('paused')}</p>
-                <button
-                  onClick={togglePause}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all flex items-center gap-2"
-                >
-                  <Play className="w-4 h-4" />{t('resume')}
-                </button>
+                <button type="button" onClick={resume} className="ui-btn px-6 py-3"><Play className="w-4 h-4" />{t('resume')}</button>
               </div>
             )}
-
-            {/* Game over overlay */}
-            {gameState === 'gameover' && (
-              <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-4 rounded-xl">
+            {status === 'over' && result && (
+              <div className="absolute inset-0 bg-black/75 rounded-xl flex flex-col items-center justify-center gap-3 p-4 text-center">
                 <p className="text-red-400 text-2xl font-bold">{t('gameOver')}</p>
-                <div className="text-center">
-                  <p className="text-gray-300 text-sm">{t('score')}</p>
-                  <p className="text-white text-3xl font-bold">{score.toLocaleString()}</p>
-                </div>
-                {score >= bestScore && score > 0 && (
-                  <div className="flex items-center gap-1 text-yellow-400 text-sm font-semibold">
-                    <Trophy className="w-4 h-4" />
-                    {t('newRecord')}
-                  </div>
+                <p className="text-white text-3xl font-bold tabular-nums">{result.score.toLocaleString()}</p>
+                {result.newBest && (
+                  <p className="flex items-center gap-1 text-yellow-300 text-sm font-semibold"><Trophy className="w-4 h-4" />{t('newRecord')}</p>
                 )}
-                <button
-                  onClick={startGame}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-all flex items-center gap-2"
-                >
-                  <RotateCcw className="w-4 h-4" />{t('newGame')}
-                </button>
+                <button type="button" onClick={start} className="ui-btn px-6 py-3"><RotateCcw className="w-4 h-4" />{t('playAgain')}</button>
               </div>
             )}
           </div>
-        </div>
 
-        {/* Right panel: Next pieces */}
-        <div className="hidden lg:flex flex-col gap-4 w-36">
-          {/* Next */}
-          <div className={`${glassCard} ${glassInset} p-3`}>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">{t('next')}</p>
-            <div className="space-y-2">
-              {(gameState !== 'idle' ? nextPieces : []).map((type, i) => (
-                <div key={i} className={`h-14 flex items-center justify-center bg-subtle rounded-lg ${i === 0 ? '' : 'opacity-60'}`}>
-                  <MiniPiece type={type} />
-                </div>
-              ))}
-              {gameState === 'idle' && Array(NEXT_COUNT).fill(null).map((_, i) => (
-                <div key={i} className="h-14 bg-subtle rounded-lg" />
-              ))}
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className={`${glassCard} ${glassInset} p-3`}>
-            <div className="flex gap-2">
-              {gameState === 'playing' ? (
-                <button
-                  onClick={togglePause}
-                  className="flex-1 flex items-center justify-center gap-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-lg py-2 text-xs font-medium hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-colors"
-                >
-                  <Pause className="w-3 h-3" />{t('pause')}
-                </button>
-              ) : gameState === 'paused' ? (
-                <button
-                  onClick={togglePause}
-                  className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-xs font-medium hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
-                >
-                  <Play className="w-3 h-3" />{t('resume')}
-                </button>
-              ) : null}
-              <button
-                onClick={startGame}
-                className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
-              >
-                <RotateCcw className="w-3 h-3" />{t('newGame')}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile: Stats row below board */}
-        <div className="lg:hidden w-full max-w-xs mx-auto space-y-3">
-          {/* Stats + Hold row */}
-          <div className="flex gap-3">
-            {/* Hold */}
-            <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
-              <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('hold')}</p>
-              <div className="h-12 flex items-center justify-center bg-subtle rounded-lg">
-                {holdPiece && <MiniPiece type={holdPiece} />}
-              </div>
-            </div>
-            {/* Next */}
-            <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
-              <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('next')}</p>
-              <div className="flex gap-1">
-                {(gameState !== 'idle' ? nextPieces.slice(0, 2) : [null, null]).map((type, i) => (
-                  <div key={i} className="flex-1 h-12 flex items-center justify-center bg-subtle rounded-lg">
-                    {type && <MiniPiece type={type} />}
+          {/* 넥스트 */}
+          <div className="w-14 sm:w-24 shrink-0">
+            <div className="ui-card p-1.5 sm:p-3">
+              <p className="text-xs font-semibold text-muted mb-1.5 text-center">{t('next')}</p>
+              <div className="space-y-1.5">
+                {Array.from({ length: NEXT_SHOWN }, (_, i) => (
+                  <div key={i} className={`flex items-center justify-center bg-subtle rounded-lg ${i === 0 ? 'h-10 sm:h-14' : 'h-8 sm:h-11'}`}>
+                    {status !== 'idle' && hud.queue[i] && <MiniPiece type={hud.queue[i]} />}
                   </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Score row */}
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { label: t('score'), value: score.toLocaleString(), color: 'text-blue-600 dark:text-blue-400' },
-              { label: t('level'), value: level, color: 'text-purple-600 dark:text-purple-400' },
-              { label: t('lines'), value: lines, color: 'text-green-600 dark:text-green-400' },
-              { label: t('bestScore'), value: bestScore.toLocaleString(), color: 'text-yellow-600 dark:text-yellow-400' },
-            ].map(({ label, value, color }) => (
-              <div key={label} className={`${glassCard} ${glassInset} p-2 text-center`}>
-                <p className="text-xs text-muted truncate">{label}</p>
-                <p className={`text-sm font-bold ${color}`}>{value}</p>
-              </div>
-            ))}
-          </div>
+        {/* 터치 버튼 (모바일·태블릿) */}
+        <div className="lg:hidden max-w-md mx-auto grid grid-cols-4 gap-2">
+          <button type="button" className={padBtn} aria-label={t('hold')} {...pad('hold')}>{t('hold')}</button>
+          <button type="button" className={padBtn} aria-label={t('controls.rotateCcw')} {...pad('ccw')}><RotateCcw className="w-6 h-6" /></button>
+          <button type="button" className={padBtn} aria-label={t('controls.rotateCw')} {...pad('cw')}><RotateCw className="w-6 h-6" /></button>
+          <button type="button" className={padBtn} aria-label={t('controls.hardDrop')} {...pad('hard')}><ChevronsDown className="w-6 h-6" /></button>
+          <button type="button" className={`${padBtn} col-span-1`} aria-label={t('controls.left')} {...pad('left')}><ArrowLeft className="w-6 h-6" /></button>
+          <button type="button" className={`${padBtn} col-span-2`} aria-label={t('controls.softDrop')} {...pad('down')}><ArrowDown className="w-6 h-6" /></button>
+          <button type="button" className={padBtn} aria-label={t('controls.right')} {...pad('right')}><ArrowRight className="w-6 h-6" /></button>
+        </div>
 
-          {/* Mobile buttons */}
-          <div className="flex gap-2">
-            {gameState === 'playing' ? (
-              <button onClick={togglePause} className="flex-1 flex items-center justify-center gap-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-lg py-2 text-sm font-medium">
-                <Pause className="w-4 h-4" />{t('pause')}
-              </button>
-            ) : gameState === 'paused' ? (
-              <button onClick={togglePause} className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-sm font-medium">
-                <Play className="w-4 h-4" />{t('resume')}
-              </button>
-            ) : null}
-            <button onClick={startGame} className="flex-1 flex items-center justify-center gap-1 bg-primary hover:bg-blue-700 text-white rounded-lg py-2 text-sm font-medium">
-              <RotateCcw className="w-4 h-4" />{t('newGame')}
-            </button>
-          </div>
+        {/* 일시정지/새 게임 */}
+        <div className="flex justify-center gap-2">
+          {status === 'playing' && (
+            <button type="button" onClick={pause} className="ui-btn-soft px-4 py-2 text-sm"><Pause className="w-4 h-4" />{t('pause')}</button>
+          )}
+          {status === 'paused' && (
+            <button type="button" onClick={resume} className="ui-btn-soft px-4 py-2 text-sm"><Play className="w-4 h-4" />{t('resume')}</button>
+          )}
+          {status !== 'idle' && (
+            <button type="button" onClick={start} className="ui-btn-soft px-4 py-2 text-sm"><RotateCcw className="w-4 h-4" />{t('newGame')}</button>
+          )}
         </div>
       </div>
 
-      {/* Leaderboard */}
+      {/* 결과 */}
+      {status === 'over' && result && (
+        <div className="ui-card p-6 space-y-4 max-w-xl mx-auto">
+          <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              [t('lines'), result.lines],
+              [t('level'), result.level],
+              [t('result.time'), fmtTime(result.ms)],
+              [t('result.pps'), pps],
+              [t('result.tetrises'), result.tetrises],
+              [t('result.tspins'), result.tspins],
+              [t('result.maxCombo'), result.maxCombo],
+              [t('result.pieces'), result.pieces],
+            ].map(([label, value]) => (
+              <div key={String(label)} className="bg-subtle rounded-xl p-3 text-center">
+                <p className="text-xs text-muted">{label}</p>
+                <p className="text-lg font-bold text-fg tabular-nums">{value}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-muted">{t('result.career', { games: saved.games, lines: saved.totalLines.toLocaleString(), bestLines: saved.bestLines })}</p>
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: t('share.label'),
+              headline: result.score.toLocaleString(),
+              sub: t('share.sub', { lines: result.lines, level: result.level }),
+              rows: [
+                { label: t('result.tetrises'), value: String(result.tetrises) },
+                { label: t('result.maxCombo'), value: String(result.maxCombo) },
+                { label: t('result.pps'), value: pps },
+                { label: t('bestScore'), value: best.toLocaleString() },
+              ],
+              cta: t('share.cta'),
+            }}
+            url={`${window.location.origin}${window.location.pathname}`}
+            text={t('share.text', { score: result.score.toLocaleString() })}
+            fileName="tetris"
+          />
+        </div>
+      )}
+
+      {/* 조작 감도 */}
+      <details className="ui-card p-4 max-w-xl mx-auto">
+        <summary className="cursor-pointer text-sm font-semibold text-body">{t('settings.title')}</summary>
+        <div className="mt-4 space-y-4">
+          {(['das', 'arr'] as const).map(k => (
+            <label key={k} className="block">
+              <span className="flex justify-between text-sm text-body">
+                <span>{t(`settings.${k}`)}</span>
+                <span className="tabular-nums text-fg font-medium">{handling[k]}ms</span>
+              </span>
+              <input
+                type="range"
+                min={k === 'das' ? 50 : 0}
+                max={k === 'das' ? 300 : 100}
+                step={k === 'das' ? 10 : 5}
+                value={handling[k]}
+                onChange={e => updateHandling({ ...handling, [k]: Number(e.target.value) })}
+                className="w-full mt-2 accent-primary"
+              />
+            </label>
+          ))}
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs text-muted">{t('settings.hint')}</p>
+            <button type="button" onClick={() => updateHandling(DEFAULT_HANDLING)} className="ui-btn-soft px-3 py-1.5 text-xs shrink-0">{t('settings.reset')}</button>
+          </div>
+        </div>
+      </details>
+
       <LeaderboardPanel leaderboard={leaderboard} />
       <NameInputModal
         isOpen={showNameModal}
         onSubmit={handleLeaderboardSubmit}
         onClose={() => setShowNameModal(false)}
-        score={score}
+        score={hud.score}
         formatScore={leaderboard.config.formatScore}
         defaultName={leaderboard.savedPlayerName}
       />
 
-      {/* Controls guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
+      {/* 조작 가이드 */}
+      <div className="ui-card p-6">
         <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Keyboard controls */}
-          <div>
-            <h3 className="text-sm font-semibold text-body mb-3">{t('guide.keyboard.title')}</h3>
-            <div className="space-y-1">
-              {(t.raw('guide.keyboard.items') as string[]).map((item, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-sub">
-                  <span className="text-blue-500">•</span>
-                  <span>{item}</span>
-                </div>
-              ))}
+          {(['keyboard', 'touch'] as const).map(sec => (
+            <div key={sec}>
+              <h3 className="text-sm font-semibold text-body mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="space-y-1 text-sm text-sub list-disc list-inside">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
             </div>
-          </div>
-          {/* Touch controls */}
-          <div>
-            <h3 className="text-sm font-semibold text-body mb-3">{t('guide.touch.title')}</h3>
-            <div className="space-y-1">
-              {(t.raw('guide.touch.items') as string[]).map((item, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-sub">
-                  <span className="text-green-500">•</span>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-        {/* Scoring */}
         <div className="mt-4 pt-4 border-t border-line">
           <h3 className="text-sm font-semibold text-body mb-3">{t('guide.scoring.title')}</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {(t.raw('guide.scoring.items') as string[]).map((item, i) => (
-              <div key={i} className="bg-subtle rounded-lg p-2 text-center text-sm text-body">
-                {item}
-              </div>
+              <div key={i} className="bg-subtle rounded-lg p-2 text-center text-sm text-body">{item}</div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Achievements */}
-      <GameAchievements
-        achievements={achievements}
-        unlockedCount={unlockedCount}
-        totalCount={totalCount}
-      />
-      <AchievementToast
-        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
-        onDismiss={dismissNewAchievements}
-      />
+      <GameAchievements achievements={achievements} unlockedCount={unlockedCount} totalCount={totalCount} />
+      <AchievementToast achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null} onDismiss={dismissNewAchievements} />
+      <GameConfetti active={status === 'over' && !!result?.newBest} />
     </div>
   )
 }

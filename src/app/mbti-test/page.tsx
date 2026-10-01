@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'MBTI 성격유형 검사 - 48문항 상세 테스트 | 툴허브',
-  description: '48문항 상세 MBTI 성격유형 검사. 나의 MBTI 유형을 정확하게 알아보고 성격 특성, 연애 스타일, 추천 직업까지 확인하세요. 결과 공유 카드 생성 가능.',
+  description: '48문항 상세 MBTI 성격유형 검사. 5점 척도로 나의 16가지 성격유형과 축별 비율(%)을 알아보고 강점·약점, 어울리는 일, 잘 맞는 유형까지 확인하세요. 결과 이미지 공유 가능(비공식 무료 검사).',
   keywords: 'MBTI 검사, MBTI 테스트, 성격유형 검사, MBTI 무료 검사, MBTI 결과, 16가지 성격유형',
   openGraph: {
     title: 'MBTI 성격유형 검사 48문항 | 툴허브',
-    description: '48문항으로 알아보는 나의 MBTI 유형. 성격 특성, 연애 스타일, 추천 직업, 결과 카드 공유까지',
+    description: '48문항으로 알아보는 나의 MBTI 유형. 축별 비율, 강점·약점, 잘 맞는 유형, 결과 이미지 공유까지',
     url: 'https://toolhub.ai.kr/mbti-test/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -32,7 +32,7 @@ export default function MbtiTestPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'MBTI 성격유형 검사',
-    description: '48문항 상세 MBTI 성격유형 검사 - 성격 특성, 연애 스타일, 추천 직업, 결과 카드 공유',
+    description: '48문항 5점 척도 성격유형 검사(비공식) - 축별 비율, 강점·약점, 잘 맞는 유형, 결과 공유',
     url: 'https://toolhub.ai.kr/mbti-test',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
@@ -42,9 +42,12 @@ export default function MbtiTestPage() {
       '48문항 상세 MBTI 검사',
       '4가지 지표별 점수 분포 시각화',
       '16가지 유형 상세 프로필',
-      '성격 특성, 강점, 약점 분석',
-      '연애 스타일 및 소통 방식',
-      '추천 직업 및 유명인',
+      '5점 척도·축별 균형 문항',
+      '축별 비율(%)과 경계 유형 안내',
+      '강점·약점 분석',
+      '잘 맞는 유형(재미용)',
+      '어울리는 일(참고용)',
+      '16가지 유형 둘러보기',
       '결과 카드 이미지 저장',
       'URL 결과 공유',
     ],
@@ -67,7 +70,7 @@ export default function MbtiTestPage() {
         name: 'MBTI 결과는 어떻게 공유하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '검사 결과 페이지에서 링크 복사, X(트위터) 공유, 또는 결과 카드 이미지 저장 기능을 이용하실 수 있습니다.',
+          text: '검사 결과 페이지에서 공유하기(모바일 공유 시트), 결과 이미지 저장, 링크 복사 기능을 이용하실 수 있습니다.',
         },
       },
       {

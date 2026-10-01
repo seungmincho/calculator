@@ -1,701 +1,390 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import dynamic from 'next/dynamic'
-import { Activity, Calculator, Heart, Scale, TrendingUp, Share2, Check, Save } from 'lucide-react'
-import CalculationHistory from './CalculationHistory'
-import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
+import { AlertTriangle, Trash2 } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea } from 'recharts'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import { STORAGE_KEYS } from '@/utils/localStorage'
+import {
+  STANDARDS, CLASSES, CUTS, GAUGE, ABDOMINAL, analyze, classRanges, gaugePos, waistCheck, ageNote, parseStd, valid,
+  bmi, round1, sanitizeLog, upsertLog, fromLegacy, LOG_KEY,
+  type Standard, type BmiClass, type Sex, type LogEntry,
+} from '@/utils/bmi'
 
-const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
-
-interface BMIResult {
-  bmi: number
-  category: string
-  categoryKorean: string
-  idealWeightMin: number
-  idealWeightMax: number
-  weightDifference: number
-  healthRisk: string
+const f1 = (n: number) => round1(n).toFixed(1)
+/** URL 값 → 범위 안이면 문자열, 아니면 기본값 */
+const pick = (v: string | null, min: number, max: number, def: string) => {
+  const n = parseFloat(v ?? '')
+  return n >= min && n <= max ? String(n) : def
 }
-
-type Gender = 'male' | 'female'
-type AgeGroup = 'adult' | 'elderly' // 성인/노인 구분
+const todayStr = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
 export default function BMICalculator() {
   const t = useTranslations('bmi')
-  const [height, setHeight] = useState<string>('')
-  const [weight, setWeight] = useState<string>('')
-  const [age, setAge] = useState<string>('')
-  const [gender, setGender] = useState<Gender>('male')
-  const [result, setResult] = useState<BMIResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-  const [showSaveButton, setShowSaveButton] = useState(false)
-  
-  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('bmi')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  const calculateBMI = () => {
-    const h = parseFloat(height) / 100 // cm to m
-    const w = parseFloat(weight)
-    const ageNum = parseFloat(age) || 30
+  const [sex, setSex] = useState<Sex>(() => (sp.get('gender') === 'female' ? 'female' : 'male'))
+  const [height, setHeight] = useState(() => pick(sp.get('height'), 50, 250, '170'))
+  const [weight, setWeight] = useState(() => pick(sp.get('weight'), 10, 400, '65'))
+  const [age, setAge] = useState(() => pick(sp.get('age'), 1, 120, ''))
+  const [waist, setWaist] = useState(() => pick(sp.get('waist'), 40, 200, ''))
+  const [std, setStd] = useState<Standard>(() => parseStd(sp.get('std')))
+  const [log, setLog] = useState<LogEntry[]>([])
 
-    if (!h || !w || h <= 0 || w <= 0) return
-
-    const bmi = w / (h * h)
-    const ageGroup: AgeGroup = ageNum >= 65 ? 'elderly' : 'adult'
-    
-    // BMI 분류 (WHO 기준, 아시아인 기준 적용)
-    let category: string
-    let categoryKorean: string
-    let healthRisk: string
-
-    if (ageGroup === 'elderly') {
-      // 노인의 경우 기준이 약간 완화됨
-      if (bmi < 22) {
-        category = 'underweight'
-        categoryKorean = '저체중'
-        healthRisk = '영양부족 위험'
-      } else if (bmi < 25) {
-        category = 'normal'
-        categoryKorean = '정상'
-        healthRisk = '건강'
-      } else if (bmi < 27) {
-        category = 'overweight'
-        categoryKorean = '과체중'
-        healthRisk = '약간 위험'
-      } else if (bmi < 30) {
-        category = 'obese1'
-        categoryKorean = '비만 1단계'
-        healthRisk = '위험'
-      } else {
-        category = 'obese2'
-        categoryKorean = '비만 2단계'
-        healthRisk = '고위험'
-      }
-    } else {
-      // 성인 기준 (아시아인 기준)
-      if (bmi < 18.5) {
-        category = 'underweight'
-        categoryKorean = '저체중'
-        healthRisk = '영양부족 위험'
-      } else if (bmi < 23) {
-        category = 'normal'
-        categoryKorean = '정상'
-        healthRisk = '건강'
-      } else if (bmi < 25) {
-        category = 'overweight'
-        categoryKorean = '과체중'
-        healthRisk = '약간 위험'
-      } else if (bmi < 30) {
-        category = 'obese1'
-        categoryKorean = '비만 1단계'
-        healthRisk = '위험'
-      } else {
-        category = 'obese2'
-        categoryKorean = '비만 2단계 이상'
-        healthRisk = '고위험'
-      }
-    }
-
-    // 이상 체중 범위 계산 (BMI 18.5-22.9 기준)
-    const minBMI = ageGroup === 'elderly' ? 22 : 18.5
-    const maxBMI = ageGroup === 'elderly' ? 25 : 22.9
-    
-    const idealWeightMin = minBMI * h * h
-    const idealWeightMax = maxBMI * h * h
-    const weightDifference = w - ((idealWeightMin + idealWeightMax) / 2)
-
-    const calculationResult = {
-      bmi,
-      category,
-      categoryKorean,
-      idealWeightMin,
-      idealWeightMax,
-      weightDifference,
-      healthRisk
-    }
-
-    setResult(calculationResult)
-    setShowSaveButton(true)
-  }
-
+  // 기록 불러오기. 새 기록이 없으면 예전 '계산 기록'(calculation_history)에서 한 번 이전
   useEffect(() => {
-    if (height && weight) {
-      calculateBMI()
-      updateURL({
-        height,
-        weight,
-        age: age || '0',
-        gender
-      })
-    }
-  }, [height, weight, age, gender])
-
-  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
-  useEffect(() => {
-    const heightParam = searchParams.get('height')
-    if (!heightParam) return // URL 파라미터가 없으면 복원하지 않음
-    
-    const weightParam = searchParams.get('weight')
-    const ageParam = searchParams.get('age')
-    const genderParam = searchParams.get('gender')
-
-    if (heightParam && /^\d+(\.\d+)?$/.test(heightParam)) {
-      setHeight(heightParam)
-    }
-    if (weightParam && /^\d+(\.\d+)?$/.test(weightParam)) {
-      setWeight(weightParam)
-    }
-    if (ageParam && /^\d+$/.test(ageParam) && ageParam !== '0') {
-      setAge(ageParam)
-    }
-    if (genderParam && ['male', 'female'].includes(genderParam)) {
-      setGender(genderParam as Gender)
-    }
-  }, [])
-
-  const formatNumber = (num: number, decimals: number = 1) => {
-    return num.toFixed(decimals)
-  }
-
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value !== '0') {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
-    })
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }
-
-  const handleShare = async () => {
-    if (!result) return
-    
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
-
     try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(currentUrl)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea')
-        textArea.value = currentUrl
-        document.body.appendChild(textArea)
-        textArea.select()
-        try {
-          document.execCommand('copy')
-          setIsCopied(true)
-          setTimeout(() => setIsCopied(false), 2000)
-        } catch (fallbackErr) {
-          console.error('Fallback copy failed: ', fallbackErr)
-        }
-        document.body.removeChild(textArea)
-      }
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
+      const raw = localStorage.getItem(LOG_KEY)
+      if (raw != null) { setLog(sanitizeLog(JSON.parse(raw))); return }
+      const legacy = fromLegacy(JSON.parse(localStorage.getItem(STORAGE_KEYS.CALCULATION_HISTORY) ?? '[]'))
+      setLog(legacy)
+      localStorage.setItem(LOG_KEY, JSON.stringify(legacy))
+    } catch { /* 저장소 없음 */ }
+  }, [])
+  const saveLog = (next: LogEntry[]) => {
+    setLog(next)
+    try { localStorage.setItem(LOG_KEY, JSON.stringify(next)) } catch { /* 저장 불가 */ }
   }
 
-  const handleSaveCalculation = () => {
-    if (!result) return
-    
-    const h = parseFloat(height)
-    const w = parseFloat(weight)
-    const ageNum = parseFloat(age) || 0
-    
-    saveCalculation(
-      {
-        height: h,
-        weight: w,
-        age: ageNum,
-        gender
-      },
-      {
-        bmi: result.bmi,
-        category: result.category,
-        categoryKorean: result.categoryKorean,
-        idealWeightMin: result.idealWeightMin,
-        idealWeightMax: result.idealWeightMax,
-        weightDifference: result.weightDifference,
-        healthRisk: result.healthRisk
-      }
-    )
-    
-    setShowSaveButton(false)
-  }
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const set = (k: string, v: string | null) => (v ? url.searchParams.set(k, v) : url.searchParams.delete(k))
+    set('height', height)
+    set('weight', weight)
+    set('gender', sex)
+    set('age', age)
+    set('waist', waist)
+    set('std', std === 'who' ? 'who' : null)
+    window.history.replaceState({}, '', url)
+  }, [sex, height, weight, age, waist, std])
 
-  const getBMIColor = (category: string) => {
-    switch (category) {
-      case 'underweight': return 'text-blue-600'
-      case 'normal': return 'text-green-600'
-      case 'overweight': return 'text-yellow-600'
-      case 'obese1': return 'text-orange-600'
-      case 'obese2': return 'text-red-600'
-      default: return 'text-gray-600'
-    }
-  }
+  const h = Number(height) || 0
+  const w = Number(weight) || 0
+  const ok = valid(h, w)
+  const r = useMemo(() => (ok ? analyze(h, w, std) : null), [ok, h, w, std])
+  const rows = useMemo(() => (ok ? classRanges(h, std) : []), [ok, h, std])
+  const wc = r ? waistCheck(sex, Number(waist) || 0, h, r.cls, std) : null
+  const note = ageNote(Number(age) || 0)
 
-  const getBMIBgColor = (category: string) => {
-    switch (category) {
-      case 'underweight': return 'bg-blue-100 dark:bg-blue-900/30 border-line'
-      case 'normal': return 'bg-green-100 dark:bg-green-900/30 border-line'
-      case 'overweight': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
-      case 'obese1': return 'bg-orange-100 dark:bg-orange-900/30 border-line'
-      case 'obese2': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
-    }
-  }
+  const cls = (c: BmiClass) => t(`u.cls.${std}.${c}`)
+  const toNormalText = (kg: number) => (kg === 0 ? t('u.inNormal') : t(kg < 0 ? 'u.lose' : 'u.gain', { kg: f1(Math.abs(kg)) }))
+  const bmiRange = (min: number | null, max: number | null) =>
+    min == null ? `< ${CUTS[std][0]}` : max == null ? `≥ ${min}` : `${min.toFixed(1)}–${max.toFixed(1)}`
+  const kgRange = (min: number | null, max: number | null) =>
+    min == null ? `≤ ${f1(max!)}kg` : max == null ? `≥ ${f1(min)}kg` : `${f1(min)}–${f1(max)}kg`
 
-  const bmiGaugeOption = useMemo(() => {
-    if (!result) return {}
-    return {
-      series: [{
-        type: 'gauge',
-        min: 10,
-        max: 40,
-        splitNumber: 6,
-        axisLine: {
-          lineStyle: {
-            width: 20,
-            color: [
-              [0.283, '#3B82F6'],   // 10-18.5: Underweight
-              [0.433, '#10B981'],   // 18.5-23: Normal
-              [0.5, '#F59E0B'],     // 23-25: Overweight
-              [0.667, '#F97316'],   // 25-30: Obese
-              [1, '#EF4444'],       // 30-40: Severely Obese
-            ]
-          }
-        },
-        pointer: { width: 5, length: '60%', itemStyle: { color: 'auto' } },
-        axisTick: { distance: -20, length: 6, lineStyle: { color: '#fff', width: 1 } },
-        splitLine: { distance: -25, length: 20, lineStyle: { color: '#fff', width: 2 } },
-        axisLabel: { distance: 30, fontSize: 11, color: '#6B7280' },
-        detail: {
-          valueAnimation: true,
-          formatter: (value: number) => `${value.toFixed(1)}`,
-          fontSize: 28,
-          fontWeight: 'bold',
-          offsetCenter: [0, '70%'],
-          color: 'auto',
-        },
-        data: [{ value: Math.round(result.bmi * 10) / 10 }]
-      }]
-    }
-  }, [result])
+  const delta = log.length > 1
+    ? { w: log[log.length - 1].w - log[0].w, b: bmi(log[log.length - 1].h, log[log.length - 1].w) - bmi(log[0].h, log[0].w) }
+    : null
+  const chartData = log.map((e) => ({ d: e.d, bmi: round1(bmi(e.h, e.w)), w: e.w }))
+
+  const numField = (label: string, value: string, set: (v: string) => void, unit: string, placeholder?: string, hint?: string) => (
+    <div>
+      <label className="block text-sm font-medium text-body">
+        {label} <span className="text-faint font-normal">({unit})</span>
+        <input type="number" inputMode="decimal" step="0.1" min="0" value={value} placeholder={placeholder}
+          onChange={(e) => set(e.target.value)} className="ui-field px-3 py-3 mt-1.5 tabular-nums font-normal" />
+      </label>
+      {hint && <p className="text-xs text-muted mt-1">{hint}</p>}
+    </div>
+  )
+
+  const [gLo, gHi] = GAUGE[std]
+  const segs = [gLo, ...CUTS[std], gHi]
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={false}
-          onLoadHistory={(historyId) => {
-            const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setHeight(inputs.height?.toString() || '')
-              setWeight(inputs.weight?.toString() || '')
-              setAge(inputs.age?.toString() || '')
-              setGender(inputs.gender || 'male')
-            }
-          }}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={(result: Record<string, unknown>) => {
-            const bmi = Number(result.bmi) || 0
-            const category = String(result.categoryKorean || '')
-            return category ? `BMI ${formatNumber(bmi, 1)} (${category})` : t('history.empty')
-          }}
-        />
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 폼 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            {t('input.title')}
-          </h2>
-
-          <div className="space-y-6">
-            {/* 키 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.height')}
-              </label>
-              <input
-                type="number"
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-                placeholder={t('input.heightPlaceholder')}
-                step="0.1"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-            </div>
-
-            {/* 몸무게 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.weight')}
-              </label>
-              <input
-                type="number"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                placeholder={t('input.weightPlaceholder')}
-                step="0.1"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-            </div>
-
-            {/* 나이 (선택사항) */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.age')}
-              </label>
-              <input
-                type="number"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                placeholder={t('input.agePlaceholder')}
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {t('input.ageNote')}
-              </p>
-            </div>
-
-            {/* 성별 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('input.gender')}
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'male'}
-                    onChange={() => setGender('male')}
-                    className="mr-2"
-                  />
-                  {t('input.male')}
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={gender === 'female'}
-                    onChange={() => setGender('female')}
-                    className="mr-2"
-                  />
-                  {t('input.female')}
-                </label>
+              <p className="text-sm font-medium text-body mb-2">{t('input.gender')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {(['male', 'female'] as const).map((g) => (
+                  <button key={g} type="button" onClick={() => setSex(g)} aria-pressed={sex === g}
+                    className={`py-2.5 rounded-xl font-medium transition-colors ${sex === g ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                    {t(`input.${g}`)}
+                  </button>
+                ))}
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {numField(t('u.height'), height, setHeight, 'cm')}
+              {numField(t('u.weight'), weight, setWeight, 'kg')}
+            </div>
+            <div className="border-t border-line pt-5 space-y-4">
+              <p className="text-sm font-semibold text-fg">{t('u.optional')}</p>
+              {numField(t('u.age'), age, setAge, t('u.unitAge'), t('u.agePlaceholder'), t('input.ageNote'))}
+              {numField(t('u.waist'), waist, setWaist, 'cm', t('u.waistPlaceholder'), t('u.waistHint'))}
+            </div>
+            <div className="border-t border-line pt-5">
+              <p className="text-sm font-medium text-body mb-2">{t('u.standard')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {STANDARDS.map((s) => (
+                  <button key={s} type="button" onClick={() => setStd(s)} aria-pressed={std === s}
+                    className={`py-2.5 px-2 rounded-xl text-sm font-medium transition-colors ${std === s ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                    {t(`u.std.${s}`)}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-2">{t(`u.stdNote.${std}`)}</p>
             </div>
           </div>
         </div>
 
-        {/* 결과 */}
-        <div className="space-y-6">
-          {result && (
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-6">
+          {!r ? (
+            <div className="bg-subtle rounded-2xl p-8 text-center text-sub">{t('placeholder')}</div>
+          ) : (
             <>
-              {/* 주요 결과 */}
-              <div className={`rounded-2xl shadow-lg p-8 border-2 ${getBMIBgColor(result.category)}`}>
-                <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  {t('result.title')}
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div className={`text-4xl font-bold ${getBMIColor(result.category)}`}>
-                      {formatNumber(result.bmi, 1)}
-                    </div>
-                    <div className={`text-lg font-semibold mt-2 ${getBMIColor(result.category)}`}>
-                      {result.categoryKorean}
-                    </div>
-                    <div className="text-sm text-body mt-1">
-                      {result.healthRisk}
-                    </div>
+              {note === 'child' && (
+                <div className="bg-amber-50 text-amber-800 rounded-2xl p-5 flex gap-3 text-sm">
+                  <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold">{t('u.child.title')}</p>
+                    <p className="mt-1">{t('u.child.body')}</p>
+                    <a href="https://knhanes.kdca.go.kr/" target="_blank" rel="noopener noreferrer" className="inline-block mt-2 font-medium underline">
+                      {t('u.child.link')}
+                    </a>
                   </div>
-                  
-                  <div className="border-t border-line-strong pt-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-body">{t('result.idealWeightRange')}</span>
-                      <span className="font-semibold text-fg">
-                        {formatNumber(result.idealWeightMin, 1)} - {formatNumber(result.idealWeightMax, 1)}kg
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-body">{t('result.weightDifference')}</span>
-                      <span className={`font-semibold ${result.weightDifference > 0 ? 'text-red-600' : result.weightDifference < 0 ? 'text-blue-600' : 'text-green-600'}`}>
-                        {result.weightDifference > 0 ? '+' : ''}{formatNumber(result.weightDifference, 1)}kg
-                      </span>
-                    </div>
-                  </div>
+                </div>
+              )}
 
-                  {/* 공유/저장 버튼 */}
-                  <div className="flex space-x-2 mt-4">
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>{t('common.copied')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>{t('result.shareResult')}</span>
-                        </>
-                      )}
-                    </button>
-                    
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-700 transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>{t('common.save')}</span>
-                      </button>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{t('u.heroLabel', { std: t(`u.std.${std}`) })}</p>
+                <div className="flex items-baseline gap-3 mt-1 flex-wrap">
+                  <p className="text-5xl font-bold tabular-nums">{f1(r.bmi)}</p>
+                  <p className="text-xl font-semibold">{cls(r.cls)}</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 text-sm">
+                  <div>
+                    <p className="text-white/70">{t('u.healthyRange')}</p>
+                    <p className="text-xl font-bold tabular-nums">{f1(r.healthyMin)}–{f1(r.healthyMax)}kg</p>
+                  </div>
+                  <div>
+                    <p className="text-white/70">{t('u.toNormal')}</p>
+                    <p className="text-xl font-bold tabular-nums">{toNormalText(r.toNormal)}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/70">{t('u.standardKg')}</p>
+                    <p className="text-xl font-bold tabular-nums">{f1(r.standardKg)}kg</p>
+                  </div>
+                </div>
+              </div>
+
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('u.share.label', { h: height, w: weight }),
+                  headline: f1(r.bmi),
+                  sub: `${cls(r.cls)} · ${t(`u.std.${std}`)}`,
+                  rows: [
+                    { label: t('u.healthyRange'), value: `${f1(r.healthyMin)}–${f1(r.healthyMax)}kg` },
+                    { label: t('u.toNormal'), value: toNormalText(r.toNormal) },
+                    { label: t('u.standardKg'), value: `${f1(r.standardKg)}kg` },
+                    ...(wc ? [{ label: t('u.waistResult'), value: `${waist}cm · ${t(wc.abdominal ? 'u.abdYes' : 'u.abdNo')}` }] : []),
+                  ],
+                }}
+                text={t('u.share.text', { bmi: f1(r.bmi), cls: cls(r.cls) })}
+                fileName="bmi"
+              />
+
+              {/* 게이지 + 단계별 체중 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('u.gaugeTitle')}</h2>
+                <div className="relative mt-4 pt-8" role="img" aria-label={t('u.gaugeAria', { bmi: f1(r.bmi), cls: cls(r.cls) })}>
+                  <div className="absolute top-0 -translate-x-1/2 px-2 py-0.5 rounded-md bg-primary text-white text-xs font-bold tabular-nums"
+                    style={{ left: `${Math.min(95, Math.max(5, gaugePos(r.bmi, std)))}%` }}>
+                    {f1(r.bmi)}
+                  </div>
+                  <div className="flex h-3 gap-0.5">
+                    {CLASSES.map((c, i) => (
+                      <div key={c} className={`h-full first:rounded-l-full last:rounded-r-full ${c === r.cls ? 'bg-primary' : c === 'normal' ? 'bg-primary/25' : 'bg-track'}`}
+                        style={{ width: `${((segs[i + 1] - segs[i]) / (gHi - gLo)) * 100}%` }} />
+                    ))}
+                  </div>
+                  <div className="absolute top-7 h-5 w-0.5 -ml-px bg-fg" style={{ left: `${gaugePos(r.bmi, std)}%` }} />
+                  <div className="relative h-5 mt-1.5 text-xs text-muted tabular-nums">
+                    {CUTS[std].map((c) => (
+                      <span key={c} className="absolute -translate-x-1/2" style={{ left: `${gaugePos(c, std)}%` }}>{c}</span>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-xs text-muted mt-1">{t('u.gaugeNote')}</p>
+
+                <div className="mt-5 grid grid-cols-2 gap-3">
+                  {r.toLower != null && (
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-muted">{t('u.toClass', { cls: cls(CLASSES[CLASSES.indexOf(r.cls) - 1]) })}</p>
+                      <p className="text-xl font-bold text-fg tabular-nums">−{f1(r.toLower)}kg</p>
+                    </div>
+                  )}
+                  {r.toUpper != null && (
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-muted">{t('u.toClass', { cls: cls(CLASSES[CLASSES.indexOf(r.cls) + 1]) })}</p>
+                      <p className="text-xl font-bold text-fg tabular-nums">+{f1(r.toUpper)}kg</p>
+                    </div>
+                  )}
+                </div>
+
+                <table className="w-full mt-5 text-sm">
+                  <thead>
+                    <tr className="text-left text-xs text-muted border-b border-line">
+                      <th className="py-2 pr-2 font-medium">{t('u.colClass')}</th>
+                      <th className="py-2 pr-2 font-medium">BMI</th>
+                      <th className="py-2 font-medium text-right">{t('u.colKg', { h: height })}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((row) => {
+                      const cur = row.c === r.cls
+                      return (
+                        <tr key={row.c} className={cur ? 'bg-primary-soft text-primary font-semibold' : 'text-body'}>
+                          <td className="py-2 px-2 rounded-l-lg">{cls(row.c)}{cur && <span className="sr-only"> ({t('u.current')})</span>}</td>
+                          <td className="py-2 pr-2 tabular-nums">{bmiRange(row.bmiMin, row.bmiMax)}</td>
+                          <td className="py-2 px-2 tabular-nums text-right rounded-r-lg">{kgRange(row.kgMin, row.kgMax)}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+                <p className="text-xs text-muted mt-3">{t(`u.source.${std}`)}</p>
+              </div>
+
+              {/* 허리둘레 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('u.waistTitle')}</h2>
+                {!wc ? (
+                  <p className="text-sm text-muted mt-2">{t('u.waistEmpty', { cut: ABDOMINAL[sex] })}</p>
+                ) : (
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-muted">{t('u.abdTitle', { sex: t(`input.${sex}`), cut: ABDOMINAL[sex] })}</p>
+                      <p className={`text-xl font-bold ${wc.abdominal ? 'text-amber-700' : 'text-fg'}`}>{t(wc.abdominal ? 'u.abdYes' : 'u.abdNo')}</p>
+                    </div>
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-muted">{t('u.whtr')}</p>
+                      <p className={`text-xl font-bold tabular-nums ${wc.ratio >= 0.5 ? 'text-amber-700' : 'text-fg'}`}>{wc.ratio.toFixed(2)}</p>
+                      <p className="text-xs text-muted mt-0.5">{t(wc.ratio >= 0.5 ? 'u.whtrHigh' : 'u.whtrOk')}</p>
+                    </div>
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-muted">{t('u.riskTitle')}</p>
+                      <p className="text-xl font-bold text-fg">{wc.risk ? t(`u.risk.${wc.risk}`) : '-'}</p>
+                      {!wc.risk && <p className="text-xs text-muted mt-0.5">{t('u.riskKrOnly')}</p>}
+                    </div>
+                  </div>
+                )}
+                <p className="text-xs text-muted mt-3">{t('u.waistSource')}</p>
+              </div>
+
+              {note === 'senior' && (
+                <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+                  <p className="font-semibold text-fg">{t('u.senior.title')}</p>
+                  <p className="mt-1">{t('u.senior.body')}</p>
+                </div>
+              )}
+
+              <p className="text-sm text-body">
+                {t('u.nextSteps')}{' '}
+                <Link href="/body-fat-calculator/" className="text-primary font-medium">{t('u.linkBodyFat')}</Link>
+                {' · '}
+                <Link href="/calorie-calculator/" className="text-primary font-medium">{t('u.linkCalorie')}</Link>
+              </p>
+
+              {/* 기록 */}
+              <div className="ui-card p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg font-semibold text-fg">{t('u.logTitle')}</h2>
+                    <p className="text-xs text-muted mt-1">{t('u.logNote')}</p>
+                  </div>
+                  <button type="button" onClick={() => saveLog(upsertLog(log, { d: todayStr(), h, w }))}
+                    className="ui-btn px-4 py-2 text-sm shrink-0">{t('u.logSave')}</button>
+                </div>
+                {log.length === 0 ? (
+                  <p className="text-sm text-muted mt-4">{t('u.logEmpty')}</p>
+                ) : (
+                  <>
+                    {delta && (
+                      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div className="bg-subtle rounded-xl p-3">
+                          <p className="text-xs text-muted">{t('u.deltaW', { from: log[0].d })}</p>
+                          <p className="font-bold text-fg tabular-nums">{delta.w > 0 ? '+' : ''}{f1(delta.w)}kg</p>
+                        </div>
+                        <div className="bg-subtle rounded-xl p-3">
+                          <p className="text-xs text-muted">{t('u.deltaB')}</p>
+                          <p className="font-bold text-fg tabular-nums">{delta.b > 0 ? '+' : ''}{f1(delta.b)}</p>
+                        </div>
+                      </div>
                     )}
-                  </div>
-                </div>
-              </div>
-
-              {/* BMI 게이지 차트 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <ReactECharts option={bmiGaugeOption} style={{ height: '280px' }} />
-              </div>
-
-              {/* BMI 단계별 설명 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-fg mb-4">
-                  {t('classification.title')}
-                </h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-blue-600 font-medium">{t('categories.underweight')}</span>
-                      <span className="text-gray-500 text-xs ml-2">(Underweight)</span>
-                    </div>
-                    <span className="text-body font-medium">18.5 미만</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-green-600 font-medium">{t('categories.normal')}</span>
-                      <span className="text-gray-500 text-xs ml-2">(Normal)</span>
-                    </div>
-                    <span className="text-body font-medium">18.5 - 22.9</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-yellow-600 font-medium">{t('categories.overweight')}</span>
-                      <span className="text-gray-500 text-xs ml-2">(Overweight)</span>
-                    </div>
-                    <span className="text-body font-medium">23.0 - 24.9</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-orange-600 font-medium">{t('categories.obese1')}</span>
-                      <span className="text-gray-500 text-xs ml-2">(Obese Class I)</span>
-                    </div>
-                    <span className="text-body font-medium">25.0 - 29.9</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-red-600 font-medium">{t('categories.obese2')}</span>
-                      <span className="text-gray-500 text-xs ml-2">(Obese Class II+)</span>
-                    </div>
-                    <span className="text-body font-medium">30.0 이상</span>
-                  </div>
-                  <p className="text-xs text-sub mt-3 pt-2 border-t border-line">
-                    {t('classification.note')}
-                  </p>
-                </div>
+                    {log.length > 1 && (
+                      <div className="h-48 mt-4">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={chartData} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                            <ReferenceArea y1={CUTS[std][0]} y2={CUTS[std][1]} fill="var(--primary)" fillOpacity={0.08} />
+                            <XAxis dataKey="d" tickFormatter={(d: string) => d.slice(5)} tick={{ fontSize: 11, fill: 'var(--muted)' }} />
+                            <YAxis domain={['dataMin - 1', 'dataMax + 1']} tickFormatter={(v: number) => String(Math.round(v))} tick={{ fontSize: 11, fill: 'var(--muted)' }} />
+                            <Tooltip formatter={(v) => [Number(v ?? 0).toFixed(1), 'BMI']} />
+                            <Line type="monotone" dataKey="bmi" stroke="var(--primary)" strokeWidth={2.5} dot={{ r: 3 }} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+                    <ul className="mt-4 divide-y divide-line text-sm">
+                      {[...log].reverse().slice(0, 10).map((e) => {
+                        const eb = round1(bmi(e.h, e.w))
+                        return (
+                          <li key={e.d} className="flex items-center justify-between gap-2 py-2">
+                            <span className="text-muted tabular-nums">{e.d}</span>
+                            <span className="text-body tabular-nums flex-1 text-right">{f1(e.w)}kg · BMI {f1(eb)}</span>
+                            <button type="button" onClick={() => saveLog(log.filter((x) => x.d !== e.d))} aria-label={t('u.logDelete')}
+                              className="p-1.5 rounded-lg text-faint hover:text-body hover:bg-soft">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </>
+                )}
               </div>
             </>
           )}
-
-          {!result && (
-            <div className="bg-subtle rounded-2xl p-8 text-center">
-              <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-sub">
-                {t('placeholder')}
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* BMI 건강 가이드 */}
-      <div className="bg-subtle rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-fg mb-6">
-          {t('guide.title')}
-        </h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.meaningTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.meaning.0')}</li>
-              <li>• {t('guide.meaning.1')}</li>
-              <li>• {t('guide.meaning.2')}</li>
-              <li>• {t('guide.meaning.3')}</li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.managementTitle')}
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• {t('guide.management.0')}</li>
-              <li>• {t('guide.management.1')}</li>
-              <li>• {t('guide.management.2')}</li>
-              <li>• {t('guide.management.3')}</li>
-            </ul>
-          </div>
+      {/* BMI의 의미 · 체중 관리 */}
+      <div className="ui-card p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(['meaning', 'management'] as const).map((k) => (
+            <div key={k}>
+              <h2 className="text-lg font-semibold text-fg mb-3">{t(`guide.${k}Title`)}</h2>
+              <ul className="space-y-1.5 text-sm text-body list-disc pl-4">
+                {[0, 1, 2, 3].map((i) => <li key={i}>{t(`guide.${k}.${i}`)}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* BMI 관련 추가 콘텐츠 */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* BMI 계산기 활용법 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-            {t('usage.title')}
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-pink-600 font-bold text-sm">1</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.1.title')}</h4>
-                <p className="text-sub text-sm">{t('usage.steps.1.content')}</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-pink-600 font-bold text-sm">2</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.2.title')}</h4>
-                <p className="text-sub text-sm">{t('usage.steps.2.content')}</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-pink-600 font-bold text-sm">3</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-fg mb-1">{t('usage.steps.3.title')}</h4>
-                <p className="text-sub text-sm">{t('usage.steps.3.content')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <GuideSection namespace="bmi" defaultOpen />
 
-        {/* 체중 관리 팁 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-            {t('healthTips.title')}
-          </h3>
-          <div className="space-y-4">
-            <div className="p-4 bg-subtle rounded-xl">
-              <h4 className="font-semibold text-green-800 dark:text-green-400 mb-2">{t('healthTips.diet.title')}</h4>
-              <p className="text-sub text-sm">{t('healthTips.diet.content')}</p>
-            </div>
-            <div className="p-4 bg-subtle rounded-xl">
-              <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">‍♂️ {t('healthTips.exercise.title')}</h4>
-              <p className="text-sub text-sm">{t('healthTips.exercise.content')}</p>
-            </div>
-            <div className="p-4 bg-subtle rounded-xl">
-              <h4 className="font-semibold text-purple-800 dark:text-purple-400 mb-2">{t('healthTips.sleep.title')}</h4>
-              <p className="text-sub text-sm">{t('healthTips.sleep.content')}</p>
-            </div>
-            <div className="p-4 bg-subtle rounded-xl">
-              <h4 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">{t('healthTips.water.title')}</h4>
-              <p className="text-sub text-sm">{t('healthTips.water.content')}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* BMI와 질병 위험도 */}
-      <div className={`${glassCard} ${glassInset} p-8`}>
-        <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          BMI와 건강 위험도
-        </h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-line">
-                <th className="text-left py-3 px-4 font-semibold text-fg">BMI 범위</th>
-                <th className="text-left py-3 px-4 font-semibold text-fg">분류</th>
-                <th className="text-left py-3 px-4 font-semibold text-fg">질병 위험도</th>
-                <th className="text-left py-3 px-4 font-semibold text-fg">주요 관심사</th>
-              </tr>
-            </thead>
-            <tbody className="text-body">
-              <tr className="border-b border-line">
-                <td className="py-3 px-4">18.5 미만</td>
-                <td className="py-3 px-4"><span className="text-blue-600 font-medium">저체중</span></td>
-                <td className="py-3 px-4">증가</td>
-                <td className="py-3 px-4">영양실조, 골다공증, 면역력 저하</td>
-              </tr>
-              <tr className="border-b border-line">
-                <td className="py-3 px-4">18.5 - 22.9</td>
-                <td className="py-3 px-4"><span className="text-green-600 font-medium">정상</span></td>
-                <td className="py-3 px-4">최저</td>
-                <td className="py-3 px-4">건강한 상태 유지</td>
-              </tr>
-              <tr className="border-b border-line">
-                <td className="py-3 px-4">23.0 - 24.9</td>
-                <td className="py-3 px-4"><span className="text-yellow-600 font-medium">과체중</span></td>
-                <td className="py-3 px-4">약간 증가</td>
-                <td className="py-3 px-4">생활습관 개선 필요</td>
-              </tr>
-              <tr className="border-b border-line">
-                <td className="py-3 px-4">25.0 - 29.9</td>
-                <td className="py-3 px-4"><span className="text-orange-600 font-medium">비만 1단계</span></td>
-                <td className="py-3 px-4">증가</td>
-                <td className="py-3 px-4">당뇨, 고혈압, 심혈관 질환</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4">30.0 이상</td>
-                <td className="py-3 px-4"><span className="text-red-600 font-medium">비만 2단계</span></td>
-                <td className="py-3 px-4">고위험</td>
-                <td className="py-3 px-4">대사증후군, 관절질환, 수면무호흡증</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-xs text-muted mt-4">
-          * 개인차가 있을 수 있으며, 정확한 진단은 의료진과 상담하시기 바랍니다.
-        </p>
-      </div>
+      <p className="text-xs text-muted">{t('u.disclaimer')}</p>
     </div>
   )
 }

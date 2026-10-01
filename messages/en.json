@@ -2922,6 +2922,106 @@
     }
   },
   "bmi": {
+    "u": {
+      "height": "Height",
+      "weight": "Weight",
+      "optional": "Optional",
+      "age": "Age",
+      "unitAge": "years",
+      "agePlaceholder": "e.g. 35",
+      "waist": "Waist",
+      "waistPlaceholder": "e.g. 85",
+      "waistHint": "Measure at the navel after breathing out",
+      "standard": "Standard",
+      "std": {
+        "kr": "Korean (KSSO)",
+        "who": "WHO"
+      },
+      "stdNote": {
+        "kr": "Used in Korean check-ups and clinics (23+ pre-obese, 25+ obese)",
+        "who": "International standard (25+ overweight, 30+ obese)"
+      },
+      "child": {
+        "title": "Adult cut-offs don't apply under 19",
+        "body": "Children and teens are assessed by BMI percentile for age and sex on the 2017 Korean growth charts (85th to <95th overweight, 95th+ obese). Ignore the adult result below.",
+        "link": "KDCA KNHANES site (growth charts)"
+      },
+      "heroLabel": "Your BMI · {std}",
+      "healthyRange": "Healthy weight range",
+      "toNormal": "To normal",
+      "standardKg": "Standard weight (BMI 22)",
+      "inNormal": "In range",
+      "lose": "Lose {kg}kg",
+      "gain": "Gain {kg}kg",
+      "share": {
+        "label": "BMI at {h}cm · {w}kg",
+        "text": "My BMI is {bmi} ({cls})"
+      },
+      "waistResult": "Waist",
+      "abdYes": "Abdominal obesity",
+      "abdNo": "Normal",
+      "gaugeTitle": "Where you stand",
+      "gaugeAria": "BMI {bmi}, {cls}",
+      "gaugeNote": "The light blue segment is the normal range; dark blue is your current category.",
+      "toClass": "To {cls}",
+      "colClass": "Category",
+      "colKg": "Weight at {h}cm",
+      "current": "current",
+      "source": {
+        "kr": "Source: KSSO Clinical Practice Guidelines for Obesity 2022. BMI is classified after rounding to one decimal (22.96 → 23.0 → pre-obese).",
+        "who": "Source: WHO adult BMI classification. Asians carry higher metabolic risk at the same BMI, so Korea uses the KSSO cut-offs."
+      },
+      "waistTitle": "Abdominal obesity by waist",
+      "waistEmpty": "Enter your waist to see abdominal obesity (cut-off {cut}cm), waist-to-height ratio and comorbidity risk. Abdominal obesity raises risk even with a normal BMI.",
+      "abdTitle": "Abdominal obesity ({sex} ≥ {cut}cm)",
+      "whtr": "Waist-to-height ratio",
+      "whtrHigh": "0.5 or more: higher risk",
+      "whtrOk": "Below 0.5",
+      "riskTitle": "Comorbidity risk",
+      "risk": {
+        "low": "Low",
+        "average": "Average",
+        "slight": "Slightly high",
+        "high": "High",
+        "veryHigh": "Very high",
+        "highest": "Highest"
+      },
+      "riskKrOnly": "Available with the KSSO standard",
+      "waistSource": "Abdominal obesity and comorbidity risk (BMI category × waist): KSSO 2022. A waist-to-height ratio of 0.5 is a common reference line.",
+      "senior": {
+        "title": "If you are 65 or older",
+        "body": "The cut-offs are the same, but older adults face greater risk from muscle loss and underweight. Many studies found the lowest mortality at a BMI slightly above the normal upper limit, so preserving muscle with strength training and protein matters more than aggressive weight loss."
+      },
+      "nextSteps": "BMI can't tell muscle from fat. Useful next tools:",
+      "linkBodyFat": "Body fat calculator",
+      "linkCalorie": "Calorie calculator for a goal weight",
+      "logTitle": "BMI log",
+      "logNote": "Stored on this device only. Saving again on the same day overwrites it.",
+      "logSave": "Log today",
+      "logEmpty": "No entries yet. Weigh under the same conditions (morning, before eating) once or twice a month.",
+      "deltaW": "Weight since {from}",
+      "deltaB": "BMI change",
+      "logDelete": "Delete entry",
+      "cls": {
+        "kr": {
+          "under": "Underweight",
+          "normal": "Normal",
+          "pre": "Pre-obese",
+          "obese1": "Obesity class 1",
+          "obese2": "Obesity class 2",
+          "obese3": "Obesity class 3"
+        },
+        "who": {
+          "under": "Underweight",
+          "normal": "Normal",
+          "pre": "Overweight",
+          "obese1": "Obese class I",
+          "obese2": "Obese class II",
+          "obese3": "Obese class III"
+        }
+      },
+      "disclaimer": "For reference only, not a diagnosis. BMI ignores muscle mass, pregnancy and swelling; consult a medical professional about your health."
+    },
     "title": "BMI Calculator",
     "description": "Calculate your Body Mass Index (BMI) to start healthy weight management",
     "input": {
@@ -2935,7 +3035,7 @@
       "heightPlaceholder": "170",
       "weightPlaceholder": "70",
       "agePlaceholder": "30",
-      "ageNote": "Separate criteria applied for 65+ years"
+      "ageNote": "Under 19 shows a note for children and teens; 65+ shows a note for older adults"
     },
     "result": {
       "title": "BMI Calculation Result",
@@ -2961,6 +3061,25 @@
       "highRisk": "High risk"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it's calculated",
+        "items": [
+          "BMI = weight (kg) ÷ height (m)². Example: 170cm, 65kg → 65 ÷ 1.7² = 22.5",
+          "Classification uses the displayed value (rounded to one decimal). 22.96 shows as 23.0 and is classified as pre-obese.",
+          "Healthy weight range = height (m)² × 18.5 to 22.9, shown in 0.1kg steps that actually classify as normal when entered.",
+          "Standard weight = height (m)² × 22 (170cm → 63.6kg)",
+          "With a waist measurement, abdominal obesity is combined with your BMI category into the KSSO comorbidity risk."
+        ]
+      },
+      "comparison": {
+        "title": "Standards compared",
+        "items": [
+          "KSSO (2022): <18.5 underweight, 18.5–22.9 normal, 23–24.9 pre-obese, 25–29.9 class 1, 30–34.9 class 2, 35+ class 3 obesity",
+          "WHO: 18.5–24.9 normal, 25–29.9 overweight, 30+ obese (classes at 30, 35, 40). The same person can be classified differently.",
+          "BMI vs body fat %: BMI can't separate muscle from fat. If you are muscular, check with the body fat calculator.",
+          "BMI 22 standard weight vs Broca ((height − 100) × 0.9): 63.6kg vs 63.0kg at 170cm — similar, but they diverge for very tall or short people."
+        ]
+      },
       "title": "BMI and Health Management",
       "meaningTitle": "Meaning of BMI",
       "meaning": {
@@ -2978,23 +3097,25 @@
       },
       "whatIs": {
         "title": "What is the BMI Calculator?",
-        "description": "The BMI (Body Mass Index) Calculator uses your height and weight to express your degree of body fat as a number. It classifies your result as underweight, normal, overweight, or obese (Stages 1–3) according to WHO and Korean Society for the Study of Obesity (KSSO) guidelines, and also shows your healthy weight range. Use it for regular weight management and health monitoring."
+        "description": "The BMI (Body Mass Index) Calculator expresses your weight status as a number from height and weight. It classifies you as underweight, normal, pre-obese or obesity class 1–3 under the Korean KSSO 2022 standard (default) or WHO, and shows the healthy weight range for your height and how many kg you are from it. Add your waist to check abdominal obesity and comorbidity risk."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your height (cm) and weight (kg).",
-          "2. Your BMI score and weight classification (underweight / normal / overweight / obese) are displayed.",
-          "3. See the healthy weight range and how far you are from your goal weight.",
-          "4. Recommended BMI ranges by age and gender are also provided for reference."
+          "Enter height (cm) and weight (kg) to see your BMI and category instantly.",
+          "Check your healthy weight range, how many kg to lose or gain to reach normal, and the distance to adjacent categories.",
+          "Optionally enter your waist to see abdominal obesity and comorbidity risk.",
+          "Switch the standard to WHO for international comparison. Share the result as a link or image.",
+          "Tap 'Log today' to save on this device and see your BMI trend chart."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "BMI doesn't account for muscle mass, so athletes and muscular individuals may be classified as overweight. Use it alongside the Body Fat Calculator for a fuller picture.",
-          "Asian populations face higher metabolic risk at the same BMI as Westerners. The KSSO defines 23–24.9 as overweight and 25+ as obese for Koreans.",
-          "Measuring waist circumference alongside BMI gives a more accurate health risk assessment. Abdominal obesity is defined as waist > 85 cm for men and > 80 cm for women."
+          "BMI ignores muscle mass, so athletes and muscular people may be classified as pre-obese or obese. Use it with the body fat calculator.",
+          "Asians carry higher metabolic risk at the same BMI; the KSSO defines 23–24.9 as pre-obese and 25+ as obese.",
+          "A waist of 90cm or more for men and 85cm or more for women is abdominal obesity, which raises risk even with a normal BMI.",
+          "Weigh under the same conditions (morning, before eating) and watch the monthly trend rather than daily swings."
         ]
       },
       "faq": {
@@ -3002,15 +3123,23 @@
         "items": [
           {
             "q": "What is the normal BMI range?",
-            "a": "WHO defines normal as 18.5–24.9. The KSSO defines normal for Koreans as 18.5–22.9. The KSSO standard is more commonly used in Korea."
+            "a": "18.5–22.9 under the KSSO standard and 18.5–24.9 under WHO. Korean health check-ups and clinics use the KSSO standard."
+          },
+          {
+            "q": "Is a BMI of 23 obese?",
+            "a": "Under the KSSO, 23–24.9 is 'pre-obese' (formerly called overweight). It is not obesity but the range where comorbidity risk starts to rise; under WHO it is normal."
           },
           {
             "q": "Does it apply to children and teenagers?",
-            "a": "The adult BMI chart applies to those 18 and older. For children and adolescents, weight status should be assessed using growth chart percentiles — consult a pediatrician."
+            "a": "The adult chart applies from age 19. Children and teens are assessed by BMI percentile for age and sex on the 2017 Korean growth charts (85th to <95th overweight, 95th+ obese). Consult a pediatrician if concerned."
+          },
+          {
+            "q": "Are the cut-offs the same for people 65 and older?",
+            "a": "Yes, but older adults face greater risk from muscle loss and underweight, and many studies found the lowest mortality at a BMI slightly above the normal upper limit. Preserving muscle and nutrition matters more than aggressive weight loss."
           },
           {
             "q": "Can a low BMI still indicate health problems?",
-            "a": "Yes. A BMI below 18.5 (underweight) can be associated with malnutrition, osteoporosis, and weakened immunity. If you've experienced rapid weight loss, consult a doctor."
+            "a": "Yes. A BMI below 18.5 can be associated with malnutrition, osteoporosis and weakened immunity. If you've lost weight rapidly, consult a doctor."
           }
         ]
       }
@@ -17910,8 +18039,52 @@
     }
   },
   "tetris": {
+    "playAgain": "Play again",
+    "idleHintKeys": "←→ move · ↑ rotate · Space hard drop · C hold · Enter start",
+    "idleHintTouch": "Tap to rotate · drag to move · flick down to hard drop",
+    "action": {
+      "single": "Single",
+      "double": "Double",
+      "triple": "Triple",
+      "tetris": "Tetris!",
+      "tspin": "T-Spin",
+      "tspinMini": "Mini T-Spin",
+      "b2b": "Back-to-Back",
+      "combo": "{n} Combo"
+    },
+    "controls": {
+      "left": "Move left",
+      "right": "Move right",
+      "softDrop": "Soft drop",
+      "hardDrop": "Hard drop",
+      "rotateCw": "Rotate clockwise",
+      "rotateCcw": "Rotate counterclockwise"
+    },
+    "result": {
+      "title": "This game",
+      "time": "Time",
+      "pps": "Pieces/sec",
+      "tetrises": "Tetrises",
+      "tspins": "T-Spins",
+      "maxCombo": "Max combo",
+      "pieces": "Pieces",
+      "career": "{games} games · {lines} lines total · best {bestLines} lines in one game"
+    },
+    "share": {
+      "label": "Tetris final score",
+      "sub": "{lines} lines · Level {level}",
+      "cta": "Beat my score →",
+      "text": "I scored {score} in Tetris. Can you beat it?"
+    },
+    "settings": {
+      "title": "Handling (DAS · ARR)",
+      "das": "DAS — delay before auto-repeat starts",
+      "arr": "ARR — auto-repeat interval (0 = instant to wall)",
+      "hint": "Lower is faster. Default 170ms / 50ms",
+      "reset": "Default"
+    },
     "title": "Tetris",
-    "description": "Classic block puzzle game with hold, next preview, ghost piece, and level system.",
+    "description": "Classic block puzzle with guideline rules: SRS rotation, 7-bag, hold, 5-piece preview, ghost, lock delay, T-spin/combo/back-to-back scoring, and mobile touch buttons.",
     "score": "Score",
     "bestScore": "Best",
     "level": "Level",
@@ -17930,31 +18103,35 @@
       "keyboard": {
         "title": "Keyboard Controls",
         "items": [
-          "← → : Move left/right",
-          "↑ : Rotate clockwise",
-          "↓ : Soft drop (move down faster)",
-          "Space : Hard drop (instant drop)",
-          "C : Hold (save current piece)",
-          "P : Pause/Resume"
+          "← → : Move (hold to auto-repeat, adjustable)",
+          "↑ or X : Rotate clockwise",
+          "Z or Ctrl : Rotate counterclockwise",
+          "↓ : Soft drop (1 pt per cell)",
+          "Space : Hard drop (2 pts per cell)",
+          "C or Shift : Hold",
+          "P or Esc : Pause/Resume · Enter : New game"
         ]
       },
       "touch": {
         "title": "Touch Controls",
         "items": [
-          "Swipe left/right : Move",
-          "Swipe down : Soft drop",
-          "Swipe up : Hard drop",
-          "Tap : Rotate"
+          "Tap the board : Rotate clockwise",
+          "Drag left/right on the board : Move cell by cell",
+          "Drag down slowly : Soft drop",
+          "Flick down : Hard drop",
+          "Flick up : Hold",
+          "Hold the on-screen buttons to auto-repeat"
         ]
       },
       "scoring": {
         "title": "Scoring System",
         "items": [
-          "1 line clear : 100 × Level",
-          "2 line clear : 300 × Level",
-          "3 line clear : 500 × Level",
-          "4 line clear (Tetris) : 800 × Level",
-          "Level increases every 10 lines, speed increases with level"
+          "Single 100 · Double 300 (× level)",
+          "Triple 500 · Tetris 800 (× level)",
+          "T-Spin Single 800 · Double 1200 · Triple 1600",
+          "Back-to-back (Tetris/T-Spin in a row) ×1.5",
+          "Combo: 50 × combo × level per consecutive clear",
+          "Level up every 10 lines; speed increases with level"
         ]
       },
       "guide": {
@@ -23890,16 +24067,169 @@
     ]
   },
   "bloodSugar": {
+    "timingRandom": "Random (any time)",
+    "u": {
+      "copyLink": "Copy link",
+      "copied": "Copied",
+      "valueLabel": "Blood sugar",
+      "unitLabel": "Unit",
+      "errValue": "Enter a blood sugar value between {min} and {max} {u}.",
+      "errDate": "Please enter a date.",
+      "privacy": "Records stay in this browser only and are never sent to a server.",
+      "ctxHint": {
+        "fasting": "After at least 8 hours without food (usually before breakfast)",
+        "beforeMeal": "Right before lunch or dinner",
+        "afterMeal": "2 hours after you started eating",
+        "bedtime": "Right before going to bed",
+        "random": "Any time, regardless of meals"
+      },
+      "heroLabel": "{ctx} blood sugar",
+      "otherUnit": "= {v} {u}",
+      "lv": {
+        "low2": "Severe low (level 2)",
+        "low": "Low blood sugar",
+        "fNormal": "Normal fasting",
+        "fIFG": "Impaired fasting glucose (prediabetes)",
+        "fDM": "In diabetes range (retest needed)",
+        "pNormal": "Normal at 2 hours",
+        "pIGT": "Impaired glucose tolerance range (prediabetes)",
+        "pDM": "In diabetes range (retest needed)",
+        "high": "High blood sugar",
+        "ok": "No diagnostic cutoff (reference)"
+      },
+      "lvDesc": {
+        "low2": "This low needs action now. Follow the 15-15 rule below, and call emergency services if the person is confused or cannot swallow.",
+        "low": "This is in the low range. Take sugar using the 15-15 rule below and recheck after 15 minutes.",
+        "fNormal": "Your fasting glucose is in the normal range. Checking about once a year, as in a routine checkup, is enough.",
+        "fIFG": "This is in the prediabetes range. Recheck on another day, and if it repeats, talk to a clinician about tests such as HbA1c. Weight, exercise and diet changes can often reverse it.",
+        "fDM": "This is above the diabetes cutoff, but diabetes is never diagnosed from one reading. It must be confirmed with a repeat fasting test or an HbA1c test, so please talk to a clinician.",
+        "pNormal": "Your 2-hour post-meal glucose is in the normal range.",
+        "pIGT": "Your post-meal glucose is higher than normal. Check a few more times at the same point, and if it stays here, talk to a clinician about formal testing.",
+        "pDM": "Your 2-hour post-meal glucose is high. One reading is not a diagnosis, so talk to a clinician and confirm with fasting glucose or HbA1c.",
+        "high": "This is a high reading. If you have strong thirst, frequent urination or weight loss, or it stays this high, see a doctor.",
+        "ok": "There is no diagnostic normal/abnormal cutoff for this timing. To check properly, measure fasting glucose (after 8+ hours without food) or 2-hour post-meal glucose."
+      },
+      "crit": {
+        "fasting": "Fasting: normal below {a} · impaired fasting glucose {a}–{b} · diabetes {c} or higher ({u})",
+        "afterMeal": "2 hours after a meal: normal below {a} · impaired glucose tolerance {a}–{b} · diabetes {c} or higher ({u})",
+        "other": "There is no diagnostic cutoff for this timing. A random glucose of {c} {u} or higher together with strong thirst, frequent urination or weight loss meets the diabetes criteria."
+      },
+      "targetPre": "If you already have diabetes, the target (Korean Diabetes Association): fasting / before meals {a}–{b} {u}",
+      "targetPost": "If you already have diabetes, the target (Korean Diabetes Association): below {a} {u} 2 hours after meals",
+      "ogttNote": "The official cutoffs for impaired glucose tolerance and diabetes use the 2-hour value after drinking 75 g of glucose (oral glucose tolerance test). Readings after ordinary meals depend on what you ate, so treat them as a reference.",
+      "diagNote": "Diabetes is never diagnosed from a single reading. It must be confirmed by a repeat test or another test, and home meters are meant for monitoring. If you are worried, talk to a clinician.",
+      "hypo": {
+        "title": "Treating a low: the 15-15 rule",
+        "steps": [
+          "Take 15 g of sugar: about 1/2–3/4 cup (120–175 mL) of juice or regular soda, 1 tablespoon of sugar or honey, or 3–4 hard candies.",
+          "Recheck after 15 minutes.",
+          "If it is still below 70 mg/dL (3.9 mmol/L), repeat once more.",
+          "Once recovered, eat a snack if your next meal is a long way off, to prevent another low."
+        ],
+        "emergency": "If the person is confused or cannot swallow, do not force food — call emergency services right away. Repeated lows without diabetes should be checked by a doctor."
+      },
+      "a1c": {
+        "title": "HbA1c result and average glucose",
+        "label": "HbA1c",
+        "result": "Result",
+        "eag": "Estimated average glucose (eAG)",
+        "lv": {
+          "normal": "Normal",
+          "pre": "Prediabetes",
+          "diabetes": "In diabetes range (retest needed)"
+        },
+        "err": "Enter a value between 3% and 20%.",
+        "crit": "Cutoffs: normal below 5.7% · prediabetes 5.7–6.4% · diabetes 6.5% or higher",
+        "formula": "eAG (mg/dL) = 28.7 × HbA1c − 46.7 (ADAG study). Reflects average glucose over the past 2–3 months.",
+        "target": "If you already have diabetes, a typical target is below 6.5% (Korean Diabetes Association, type 2) or below 7% (ADA), individualized by your clinician based on age and hypoglycemia risk."
+      },
+      "colMmol": "Blood Sugar (mmol/L)",
+      "periodDays": "{n} days",
+      "countN": "{n}×",
+      "tirTitle": "Readings by range",
+      "tirBelow": "Below {lo}",
+      "tirIn": "{lo}–{hi}",
+      "tirAbove": "Above {hi}",
+      "tirNote": "70–180 mg/dL is the continuous glucose monitoring (CGM) target range for people with diabetes; spending 70%+ of time in it is the international consensus goal. For fingerstick logs, use it only as a reference.",
+      "ctxAvgTitle": "Average by timing",
+      "chartTitle": "Blood sugar trend",
+      "chartBand": "Shaded = {lo}–{hi} {u}",
+      "chartValue": "Blood sugar",
+      "g": {
+        "title": "Blood sugar cutoffs at a glance",
+        "tableHead": [
+          "Test",
+          "Normal",
+          "Prediabetes",
+          "Diabetes"
+        ],
+        "rows": [
+          [
+            "Fasting glucose (8+ h fast)",
+            "Below 100",
+            "100–125 (IFG)",
+            "126 or higher"
+          ],
+          [
+            "75 g OGTT, 2 hours",
+            "Below 140",
+            "140–199 (IGT)",
+            "200 or higher"
+          ],
+          [
+            "HbA1c",
+            "Below 5.7%",
+            "5.7–6.4%",
+            "6.5% or higher"
+          ],
+          [
+            "Random glucose",
+            "—",
+            "—",
+            "200 or higher + classic symptoms"
+          ]
+        ],
+        "tableUnit": "Units: mg/dL. Divide by 18.016 for mmol/L (e.g. 126 mg/dL ≈ 7.0 mmol/L).",
+        "diagTitle": "How diagnosis works",
+        "diagItems": [
+          "Without symptoms, one reading is not a diagnosis. A repeat test on another day, or a second test, must also be over the cutoff.",
+          "A random glucose of 200 mg/dL or higher with strong thirst, frequent urination or unexplained weight loss meets the criteria on its own.",
+          "Under ISO 15197, a home meter passes if 95% of results fall within ±15% of the true value (±15 mg/dL below 100 mg/dL), so diagnosis uses lab tests.",
+          "Prediabetes carries a high risk of progressing to diabetes, but weight loss, exercise and diet changes can cut that risk substantially."
+        ],
+        "hypoTitle": "About low blood sugar",
+        "hypoItems": [
+          "Below 70 mg/dL is hypoglycemia (level 1); below 54 mg/dL needs immediate action (level 2).",
+          "Common symptoms are cold sweat, shaking, a pounding heart, hunger and dizziness; severe lows can cause confusion.",
+          "Take extra care with insulin or sulfonylureas, and discuss any low with your clinician to find the cause."
+        ],
+        "tipsTitle": "Measuring accurately",
+        "tipsItems": [
+          "Measure fasting glucose after at least 8 hours without food, usually before breakfast.",
+          "Measure post-meal glucose 2 hours after you started eating.",
+          "Wash and fully dry your hands first — leftover sugar such as fruit juice can raise the reading.",
+          "Note food, exercise and medication alongside each reading to spot patterns.",
+          "Export to CSV and show it to your clinician."
+        ],
+        "sourcesTitle": "Sources",
+        "sources": [
+          "Korean Diabetes Association, 2023 Clinical Practice Guidelines for Diabetes (diagnosis, glycemic targets, hypoglycemia)",
+          "American Diabetes Association, Standards of Care in Diabetes — Diagnosis and Classification / Glycemic Goals and Hypoglycemia",
+          "Nathan DM et al., Diabetes Care 2008 (ADAG: HbA1c → estimated average glucose)",
+          "Battelino T et al., Diabetes Care 2019 (international consensus on CGM time in range)"
+        ]
+      }
+    },
     "title": "Blood Sugar Tracker",
-    "description": "Record and track your blood sugar levels. Data is stored in your browser.",
-    "disclaimer": "This tool does not provide medical advice. Always consult a healthcare professional for health-related decisions.",
+    "description": "Check whether your blood sugar is normal for when you measured it, then log readings to see trends and averages. Includes mg/dL ⇄ mmol/L and HbA1c conversion.",
+    "disclaimer": "This tool is for reference only and does not replace a diagnosis. Results use general cutoffs for each measurement timing; always set diagnosis and treatment goals with a clinician.",
     "addRecord": "Add Record",
     "value": "Blood Sugar (mg/dL)",
     "valuePlaceholder": "e.g. 95",
     "timing": "Measurement Timing",
     "timingFasting": "Fasting",
     "timingBeforeMeal": "Before Meal",
-    "timingAfterMeal": "After Meal",
+    "timingAfterMeal": "2h After Meal",
     "timingBedtime": "Bedtime",
     "date": "Date",
     "time": "Time",
@@ -34518,8 +34848,481 @@
     }
   },
   "mbtiTest": {
+    "likert": [
+      "Strongly disagree",
+      "Disagree",
+      "Neutral",
+      "Agree",
+      "Strongly agree"
+    ],
+    "progressCount": "{n} / {total}",
+    "keyHint": "Answer with keys 1–5 · ← previous question",
+    "restart": "Start over",
+    "resumed": "Picking up where you left off",
+    "axisName": {
+      "EI": "Energy",
+      "SN": "Information",
+      "TF": "Decisions",
+      "JP": "Lifestyle"
+    },
+    "letter": {
+      "E": "Extraversion",
+      "I": "Introversion",
+      "S": "Sensing",
+      "N": "Intuition",
+      "T": "Thinking",
+      "F": "Feeling",
+      "J": "Judging",
+      "P": "Perceiving"
+    },
+    "borderline": "Borderline",
+    "borderlineNote": "An axis under 60% means both sides are close. The letter may flip if you retake the test.",
+    "sharedResult": "Shared result",
+    "takeTest": "Take the test",
+    "noScores": "This link only includes the type, not the axis scores. Take the test to see your own percentages.",
+    "bestMatch": "Good matches (just for fun)",
+    "bestMatchNote": "Type compatibility has no scientific basis — enjoy it for fun. Tap one for the detailed match.",
+    "shareLabel": "My 16-type personality result",
+    "browseTitle": "Browse all 16 types",
+    "browseHint": "Tap a type to read its description.",
+    "questions": [
+      "I recharge on weekends by making plans with people.",
+      "I understand best when there are concrete examples and numbers.",
+      "When a friend shares a problem, solutions come to mind first.",
+      "I only feel at ease once my trip itinerary is planned.",
+      "After a day full of people, I really need time alone.",
+      "I often imagine \"what if\" scenarios.",
+      "When deciding, I first think about how the people affected will feel.",
+      "Sudden changes of plan don't bother me much.",
+      "I usually start conversations with people I've just met.",
+      "I feel more comfortable following proven methods.",
+      "When deciding, logic and evidence come before feelings.",
+      "I like making to-do lists and checking items off.",
+      "I'm comfortable eating out or seeing a movie alone.",
+      "I'm more curious about the big picture and its meaning than the details.",
+      "Even when something is true, I soften it if it might hurt.",
+      "I focus best when a deadline is close.",
+      "I sort out my thoughts by talking them through.",
+      "When cooking, I stick to the recipe.",
+      "Accurate feedback helps me more than kind words.",
+      "I usually finish tasks well before the deadline.",
+      "I prefer deep talks with one or two people over big gatherings.",
+      "I enjoy spotting patterns and connections others miss.",
+      "Keeping the relationship matters more than winning an argument.",
+      "A spontaneous trip excites me more than a planned one.",
+      "I feel energized after a big get-together.",
+      "I focus on what needs doing now rather than the distant future.",
+      "When we disagree, I like to debate and work out who's right.",
+      "I usually arrive early for appointments.",
+      "I think things through before I speak.",
+      "I'd rather try a new approach than repeat the same one.",
+      "I easily notice changes in other people's moods.",
+      "I like keeping my options open as long as possible.",
+      "In meetings or class, I tend to speak up first.",
+      "I remember the details of people and places well.",
+      "Rules should apply equally to everyone, whatever the circumstances.",
+      "I feel better when things are kept in their set places.",
+      "I'd rather text than call.",
+      "I like explaining things with metaphors and analogies.",
+      "For a struggling friend, empathy should come before advice.",
+      "I shop by browsing and buying what catches my eye, not from a list.",
+      "I'm usually the one who reaches out first.",
+      "In films and books, I enjoy realistic stories more.",
+      "In movies, I notice plot holes before I get emotionally absorbed.",
+      "I like to decide quickly and move on.",
+      "In a new group, I watch for a while before joining in.",
+      "I enjoy conversations that drift into abstract or philosophical topics.",
+      "Praise and encouragement give me a big boost.",
+      "I plan my day around how I feel that day."
+    ],
+    "types": {
+      "INTJ": {
+        "nickname": "Architect",
+        "short": "Independent, strategic planner",
+        "desc": "You map out the big picture and push long-term goals through on your own. You value competence and efficiency and tend to judge by logic rather than feelings.",
+        "strengths": [
+          "Long-range planning",
+          "Independent problem-solving",
+          "High standards",
+          "Gets to the core fast"
+        ],
+        "weaknesses": [
+          "Struggles to express feelings",
+          "Perfectionism",
+          "Can come across as critical",
+          "Finds small talk draining"
+        ],
+        "careers": [
+          "Strategy & planning",
+          "Research",
+          "Software engineering",
+          "Data analysis",
+          "Architecture"
+        ]
+      },
+      "INTP": {
+        "nickname": "Logician",
+        "short": "Curious, logical thinker",
+        "desc": "You need to understand how things work. You love taking ideas apart and prefer original solutions over set routines.",
+        "strengths": [
+          "Analytical thinking",
+          "Original ideas",
+          "Objectivity",
+          "Deep curiosity"
+        ],
+        "weaknesses": [
+          "Weak follow-through",
+          "Awkward with emotions",
+          "Bored by routine",
+          "Overthinking delays decisions"
+        ],
+        "careers": [
+          "Developer",
+          "Researcher",
+          "Math & statistics",
+          "Theoretical research",
+          "Systems design"
+        ]
+      },
+      "ENTJ": {
+        "nickname": "Commander",
+        "short": "Natural leader driven by goals",
+        "desc": "Once a goal is set, you rally people and resources and execute fast. Decisive and efficiency-minded, you can sometimes miss how others feel.",
+        "strengths": [
+          "Leadership",
+          "Decisiveness",
+          "Execution",
+          "Long-term strategy"
+        ],
+        "weaknesses": [
+          "Impatience",
+          "Can seem unsympathetic",
+          "Stubbornness",
+          "Workaholic streak"
+        ],
+        "careers": [
+          "Management & startups",
+          "Consulting",
+          "Project management",
+          "Law",
+          "Sales leadership"
+        ]
+      },
+      "ENTP": {
+        "nickname": "Debater",
+        "short": "Endless source of ideas",
+        "desc": "You hunt for new possibilities and sharpen ideas through debate. Quick and articulate, you're energized by new challenges, not repetition.",
+        "strengths": [
+          "Creativity",
+          "Quick wit",
+          "Persuasiveness",
+          "Fast learning"
+        ],
+        "weaknesses": [
+          "Weak follow-through",
+          "Love of debate can be misread",
+          "Chafes at rules",
+          "Gets bored easily"
+        ],
+        "careers": [
+          "Entrepreneurship",
+          "Planning & marketing",
+          "Consulting",
+          "Creator",
+          "Lawyer"
+        ]
+      },
+      "INFJ": {
+        "nickname": "Advocate",
+        "short": "Insightful idealist",
+        "desc": "You read people well and want work that matters. Quiet but firm in your beliefs, you rarely bend on values you've chosen.",
+        "strengths": [
+          "Insight",
+          "Empathy",
+          "Strong principles",
+          "Expressing ideas in words"
+        ],
+        "weaknesses": [
+          "Burns out easily",
+          "Perfectionism",
+          "Sensitive to criticism",
+          "Avoids conflict"
+        ],
+        "careers": [
+          "Counseling & psychology",
+          "Education",
+          "Writing & editing",
+          "Nonprofits",
+          "UX research"
+        ]
+      },
+      "INFP": {
+        "nickname": "Mediator",
+        "short": "Warm, idealistic dreamer",
+        "desc": "You have clear personal values and deep empathy. You enjoy creative expression and want authentic relationships and work.",
+        "strengths": [
+          "Empathy",
+          "Creativity",
+          "Authenticity",
+          "Open-mindedness"
+        ],
+        "weaknesses": [
+          "Puts off practical tasks",
+          "Self-critical",
+          "Mood swings",
+          "Hard time saying no"
+        ],
+        "careers": [
+          "Writing & content",
+          "Design & arts",
+          "Counseling",
+          "Social work",
+          "Education"
+        ]
+      },
+      "ENFJ": {
+        "nickname": "Protagonist",
+        "short": "Warm leader of people",
+        "desc": "You see potential in people and help them grow together. Great at reading the room and connecting people, you sometimes neglect yourself.",
+        "strengths": [
+          "Leadership",
+          "Motivating others",
+          "Communication",
+          "Organization"
+        ],
+        "weaknesses": [
+          "Over-commitment",
+          "Sensitive to approval",
+          "Hard time saying no",
+          "Over-involved in others' problems"
+        ],
+        "careers": [
+          "Teaching",
+          "HR & culture",
+          "Coaching",
+          "PR",
+          "Public & nonprofit"
+        ]
+      },
+      "ENFP": {
+        "nickname": "Campaigner",
+        "short": "Energetic free spirit",
+        "desc": "You dive into new people and ideas with curiosity and enthusiasm. You brighten the room and spot possibilities, but finishing what you start can be hard.",
+        "strengths": [
+          "Enthusiasm",
+          "Creativity",
+          "Friendliness",
+          "Adaptability"
+        ],
+        "weaknesses": [
+          "Scattered focus",
+          "Weak follow-through",
+          "Mood swings",
+          "Struggles with schedules"
+        ],
+        "careers": [
+          "Marketing & advertising",
+          "Planning",
+          "Media & content",
+          "Education",
+          "Counseling"
+        ]
+      },
+      "ISTJ": {
+        "nickname": "Logistician",
+        "short": "Reliable, principled realist",
+        "desc": "You get the job done responsibly. You judge by facts and experience and take procedures and promises seriously.",
+        "strengths": [
+          "Responsibility",
+          "Attention to detail",
+          "Reliability",
+          "Consistency"
+        ],
+        "weaknesses": [
+          "Slow to change",
+          "Inflexible",
+          "Reserved with feelings",
+          "Takes on too much alone"
+        ],
+        "careers": [
+          "Accounting & finance",
+          "Civil service",
+          "Quality & operations",
+          "Engineering",
+          "Legal"
+        ]
+      },
+      "ISFJ": {
+        "nickname": "Defender",
+        "short": "Warm, devoted protector",
+        "desc": "You quietly look after the people around you and fulfill your duties. You notice small changes but tend to put your own needs last.",
+        "strengths": [
+          "Considerate",
+          "Diligent",
+          "Good memory for details",
+          "Patience"
+        ],
+        "weaknesses": [
+          "Hard time saying no",
+          "Uneasy with change",
+          "Reluctant to speak up",
+          "Worries a lot"
+        ],
+        "careers": [
+          "Nursing & healthcare",
+          "Education",
+          "Administration",
+          "Customer support",
+          "Social work"
+        ]
+      },
+      "ESTJ": {
+        "nickname": "Executive",
+        "short": "Organized, decisive manager",
+        "desc": "You set up order and systems so things run reliably. You have clear standards and strong drive, but can seem strict to people who work differently.",
+        "strengths": [
+          "Organization",
+          "Drive",
+          "Responsibility",
+          "Clear communication"
+        ],
+        "weaknesses": [
+          "Inflexible",
+          "Stubborn",
+          "Can overlook feelings",
+          "Controlling"
+        ],
+        "careers": [
+          "Management",
+          "Operations & logistics",
+          "Public service",
+          "Finance",
+          "Project management"
+        ]
+      },
+      "ESFJ": {
+        "nickname": "Consul",
+        "short": "Caring social glue",
+        "desc": "You value harmony and look after everyone. Sociable and dependable, you're often the center of the group but care a lot about others' opinions.",
+        "strengths": [
+          "Friendliness",
+          "Thoughtfulness",
+          "Teamwork",
+          "Responsibility"
+        ],
+        "weaknesses": [
+          "Needs approval",
+          "Avoids conflict",
+          "Hurt by criticism",
+          "Uneasy with change"
+        ],
+        "careers": [
+          "Education",
+          "Nursing & healthcare",
+          "Service & sales",
+          "Event planning",
+          "HR"
+        ]
+      },
+      "ISTP": {
+        "nickname": "Virtuoso",
+        "short": "Calm, practical problem-solver",
+        "desc": "You solve problems hands-on by figuring out how things work. Calm under pressure and efficient, you tend to put off emotional talk and long-term plans.",
+        "strengths": [
+          "Composure",
+          "Hands-on skill",
+          "Efficiency",
+          "Independence"
+        ],
+        "weaknesses": [
+          "Can seem blunt",
+          "Weak long-term planning",
+          "Gets bored easily",
+          "Keeps feelings private"
+        ],
+        "careers": [
+          "Engineering & repair",
+          "Developer",
+          "Emergency & field work",
+          "Athlete",
+          "Data analysis"
+        ]
+      },
+      "ISFP": {
+        "nickname": "Adventurer",
+        "short": "Gentle, artistic free spirit",
+        "desc": "You enjoy the present moment and treasure your own sense of style. Kind and modest, you tend to quietly step back from conflict.",
+        "strengths": [
+          "Aesthetic sense",
+          "Warmth",
+          "Flexibility",
+          "Authenticity"
+        ],
+        "weaknesses": [
+          "Struggles with planning",
+          "Sensitive to criticism",
+          "Avoids conflict",
+          "Holds back opinions"
+        ],
+        "careers": [
+          "Design",
+          "Art & music",
+          "Culinary",
+          "Photo & video",
+          "Health & care"
+        ]
+      },
+      "ESTP": {
+        "nickname": "Entrepreneur",
+        "short": "Energetic person of action",
+        "desc": "You act first and shine in the moment. You read situations fast and turn crises into chances, but sometimes miss long-term consequences.",
+        "strengths": [
+          "Quick reactions",
+          "Execution",
+          "Sociability",
+          "Crisis handling"
+        ],
+        "weaknesses": [
+          "Impulsive",
+          "Weak long-term planning",
+          "Chafes at rules",
+          "Low tolerance for boredom"
+        ],
+        "careers": [
+          "Sales",
+          "Entrepreneurship",
+          "Marketing",
+          "Sports",
+          "Emergency & field work"
+        ]
+      },
+      "ESFP": {
+        "nickname": "Entertainer",
+        "short": "Born entertainer who lights up the room",
+        "desc": "You create fun wherever people gather. You live in the moment and express feelings openly, but planning ahead is a challenge.",
+        "strengths": [
+          "Friendliness",
+          "Positive energy",
+          "Practical sense",
+          "Observant"
+        ],
+        "weaknesses": [
+          "Impulse spending",
+          "Weak long-term planning",
+          "Avoids conflict",
+          "Easily distracted"
+        ],
+        "careers": [
+          "Media & performance",
+          "Service & sales",
+          "Event planning",
+          "Travel & tourism",
+          "Education"
+        ]
+      }
+    },
     "title": "MBTI Personality Test",
-    "description": "Discover your MBTI type with our detailed 48-question test",
+    "description": "48 questions, about 5 minutes. A free, unofficial 16-type personality test with 5-point answers",
     "startTest": "Start Test",
     "question": "Question",
     "of": "/",
@@ -34535,7 +35338,7 @@
     "weaknesses": "Weaknesses",
     "communicationStyle": "Communication Style",
     "loveStyle": "Relationship Style",
-    "careers": "Recommended Careers",
+    "careers": "Career fit (for reference)",
     "famousPeople": "Famous People",
     "koreanPopulation": "Korean Population %",
     "retake": "Retake Test",
@@ -34548,8 +35351,17 @@
     "shareX": "X (Twitter)",
     "downloadCard": "Save Result Card",
     "checkCompatibility": "Check Compatibility",
-    "disclaimer": "This test is for entertainment purposes only. It is not an official MBTI assessment.",
+    "disclaimer": "An unofficial test for fun and self-reflection. MBTI® is a registered trademark of The Myers-Briggs Company; this is not the official MBTI assessment.",
     "guide": {
+      "scoring": {
+        "title": "How scoring works",
+        "items": [
+          "Each of the four axes has 12 statements, 6 of them reverse-worded, so a habit of agreeing with everything (acquiescence bias) does not push your result to one side.",
+          "Each answer becomes -2 to +2 points, summed per axis and shown as the percentage toward the first letter (E/S/T/J). The four axes are scored independently.",
+          "The side above 50% sets the letter; an exact 50% tie goes to I/N/F/P.",
+          "If neither side reaches 60%, the axis is marked \"Borderline\" — both preferences are close and the letter may change on a retake."
+        ]
+      },
       "title": "MBTI Test Guide",
       "what": {
         "title": "What is MBTI?",
@@ -34620,15 +35432,15 @@
       },
       "whatIs": {
         "title": "What is the MBTI Personality Test?",
-        "description": "The MBTI Personality Test uses 48 questions based on Carl Jung's psychological type theory to classify your personality into one of 16 types. The four axes—E/I (Extraversion/Introversion), S/N (Sensing/Intuition), T/F (Thinking/Feeling), and J/P (Judging/Perceiving)—reveal your strengths, weaknesses, career tendencies, and interpersonal style."
+        "description": "This 16-type personality test combines four preference pairs (E/I, S/N, T/F, J/P) from Carl Jung's psychological type theory to sort personalities into 16 types for self-reflection. It is an unofficial 48-question test made by ToolHub, not the official MBTI® assessment. MBTI and Myers-Briggs Type Indicator are registered trademarks of The Myers-Briggs Company; the official assessment is available through certified practitioners."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Read each of the 48 questions and choose the answer that feels more like you.",
-          "2. There are no right or wrong answers—respond based on your typical self, not your ideal.",
-          "3. After completing all questions, your result will show one of the 16 types.",
-          "4. Review each axis score and the detailed type description."
+          "Questions appear one per screen. Pick one of five answers from \"Strongly disagree\" to \"Strongly agree\" and you move to the next question.",
+          "Use keys 1–5 to answer, and ← or Backspace to go back.",
+          "Your answers are saved in this tab, so a refresh will not lose your progress.",
+          "After all 48 questions you get your type and per-axis percentages. Share the result link and friends see the same result page."
         ]
       },
       "tips": {
@@ -34644,16 +35456,20 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Why does my MBTI result change each time I take the test?",
-            "a": "Results can vary based on your mental state, recent experiences, and how you interpret the questions. Axes near the 50% threshold are especially prone to flipping. Take the test on different days for a more consistent result."
+            "q": "Is this the official MBTI test?",
+            "a": "No. MBTI® is a registered trademark of The Myers-Briggs Company, and the official assessment is a paid test given by certified practitioners. This unofficial test borrows the same four-preference concept, so do not use it for diagnosis, hiring, or career decisions."
           },
           {
-            "q": "What is the rarest MBTI type?",
-            "a": "INFJ is considered the rarest, found in roughly 1–2% of the global population. The most common types include ISFJ, ESFJ, and ISTJ."
+            "q": "Why does my result change each time I take the test?",
+            "a": "Mood, recent experiences, and how you read the questions can all shift results. Axes marked Borderline (under 60%) flip most easily. Take the test on a few different days and look at which letters keep coming up."
+          },
+          {
+            "q": "What is the rarest type?",
+            "a": "In official MBTI samples from the US, INFJ is often cited as the rarest at roughly 1–2%, while ISFJ, ESFJ, and ISTJ are among the most common. Distributions vary considerably by country and sample."
           },
           {
             "q": "Is MBTI appropriate as a hiring tool?",
-            "a": "MBTI was not designed for selection purposes. Its predictive validity for job performance is low, and professionals advise against using it in hiring decisions."
+            "a": "MBTI was not designed for selection. Its validity for predicting job performance is low, and professionals advise against using it in hiring decisions."
           }
         ]
       }

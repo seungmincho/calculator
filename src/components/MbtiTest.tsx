@@ -2,707 +2,408 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { ChevronLeft, ChevronRight, Share2, Copy, Check, Download, ExternalLink, RotateCcw } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
-import { testQuestions, calculateResult, mbtiProfiles, type MbtiType, type TestResult } from '@/data/mbtiData'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { ChevronLeft, RotateCcw, ExternalLink } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import { compatibilityMatrix } from '@/data/mbtiData'
+import {
+  AXES, TYPES, QUESTIONS, LIKERT, scoreAnswers, parseShare, shareQuery, isBorderline, sanitizeAnswers, type TypeCode,
+} from '@/utils/mbti'
 
-type Screen = 'intro' | 'test' | 'result'
+const STORE = 'mbti-test-progress'
+const empty = () => Array<number | null>(QUESTIONS.length).fill(null)
 
 export default function MbtiTest() {
   const t = useTranslations('mbtiTest')
+  const sp = useSearchParams()
+  const shared = parseShare(sp.get('r'), sp.get('s'), sp.get('result'))
 
-  const [screen, setScreen] = useState<Screen>('intro')
-  const [currentQ, setCurrentQ] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
-  const [result, setResult] = useState<TestResult | null>(null)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [animDir, setAnimDir] = useState<'forward' | 'back'>('forward')
-  const [isAnimating, setIsAnimating] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [answers, setAnswers] = useState<(number | null)[]>(empty)
+  const [idx, setIdx] = useState(0)
+  const [started, setStarted] = useState(false)
+  const [resumed, setResumed] = useState(false)
+  const [mine, setMine] = useState(false)
+  const [browse, setBrowse] = useState<TypeCode | null>(null)
+  const lock = useRef(false)
 
-  // Sync result type with URL params
+  // 새로고침 복원 (마운트 후)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const resultParam = params.get('result') as MbtiType | null
-    if (resultParam && mbtiProfiles[resultParam]) {
-      const fakeAnswers: Record<number, string> = {}
-      // Build plausible answers from the URL type param to reconstruct scores
-      const typeChars = resultParam.split('')
-      testQuestions.forEach(q => {
-        if (q.axis === 'EI') fakeAnswers[q.id] = typeChars[0]
-        else if (q.axis === 'SN') fakeAnswers[q.id] = typeChars[1]
-        else if (q.axis === 'TF') fakeAnswers[q.id] = typeChars[2]
-        else if (q.axis === 'JP') fakeAnswers[q.id] = typeChars[3]
-      })
-      setAnswers(fakeAnswers)
-      setResult(calculateResult(fakeAnswers))
-      setScreen('result')
-    }
-  }, [])
-
-  const totalQuestions = testQuestions.length
-  const progress = Math.round((Object.keys(answers).length / totalQuestions) * 100)
-
-  const handleAnswer = useCallback((value: string) => {
-    const questionId = testQuestions[currentQ].id
-    setAnswers(prev => ({ ...prev, [questionId]: value }))
-
-    if (currentQ < totalQuestions - 1) {
-      setAnimDir('forward')
-      setIsAnimating(true)
-      setTimeout(() => {
-        setCurrentQ(q => q + 1)
-        setIsAnimating(false)
-      }, 180)
-    }
-  }, [currentQ, totalQuestions])
-
-  const handlePrev = useCallback(() => {
-    if (currentQ > 0) {
-      setAnimDir('back')
-      setIsAnimating(true)
-      setTimeout(() => {
-        setCurrentQ(q => q - 1)
-        setIsAnimating(false)
-      }, 180)
-    }
-  }, [currentQ])
-
-  const handleNext = useCallback(() => {
-    if (currentQ < totalQuestions - 1) {
-      setAnimDir('forward')
-      setIsAnimating(true)
-      setTimeout(() => {
-        setCurrentQ(q => q + 1)
-        setIsAnimating(false)
-      }, 180)
-    }
-  }, [currentQ, totalQuestions])
-
-  const handleSeeResult = useCallback(() => {
-    const calcResult = calculateResult(answers)
-    setResult(calcResult)
-    // Update URL
-    const url = new URL(window.location.href)
-    url.searchParams.set('result', calcResult.type)
-    window.history.replaceState({}, '', url)
-    setScreen('result')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [answers])
-
-  const handleRetake = useCallback(() => {
-    setAnswers({})
-    setCurrentQ(0)
-    setResult(null)
-    const url = new URL(window.location.href)
-    url.searchParams.delete('result')
-    window.history.replaceState({}, '', url)
-    setScreen('intro')
-  }, [])
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
+      const saved = JSON.parse(sessionStorage.getItem(STORE) ?? 'null')
+      const a = sanitizeAnswers(saved?.answers)
+      if (a && a.some((v) => v != null)) {
+        setAnswers(a)
+        setIdx(Math.min(Math.max(0, Number(saved.idx) || 0), QUESTIONS.length - 1))
+        setStarted(true)
+        setResumed(true)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* 저장소 없음 */ }
   }, [])
 
-  const handleShareX = useCallback(() => {
-    if (!result) return
-    const profile = mbtiProfiles[result.type]
-    const text = t('shareText').replace('{type}', result.type).replace('{nickname}', profile.nickname)
-    const url = `https://toolhub.ai.kr/mbti-test?result=${result.type}`
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank')
-  }, [result, t])
+  useEffect(() => {
+    if (!started) return
+    try { sessionStorage.setItem(STORE, JSON.stringify({ answers, idx })) } catch { /* 무시 */ }
+  }, [started, answers, idx])
 
-  const handleDownloadCard = useCallback(() => {
-    if (!result) return
-    const profile = mbtiProfiles[result.type]
-    const canvas = document.createElement('canvas')
-    const dpr = window.devicePixelRatio || 1
-    const W = 600
-    const H = 400
-    canvas.width = W * dpr
-    canvas.height = H * dpr
-    canvas.style.width = `${W}px`
-    canvas.style.height = `${H}px`
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    ctx.scale(dpr, dpr)
+  const view = shared ? 'result' : started ? 'test' : 'intro'
+  const answered = answers.filter((v) => v != null).length
+  const allDone = answered === QUESTIONS.length
 
-    // Background gradient
-    const [c1, c2] = profile.colorGradient
-    const grad = ctx.createLinearGradient(0, 0, W, H)
-    grad.addColorStop(0, c1)
-    grad.addColorStop(1, c2)
-    ctx.fillStyle = grad
-    ctx.fillRect(0, 0, W, H)
+  const finish = useCallback((a: (number | null)[]) => {
+    const r = scoreAnswers(a)
+    try { sessionStorage.removeItem(STORE) } catch { /* 무시 */ }
+    setStarted(false)
+    setMine(true)
+    window.history.replaceState(null, '', `${window.location.pathname}?${shareQuery(r.type, r.pct)}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
 
-    // Overlay for readability
-    ctx.fillStyle = 'rgba(0,0,0,0.25)'
-    ctx.fillRect(0, 0, W, H)
+  const answer = useCallback((v: number) => {
+    if (lock.current) return
+    const next = answers.slice()
+    next[idx] = v
+    setAnswers(next)
+    setResumed(false)
+    const done = next.every((x) => x != null)
+    if (done && idx === QUESTIONS.length - 1) { finish(next); return }
+    lock.current = true
+    setTimeout(() => {
+      // 다음 미응답 문항으로, 없으면 다음 문항(검토 중)
+      const nextOpen = next.findIndex((x, i) => i > idx && x == null)
+      setIdx(nextOpen >= 0 ? nextOpen : Math.min(idx + 1, QUESTIONS.length - 1))
+      lock.current = false
+    }, 150)
+  }, [answers, idx, finish])
 
-    // Emoji
-    ctx.font = '56px serif'
-    ctx.textAlign = 'center'
-    ctx.fillText(profile.emoji, W / 2, 80)
+  const prev = useCallback(() => setIdx((i) => Math.max(0, i - 1)), [])
 
-    // Type name
-    ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, sans-serif'
-    ctx.fillStyle = '#ffffff'
-    ctx.textAlign = 'center'
-    ctx.fillText(result.type, W / 2, 155)
+  const restart = useCallback(() => {
+    try { sessionStorage.removeItem(STORE) } catch { /* 무시 */ }
+    setAnswers(empty())
+    setIdx(0)
+    setMine(false)
+    setResumed(false)
+    setStarted(true)
+    if (window.location.search) window.history.replaceState(null, '', window.location.pathname)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
 
-    // Nickname
-    ctx.font = '24px -apple-system, BlinkMacSystemFont, sans-serif'
-    ctx.fillStyle = 'rgba(255,255,255,0.85)'
-    ctx.fillText(profile.nickname + ' · ' + profile.nicknameEn, W / 2, 190)
-
-    // Short description
-    ctx.font = '16px -apple-system, BlinkMacSystemFont, sans-serif'
-    ctx.fillStyle = 'rgba(255,255,255,0.75)'
-    ctx.fillText(profile.shortDesc, W / 2, 220)
-
-    // Axis bars
-    const axes: Array<{ label: string; pct: number; left: string; right: string }> = [
-      { label: 'E / I', pct: result.percentages.EI, left: 'E', right: 'I' },
-      { label: 'S / N', pct: result.percentages.SN, left: 'S', right: 'N' },
-      { label: 'T / F', pct: result.percentages.TF, left: 'T', right: 'F' },
-      { label: 'J / P', pct: result.percentages.JP, left: 'J', right: 'P' },
-    ]
-    const barX = 60
-    const barW = W - 120
-    const barH = 10
-    const startY = 255
-
-    axes.forEach((axis, i) => {
-      const y = startY + i * 30
-
-      // Left label
-      ctx.font = '13px monospace'
-      ctx.fillStyle = 'rgba(255,255,255,0.9)'
-      ctx.textAlign = 'left'
-      ctx.fillText(axis.left, barX - 20, y + 8)
-
-      // Right label
-      ctx.textAlign = 'right'
-      ctx.fillText(axis.right, barX + barW + 20, y + 8)
-
-      // Background bar
-      ctx.fillStyle = 'rgba(255,255,255,0.2)'
-      ctx.beginPath()
-      ctx.roundRect(barX, y, barW, barH, 5)
-      ctx.fill()
-
-      // Filled bar
-      ctx.fillStyle = 'rgba(255,255,255,0.75)'
-      ctx.beginPath()
-      ctx.roundRect(barX, y, barW * (axis.pct / 100), barH, 5)
-      ctx.fill()
-
-      // Percentage text
-      ctx.font = '12px sans-serif'
-      ctx.fillStyle = 'rgba(255,255,255,0.8)'
-      ctx.textAlign = 'center'
-      ctx.fillText(`${axis.pct}%`, barX + barW * (axis.pct / 100) + 18, y + 8)
-    })
-
-    // Branding
-    ctx.font = '13px sans-serif'
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'
-    ctx.textAlign = 'center'
-    ctx.fillText('toolhub.ai.kr', W / 2, H - 15)
-
-    const link = document.createElement('a')
-    link.download = `MBTI_${result.type}_result.png`
-    link.href = canvas.toDataURL('image/png')
-    link.click()
-  }, [result])
-
-  const allAnswered = Object.keys(answers).length === totalQuestions
-  const currentQuestion = testQuestions[currentQ]
-  const currentAnswer = currentQuestion ? answers[currentQuestion.id] : undefined
-
-  // ─── Intro Screen ───
-  if (screen === 'intro') {
-    const guideWhat = t.raw('guide.what.items') as string[]
-    const guideHowTo = t.raw('guide.howTo.items') as string[]
-    const guideAxes = t.raw('guide.axes.items') as string[]
-
-    return (
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="text-center">
-          <div className="text-5xl mb-3">🧠</div>
-          <h1 className="text-3xl font-bold text-fg mb-2">{t('title')}</h1>
-          <p className="text-muted">{t('description')}</p>
-        </div>
-
-        {/* Guide sections */}
-        <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
-
-          <div className="grid sm:grid-cols-3 gap-5">
-            {/* What is MBTI */}
-            <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-fg mb-3">{t('guide.what.title')}</h3>
-              <ul className="space-y-2">
-                {guideWhat.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="mt-0.5 text-purple-400">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* How to */}
-            <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-fg mb-3">{t('guide.howTo.title')}</h3>
-              <ul className="space-y-2">
-                {guideHowTo.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="mt-0.5 text-blue-400">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Axes */}
-            <div className="bg-subtle rounded-xl p-5">
-              <h3 className="font-semibold text-fg mb-3">{t('guide.axes.title')}</h3>
-              <ul className="space-y-2">
-                {guideAxes.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="mt-0.5 text-indigo-400">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setScreen('test')}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 font-semibold text-lg transition-all shadow-md hover:shadow-lg"
-          >
-            {t('startTest')} →
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  // ─── Test Screen ───
-  if (screen === 'test') {
-    const axisLabels: Record<string, string> = {
-      EI: 'E / I',
-      SN: 'S / N',
-      TF: 'T / F',
-      JP: 'J / P',
+  // 키보드: 1~5 답, ←/Backspace 이전
+  useEffect(() => {
+    if (view !== 'test') return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const el = e.target as HTMLElement
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) return
+      if (e.key >= '1' && e.key <= '5') { e.preventDefault(); answer(Number(e.key)) }
+      else if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); prev() }
     }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [view, answer, prev])
 
-    return (
-      <div className="space-y-5">
-        {/* Progress header */}
-        <div className={`${glassCard} ${glassInset} p-5`}>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-muted">
-              {t('question')} {currentQ + 1}{t('of')}{totalQuestions}
-            </span>
-            <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
-              {t('progress')} {progress}%
-            </span>
-          </div>
-          <div className="w-full bg-track rounded-full h-2">
-            <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <span className="text-xs text-faint">{axisLabels[currentQuestion.axis]}</span>
-            <span className="text-xs text-faint">
-              {Object.keys(answers).length} / {totalQuestions}
-            </span>
-          </div>
+  const questions = t.raw('questions') as string[]
+  const likert = t.raw('likert') as string[]
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
+      </div>
+
+      {view === 'intro' && (
+        <div className="ui-card p-6 space-y-4">
+          <button onClick={restart} className="ui-btn w-full px-4 py-4 text-lg">{t('startTest')}</button>
+          <p className="text-xs text-faint">{t('disclaimer')}</p>
         </div>
+      )}
 
-        {/* Question card */}
-        <div
-          className={`${glassCard} ${glassInset} p-6 sm:p-8 transition-all duration-180 ${
-            isAnimating
-              ? animDir === 'forward'
-                ? 'opacity-0 translate-x-4'
-                : 'opacity-0 -translate-x-4'
-              : 'opacity-100 translate-x-0'
-          }`}
-          style={{ transform: isAnimating ? undefined : 'translateX(0)', transition: 'opacity 0.18s, transform 0.18s' }}
-        >
-          <p className="text-lg sm:text-xl font-semibold text-fg mb-8 text-center leading-relaxed">
-            {currentQuestion.question}
-          </p>
-
-          <div className="flex flex-col gap-4">
-            {/* Option A */}
-            <button
-              onClick={() => handleAnswer(currentQuestion.optionA.value)}
-              className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
-                currentAnswer === currentQuestion.optionA.value
-                  ? 'border-purple-500 bg-subtle text-sub'
-                  : 'border-line bg-field text-body hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900'
-              }`}
-            >
-              <span className="inline-flex items-center gap-3">
-                <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                  currentAnswer === currentQuestion.optionA.value
-                    ? 'border-purple-500 bg-purple-500'
-                    : 'border-gray-300 dark:border-gray-500'
-                }`}>
-                  {currentAnswer === currentQuestion.optionA.value && (
-                    <span className="w-2 h-2 rounded-full bg-white" />
-                  )}
-                </span>
-                {currentQuestion.optionA.text}
+      {view === 'test' && (
+        <div className="space-y-4">
+          <div className="ui-card p-5">
+            <div className="flex items-center justify-between mb-3 text-sm">
+              <button
+                onClick={prev}
+                disabled={idx === 0}
+                className="inline-flex items-center gap-1 min-h-[44px] -ml-2 px-2 rounded-xl text-body hover:bg-soft disabled:opacity-40"
+              >
+                <ChevronLeft className="w-4 h-4" /> {t('prev')}
+              </button>
+              <span className="font-semibold text-fg tabular-nums">
+                {t('progressCount', { n: idx + 1, total: QUESTIONS.length })}
               </span>
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
-              <span className="text-xs text-faint font-medium">VS</span>
-              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
+              <button onClick={restart} className="min-h-[44px] px-2 -mr-2 rounded-xl text-muted hover:bg-soft">
+                {t('restart')}
+              </button>
             </div>
+            <div
+              className="w-full bg-track rounded-full h-2"
+              role="progressbar"
+              aria-valuenow={answered}
+              aria-valuemin={0}
+              aria-valuemax={QUESTIONS.length}
+            >
+              <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: `${(answered / QUESTIONS.length) * 100}%` }} />
+            </div>
+            {resumed && <p className="text-xs text-muted mt-2">{t('resumed')}</p>}
+          </div>
 
-            {/* Option B */}
+          <div className="ui-card p-6 sm:p-8">
+            <p key={idx} className="text-lg sm:text-xl font-semibold text-fg text-center leading-relaxed mb-6 min-h-[3.5rem] break-keep">
+              {questions[idx]}
+            </p>
+            <div className="flex flex-col gap-2" role="radiogroup" aria-label={questions[idx]}>
+              {LIKERT.map((v, i) => {
+                const on = answers[idx] === v
+                return (
+                  <button
+                    key={v}
+                    role="radio"
+                    aria-checked={on}
+                    onClick={() => answer(v)}
+                    className={`flex items-center gap-3 w-full min-h-[48px] px-4 rounded-xl border text-left font-medium transition-colors ${
+                      on ? 'bg-primary-soft text-primary border-primary' : 'border-line text-body hover:bg-soft'
+                    }`}
+                  >
+                    <span className={`w-6 text-center text-sm tabular-nums ${on ? 'text-primary' : 'text-faint'}`}>{v}</span>
+                    {likert[i]}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="hidden sm:block text-xs text-faint text-center mt-4">{t('keyHint')}</p>
+          </div>
+
+          {allDone && (
+            <button onClick={() => finish(answers)} className="ui-btn w-full px-4 py-3">{t('seeResult')}</button>
+          )}
+        </div>
+      )}
+
+      {view === 'result' && shared && (
+        <Result
+          t={t}
+          type={shared.type}
+          pct={shared.pct}
+          mine={mine}
+          onRetake={restart}
+        />
+      )}
+
+      {/* 16유형 둘러보기 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('browseTitle')}</h2>
+        <p className="text-sm text-muted mt-1 mb-4">{t('browseHint')}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {TYPES.map((code) => (
             <button
-              onClick={() => handleAnswer(currentQuestion.optionB.value)}
-              className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
-                currentAnswer === currentQuestion.optionB.value
-                  ? 'border-indigo-500 bg-subtle text-sub'
-                  : 'border-line bg-field text-body hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900'
+              key={code}
+              onClick={() => setBrowse((b) => (b === code ? null : code))}
+              aria-expanded={browse === code}
+              className={`min-h-[56px] px-3 py-2 rounded-xl border text-left transition-colors ${
+                browse === code ? 'bg-primary-soft text-primary border-primary' : 'border-line hover:bg-soft'
               }`}
             >
-              <span className="inline-flex items-center gap-3">
-                <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                  currentAnswer === currentQuestion.optionB.value
-                    ? 'border-indigo-500 bg-indigo-500'
-                    : 'border-gray-300 dark:border-gray-500'
-                }`}>
-                  {currentAnswer === currentQuestion.optionB.value && (
-                    <span className="w-2 h-2 rounded-full bg-white" />
-                  )}
-                </span>
-                {currentQuestion.optionB.text}
-              </span>
+              <div className={`font-bold tabular-nums ${browse === code ? 'text-primary' : 'text-fg'}`}>{code}</div>
+              <div className={`text-xs ${browse === code ? 'text-primary' : 'text-muted'}`}>{t(`types.${code}.nickname`)}</div>
             </button>
-          </div>
+          ))}
         </div>
+        {browse && (
+          <div className="mt-5 pt-5 border-t border-line">
+            <h3 className="text-lg font-bold text-fg">
+              {browse} · {t(`types.${browse}.nickname`)}
+            </h3>
+            <p className="text-sm text-muted mb-4">{t(`types.${browse}.short`)}</p>
+            <TypeDetail t={t} type={browse} />
+          </div>
+        )}
+      </div>
 
-        {/* Navigation */}
-        <div className="flex gap-3">
-          <button
-            onClick={handlePrev}
-            disabled={currentQ === 0}
-            className="flex items-center gap-1 px-4 py-3 rounded-xl bg-soft text-body font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      <Guide t={t} />
+    </div>
+  )
+}
+
+type T = ReturnType<typeof useTranslations>
+
+function Result({ t, type, pct, mine, onRetake }: { t: T; type: TypeCode; pct: number[] | null; mine: boolean; onRetake: () => void }) {
+  const nickname = t(`types.${type}.nickname`)
+  const axes = pct
+    ? AXES.map((ax, a) => {
+        const first = pct[a]
+        const dom = first > 50 ? ax[0] : ax[1]
+        return { ax, first, dom, domPct: Math.max(first, 100 - first), border: isBorderline(first) }
+      })
+    : null
+
+  return (
+    <div className="space-y-4">
+      <div className="ui-hero p-8 text-center">
+        <div className="text-sm text-white/70">{mine ? t('yourType') : t('sharedResult')}</div>
+        <div className="text-5xl font-bold tracking-wider mt-2 tabular-nums">{type}</div>
+        <div className="text-xl font-semibold mt-2">{nickname}</div>
+        <div className="text-sm text-white/70 mt-1">{t(`types.${type}.short`)}</div>
+      </div>
+
+      {!mine && (
+        <button onClick={onRetake} className="ui-btn w-full px-4 py-3">{t('takeTest')}</button>
+      )}
+
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg mb-5">{t('typeDistribution')}</h2>
+        {axes ? (
+          <>
+            <div className="space-y-5">
+              {axes.map(({ ax, first, dom, domPct, border }) => (
+                <div key={ax}>
+                  <div className="flex items-center gap-2 mb-1.5 text-xs text-muted">
+                    {t(`axisName.${ax}`)}
+                    {border && <span className="px-2 py-0.5 rounded-full bg-soft text-sub">{t('borderline')}</span>}
+                  </div>
+                  <div className="flex items-center justify-between mb-1.5 text-sm">
+                    {[ax[0], ax[1]].map((l, i) => (
+                      <span key={l} className={`tabular-nums ${dom === l ? 'font-bold text-primary' : 'text-muted'}`}>
+                        {i === 0
+                          ? `${l} ${t(`letter.${l}`)} ${first}%`
+                          : `${100 - first}% ${t(`letter.${l}`)} ${l}`}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex h-3 rounded-full overflow-hidden bg-track" aria-label={`${dom} ${domPct}%`}>
+                    <div className={dom === ax[0] ? 'bg-primary' : 'bg-primary-soft'} style={{ width: `${first}%` }} />
+                    <div className={dom === ax[1] ? 'bg-primary' : 'bg-primary-soft'} style={{ width: `${100 - first}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {axes.some((a) => a.border) && (
+              <p className="bg-subtle rounded-2xl p-4 text-sm text-sub mt-5">{t('borderlineNote')}</p>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-muted">{t('noScores')}</p>
+        )}
+      </div>
+
+      <div className="ui-card p-6">
+        <TypeDetail t={t} type={type} />
+      </div>
+
+      <div className="ui-card p-6 space-y-4">
+        <h2 className="text-lg font-semibold text-fg">{t('shareResult')}</h2>
+        <ShareResult
+          card={{
+            tool: t('title'),
+            label: t('shareLabel'),
+            headline: type,
+            sub: `${nickname} · ${t(`types.${type}.short`)}`,
+            rows: axes?.map((a) => ({ label: t(`axisName.${a.ax}`), value: `${a.dom} ${a.domPct}%` })),
+          }}
+          text={t('shareText', { type, nickname })}
+          fileName={`mbti-${type}`}
+        />
+        <div className="flex flex-wrap gap-2">
+          <a
+            href={`/mbti-compatibility/?type1=${type}`}
+            className="ui-btn-soft px-4 py-2.5 text-sm"
           >
-            <ChevronLeft className="w-4 h-4" />
-            {t('prev')}
-          </button>
-
-          <div className="flex-1" />
-
-          {allAnswered ? (
-            <button
-              onClick={handleSeeResult}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold transition-all shadow-md"
-            >
-              {t('seeResult')} 🎉
-            </button>
-          ) : (
-            <button
-              onClick={handleNext}
-              disabled={currentQ === totalQuestions - 1}
-              className="flex items-center gap-1 px-4 py-3 rounded-xl bg-soft text-body font-medium hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            >
-              {t('next')}
-              <ChevronRight className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4" /> {t('checkCompatibility')}
+          </a>
+          {mine && (
+            <button onClick={onRetake} className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-soft text-body hover:bg-track">
+              <RotateCcw className="w-4 h-4" /> {t('retake')}
             </button>
           )}
         </div>
+        <p className="text-xs text-faint">{t('disclaimer')}</p>
+      </div>
+    </div>
+  )
+}
 
-        {/* Question dots preview */}
-        <div className={`${glassCard} ${glassInset} p-4`}>
-          <div className="flex flex-wrap gap-1.5 justify-center">
-            {testQuestions.map((q, i) => (
-              <button
-                key={q.id}
-                onClick={() => {
-                  setAnimDir(i > currentQ ? 'forward' : 'back')
-                  setCurrentQ(i)
-                }}
-                className={`w-6 h-6 rounded-full text-xs font-medium transition-all ${
-                  i === currentQ
-                    ? 'bg-purple-600 text-white scale-110'
-                    : answers[q.id]
-                    ? 'bg-primary-soft text-primary'
-                    : 'bg-gray-200 dark:bg-gray-600 text-muted'
-                }`}
-                title={`Q${i + 1}`}
-              >
-                {i + 1}
-              </button>
-            ))}
+function TypeDetail({ t, type }: { t: T; type: TypeCode }) {
+  const list = (k: string) => t.raw(`types.${type}.${k}`) as string[]
+  const matches = (Object.entries(compatibilityMatrix[type]) as [TypeCode, number][])
+    .filter(([, r]) => r === 5)
+    .map(([c]) => c)
+  return (
+    <div className="space-y-5">
+      <p className="text-body leading-relaxed">{t(`types.${type}.desc`)}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {(['strengths', 'weaknesses'] as const).map((k) => (
+          <div key={k} className="bg-subtle rounded-2xl p-5">
+            <h3 className="font-semibold text-fg mb-2">{t(k)}</h3>
+            <ul className="space-y-1.5 text-sm text-sub list-disc pl-4">
+              {list(k).map((s) => <li key={s}>{s}</li>)}
+            </ul>
           </div>
+        ))}
+      </div>
+      <div>
+        <h3 className="font-semibold text-fg mb-2">{t('careers')}</h3>
+        <div className="flex flex-wrap gap-2">
+          {list('careers').map((c) => (
+            <span key={c} className="px-3 py-1.5 bg-soft text-body rounded-lg text-sm">{c}</span>
+          ))}
         </div>
       </div>
-    )
-  }
-
-  // ─── Result Screen ───
-  if (screen === 'result' && result) {
-    const profile = mbtiProfiles[result.type]
-    const [colorFrom, colorTo] = profile.colorGradient
-
-    const axes = [
-      { axis: 'EI', left: 'E', right: 'I', leftPct: result.percentages.EI, rightPct: 100 - result.percentages.EI, dominant: result.type[0] },
-      { axis: 'SN', left: 'S', right: 'N', leftPct: result.percentages.SN, rightPct: 100 - result.percentages.SN, dominant: result.type[1] },
-      { axis: 'TF', left: 'T', right: 'F', leftPct: result.percentages.TF, rightPct: 100 - result.percentages.TF, dominant: result.type[2] },
-      { axis: 'JP', left: 'J', right: 'P', leftPct: result.percentages.JP, rightPct: 100 - result.percentages.JP, dominant: result.type[3] },
-    ]
-
-    const shareUrl = `https://toolhub.ai.kr/mbti-test?result=${result.type}`
-
-    return (
-      <div className="space-y-5">
-        {/* Type badge hero */}
-        <div
-          className="rounded-2xl shadow-xl p-8 text-center text-white"
-          style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
-        >
-          <div className="text-6xl mb-3">{profile.emoji}</div>
-          <div className="text-5xl font-bold tracking-wider mb-2">{result.type}</div>
-          <div className="text-xl font-semibold opacity-90 mb-1">{profile.nickname} · {profile.nicknameEn}</div>
-          <div className="text-sm opacity-75">{profile.shortDesc}</div>
-          <div className="mt-4 inline-block bg-white/20 rounded-full px-4 py-1 text-sm">
-            {t('koreanPopulation')}: {profile.koreanPercent}%
-          </div>
-        </div>
-
-        {/* Axis distribution */}
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-fg mb-5">{t('typeDistribution')}</h2>
-          <div className="space-y-4">
-            {axes.map(({ axis, left, right, leftPct, rightPct, dominant }) => (
-              <div key={axis}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className={`text-sm font-semibold ${dominant === left ? 'text-purple-600 dark:text-purple-400' : 'text-faint'}`}>
-                    {left} {dominant === left && `${leftPct}%`}
-                  </span>
-                  <span className={`text-sm font-semibold ${dominant === right ? 'text-indigo-600 dark:text-indigo-400' : 'text-faint'}`}>
-                    {dominant === right && `${rightPct}%`} {right}
-                  </span>
-                </div>
-                <div className="flex h-3 rounded-full overflow-hidden bg-soft">
-                  <div
-                    className="h-full rounded-l-full transition-all duration-700"
-                    style={{
-                      width: `${leftPct}%`,
-                      background: `linear-gradient(to right, ${colorFrom}, ${colorTo})`,
-                    }}
-                  />
-                  <div
-                    className="h-full rounded-r-full"
-                    style={{ width: `${rightPct}%`, background: '#e5e7eb' }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Traits, strengths, weaknesses */}
-        <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-          {/* Traits */}
-          <div>
-            <h2 className="text-lg font-semibold text-fg mb-3">{t('personality')}</h2>
-            <div className="flex flex-wrap gap-2">
-              {profile.traits.map(trait => (
-                <span
-                  key={trait}
-                  className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                  style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
-                >
-                  {trait}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Strengths & weaknesses */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="bg-subtle rounded-xl p-4">
-              <h3 className="font-semibold text-fg mb-3">{t('strengths')}</h3>
-              <ul className="space-y-1.5">
-                {profile.strengths.map(s => (
-                  <li key={s} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="text-green-500 mt-0.5">✓</span>
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-red-50 dark:bg-red-950 rounded-xl p-4">
-              <h3 className="font-semibold text-red-800 dark:text-red-200 mb-3">{t('weaknesses')}</h3>
-              <ul className="space-y-1.5">
-                {profile.weaknesses.map(w => (
-                  <li key={w} className="flex items-start gap-2 text-sm text-red-700 dark:text-red-300">
-                    <span className="text-red-400 mt-0.5">△</span>
-                    <span>{w}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Communication & love style */}
-        <div className="grid sm:grid-cols-2 gap-5">
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-fg mb-3">{t('communicationStyle')}</h2>
-            <p className="text-sm text-sub leading-relaxed">{profile.communicationStyle}</p>
-          </div>
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-base font-semibold text-fg mb-3">{t('loveStyle')}</h2>
-            <p className="text-sm text-sub leading-relaxed">{profile.loveStyle}</p>
-          </div>
-        </div>
-
-        {/* Careers */}
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-fg mb-3">{t('careers')}</h2>
+      {matches.length > 0 && (
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('bestMatch')}</h3>
           <div className="flex flex-wrap gap-2">
-            {profile.careers.map(career => (
-              <span
-                key={career}
-                className="px-3 py-1.5 bg-soft text-body rounded-lg text-sm font-medium"
+            {matches.map((m) => (
+              <a
+                key={m}
+                href={`/mbti-compatibility/?type1=${type}&type2=${m}`}
+                className="px-3 py-1.5 bg-soft hover:bg-track text-body rounded-lg text-sm"
               >
-                {career}
-              </span>
+                <span className="font-semibold">{m}</span> {t(`types.${m}.nickname`)}
+              </a>
             ))}
           </div>
+          <p className="text-xs text-faint mt-2">{t('bestMatchNote')}</p>
         </div>
+      )}
+    </div>
+  )
+}
 
-        {/* Famous people */}
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-fg mb-4">{t('famousPeople')}</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-sm font-medium text-muted mb-2">한국인</h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.famousKoreans.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-subtle text-sub rounded-lg text-sm">
-                    {p}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="text-sm font-medium text-muted mb-2">해외</h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.famousInternational.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-subtle text-sub rounded-lg text-sm">
-                    {p}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Share section */}
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <h2 className="text-lg font-semibold text-fg mb-4">{t('shareResult')}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {/* Copy link */}
-            <button
-              onClick={() => copyToClipboard(shareUrl, 'link')}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium transition-colors text-sm"
-            >
-              {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-              {copiedId === 'link' ? t('copied') : t('copyLink')}
-            </button>
-
-            {/* X/Twitter */}
-            <button
-              onClick={handleShareX}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gray-900 dark:bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500 text-white font-medium transition-colors text-sm"
-            >
-              <Share2 className="w-4 h-4" />
-              {t('shareX')}
-            </button>
-
-            {/* Download card */}
-            <button
-              onClick={handleDownloadCard}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-medium transition-all text-sm col-span-2 sm:col-span-1"
-            >
-              <Download className="w-4 h-4" />
-              {t('downloadCard')}
-            </button>
-          </div>
-        </div>
-
-        {/* CTA: Compatibility check */}
-        <div
-          className="rounded-2xl p-6 text-center text-white"
-          style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
-        >
-          <div className="text-2xl mb-2">💑</div>
-          <p className="font-semibold mb-4 text-lg">나의 유형과 궁합이 맞는 유형은?</p>
-          <a
-            href={`/mbti-compatibility?type=${result.type}`}
-            className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 rounded-xl px-6 py-3 font-semibold transition-all text-sm"
-          >
-            <ExternalLink className="w-4 h-4" />
-            {t('checkCompatibility')}
-          </a>
-        </div>
-
-        {/* Retake & disclaimer */}
-        <div className="space-y-4">
-          <button
-            onClick={handleRetake}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-            {t('retake')}
-          </button>
-
-          <p className="text-center text-xs text-faint px-4">{t('disclaimer')}</p>
-        </div>
-
-        {/* Hidden canvas for download */}
-        <canvas ref={canvasRef} className="hidden" />
+function Guide({ t }: { t: T }) {
+  const sections = [
+    { title: t('guide.axes.title'), items: t.raw('guide.axes.items') as string[] },
+    { title: t('guide.howToUse.title'), items: t.raw('guide.howToUse.items') as string[] },
+    { title: t('guide.scoring.title'), items: t.raw('guide.scoring.items') as string[] },
+    { title: t('guide.tips.title'), items: t.raw('guide.tips.items') as string[] },
+  ]
+  const faq = t.raw('guide.faq.items') as { q: string; a: string }[]
+  return (
+    <div className="ui-card p-6 space-y-6">
+      <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+      <div>
+        <h3 className="font-semibold text-fg mb-2">{t('guide.whatIs.title')}</h3>
+        <p className="text-sm text-sub leading-relaxed">{t('guide.whatIs.description')}</p>
       </div>
-    )
-  }
-
-  return null
+      {sections.map((s) => (
+        <div key={s.title}>
+          <h3 className="font-semibold text-fg mb-2">{s.title}</h3>
+          <ul className="space-y-1.5 text-sm text-sub list-disc pl-4">
+            {s.items.map((i) => <li key={i}>{i}</li>)}
+          </ul>
+        </div>
+      ))}
+      <div>
+        <h3 className="font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+        <div className="space-y-3">
+          {faq.map((f) => (
+            <div key={f.q} className="bg-subtle rounded-2xl p-5">
+              <p className="font-medium text-fg">{f.q}</p>
+              <p className="text-sm text-sub mt-1 leading-relaxed">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
