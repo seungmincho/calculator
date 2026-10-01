@@ -178,7 +178,7 @@ export default function TextConverter() {
       {/* 모든 케이스 */}
       <section className="ui-card p-5 space-y-4">
         <div>
-          <h2 className="text-lg font-semibold text-fg">{t('cases.title')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('cases.heading')}</h2>
           <p className="text-sm text-muted mt-1">{t('cases.hint')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

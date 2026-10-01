@@ -7443,6 +7443,7 @@
   "textConverter": {
     "stats": "{chars}자 · {words}단어 · {lines}줄",
     "cases": {
+      "heading": "케이스 변환 한눈에",
       "title": "Title Case",
       "hint": "여러 줄이면 줄마다 변환합니다. 약어·숫자도 단어로 정확히 나눕니다 (XMLHttpRequest2 → xml_http_request2).",
       "upper": "UPPER CASE",

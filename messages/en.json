@@ -7443,6 +7443,7 @@
   "textConverter": {
     "stats": "{chars} chars · {words} words · {lines} lines",
     "cases": {
+      "heading": "All case styles",
       "title": "Title Case",
       "hint": "Multi-line input is converted line by line. Acronyms and numbers are split correctly (XMLHttpRequest2 → xml_http_request2).",
       "upper": "UPPER CASE",

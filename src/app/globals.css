@@ -220,6 +220,8 @@ body {
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
+  /* "A·B·C·D"처럼 끊을 곳 없는 긴 문자열이 모바일 레이아웃을 넓히지 않게 */
+  overflow-wrap: break-word;
 }
 
 /* Accessibility - Consistent focus styles */
