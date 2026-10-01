@@ -111,8 +111,106 @@
     "results": "tools"
   },
   "timeConverter": {
+    "intlLocale": "en-US",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyLink": "Copy link",
+    "clear": "Clear",
+    "remove": "Remove",
+    "nowLive": "Now",
+    "nowShort": "Now",
+    "useNow": "Use current time",
+    "pasteLabel": "Paste any time",
+    "pastePlaceholder": "1790823600 · 2026-10-01T12:00:00Z · Oct 1, 2026 3:00 PM",
+    "pasteHint": "Recognizes Unix timestamps (seconds, ms, µs, ns auto-detected), ISO 8601, RFC 2822, 2026.10.01 15:30, 10/01/2026 3:00 PM, and now/yesterday/tomorrow. You can paste a whole log line.",
+    "parseFail": "Couldn't recognize that. Try 1790823600, 2026-10-01 12:00, or 2026-10-01T03:00:00Z",
+    "detected": "Detected: {what}",
+    "kind": {
+      "epoch": "Unix timestamp ({unit})",
+      "now": "relative to now",
+      "wall": "no time zone given, read as {zone} time",
+      "zoned": "date-time with a time zone"
+    },
+    "unit": {
+      "s": "seconds",
+      "ms": "milliseconds",
+      "us": "microseconds",
+      "ns": "nanoseconds"
+    },
+    "dateTimeIn": "Date and time in {zone}",
+    "sourceZone": "Base time zone",
+    "searchZone": "Change city, country or zone (e.g. New York, Asia/Tokyo)",
+    "addZone": "Add a city to compare (e.g. Sydney, Paris, Berlin)",
+    "noResults": "No results",
+    "gapWarn": "This time doesn't exist in {zone} because clocks spring forward for daylight saving. Calculated as {time}, one hour later.",
+    "ambiguousWarn": "This time occurs twice in {zone} because daylight saving ends. Using the first occurrence (daylight time).",
+    "heroLabel": "Time in {zone}",
+    "dst": "Daylight saving",
+    "formatsTitle": "Developer formats",
+    "fmt": {
+      "unixS": "Unix timestamp (seconds)",
+      "unixMs": "Unix timestamp (milliseconds)",
+      "isoUtc": "ISO 8601 (UTC) · JavaScript toISOString()",
+      "iso": "ISO 8601 ({zone} offset)",
+      "rfc2822": "RFC 2822 ({zone})",
+      "sql": "SQL DATETIME ({zone})",
+      "relative": "Relative to now"
+    },
+    "otherZones": "In other time zones",
+    "sameTime": "same time",
+    "diffHours": "{h}h",
+    "nextDay": "next day",
+    "prevDay": "previous day",
+    "meetingLink": "Plan a meeting across countries — see overlapping work hours (World Clock)",
+    "add": {
+      "title": "Add or subtract time",
+      "desc": "Years, months, weeks, days and business days follow the {zone} calendar (same clock time across DST); hours, minutes and seconds are elapsed time.",
+      "plus": "Add",
+      "minus": "Subtract",
+      "amount": "Amount",
+      "unit": "Unit",
+      "result": "Result",
+      "useAsBase": "Use as base time",
+      "useAsEnd": "Use as end time"
+    },
+    "addUnit": {
+      "y": "years",
+      "mo": "months",
+      "w": "weeks",
+      "d": "days",
+      "bd": "business days",
+      "h": "hours",
+      "mi": "minutes",
+      "s": "seconds"
+    },
+    "outOfRange": "Out of the supported date range.",
+    "holidayNote": "Business days exclude weekends and Korean public holidays (including substitute holidays and election days). Lunar holidays are covered for 2024–2030; temporary holidays only once designated.",
+    "diff": {
+      "title": "Between two times",
+      "desc": "Difference from the time above to an end time",
+      "start": "Base time",
+      "end": "End time (in {zone})",
+      "after": "Until the end time",
+      "before": "The end time is earlier by",
+      "dhms": "{d}d {h}h {m}m {s}s",
+      "totalHours": "Total hours",
+      "totalMinutes": "Total minutes",
+      "totalSeconds": "Total seconds",
+      "calendarDays": "Calendar days apart",
+      "businessDays": "Business days",
+      "businessNote": "Business days are counted from the day after the start through the end date."
+    },
     "title": "Time Converter",
-    "description": "All-in-one tool for timezone conversion, Unix timestamps, and relative time calculations",
+    "description": "Unix timestamp ⇄ date (seconds, ms, ns auto-detected), DST-correct time zone conversion, date math and business days",
     "realTimeWorldClock": "Real-Time World Clock",
     "timezoneConversion": "Timezone Conversion",
     "unixTimestamp": "Unix Timestamp",
@@ -193,27 +291,39 @@
       "denver": "Denver (MST/MDT)"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Time zone conversion uses the browser's IANA time zone database (Intl API) directly. No offsets are hard-coded, so DST start and end dates stay correct every year.",
+          "Timestamp units are inferred from the digit count: up to 11 digits = seconds, 12–14 = milliseconds, 15–17 = microseconds, 18–19 = nanoseconds.",
+          "A time skipped when DST starts (e.g. New York 2026-03-08 02:30) is pushed one hour later; a time repeated when DST ends (e.g. New York 2026-11-01 01:30) uses the first occurrence. A warning is shown in both cases.",
+          "'+1 day' follows the calendar, so on a DST change day it can be 23 or 25 real hours. Use the 'hours' unit for exactly 24 hours.",
+          "Adding 1 month to January 31 gives the last day of February (29 in leap years, 28 otherwise)."
+        ]
+      },
       "title": "Time Converter Guide",
       "whatIs": {
         "title": "What is the Time Converter?",
-        "description": "Convert time zones in real-time across major cities worldwide, and convert between Unix timestamps and dates. Supports 12+ major time zones including KST, UTC, EST/PST, CET, and JST."
+        "description": "Convert between Unix timestamps and dates, and see one moment in several countries at once. Search zones by city name (Seoul, New York, London, Sydney) or IANA name (Asia/Tokyo); daylight saving time is applied automatically from the browser's time zone data. Copy ISO 8601, RFC 2822 or SQL formats, add or subtract time, and get the difference and business days between two times on one screen."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Select source and target time zones, then enter date and time to convert.",
-          "In the Unix Timestamp tab, enter a number to convert to KST/UTC/ISO 8601 format.",
-          "The Relative Time tab shows how long ago or until a given time.",
-          "Click copy to save converted times to clipboard."
+          "Paste a timestamp or date into the top box. The format and unit (seconds, ms, µs, ns) are detected automatically, even inside a log line.",
+          "Dates without a time zone are read in the base time zone. Change it by searching a city, country or IANA name.",
+          "Copy Unix seconds/ms, ISO 8601, RFC 2822 or SQL from 'Developer formats'.",
+          "Add cities under 'In other time zones' to see the same moment's local time, offset, DST status and day change.",
+          "Use 'Add or subtract time' and 'Between two times' for N days later, N business days later, or the gap between two times. 'Copy link' shares the current view."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "New York (EST) is 14 hours behind Korea (13 during DST).",
-          "Unix timestamps count seconds since Jan 1, 1970 00:00:00 UTC.",
-          "DST regions change UTC offsets seasonally - verify when converting US/EU times.",
-          "Use this to convert server log UTC timestamps to local time."
+          "New York is 14 hours behind Korea, 13 hours during DST (March 8 – November 1, 2026).",
+          "JavaScript Date.now() is milliseconds (13 digits), most server/DB Unix time is seconds (10 digits), Go/Rust UnixNano is nanoseconds (19 digits).",
+          "Store ISO 8601 with an offset (e.g. 2026-10-01T12:00:00+09:00) or UTC in APIs and databases to avoid DST confusion.",
+          "For exactly 24 hours later, add 24 hours rather than 1 day — they differ on DST change days.",
+          "To schedule across countries, use the World Clock meeting planner to find overlapping work hours."
         ]
       },
       "faq": {
@@ -221,15 +331,23 @@
         "items": [
           {
             "q": "What's the time difference between Korea and the US?",
-            "a": "Eastern US (New York) is 14 hours behind Korea, Western US (LA) is 17 hours behind. During DST (Mar-Nov), it's 13 and 16 hours respectively."
+            "a": "New York is 14 hours behind Korea and Los Angeles 17 hours. During DST (March 8 – November 1 in 2026) it's 13 and 16 hours."
           },
           {
             "q": "What is a Unix timestamp?",
-            "a": "A Unix timestamp (Epoch time) is the number of seconds elapsed since January 1, 1970 00:00:00 UTC. It's timezone-independent."
+            "a": "The number of seconds since January 1, 1970 00:00:00 UTC. It's a single zone-independent number, widely used in servers and databases. Some systems use milliseconds (13 digits) or nanoseconds (19 digits), so this tool infers the unit from the digit count."
           },
           {
             "q": "What is DST?",
-            "a": "Daylight Saving Time advances clocks by 1 hour in summer. The US observes it from March to November. Korea, Japan, and China do not use DST."
+            "a": "Daylight saving time moves clocks forward one hour in summer. The US and Canada observe it from the second Sunday of March to the first Sunday of November, Europe from the last Sunday of March to the last Sunday of October, and southeastern Australia from the first Sunday of October to the first Sunday of April. Korea, Japan and China don't use it."
+          },
+          {
+            "q": "What happens with a time that doesn't exist, like 2026-03-08 02:30 in New York?",
+            "a": "When DST starts, clocks jump from 02:00 to 03:00, so that time never happens. The tool moves it one hour later (03:30) and shows a warning. A time that occurs twice when DST ends uses the first occurrence."
+          },
+          {
+            "q": "How are business days counted?",
+            "a": "Weekends and Korean public holidays (including substitute holidays and election days) are excluded, counting from the day after the start through the end date. Lunar holidays are covered for 2024–2030; temporary holidays only once designated by the government."
           }
         ]
       }
@@ -18681,11 +18799,117 @@
     }
   },
   "budgetCalculator": {
+    "won": "₩{n}",
+    "unit": "₩",
+    "link": {
+      "viewing": "You're viewing a budget from a shared link. Your saved budget stays untouched until you edit this one.",
+      "loadMine": "Load my budget"
+    },
+    "emergency": {
+      "title": "Emergency fund goal",
+      "desc": "A common guideline is to keep 3–6 months of essential expenses aside for job loss or medical bills.",
+      "months": "{n} months",
+      "balance": "Emergency savings so far",
+      "target": "Essentials ₩{need}/month × {n} months",
+      "done": "Goal reached! You can now direct extra money to investing.",
+      "noPlan": "₩{short} to go. Add an emergency fund amount to your budget.",
+      "eta": "{pct}% saved. At ₩{monthly}/month you'll reach it in {n} months."
+    },
+    "hero": {
+      "label": "Savings rate of ₩{income} monthly income",
+      "rate": "{n}%",
+      "unallocated": "Save the unassigned ₩{amount} too and your rate becomes {rate}%",
+      "income": "Monthly income",
+      "spend": "Monthly spending",
+      "saving": "Monthly savings",
+      "left": "Unassigned",
+      "year1": "Saved in 1 year",
+      "yearNote": "₩{y3} in 3 years (simple total, no interest)"
+    },
+    "verdict": {
+      "noIncome": "Enter your income to get a verdict.",
+      "over": "Planned spending and savings exceed income by ₩{amount}. Trim wants first.",
+      "low": "Savings rate under 10%. Cut fixed costs to make room for saving.",
+      "fair": "You're saving. Try to reach the recommended 20%.",
+      "good": "Above the recommended 20% savings rate. A healthy budget.",
+      "great": "30%+ savings rate. This budget builds wealth fast."
+    },
+    "plan": {
+      "title": "Plan your budget",
+      "desc": "Pick a rule to compare against its target ratios. Edit each amount or split your income in one click.",
+      "ruleLabel": "Budget rule",
+      "fill": "Auto-split by this rule",
+      "undo": "Undo",
+      "target": "Target {pct}% · ₩{amount}",
+      "onTarget": "On target",
+      "overBy": "₩{amount} over",
+      "underBy": "₩{amount} under"
+    },
+    "rules": {
+      "r503020": {
+        "name": "50/30/20",
+        "desc": "50% of after-tax income to needs, 30% to wants, 20% to savings. Popularized by Elizabeth Warren in \"All Your Worth\" (2005)."
+      },
+      "fourAccounts": {
+        "name": "4 accounts",
+        "desc": "On payday, auto-transfer into fixed-cost, living, emergency and investment accounts. 30/40/10/20 is an example; adjust it to your situation."
+      },
+      "rookie": {
+        "name": "First job",
+        "desc": "For new workers with low fixed costs (e.g. living with parents): save half your pay to build a seed fund fast (30/20/50)."
+      }
+    },
+    "bucket": {
+      "need": "Needs",
+      "want": "Wants",
+      "saving": "Savings",
+      "fixed": "Fixed-cost account",
+      "living": "Living account",
+      "reserve": "Emergency account",
+      "invest": "Investment account"
+    },
+    "tracker": {
+      "title": "Monthly spending log",
+      "desc": "Compared against the budget above. Log what you spent to see what's left and your daily allowance. Stored only in this browser.",
+      "prev": "Previous month",
+      "next": "Next month",
+      "month": "{m}/{y}",
+      "daily": "Daily allowance left this month",
+      "dailyBasis": "₩{left} left for variable living costs ÷ {days} days (excl. fixed costs & savings)",
+      "fast": "Spending faster than planned. Pace limit so far ₩{limit}, actual ₩{spent}",
+      "onPace": "On track (pace limit so far ₩{limit})",
+      "result": "Month result",
+      "overSpent": "₩{amount} over",
+      "underSpent": "₩{amount} saved",
+      "future": "This month hasn't started. You can log planned expenses ahead.",
+      "planned": "Budget",
+      "spent": "Spent",
+      "left": "Left",
+      "savedLine": "Saved ₩{saved} / planned ₩{plan}",
+      "catPlan": "Budget ₩{plan}",
+      "catOver": "Budget ₩{plan} · ₩{amount} over",
+      "actualOf": "{cat} actual spending",
+      "csv": "Export CSV",
+      "clear": "Clear this month",
+      "clearConfirm": "Clear this month's log? This can't be undone.",
+      "csvHeader": [
+        "Month",
+        "Category",
+        "Budget",
+        "Actual"
+      ]
+    },
     "title": "Budget Calculator",
-    "description": "Manage monthly expenses by category and plan your budget",
+    "description": "Decide where your paycheck goes, get a savings-rate verdict and see your daily allowance left this month",
     "currency": " KRW",
     "manWon": "0K",
     "income": {
+      "modeNet": "Monthly take-home",
+      "modeAnnual": "From salary",
+      "annual": "Annual salary (gross)",
+      "netResult": "Take-home ₩{n}/month",
+      "netBasis": "2026 Korean social insurance & income tax, assuming ₩200,000 non-taxable meal allowance and 1 dependent (yourself).",
+      "netDetail": "See deductions",
       "title": "Income",
       "salary": "Salary (After Tax)",
       "sideIncome": "Side Income",
@@ -18696,6 +18920,7 @@
       "average": "Korean Avg"
     },
     "categories": {
+      "emergency": "Emergency fund",
       "housing": "Housing",
       "food": "Food",
       "transport": "Transport",
@@ -18754,41 +18979,57 @@
       "copied": "Copied!"
     },
     "preset": {
+      "title": "Save budget",
+      "delete": "Delete",
       "defaultName": "My Budget",
       "placeholder": "Preset name",
       "saved": "Saved Budgets"
     },
     "share": {
+      "label": "My savings rate",
+      "text": "My savings rate is {n}%! Plan your budget too",
+      "showAmounts": "Include amounts in shared image & link (ratios only by default)",
       "title": "Monthly Budget Summary"
     },
     "guide": {
+      "accounts": {
+        "title": "What is the 4-account method?",
+        "items": [
+          "Spending everything from one account hides how much is left. Split accounts by purpose and each balance becomes your remaining budget.",
+          "Fixed-cost (salary) account: rent, utilities, phone, insurance and subscriptions leave by auto-debit.",
+          "Living account: for variable costs like food, transport and leisure. Link a debit card and spend only its balance.",
+          "Emergency account: keep 3–6 months of essential costs in an instant-access (parking) account.",
+          "Investment account: savings plans, pension accounts (IRP), ISA and other long-term assets. Auto-transfer on payday: pay yourself first."
+        ]
+      },
       "title": "User Guide",
       "usage": {
         "title": "How to Use",
         "items": [
-          "Enter your monthly income (after-tax salary, side income, etc.)",
-          "Enter amounts for each expense category or adjust with sliders",
-          "Review the donut chart and category bar graphs",
-          "Compare with the 50/30/20 rule to find improvements",
-          "Save your budget to load later"
+          "Enter monthly take-home pay, or switch to 'From salary' to convert an annual salary to take-home",
+          "Pick a budget rule (50/30/20, 4 accounts, first job) and auto-split, or edit each category",
+          "Check the savings-rate verdict and how much you'll save in a year on the blue card",
+          "Log actual spending per month to see what's left and your daily allowance; past months show a summary",
+          "Your budget and log are saved in this browser. Export CSV or share a link to move them"
         ]
       },
       "rule": {
         "title": "What is the 50/30/20 Rule?",
         "items": [
-          "Needs (50%): Housing, food, transport, communication, insurance, medical - essential expenses",
-          "Wants (30%): Dining out, leisure, shopping, hobbies - discretionary spending",
-          "Savings (20%): Savings accounts, investments, emergency fund - building for the future"
+          "Needs (50%): housing, food, transport, phone, insurance, medical: hard-to-cut costs",
+          "Wants (30%): leisure, clothing, social events, education: adjustable spending",
+          "Savings (20%): emergency fund, savings, investing. Extra loan principal payments count here too",
+          "Popularized by Elizabeth Warren's \"All Your Worth\" (2005). In high-rent areas needs often exceed 50%, so some use 60/20/20"
         ]
       },
       "tips": {
         "title": "Saving Tips",
         "items": [
-          "Food expenses should be 15-20% of income",
-          "Identify fixed costs (housing, communication) first",
-          "Budget for social events by dividing annual total by 12",
-          "Aim for at least 20% savings rate",
-          "Compare with Korean averages to find areas to cut back"
+          "Cutting fixed costs (phone, insurance, subscriptions) pays off every month. Start with budget carriers, duplicate insurance and unused subscriptions",
+          "Don't save what's left; auto-transfer savings on payday first",
+          "Divide yearly costs (holidays, gifts, car tax) by 12 and budget them monthly so no month goes into deficit",
+          "Overspend one day and the remaining daily allowance shrinks automatically. Checking once a day is enough",
+          "20% is a common savings-rate guideline. If that's hard, start at 10% and raise it each year"
         ]
       },
       "guide": {
@@ -18816,22 +19057,30 @@
       },
       "whatIs": {
         "title": "What is the Budget Calculator?",
-        "description": "The Budget Calculator is a personal finance tool for tracking monthly expenses by category — housing, food, transportation, communication, leisure, and more — to calculate total spending and monitor your budget at a glance. Guided by the 50/30/20 budgeting rule, it helps you understand your spending patterns and identify areas where you can save."
+        "description": "This budget calculator helps you decide where each paycheck should go. Enter your income (monthly take-home or annual salary), pick a rule (50/30/20, 4 accounts or first job) and compare each category against the target ratios with a savings-rate verdict. Log actual spending each month to see what's left and your daily allowance, plus when you'll reach your emergency fund goal."
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
             "q": "What is the 50/30/20 rule?",
-            "a": "A simple personal finance guideline: allocate 50% of after-tax income to needs (housing, food, transport), 30% to wants (leisure, shopping), and 20% to savings and debt repayment."
+            "a": "A simple guideline: allocate 50% of after-tax income to needs (housing, food, transport), 30% to wants (leisure, shopping), and 20% to savings and investing."
           },
           {
-            "q": "Will my data be saved between visits?",
-            "a": "Yes. Budget items are stored in browser localStorage, so they persist when you reload the page."
+            "q": "Is my data saved between visits?",
+            "a": "Yes. Your budget and monthly log are saved automatically in this browser (localStorage) and never sent to a server. Clearing browser data deletes them, so export a CSV backup."
+          },
+          {
+            "q": "How is the daily allowance calculated?",
+            "a": "This month's variable living budget (food, transport, medical, leisure, clothing, social events, other) minus what you've spent, divided by the remaining days including today. Fixed costs (housing, phone, insurance, education) and savings are excluded."
+          },
+          {
+            "q": "Does sharing reveal my amounts?",
+            "a": "By default only your savings rate and ratios are shared. Turn on 'Include amounts' to share amounts and a link with your budget."
           },
           {
             "q": "Can dual-income households calculate combined budgets?",
-            "a": "Yes. Enter the combined household income and all shared household expenses in the respective fields."
+            "a": "Yes. Enter the combined household income and all shared household expenses."
           }
         ]
       }
@@ -19080,8 +19329,92 @@
     }
   },
   "movingCost": {
+    "amt": "₩{n}0k",
+    "approxPyeong": "about {n} pyeong",
+    "vehicle": "Typical truck: {ton}",
+    "storageHint": "Storage move if move-in dates don't line up (0 = move in directly)",
+    "kmPreset": "{label} · {km}km",
+    "accessHint": "Stairs add a per-floor fee from the 3rd floor; 5th floor and above usually needs a ladder truck. A ladder truck is charged per side (origin/destination).",
+    "access": {
+      "elevator": "Elevator",
+      "stairs": "Stairs",
+      "ladder": "Ladder truck"
+    },
+    "badge": {
+      "peak": "Peak season (Mar/Sep)",
+      "shoulder": "Busy season (Feb/Apr/Oct)",
+      "weekend": "Weekend/holiday",
+      "son": "Son-eomneun day",
+      "monthEnd": "Month end",
+      "normal": "Off-peak weekday"
+    },
+    "lunarOf": "Lunar {leap}{m}/{d}",
+    "leap": "leap ",
+    "dayPremium": "Demand surcharge on this day: about +{p}% (typical, estimated)",
+    "dayNoPremium": "No surcharge on this day. Among the cheapest.",
+    "dateFmt": "{m}/{d} ({w})",
+    "cal": {
+      "title": "{m}/{y}",
+      "prev": "Previous month",
+      "next": "Next month",
+      "son": "S",
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "legend": "S = son-eomneun day (lunar 9, 10, 19, 20, 29, 30) · % = estimated demand surcharge · {n} lowest-surcharge days this month"
+    },
+    "hero": {
+      "label": "Estimated cost: {size} {type}",
+      "range": "Range {range}",
+      "mover": "Moving company",
+      "extra": "Extras",
+      "basis": "Typical value for {ton} truck · {km}km (market estimate)"
+    },
+    "warn": {
+      "truckLarge": "Over 15 pyeong a 1-ton truck needs several trips and can end up costing more. Get regular/semi-packed quotes too.",
+      "stairsHigh": "Carrying by stairs to the 5th floor or higher is hard and expensive; a ladder truck is usually used.",
+      "ladderHigh": "Above the 20th floor a ladder truck may not reach. Check equipment availability with the mover."
+    },
+    "breakdownTitle": "Cost breakdown (min ~ max)",
+    "group": {
+      "mover": "Moving company quote",
+      "extra": "Separate extras"
+    },
+    "lines": {
+      "base": "Base hauling/packing",
+      "storage": "Storage (extra loading + fee)",
+      "distance": "Distance",
+      "access": "Floors/ladder truck",
+      "premium": "Date surcharge",
+      "piano": "Piano",
+      "ac": "AC relocation",
+      "clean": "Move-in cleaning",
+      "waste": "Bulky waste fees"
+    },
+    "share": {
+      "vehicle": "Truck",
+      "text": "Our {size} {type} move: about {amount}"
+    },
+    "quotes": {
+      "title": "Compare quotes",
+      "desc": "Enter the quotes you received (totals) to see the lowest/average versus this estimate.",
+      "name": "Company {n}",
+      "unit": "×10k KRW",
+      "min": "Lowest",
+      "avg": "Average",
+      "max": "Highest",
+      "vsEstimate": "Average quote vs typical estimate: {diff} (estimate range {range})",
+      "lowWarn": "Quotes more than 20% below the estimated minimum often add same-day charges (ladder truck, crew, packing). Write what's included into the contract.",
+      "empty": "Enter at least one quote to compare."
+    },
     "title": "Moving Cost Calculator",
-    "description": "Calculate estimated moving costs by type and conditions",
+    "description": "Estimate your moving cost as a min-max range by size, type, distance, floors and date, plus a son-eomneun day calendar and moving checklist",
     "sizeLabel": "Home Size",
     "customSize": "Custom Input",
     "pyeong": "pyeong",
@@ -19096,14 +19429,16 @@
     },
     "movingTypeLabel": "Moving Type",
     "movingTypes": {
+      "truck": "Small truck",
       "full": "Full Service",
       "semi": "Semi Service",
       "regular": "Self-Pack"
     },
     "movingTypeDesc": {
+      "truck": "1-ton truck driver mainly hauls (studio, few items)",
       "full": "Company handles everything (most convenient)",
       "semi": "Company packs large items, you pack small items",
-      "regular": "You pack, movers only transport (cheapest)"
+      "regular": "You pack; the mover hauls and places"
     },
     "distanceLabel": "Distance",
     "distances": {
@@ -19113,21 +19448,23 @@
       "veryLong": "Very Long",
       "custom": "Custom"
     },
-    "floorLabel": "Floor Info",
-    "currentFloor": "Current Floor",
-    "newFloor": "New Floor",
+    "floorLabel": "Floors & access",
+    "currentFloor": "Origin (current home)",
+    "newFloor": "Destination (new home)",
     "floor": "F",
     "hasElevator": "Has Elevator",
     "ladderTruck": "Ladder Truck Needed",
-    "extrasLabel": "Extra Services",
+    "extrasLabel": "Extras",
     "extras": {
-      "acUnits": "AC Install/Remove (units)",
+      "waste": "Bulky waste (items)",
+      "clean": "Move-in cleaning (new home)",
+      "acUnits": "AC relocation (units, wall-mounted)",
       "piano": "Piano Moving",
       "pianoNone": "None",
       "pianoUpright": "Upright Piano",
       "pianoGrand": "Grand Piano",
       "largeAppliances": "Large Appliances (count)",
-      "storageDays": "Storage Service (days)",
+      "storageDays": "Storage days",
       "organization": "Organization Service",
       "cleaning": "Cleaning Service"
     },
@@ -19143,11 +19480,11 @@
     "won": " KRW",
     "copied": "Copied!",
     "copyResult": "Copy Result",
-    "disclaimer": "* Prices are estimates based on 2024-2025 average Korean market rates. Actual costs may vary by company and circumstances. Please contact moving companies directly for accurate quotes.",
+    "disclaimer": "* Moving prices are set freely by companies; there is no government tariff. Figures are estimates based on 2025-2026 market quote ranges, not official rates. Get an on-site quote for the exact price.",
     "result": {
       "title": "Estimated Cost",
       "estimatedTotal": "Total Estimated Cost",
-      "empty": "Set options on the left to see estimated costs",
+      "empty": "Enter your home size to see the estimate",
       "base": "Base Moving Cost",
       "distance": "Distance Surcharge",
       "floor": "Floor Surcharge",
@@ -19159,6 +19496,64 @@
       "total": "Total Estimated Cost"
     },
     "checklist": {
+      "desc": "To-dos relative to moving day. Checks are saved in this browser only.",
+      "progress": "{done}/{total} done",
+      "phases": [
+        {
+          "title": "One month before",
+          "items": [
+            "Get on-site (or video) quotes from 3+ movers",
+            "Put total price, extra-charge terms, crew size and ladder truck in the contract",
+            "Fix the date (avoiding son-eomneun days, weekends and month end is cheaper)",
+            "Book the elevator with building management (both buildings)"
+          ]
+        },
+        {
+          "title": "Two weeks before",
+          "items": [
+            "Request internet/TV relocation",
+            "Book AC relocation and move-in cleaning",
+            "Sort out furniture to discard; report bulky waste (district office/app)",
+            "Book city gas disconnection/connection"
+          ]
+        },
+        {
+          "title": "One week before",
+          "items": [
+            "Apply for Korea Post mail forwarding",
+            "Change address for cards, banks, insurance",
+            "Use up fridge food; set aside valuables and documents",
+            "Check daycare/school transfer papers"
+          ]
+        },
+        {
+          "title": "Day before",
+          "items": [
+            "Turn off the fridge and drain/defrost",
+            "Drain the washing machine hose",
+            "Read meters; request settlement of maintenance fees and utilities",
+            "Pack a day bag (toiletries, chargers, documents)"
+          ]
+        },
+        {
+          "title": "Moving day",
+          "items": [
+            "Photograph fragile furniture/appliances before work starts",
+            "Final check of the empty home (items, keys, meters)",
+            "Check gas, power and water at the new home",
+            "Report damage/loss right away and record it (notify within 30 days per the standard terms)"
+          ]
+        },
+        {
+          "title": "Within 2 weeks after",
+          "items": [
+            "Move-in report (within 14 days, Gov24 or community center)",
+            "Get a fixed date stamp (same day as move-in report for lease tenants)",
+            "Housing lease report (if applicable, within 30 days of contract; can be filed with the move-in report)",
+            "Confirm car/driver's license address update (mostly automatic with the move-in report)"
+          ]
+        }
+      ],
       "title": "Moving Preparation Checklist",
       "items": [
         "Compare quotes from at least 3 moving companies",
@@ -19179,29 +19574,40 @@
       ]
     },
     "guide": {
+      "sources": {
+        "title": "Sources & notes",
+        "items": [
+          "Moving prices are set freely by companies, not by government tariff. Figures are estimates based on 2025-2026 published quote ranges from moving platforms/companies, not official rates.",
+          "Son-eomneun days: lunar days ending in 9 or 0 (9, 10, 19, 20, 29, 30). Lunar conversion follows KASI.",
+          "KFTC standard terms for moving cargo: deposit, cancellation and damage compensation rules",
+          "Korea Consumer Agency Consumer24 (consumer.go.kr) and the 1372 hotline: moving disputes",
+          "Resident Registration Act Art. 16: move-in report within 14 days of moving",
+          "Housing Lease Protection Act: opposability from 0:00 the day after handover + move-in report; priority repayment with a fixed date stamp"
+        ]
+      },
       "title": "Moving Guide",
       "priceRef": {
-        "title": "Base Cost by Size (Full Service)",
+        "title": "Full-packed base cost by size (market estimate)",
         "items": [
-          "Studio (6p): 300K-500K KRW",
-          "1BR (10p): 500K-800K KRW",
-          "20p: 800K-1.2M KRW",
-          "30p: 1.2M-1.8M KRW",
-          "40p: 1.8M-2.5M KRW",
-          "50p+: 2.5M-3.5M KRW",
-          "Self-Pack is 50-60% of full service cost",
-          "Semi Service is 70-80% of full service cost"
+          "Studio up to 8 pyeong (1t): ₩450k-800k, typical ₩600k",
+          "1-2BR up to 15 pyeong (2.5t): ₩0.8M-1.5M, typical ₩1.1M",
+          "20s pyeong (5t): ₩1.4M-2.3M, typical ₩1.8M",
+          "30s pyeong (5t+2.5t): ₩2.0M-3.2M, typical ₩2.5M",
+          "40s pyeong (two 5t): ₩2.8M-4.2M, typical ₩3.4M",
+          "50+ pyeong: from ₩3.5M-5.5M",
+          "Versus full-packed: semi ~65-80%, regular ~45-60%, small truck ~25-40%",
+          "Basis: within 20km, elevator, off-peak weekday"
         ]
       },
       "tips": {
         "title": "Money-Saving Tips",
         "items": [
-          "Moving in off-season saves 20-30%",
-          "Weekday moves are 10-20% cheaper than weekends",
-          "Get quotes from at least 3 companies",
-          "Decluttering beforehand reduces costs",
-          "Auspicious days have higher demand and prices",
-          "Separate AC service companies may be cheaper than movers"
+          "Weekdays that avoid son-eomneun days, weekends and month end are cheapest. Pick low-% days on the calendar.",
+          "March and September are peak months and cost about 20% more. Aim for Jun-Aug or Nov-Jan if you can.",
+          "Get 3+ on-site (or video) quotes to avoid same-day extra charges.",
+          "Getting rid of furniture beforehand can drop the truck size a step (5t to 2.5t).",
+          "AC relocation and move-in cleaning are often cheaper when quoted separately.",
+          "Write in the contract whether ladder truck, elevator, crew size and packing materials are included."
         ]
       },
       "guide": {
@@ -19238,31 +19644,44 @@
       },
       "whatIs": {
         "title": "What is the Moving Cost Calculator?",
-        "description": "The Moving Cost Calculator estimates your total moving expenses based on the move type (full-service packing, semi-packing, or basic transport), home size, distance, and timing (peak vs. off-peak season). It incorporates the latest 2025–2026 market rates and includes optional costs for ladder trucks, storage moves, and appliance reinstallation."
+        "description": "Enter home size (amount of stuff), moving type, distance, floors with elevator/ladder truck and the date to estimate a min-typical-max moving cost. Moving prices are not government-regulated, so these figures are estimates based on 2025-2026 market quote ranges. Use it to budget before getting quotes and to check whether quotes are reasonable."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter your current home size (pyeong or number of rooms) and select the move type.",
-          "2. Enter the origin and destination addresses or estimated distance.",
-          "3. Choose your preferred moving date — peak season and weekend surcharges apply automatically.",
-          "4. Check any add-ons (ladder truck, storage, AC reinstallation, etc.) to see the total estimated cost."
+          "1. Pick your home size (pyeong or m²) to see the typical truck size (1 ton to two 5-ton trucks).",
+          "2. Choose the moving type (small truck/regular/semi-packed/full-packed) and storage days if needed.",
+          "3. Set distance, origin/destination floors and elevator/stairs/ladder truck.",
+          "4. Pick a date on the calendar to apply son-eomneun day, weekend, month-end and season surcharges. Lower % days are cheaper.",
+          "5. Enter received quotes in 'Compare quotes' and track tasks with the checklist."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "When is moving peak season?",
-            "a": "March–April (spring) and September–October (fall) are peak seasons, with prices typically 20–30% higher. Month-end and weekends are also in high demand and may include surcharges."
+            "q": "What is a son-eomneun day, and is it really pricier?",
+            "a": "Lunar days ending in 9 or 0 (9, 10, 19, 20, 29, 30) are traditionally considered free of spirits and good for moving. Demand concentrates, so prices run about 10% higher or bookings fill early. The calendar marks them with 'S'."
           },
           {
-            "q": "What's the difference between full-service, semi, and basic moves?",
-            "a": "Full-service includes packing, transport, and unpacking by the movers. Semi-service has movers pack large furniture/appliances only. Basic service covers transport only — you pack everything yourself."
+            "q": "When is peak moving season?",
+            "a": "March and September peak, with February, April and October also busy. Weekends/holidays and month end are pricier too. This calculator applies estimated surcharges of 5-30% (season), 5-20% (weekend/holiday), 5-20% (son-eomneun day) and 0-10% (month end), multiplied when they overlap."
           },
           {
-            "q": "Will the estimate match the actual quote?",
-            "a": "This calculator uses average market rates as a reference. Actual costs depend on item types, access conditions, and the specific company. Always get at least 3 quotes to compare."
+            "q": "How do small truck, regular, semi-packed and full-packed moves differ?",
+            "a": "Small truck: a 1-ton driver mainly hauls. Regular: you pack, the mover hauls and places. Semi-packed: the mover packs kitchen/furniture/appliances, you pack clothes and small items. Full-packed: the mover does everything. A storage move keeps items in a warehouse between dates, adding another loading round and a storage fee."
+          },
+          {
+            "q": "What about deposits and cancellations?",
+            "a": "The KFTC standard terms for moving cargo set compensation rules (forfeiting or doubling the deposit, etc.) depending on timing and who cancels. Check whether the mover uses the standard terms and confirm deposit, balance and extra charges in the contract."
+          },
+          {
+            "q": "What if something gets damaged?",
+            "a": "Photograph furniture before work and report damage or loss immediately. Under the standard terms, the mover's liability may lapse if not notified within 30 days of delivery. If unresolved, call the 1372 consumer hotline."
+          },
+          {
+            "q": "Why do real quotes differ from this estimate?",
+            "a": "Actual volume, access and parking, crew size, packing materials and local prices all matter. Get at least 3 quotes and compare them here. Quotes far below the estimated minimum often add same-day charges."
           }
         ]
       }
@@ -25738,8 +26157,67 @@
     }
   },
   "invoiceGenerator": {
-    "title": "Invoice / Tax Invoice Generator",
-    "description": "Create professional invoices and export them as PDF",
+    "newDoc": "New document",
+    "pdfBusy": "Creating PDF…",
+    "pdfError": "Couldn't create the PDF. Use Print → 'Save as PDF' instead.",
+    "previewNote": "Preview at true A4 proportions. The PDF and printout match this view.",
+    "autosaveNote": "Your details and the current draft are saved automatically in this browser only.",
+    "recentClients": "Recent clients",
+    "removeClient": "Remove from recent clients",
+    "docNumber": "Document No.",
+    "validUntil": "Valid until",
+    "delivery": "Delivery",
+    "deliveryPlaceholder": "e.g. within 2 weeks of contract",
+    "payment": "Payment terms",
+    "paymentPlaceholder": "e.g. 50% deposit, balance within 7 days of delivery",
+    "payDue": "Payment due",
+    "account": "Bank account",
+    "accountPlaceholder": "e.g. KB Bank 123456-01-234567 (Hong Gildong)",
+    "bizNoValid": "Check digit is valid",
+    "bizNoInvalid": "Check digit doesn't match. Please re-check the number",
+    "sample": {
+      "item": "Website development"
+    },
+    "view": {
+      "edit": "Edit",
+      "preview": "Preview"
+    },
+    "docType": {
+      "label": "Document type",
+      "quote": "Quotation",
+      "statement": "Transaction statement",
+      "bill": "Bill"
+    },
+    "dateLabel": {
+      "quote": "Quote date",
+      "statement": "Transaction date",
+      "bill": "Billing date"
+    },
+    "stamp": {
+      "label": "Seal",
+      "upload": "Upload image",
+      "change": "Change",
+      "remove": "Remove",
+      "hint": "Placed over the representative's (seal) mark. White backgrounds become transparent.",
+      "make": "No seal image? Make one"
+    },
+    "vat": {
+      "label": "VAT",
+      "excl": "Excluded",
+      "incl": "Included",
+      "none": "None (exempt / simplified)",
+      "hint": {
+        "excl": "Enter unit prices before VAT. VAT is 10% of the supply value, rounded down to the won.",
+        "incl": "Enter unit prices including VAT. VAT = amount ÷ 11, rounded down to the won.",
+        "none": "For VAT-exempt businesses or simplified taxpayers who issue receipts without a separate VAT line."
+      },
+      "basis": "VAT calculation",
+      "basisLine": "Per line, then summed",
+      "basisTotal": "Once on the total",
+      "adjusted": "VAT adjusted by {n} won to match the total (applied to the largest line)"
+    },
+    "title": "Quotation, Statement & Bill Maker",
+    "description": "Fill in a Korean-style business form and download a clean A4 PDF with Hangul intact",
     "save": "Save",
     "load": "Load",
     "reset": "Reset",
@@ -25747,7 +26225,7 @@
     "previewSubtitle": "Copy for Buyer",
     "editMode": "Edit Mode",
     "print": "Print",
-    "exportPDF": "Export PDF",
+    "exportPDF": "Download PDF",
     "savedFeedback": "Saved!",
     "loadedFeedback": "Loaded!",
     "invoiceNumber": "Invoice Number",
@@ -25755,17 +26233,24 @@
     "dueDate": "Due Date",
     "sender": "Seller (From)",
     "recipient": "Buyer (To)",
-    "notes": "Notes",
-    "notesPlaceholder": "Payment terms, delivery info, or any other notes",
+    "notes": "Remarks",
+    "notesPlaceholder": "e.g. VAT excluded. Includes two rounds of design revisions.",
     "section": {
+      "doc": "Document",
       "invoiceInfo": "Invoice Info",
-      "sender": "Seller Information",
-      "recipient": "Buyer Information",
-      "items": "Line Items",
-      "notes": "Notes / Memo"
+      "sender": "Supplier (you)",
+      "recipient": "Customer",
+      "items": "Items",
+      "notes": "Remarks"
     },
     "company": {
-      "name": "Company Name",
+      "bizNo": "Business registration No.",
+      "rep": "Representative",
+      "bizType": "Business type",
+      "bizItem": "Business item",
+      "bizTypePlaceholder": "e.g. Services",
+      "bizItemPlaceholder": "e.g. Software development",
+      "name": "Trade name",
       "namePlaceholder": "Company or trade name",
       "regNumber": "Business Registration No.",
       "representative": "Representative",
@@ -25776,57 +26261,59 @@
       "email": "Email"
     },
     "items": {
+      "spec": "Spec",
       "name": "Item Name",
       "namePlaceholder": "Item or service name",
       "quantity": "Qty",
-      "unitPrice": "Unit Price (KRW)",
+      "unitPrice": "Unit price",
       "amount": "Amount (KRW)",
-      "taxable": "VAT",
+      "taxable": "Taxable",
       "add": "Add Item",
       "remove": "Remove item"
     },
     "summary": {
-      "subtotal": "Subtotal",
+      "subtotal": "Supply value",
       "vat": "VAT",
       "total": "Total"
     },
     "guide": {
-      "title": "Invoice Writing Guide",
+      "title": "Guide to Korean quotations and statements",
       "sections": [
         {
-          "title": "Required Fields",
+          "title": "Which document?",
           "items": [
-            "Business registration number is mandatory for tax invoices",
-            "Clearly state invoice date and due/validity date",
-            "List item name, quantity, unit price, and amount accurately",
-            "Distinguish between taxable and VAT-exempt items"
+            "Quotation: states price and terms before a deal. Adding validity, delivery and payment terms prevents disputes.",
+            "Transaction statement: confirms items, quantities and amounts on delivery. The receiver's signature makes it proof of delivery.",
+            "Bill: requests payment. Always include the due date and bank account.",
+            "This tool does not issue tax invoices. Corporations and sole proprietors with prior-year supply value of KRW 80M+ must issue e-tax invoices via Hometax or similar."
           ]
         },
         {
-          "title": "VAT Information",
+          "title": "How VAT is calculated",
           "items": [
-            "General taxpayers charge 10% VAT on the supply amount",
-            "Uncheck VAT for exempt items (medical, education, etc.)",
-            "Simplified taxpayers may have limited invoice issuance rights",
-            "Electronic tax invoices are legally binding official documents"
+            "VAT excluded: unit price is the supply value; VAT = supply value × 10%, rounded down to the won.",
+            "VAT included: VAT = amount ÷ 11 (rounded down), supply value = amount − VAT.",
+            "Rounding of fractions is not set by law and follows the parties' agreement; most businesses round down.",
+            "Rounding per line can come out a few won lower than calculating once on the total. 'Once on the total' puts the difference on the largest line so the sums match.",
+            "Untick 'Taxable' for VAT-exempt items such as unprocessed farm/fishery products or medical and educational services."
           ]
         },
         {
-          "title": "PDF Export Tips",
+          "title": "What to include",
           "items": [
-            "The PDF export uses ASCII-safe rendering for compatibility",
-            "Korean characters may appear as '?' in PDF — use Print for Korean output",
-            "The Print button opens your browser's native print dialog",
-            "Enable 'Background graphics' in print settings for best results"
+            "Supplier: trade name, business registration number, representative, address, business type/item, contact",
+            "The business registration number is checked against the NTS check-digit rule as you type. Use the business number lookup tool to check registration status.",
+            "The total is also written out in Korean (e.g. 금 일백일십만원정) to prevent tampering.",
+            "Document numbers follow date-serial (e.g. 20261001-001) and increase by one for each new document."
           ]
         },
         {
-          "title": "Save & Manage",
+          "title": "PDF, printing and saving",
           "items": [
-            "Use Save to store your current invoice in the browser",
-            "Use Load to restore a previously saved invoice",
-            "Reset generates a new invoice number and clears all fields",
-            "Always export important invoices as PDF for record-keeping"
+            "Download PDF captures the preview as an A4 image, so Hangul never breaks.",
+            "Print prints only the document. Choosing 'Save as PDF' in the print dialog gives a PDF with selectable text.",
+            "Seal images have white backgrounds made transparent and are placed on the representative's (seal) mark.",
+            "Your details and draft are saved only in this browser; after a PDF or print, the customer is added to Recent clients. Nothing is sent to a server."
           ]
         }
       ],
@@ -25872,7 +26359,7 @@
       },
       "whatIs": {
         "title": "What is the Invoice / Tax Invoice Generator?",
-        "description": "A tool for freelancers and small business owners to quickly create professional invoices and tax invoices and export them as PDF. Enter your business info, client details, line items and amounts, and VAT (10%) is automatically calculated with a total sum. No accounting software needed — generate and email or print the PDF directly."
+        "description": "Make a Korean quotation (견적서), transaction statement (거래명세서) or bill (청구서) in the standard Korean layout — supplier/customer boxes and the total written out in Korean — and download it as an A4 PDF. Choose VAT excluded, included or none and the supply value and VAT are calculated with won-level rounding down. Your business details and seal are saved in the browser and prefilled for the next document."
       },
       "howToUse": {
         "title": "How to Use",
@@ -25895,16 +26382,24 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I issue legally valid electronic tax invoices here?",
-            "a": "Legally valid e-tax invoices must be issued through the National Tax Service's Hometax. This tool generates document-format invoices for sharing with clients. Use Hometax for official tax reporting."
+            "q": "Can this replace a tax invoice?",
+            "a": "No. A tax invoice is a statutory record issued via Hometax or similar. Quotations, statements and bills document the deal; the tax invoice must be issued separately."
           },
           {
-            "q": "Can tax-exempt businesses use this?",
-            "a": "Yes, set VAT to 0% for tax-exempt transactions. Tax-exempt businesses should issue a 'bill of supply' (계산서) without VAT rather than a tax invoice."
+            "q": "Does a transaction statement need a seal?",
+            "a": "It isn't a statutory form, so no. Many clients still ask for a sealed document, so uploading a seal image once is handy. The receiver signs the receipt line to confirm delivery."
           },
           {
-            "q": "Can I save client information for reuse?",
-            "a": "Frequently used info is saved via browser localStorage and can be reloaded. Enter regular clients once and reuse conveniently."
+            "q": "With VAT included, the VAT is off by 1 won.",
+            "a": "Included VAT is amount ÷ 11 rounded down. Rounding each line can differ from the total by a won or so. Switch VAT calculation to 'Once on the total' to match the total."
+          },
+          {
+            "q": "How do VAT-exempt or simplified taxpayers use it?",
+            "a": "Set VAT to 'None' to show amounts without a VAT column. Simplified taxpayers who issue tax invoices (prior-year turnover KRW 48M+) can use 'Excluded' like general taxpayers."
+          },
+          {
+            "q": "Where is my data stored?",
+            "a": "Only in this browser's localStorage — nothing is sent to a server. It won't appear on other devices or browsers, so keep important documents as PDFs."
           }
         ]
       }

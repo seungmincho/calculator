@@ -32,7 +32,7 @@ export default function BudgetCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '생활비 계산기',
-    description: '카테고리별 월간 지출을 관리하고 예산을 계획하는 도구. 50/30/20 규칙, 시각적 분석, 한국 평균 비교, 절약 추천 기능.',
+    description: '카테고리별 월간 지출을 관리하고 예산을 계획하는 도구. 50/30/20·통장 쪼개기 규칙, 월별 계획 대비 실제 지출, 남은 하루 예산, 비상금 목표, 연봉→실수령 연동.',
     url: 'https://toolhub.ai.kr/budget-calculator',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -44,12 +44,14 @@ export default function BudgetCalculatorPage() {
     },
     featureList: [
       '월급/부수입/기타수입 입력',
-      '12개 한국형 지출 카테고리',
-      '도넛 차트 시각화',
+      '13개 한국형 지출 카테고리',
+      '연봉 → 실수령액 자동 계산',
+      '월별 계획 대비 실제 지출·남은 하루 예산',
+      '비상금 목표(3~6개월) 진행률',
       '50/30/20 규칙 분석',
-      '한국 평균 지출 비교',
+      '50/30/20·통장 쪼개기 규칙 자동 배분',
       '예산 프리셋 저장/불러오기',
-      '텍스트 공유 기능',
+      '저축률 결과 이미지 공유·CSV 내보내기',
     ],
   }
 
@@ -90,7 +92,7 @@ export default function BudgetCalculatorPage() {
               생활비 계산기란?
             </h2>
             <p className="text-body leading-relaxed mb-6">
-              생활비 계산기는 <strong>월간 소득 대비 지출을 카테고리별로 분석하고 예산을 체계적으로 관리</strong>하는 도구입니다. 식비·주거비·교통비 등 12개 한국형 지출 항목을 입력하면 50/30/20 규칙 충족 여부, 한국 평균 지출 비교, 절약 추천까지 자동으로 제공됩니다. 가계부 쓰기가 어려운 분, 월말마다 남는 돈이 없는 분, 저축률을 높이고 싶은 분에게 적합합니다.
+              생활비 계산기는 <strong>월간 소득 대비 지출을 카테고리별로 분석하고 예산을 체계적으로 관리</strong>하는 도구입니다. 식비·주거비·교통비 등 13개 한국형 지출 항목을 입력하면 50/30/20 규칙 충족 여부, 한국 평균 지출 비교, 절약 추천까지 자동으로 제공됩니다. 가계부 쓰기가 어려운 분, 월말마다 남는 돈이 없는 분, 저축률을 높이고 싶은 분에게 적합합니다.
             </p>
             <h3 className="text-lg font-semibold text-fg mb-3">
               생활비 관리 및 절약 팁
@@ -100,7 +102,7 @@ export default function BudgetCalculatorPage() {
               <li><strong>고정비 최소화:</strong> 통신비·구독 서비스·보험을 정기적으로 점검해 불필요한 지출을 줄이세요.</li>
               <li><strong>식비 절약:</strong> 주 1회 장보기와 도시락 지참으로 외식비를 월 5~10만 원 줄일 수 있습니다.</li>
               <li><strong>프리셋 저장:</strong> 현재 예산 구성을 저장해두면 다음 달 빠르게 불러와 비교할 수 있습니다.</li>
-              <li><strong>한국 평균 비교:</strong> 항목별 평균과 내 지출을 비교해 어느 영역이 과다 지출인지 파악하세요.</li>
+              <li><strong>월별 기록:</strong> 매달 실제 지출을 입력하면 계획 대비 어느 항목이 넘쳤는지와 남은 하루 예산을 바로 확인할 수 있습니다.</li>
             </ul>
           </div>
         </section>

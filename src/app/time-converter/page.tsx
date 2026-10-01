@@ -43,7 +43,7 @@ export default function TimeConverterPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['타임존 변환', 'Unix 타임스탬프 변환', '날짜/시간 포맷', '세계 시간 비교']
+    featureList: ['타임존 변환(IANA·서머타임 자동)', 'Unix 타임스탬프 초·ms·µs·ns 자동 인식', 'ISO 8601·RFC 2822·SQL 형식 출력', '날짜 붙여넣기 자동 해석(한국어·영어)', '날짜 더하기·빼기, 두 시각 차이', '영업일 계산(한국 공휴일 반영)', '여러 도시 시간 비교']
   }
 
   const faqJsonLd = {

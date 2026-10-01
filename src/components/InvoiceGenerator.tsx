@@ -1,328 +1,377 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, type CSSProperties } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import { Plus, Trash2, Download, Printer, FilePlus2, X } from 'lucide-react'
+import { formatBizNo, validate as validateBizNo } from '@/utils/businessNumber'
 import {
-  Plus,
-  Trash2,
-  Download,
-  Printer,
-  Save,
-  FolderOpen,
-  Eye,
-  EyeOff,
-  RefreshCw,
-  FileText,
-  Building2,
-  User,
-  Package,
-  StickyNote,
-  ChevronDown,
-  ChevronUp,
-} from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+  computeTotals, amountInKorean, nextDocNumber, won,
+  type DocType, type VatMode, type VatBasis, type DocTotals,
+} from '@/utils/invoiceDoc'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-interface CompanyInfo {
+interface Party {
   name: string
-  regNumber: string
-  representative: string
+  bizNo: string
+  rep: string
   address: string
+  bizType: string
+  bizItem: string
   phone: string
   email: string
 }
 
-interface InvoiceItem {
+interface Item {
   id: string
   name: string
-  quantity: number
-  unitPrice: number
+  spec: string
+  qty: number
+  price: number
   taxable: boolean
 }
 
-interface InvoiceData {
-  invoiceNumber: string
-  invoiceDate: string
+interface Doc {
+  type: DocType
+  number: string
+  date: string
+  validUntil: string
+  delivery: string
+  payment: string
   dueDate: string
-  sender: CompanyInfo
-  recipient: CompanyInfo
-  items: InvoiceItem[]
+  account: string
+  supplier: Party
+  client: Party
+  items: Item[]
+  vatMode: VatMode
+  basis: VatBasis
   notes: string
+  stamp: string // dataURL (축소·흰 배경 투명 처리)
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function formatKRW(amount: number): string {
-  return amount.toLocaleString('ko-KR') + '원'
-}
+const DRAFT_KEY = 'invoiceGenerator_draft'
+const CLIENTS_KEY = 'invoiceGenerator_clients'
+const LAST_NO_KEY = 'invoiceGenerator_lastNo'
+const LEGACY_KEY = 'invoiceGenerator_saved'
+const PAPER_W = 794 // A4 210mm @96dpi
+const PAPER_H = 1123
 
-function generateInvoiceNumber(): string {
-  const now = new Date()
-  const y = now.getFullYear()
-  const m = String(now.getMonth() + 1).padStart(2, '0')
-  const d = String(now.getDate()).padStart(2, '0')
-  const rand = String(Math.floor(Math.random() * 1000)).padStart(3, '0')
-  return `INV-${y}${m}${d}-${rand}`
-}
+const EMPTY_PARTY: Party = { name: '', bizNo: '', rep: '', address: '', bizType: '', bizItem: '', phone: '', email: '' }
 
-function todayStr(): string {
-  return new Date().toISOString().slice(0, 10)
-}
-
-function dueDateStr(): string {
+const ymd = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+const plusDays = (n: number) => {
   const d = new Date()
-  d.setDate(d.getDate() + 30)
-  return d.toISOString().slice(0, 10)
+  d.setDate(d.getDate() + n)
+  return ymd(d)
 }
-
-const EMPTY_COMPANY: CompanyInfo = {
-  name: '',
-  regNumber: '',
-  representative: '',
-  address: '',
-  phone: '',
-  email: '',
-}
-
-const EMPTY_ITEM = (): InvoiceItem => ({
+const newItem = (name = '', price = 0): Item => ({
   id: Math.random().toString(36).slice(2),
-  name: '',
-  quantity: 1,
-  unitPrice: 0,
+  name,
+  spec: '',
+  qty: 1,
+  price,
   taxable: true,
 })
+const dots = (s: string) => s.replace(/-/g, '. ')
 
-const DEFAULT_INVOICE = (): InvoiceData => ({
-  invoiceNumber: generateInvoiceNumber(),
-  invoiceDate: todayStr(),
-  dueDate: dueDateStr(),
-  sender: { ...EMPTY_COMPANY },
-  recipient: { ...EMPTY_COMPANY },
-  items: [EMPTY_ITEM()],
-  notes: '',
+function blankDoc(sampleItem: string): Doc {
+  return {
+    type: 'quote',
+    number: '',
+    date: '',
+    validUntil: '',
+    delivery: '',
+    payment: '',
+    dueDate: '',
+    account: '',
+    supplier: { ...EMPTY_PARTY },
+    client: { ...EMPTY_PARTY },
+    items: [sampleItem ? newItem(sampleItem, 1_000_000) : newItem()],
+    vatMode: 'excl',
+    basis: 'line',
+    notes: '',
+    stamp: '',
+  }
+}
+
+/** 저장된 값(구버전 포함)을 현재 형태로 */
+function restore(raw: Partial<Doc>, base: Doc): Doc {
+  const items = Array.isArray(raw.items) && raw.items.length
+    ? raw.items.map((i) => ({ ...newItem(), ...i, qty: Number(i.qty) || 0, price: Number(i.price) || 0 }))
+    : base.items
+  return {
+    ...base,
+    ...raw,
+    supplier: { ...EMPTY_PARTY, ...raw.supplier },
+    client: { ...EMPTY_PARTY, ...raw.client },
+    items,
+  }
+}
+
+type LegacyCompany = { name?: string; regNumber?: string; representative?: string; address?: string; phone?: string; email?: string }
+const fromLegacy = (c: LegacyCompany = {}): Party => ({
+  ...EMPTY_PARTY,
+  name: c.name ?? '',
+  bizNo: c.regNumber ?? '',
+  rep: c.representative ?? '',
+  address: c.address ?? '',
+  phone: c.phone ?? '',
+  email: c.email ?? '',
 })
 
-const STORAGE_KEY = 'invoiceGenerator_saved'
+/** 도장 이미지: 최대 200px로 줄이고 흰 배경을 투명하게 */
+async function loadStamp(file: File): Promise<string> {
+  const url = URL.createObjectURL(file)
+  try {
+    const img = new Image()
+    img.src = url
+    await img.decode()
+    const s = Math.min(1, 200 / Math.max(img.width, img.height))
+    const c = document.createElement('canvas')
+    c.width = Math.max(1, Math.round(img.width * s))
+    c.height = Math.max(1, Math.round(img.height * s))
+    const ctx = c.getContext('2d')!
+    ctx.drawImage(img, 0, 0, c.width, c.height)
+    const d = ctx.getImageData(0, 0, c.width, c.height)
+    for (let i = 0; i < d.data.length; i += 4) {
+      if (d.data[i] > 225 && d.data[i + 1] > 225 && d.data[i + 2] > 225) d.data[i + 3] = 0
+    }
+    ctx.putImageData(d, 0, 0)
+    return c.toDataURL('image/png')
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
 
-// ── Sub-components ─────────────────────────────────────────────────────────
+// ── Paper (문서 본문: 테마와 무관하게 흰 종이, 인라인 스타일 → 인쇄 iframe·PDF 캡처에 그대로 복제) ──
 
-function SectionHeader({ icon: Icon, title }: { icon: React.ElementType; title: string }) {
+const TITLES: Record<DocType, string> = { quote: '견 적 서', statement: '거 래 명 세 서', bill: '청 구 서' }
+const DATE_LABEL: Record<DocType, string> = { quote: '견적일자', statement: '거래일자', bill: '청구일자' }
+const LINE = '1px solid #555'
+const th: CSSProperties = { border: LINE, background: '#f2f4f6', padding: '6px 6px', fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap' }
+const td: CSSProperties = { border: LINE, padding: '6px 6px', wordBreak: 'keep-all', overflowWrap: 'anywhere' }
+const num: CSSProperties = { ...td, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }
+const table: CSSProperties = { width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }
+
+function PartyTable({ label, p, stamp }: { label: string; p: Party; stamp?: string }) {
   return (
-    <div className="flex items-center gap-2 mb-4 pb-2 border-b border-line">
-      <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
-      <h2 className="text-base font-semibold text-fg">{title}</h2>
-    </div>
+    <table style={table}>
+      <colgroup>
+        <col style={{ width: 26 }} />
+        <col style={{ width: 62 }} />
+        <col />
+        <col style={{ width: 46 }} />
+        <col style={{ width: '34%' }} />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td rowSpan={5} style={{ ...th, padding: '4px 2px', lineHeight: 1.5 }}>
+            {label.split('').map((ch, i) => <div key={i}>{ch}</div>)}
+          </td>
+          <td style={th}>등록번호</td>
+          <td colSpan={3} style={{ ...td, fontWeight: 600, letterSpacing: '0.05em' }}>{p.bizNo}</td>
+        </tr>
+        <tr>
+          <td style={th}>상호</td>
+          <td style={td}>{p.name}</td>
+          <td style={th}>성명</td>
+          <td style={{ ...td, position: 'relative' }}>
+            {p.rep}
+            {stamp !== undefined && <span style={{ float: 'right', color: '#888' }}>(인)</span>}
+            {stamp && (
+              <img src={stamp} alt="" style={{ position: 'absolute', right: -4, top: -14, width: 54, height: 54, objectFit: 'contain', maxWidth: 'none' }} />
+            )}
+          </td>
+        </tr>
+        <tr>
+          <td style={th}>주소</td>
+          <td colSpan={3} style={td}>{p.address}</td>
+        </tr>
+        <tr>
+          <td style={th}>업태</td>
+          <td style={td}>{p.bizType}</td>
+          <td style={th}>종목</td>
+          <td style={td}>{p.bizItem}</td>
+        </tr>
+        <tr>
+          <td style={th}>연락처</td>
+          <td colSpan={3} style={td}>{[p.phone, p.email].filter(Boolean).join(' · ')}</td>
+        </tr>
+      </tbody>
+    </table>
   )
 }
 
-function CompanyForm({
-  label,
-  data,
-  onChange,
-  t,
-}: {
-  label: string
-  data: CompanyInfo
-  onChange: (field: keyof CompanyInfo, value: string) => void
-  t: ReturnType<typeof useTranslations>
-}) {
-  const inputClass =
-    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
+function Paper({ doc, totals }: { doc: Doc; totals: DocTotals }) {
+  const withVat = doc.vatMode !== 'none'
+  const rows = doc.items.map((it, i) => ({ it, l: totals.lines[i] })).filter(({ it, l }) => it.name || l.total)
+  const pad = Math.max(0, 10 - rows.length)
+  const cols = withVat ? 7 : 6
+  const metaRow = (k: string, v: string) =>
+    v ? (
+      <tr key={k}>
+        <td style={{ ...th, width: 74 }}>{k}</td>
+        <td style={td}>{v}</td>
+      </tr>
+    ) : null
 
-  const Field = ({
-    field,
-    placeholder,
-    type = 'text',
-  }: {
-    field: keyof CompanyInfo
-    placeholder?: string
-    type?: string
-  }) => (
-    <div>
-      <label className="block text-xs font-medium text-sub mb-1">
-        {t(`company.${field}`)}
-      </label>
-      <input
-        type={type}
-        className={inputClass}
-        value={data[field]}
-        placeholder={placeholder}
-        onChange={(e) => onChange(field, e.target.value)}
-      />
-    </div>
-  )
-
-  return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400 mb-3">
-        {label}
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Field field="name" placeholder={t('company.namePlaceholder')} />
-        <Field field="regNumber" placeholder="000-00-00000" />
-        <Field field="representative" placeholder={t('company.repPlaceholder')} />
-        <Field field="phone" placeholder="02-0000-0000" type="tel" />
-        <div className="sm:col-span-2">
-          <Field field="address" placeholder={t('company.addressPlaceholder')} />
-        </div>
-        <div className="sm:col-span-2">
-          <Field field="email" placeholder="example@company.com" type="email" />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ── Preview component ──────────────────────────────────────────────────────
-
-function InvoicePreview({
-  data,
-  subtotal,
-  vat,
-  total,
-  t,
-}: {
-  data: InvoiceData
-  subtotal: number
-  vat: number
-  total: number
-  t: ReturnType<typeof useTranslations>
-}) {
   return (
     <div
-      id="invoice-preview"
-      className="bg-white text-gray-900 rounded-xl shadow-lg p-8 print:shadow-none print:rounded-none"
-      style={{ fontFamily: 'Malgun Gothic, Apple SD Gothic Neo, sans-serif' }}
+      id="invoice-paper"
+      style={{
+        width: PAPER_W,
+        minHeight: PAPER_H,
+        boxSizing: 'border-box',
+        padding: '44px 42px',
+        background: '#ffffff',
+        color: '#111111',
+        fontFamily: 'Pretendard, "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif',
+        fontSize: 12,
+        lineHeight: 1.45,
+      }}
     >
-      {/* Title */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold tracking-widest text-gray-900">견 적 서</h1>
-        <p className="text-sm text-gray-500 mt-1">{t('previewSubtitle')}</p>
+      <div style={{ textAlign: 'center', fontSize: 30, fontWeight: 700, letterSpacing: '0.3em', marginBottom: 6 }}>
+        {TITLES[doc.type]}
       </div>
+      <div style={{ textAlign: 'right', fontSize: 11, color: '#555', marginBottom: 14 }}>No. {doc.number}</div>
 
-      {/* Invoice meta */}
-      <div className="flex justify-end mb-6">
-        <table className="text-sm border-collapse">
-          <tbody>
-            <tr>
-              <td className="border border-gray-300 bg-gray-50 px-3 py-1 font-medium text-gray-600 text-right">
-                {t('invoiceNumber')}
-              </td>
-              <td className="border border-gray-300 px-3 py-1 text-gray-900">{data.invoiceNumber}</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 bg-gray-50 px-3 py-1 font-medium text-gray-600 text-right">
-                {t('invoiceDate')}
-              </td>
-              <td className="border border-gray-300 px-3 py-1 text-gray-900">{data.invoiceDate}</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 bg-gray-50 px-3 py-1 font-medium text-gray-600 text-right">
-                {t('dueDate')}
-              </td>
-              <td className="border border-gray-300 px-3 py-1 text-gray-900">{data.dueDate}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Parties */}
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        {[
-          { label: t('sender'), info: data.sender },
-          { label: t('recipient'), info: data.recipient },
-        ].map(({ label, info }) => (
-          <div key={label} className="border border-gray-300 rounded-lg overflow-hidden">
-            <div className="bg-gray-100 px-3 py-1.5 font-semibold text-sm text-gray-700 border-b border-gray-300">
-              {label}
+      {doc.type === 'quote' ? (
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 14 }}>
+          <div style={{ width: '42%' }}>
+            <div style={{ fontSize: 17, fontWeight: 700, borderBottom: '1px solid #111', paddingBottom: 4, marginBottom: 10 }}>
+              {doc.client.name || ' '} <span style={{ fontWeight: 400, fontSize: 14 }}>귀하</span>
             </div>
-            <div className="p-3 space-y-1 text-sm">
-              <div className="font-bold text-base text-gray-900">{info.name || '-'}</div>
-              {info.regNumber && (
-                <div className="text-gray-600">
-                  {t('company.regNumber')}: {info.regNumber}
-                </div>
-              )}
-              {info.representative && (
-                <div className="text-gray-600">
-                  {t('company.representative')}: {info.representative}
-                </div>
-              )}
-              {info.address && <div className="text-gray-600">{info.address}</div>}
-              {info.phone && <div className="text-gray-600">{info.phone}</div>}
-              {info.email && <div className="text-gray-600">{info.email}</div>}
+            <table style={table}>
+              <tbody>
+                {metaRow(DATE_LABEL.quote, dots(doc.date))}
+                {metaRow('유효기간', doc.validUntil ? `${dots(doc.validUntil)} 까지` : '')}
+                {metaRow('납기', doc.delivery)}
+                {metaRow('결제조건', doc.payment)}
+              </tbody>
+            </table>
+            <div style={{ marginTop: 12 }}>아래와 같이 견적합니다.</div>
+          </div>
+          <div style={{ flex: 1 }}>
+            <PartyTable label="공급자" p={doc.supplier} stamp={doc.stamp} />
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={{ marginBottom: 8 }}>
+            {DATE_LABEL[doc.type]}: {dots(doc.date)}
+            {doc.type === 'bill' && doc.dueDate && <span style={{ marginLeft: 16 }}>결제기한: {dots(doc.dueDate)}</span>}
+          </div>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+            <div style={{ flex: 1 }}>
+              <PartyTable label="공급자" p={doc.supplier} stamp={doc.stamp} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <PartyTable label="공급받는자" p={doc.client} />
             </div>
           </div>
-        ))}
-      </div>
+          {doc.type === 'bill' && <div style={{ marginBottom: 10 }}>아래와 같이 청구합니다.</div>}
+        </>
+      )}
 
-      {/* Items table */}
-      <table className="w-full text-sm border-collapse mb-6">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="border border-gray-600 px-3 py-2 text-left">{t('items.name')}</th>
-            <th className="border border-gray-600 px-3 py-2 text-right w-16">{t('items.quantity')}</th>
-            <th className="border border-gray-600 px-3 py-2 text-right w-28">{t('items.unitPrice')}</th>
-            <th className="border border-gray-600 px-3 py-2 text-right w-28">{t('items.amount')}</th>
-            <th className="border border-gray-600 px-3 py-2 text-center w-16">{t('items.taxable')}</th>
-          </tr>
-        </thead>
+      {/* 합계금액 */}
+      <table style={{ ...table, marginBottom: 12 }}>
         <tbody>
-          {data.items.map((item, i) => {
-            const amount = item.quantity * item.unitPrice
-            return (
-              <tr key={item.id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="border border-gray-300 px-3 py-2">{item.name || '-'}</td>
-                <td className="border border-gray-300 px-3 py-2 text-right">{item.quantity.toLocaleString()}</td>
-                <td className="border border-gray-300 px-3 py-2 text-right">{item.unitPrice.toLocaleString()}</td>
-                <td className="border border-gray-300 px-3 py-2 text-right font-medium">
-                  {amount.toLocaleString()}
-                </td>
-                <td className="border border-gray-300 px-3 py-2 text-center text-xs">
-                  {item.taxable ? '✓' : '-'}
-                </td>
-              </tr>
-            )
-          })}
+          <tr>
+            <td style={{ ...th, width: 150, fontSize: 13 }}>
+              합계금액
+              <div style={{ fontSize: 10, fontWeight: 400 }}>
+                {doc.vatMode === 'none' ? '' : '(공급가액 + 세액)'}
+              </div>
+            </td>
+            <td style={{ ...td, fontSize: 15, fontWeight: 700 }}>
+              {amountInKorean(totals.total) || '금 영원정'}
+              <span style={{ fontWeight: 400, marginLeft: 8 }}>(₩{won(totals.total)})</span>
+            </td>
+          </tr>
         </tbody>
       </table>
 
-      {/* Totals */}
-      <div className="flex justify-end mb-6">
-        <table className="text-sm border-collapse w-56">
+      {/* 품목 */}
+      <table style={table}>
+        <colgroup>
+          <col style={{ width: 32 }} />
+          <col />
+          <col style={{ width: 80 }} />
+          <col style={{ width: 52 }} />
+          <col style={{ width: 92 }} />
+          <col style={{ width: 104 }} />
+          {withVat && <col style={{ width: 88 }} />}
+        </colgroup>
+        <thead>
+          <tr>
+            <th style={th}>No</th>
+            <th style={th}>품목</th>
+            <th style={th}>규격</th>
+            <th style={th}>수량</th>
+            <th style={th}>단가</th>
+            <th style={th}>{withVat ? '공급가액' : '금액'}</th>
+            {withVat && <th style={th}>세액</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(({ it, l }, i) => (
+            <tr key={it.id}>
+              <td style={{ ...td, textAlign: 'center' }}>{i + 1}</td>
+              <td style={td}>
+                {it.name}
+                {withVat && !it.taxable && <span style={{ color: '#666' }}> (면세)</span>}
+              </td>
+              <td style={{ ...td, textAlign: 'center' }}>{it.spec}</td>
+              <td style={num}>{it.qty.toLocaleString('ko-KR')}</td>
+              <td style={num}>{won(it.price)}</td>
+              <td style={num}>{won(l.supply)}</td>
+              {withVat && <td style={num}>{won(l.vat)}</td>}
+            </tr>
+          ))}
+          {Array.from({ length: pad }, (_, i) => (
+            <tr key={`pad${i}`}>
+              {Array.from({ length: cols }, (_, j) => (
+                <td key={j} style={td}>{' '}</td>
+              ))}
+            </tr>
+          ))}
+          <tr>
+            <td colSpan={5} style={th}>합 계</td>
+            <td style={{ ...num, fontWeight: 700 }}>{won(totals.supply)}</td>
+            {withVat && <td style={{ ...num, fontWeight: 700 }}>{won(totals.vat)}</td>}
+          </tr>
+        </tbody>
+      </table>
+      {doc.vatMode === 'incl' && (
+        <div style={{ fontSize: 10, color: '#555', marginTop: 4 }}>* 단가는 부가세 포함 금액입니다.</div>
+      )}
+
+      {(doc.account || doc.notes) && (
+        <table style={{ ...table, marginTop: 12 }}>
           <tbody>
-            <tr>
-              <td className="border border-gray-300 bg-gray-50 px-3 py-2 font-medium text-gray-600">
-                {t('summary.subtotal')}
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-right font-medium">
-                {subtotal.toLocaleString()}원
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 bg-gray-50 px-3 py-2 font-medium text-gray-600">
-                {t('summary.vat')} (10%)
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-right font-medium">
-                {vat.toLocaleString()}원
-              </td>
-            </tr>
-            <tr className="bg-blue-600 text-white">
-              <td className="border border-blue-500 px-3 py-2 font-bold">{t('summary.total')}</td>
-              <td className="border border-blue-500 px-3 py-2 text-right font-bold text-lg">
-                {total.toLocaleString()}원
-              </td>
-            </tr>
+            {doc.account && (
+              <tr>
+                <td style={{ ...th, width: 90 }}>입금계좌</td>
+                <td style={td}>{doc.account}</td>
+              </tr>
+            )}
+            {doc.notes && (
+              <tr>
+                <td style={{ ...th, width: 90 }}>비고</td>
+                <td style={{ ...td, whiteSpace: 'pre-wrap', minHeight: 50 }}>{doc.notes}</td>
+              </tr>
+            )}
           </tbody>
         </table>
-      </div>
+      )}
 
-      {/* Notes */}
-      {data.notes && (
-        <div className="border border-gray-300 rounded-lg p-4">
-          <p className="text-xs font-semibold text-gray-500 mb-1">{t('notes')}</p>
-          <p className="text-sm text-gray-700 whitespace-pre-wrap">{data.notes}</p>
+      {doc.type === 'statement' && (
+        <div style={{ textAlign: 'right', marginTop: 28 }}>
+          인수자 <span style={{ display: 'inline-block', width: 140, borderBottom: '1px solid #111' }}>{' '}</span> (인)
         </div>
       )}
     </div>
@@ -333,539 +382,571 @@ function InvoicePreview({
 
 export default function InvoiceGenerator() {
   const t = useTranslations('invoiceGenerator')
-  const [invoice, setInvoice] = useState<InvoiceData>(DEFAULT_INVOICE)
-  const [showPreview, setShowPreview] = useState(false)
-  const [saved, setSaved] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [guideOpen, setGuideOpen] = useState(false)
-  const printRef = useRef<HTMLDivElement>(null)
+  const [doc, setDoc] = useState<Doc>(() => blankDoc(t('sample.item')))
+  const [clients, setClients] = useState<Party[]>([])
+  const [ready, setReady] = useState(false)
+  const [view, setView] = useState<'edit' | 'preview'>('edit')
+  const [busy, setBusy] = useState(false)
+  const [pdfError, setPdfError] = useState(false)
+  const [zoom, setZoom] = useState(1)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const paperRef = useRef<HTMLDivElement>(null)
+  const stampInput = useRef<HTMLInputElement>(null)
 
-  // ── Totals ───────────────────────────────────────────────────────────────
+  const totals = computeTotals(doc.items, doc.vatMode, doc.basis)
 
-  const { subtotal, vat, total } = (() => {
-    let taxableSum = 0
-    let nonTaxableSum = 0
-    for (const item of invoice.items) {
-      const amt = item.quantity * item.unitPrice
-      if (item.taxable) taxableSum += amt
-      else nonTaxableSum += amt
-    }
-    const vatAmt = Math.round(taxableSum * 0.1)
-    return {
-      subtotal: taxableSum + nonTaxableSum,
-      vat: vatAmt,
-      total: taxableSum + nonTaxableSum + vatAmt,
-    }
-  })()
-
-  // ── Item handlers ────────────────────────────────────────────────────────
-
-  const addItem = useCallback(() => {
-    setInvoice((prev) => ({ ...prev, items: [...prev.items, EMPTY_ITEM()] }))
-  }, [])
-
-  const removeItem = useCallback((id: string) => {
-    setInvoice((prev) => ({
-      ...prev,
-      items: prev.items.length > 1 ? prev.items.filter((i) => i.id !== id) : prev.items,
-    }))
-  }, [])
-
-  const updateItem = useCallback((id: string, field: keyof InvoiceItem, value: string | number | boolean) => {
-    setInvoice((prev) => ({
-      ...prev,
-      items: prev.items.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
-    }))
-  }, [])
-
-  // ── Company handlers ─────────────────────────────────────────────────────
-
-  const updateSender = useCallback((field: keyof CompanyInfo, value: string) => {
-    setInvoice((prev) => ({ ...prev, sender: { ...prev.sender, [field]: value } }))
-  }, [])
-
-  const updateRecipient = useCallback((field: keyof CompanyInfo, value: string) => {
-    setInvoice((prev) => ({ ...prev, recipient: { ...prev.recipient, [field]: value } }))
-  }, [])
-
-  // ── localStorage ─────────────────────────────────────────────────────────
-
-  const saveToStorage = useCallback(() => {
+  // ── localStorage (mount 이후) ──────────────────────────────────────────
+  useEffect(() => {
+    const today = ymd(new Date())
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(invoice))
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    } catch {
-      // ignore
-    }
-  }, [invoice])
-
-  const loadFromStorage = useCallback(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
+      const raw = localStorage.getItem(DRAFT_KEY)
       if (raw) {
-        setInvoice(JSON.parse(raw))
-        setLoaded(true)
-        setTimeout(() => setLoaded(false), 2000)
+        setDoc((d) => restore(JSON.parse(raw), d))
+      } else {
+        const number = nextDocNumber(today, localStorage.getItem(LAST_NO_KEY))
+        localStorage.setItem(LAST_NO_KEY, number)
+        let supplier = EMPTY_PARTY
+        let client = EMPTY_PARTY
+        const legacy = localStorage.getItem(LEGACY_KEY)
+        if (legacy) {
+          const l = JSON.parse(legacy)
+          supplier = fromLegacy(l.sender)
+          client = fromLegacy(l.recipient)
+        }
+        setDoc((d) => ({ ...d, number, date: today, validUntil: plusDays(30), dueDate: plusDays(30), supplier, client }))
       }
+      const c = JSON.parse(localStorage.getItem(CLIENTS_KEY) || '[]')
+      if (Array.isArray(c)) setClients(c.map((p) => ({ ...EMPTY_PARTY, ...p })))
+    } catch {
+      setDoc((d) => ({ ...d, number: nextDocNumber(today), date: today, validUntil: plusDays(30), dueDate: plusDays(30) }))
+    }
+    setReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (!ready) return
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(doc))
+    } catch {
+      // 저장 공간 부족 등: 무시 (작성 내용은 화면에 그대로)
+    }
+  }, [doc, ready])
+
+  // ── 미리보기 축소 (A4 폭 794px을 상자 폭에 맞춤) ──────────────────────
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width
+      if (w > 0) setZoom(Math.min(1, w / PAPER_W))
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // ── Updaters ───────────────────────────────────────────────────────────
+  const set = useCallback(<K extends keyof Doc>(k: K, v: Doc[K]) => setDoc((d) => ({ ...d, [k]: v })), [])
+  const setParty = useCallback((who: 'supplier' | 'client', k: keyof Party, v: string) => {
+    setDoc((d) => ({ ...d, [who]: { ...d[who], [k]: k === 'bizNo' ? formatBizNo(v) : v } }))
+  }, [])
+  const updateItem = useCallback(<K extends keyof Item>(id: string, k: K, v: Item[K]) => {
+    setDoc((d) => ({ ...d, items: d.items.map((it) => (it.id === id ? { ...it, [k]: v } : it)) }))
+  }, [])
+
+  const newDoc = useCallback(() => {
+    const today = ymd(new Date())
+    let number = nextDocNumber(today)
+    try {
+      number = nextDocNumber(today, localStorage.getItem(LAST_NO_KEY))
+      localStorage.setItem(LAST_NO_KEY, number)
     } catch {
       // ignore
     }
+    // 내 정보·도장·부가세 설정·문서 종류는 유지
+    setDoc((d) => ({
+      ...blankDoc(''),
+      type: d.type,
+      vatMode: d.vatMode,
+      basis: d.basis,
+      supplier: d.supplier,
+      stamp: d.stamp,
+      account: d.account,
+      payment: d.payment,
+      number,
+      date: today,
+      validUntil: plusDays(30),
+      dueDate: plusDays(30),
+    }))
   }, [])
 
-  const resetInvoice = useCallback(() => {
-    setInvoice(DEFAULT_INVOICE())
+  const rememberClient = useCallback(() => {
+    const c = doc.client
+    if (!c.name.trim()) return
+    setClients((prev) => {
+      const next = [c, ...prev.filter((p) => !(p.name === c.name && p.bizNo === c.bizNo))].slice(0, 8)
+      try {
+        localStorage.setItem(CLIENTS_KEY, JSON.stringify(next))
+      } catch {
+        // ignore
+      }
+      return next
+    })
+  }, [doc.client])
+
+  const removeClient = useCallback((i: number) => {
+    setClients((prev) => {
+      const next = prev.filter((_, j) => j !== i)
+      try {
+        localStorage.setItem(CLIENTS_KEY, JSON.stringify(next))
+      } catch {
+        // ignore
+      }
+      return next
+    })
   }, [])
 
-  // ── PDF export ───────────────────────────────────────────────────────────
+  const onStamp = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    e.target.value = ''
+    if (!f) return
+    try {
+      set('stamp', await loadStamp(f))
+    } catch {
+      // 읽을 수 없는 이미지: 무시
+    }
+  }, [set])
 
+  const fileName = `${TITLES[doc.type].replace(/\s/g, '')}_${doc.client.name.trim() || doc.number}_${doc.number}`.replace(/[\\/:*?"<>|]/g, '')
+
+  // ── PDF: 미리보기 DOM → html2canvas(한글 그대로) → jsPDF A4 ─────────────
   const exportPDF = useCallback(async () => {
-    const { default: jsPDF } = await import('jspdf')
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-
-    const lm = 20
-    const pw = 170
-    let y = 20
-
-    const line = (text: string, x: number, yPos: number, size = 10, style: 'normal' | 'bold' = 'normal') => {
-      doc.setFontSize(size)
-      doc.setFont('helvetica', style)
-      doc.text(text, x, yPos)
+    const el = paperRef.current
+    if (!el || busy) return
+    setBusy(true)
+    setPdfError(false)
+    setView('preview') // 모바일: 내려받는 문서를 보여주고, 캡처 대상이 display:none이 아니게
+    try {
+      await new Promise((r) => setTimeout(r, 50))
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([import('html2canvas'), import('jspdf')])
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: 1280, // 복제 문서에서 미리보기 열이 보이도록(lg 이상)
+        onclone: (_d, clone) => {
+          if (clone.parentElement) clone.parentElement.style.zoom = '1'
+        },
+      })
+      const pdf = new jsPDF({ unit: 'mm', format: 'a4' })
+      const pageH = Math.floor((canvas.width * 297) / 210)
+      // ponytail: 픽셀 단위로 페이지를 자름 — 품목이 아주 많으면 행 중간에서 나뉠 수 있음
+      for (let y = 0, i = 0; y < canvas.height; y += pageH, i++) {
+        const h = Math.min(pageH, canvas.height - y)
+        if (i > 0 && h < 24) break
+        const page = document.createElement('canvas')
+        page.width = canvas.width
+        page.height = h
+        page.getContext('2d')!.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h)
+        if (i > 0) pdf.addPage()
+        pdf.addImage(page.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, (h * 210) / canvas.width)
+      }
+      pdf.save(`${fileName}.pdf`)
+      rememberClient()
+    } catch {
+      setPdfError(true)
+    } finally {
+      setBusy(false)
     }
+  }, [busy, fileName, rememberClient])
 
-    const safeStr = (s: string) => s.replace(/[^\x00-\x7F]/g, '?')
-
-    // Title
-    doc.setFontSize(22)
-    doc.setFont('helvetica', 'bold')
-    doc.text('INVOICE / GYEONJEOKSEO', 105, y, { align: 'center' })
-    y += 8
-
-    doc.setDrawColor(59, 130, 246)
-    doc.setLineWidth(0.8)
-    doc.line(lm, y, lm + pw, y)
-    y += 6
-
-    // Meta
-    line(`Invoice No: ${invoice.invoiceNumber}`, lm, y, 9)
-    line(`Date: ${invoice.invoiceDate}`, 130, y, 9)
-    y += 5
-    line(`Due: ${invoice.dueDate}`, 130, y, 9)
-    y += 8
-
-    // Parties
-    const partyY = y
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'bold')
-    doc.text('FROM (Sender):', lm, y)
-    doc.text('TO (Recipient):', 110, y)
-    y += 4
-
-    const partyFields: (keyof CompanyInfo)[] = ['name', 'regNumber', 'representative', 'address', 'phone', 'email']
-    partyFields.forEach((field) => {
-      const sv = invoice.sender[field]
-      const rv = invoice.recipient[field]
-      if (sv || rv) {
-        doc.setFont('helvetica', 'normal')
-        doc.setFontSize(8)
-        if (sv) doc.text(safeStr(sv), lm, y)
-        if (rv) doc.text(safeStr(rv), 110, y)
-        y += 4
-      }
-    })
-    y = Math.max(y, partyY + 30) + 4
-
-    // Divider
-    doc.setDrawColor(200, 200, 200)
-    doc.setLineWidth(0.3)
-    doc.line(lm, y, lm + pw, y)
-    y += 5
-
-    // Items header
-    doc.setFillColor(30, 58, 138)
-    doc.rect(lm, y, pw, 6, 'F')
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'bold')
-    doc.text('Item', lm + 2, y + 4)
-    doc.text('Qty', 125, y + 4, { align: 'right' })
-    doc.text('Unit Price', 148, y + 4, { align: 'right' })
-    doc.text('Amount', 170, y + 4, { align: 'right' })
-    doc.text('VAT', 178, y + 4)
-    y += 6
-
-    doc.setTextColor(0, 0, 0)
-    invoice.items.forEach((item, i) => {
-      const amount = item.quantity * item.unitPrice
-      if (i % 2 === 0) {
-        doc.setFillColor(248, 250, 252)
-        doc.rect(lm, y, pw, 5.5, 'F')
-      }
-      doc.setFontSize(8)
-      doc.setFont('helvetica', 'normal')
-      doc.text(safeStr(item.name || '-'), lm + 2, y + 4)
-      doc.text(String(item.quantity), 125, y + 4, { align: 'right' })
-      doc.text(item.unitPrice.toLocaleString(), 148, y + 4, { align: 'right' })
-      doc.text(amount.toLocaleString(), 170, y + 4, { align: 'right' })
-      doc.text(item.taxable ? 'Y' : '-', 178, y + 4)
-      y += 5.5
-    })
-
-    // Totals
-    y += 4
-    doc.setDrawColor(200, 200, 200)
-    doc.line(lm + pw - 60, y, lm + pw, y)
-    y += 4
-
-    const totalsRows = [
-      [`Subtotal:`, subtotal.toLocaleString() + ' KRW'],
-      [`VAT (10%):`, vat.toLocaleString() + ' KRW'],
-      [`TOTAL:`, total.toLocaleString() + ' KRW'],
-    ]
-
-    totalsRows.forEach(([label, val], idx) => {
-      const isBold = idx === 2
-      doc.setFont('helvetica', isBold ? 'bold' : 'normal')
-      doc.setFontSize(isBold ? 10 : 8)
-      if (isBold) {
-        doc.setFillColor(59, 130, 246)
-        doc.rect(lm + pw - 62, y - 3, 62, 7, 'F')
-        doc.setTextColor(255, 255, 255)
-      }
-      doc.text(label, lm + pw - 60 + 1, y + 1.5)
-      doc.text(val, lm + pw, y + 1.5, { align: 'right' })
-      if (isBold) doc.setTextColor(0, 0, 0)
-      y += isBold ? 8 : 5
-    })
-
-    // Notes
-    if (invoice.notes) {
-      y += 4
-      doc.setFontSize(8)
-      doc.setFont('helvetica', 'bold')
-      doc.text('Notes:', lm, y)
-      y += 4
-      doc.setFont('helvetica', 'normal')
-      const lines = doc.splitTextToSize(safeStr(invoice.notes), pw)
-      doc.text(lines, lm, y)
-    }
-
-    doc.save(`invoice-${invoice.invoiceNumber}.pdf`)
-  }, [invoice, subtotal, vat, total])
-
-  // ── Print ────────────────────────────────────────────────────────────────
-
+  // ── 인쇄: 문서만 담은 iframe을 인쇄 (페이지 레이아웃과 무관) ────────────
   const handlePrint = useCallback(() => {
-    window.print()
-  }, [])
+    const el = paperRef.current
+    if (!el) return
+    const f = document.createElement('iframe')
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'
+    document.body.appendChild(f)
+    const d = f.contentDocument
+    const w = f.contentWindow
+    if (!d || !w) return
+    d.open()
+    d.write(
+      '<!doctype html><html><head><meta charset="utf-8"><style>@page{size:A4;margin:0}html,body{margin:0}' +
+        '*{-webkit-print-color-adjust:exact;print-color-adjust:exact}#invoice-paper{min-height:auto!important}</style></head><body>' +
+        el.outerHTML +
+        '</body></html>',
+    )
+    d.close()
+    d.title = fileName // 'PDF로 저장' 시 기본 파일명
+    rememberClient()
+    const cleanup = () => setTimeout(() => f.remove(), 500)
+    w.onafterprint = cleanup
+    setTimeout(() => {
+      w.focus()
+      w.print()
+    }, 300)
+  }, [fileName, rememberClient])
 
-  // ── Input classes ────────────────────────────────────────────────────────
+  // ── Render helpers ─────────────────────────────────────────────────────
+  const seg = (on: boolean) =>
+    `px-3 py-2 text-sm font-medium rounded-xl transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const label = 'block text-xs font-medium text-sub mb-1'
+  const field = 'ui-field w-full min-w-0 px-3 py-2 text-sm'
 
-  const inputClass =
-    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm'
+  const partyForm = (who: 'supplier' | 'client') => {
+    const p = doc[who]
+    const v = validateBizNo(p.bizNo)
+    const input = (k: keyof Party, ph?: string, type = 'text', mode?: 'numeric' | 'tel' | 'email') => (
+      <div>
+        <label className={label} htmlFor={`${who}-${k}`}>{t(`company.${k}`)}</label>
+        <input
+          id={`${who}-${k}`}
+          type={type}
+          inputMode={mode}
+          className={field}
+          value={p[k]}
+          placeholder={ph}
+          onChange={(e) => setParty(who, k, e.target.value)}
+        />
+        {k === 'bizNo' && v.reason === 'checksum' && <p className="text-xs text-red-600 mt-1">{t('bizNoInvalid')}</p>}
+        {k === 'bizNo' && v.reason === 'ok' && <p className="text-xs text-primary mt-1">{t('bizNoValid')}</p>}
+      </div>
+    )
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {input('name', t('company.namePlaceholder'))}
+        {input('bizNo', '000-00-00000', 'text', 'numeric')}
+        {input('rep', t('company.repPlaceholder'))}
+        {input('phone', '02-000-0000', 'tel', 'tel')}
+        <div className="sm:col-span-2">{input('address', t('company.addressPlaceholder'))}</div>
+        {input('bizType', t('company.bizTypePlaceholder'))}
+        {input('bizItem', t('company.bizItemPlaceholder'))}
+        <div className="sm:col-span-2">{input('email', 'example@company.com', 'email', 'email')}</div>
+      </div>
+    )
+  }
 
-  const textareaClass =
-    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none'
-
-  // ── Render ───────────────────────────────────────────────────────────────
+  const guideSections = t.raw('guide.sections')
+  const faq = t.raw('guide.faq.items')
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <FileText className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-            {t('title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-
-        {/* Action buttons */}
         <div className="flex flex-wrap gap-2">
-          <button
-            onClick={saveToStorage}
-            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
-          >
-            <Save className="w-4 h-4" />
-            {saved ? t('savedFeedback') : t('save')}
+          <button onClick={newDoc} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2 text-sm">
+            <FilePlus2 className="w-4 h-4" />
+            {t('newDoc')}
           </button>
-          <button
-            onClick={loadFromStorage}
-            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
-          >
-            <FolderOpen className="w-4 h-4" />
-            {loaded ? t('loadedFeedback') : t('load')}
-          </button>
-          <button
-            onClick={resetInvoice}
-            className="flex items-center gap-1.5 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
-          >
-            <RefreshCw className="w-4 h-4" />
-            {t('reset')}
-          </button>
-          <button
-            onClick={() => setShowPreview((p) => !p)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-sub rounded-lg text-sm font-medium transition-colors"
-          >
-            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            {showPreview ? t('editMode') : t('previewMode')}
-          </button>
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-2 bg-gray-800 dark:bg-gray-200 hover:bg-gray-900 dark:hover:bg-white text-white dark:text-gray-900 rounded-lg text-sm font-medium transition-colors"
-          >
+          <button onClick={handlePrint} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2 text-sm">
             <Printer className="w-4 h-4" />
             {t('print')}
           </button>
-          <button
-            onClick={exportPDF}
-            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 font-medium text-sm transition-colors"
-          >
+          <button onClick={exportPDF} disabled={busy} className="ui-btn flex items-center gap-1.5 px-4 py-2 text-sm">
             <Download className="w-4 h-4" />
-            {t('exportPDF')}
+            {busy ? t('pdfBusy') : t('exportPDF')}
           </button>
         </div>
       </div>
+      {pdfError && <p className="bg-amber-50 text-amber-800 rounded-xl px-4 py-3 text-sm">{t('pdfError')}</p>}
 
-      {showPreview ? (
-        /* ── Preview mode ─────────────────────────────────────────────────── */
-        <div ref={printRef}>
-          <InvoicePreview data={invoice} subtotal={subtotal} vat={vat} total={total} t={t} />
-        </div>
-      ) : (
-        /* ── Edit mode ────────────────────────────────────────────────────── */
-        <div className="space-y-6">
-          {/* Invoice meta */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={FileText} title={t('section.invoiceInfo')} />
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* 모바일: 작성/미리보기 전환 */}
+      <div className="flex gap-2 lg:hidden">
+        <button onClick={() => setView('edit')} className={seg(view === 'edit')}>{t('view.edit')}</button>
+        <button onClick={() => setView('preview')} className={seg(view === 'preview')}>{t('view.preview')}</button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+        {/* ── Editor ─────────────────────────────────────────────────── */}
+        <div className={`lg:col-span-2 space-y-6 min-w-0 ${view === 'preview' ? 'hidden lg:block' : ''}`}>
+          {/* 문서 */}
+          <div className="ui-card p-5 space-y-4">
+            <h2 className="text-base font-semibold text-fg">{t('section.doc')}</h2>
+            <div className="flex flex-wrap gap-2" role="group" aria-label={t('docType.label')}>
+              {(['quote', 'statement', 'bill'] as const).map((k) => (
+                <button key={k} onClick={() => set('type', k)} className={seg(doc.type === k)} aria-pressed={doc.type === k}>
+                  {t(`docType.${k}`)}
+                </button>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
-                  {t('invoiceNumber')}
-                </label>
-                <input
-                  type="text"
-                  className={inputClass}
-                  value={invoice.invoiceNumber}
-                  onChange={(e) => setInvoice((p) => ({ ...p, invoiceNumber: e.target.value }))}
-                />
+                <label className={label} htmlFor="doc-number">{t('docNumber')}</label>
+                <input id="doc-number" className={field} value={doc.number} onChange={(e) => set('number', e.target.value)} />
               </div>
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
-                  {t('invoiceDate')}
-                </label>
-                <input
-                  type="date"
-                  className={inputClass}
-                  value={invoice.invoiceDate}
-                  onChange={(e) => setInvoice((p) => ({ ...p, invoiceDate: e.target.value }))}
-                />
+                <label className={label} htmlFor="doc-date">{t(`dateLabel.${doc.type}`)}</label>
+                <input id="doc-date" type="date" className={field} value={doc.date} onChange={(e) => set('date', e.target.value)} />
               </div>
-              <div>
-                <label className="block text-xs font-medium text-sub mb-1">
-                  {t('dueDate')}
-                </label>
-                <input
-                  type="date"
-                  className={inputClass}
-                  value={invoice.dueDate}
-                  onChange={(e) => setInvoice((p) => ({ ...p, dueDate: e.target.value }))}
-                />
+              {doc.type === 'quote' && (
+                <>
+                  <div>
+                    <label className={label} htmlFor="doc-valid">{t('validUntil')}</label>
+                    <input id="doc-valid" type="date" className={field} value={doc.validUntil} onChange={(e) => set('validUntil', e.target.value)} />
+                  </div>
+                  <div>
+                    <label className={label} htmlFor="doc-delivery">{t('delivery')}</label>
+                    <input id="doc-delivery" className={field} value={doc.delivery} placeholder={t('deliveryPlaceholder')} onChange={(e) => set('delivery', e.target.value)} />
+                  </div>
+                  <div className="col-span-2">
+                    <label className={label} htmlFor="doc-payment">{t('payment')}</label>
+                    <input id="doc-payment" className={field} value={doc.payment} placeholder={t('paymentPlaceholder')} onChange={(e) => set('payment', e.target.value)} />
+                  </div>
+                </>
+              )}
+              {doc.type === 'bill' && (
+                <div>
+                  <label className={label} htmlFor="doc-due">{t('payDue')}</label>
+                  <input id="doc-due" type="date" className={field} value={doc.dueDate} onChange={(e) => set('dueDate', e.target.value)} />
+                </div>
+              )}
+              <div className="col-span-2">
+                <label className={label} htmlFor="doc-account">{t('account')}</label>
+                <input id="doc-account" className={field} value={doc.account} placeholder={t('accountPlaceholder')} onChange={(e) => set('account', e.target.value)} />
               </div>
             </div>
           </div>
 
-          {/* Sender / Recipient */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <SectionHeader icon={Building2} title={t('section.sender')} />
-              <CompanyForm label={t('sender')} data={invoice.sender} onChange={updateSender} t={t} />
+          {/* 공급자 */}
+          <div className="ui-card p-5 space-y-4">
+            <div>
+              <h2 className="text-base font-semibold text-fg">{t('section.sender')}</h2>
+              <p className="text-xs text-muted mt-1">{t('autosaveNote')}</p>
             </div>
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <SectionHeader icon={User} title={t('section.recipient')} />
-              <CompanyForm label={t('recipient')} data={invoice.recipient} onChange={updateRecipient} t={t} />
+            {partyForm('supplier')}
+            <div className="bg-subtle rounded-2xl p-4 flex items-center gap-3">
+              {doc.stamp ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={doc.stamp} alt={t('stamp.label')} className="w-14 h-14 object-contain bg-surface rounded-lg border border-line" />
+              ) : (
+                <div className="w-14 h-14 rounded-lg border border-dashed border-line-strong shrink-0" aria-hidden />
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-body">{t('stamp.label')}</p>
+                <p className="text-xs text-muted">{t('stamp.hint')}</p>
+                <Link href="/stamp-generator/" className="text-xs text-primary hover:underline">{t('stamp.make')}</Link>
+              </div>
+              <div className="flex flex-col gap-1.5 shrink-0">
+                <button onClick={() => stampInput.current?.click()} className="ui-btn-soft px-3 py-1.5 text-xs">
+                  {doc.stamp ? t('stamp.change') : t('stamp.upload')}
+                </button>
+                {doc.stamp && (
+                  <button onClick={() => set('stamp', '')} className="text-xs text-muted hover:text-body">{t('stamp.remove')}</button>
+                )}
+              </div>
+              <input ref={stampInput} type="file" accept="image/*" className="hidden" onChange={onStamp} />
             </div>
           </div>
 
-          {/* Items */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={Package} title={t('section.items')} />
+          {/* 공급받는자 */}
+          <div className="ui-card p-5 space-y-4">
+            <h2 className="text-base font-semibold text-fg">{t('section.recipient')}</h2>
+            {clients.length > 0 && (
+              <div>
+                <p className={label}>{t('recentClients')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {clients.map((c, i) => (
+                    <span key={`${c.name}-${c.bizNo}`} className="inline-flex items-center rounded-full bg-soft text-body text-sm">
+                      <button onClick={() => set('client', { ...c })} className="pl-3 pr-1 py-1 hover:text-primary">{c.name}</button>
+                      <button onClick={() => removeClient(i)} className="pr-2 pl-1 py-1 text-faint hover:text-body" aria-label={t('removeClient')}>
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {partyForm('client')}
+          </div>
 
-            {/* Table header */}
-            <div className="hidden sm:grid grid-cols-12 gap-2 mb-2 px-2">
-              <div className="col-span-4 text-xs font-medium text-muted">{t('items.name')}</div>
-              <div className="col-span-2 text-xs font-medium text-muted text-right">
-                {t('items.quantity')}
+          {/* 품목 */}
+          <div className="ui-card p-5 space-y-4">
+            <h2 className="text-base font-semibold text-fg">{t('section.items')}</h2>
+            <div>
+              <p className={label}>{t('vat.label')}</p>
+              <div className="flex flex-wrap gap-2">
+                {(['excl', 'incl', 'none'] as const).map((m) => (
+                  <button key={m} onClick={() => set('vatMode', m)} className={seg(doc.vatMode === m)} aria-pressed={doc.vatMode === m}>
+                    {t(`vat.${m}`)}
+                  </button>
+                ))}
               </div>
-              <div className="col-span-2 text-xs font-medium text-muted text-right">
-                {t('items.unitPrice')}
-              </div>
-              <div className="col-span-2 text-xs font-medium text-muted text-right">
-                {t('items.amount')}
-              </div>
-              <div className="col-span-1 text-xs font-medium text-muted text-center">
-                {t('items.taxable')}
-              </div>
-              <div className="col-span-1" />
+              <p className="text-xs text-muted mt-2">{t(`vat.hint.${doc.vatMode}`)}</p>
             </div>
+            {doc.vatMode !== 'none' && (
+              <div>
+                <label className={label} htmlFor="vat-basis">{t('vat.basis')}</label>
+                <select id="vat-basis" className={field} value={doc.basis} onChange={(e) => set('basis', e.target.value as VatBasis)}>
+                  <option value="line">{t('vat.basisLine')}</option>
+                  <option value="total">{t('vat.basisTotal')}</option>
+                </select>
+                {totals.adjusted !== 0 && (
+                  <p className="text-xs text-muted mt-1">{t('vat.adjusted', { n: won(totals.adjusted) })}</p>
+                )}
+              </div>
+            )}
 
             <div className="space-y-3">
-              {invoice.items.map((item) => {
-                const amount = item.quantity * item.unitPrice
+              {doc.items.map((it, i) => {
+                const l = totals.lines[i]
                 return (
-                  <div
-                    key={item.id}
-                    className="grid grid-cols-12 gap-2 items-center p-2 rounded-lg bg-subtle"
-                  >
-                    {/* Name */}
-                    <div className="col-span-12 sm:col-span-4">
+                  <div key={it.id} className="bg-subtle rounded-2xl p-3 space-y-2">
+                    <div className="flex gap-2">
                       <input
-                        type="text"
-                        className={inputClass}
+                        className="ui-field flex-1 min-w-0 px-3 py-2 text-sm"
+                        aria-label={t('items.name')}
                         placeholder={t('items.namePlaceholder')}
-                        value={item.name}
-                        onChange={(e) => updateItem(item.id, 'name', e.target.value)}
+                        value={it.name}
+                        onChange={(e) => updateItem(it.id, 'name', e.target.value)}
                       />
-                    </div>
-                    {/* Quantity */}
-                    <div className="col-span-4 sm:col-span-2">
                       <input
-                        type="number"
-                        min={1}
-                        className={inputClass + ' text-right'}
-                        value={item.quantity}
-                        onChange={(e) => updateItem(item.id, 'quantity', Math.max(1, parseInt(e.target.value) || 1))}
+                        className="ui-field w-24 min-w-0 px-3 py-2 text-sm"
+                        aria-label={t('items.spec')}
+                        placeholder={t('items.spec')}
+                        value={it.spec}
+                        onChange={(e) => updateItem(it.id, 'spec', e.target.value)}
                       />
-                    </div>
-                    {/* Unit price */}
-                    <div className="col-span-4 sm:col-span-2">
-                      <input
-                        type="number"
-                        min={0}
-                        className={inputClass + ' text-right'}
-                        value={item.unitPrice}
-                        onChange={(e) => updateItem(item.id, 'unitPrice', parseInt(e.target.value) || 0)}
-                      />
-                    </div>
-                    {/* Amount (read-only) */}
-                    <div className="col-span-4 sm:col-span-2">
-                      <div className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-600 rounded-lg text-right text-sm font-medium text-fg">
-                        {amount.toLocaleString()}
-                      </div>
-                    </div>
-                    {/* Taxable */}
-                    <div className="col-span-6 sm:col-span-1 flex items-center justify-center">
-                      <label className="flex items-center gap-1.5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 accent-blue-600"
-                          checked={item.taxable}
-                          onChange={(e) => updateItem(item.id, 'taxable', e.target.checked)}
-                        />
-                        <span className="text-xs text-muted sm:hidden">{t('items.taxable')}</span>
-                      </label>
-                    </div>
-                    {/* Remove */}
-                    <div className="col-span-6 sm:col-span-1 flex justify-end sm:justify-center">
                       <button
-                        onClick={() => removeItem(item.id)}
-                        disabled={invoice.items.length === 1}
-                        className="p-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        onClick={() => setDoc((d) => ({ ...d, items: d.items.length > 1 ? d.items.filter((x) => x.id !== it.id) : [newItem()] }))}
+                        className="p-2 rounded-lg text-faint hover:text-red-600 shrink-0"
                         aria-label={t('items.remove')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <input
+                        type="number"
+                        min={0}
+                        step="any"
+                        inputMode="decimal"
+                        className="ui-field w-20 px-3 py-2 text-sm text-right tabular-nums"
+                        aria-label={t('items.quantity')}
+                        value={Number.isFinite(it.qty) ? it.qty : ''}
+                        onChange={(e) => updateItem(it.id, 'qty', Math.max(0, parseFloat(e.target.value) || 0))}
+                      />
+                      <span className="text-muted text-sm">×</span>
+                      <input
+                        inputMode="numeric"
+                        className="ui-field flex-1 min-w-[7rem] px-3 py-2 text-sm text-right tabular-nums"
+                        aria-label={t('items.unitPrice')}
+                        placeholder={t('items.unitPrice')}
+                        value={it.price ? won(it.price) : ''}
+                        onChange={(e) => updateItem(it.id, 'price', Number(e.target.value.replace(/\D/g, '').slice(0, 13)) || 0)}
+                      />
+                      {doc.vatMode !== 'none' && (
+                        <label className="flex items-center gap-1.5 text-xs text-sub cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 accent-blue-600"
+                            checked={it.taxable}
+                            onChange={(e) => updateItem(it.id, 'taxable', e.target.checked)}
+                          />
+                          {t('items.taxable')}
+                        </label>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted text-right tabular-nums">
+                      {t('summary.subtotal')} {won(l.supply)}
+                      {doc.vatMode !== 'none' && ` · ${t('summary.vat')} ${won(l.vat)}`}
+                    </p>
                   </div>
                 )
               })}
             </div>
-
             <button
-              onClick={addItem}
-              className="mt-4 flex items-center gap-2 px-4 py-2 border-2 border-dashed border-line rounded-lg text-blue-600 dark:text-blue-400 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium w-full justify-center"
+              onClick={() => set('items', [...doc.items, newItem()])}
+              className="ui-btn-soft w-full flex items-center justify-center gap-2 px-4 py-2 text-sm"
             >
               <Plus className="w-4 h-4" />
               {t('items.add')}
             </button>
 
-            {/* Summary */}
-            <div className="mt-6 flex justify-end">
-              <div className="w-full sm:w-64 space-y-2">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-muted">{t('summary.subtotal')}</span>
-                  <span className="font-medium text-fg">{formatKRW(subtotal)}</span>
+            {/* 합계 */}
+            <div className="border-t border-line pt-4 space-y-1.5">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted">{t('summary.subtotal')}</span>
+                <span className="text-body tabular-nums">{won(totals.supply)}</span>
+              </div>
+              {doc.vatMode !== 'none' && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted">{t('summary.vat')}</span>
+                  <span className="text-body tabular-nums">{won(totals.vat)}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-muted">{t('summary.vat')} (10%)</span>
-                  <span className="font-medium text-fg">{formatKRW(vat)}</span>
-                </div>
-                <div className="flex justify-between items-center pt-2 border-t border-line">
-                  <span className="font-bold text-fg">{t('summary.total')}</span>
-                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{formatKRW(total)}</span>
+              )}
+              <div className="flex justify-between items-baseline pt-1">
+                <span className="font-semibold text-fg">{t('summary.total')}</span>
+                <span className="text-2xl font-bold text-fg tabular-nums">{won(totals.total)}</span>
+              </div>
+              <p className="text-right text-sm text-sub">{amountInKorean(totals.total)}</p>
+            </div>
+          </div>
+
+          {/* 비고 */}
+          <div className="ui-card p-5 space-y-3">
+            <h2 className="text-base font-semibold text-fg">{t('section.notes')}</h2>
+            <textarea
+              className="ui-field w-full px-3 py-2 text-sm resize-y"
+              rows={3}
+              aria-label={t('notes')}
+              placeholder={t('notesPlaceholder')}
+              value={doc.notes}
+              onChange={(e) => set('notes', e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* ── Preview ────────────────────────────────────────────────── */}
+        <div className={`lg:col-span-3 min-w-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto ${view === 'edit' ? 'hidden lg:block' : ''}`}>
+          <div className="ui-card p-3 sm:p-4 bg-subtle">
+            <div ref={boxRef} className="overflow-hidden">
+              <div style={{ zoom }}>
+                <div ref={paperRef} style={{ width: PAPER_W }}>
+                  <Paper doc={doc} totals={totals} />
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Notes */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={StickyNote} title={t('section.notes')} />
-            <textarea
-              className={textareaClass}
-              rows={4}
-              placeholder={t('notesPlaceholder')}
-              value={invoice.notes}
-              onChange={(e) => setInvoice((p) => ({ ...p, notes: e.target.value }))}
-            />
-          </div>
+          <p className="text-xs text-muted mt-2">{t('previewNote')}</p>
         </div>
-      )}
+      </div>
 
       {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          className="flex items-center justify-between w-full text-left"
-          onClick={() => setGuideOpen((o) => !o)}
-          aria-expanded={guideOpen}
-        >
-          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          {guideOpen ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
-        </button>
-
-        {guideOpen && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {(t.raw('guide.sections') as Array<{ title: string; items: string[] }>).map((section) => (
-              <div key={section.title} className="bg-subtle rounded-xl p-5">
-                <h3 className="font-semibold text-fg mb-3">{section.title}</h3>
-                <ul className="space-y-1.5">
-                  {section.items.map((item: string) => (
-                    <li key={item} className="flex gap-2 text-sm text-sub">
-                      <span className="text-blue-500 shrink-0">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
+      <div className="ui-card p-6 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+          <p className="text-sm text-sub mt-2 leading-relaxed">{t('guide.whatIs.description')}</p>
+        </div>
+        {Array.isArray(guideSections) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(guideSections as Array<{ title: string; items: string[] }>).map((s) => (
+              <div key={s.title} className="bg-subtle rounded-2xl p-5">
+                <h3 className="font-semibold text-fg mb-3">{s.title}</h3>
+                <ul className="space-y-1.5 list-disc pl-4 text-sm text-sub">
+                  {s.items.map((item) => <li key={item}>{item}</li>)}
                 </ul>
               </div>
             ))}
           </div>
         )}
+        {Array.isArray(faq) && (
+          <div>
+            <h3 className="font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+            <dl className="space-y-4">
+              {(faq as Array<{ q: string; a: string }>).map((f) => (
+                <div key={f.q}>
+                  <dt className="text-sm font-medium text-body">{f.q}</dt>
+                  <dd className="text-sm text-sub mt-1">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
       </div>
-
-      {/* Print styles */}
-      <style>{`
-        @media print {
-          body > * { display: none !important; }
-          #invoice-preview { display: block !important; }
-        }
-      `}</style>
     </div>
   )
 }

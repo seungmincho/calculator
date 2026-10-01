@@ -1,892 +1,489 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { Clock, Globe, Copy, Check, Calendar, Timer, ArrowRightLeft } from 'lucide-react';
-import { useTranslations } from '@/lib/i18n';
-import GuideSection from '@/components/GuideSection';
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
+import { Copy, Check, Link2, Search, X, ClipboardPaste, ArrowRight } from 'lucide-react'
+import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import GuideSection from '@/components/GuideSection'
+import { resolveCity, searchCities, offsetMin, isDST, fmtOffset, fmtDiff, dayDiff } from '@/utils/worldClock'
+import {
+  type AddUnit, type Parsed, type Wall, type WallStatus, ADD_UNITS,
+  wallToUtc, wallOf, wallInput, parseWallInput, formatAll, relative, addTime, diffTime, parseAny, tzAbbr,
+} from '@/utils/timeConvert'
 
-const TimeConverter = () => {
-  const t = useTranslations('timeConverter');
-  const tc = useTranslations('common');
-  
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
-  const [sourceTimezone, setSourceTimezone] = useState('Asia/Seoul');
-  const [targetTimezone, setTargetTimezone] = useState('UTC');
-  const [unixTimestamp, setUnixTimestamp] = useState('');
-  const [isCopied, setIsCopied] = useState('');
-  const [activeTab, setActiveTab] = useState<'converter' | 'unix' | 'relative'>('converter');
-  const [pasteInput, setPasteInput] = useState('');
-  const [clipboardSupported, setClipboardSupported] = useState(false);
+const EXAMPLE = Date.UTC(2026, 9, 1, 3) // 정적 HTML용 고정 예시 (2026-10-01 12:00 KST). 마운트 후 현재 시각으로 바뀜
+const DEFAULT_SRC = 'seoul'
+const DEFAULT_TARGETS = ['utc', 'newYork', 'losAngeles', 'london', 'tokyo']
+const MAX_MS = 8.64e15
+const pad = (n: number) => String(n).padStart(2, '0')
 
-  // 주요 타임존 목록
-  const timezones = [
-    { value: 'Asia/Seoul', label: t('timezones.korea'), offset: '+09:00' },
-    { value: 'UTC', label: t('timezones.utc'), offset: '+00:00' },
-    { value: 'America/New_York', label: t('timezones.newYork'), offset: '-05:00/-04:00' },
-    { value: 'America/Los_Angeles', label: t('timezones.losAngeles'), offset: '-08:00/-07:00' },
-    { value: 'Europe/London', label: t('timezones.london'), offset: '+00:00/+01:00' },
-    { value: 'Europe/Paris', label: t('timezones.paris'), offset: '+01:00/+02:00' },
-    { value: 'Asia/Tokyo', label: t('timezones.tokyo'), offset: '+09:00' },
-    { value: 'Asia/Shanghai', label: t('timezones.shanghai'), offset: '+08:00' },
-    { value: 'Asia/Singapore', label: t('timezones.singapore'), offset: '+08:00' },
-    { value: 'Australia/Sydney', label: t('timezones.sydney'), offset: '+11:00/+10:00' },
-    { value: 'America/Chicago', label: t('timezones.chicago'), offset: '-06:00/-05:00' },
-    { value: 'America/Denver', label: t('timezones.denver'), offset: '-07:00/-06:00' },
-  ];
+async function copyText(text: string) {
+  try {
+    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return }
+  } catch { /* fallback */ }
+  const ta = document.createElement('textarea')
+  ta.value = text
+  ta.style.position = 'fixed'
+  ta.style.left = '-999999px'
+  document.body.appendChild(ta)
+  ta.select()
+  document.execCommand('copy')
+  document.body.removeChild(ta)
+}
 
-  // 실시간 시계 업데이트 및 클립보드 지원 확인
+const numParam = (v: string | null) => {
+  if (!v) return null
+  const n = Number(v)
+  return Number.isFinite(n) && Math.abs(n) <= MAX_MS ? n : null
+}
+
+function ZoneSearch({ placeholder, exclude, onPick, refMs }: {
+  placeholder: string; exclude: string[]; onPick: (id: string) => void; refMs: number
+}) {
+  const t = useTranslations('timeConverter')
+  const [q, setQ] = useState('')
+  const allTz = useMemo(() => {
+    try { return (Intl as unknown as { supportedValuesOf: (k: string) => string[] }).supportedValuesOf('timeZone') } catch { return [] }
+  }, [])
+  const results = useMemo(() => searchCities(q, exclude, allTz), [q, exclude, allTz])
+  const pick = (id: string) => { onPick(id); setQ('') }
+  return (
+    <div className="relative">
+      <Search className="w-4 h-4 text-faint absolute left-4 top-1/2 -translate-y-1/2" aria-hidden />
+      <input
+        value={q}
+        onChange={e => setQ(e.target.value)}
+        onKeyDown={e => { if (e.key === 'Enter' && results[0]) pick(results[0].id); if (e.key === 'Escape') setQ('') }}
+        placeholder={placeholder}
+        aria-label={placeholder}
+        className="ui-field pl-10 pr-4 py-3"
+      />
+      {q.trim() && (
+        <ul className="absolute z-20 mt-2 w-full bg-surface border border-line rounded-xl shadow-lg max-h-72 overflow-auto">
+          {results.length ? results.map(c => (
+            <li key={c.id}>
+              <button onClick={() => pick(c.id)} className="w-full text-left px-4 py-2.5 hover:bg-soft flex justify-between gap-3">
+                <span className="text-fg min-w-0 truncate">{c.ko} <span className="text-muted text-sm">{c.en !== c.ko ? c.en : ''}</span></span>
+                <span className="text-xs text-faint tabular-nums shrink-0">{fmtOffset(offsetMin(c.tz, refMs))}</span>
+              </button>
+            </li>
+          )) : <li className="px-4 py-3 text-sm text-muted">{t('noResults')}</li>}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default function TimeConverter() {
+  const t = useTranslations('timeConverter')
+  const sp = useSearchParams()
+  const locale = t('intlLocale')
+  const weekdays = t.raw('weekdays') as string[]
+
+  const [ms, setMs] = useState(EXAMPLE)
+  const [endMs, setEndMs] = useState(EXAMPLE + 7 * 86400000)
+  const [srcId, setSrcId] = useState(DEFAULT_SRC)
+  const [targets, setTargets] = useState<string[]>(DEFAULT_TARGETS)
+  // 시간대를 바꿀 때: 'wall'이면 같은 벽시계 시각을 새 시간대로 재해석, 'instant'면 같은 순간 유지
+  const [anchor, setAnchor] = useState<'wall' | 'instant'>('instant')
+  const [status, setStatus] = useState<WallStatus>('ok')
+  const [pinned, setPinned] = useState(false) // 사용자가 시각을 정했으면 URL에 t/b 기록
+  const [text, setText] = useState('')
+  const [parsed, setParsed] = useState<Parsed | null | undefined>(undefined)
+  const [now, setNow] = useState<number | null>(null)
+  const [ready, setReady] = useState(false)
+  const [canPaste, setCanPaste] = useState(false)
+  const [copied, setCopied] = useState<string | null>(null)
+  const [addN, setAddN] = useState('30')
+  const [addSign, setAddSign] = useState<1 | -1>(1)
+  const [addUnit, setAddUnit] = useState<AddUnit>('d')
+
+  const src = resolveCity(srcId) ?? resolveCity(DEFAULT_SRC)!
+  const tz = src.tz
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    setNow(Date.now())
+    setCanPaste(!!navigator.clipboard?.readText && window.isSecureContext)
+    const iv = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(iv)
+  }, [])
 
-    // 클립보드 API 지원 확인
-    setClipboardSupported(!!(navigator.clipboard && window.isSecureContext));
+  // 초기화: URL(t, b, tz, to) > 현재 시각. 한 번만.
+  useEffect(() => {
+    if (ready) return
+    const z = sp.get('tz')
+    const zone = (z && resolveCity(z)) || resolveCity(DEFAULT_SRC)!
+    if (z && resolveCity(z)) setSrcId(z)
+    const to = (sp.get('to') ?? '').split(',').filter(id => resolveCity(id))
+    if (to.length) setTargets(to)
+    const tp = numParam(sp.get('t'))
+    const base = tp ?? Date.now()
+    setMs(base)
+    setEndMs(numParam(sp.get('b')) ?? addTime(base, zone.tz, 7, 'd'))
+    if (tp != null) setPinned(true)
+    setReady(true)
+  }, [ready, sp])
 
-    return () => clearInterval(timer);
-  }, []);
+  useEffect(() => {
+    if (!ready) return
+    const u = new URL(window.location.href)
+    const set = (k: string, v: string | null) => (v == null ? u.searchParams.delete(k) : u.searchParams.set(k, v))
+    set('t', pinned ? String(ms) : null)
+    set('b', pinned ? String(endMs) : null)
+    set('tz', srcId === DEFAULT_SRC ? null : srcId)
+    set('to', targets.join(',') === DEFAULT_TARGETS.join(',') ? null : targets.join(','))
+    window.history.replaceState(window.history.state, '', u)
+  }, [ready, ms, endMs, srcId, targets, pinned])
 
-  // 타임존 변환 함수
-  const convertTime = (date: Date, fromTz: string, toTz: string) => {
-    // 원본 시간을 UTC로 변환한 후 대상 타임존으로 변환
-    const utcTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-    return new Intl.DateTimeFormat('ko-KR', {
-      timeZone: toTz,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).format(utcTime);
-  };
+  const flash = (k: string) => { setCopied(k); setTimeout(() => setCopied(null), 2000) }
+  const copy = async (v: string, k: string) => { await copyText(v); flash(k) }
 
-  // Unix 타임스탬프 변환
-  const convertUnixTimestamp = (timestamp: string) => {
-    const ts = parseInt(timestamp);
-    if (isNaN(ts)) return null;
-    
-    const date = new Date(ts * 1000);
-    return {
-      kst: new Intl.DateTimeFormat('ko-KR', {
-        timeZone: 'Asia/Seoul',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      }).format(date),
-      utc: new Intl.DateTimeFormat('ko-KR', {
-        timeZone: 'UTC',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      }).format(date)
-    };
-  };
+  const setWall = (w: Wall) => {
+    const r = wallToUtc(tz, w)
+    setMs(r.ms); setStatus(r.status); setAnchor('wall'); setPinned(true)
+  }
+  const setInstant = (v: number) => { setMs(v); setStatus('ok'); setAnchor('instant'); setPinned(true) }
 
-  // 상대 시간 계산
-  const getRelativeTime = (date: Date) => {
-    const now = new Date();
-    const diffInMs = date.getTime() - now.getTime();
-    const diffInMinutes = Math.round(diffInMs / (1000 * 60));
-    const diffInHours = Math.round(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
+  const onText = (v: string) => {
+    setText(v)
+    if (!v.trim()) { setParsed(undefined); return }
+    const p = parseAny(v, tz, Date.now())
+    setParsed(p)
+    if (!p) return
+    setMs(p.ms); setStatus(p.status ?? 'ok'); setAnchor(p.status ? 'wall' : 'instant'); setPinned(true)
+  }
+  const paste = async () => {
+    try { onText(await navigator.clipboard.readText()) } catch { /* 권한 거부: 직접 붙여넣기 */ }
+  }
 
-    if (Math.abs(diffInMinutes) < 60) {
-      return diffInMinutes === 0 ? '지금' : 
-             diffInMinutes > 0 ? `${diffInMinutes}분 후` : `${Math.abs(diffInMinutes)}분 전`;
-    } else if (Math.abs(diffInHours) < 24) {
-      return diffInHours > 0 ? `${diffInHours}시간 후` : `${Math.abs(diffInHours)}시간 전`;
-    } else {
-      return diffInDays > 0 ? `${diffInDays}일 후` : `${Math.abs(diffInDays)}일 전`;
+  const changeSrc = (id: string) => {
+    const z = resolveCity(id)
+    if (!z) return
+    if (anchor === 'wall') {
+      const r = wallToUtc(z.tz, wallOf(tz, ms))
+      setMs(r.ms); setStatus(r.status)
+      setEndMs(wallToUtc(z.tz, wallOf(tz, endMs)).ms)
     }
-  };
+    setSrcId(id)
+  }
 
-  // 클립보드 복사 (폴백 포함)
-  const copyToClipboard = async (text: string, type: string) => {
+  // ── 파생값 ──
+  const fm = useMemo(() => formatAll(ms, tz), [ms, tz])
+  const w = wallOf(tz, ms)
+  const wd = new Date(Date.UTC(w.y, w.mo - 1, w.d)).getUTCDay()
+  const off = offsetMin(tz, ms)
+  const abbr = tzAbbr(tz, ms)
+  const rel = now != null ? relative(ms, now, locale) : '—'
+  const dateLabel = (x: Wall) => `${x.y}-${pad(x.mo)}-${pad(x.d)} (${weekdays[new Date(Date.UTC(x.y, x.mo - 1, x.d)).getUTCDay()]})`
+
+  const n = Math.min(Math.abs(parseInt(addN, 10) || 0), 100000)
+  const addRes = useMemo(() => {
     try {
-      // 모던 브라우저 Clipboard API 시도
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        setIsCopied(type);
-        setTimeout(() => setIsCopied(''), 2000);
-        return;
-      }
-      
-      // 폴백: 전통적인 방법
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      if (successful) {
-        setIsCopied(type);
-        setTimeout(() => setIsCopied(''), 2000);
-      } else {
-        throw new Error('복사 실패');
-      }
-    } catch (err) {
-      console.error('복사 실패:', err);
-      // 사용자에게 수동 복사 안내
-      alert(`복사에 실패했습니다. 다음 텍스트를 수동으로 복사하세요:\n${text}`);
-    }
-  };
+      const r = addTime(ms, tz, addSign * n, addUnit)
+      return Math.abs(r) <= MAX_MS ? r : null
+    } catch { return null }
+  }, [ms, tz, addSign, n, addUnit])
 
-  // 클립보드 붙여넣기 및 자동 파싱
-  const handlePaste = async () => {
-    try {
-      // 모던 브라우저 Clipboard API 시도
-      if (navigator.clipboard && window.isSecureContext) {
-        const text = await navigator.clipboard.readText();
-        setPasteInput(text);
-        parseTimeFromText(text);
-        return;
-      }
-      
-      // 폴백: 사용자에게 직접 입력 요청
-      const text = prompt('클립보드에서 시간 정보를 붙여넣어 주세요:');
-      if (text) {
-        setPasteInput(text);
-        parseTimeFromText(text);
-      }
-    } catch (err) {
-      console.error('붙여넣기 실패:', err);
-      // 폴백: 사용자에게 직접 입력 요청
-      const text = prompt('클립보드 접근에 실패했습니다. 시간 정보를 직접 입력해 주세요:');
-      if (text) {
-        setPasteInput(text);
-        parseTimeFromText(text);
-      }
-    }
-  };
+  const df = useMemo(() => diffTime(ms, endMs, tz), [ms, endMs, tz])
+  const num = (v: number, digits = 0) => v.toLocaleString(locale, { maximumFractionDigits: digits })
 
-  // 텍스트에서 시간 정보 자동 파싱
-  const parseTimeFromText = (text: string) => {
-    // ISO 8601 형식 감지 (2024-01-01T12:00:00Z, 2024-01-01T12:00:00+09:00)
-    const isoRegex = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z|[+-]\d{2}:\d{2})?)/;
-    const isoMatch = text.match(isoRegex);
-    
-    if (isoMatch) {
-      const parsedDate = new Date(isoMatch[1]);
-      if (!isNaN(parsedDate.getTime())) {
-        setSelectedDateTime(parsedDate);
-        // 타임존 감지
-        if (isoMatch[1].includes('Z')) {
-          setSourceTimezone('UTC');
-        } else if (isoMatch[1].includes('+09:00')) {
-          setSourceTimezone('Asia/Seoul');
-        }
-        return;
-      }
-    }
+  const shareUrl = () => {
+    const u = new URL(window.location.href)
+    u.searchParams.set('t', String(ms))
+    u.searchParams.set('b', String(endMs))
+    return u.toString()
+  }
+  const meetingHref = `/world-clock/?cities=${encodeURIComponent([srcId, ...targets.filter(id => id !== srcId)].join(','))}&at=${Math.floor(ms / 1000)}`
 
-    // Unix 타임스탬프 감지 (10자리 또는 13자리)
-    const unixRegex = /\b(\d{10}|\d{13})\b/;
-    const unixMatch = text.match(unixRegex);
-    
-    if (unixMatch) {
-      const timestamp = unixMatch[1];
-      const tsNumber = parseInt(timestamp);
-      // 13자리면 밀리초, 10자리면 초
-      const date = new Date(timestamp.length === 13 ? tsNumber : tsNumber * 1000);
-      if (!isNaN(date.getTime())) {
-        setSelectedDateTime(date);
-        setUnixTimestamp(timestamp.length === 13 ? Math.floor(tsNumber / 1000).toString() : timestamp);
-        setActiveTab('unix');
-        return;
-      }
-    }
+  const formatRows: [string, string][] = [
+    ['unixS', fm.unixS],
+    ['unixMs', fm.unixMs],
+    ['isoUtc', fm.isoUtc],
+    ['iso', fm.iso],
+    ['rfc2822', fm.rfc2822],
+    ['sql', fm.sql],
+  ]
 
-    // 일반적인 날짜 형식 감지 (YYYY-MM-DD HH:mm:ss)
-    const dateRegex = /(\d{4}[-/]\d{1,2}[-/]\d{1,2})\s+(\d{1,2}:\d{2}(?::\d{2})?)/;
-    const dateMatch = text.match(dateRegex);
-    
-    if (dateMatch) {
-      const dateStr = dateMatch[1].replace(/\//g, '-');
-      const timeStr = dateMatch[2];
-      const fullDateTime = `${dateStr}T${timeStr.length === 5 ? timeStr + ':00' : timeStr}`;
-      const parsedDate = new Date(fullDateTime);
-      if (!isNaN(parsedDate.getTime())) {
-        setSelectedDateTime(parsedDate);
-        return;
-      }
-    }
+  const CopyBtn = ({ v, k }: { v: string; k: string }) => (
+    <button onClick={() => copy(v, k)} aria-label={t('copy')} className="p-1.5 rounded-lg text-muted hover:bg-soft shrink-0">
+      {copied === k ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+    </button>
+  )
 
-    // 미국식 날짜 형식 감지 (MM/DD/YYYY)
-    const usDateRegex = /(\d{1,2}\/\d{1,2}\/\d{4})\s+(\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM)?)/i;
-    const usDateMatch = text.match(usDateRegex);
-    
-    if (usDateMatch) {
-      const parsedDate = new Date(usDateMatch[0]);
-      if (!isNaN(parsedDate.getTime())) {
-        setSelectedDateTime(parsedDate);
-        return;
-      }
-    }
-
-    // 상대 시간 키워드 감지
-    const relativeRegex = /(now|지금|today|오늘|yesterday|어제|tomorrow|내일)/i;
-    if (relativeRegex.test(text)) {
-      const now = new Date();
-      if (/yesterday|어제/i.test(text)) {
-        now.setDate(now.getDate() - 1);
-      } else if (/tomorrow|내일/i.test(text)) {
-        now.setDate(now.getDate() + 1);
-      }
-      setSelectedDateTime(now);
-      setActiveTab('relative');
-      return;
-    }
-
-    // 타임존 키워드 감지 및 설정
-    const timezoneKeywords = {
-      'KST|한국|Korea': 'Asia/Seoul',
-      'UTC|GMT': 'UTC',
-      'EST|EDT|Eastern': 'America/New_York',
-      'PST|PDT|Pacific': 'America/Los_Angeles',
-      'JST|일본|Japan': 'Asia/Tokyo',
-      'CST|China|중국': 'Asia/Shanghai',
-      'GMT|London|런던': 'Europe/London',
-      'CET|Paris|파리': 'Europe/Paris'
-    };
-
-    for (const [keywords, timezone] of Object.entries(timezoneKeywords)) {
-      const regex = new RegExp(keywords, 'i');
-      if (regex.test(text)) {
-        setSourceTimezone(timezone);
-        break;
-      }
-    }
-  };
-
-  // 현재 시간을 다양한 타임존으로 표시
-  const getCurrentTimeInTimezones = () => {
-    return timezones.slice(0, 6).map(tz => ({
-      ...tz,
-      time: new Intl.DateTimeFormat('ko-KR', {
-        timeZone: tz.value,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      }).format(currentTime),
-      date: new Intl.DateTimeFormat('ko-KR', {
-        timeZone: tz.value,
-        month: 'short',
-        day: 'numeric'
-      }).format(currentTime)
-    }));
-  };
+  const parsedText = (p: Parsed) =>
+    p.kind === 'epoch' ? t('kind.epoch', { unit: t(`unit.${p.unit}`) })
+      : p.kind === 'now' ? t('kind.now')
+        : p.status ? t('kind.wall', { zone: src.ko })
+          : t('kind.zoned')
 
   return (
     <div className="py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* 헤더 */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="text-2xl font-bold text-fg">
-              {t('title')}
-            </h1>
-            <p className="text-sm text-muted mt-1">
-              {t('description')}
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-sm text-muted mt-1">{t('description')}</p>
+          </div>
+          <button onClick={() => copy(shareUrl(), 'link')} className="ui-btn-soft px-3 py-2 text-sm">
+            {copied === 'link' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
+            {copied === 'link' ? t('copied') : t('copyLink')}
+          </button>
+        </div>
+
+        {/* 지금 (실시간) */}
+        <div className="ui-card px-5 py-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+          <span className="font-semibold text-fg">{t('nowLive')}</span>
+          {([['nowS', now != null ? String(Math.floor(now / 1000)) : ''], ['nowMs', now != null ? String(now) : '']] as const).map(([k, v]) => (
+            <span key={k} className="flex items-center gap-1.5 min-w-0">
+              <span className="text-muted">{t(`fmt.${k === 'nowS' ? 'unixS' : 'unixMs'}`)}</span>
+              <code className="font-mono text-fg tabular-nums">{v || '—'}</code>
+              {v && <CopyBtn v={v} k={k} />}
+            </span>
+          ))}
+          <button onClick={() => { setText(''); setParsed(undefined); setInstant(Date.now()) }} className="ui-btn px-3 py-1.5 text-sm sm:ml-auto">
+            {t('useNow')}
+          </button>
+        </div>
+
+        {/* 입력 */}
+        <div className="ui-card p-6 space-y-5">
+          <div>
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <label htmlFor="tc-paste" className="text-sm font-medium text-body">{t('pasteLabel')}</label>
+              {canPaste && (
+                <button onClick={paste} className="ui-btn-soft px-3 py-1.5 text-sm">
+                  <ClipboardPaste className="w-4 h-4" />{t('pasteFromClipboard')}
+                </button>
+              )}
+            </div>
+            <div className="relative">
+              <input
+                id="tc-paste"
+                value={text}
+                onChange={e => onText(e.target.value)}
+                placeholder={t('pastePlaceholder')}
+                className="ui-field px-4 py-3 pr-10 font-mono text-sm"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              {text && (
+                <button onClick={() => onText('')} aria-label={t('clear')} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted hover:bg-soft">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <p className={`text-xs mt-2 ${parsed === null ? 'text-amber-700' : 'text-muted'}`}>
+              {parsed === undefined ? t('pasteHint') : parsed === null ? t('parseFail') : t('detected', { what: parsedText(parsed) })}
             </p>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="tc-dt" className="block text-sm font-medium text-body mb-2">{t('dateTimeIn', { zone: src.ko })}</label>
+              <input
+                id="tc-dt"
+                type="datetime-local"
+                step={1}
+                value={wallInput(w)}
+                onChange={e => { const x = parseWallInput(e.target.value); if (x) setWall(x) }}
+                className="ui-field px-4 py-3"
+              />
+            </div>
+            <div>
+              <div className="text-sm font-medium text-body mb-2">
+                {t('sourceZone')}: <span className="text-primary">{src.ko}</span> <span className="text-faint text-xs">{src.tz}</span>
+              </div>
+              <ZoneSearch placeholder={t('searchZone')} exclude={[srcId]} onPick={changeSrc} refMs={ms} />
+            </div>
+          </div>
+
+          {status !== 'ok' && (
+            <div className="bg-amber-50 text-amber-800 rounded-xl px-4 py-3 text-sm">
+              {status === 'gap' ? t('gapWarn', { zone: src.ko, time: `${pad(w.h)}:${pad(w.mi)}` }) : t('ambiguousWarn', { zone: src.ko })}
+            </div>
+          )}
         </div>
 
-        {/* 실시간 세계시계 */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-fg mb-4 flex items-center gap-2">
-            <Globe className="h-5 w-5" />
-            {t('realTimeWorldClock')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {getCurrentTimeInTimezones().map((tz) => (
-              <div key={tz.value} className={`${glassCard} ${glassInset}-md p-4`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold text-fg">{tz.label}</div>
-                    <div className="text-sm text-muted">{tz.offset}</div>
+        {/* 핵심 결과 */}
+        <div className="ui-hero p-6 sm:p-8">
+          <div className="text-sm text-white/70">{t('heroLabel', { zone: src.ko })}</div>
+          <div className="text-4xl sm:text-5xl font-bold tabular-nums mt-2">{`${pad(w.h)}:${pad(w.mi)}:${pad(w.s)}`}</div>
+          <div className="mt-2 text-white/80 tabular-nums" suppressHydrationWarning>
+            {`${w.y}-${pad(w.mo)}-${pad(w.d)} (${weekdays[wd]}) · ${fmtOffset(off)}${abbr ? ` ${abbr}` : ''}${isDST(tz, ms) ? ` · ${t('dst')}` : ''}`}
+          </div>
+          <div className="mt-1 text-white/70 text-sm" suppressHydrationWarning>{rel}</div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* 개발자 형식 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('formatsTitle')}</h2>
+            <div className="divide-y divide-line">
+              {formatRows.map(([k, v]) => (
+                <div key={k} className="py-2.5 flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-xs text-muted">{t(`fmt.${k}`, { zone: src.ko })}</div>
+                    <code className="font-mono text-sm text-fg break-all">{v}</code>
                   </div>
-                  <div className="text-right">
-                    <div className="text-xl font-mono font-bold text-blue-600 dark:text-blue-400">
-                      {tz.time}
-                    </div>
-                    <div className="text-sm text-muted">{tz.date}</div>
-                  </div>
+                  <CopyBtn v={v} k={k} />
                 </div>
+              ))}
+              <div className="py-2.5 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-xs text-muted">{t('fmt.relative')}</div>
+                  <span className="text-sm text-fg" suppressHydrationWarning>{rel}</span>
+                </div>
+                {now != null && <CopyBtn v={rel} k="relative" />}
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* 다른 시간대 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('otherZones')}</h2>
+            <ul className="divide-y divide-line">
+              {targets.map(id => {
+                const c = resolveCity(id)
+                if (!c) return null
+                const l = wallOf(c.tz, ms)
+                const o = offsetMin(c.tz, ms)
+                const dd = dayDiff(c.tz, tz, ms)
+                const ab = tzAbbr(c.tz, ms)
+                return (
+                  <li key={id} className="py-3 flex items-center gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <span className="font-semibold text-fg">{c.ko}</span>
+                        <span className="text-xs text-faint truncate">{c.tz}</span>
+                      </div>
+                      <div className="text-xs text-muted mt-0.5" suppressHydrationWarning>
+                        {fmtOffset(o)}{ab ? ` ${ab}` : ''}
+                        {isDST(c.tz, ms) ? ` · ${t('dst')}` : ''}
+                        {' · '}{o === off ? t('sameTime') : t('diffHours', { h: fmtDiff(o - off) })}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="font-bold text-fg tabular-nums text-lg">{`${pad(l.h)}:${pad(l.mi)}`}</div>
+                      <div className="text-xs text-muted tabular-nums">
+                        {dateLabel(l)}
+                        {dd !== 0 && <span className="ml-1 text-primary font-medium">{dd > 0 ? t('nextDay') : t('prevDay')}</span>}
+                      </div>
+                    </div>
+                    <div className="flex flex-col shrink-0">
+                      <CopyBtn v={formatAll(ms, c.tz).iso} k={`z-${id}`} />
+                      <button onClick={() => setTargets(v => v.filter(x => x !== id))} aria-label={t('remove')} className="p-1.5 rounded-lg text-muted hover:bg-soft">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+            <div className="mt-3">
+              <ZoneSearch placeholder={t('addZone')} exclude={targets} onPick={id => setTargets(v => (v.includes(id) ? v : [...v, id]))} refMs={ms} />
+            </div>
+            <Link href={meetingHref} className="mt-4 flex items-center justify-between gap-2 bg-subtle rounded-xl px-4 py-3 text-sm text-body hover:bg-soft">
+              <span>{t('meetingLink')}</span>
+              <ArrowRight className="w-4 h-4 text-primary shrink-0" />
+            </Link>
           </div>
         </div>
 
-        {/* 탭 네비게이션 */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button
-            onClick={() => setActiveTab('converter')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              activeTab === 'converter'
-                ? 'bg-blue-500 text-white'
-                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('timezoneConversion')}
-          </button>
-          <button
-            onClick={() => setActiveTab('unix')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              activeTab === 'unix'
-                ? 'bg-blue-500 text-white'
-                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('unixTimestamp')}
-          </button>
-          <button
-            onClick={() => setActiveTab('relative')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              activeTab === 'relative'
-                ? 'bg-blue-500 text-white'
-                : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            {t('relativeTime')}
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* 메인 컨버터 */}
-          <div className="space-y-6">
-            {/* 스마트 붙여넣기 도구 */}
-            <div className="bg-subtle border border-line rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-sub mb-3 flex items-center gap-2">
-                {t('smartPaste')}
-              </h3>
-              <p className="text-sm text-blue-700 dark:text-blue-400 mb-4">
-                {clipboardSupported 
-                  ? t('smartPasteDescriptionSupported')
-                  : t('smartPasteDescriptionFallback')
-                }
-                {!clipboardSupported && (
-                  <span className="block mt-1 text-xs text-orange-600 dark:text-orange-400">
-                    {t('httpsClipboardTip')}
-                  </span>
-                )}
-              </p>
-              
-              <div className="flex gap-2 mb-3">
-                <button
-                  onClick={handlePaste}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center gap-2"
-                  title={clipboardSupported ? t('pasteFromClipboard') : t('manualInputMode')}
-                >
-                  <span>{clipboardSupported ? "📋" : "⌨️"}</span>
-                  {clipboardSupported ? t('pasteFromClipboard') : t('manualInput')}
-                </button>
-                <button
-                  onClick={() => setPasteInput('')}
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-body rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
-                >
-                  {tc('clear')}
-                </button>
-              </div>
-
-              <div className="mb-3">
-                <textarea
-                  value={pasteInput}
-                  onChange={(e) => {
-                    setPasteInput(e.target.value);
-                    if (e.target.value.trim()) {
-                      parseTimeFromText(e.target.value);
-                    }
-                  }}
-                  placeholder={t('pasteTimeInfoPlaceholder')}
-                  className="w-full h-20 px-3 py-2 border border-line rounded-md shadow-sm bg-field text-fg placeholder-gray-500 dark:placeholder-gray-400 text-sm resize-none"
-                />
-              </div>
-
-              <div className="text-xs text-blue-600 dark:text-blue-400 space-y-1">
-                <div><strong>{t('supportedFormats')}</strong></div>
-                <div>• {t('iso8601Format')}</div>
-                <div>• {t('unixTimestampFormat')}</div>
-                <div>• {t('generalDateFormat')}</div>
-                <div>• {t('usDateFormat')}</div>
-                <div>• {t('relativeTimeFormat')}</div>
-              </div>
+        {/* 날짜 계산 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('add.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('add.desc', { zone: src.ko })}</p>
             </div>
-            {activeTab === 'converter' && (
-              <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <ArrowRightLeft className="h-5 w-5" />
-                  {t('timezoneConversion')}
-                </h3>
-                
-                {/* 날짜/시간 입력 */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('convertDateTime')}
-                  </label>
-                  <input
-                    type="datetime-local"
-                    value={selectedDateTime.toISOString().slice(0, 16)}
-                    onChange={(e) => setSelectedDateTime(new Date(e.target.value))}
-                    className={`w-full px-3 py-2 ${glassInput}`}
-                  />
-                </div>
-
-                {/* 원본 타임존 */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('sourceTimezone')}
-                  </label>
-                  <select
-                    value={sourceTimezone}
-                    onChange={(e) => setSourceTimezone(e.target.value)}
-                    className={`w-full px-3 py-2 ${glassInput}`}
-                  >
-                    {timezones.map((tz) => (
-                      <option key={tz.value} value={tz.value}>
-                        {tz.label} ({tz.offset})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 대상 타임존 */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('targetTimezone')}
-                  </label>
-                  <select
-                    value={targetTimezone}
-                    onChange={(e) => setTargetTimezone(e.target.value)}
-                    className={`w-full px-3 py-2 ${glassInput}`}
-                  >
-                    {timezones.map((tz) => (
-                      <option key={tz.value} value={tz.value}>
-                        {tz.label} ({tz.offset})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 변환 결과 */}
-                <div className="bg-subtle rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-body">
-                      {t('convertedTime')}
-                    </span>
-                    <button
-                      onClick={() => copyToClipboard(convertTime(selectedDateTime, sourceTimezone, targetTimezone), 'converted')}
-                      className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                    >
-                      {isCopied === 'converted' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                    </button>
-                  </div>
-                  <div className="text-xl font-mono font-bold text-blue-600 dark:text-blue-400">
-                    {convertTime(selectedDateTime, sourceTimezone, targetTimezone)}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'unix' && (
-              <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <Timer className="h-5 w-5" />
-                  {t('unixTimestamp')} {t('timezoneConversion')}
-                </h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('unixTimestampSeconds')}
-                  </label>
-                  <input
-                    type="text"
-                    value={unixTimestamp}
-                    onChange={(e) => setUnixTimestamp(e.target.value)}
-                    placeholder="1640995200"
-                    className={`w-full px-3 py-2 ${glassInput}`}
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <button
-                    onClick={() => setUnixTimestamp(Math.floor(Date.now() / 1000).toString())}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                  >
-                    {t('setCurrentTime')}
+            <div className="flex flex-wrap gap-2">
+              <div className="flex rounded-xl bg-soft p-1 text-sm">
+                {([1, -1] as const).map(s => (
+                  <button key={s} onClick={() => setAddSign(s)}
+                    className={`px-3 py-2 rounded-lg font-medium ${addSign === s ? 'bg-primary text-white' : 'text-body'}`}>
+                    {s === 1 ? t('add.plus') : t('add.minus')}
                   </button>
-                </div>
-
-                {unixTimestamp && convertUnixTimestamp(unixTimestamp) && (
-                  <div className="space-y-3">
-                    <div className="bg-subtle rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-body">
-                          {t('koreanTime')}
-                        </span>
-                        <button
-                          onClick={() => copyToClipboard(convertUnixTimestamp(unixTimestamp)?.kst || '', 'kst')}
-                          className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          {isCopied === 'kst' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                        </button>
-                      </div>
-                      <div className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                        {convertUnixTimestamp(unixTimestamp)?.kst}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-subtle rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-body">
-                          {t('utcTime')}
-                        </span>
-                        <button
-                          onClick={() => copyToClipboard(convertUnixTimestamp(unixTimestamp)?.utc || '', 'utc')}
-                          className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          {isCopied === 'utc' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                        </button>
-                      </div>
-                      <div className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                        {convertUnixTimestamp(unixTimestamp)?.utc}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                ))}
               </div>
-            )}
-
-            {activeTab === 'relative' && (
-              <div className={`${glassCard} ${glassInset}-lg p-6`}>
-                <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <Calendar className="h-5 w-5" />
-                  {t('relativeTime')} {tc('calculate')}
-                </h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('compareDateTime')}
-                  </label>
-                  <input
-                    type="datetime-local"
-                    value={selectedDateTime.toISOString().slice(0, 16)}
-                    onChange={(e) => setSelectedDateTime(new Date(e.target.value))}
-                    className={`w-full px-3 py-2 ${glassInput}`}
-                  />
-                </div>
-
-                <div className="bg-subtle rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-body">
-                      {t('timeDifference')}
-                    </span>
-                    <button
-                      onClick={() => copyToClipboard(getRelativeTime(selectedDateTime), 'relative')}
-                      className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                    >
-                      {isCopied === 'relative' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                    </button>
+              <input
+                type="number" inputMode="numeric" min={0} max={100000}
+                value={addN} onChange={e => setAddN(e.target.value)}
+                aria-label={t('add.amount')}
+                className="ui-field px-4 py-2.5 w-28 tabular-nums"
+              />
+              <select value={addUnit} onChange={e => setAddUnit(e.target.value as AddUnit)} aria-label={t('add.unit')} className="ui-field px-3 py-2.5 w-auto">
+                {ADD_UNITS.map(u => <option key={u} value={u}>{t(`addUnit.${u}`)}</option>)}
+              </select>
+            </div>
+            {addRes != null ? (() => {
+              const r = wallOf(tz, addRes)
+              return (
+                <div className="bg-subtle rounded-2xl p-5">
+                  <div className="text-sm text-sub">{t('add.result')}</div>
+                  <div className="text-2xl font-bold text-fg tabular-nums mt-1">{`${dateLabel(r)} ${pad(r.h)}:${pad(r.mi)}:${pad(r.s)}`}</div>
+                  <div className="flex items-center gap-1 mt-1 text-sm text-muted">
+                    <code className="font-mono break-all">{formatAll(addRes, tz).iso}</code>
+                    <CopyBtn v={formatAll(addRes, tz).iso} k="addIso" />
                   </div>
-                  <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                    {getRelativeTime(selectedDateTime)}
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <button onClick={() => setInstant(addRes)} className="ui-btn-soft px-3 py-1.5 text-sm">{t('add.useAsBase')}</button>
+                    <button onClick={() => { setEndMs(addRes); setPinned(true) }} className="ui-btn-soft px-3 py-1.5 text-sm">{t('add.useAsEnd')}</button>
                   </div>
                 </div>
-              </div>
-            )}
+              )
+            })() : <p className="text-sm text-amber-700">{t('outOfRange')}</p>}
+            {addUnit === 'bd' && <p className="text-xs text-muted">{t('holidayNote')}</p>}
           </div>
 
-          {/* 유용한 정보 및 도구 */}
-          <div className="space-y-6">
-            {/* 개발자 도구 */}
-            <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-fg mb-4">
-                {t('developerTools')}
-              </h3>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 gap-3">
-                  {/* 현재 Unix 타임스탬프 */}
-                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
-                    <span className="text-sm text-body">{t('currentUnixSeconds')}</span>
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
-                        {Math.floor(Date.now() / 1000)}
-                      </code>
-                      <button
-                        onClick={() => copyToClipboard(Math.floor(Date.now() / 1000).toString(), 'currentUnix')}
-                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                      >
-                        {isCopied === 'currentUnix' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* 현재 Unix 타임스탬프 (밀리초) */}
-                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
-                    <span className="text-sm text-body">{t('currentUnixMilliseconds')}</span>
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
-                        {Date.now()}
-                      </code>
-                      <button
-                        onClick={() => copyToClipboard(Date.now().toString(), 'currentUnixMs')}
-                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                      >
-                        {isCopied === 'currentUnixMs' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* ISO 8601 (UTC) */}
-                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
-                    <span className="text-sm text-body">{t('iso8601UTC')}</span>
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
-                        {new Date().toISOString()}
-                      </code>
-                      <button
-                        onClick={() => copyToClipboard(new Date().toISOString(), 'isoUtc')}
-                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                      >
-                        {isCopied === 'isoUtc' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* ISO 8601 (KST) */}
-                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
-                    <span className="text-sm text-body">{t('iso8601KST')}</span>
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
-                        {new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().replace('Z', '+09:00')}
-                      </code>
-                      <button
-                        onClick={() => copyToClipboard(new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().replace('Z', '+09:00'), 'isoKst')}
-                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                      >
-                        {isCopied === 'isoKst' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* RFC 2822 */}
-                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg">
-                    <span className="text-sm text-body">{t('rfc2822')}</span>
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-blue-600 dark:text-blue-400 bg-surface px-2 py-1 rounded text-xs">
-                        {new Date().toUTCString()}
-                      </code>
-                      <button
-                        onClick={() => copyToClipboard(new Date().toUTCString(), 'rfc2822')}
-                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                      >
-                        {isCopied === 'rfc2822' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 계산된 타임스탬프들 */}
-                <div className="border-t border-line pt-3 mt-4">
-                  <h4 className="text-sm font-medium text-fg mb-2">{t('commonTimestamps')}</h4>
-                  <div className="grid grid-cols-1 gap-2">
-                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
-                      <span className="text-body">{t('oneHourLater')}</span>
-                      <div className="flex items-center gap-1">
-                        <code className="font-mono text-blue-600 dark:text-blue-400">
-                          {Math.floor((Date.now() + 60 * 60 * 1000) / 1000)}
-                        </code>
-                        <button
-                          onClick={() => copyToClipboard(Math.floor((Date.now() + 60 * 60 * 1000) / 1000).toString(), 'oneHourLater')}
-                          className="p-0.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          {isCopied === 'oneHourLater' ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
-                      <span className="text-body">{t('oneDayLater')}</span>
-                      <div className="flex items-center gap-1">
-                        <code className="font-mono text-blue-600 dark:text-blue-400">
-                          {Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000)}
-                        </code>
-                        <button
-                          onClick={() => copyToClipboard(Math.floor((Date.now() + 24 * 60 * 60 * 1000) / 1000).toString(), 'oneDayLater')}
-                          className="p-0.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          {isCopied === 'oneDayLater' ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-subtle rounded text-xs">
-                      <span className="text-body">{t('oneWeekLater')}</span>
-                      <div className="flex items-center gap-1">
-                        <code className="font-mono text-blue-600 dark:text-blue-400">
-                          {Math.floor((Date.now() + 7 * 24 * 60 * 60 * 1000) / 1000)}
-                        </code>
-                        <button
-                          onClick={() => copyToClipboard(Math.floor((Date.now() + 7 * 24 * 60 * 60 * 1000) / 1000).toString(), 'oneWeekLater')}
-                          className="p-0.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          {isCopied === 'oneWeekLater' ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('diff.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('diff.desc')}</p>
+            </div>
+            <div className="text-sm text-body">
+              <span className="text-muted">{t('diff.start')}</span>{' '}
+              <span className="tabular-nums">{`${dateLabel(w)} ${pad(w.h)}:${pad(w.mi)}:${pad(w.s)}`}</span>
+            </div>
+            <div>
+              <label htmlFor="tc-end" className="block text-sm font-medium text-body mb-2">{t('diff.end', { zone: src.ko })}</label>
+              <div className="flex gap-2">
+                <input
+                  id="tc-end" type="datetime-local" step={1}
+                  value={wallInput(wallOf(tz, endMs))}
+                  onChange={e => { const x = parseWallInput(e.target.value); if (x) { setEndMs(wallToUtc(tz, x).ms); setPinned(true) } }}
+                  className="ui-field px-4 py-3 min-w-0"
+                />
+                <button onClick={() => { setEndMs(Date.now()); setPinned(true) }} className="ui-btn-soft px-3 py-2 text-sm shrink-0">{t('nowShort')}</button>
               </div>
             </div>
-
-            {/* 티케팅 도구 */}
-            <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-fg mb-4">
-                {t('ticketingTools')}
-              </h3>
-              <div className="space-y-4">
-                <div className="bg-subtle border border-red-200 dark:border-red-800 rounded-lg p-4">
-                  <h4 className="font-semibold text-red-800 dark:text-red-300 mb-2">{t('concertTicketing')}</h4>
-                  <p className="text-sm text-red-700 dark:text-red-400 mb-3">
-                    {t('concertTicketingDesc')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-surface p-2 rounded border">
-                      <div className="font-medium">{t('interpark')}</div>
-                      <div className="text-sub">{t('weekdaysOpen')}</div>
-                    </div>
-                    <div className="bg-surface p-2 rounded border">
-                      <div className="font-medium">{t('yes24')}</div>
-                      <div className="text-sub">{t('weekdaysOpen')}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-subtle border border-line rounded-lg p-4">
-                  <h4 className="font-semibold text-sub mb-2">{t('overseasEvents')}</h4>
-                  <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
-                    {t('overseasEventsDesc')}
-                  </p>
-                  <div className="grid grid-cols-1 gap-2 text-xs">
-                    <div className="bg-surface p-2 rounded border">
-                      <div className="font-medium">{t('appleEvent')}</div>
-                      <div className="text-sub">{t('appleEventTime')}</div>
-                    </div>
-                    <div className="bg-surface p-2 rounded border">
-                      <div className="font-medium">{t('steamGameRelease')}</div>
-                      <div className="text-sub">{t('steamReleaseTime')}</div>
-                    </div>
-                  </div>
-                </div>
+            <div className="bg-subtle rounded-2xl p-5">
+              <div className="text-sm text-sub">{df.sign < 0 ? t('diff.before') : t('diff.after')}</div>
+              <div className="text-2xl font-bold text-fg tabular-nums mt-1">
+                {t('diff.dhms', { d: num(df.days), h: df.hours, m: df.minutes, s: df.seconds })}
               </div>
-            </div>
-
-            {/* 유용한 팁 */}
-            <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-fg mb-4">
-                {t('timeConversionTips')}
-              </h3>
-              <div className="space-y-3 text-sm text-sub">
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <div>{t('daylightSavingTip')}</div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <div>{t('unixTimestampTip')}</div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <div>{t('ticketingPrep')}</div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <div>{t('internationalMeeting')}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* 자주 사용하는 시간대 */}
-            <div className={`${glassCard} ${glassInset}-lg p-6`}>
-              <h3 className="text-lg font-semibold text-fg mb-4">
-                {t('commonTimeConversions')}
-              </h3>
-              <div className="space-y-2 text-sm">
-                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
-                  <div>
-                    <div className="font-medium text-fg">{t('koreaToUSEast')}</div>
-                    <div className="text-sub">{t('timeDifferenceNote')}</div>
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 text-sm">
+                {([
+                  ['totalHours', num(df.totalSeconds / 3600, 2)],
+                  ['totalMinutes', num(df.totalSeconds / 60, 2)],
+                  ['totalSeconds', num(df.totalSeconds)],
+                  ['calendarDays', num(Math.abs(df.calendarDays))],
+                  ['businessDays', df.businessDays == null ? '—' : num(Math.abs(df.businessDays))],
+                ] as const).map(([k, v]) => (
+                  <div key={k} className="min-w-0">
+                    <dt className="text-muted text-xs">{t(`diff.${k}`)}</dt>
+                    <dd className="text-fg font-medium tabular-nums">{v}</dd>
                   </div>
-                  <div className="text-right">
-                    <div className="text-blue-600 dark:text-blue-400 font-mono">
-                      {new Intl.DateTimeFormat('ko-KR', {
-                        timeZone: 'America/New_York',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      }).format(currentTime)}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
-                  <div>
-                    <div className="font-medium text-fg">{t('koreaToUK')}</div>
-                    <div className="text-sub">{t('timeDifferenceUK')}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-blue-600 dark:text-blue-400 font-mono">
-                      {new Intl.DateTimeFormat('ko-KR', {
-                        timeZone: 'Europe/London',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      }).format(currentTime)}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 p-3 bg-subtle rounded-lg">
-                  <div>
-                    <div className="font-medium text-fg">{t('koreaToAustralia')}</div>
-                    <div className="text-sub">{t('timeDifferenceAustralia')}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-blue-600 dark:text-blue-400 font-mono">
-                      {new Intl.DateTimeFormat('ko-KR', {
-                        timeZone: 'Australia/Sydney',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      }).format(currentTime)}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                ))}
+              </dl>
+              <p className="text-xs text-muted mt-3">{t('diff.businessNote')} {t('holidayNote')}</p>
             </div>
           </div>
         </div>
 
-        <GuideSection namespace="timeConverter" />
+        <GuideSection namespace="timeConverter" defaultOpen />
       </div>
     </div>
-  );
-};
-
-export default TimeConverter;
+  )
+}

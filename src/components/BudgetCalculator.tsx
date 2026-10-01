@@ -1,1048 +1,565 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import dynamic from 'next/dynamic'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { ChevronLeft, ChevronRight, Download, Trash2, Undo2 } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import { calculateNetSalary } from '@/utils/netSalary'
 import {
-  Check,
-  Save,
-  Trash2,
-  Share2,
-  BookOpen,
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  Wallet,
-  PiggyBank,
-  RotateCcw,
-  Link,
-} from 'lucide-react'
+  CATEGORY_IDS, DEFAULT_INCOME, DEFAULT_PLAN, RULES, analyze, fillByRule, monthStatus, emergencyGoal,
+  normalizeAmounts, normalizeMonths, readParams, toCSV, monthKey, shiftMonth, isRule,
+  type Amounts, type CatId, type RuleId,
+} from '@/utils/budget'
 
-const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
+// 예전 프리셋 키(그대로 읽고 씀) + 계획·월별 기록 키
+const PRESET_KEY = 'budgetCalculator_presets'
+const STORAGE_KEY = 'budgetCalculator_v2'
 
-// ── Types ──
-
-interface IncomeData {
+interface Plan {
+  mode: 'net' | 'annual'
   salary: number
+  annual: number
   sideIncome: number
   otherIncome: number
+  amounts: Amounts
+  rule: RuleId
+}
+interface Preset { id: string; name: string; date: string; plan: Plan }
+
+const DEFAULT: Plan = {
+  mode: 'net', salary: DEFAULT_INCOME, annual: 50_000_000, sideIncome: 0, otherIncome: 0,
+  amounts: { ...DEFAULT_PLAN }, rule: 'r503020',
+}
+const RULE_IDS = Object.keys(RULES) as RuleId[]
+
+const fmt = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const num = (v: unknown, d = 0) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.floor(v) : d)
+
+function normalizePlan(x: unknown): Plan | null {
+  if (!x || typeof x !== 'object') return null
+  const p = x as Record<string, unknown>
+  return {
+    mode: p.mode === 'annual' ? 'annual' : 'net',
+    salary: num(p.salary, DEFAULT_INCOME),
+    annual: num(p.annual, DEFAULT.annual),
+    sideIncome: num(p.sideIncome),
+    otherIncome: num(p.otherIncome),
+    amounts: normalizeAmounts(p.amounts),
+    rule: isRule(p.rule) ? p.rule : 'r503020',
+  }
 }
 
-interface ExpenseCategory {
-  id: string
-  labelKey: string
-  icon: string
-  amount: number
-  budgetType: 'need' | 'want' | 'saving'
+/** 예전 프리셋 {income:{salary,…}, expenses:[{id,amount}]} 과 새 프리셋 {plan} 둘 다 읽는다 */
+function normalizePreset(x: unknown): Preset | null {
+  if (!x || typeof x !== 'object') return null
+  const p = x as Record<string, unknown>
+  const inc = (p.income ?? {}) as Record<string, unknown>
+  const plan = p.plan ? normalizePlan(p.plan) : {
+    ...DEFAULT, salary: num(inc.salary), sideIncome: num(inc.sideIncome), otherIncome: num(inc.otherIncome),
+    amounts: normalizeAmounts(p.expenses),
+  }
+  if (!plan) return null
+  return { id: String(p.id ?? Date.now()), name: String(p.name ?? ''), date: String(p.date ?? ''), plan }
 }
 
-interface BudgetPreset {
-  id: string
-  name: string
-  date: string
-  income: IncomeData
-  expenses: ExpenseCategory[]
+function WonInput({ value, onChange, label, unit, className = '' }: {
+  value: number; onChange: (n: number) => void; label: string; unit: string; className?: string
+}) {
+  return (
+    <div className={`relative ${className}`}>
+      <input
+        type="text" inputMode="numeric" aria-label={label}
+        value={value === 0 ? '' : fmt(value)} placeholder="0"
+        onChange={(e) => onChange(Math.min(Number(e.target.value.replace(/[^0-9]/g, '')) || 0, 1e12))}
+        className="ui-field w-full pl-3 pr-8 py-2.5 text-right tabular-nums"
+      />
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm pointer-events-none">{unit}</span>
+    </div>
+  )
 }
-
-// ── Constants ──
-
-const CATEGORY_COLORS = [
-  '#3B82F6', // blue
-  '#EF4444', // red
-  '#10B981', // emerald
-  '#F59E0B', // amber
-  '#8B5CF6', // violet
-  '#EC4899', // pink
-  '#06B6D4', // cyan
-  '#F97316', // orange
-  '#84CC16', // lime
-  '#6366F1', // indigo
-  '#14B8A6', // teal
-  '#78716C', // stone
-]
-
-const DEFAULT_EXPENSES: ExpenseCategory[] = [
-  { id: 'housing', labelKey: 'housing', icon: '🏠', amount: 0, budgetType: 'need' },
-  { id: 'food', labelKey: 'food', icon: '🍚', amount: 0, budgetType: 'need' },
-  { id: 'transport', labelKey: 'transport', icon: '🚌', amount: 0, budgetType: 'need' },
-  { id: 'communication', labelKey: 'communication', icon: '📱', amount: 0, budgetType: 'need' },
-  { id: 'insurance', labelKey: 'insurance', icon: '🛡️', amount: 0, budgetType: 'need' },
-  { id: 'education', labelKey: 'education', icon: '📚', amount: 0, budgetType: 'want' },
-  { id: 'medical', labelKey: 'medical', icon: '🏥', amount: 0, budgetType: 'need' },
-  { id: 'leisure', labelKey: 'leisure', icon: '🎬', amount: 0, budgetType: 'want' },
-  { id: 'clothing', labelKey: 'clothing', icon: '👔', amount: 0, budgetType: 'want' },
-  { id: 'social', labelKey: 'social', icon: '💐', amount: 0, budgetType: 'want' },
-  { id: 'savings', labelKey: 'savings', icon: '💰', amount: 0, budgetType: 'saving' },
-  { id: 'other', labelKey: 'other', icon: '📦', amount: 0, budgetType: 'want' },
-]
-
-// Korean average expense ratios (approximate % of income)
-const KOREAN_AVERAGE: Record<string, number> = {
-  housing: 25,
-  food: 15,
-  transport: 8,
-  communication: 4,
-  insurance: 7,
-  education: 8,
-  medical: 4,
-  leisure: 7,
-  clothing: 5,
-  social: 4,
-  savings: 10,
-  other: 3,
-}
-
-const STORAGE_KEY = 'budgetCalculator_presets'
-
-// ── Helpers ──
-
-function formatWon(value: number): string {
-  return value.toLocaleString('ko-KR')
-}
-
-function parseWonInput(value: string): number {
-  const num = parseInt(value.replace(/[^0-9]/g, ''), 10)
-  return isNaN(num) ? 0 : num
-}
-
-// ── Component ──
 
 export default function BudgetCalculator() {
   const t = useTranslations('budgetCalculator')
   const searchParams = useSearchParams()
 
-  // ── State ──
-  const [income, setIncome] = useState<IncomeData>(() => {
-    const s = searchParams.get('salary')
-    const si = searchParams.get('sideIncome')
-    const oi = searchParams.get('otherIncome')
-    return {
-      salary: s ? parseInt(s, 10) : 3000000,
-      sideIncome: si ? parseInt(si, 10) : 0,
-      otherIncome: oi ? parseInt(oi, 10) : 0,
-    }
-  })
-
-  const [expenses, setExpenses] = useState<ExpenseCategory[]>(() => {
-    return DEFAULT_EXPENSES.map((e) => {
-      const paramVal = searchParams.get(`exp_${e.id}`)
-      return { ...e, amount: paramVal ? parseInt(paramVal, 10) : 0 }
-    })
-  })
-
-  const [presets, setPresets] = useState<BudgetPreset[]>([])
+  const [plan, setPlan] = useState<Plan>(DEFAULT)
+  const [months, setMonths] = useState<Record<string, Partial<Amounts>>>({})
+  const [emBalance, setEmBalance] = useState(0)
+  const [emMonths, setEmMonths] = useState<3 | 6>(3)
+  const [presets, setPresets] = useState<Preset[]>([])
   const [presetName, setPresetName] = useState('')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showGuide, setShowGuide] = useState(false)
-  const [isDark, setIsDark] = useState(false)
+  const [today, setToday] = useState('')
+  const [monthSel, setMonthSel] = useState('')
+  const [showAmounts, setShowAmounts] = useState(false)
+  const [undoPlan, setUndoPlan] = useState<Amounts | null>(null)
+  // 공유 링크로 들어왔는데 내 저장 계획이 있으면, 직접 고치기 전까지 내 계획을 덮어쓰지 않는다
+  const [linkView, setLinkView] = useState(false)
+  const storedPlan = useRef<Plan | null>(null)
+  const [loaded, setLoaded] = useState(false)
 
-  // ── URL sync ──
-  const updateURL = useCallback((newIncome: IncomeData, newExpenses: ExpenseCategory[]) => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('salary', String(newIncome.salary))
-    url.searchParams.set('sideIncome', String(newIncome.sideIncome))
-    url.searchParams.set('otherIncome', String(newIncome.otherIncome))
-    newExpenses.forEach((e) => {
-      url.searchParams.set(`exp_${e.id}`, String(e.amount))
-    })
-    window.history.replaceState({}, '', url)
-  }, [])
-
+  // ── 마운트: URL > 저장값 > 기본값 ──
   useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains('dark'))
-    check()
-    const observer = new MutationObserver(check)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
-  }, [])
-
-  // Load presets from localStorage
-  useEffect(() => {
+    let stored: Record<string, unknown> = {}
+    try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') ?? {} } catch { /* 깨진 값 무시 */ }
+    storedPlan.current = normalizePlan(stored.plan)
+    setMonths(normalizeMonths(stored.months))
+    setEmBalance(num(stored.emBalance))
+    setEmMonths(stored.emMonths === 6 ? 6 : 3)
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setPresets(JSON.parse(stored))
-      }
-    } catch {
-      // ignore
+      const raw = JSON.parse(localStorage.getItem(PRESET_KEY) || '[]')
+      if (Array.isArray(raw)) setPresets(raw.map(normalizePreset).filter((p): p is Preset => !!p))
+    } catch { /* ignore */ }
+
+    const fromUrl = readParams((k) => searchParams.get(k))
+    const ruleParam = searchParams.get('rule')
+    if (fromUrl) {
+      setPlan({ ...fromUrl, rule: fromUrl.rule ?? storedPlan.current?.rule ?? 'r503020' })
+      setLinkView(!!storedPlan.current)
+    } else if (storedPlan.current) {
+      setPlan({ ...storedPlan.current, rule: isRule(ruleParam) ? ruleParam : storedPlan.current.rule })
+    } else if (isRule(ruleParam)) {
+      setPlan((p) => ({ ...p, rule: ruleParam }))
     }
-  }, [])
+    const now = new Date()
+    setToday(`${monthKey(now)}-${String(now.getDate()).padStart(2, '0')}`)
+    setMonthSel(monthKey(now))
+    setLoaded(true)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Derived values ──
-  const totalIncome = useMemo(
-    () => income.salary + income.sideIncome + income.otherIncome,
-    [income]
-  )
-
-  const totalExpenses = useMemo(
-    () => expenses.reduce((sum, e) => sum + e.amount, 0),
-    [expenses]
-  )
-
-  const remaining = totalIncome - totalExpenses
-
-  const savingsRate = useMemo(() => {
-    if (totalIncome <= 0) return 0
-    const savingsAmount = expenses.find((e) => e.id === 'savings')?.amount ?? 0
-    return Math.round((savingsAmount / totalIncome) * 100)
-  }, [totalIncome, expenses])
-
-  const categoryBreakdown = useMemo(() => {
-    return expenses
-      .filter((e) => e.amount > 0)
-      .map((e, i) => ({
-        ...e,
-        percent: totalExpenses > 0 ? (e.amount / totalExpenses) * 100 : 0,
-        incomePercent: totalIncome > 0 ? (e.amount / totalIncome) * 100 : 0,
-        color: CATEGORY_COLORS[i % CATEGORY_COLORS.length],
+  // ── 저장 + URL ──
+  useEffect(() => {
+    if (!loaded) return
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        plan: linkView ? storedPlan.current : plan, months, emBalance, emMonths,
       }))
-  }, [expenses, totalExpenses, totalIncome])
+    } catch { /* 용량 초과 등 */ }
+    const url = new URL(window.location.href)
+    const sp = url.searchParams
+    for (const k of [...sp.keys()]) if (k === 'salary' || k === 'annual' || k === 'sideIncome' || k === 'otherIncome' || k === 'rule' || k.startsWith('exp_')) sp.delete(k)
+    if (plan.mode === 'annual') sp.set('annual', String(plan.annual))
+    else sp.set('salary', String(plan.salary))
+    if (plan.sideIncome) sp.set('sideIncome', String(plan.sideIncome))
+    if (plan.otherIncome) sp.set('otherIncome', String(plan.otherIncome))
+    for (const c of CATEGORY_IDS) sp.set(`exp_${c}`, String(plan.amounts[c]))
+    sp.set('rule', plan.rule)
+    window.history.replaceState(window.history.state, '', url)
+  }, [loaded, plan, months, emBalance, emMonths, linkView])
 
-  // 50/30/20 Rule
-  const rule503020 = useMemo(() => {
-    const needs = expenses
-      .filter((e) => e.budgetType === 'need')
-      .reduce((sum, e) => sum + e.amount, 0)
-    const wants = expenses
-      .filter((e) => e.budgetType === 'want')
-      .reduce((sum, e) => sum + e.amount, 0)
-    const saving = expenses
-      .filter((e) => e.budgetType === 'saving')
-      .reduce((sum, e) => sum + e.amount, 0)
+  const edit = (patch: Partial<Plan>) => { setPlan((p) => ({ ...p, ...patch })); setLinkView(false); setUndoPlan(null) }
+  const setAmount = (c: CatId, v: number) => { setPlan((p) => ({ ...p, amounts: { ...p.amounts, [c]: v } })); setLinkView(false) }
 
-    const needsTarget = totalIncome * 0.5
-    const wantsTarget = totalIncome * 0.3
-    const savingTarget = totalIncome * 0.2
+  // ── 계산 ──
+  const net = useMemo(() => calculateNetSalary(plan.annual)?.netMonthly ?? 0, [plan.annual])
+  const salary = plan.mode === 'annual' ? net : plan.salary
+  const income = salary + plan.sideIncome + plan.otherIncome
+  const a = useMemo(() => analyze(income, plan.amounts, plan.rule), [income, plan.amounts, plan.rule])
+  const rate = Math.round(a.savingsRate)
+  const em = emergencyGoal(a.need, emMonths, emBalance, plan.amounts.emergency)
+  // ponytail: 월별 기록은 '현재 계획' 하나와 비교 — 달마다 계획이 달라야 하면 months[k]에 계획 스냅샷 저장
+  const actual = months[monthSel] ?? {}
+  const ms = monthSel && today ? monthStatus(plan.amounts, actual, monthSel, today) : null
+  const cat = (c: CatId) => t(`categories.${c}`)
+  const won = (n: number) => t('won', { n: fmt(n) })
+  const unit = t('unit')
 
-    return {
-      needs: { actual: needs, target: needsTarget, percent: totalIncome > 0 ? (needs / totalIncome) * 100 : 0 },
-      wants: { actual: wants, target: wantsTarget, percent: totalIncome > 0 ? (wants / totalIncome) * 100 : 0 },
-      saving: { actual: saving, target: savingTarget, percent: totalIncome > 0 ? (saving / totalIncome) * 100 : 0 },
-    }
-  }, [expenses, totalIncome])
+  const verdictText = income <= 0 ? t('verdict.noIncome')
+    : a.verdict === 'over' ? t('verdict.over', { amount: fmt(-a.unallocated) }) : t(`verdict.${a.verdict}`)
 
-  // Donut chart CSS
-  const donutGradient = useMemo(() => {
-    if (categoryBreakdown.length === 0) return 'conic-gradient(#e5e7eb 0deg 360deg)'
-    let acc = 0
-    const segments = categoryBreakdown.map((item) => {
-      const start = acc
-      acc += (item.percent / 100) * 360
-      return `${item.color} ${start}deg ${acc}deg`
-    })
-    if (acc < 360) {
-      segments.push(`#e5e7eb ${acc}deg 360deg`)
-    }
-    return `conic-gradient(${segments.join(', ')})`
-  }, [categoryBreakdown])
+  const shareCard = {
+    tool: t('title'),
+    label: t('share.label'),
+    headline: `${rate}%`,
+    sub: verdictText,
+    rows: showAmounts
+      ? [
+          { label: t('hero.income'), value: won(income) },
+          { label: t('hero.spend'), value: won(a.spend) },
+          { label: t('hero.saving'), value: won(a.saving) },
+          { label: t('hero.year1'), value: won(a.year1) },
+        ]
+      : a.buckets.map((b) => ({ label: t(`bucket.${b.id}`), value: `${Math.round(b.actualPct)}%` })),
+  }
 
-  // ECharts donut chart option
-  const budgetChartOption = useMemo(() => {
-    const data = categoryBreakdown.map((item) => ({
-      value: item.amount,
-      name: t(`categories.${item.labelKey}`),
-      itemStyle: { color: item.color },
-    }))
-    if (data.length === 0) return {}
+  // ── 핸들러 ──
+  const fill = () => { setUndoPlan(plan.amounts); setPlan((p) => ({ ...p, amounts: fillByRule(income, p.amounts, p.rule) })); setLinkView(false) }
+  const undo = () => { if (undoPlan) setPlan((p) => ({ ...p, amounts: undoPlan })); setUndoPlan(null) }
 
-    const tooltipBg = isDark ? 'rgba(31,41,55,0.97)' : 'rgba(255,255,255,0.97)'
-    const tooltipBorder = isDark ? '#4b5563' : '#e5e7eb'
-    const tooltipText = isDark ? '#f9fafb' : '#1f2937'
-    const legendText = isDark ? '#9ca3af' : '#6b7280'
-
-    return {
-      tooltip: {
-        trigger: 'item' as const,
-        formatter: '{b}: {c}원 ({d}%)',
-        backgroundColor: tooltipBg,
-        borderColor: tooltipBorder,
-        textStyle: { color: tooltipText, fontSize: 12 },
-      },
-      legend: {
-        orient: 'vertical' as const,
-        right: '5%',
-        top: 'center',
-        textStyle: { fontSize: 11, color: legendText },
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: ['40%', '70%'],
-          center: ['40%', '50%'],
-          avoidLabelOverlap: true,
-          label: { show: false },
-          emphasis: {
-            label: { show: true, fontSize: 14, fontWeight: 'bold' as const },
-          },
-          data,
-        },
-      ],
-    }
-  }, [categoryBreakdown, t, isDark])
-
-  // ── Handlers ──
-
-  const handleIncomeChange = useCallback((field: keyof IncomeData, value: string) => {
-    setIncome((prev) => {
-      const next = { ...prev, [field]: parseWonInput(value) }
-      setExpenses((prevExp) => { updateURL(next, prevExp); return prevExp })
-      return next
-    })
-  }, [updateURL])
-
-  const handleExpenseChange = useCallback((id: string, value: string) => {
-    setExpenses((prev) => {
-      const next = prev.map((e) => (e.id === id ? { ...e, amount: parseWonInput(value) } : e))
-      setIncome((prevInc) => { updateURL(prevInc, next); return prevInc })
-      return next
-    })
-  }, [updateURL])
-
-  const handleExpenseSlider = useCallback((id: string, value: number) => {
-    setExpenses((prev) => {
-      const next = prev.map((e) => (e.id === id ? { ...e, amount: value } : e))
-      setIncome((prevInc) => { updateURL(prevInc, next); return prevInc })
-      return next
-    })
-  }, [updateURL])
-
-  const handleReset = useCallback(() => {
-    const resetIncome = { salary: 3000000, sideIncome: 0, otherIncome: 0 }
-    const resetExpenses = DEFAULT_EXPENSES.map((e) => ({ ...e }))
-    setIncome(resetIncome)
-    setExpenses(resetExpenses)
-    updateURL(resetIncome, resetExpenses)
-  }, [updateURL])
-
-  const handleSavePreset = useCallback(() => {
-    const name = presetName.trim() || t('preset.defaultName')
-    const newPreset: BudgetPreset = {
-      id: Date.now().toString(),
-      name,
-      date: new Date().toLocaleDateString('ko-KR'),
-      income: { ...income },
-      expenses: expenses.map((e) => ({ ...e })),
-    }
-    const updated = [newPreset, ...presets].slice(0, 10)
-    setPresets(updated)
+  const savePresets = (list: Preset[]) => {
+    setPresets(list)
+    try { localStorage.setItem(PRESET_KEY, JSON.stringify(list)) } catch { /* ignore */ }
+  }
+  const savePreset = () => {
+    const p: Preset = { id: Date.now().toString(), name: presetName.trim() || t('preset.defaultName'), date: new Date().toLocaleDateString('ko-KR'), plan }
+    savePresets([p, ...presets].slice(0, 10))
     setPresetName('')
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-    } catch {
-      // ignore
-    }
-  }, [income, expenses, presets, presetName, t])
+  }
 
-  const handleLoadPreset = useCallback((preset: BudgetPreset) => {
-    const newIncome = { ...preset.income }
-    const newExpenses = preset.expenses.map((e) => ({ ...e }))
-    setIncome(newIncome)
-    setExpenses(newExpenses)
-    updateURL(newIncome, newExpenses)
-  }, [updateURL])
+  const setActual = (c: CatId, v: number) => setMonths((m) => ({ ...m, [monthSel]: { ...m[monthSel], [c]: v } }))
+  const clearMonth = () => {
+    if (!window.confirm(t('tracker.clearConfirm'))) return
+    setMonths((m) => { const n = { ...m }; delete n[monthSel]; return n })
+  }
+  const exportCSV = () => {
+    const csv = toCSV(months, plan.amounts, t.raw('tracker.csvHeader') as string[], cat)
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `budget-${today || 'export'}.csv`
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000)
+  }
 
-  const handleDeletePreset = useCallback((id: string) => {
-    const updated = presets.filter((p) => p.id !== id)
-    setPresets(updated)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-    } catch {
-      // ignore
-    }
-  }, [presets])
-
-  const copyToClipboard = useCallback(
-    async (text: string, id: string) => {
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(text)
-        } else {
-          const textarea = document.createElement('textarea')
-          textarea.value = text
-          textarea.style.position = 'fixed'
-          textarea.style.left = '-999999px'
-          document.body.appendChild(textarea)
-          textarea.select()
-          document.execCommand('copy')
-          document.body.removeChild(textarea)
-        }
-        setCopiedId(id)
-        setTimeout(() => setCopiedId(null), 2000)
-      } catch {
-        setCopiedId(id)
-        setTimeout(() => setCopiedId(null), 2000)
-      }
-    },
-    []
-  )
-
-  const handleCopyLink = useCallback(() => {
-    copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
-
-  const handleShareSummary = useCallback(() => {
-    const lines: string[] = [
-      `=== ${t('share.title')} ===`,
-      '',
-      `[${t('income.title')}]`,
-      `${t('income.salary')}: ${formatWon(income.salary)}${t('currency')}`,
-    ]
-    if (income.sideIncome > 0) {
-      lines.push(`${t('income.sideIncome')}: ${formatWon(income.sideIncome)}${t('currency')}`)
-    }
-    if (income.otherIncome > 0) {
-      lines.push(`${t('income.otherIncome')}: ${formatWon(income.otherIncome)}${t('currency')}`)
-    }
-    lines.push(`${t('summary.totalIncome')}: ${formatWon(totalIncome)}${t('currency')}`)
-    lines.push('')
-    lines.push(`[${t('expenses.title')}]`)
-    expenses.forEach((e) => {
-      if (e.amount > 0) {
-        lines.push(`${e.icon} ${t(`categories.${e.labelKey}`)}: ${formatWon(e.amount)}${t('currency')}`)
-      }
-    })
-    lines.push(`${t('summary.totalExpenses')}: ${formatWon(totalExpenses)}${t('currency')}`)
-    lines.push('')
-    lines.push(`[${t('summary.title')}]`)
-    lines.push(
-      `${t('summary.remaining')}: ${formatWon(remaining)}${t('currency')} (${remaining >= 0 ? t('summary.surplus') : t('summary.deficit')})`
-    )
-    lines.push(`${t('summary.savingsRate')}: ${savingsRate}%`)
-
-    copyToClipboard(lines.join('\n'), 'share')
-  }, [income, expenses, totalIncome, totalExpenses, remaining, savingsRate, t, copyToClipboard])
-
-  // ── Quick-fill buttons ──
-  const quickAmounts = [100000, 300000, 500000, 1000000]
+  const [selY, selM] = monthSel ? monthSel.split('-').map(Number) : [0, 0]
+  const seg = (on: boolean, pad = 'px-3') => `${pad} py-2 text-sm rounded-xl transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg">
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">
-          {t('description')}
-        </p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column: Income + Expenses */}
+      {linkView && (
+        <div className="bg-subtle rounded-2xl p-4 text-sm text-sub flex flex-wrap items-center gap-3">
+          <span className="flex-1 min-w-[12rem]">{t('link.viewing')}</span>
+          <button
+            onClick={() => { if (storedPlan.current) setPlan(storedPlan.current); setLinkView(false) }}
+            className="ui-btn-soft px-4 py-2 text-sm"
+          >
+            {t('link.loadMine')}
+          </button>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ── 왼쪽: 수입 · 비상금 · 저장 ── */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Income Section */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              {t('income.title')}
-            </h2>
+          <div className="ui-card p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-fg">{t('income.title')}</h2>
+            <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('income.title')}>
+              <button className={seg(plan.mode === 'net')} onClick={() => edit({ mode: 'net' })}>{t('income.modeNet')}</button>
+              <button className={seg(plan.mode === 'annual')} onClick={() => edit({ mode: 'annual' })}>{t('income.modeAnnual')}</button>
+            </div>
+            {plan.mode === 'net' ? (
+              <label className="block">
+                <span className="block text-sm font-medium text-body mb-1">{t('income.salary')}</span>
+                <WonInput unit={unit} label={t('income.salary')} value={plan.salary} onChange={(v) => edit({ salary: v })} />
+              </label>
+            ) : (
+              <div>
+                <label className="block">
+                  <span className="block text-sm font-medium text-body mb-1">{t('income.annual')}</span>
+                  <WonInput unit={unit} label={t('income.annual')} value={plan.annual} onChange={(v) => edit({ annual: v })} />
+                </label>
+                <p className="mt-2 text-sm text-body">{t('income.netResult', { n: fmt(net) })}</p>
+                <p className="mt-1 text-xs text-muted">
+                  {t('income.netBasis')}{' '}
+                  <a href={`/salary-calculator/?salary=${plan.annual}&type=annual`} className="text-primary hover:underline">
+                    {t('income.netDetail')}
+                  </a>
+                </p>
+              </div>
+            )}
+            {(['sideIncome', 'otherIncome'] as const).map((f) => (
+              <label key={f} className="block">
+                <span className="block text-sm font-medium text-body mb-1">{t(`income.${f}`)}</span>
+                <WonInput unit={unit} label={t(`income.${f}`)} value={plan[f]} onChange={(v) => edit({ [f]: v })} />
+              </label>
+            ))}
+            <div className="pt-3 border-t border-line flex justify-between items-center">
+              <span className="text-sm font-medium text-body">{t('summary.totalIncome')}</span>
+              <span className="text-lg font-bold text-fg tabular-nums">{won(income)}</span>
+            </div>
+          </div>
+
+          {/* 비상금 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('emergency.title')}</h2>
+              <p className="text-xs text-muted mt-1">{t('emergency.desc')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {([3, 6] as const).map((n) => (
+                <button key={n} className={seg(emMonths === n)} onClick={() => setEmMonths(n)}>{t('emergency.months', { n })}</button>
+              ))}
+            </div>
+            <label className="block">
+              <span className="block text-sm font-medium text-body mb-1">{t('emergency.balance')}</span>
+              <WonInput unit={unit} label={t('emergency.balance')} value={emBalance} onChange={setEmBalance} />
+            </label>
+            <div>
+              <div className="flex justify-between text-sm">
+                <span className="text-sub">{t('emergency.target', { need: fmt(a.need), n: emMonths })}</span>
+              </div>
+              <p className="text-2xl font-bold text-fg tabular-nums mt-1">{won(em.target)}</p>
+              <div className="mt-2 h-2 bg-track rounded-full overflow-hidden">
+                <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${em.progress}%` }} />
+              </div>
+              <p className="mt-2 text-sm text-body">
+                {em.monthsToGoal === 0 ? t('emergency.done')
+                  : em.monthsToGoal === null ? t('emergency.noPlan', { short: fmt(em.short) })
+                  : t('emergency.eta', { pct: Math.floor(em.progress), monthly: fmt(plan.amounts.emergency), n: em.monthsToGoal })}
+              </p>
+            </div>
+          </div>
+
+          {/* 저장 */}
+          <div className="ui-card p-6 space-y-3">
+            <h2 className="text-lg font-semibold text-fg">{t('preset.title')}</h2>
+            <div className="flex gap-2">
+              <input
+                type="text" value={presetName} onChange={(e) => setPresetName(e.target.value)}
+                placeholder={t('preset.placeholder')} aria-label={t('preset.placeholder')}
+                className="ui-field flex-1 min-w-0 px-3 py-2.5 text-sm"
+              />
+              <button onClick={savePreset} className="ui-btn px-4 py-2.5 text-sm">{t('actions.save')}</button>
+            </div>
+            {presets.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted">{t('preset.saved')}</p>
+                {presets.map((p) => (
+                  <div key={p.id} className="flex items-center gap-2 px-3 py-2 bg-subtle rounded-xl">
+                    <button onClick={() => { edit(p.plan) }} className="flex-1 min-w-0 text-left text-sm text-body hover:text-primary">
+                      <span className="font-medium">{p.name}</span>
+                      <span className="text-xs text-faint ml-2">{p.date}</span>
+                    </button>
+                    <button
+                      onClick={() => savePresets(presets.filter((x) => x.id !== p.id))}
+                      aria-label={t('preset.delete')} className="p-1 text-faint hover:text-red-500"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── 오른쪽: 판정 · 예산 짜기 ── */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-hero p-6 sm:p-8">
+            <p className="text-sm text-white/70">{t('hero.label', { income: fmt(income) })}</p>
+            <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{t('hero.rate', { n: rate })}</p>
+            <p className="mt-2 text-white/90">{verdictText}</p>
+            {a.unallocated > 0 && income > 0 && (
+              <p className="mt-1 text-sm text-white/70">{t('hero.unallocated', { amount: fmt(a.unallocated), rate: Math.round(a.potentialRate) })}</p>
+            )}
+            <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                ['hero.spend', a.spend],
+                ['hero.saving', a.saving],
+                ['hero.left', a.unallocated],
+                ['hero.year1', a.year1],
+              ].map(([k, v]) => (
+                <div key={k as string} className="rounded-2xl bg-white/15 p-4 min-w-0">
+                  <p className="text-xs text-white/70">{t(k as string)}</p>
+                  <p className="text-lg font-bold tabular-nums break-all">{won(v as number)}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-white/70">{t('hero.yearNote', { y3: fmt(a.year3) })}</p>
+          </div>
+
+          <div className="space-y-2">
+            <ShareResult
+              card={shareCard}
+              url={showAmounts ? undefined : `${typeof window !== 'undefined' ? window.location.origin : ''}/budget-calculator/?rule=${plan.rule}`}
+              text={t('share.text', { n: rate })}
+              fileName="budget"
+            />
+            <label className="flex items-center gap-2 text-sm text-sub">
+              <input type="checkbox" checked={showAmounts} onChange={(e) => setShowAmounts(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+              {t('share.showAmounts')}
+            </label>
+          </div>
+
+          {/* 예산 짜기 */}
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('plan.title')}</h2>
+              <p className="text-xs text-muted mt-1">{t('plan.desc')}</p>
+            </div>
+            <div className="grid grid-cols-3 gap-2" role="group" aria-label={t('plan.ruleLabel')}>
+              {RULE_IDS.map((r) => (
+                <button key={r} className={seg(plan.rule === r, 'px-2')} onClick={() => edit({ rule: r })}>{t(`rules.${r}.name`)}</button>
+              ))}
+            </div>
+            <p className="text-sm text-sub">{t(`rules.${plan.rule}.desc`)}</p>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={fill} disabled={income <= 0} className="ui-btn-soft px-4 py-2 text-sm">{t('plan.fill')}</button>
+              {undoPlan && (
+                <button onClick={undo} className="ui-btn-soft px-4 py-2 text-sm inline-flex items-center gap-1.5">
+                  <Undo2 className="w-4 h-4" />{t('plan.undo')}
+                </button>
+              )}
+            </div>
+
+            {/* 통별 막대 */}
+            <div className="flex h-3 rounded-full overflow-hidden bg-track" aria-hidden>
+              {a.buckets.map((b, i) => (
+                <div key={b.id} className="h-full bg-primary" style={{ width: `${Math.min(b.actualPct, 100)}%`, opacity: 1 - i * 0.22 }} />
+              ))}
+            </div>
+
             <div className="space-y-4">
-              {(['salary', 'sideIncome', 'otherIncome'] as const).map((field) => (
-                <div key={field}>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t(`income.${field}`)}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      value={income[field] === 0 ? '' : formatWon(income[field])}
-                      onChange={(e) => handleIncomeChange(field, e.target.value)}
-                      placeholder="0"
-                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm pointer-events-none">
-                      {t('currency')}
+              {a.buckets.map((b) => (
+                <div key={b.id} className="bg-subtle rounded-2xl p-4">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                    <h3 className="font-semibold text-fg">{t(`bucket.${b.id}`)}</h3>
+                    <span className={`text-sm font-semibold tabular-nums ${b.warn ? 'text-amber-600' : 'text-fg'}`}>
+                      {won(b.actual)} · {b.actualPct.toFixed(1)}%
                     </span>
+                  </div>
+                  <p className="text-xs text-muted mt-0.5">
+                    {t('plan.target', { pct: b.pct, amount: fmt(b.target) })}
+                    {' · '}
+                    <span className={b.warn ? 'text-amber-600' : ''}>
+                      {Math.abs(b.actual - b.target) < 1 ? t('plan.onTarget')
+                        : b.actual > b.target ? t('plan.overBy', { amount: fmt(b.actual - b.target) })
+                        : t('plan.underBy', { amount: fmt(b.target - b.actual) })}
+                    </span>
+                  </p>
+                  <div className="mt-2 h-1.5 bg-track rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${b.warn ? 'bg-amber-500' : 'bg-primary'}`}
+                      style={{ width: `${b.target > 0 ? Math.min((b.actual / b.target) * 100, 100) : 0}%` }}
+                    />
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {b.cats.map((c) => (
+                      <div key={c} className="flex items-center gap-3">
+                        <span className="flex-1 min-w-0 text-sm text-body">
+                          {cat(c)}
+                          {income > 0 && <span className="ml-1.5 text-xs text-faint tabular-nums">{((plan.amounts[c] / income) * 100).toFixed(1)}%</span>}
+                        </span>
+                        <WonInput unit={unit} label={cat(c)} value={plan.amounts[c]} onChange={(v) => setAmount(c, v)} className="w-36 shrink-0" />
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
-              <div className="pt-3 border-t border-line">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-body">
-                    {t('summary.totalIncome')}
-                  </span>
-                  <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {formatWon(totalIncome)}{t('currency')}
-                  </span>
-                </div>
-              </div>
             </div>
-          </div>
-
-          {/* Actions */}
-          <div className={`${glassCard} ${glassInset} p-4`}>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={handleReset}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              >
-                <RotateCcw className="w-4 h-4" />
-                {t('actions.reset')}
-              </button>
-              <button
-                onClick={handleShareSummary}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              >
-                {copiedId === 'share' ? (
-                  <Check className="w-4 h-4 text-green-500" />
-                ) : (
-                  <Share2 className="w-4 h-4" />
-                )}
-                {copiedId === 'share' ? t('actions.copied') : t('actions.share')}
-              </button>
-              <button
-                onClick={handleCopyLink}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              >
-                {copiedId === 'link' ? (
-                  <Check className="w-4 h-4 text-green-500" />
-                ) : (
-                  <Link className="w-4 h-4" />
-                )}
-                {copiedId === 'link' ? t('actions.copied') : '링크 복사'}
-              </button>
-            </div>
-
-            {/* Save Preset */}
-            <div className="mt-3 flex gap-2">
-              <input
-                type="text"
-                value={presetName}
-                onChange={(e) => setPresetName(e.target.value)}
-                placeholder={t('preset.placeholder')}
-                className={`flex-1 px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
-              <button
-                onClick={handleSavePreset}
-                className="flex items-center gap-1 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
-              >
-                <Save className="w-4 h-4" />
-                {t('actions.save')}
-              </button>
-            </div>
-
-            {/* Preset List */}
-            {presets.length > 0 && (
-              <div className="mt-3 space-y-2">
-                <p className="text-xs font-medium text-muted">
-                  {t('preset.saved')}
-                </p>
-                {presets.map((preset) => (
-                  <div
-                    key={preset.id}
-                    className="flex items-center justify-between px-3 py-2 bg-subtle rounded-lg"
-                  >
-                    <button
-                      onClick={() => handleLoadPreset(preset)}
-                      className="flex-1 text-left text-sm text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                    >
-                      <span className="font-medium">{preset.name}</span>
-                      <span className="text-xs text-gray-400 ml-2">{preset.date}</span>
-                    </button>
-                    <button
-                      onClick={() => handleDeletePreset(preset.id)}
-                      className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Right Column: Expense Grid + Summary */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Expense Categories */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              {t('expenses.title')}
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {expenses.map((expense, index) => {
-                const avgPercent = KOREAN_AVERAGE[expense.id] ?? 0
-                const avgAmount = Math.round(totalIncome * avgPercent / 100)
-                const isOverAvg = expense.amount > avgAmount * 1.3 && avgAmount > 0
-
-                return (
-                  <div
-                    key={expense.id}
-                    className={`p-4 rounded-lg border transition-colors ${
-                      isOverAvg
-                        ? 'border-amber-300 dark:border-amber-600 bg-amber-50 dark:bg-amber-950/30'
-                        : 'border-line bg-subtle'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{expense.icon}</span>
-                        <span className="text-sm font-medium text-fg">
-                          {t(`categories.${expense.labelKey}`)}
-                        </span>
-                        <span
-                          className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                            expense.budgetType === 'need'
-                              ? 'bg-primary-soft text-primary'
-                              : expense.budgetType === 'saving'
-                              ? 'bg-primary-soft text-primary'
-                              : 'bg-soft text-sub'
-                          }`}
-                        >
-                          {t(`budgetType.${expense.budgetType}`)}
-                        </span>
-                      </div>
-                      {isOverAvg && (
-                        <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                      )}
-                    </div>
-
-                    <div className="relative mb-2">
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        value={expense.amount === 0 ? '' : formatWon(expense.amount)}
-                        onChange={(e) => handleExpenseChange(expense.id, e.target.value)}
-                        placeholder="0"
-                        className={`w-full px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
-                      />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-xs pointer-events-none">
-                        {t('currency')}
-                      </span>
-                    </div>
-
-                    {/* Slider */}
-                    <input
-                      type="range"
-                      min="0"
-                      max={Math.max(totalIncome * 0.5, 2000000)}
-                      step="10000"
-                      value={expense.amount}
-                      onChange={(e) => handleExpenseSlider(expense.id, parseInt(e.target.value))}
-                      className="w-full h-1.5 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                    />
-
-                    {/* Quick amounts */}
-                    <div className="flex gap-1 mt-2 flex-wrap">
-                      {quickAmounts.map((amt) => (
-                        <button
-                          key={amt}
-                          onClick={() =>
-                            handleExpenseSlider(expense.id, expense.amount + amt)
-                          }
-                          className="px-2 py-0.5 text-[10px] bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body rounded transition-colors"
-                        >
-                          +{amt >= 1000000 ? `${amt / 10000}${t('manWon')}` : `${formatWon(amt)}`}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Korean average comparison */}
-                    {totalIncome > 0 && (
-                      <div className="mt-2 text-[11px] text-muted">
-                        {t('expenses.average')}: {formatWon(avgAmount)}{t('currency')} ({avgPercent}%)
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Summary Section */}
-          <div className="grid sm:grid-cols-2 gap-6">
-            {/* Donut Chart */}
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-base font-semibold text-fg mb-4">
-                {t('chart.title')}
-              </h3>
-              {categoryBreakdown.length > 0 ? (
-                <ReactECharts option={budgetChartOption} style={{ height: '300px' }} />
-              ) : (
-                <div className="flex justify-center mb-4">
-                  <div className="relative w-48 h-48">
-                    <div
-                      className="w-full h-full rounded-full"
-                      style={{ background: 'conic-gradient(#e5e7eb 0deg 360deg)' }}
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-28 h-28 rounded-full bg-surface flex flex-col items-center justify-center">
-                        <span className="text-xs text-muted">
-                          {t('chart.total')}
-                        </span>
-                        <span className="text-sm font-bold text-fg">0</span>
-                        <span className="text-[10px] text-gray-400">{t('currency')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Legend */}
-              <div className="space-y-1.5 mt-4">
-                {categoryBreakdown.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-3 h-3 rounded-sm flex-shrink-0"
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <span className="text-body">
-                        {item.icon} {t(`categories.${item.labelKey}`)}
-                      </span>
-                    </div>
-                    <span className="text-fg font-medium">
-                      {item.percent.toFixed(1)}%
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Income vs Expense + Stats */}
-            <div className="space-y-6">
-              {/* Summary Card */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-fg mb-4">
-                  {t('summary.title')}
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub flex items-center gap-1.5">
-                      <TrendingUp className="w-4 h-4 text-blue-500" />
-                      {t('summary.totalIncome')}
-                    </span>
-                    <span className="font-semibold text-blue-600 dark:text-blue-400">
-                      {formatWon(totalIncome)}{t('currency')}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub flex items-center gap-1.5">
-                      <TrendingDown className="w-4 h-4 text-red-500" />
-                      {t('summary.totalExpenses')}
-                    </span>
-                    <span className="font-semibold text-red-600 dark:text-red-400">
-                      {formatWon(totalExpenses)}{t('currency')}
-                    </span>
-                  </div>
-                  <div className="border-t border-line pt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-body">
-                        {t('summary.remaining')}
-                      </span>
-                      <span
-                        className={`text-lg font-bold ${
-                          remaining >= 0
-                            ? 'text-green-600 dark:text-green-400'
-                            : 'text-red-600 dark:text-red-400'
-                        }`}
-                      >
-                        {remaining >= 0 ? '+' : ''}
-                        {formatWon(remaining)}{t('currency')}
-                      </span>
-                    </div>
-                    <p
-                      className={`text-xs mt-1 ${
-                        remaining >= 0
-                          ? 'text-green-600 dark:text-green-400'
-                          : 'text-red-600 dark:text-red-400'
-                      }`}
-                    >
-                      {remaining >= 0 ? t('summary.surplus') : t('summary.deficit')}
-                    </p>
-                  </div>
-
-                  {/* Progress bar: expense / income */}
-                  <div>
-                    <div className="flex justify-between text-xs text-muted mb-1">
-                      <span>{t('summary.usageRate')}</span>
-                      <span>
-                        {totalIncome > 0
-                          ? Math.min(Math.round((totalExpenses / totalIncome) * 100), 999)
-                          : 0}
-                        %
-                      </span>
-                    </div>
-                    <div className="w-full h-3 bg-track rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-300 ${
-                          totalExpenses > totalIncome
-                            ? 'bg-red-500'
-                            : totalExpenses > totalIncome * 0.8
-                            ? 'bg-amber-500'
-                            : 'bg-green-500'
-                        }`}
-                        style={{
-                          width: `${Math.min(
-                            totalIncome > 0 ? (totalExpenses / totalIncome) * 100 : 0,
-                            100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Savings Rate */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub flex items-center gap-1.5">
-                      <PiggyBank className="w-4 h-4 text-green-500" />
-                      {t('summary.savingsRate')}
-                    </span>
-                    <span
-                      className={`font-semibold ${
-                        savingsRate >= 20
-                          ? 'text-green-600 dark:text-green-400'
-                          : savingsRate >= 10
-                          ? 'text-amber-600 dark:text-amber-400'
-                          : 'text-red-600 dark:text-red-400'
-                      }`}
-                    >
-                      {savingsRate}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Category Bars */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-base font-semibold text-fg mb-3">
-                  {t('chart.categoryBars')}
-                </h3>
-                <div className="space-y-2">
-                  {categoryBreakdown.map((item) => (
-                    <div key={item.id}>
-                      <div className="flex justify-between text-xs mb-0.5">
-                        <span className="text-body">
-                          {item.icon} {t(`categories.${item.labelKey}`)}
-                        </span>
-                        <span className="text-muted">
-                          {formatWon(item.amount)}{t('currency')} ({item.incomePercent.toFixed(1)}%)
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-track rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min(item.incomePercent, 100)}%`,
-                            backgroundColor: item.color,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                  {categoryBreakdown.length === 0 && (
-                    <p className="text-sm text-faint text-center py-4">
-                      {t('chart.noData')}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 50/30/20 Rule */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-base font-semibold text-fg mb-2">
-              {t('rule.title')}
-            </h3>
-            <p className="text-xs text-muted mb-4">
-              {t('rule.description')}
-            </p>
-            <div className="grid sm:grid-cols-3 gap-4">
-              {/* Needs 50% */}
-              <div className="p-4 rounded-lg bg-subtle border border-line">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-sub">
-                    {t('rule.needs')} (50%)
-                  </span>
-                  {rule503020.needs.percent > 55 && (
-                    <AlertTriangle className="w-4 h-4 text-amber-500" />
-                  )}
-                </div>
-                <p className="text-lg font-bold text-fg">
-                  {formatWon(rule503020.needs.actual)}{t('currency')}
-                </p>
-                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                  {t('rule.target')}: {formatWon(Math.round(rule503020.needs.target))}{t('currency')}
-                </p>
-                <div className="mt-2 w-full h-2 bg-blue-200 dark:bg-blue-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      rule503020.needs.percent > 55 ? 'bg-amber-500' : 'bg-blue-500'
-                    }`}
-                    style={{ width: `${Math.min(rule503020.needs.percent * 2, 100)}%` }}
-                  />
-                </div>
-                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                  {t('rule.actual')}: {rule503020.needs.percent.toFixed(1)}%
-                </p>
-              </div>
-
-              {/* Wants 30% */}
-              <div className="p-4 rounded-lg bg-subtle border border-line">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-sub">
-                    {t('rule.wants')} (30%)
-                  </span>
-                  {rule503020.wants.percent > 35 && (
-                    <AlertTriangle className="w-4 h-4 text-amber-500" />
-                  )}
-                </div>
-                <p className="text-lg font-bold text-fg">
-                  {formatWon(rule503020.wants.actual)}{t('currency')}
-                </p>
-                <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
-                  {t('rule.target')}: {formatWon(Math.round(rule503020.wants.target))}{t('currency')}
-                </p>
-                <div className="mt-2 w-full h-2 bg-purple-200 dark:bg-purple-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      rule503020.wants.percent > 35 ? 'bg-amber-500' : 'bg-purple-500'
-                    }`}
-                    style={{ width: `${Math.min((rule503020.wants.percent / 30) * 100, 100)}%` }}
-                  />
-                </div>
-                <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
-                  {t('rule.actual')}: {rule503020.wants.percent.toFixed(1)}%
-                </p>
-              </div>
-
-              {/* Savings 20% */}
-              <div className="p-4 rounded-lg bg-subtle border border-line">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-sub">
-                    {t('rule.saving')} (20%)
-                  </span>
-                  {rule503020.saving.percent < 15 && totalIncome > 0 && (
-                    <AlertTriangle className="w-4 h-4 text-amber-500" />
-                  )}
-                </div>
-                <p className="text-lg font-bold text-fg">
-                  {formatWon(rule503020.saving.actual)}{t('currency')}
-                </p>
-                <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-                  {t('rule.target')}: {formatWon(Math.round(rule503020.saving.target))}{t('currency')}
-                </p>
-                <div className="mt-2 w-full h-2 bg-green-200 dark:bg-green-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      rule503020.saving.percent < 15 ? 'bg-amber-500' : 'bg-green-500'
-                    }`}
-                    style={{ width: `${Math.min((rule503020.saving.percent / 20) * 100, 100)}%` }}
-                  />
-                </div>
-                <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-                  {t('rule.actual')}: {rule503020.saving.percent.toFixed(1)}%
-                </p>
-              </div>
-            </div>
-
-            {/* Recommendations */}
-            {totalIncome > 0 && (
-              <div className="mt-4 p-4 bg-subtle rounded-lg">
-                <h4 className="text-sm font-medium text-fg mb-2">
-                  {t('rule.recommendations')}
-                </h4>
-                <ul className="space-y-1.5 text-xs text-sub">
-                  {rule503020.needs.percent > 55 && (
-                    <li className="flex items-start gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0" />
-                      {t('rule.rec.needsHigh')}
-                    </li>
-                  )}
-                  {rule503020.wants.percent > 35 && (
-                    <li className="flex items-start gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0" />
-                      {t('rule.rec.wantsHigh')}
-                    </li>
-                  )}
-                  {rule503020.saving.percent < 15 && (
-                    <li className="flex items-start gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0" />
-                      {t('rule.rec.savingLow')}
-                    </li>
-                  )}
-                  {rule503020.needs.percent <= 55 &&
-                    rule503020.wants.percent <= 35 &&
-                    rule503020.saving.percent >= 15 && (
-                      <li className="flex items-start gap-1.5">
-                        <Check className="w-3.5 h-3.5 text-green-500 mt-0.5 flex-shrink-0" />
-                        {t('rule.rec.good')}
-                      </li>
-                    )}
-                  {totalExpenses > totalIncome && (
-                    <li className="flex items-start gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-red-500 mt-0.5 flex-shrink-0" />
-                      {t('rule.rec.overBudget')}
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="flex items-center gap-2 w-full text-left"
-        >
-          <BookOpen className="w-5 h-5 text-blue-500" />
-          <h2 className="text-xl font-semibold text-fg flex-1">
-            {t('guide.title')}
-          </h2>
-          <svg
-            className={`w-5 h-5 text-gray-400 transition-transform ${showGuide ? 'rotate-180' : ''}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        {showGuide && (
-          <div className="mt-6 space-y-6">
-            {/* How to use */}
-            <div>
-              <h3 className="text-base font-semibold text-fg mb-2">
-                {t('guide.usage.title')}
-              </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
-                {(t.raw('guide.usage.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* 50/30/20 Guide */}
-            <div>
-              <h3 className="text-base font-semibold text-fg mb-2">
-                {t('guide.rule.title')}
-              </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
-                {(t.raw('guide.rule.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tips */}
-            <div>
-              <h3 className="text-base font-semibold text-fg mb-2">
-                {t('guide.tips.title')}
-              </h3>
-              <ul className="list-disc list-inside space-y-1 text-sm text-sub">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
+      {/* ── 월별 기록 ── */}
+      {ms && (
+        <div className="ui-card p-6 space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-semibold text-fg">{t('tracker.title')}</h2>
+            <div className="flex items-center gap-1">
+              <button onClick={() => setMonthSel((k) => shiftMonth(k, -1))} aria-label={t('tracker.prev')} className="p-2 rounded-xl bg-soft hover:bg-subtle text-body">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="px-3 text-sm font-semibold text-fg tabular-nums min-w-[7rem] text-center">{t('tracker.month', { y: selY, m: selM })}</span>
+              <button onClick={() => setMonthSel((k) => shiftMonth(k, 1))} aria-label={t('tracker.next')} className="p-2 rounded-xl bg-soft hover:bg-subtle text-body">
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
-        )}
+          <p className="text-xs text-muted -mt-2">{t('tracker.desc')}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-subtle rounded-2xl p-5">
+              {ms.phase === 'current' ? (
+                <>
+                  <p className="text-sm text-sub">{t('tracker.daily')}</p>
+                  <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(ms.daily)}</p>
+                  <p className="text-xs text-muted mt-1">{t('tracker.dailyBasis', { days: ms.daysLeft, left: fmt(Math.max(0, ms.varPlanned - ms.varSpent)) })}</p>
+                  <p className={`text-sm mt-2 ${ms.fast ? 'text-amber-600' : 'text-body'}`}>
+                    {ms.fast ? t('tracker.fast', { limit: fmt(ms.paceLimit), spent: fmt(ms.varSpent) }) : t('tracker.onPace', { limit: fmt(ms.paceLimit) })}
+                  </p>
+                </>
+              ) : ms.phase === 'past' ? (
+                <>
+                  <p className="text-sm text-sub">{t('tracker.result')}</p>
+                  <p className={`text-3xl font-bold tabular-nums mt-1 ${ms.left < 0 ? 'text-amber-600' : 'text-fg'}`}>
+                    {ms.left < 0 ? t('tracker.overSpent', { amount: fmt(-ms.left) }) : t('tracker.underSpent', { amount: fmt(ms.left) })}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm text-sub">{t('tracker.future')}</p>
+              )}
+            </div>
+            <dl className="grid grid-cols-3 gap-3 content-start">
+              {[
+                ['tracker.planned', ms.planned, false],
+                ['tracker.spent', ms.spent, false],
+                ['tracker.left', ms.left, ms.left < 0],
+              ].map(([k, v, warn]) => (
+                <div key={k as string} className="min-w-0">
+                  <dt className="text-xs text-muted">{t(k as string)}</dt>
+                  <dd className={`text-base sm:text-lg font-bold tabular-nums break-all ${warn ? 'text-amber-600' : 'text-fg'}`}>{won(v as number)}</dd>
+                </div>
+              ))}
+              <div className="col-span-3 text-sm text-sub">
+                {t('tracker.savedLine', { saved: fmt(ms.saved), plan: fmt(ms.savedPlan) })}
+              </div>
+            </dl>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            {CATEGORY_IDS.map((c) => {
+              const p = plan.amounts[c]
+              const v = actual[c] ?? 0
+              const over = v > p
+              return (
+                <div key={c}>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-body">{cat(c)}</p>
+                      <p className={`text-xs tabular-nums ${over ? 'text-amber-600' : 'text-faint'}`}>
+                        {over ? t('tracker.catOver', { plan: fmt(p), amount: fmt(v - p) }) : t('tracker.catPlan', { plan: fmt(p) })}
+                      </p>
+                    </div>
+                    <WonInput unit={unit} label={t('tracker.actualOf', { cat: cat(c) })} value={v} onChange={(n) => setActual(c, n)} className="w-36 shrink-0" />
+                  </div>
+                  <div className="mt-1.5 h-1 bg-track rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${over ? 'bg-amber-500' : 'bg-primary'}`} style={{ width: `${p > 0 ? Math.min((v / p) * 100, 100) : v > 0 ? 100 : 0}%` }} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-line">
+            <button onClick={exportCSV} disabled={Object.keys(months).length === 0} className="ui-btn-soft px-4 py-2 text-sm inline-flex items-center gap-1.5">
+              <Download className="w-4 h-4" />{t('tracker.csv')}
+            </button>
+            <button onClick={clearMonth} disabled={!months[monthSel]} className="ui-btn-soft px-4 py-2 text-sm inline-flex items-center gap-1.5">
+              <Trash2 className="w-4 h-4" />{t('tracker.clear')}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── 가이드 ── */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <p className="text-sm text-body leading-relaxed">{t('guide.whatIs.description')}</p>
+        {(['usage', 'rule', 'accounts', 'tips'] as const).map((s) => (
+          <div key={s}>
+            <h3 className="text-base font-semibold text-fg mb-2">{t(`guide.${s}.title`)}</h3>
+            <ul className="list-disc pl-5 space-y-1 text-sm text-sub">
+              {(t.raw(`guide.${s}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+        <div>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <dl className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4">
+                <dt className="text-sm font-semibold text-fg">{f.q}</dt>
+                <dd className="text-sm text-sub mt-1">{f.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </div>
   )
