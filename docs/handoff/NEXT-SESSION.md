@@ -23,7 +23,7 @@
 - 실기기 확인 권장: 한글 IME 입력(타자연습·워들·십자말), 마이크(소음측정), 음성(TTS)
 
 ## 2. 다음 후보 (popular_tools 클릭 순)
-- 다음: markdown-editor, screen-info, emoji-picker, retirement-calculator, image-ocr, image-compressor, reaction-test, background-remover, wedding-calculator, income-tax, invoice-generator (popular_tools offset 70~)
+- 다음: emoji-picker, retirement-calculator, image-ocr, image-compressor, reaction-test, background-remover, wedding-calculator, income-tax, invoice-generator (popular_tools offset 70~)
 - **성능 과제**: ko.json 전체(2.1MB, gzip 511KB)가 모든 페이지 번들에 포함 → 도구별 네임스페이스 분리 로딩 검토(src/lib/i18n.ts 정적 import 구조). 미사용 키 정리로도 일부 감소
 - 기준금리 변경 시 `src/utils/rentConvert.ts` BASE_RATE, 전기차 지방비 추경 시 `src/utils/evSubsidy.ts` RAW/DATA_DATE, LLM 단가 `src/utils/llmPricing.ts` 갱신
 - 쓰지 않게 된 i18n 키 정리 (에이전트 보고서마다 목록 있음), ko.json `*.guide.guide.*` 중복 블록, `aspectRatio.businessNumber` 중첩 쓰레기
