@@ -1,1167 +1,465 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useSearchParams } from '@/hooks/useSearchParams'
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
+import { ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, BookOpen, Baby, Users, Clock, ChevronDown, ChevronUp, Share2, AlertTriangle, Info } from 'lucide-react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import DatePicker from '@/components/ui/DatePicker'
+import ShareResult from '@/components/ShareResult'
+import { addMonths, isValidDate, todayKST } from '@/utils/dday'
+import {
+  FLOOR, RH, monthRule, plan, compareOrders, rows, reducedHours, maxReduceMonths,
+  type Who, type Order, type Row,
+} from '@/utils/parentalLeave'
 
-// ── Types ──
-interface MonthlyBenefit {
-  month: number
-  payRate: number
-  cap: number
-  benefit: number
-  vsWage: number
-  isEnhanced: boolean
-  isLowerLimit: boolean
-  isUpperLimit: boolean
-}
+const WHOS: Who[] = ['both', 'one', 'single']
+const ORDERS: Order[] = ['mom', 'dad', 'same']
+const FALLBACK_START = '2026-10-01'
+const MONTHS = Array.from({ length: 18 }, (_, i) => i + 1)
+const CAP_GROUPS: [number, string][] = [[1, '1~2'], [3, '3'], [4, '4'], [5, '5'], [6, '6'], [7, '7~18']]
 
-interface IndividualResult {
-  months: MonthlyBenefit[]
-  totalBenefit: number
-  monthlyAverage: number
-  incomeReplacement: number
-  incomeLoss: number
-  wage: number
-}
+const LINKS = [
+  { key: 'work24', href: 'https://www.work24.go.kr' },
+  { key: 'law', href: 'https://www.law.go.kr/법령/고용보험법' },
+  { key: 'decree', href: 'https://www.law.go.kr/법령/고용보험법시행령' },
+  { key: 'moel', href: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=17133' },
+  { key: 'korea', href: 'https://www.korea.kr/news/policyNewsView.do?newsId=148957375' },
+]
 
-interface CoupleResult {
-  father: IndividualResult
-  mother: IndividualResult
-  combinedTotal: number
-  timeline: TimelineMonth[]
-}
+const won = (n: number) => `${Math.round(n).toLocaleString('ko-KR')}원`
+const man = (n: number) => `${(n / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 1 })}만`
+const dot = (d: string) => d.replaceAll('-', '.')
+const pick = <T extends string>(v: string | null, list: readonly T[]) => (v && (list as readonly string[]).includes(v) ? (v as T) : null)
+/** 예전 링크의 YYYY-MM 도 받음 */
+const toDate = (v: string | null) => (v && /^\d{4}-\d{2}$/.test(v) ? `${v}-01` : isValidDate(v) ? v : null)
+const num = (v: string | null) => Number(v) || 0
 
-interface TimelineMonth {
-  monthLabel: string
-  fatherBenefit: number
-  motherBenefit: number
-  fatherActive: boolean
-  motherActive: boolean
-  fatherEnhanced: boolean
-  motherEnhanced: boolean
-}
-
-interface ReducedHoursResult {
-  first10hBenefit: number
-  remainingBenefit: number
-  totalBenefit: number
-  companyPay: number
-  totalIncome: number
-  reducedHours: number
-}
-
-// ── Helpers ──
-const formatNumber = (num: number): string => {
-  return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
-const parseCommaNumber = (str: string): number => {
-  return parseInt(str.replace(/,/g, ''), 10) || 0
-}
-
-const formatCommaInput = (value: string): string => {
-  const num = value.replace(/[^\d]/g, '')
-  if (!num) return ''
-  return parseInt(num, 10).toLocaleString('ko-KR')
-}
-
-const getCurrentMonth = (): string => {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
-}
-
-const monthDiff = (startYM: string, endYM: string): number => {
-  const [sy, sm] = startYM.split('-').map(Number)
-  const [ey, em] = endYM.split('-').map(Number)
-  return (ey - sy) * 12 + (em - sm)
-}
-
-// ── Calculation Logic ──
-const SIX_PLUS_SIX_CAPS = [2500000, 2500000, 3000000, 3500000, 4000000, 4500000]
-const MIN_BENEFIT = 700000
-
-function calcIndividual(
-  wage: number,
-  duration: number,
-  isSixPlusSix: boolean,
-  childBirth?: string,
-  leaveStart?: string,
-): IndividualResult {
-  const months: MonthlyBenefit[] = []
-
-  for (let i = 1; i <= duration; i++) {
-    let payRate: number
-    let cap: number
-    let isEnhanced = false
-
-    if (isSixPlusSix && i <= 6) {
-      payRate = 1.0
-      cap = SIX_PLUS_SIX_CAPS[i - 1]
-      isEnhanced = true
-    } else if (i <= 3) {
-      payRate = 1.0
-      cap = 2500000
-    } else if (i <= 6) {
-      payRate = 1.0
-      cap = 2000000
-    } else {
-      payRate = 0.8
-      cap = 1600000
-    }
-
-    let benefit = Math.min(wage * payRate, cap)
-    const isUpperLimit = wage * payRate > cap
-    const isLowerLimit = benefit < MIN_BENEFIT && wage > 0
-    benefit = Math.max(benefit, MIN_BENEFIT)
-    if (wage === 0) benefit = 0
-
-    months.push({
-      month: i,
-      payRate,
-      cap,
-      benefit,
-      vsWage: wage > 0 ? (benefit / wage) * 100 : 0,
-      isEnhanced,
-      isLowerLimit,
-      isUpperLimit,
-    })
-  }
-
-  const totalBenefit = months.reduce((s, m) => s + m.benefit, 0)
-  const monthlyAverage = duration > 0 ? totalBenefit / duration : 0
-  const incomeReplacement = wage > 0 ? (monthlyAverage / wage) * 100 : 0
-  const incomeLoss = wage * duration - totalBenefit
-
-  return { months, totalBenefit, monthlyAverage, incomeReplacement, incomeLoss, wage }
-}
-
-function calcCouple(
-  fatherWage: number,
-  motherWage: number,
-  fatherStart: string,
-  motherStart: string,
-  fatherDuration: number,
-  motherDuration: number,
-  childBirth: string,
-): CoupleResult {
-  // Check 6+6 eligibility: child <= 18 months at either parent's leave start
-  const childAge1 = fatherStart ? monthDiff(childBirth, fatherStart) : 999
-  const childAge2 = motherStart ? monthDiff(childBirth, motherStart) : 999
-  const sixPlusSixEligible = childBirth && Math.min(childAge1, childAge2) <= 18
-
-  const fatherResult = calcIndividual(fatherWage, fatherDuration, !!sixPlusSixEligible, childBirth, fatherStart)
-  const motherResult = calcIndividual(motherWage, motherDuration, !!sixPlusSixEligible, childBirth, motherStart)
-
-  // Build timeline
-  const baseMonth = fatherStart && motherStart
-    ? (fatherStart < motherStart ? fatherStart : motherStart)
-    : fatherStart || motherStart || getCurrentMonth()
-
-  const [baseY, baseM] = baseMonth.split('-').map(Number)
-  const fatherOffset = fatherStart ? monthDiff(baseMonth, fatherStart) : 0
-  const motherOffset = motherStart ? monthDiff(baseMonth, motherStart) : 0
-  const totalMonths = Math.max(fatherOffset + fatherDuration, motherOffset + motherDuration)
-
-  const timeline: TimelineMonth[] = []
-  for (let i = 0; i < totalMonths; i++) {
-    const calMonth = baseM + i
-    const y = baseY + Math.floor((calMonth - 1) / 12)
-    const m = ((calMonth - 1) % 12) + 1
-
-    const fatherMonthIdx = i - fatherOffset
-    const motherMonthIdx = i - motherOffset
-    const fatherActive = fatherMonthIdx >= 0 && fatherMonthIdx < fatherDuration
-    const motherActive = motherMonthIdx >= 0 && motherMonthIdx < motherDuration
-
-    const fatherBenefit = fatherActive ? (fatherResult.months[fatherMonthIdx]?.benefit ?? 0) : 0
-    const motherBenefit = motherActive ? (motherResult.months[motherMonthIdx]?.benefit ?? 0) : 0
-    const fatherEnhanced = fatherActive && (fatherResult.months[fatherMonthIdx]?.isEnhanced ?? false)
-    const motherEnhanced = motherActive && (motherResult.months[motherMonthIdx]?.isEnhanced ?? false)
-
-    timeline.push({
-      monthLabel: `${y}.${String(m).padStart(2, '0')}`,
-      fatherBenefit,
-      motherBenefit,
-      fatherActive,
-      motherActive,
-      fatherEnhanced,
-      motherEnhanced,
-    })
-  }
-
-  return {
-    father: fatherResult,
-    mother: motherResult,
-    combinedTotal: fatherResult.totalBenefit + motherResult.totalBenefit,
-    timeline,
-  }
-}
-
-function calcReducedHours(wage: number, beforeHours: number, afterHours: number): ReducedHoursResult {
-  const reducedHours = beforeHours - afterHours
-  if (reducedHours <= 0 || beforeHours <= 0) {
-    return { first10hBenefit: 0, remainingBenefit: 0, totalBenefit: 0, companyPay: 0, totalIncome: 0, reducedHours: 0 }
-  }
-
-  const first10h = Math.min(reducedHours, 10)
-  const remainingH = Math.max(reducedHours - 10, 0)
-
-  const first10hBenefit = Math.min(wage * (first10h / beforeHours), 550000)
-  const remainingBenefit = remainingH > 0
-    ? Math.min(wage * (remainingH / beforeHours) * 0.8, 1500000)
-    : 0
-  const totalBenefit = first10hBenefit + remainingBenefit
-  const companyPay = wage * (afterHours / beforeHours)
-  const totalIncome = totalBenefit + companyPay
-
-  return { first10hBenefit, remainingBenefit, totalBenefit, companyPay, totalIncome, reducedHours }
-}
-
-// ── Component ──
 export default function ParentalLeaveCalculator() {
   const t = useTranslations('parentalLeave')
   const searchParams = useSearchParams()
 
-  // Tab state
-  const [activeTab, setActiveTab] = useState<'individual' | 'couple'>('individual')
+  const [who, setWho] = useState<Who>('both')
+  const [order, setOrder] = useState<Order>('mom')
+  const [start, setStart] = useState(FALLBACK_START)
+  const [birth, setBirth] = useState(addMonths(FALLBACK_START, -3))
+  const [momWage, setMomWage] = useState(3_000_000)
+  const [momMonths, setMomMonths] = useState(12)
+  const [dadWage, setDadWage] = useState(3_500_000)
+  const [dadMonths, setDadMonths] = useState(6)
+  const [rhWho, setRhWho] = useState<'mom' | 'dad'>('mom')
+  const [rhBefore, setRhBefore] = useState(40)
+  const [rhAfter, setRhAfter] = useState(30)
+  const [rhMonths, setRhMonths] = useState(12)
+  const [ready, setReady] = useState(false)
 
-  // Individual tab inputs
-  const [wage, setWage] = useState('')
-  const [isAnnual, setIsAnnual] = useState(false)
-  const [leaveStart, setLeaveStart] = useState(getCurrentMonth())
-  const [leaveDuration, setLeaveDuration] = useState(12)
-  const [isSixPlusSix, setIsSixPlusSix] = useState(false)
-  const [childBirth, setChildBirth] = useState('')
-  const [spouseLeaveStart, setSpouseLeaveStart] = useState('')
-  const [spouseLeaveDuration, setSpouseLeaveDuration] = useState(6)
-
-  // Couple tab inputs
-  const [fatherWage, setFatherWage] = useState('')
-  const [motherWage, setMotherWage] = useState('')
-  const [fatherStart, setFatherStart] = useState('')
-  const [motherStart, setMotherStart] = useState('')
-  const [fatherDuration, setFatherDuration] = useState(6)
-  const [motherDuration, setMotherDuration] = useState(12)
-  const [coupleChildBirth, setCoupleChildBirth] = useState('')
-
-  // Reduced hours
-  const [showReducedHours, setShowReducedHours] = useState(false)
-  const [beforeHours, setBeforeHours] = useState(40)
-  const [afterHours, setAfterHours] = useState(25)
-
-  // Copy state
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-
-  // ── URL State Sync ──
+  // URL → 상태 (예전 링크 wage/type/duration/sixPlusSix/childBirth/start 호환)
   useEffect(() => {
-    const w = searchParams.get('wage')
-    const tp = searchParams.get('type')
-    const dur = searchParams.get('duration')
-    const six = searchParams.get('sixPlusSix')
-    const cb = searchParams.get('childBirth')
-    const st = searchParams.get('start')
+    const g = (k: string) => searchParams.get(k)
+    const w = pick(g('who'), WHOS) ?? (g('sixPlusSix') === '0' ? 'one' : g('sixPlusSix') === '1' ? 'both' : null)
+    if (w) setWho(w)
+    const o = pick(g('order'), ORDERS); if (o) setOrder(o)
+    const wage = num(g('wage')); if (wage > 0) setMomWage(g('type') === 'annual' ? Math.floor(wage / 12) : wage)
+    const d = num(g('duration')); if (d >= 1 && d <= 18) setMomMonths(d)
+    const fw = num(g('fwage')); if (fw > 0) setDadWage(fw)
+    const fd = num(g('fduration')); if (fd >= 1 && fd <= 18) setDadMonths(fd)
+    const s = toDate(g('start')) ?? todayKST()
+    setStart(s)
+    setBirth(toDate(g('birth')) ?? toDate(g('childBirth')) ?? addMonths(s, -3))
+    const rb = num(g('rb')); if ([40, 35, 30].includes(rb)) setRhBefore(rb)
+    const ra = num(g('ra')); if (ra >= RH.minAfter && ra <= RH.maxAfter) setRhAfter(ra)
+    setReady(true)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    if (w) setWage(formatCommaInput(w))
-    if (tp === 'annual') setIsAnnual(true)
-    if (dur) setLeaveDuration(Math.min(18, Math.max(1, parseInt(dur) || 12)))
-    if (six === '1') setIsSixPlusSix(true)
-    if (cb) setChildBirth(cb)
-    if (st) setLeaveStart(st)
-  }, [searchParams])
-
-  const updateURL = useCallback((params: Record<string, string>) => {
+  // 상태 → URL
+  useEffect(() => {
+    if (!ready) return
     const url = new URL(window.location.href)
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) {
-        url.searchParams.set(key, value)
-      } else {
-        url.searchParams.delete(key)
-      }
-    })
-    window.history.replaceState({}, '', url.toString())
-  }, [])
+    const sp = url.searchParams
+    ;['type', 'sixPlusSix', 'childBirth'].forEach((k) => sp.delete(k))
+    sp.set('who', who); sp.set('wage', String(momWage)); sp.set('duration', String(momMonths)); sp.set('start', start)
+    if (who === 'both') {
+      sp.set('order', order); sp.set('fwage', String(dadWage)); sp.set('fduration', String(dadMonths)); sp.set('birth', birth)
+    } else ['order', 'fwage', 'fduration', 'birth'].forEach((k) => sp.delete(k))
+    sp.set('rb', String(rhBefore)); sp.set('ra', String(rhAfter))
+    window.history.replaceState({}, '', url)
+  }, [ready, who, order, start, birth, momWage, momMonths, dadWage, dadMonths, rhBefore, rhAfter])
 
-  // ── Compute individual result ──
-  const individualResult = useMemo(() => {
-    const rawWage = parseCommaNumber(wage)
-    const monthlyWage = isAnnual ? Math.floor(rawWage / 12) : rawWage
-    if (monthlyWage <= 0) return null
+  const input = { who, order, start, birth, momWage, momMonths, dadWage, dadMonths }
+  const p = useMemo(() => plan(input), [who, order, start, birth, momWage, momMonths, dadWage, dadMonths]) // eslint-disable-line react-hooks/exhaustive-deps
+  const scenarios = useMemo(() => (who === 'both' ? compareOrders(input) : []), [who, start, birth, momWage, momMonths, dadWage, dadMonths]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Check 6+6 eligibility: 자녀 생년월 필수, 생후 18개월 이내
-    let eligible66 = isSixPlusSix && !!childBirth
-    if (eligible66 && childBirth && leaveStart) {
-      const childAgeAtStart = monthDiff(childBirth, leaveStart)
-      if (childAgeAtStart > 18) eligible66 = false
-    }
+  const both = who === 'both'
+  const rhWage = both && rhWho === 'dad' ? dadWage : momWage
+  const after = Math.min(rhAfter, rhBefore - 1)
+  const rh = reducedHours(rhWage, rhBefore, after)
+  const leaveCmp = rows(rhWage, rhMonths, start, 0, who === 'single')
+  const leaveCmpTotal = leaveCmp.reduce((s, r) => s + r.amount, 0)
+  const usedLeave = both && rhWho === 'dad' ? p.dadMonths : p.momMonths
 
-    return calcIndividual(monthlyWage, leaveDuration, eligible66, childBirth, leaveStart)
-  }, [wage, isAnnual, leaveDuration, isSixPlusSix, childBirth, leaveStart])
+  const months = p.momMonths + p.dadMonths
+  const monthlyMax = Math.max(...p.calendar.map((c) => c.mom + c.dad))
+  const parent = (k: 'mom' | 'dad') => (both ? t(`p.${k}`) : t('p.me'))
 
-  // ── Compute couple result ──
-  const coupleResult = useMemo(() => {
-    const fw = parseCommaNumber(fatherWage)
-    const mw = parseCommaNumber(motherWage)
-    if (fw <= 0 && mw <= 0) return null
-    if (!fatherStart && !motherStart) return null
+  const seg = (on: boolean) => `px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const label = 'block text-sm font-medium text-body mb-2'
 
-    return calcCouple(fw, mw, fatherStart, motherStart, fatherDuration, motherDuration, coupleChildBirth)
-  }, [fatherWage, motherWage, fatherStart, motherStart, fatherDuration, motherDuration, coupleChildBirth])
+  const wageField = (id: string, text: string, value: number, set: (n: number) => void) => (
+    <div>
+      <label htmlFor={id} className={label}>{text}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="numeric"
+          value={value ? value.toLocaleString('ko-KR') : ''}
+          onChange={(e) => set(Number(e.target.value.replace(/[^0-9]/g, '')) || 0)}
+          className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+        />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted text-sm">{t('p.won')}</span>
+      </div>
+    </div>
+  )
+  const monthField = (id: string, text: string, value: number, set: (n: number) => void) => (
+    <div>
+      <label htmlFor={id} className={label}>{text}</label>
+      <select id={id} value={value} onChange={(e) => set(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+        {MONTHS.map((n) => <option key={n} value={n}>{t('p.monthsOption', { n })}</option>)}
+      </select>
+    </div>
+  )
+  const tag = (r: Row) =>
+    r.kind === 'special' ? t('p.tag.special') : r.kind === 'single' ? t('p.tag.single')
+      : r.applied === 'cap' ? t('p.tag.cap') : r.applied === 'floor' ? t('p.tag.floor') : `${r.rate * 100}%`
+  const cell = (r?: Row) => r ? (
+    <td className={`px-3 py-2.5 text-right tabular-nums ${r.kind === 'special' ? 'bg-primary-soft text-primary' : 'text-fg'}`}>
+      <div className="font-semibold">{won(r.amount)}</div>
+      <div className="text-xs opacity-80">{t('p.table.nth', { n: r.n })} · {tag(r)}</div>
+    </td>
+  ) : <td className="px-3 py-2.5 text-right text-faint">-</td>
 
-  // ── Reduced hours ──
-  const reducedResult = useMemo(() => {
-    const monthlyWage = isAnnual ? Math.floor(parseCommaNumber(wage) / 12) : parseCommaNumber(wage)
-    if (monthlyWage <= 0) return null
-    return calcReducedHours(monthlyWage, beforeHours, afterHours)
-  }, [wage, isAnnual, beforeHours, afterHours])
-
-  // ── 6+6 eligibility warning ──
-  const sixPlusSixWarning = useMemo(() => {
-    if (!isSixPlusSix || !childBirth || !leaveStart) return null
-    const age = monthDiff(childBirth, leaveStart)
-    if (age > 18) return t('warnings.childOver18Months')
-    return null
-  }, [isSixPlusSix, childBirth, leaveStart, t])
-
-  // ── Chart data ──
-  const chartData = useMemo(() => {
-    if (!individualResult) return []
-    const monthlyWage = individualResult.wage
-    return individualResult.months.map((m) => ({
-      name: `${m.month}${t('results.monthUnit')}`,
-      benefit: Math.floor(m.benefit / 10000),
-      wage: Math.floor(monthlyWage / 10000),
-    }))
-  }, [individualResult, t])
-
-  const coupleChartData = useMemo(() => {
-    if (!coupleResult) return []
-    return coupleResult.timeline.map((m) => ({
-      name: m.monthLabel,
-      father: Math.floor(m.fatherBenefit / 10000),
-      mother: Math.floor(m.motherBenefit / 10000),
-    }))
-  }, [coupleResult])
-
-  // ── Copy handler ──
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  // ── Share handler ──
-  const handleShare = useCallback(() => {
-    const rawWage = parseCommaNumber(wage)
-    updateURL({
-      wage: String(rawWage),
-      type: isAnnual ? 'annual' : 'monthly',
-      duration: String(leaveDuration),
-      sixPlusSix: isSixPlusSix ? '1' : '0',
-      childBirth: childBirth || '',
-      start: leaveStart || '',
-    })
-    copyToClipboard(window.location.href, 'share')
-  }, [wage, isAnnual, leaveDuration, isSixPlusSix, childBirth, leaveStart, updateURL, copyToClipboard])
-
-  // ── Wage change handler with comma formatting ──
-  const handleWageChange = useCallback((value: string, setter: (v: string) => void) => {
-    setter(formatCommaInput(value))
-  }, [])
-
-  // Duration options
-  const durationOptions = Array.from({ length: 18 }, (_, i) => i + 1)
+  const status = both
+    ? p.eligible66 ? t('p.res.ok66', { n: p.special }) : t('p.res.no66')
+    : who === 'single' ? t('p.res.single') : t('p.res.oneHint')
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Baby className="w-7 h-7 text-pink-500" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-line">
-        <button
-          onClick={() => setActiveTab('individual')}
-          className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'individual'
-              ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-              : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
-          }`}
-        >
-          {t('tabs.individual')}
-        </button>
-        <button
-          onClick={() => setActiveTab('couple')}
-          className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'couple'
-              ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-              : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
-          }`}
-        >
-          <Users className="w-4 h-4 inline mr-1" />
-          {t('tabs.couple')}
-        </button>
-      </div>
-
-      {/* Tab 1: Individual */}
-      {activeTab === 'individual' && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Settings Panel */}
-          <div className="lg:col-span-1">
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg">{t('inputs.settings')}</h2>
-
-              {/* Wage input */}
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('inputs.ordinaryWage')}
-                </label>
-                <div className="flex items-center gap-2 mb-2">
-                  <label className="flex items-center gap-1 text-sm text-sub cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isAnnual}
-                      onChange={(e) => setIsAnnual(e.target.checked)}
-                      className="accent-blue-600"
-                    />
-                    {t('inputs.inputAsAnnual')}
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={wage}
-                    onChange={(e) => handleWageChange(e.target.value, setWage)}
-                    placeholder={t('inputs.ordinaryWagePlaceholder')}
-                    aria-label={t('inputs.ordinaryWage')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
-                    {t('inputs.won')}
-                  </span>
-                </div>
-                {isAnnual && wage && (
-                  <p className="text-xs text-muted mt-1">
-                    {t('inputs.monthlyConverted')}: {formatNumber(Math.floor(parseCommaNumber(wage) / 12))}{t('inputs.won')}
-                  </p>
-                )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-6">
+            <div>
+              <span className={label}>{t('p.who.label')}</span>
+              <div className="grid grid-cols-3 gap-2">
+                {WHOS.map((w) => <button key={w} type="button" className={seg(who === w)} onClick={() => setWho(w)}>{t(`p.who.${w}`)}</button>)}
               </div>
-
-              {/* Leave start month */}
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('inputs.leaveStartMonth')}
-                </label>
-                <input
-                  type="month"
-                  value={leaveStart}
-                  onChange={(e) => setLeaveStart(e.target.value)}
-                  aria-label={t('inputs.leaveStartMonth')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-
-              {/* Leave duration */}
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('inputs.leaveDuration')}
-                </label>
-                <select
-                  value={leaveDuration}
-                  onChange={(e) => setLeaveDuration(parseInt(e.target.value))}
-                  aria-label={t('inputs.leaveDuration')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {durationOptions.map((n) => (
-                    <option key={n} value={n}>
-                      {n}{t('inputs.monthsLabel')}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 6+6 toggle */}
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('inputs.sixPlusSix')}
-                </label>
-                <div className="flex gap-3">
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="sixPlusSix"
-                      checked={isSixPlusSix}
-                      onChange={() => setIsSixPlusSix(true)}
-                      className="accent-blue-600"
-                    />
-                    <span className="text-sm text-body">{t('inputs.apply')}</span>
-                  </label>
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="sixPlusSix"
-                      checked={!isSixPlusSix}
-                      onChange={() => setIsSixPlusSix(false)}
-                      className="accent-blue-600"
-                    />
-                    <span className="text-sm text-body">{t('inputs.notApply')}</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Conditional 6+6 fields */}
-              {isSixPlusSix && (
-                <div className="space-y-4 border-l-2 border-line pl-4">
-                  <div>
-                    <label className="block text-sm font-medium text-body mb-1">
-                      {t('inputs.childBirthMonth')}
-                    </label>
-                    <input
-                      type="month"
-                      value={childBirth}
-                      onChange={(e) => setChildBirth(e.target.value)}
-                      aria-label={t('inputs.childBirthMonth')}
-                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-body mb-1">
-                      {t('inputs.spouseLeaveStart')}
-                    </label>
-                    <input
-                      type="month"
-                      value={spouseLeaveStart}
-                      onChange={(e) => setSpouseLeaveStart(e.target.value)}
-                      aria-label={t('inputs.spouseLeaveStart')}
-                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-body mb-1">
-                      {t('inputs.spouseLeaveDuration')}
-                    </label>
-                    <select
-                      value={spouseLeaveDuration}
-                      onChange={(e) => setSpouseLeaveDuration(parseInt(e.target.value))}
-                      aria-label={t('inputs.spouseLeaveDuration')}
-                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                    >
-                      {durationOptions.map((n) => (
-                        <option key={n} value={n}>
-                          {n}{t('inputs.monthsLabel')}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              )}
-
-              {/* 6+6 eligibility warning */}
-              {sixPlusSixWarning && (
-                <div className="flex items-start gap-2 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-yellow-700 dark:text-yellow-300">{sixPlusSixWarning}</p>
-                </div>
-              )}
-
-              {/* Abolished post-pay info */}
-              <div className="flex items-start gap-2 bg-subtle rounded-lg p-3">
-                <Info className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-muted line-through">
-                  {t('warnings.abolishedPostPay')}
-                </p>
-              </div>
-
-              {/* Share button */}
-              <button
-                onClick={handleShare}
-                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
-              >
-                {copiedId === 'share' ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
-                {copiedId === 'share' ? t('shared') : t('share')}
-              </button>
             </div>
-          </div>
 
-          {/* Results Panel */}
-          <div className="lg:col-span-2 space-y-6">
-            {individualResult ? (
+            <div>
+              <span className={label}>{both ? t('p.startFirst') : t('p.start')}</span>
+              <DatePicker value={start} onChange={setStart} />
+            </div>
+
+            {wageField('pl-mw', both ? t('p.wageOf', { who: t('p.mom') }) : t('p.wage'), momWage, setMomWage)}
+            {monthField('pl-mm', both ? t('p.monthsOf', { who: t('p.mom') }) : t('p.months'), momMonths, setMomMonths)}
+
+            {both && (
               <>
-                {/* Summary Cards */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <SummaryCard
-                    label={t('results.totalBenefit')}
-                    value={`${formatNumber(individualResult.totalBenefit)}${t('inputs.won')}`}
-                    sub={`${formatNumber(Math.floor(individualResult.totalBenefit / 10000))}${t('results.manwon')}`}
-                    color="blue"
-                  />
-                  <SummaryCard
-                    label={t('results.monthlyAverage')}
-                    value={`${formatNumber(Math.floor(individualResult.monthlyAverage))}${t('inputs.won')}`}
-                    color="green"
-                  />
-                  <SummaryCard
-                    label={t('results.incomeReplacement')}
-                    value={`${individualResult.incomeReplacement.toFixed(1)}%`}
-                    color="purple"
-                  />
-                  <SummaryCard
-                    label={t('results.incomeLoss')}
-                    value={`${formatNumber(individualResult.incomeLoss)}${t('inputs.won')}`}
-                    sub={`${formatNumber(Math.floor(individualResult.incomeLoss / 10000))}${t('results.manwon')}`}
-                    color="red"
-                  />
-                </div>
-
-                {/* Monthly Table */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('results.monthlyTable')}</h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm" aria-label={t('results.monthlyTable')}>
-                      <thead>
-                        <tr className="border-b border-line">
-                          <th scope="col" className="text-left py-2 px-2 text-muted font-medium">{t('results.monthCol')}</th>
-                          <th scope="col" className="text-right py-2 px-2 text-muted font-medium">{t('results.payRate')}</th>
-                          <th scope="col" className="text-right py-2 px-2 text-muted font-medium">{t('results.cap')}</th>
-                          <th scope="col" className="text-right py-2 px-2 text-muted font-medium">{t('results.actualBenefit')}</th>
-                          <th scope="col" className="text-right py-2 px-2 text-muted font-medium">{t('results.vsWage')}</th>
-                          <th scope="col" className="text-center py-2 px-2 text-muted font-medium">{t('results.note')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {individualResult.months.map((m) => (
-                          <tr key={m.month} className={`border-b border-line ${m.isEnhanced ? 'bg-primary-soft text-primary' : ''}`}>
-                            <th scope="row" className="py-2 px-2 text-fg font-medium">
-                              {m.month}{t('results.monthUnit')}
-                            </th>
-                            <td className="text-right py-2 px-2 text-body">{Math.floor(m.payRate * 100)}%</td>
-                            <td className="text-right py-2 px-2 text-body">{formatNumber(m.cap)}</td>
-                            <td className="text-right py-2 px-2 font-semibold text-blue-600 dark:text-blue-400">{formatNumber(m.benefit)}</td>
-                            <td className="text-right py-2 px-2 text-body">{m.vsWage.toFixed(1)}%</td>
-                            <td className="text-center py-2 px-2">
-                              {m.isEnhanced && (
-                                <span className="inline-block text-xs bg-soft text-sub rounded px-1.5 py-0.5">
-                                  {t('results.enhanced')}
-                                </span>
-                              )}
-                              {m.isLowerLimit && (
-                                <span className="inline-block text-xs bg-soft text-sub rounded px-1.5 py-0.5">
-                                  {t('results.lowerLimit')}
-                                </span>
-                              )}
-                              {m.isUpperLimit && !m.isLowerLimit && (
-                                <span className="inline-block text-xs bg-soft text-sub rounded px-1.5 py-0.5">
-                                  {t('results.upperLimit')}
-                                </span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  {/* Copy summary */}
-                  <div className="mt-4 flex justify-end">
-                    <button
-                      onClick={() => {
-                        const lines = individualResult.months.map(
-                          (m) => `${m.month}${t('results.monthUnit')}: ${formatNumber(m.benefit)}${t('inputs.won')} (${m.vsWage.toFixed(1)}%)`
-                        )
-                        lines.push(`---`)
-                        lines.push(`${t('results.totalBenefit')}: ${formatNumber(individualResult.totalBenefit)}${t('inputs.won')}`)
-                        lines.push(`${t('results.monthlyAverage')}: ${formatNumber(Math.floor(individualResult.monthlyAverage))}${t('inputs.won')}`)
-                        lines.push(`${t('results.incomeReplacement')}: ${individualResult.incomeReplacement.toFixed(1)}%`)
-                        copyToClipboard(lines.join('\n'), 'table')
-                      }}
-                      className="flex items-center gap-1 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                    >
-                      {copiedId === 'table' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      {copiedId === 'table' ? t('copied') : t('copyResult')}
-                    </button>
+                {wageField('pl-dw', t('p.wageOf', { who: t('p.dad') }), dadWage, setDadWage)}
+                {monthField('pl-dm', t('p.monthsOf', { who: t('p.dad') }), dadMonths, setDadMonths)}
+                <div>
+                  <span className={label}>{t('p.order.label')}</span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {ORDERS.map((o) => <button key={o} type="button" className={seg(order === o)} onClick={() => setOrder(o)}>{t(`p.order.${o}`)}</button>)}
                   </div>
                 </div>
-
-                {/* Bar Chart */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('results.chartTitle')}</h3>
-                  <div className="h-80" aria-label={t('results.chartTitle')}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                        <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                        <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `${v}`} label={{ value: t('results.manwonUnit'), angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
-                        <Tooltip formatter={(value, name) => [`${value}${t('results.manwonUnit')}`, (name as string) === 'wage' ? t('results.wageLabel') : t('results.benefitLabel')]} />
-                        <Legend formatter={(value: string) => (value === 'wage' ? t('results.wageLabel') : t('results.benefitLabel'))} />
-                        <Bar dataKey="wage" fill="#d1d5db" name="wage" radius={[2, 2, 0, 0]} />
-                        <Bar dataKey="benefit" fill="#3b82f6" name="benefit" radius={[2, 2, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                <div>
+                  <span className={label}>{t('p.birth')}</span>
+                  <DatePicker value={birth} onChange={setBirth} />
+                  <p className="text-xs text-muted mt-1.5">{t('p.birthHint')}</p>
                 </div>
               </>
-            ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-                <Baby className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                <p className="text-muted">{t('results.placeholder')}</p>
-              </div>
             )}
+            <p className="text-xs text-muted">{t('p.wageHint')}</p>
           </div>
         </div>
-      )}
 
-      {/* Tab 2: Couple */}
-      {activeTab === 'couple' && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Couple Settings */}
-          <div className="lg:col-span-1 space-y-4">
-            {/* Father */}
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold">{t('couple.fatherShort')}</span>
-                {t('couple.fatherSection')}
-              </h2>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.fatherWage')}</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={fatherWage}
-                    onChange={(e) => handleWageChange(e.target.value, setFatherWage)}
-                    placeholder={t('inputs.ordinaryWagePlaceholder')}
-                    aria-label={t('inputs.fatherWage')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('inputs.won')}</span>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.fatherLeaveStart')}</label>
-                <input
-                  type="month"
-                  value={fatherStart}
-                  onChange={(e) => setFatherStart(e.target.value)}
-                  aria-label={t('inputs.fatherLeaveStart')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.fatherLeaveDuration')}</label>
-                <select
-                  value={fatherDuration}
-                  onChange={(e) => setFatherDuration(parseInt(e.target.value))}
-                  aria-label={t('inputs.fatherLeaveDuration')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {durationOptions.map((n) => (
-                    <option key={n} value={n}>{n}{t('inputs.monthsLabel')}</option>
-                  ))}
-                </select>
-              </div>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6">
+            <p className="text-sm text-sub">{both ? t('p.res.totalBoth') : t('p.res.total')}</p>
+            <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(p.total)}</p>
+            <p className="text-sm text-muted mt-1">{dot(start)} ~ {dot(p.end)} · {t('p.monthsOption', { n: months })}</p>
+
+            <div className={`mt-4 rounded-2xl p-4 text-sm ${both && !p.eligible66 ? 'bg-amber-50 text-amber-800' : 'bg-primary-soft text-primary'}`} role="status">
+              {status}
             </div>
 
-            {/* Mother */}
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold">{t('couple.motherShort')}</span>
-                {t('couple.motherSection')}
-              </h2>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.motherWage')}</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={motherWage}
-                    onChange={(e) => handleWageChange(e.target.value, setMotherWage)}
-                    placeholder={t('inputs.ordinaryWagePlaceholder')}
-                    aria-label={t('inputs.motherWage')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('inputs.won')}</span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
+              {[
+                { k: parent('mom'), v: won(p.momTotal) },
+                ...(both ? [{ k: parent('dad'), v: won(p.dadTotal) }] : []),
+                { k: t('p.res.monthlyAvg'), v: won(months ? p.total / months : 0) },
+                { k: t('p.res.monthlyMax'), v: won(monthlyMax) },
+              ].map((x) => (
+                <div key={x.k} className="bg-subtle rounded-2xl p-4">
+                  <p className="text-xs text-muted">{x.k}</p>
+                  <p className="font-semibold text-fg tabular-nums mt-1">{x.v}</p>
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.motherLeaveStart')}</label>
-                <input
-                  type="month"
-                  value={motherStart}
-                  onChange={(e) => setMotherStart(e.target.value)}
-                  aria-label={t('inputs.motherLeaveStart')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('inputs.motherLeaveDuration')}</label>
-                <select
-                  value={motherDuration}
-                  onChange={(e) => setMotherDuration(parseInt(e.target.value))}
-                  aria-label={t('inputs.motherLeaveDuration')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {durationOptions.map((n) => (
-                    <option key={n} value={n}>{n}{t('inputs.monthsLabel')}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Child birth */}
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg">{t('inputs.childBirthMonth')}</h2>
-              <input
-                type="month"
-                value={coupleChildBirth}
-                onChange={(e) => setCoupleChildBirth(e.target.value)}
-                aria-label={t('inputs.childBirthMonth')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
-              <p className="text-xs text-muted">{t('couple.childBirthHint')}</p>
-            </div>
-          </div>
-
-          {/* Couple Results */}
-          <div className="lg:col-span-2 space-y-6">
-            {coupleResult ? (
-              <>
-                {/* Combined Summary */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('couple.summary')}</h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm" aria-label={t('couple.summary')}>
-                      <thead>
-                        <tr className="border-b border-line">
-                          <th scope="col" className="text-left py-2 px-3 text-muted font-medium">{t('couple.item')}</th>
-                          <th scope="col" className="text-right py-2 px-3 text-blue-600 dark:text-blue-400 font-medium">{t('couple.father')}</th>
-                          <th scope="col" className="text-right py-2 px-3 text-pink-600 dark:text-pink-400 font-medium">{t('couple.mother')}</th>
-                          <th scope="col" className="text-right py-2 px-3 text-fg font-medium">{t('couple.total')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-line">
-                          <th scope="row" className="text-left py-2 px-3 text-body">{t('couple.period')}</th>
-                          <td className="text-right py-2 px-3 text-fg">{fatherDuration}{t('inputs.monthsLabel')}</td>
-                          <td className="text-right py-2 px-3 text-fg">{motherDuration}{t('inputs.monthsLabel')}</td>
-                          <td className="text-right py-2 px-3 text-fg font-semibold">{fatherDuration + motherDuration}{t('inputs.monthsLabel')}</td>
-                        </tr>
-                        <tr className="border-b border-line">
-                          <th scope="row" className="text-left py-2 px-3 text-body">{t('results.totalBenefit')}</th>
-                          <td className="text-right py-2 px-3 text-blue-600 dark:text-blue-400 font-semibold">{formatNumber(coupleResult.father.totalBenefit)}</td>
-                          <td className="text-right py-2 px-3 text-pink-600 dark:text-pink-400 font-semibold">{formatNumber(coupleResult.mother.totalBenefit)}</td>
-                          <td className="text-right py-2 px-3 text-fg font-bold">{formatNumber(coupleResult.combinedTotal)}</td>
-                        </tr>
-                        <tr className="border-b border-line">
-                          <th scope="row" className="text-left py-2 px-3 text-body">{t('results.monthlyAverage')}</th>
-                          <td className="text-right py-2 px-3 text-fg">{formatNumber(Math.floor(coupleResult.father.monthlyAverage))}</td>
-                          <td className="text-right py-2 px-3 text-fg">{formatNumber(Math.floor(coupleResult.mother.monthlyAverage))}</td>
-                          <td className="text-right py-2 px-3 text-muted">-</td>
-                        </tr>
-                        <tr>
-                          <th scope="row" className="text-left py-2 px-3 text-body">{t('results.incomeReplacement')}</th>
-                          <td className="text-right py-2 px-3 text-fg">{coupleResult.father.incomeReplacement.toFixed(1)}%</td>
-                          <td className="text-right py-2 px-3 text-fg">{coupleResult.mother.incomeReplacement.toFixed(1)}%</td>
-                          <td className="text-right py-2 px-3 text-muted">-</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Timeline */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('couple.timeline')}</h3>
-                  <div className="overflow-x-auto">
-                    <div className="min-w-[600px]">
-                      {/* Father row */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-8 text-sm font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">{t('couple.father')}</span>
-                        <div className="flex-1 flex gap-0.5">
-                          {coupleResult.timeline.map((m, i) => (
-                            <div
-                              key={`f-${i}`}
-                              className={`flex-1 h-10 rounded-sm flex items-center justify-center text-xs font-medium ${
-                                m.fatherActive
-                                  ? m.fatherEnhanced
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-blue-300 dark:bg-blue-700 text-fg'
-                                  : 'bg-soft text-faint'
-                              }`}
-                              title={m.fatherActive ? `${formatNumber(m.fatherBenefit)}${t('inputs.won')}` : ''}
-                            >
-                              {m.fatherActive ? `${Math.floor(m.fatherBenefit / 10000)}` : ''}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Mother row */}
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-8 text-sm font-medium text-pink-600 dark:text-pink-400 flex-shrink-0">{t('couple.mother')}</span>
-                        <div className="flex-1 flex gap-0.5">
-                          {coupleResult.timeline.map((m, i) => (
-                            <div
-                              key={`m-${i}`}
-                              className={`flex-1 h-10 rounded-sm flex items-center justify-center text-xs font-medium ${
-                                m.motherActive
-                                  ? m.motherEnhanced
-                                    ? 'bg-pink-500 text-white'
-                                    : 'bg-pink-300 dark:bg-pink-700 text-fg'
-                                  : 'bg-soft text-faint'
-                              }`}
-                              title={m.motherActive ? `${formatNumber(m.motherBenefit)}${t('inputs.won')}` : ''}
-                            >
-                              {m.motherActive ? `${Math.floor(m.motherBenefit / 10000)}` : ''}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Month labels */}
-                      <div className="flex items-center gap-2">
-                        <span className="w-8 flex-shrink-0" />
-                        <div className="flex-1 flex gap-0.5">
-                          {coupleResult.timeline.map((m, i) => (
-                            <div key={`l-${i}`} className="flex-1 text-center text-xs text-faint truncate">
-                              {m.monthLabel}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Legend */}
-                      <div className="flex flex-wrap gap-4 mt-4 text-xs text-muted">
-                        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-blue-500" /> {t('couple.fatherEnhanced')}</span>
-                        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-blue-300 dark:bg-blue-700" /> {t('couple.fatherStandard')}</span>
-                        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-pink-500" /> {t('couple.motherEnhanced')}</span>
-                        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-pink-300 dark:bg-pink-700" /> {t('couple.motherStandard')}</span>
-                        <span className="text-gray-400">({t('results.manwonUnit')})</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Couple Chart */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('couple.householdIncome')}</h3>
-                  <div className="h-72" aria-label={t('couple.householdIncome')}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={coupleChartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                        <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" height={60} />
-                        <YAxis tick={{ fontSize: 12 }} label={{ value: t('results.manwonUnit'), angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
-                        <Tooltip formatter={(value, name) => [`${value}${t('results.manwonUnit')}`, (name as string) === 'father' ? t('couple.father') : t('couple.mother')]} />
-                        <Legend formatter={(value: string) => (value === 'father' ? t('couple.father') : t('couple.mother'))} />
-                        <Bar dataKey="father" stackId="a" fill="#3b82f6" name="father" />
-                        <Bar dataKey="mother" stackId="a" fill="#ec4899" name="mother" radius={[2, 2, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-                <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                <p className="text-muted">{t('couple.placeholder')}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Reduced Hours Section */}
-      <div className={`${glassCard} ${glassInset}`}>
-        <button
-          onClick={() => setShowReducedHours(!showReducedHours)}
-          className="w-full flex items-center justify-between px-6 py-4 text-left"
-          aria-expanded={showReducedHours}
-        >
-          <div className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-green-500" />
-            <span className="text-lg font-semibold text-fg">{t('reducedHours.title')}</span>
-          </div>
-          {showReducedHours ? (
-            <ChevronUp className="w-5 h-5 text-gray-400" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-400" />
-          )}
-        </button>
-
-        {showReducedHours && (
-          <div className="px-6 pb-6 space-y-4 border-t border-line pt-4">
-            <p className="text-sm text-muted">{t('reducedHours.description')}</p>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('reducedHours.beforeHours')}
-                </label>
-                <select
-                  value={beforeHours}
-                  onChange={(e) => setBeforeHours(parseInt(e.target.value))}
-                  aria-label={t('reducedHours.beforeHours')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {[40, 35, 30].map((h) => (
-                    <option key={h} value={h}>{h}{t('reducedHours.hoursPerWeek')}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('reducedHours.afterHours')}
-                </label>
-                <select
-                  value={afterHours}
-                  onChange={(e) => setAfterHours(parseInt(e.target.value))}
-                  aria-label={t('reducedHours.afterHours')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {Array.from({ length: beforeHours - 14 }, (_, i) => 15 + i).map((h) => (
-                    <option key={h} value={h}>{h}{t('reducedHours.hoursPerWeek')}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {reducedResult && reducedResult.reducedHours > 0 && (
-              <div className="bg-subtle rounded-xl p-4 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-sub">{t('reducedHours.reducedTime')}</span>
-                  <span className="font-medium text-fg">{reducedResult.reducedHours}{t('reducedHours.hoursPerWeek')}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-sub">{t('reducedHours.first10h')}</span>
-                  <span className="font-medium text-fg">{formatNumber(Math.floor(reducedResult.first10hBenefit))}{t('inputs.won')}</span>
-                </div>
-                {reducedResult.remainingBenefit > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-sub">{t('reducedHours.remaining')}</span>
-                    <span className="font-medium text-fg">{formatNumber(Math.floor(reducedResult.remainingBenefit))}{t('inputs.won')}</span>
-                  </div>
-                )}
-                <div className="flex justify-between text-sm">
-                  <span className="text-sub">{t('reducedHours.govBenefit')}</span>
-                  <span className="font-medium text-green-700 dark:text-green-400">{formatNumber(Math.floor(reducedResult.totalBenefit))}{t('inputs.won')}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-sub">{t('reducedHours.companyPay')}</span>
-                  <span className="font-medium text-fg">{formatNumber(Math.floor(reducedResult.companyPay))}{t('inputs.won')}</span>
-                </div>
-                <div className="border-t border-line pt-2 flex justify-between text-sm font-semibold">
-                  <span className="text-body">{t('reducedHours.totalIncome')}</span>
-                  <span className="text-green-700 dark:text-green-400">{formatNumber(Math.floor(reducedResult.totalIncome))}{t('inputs.won')}</span>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="space-y-6">
-          {/* 2025 Changes */}
-          <div>
-            <h3 className="text-base font-semibold text-fg mb-3">{t('guide.changes2025.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.changes2025.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-500 mt-1 flex-shrink-0">&#8226;</span>
-                  {item}
-                </li>
               ))}
-            </ul>
+            </div>
+
+            {(p.clampedMom || p.clampedDad) && (
+              <p className="mt-4 rounded-2xl p-4 text-sm bg-amber-50 text-amber-800">{t('p.res.clamped')}</p>
+            )}
+            {p.retro > 0 && (
+              <p className="mt-4 rounded-2xl p-4 text-sm bg-subtle text-sub">
+                {t('p.res.retro', { who: parent(order === 'dad' ? 'dad' : 'mom'), amount: won(p.retro) })}
+              </p>
+            )}
+
+            <ShareResult
+              className="mt-6"
+              card={{
+                tool: t('title'),
+                label: both ? t('p.share.labelBoth', { m: p.momMonths, d: p.dadMonths }) : t('p.share.label', { n: p.momMonths }),
+                headline: won(p.total),
+                sub: status,
+                rows: [
+                  { label: parent('mom'), value: won(p.momTotal) },
+                  ...(both ? [{ label: parent('dad'), value: won(p.dadTotal) }] : []),
+                  { label: t('p.res.monthlyMax'), value: won(monthlyMax) },
+                  { label: t('p.share.period'), value: `${dot(start)} ~ ${dot(p.end)}` },
+                ],
+              }}
+              text={t('p.share.text', { amount: won(p.total) })}
+            />
           </div>
 
-          {/* General vs 6+6 */}
-          <div>
-            <h3 className="text-base font-semibold text-fg mb-3">{t('guide.comparison.title')}</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+          {/* 월별 지급표 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('p.table.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('p.table.desc')}</p>
+            <div className="overflow-x-auto mt-4 -mx-2">
+              <table className="w-full text-sm min-w-[420px]">
                 <thead>
-                  <tr className="border-b border-line">
-                    <th scope="col" className="text-left py-2 px-2 text-muted font-medium">{t('guide.comparison.monthCol')}</th>
-                    <th scope="col" className="text-right py-2 px-2 text-muted font-medium">{t('guide.comparison.general')}</th>
-                    <th scope="col" className="text-right py-2 px-2 text-pink-500 font-medium">{t('guide.comparison.sixPlusSix')}</th>
+                  <tr className="border-b border-line text-muted">
+                    <th scope="col" className="px-3 py-2 text-left font-medium">{t('p.table.month')}</th>
+                    <th scope="col" className="px-3 py-2 text-right font-medium">{parent('mom')}</th>
+                    {both && <th scope="col" className="px-3 py-2 text-right font-medium">{parent('dad')}</th>}
+                    {both && <th scope="col" className="px-3 py-2 text-right font-medium">{t('p.table.sum')}</th>}
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { months: '1~2', general: '100% (250)', six: '100% (250)' },
-                    { months: '3', general: '100% (250)', six: '100% (300)' },
-                    { months: '4', general: '100% (200)', six: '100% (350)' },
-                    { months: '5', general: '100% (200)', six: '100% (400)' },
-                    { months: '6', general: '100% (200)', six: '100% (450)' },
-                    { months: '7~18', general: '80% (160)', six: '80% (160)' },
-                  ].map((row) => (
-                    <tr key={row.months} className="border-b border-line">
-                      <td className="py-2 px-2 text-body">{row.months}{t('results.monthUnit')}</td>
-                      <td className="text-right py-2 px-2 text-body">{row.general}{t('results.manwonUnit')}</td>
-                      <td className="text-right py-2 px-2 text-pink-600 dark:text-pink-400 font-medium">{row.six}{t('results.manwonUnit')}</td>
+                  {p.calendar.map((c) => (
+                    <tr key={c.ym} className="border-b border-line">
+                      <th scope="row" className="px-3 py-2.5 text-left font-medium text-body whitespace-nowrap">
+                        {c.ym.replace('-', '.')}
+                        <div className="text-xs text-muted font-normal">{dot((c.momRow ?? c.dadRow)!.from).slice(5)}~{dot((c.momRow ?? c.dadRow)!.to).slice(5)}</div>
+                      </th>
+                      {cell(c.momRow)}
+                      {both && cell(c.dadRow)}
+                      {both && <td className="px-3 py-2.5 text-right font-semibold text-fg tabular-nums">{won(c.mom + c.dad)}</td>}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-faint mt-2">{t('guide.comparison.note')}</p>
+            <p className="text-xs text-muted mt-3">{t('p.table.note')}</p>
           </div>
 
-          {/* Eligibility */}
-          <div>
-            <h3 className="text-base font-semibold text-fg mb-3">{t('guide.eligibility.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.eligibility.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                  <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  {item}
-                </li>
+          {/* 순서 비교 */}
+          {both && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg">{t('p.cmp.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('p.cmp.desc')}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                {scenarios.map((s) => (
+                  <button
+                    key={s.order} type="button" onClick={() => setOrder(s.order)} aria-pressed={order === s.order}
+                    className={`text-left rounded-2xl p-4 border transition-colors ${order === s.order ? 'bg-primary-soft border-primary' : 'bg-surface border-line hover:bg-subtle'}`}
+                  >
+                    <p className={`text-sm font-semibold ${order === s.order ? 'text-primary' : 'text-fg'}`}>{t(`p.order.${s.order}`)}</p>
+                    <p className="text-xl font-bold text-fg tabular-nums mt-1">{won(s.total)}</p>
+                    <dl className="mt-3 space-y-1 text-xs">
+                      {[
+                        [t('p.cmp.six'), s.eligible66 ? t('p.cmp.sixYes', { n: s.special }) : t('p.cmp.sixNo')],
+                        [t('p.cmp.care'), t('p.monthsOption', { n: s.careMonths })],
+                        [t('p.cmp.lowest'), won(s.lowest)],
+                        [t('p.cmp.end'), dot(s.end)],
+                      ].map(([k, v]) => (
+                        <div key={k} className="flex justify-between gap-2"><dt className="text-muted">{k}</dt><dd className="text-body tabular-nums">{v}</dd></div>
+                      ))}
+                    </dl>
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-3">{t('p.cmp.note')}</p>
+            </div>
+          )}
+
+          {/* 육아휴직 vs 근로시간 단축 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('p.rh.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('p.rh.desc')}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+              {both && (
+                <div className="sm:col-span-3 grid grid-cols-2 gap-2">
+                  {(['mom', 'dad'] as const).map((k) => <button key={k} type="button" className={seg(rhWho === k)} onClick={() => setRhWho(k)}>{t(`p.${k}`)}</button>)}
+                </div>
+              )}
+              <div>
+                <label htmlFor="pl-rb" className={label}>{t('p.rh.before')}</label>
+                <select id="pl-rb" value={rhBefore} onChange={(e) => setRhBefore(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {[40, 35, 30].map((h) => <option key={h} value={h}>{t('p.rh.hours', { h })}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="pl-ra" className={label}>{t('p.rh.after')}</label>
+                <select id="pl-ra" value={after} onChange={(e) => setRhAfter(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {Array.from({ length: Math.min(RH.maxAfter, rhBefore - 1) - RH.minAfter + 1 }, (_, i) => RH.minAfter + i).map((h) => (
+                    <option key={h} value={h}>{t('p.rh.hours', { h })}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="pl-rm" className={label}>{t('p.rh.months')}</label>
+                <select id="pl-rm" value={rhMonths} onChange={(e) => setRhMonths(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {MONTHS.slice(0, 12).map((n) => <option key={n} value={n}>{t('p.monthsOption', { n })}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-sub">{t('p.rh.leaveBox', { n: rhMonths })}</p>
+                <p className="text-2xl font-bold text-fg tabular-nums mt-1">{won(leaveCmpTotal)}</p>
+                <p className="text-xs text-muted mt-1">{t('p.rh.perMonth', { amount: won(leaveCmpTotal / rhMonths) })}</p>
+              </div>
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-sub">{t('p.rh.reduceBox', { n: rhMonths, h: after })}</p>
+                <p className="text-2xl font-bold text-fg tabular-nums mt-1">{won(rh.total * rhMonths)}</p>
+                <p className="text-xs text-muted mt-1">{t('p.rh.perMonth', { amount: won(rh.total) })}</p>
+              </div>
+            </div>
+            <dl className="mt-4 space-y-2 text-sm">
+              {[
+                [t('p.rh.first', { h: Math.min(rh.cut, 10) }), won(rh.first)],
+                [t('p.rh.rest', { h: Math.max(rh.cut - 10, 0) }), won(rh.rest)],
+                [t('p.rh.company', { h: after }), won(rh.company)],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-3"><dt className="text-sub">{k}</dt><dd className="text-fg tabular-nums">{v}</dd></div>
               ))}
-            </ul>
+            </dl>
+            <p className="text-xs text-muted mt-3">
+              {t('p.rh.note', { used: usedLeave, max: maxReduceMonths(usedLeave) })}
+            </p>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
 
-// ── Summary Card Component ──
-function SummaryCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color: 'blue' | 'green' | 'purple' | 'red' }) {
-  const colorMap = {
-    blue: 'bg-subtle border-line',
-    green: 'bg-subtle border-line',
-    purple: 'bg-subtle border-line',
-    red: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800',
-  }
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-8">
+        <section>
+          <h2 className="text-xl font-semibold text-fg mb-1">{t('p.rules.title')}</h2>
+          <p className="text-sm text-muted mb-4">{t('p.rules.desc', { floor: man(FLOOR) })}</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[360px]">
+              <thead>
+                <tr className="border-b border-line text-muted">
+                  <th scope="col" className="px-3 py-2 text-left font-medium">{t('p.rules.month')}</th>
+                  <th scope="col" className="px-3 py-2 text-right font-medium">{t('p.rules.general')}</th>
+                  <th scope="col" className="px-3 py-2 text-right font-medium">{t('p.rules.single')}</th>
+                  <th scope="col" className="px-3 py-2 text-right font-medium text-primary">{t('p.rules.special')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {CAP_GROUPS.map(([n, lbl]) => {
+                  const g = monthRule(n, false, false), s = monthRule(n, false, true), sp = monthRule(n, true, false)
+                  return (
+                    <tr key={lbl} className="border-b border-line tabular-nums">
+                      <th scope="row" className="px-3 py-2 text-left font-medium text-body">{t('p.rules.nth', { n: lbl })}</th>
+                      <td className="px-3 py-2 text-right text-body">{g.rate * 100}% · {man(g.cap)}</td>
+                      <td className="px-3 py-2 text-right text-body">{s.rate * 100}% · {man(s.cap)}</td>
+                      <td className="px-3 py-2 text-right text-primary font-medium">{sp.rate * 100}% · {man(sp.cap)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-  return (
-    <div className={`rounded-xl border p-4 ${colorMap[color]}`}>
-      <p className="text-xs text-muted mb-1">{label}</p>
-      <p className="text-lg font-bold text-fg leading-tight">{value}</p>
-      {sub && <p className="text-xs text-faint mt-0.5">{sub}</p>}
+        <section>
+          <h2 className="text-xl font-semibold text-fg mb-4">{t('p.steps.title')}</h2>
+          <ol className="space-y-3">
+            {(t.raw('p.steps.items') as string[]).map((s, i) => (
+              <li key={i} className="flex gap-3 text-sm text-body">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                <span className="pt-0.5">{s}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(['flow', 'rhRules'] as const).map((k) => (
+            <section key={k} className="bg-subtle rounded-2xl p-5">
+              <h3 className="font-semibold text-fg mb-3">{t(`p.${k}.title`)}</h3>
+              <ul className="space-y-2 list-disc pl-5 text-sm text-sub">
+                {(t.raw(`p.${k}.items`) as string[]).map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            </section>
+          ))}
+        </div>
+
+        <section className="bg-amber-50 text-amber-800 rounded-2xl p-5">
+          <h3 className="font-semibold mb-3">{t('p.caution.title')}</h3>
+          <ul className="space-y-2 list-disc pl-5 text-sm">
+            {(t.raw('p.caution.items') as string[]).map((s, i) => <li key={i}>{s}</li>)}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold text-fg mb-4">{t('p.faq.title')}</h2>
+          <div className="space-y-2">
+            {(t.raw('p.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <details key={i} className="bg-subtle rounded-2xl p-4">
+                <summary className="font-medium text-fg cursor-pointer">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h3 className="font-semibold text-fg mb-3">{t('p.related.title')}</h3>
+          <div className="flex flex-wrap gap-2">
+            {(['/child-benefit', '/due-date'] as const).map((href, i) => (
+              <Link key={href} href={`${href}/`} className="inline-flex items-center px-4 py-2 rounded-xl bg-soft hover:bg-subtle text-body text-sm">
+                {(t.raw('p.related.items') as string[])[i]}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h3 className="font-semibold text-fg mb-3">{t('p.links.title')}</h3>
+          <div className="flex flex-wrap gap-2">
+            {LINKS.map((l) => (
+              <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-soft hover:bg-subtle text-body text-sm">
+                {t(`p.links.${l.key}`)} <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            ))}
+          </div>
+          <p className="text-xs text-muted mt-3">{t('p.links.note')}</p>
+        </section>
+      </div>
     </div>
   )
 }

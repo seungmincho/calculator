@@ -1,612 +1,513 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useSearchParams } from '@/hooks/useSearchParams'
+import { useState, useMemo, useEffect } from 'react'
+import { ChevronDown, Minus, Plus, ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
-import { Info, RotateCcw, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import { todayKST, addYears, isValidDate } from '@/utils/dday'
+import {
+  homelessStart, scoreAt, nextHomelessUp, nextSubUp, householdMax, isNewlywed,
+  backYears, backMonths, subScoreByMonths, spouseSubScoreByMonths, type ScoreInput,
+} from '@/utils/housingSubscription'
 
-// ── Scoring tables ──────────────────────────────────────────────
+type Mode = 'date' | 'direct'
+type Status = 'yes' | 'check' | 'no'
 
-function getHomelessScore(years: number, isUnder30Unmarried: boolean): number {
-  if (isUnder30Unmarried) return 0
-  if (years < 1) return 2
-  if (years < 2) return 4
-  if (years < 3) return 6
-  if (years < 4) return 8
-  if (years < 5) return 10
-  if (years < 6) return 12
-  if (years < 7) return 14
-  if (years < 8) return 16
-  if (years < 9) return 18
-  if (years < 10) return 20
-  if (years < 11) return 22
-  if (years < 12) return 24
-  if (years < 13) return 26
-  if (years < 14) return 28
-  if (years < 15) return 30
-  return 32
+const dot = (d: string) => d.replaceAll('-', '.')
+const int = (s: string | null, d: number, lo: number, hi: number) => {
+  const n = Number(s)
+  return s != null && s !== '' && Number.isInteger(n) ? Math.min(hi, Math.max(lo, n)) : d
 }
+const date = (s: string | null, d: string) => (isValidDate(s) ? s : d)
 
-function getDependentScore(count: number): number {
-  const scores = [5, 10, 15, 20, 25, 30, 35]
-  return scores[Math.min(count, 6)]
-}
+const D = { birth: '1990-05-15', marriage: '2019-10-12', sub: '2015-03-01' }
+const A_OPTS = [-1, ...Array.from({ length: 16 }, (_, i) => i)] // -1 = 해당 없음, 0 = 1년 미만, 15 = 15년 이상
+const C_OPTS = [0, 6, ...Array.from({ length: 15 }, (_, i) => (i + 1) * 12)] // 개월
+const SC_OPTS = [-1, 0, 12, 24] // 배우자: 없음, 1년 미만, 1~2년, 2년 이상
+const PROJ = [0, 1, 2, 3, 5]
 
-function getSubscriptionScore(months: number): number {
-  if (months < 6) return 1
-  if (months < 12) return 2
-  if (months < 24) return 3
-  if (months < 36) return 4
-  if (months < 48) return 5
-  if (months < 60) return 6
-  if (months < 72) return 7
-  if (months < 84) return 8
-  if (months < 96) return 9
-  if (months < 108) return 10
-  if (months < 120) return 11
-  if (months < 132) return 12
-  if (months < 144) return 13
-  if (months < 156) return 14
-  if (months < 168) return 15
-  if (months < 180) return 16
-  return 17
-}
-
-function monthsBetween(start: Date, end: Date): number {
+function Stepper({ value, onChange, max, label }: { value: number; onChange: (n: number) => void; max: number; label: string }) {
+  const btn = 'w-9 h-9 rounded-xl bg-soft hover:bg-track text-body flex items-center justify-center disabled:opacity-40'
   return (
-    (end.getFullYear() - start.getFullYear()) * 12 +
-    (end.getMonth() - start.getMonth())
-  )
-}
-
-function yearsBetween(start: Date, end: Date): number {
-  const months = monthsBetween(start, end)
-  return Math.max(0, months / 12)
-}
-
-function getAgeAtDate(birthDate: Date, refDate: Date): number {
-  let age = refDate.getFullYear() - birthDate.getFullYear()
-  const m = refDate.getMonth() - birthDate.getMonth()
-  if (m < 0 || (m === 0 && refDate.getDate() < birthDate.getDate())) age--
-  return age
-}
-
-// ── Rough percentile estimate (simplified) ──
-function estimatePercentile(score: number): string {
-  if (score >= 74) return '5'
-  if (score >= 68) return '10'
-  if (score >= 62) return '20'
-  if (score >= 55) return '30'
-  if (score >= 48) return '40'
-  if (score >= 42) return '50'
-  if (score >= 35) return '60'
-  return '70'
-}
-
-// ── Donut chart ──────────────────────────────────────────────────
-
-function DonutChart({ score, max }: { score: number; max: number }) {
-  const radius = 70
-  const stroke = 14
-  const normalizedRadius = radius - stroke / 2
-  const circumference = 2 * Math.PI * normalizedRadius
-  const pct = Math.min(score / max, 1)
-  const offset = circumference - pct * circumference
-
-  let color = '#3b82f6' // blue
-  if (score >= 60) color = '#10b981' // green
-  else if (score >= 45) color = '#f59e0b' // amber
-
-  return (
-    <svg width={radius * 2} height={radius * 2} className="transform -rotate-90">
-      <circle
-        cx={radius}
-        cy={radius}
-        r={normalizedRadius}
-        fill="none"
-        stroke="#e5e7eb"
-        strokeWidth={stroke}
-        className="dark:stroke-gray-700"
-      />
-      <circle
-        cx={radius}
-        cy={radius}
-        r={normalizedRadius}
-        fill="none"
-        stroke={color}
-        strokeWidth={stroke}
-        strokeDasharray={`${circumference} ${circumference}`}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        style={{ transition: 'stroke-dashoffset 0.5s ease' }}
-      />
-    </svg>
-  )
-}
-
-// ── Score bar ────────────────────────────────────────────────────
-
-function ScoreBar({ label, score, max, color }: { label: string; score: number; max: number; color: string }) {
-  const pct = max > 0 ? (score / max) * 100 : 0
-  return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-sm">
-        <span className="text-body">{label}</span>
-        <span className="font-semibold text-fg">
-          {score} <span className="text-faint font-normal">/ {max}</span>
-        </span>
-      </div>
-      <div className="h-3 bg-soft rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-500 ${color}`}
-          style={{ width: `${pct}%` }}
-        />
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-sm text-body">{label}</span>
+      <div className="flex items-center gap-2">
+        <button type="button" className={btn} disabled={value <= 0} onClick={() => onChange(value - 1)} aria-label={`${label} -1`}><Minus className="w-4 h-4" /></button>
+        <span className="w-6 text-center font-semibold text-fg tabular-nums">{value}</span>
+        <button type="button" className={btn} disabled={value >= max} onClick={() => onChange(value + 1)} aria-label={`${label} +1`}><Plus className="w-4 h-4" /></button>
       </div>
     </div>
   )
 }
-
-// ── Tooltip ──────────────────────────────────────────────────────
-
-function Tooltip({ text }: { text: string }) {
-  const [show, setShow] = useState(false)
-  return (
-    <span className="relative inline-block ml-1">
-      <button
-        type="button"
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        onFocus={() => setShow(true)}
-        onBlur={() => setShow(false)}
-        className="text-gray-400 hover:text-blue-500 focus:outline-none"
-        aria-label="정보"
-      >
-        <Info size={14} />
-      </button>
-      {show && (
-        <span className="absolute z-20 left-6 top-0 w-56 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg p-2 shadow-lg whitespace-normal">
-          {text}
-        </span>
-      )}
-    </span>
-  )
-}
-
-// ── Input helpers ────────────────────────────────────────────────
-
-interface LabelProps {
-  label: string
-  tooltip?: string
-  children: React.ReactNode
-}
-function FormRow({ label, tooltip, children }: LabelProps) {
-  return (
-    <div className="space-y-1">
-      <label className="flex items-center text-sm font-medium text-body">
-        {label}
-        {tooltip && <Tooltip text={tooltip} />}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-// ── Main component ───────────────────────────────────────────────
-
-type InputMode = 'date' | 'direct'
 
 export default function HousingSubscription() {
   const t = useTranslations('housingSubscription')
-  const searchParams = useSearchParams()
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const sp = useSearchParams()
 
-  const today = new Date()
-  const todayStr = today.toISOString().split('T')[0]
+  // 오늘은 마운트 후에 정함 (정적 HTML 빌드 날짜로 계산되지 않게)
+  const [today, setToday] = useState('')
+  const [ref, setRef] = useState(() => date(sp.get('ref'), ''))
+  const [mode, setMode] = useState<Mode>(() => (sp.get('m') === 'd' ? 'direct' : 'date'))
+  // 날짜 모드
+  const [birth, setBirth] = useState(() => date(sp.get('b'), D.birth))
+  const [marriage, setMarriage] = useState(() => (sp.get('mar') === '' ? '' : date(sp.get('mar'), D.marriage)))
+  const [neverOwned, setNeverOwned] = useState(() => sp.get('own') !== '1')
+  const [disposal, setDisposal] = useState(() => date(sp.get('dis'), ''))
+  const [subStart, setSubStart] = useState(() => date(sp.get('s'), D.sub))
+  const [spouseSub, setSpouseSub] = useState(() => date(sp.get('ss'), ''))
+  // 직접 선택 모드
+  const [ha, setHa] = useState(() => int(sp.get('ha'), 6, -1, 15))
+  const [sm, setSm] = useState(() => int(sp.get('sm'), 132, 0, 180))
+  const [ssm, setSsm] = useState(() => int(sp.get('ssm'), -1, -1, 24))
+  // 부양가족
+  const [spouse, setSpouse] = useState(() => sp.get('sp') !== '0')
+  const [parents, setParents] = useState(() => int(sp.get('p'), 0, 0, 4))
+  const [children, setChildren] = useState(() => int(sp.get('c'), 2, 0, 6))
+  const [baby, setBaby] = useState(() => sp.get('nb') === '1')
 
-  // ── Homeless period ──────────────────────────────────────────
-  const [homelessMode, setHomelessMode] = useState<InputMode>('date')
-  const [homelessStartDate, setHomelessStartDate] = useState('')
-  const [homelessYearsDirect, setHomelessYearsDirect] = useState('')
-  const [birthDate, setBirthDate] = useState('')
-  const [isMarried, setIsMarried] = useState(false)
-
-  // ── Dependents ───────────────────────────────────────────────
-  const [dependentCount, setDependentCount] = useState(0)
-
-  // ── Subscription account ─────────────────────────────────────
-  const [subMode, setSubMode] = useState<InputMode>('date')
-  const [subStartDate, setSubStartDate] = useState('')
-  const [subMonthsDirect, setSubMonthsDirect] = useState('')
-
-  // ── Guide accordion ──────────────────────────────────────────
-  const [guideOpen, setGuideOpen] = useState(false)
-
-  // URL param sync - read on mount
   useEffect(() => {
-    const dep = searchParams.get('dependents')
-    const married = searchParams.get('married')
-    const hYears = searchParams.get('homelessYears')
-    const subMonths = searchParams.get('subMonths')
-    if (dep) setDependentCount(Number(dep))
-    if (married === 'true') setIsMarried(true)
-    if (hYears) { setHomelessMode('direct'); setHomelessYearsDirect(hYears) }
-    if (subMonths) { setSubMode('direct'); setSubMonthsDirect(subMonths) }
+    const d = todayKST()
+    setToday(d)
+    setRef(r => r || d)
   }, [])
 
-  // URL param sync - write on change
+  // URL 동기화 (기본값은 생략)
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const params = new URLSearchParams()
-    params.set('dependents', String(dependentCount))
-    if (isMarried) params.set('married', 'true')
-    if (homelessMode === 'direct' && homelessYearsDirect) params.set('homelessYears', homelessYearsDirect)
-    if (subMode === 'direct' && subMonthsDirect) params.set('subMonths', subMonthsDirect)
-    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
-  }, [dependentCount, isMarried, homelessMode, homelessYearsDirect, subMode, subMonthsDirect])
+    if (!today) return
+    const url = new URL(window.location.href)
+    const set = (k: string, v: string | null) => (v == null ? url.searchParams.delete(k) : url.searchParams.set(k, v))
+    for (const k of ['dependents', 'married', 'homelessYears', 'subMonths']) url.searchParams.delete(k) // 예전 링크
+    const dm = mode === 'date'
+    set('m', dm ? null : 'd')
+    set('ref', ref && ref !== today ? ref : null)
+    set('b', dm && birth !== D.birth ? birth : null)
+    set('mar', dm && marriage !== D.marriage ? marriage : null)
+    set('own', neverOwned ? null : '1')
+    set('dis', dm && !neverOwned && disposal ? disposal : null)
+    set('s', dm && subStart !== D.sub ? subStart : null)
+    set('ss', dm && spouse && spouseSub ? spouseSub : null)
+    set('ha', !dm ? String(ha) : null)
+    set('sm', !dm ? String(sm) : null)
+    set('ssm', !dm && spouse && ssm >= 0 ? String(ssm) : null)
+    set('sp', spouse ? null : '0')
+    set('p', parents ? String(parents) : null)
+    set('c', children !== 2 ? String(children) : null)
+    set('nb', baby ? '1' : null)
+    window.history.replaceState({}, '', url.toString())
+  }, [today, ref, mode, birth, marriage, neverOwned, disposal, subStart, spouseSub, ha, sm, ssm, spouse, parents, children, baby])
 
-  const copyLink = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-    } catch { /* */ }
-    setCopiedId('link')
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
+  // 예전 링크(?dependents=&homelessYears=&subMonths=) → 직접 선택 모드로
+  useEffect(() => {
+    const dep = sp.get('dependents'), hy = sp.get('homelessYears'), sMon = sp.get('subMonths')
+    if (dep == null && hy == null && sMon == null) return
+    setMode('direct')
+    if (dep != null) { setSpouse(false); setParents(0); setChildren(int(dep, 0, 0, 6)) }
+    if (hy != null) setHa(Math.min(15, Math.floor(Number(hy) || 0)))
+    if (sMon != null) setSm(C_OPTS.filter(m => m <= (Number(sMon) || 0)).pop() ?? 0)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Derived calculations ─────────────────────────────────────
-  const { homelessYears } = useMemo(() => {
-    if (homelessMode === 'direct') {
-      const y = parseFloat(homelessYearsDirect) || 0
-      return { homelessYears: y, homelessMonths: y * 12 }
+  const dependents = (spouse ? 1 : 0) + parents + children
+
+  const input: ScoreInput | null = useMemo(() => {
+    if (!ref) return null
+    if (mode === 'direct') {
+      return {
+        homelessStart: ha < 0 ? null : backYears(ref, ha),
+        subStart: backMonths(ref, sm),
+        spouseSubStart: spouse && ssm >= 0 ? backMonths(ref, ssm) : null,
+        dependents,
+      }
     }
-    if (!homelessStartDate) return { homelessYears: 0, homelessMonths: 0 }
-    const start = new Date(homelessStartDate)
-    const y = yearsBetween(start, today)
-    return { homelessYears: y, homelessMonths: y * 12 }
-  }, [homelessMode, homelessStartDate, homelessYearsDirect])
-
-  const isUnder30Unmarried = useMemo(() => {
-    if (isMarried) return false
-    if (!birthDate) return true // default: assume under 30 if no birth date
-    const birth = new Date(birthDate)
-    const age = getAgeAtDate(birth, today)
-    return age < 30
-  }, [birthDate, isMarried])
-
-  const subMonths = useMemo(() => {
-    if (subMode === 'direct') {
-      return parseFloat(subMonthsDirect) * (subMonthsDirect.includes('.') ? 12 : 1) || 0
-      // allow months as integer directly
+    if (!birth) return null
+    return {
+      homelessStart: homelessStart(birth, marriage || null, neverOwned ? null : disposal || null),
+      subStart: subStart || null,
+      spouseSubStart: spouse && spouseSub ? spouseSub : null,
+      dependents,
     }
-    if (!subStartDate) return 0
-    const start = new Date(subStartDate)
-    return Math.max(0, monthsBetween(start, today))
-  }, [subMode, subStartDate, subMonthsDirect])
+  }, [ref, mode, ha, sm, ssm, spouse, dependents, birth, marriage, neverOwned, disposal, subStart, spouseSub])
 
-  // Re-compute subMonths cleanly for direct mode (user enters months)
-  const subMonthsFinal = useMemo(() => {
-    if (subMode === 'direct') return Math.max(0, Math.floor(parseFloat(subMonthsDirect) || 0))
-    return Math.max(0, subMonths)
-  }, [subMode, subMonthsDirect, subMonths])
+  const r = useMemo(() => {
+    if (!input || !ref) return null
+    const now = scoreAt(input, ref)
+    const proj = PROJ.map(y => ({ y, total: scoreAt(input, addYears(ref, y)).total }))
+    return {
+      now, proj, next: proj[1].total,
+      nextA: mode === 'date' ? nextHomelessUp(input.homelessStart, ref) : null,
+      nextC: mode === 'date' ? nextSubUp(input.subStart, ref) : null,
+      maxA: input.homelessStart ? addYears(input.homelessStart, 15) : null,
+      maxC: input.subStart ? addYears(input.subStart, 15) : null,
+      hhMax: householdMax(dependents),
+    }
+  }, [input, ref, mode, dependents])
 
-  const scoreA = useMemo(() => getHomelessScore(homelessYears, isUnder30Unmarried), [homelessYears, isUnder30Unmarried])
-  const scoreB = useMemo(() => getDependentScore(dependentCount), [dependentCount])
-  const scoreC = useMemo(() => getSubscriptionScore(subMonthsFinal), [subMonthsFinal])
-  const totalScore = scoreA + scoreB + scoreC
+  // 무주택 기산 사유
+  const startReason = (() => {
+    if (mode !== 'date' || !birth || !input?.homelessStart) return null
+    const s = input.homelessStart
+    const why = !neverOwned && disposal && s === disposal ? 'disposal' : marriage && s === marriage ? 'marriage' : 'age30'
+    return t('inp.startIs', { date: dot(s), why: t(`inp.why.${why}`) })
+  })()
+  const under30Single = mode === 'date' && !!input?.homelessStart && !!ref && input.homelessStart > ref
 
-  const percentile = estimatePercentile(totalScore)
+  const status = (): { key: string; s: Status }[] => {
+    const newlywed: Status = mode === 'date' ? (isNewlywed(marriage || null, ref) ? 'yes' : 'no') : spouse ? 'check' : 'no'
+    return [
+      { key: 'newlywed', s: newlywed },
+      { key: 'firstHome', s: neverOwned ? 'check' : 'no' },
+      { key: 'newborn', s: baby ? 'yes' : 'no' },
+      { key: 'multiChild', s: children >= 2 ? 'yes' : 'no' },
+      { key: 'elderly', s: parents >= 1 ? 'check' : 'no' },
+    ]
+  }
 
-  const reset = useCallback(() => {
-    setHomelessMode('date')
-    setHomelessStartDate('')
-    setHomelessYearsDirect('')
-    setBirthDate('')
-    setIsMarried(false)
-    setDependentCount(0)
-    setSubMode('date')
-    setSubStartDate('')
-    setSubMonthsDirect('')
-  }, [])
+  const reset = () => {
+    setRef(today); setMode('date'); setBirth(D.birth); setMarriage(D.marriage); setNeverOwned(true); setDisposal('')
+    setSubStart(D.sub); setSpouseSub(''); setHa(6); setSm(132); setSsm(-1)
+    setSpouse(true); setParents(0); setChildren(2); setBaby(false)
+  }
 
-  const inputClass = `${glassInput} px-3 py-2 text-sm`
-  const modeBtn = (active: boolean) =>
-    `px-3 py-1 text-xs rounded-md font-medium transition-colors ${
-      active
-        ? 'bg-blue-600 text-white'
-        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
-    }`
+  const seg = (on: boolean) => `px-3 py-2 text-sm font-medium rounded-lg transition-colors ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+  const label = 'block text-sm font-medium text-body mb-1.5'
+  const field = 'ui-field w-full px-4 py-3'
+  const pt = (n: number) => t('pt', { n })
+
+  const ratioRows = t.raw('ratio.rows') as { size: string; spec: string; adj: string; other: string }[]
+  const ratioNotes = t.raw('ratio.notes') as string[]
+  const rules = t.raw('guide.rules') as { title: string; items: string[] }[]
+  const faq = t.raw('guide.faq.items') as { q: string; a: string }[]
+  const sources = t.raw('guide.sources.items') as { label: string; url: string }[]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={copyLink}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-            title="링크 복사"
-          >
-            {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-            <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
-          </button>
-          <button
-            onClick={reset}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-            aria-label={t('reset')}
-          >
-            <RotateCcw size={14} />
-            {t('reset')}
-          </button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('inp.lead')}</p>
       </div>
 
-      {/* Main grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* ── Input panel ──────────────────────────────────── */}
-        <div className="lg:col-span-1 space-y-6">
-
-          {/* A. 무주택기간 */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">A</span>
-              <h2 className="font-semibold text-fg text-sm">{t('sectionA')}</h2>
-              <span className="ml-auto text-xs text-gray-400">{t('maxA')}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-6">
+            <div className="grid grid-cols-2 gap-1 bg-soft rounded-xl p-1">
+              <button type="button" className={seg(mode === 'date')} onClick={() => setMode('date')}>{t('mode.date')}</button>
+              <button type="button" className={seg(mode === 'direct')} onClick={() => setMode('direct')}>{t('mode.direct')}</button>
             </div>
 
-            {/* Mode toggle */}
-            <div className="flex gap-2">
-              <button className={modeBtn(homelessMode === 'date')} onClick={() => setHomelessMode('date')}>{t('dateMode')}</button>
-              <button className={modeBtn(homelessMode === 'direct')} onClick={() => setHomelessMode('direct')}>{t('directMode')}</button>
-            </div>
-
-            {homelessMode === 'date' ? (
-              <FormRow label={t('homelessStartLabel')} tooltip={t('homelessStartTooltip')}>
-                <input type="date" value={homelessStartDate} max={todayStr}
-                  onChange={e => setHomelessStartDate(e.target.value)} className={inputClass} />
-              </FormRow>
-            ) : (
-              <FormRow label={t('homelessYearsLabel')} tooltip={t('homelessYearsTooltip')}>
-                <div className="flex items-center gap-2">
-                  <input type="number" value={homelessYearsDirect} min="0" max="30" step="0.5"
-                    onChange={e => setHomelessYearsDirect(e.target.value)}
-                    className={inputClass} placeholder="0" />
-                  <span className="text-sm text-muted whitespace-nowrap">{t('yearsUnit')}</span>
-                </div>
-              </FormRow>
-            )}
-
-            <FormRow label={t('birthDateLabel')} tooltip={t('birthDateTooltip')}>
-              <input type="date" value={birthDate} max={todayStr}
-                onChange={e => setBirthDate(e.target.value)} className={inputClass} />
-            </FormRow>
-
-            <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
-              <input type="checkbox" checked={isMarried} onChange={e => setIsMarried(e.target.checked)}
-                className="accent-blue-600" />
-              {t('marriedLabel')}
-              <Tooltip text={t('marriedTooltip')} />
-            </label>
-
-            {isUnder30Unmarried && (
-              <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950 rounded-lg p-2">
-                {t('under30Notice')}
-              </p>
-            )}
-          </div>
-
-          {/* B. 부양가족 */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">B</span>
-              <h2 className="font-semibold text-fg text-sm">{t('sectionB')}</h2>
-              <span className="ml-auto text-xs text-gray-400">{t('maxB')}</span>
-            </div>
-
-            <FormRow label={t('dependentLabel')} tooltip={t('dependentTooltip')}>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setDependentCount(c => Math.max(0, c - 1))}
-                  className="w-8 h-8 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-bold flex items-center justify-center"
-                >-</button>
-                <span className="text-xl font-bold text-fg w-8 text-center">{dependentCount}</span>
-                <button
-                  type="button"
-                  onClick={() => setDependentCount(c => Math.min(6, c + 1))}
-                  className="w-8 h-8 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-bold flex items-center justify-center"
-                >+</button>
-                <span className="text-sm text-muted">{t('personUnit')}</span>
-              </div>
-            </FormRow>
-
-            <p className="text-xs text-muted">{t('dependentNote')}</p>
-
-            {/* Score preview for B */}
-            <div className="flex justify-between items-center text-xs bg-subtle rounded-lg px-3 py-2">
-              <span className="text-sub">{t('expectedScore')}</span>
-              <span className="font-bold text-sub">{scoreB}점</span>
-            </div>
-          </div>
-
-          {/* C. 청약통장 가입기간 */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">C</span>
-              <h2 className="font-semibold text-fg text-sm">{t('sectionC')}</h2>
-              <span className="ml-auto text-xs text-gray-400">{t('maxC')}</span>
-            </div>
-
-            {/* Mode toggle */}
-            <div className="flex gap-2">
-              <button className={modeBtn(subMode === 'date')} onClick={() => setSubMode('date')}>{t('dateMode')}</button>
-              <button className={modeBtn(subMode === 'direct')} onClick={() => setSubMode('direct')}>{t('directMode')}</button>
-            </div>
-
-            {subMode === 'date' ? (
-              <FormRow label={t('subStartLabel')} tooltip={t('subStartTooltip')}>
-                <input type="date" value={subStartDate} max={todayStr}
-                  onChange={e => setSubStartDate(e.target.value)} className={inputClass} />
-              </FormRow>
-            ) : (
-              <FormRow label={t('subMonthsLabel')} tooltip={t('subMonthsTooltip')}>
-                <div className="flex items-center gap-2">
-                  <input type="number" value={subMonthsDirect} min="0" max="300" step="1"
-                    onChange={e => setSubMonthsDirect(e.target.value)}
-                    className={inputClass} placeholder="0" />
-                  <span className="text-sm text-muted whitespace-nowrap">{t('monthsUnit')}</span>
-                </div>
-              </FormRow>
-            )}
-          </div>
-        </div>
-
-        {/* ── Result panel ─────────────────────────────────── */}
-        <div className="lg:col-span-2 space-y-6">
-
-          {/* Total score card */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-6">{t('resultTitle')}</h2>
-
-            <div className="flex flex-col sm:flex-row items-center gap-8">
-              {/* Donut */}
-              <div className="relative flex-shrink-0">
-                <DonutChart score={totalScore} max={84} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-extrabold text-fg">{totalScore}</span>
-                  <span className="text-sm text-faint">{t('outOf84')}</span>
-                </div>
-              </div>
-
-              {/* Score bars */}
-              <div className="flex-1 w-full space-y-4">
-                <ScoreBar label={`A. ${t('sectionA')}`} score={scoreA} max={32} color="bg-blue-500" />
-                <ScoreBar label={`B. ${t('sectionB')}`} score={scoreB} max={35} color="bg-emerald-500" />
-                <ScoreBar label={`C. ${t('sectionC')}`} score={scoreC} max={17} color="bg-purple-500" />
-
-                <div className="border-t border-line pt-3 flex justify-between items-center">
-                  <span className="font-semibold text-fg">{t('totalLabel')}</span>
-                  <span className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">{totalScore}점</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Percentile estimate */}
-          <div className="bg-subtle rounded-xl p-5 flex gap-4 items-start">
-            <Info size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-fg text-sm">{t('percentileTitle')}</p>
-              <p className="text-sub text-sm mt-1">
-                {t('percentileDesc').replace('{score}', String(totalScore)).replace('{pct}', percentile)}
-              </p>
-              <p className="text-xs text-blue-500 dark:text-blue-400 mt-1">{t('percentileNote')}</p>
+              <label className={label} htmlFor="hs-ref">{t('inp.ref')}</label>
+              <input id="hs-ref" type="date" value={ref} onChange={e => setRef(e.target.value)} className={field} />
+              <p className="text-xs text-muted mt-1">{t('inp.refHint')}</p>
             </div>
+
+            {/* A. 무주택기간 */}
+            <section className="space-y-3 border-t border-line pt-5">
+              <h2 className="text-sm font-semibold text-fg">{t('sectionA')} <span className="text-faint font-normal">{t('maxA')}</span></h2>
+              {mode === 'date' ? (
+                <>
+                  <div>
+                    <label className={label} htmlFor="hs-birth">{t('birthDateLabel')}</label>
+                    <input id="hs-birth" type="date" value={birth} max={ref || undefined} onChange={e => setBirth(e.target.value)} className={field} />
+                  </div>
+                  <div>
+                    <label className={label} htmlFor="hs-mar">{t('inp.marriage')}</label>
+                    <input id="hs-mar" type="date" value={marriage} max={ref || undefined} onChange={e => setMarriage(e.target.value)} className={field} />
+                    <p className="text-xs text-muted mt-1">{t('inp.marriageHint')}</p>
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <label className={label} htmlFor="hs-ha">{t('inp.homelessPeriod')}</label>
+                  <select id="hs-ha" value={ha} onChange={e => setHa(Number(e.target.value))} className={field}>
+                    {A_OPTS.map(v => (
+                      <option key={v} value={v}>
+                        {v < 0 ? t('direct.aNone') : v === 0 ? t('direct.under1y', { pt: pt(2) }) : v === 15 ? t('direct.over15y', { pt: pt(32) }) : t('direct.yRange', { from: v, to: v + 1, pt: pt(2 + 2 * v) })}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={neverOwned} onChange={e => setNeverOwned(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+                <span>{t('inp.neverOwned')}</span>
+              </label>
+              {mode === 'date' && !neverOwned && (
+                <div>
+                  <label className={label} htmlFor="hs-dis">{t('inp.disposal')}</label>
+                  <input id="hs-dis" type="date" value={disposal} max={ref || undefined} onChange={e => setDisposal(e.target.value)} className={field} />
+                  <p className="text-xs text-muted mt-1">{t('inp.disposalHint')}</p>
+                </div>
+              )}
+              {startReason && <p className="text-xs text-sub bg-subtle rounded-xl px-3 py-2">{startReason}</p>}
+              {under30Single && (
+                <p className="text-xs bg-amber-50 text-amber-800 rounded-xl px-3 py-2">{t('inp.under30', { date: dot(input!.homelessStart!) })}</p>
+              )}
+            </section>
+
+            {/* B. 부양가족 */}
+            <section className="space-y-3 border-t border-line pt-5">
+              <h2 className="text-sm font-semibold text-fg">{t('sectionB')} <span className="text-faint font-normal">{t('maxB')}</span></h2>
+              <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={spouse} onChange={e => setSpouse(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+                <span>{t('inp.spouse')}</span>
+              </label>
+              <Stepper label={t('inp.parents')} value={parents} onChange={setParents} max={4} />
+              <Stepper label={t('inp.children')} value={children} onChange={setChildren} max={6} />
+              <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={baby} onChange={e => setBaby(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+                <span>{t('inp.baby')}</span>
+              </label>
+              <p className="text-xs text-muted">{t('inp.dependentsHint', { n: dependents })}</p>
+            </section>
+
+            {/* C. 청약통장 */}
+            <section className="space-y-3 border-t border-line pt-5">
+              <h2 className="text-sm font-semibold text-fg">{t('sectionC')} <span className="text-faint font-normal">{t('maxC')}</span></h2>
+              {mode === 'date' ? (
+                <>
+                  <div>
+                    <label className={label} htmlFor="hs-sub">{t('subStartLabel')}</label>
+                    <input id="hs-sub" type="date" value={subStart} max={ref || undefined} onChange={e => setSubStart(e.target.value)} className={field} />
+                  </div>
+                  {spouse && (
+                    <div>
+                      <label className={label} htmlFor="hs-ss">{t('inp.spouseSub')}</label>
+                      <input id="hs-ss" type="date" value={spouseSub} max={ref || undefined} onChange={e => setSpouseSub(e.target.value)} className={field} />
+                      <p className="text-xs text-muted mt-1">{t('inp.spouseSubHint')}</p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className={label} htmlFor="hs-sm">{t('inp.subPeriod')}</label>
+                    <select id="hs-sm" value={sm} onChange={e => setSm(Number(e.target.value))} className={field}>
+                      {C_OPTS.map(m => (
+                        <option key={m} value={m}>
+                          {m === 0 ? t('direct.under6m', { pt: pt(1) }) : m === 6 ? t('direct.m6to12', { pt: pt(2) }) : m === 180 ? t('direct.over15y', { pt: pt(17) }) : t('direct.yRange', { from: m / 12, to: m / 12 + 1, pt: pt(subScoreByMonths(m)) })}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {spouse && (
+                    <div>
+                      <label className={label} htmlFor="hs-ssm">{t('inp.spouseSub')}</label>
+                      <select id="hs-ssm" value={ssm} onChange={e => setSsm(Number(e.target.value))} className={field}>
+                        {SC_OPTS.map(m => (
+                          <option key={m} value={m}>
+                            {m < 0 ? t('direct.spouseNone') : m === 0 ? t('direct.under1y', { pt: pt(1) }) : m === 12 ? t('direct.yRange', { from: 1, to: 2, pt: pt(2) }) : t('direct.over2y', { pt: pt(spouseSubScoreByMonths(m)) })}
+                          </option>
+                        ))}
+                      </select>
+                      <p className="text-xs text-muted mt-1">{t('inp.spouseSubHint')}</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </section>
+
+            <button type="button" onClick={reset} className="ui-btn-soft w-full px-4 py-2.5 text-sm">{t('reset')}</button>
+          </div>
+        </div>
+
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6 space-y-6">
+            {r ? (
+              <>
+                <div>
+                  <p className="text-sm text-muted">{t('res.label', { date: dot(ref) })}</p>
+                  <p className="mt-1">
+                    <span className="text-5xl font-bold text-fg tabular-nums">{r.now.total}</span>
+                    <span className="text-lg text-faint ml-1">{t('outOf84')}</span>
+                  </p>
+                  <p className="text-sm text-sub mt-2">
+                    {t('res.nextYear', { score: r.next, diff: r.next - r.now.total })}
+                    {' · '}
+                    {t('res.toMax', { n: 84 - r.now.total })}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  {([
+                    ['A', t('sectionA'), r.now.a, 32, r.now.homelessYears == null ? t('res.notCounted') : r.now.homelessYears === 0 ? t('res.under1y') : t('res.years', { n: r.now.homelessYears })],
+                    ['B', t('sectionB'), r.now.b, 35, t('res.persons', { n: dependents })],
+                    ['C', t('sectionC'), r.now.c, 17, r.now.cSpouse ? t('res.subWithSpouse', { own: r.now.cOwn, sp: r.now.cSpouse }) : t('res.months', { y: Math.floor(r.now.subMonths / 12), m: r.now.subMonths % 12 })],
+                  ] as const).map(([k, name, s, max, detail]) => (
+                    <div key={k} className="space-y-1.5">
+                      <div className="flex items-baseline justify-between gap-3 text-sm">
+                        <span className="text-body">{name} <span className="text-faint">· {detail}</span></span>
+                        <span className="font-semibold text-fg tabular-nums whitespace-nowrap">{s} <span className="text-faint font-normal">/ {max}</span></span>
+                      </div>
+                      <div className="h-2.5 bg-track rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${(s / max) * 100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <ShareResult
+                  fileName="housing-subscription-score"
+                  text={t('share.text', { score: r.now.total })}
+                  card={{
+                    tool: t('title'),
+                    label: t('share.label'),
+                    headline: t('share.headline', { score: r.now.total }),
+                    sub: t('res.nextYear', { score: r.next, diff: r.next - r.now.total }),
+                    rows: [
+                      { label: t('sectionA'), value: `${r.now.a} / 32` },
+                      { label: t('sectionB'), value: `${r.now.b} / 35` },
+                      { label: t('sectionC'), value: `${r.now.c} / 17` },
+                      { label: t('bench.title'), value: pt(r.hhMax) },
+                    ],
+                  }}
+                />
+              </>
+            ) : (
+              <p className="text-sm text-muted">{t('res.empty')}</p>
+            )}
           </div>
 
-          {/* Score detail table */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="font-semibold text-fg mb-4">{t('detailTableTitle')}</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-line">
-                    <th className="text-left py-2 text-muted font-medium">{t('tableCategory')}</th>
-                    <th className="text-center py-2 text-muted font-medium">{t('tableMyValue')}</th>
-                    <th className="text-center py-2 text-muted font-medium">{t('tableMyScore')}</th>
-                    <th className="text-center py-2 text-muted font-medium">{t('tableMaxScore')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                  <tr>
-                    <td className="py-2 text-body">{t('sectionA')}</td>
-                    <td className="py-2 text-center text-fg">
-                      {isUnder30Unmarried ? t('notApplicable') : `${homelessYears.toFixed(1)}${t('yearsUnit')}`}
-                    </td>
-                    <td className="py-2 text-center font-semibold text-blue-600 dark:text-blue-400">{scoreA}</td>
-                    <td className="py-2 text-center text-gray-400">32</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-body">{t('sectionB')}</td>
-                    <td className="py-2 text-center text-fg">{dependentCount}{t('personUnit')}{dependentCount >= 6 ? ' 이상' : ''}</td>
-                    <td className="py-2 text-center font-semibold text-emerald-600 dark:text-emerald-400">{scoreB}</td>
-                    <td className="py-2 text-center text-gray-400">35</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-body">{t('sectionC')}</td>
-                    <td className="py-2 text-center text-fg">{subMonthsFinal}{t('monthsUnit')}</td>
-                    <td className="py-2 text-center font-semibold text-purple-600 dark:text-purple-400">{scoreC}</td>
-                    <td className="py-2 text-center text-gray-400">17</td>
-                  </tr>
-                  <tr className="bg-subtle font-semibold">
-                    <td className="py-2 text-fg">{t('totalLabel')}</td>
-                    <td className="py-2"></td>
-                    <td className="py-2 text-center text-blue-600 dark:text-blue-400 text-lg">{totalScore}</td>
-                    <td className="py-2 text-center text-muted">84</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          {r && (
+            <>
+              {/* 앞으로 오르는 점수 */}
+              <div className="ui-card p-6 space-y-4">
+                <h2 className="text-lg font-semibold text-fg">{t('proj.title')}</h2>
+                <div className="grid grid-cols-5 gap-2">
+                  {r.proj.map(p => (
+                    <div key={p.y} className={`rounded-xl px-2 py-3 text-center ${p.y === 0 ? 'bg-primary-soft text-primary' : 'bg-subtle'}`}>
+                      <div className={`text-xs ${p.y === 0 ? '' : 'text-muted'}`}>{p.y === 0 ? t('proj.now') : t('proj.later', { n: p.y })}</div>
+                      <div className={`text-xl font-bold tabular-nums mt-1 ${p.y === 0 ? '' : 'text-fg'}`}>{p.total}</div>
+                    </div>
+                  ))}
+                </div>
+                <ul className="text-sm text-body space-y-1.5">
+                  {r.nextA && <li>{t('proj.nextA', { date: dot(r.nextA) })}</li>}
+                  {r.nextC && <li>{t('proj.nextC', { date: dot(r.nextC) })}</li>}
+                  <li>{r.now.a >= 32 ? t('proj.maxADone') : r.maxA ? t('proj.maxA', { date: dot(r.maxA) }) : t('proj.maxANone')}</li>
+                  <li>{r.now.c >= 17 ? t('proj.maxCDone') : r.maxC ? t('proj.maxC', { date: dot(r.maxC) }) : '-'}</li>
+                  <li>{dependents >= 6 ? t('proj.maxBDone') : t('proj.maxB', { n: 6 - dependents })}</li>
+                </ul>
+                <p className="text-xs text-muted">{t('proj.note')}</p>
+              </div>
+
+              {/* 가구 기준 최고점 + 커트라인 */}
+              <div className="ui-card p-6 space-y-3">
+                <h2 className="text-lg font-semibold text-fg">{t('bench.title')}</h2>
+                <p className="text-sm text-body">{t('bench.desc', { size: dependents + 1, max: r.hhMax, score: r.now.total })}</p>
+                <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                  {[0, 1, 2, 3, 4, 5, 6].map(n => (
+                    <div key={n} className={`rounded-xl px-2 py-2 text-center ${Math.min(6, dependents) === n ? 'bg-primary-soft text-primary' : 'bg-subtle text-sub'}`}>
+                      <div className="text-xs">{t('bench.size', { n: n + 1 })}{n === 6 ? '+' : ''}</div>
+                      <div className="font-bold tabular-nums">{householdMax(n)}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-subtle rounded-2xl p-4 text-sm text-sub">
+                  {t('bench.cutline')}{' '}
+                  <a href="https://www.applyhome.co.kr" target="_blank" rel="noopener noreferrer" className="text-primary font-medium inline-flex items-center gap-1">
+                    {t('bench.cutlineLink')} <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              {/* 특별공급 */}
+              <div className="ui-card p-6 space-y-3">
+                <h2 className="text-lg font-semibold text-fg">{t('special.title')}</h2>
+                <ul className="divide-y divide-line">
+                  {status().map(({ key, s }) => (
+                    <li key={key} className="py-3 flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-medium text-fg">{t(`special.${key}.name`)}</div>
+                        <div className="text-xs text-muted mt-0.5">{t(`special.${key}.req`)}</div>
+                      </div>
+                      <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ${s === 'yes' ? 'bg-primary-soft text-primary' : s === 'check' ? 'bg-soft text-sub' : 'text-faint'}`}>
+                        {t(`special.status.${s}`)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-muted">{t('special.note')}</p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Guide accordion */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          onClick={() => setGuideOpen(o => !o)}
-          className="w-full flex items-center justify-between px-6 py-4 text-left"
-        >
-          <h2 className="text-lg font-semibold text-fg">{t('guideTitle')}</h2>
-          {guideOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
-        </button>
+      {/* 가점제 vs 추첨제 */}
+      <div className="ui-card p-6 space-y-4">
+        <h2 className="text-xl font-semibold text-fg">{t('ratio.title')}</h2>
+        <p className="text-sm text-body">{t('ratio.desc')}</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[480px]">
+            <thead>
+              <tr className="border-b border-line text-muted">
+                <th className="text-left py-2 font-medium">{t('ratio.size')}</th>
+                <th className="text-left py-2 font-medium">{t('ratio.spec')}</th>
+                <th className="text-left py-2 font-medium">{t('ratio.adj')}</th>
+                <th className="text-left py-2 font-medium">{t('ratio.other')}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {ratioRows.map(row => (
+                <tr key={row.size}>
+                  <td className="py-2.5 text-fg font-medium">{row.size}</td>
+                  <td className="py-2.5 text-body">{row.spec}</td>
+                  <td className="py-2.5 text-body">{row.adj}</td>
+                  <td className="py-2.5 text-body">{row.other}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <ul className="list-disc pl-5 space-y-1 text-xs text-muted">
+          {ratioNotes.map((x, i) => <li key={i}>{x}</li>)}
+        </ul>
+      </div>
 
-        {guideOpen && (
-          <div className="px-6 pb-6 grid md:grid-cols-2 gap-6">
-            {/* A guide */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-sub text-sm">{t('guideATitle')}</h3>
-              <ul className="space-y-1 text-sm text-sub">
-                {(t.raw('guideAItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-blue-400 flex-shrink-0">•</span>{item}</li>
-                ))}
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-8">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {rules.map(sec => (
+            <section key={sec.title}>
+              <h3 className="text-base font-semibold text-fg mb-3">{sec.title}</h3>
+              <ul className="list-disc pl-5 space-y-1.5 text-sm text-body">
+                {sec.items.map((x, i) => <li key={i}>{x}</li>)}
               </ul>
-            </div>
+            </section>
+          ))}
+        </div>
 
-            {/* B guide */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-sub text-sm">{t('guideBTitle')}</h3>
-              <ul className="space-y-1 text-sm text-sub">
-                {(t.raw('guideBItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-emerald-400 flex-shrink-0">•</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* C guide */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-sub text-sm">{t('guideCTitle')}</h3>
-              <ul className="space-y-1 text-sm text-sub">
-                {(t.raw('guideCItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-purple-400 flex-shrink-0">•</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Cautions */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-amber-700 dark:text-amber-300 text-sm">{t('guideCautionTitle')}</h3>
-              <ul className="space-y-1 text-sm text-sub">
-                {(t.raw('guideCautionItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2">{item}</li>
-                ))}
-              </ul>
-            </div>
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+          <div className="divide-y divide-line border-y border-line">
+            {faq.map((f, i) => (
+              <details key={i} className="group py-3">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-sm font-medium text-fg">
+                  {f.q}
+                  <ChevronDown className="w-4 h-4 text-faint shrink-0 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="text-sm text-body mt-2">{f.a}</p>
+              </details>
+            ))}
           </div>
-        )}
+        </section>
+
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.sources.title')}</h3>
+          <ul className="space-y-1.5 text-sm">
+            {sources.map(s => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
+                  {s.label} <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{t('guide.sources.asOf')}</p>
+        </section>
       </div>
     </div>
   )

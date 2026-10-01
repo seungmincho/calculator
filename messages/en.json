@@ -30720,6 +30720,236 @@
     "footer": "Based on unique session visits · Real-time updates"
   },
   "housingSubscription": {
+    "pt": "{n} pts",
+    "mode": {
+      "date": "Auto from dates",
+      "direct": "Pick ranges"
+    },
+    "inp": {
+      "lead": "Enter your birth date, marriage date and account opening date to get your Korean housing subscription score (out of 84), plus next year's score and special supply eligibility.",
+      "ref": "Reference date (announcement date)",
+      "refHint": "Scores are counted as of the recruitment announcement date. Leave today's date if unsure.",
+      "marriage": "Marriage registration date",
+      "marriageHint": "Leave blank if single. If you married before 30, the homeless period starts from the marriage date.",
+      "homelessPeriod": "Homeless period",
+      "neverOwned": "No household member has ever owned a home",
+      "disposal": "Date you became homeless (home sold)",
+      "disposalHint": "Enter the latest date any household member sold a home.",
+      "startIs": "Homeless period starts: {date} ({why})",
+      "why": {
+        "age30": "30th birthday",
+        "marriage": "marriage before 30",
+        "disposal": "home sale date"
+      },
+      "under30": "Single and under 30, so the homeless period scores 0. It starts at 2 points on {date}.",
+      "spouse": "Spouse (counts even with a separate registration)",
+      "parents": "Parents/grandparents (same registry 3+ years)",
+      "children": "Unmarried children",
+      "baby": "Has a child under 2 (newborn special supply)",
+      "dependentsHint": "{n} dependents (excluding you). Unmarried children 30+ need 1+ year on the same registry; parents who own a home are excluded.",
+      "spouseSub": "Spouse's account opening date",
+      "spouseSubHint": "50% of the spouse's period is added, up to 3 points. Leave blank if none.",
+      "subPeriod": "Subscription account period"
+    },
+    "direct": {
+      "aNone": "N/A (single under 30 / homeowner) · 0 pts",
+      "under1y": "Under 1 year · {pt}",
+      "over15y": "15+ years · {pt}",
+      "over2y": "2+ years · {pt}",
+      "yRange": "{from}–{to} years · {pt}",
+      "under6m": "Under 6 months · {pt}",
+      "m6to12": "6–12 months · {pt}",
+      "spouseNone": "Spouse has no account · 0 pts"
+    },
+    "res": {
+      "label": "My score as of {date}",
+      "nextYear": "{score} in 1 year (+{diff})",
+      "toMax": "{n} to the maximum",
+      "notCounted": "not started",
+      "under1y": "under 1 year",
+      "years": "{n} yrs",
+      "persons": "{n}",
+      "subWithSpouse": "own {own} + spouse {sp}",
+      "months": "{y} yrs {m} mos",
+      "empty": "Enter a birth date and reference date to see your score."
+    },
+    "share": {
+      "label": "My subscription score (of 84)",
+      "headline": "{score} points",
+      "text": "My housing subscription score is {score} out of 84. What's yours?"
+    },
+    "proj": {
+      "title": "How your score grows",
+      "now": "Now",
+      "later": "+{n} yr",
+      "nextA": "Homeless period next +2: {date}",
+      "nextC": "Account period next +1: {date}",
+      "maxA": "Homeless period maxes out (32): {date}",
+      "maxADone": "Homeless period is already at the max (32).",
+      "maxANone": "You own a home, so homeless points don't accrue.",
+      "maxC": "Own account maxes out (17): {date}",
+      "maxCDone": "Account period is already at the max (17).",
+      "maxB": "Dependents only grow with headcount. {n} more for the max (35).",
+      "maxBDone": "Dependents are already at the max (35).",
+      "note": "Assumes you stay homeless, keep the account and have the same dependents."
+    },
+    "bench": {
+      "title": "Max score by household size",
+      "desc": "A {size}-person household can reach {max} points; you have {score}. Dependents are fixed by headcount, so among same-size households the homeless and account periods decide.",
+      "size": "{n}p",
+      "cutline": "Winning cutoffs vary a lot by region, complex and unit size, so we don't show fixed numbers. Check past winning scores on Applyhome.",
+      "cutlineLink": "Applyhome winning scores"
+    },
+    "special": {
+      "title": "Special supply quick check",
+      "status": {
+        "yes": "Possible",
+        "check": "Check",
+        "no": "No"
+      },
+      "newlywed": {
+        "name": "Newlyweds",
+        "req": "Married within 7 years (incl. engaged couples, single parents of children 6 or under), homeless, income/asset limits. Since 2024-03-25 the spouse's pre-marriage history is ignored."
+      },
+      "firstHome": {
+        "name": "First home",
+        "req": "No household member has ever owned a home, 1st priority, 5+ years of income tax, income limits. Private units up to 85㎡."
+      },
+      "newborn": {
+        "name": "Newborn",
+        "req": "Household with a child under 2 as of the announcement. Since 2026-06-15 private housing also sets aside 10% of special supply regardless of marriage length."
+      },
+      "multiChild": {
+        "name": "Multi-child",
+        "req": "2+ minor children (incl. unborn). Private housing lowered from 3 to 2 children in 2024."
+      },
+      "elderly": {
+        "name": "Elderly parent support",
+        "req": "Homeless head of household supporting a parent aged 65+ for 3+ years."
+      },
+      "note": "Basic requirements only. Check income/asset limits, account priority and past win history in the announcement."
+    },
+    "ratio": {
+      "title": "Point vs lottery ratio (private housing)",
+      "desc": "Within one complex the share selected by points depends on unit size. With a low score, target sizes with a larger lottery share.",
+      "size": "Unit size",
+      "spec": "Speculation-overheated",
+      "adj": "Adjustment target",
+      "other": "Other areas",
+      "rows": [
+        {
+          "size": "≤ 60㎡",
+          "spec": "Points 40% · Lottery 60%",
+          "adj": "Points 40% · Lottery 60%",
+          "other": "Points ≤ 40% (local gov.)"
+        },
+        {
+          "size": "60–85㎡",
+          "spec": "Points 70% · Lottery 30%",
+          "adj": "Points 70% · Lottery 30%",
+          "other": "Points ≤ 40% (local gov.)"
+        },
+        {
+          "size": "> 85㎡",
+          "spec": "Points 80% · Lottery 20%",
+          "adj": "Points 50% · Lottery 50%",
+          "other": "Lottery 100% (some exceptions)"
+        }
+      ],
+      "notes": [
+        "Basis: Rules on Housing Supply, Art. 28 (ratios since the 2023-04-01 reform). The announcement is final.",
+        "Since 2025-10-16 (10·15 measures), all of Seoul and 12 Gyeonggi areas (Gwacheon, Gwangmyeong, Seongnam Bundang/Sujeong/Jungwon, Suwon Yeongtong/Jangan/Paldal, Anyang Dongan, Yongin Suji, Uiwang, Hanam) are regulated areas. Designations can change.",
+        "In regulated areas, the capital region and metro cities, 75%+ of lottery units go to homeless applicants first.",
+        "If you lose in the point pool, you are automatically entered into the lottery pool of the same complex."
+      ]
+    },
+    "guide": {
+      "title": "Scoring rules at a glance",
+      "rules": [
+        {
+          "title": "Homeless period (max 32)",
+          "items": [
+            "Counted from your 30th birthday, or from marriage registration if you married before 30",
+            "Single and under 30: 0 points; homeowners: 0 points",
+            "Under 1 year 2 points, +2 per year, 15+ years 32 points",
+            "If you sold a home, counting restarts from the date you became homeless (whole household)"
+          ]
+        },
+        {
+          "title": "Dependents (max 35)",
+          "items": [
+            "Excluding you: 0 = 5 points, +5 each, 6+ = 35 points",
+            "A spouse counts even with a separate registration",
+            "Parents/grandparents (incl. in-laws) count if you are head of household and share the registry for 3+ years; excluded if either owns a home",
+            "Unmarried children count; those 30+ need 1+ year on the same registry"
+          ]
+        },
+        {
+          "title": "Account period (max 17)",
+          "items": [
+            "Under 6 months 1, 6–12 months 2, then +1 per year, 15+ years 17",
+            "50% of the spouse's period adds up to 3 points (17 cap, since 2024-03-25)",
+            "Converted legacy accounts keep the original opening date",
+            "Up to 5 years opened as a minor are recognized (2024 change)"
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When does the homeless period start?",
+            "a": "On your 30th birthday, or on the marriage registration date if you married earlier. If you sold a home, the later of that date and the date you became homeless applies. It is judged for the whole household."
+          },
+          {
+            "q": "Is it really 0 points if I'm single and under 30?",
+            "a": "Yes. It starts at 2 points on your 30th birthday and rises 2 points a year."
+          },
+          {
+            "q": "How do parents count as dependents?",
+            "a": "You must be head of household and share the resident registry with them for 3+ consecutive years. If either parent owns a home, both are excluded. Health insurance usage records may be required to prove actual residence."
+          },
+          {
+            "q": "Does my spouse's account count?",
+            "a": "Since 2024-03-25, 50% of the spouse's period is converted and added up to 3 points, capped at 17 in total. E.g. own 5 years (7) + spouse 4 years (3) = 10."
+          },
+          {
+            "q": "Does a small home count as homeless?",
+            "a": "For private general supply only, one home of 60㎡ or less valued at KRW 160M or less (capital region) or KRW 100M (elsewhere) is treated as homeless. Not for special supply."
+          },
+          {
+            "q": "What happens on a tie?",
+            "a": "Since 2024-03-25, the longer account holder wins; if still tied, a lottery decides."
+          },
+          {
+            "q": "Does public housing use points?",
+            "a": "No. National housing general supply uses deposit amount/count, not points. Points apply to private housing."
+          },
+          {
+            "q": "Where can I see cutoffs?",
+            "a": "Applyhome (applyhome.co.kr) shows competition rates and winning scores by complex."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Rules on Housing Supply (Annex 1, Art. 28) — Korea Law Information Center",
+            "url": "https://www.law.go.kr/법령/주택공급에관한규칙"
+          },
+          {
+            "label": "Applyhome (Korea Real Estate Board)",
+            "url": "https://www.applyhome.co.kr"
+          },
+          {
+            "label": "Ministry of Land, Infrastructure and Transport",
+            "url": "https://www.molit.go.kr"
+          }
+        ],
+        "asOf": "As of October 2026, reflecting the 2024-03-25 and 2026-06-15 amendments. Applyhome's figures at application are authoritative."
+      }
+    },
     "title": "Housing Subscription Score Calculator",
     "description": "Calculate your housing subscription score (max 84) based on homelessness period, dependents, and account duration",
     "reset": "Reset",
@@ -34827,8 +35057,189 @@
     "decision": "Random/Decision"
   },
   "parentalLeave": {
+    "p": {
+      "won": "KRW",
+      "me": "You",
+      "mom": "Mom",
+      "dad": "Dad",
+      "who": {
+        "label": "Who takes leave",
+        "both": "Both parents",
+        "one": "One parent",
+        "single": "Single parent"
+      },
+      "start": "Leave start date",
+      "startFirst": "First leave start date",
+      "wage": "Monthly ordinary wage (gross)",
+      "wageOf": "{who}'s monthly ordinary wage",
+      "months": "Leave length",
+      "monthsOf": "{who}'s leave length",
+      "monthsOption": "{n} mo",
+      "order": {
+        "label": "Order",
+        "mom": "Mom first",
+        "dad": "Dad first",
+        "same": "Together"
+      },
+      "birth": "Child's date of birth",
+      "birthHint": "The 6+6 boost applies only if the second parent starts leave before the child turns 18 months.",
+      "wageHint": "Ordinary wage = base pay + fixed monthly allowances (incl. regular bonuses). Exclude variable pay such as overtime. Check your payslip or HR for the exact figure.",
+      "res": {
+        "total": "Total parental leave benefit",
+        "totalBoth": "Household parental leave benefit",
+        "ok66": "6+6 applies — each parent gets 100% of wage for the first {n} months with stepped-up caps.",
+        "no66": "6+6 does not apply — the second parent must start leave within 18 months of birth. Try another order or start date.",
+        "single": "Single-parent rule — cap KRW 3M for the first 3 months, leave up to 18 months.",
+        "oneHint": "If your spouse also takes leave, the 6+6 rule raises the first 6 months' cap up to KRW 4.5M. Tap 'Both parents' to compare.",
+        "monthlyAvg": "Monthly average",
+        "monthlyMax": "Highest month",
+        "clamped": "Leave beyond 12 months (up to 18) needs both parents to take 3+ months each, or a single parent / parent of a severely disabled child. Capped at 12 months.",
+        "retro": "{who}'s 6+6 top-up of {amount} is paid at the regular rate during leave, then retroactively after the spouse starts leave."
+      },
+      "share": {
+        "label": "Total for {n} months of parental leave",
+        "labelBoth": "Household parental leave (Mom {m} mo + Dad {d} mo)",
+        "period": "Leave period",
+        "text": "We could get {amount} in parental leave benefits. How much would yours be?"
+      },
+      "table": {
+        "title": "Monthly payout (calendar)",
+        "desc": "Benefits are paid in one-month blocks from the leave start date. Each cell is the amount for that block.",
+        "month": "Pay period",
+        "sum": "Total",
+        "nth": "Month {n}",
+        "note": "The benefit is tax-free with no social insurance deductions. Apply on Work24 from one month after leave starts (monthly or several months at once), within 12 months after leave ends."
+      },
+      "tag": {
+        "special": "6+6",
+        "single": "Single",
+        "cap": "Cap",
+        "floor": "Floor"
+      },
+      "cmp": {
+        "title": "Who goes first? Compare orders",
+        "desc": "Same lengths and wages, only the order changes. Tap a card to use that order.",
+        "six": "6+6",
+        "sixYes": "{n} mo",
+        "sixNo": "No",
+        "care": "Childcare coverage",
+        "lowest": "Lowest household month",
+        "end": "Leave ends",
+        "note": "Lowest household month = benefit of the parent on leave + ordinary wage of the working parent (gross). If 6+6 applies, the total is the same in any order; what changes is coverage and the income dip."
+      },
+      "rh": {
+        "title": "Parental leave vs reduced hours",
+        "desc": "What if you work fewer hours instead of stopping? Compare what you receive over the same period, with the caps raised in January 2026.",
+        "before": "Current weekly hours",
+        "after": "Reduced weekly hours",
+        "months": "Period",
+        "hours": "{h} h/week",
+        "leaveBox": "Parental leave, {n} mo",
+        "reduceBox": "{h} h/week for {n} mo",
+        "perMonth": "{amount} / month",
+        "first": "Reduction benefit: first {h} h (100% of wage)",
+        "rest": "Reduction benefit: remaining {h} h (80%)",
+        "company": "Employer pay ({h} h/week worked)",
+        "note": "Reduced hours can be used for 1 year plus twice the unused parental leave, up to 3 years. With {used} months of leave, that is up to {max} months. Employer pay is estimated pro rata to hours."
+      },
+      "rules": {
+        "title": "2026 parental leave benefit rules",
+        "desc": "You receive ordinary wage × rate, up to the monthly cap. The floor is KRW {floor}; the 25% deferred payment was abolished in 2025, so the full amount is paid during leave.",
+        "month": "Leave month",
+        "general": "Regular",
+        "single": "Single parent",
+        "special": "6+6",
+        "nth": "Month {n}"
+      },
+      "steps": {
+        "title": "How to apply",
+        "items": [
+          "Request leave from your employer in writing at least 30 days before it starts.",
+          "Your employer submits a parental leave confirmation on Work24. Make sure it was filed.",
+          "From one month after leave starts, apply for the benefit on Work24 (work24.go.kr) or at a job center, monthly or for several months at once.",
+          "If your spouse also takes leave, each applies separately. The 6+6 top-up for the first parent is paid retroactively after the second parent's leave begins.",
+          "You must apply within 12 months after the leave ends."
+        ]
+      },
+      "flow": {
+        "title": "From birth back to work",
+        "items": [
+          "Maternity leave 90 days (120 for multiples), at least 45 (60) after birth. Benefit cap KRW 2.2M/month in 2026.",
+          "Paternity leave 20 paid days, usable in up to 4 parts within 120 days of birth.",
+          "Parental leave: child aged 8 or under (grade 2), 1 year per parent (18 months if conditions are met), in up to 4 parts.",
+          "Reduced hours during childcare: child aged 12 or under (grade 6), work 15-35 hours/week and receive a reduction benefit."
+        ]
+      },
+      "rhRules": {
+        "title": "Reduced-hours benefit (2026)",
+        "items": [
+          "First 10 hours reduced per week: 100% of ordinary wage (base cap KRW 2.5M) × 10 ÷ prior weekly hours",
+          "Remaining hours: 80% of ordinary wage (base cap KRW 1.6M) × remaining hours ÷ prior weekly hours",
+          "Base floor KRW 500k. Until 2025 the caps were KRW 2.2M and 1.5M.",
+          "Length: 1 year + 2 × unused parental leave, up to 3 years, in blocks of at least 1 month."
+        ]
+      },
+      "caution": {
+        "title": "Easy to miss",
+        "items": [
+          "If employer payments plus the benefit exceed your ordinary wage, the benefit is reduced by the excess.",
+          "If you take another job or quit during leave, no benefit is paid for that period onward (Employment Insurance Act Art. 73).",
+          "You need at least 180 insured days in total before leave starts.",
+          "The 18 months for 6+6 count the birth date itself; the second parent must start before the child turns 18 months."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much is the parental leave benefit in 2026?",
+            "a": "Months 1-3: 100% of ordinary wage (cap KRW 2.5M), months 4-6: 100% (cap 2.0M), from month 7: 80% (cap 1.6M), floor KRW 700k. The January 2025 reform still applies in 2026. With a KRW 3M wage, 12 months totals KRW 23.1M."
+          },
+          {
+            "q": "How is 6+6 calculated?",
+            "a": "If both parents take leave within 18 months of birth, each gets 100% of wage for the months they both used (up to 6), with caps of 2.5, 2.5, 3, 3.5, 4 and 4.5 million. Leave need not overlap. Six months each gives up to KRW 20M per parent, 40M together."
+          },
+          {
+            "q": "What if Dad takes only 3 months?",
+            "a": "Only the 3 shared months get the boost (caps 2.5, 2.5, 3 million). Extending leave to 18 months requires 3+ months from each parent, so 3 months is worth reaching."
+          },
+          {
+            "q": "Is the benefit taxed?",
+            "a": "No, it is tax-free (Income Tax Act Art. 12). Health insurance premiums are reduced during leave and you can request a national pension exemption. Ask HR for details."
+          },
+          {
+            "q": "Leave or reduced hours: which pays more?",
+            "a": "In cash, reduced hours usually pays more (employer pay + benefit), but you keep working so you have less time with your child. Reduced hours can last up to 3 years, so many parents use leave first and then switch."
+          },
+          {
+            "q": "Can contract workers or fathers receive it?",
+            "a": "Yes, if you are covered by employment insurance with 180+ insured days before leave, regardless of gender or contract type. Contract workers are paid only for leave within the contract term."
+          },
+          {
+            "q": "What happened to the deferred payment?",
+            "a": "It was abolished from January 2025, so the full benefit is paid during leave. Deferred amounts for leave before 2025 are still paid after 6 months back at work."
+          }
+        ]
+      },
+      "related": {
+        "title": "Related tools",
+        "items": [
+          "Child benefit calculator",
+          "Due date calculator"
+        ]
+      },
+      "links": {
+        "title": "Sources",
+        "work24": "Work24 (apply)",
+        "law": "Employment Insurance Act Art. 70, 73, 73-2",
+        "decree": "Enforcement Decree Art. 95, 95-3, 104-2",
+        "moel": "Ministry of Employment press release",
+        "korea": "Korea.kr: 2026 changes",
+        "note": "Based on laws and Ministry of Employment and Labor materials as of October 2026. Actual amounts depend on the job center's review."
+      }
+    },
     "title": "Parental Leave Benefit Calculator",
-    "description": "Reflects 2025 6+6 Parental Leave system, monthly benefit details & couple simulation",
+    "description": "2026 Korean parental leave benefit (caps: KRW 2.5M for months 1-3, 2.0M for 4-6, 1.6M from month 7) with the 6+6 parents' leave and single-parent rules. See a month-by-month payout table and compare mom-first, dad-first, simultaneous leave and reduced working hours.",
     "tabs": {
       "individual": "Individual",
       "couple": "Couple Simulation"
