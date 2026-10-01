@@ -3,571 +3,442 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Utensils, Search, Plus, Trash2, Copy, Check, BookOpen, X, Link } from 'lucide-react'
-import dynamic from 'next/dynamic'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Search, Plus, Trash2, Copy, Check, X } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import {
+  FOODS, CATEGORIES, DV, AMDR, PORTIONS, MAX_AMOUNT, DEFAULT_MEAL,
+  scale, per100, sum, macroRatio, ratioStatus, dvPct, encodeMeal, decodeMeal, norm,
+  type Food, type Macro, type Nutrients,
+} from '@/utils/nutrition'
 
-const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
-
-// ── Food Database ────────────────────────────────────────────────────────────
-interface FoodItem {
-  id: string
-  category: string
-  cal: number      // kcal per serving
-  protein: number  // g per serving
-  fat: number      // g per serving
-  carbs: number    // g per serving
-  serving: number  // grams per serving
-}
-
-const FOODS: FoodItem[] = [
-  // 밥류
-  { id: 'rice', category: 'rice', cal: 300, protein: 5, fat: 0.5, carbs: 65, serving: 210 },
-  { id: 'bibimbap', category: 'rice', cal: 550, protein: 18, fat: 15, carbs: 78, serving: 400 },
-  { id: 'kimchiFriedRice', category: 'rice', cal: 450, protein: 10, fat: 12, carbs: 72, serving: 350 },
-  { id: 'kimbap', category: 'rice', cal: 380, protein: 12, fat: 8, carbs: 62, serving: 250 },
-  { id: 'curryRice', category: 'rice', cal: 520, protein: 12, fat: 15, carbs: 80, serving: 400 },
-  // 면류
-  { id: 'ramyeon', category: 'noodle', cal: 500, protein: 10, fat: 16, carbs: 78, serving: 550 },
-  { id: 'jajangmyeon', category: 'noodle', cal: 650, protein: 15, fat: 18, carbs: 95, serving: 500 },
-  { id: 'naengmyeon', category: 'noodle', cal: 430, protein: 12, fat: 5, carbs: 82, serving: 500 },
-  { id: 'udong', category: 'noodle', cal: 380, protein: 12, fat: 4, carbs: 72, serving: 450 },
-  { id: 'japchae', category: 'noodle', cal: 350, protein: 6, fat: 10, carbs: 58, serving: 250 },
-  // 국/찌개
-  { id: 'kimchiJjigae', category: 'soup', cal: 200, protein: 12, fat: 10, carbs: 12, serving: 300 },
-  { id: 'doenjangJjigae', category: 'soup', cal: 150, protein: 10, fat: 5, carbs: 15, serving: 300 },
-  { id: 'sundubuJjigae', category: 'soup', cal: 180, protein: 14, fat: 8, carbs: 10, serving: 350 },
-  { id: 'miyeokguk', category: 'soup', cal: 70, protein: 5, fat: 3, carbs: 6, serving: 300 },
-  { id: 'samgyetang', category: 'soup', cal: 800, protein: 55, fat: 35, carbs: 60, serving: 800 },
-  // 반찬
-  { id: 'kimchi', category: 'side', cal: 15, protein: 1, fat: 0.3, carbs: 2, serving: 40 },
-  { id: 'gyeranjjim', category: 'side', cal: 120, protein: 10, fat: 8, carbs: 2, serving: 150 },
-  { id: 'japchae2', category: 'side', cal: 180, protein: 4, fat: 6, carbs: 28, serving: 120 },
-  { id: 'dubuJorim', category: 'side', cal: 100, protein: 8, fat: 5, carbs: 5, serving: 120 },
-  // 고기/구이
-  { id: 'samgyeopsal', category: 'meat', cal: 520, protein: 22, fat: 45, carbs: 0, serving: 150 },
-  { id: 'bulgogi', category: 'meat', cal: 350, protein: 28, fat: 15, carbs: 20, serving: 200 },
-  { id: 'dakgalbi', category: 'meat', cal: 400, protein: 30, fat: 12, carbs: 35, serving: 300 },
-  { id: 'tonkatsu', category: 'meat', cal: 450, protein: 25, fat: 22, carbs: 35, serving: 200 },
-  // 간식
-  { id: 'tteokbokki', category: 'snack', cal: 350, protein: 6, fat: 5, carbs: 70, serving: 250 },
-  { id: 'friedChicken', category: 'snack', cal: 600, protein: 35, fat: 35, carbs: 30, serving: 250 },
-  { id: 'hotdog', category: 'snack', cal: 300, protein: 8, fat: 18, carbs: 28, serving: 120 },
-  { id: 'bungeoppang', category: 'snack', cal: 180, protein: 4, fat: 3, carbs: 35, serving: 100 },
-  // 음료
-  { id: 'americano', category: 'drink', cal: 5, protein: 0, fat: 0, carbs: 1, serving: 355 },
-  { id: 'cafeLatte', category: 'drink', cal: 180, protein: 8, fat: 7, carbs: 20, serving: 355 },
-  { id: 'cola', category: 'drink', cal: 140, protein: 0, fat: 0, carbs: 39, serving: 355 },
-  { id: 'soju', category: 'drink', cal: 340, protein: 0, fat: 0, carbs: 0, serving: 360 },
-  { id: 'beer', category: 'drink', cal: 150, protein: 1, fat: 0, carbs: 13, serving: 355 },
-  // 패스트푸드
-  { id: 'hamburger', category: 'fast', cal: 550, protein: 25, fat: 30, carbs: 45, serving: 200 },
-  { id: 'pizza', category: 'fast', cal: 270, protein: 12, fat: 10, carbs: 33, serving: 107 },
-  { id: 'frenchFries', category: 'fast', cal: 340, protein: 4, fat: 17, carbs: 44, serving: 117 },
-  { id: 'gimbapRoll', category: 'fast', cal: 200, protein: 5, fat: 4, carbs: 35, serving: 150 },
-]
-
-const CATEGORIES = ['all', 'rice', 'noodle', 'soup', 'side', 'meat', 'snack', 'drink', 'fast'] as const
-
-// Daily Recommended Intake (성인 기준)
-const DRI = { cal: 2000, protein: 55, fat: 54, carbs: 324 }
-
-// Portion options
-const PORTIONS = [0.5, 1, 1.5, 2, 3] as const
-
-interface MealEntry {
-  uid: number
-  food: FoodItem
-  portion: number
-}
+interface MealEntry { uid: number; food: Food; amount: number }
 
 let nextUid = 1
+const withUid = (list: { food: Food; amount: number }[]): MealEntry[] => list.map((e) => ({ ...e, uid: nextUid++ }))
 
-const formatNumber = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const fmt = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const fmtG = (n: number) => (n < 10 ? (Math.round(n * 10) / 10).toString() : fmt(n))
+const MACROS: Macro[] = ['carbs', 'protein', 'fat']
+const MACRO_BAR: Record<Macro, string> = { carbs: 'bg-primary', protein: 'bg-primary/55', fat: 'bg-primary/25' }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+const EMPTY_CUSTOM = { name: '', serving: '100', cal: '', carbs: '', protein: '', fat: '', sodium: '' }
+type CustomForm = typeof EMPTY_CUSTOM
+
 export default function NutritionCalculator() {
   const t = useTranslations('nutritionCalculator')
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
-    const c = searchParams.get('category') ?? 'all'
-    return CATEGORIES.includes(c as typeof CATEGORIES[number]) ? c : 'all'
+  const [category, setCategory] = useState<string>(() => {
+    const c = sp.get('category') ?? 'all'
+    return (CATEGORIES as readonly string[]).includes(c) ? c : 'all'
   })
-  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') ?? '')
-  const [mealEntries, setMealEntries] = useState<MealEntry[]>([])
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showGuide, setShowGuide] = useState(false)
-  const [linkCopied, setLinkCopied] = useState(false)
+  const [query, setQuery] = useState(() => sp.get('q') ?? '')
+  const [entries, setEntries] = useState<MealEntry[]>(() =>
+    withUid(decodeMeal(sp.get('m'), sp.get('c')) ?? decodeMeal(DEFAULT_MEAL, null)!))
+  const [customOpen, setCustomOpen] = useState(false)
+  const [custom, setCustom] = useState<CustomForm>(EMPTY_CUSTOM)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const url = new URL(window.location.href)
-    url.searchParams.set('category', selectedCategory)
-    if (searchQuery) url.searchParams.set('q', searchQuery)
-    else url.searchParams.delete('q')
+    const { m, c } = encodeMeal(entries)
+    url.searchParams.set('m', m)
+    if (c) url.searchParams.set('c', c); else url.searchParams.delete('c')
+    if (category !== 'all') url.searchParams.set('category', category); else url.searchParams.delete('category')
+    if (query) url.searchParams.set('q', query); else url.searchParams.delete('q')
     window.history.replaceState({}, '', url)
-  }, [selectedCategory, searchQuery])
+  }, [entries, category, query])
 
-  const copyLink = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-    } catch {
-      // ignore
-    }
-    setLinkCopied(true)
-    setTimeout(() => setLinkCopied(false), 2000)
-  }, [])
+  const nameOf = useCallback((food: Food) =>
+    food.category === 'custom' ? (food.name || t('u.custom.defaultName')) : t(`foods.${food.id}`), [t])
+  const unitOf = (food: Food) => food.unit ?? 'g'
 
-  // ── Filtered food list ───────────────────────────────────────────────────
-  const filteredFoods = useMemo(() => {
-    return FOODS.filter(food => {
-      const matchCategory = selectedCategory === 'all' || food.category === selectedCategory
-      const matchSearch = searchQuery === '' ||
-        t(`foods.${food.id}`).toLowerCase().includes(searchQuery.toLowerCase())
-      return matchCategory && matchSearch
+  const filtered = useMemo(() => {
+    const q = norm(query)
+    return FOODS.filter((food) =>
+      (category === 'all' || food.category === category) && (!q || norm(t(`foods.${food.id}`)).includes(q)))
+  }, [category, query, t])
+
+  const inMeal = useMemo(() => new Set(entries.map((e) => e.food.id)), [entries])
+
+  // ── 계산 ──
+  const total = useMemo(() => sum(entries.map((e) => scale(e.food, e.amount))), [entries])
+  const pct = dvPct(total)
+  const ratio = macroRatio(total)
+  const alcoholKcal = total.cal - (total.carbs * 4 + total.protein * 4 + total.fat * 9)
+
+  // ── 액션 ──
+  const addFood = useCallback((food: Food) => {
+    setEntries((prev) => {
+      const hit = prev.find((e) => e.food.id === food.id)
+      if (hit) return prev.map((e) => e === hit ? { ...e, amount: Math.min(e.amount + food.serving, MAX_AMOUNT) } : e)
+      return [...prev, { uid: nextUid++, food, amount: food.serving }]
     })
-  }, [selectedCategory, searchQuery, t])
+  }, [])
+  const setAmount = (uid: number, amount: number) =>
+    setEntries((prev) => prev.map((e) => e.uid === uid ? { ...e, amount: Math.min(Math.max(amount, 0), MAX_AMOUNT) } : e))
+  const remove = (uid: number) => setEntries((prev) => prev.filter((e) => e.uid !== uid))
 
-  // ── Meal totals ──────────────────────────────────────────────────────────
-  const totals = useMemo(() => {
-    if (mealEntries.length === 0) return null
-    const cal = mealEntries.reduce((s, e) => s + e.food.cal * e.portion, 0)
-    const protein = mealEntries.reduce((s, e) => s + e.food.protein * e.portion, 0)
-    const fat = mealEntries.reduce((s, e) => s + e.food.fat * e.portion, 0)
-    const carbs = mealEntries.reduce((s, e) => s + e.food.carbs * e.portion, 0)
-    return { cal, protein, fat, carbs }
-  }, [mealEntries])
-
-  // ── ECharts options ──────────────────────────────────────────────────────
-  const donutOption = useMemo(() => {
-    if (!totals) return null
-    const carbsCal = totals.carbs * 4
-    const proteinCal = totals.protein * 4
-    const fatCal = totals.fat * 9
-    const total = carbsCal + proteinCal + fatCal || 1
-    return {
-      tooltip: { trigger: 'item', formatter: '{b}: {c} kcal ({d}%)' },
-      legend: { bottom: 0, textStyle: { color: '#6b7280' } },
-      series: [{
-        type: 'pie',
-        radius: ['45%', '70%'],
-        center: ['50%', '45%'],
-        avoidLabelOverlap: false,
-        label: { show: false },
-        emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
-        data: [
-          { value: Math.round(carbsCal), name: t('macros.carbs'), itemStyle: { color: '#3b82f6' } },
-          { value: Math.round(proteinCal), name: t('macros.protein'), itemStyle: { color: '#10b981' } },
-          { value: Math.round(fatCal), name: t('macros.fat'), itemStyle: { color: '#f59e0b' } },
-        ],
-      }],
+  const numOf = (s: string) => { const n = parseFloat(s); return Number.isFinite(n) && n >= 0 ? n : 0 }
+  const customValid = numOf(custom.serving) > 0 && custom.cal.trim() !== ''
+  const addCustom = () => {
+    if (!customValid) return
+    const uid = nextUid++
+    const serving = numOf(custom.serving)
+    const food: Food = {
+      id: `c${uid}`, category: 'custom', name: custom.name.trim().slice(0, 40), serving,
+      cal: numOf(custom.cal), carbs: numOf(custom.carbs), protein: numOf(custom.protein), fat: numOf(custom.fat), sodium: numOf(custom.sodium),
     }
-  }, [totals, t])
+    setEntries((prev) => [...prev, { uid, food, amount: serving }])
+    setCustom(EMPTY_CUSTOM)
+    setCustomOpen(false)
+  }
 
-  const barOption = useMemo(() => {
-    if (!totals) return null
-    const pctCal = Math.min((totals.cal / DRI.cal) * 100, 200)
-    const pctProtein = Math.min((totals.protein / DRI.protein) * 100, 200)
-    const pctFat = Math.min((totals.fat / DRI.fat) * 100, 200)
-    const pctCarbs = Math.min((totals.carbs / DRI.carbs) * 100, 200)
-    return {
-      tooltip: { trigger: 'axis', formatter: (params: { name: string; value: number }[]) => `${params[0].name}: ${params[0].value.toFixed(1)}%` },
-      grid: { left: 60, right: 20, top: 20, bottom: 40 },
-      xAxis: {
-        type: 'category',
-        data: [t('macros.calories'), t('macros.carbs'), t('macros.protein'), t('macros.fat')],
-        axisLabel: { color: '#6b7280', fontSize: 11 },
-        axisLine: { lineStyle: { color: '#e5e7eb' } },
-      },
-      yAxis: {
-        type: 'value',
-        max: 200,
-        axisLabel: { formatter: '{value}%', color: '#6b7280', fontSize: 11 },
-        splitLine: { lineStyle: { color: '#f3f4f6' } },
-      },
-      series: [{
-        type: 'bar',
-        barMaxWidth: 60,
-        data: [
-          { value: parseFloat(pctCal.toFixed(1)), itemStyle: { color: pctCal > 100 ? '#ef4444' : '#f97316' } },
-          { value: parseFloat(pctCarbs.toFixed(1)), itemStyle: { color: pctCarbs > 100 ? '#ef4444' : '#3b82f6' } },
-          { value: parseFloat(pctProtein.toFixed(1)), itemStyle: { color: pctProtein > 100 ? '#ef4444' : '#10b981' } },
-          { value: parseFloat(pctFat.toFixed(1)), itemStyle: { color: pctFat > 100 ? '#ef4444' : '#f59e0b' } },
-        ],
-        label: { show: true, position: 'top', formatter: '{c}%', fontSize: 11, color: '#374151' },
-        markLine: {
-          silent: true,
-          lineStyle: { color: '#ef4444', type: 'dashed' },
-          data: [{ yAxis: 100, label: { formatter: '100%', color: '#ef4444' } }],
-        },
-      }],
-    }
-  }, [totals, t])
+  const shareLabel = entries.length === 0 ? t('u.heroLabel')
+    : entries.length === 1 ? t('u.share.labelOne', { first: nameOf(entries[0].food) })
+    : t('u.share.label', { first: nameOf(entries[0].food), n: entries.length })
+  const ratioText = t('u.share.ratio', { c: Math.round(ratio.carbs), p: Math.round(ratio.protein), f: Math.round(ratio.fat) })
 
-  // ── Actions ──────────────────────────────────────────────────────────────
-  const addFood = useCallback((food: FoodItem) => {
-    setMealEntries(prev => [...prev, { uid: nextUid++, food, portion: 1 }])
-  }, [])
+  const copySummary = async () => {
+    const lines = [`[${t('title')}]`, ...entries.map((e) => `${nameOf(e.food)} ${fmtG(e.amount)}${unitOf(e.food)} - ${fmt(scale(e.food, e.amount).cal)} kcal`), '',
+      `${t('summary.totalCal')}: ${fmt(total.cal)} kcal (${ratioText})`,
+      `${t('macros.carbs')} ${fmtG(total.carbs)}g · ${t('macros.protein')} ${fmtG(total.protein)}g · ${t('macros.fat')} ${fmtG(total.fat)}g · ${t('u.sodium')} ${fmt(total.sodium)}mg`]
+    try { await navigator.clipboard.writeText(lines.join('\n')) } catch { /* 권한 없음 */ }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
-  const removeEntry = useCallback((uid: number) => {
-    setMealEntries(prev => prev.filter(e => e.uid !== uid))
-  }, [])
+  const labelRows: { key: keyof Nutrients; label: string; unit: string }[] = [
+    { key: 'cal', label: t('macros.calories'), unit: 'kcal' },
+    { key: 'sodium', label: t('u.sodium'), unit: 'mg' },
+    { key: 'carbs', label: t('macros.carbs'), unit: 'g' },
+    { key: 'protein', label: t('macros.protein'), unit: 'g' },
+    { key: 'fat', label: t('macros.fat'), unit: 'g' },
+  ]
 
-  const updatePortion = useCallback((uid: number, portion: number) => {
-    setMealEntries(prev => prev.map(e => e.uid === uid ? { ...e, portion } : e))
-  }, [])
+  const customFields: { key: keyof CustomForm; label: string }[] = [
+    { key: 'serving', label: t('u.custom.serving') },
+    { key: 'cal', label: t('u.custom.cal') },
+    { key: 'carbs', label: `${t('macros.carbs')} (g)` },
+    { key: 'protein', label: `${t('macros.protein')} (g)` },
+    { key: 'fat', label: `${t('macros.fat')} (g)` },
+    { key: 'sodium', label: `${t('u.sodium')} (mg)` },
+  ]
 
-  const clearMeal = useCallback(() => {
-    setMealEntries([])
-  }, [])
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const buildSummary = useCallback(() => {
-    if (!totals) return ''
-    const lines = [`[${t('title')}]`, '']
-    mealEntries.forEach(e => {
-      lines.push(`${t(`foods.${e.food.id}`)} x${e.portion} - ${formatNumber(e.food.cal * e.portion)} kcal`)
-    })
-    lines.push('')
-    lines.push(`${t('summary.totalCal')}: ${formatNumber(totals.cal)} kcal`)
-    lines.push(`${t('macros.carbs')}: ${formatNumber(totals.carbs)} g`)
-    lines.push(`${t('macros.protein')}: ${formatNumber(totals.protein)} g`)
-    lines.push(`${t('macros.fat')}: ${formatNumber(totals.fat)} g`)
-    return lines.join('\n')
-  }, [totals, mealEntries, t])
-
-  // ── Render ───────────────────────────────────────────────────────────────
   return (
     <div className="space-y-6">
-      {/* 헤더 */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <Utensils className="w-6 h-6 text-green-500" />
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button
-          onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
-        >
-          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          {linkCopied ? t('linkCopied') : t('copyLink')}
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* 카테고리 필터 + 검색 */}
-      <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                selectedCategory === cat
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t(`categories.${cat}`)}
-            </button>
-          ))}
-        </div>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder={t('searchPlaceholder')}
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className={`w-full pl-9 pr-9 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              aria-label={t('clearSearch')}
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* 음식 목록 */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* 음식 그리드 */}
-          <div className={`${glassCard} ${glassInset} p-4`}>
-            <h2 className="text-base font-semibold text-fg mb-3">
-              {t('foodDatabase')} <span className="text-sm font-normal text-gray-400">({filteredFoods.length})</span>
-            </h2>
-            {filteredFoods.length === 0 ? (
-              <div className="text-center py-8 text-faint text-sm">
-                {t('noResults')}
-              </div>
-            ) : (
-              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2">
-                {filteredFoods.map(food => (
-                  <div
-                    key={food.id}
-                    className="bg-subtle rounded-lg p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group"
-                    onClick={() => addFood(food)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={e => e.key === 'Enter' && addFood(food)}
-                    aria-label={`${t(`foods.${food.id}`)} ${food.cal}kcal ${t('addToMeal')}`}
-                  >
-                    <div className="flex items-start justify-between gap-1">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-fg truncate">
-                          {t(`foods.${food.id}`)}
-                        </p>
-                        <p className="text-xs text-muted mt-0.5">
-                          {food.serving}g {t('perServing')}
-                        </p>
-                      </div>
-                      <button
-                        className="shrink-0 w-6 h-6 rounded-full bg-soft text-sub flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        aria-hidden="true"
-                        tabIndex={-1}
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-base font-bold text-orange-600 dark:text-orange-400">
-                        {food.cal}
-                      </span>
-                      <span className="text-xs text-gray-400">kcal</span>
-                      <div className="flex gap-2 ml-auto text-xs text-muted">
-                        <span className="text-blue-500">C {food.carbs}g</span>
-                        <span className="text-green-500">P {food.protein}g</span>
-                        <span className="text-amber-500">F {food.fat}g</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        {/* ── 음식 고르기 ── */}
+        <section className="lg:col-span-2 ui-card p-4 sm:p-5 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
+            <input
+              type="search"
+              placeholder={t('searchPlaceholder')}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="ui-field w-full pl-10 pr-10 py-3 text-sm"
+            />
+            {query && (
+              <button onClick={() => setQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-body" aria-label={t('clearSearch')}>
+                <X className="w-4 h-4" />
+              </button>
             )}
           </div>
-
-          {/* 차트 */}
-          {totals && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className={`${glassCard} ${glassInset} p-4`}>
-                <h3 className="text-sm font-semibold text-body mb-2">{t('chart.macroRatio')}</h3>
-                {donutOption && (
-                  <ReactECharts option={donutOption} style={{ height: 220 }} />
-                )}
-              </div>
-              <div className={`${glassCard} ${glassInset} p-4`}>
-                <h3 className="text-sm font-semibold text-body mb-2">{t('chart.dailyPct')}</h3>
-                {barOption && (
-                  <ReactECharts option={barOption} style={{ height: 220 }} />
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 식단 패널 */}
-        <div className="lg:col-span-1 space-y-4">
-          {/* 식단 목록 */}
-          <div className={`${glassCard} ${glassInset} p-4`}>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-semibold text-fg">
-                {t('mealList')} <span className="text-sm font-normal text-gray-400">({mealEntries.length})</span>
-              </h2>
-              {mealEntries.length > 0 && (
-                <button
-                  onClick={clearMeal}
-                  className="text-xs text-gray-400 hover:text-red-500 transition-colors"
-                >
-                  {t('clearAll')}
-                </button>
-              )}
-            </div>
-
-            {mealEntries.length === 0 ? (
-              <div className="text-center py-8 text-faint text-sm">
-                <Utensils className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                <p>{t('mealEmpty')}</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {mealEntries.map(entry => (
-                  <div
-                    key={entry.uid}
-                    className="border border-line rounded-lg p-3"
-                  >
-                    <div className="flex items-start justify-between gap-1 mb-2">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-fg truncate">
-                          {t(`foods.${entry.food.id}`)}
-                        </p>
-                        <p className="text-xs text-orange-600 dark:text-orange-400 font-semibold">
-                          {formatNumber(entry.food.cal * entry.portion)} kcal
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => removeEntry(entry.uid)}
-                        className="p-1 text-gray-400 hover:text-red-500 transition-colors shrink-0"
-                        aria-label={t('removeItem')}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted mb-1 block">{t('portion')}</label>
-                      <div className="flex gap-1 flex-wrap">
-                        {PORTIONS.map(p => (
-                          <button
-                            key={p}
-                            onClick={() => updatePortion(entry.uid, p)}
-                            className={`px-2 py-0.5 text-xs rounded transition-colors ${
-                              entry.portion === p
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {p}x
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="mt-2 flex gap-2 text-xs text-muted">
-                      <span className="text-blue-500">C {formatNumber(entry.food.carbs * entry.portion)}g</span>
-                      <span className="text-green-500">P {formatNumber(entry.food.protein * entry.portion)}g</span>
-                      <span className="text-amber-500">F {formatNumber(entry.food.fat * entry.portion)}g</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                  category === cat ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
+              >
+                {t(`categories.${cat}`)}
+              </button>
+            ))}
           </div>
 
-          {/* 합계 요약 */}
-          {totals && (
-            <div className={`${glassCard} ${glassInset} p-4`}>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-base font-semibold text-fg">{t('summary.title')}</h2>
-                <button
-                  onClick={() => copyToClipboard(buildSummary(), 'summary')}
-                  className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                >
-                  {copiedId === 'summary' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copiedId === 'summary' ? t('copied') : t('copy')}
+          <div>
+            <p className="text-sm font-semibold text-fg mb-2">
+              {t('foodDatabase')} <span className="font-normal text-faint">({filtered.length})</span>
+            </p>
+            {filtered.length === 0 ? (
+              <div className="text-center py-8 text-sm text-faint space-y-3">
+                <p>{t('noResults')}</p>
+                <button onClick={() => { setCustomOpen(true); setCustom({ ...EMPTY_CUSTOM, name: query }) }} className="ui-btn-soft px-4 py-2 text-sm">
+                  {t('u.custom.open')}
                 </button>
               </div>
-
-              {/* 총 칼로리 */}
-              <div className="bg-subtle rounded-xl p-3 text-center mb-3">
-                <p className="text-xs text-orange-600 dark:text-orange-400">{t('summary.totalCal')}</p>
-                <p className="text-3xl font-bold text-orange-700 dark:text-orange-400">{formatNumber(totals.cal)}</p>
-                <p className="text-xs text-orange-500">kcal</p>
-                <p className="text-xs text-muted mt-1">
-                  {t('summary.driPct', { pct: ((totals.cal / DRI.cal) * 100).toFixed(0) })}
-                </p>
-              </div>
-
-              {/* 3대 영양소 */}
-              <div className="space-y-2">
-                {[
-                  { label: t('macros.carbs'), value: totals.carbs, dri: DRI.carbs, unit: 'g', color: 'blue' },
-                  { label: t('macros.protein'), value: totals.protein, dri: DRI.protein, unit: 'g', color: 'green' },
-                  { label: t('macros.fat'), value: totals.fat, dri: DRI.fat, unit: 'g', color: 'amber' },
-                ].map(({ label, value, dri, unit, color }) => {
-                  const pct = Math.min((value / dri) * 100, 100)
+            ) : (
+              <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 max-h-[26rem] overflow-y-auto lg:max-h-none lg:overflow-visible">
+                {filtered.map((food) => {
+                  const on = inMeal.has(food.id)
                   return (
-                    <div key={label}>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-sub">{label}</span>
-                        <span className="font-medium text-fg">
-                          {formatNumber(value)}{unit} <span className="text-gray-400 font-normal">/ {dri}{unit}</span>
-                        </span>
+                    <button
+                      key={food.id}
+                      onClick={() => addFood(food)}
+                      aria-label={`${t(`foods.${food.id}`)} ${food.cal}kcal ${t('addToMeal')}`}
+                      className={`text-left rounded-xl border p-3 transition-colors ${
+                        on ? 'bg-primary-soft border-primary' : 'bg-subtle border-transparent hover:border-line-strong'}`}
+                    >
+                      <div className="flex items-start justify-between gap-1">
+                        <p className={`text-sm font-semibold truncate ${on ? 'text-primary' : 'text-fg'}`}>{t(`foods.${food.id}`)}</p>
+                        {on ? <Check className="w-4 h-4 text-primary shrink-0" /> : <Plus className="w-4 h-4 text-faint shrink-0" />}
                       </div>
-                      <div className="h-2 bg-soft rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all bg-${color}-500`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
+                      <p className="mt-1 text-base font-bold text-fg tabular-nums">{fmt(food.cal)}<span className="text-xs font-normal text-muted"> kcal</span></p>
+                      <p className="text-xs text-muted tabular-nums">
+                        {t('perServing')} {food.serving}{unitOf(food)} · {t(food.unit === 'ml' ? 'u.per100ml' : 'u.per100g', { kcal: fmt(per100(food).cal) })}
+                      </p>
+                    </button>
                   )
                 })}
               </div>
+            )}
+          </div>
+          <p className="text-xs text-faint">{t('u.dataNote')}</p>
+        </section>
 
-              {/* DRI 기준 안내 */}
-              <p className="text-xs text-faint mt-3">{t('summary.driNote')}</p>
+        {/* ── 결과 + 내 식단 ── */}
+        <div className="space-y-4">
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{t('u.heroLabel')}</p>
+            <p className="text-4xl font-bold mt-1 tabular-nums">{fmt(total.cal)}<span className="text-xl font-semibold"> kcal</span></p>
+            <p className="text-sm text-white/80 mt-1">{t('u.heroSub', { pct: Math.round(pct.cal), n: entries.length })}</p>
+            <div className="grid grid-cols-4 gap-2 mt-5 pt-4 border-t border-white/20 text-sm">
+              {[...MACROS.map((m) => ({ label: t(`macros.${m}`), value: `${fmtG(total[m])}g` })),
+                { label: t('u.sodium'), value: `${fmt(total.sodium)}mg` }].map((x) => (
+                <div key={x.label} className="min-w-0">
+                  <p className="text-white/70 text-xs truncate">{x.label}</p>
+                  <p className="font-bold tabular-nums truncate">{x.value}</p>
+                </div>
+              ))}
             </div>
+          </div>
+
+          {entries.length > 0 && (
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: shareLabel,
+                headline: `${fmt(total.cal)} kcal`,
+                sub: ratioText,
+                rows: [
+                  ...MACROS.map((m) => ({ label: t(`macros.${m}`), value: `${fmtG(total[m])}g` })),
+                  { label: t('u.sodium'), value: `${fmt(total.sodium)}mg (${Math.round(pct.sodium)}%)` },
+                ],
+              }}
+              text={t('u.share.text', { label: shareLabel, kcal: fmt(total.cal), ratio: ratioText })}
+              fileName="nutrition-calculator"
+            />
           )}
+
+          <div className="ui-card p-4 sm:p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-semibold text-fg">
+                {t('mealList')} <span className="text-sm font-normal text-faint">({entries.length})</span>
+              </h2>
+              {entries.length > 0 && (
+                <button onClick={() => setEntries([])} className="text-xs text-muted hover:text-fg">{t('clearAll')}</button>
+              )}
+            </div>
+
+            {entries.length === 0 ? (
+              <p className="text-center py-6 text-sm text-faint">{t('mealEmpty')}</p>
+            ) : (
+              <ul className="space-y-2">
+                {entries.map((e) => {
+                  const unit = unitOf(e.food)
+                  return (
+                    <li key={e.uid} className="rounded-xl border border-line p-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-fg truncate">{nameOf(e.food)}</p>
+                          <p className="text-xs text-muted tabular-nums">
+                            {fmt(scale(e.food, e.amount).cal)} kcal · {t('u.sodium')} {fmt(scale(e.food, e.amount).sodium)}mg
+                          </p>
+                        </div>
+                        <button onClick={() => remove(e.uid)} className="p-1 text-faint hover:text-fg shrink-0" aria-label={t('removeItem')}>
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="mt-2 flex items-center gap-2 flex-wrap">
+                        <label className="flex items-center gap-1.5">
+                          <span className="sr-only">{t('u.amount')}</span>
+                          <input
+                            type="number"
+                            inputMode="decimal"
+                            min={0}
+                            max={MAX_AMOUNT}
+                            step={10}
+                            value={e.amount || ''}
+                            onChange={(ev) => setAmount(e.uid, parseFloat(ev.target.value) || 0)}
+                            className="ui-field w-20 px-2.5 py-1.5 text-sm tabular-nums"
+                          />
+                          <span className="text-xs text-muted">{unit}</span>
+                        </label>
+                        <div className="flex gap-1">
+                          {PORTIONS.map((p) => {
+                            const on = Math.abs(e.amount - e.food.serving * p) < 0.05
+                            return (
+                              <button
+                                key={p}
+                                onClick={() => setAmount(e.uid, Math.round(e.food.serving * p * 10) / 10)}
+                                className={`px-2 py-1 text-xs rounded-lg transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-track'}`}
+                              >
+                                {t('u.portionChip', { n: p })}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+
+            {/* 직접 입력 */}
+            {customOpen ? (
+              <div className="mt-3 bg-subtle rounded-2xl p-4 space-y-3">
+                <div>
+                  <p className="text-sm font-semibold text-fg">{t('u.custom.title')}</p>
+                  <p className="text-xs text-muted mt-0.5">{t('u.custom.hint')}</p>
+                </div>
+                <label className="block">
+                  <span className="text-xs text-sub">{t('u.custom.name')}</span>
+                  <input
+                    value={custom.name}
+                    maxLength={40}
+                    placeholder={t('u.custom.namePh')}
+                    onChange={(e) => setCustom({ ...custom, name: e.target.value })}
+                    className="ui-field w-full mt-1 px-3 py-2 text-sm"
+                  />
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {customFields.map(({ key, label }) => (
+                    <label key={key} className="block">
+                      <span className="text-xs text-sub">{label}</span>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        min={0}
+                        value={custom[key]}
+                        onChange={(e) => setCustom({ ...custom, [key]: e.target.value })}
+                        className="ui-field w-full mt-1 px-3 py-2 text-sm tabular-nums"
+                      />
+                    </label>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={addCustom} disabled={!customValid} className="ui-btn flex-1 px-4 py-2.5 text-sm">{t('u.custom.add')}</button>
+                  <button onClick={() => setCustomOpen(false)} className="ui-btn-soft px-4 py-2.5 text-sm">{t('u.custom.cancel')}</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => setCustomOpen(true)} className="mt-3 w-full ui-btn-soft px-4 py-2.5 text-sm">
+                <Plus className="w-4 h-4" /> {t('u.custom.open')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* 가이드 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between"
-          aria-expanded={showGuide}
-        >
-          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
-        </button>
-        {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-body">
+      {/* ── 상세: 영양정보 + 탄단지 ── */}
+      <div className="grid md:grid-cols-2 gap-6 items-start">
+        <section className="ui-card p-5 sm:p-6">
+          <div className="flex items-start justify-between gap-3 pb-3 border-b-2 border-fg">
             <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.howToUse.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.howToUse.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
+              <h2 className="text-lg font-bold text-fg">{t('u.label.title')}</h2>
+              <p className="text-xs text-muted mt-0.5">{t('u.label.basis')}</p>
             </div>
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.macros.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.macros.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
+            <button onClick={copySummary} disabled={!entries.length} className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-soft text-body hover:bg-track disabled:opacity-40">
+              {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? t('copied') : t('copy')}
+            </button>
           </div>
-        )}
+          <ul className="divide-y divide-line">
+            {labelRows.map(({ key, label, unit }) => {
+              const p = pct[key]
+              const over = p > 100
+              return (
+                <li key={key} className="py-3">
+                  <div className="flex items-baseline justify-between gap-2 text-sm">
+                    <span className="text-body"><span className="font-semibold text-fg">{label}</span> <span className="tabular-nums">{key === 'carbs' || key === 'protein' || key === 'fat' ? fmtG(total[key]) : fmt(total[key])}{unit}</span></span>
+                    <span className={`font-bold tabular-nums ${over ? 'text-amber-600' : 'text-fg'}`}>{Math.round(p)}%</span>
+                  </div>
+                  <div className="mt-1.5 h-1.5 bg-track rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${over ? 'bg-amber-500' : 'bg-primary'}`} style={{ width: `${Math.min(p, 100)}%` }} />
+                  </div>
+                  <p className="text-xs text-faint mt-1 tabular-nums">{t('u.label.dv', { v: `${fmt(DV[key])}${unit}` })}</p>
+                </li>
+              )
+            })}
+          </ul>
+          <p className="text-xs text-muted mt-2">{t('u.label.note')}</p>
+        </section>
+
+        <section className="ui-card p-5 sm:p-6 space-y-4">
+          <h2 className="text-lg font-bold text-fg">{t('u.ratio.title')}</h2>
+          <div className="flex h-3 rounded-full overflow-hidden bg-track">
+            {MACROS.map((m) => <div key={m} className={MACRO_BAR[m]} style={{ width: `${ratio[m]}%` }} />)}
+          </div>
+          <ul className="space-y-3">
+            {MACROS.map((m) => {
+              const st = ratioStatus(m, ratio[m])
+              const has = total.carbs + total.protein + total.fat > 0
+              return (
+                <li key={m} className="flex items-center gap-3 text-sm">
+                  <span className={`w-3 h-3 rounded-sm shrink-0 ${MACRO_BAR[m]}`} />
+                  <span className="text-fg font-semibold w-16 shrink-0">{t(`macros.${m}`)}</span>
+                  <span className="font-bold text-fg tabular-nums w-12">{Math.round(ratio[m])}%</span>
+                  <span className="text-xs text-muted flex-1">{t('u.ratio.range', { lo: AMDR[m][0], hi: AMDR[m][1] })}</span>
+                  {has && (
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${st === 0 ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
+                      {t(st === 0 ? 'u.ratio.ok' : st < 0 ? 'u.ratio.low' : 'u.ratio.high')}
+                    </span>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+          {alcoholKcal > 30 && <p className="text-xs text-muted">{t('u.ratio.alcohol', { kcal: fmt(alcoholKcal) })}</p>}
+          <p className="text-xs text-faint">{t('u.ratio.note')}</p>
+          {pct.sodium > 100 && (
+            <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">
+              {t('u.sodiumWarn', { mg: fmt(total.sodium), pct: Math.round(pct.sodium) })}
+            </div>
+          )}
+        </section>
       </div>
+
+      {/* ── 가이드 ── */}
+      <section className="ui-card p-6 space-y-6 text-sm text-body">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        {(['howToUse', 'macros', 'tips'] as const).map((k) => (
+          <div key={k}>
+            <h3 className="font-semibold text-fg mb-2">{t(`guide.${k}.title`)}</h3>
+            <ul className="list-disc pl-5 space-y-1">
+              {(t.raw(`guide.${k}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <dl className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((x, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4">
+                <dt className="font-semibold text-fg">{x.q}</dt>
+                <dd className="mt-1 text-sub">{x.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
     </div>
   )
 }

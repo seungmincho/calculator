@@ -1,814 +1,341 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
 import {
-  GraduationCap,
-  Copy,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  BookOpen,
-  RefreshCw,
-  Award,
-  TrendingUp,
-} from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+  CUTS, CUT_YEAR, CSAT_YEAR, TOP_PCT, type CutKey, type Grades,
+  gradeOf, clampScore, topRange, pointsToNext, estimate, daysUntil, bestSum, gradeAverages,
+} from '@/utils/csatGrade'
 
-// ── Types ──
+type Id = 'kor' | 'math' | 'eng' | 'hist' | 'inq1' | 'inq2'
+type Sel = { kor: string; math: string; inq1: string; inq2: string }
 
-type SubjectKey =
-  | 'korean'
-  | 'mathCalc'
-  | 'mathProb'
-  | 'english'
-  | 'koreanHistory'
-  | 'socialStudies'
-  | 'science'
+const IDS: Id[] = ['kor', 'math', 'eng', 'hist', 'inq1', 'inq2']
+const DEFAULT_SCORES: Record<Id, string> = { kor: '84', math: '80', eng: '85', hist: '42', inq1: '44', inq2: '41' }
+const DEFAULT_SEL: Sel = { kor: 'lm', math: 'prob', inq1: 'soc', inq2: 'soc' }
+const SEL_OPTS: Record<keyof Sel, string[]> = { kor: ['lm', 'hj'], math: ['prob', 'calc', 'geo'], inq1: ['soc', 'sci'], inq2: ['soc', 'sci'] }
+const SEL_PARAM: Record<keyof Sel, string> = { kor: 'korSel', math: 'mathSel', inq1: 'inq1Type', inq2: 'inq2Type' }
+const TABLE_KEYS: CutKey[] = ['korean', 'mathProb', 'mathCalc', 'english', 'koreanHistory', 'socialStudies', 'science']
 
-interface GradeCutoff {
-  grade: number
-  rawCutoff: number
-  standardScore?: number | null
-  percentile?: number | null
+// 구버전 링크(?subject=&score=) 호환
+const LEGACY: Record<string, [Id, Partial<Sel>]> = {
+  korean: ['kor', {}], mathCalc: ['math', { math: 'calc' }], mathProb: ['math', { math: 'prob' }],
+  english: ['eng', {}], koreanHistory: ['hist', {}], socialStudies: ['inq1', { inq1: 'soc' }], science: ['inq1', { inq1: 'sci' }],
 }
 
-interface SubjectData {
-  key: SubjectKey
-  labelKey: string
-  detailKey: string
-  maxScore: number
-  isAbsolute: boolean
-  cutoffs: GradeCutoff[]
-}
-
-// ── Cutoff Data (2025학년도 수능) ──
-
-const SUBJECTS: SubjectData[] = [
-  {
-    key: 'korean',
-    labelKey: 'subjects.korean',
-    detailKey: 'subjectDetail.korean',
-    maxScore: 100,
-    isAbsolute: false,
-    cutoffs: [
-      { grade: 1, rawCutoff: 92, standardScore: 131, percentile: 96 },
-      { grade: 2, rawCutoff: 85, standardScore: 124, percentile: 89 },
-      { grade: 3, rawCutoff: 77, standardScore: 116, percentile: 77 },
-      { grade: 4, rawCutoff: 68, standardScore: 107, percentile: 60 },
-      { grade: 5, rawCutoff: 58, standardScore: 97, percentile: 40 },
-      { grade: 6, rawCutoff: 47, standardScore: 86, percentile: 23 },
-      { grade: 7, rawCutoff: 36, standardScore: 75, percentile: 11 },
-      { grade: 8, rawCutoff: 27, standardScore: 66, percentile: 4 },
-      { grade: 9, rawCutoff: 0, standardScore: null, percentile: 0 },
-    ],
-  },
-  {
-    key: 'mathCalc',
-    labelKey: 'subjects.math',
-    detailKey: 'subjectDetail.mathCalc',
-    maxScore: 100,
-    isAbsolute: false,
-    cutoffs: [
-      { grade: 1, rawCutoff: 92, standardScore: 135, percentile: 96 },
-      { grade: 2, rawCutoff: 85, standardScore: 131, percentile: 90 },
-      { grade: 3, rawCutoff: 76, standardScore: 123, percentile: 77 },
-      { grade: 4, rawCutoff: 64, standardScore: 112, percentile: 60 },
-      { grade: 5, rawCutoff: 48, standardScore: 96, percentile: 40 },
-      { grade: 6, rawCutoff: 32, standardScore: 80, percentile: 23 },
-      { grade: 7, rawCutoff: 20, standardScore: 68, percentile: 11 },
-      { grade: 8, rawCutoff: 12, standardScore: 60, percentile: 4 },
-      { grade: 9, rawCutoff: 0, standardScore: null, percentile: 0 },
-    ],
-  },
-  {
-    key: 'mathProb',
-    labelKey: 'subjects.math',
-    detailKey: 'subjectDetail.mathProb',
-    maxScore: 100,
-    isAbsolute: false,
-    cutoffs: [
-      { grade: 1, rawCutoff: 88, standardScore: 130, percentile: 95 },
-      { grade: 2, rawCutoff: 80, standardScore: 124, percentile: 88 },
-      { grade: 3, rawCutoff: 68, standardScore: 114, percentile: 76 },
-      { grade: 4, rawCutoff: 52, standardScore: 100, percentile: 58 },
-      { grade: 5, rawCutoff: 36, standardScore: 86, percentile: 39 },
-      { grade: 6, rawCutoff: 24, standardScore: 74, percentile: 22 },
-      { grade: 7, rawCutoff: 16, standardScore: 66, percentile: 10 },
-      { grade: 8, rawCutoff: 8, standardScore: 58, percentile: 4 },
-      { grade: 9, rawCutoff: 0, standardScore: null, percentile: 0 },
-    ],
-  },
-  {
-    key: 'english',
-    labelKey: 'subjects.english',
-    detailKey: 'subjectDetail.english',
-    maxScore: 100,
-    isAbsolute: true,
-    cutoffs: [
-      { grade: 1, rawCutoff: 90 },
-      { grade: 2, rawCutoff: 80 },
-      { grade: 3, rawCutoff: 70 },
-      { grade: 4, rawCutoff: 60 },
-      { grade: 5, rawCutoff: 50 },
-      { grade: 6, rawCutoff: 40 },
-      { grade: 7, rawCutoff: 30 },
-      { grade: 8, rawCutoff: 20 },
-      { grade: 9, rawCutoff: 0 },
-    ],
-  },
-  {
-    key: 'koreanHistory',
-    labelKey: 'subjects.koreanHistory',
-    detailKey: 'subjectDetail.koreanHistory',
-    maxScore: 50,
-    isAbsolute: true,
-    cutoffs: [
-      { grade: 1, rawCutoff: 40 },
-      { grade: 2, rawCutoff: 35 },
-      { grade: 3, rawCutoff: 30 },
-      { grade: 4, rawCutoff: 25 },
-      { grade: 5, rawCutoff: 20 },
-      { grade: 6, rawCutoff: 15 },
-      { grade: 7, rawCutoff: 10 },
-      { grade: 8, rawCutoff: 5 },
-      { grade: 9, rawCutoff: 0 },
-    ],
-  },
-  {
-    key: 'socialStudies',
-    labelKey: 'subjects.socialStudies',
-    detailKey: 'subjectDetail.socialStudies',
-    maxScore: 50,
-    isAbsolute: false,
-    cutoffs: [
-      { grade: 1, rawCutoff: 47 },
-      { grade: 2, rawCutoff: 44 },
-      { grade: 3, rawCutoff: 40 },
-      { grade: 4, rawCutoff: 35 },
-      { grade: 5, rawCutoff: 29 },
-      { grade: 6, rawCutoff: 23 },
-      { grade: 7, rawCutoff: 17 },
-      { grade: 8, rawCutoff: 11 },
-      { grade: 9, rawCutoff: 0 },
-    ],
-  },
-  {
-    key: 'science',
-    labelKey: 'subjects.science',
-    detailKey: 'subjectDetail.science',
-    maxScore: 50,
-    isAbsolute: false,
-    cutoffs: [
-      { grade: 1, rawCutoff: 46 },
-      { grade: 2, rawCutoff: 42 },
-      { grade: 3, rawCutoff: 38 },
-      { grade: 4, rawCutoff: 33 },
-      { grade: 5, rawCutoff: 27 },
-      { grade: 6, rawCutoff: 21 },
-      { grade: 7, rawCutoff: 15 },
-      { grade: 8, rawCutoff: 9 },
-      { grade: 9, rawCutoff: 0 },
-    ],
-  },
-]
-
-// ── Helpers ──
-
-function getGrade(subject: SubjectData, score: number): number {
-  for (const c of subject.cutoffs) {
-    if (score >= c.rawCutoff) return c.grade
-  }
-  return 9
-}
-
-function getGradeColor(grade: number): string {
-  switch (grade) {
-    case 1:
-      return 'bg-yellow-100 dark:bg-yellow-900/40 border-yellow-400 dark:border-yellow-600 text-yellow-800 dark:text-yellow-200'
-    case 2:
-      return 'bg-soft border-gray-400 dark:border-gray-500 text-body'
-    case 3:
-      return 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 dark:border-orange-600 text-fg'
-    case 4:
-    case 5:
-      return 'bg-subtle border-line text-fg'
-    case 6:
-    case 7:
-      return 'bg-subtle border-line text-fg'
-    default:
-      return 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-800 dark:text-red-200'
+function cutOf(id: Id, sel: Sel): CutKey {
+  switch (id) {
+    case 'kor': return 'korean'
+    case 'math': return sel.math === 'prob' ? 'mathProb' : 'mathCalc' // 기하는 미적분 컷으로 근사 (기존 데이터 구분)
+    case 'eng': return 'english'
+    case 'hist': return 'koreanHistory'
+    default: return sel[id] === 'sci' ? 'science' : 'socialStudies'
   }
 }
 
-function getGradeCircleColor(grade: number): string {
-  switch (grade) {
-    case 1:
-      return 'from-yellow-400 to-yellow-600'
-    case 2:
-      return 'from-gray-300 to-gray-500'
-    case 3:
-      return 'from-orange-400 to-orange-600'
-    case 4:
-    case 5:
-      return 'from-blue-400 to-blue-600'
-    case 6:
-    case 7:
-      return 'from-green-400 to-green-600'
-    default:
-      return 'from-red-400 to-red-600'
-  }
+const localToday = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
-
-function getRowHighlight(grade: number): string {
-  switch (grade) {
-    case 1:
-      return 'bg-yellow-50 dark:bg-yellow-900/20'
-    case 2:
-      return 'bg-gray-50 dark:bg-gray-700/30'
-    case 3:
-      return 'bg-subtle'
-    case 4:
-    case 5:
-      return 'bg-subtle'
-    case 6:
-    case 7:
-      return 'bg-subtle'
-    default:
-      return 'bg-red-50 dark:bg-red-900/20'
-  }
-}
-
-// ── Component ──
 
 export default function CsatGrade() {
   const t = useTranslations('csatGrade')
+  const sp = useSearchParams()
 
-  const [subjectKey, setSubjectKey] = useState<SubjectKey>('korean')
-  const [rawScore, setRawScore] = useState<string>('')
-  const [result, setResult] = useState<{
-    grade: number
-    subject: SubjectData
-    score: number
-  } | null>(null)
-  const [copiedLink, setCopiedLink] = useState(false)
-  const [showTable, setShowTable] = useState(false)
-  const [showGuide, setShowGuide] = useState(false)
+  const [sel, setSel] = useState<Sel>(() => {
+    const s = { ...DEFAULT_SEL }
+    for (const k of Object.keys(SEL_OPTS) as (keyof Sel)[]) {
+      const v = sp.get(SEL_PARAM[k])
+      if (v && SEL_OPTS[k].includes(v)) s[k] = v
+    }
+    const legacy = LEGACY[sp.get('subject') ?? '']
+    return legacy ? { ...s, ...legacy[1] } : s
+  })
+  const [scores, setScores] = useState<Record<Id, string>>(() => {
+    const s = { ...DEFAULT_SCORES }
+    for (const id of IDS) {
+      const v = sp.get(id)
+      if (v != null && v !== '' && !isNaN(+v)) s[id] = v
+    }
+    const legacy = LEGACY[sp.get('subject') ?? '']
+    const sc = sp.get('score')
+    if (legacy && sc != null && sc !== '' && !isNaN(+sc)) s[legacy[0]] = sc
+    return s
+  })
+  const [minN, setMinN] = useState(() => ([2, 3, 4].includes(Number(sp.get('minN'))) ? Number(sp.get('minN')) : 3))
+  const [minSum, setMinSum] = useState(() => {
+    const v = Number(sp.get('minSum'))
+    return Number.isInteger(v) && v >= 2 && v <= 36 ? v : 7
+  })
+  const [tableKey, setTableKey] = useState<CutKey>('korean')
+  const [today, setToday] = useState<string | null>(null)
+  useEffect(() => setToday(localToday()), [])
 
-  const subject = useMemo(
-    () => SUBJECTS.find((s) => s.key === subjectKey)!,
-    [subjectKey]
-  )
-
-  // URL params
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const s = params.get('subject')
-    const sc = params.get('score')
-    if (s && SUBJECTS.some((sub) => sub.key === s)) {
-      setSubjectKey(s as SubjectKey)
-      if (sc) {
-        const num = parseInt(sc, 10)
-        const sub = SUBJECTS.find((sub) => sub.key === s)!
-        if (!isNaN(num) && num >= 0 && num <= sub.maxScore) {
-          setRawScore(sc)
-          setResult({ grade: getGrade(sub, num), subject: sub, score: num })
-        }
-      }
-    }
-  }, [])
-
-  const updateURL = useCallback((subj: string, score: string) => {
     const url = new URL(window.location.href)
-    url.searchParams.set('subject', subj)
-    if (score) url.searchParams.set('score', score)
-    else url.searchParams.delete('score')
+    const q = url.searchParams
+    for (const id of IDS) q.set(id, scores[id] || '0')
+    for (const k of Object.keys(SEL_PARAM) as (keyof Sel)[]) q.set(SEL_PARAM[k], sel[k])
+    q.set('minN', String(minN))
+    q.set('minSum', String(minSum))
+    q.delete('subject')
+    q.delete('score')
     window.history.replaceState({}, '', url)
-  }, [])
+  }, [scores, sel, minN, minSum])
 
-  const handleCalculate = useCallback(() => {
-    const score = parseInt(rawScore, 10)
-    if (isNaN(score) || score < 0 || score > subject.maxScore) return
-    const grade = getGrade(subject, score)
-    setResult({ grade, subject, score })
-    updateURL(subjectKey, rawScore)
-  }, [rawScore, subject, subjectKey, updateURL])
+  const rows = useMemo(() => IDS.map((id) => {
+    const cut = cutOf(id, sel)
+    const score = clampScore(cut, Number(scores[id] || 0))
+    const grade = gradeOf(cut, score)
+    return { id, cut, score, grade, max: CUTS[cut].max, absolute: CUTS[cut].absolute, est: estimate(cut, score), next: pointsToNext(cut, score) }
+  }), [scores, sel])
 
-  const handleReset = useCallback(() => {
-    setRawScore('')
-    setResult(null)
-    setShowTable(false)
-    const url = new URL(window.location.href)
-    url.searchParams.delete('subject')
-    url.searchParams.delete('score')
-    window.history.replaceState({}, '', url)
-  }, [])
+  const g = Object.fromEntries(rows.map((r) => [r.id, r.grade])) as unknown as Grades
+  const avg = gradeAverages(g)
+  const sums = [2, 3, 4].map((n) => ({ n, sum: bestSum(g, n) }))
+  const mySum = bestSum(g, minN)
+  const minOk = mySum <= minSum
+  const days = today ? daysUntil(today) : null
 
-  const handleSubjectChange = useCallback(
-    (key: SubjectKey) => {
-      setSubjectKey(key)
-      setResult(null)
-      setRawScore('')
-      updateURL(key, '')
-    },
-    [updateURL]
-  )
+  const name = (id: Id) =>
+    id === 'kor' ? t('subjects.korean') : id === 'math' ? t('subjects.math') : id === 'eng' ? t('subjects.english')
+      : id === 'hist' ? t('subjects.koreanHistory') : t(id === 'inq1' ? 'u.inq1' : 'u.inq2')
+  const selLabel = (k: keyof Sel, v: string) => (k === 'inq1' || k === 'inq2' ? t(v === 'sci' ? 'subjects.science' : 'subjects.socialStudies') : t(`u.sel.${v}`))
+  const gradeText = (gr: number | string) => t('u.gradeN', { g: gr })
 
-  const copyLink = useCallback(async () => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('subject', subjectKey)
-    if (rawScore) url.searchParams.set('score', rawScore)
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url.toString())
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = url.toString()
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    } catch {
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    }
-  }, [subjectKey, rawScore])
+  const setScore = (id: Id, v: string, cut: CutKey) =>
+    setScores((s) => ({ ...s, [id]: v === '' ? '' : String(clampScore(cut, Number(v))) }))
 
-  const matchedCutoff = useMemo(() => {
-    if (!result) return null
-    return result.subject.cutoffs.find((c) => c.grade === result.grade) ?? null
-  }, [result])
+  const seg = (active: boolean) =>
+    `px-3 py-2 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
-  const scoreBarSegments = useMemo(() => {
-    const cutoffs = subject.cutoffs
-    const segments: { grade: number; from: number; to: number }[] = []
-    for (let i = 0; i < cutoffs.length; i++) {
-      const from = cutoffs[i].rawCutoff
-      const to = i === 0 ? subject.maxScore : cutoffs[i - 1].rawCutoff - 1
-      segments.push({ grade: cutoffs[i].grade, from, to })
-    }
-    return segments.reverse()
-  }, [subject])
+  const inq = rows[4].grade === rows[5].grade ? gradeText(rows[4].grade) : t('u.inqPair', { a: rows[4].grade, b: rows[5].grade })
+  const heroSub = t('u.heroSub', { noEng: avg.noEng.toFixed(2), s3: sums[1].sum })
+
+  const table = CUTS[tableKey]
+  const tableRow = rows.find((r) => r.cut === tableKey)
+  const hasStd = table.cuts[0].std != null
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-primary rounded-lg text-white">
-          <GraduationCap className="w-6 h-6" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Input Section */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('subject')}
-            </h2>
-
-            {/* Year badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-subtle rounded-full text-sm font-medium text-sub">
-              <GraduationCap className="w-4 h-4" />
-              {t('year')}
-            </div>
-
-            {/* Subject select */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1.5">
-                {t('subject')}
-              </label>
-              <select
-                value={subjectKey}
-                onChange={(e) =>
-                  handleSubjectChange(e.target.value as SubjectKey)
-                }
-                className={`${glassInput} px-3 py-2`}
-              >
-                {SUBJECTS.map((s) => (
-                  <option key={s.key} value={s.key}>
-                    {t(s.detailKey)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Raw score input */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1.5">
-                {t('rawScore')} ({t('maxScore')}: {subject.maxScore})
-              </label>
-              <input
-                type="number"
-                min={0}
-                max={subject.maxScore}
-                value={rawScore}
-                onChange={(e) => setRawScore(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleCalculate()
-                }}
-                placeholder={`0 ~ ${subject.maxScore}`}
-                className={`${glassInput} px-3 py-2`}
-              />
-            </div>
-
-            {/* Absolute/relative badge */}
-            <div className="flex items-center gap-2">
-              <span
-                className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                  subject.isAbsolute
-                    ? 'bg-primary-soft text-primary'
-                    : 'bg-soft text-sub'
-                }`}
-              >
-                {subject.isAbsolute ? t('absoluteGrade') : t('relativeGrade')}
-              </span>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleCalculate}
-                disabled={!rawScore}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {t('calculate')}
-              </button>
-              <button
-                onClick={handleReset}
-                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                title={t('reset')}
-              >
-                <RefreshCw className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Copy link */}
-            <button
-              onClick={copyLink}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="w-4 h-4 text-green-500" />
-                  {t('linkCopied')}
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" />
-                  {t('copyLinkButton')}
-                </>
-              )}
-            </button>
+      {/* ── 핵심 결과 ── */}
+      <div className="space-y-4">
+        <div className="ui-hero p-6 sm:p-8">
+          {days != null && days >= 0 && (
+            <p className="text-sm text-white/80 tabular-nums">
+              {t('u.dday', { year: CSAT_YEAR, d: days === 0 ? 'D-Day' : `D-${days}` })} · {t('u.examDate')}
+            </p>
+          )}
+          <p className="text-sm text-white/70 mt-3">{t('u.heroLabel')}</p>
+          <p className="text-4xl sm:text-5xl font-bold tabular-nums mt-1">{gradeText(avg.all.toFixed(2))}</p>
+          <p className="text-sm text-white/80 mt-2 tabular-nums">{heroSub}</p>
+          <div className="mt-6 pt-4 border-t border-white/20 grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {rows.map((r) => (
+              <div key={r.id} className="bg-white/15 rounded-xl px-2 py-2 text-center">
+                <div className="text-xs text-white/70 truncate">{name(r.id)}</div>
+                <div className="text-lg font-bold tabular-nums">{r.grade}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Result Section */}
-        <div className="lg:col-span-2 space-y-6">
-          {result ? (
-            <>
-              {/* Grade result card */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-6 flex items-center gap-2">
-                  {t('result')}
-                </h2>
+        <ShareResult
+          card={{
+            tool: t('title'),
+            label: t('u.heroLabel'),
+            headline: gradeText(avg.all.toFixed(2)),
+            sub: heroSub,
+            rows: [
+              ...rows.slice(0, 4).map((r) => ({ label: name(r.id), value: t('u.shareRow', { g: r.grade, s: r.score }) })),
+              { label: t('u.inq'), value: inq },
+            ],
+          }}
+          text={t('u.shareText', { avg: avg.all.toFixed(2), s3: sums[1].sum })}
+          fileName="csat-grade"
+        />
+      </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-8">
-                  {/* Grade circle */}
-                  <div className="flex-shrink-0">
-                    <div
-                      className={`w-32 h-32 rounded-full bg-gradient-to-br ${getGradeCircleColor(
-                        result.grade
-                      )} flex items-center justify-center shadow-lg`}
-                    >
-                      <div className="text-center text-white">
-                        <div className="text-4xl font-bold">
-                          {result.grade}
-                        </div>
-                        <div className="text-sm opacity-90">{t('grade')}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex-1 space-y-4 text-center sm:text-left">
-                    <div
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${getGradeColor(
-                        result.grade
-                      )}`}
-                    >
-                      <Award className="w-5 h-5" />
-                      <span className="font-semibold text-lg">
-                        {t('gradeResult', { grade: result.grade })}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-subtle rounded-lg p-3">
-                        <div className="text-xs text-muted">
-                          {t('yourScore')}
-                        </div>
-                        <div className="text-xl font-bold text-fg">
-                          {result.score}
-                          <span className="text-sm font-normal text-muted">
-                            {' '}
-                            / {result.subject.maxScore}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="bg-subtle rounded-lg p-3">
-                        <div className="text-xs text-muted">
-                          {t('cutoff')}
-                        </div>
-                        <div className="text-xl font-bold text-fg">
-                          {matchedCutoff?.rawCutoff ?? 0}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Standard score & percentile for relative subjects */}
-                    {!result.subject.isAbsolute && matchedCutoff && (
-                      <div className="grid grid-cols-2 gap-4">
-                        {matchedCutoff.standardScore != null && (
-                          <div className="bg-subtle rounded-lg p-3">
-                            <div className="text-xs text-blue-600 dark:text-blue-400">
-                              {t('standardScore')}
-                            </div>
-                            <div className="text-xl font-bold text-fg">
-                              {matchedCutoff.standardScore}
-                            </div>
-                          </div>
-                        )}
-                        {matchedCutoff.percentile != null && (
-                          <div className="bg-subtle rounded-lg p-3">
-                            <div className="text-xs text-indigo-600 dark:text-indigo-400">
-                              {t('percentile')}
-                            </div>
-                            <div className="text-xl font-bold text-fg">
-                              {matchedCutoff.percentile}%
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Absolute badge */}
-                    {result.subject.isAbsolute && (
-                      <span className="inline-flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-soft text-sub font-medium">
-                        <Check className="w-3.5 h-3.5" />
-                        {t('absoluteGrade')}
-                      </span>
+      {/* ── 과목별 입력 + 등급 ── */}
+      <div className="ui-card p-4 sm:p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('u.inputTitle')}</h2>
+        <p className="text-xs text-muted mt-1">{t('u.inputNote', { year: CUT_YEAR })}</p>
+        <ul className="mt-4 divide-y divide-line">
+          {rows.map((r) => {
+            const selKey = (r.id in SEL_OPTS ? r.id : null) as keyof Sel | null
+            const [from, to] = topRange(r.grade)
+            return (
+              <li key={r.id} className="py-4 first:pt-0 last:pb-0">
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <label htmlFor={`csat-${r.id}`} className="block text-sm font-semibold text-fg">{name(r.id)}</label>
+                    {selKey ? (
+                      <select
+                        aria-label={t('u.selectAria', { s: name(r.id) })}
+                        value={sel[selKey]}
+                        onChange={(e) => setSel((s) => ({ ...s, [selKey]: e.target.value }))}
+                        className="ui-field px-2 py-1.5 mt-1 text-sm w-full max-w-[11rem]"
+                      >
+                        {SEL_OPTS[selKey].map((v) => <option key={v} value={v}>{selLabel(selKey, v)}</option>)}
+                      </select>
+                    ) : (
+                      <span className="inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full bg-primary-soft text-primary">{t('absoluteGrade')}</span>
                     )}
                   </div>
-                </div>
-
-                {/* Score bar visualization */}
-                <div className="mt-8">
-                  <div className="text-sm font-medium text-body mb-2">
-                    {t('gradeRange')}
-                  </div>
-                  <div className="relative w-full h-8 rounded-lg overflow-hidden flex">
-                    {scoreBarSegments.map((seg) => {
-                      const width =
-                        ((seg.to - seg.from + 1) / (subject.maxScore + 1)) * 100
-                      const isActive = result.grade === seg.grade
-                      return (
-                        <div
-                          key={seg.grade}
-                          className={`relative h-full flex items-center justify-center text-xs font-bold transition-all ${
-                            isActive
-                              ? 'ring-2 ring-blue-500 ring-offset-1 z-10'
-                              : 'opacity-70'
-                          }`}
-                          style={{
-                            width: `${width}%`,
-                            backgroundColor: getSegmentBg(seg.grade),
-                          }}
-                          title={`${seg.grade}${t('grade')}: ${seg.from}~${seg.to}`}
-                        >
-                          <span className="text-white drop-shadow-sm">
-                            {seg.grade}
-                          </span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                  {/* Score marker */}
-                  <div className="relative w-full h-3 mt-1">
-                    <div
-                      className="absolute top-0 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-blue-600 dark:border-t-blue-400 transition-all"
-                      style={{
-                        left: `${(result.score / subject.maxScore) * 100}%`,
-                        transform: 'translateX(-6px)',
-                      }}
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      id={`csat-${r.id}`}
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      max={r.max}
+                      value={scores[r.id]}
+                      onChange={(e) => setScore(r.id, e.target.value, r.cut)}
+                      className="ui-field px-3 py-2 w-20 text-right tabular-nums"
                     />
+                    <span className="text-sm text-muted tabular-nums w-9">/{r.max}</span>
+                  </div>
+                  <div className="w-16 text-right">
+                    <span className="text-2xl font-bold text-fg tabular-nums">{r.grade}</span>
+                    <span className="text-sm text-sub">{t('grade')}</span>
                   </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <GraduationCap className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">
-                {t('description')}
-              </p>
-            </div>
-          )}
+                <p className="mt-2 text-xs text-sub tabular-nums">
+                  {r.absolute ? t('u.absNote') : t('u.topRange', { from, to })}
+                  {r.est && (
+                    <> · {t('u.estStdPct', {
+                      std: r.est.bound === 'ge' ? t('u.ge', { v: r.est.std }) : r.est.bound === 'lt' ? t('u.lt', { v: r.est.std }) : r.est.std,
+                      pct: r.est.pct,
+                    })}</>
+                  )}
+                  {r.next != null && <> · {t('u.toNext', { g: r.grade - 1, n: r.next })}</>}
+                  {r.id === 'math' && sel.math === 'geo' && <> · {t('u.geoNote')}</>}
+                </p>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
 
-          {/* Grade cutoff table */}
-          <div className={`${glassCard} ${glassInset}`}>
-            <button
-              onClick={() => setShowTable(!showTable)}
-              className="w-full flex items-center justify-between p-6 text-left"
-            >
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                {t('gradeTable')} — {t(subject.detailKey)}
-              </h2>
-              {showTable ? (
-                <ChevronUp className="w-5 h-5 text-gray-500" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-500" />
-              )}
+      {/* ── 수능최저 ── */}
+      <div className="ui-card p-4 sm:p-6 space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold text-fg">{t('u.minTitle')}</h2>
+          <p className="text-xs text-muted mt-1">{t('u.minNote')}</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {[2, 3, 4].map((n) => (
+            <button key={n} onClick={() => setMinN(n)} aria-pressed={minN === n} className={seg(minN === n)}>
+              {t('u.nSum', { n })}
             </button>
-
-            {showTable && (
-              <div className="px-6 pb-6">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-line">
-                        <th className="py-2 px-3 text-left text-sub font-medium">
-                          {t('grade')}
-                        </th>
-                        <th className="py-2 px-3 text-left text-sub font-medium">
-                          {t('cutoff')}
-                        </th>
-                        {!subject.isAbsolute &&
-                          subject.cutoffs[0]?.standardScore != null && (
-                            <>
-                              <th className="py-2 px-3 text-left text-sub font-medium">
-                                {t('standardScore')}
-                              </th>
-                              <th className="py-2 px-3 text-left text-sub font-medium">
-                                {t('percentile')}
-                              </th>
-                            </>
-                          )}
-                        <th className="py-2 px-3 text-left text-sub font-medium">
-                          {t('gradeRange')}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {subject.cutoffs.map((c, i) => {
-                        const upper =
-                          i === 0
-                            ? subject.maxScore
-                            : subject.cutoffs[i - 1].rawCutoff - 1
-                        const isHighlighted =
-                          result && result.grade === c.grade
-                        return (
-                          <tr
-                            key={c.grade}
-                            className={`border-b border-line transition-colors ${
-                              isHighlighted
-                                ? getRowHighlight(c.grade)
-                                : ''
-                            }`}
-                          >
-                            <td className="py-2.5 px-3">
-                              <span
-                                className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold text-white bg-gradient-to-br ${getGradeCircleColor(
-                                  c.grade
-                                )}`}
-                              >
-                                {c.grade}
-                              </span>
-                            </td>
-                            <td className="py-2.5 px-3 font-medium text-fg">
-                              {c.rawCutoff}
-                            </td>
-                            {!subject.isAbsolute &&
-                              subject.cutoffs[0]?.standardScore != null && (
-                                <>
-                                  <td className="py-2.5 px-3 text-body">
-                                    {c.standardScore ?? '-'}
-                                  </td>
-                                  <td className="py-2.5 px-3 text-body">
-                                    {c.percentile != null
-                                      ? `${c.percentile}%`
-                                      : '-'}
-                                  </td>
-                                </>
-                              )}
-                            <td className="py-2.5 px-3 text-sub">
-                              {c.rawCutoff} ~ {upper}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Disclaimer */}
-          <p className="text-xs text-faint text-center">
-            {t('disclaimer')}
+          ))}
+          <input
+            type="number"
+            inputMode="numeric"
+            min={minN}
+            max={minN * 9}
+            value={minSum}
+            onChange={(e) => setMinSum(Math.min(36, Math.max(2, Math.round(Number(e.target.value) || 2))))}
+            aria-label={t('u.minSumAria')}
+            className="ui-field px-3 py-2 w-20 text-right tabular-nums"
+          />
+          <span className="text-sm text-body">{t('u.within')}</span>
+        </div>
+        <div className="bg-subtle rounded-2xl p-5">
+          <p className={`text-xl font-bold ${minOk ? 'text-primary' : 'text-fg'}`}>
+            {minOk ? t('u.minOk') : t('u.minShort', { n: mySum - minSum })}
           </p>
+          <p className="text-sm text-sub mt-1 tabular-nums">{t('u.minMine', { n: minN, sum: mySum, target: minSum })}</p>
+          <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+            {sums.map((s) => (
+              <div key={s.n} className="bg-surface rounded-xl py-2">
+                <div className="text-xs text-muted">{t('u.nSum', { n: s.n })}</div>
+                <div className="text-lg font-bold text-fg tabular-nums">{s.sum}</div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted mt-3">{t('u.histNote', { g: rows[3].grade })}</p>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset}`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between p-6 text-left"
-        >
-          <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          {showGuide ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
-        </button>
+      {/* ── 등급컷 표 ── */}
+      <div className="ui-card p-4 sm:p-6 space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold text-fg">{t('gradeTable')}</h2>
+          <select
+            aria-label={t('subject')}
+            value={tableKey}
+            onChange={(e) => setTableKey(e.target.value as CutKey)}
+            className="ui-field px-3 py-2 text-sm"
+          >
+            {TABLE_KEYS.map((k) => <option key={k} value={k}>{t(`subjectDetail.${k}`)}</option>)}
+          </select>
+        </div>
+        <p className="text-xs text-muted">{table.absolute ? t('u.tableAbs') : t('u.tableRel', { year: CUT_YEAR })}</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-line text-left text-sub">
+                <th className="py-2 px-2 font-medium">{t('grade')}</th>
+                <th className="py-2 px-2 font-medium">{t('cutoff')}</th>
+                {hasStd && <th className="py-2 px-2 font-medium">{t('u.stdAtCut')}</th>}
+                {!table.absolute && <th className="py-2 px-2 font-medium">{t('u.cumTop')}</th>}
+                <th className="py-2 px-2 font-medium">{t('gradeRange')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {table.cuts.map((c, i) => {
+                const upper = i === 0 ? table.max : table.cuts[i - 1].raw - 1
+                const mine = tableRow?.grade === c.grade
+                return (
+                  <tr key={c.grade} className={`border-b border-line ${mine ? 'bg-primary-soft' : ''}`}>
+                    <td className={`py-2.5 px-2 font-semibold ${mine ? 'text-primary' : 'text-fg'}`}>{gradeText(c.grade)}</td>
+                    <td className="py-2.5 px-2 font-medium text-fg tabular-nums">{c.raw}</td>
+                    {hasStd && <td className="py-2.5 px-2 text-body tabular-nums">{c.std ?? '-'}</td>}
+                    {!table.absolute && <td className="py-2.5 px-2 text-body tabular-nums">{TOP_PCT[c.grade - 1]}%</td>}
+                    <td className="py-2.5 px-2 text-sub tabular-nums">{c.raw} ~ {upper}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-faint">{t('disclaimer')}</p>
+      </div>
 
-        {showGuide && (
-          <div className="px-6 pb-6 space-y-6">
-            {/* Grading system */}
-            <div>
-              <h3 className="text-md font-semibold text-body mb-3">
-                {t('guide.grading.title')}
-              </h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.grading.items') as string[]).map(
-                  (item, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start gap-2 text-sm text-sub"
-                    >
-                      <span className="text-blue-500 mt-0.5">•</span>
-                      {item}
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-
-            {/* Tips */}
-            <div>
-              <h3 className="text-md font-semibold text-body mb-3">
-                {t('guide.tips.title')}
-              </h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-2 text-sm text-sub"
-                  >
-                    <span className="text-indigo-500 mt-0.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* ── 가이드 ── */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('guide.whatIs.title')}</h3>
+          <p className="text-sm text-sub leading-relaxed">{t('guide.whatIs.description')}</p>
+        </div>
+        {(['grading', 'howToUse', 'tips'] as const).map((sec) => (
+          <div key={sec}>
+            <h3 className="font-semibold text-fg mb-2">{t(`guide.${sec}.title`)}</h3>
+            <ul className="space-y-1.5 list-disc pl-5 text-sm text-sub leading-relaxed">
+              {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
           </div>
-        )}
+        ))}
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm font-semibold text-fg">{f.q}</p>
+                <p className="text-sm text-sub mt-1 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
-}
-
-// ── Score bar segment colors ──
-
-function getSegmentBg(grade: number): string {
-  const colors: Record<number, string> = {
-    1: '#ca8a04',
-    2: '#9ca3af',
-    3: '#ea580c',
-    4: '#3b82f6',
-    5: '#60a5fa',
-    6: '#22c55e',
-    7: '#4ade80',
-    8: '#ef4444',
-    9: '#f87171',
-  }
-  return colors[grade] ?? '#9ca3af'
 }

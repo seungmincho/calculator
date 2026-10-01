@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환 | 툴허브',
-  description: 'CSS 단위를 즉시 변환하세요. px, rem, em, vw, vh, %, pt, cm, mm, in 상호 변환. 루트 폰트 크기, 뷰포트 크기 기준값 설정 지원.',
+  description: 'CSS 단위를 즉시 변환하세요. px, rem, em, vw, vh, %, pt, cm, mm, in 상호 변환. CSS 일괄 px→rem 변환, clamp() 유동 타이포 생성기까지.',
   keywords: 'CSS 단위 변환, px rem 변환, px em 변환, px vw 변환, CSS 단위 계산기, rem 변환기, viewport 단위',
   openGraph: {
     title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환 | 툴허브',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환',
-    description: 'CSS 단위를 즉시 변환. px, rem, em, vw, vh 등 10가지 단위 지원.',
+    description: 'CSS 단위를 즉시 변환. px, rem, em, vw, vh 등 16가지 단위 + px→rem 일괄 변환·clamp() 생성.',
     images: ['https://toolhub.ai.kr/og/css-unit-converter.png'],
   },
   alternates: {
@@ -42,6 +42,8 @@ export default function CssUnitConverterPage() {
       'px, rem, em, vw, vh, %, pt, cm, mm, in 상호 변환',
       '루트 폰트 크기 설정',
       '부모 요소 폰트 크기 설정',
+      'CSS 코드 px→rem 일괄 변환',
+      'clamp() 유동 타이포그래피 생성기',
       '뷰포트 너비/높이 기준값 설정',
       '클릭하여 결과 복사',
       '단위 변환 공식 참고표',
@@ -103,7 +105,7 @@ export default function CssUnitConverterPage() {
             CSS 단위 변환기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            CSS 단위 변환기는 px, rem, em, vw, vh, %, pt, cm, mm, in 등 10가지 CSS 단위를 즉시 상호 변환해주는 웹 개발 도구입니다. 반응형 웹 디자인을 구현할 때 픽셀 단위의 디자인 시안을 rem이나 vw 기반의 유연한 레이아웃으로 변환하거나, 루트 폰트 크기와 뷰포트 크기를 기준값으로 설정하여 정확한 변환 결과를 얻을 수 있습니다.
+            CSS 단위 변환기는 px, rem, em, vw, vh, %, pt, cm, mm, in, Q, vmin, vmax 등 16가지 CSS 단위를 즉시 상호 변환해주는 웹 개발 도구입니다. 반응형 웹 디자인을 구현할 때 픽셀 단위의 디자인 시안을 rem이나 vw 기반의 유연한 레이아웃으로 변환하거나, 루트 폰트 크기와 뷰포트 크기를 기준값으로 설정하여 정확한 변환 결과를 얻을 수 있습니다. CSS 코드를 붙여 넣어 px를 rem으로 한 번에 바꾸고, 최소·최대 크기로 clamp() 유동 폰트 공식을 만들 수도 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             CSS 단위 변환기 활용 팁

@@ -22108,16 +22108,68 @@
     ]
   },
   "cssUnitConverter": {
+    "tab_convert": "Convert",
+    "tab_bulk": "Bulk CSS px→rem",
+    "tab_clamp": "clamp() generator",
+    "tab_table": "px↔rem table",
+    "viewportPresets": "Viewport presets",
+    "inputHint": "You can type the unit too, e.g. 24px or 1.5rem. ↑/↓ ±1, Shift ±10, Alt ±0.1",
+    "inputError": "Enter a number or number + unit (e.g. 24px).",
+    "unitNames": {
+      "px": "Pixels",
+      "rem": "Root font size",
+      "em": "Parent font size",
+      "%": "Parent font size (font-size)",
+      "ch": "Width of '0' (approx.)",
+      "ex": "x-height (approx.)",
+      "vw": "1% of viewport width",
+      "vh": "1% of viewport height",
+      "vmin": "1% of the smaller side",
+      "vmax": "1% of the larger side",
+      "pt": "Points (1/72in)",
+      "pc": "Picas (12pt)",
+      "in": "Inches (96px)",
+      "cm": "Centimeters",
+      "mm": "Millimeters",
+      "Q": "Quarter-millimeters"
+    },
+    "group_font": "Font-relative",
+    "group_viewport": "Viewport-relative",
+    "group_physical": "Absolute (physical)",
+    "physicalNote": "In CSS, 1in is always exactly 96px. It may not match a ruler held to your screen; it matches real size only in print.",
+    "approxNote": "ch and ex depend on the font and can't be computed exactly, so they use the CSS spec fallback (0.5em). % is relative to font-size.",
+    "bulkTitle": "Bulk CSS px → rem",
+    "bulkDesc": "Paste CSS to convert px values to rem based on a {root}px root font size. Values inside comments, url() and strings are left untouched.",
+    "bulkMinPx": "Keep values below",
+    "bulkKeep1px": "Keep 1px (borders, hairlines)",
+    "bulkSkipMedia": "Don't convert @media lines",
+    "bulkInput": "Input CSS",
+    "bulkOutput": "Result ({count} converted)",
+    "bulkNote": "rem/em inside media queries use the browser's default font size (usually 16px), not the html font size. If you changed the root font size, keeping @media lines in px is safer.",
+    "clampTitle": "clamp() fluid typography generator",
+    "clampDesc": "Builds a clamp() expression that is the min size at the min viewport and the max size at the max viewport, scaling linearly in between. It mixes in rem so user font-size preferences still apply.",
+    "clampMinSize": "Min size",
+    "clampMaxSize": "Max size",
+    "clampMinVw": "Min viewport width",
+    "clampMaxVw": "Max viewport width",
+    "clampPreview": "Actual size by screen width",
+    "clampColViewport": "Viewport",
+    "clampColSize": "Size",
+    "clampColSample": "Preview",
+    "clampSampleText": "Hello Aa",
+    "clampError": "Sizes must be greater than 0 and the max viewport width must exceed the min viewport width.",
+    "tableTitle": "px ↔ rem table (root {root}px)",
+    "tableDesc": "Common px values converted to rem. Click a cell to copy the rem value. The table follows the root font size setting.",
     "title": "CSS Unit Converter",
-    "description": "Instantly convert between CSS units: px, rem, em, vw, vh, %, pt, cm, mm, in.",
+    "description": "Convert a value to 16 CSS units at once (px, rem, em, vw, vh, pt, cm and more), bulk-convert CSS px→rem, and generate clamp() fluid type.",
     "inputLabel": "Value to Convert",
-    "inputPlaceholder": "Enter value (e.g. 16)",
+    "inputPlaceholder": "e.g. 24 or 24px",
     "unitLabel": "Select Unit",
     "settingsTitle": "Base Settings",
     "rootFontSize": "Root font size (for rem)",
     "parentFontSize": "Parent element font size (for em)",
-    "viewportWidth": "Viewport width (for vw)",
-    "viewportHeight": "Viewport height (for vh)",
+    "viewportWidth": "Viewport width",
+    "viewportHeight": "Viewport height",
     "resultsTitle": "Conversion Results",
     "copySuccess": "Copied",
     "copy": "Copy",
@@ -22132,7 +22184,7 @@
       [
         "px → rem",
         "px ÷ root font size",
-        "16px ÷ 16 = 1rem"
+        "24px ÷ 16 = 1.5rem"
       ],
       [
         "rem → px",
@@ -22146,57 +22198,74 @@
       ],
       [
         "px → vw",
-        "px ÷ (viewport width ÷ 100)",
-        "192px ÷ 19.2 ≈ 10vw"
+        "px ÷ viewport width × 100",
+        "144px ÷ 1440 × 100 = 10vw"
       ],
       [
         "px → pt",
-        "px × 0.75",
+        "px × 0.75 (= 72/96)",
         "16px × 0.75 = 12pt"
       ],
       [
-        "px → cm",
-        "px ÷ 37.795",
-        "37.795px ≈ 1cm"
-      ],
-      [
-        "pt → px",
-        "pt ÷ 0.75",
-        "12pt ÷ 0.75 = 16px"
+        "pc → px",
+        "pc × 16 (1pc = 12pt)",
+        "1pc = 16px"
       ],
       [
         "in → px",
         "in × 96",
-        "1in × 96 = 96px"
+        "1in = 96px"
+      ],
+      [
+        "cm → px",
+        "cm × 96 ÷ 2.54",
+        "1cm ≈ 37.7953px"
+      ],
+      [
+        "mm → px",
+        "mm × 96 ÷ 25.4",
+        "1mm ≈ 3.7795px"
+      ],
+      [
+        "Q → px",
+        "Q × 96 ÷ 101.6 (1Q = 0.25mm)",
+        "4Q = 1mm"
+      ],
+      [
+        "clamp()",
+        "min rem, intercept rem + slope vw, max rem",
+        "clamp(1rem, 0.8239rem + 0.7512vw, 1.5rem)"
       ]
     ],
     "guideTitle": "Complete CSS Unit Guide",
     "guideAbsoluteTitle": "Absolute Units",
     "guideAbsoluteItems": [
-      "px (pixels): Smallest screen unit. Fixed size. On retina displays, 1px maps to 2–3 physical pixels.",
-      "pt (points): Print media unit. 1pt = 1/72 inch ≈ 1.333px.",
-      "cm / mm / in: Physical size units. Mainly used in print CSS rather than screen layouts."
+      "px (pixels): A CSS pixel is a 'reference pixel', not a device pixel. On retina screens 1px is drawn with 2–3 physical pixels.",
+      "in / pt / pc: 1in = 96px = 72pt = 6pc, so 1pt = 4/3px (≈1.333px) and 1pc = 16px, always.",
+      "cm / mm / Q: Based on 1in = 2.54cm, so 1cm ≈ 37.795px, 1mm ≈ 3.78px, 1Q = 0.25mm. Mostly used in print CSS (@media print)."
     ],
     "guideRelativeTitle": "Relative Units (Font-based)",
     "guideRelativeItems": [
-      "rem: Relative to the root (<html>) font size. Default is usually 16px. Great for global scaling.",
-      "em: Relative to the current or parent element's font size. Can compound when nested — use carefully.",
-      "% (percent): Relative to the parent element's corresponding property. For font-size, % is relative to parent font size."
+      "rem: Relative to the root (<html>) font size, usually 16px by default. Scales with the user's font settings — good for accessibility.",
+      "em: Relative to the element's own font size (for font-size itself, the parent's). Compounds when nested — use carefully.",
+      "% (percent): The reference depends on the property: font-size uses the parent font size, width uses the containing block width. This tool's % is font-size based.",
+      "ch / ex: Based on the width of '0' and the x-height. They vary by font, so this tool approximates with the spec fallback (0.5em). Handy for line length (max-width: 65ch)."
     ],
     "guideViewportTitle": "Viewport Units",
     "guideViewportItems": [
-      "vw: 1% of the viewport width. 100vw = full screen width. Ideal for responsive layouts.",
-      "vh: 1% of the viewport height. 100vh = full screen height. Great for full-screen sections.",
-      "svh/dvh: New viewport units addressing mobile browser address bar issues (modern browser support)."
+      "vw / vh: 1% of viewport width/height. 100vw includes the vertical scrollbar, which can cause horizontal scrolling.",
+      "vmin / vmax: 1% of the smaller/larger side. Useful to keep proportions regardless of orientation.",
+      "svh / lvh / dvh: Fix the mobile address bar issue where 100vh is taller than the visible screen. Prefer 100dvh (or 100svh) for full-screen sections.",
+      "Sizing text with vw alone ignores user zoom and font settings. Mix in rem, e.g. clamp(min rem, rem + vw, max rem)."
     ],
     "guideTipsTitle": "Unit Selection Guide",
     "guideTipsItems": [
       "Font sizes: Use rem — respects user browser settings and improves accessibility.",
-      "Layout spacing: Use rem or px — maintains consistency.",
+      "Responsive font sizes: Use the clamp() generator to scale smoothly between a min and max size without media queries.",
+      "Porting px designs: Paste CSS into the bulk tab and keep the 1px option on for borders.",
       "Component inner spacing: Use em — scales with the component's font size.",
-      "Responsive widths: Use vw, %, or min/max combinations for flexible layouts.",
-      "Media query breakpoints: Use px or em — em responds to user font size preferences.",
-      "Print CSS: Use pt, cm, mm — guarantees physical dimensions."
+      "Media query breakpoints: Use px or em — em follows user font preferences but ignores the html font size.",
+      "Print CSS: Use pt, cm, mm — guarantees physical dimensions when printed."
     ]
   },
   "stampGenerator": {
@@ -23453,15 +23522,59 @@
     }
   },
   "nutritionCalculator": {
+    "u": {
+      "per100g": "{kcal}kcal per 100g",
+      "per100ml": "{kcal}kcal per 100ml",
+      "amount": "Amount",
+      "portionChip": "{n} serv.",
+      "sodium": "Sodium",
+      "heroLabel": "Total calories of this meal",
+      "heroSub": "{pct}% of the 2,000 kcal reference · {n} items",
+      "dataNote": "Food values are typical per-serving estimates aligned with public data such as the MFDS Korean food composition database. They vary by brand, recipe and how much broth you eat, so enter label values for packaged foods.",
+      "label": {
+        "title": "Nutrition Facts",
+        "basis": "Meal total · % of Korean Daily Values",
+        "dv": "Daily Value {v}",
+        "note": "% Daily Values are based on a 2,000 kcal diet and may differ with your energy needs. (MFDS food labeling standards)"
+      },
+      "ratio": {
+        "title": "Macro ratio (by calories)",
+        "range": "Recommended {lo}–{hi}%",
+        "ok": "Balanced",
+        "low": "Low",
+        "high": "High",
+        "alcohol": "About {kcal} kcal from alcohol is excluded from the macro ratio.",
+        "note": "Ranges: Acceptable Macronutrient Distribution Ranges for adults (2020 Dietary Reference Intakes for Koreans). Carbs and protein 4 kcal/g, fat 9 kcal/g."
+      },
+      "sodiumWarn": "This meal has {mg}mg of sodium, {pct}% of the 2,000mg Daily Value. Leaving the broth or sauce cuts it a lot.",
+      "custom": {
+        "open": "Enter from a nutrition label",
+        "title": "Enter from a nutrition label",
+        "hint": "Enter the values for the serving size (or total contents) shown on the package.",
+        "name": "Food name",
+        "namePh": "e.g. Protein bar",
+        "serving": "Serving size (g)",
+        "cal": "Calories (kcal)",
+        "add": "Add to meal",
+        "cancel": "Cancel",
+        "defaultName": "Custom food"
+      },
+      "share": {
+        "labelOne": "Calories in {first}",
+        "label": "Total calories of a {n}-item meal with {first}",
+        "ratio": "C {c}% · P {p}% · F {f}%",
+        "text": "{label}: {kcal} kcal ({ratio})"
+      }
+    },
     "title": "Nutrition Calculator",
-    "description": "Calculate calories and macronutrients (carbs, protein, fat) for meals using a Korean food database.",
+    "description": "Calculate calories, macros and sodium for a meal from 46 Korean foods or your own nutrition label, with % of Korean Daily Values.",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
-    "searchPlaceholder": "Search food name...",
+    "searchPlaceholder": "Search foods (e.g. kimchi stew, chicken breast)",
     "clearSearch": "Clear search",
     "foodDatabase": "Food Database",
     "noResults": "No results found",
-    "perServing": "per serving",
+    "perServing": "Serving",
     "addToMeal": "Add to meal",
     "mealList": "My Meal",
     "mealEmpty": "Click a food item to add it to your meal",
@@ -23471,6 +23584,7 @@
     "copy": "Copy",
     "copied": "Copied!",
     "categories": {
+      "basic": "Basics",
       "all": "All",
       "rice": "Rice",
       "noodle": "Noodles",
@@ -23482,6 +23596,16 @@
       "fast": "Fast Food"
     },
     "foods": {
+      "egg": "Boiled egg (1)",
+      "chickenBreast": "Chicken breast (cooked)",
+      "sweetPotato": "Steamed sweet potato (1)",
+      "banana": "Banana (1)",
+      "apple": "Apple (1)",
+      "milk": "Milk (1 carton)",
+      "tofu": "Tofu",
+      "brownRice": "Brown rice",
+      "jjamppong": "Jjamppong (spicy seafood noodles)",
+      "jeyuk": "Jeyuk bokkeum (spicy stir-fried pork)",
       "rice": "Steamed Rice",
       "bibimbap": "Bibimbap",
       "kimchiFriedRice": "Kimchi Fried Rice",
@@ -23540,19 +23664,21 @@
       "howToUse": {
         "title": "Usage",
         "items": [
-          "Use category buttons or the search bar to find foods",
-          "Click a food card to add it to 'My Meal'",
-          "Adjust portions (0.5x – 3x) to match actual intake",
-          "Check the charts for macro ratio and % of daily recommended intake",
-          "Use the copy button to save a meal summary to clipboard"
+          "Find a food by search or category and tap it to add one serving to 'My Meal' (tap again to add another serving)",
+          "Enter the amount in g (ml for drinks) or use the 0.5 / 1 / 1.5 / 2 serving buttons",
+          "For foods not listed, use 'Enter from a nutrition label' with the values on the package",
+          "Nutrition Facts shows calories, sodium, carbs, protein and fat as % of Daily Values; the macro ratio shows whether you are within the recommended ranges",
+          "Share, save as image or copy the link. Opening the link restores the same meal"
         ]
       },
       "macros": {
-        "title": "What are Macronutrients?",
+        "title": "Macronutrients and Daily Values",
         "items": [
-          "Carbs (C): 4 kcal/g, primary energy source. Daily goal: 324g (55-65% of total calories)",
-          "Protein (P): 4 kcal/g, builds muscle and enzymes. Daily goal: 55g (7-20% of total calories)",
-          "Fat (F): 9 kcal/g, hormones and cell membranes. Daily goal: 54g (15-30% of total calories)"
+          "Carbohydrate: 4 kcal/g, main energy source. Daily Value 324g; recommended 55–65% of calories",
+          "Protein: 4 kcal/g, builds muscle and enzymes. Daily Value 55g; recommended 7–20%",
+          "Fat: 9 kcal/g, hormones and cell membranes. Daily Value 54g; recommended 15–30%",
+          "Sodium: Daily Value 2,000mg. A bowl of Korean soup, stew or noodles can contain 1,500–4,000mg",
+          "Daily Values follow the MFDS food labeling standards (2,000 kcal basis); ranges follow the 2020 Dietary Reference Intakes for Koreans"
         ]
       },
       "tips": {
@@ -23597,15 +23723,19 @@
         "items": [
           {
             "q": "What are the recommended macronutrient ratios?",
-            "a": "For average adults: carbohydrates 50–60%, protein 15–20%, fat 20–30%. Adjust protein higher for muscle gain and reduce carbohydrates for weight loss."
+            "a": "The 2020 Dietary Reference Intakes for Koreans set adult ranges of 55–65% carbohydrate, 7–20% protein and 15–30% fat. For muscle gain raise protein; for weight loss adjust total calories, carbs and sugars first."
           },
           {
             "q": "What if a food isn't in the database?",
-            "a": "Substitute with a similar food or manually enter nutritional values from the product label. For branded processed foods, check the manufacturer's website for exact figures."
+            "a": "Tap 'Enter from a nutrition label' and enter the serving size (g) plus calories, carbs, protein, fat and sodium from the package. Custom foods are saved in the share link too."
           },
           {
-            "q": "What is the daily calorie recommendation?",
-            "a": "Generally 2,500 kcal for adult males and 2,000 kcal for adult females, but it varies by BMR and activity level. Check your personalized recommendation with the Calorie Calculator first."
+            "q": "How many calories do I need per day?",
+            "a": "Estimated energy requirements in the 2020 Korean DRIs are 2,600 kcal (men) / 2,000 kcal (women) at ages 19–29, 2,500 / 1,900 kcal at 30–49 and 2,200 / 1,700 kcal at 50–64. Needs vary with activity, so check yours with the Calorie Calculator."
+          },
+          {
+            "q": "What's the difference between calories per 100g and per serving?",
+            "a": "Labels show values per 100g (ml) or per serving. This calculator shows each food's serving weight and calories per 100g, and converts automatically when you enter the amount in grams."
           }
         ]
       }
@@ -32861,6 +32991,24 @@
     "resetFilters": "Reset Filters"
   },
   "picross": {
+    "dailyNo": "Daily #{day}",
+    "practice": "Practice",
+    "dailyDone": "Done today",
+    "streak": "{n}-day streak",
+    "inputMode": "Input tool",
+    "modeFill": "Fill",
+    "modeX": "Mark X",
+    "assist": "Show mistakes instantly",
+    "cardLabelDaily": "Picross #{day} · {size}",
+    "cardLabelPractice": "Picross practice · {size}",
+    "mistakesNone": "Solved without a single mistake",
+    "mistakesCount": "Mistakes: {n}",
+    "copyResult": "Copy result",
+    "nextPuzzle": "Next puzzle in",
+    "playPractice": "Play a practice puzzle",
+    "uniqueNote": "Every puzzle is verified to have exactly one solution reachable by logic alone—no guessing. The daily puzzle is the same for everyone and changes at midnight KST.",
+    "statsStreak": "Current streak",
+    "statsMaxStreak": "Best streak",
     "title": "Picross",
     "description": "Logic puzzle game - fill cells using number clues to reveal a picture",
     "dailyBadge": "Daily Puzzle",
@@ -32871,8 +33019,8 @@
     "newPuzzle": "New Puzzle",
     "reset": "Reset",
     "mistakes": "Mistakes",
-    "helpClick": "Click: Fill/clear cell",
-    "helpRightClick": "Right-click (mobile: long press): Mark X",
+    "helpClick": "Tap or drag to fill/mark several cells at once",
+    "helpRightClick": "PC: right-click = mark X",
     "cell": "Cell",
     "winTitle": "Congratulations!",
     "winMessage": "Completed {size} puzzle in {time}!",
@@ -32896,13 +33044,14 @@
       "Start with rows/columns that have large number clues.",
       "When the clue sum is close to the grid size, use overlap technique to find definite cells.",
       "Mark empty cells with X to help with reasoning.",
-      "Completed row/column clues turn green."
+      "Clues of rows/columns that are satisfied fade out, so only the remaining lines stand out."
     ],
     "guideControlsTitle": "Controls",
     "guideControlsItems": [
-      "PC: Left-click to fill a cell, right-click to mark X.",
-      "Mobile: Tap to fill a cell, long press to mark X.",
-      "Click a filled cell again to clear it."
+      "Pick a tool with the 'Fill / Mark X' buttons above, then tap cells.",
+      "Press and drag to fill or clear several cells along one line at once.",
+      "On PC, right-click marks X; on keyboard use Enter (current tool) or the X key.",
+      "Tap a filled cell again to clear it. Turn off 'Show mistakes instantly' to solve without hints."
     ]
   },
   "taxSeason": {
@@ -34070,8 +34219,51 @@
     }
   },
   "csatGrade": {
+    "u": {
+      "dday": "{year} CSAT {d}",
+      "examDate": "Thu, Nov 19, 2026",
+      "heroLabel": "Average grade (Korean·Math·English·Inquiry)",
+      "heroSub": "Excl. English {noEng} · best 3 areas sum {s3}",
+      "gradeN": "Grade {g}",
+      "inq": "Inquiry",
+      "inq1": "Inquiry 1",
+      "inq2": "Inquiry 2",
+      "inqPair": "Grades {a}·{b}",
+      "shareRow": "Grade {g} ({s} pts)",
+      "shareText": "My CSAT average grade {avg}, best-3 sum {s3}",
+      "inputTitle": "Raw scores by subject",
+      "inputNote": "Results update as you type. Korean, Math and Inquiry use estimated cutoffs from the {year} CSAT.",
+      "selectAria": "{s} elective",
+      "sel": {
+        "lm": "Language & Media",
+        "hj": "Speech & Writing",
+        "prob": "Probability & Statistics",
+        "calc": "Calculus",
+        "geo": "Geometry"
+      },
+      "absNote": "Absolute grading, fixed cutoffs",
+      "topRange": "Top {from}–{to}%",
+      "estStdPct": "Standard score ~{std} · percentile ~{pct} (est.)",
+      "ge": "{v}+",
+      "lt": "below {v}",
+      "toNext": "+{n} pts to grade {g}",
+      "geoNote": "Geometry approximated with Calculus cutoffs",
+      "minTitle": "Minimum CSAT requirement check",
+      "minNote": "Sum of your best grades among Korean, Math, English and Inquiry (best one subject).",
+      "nSum": "Best {n}",
+      "minSumAria": "Required grade sum",
+      "within": "or less",
+      "minOk": "Requirement met",
+      "minShort": "Short by {n}",
+      "minMine": "Your best-{n} sum {sum} / required {target} or less",
+      "histNote": "Korean History grade {g} — check each university's Korean History requirement separately. Some universities average both Inquiry subjects.",
+      "tableAbs": "Absolutely graded subjects use the same fixed cutoffs every year.",
+      "tableRel": "Raw cutoffs are private-institute estimates from the {year} CSAT; standard scores are the (estimated) values at each cutoff. Cumulative shares follow KICE's 9-grade system.",
+      "stdAtCut": "Std. score at cut (est.)",
+      "cumTop": "Cumulative top"
+    },
     "title": "CSAT Grade Calculator",
-    "description": "Check your grade based on raw score for each CSAT subject",
+    "description": "Enter raw scores for Korean, Math, English, Korean History and Inquiry to see estimated grades, your average grade and whether you meet minimum CSAT requirements",
     "year": "CSAT Year",
     "subject": "Select Subject",
     "rawScore": "Raw Score",
@@ -34099,8 +34291,8 @@
       "mathProb": "Math (Probability & Statistics)",
       "english": "English (Absolute Grading)",
       "koreanHistory": "Korean History (Absolute Grading)",
-      "socialStudies": "Social Studies (Subject Selection)",
-      "science": "Science (Subject Selection)"
+      "socialStudies": "Social Studies (subject-average estimate)",
+      "science": "Science (subject-average estimate)"
     },
     "absoluteGrade": "Absolute Grading",
     "relativeGrade": "Relative Grading",
@@ -34110,25 +34302,27 @@
     "shareButton": "Share Result",
     "copyLinkButton": "Copy Link",
     "linkCopied": "Link copied!",
-    "disclaimer": "Grade cutoffs are based on 2025 CSAT. Actual cutoffs vary each year.",
+    "disclaimer": "Relative-grading cutoffs are estimates based on the 2025 CSAT; actual cutoffs change every year. Check the official KICE score report for your real results.",
     "guide": {
       "title": "CSAT Grade Guide",
       "grading": {
         "title": "Grading Method",
         "items": [
-          "Relative grading: Top 4% = Grade 1, Top 11% = Grade 2, Top 23% = Grade 3...",
-          "Absolute grading (English/Korean History): Grades based on raw score ranges",
-          "English: 90+ = Grade 1, 80+ = Grade 2...",
-          "Korean History: 40+ = Grade 1, 35+ = Grade 2..."
+          "Korean, Math and Inquiry are graded relatively by standard score: top 4% = Grade 1, 11% = 2, 23% = 3, 40% = 4, 60% = 5, 77% = 6, 89% = 7, 96% = 8, the rest = 9.",
+          "Integrated CSAT: Korean (Speech & Writing / Language & Media) and Math (Probability & Statistics / Calculus / Geometry) are graded on one standard-score scale regardless of elective, so raw-score cutoffs differ by elective.",
+          "English is graded absolutely out of 100: 90+ = Grade 1, then every 10 points (80 = 2, 70 = 3 … 20 = 8, below 20 = 9).",
+          "Korean History is mandatory and graded absolutely out of 50: 40+ = Grade 1, then every 5 points (35 = 2 … 5 = 8, below 5 = 9). Skipping it voids the whole CSAT score report.",
+          "Up to two Inquiry subjects (50 points each). The current elective system continues through the 2027 CSAT; from the 2028 CSAT electives are removed."
         ]
       },
       "tips": {
         "title": "Notes",
         "items": [
-          "Displayed cutoffs are based on previous year and may differ from actual CSAT",
-          "Standard scores and percentiles apply only to relatively graded subjects",
-          "Exploration subjects have separate converted standard scores",
-          "Official cutoffs are released by KICE on score release date"
+          "Grades, standard scores and percentiles shown here are estimates based on 2025 CSAT cutoffs. Real grades depend on that year's score distribution.",
+          "KICE does not publish raw-score cutoffs. Score reports list only standard scores, percentiles and grades; widely shared raw cutoffs are private-institute estimates.",
+          "Minimum CSAT requirements differ by university (areas counted, best one vs. average of two Inquiry subjects, Korean History rule). Always check the admission guide.",
+          "Inquiry cutoffs vary a lot by subject, so only an average-level estimate for Social Studies / Science is provided.",
+          "Regular admissions use standard scores, percentiles and university-specific converted Inquiry scores rather than grades."
         ]
       },
       "guide": {
@@ -34174,31 +34368,40 @@
       },
       "whatIs": {
         "title": "What is the CSAT Grade Calculator?",
-        "description": "The CSAT Grade Calculator instantly displays your estimated grade by subject using the latest grade cutoff data after you enter your raw scores. It supports all subjects including Korean, Math, English, Social Studies, Science, Vocational Education, and second foreign languages. Full grade cutoff tables are provided to help you set target scores and plan your study strategy."
+        "description": "Enter raw scores for Korean, Math, English, Korean History and Inquiry at once to see estimated grades per subject, estimated standard scores and percentiles, your average grade and whether you meet minimum CSAT requirements. It also shows the countdown to the 2027 CSAT (Nov 19, 2026). Relatively graded subjects use estimates based on 2025 CSAT cutoffs."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select the exam year (academic year).",
-          "2. Select a subject and enter your raw score.",
-          "3. Your corresponding grade is displayed instantly.",
-          "4. Review the full grade cutoff table to identify the score needed for your target grade."
+          "1. Choose your Korean/Math electives and Inquiry areas (Social Studies / Science).",
+          "2. Enter raw scores; grades update instantly.",
+          "3. Check your average grade and best-3 sum in the blue card.",
+          "4. Enter a university's minimum requirement (e.g. best 3 sum ≤ 7) to see if you meet it.",
+          "5. Share an image or link; the link restores your scores."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Can the same raw score earn different grades in different years?",
-            "a": "Yes. CSAT uses relative grading (except English), so the same raw score can land in different grade brackets depending on that year's score distribution. Standard scores and percentiles are what actually determine university admissions."
+            "q": "When is the 2027 CSAT?",
+            "a": "It is scheduled for Thursday, November 19, 2026. Check KICE announcements for the official schedule and score release date."
           },
           {
-            "q": "Which side of a grade cutoff boundary counts as which grade?",
-            "a": "The cutoff is the minimum score for that grade. For example, if Grade 1 cuts at 91, a score of 91 is Grade 1 and 90 is Grade 2."
+            "q": "Can the same raw score earn different grades?",
+            "a": "Yes. Korean, Math and Inquiry are graded relatively, so grades depend on that year's distribution. English and Korean History use fixed absolute cutoffs."
           },
           {
-            "q": "How do I compare scores across different exploratory electives?",
-            "a": "Universities use standard scores and percentiles to compensate for difficulty differences between electives. A lower raw score in a harder subject may produce a higher standard score."
+            "q": "Why do Calculus and Probability & Statistics give different grades for the same raw score?",
+            "a": "The integrated CSAT grades by a standard score adjusted using the common section. Because elective groups differ in ability, the same raw score can map to different standard scores and grades."
+          },
+          {
+            "q": "What does a 'best 3 sum of 7' requirement mean?",
+            "a": "The sum of your three best grades among Korean, Math, English and Inquiry must be 7 or less, e.g. grades 2, 2, 3. Universities differ on whether Inquiry counts your best subject or the average of two."
+          },
+          {
+            "q": "Which grade is a score exactly on the cutoff?",
+            "a": "A cutoff is the minimum score for that grade. If Grade 1 cuts at 92, then 92 is Grade 1 and 91 is Grade 2."
           }
         ]
       }
