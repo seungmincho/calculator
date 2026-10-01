@@ -48578,7 +48578,183 @@
       ]
     }
   },
-  "resignationLetter": {},
+  "resignationLetter": {
+    "title": "Resignation Letter Generator",
+    "description": "Pick a reason and get a polite Korean resignation letter. Checks severance, notice period and unemployment-benefit pitfalls, with seal stamp and PDF export.",
+    "section": {
+      "reason": "Reason for resignation",
+      "dates": "Hire date & last day",
+      "me": "Your details",
+      "company": "Addressee (company)"
+    },
+    "sectionHint": {
+      "reason": "Choosing a reason fills in a sentence you can edit below.",
+      "company": "If left blank, shown as '○○ Co., Ltd. CEO'."
+    },
+    "reason": "Choose a reason",
+    "reasons": {
+      "personal": "Personal",
+      "jobChange": "New job",
+      "study": "Study",
+      "health": "Health",
+      "family": "Family/childcare",
+      "contract": "Contract end",
+      "recommended": "Asked to resign",
+      "custom": "Custom"
+    },
+    "reasonText": "Reason text",
+    "reasonTextHint": "Keep it short and polite; leave out complaints or emotional wording.",
+    "handover": "Add handover commitment",
+    "handoverHint": "Adds a sentence promising handover and return of company property by the last day.",
+    "hireDate": "Hire date",
+    "quitDate": "Desired last working day",
+    "quitDateHint": "You work through this day; employment ends the next day.",
+    "submitDate": "Submission date",
+    "name": "Name",
+    "namePlaceholder": "Hong Gil-dong",
+    "phone": "Phone",
+    "dept": "Department",
+    "deptPlaceholder": "Management Support",
+    "position": "Position",
+    "positionPlaceholder": "Assistant Manager",
+    "company": "Company name",
+    "companyPlaceholder": "○○ Co., Ltd.",
+    "ceo": "CEO name",
+    "ceoPlaceholder": "Kim",
+    "summary": {
+      "tenure": "Length of service",
+      "tenureValue": "{y}y {m}m {d}d",
+      "severance": "Severance pay",
+      "severanceYes": "Eligible (1+ year)",
+      "severanceNo": "Not eligible ({n} days short)",
+      "noticeDays": "Submission to last day",
+      "noticeDaysValue": "{n} days",
+      "effective": "If not accepted, employed until",
+      "effectiveValue": "{general} (monthly pay: {monthly})"
+    },
+    "insight": {
+      "hireAfterQuit": "The last day is before the hire date. Please check the dates.",
+      "quitBeforeSubmit": "The last day is before the submission date. Please check the dates.",
+      "notice": "Your last day is {days} days after submission. If the company accepts, you leave on that day; if not, under Civil Act Art. 660 employment continues until {general}, one month after notice ({monthly} for monthly-paid workers, the end of the next pay period). Not showing up before then may count as absence, reducing average wage/severance or causing damage claims, so agree on the date in advance.",
+      "recommended": "To receive unemployment benefits, state the reason accurately as 'resignation at the company's request'. Writing 'personal reasons' may be treated as voluntary and disqualify you. Check that the employment-insurance loss report / separation certificate filed by the company uses code 23 (business necessity, recommended resignation), and ask the job center to correct it if not.",
+      "contract": "Leaving because your fixed-term contract ended qualifies for unemployment benefits. Write 'contract expiry', not 'personal reasons', and check that the separation certificate uses code 32 (contract expiry). If the company offered renewal and you refused, it may be treated as voluntary. A resignation letter is normally not needed at contract end; submit one only if asked.",
+      "healthFamily": "If you cannot work due to illness or injury and were denied leave, or you applied for family-care/childcare leave and the company refused, the resignation can be a justified reason and you may still receive unemployment benefits (medical certificate or leave request records needed). Describe the reason factually.",
+      "severanceOk": "With {y}y {m}m of service you are eligible for severance pay. Severance and remaining wages must be paid within 14 days of leaving (Employee Retirement Benefit Security Act Art. 9; extendable by agreement).",
+      "severanceShort": "You are {n} days short of one year, so no severance pay. Working until {date} makes you eligible (if you work 15+ hours per week).",
+      "severanceNone": "Less than one year of service, so no severance pay (requires 1+ year of continuous service and 15+ hours per week).",
+      "anniversary": "Your last day is the eve of your {n}-year anniversary. Under case law and Ministry of Employment interpretation, the year's annual leave ({days} days) only arises if employment continues to the next day, so leaving one day later earns {days} more days of leave pay.",
+      "leave": "Unused annual leave is paid out as leave allowance when you leave, or you can use it before your last day. Check the remaining days and pay with the annual leave calculator."
+    },
+    "guide": {
+      "title": "How to Write a Resignation Letter",
+      "intro": "A resignation letter expresses your intent to end the employment contract. There is no mandatory form; name, department, desired last day, reason, date and signature are enough. Getting the dates and reason right matters more than the format.",
+      "sections": [
+        {
+          "title": "Procedure & timing",
+          "items": [
+            "Usually tell your direct manager in person first, then submit the letter.",
+            "Check the notice rule in your work rules or contract. 30 days is common practice.",
+            "If accepted, you leave on the agreed date; if not, under Civil Act Art. 660 it takes effect one month after notice (end of the next month for monthly pay).",
+            "Keep a copy or photo, and keep sent records if submitted by email or messenger.",
+            "Make sure your last day does not overlap with your new job's start date (social insurance)."
+          ]
+        },
+        {
+          "title": "Handover",
+          "items": [
+            "Document your tasks, status and deadlines of ongoing work, and key contacts.",
+            "Transfer accounts, passwords and shared-drive access per company process; back up personal files beforehand.",
+            "Get a checklist signed for returning laptop, access card, corporate card, etc.",
+            "Agree in advance whether you will use remaining leave during handover."
+          ]
+        },
+        {
+          "title": "Leaving checklist",
+          "items": [
+            "Severance and remaining wages: within 14 days of leaving (Labor Standards Act Art. 36, Retirement Benefit Act Art. 9). Severance goes to an IRP account.",
+            "Social insurance: the company reports loss of coverage as of the day after your last day. Check regional health insurance or voluntary continued coverage.",
+            "Year-end tax settlement: done mid-year on leaving; claim missed deductions in the May income tax filing.",
+            "Get a certificate of employment, withholding receipt and retirement income withholding receipt.",
+            "If eligible for unemployment benefits, check the separation reason and apply on Work24 within 12 months after leaving."
+          ]
+        },
+        {
+          "title": "Writing the reason",
+          "items": [
+            "For voluntary resignation, a short 'personal reasons' is enough.",
+            "If the company's circumstances apply (recommended resignation, contract end, unpaid wages, harassment), state them factually so unemployment benefits are not affected.",
+            "Do not sign if the company asks you to rewrite it as 'personal reasons' when that is untrue.",
+            "Leave out emotional wording or criticism of the company; it may surface in reference checks."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What if the company refuses to accept my resignation?",
+            "a": "For an open-ended contract, under Civil Act Art. 660 resignation takes effect one month after notice even without acceptance. If pay is set by period (e.g., monthly), it takes effect after the next pay period following the notice (usually the end of next month). Keep working until then to be safe."
+          },
+          {
+            "q": "Is a resignation sent by email or messenger valid?",
+            "a": "Yes. Resignation is a declaration of intent with no required form. You must be able to prove it reached the company and when, so keep sent records and ideally attach a signed PDF letter."
+          },
+          {
+            "q": "Must I use the company's own form?",
+            "a": "No form is required by law, so any form has the same effect. Using the company form is fine, but if asked to write something untrue (e.g., 'personal reasons' for a recommended resignation), write the actual reason; it affects unemployment benefits."
+          },
+          {
+            "q": "Can I withdraw my resignation?",
+            "a": "In principle yes, before the company accepts it. Once accepted, or if withdrawal would cause unforeseen harm to the company, the company's consent is needed."
+          },
+          {
+            "q": "When do I receive severance pay?",
+            "a": "With 1+ year of continuous service (15+ hours/week), within 14 days of leaving. The date can be extended by agreement, and severance is in principle transferred to an IRP account."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Severance pay calculator",
+          "href": "/retirement-calculator/"
+        },
+        {
+          "label": "Annual leave calculator",
+          "href": "/annual-leave/"
+        },
+        {
+          "label": "Unemployment benefit calculator",
+          "href": "/unemployment-benefit/"
+        },
+        {
+          "label": "Year-end tax calculator",
+          "href": "/year-end-tax/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Civil Act Art. 660 (termination notice of employment without fixed term) — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/민법/제660조"
+        },
+        {
+          "label": "Labor Standards Act Art. 36 (settlement of money and valuables)",
+          "url": "https://www.law.go.kr/법령/근로기준법/제36조"
+        },
+        {
+          "label": "Employee Retirement Benefit Security Act Art. 9 (payment of severance)",
+          "url": "https://www.law.go.kr/법령/근로자퇴직급여보장법/제9조"
+        },
+        {
+          "label": "Enforcement Rule of the Employment Insurance Act, Annex 2 (justified reasons for leaving)",
+          "url": "https://www.law.go.kr/법령/고용보험법시행규칙"
+        },
+        {
+          "label": "Work24 — unemployment benefit application",
+          "url": "https://www.work24.go.kr"
+        }
+      ]
+    }
+  },
   "powerOfAttorney": {},
   "certifiedLetter": {},
   "employmentContract": {}
