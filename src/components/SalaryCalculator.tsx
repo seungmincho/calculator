@@ -683,6 +683,11 @@ const SalaryCalculatorContent = () => {
                       <span className="text-sub">{t('result.taxCredit')}</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
                     </div>
+                    <div className="flex justify-between">
+                      <span className="text-sub">{t('result.annualTaxEstimate')}</span>
+                      <span className="font-medium text-fg">{formatNumber(result.taxInfo.annualTaxEstimate)}{t('input.currency')}</span>
+                    </div>
+                    <p className="pt-2 text-xs text-muted">{t('result.withholdingNote')}</p>
                   </div>
                 </div>
               )}

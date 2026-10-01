@@ -111,7 +111,7 @@ try {
     for (const [spouse, children] of [[false, 0], [true, 2]] as const) {
       const x: YetInput = { ...DEFAULT_INPUT, salary, spouse, children, healthEmp: 0, credit: 0, debit: 0, transport: 0 }
       const n = calculateNetSalary(salary, { nonTaxableMonthly: 0, dependents: 1 + (spouse ? 1 : 0) + children, children })
-      assert.equal(calc(x).special.determined, n.deductions.incomeTax, `netSalary ${salary}/${children}`)
+      assert.equal(calc(x).special.determined, n.taxInfo.annualTaxEstimate, `netSalary ${salary}/${children}`)
     }
   }
 } catch (e) {

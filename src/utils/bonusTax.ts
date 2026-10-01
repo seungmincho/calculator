@@ -5,13 +5,15 @@
  *
  * 근거
  *  - 소득세: 상여 원천징수(소득세법 시행령 §194) = 지급대상기간 m개월 × 간이세액표[(월급+성과급/m)] − 이미 뗀 세액.
- *    지급대상기간이 없는 성과급은 1월~지급월. 간이세액표는 "월급×12 연간세액÷12"로 만들어진 표라 calculateNetSalary로 근사.
+ *    지급대상기간이 없는 성과급은 1월~지급월. 간이세액표는 wageTaxTable.ts 실데이터.
+ *  - 연말정산(final): 연간 결정세액 추정(taxInfo.annualTaxEstimate) 차이.
  *  - 국민연금: 기준소득월액(전년도 소득 기준)을 연중 고정 적용 → 성과급 달에 추가로 떼지 않음.
  *  - 건강·장기요양: 보수월액 연중 고정 → 지급월엔 없음, 다음 해 4월 보수총액 정산 때 성과급 × 요율 부과.
  *  - 고용보험: 대부분 급여명세서가 지급월 실지급액 × 0.9% 공제.
  */
 import { INSURANCE } from './insuranceRates'
 import { calculateNetSalary } from './netSalary'
+import { wageTax } from './wageTaxTable'
 
 export interface BonusTaxInput {
   /** 세전 연봉 (비과세 포함, 성과급 제외) */
@@ -59,9 +61,8 @@ export function calculateBonusTax(input: BonusTaxInput) {
   const base = calculateNetSalary(taxableSalary, opt)!
   const withBonus = calculateNetSalary(taxableSalary + bonus, { ...opt, nationalPensionAnnual: base.deductions.nationalPension })!
 
-  // 간이세액표 근사: 월 과세급여 → 월 소득세 (10원 미만 절사)
-  const monthlyTax = (monthly: number) =>
-    Math.floor(calculateNetSalary(monthly * 12, opt)!.deductions.incomeTax / 12 / 10) * 10
+  // 간이세액표: 월 과세급여 → 월 소득세
+  const monthlyTax = (monthly: number) => wageTax(monthly, opt.dependents, opt.children)
   const monthlySalary = taxableSalary / 12
   const nowIncomeTax = Math.max(0, period * (monthlyTax(monthlySalary + bonus / period) - monthlyTax(monthlySalary)))
 
@@ -74,17 +75,18 @@ export function calculateBonusTax(input: BonusTaxInput) {
     incomeTax: nowIncomeTax, localIncomeTax: Math.floor(nowIncomeTax * 0.1),
   }, bonus)
 
-  const finalIncomeTax = withBonus.deductions.incomeTax - base.deductions.incomeTax
+  const annualTax = (r: typeof base) => r.taxInfo.annualTaxEstimate
+  const finalIncomeTax = annualTax(withBonus) - annualTax(base)
   const final = sumDeductions({
     nationalPension: 0, healthInsurance, longTermCare, employmentInsurance,
     incomeTax: finalIncomeTax,
-    localIncomeTax: withBonus.deductions.localIncomeTax - base.deductions.localIncomeTax,
+    localIncomeTax: Math.floor(annualTax(withBonus) * 0.1) - Math.floor(annualTax(base) * 0.1),
   }, bonus)
 
   const baseBracket = bracketIndex(base.taxInfo.taxableIncome)
   const withBracket = bracketIndex(withBonus.taxInfo.taxableIncome)
-  const baseTotalTax = base.deductions.incomeTax + base.deductions.localIncomeTax
-  const withTotalTax = withBonus.deductions.incomeTax + withBonus.deductions.localIncomeTax
+  const baseTotalTax = annualTax(base) + Math.floor(annualTax(base) * 0.1)
+  const withTotalTax = annualTax(withBonus) + Math.floor(annualTax(withBonus) * 0.1)
 
   return {
     bonus,

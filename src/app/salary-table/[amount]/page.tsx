@@ -61,7 +61,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
   const faq = [
     { q: `연봉 ${salaryLabel(man)}의 세전 월급은 얼마인가요?`, a: `연봉을 12로 나눈 ${won(monthlyGross)}입니다. 여기서 4대보험 ${won(insMonthly)}과 소득세·지방소득세 ${won(taxMonthly)}을 빼면 월 실수령액 ${won(r.netMonthly)}이 됩니다 (부양가족 1인, 비과세 20만원 기준).` },
     { q: `연봉 ${salaryLabel(man)}은 공제율이 몇 %인가요?`, a: `총 공제율은 ${((d.total / r.gross) * 100).toFixed(1)}%입니다. 4대보험이 ${((insMonthly * 12 / r.gross) * 100).toFixed(1)}%, 세금이 ${((taxMonthly * 12 / r.gross) * 100).toFixed(1)}%이며, 과세표준 ${won(r.taxInfo.taxableIncome)}에 ${r.taxInfo.taxableIncome <= 14_000_000 ? '6%' : r.taxInfo.taxableIncome <= 50_000_000 ? '15%' : r.taxInfo.taxableIncome <= 88_000_000 ? '24%' : r.taxInfo.taxableIncome <= 150_000_000 ? '35%' : '38% 이상'} 구간 세율이 적용됩니다.` },
-    { q: '계산기마다 실수령액이 조금씩 다른 이유는?', a: `비과세 항목·부양가족 기본값과 세액공제 반영 방식이 달라서입니다. 이 페이지는 ${YEAR}년 요율로 근로소득세액공제까지 반영한 연간 세액을 12로 나눈 값이며, 회사 급여명세서는 간이세액표 원천징수액이라 월별로는 다르고 연말정산에서 맞춰집니다.` },
+    { q: '계산기마다 실수령액이 조금씩 다른 이유는?', a: `비과세 항목·부양가족 기본값과 소득세 계산 방식이 달라서입니다. 이 페이지는 ${YEAR}년 4대보험 요율과 회사가 실제로 쓰는 국세청 근로소득 간이세액표(2026.2.27 개정)로 계산해 급여명세서와 거의 같고, 연간 세금은 연말정산에서 확정됩니다.` },
     { q: `연봉이 ${salaryLabel(man + 300)}으로 오르면 실수령액은 얼마나 늘어나나요?`, a: `월 실수령액이 ${won(r.netMonthly)}에서 ${won(raise.netMonthly)}으로 약 ${won(raise.netMonthly - r.netMonthly)} 늘어납니다. 연봉 인상분 300만원(월 25만원) 중 약 ${(((raise.netMonthly - r.netMonthly) / 250_000) * 100).toFixed(0)}%가 실제 손에 들어옵니다.` },
   ]
 
@@ -120,7 +120,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
                   ['건강보험', d.healthInsurance, pct(INSURANCE.healthRate)],
                   ['장기요양보험', d.longTermCare, `건보료의 ${pct(INSURANCE.longTermCareRate)}`],
                   ['고용보험', d.employmentInsurance, pct(INSURANCE.employmentRate)],
-                  ['소득세', d.incomeTax, `세액공제 ${won(r.taxInfo.taxCredit)} 반영`],
+                  ['소득세', d.incomeTax, '국세청 간이세액표(2026.2.27) 기준'],
                   ['지방소득세', d.localIncomeTax, '소득세의 10%'],
                 ].map(([name, annual, note]) => (
                   <tr key={name as string}>

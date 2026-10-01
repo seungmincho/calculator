@@ -394,6 +394,8 @@
       "currency": "KRW"
     },
     "result": {
+      "annualTaxEstimate": "Estimated annual tax at year-end (reference)",
+      "withholdingNote": "Monthly income tax withheld follows the NTS simplified withholding table (revised 2026-02-27). The tax base and annual tax above are reference values before special deductions; your final tax is settled at year-end.",
       "monthlyTakeHome": "Monthly Take-Home",
       "annualTakeHome": "Annual Take-Home",
       "effectiveTaxRate": "Effective Tax Rate",

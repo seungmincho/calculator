@@ -1,8 +1,9 @@
 /**
  * 연봉 → 실수령액 순수 계산 (2026). SalaryCalculator·연봉 실수령액 표(/salary-table)가 공유.
- * 입력 의미는 근로소득 간이세액표와 동일: 공제대상가족 수(본인 포함) + 그중 8~20세 자녀 수.
+ * 월 소득세는 근로소득 간이세액표 실데이터(wageTaxTable.ts). 입력 의미도 간이세액표와 동일: 공제대상가족 수(본인 포함) + 그중 8~20세 자녀 수.
  */
 import { INSURANCE, PENSION_ANNUAL_CAP } from './insuranceRates'
+import { wageTax } from './wageTaxTable'
 
 export interface NetSalaryInput {
   /** 월 비과세액 (식대 등). 기본 20만 */
@@ -69,7 +70,10 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   const childTaxCredit = children === 0 ? 0 : children === 1 ? 250_000 : 550_000 + (children - 2) * 400_000
 
   const taxCredit = Math.min(computedTax, Math.floor(workTaxCredit + childTaxCredit))
-  const incomeTax = computedTax - taxCredit
+  // 연말정산 결정세액 추정(특별공제·표준세액공제 제외) — 참고용
+  const annualTaxEstimate = computedTax - taxCredit
+  // 매달 실제로 떼는 소득세 = 근로소득 간이세액표(2026.2.27 개정). 실수령액·기납부세액은 이 값 기준
+  const incomeTax = wageTax(taxableAnnual / 12, dependents, children) * 12
   const localIncomeTax = Math.floor(incomeTax * 0.1)
 
   const totalDeductions = nationalPension + healthInsurance + longTermCare + employmentInsurance + incomeTax + localIncomeTax
@@ -88,6 +92,7 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
       taxableIncome,
       personalDeduction,
       taxCredit,
+      annualTaxEstimate,
       effectiveTaxRate: ((incomeTax + localIncomeTax) / grossAnnual) * 100,
     },
   }

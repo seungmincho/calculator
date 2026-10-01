@@ -394,6 +394,8 @@
       "currency": "원"
     },
     "result": {
+      "annualTaxEstimate": "연말정산 예상 결정세액 (참고)",
+      "withholdingNote": "월급에서 떼는 소득세는 국세청 근로소득 간이세액표(2026.2.27 개정) 기준이에요. 위 과세표준·결정세액은 의료비·카드 등 특별공제를 넣기 전 참고값이고, 실제 연간 세금은 연말정산에서 확정돼요.",
       "monthlyTakeHome": "월 실수령액",
       "annualTakeHome": "연 실수령액",
       "effectiveTaxRate": "실효세율",

@@ -5,7 +5,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
+import { calculateNetSalary as calcNetSalary } from '@/utils/netSalary'
 
 // ── 2025년 한국 급여 계산 로직 (SalaryCalculator와 동일 기준) ──
 
@@ -50,90 +50,13 @@ function calculateNetSalary(
   childrenCount: number
 ): SalaryResult | null {
   if (!inputSalary || inputSalary <= 0) return null
-
-  const grossAnnual = type === 'monthly' ? inputSalary * 12 : inputSalary
-  const nonTaxableAnnual = nonTaxableMonthly * 12
-  const taxableAnnual = grossAnnual - nonTaxableAnnual
-
-  // 4대보험 (2025)
-  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
-  const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
-  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
-  const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
-
-  // 근로소득공제
-  let workIncomeDeduction = 0
-  if (grossAnnual <= 5000000) {
-    workIncomeDeduction = grossAnnual * 0.7
-  } else if (grossAnnual <= 15000000) {
-    workIncomeDeduction = 3500000 + (grossAnnual - 5000000) * 0.4
-  } else if (grossAnnual <= 45000000) {
-    workIncomeDeduction = 7500000 + (grossAnnual - 15000000) * 0.15
-  } else if (grossAnnual <= 100000000) {
-    workIncomeDeduction = 12000000 + (grossAnnual - 45000000) * 0.05
-  } else {
-    workIncomeDeduction = 14750000 + (grossAnnual - 100000000) * 0.02
-  }
-  workIncomeDeduction = Math.min(workIncomeDeduction, 20000000)
-
-  // 인적공제
-  const basicDeduction = 1500000
-  const dependentDeduction = (dependentCount - 1) * 1500000
-  const childDeduction = childrenCount * 1500000
-  const totalPersonalDeduction = basicDeduction + dependentDeduction + childDeduction
-
-  const workIncome = grossAnnual - workIncomeDeduction
-  const totalDeduction = nationalPension + totalPersonalDeduction
-  const taxableIncome = Math.max(0, workIncome - totalDeduction)
-
-  // 소득세 (2025 누진세율)
-  let incomeTax = 0
-  if (taxableIncome <= 14000000) {
-    incomeTax = taxableIncome * 0.06
-  } else if (taxableIncome <= 50000000) {
-    incomeTax = 840000 + (taxableIncome - 14000000) * 0.15
-  } else if (taxableIncome <= 88000000) {
-    incomeTax = 6240000 + (taxableIncome - 50000000) * 0.24
-  } else if (taxableIncome <= 150000000) {
-    incomeTax = 15360000 + (taxableIncome - 88000000) * 0.35
-  } else if (taxableIncome <= 300000000) {
-    incomeTax = 37060000 + (taxableIncome - 150000000) * 0.38
-  } else if (taxableIncome <= 500000000) {
-    incomeTax = 94060000 + (taxableIncome - 300000000) * 0.4
-  } else if (taxableIncome <= 1000000000) {
-    incomeTax = 174060000 + (taxableIncome - 500000000) * 0.42
-  } else {
-    incomeTax = 384060000 + (taxableIncome - 1000000000) * 0.45
-  }
-  incomeTax = Math.floor(incomeTax)
-  const localIncomeTax = Math.floor(incomeTax * 0.1)
-
-  const totalDeductions = nationalPension + healthInsurance + longTermCare + employmentInsurance + incomeTax + localIncomeTax
-  const netAnnual = grossAnnual - totalDeductions
-  const netMonthly = Math.floor(netAnnual / 12)
-
-  return {
-    gross: grossAnnual,
-    taxable: taxableAnnual,
-    workIncome,
-    workIncomeDeduction,
-    netAnnual,
-    netMonthly,
-    deductions: {
-      nationalPension,
-      healthInsurance,
-      longTermCare,
-      employmentInsurance,
-      incomeTax,
-      localIncomeTax,
-      total: totalDeductions,
-    },
-    taxInfo: {
-      taxableIncome,
-      personalDeduction: totalPersonalDeduction,
-      effectiveTaxRate: grossAnnual > 0 ? (incomeTax + localIncomeTax) / grossAnnual * 100 : 0,
-    },
-  }
+  const deps = Math.max(1, dependentCount)
+  // 계산은 utils/netSalary.ts (연봉 계산기와 동일, 소득세 = 간이세액표)
+  return calcNetSalary(type === 'monthly' ? inputSalary * 12 : inputSalary, {
+    nonTaxableMonthly,
+    dependents: deps,
+    children: Math.min(childrenCount, deps - 1),
+  })
 }
 
 const formatNumber = (num: number) => num.toLocaleString('ko-KR')
