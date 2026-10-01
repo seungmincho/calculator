@@ -2247,6 +2247,11 @@
       "powerOfAttorney": "Power of Attorney Generator",
       "certifiedLetter": "Certified Letter Generator",
       "employmentContract": "Employment Contract Generator",
+      "brokerageFee": "Real Estate Brokerage Fee Calculator",
+      "annualCarTax": "Annual Car Tax Calculator",
+      "paySlip": "Pay Slip Generator",
+      "receiptGenerator": "Receipt Generator",
+      "leaseContract": "Lease Agreement Generator",
       "kanbanBoard": "Kanban Board",
       "meetingMinutes": "Meeting Minutes",
       "menuPicker": "What to Eat",
@@ -6634,6 +6639,26 @@
       "employmentContract": {
         "title": "Employment Contract Generator",
         "description": "Korean standard employment contract with minimum wage & weekly holiday pay checks"
+      },
+      "brokerageFee": {
+        "title": "Real Estate Brokerage Fee Calculator",
+        "description": "Korean real estate brokerage fee by legal cap rates for sale, jeonse and monthly rent"
+      },
+      "annualCarTax": {
+        "title": "Annual Car Tax Calculator",
+        "description": "Korean annual car tax by engine size and age, January prepayment discount, EV"
+      },
+      "paySlip": {
+        "title": "Pay Slip Generator",
+        "description": "Korean pay slip with automatic insurance & tax deductions, calculation basis, PDF"
+      },
+      "receiptGenerator": {
+        "title": "Receipt Generator",
+        "description": "Simple Korean receipt with amount in words, items, stamp, PDF"
+      },
+      "leaseContract": {
+        "title": "Lease Agreement Generator",
+        "description": "Korean standard housing lease (jeonse/monthly) with recommended clauses, PDF"
       },
       "kanbanBoard": {
         "title": "Kanban Board",
@@ -49640,5 +49665,10 @@
         }
       ]
     }
-  }
+  },
+  "brokerageFee": {},
+  "annualCarTax": {},
+  "paySlip": {},
+  "receiptGenerator": {},
+  "leaseContract": {}
 }

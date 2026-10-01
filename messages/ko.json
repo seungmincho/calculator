@@ -2777,6 +2777,11 @@
       "powerOfAttorney": "위임장 작성기",
       "certifiedLetter": "내용증명 작성기",
       "employmentContract": "근로계약서 작성기",
+      "brokerageFee": "중개수수료 계산기",
+      "annualCarTax": "자동차세 계산기",
+      "paySlip": "급여명세서 작성기",
+      "receiptGenerator": "영수증 작성기",
+      "leaseContract": "부동산 임대차계약서 작성기",
       "kanbanBoard": "칸반보드",
       "meetingMinutes": "회의록 작성기",
       "menuPicker": "오늘 뭐 먹지",
@@ -6634,6 +6639,26 @@
       "employmentContract": {
         "title": "근로계약서 작성기",
         "description": "표준근로계약서 양식, 최저임금·주휴수당 자동 확인, PDF 출력"
+      },
+      "brokerageFee": {
+        "title": "중개수수료 계산기",
+        "description": "부동산 복비(중개보수) 매매·전세·월세 상한 요율 계산, 부가세 포함"
+      },
+      "annualCarTax": {
+        "title": "자동차세 계산기",
+        "description": "배기량·차령별 연간 자동차세와 1월 연납 할인, 전기차·영업용 계산"
+      },
+      "paySlip": {
+        "title": "급여명세서 작성기",
+        "description": "급여명세서 양식 작성, 4대보험·소득세 자동 공제, 계산방법 기재, PDF 출력"
+      },
+      "receiptGenerator": {
+        "title": "영수증 작성기",
+        "description": "간이 영수증 양식 작성, 금액 한글 표기·품목·도장, PDF 출력"
+      },
+      "leaseContract": {
+        "title": "부동산 임대차계약서 작성기",
+        "description": "주택임대차표준계약서 기반 전세·월세 계약서 작성, 특약 추천, PDF 출력"
       },
       "kanbanBoard": {
         "title": "칸반보드",
@@ -49785,5 +49810,10 @@
         }
       ]
     }
-  }
+  },
+  "brokerageFee": {},
+  "annualCarTax": {},
+  "paySlip": {},
+  "receiptGenerator": {},
+  "leaseContract": {}
 }
