@@ -1,4 +1,19 @@
-# NEXT-SESSION (2026-10-01 오후, main 푸시 완료 8ccaf66)
+# NEXT-SESSION (2026-10-01 저녁, main 푸시·배포 완료 8cf7483)
+
+## 2026-10-01 저녁 — 배치 3~8 (24개 도구) + Impeccable 디자인 정리, 한 번에 배포
+- 3: emoji-picker, retirement-calculator(퇴직금 — 2023~ 퇴직소득세로 재작성), image-ocr, image-compressor
+- 4: color-blindness-simulator, notepad, roman-numeral, loan-calculator
+- 5: reaction-test, background-remover, wedding-calculator(한국소비자원 2025.8 수치 확인), income-tax(+freelancerTax 복식부기 기준경비율 1/2 버그 수정)
+- 6: invoice-generator(한글 PDF = html2canvas, jsPDF optional dep로 설치됨·package.json 미기재), time-converter, moving-cost(손없는날 음력), budget-calculator
+- 7: calorie-calculator, screen-compare, text-converter, body-fat-calculator
+- 8: mbti-test(연애 스타일·유명인 섹션 제거됨 — 검색 유입 줄면 복원 검토), blood-sugar, bmi-calculator(대한비만학회 2022), tetris
+- 각 page.tsx의 틀린 SEO/FAQ 문구(기준치·없는 기능)도 메인에서 정정. 공통 헬퍼: scratchpad featurelist.py (JSON-LD featureList 교체)
+- **Impeccable 스킬 설치**(.claude/skills/impeccable + .claude/agents, 훅은 설치 안 함 — 편집마다 다운로드 바이너리 실행). 감사 135→62건: `--faint` #8b95a1(대비 3:1), 측면 색 테두리 제거, `scripts/strip-dead-gradient-stops.py`(죽은 그라데이션 448개), 배경 색 얼룩 제거. 재감사: `.claude/skills/impeccable/scripts/impeccable detect --json src/components`
+- body `overflow-wrap: break-word` — "A·B·C" 같은 긴 문자열이 모바일 레이아웃을 넓히던 문제(텍스트 변환·로마숫자)
+- 빌드가 메모리 부족(WSL·bun·Claude 창)으로 segfault/exit 134 날 수 있음 → 재시도하면 됨(코드 문제 아님)
+- **성과 측정**: 2026-10-29 전후 Search Console에서 위 24개 + 오전 배치 페이지의 노출·클릭을 직전 4주와 비교 (CF Web Analytics는 내부 이동 위주라 부적합)
+- 다음 후보(클릭순, 미개선): omok·mancala·checkers·othello·battleship·dots-and-boxes(BoardGamePage 공통), chess, color-blindness 외 offset 118~ (popular_tools 재조회)
+
 
 ## 2026-10-01 오후 배치 (배포·푸시)
 - **입력창 전역 수정**: `ui-field` 회색 채움+투명 테두리 → 흰 바탕+`--line-strong` 테두리+hover (친구 피드백 "입력 폼처럼 안 생김", globals.css 한 곳)
@@ -34,7 +49,7 @@
 - 병합: `python scripts/merge-i18n.py <ns> new.json` → `... over.json --overwrite` → node로 키 확인. 기존 키와 충돌하는 "새" 키는 병합 안 되니 over로 다시 넣을 것
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
-- 배포: SW 버전 bump(public/sw.js, 현재 v4.26.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+- 배포: SW 버전 bump(public/sw.js, 현재 v4.27.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
 
 ## 4. 재개 프롬프트
 "docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
