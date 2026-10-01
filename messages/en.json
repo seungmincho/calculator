@@ -49666,7 +49666,250 @@
       ]
     }
   },
-  "brokerageFee": {},
+  "brokerageFee": {
+    "title": "Brokerage Fee Calculator",
+    "subtitle": "Calculate the legal maximum Korean real estate brokerage fee (2026 rates) for sales, jeonse and monthly rent, including officetels and commercial property, VAT and negotiated rates.",
+    "units": {
+      "won": " KRW"
+    },
+    "deal": {
+      "sale": "Sale",
+      "jeonse": "Jeonse",
+      "monthly": "Monthly rent"
+    },
+    "prop": {
+      "label": "Property type",
+      "house": "Housing",
+      "officetel": "Officetel (residential)",
+      "officetelEtc": "Officetel (other)",
+      "nonHouse": "Commercial / land"
+    },
+    "propHint": {
+      "house": "Apartments, villas, houses, pre-sale rights. Mixed buildings with half or more residential area",
+      "officetel": "Up to 85㎡ with kitchen, flush toilet and bathing facilities",
+      "officetelEtc": "Over 85㎡ or lacking residential facilities",
+      "nonHouse": "Shops, offices, land, factories and other non-residential property"
+    },
+    "amount": {
+      "sale": "Sale price",
+      "jeonse": "Jeonse deposit",
+      "monthly": "Deposit",
+      "rent": "Monthly rent"
+    },
+    "monthlyFormula": "Transaction amount {amount} KRW = deposit + rent × {mult}",
+    "monthlyUnder": "Deposit + rent × 100 is under 50M KRW, so × 70 applies.",
+    "vat": {
+      "label": "VAT",
+      "general": "General 10%",
+      "simple": "Simplified 4%",
+      "none": "Excluded",
+      "hint": {
+        "general": "General-taxpayer brokers charge 10% VAT on top of the fee.",
+        "simple": "Simplified taxpayers charge about 4% (40% value-added ratio × 10%). Check the business registration.",
+        "none": "Shows the fee without VAT."
+      }
+    },
+    "nego": {
+      "label": "Negotiated rate",
+      "hint": "Negotiable with the broker up to {max}.",
+      "reset": "Use max"
+    },
+    "result": {
+      "label": "{deal} · amount {amount} KRW · per party",
+      "maxRate": "Max rate",
+      "negoRate": "Negotiated rate",
+      "capApplied": "capped at {cap} KRW",
+      "vatIncl": "incl. {rate} VAT",
+      "amount": "Transaction amount",
+      "fee": "Brokerage fee",
+      "vat": "VAT ({rate})",
+      "each": "{party} pays",
+      "both": "Both parties",
+      "negoSaved": "You pay {amount} KRW less per party ({both} KRW for both) than the maximum.",
+      "cut": "Negotiating 0.1%p lower to {rate} saves {amount} KRW per party.",
+      "noteMax": "The legal rate is a ceiling. Agree on the fee with the broker before signing to avoid disputes.",
+      "noteOther": "Non-residential property is negotiated within 0.9%. 0.9% is only the ceiling, so agree on the rate before signing."
+    },
+    "party": {
+      "seller": "Seller",
+      "buyer": "Buyer",
+      "landlord": "Landlord",
+      "tenant": "Tenant"
+    },
+    "share": {
+      "label": "{deal} {amount} KRW brokerage fee",
+      "text": "Brokerage fee for {deal} {amount} KRW: {fee} KRW per party (incl. VAT)"
+    },
+    "table": {
+      "title": "{deal} max rate table",
+      "desc": {
+        "house": "Nationwide rates since the October 19, 2021 reform.",
+        "officetel": "Residential officetels: 0.5% for sales and 0.4% for leases regardless of price.",
+        "officetelEtc": "Officetels without residential facilities are negotiated within 0.9%.",
+        "nonHouse": "Commercial property and land are negotiated within 0.9%."
+      },
+      "head": [
+        "Amount",
+        "Max rate",
+        "Cap"
+      ],
+      "under": "Under {b}",
+      "range": "{a} – under {b}",
+      "over": "{a} and over",
+      "all": "All amounts",
+      "within": "up to {rate}",
+      "now": "Now",
+      "noCap": "None",
+      "note": "Rates and caps exclude VAT. If amount × rate exceeds the cap, only the cap can be charged."
+    },
+    "compare": {
+      "title": "Jeonse vs monthly rent fee",
+      "desc": "Compare the fee for the same home leased as jeonse or as deposit + monthly rent. Uses the property type and VAT settings above.",
+      "jeonse": "Jeonse deposit",
+      "deposit": "Monthly-rent deposit",
+      "rent": "Monthly rent",
+      "jeonseFee": "As jeonse",
+      "monthlyFee": "As monthly rent",
+      "amountLine": "Amount {amount} KRW · rate {rate}",
+      "cheaper": "The monthly-rent contract costs {amount} KRW less per party.",
+      "pricier": "The monthly-rent contract costs {amount} KRW more per party.",
+      "same": "Both contracts have the same fee.",
+      "note": "Monthly rent is converted as deposit + rent × 100 (× 70 if under 50M KRW). Use the rent converter to compare the real cost."
+    },
+    "chart": {
+      "title": "Fee by amount ({deal})",
+      "desc": "Per-party fee at the max rate, incl. VAT. It jumps at the 900M, 1.2B and 1.5B brackets.",
+      "x": "Amount",
+      "fee": "Brokerage fee",
+      "now": "Now"
+    },
+    "disclaimer": "For reference based on legal maximums. The actual fee depends on negotiation, local ordinances and expense claims.",
+    "guide": {
+      "title": "Brokerage fee essentials",
+      "amount": {
+        "title": "Transaction amount",
+        "items": [
+          "Sales use the price; jeonse uses the deposit.",
+          "Monthly rent uses deposit + rent × 100, or deposit + rent × 70 if that is under 50M KRW (Enforcement Rule Art. 20(5)).",
+          "Exchanges use the higher-valued property; pre-sale rights use payments made plus premium.",
+          "If the same broker handles a sale and a lease between the same parties, only the sale fee applies."
+        ]
+      },
+      "pay": {
+        "title": "When to pay",
+        "items": [
+          "Paid as agreed with the broker, or on the day the balance is paid if there is no agreement (Enforcement Decree Art. 27-2).",
+          "In practice each party pays its share on the balance payment day.",
+          "Write the fee and payment date in the contract to avoid disputes."
+        ]
+      },
+      "doc": {
+        "title": "Property confirmation statement",
+        "items": [
+          "Brokers must explain the property and hand over a confirmation statement with the contract (Licensed Real Estate Agents Act Art. 25).",
+          "The statement lists the fee, expenses and how they were calculated — compare them with this result.",
+          "Charging more than the legal cap is prohibited (Art. 33(1)4), punishable by up to 1 year in prison or a 10M KRW fine."
+        ]
+      },
+      "receipt": {
+        "title": "Cash receipts and tax invoices",
+        "items": [
+          "Brokerage is a mandatory cash-receipt business: cash payments of 100,000 KRW or more must be receipted even without a request.",
+          "Businesses can receive a tax invoice (general taxpayer) and deduct input VAT.",
+          "VAT is 10% for general and about 4% for simplified taxpayers. Check the business registration."
+        ]
+      },
+      "cancel": {
+        "title": "If the contract is cancelled",
+        "items": [
+          "No fee is owed if the contract is void, cancelled or rescinded due to the broker's intent or negligence (Art. 32(1) proviso).",
+          "If a party walks away after paying the down payment, the fee may still be claimed, though courts sometimes reduce it.",
+          "If it falls through at the provisional deposit stage, a claim is difficult without a fee agreement. Consult the local district office in a dispute."
+        ]
+      },
+      "region": {
+        "title": "Regional differences and expenses",
+        "items": [
+          "Housing fees are set by provincial ordinances within the ministry ordinance; since October 2021 all provinces use the same rates.",
+          "Officetel, commercial and land rates are set nationwide by the Enforcement Rule (Art. 20(4)).",
+          "Brokers may also charge documented actual expenses for title checks and deposit protection (Art. 32(2))."
+        ]
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "What is the brokerage fee for a home sale?",
+          "a": "Under the 2021 rates: under 50M 0.6% (cap 250K), 50M–200M 0.5% (cap 800K), 200M–900M 0.4%, 900M–1.2B 0.5%, 1.2B–1.5B 0.6%, 1.5B and over 0.7%. Seller and buyer each pay."
+        },
+        {
+          "q": "How are jeonse and monthly rent fees calculated?",
+          "a": "Leases: under 50M 0.5% (cap 200K), 50M–100M 0.4% (cap 300K), 100M–600M 0.3%, 600M–1.2B 0.4%, 1.2B–1.5B 0.5%, 1.5B and over 0.6%. Monthly rent uses deposit + rent × 100, or × 70 if under 50M."
+        },
+        {
+          "q": "Is VAT added to the brokerage fee?",
+          "a": "Yes. Legal rates and caps exclude VAT. General-taxpayer brokers add 10%, simplified taxpayers about 4%."
+        },
+        {
+          "q": "Can I negotiate the fee?",
+          "a": "Yes. The legal rate is a ceiling. Agree on the rate before signing; on a 600M sale, 0.1%p lower saves 600K KRW per party (before VAT)."
+        },
+        {
+          "q": "What is the officetel fee?",
+          "a": "Residential officetels (85㎡ or less with kitchen, toilet and bath): 0.5% for sales, 0.4% for leases. Others are negotiated within 0.9%."
+        },
+        {
+          "q": "What is the fee for commercial property or land?",
+          "a": "Non-residential property is negotiated within 0.9% of the transaction amount."
+        },
+        {
+          "q": "When do I pay the fee?",
+          "a": "As agreed, or on the day the balance is paid if there is no agreement — usually the balance payment day."
+        },
+        {
+          "q": "Do I pay if the contract falls through?",
+          "a": "Not if it is due to the broker's intent or negligence. If a party cancels, the fee may be claimed, though courts may reduce it."
+        },
+        {
+          "q": "Can I get a cash receipt?",
+          "a": "Yes. Brokerage is a mandatory cash-receipt business for payments of 100,000 KRW or more, including bank transfers."
+        }
+      ]
+    },
+    "sources": {
+      "title": "Sources",
+      "items": [
+        {
+          "label": "Licensed Real Estate Agents Act Art. 32 (fees), Art. 33 (prohibited acts)",
+          "url": "https://www.law.go.kr/법령/공인중개사법"
+        },
+        {
+          "label": "Enforcement Rule Art. 20 (fee and expense limits)",
+          "url": "https://www.law.go.kr/법령/공인중개사법시행규칙"
+        },
+        {
+          "label": "Seoul Ordinance on Housing Brokerage Fees",
+          "url": "https://www.law.go.kr/자치법규/서울특별시주택중개보수등에관한조례"
+        },
+        {
+          "label": "Seoul Real Estate Information Plaza — fee table",
+          "url": "https://land.seoul.go.kr/land/broker/brokerageCommission.do"
+        },
+        {
+          "label": "Korea Association of Realtors",
+          "url": "https://www.kar.or.kr"
+        }
+      ],
+      "asOf": "As of October 2026 (rates reformed October 19, 2021). Local ordinances may change."
+    },
+    "links": {
+      "acquisition-tax": "Acquisition tax",
+      "rent-converter": "Rent converter",
+      "jeonse-loan": "Jeonse loan",
+      "lease-contract": "Lease contract"
+    }
+  },
   "annualCarTax": {},
   "paySlip": {},
   "receiptGenerator": {

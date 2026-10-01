@@ -13,6 +13,7 @@
  *   출산·양육 제36조의5(12억 이하 1가구 1주택, 500만원, ~2028.12.31). 지방교육세는 취득세 감면 비율만큼 함께 감면
  */
 import { getKoreanHolidays, isHoliday, isWeekend } from './koreanHolidays.ts'
+import { saleFee } from './brokerageFee.ts'
 
 export type Mode = 'buy' | 'inherit' | 'gift'
 /** house = 주택, building = 토지·상가·오피스텔·건물(4%), farmland = 농지 */
@@ -123,14 +124,8 @@ export function calcTax(i: TaxInput): TaxResult {
 
 // ── 부대비용 (매매) ──
 
-/** 주택 매매 중개보수 상한 (공인중개사법 시행규칙 별표1, 2021.10.19~). 부가세 별도 */
-export function brokerFee(price: number, kind: Kind): number {
-  if (kind !== 'house') return Math.floor(price * 0.009) // 주택 외(토지·상가·오피스텔 등) 상한 0.9%
-  if (price < 50_000_000) return Math.min(Math.floor(price * 0.006), 250_000)
-  if (price < 200_000_000) return Math.min(Math.floor(price * 0.005), 800_000)
-  const r = price < 900_000_000 ? 0.004 : price < 1_200_000_000 ? 0.005 : price < 1_500_000_000 ? 0.006 : 0.007
-  return Math.floor(price * r)
-}
+/** 매매 중개보수 상한 (부가세 별도). 주택 외(토지·상가·오피스텔 등)는 0.9% — 요율표는 brokerageFee.ts */
+export const brokerFee = (price: number, kind: Kind): number => saleFee(price, kind === 'house' ? 'house' : 'nonHouse')
 
 /** 국민주택채권 매입률 (소유권이전등기, 시가표준액 기준, 서울·광역시 / 그 밖의 지역) */
 export function bondRate(std: number, kind: Kind, metro: boolean): number {
