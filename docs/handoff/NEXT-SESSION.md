@@ -1,11 +1,28 @@
-# NEXT-SESSION (2026-10-01 저녁, main 푸시·배포 완료 8cf7483)
+# NEXT-SESSION (2026-10-02, main 푸시·배포 완료 a695f91 + handoff)
+
+## 2026-10-02 — 구글 유입 대비: 계산기 8개 고도화 + 문서 양식 5종 신규
+- 배경: popular_tools 클릭 데이터는 구글 색인 전(네이버·내부 이동 위주)이라 **정리(삭제)는 10/29 GSC 확인 후**. 기준: 색인 2개월+ 노출≈0 & 방문≤10 → 301 병합. 1순위 후보 cs-*/dev-* 학습 페이지 9개. 결정 도구 9개는 9/30 분리라 판단 보류
+- 퇴직금 통합: `/severance-pay` 삭제 → `/retirement-calculator/` 301 (`scripts/generate-redirects-rss.js` `movedRoutes` — 앞으로 통합·이전은 여기에). 쿼리 유지 확인(start/end 호환)
+- 고도화(검색량 큰데 미개선): annual-leave, unemployment-benefit, weekly-holiday-pay, hourly-wage, savings-calculator, acquisition-tax, parental-leave, housing-subscription. 각각 `src/utils/<x>.ts` + `scripts/check-<x>.ts`
+  - 실제 버그 수정: 취득세 농특세·지방교육세 중과, 육아기 단축급여 2025 상한, 6+6 공통개월, 적금 가짜 규칙·엉터리 FAQ, 연차 촉진제도 설명 반대
+- 신규 문서 양식 5종 (tools > generators): /iou-generator, /resignation-letter, /power-of-attorney, /certified-letter, /employment-contract
+  - 공통 엔진 `src/components/document/{DocumentGenerator,paper,fields}.tsx` + `src/utils/document.ts`. 새 양식 = 템플릿 객체 하나(IouGenerator.tsx 참고). 용지 본문은 한국어 하드코딩, 개인정보 URL 금지(localStorage `docgen_<id>`)
+  - 내용증명 ↔ 차용증 localStorage 불러오기 연동
+- **i18n 새 네임스페이스 함정**: 한 줄 `"ns": {}` 스텁에 merge-i18n.py를 쓰면 키가 최상위로 새어 나감(JSON은 유효). 스텁을 json.dumps로 통째 치환(scratchpad fill_ns.py 방식)
+- Git Bash에서 `node scripts/verify-page.mjs /path/` → 경로가 MSYS 변환돼 `/`만 검사됨. `MSYS_NO_PATHCONV=1` 필수. verify-page는 HTTP 상태만 보므로 iframe JS로 raw key·overflow 검사함
+- 앱 내장 브라우저에선 SW 등록 실패 콘솔 에러가 나옴(sw.js 200) — 환경 문제, 무시
+- 확인 필요(에이전트 보고): 취득세 6~9억 세율 반올림 자리·국민주택채권 매입률, 퇴직소득 연금수령 21년차 50% 감면 법령 원문, 청약 10·15 규제지역 현행 여부, 청년미래적금 공식 자료, 위임장 부동산 등기 대리(법무사) 안내 누락
+- 다음 후보(검색량 큼·미개선): car-tax-calculator(방문 0), capital-gains-tax, real-estate-calculator(중개수수료), health-insurance, national-pension, exchange-calculator, compound-calculator, dsr-calculator, ovulation-calculator. 문서 양식 추가 후보: 영수증, 합의서, 각서, 경위서, 시말서
+- 미사용 i18n 키 대량(각 컴포넌트 재작성으로 옛 키 남음) — 번들 크기 과제와 함께 정리
+
+## (이전) 2026-10-01 저녁 배포 8cf7483
 
 ## 2026-10-01 밤 — 수능 시즌 콘텐츠 (b9907fc)
 - 신규 `/csat-dday/` (수능 D-day·시간표·준비물·가채점표·응원 카드·대입 일정). 준비물·4교시 세부·문항 수는 "예년 기준" 표기 → **2027 수험생 유의사항 공고 후 `src/utils/csatDday.ts`/i18n 확인**
 - `/csat-grade` health → calculators 이동
 - 예약 작업: 11/20 09:00 가채점 컷 초안, 12/11 13:00 확정 컷 초안 (scheduled-tasks, 로컬 커밋까지만 하고 배포 여부 질문)
 - 새 i18n 네임스페이스는 merge-i18n.py가 못 만듦 → 파일 끝에 `"ns": {}` 스텁 추가 후 병합
-- SW v4.28.0
+- SW v4.29.0 (2026-10-02)
 
 ## 2026-10-01 저녁 — 배치 3~8 (24개 도구) + Impeccable 디자인 정리, 한 번에 배포
 - 3: emoji-picker, retirement-calculator(퇴직금 — 2023~ 퇴직소득세로 재작성), image-ocr, image-compressor
@@ -56,7 +73,7 @@
 - 병합: `python scripts/merge-i18n.py <ns> new.json` → `... over.json --overwrite` → node로 키 확인. 기존 키와 충돌하는 "새" 키는 병합 안 되니 over로 다시 넣을 것
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
-- 배포: SW 버전 bump(public/sw.js, 현재 v4.28.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+- 배포: SW 버전 bump(public/sw.js, 현재 v4.29.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
 
 ## 4. 재개 프롬프트
 "docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
