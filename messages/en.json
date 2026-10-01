@@ -14295,16 +14295,102 @@
     }
   },
   "annualLeave": {
+    "refDate": "Reference date",
+    "refDateHint": "Defaults to today. If you are leaving, enter your last working day.",
+    "retireMode": "I leave on this date (settle as last working day)",
+    "usedNow": "Leave used in the current period (days)",
+    "usedHint": "Only days used from leave that has not expired yet. Half day = 0.5",
+    "lowAttendance": "Attendance in the last year was below 80%",
+    "lowAttendanceMonths": "Months with perfect attendance in that year",
+    "lowAttendanceHint": "Below 80% attendance you get 1 day per month of perfect attendance instead of 15 days (LSA Art. 60(2)). Maternity leave, parental leave and work injury count as attendance.",
+    "invalidJoin": "The hire date is after the reference date. Please check the dates.",
+    "hero": {
+      "label": "Annual leave you can use now",
+      "labelRetire": "Remaining leave on your last day",
+      "tenure": "{y} yr {m} mo of service · year {n}",
+      "remainingOf": "{used} of {active} days used",
+      "expires": "Expires if unused by {date} (payable in cash unless the employer ran the usage-promotion procedure)",
+      "thisPeriod": "Granted this period",
+      "totalSince": "Total granted since hire",
+      "nextGrant": "Next grant",
+      "nextGrantValue": "{date} · {days} days"
+    },
+    "shareCard": {
+      "label": "{y} yr {m} mo of service, leave left",
+      "text": "I have {days} days of annual leave left"
+    },
+    "compare": {
+      "title": "Hire-date basis vs fiscal-year basis",
+      "item": "Item",
+      "active": "Usable now",
+      "total": "Total granted to date",
+      "next": "Next grant",
+      "retireTitle": "Settlement when leaving",
+      "retireTotals": "Hire-date basis total {join} days, fiscal-year basis total {fiscal} days.",
+      "retireShortfall": "The hire-date basis gives {days} more days. A company using the fiscal-year basis must pay this difference (about KRW {won}) as leave allowance.",
+      "retireOk": "The fiscal-year basis is not lower than the hire-date basis, so there is no difference to settle.",
+      "retireHint": "Set the reference date to your last working day and turn on 'I leave on this date' to see the difference between the two bases.",
+      "note": "The fiscal-year basis is an administrative convenience and must not disadvantage employees. While employed, the company basis applies; when you leave, leave is recalculated on the hire-date basis and any shortfall is paid in cash.",
+      "prorated": "Fiscal-year prorated leave = 15 days × days worked in the hire year ÷ 365. Rounding follows company rules. Monthly leave for the first year (up to 11 days) is granted separately."
+    },
+    "pay": {
+      "title": "Unused annual leave allowance",
+      "mode": {
+        "monthly": "Monthly",
+        "hourly": "Hourly",
+        "daily": "Daily"
+      },
+      "amount": {
+        "monthly": "Monthly ordinary wage",
+        "hourly": "Ordinary hourly wage",
+        "daily": "Daily ordinary wage"
+      },
+      "dailyHours": "Contractual hours per day",
+      "remaining": "Remaining leave to be paid (days)",
+      "remainingHint": "Leave blank to use the calculated {days} days.",
+      "result": "Estimated allowance (pre-tax)",
+      "formula": "{days} days × daily ordinary wage KRW {daily}",
+      "settlementAdd": "Includes {days} days of settlement difference",
+      "dailyFromMonthly": "Daily wage = KRW {amount} ÷ 209 h × {hours} h = KRW {daily}",
+      "dailyFromHourly": "Daily wage = KRW {amount} × {hours} h = KRW {daily}",
+      "dailyDirect": "Uses the daily ordinary wage you entered.",
+      "minWage": "Below the 2026 minimum hourly wage of KRW {wage}. Please check the amount.",
+      "note": "209 hours/month = 40 h/week + 8 h weekly paid holiday (part-timers: enter hourly wage). Ordinary wage is base pay plus fixed monthly allowances; regular, uniform bonuses may be included. Rules of employment may use average wage instead (Art. 60(5)). The allowance is taxable wage income."
+    },
+    "table": {
+      "title": "Leave accrual by year",
+      "year": "Year",
+      "yearValue": "Year {n}",
+      "date": "Granted on",
+      "days": "Days",
+      "cumulative": "Cumulative",
+      "kind": "Type",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "prorated": "Prorated",
+      "future": "upcoming",
+      "showAll": "Show up to year 21+ (25-day cap)",
+      "showLess": "Collapse"
+    },
+    "bridge": {
+      "title": "Turn leave into long weekends",
+      "desc": "Workdays between holidays over the next year that link into a longer break. Substitute holidays included.",
+      "rest": "{days}-day break",
+      "leave": "{days} leave days",
+      "leaveOn": "Take leave on",
+      "none": "No bridge-holiday opportunities in the next year.",
+      "fitsHint": "Highlighted items fit within your {days} remaining days. Actual company days off may differ."
+    },
     "title": "Annual Leave Calculator",
-    "description": "Calculate earned annual leave days based on your join date.",
+    "description": "Enter your hire date to see statutory annual leave days, remaining leave, unused leave allowance and the hire-date vs fiscal-year difference.",
     "joinDate": "Join Date",
     "usedLeaves": "Used Leave Days",
     "usedLeavesPlaceholder": "0",
-    "calculationBasis": "Calculation Basis",
+    "calculationBasis": "Your company's leave basis",
     "joinDateBasis": "Join Date Basis",
     "fiscalYearBasis": "Fiscal Year Basis",
-    "joinDateBasisDesc": "Calculates leave based on join date (Labor Standards Act default)",
-    "fiscalYearBasisDesc": "Prorates leave based on fiscal year (Jan-Dec)",
+    "joinDateBasisDesc": "Leave is granted on each work anniversary (the legal rule)",
+    "fiscalYearBasisDesc": "Leave is granted to everyone each January 1, prorated in the year after hire",
     "dailyWage": "Daily Wage (KRW)",
     "dailyWagePlaceholder": "Leave empty to skip pay calculation",
     "dailyWageDesc": "Used for leave pay calculation. Regular wage ÷ prescribed work days",
@@ -14324,15 +14410,16 @@
       "desc": "Leave milestones by years of service. +1 day every 2 years from year 3 (max 25 days)"
     },
     "promotion": {
-      "title": "Leave Promotion Notice",
-      "description": "Employers may follow the leave promotion procedure per Article 61 of the Labor Standards Act. Completing the procedure exempts the employer from compensating unused leave.",
+      "title": "Leave-usage promotion (when unused leave is not paid)",
+      "description": "If the employer follows the written procedure of LSA Article 61 exactly, leave the employee still does not use expires without an allowance.",
       "steps": [
-        "6 months before expiry: Notify unused leave days in writing",
-        "If employee doesn't designate dates: Urge in writing 2 months before expiry",
-        "If still unused: Employer designates dates in writing",
-        "Completing all steps exempts the employer from paying unused leave compensation"
+        "Within 10 days from 6 months before the leave period ends, the employer notifies remaining days in writing and asks the employee to set dates",
+        "The employee sets dates and notifies the employer within 10 days",
+        "If the employee does not, the employer designates dates in writing by 2 months before the period ends",
+        "Monthly leave in the first year: request within 10 days from 3 months before the 1-year mark, designate by 1 month before (leave arising after the request: request within 5 days from 1 month before, designate by 10 days before)",
+        "If all steps were followed, unused leave expires with no allowance"
       ],
-      "warning": "If the promotion procedure is not followed, unused leave must be compensated. Written notice requirements must be met or the promotion is invalid."
+      "warning": "Verbal notice alone, or letting the employee work on the designated leave day, may invalidate the procedure. Leave left unused because of resignation is paid regardless."
     },
     "result": {
       "title": "Annual Leave Result",
@@ -14356,14 +14443,59 @@
       "additional": "Additional"
     },
     "guide": {
+      "basis": {
+        "title": "Hire-date basis vs fiscal-year basis",
+        "items": [
+          "Hire-date basis (the legal rule): leave is granted on each work anniversary — 15 days at 1 year, 16 at 3 years, 17 at 5 years, and so on.",
+          "Fiscal-year basis: everyone receives leave on January 1. The first January 1 after hire gives prorated leave (15 × days worked in the hire year ÷ 365), then 15 days from the next January 1.",
+          "The fiscal-year basis is allowed for administrative convenience if the rules of employment provide for it, but it must not disadvantage employees.",
+          "When you leave, leave is recalculated on the hire-date basis; if the fiscal-year basis gave fewer days, the difference is paid as leave allowance (MOEL guidance).",
+          "If you joined on January 1, both bases give the same result."
+        ]
+      },
+      "smallBiz": {
+        "title": "No statutory annual leave for workplaces under 5 employees or very short part-time workers",
+        "body": "Article 60 does not apply to workplaces with 4 or fewer regular employees (LSA Enforcement Decree, Annex 1). Workers averaging under 15 hours a week over 4 weeks also have no annual leave (Art. 18(3)). Company rules or contracts that grant leave still apply."
+      },
+      "sources": {
+        "title": "Legal basis & sources",
+        "items": [
+          {
+            "label": "Labor Standards Act Art. 60 (Annual paid leave) — Korea Law Information Center",
+            "url": "https://www.law.go.kr/법령/근로기준법/제60조"
+          },
+          {
+            "label": "Labor Standards Act Art. 61 (Promotion of annual leave use)",
+            "url": "https://www.law.go.kr/법령/근로기준법/제61조"
+          },
+          {
+            "label": "LSA Enforcement Decree Annex 1 (scope for workplaces under 5 employees)",
+            "url": "https://www.law.go.kr/법령/근로기준법시행령"
+          },
+          {
+            "label": "Supreme Court 2021Da227100 (Oct 14, 2021): employment must continue the day after one year for the 15 days to arise"
+          },
+          {
+            "label": "Ministry of Employment and Labor — annual leave and fiscal-year basis guidance",
+            "url": "https://www.moel.go.kr"
+          },
+          {
+            "label": "Minimum Wage Commission — 2026 minimum wage KRW 10,320/hour",
+            "url": "https://www.minimumwage.go.kr"
+          }
+        ],
+        "disclaimer": "Reference result based on the law as of October 2026. More favorable company rules or collective agreements take precedence. For disputes, contact MOEL (1350)."
+      },
       "title": "Annual Leave Guide",
       "rules": {
-        "title": "Leave Accrual Rules",
+        "title": "Accrual rules (LSA Article 60)",
         "items": [
-          "Under 1 year: 1 day per month of perfect attendance (max 11)",
-          "1+ years: 15 days per year",
-          "3+ years: 1 additional day per 2 years (max 25 days)",
-          "Leave must be used within 1 year of accrual"
+          "Under 1 year (or attendance below 80%): 1 day per month of perfect attendance, up to 11 days, usable until the 1-year mark",
+          "80%+ attendance over a year: 15 days",
+          "3+ years of service: +1 day every 2 years beyond the first year (16 at 3 years, 17 at 5 years … capped at 25 from 21 years)",
+          "Up to 26 days in the first two years (11 monthly + 15 at the first anniversary)",
+          "Annual leave is usable for 1 year from the grant date; unused days can be claimed in cash (3-year wage claim limitation)",
+          "You must still be employed on the first anniversary itself to receive the 15 days (Supreme Court 2021Da227100)"
         ]
       },
       "tips": {
@@ -14392,16 +14524,36 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "How many leave days do I get in my first year?",
-            "a": "Up to 11 days accrue monthly (1 day per month) during the first year. After completing 1 full year, 15 days are granted at once."
+            "q": "How much leave do I get in my first year?",
+            "a": "1 day per month of perfect attendance, up to 11 days, then 15 days on your first anniversary — up to 26 days over two years. Monthly leave must be used before the 1-year mark."
           },
           {
-            "q": "Does leave increase after 3 years?",
-            "a": "Yes. One additional day is added for every 2 years of continued service beyond the first year, up to a maximum of 25 days."
+            "q": "If I work exactly one year and leave, do I get 15 days?",
+            "a": "No. Per Supreme Court 2021Da227100 and MOEL guidance (Dec 2021), you must still be employed on the day after completing one year (the anniversary). Hired 2025-03-02 and last day 2026-03-01: 11 days only; last day 2026-03-02: 11 + 15."
           },
           {
-            "q": "What happens to unused leave?",
-            "a": "Unused leave expires 1 year after it accrues. If the employer fails to encourage use and leave goes unused, they must pay unused leave allowance (미사용 연차수당)."
+            "q": "How does leave grow after 3 years?",
+            "a": "+1 day every 2 years beyond the first year: 16 days at 3–4 years, 17 at 5–6 … 24 at 19–20, capped at 25 from 21 years."
+          },
+          {
+            "q": "What happens to leave I don't use?",
+            "a": "It expires after its 1-year usage period, but you can claim an allowance for unused days — unless the employer properly followed the Article 61 promotion procedure in writing."
+          },
+          {
+            "q": "How is the allowance calculated?",
+            "a": "Unused days × daily ordinary wage. Monthly: monthly ordinary wage ÷ 209 h × 8 h. Hourly: hourly wage × daily contractual hours. Rules of employment may use average wage. It is taxable and must be paid within 14 days of leaving (Art. 36)."
+          },
+          {
+            "q": "My company uses the fiscal-year basis. Do I lose out when I leave?",
+            "a": "You should not. On leaving, leave is recalculated on the hire-date basis and any shortfall is paid. Set the reference date to your last day and turn on 'I leave on this date' to see the difference."
+          },
+          {
+            "q": "Do small businesses or part-timers get annual leave?",
+            "a": "Workplaces with 4 or fewer regular employees are exempt. Part-timers at larger workplaces working 15+ hours a week get leave prorated by hours (full-time leave × part-time hours ÷ full-time hours)."
+          },
+          {
+            "q": "Does parental or maternity leave count?",
+            "a": "Yes. Maternity leave, parental leave and time off for work injury count as attendance (Art. 60(6))."
           }
         ]
       }

@@ -1,683 +1,481 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Calendar, Sun, BookOpen, Clock, Copy, Check, Share2, AlertTriangle, ChevronDown } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import DatePicker from '@/components/ui/DatePicker'
+import ShareResult from '@/components/ShareResult'
+import { getKoreanHolidays } from '@/utils/koreanHolidays'
+import { todayKST, addMonths, addDays, ymd, isValidDate } from '@/utils/dday'
+import {
+  summarize, settlement, timeline, dailyWage, bridges, MIN_WAGE_2026,
+  type WageMode, type GrantKind,
+} from '@/utils/annualLeave'
 
-type CalcBasis = 'joinDate' | 'fiscalYear'
+type Basis = 'joinDate' | 'fiscalYear'
+const BASES: Basis[] = ['joinDate', 'fiscalYear']
 
-interface LeaveBreakdown {
-  year: number
-  earned: number
-  type: 'monthly' | 'annual' | 'additional'
-}
-
-interface LeaveResult {
-  years: number
-  months: number
-  totalEarned: number
-  used: number
-  remaining: number
-  currentYearEarned: number
-  nextEarnedDate: string | null
-  breakdown: LeaveBreakdown[]
-  leavePay: number | null
-}
-
-// Milestones for the timeline: year → total annual leave
-const MILESTONES = [
-  { year: 1, days: 15, label: '1y' },
-  { year: 3, days: 16, label: '3y' },
-  { year: 5, days: 17, label: '5y' },
-  { year: 7, days: 18, label: '7y' },
-  { year: 9, days: 19, label: '9y' },
-  { year: 11, days: 20, label: '11y' },
-  { year: 21, days: 25, label: '21y+' },
-]
-
-function getAnnualLeaveForYear(completedYears: number): number {
-  if (completedYears < 1) return 0
-  const base = 15
-  const additional = completedYears >= 2 ? Math.floor((completedYears - 1) / 2) : 0
-  return Math.min(base + additional, 25)
-}
+const fmtDays = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
+const fmtWon = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const dot = (d: string) => d.replaceAll('-', '.')
+const num = (s: string | null, d: number) => { const n = Number(s); return s != null && s !== '' && Number.isFinite(n) && n >= 0 ? n : d }
+const WAGE_DEFAULT: Record<WageMode, number> = { monthly: 3_000_000, hourly: 10_320, daily: 100_000 }
 
 export default function AnnualLeave() {
   const t = useTranslations('annualLeave')
-  const searchParams = useSearchParams()
-  const today = new Date()
+  const sp = useSearchParams()
 
-  // Read URL params on mount
-  const initialJoin = searchParams.get('join') || ''
-  const initialUsed = parseInt(searchParams.get('used') || '0', 10) || 0
-  const initialBasis = (searchParams.get('basis') as CalcBasis) || 'joinDate'
-  const initialWage = parseInt(searchParams.get('wage') || '0', 10) || 0
-
-  const [joinDate, setJoinDate] = useState<string>(initialJoin)
-  const [usedLeaves, setUsedLeaves] = useState<number>(initialUsed)
-  const [calcBasis, setCalcBasis] = useState<CalcBasis>(initialBasis)
-  const [dailyWage, setDailyWage] = useState<number>(initialWage)
-  const [copiedLink, setCopiedLink] = useState(false)
+  // 오늘은 마운트 후에 정함 (정적 HTML 빌드 날짜로 계산되지 않게)
+  const [today, setToday] = useState('')
+  const [join, setJoin] = useState(() => (isValidDate(sp.get('join')) ? sp.get('join')! : ''))
+  const [ref, setRef] = useState(() => (isValidDate(sp.get('ref')) ? sp.get('ref')! : ''))
+  const [retire, setRetire] = useState(() => sp.get('out') === '1')
+  const [basis, setBasis] = useState<Basis>(() => (sp.get('basis') === 'fiscalYear' ? 'fiscalYear' : 'joinDate'))
+  const [used, setUsed] = useState(() => num(sp.get('used'), 0))
+  const [lowOn, setLowOn] = useState(() => sp.get('low') != null)
+  const [lowMonths, setLowMonths] = useState(() => Math.min(11, num(sp.get('low'), 6)))
+  // 예전 링크의 wage = 통상 일급
+  const [wageMode, setWageMode] = useState<WageMode>(() => {
+    const m = sp.get('wm')
+    return m === 'hourly' || m === 'daily' ? m : !sp.get('pay') && sp.get('wage') ? 'daily' : 'monthly'
+  })
+  const [pay, setPay] = useState(() => num(sp.get('pay') ?? sp.get('wage'), 0))
+  const [hours, setHours] = useState(() => num(sp.get('hrs'), 8) || 8)
+  const [remInput, setRemInput] = useState(() => sp.get('rem') ?? '')
+  const [showAll, setShowAll] = useState(false)
   const [promotionOpen, setPromotionOpen] = useState(false)
 
-  // Sync state to URL
+  const defaultJoin = today ? addMonths(today, -38) : ''
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const url = new URL(window.location.href)
-    if (joinDate) url.searchParams.set('join', joinDate)
-    else url.searchParams.delete('join')
-    if (usedLeaves > 0) url.searchParams.set('used', String(usedLeaves))
-    else url.searchParams.delete('used')
-    if (calcBasis !== 'joinDate') url.searchParams.set('basis', calcBasis)
-    else url.searchParams.delete('basis')
-    if (dailyWage > 0) url.searchParams.set('wage', String(dailyWage))
-    else url.searchParams.delete('wage')
-    window.history.replaceState({}, '', url.toString())
-  }, [joinDate, usedLeaves, calcBasis, dailyWage])
-
-  // --- Join Date Basis Calculation (existing logic) ---
-  const calcJoinDateBasis = useCallback((join: Date): Omit<LeaveResult, 'leavePay'> | null => {
-    if (join > today) return null
-
-    let years = today.getFullYear() - join.getFullYear()
-    let months = today.getMonth() - join.getMonth()
-    if (months < 0) { years--; months += 12 }
-    if (today.getDate() < join.getDate()) {
-      months--
-      if (months < 0) { years--; months += 12 }
-    }
-    const totalMonths = years * 12 + months
-
-    const breakdown: LeaveBreakdown[] = []
-    let totalEarned = 0
-    let currentYearEarned = 0
-
-    if (totalMonths < 12) {
-      const monthlyLeave = Math.min(totalMonths, 11)
-      totalEarned = monthlyLeave
-      currentYearEarned = monthlyLeave
-      breakdown.push({ year: 1, earned: monthlyLeave, type: 'monthly' })
-    } else {
-      totalEarned += 11
-      breakdown.push({ year: 1, earned: 11, type: 'monthly' })
-      const fullYears = Math.floor((totalMonths - 12) / 12) + 1
-      for (let i = 1; i <= fullYears; i++) {
-        let yearLeave = 15
-        if (i >= 2) {
-          const additionalYears = Math.floor((i - 1) / 2)
-          const additional = Math.min(additionalYears, 10)
-          yearLeave += additional
-          breakdown.push({ year: i + 1, earned: yearLeave, type: 'additional' })
-        } else {
-          breakdown.push({ year: i + 1, earned: yearLeave, type: 'annual' })
-        }
-        totalEarned += yearLeave
-        if (i === fullYears) currentYearEarned = yearLeave
-      }
-    }
-
-    let nextEarnedDate: string | null = null
-    if (totalMonths < 12) {
-      const nextMonth = new Date(join)
-      nextMonth.setMonth(join.getMonth() + totalMonths + 1)
-      if (nextMonth <= new Date(join.getFullYear() + 1, join.getMonth(), join.getDate())) {
-        nextEarnedDate = nextMonth.toLocaleDateString('ko-KR')
-      }
-    } else {
-      const nextAnniversary = new Date(join)
-      nextAnniversary.setFullYear(today.getFullYear() + 1)
-      if (nextAnniversary <= today) nextAnniversary.setFullYear(nextAnniversary.getFullYear() + 1)
-      nextEarnedDate = nextAnniversary.toLocaleDateString('ko-KR')
-    }
-
-    return {
-      years, months, totalEarned, used: usedLeaves,
-      remaining: totalEarned - usedLeaves, currentYearEarned, nextEarnedDate, breakdown,
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usedLeaves])
-
-  // --- Fiscal Year Basis Calculation ---
-  const calcFiscalYearBasis = useCallback((join: Date): Omit<LeaveResult, 'leavePay'> | null => {
-    if (join > today) return null
-
-    let years = today.getFullYear() - join.getFullYear()
-    let months = today.getMonth() - join.getMonth()
-    if (months < 0) { years--; months += 12 }
-    if (today.getDate() < join.getDate()) {
-      months--
-      if (months < 0) { years--; months += 12 }
-    }
-
-    const currentYear = today.getFullYear()
-    const joinYear = join.getFullYear()
-    const breakdown: LeaveBreakdown[] = []
-    let totalEarned = 0
-    let currentYearEarned = 0
-
-    for (let yr = joinYear; yr <= currentYear; yr++) {
-      // Start of this fiscal period for the employee
-      const fiscalStart = new Date(yr, 0, 1)
-      const fiscalEnd = new Date(yr, 11, 31)
-
-      // Months worked in this fiscal year
-      const effectiveStart = join > fiscalStart ? join : fiscalStart
-      const effectiveEnd = today < fiscalEnd ? today : fiscalEnd
-      if (effectiveStart > effectiveEnd) continue
-
-      const completedYearsAtStart = yr - joinYear
-
-      if (completedYearsAtStart < 1) {
-        // First partial year: monthly accrual
-        const monthsInYear = Math.min(
-          11,
-          (effectiveEnd.getFullYear() - effectiveStart.getFullYear()) * 12 +
-          effectiveEnd.getMonth() - effectiveStart.getMonth()
-        )
-        const earned = Math.max(0, monthsInYear)
-        if (earned > 0) {
-          totalEarned += earned
-          breakdown.push({ year: 1, earned, type: 'monthly' })
-          if (yr === currentYear) currentYearEarned = earned
-        }
-      } else {
-        // Full year: prorated if partial
-        const fullYearLeave = getAnnualLeaveForYear(completedYearsAtStart)
-        // Prorate for partial years (join year or current year)
-        let monthsActive = 12
-        if (yr === joinYear) {
-          monthsActive = 12 - join.getMonth()
-        }
-        if (yr === currentYear) {
-          monthsActive = today.getMonth() + 1
-        }
-        const earned = yr === currentYear && yr !== joinYear
-          ? Math.round(fullYearLeave * monthsActive / 12)
-          : fullYearLeave
-
-        totalEarned += earned
-        const yearLabel = completedYearsAtStart + 1
-        breakdown.push({
-          year: yearLabel,
-          earned,
-          type: completedYearsAtStart >= 2 ? 'additional' : 'annual',
-        })
-        if (yr === currentYear) currentYearEarned = earned
-      }
-    }
-
-    const nextEarnedDate = new Date(currentYear + 1, 0, 1).toLocaleDateString('ko-KR')
-
-    return {
-      years, months, totalEarned, used: usedLeaves,
-      remaining: totalEarned - usedLeaves, currentYearEarned, nextEarnedDate, breakdown,
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usedLeaves])
-
-  const calculateLeave = useMemo((): LeaveResult | null => {
-    if (!joinDate) return null
-    const join = new Date(joinDate)
-    if (isNaN(join.getTime()) || join > today) return null
-
-    const base = calcBasis === 'joinDate' ? calcJoinDateBasis(join) : calcFiscalYearBasis(join)
-    if (!base) return null
-
-    const leavePay = dailyWage > 0 ? base.remaining * dailyWage : null
-    return { ...base, leavePay }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [joinDate, usedLeaves, calcBasis, dailyWage, calcJoinDateBasis, calcFiscalYearBasis])
-
-  // Timeline data: years worked mapped to milestones
-  const timelineData = useMemo(() => {
-    if (!calculateLeave) return null
-    const workedYears = calculateLeave.years + (calculateLeave.months > 0 ? calculateLeave.months / 12 : 0)
-    const maxYear = Math.max(Math.ceil(workedYears) + 2, 5)
-    return { workedYears, maxYear: Math.min(maxYear, 25) }
-  }, [calculateLeave])
-
-  const handleReset = () => {
-    setJoinDate('')
-    setUsedLeaves(0)
-    setDailyWage(0)
-    setCalcBasis('joinDate')
-  }
-
-  const copyLink = useCallback(async () => {
-    try {
-      const url = new URL(window.location.href)
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url.toString())
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = url.toString()
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    } catch { /* ignore */ }
+    const d = todayKST()
+    setToday(d)
+    setJoin(j => j || addMonths(d, -38))
+    setRef(r => r || d)
   }, [])
 
-  const shareResult = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: t('title'),
-          url: window.location.href,
-        })
-      } catch { /* user cancelled */ }
-    } else {
-      copyLink()
-    }
-  }, [t, copyLink])
+  const amount = pay || WAGE_DEFAULT[wageMode]
 
-  const guideItems = t.raw('guide.rules.items') as string[]
-  const tipsItems = t.raw('guide.tips.items') as string[]
+  // URL 동기화 (기본값은 생략)
+  useEffect(() => {
+    if (!today) return
+    const url = new URL(window.location.href)
+    const set = (k: string, v: string | null) => (v == null ? url.searchParams.delete(k) : url.searchParams.set(k, v))
+    url.searchParams.delete('wage')
+    set('join', join && join !== defaultJoin ? join : null)
+    set('ref', ref && ref !== today ? ref : null)
+    set('out', retire ? '1' : null)
+    set('basis', basis === 'fiscalYear' ? basis : null)
+    set('used', used > 0 ? String(used) : null)
+    set('low', lowOn ? String(lowMonths) : null)
+    set('wm', wageMode !== 'monthly' ? wageMode : null)
+    set('pay', pay > 0 ? String(pay) : null)
+    set('hrs', hours !== 8 ? String(hours) : null)
+    set('rem', remInput !== '' ? remInput : null)
+    window.history.replaceState({}, '', url.toString())
+  }, [today, defaultJoin, join, ref, retire, basis, used, lowOn, lowMonths, wageMode, pay, hours, remInput])
 
-  const formatNumber = (n: number) => n.toLocaleString('ko-KR')
+  const opt = useMemo(() => ({ lowAttendanceMonths: lowOn ? lowMonths : null }), [lowOn, lowMonths])
+  const valid = !!join && !!ref && join <= ref
+
+  const calc = useMemo(() => {
+    if (!valid) return null
+    const tenure = ymd(join, ref)
+    const both = { joinDate: summarize('joinDate', join, ref, opt), fiscalYear: summarize('fiscalYear', join, ref, opt) }
+    const s = both[basis]
+    const expiresSoonest = s.grants.filter(g => g.date <= ref && ref <= g.expires).map(g => g.expires).sort()[0] ?? null
+    const remaining = Math.max(0, Math.round((s.active - used) * 100) / 100)
+    return { tenure, both, s, remaining, expiresSoonest, settle: settlement(join, ref, opt) }
+  }, [valid, join, ref, basis, used, opt])
+
+  const rows = useMemo(() => {
+    if (!calc) return []
+    const horizon = showAll ? 22 : Math.max(calc.tenure.years + 3, 3)
+    return timeline(basis, join, ref, horizon, opt)
+  }, [calc, showAll, basis, join, ref, opt])
+
+  const bridgeList = useMemo(() => (today ? bridges(today, addDays(today, 365), getKoreanHolidays).slice(0, 8) : []), [today])
+
+  // 연차수당
+  const daily = dailyWage(wageMode, amount, hours)
+  const remForPay = remInput !== '' ? num(remInput, 0) : (calc?.remaining ?? 0)
+  const settleDays = retire && basis === 'fiscalYear' ? (calc?.settle.shortfall ?? 0) : 0
+  const payDays = Math.round((remForPay + settleDays) * 100) / 100
+  const leavePay = Math.round(payDays * daily)
+  const hourly = wageMode === 'monthly' ? amount / 209 : wageMode === 'hourly' ? amount : daily / hours
+  const belowMin = hourly > 0 && hourly < MIN_WAGE_2026
+
+  const kindLabel = (k: GrantKind) => t(`table.${k}`)
+  const seg = (on: boolean) => `px-3 py-2 text-sm font-medium rounded-lg transition-colors ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+  const basisLabel = (b: Basis) => (b === 'joinDate' ? t('joinDateBasis') : t('fiscalYearBasis'))
+
+  const reset = () => {
+    setJoin(defaultJoin); setRef(today); setRetire(false); setBasis('joinDate'); setUsed(0)
+    setLowOn(false); setWageMode('monthly'); setPay(0); setHours(8); setRemInput('')
+  }
+
+  const guideRules = t.raw('guide.rules.items') as string[]
+  const basisItems = t.raw('guide.basis.items') as string[]
+  const faq = t.raw('guide.faq.items') as { q: string; a: string }[]
+  const sources = t.raw('guide.sources.items') as { label: string; url?: string }[]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        {joinDate && (
-          <div className="flex gap-2">
-            <button
-              onClick={copyLink}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              title={t('copyLink')}
-            >
-              {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-              <span className="hidden sm:inline">{copiedLink ? t('copied') : t('copyLink')}</span>
-            </button>
-            <button
-              onClick={shareResult}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-sub rounded-lg transition-colors"
-              title={t('share')}
-            >
-              <Share2 className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('share')}</span>
-            </button>
-          </div>
-        )}
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
-              <Calendar className="w-5 h-5" />
-              <h2 className="text-lg font-semibold">{t('title')}</h2>
-            </div>
-
-            {/* Calculation Basis Toggle */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('calculationBasis')}
-              </label>
-              <div className="grid grid-cols-2 gap-1 bg-soft rounded-lg p-1">
-                <button
-                  onClick={() => setCalcBasis('joinDate')}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    calcBasis === 'joinDate'
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
-                  }`}
-                >
-                  {t('joinDateBasis')}
-                </button>
-                <button
-                  onClick={() => setCalcBasis('fiscalYear')}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    calcBasis === 'fiscalYear'
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
-                  }`}
-                >
-                  {t('fiscalYearBasis')}
-                </button>
+              <label className="block text-sm font-medium text-body mb-2">{t('calculationBasis')}</label>
+              <div className="grid grid-cols-2 gap-1 bg-soft rounded-xl p-1">
+                {BASES.map(b => <button key={b} onClick={() => setBasis(b)} className={seg(basis === b)}>{basisLabel(b)}</button>)}
               </div>
-              <p className="text-xs text-muted mt-1">
-                {calcBasis === 'joinDate' ? t('joinDateBasisDesc') : t('fiscalYearBasisDesc')}
-              </p>
+              <p className="text-xs text-muted mt-1.5">{basis === 'joinDate' ? t('joinDateBasisDesc') : t('fiscalYearBasisDesc')}</p>
             </div>
 
-            {/* Join Date */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('joinDate')}
-              </label>
-              <input
-                type="date"
-                value={joinDate}
-                onChange={(e) => setJoinDate(e.target.value)}
-                max={today.toISOString().split('T')[0]}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
+              <label className="block text-sm font-medium text-body mb-2">{t('joinDate')}</label>
+              <DatePicker value={join} onChange={setJoin} maxDate={ref ? new Date(ref + 'T00:00:00') : undefined} />
             </div>
 
-            {/* Used Leaves */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('usedLeaves')}
+              <label className="block text-sm font-medium text-body mb-2">{t('refDate')}</label>
+              <DatePicker value={ref} onChange={setRef} />
+              <p className="text-xs text-muted mt-1.5">{t('refDateHint')}</p>
+              <label className="flex items-center gap-2 mt-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={retire} onChange={e => setRetire(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                {t('retireMode')}
               </label>
-              <input
-                type="number"
-                value={usedLeaves}
-                onChange={(e) => setUsedLeaves(Math.max(0, parseInt(e.target.value) || 0))}
-                min="0"
-                placeholder={t('usedLeavesPlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              />
             </div>
 
-            {/* Daily Wage (for leave pay calculation) */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('dailyWage')}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={dailyWage || ''}
-                  onChange={(e) => setDailyWage(Math.max(0, parseInt(e.target.value) || 0))}
-                  min="0"
-                  placeholder={t('dailyWagePlaceholder')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-              <p className="text-xs text-muted mt-1">{t('dailyWageDesc')}</p>
+              <label className="block text-sm font-medium text-body mb-2" htmlFor="al-used">{t('usedNow')}</label>
+              <input id="al-used" type="number" inputMode="decimal" min={0} step={0.5} value={used || ''} placeholder="0"
+                onChange={e => setUsed(Math.max(0, Number(e.target.value) || 0))} className="ui-field w-full px-4 py-3 tabular-nums" />
+              <p className="text-xs text-muted mt-1.5">{t('usedHint')}</p>
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2 pt-2">
-              <button
-                onClick={handleReset}
-                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
-                {t('reset')}
-              </button>
+            <div>
+              <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
+                <input type="checkbox" checked={lowOn} onChange={e => setLowOn(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                {t('lowAttendance')}
+              </label>
+              {lowOn && (
+                <div className="mt-2">
+                  <label className="block text-xs text-sub mb-1" htmlFor="al-low">{t('lowAttendanceMonths')}</label>
+                  <input id="al-low" type="number" min={0} max={11} value={lowMonths}
+                    onChange={e => setLowMonths(Math.min(11, Math.max(0, Math.floor(Number(e.target.value) || 0))))} className="ui-field w-full px-4 py-2.5 tabular-nums" />
+                </div>
+              )}
+              <p className="text-xs text-muted mt-1.5">{t('lowAttendanceHint')}</p>
             </div>
+
+            <button onClick={reset} className="ui-btn-soft w-full px-4 py-2.5 text-sm font-medium">{t('reset')}</button>
           </div>
         </div>
 
-        {/* Results Panel */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {calculateLeave ? (
+          {!today ? (
+            <div className="ui-card p-12 text-center text-muted">{t('description')}</div>
+          ) : !calc ? (
+            <div className="ui-card p-6 text-sm text-red-600">{t('invalidJoin')}</div>
+          ) : (
             <>
-              {/* Main Results */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
-                  <Sun className="w-5 h-5" />
-                  <h2 className="text-lg font-semibold">{t('result.title')}</h2>
-                  <span className="ml-auto text-xs text-faint bg-soft px-2 py-0.5 rounded">
-                    {calcBasis === 'joinDate' ? t('joinDateBasis') : t('fiscalYearBasis')}
-                  </span>
+              <div className="ui-card p-6">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm text-sub">{retire ? t('hero.labelRetire') : t('hero.label')}</span>
+                  <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-md">{basisLabel(basis)}</span>
                 </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {/* Work Period */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.workPeriod')}</div>
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {calculateLeave.years}{t('result.years')} {calculateLeave.months}{t('result.months')}
-                    </div>
-                  </div>
-
-                  {/* Total Earned */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.totalEarned')}</div>
-                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {calculateLeave.totalEarned}{t('result.days')}
-                    </div>
-                  </div>
-
-                  {/* Used */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.used')}</div>
-                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                      {calculateLeave.used}{t('result.days')}
-                    </div>
-                  </div>
-
-                  {/* Remaining */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.remaining')}</div>
-                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                      {calculateLeave.remaining}{t('result.days')}
-                    </div>
-                  </div>
-
-                  {/* Current Year Earned */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.currentYearEarned')}</div>
-                    <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                      {calculateLeave.currentYearEarned}{t('result.days')}
-                    </div>
-                  </div>
-
-                  {/* Next Earned Date */}
-                  {calculateLeave.nextEarnedDate && (
-                    <div className="bg-subtle rounded-lg p-4">
-                      <div className="text-sm text-sub mb-1">{t('result.nextEarned')}</div>
-                      <div className="text-xl font-bold text-teal-600 dark:text-teal-400">
-                        {calculateLeave.nextEarnedDate}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Leave Pay Calculation */}
-                {calculateLeave.leavePay !== null && calculateLeave.remaining > 0 && (
-                  <div className="mt-4 bg-amber-50 dark:bg-amber-950 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
-                    <div className="text-sm text-sub mb-1">{t('leavePay.title')}</div>
-                    <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                      {formatNumber(calculateLeave.leavePay)}{t('won')}
-                    </div>
-                    <p className="text-xs text-muted mt-1">
-                      {t('leavePay.formula', {
-                        remaining: calculateLeave.remaining,
-                        wage: formatNumber(dailyWage),
-                        total: formatNumber(calculateLeave.leavePay),
-                      })}
-                    </p>
-                  </div>
+                <div className="mt-1 text-3xl font-bold text-fg tabular-nums">{fmtDays(calc.remaining)}{t('result.days')}</div>
+                <p className="text-sm text-muted mt-1">
+                  {t('hero.tenure', { y: calc.tenure.years, m: calc.tenure.months, n: calc.tenure.years + 1 })}
+                  {' · '}{t('hero.remainingOf', { active: fmtDays(calc.s.active), used: fmtDays(used) })}
+                </p>
+                {calc.expiresSoonest && !retire && (
+                  <p className="text-xs text-muted mt-1">{t('hero.expires', { date: dot(calc.expiresSoonest) })}</p>
                 )}
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub">{t('hero.thisPeriod')}</div>
+                    <div className="text-xl font-bold text-fg tabular-nums mt-1">{fmtDays(calc.s.active)}{t('result.days')}</div>
+                  </div>
+                  <div className="bg-subtle rounded-xl p-4">
+                    <div className="text-xs text-sub">{t('hero.totalSince')}</div>
+                    <div className="text-xl font-bold text-fg tabular-nums mt-1">{fmtDays(calc.s.total)}{t('result.days')}</div>
+                  </div>
+                  <div className="bg-subtle rounded-xl p-4 col-span-2 sm:col-span-1">
+                    <div className="text-xs text-sub">{t('hero.nextGrant')}</div>
+                    <div className="text-base font-bold text-fg tabular-nums mt-1">
+                      {calc.s.next && !retire ? t('hero.nextGrantValue', { date: dot(calc.s.next.date), days: fmtDays(calc.s.next.days) }) : '-'}
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Timeline Visualization */}
-              {timelineData && timelineData.workedYears >= 0.5 && (
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
-                    <Clock className="w-5 h-5" />
-                    <h2 className="text-lg font-semibold">{t('timeline.title')}</h2>
-                  </div>
+              <ShareResult
+                fileName="annual-leave"
+                text={t('shareCard.text', { days: fmtDays(calc.remaining) })}
+                card={{
+                  tool: t('title'),
+                  label: t('shareCard.label', { y: calc.tenure.years, m: calc.tenure.months }),
+                  headline: `${fmtDays(calc.remaining)}${t('result.days')}`,
+                  sub: basisLabel(basis),
+                  rows: [
+                    { label: t('hero.thisPeriod'), value: `${fmtDays(calc.s.active)}${t('result.days')}` },
+                    { label: t('hero.totalSince'), value: `${fmtDays(calc.s.total)}${t('result.days')}` },
+                    ...(calc.s.next && !retire ? [{ label: t('hero.nextGrant'), value: t('hero.nextGrantValue', { date: dot(calc.s.next.date), days: fmtDays(calc.s.next.days) }) }] : []),
+                    { label: t('pay.title'), value: `${fmtWon(leavePay)}${t('won')}` },
+                  ],
+                }}
+              />
 
-                  {/* Timeline bar */}
-                  <div className="relative mt-6 mb-10">
-                    <div className="h-3 bg-track rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
-                      />
-                    </div>
-
-                    {/* Current position marker */}
-                    <div
-                      className="absolute -top-1 w-5 h-5 bg-blue-600 border-2 border-white dark:border-gray-800 rounded-full shadow-md transform -translate-x-1/2"
-                      style={{ left: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
-                    />
-                    <div
-                      className="absolute top-6 text-xs font-bold text-blue-600 dark:text-blue-400 transform -translate-x-1/2 whitespace-nowrap"
-                      style={{ left: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
-                    >
-                      {t('timeline.current')}
-                    </div>
-
-                    {/* Milestone markers */}
-                    {MILESTONES.filter(m => m.year <= timelineData.maxYear).map((m) => {
-                      const pos = (m.year / timelineData.maxYear) * 100
-                      const isPast = timelineData.workedYears >= m.year
-                      return (
-                        <div key={m.year} className="absolute" style={{ left: `${pos}%` }}>
-                          <div className={`w-2 h-2 rounded-full transform -translate-x-1/2 -top-[calc(0.375rem-1px)] absolute ${
-                            isPast ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-500'
-                          }`} />
-                          <div className={`absolute top-4 transform -translate-x-1/2 text-center whitespace-nowrap ${
-                            isPast ? 'text-green-600 dark:text-green-400' : 'text-faint'
-                          }`}>
-                            <div className="text-[10px] font-semibold">{m.year}{t('result.years')}</div>
-                            <div className="text-[10px]">{m.days}{t('result.days')}</div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-
-                  <p className="text-xs text-muted mt-2">{t('timeline.desc')}</p>
-                </div>
-              )}
-
-              {/* Breakdown Table */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
-                  <Clock className="w-5 h-5" />
-                  <h2 className="text-lg font-semibold">{t('breakdown.title')}</h2>
-                </div>
-
+              {/* 입사일 vs 회계연도 비교 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('compare.title')}</h2>
                 <div className="overflow-x-auto">
-                  <table className="w-full">
+                  <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-line">
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-body">
-                          {t('breakdown.year')}
-                        </th>
-                        <th className="text-right py-3 px-4 text-sm font-semibold text-body">
-                          {t('breakdown.earned')}
-                        </th>
-                        <th className="text-right py-3 px-4 text-sm font-semibold text-body">
-                          {t('breakdown.type')}
-                        </th>
+                      <tr className="border-b border-line text-sub">
+                        <th className="text-left py-2.5 pr-3 font-medium">{t('compare.item')}</th>
+                        {BASES.map(b => (
+                          <th key={b} className={`text-right py-2.5 px-3 font-medium ${basis === b ? 'text-primary' : ''}`}>{basisLabel(b)}</th>
+                        ))}
                       </tr>
                     </thead>
-                    <tbody>
-                      {calculateLeave.breakdown.map((item, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                        >
-                          <td className="py-3 px-4 text-sm text-fg">
-                            {item.year}{t('breakdown.year')}
-                          </td>
-                          <td className="text-right py-3 px-4 text-sm font-semibold text-blue-600 dark:text-blue-400">
-                            {item.earned}{t('result.days')}
-                          </td>
-                          <td className="text-right py-3 px-4 text-sm text-sub">
-                            {t(`breakdown.${item.type}`)}
+                    <tbody className="text-body tabular-nums">
+                      <tr className="border-b border-line">
+                        <td className="py-2.5 pr-3">{t('compare.active')}</td>
+                        {BASES.map(b => <td key={b} className="text-right py-2.5 px-3 font-semibold text-fg">{fmtDays(calc.both[b].active)}{t('result.days')}</td>)}
+                      </tr>
+                      <tr className="border-b border-line">
+                        <td className="py-2.5 pr-3">{t('compare.total')}</td>
+                        {BASES.map(b => <td key={b} className="text-right py-2.5 px-3 font-semibold text-fg">{fmtDays(calc.both[b].total)}{t('result.days')}</td>)}
+                      </tr>
+                      <tr>
+                        <td className="py-2.5 pr-3">{t('compare.next')}</td>
+                        {BASES.map(b => {
+                          const n = calc.both[b].next
+                          return <td key={b} className="text-right py-2.5 px-3 whitespace-nowrap">{n ? t('hero.nextGrantValue', { date: dot(n.date), days: fmtDays(n.days) }) : '-'}</td>
+                        })}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="bg-subtle rounded-2xl p-5 mt-4 text-sm text-sub space-y-2">
+                  <p className="font-semibold text-fg">{t('compare.retireTitle')}</p>
+                  {retire ? (
+                    <p>
+                      {t('compare.retireTotals', { join: fmtDays(calc.settle.join), fiscal: fmtDays(calc.settle.fiscal) })}{' '}
+                      {calc.settle.shortfall > 0
+                        ? t('compare.retireShortfall', { days: fmtDays(calc.settle.shortfall), won: fmtWon(calc.settle.shortfall * daily) })
+                        : t('compare.retireOk')}
+                    </p>
+                  ) : (
+                    <p>{t('compare.retireHint')}</p>
+                  )}
+                  <p>{t('compare.note')}</p>
+                  <p className="text-xs text-muted">{t('compare.prorated')}</p>
+                </div>
+              </div>
+
+              {/* 연차수당 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('pay.title')}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-3 gap-1 bg-soft rounded-xl p-1">
+                      {(['monthly', 'hourly', 'daily'] as WageMode[]).map(m => (
+                        <button key={m} onClick={() => { setWageMode(m); setPay(0) }} className={seg(wageMode === m)}>{t(`pay.mode.${m}`)}</button>
+                      ))}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-body mb-2" htmlFor="al-pay">{t(`pay.amount.${wageMode}`)}</label>
+                      <div className="relative">
+                        <input id="al-pay" type="text" inputMode="numeric" value={pay ? fmtWon(pay) : ''} placeholder={fmtWon(WAGE_DEFAULT[wageMode])}
+                          onChange={e => setPay(Number(e.target.value.replace(/[^\d]/g, '')) || 0)} className="ui-field w-full px-4 py-3 pr-10 tabular-nums" />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-faint">{t('won')}</span>
+                      </div>
+                      {belowMin && <p className="text-xs text-amber-700 mt-1.5">{t('pay.minWage', { wage: fmtWon(MIN_WAGE_2026) })}</p>}
+                    </div>
+                    {wageMode !== 'daily' && (
+                      <div>
+                        <label className="block text-sm font-medium text-body mb-2" htmlFor="al-hrs">{t('pay.dailyHours')}</label>
+                        <input id="al-hrs" type="number" min={1} max={8} step={0.5} value={hours}
+                          onChange={e => setHours(Math.min(8, Math.max(0.5, Number(e.target.value) || 8)))} className="ui-field w-full px-4 py-3 tabular-nums" />
+                      </div>
+                    )}
+                    <div>
+                      <label className="block text-sm font-medium text-body mb-2" htmlFor="al-rem">{t('pay.remaining')}</label>
+                      <input id="al-rem" type="number" inputMode="decimal" min={0} step={0.5} value={remInput}
+                        placeholder={fmtDays(calc.remaining)} onChange={e => setRemInput(e.target.value)} className="ui-field w-full px-4 py-3 tabular-nums" />
+                      <p className="text-xs text-muted mt-1.5">{t('pay.remainingHint', { days: fmtDays(calc.remaining) })}</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-subtle rounded-2xl p-5 flex flex-col justify-center">
+                    <div className="text-sm text-sub">{t('pay.result')}</div>
+                    <div className="text-3xl font-bold text-fg tabular-nums mt-1">{fmtWon(leavePay)}{t('won')}</div>
+                    <p className="text-sm text-sub mt-2 tabular-nums">{t('pay.formula', { days: fmtDays(payDays), daily: fmtWon(daily) })}</p>
+                    {settleDays > 0 && <p className="text-xs text-sub mt-1">{t('pay.settlementAdd', { days: fmtDays(settleDays) })}</p>}
+                    <p className="text-xs text-muted mt-3 tabular-nums">
+                      {wageMode === 'monthly' && t('pay.dailyFromMonthly', { amount: fmtWon(amount), hours, daily: fmtWon(daily) })}
+                      {wageMode === 'hourly' && t('pay.dailyFromHourly', { amount: fmtWon(amount), hours, daily: fmtWon(daily) })}
+                      {wageMode === 'daily' && t('pay.dailyDirect')}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted mt-4">{t('pay.note')}</p>
+              </div>
+
+              {/* 연도별 발생표 */}
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('table.title')}</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-line text-sub">
+                        <th className="text-left py-2.5 pr-3 font-medium">{t('table.year')}</th>
+                        <th className="text-left py-2.5 px-3 font-medium">{t('table.date')}</th>
+                        <th className="text-right py-2.5 px-3 font-medium">{t('table.days')}</th>
+                        <th className="text-right py-2.5 px-3 font-medium">{t('table.cumulative')}</th>
+                        <th className="text-right py-2.5 pl-3 font-medium">{t('table.kind')}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="tabular-nums">
+                      {rows.map((r, i) => (
+                        <tr key={i} className={`border-b border-line ${r.future ? 'text-faint' : 'text-body'}`}>
+                          <td className="py-2.5 pr-3 whitespace-nowrap">{t('table.yearValue', { n: r.year })}</td>
+                          <td className="py-2.5 px-3 whitespace-nowrap">{dot(r.date)}{r.future && <span className="ml-1.5 text-xs">{t('table.future')}</span>}</td>
+                          <td className={`text-right py-2.5 px-3 font-semibold ${r.future ? '' : 'text-fg'}`}>{fmtDays(r.days)}{t('result.days')}</td>
+                          <td className="text-right py-2.5 px-3">{fmtDays(r.cumulative)}{t('result.days')}</td>
+                          <td className="text-right py-2.5 pl-3 whitespace-nowrap">
+                            {kindLabel(r.kind)}{r.kind === 'monthly' && r.count ? ` ×${r.count}` : ''}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+                <button onClick={() => setShowAll(v => !v)} className="ui-btn-soft px-4 py-2 text-sm mt-4">
+                  {showAll ? t('table.showLess') : t('table.showAll')}
+                </button>
               </div>
             </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <Sun className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">{t('description')}</p>
+          )}
+
+          {/* 징검다리 연휴 */}
+          {today && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg">{t('bridge.title')}</h2>
+              <p className="text-sm text-muted mt-1 mb-4">{t('bridge.desc')}</p>
+              {bridgeList.length === 0 ? (
+                <p className="text-sm text-muted">{t('bridge.none')}</p>
+              ) : (
+                <ul className="space-y-2">
+                  {bridgeList.map(b => {
+                    const fits = calc ? b.leaveDates.length <= calc.remaining : false
+                    return (
+                      <li key={b.start} className={`rounded-xl p-4 border ${fits ? 'border-primary bg-primary-soft' : 'border-line'}`}>
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                          <span className="font-semibold text-fg tabular-nums">{dot(b.start)} ~ {dot(b.end).slice(5)}</span>
+                          <span className="text-sm text-body">
+                            {t('bridge.rest', { days: b.restDays })} · <span className={fits ? 'text-primary font-semibold' : ''}>{t('bridge.leave', { days: b.leaveDates.length })}</span>
+                          </span>
+                        </div>
+                        <p className="text-xs text-sub mt-1">{b.holidays.join(', ')}</p>
+                        <p className="text-xs text-muted mt-0.5 tabular-nums">{t('bridge.leaveOn')}: {b.leaveDates.map(d => dot(d).slice(5)).join(', ')}</p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+              {calc && <p className="text-xs text-muted mt-3">{t('bridge.fitsHint', { days: fmtDays(calc.remaining) })}</p>}
             </div>
           )}
         </div>
       </div>
 
-      {/* Leave Promotion Notice */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setPromotionOpen(!promotionOpen)}
-          className="w-full flex items-center justify-between text-left"
-        >
-          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-            <AlertTriangle className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('promotion.title')}</h2>
-          </div>
-          <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${promotionOpen ? 'rotate-180' : ''}`} />
+      {/* 연차 사용 촉진 */}
+      <div className="ui-card p-6">
+        <button onClick={() => setPromotionOpen(v => !v)} aria-expanded={promotionOpen} className="w-full flex items-center justify-between text-left">
+          <h2 className="text-lg font-semibold text-fg">{t('promotion.title')}</h2>
+          <ChevronDown className={`w-5 h-5 text-faint transition-transform ${promotionOpen ? 'rotate-180' : ''}`} />
         </button>
-
         {promotionOpen && (
           <div className="mt-4 space-y-4">
             <p className="text-sm text-body">{t('promotion.description')}</p>
-
-            <div className="space-y-3">
+            <ol className="space-y-3">
               {(t.raw('promotion.steps') as string[]).map((step, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded-full flex items-center justify-center text-sm font-bold">
-                    {i + 1}
-                  </span>
+                <li key={i} className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold">{i + 1}</span>
                   <span className="text-sm text-body">{step}</span>
-                </div>
+                </li>
               ))}
-            </div>
-
-            <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">{t('promotion.warning')}</p>
-            </div>
+            </ol>
+            <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('promotion.warning')}</div>
           </div>
         )}
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
-          <BookOpen className="w-5 h-5" />
-          <h2 className="text-xl font-semibold">{t('guide.title')}</h2>
-        </div>
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-8">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
 
-        <div className="space-y-6">
-          {/* Rules */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.rules.title')}
-            </h3>
-            <ul className="space-y-2 text-body">
-              {guideItems.map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.rules.title')}</h3>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-body">
+            {guideRules.map((x, i) => <li key={i}>{x}</li>)}
+          </ul>
+        </section>
 
-          {/* Tips */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2 text-body">
-              {tipsItems.map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+        <section className="bg-amber-50 text-amber-800 rounded-2xl p-5 text-sm">
+          <p className="font-semibold mb-1">{t('guide.smallBiz.title')}</p>
+          <p>{t('guide.smallBiz.body')}</p>
+        </section>
+
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.basis.title')}</h3>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-body">
+            {basisItems.map((x, i) => <li key={i}>{x}</li>)}
+          </ul>
+        </section>
+
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+          <div className="divide-y divide-line border-y border-line">
+            {faq.map((f, i) => (
+              <details key={i} className="group py-3">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-sm font-medium text-fg">
+                  {f.q}
+                  <ChevronDown className="w-4 h-4 text-faint shrink-0 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="text-sm text-body mt-2">{f.a}</p>
+              </details>
+            ))}
           </div>
-        </div>
+        </section>
+
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('guide.sources.title')}</h3>
+          <ul className="space-y-1.5 text-sm">
+            {sources.map((s, i) => (
+              <li key={i}>
+                {s.url
+                  ? <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  : <span className="text-body">{s.label}</span>}
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{t('guide.sources.disclaimer')}</p>
+        </section>
       </div>
     </div>
   )

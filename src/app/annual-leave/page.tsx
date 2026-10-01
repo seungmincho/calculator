@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '연차 계산기 - 입사일 기준 연차 일수 계산 | 툴허브',
-  description: '연차 계산기 - 입사일을 기준으로 발생한 연차 일수, 잔여 연차, 연차 발생 내역을 계산합니다. 근로기준법 기반 정확한 연차 계산.',
+  description: '연차 계산기 - 입사일만 넣으면 근로기준법 기준 연차 일수, 남은 연차, 미사용 연차수당, 입사일·회계연도 기준 비교와 퇴사 정산까지 계산합니다.',
   keywords: '연차 계산기, 연차 일수 계산, 연차 발생, 잔여 연차, annual leave calculator',
   openGraph: { title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/annual-leave.png', width: 1200, height: 630, alt: '연차 계산기' }] },
   twitter: { card: 'summary_large_image', title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', images: ['https://toolhub.ai.kr/og/annual-leave.png'] },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function AnnualLeavePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '연차 계산기', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['연차 일수 계산', '잔여 연차', '연차 발생 내역', '근로기준법 기반'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '연차 계산기', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['입사일·회계연도 기준 연차 비교', '퇴사 시 연차 정산', '미사용 연차수당 계산', '연도별 연차 발생표', '징검다리 연휴 추천', '근로기준법 제60조 기반'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -23,7 +23,7 @@ export default function AnnualLeavePage() {
         name: '연차 휴가는 몇 일이 발생하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '입사 1년 미만 근로자는 1개월 개근 시 매월 1일씩 최대 11일이 발생합니다. 1년 이상 근무 시 15일이 발생하며, 3년 이상부터는 2년마다 1일씩 추가되어 최대 25일까지 늘어납니다. 주 15시간 이상 근무하는 모든 근로자가 대상입니다.',
+          text: '입사 1년 미만 근로자는 1개월 개근 시 매월 1일씩 최대 11일이 발생합니다. 1년 이상 근무 시 15일이 발생하며, 3년 이상부터는 2년마다 1일씩 추가되어 최대 25일까지 늘어납니다. 상시 5인 이상 사업장에서 주 15시간 이상 근무하는 근로자가 대상입니다(5인 미만 사업장은 미적용).',
         },
       },
       {
@@ -31,7 +31,7 @@ export default function AnnualLeavePage() {
         name: '미사용 연차에 대한 연차수당은 어떻게 계산하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '연차수당은 미사용 연차일수 × 1일 통상임금으로 계산합니다. 통상임금은 월 기본급을 월 소정근로일수로 나눈 금액입니다. 단, 회사가 연차 사용 촉진 절차를 정당하게 실시한 경우에는 미사용 연차수당을 지급하지 않을 수 있습니다.',
+          text: '연차수당은 미사용 연차일수 × 1일 통상임금으로 계산합니다. 1일 통상임금은 월 통상임금 ÷ 209시간 × 8시간(시급제는 시급 × 1일 소정근로시간)으로 구합니다. 회사가 사용 촉진 절차를 서면으로 적법하게 거쳤다면 미사용 수당을 주지 않을 수 있습니다.',
         },
       },
       {
@@ -39,7 +39,7 @@ export default function AnnualLeavePage() {
         name: '연차 사용 촉진제도란 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '연차 사용 촉진제도는 사용자가 근로자에게 미사용 연차를 사용하도록 촉구하는 제도입니다. 연차 소멸 6개월 전 미사용 연차 일수를 알려주고, 소멸 2개월 전까지 사용 시기를 지정하도록 촉구합니다. 근로자가 이에 응하지 않으면 연차수당 지급 의무가 면제됩니다.',
+          text: '연차 사용 촉진제도는 사용자가 근로자에게 미사용 연차를 사용하도록 촉구하는 제도입니다. 사용기간이 끝나기 6개월 전 기준 10일 이내에 회사가 남은 일수를 알리고 사용 시기를 정하도록 서면 촉구하고, 근로자가 10일 안에 통보하지 않으면 끝나기 2개월 전까지 회사가 사용 시기를 정해 서면 통보합니다. 이 절차를 지키면 미사용 수당 지급 의무가 면제됩니다.',
         },
       },
     ],
@@ -71,7 +71,7 @@ export default function AnnualLeavePage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>입사 1년 미만:</strong> 1개월 개근 시 다음 달 1일의 연차가 생기므로, 입사 1개월 후부터 바로 1일 사용이 가능합니다.</li>
             <li><strong>연차 소멸 기한:</strong> 연차 휴가는 발생일로부터 1년 이내에 사용하지 않으면 소멸되므로 잔여 연차를 주기적으로 확인하세요.</li>
-            <li><strong>연차수당 계산:</strong> 미사용 연차에 대해 통상임금 기준으로 연차수당을 청구할 수 있으며, 미사용 연차 일수 × 1일 통상임금으로 계산합니다.</li>
+            <li><strong>연차수당 계산:</strong> 미사용 연차에 대해 통상임금 기준으로 연차수당을 청구할 수 있으며, 미사용 연차 일수 × 1일 통상임금(월 통상임금 ÷ 209 × 8)으로 계산합니다.</li>
             <li><strong>장기 근속 추가 연차:</strong> 3년 이상 근무 시 매 2년마다 1일씩 추가되어 최대 25일까지 늘어납니다.</li>
             <li><strong>사용 촉진 제도 주의:</strong> 회사가 연차 사용을 촉구했는데도 사용하지 않으면 연차수당 지급 의무가 면제될 수 있습니다.</li>
           </ul>
