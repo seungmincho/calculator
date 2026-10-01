@@ -1,998 +1,413 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { Target, BarChart3, Calculator, Share2, Check, Save } from 'lucide-react';
-import { glassCard, glassInset, glassInput } from '@/lib/glass';
-import { useCalculationHistory } from '@/hooks/useCalculationHistory';
-import CalculationHistory from '@/components/CalculationHistory';
-import { useTranslations } from '@/lib/i18n';
-import GuideSection from '@/components/GuideSection';
+import { useState, useMemo, useEffect } from 'react'
+import { ExternalLink } from 'lucide-react'
+import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  calc, schedule, requiredAmount, savingToDepositRate, depositToSavingRate,
+  TAX_RATES, TAX_KEYS, type Kind, type TaxKey,
+} from '@/utils/savings'
 
-type SavingsType = 'regular' | 'free' | 'target' | 'compound';
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const pct = (n: number) => (Math.round(n * 100) / 100).toString()
+const num = (s: string) => parseFloat(s.replace(/,/g, '')) || 0
+const commas = (s: string) => {
+  const d = s.replace(/[^\d]/g, '')
+  return d ? Number(d).toLocaleString('ko-KR') : ''
+}
+const PERIODS = [6, 12, 24, 36]
+const isTax = (s: string | null): s is TaxKey => !!s && (TAX_KEYS as string[]).includes(s)
 
-interface SavingsResult {
-  type: SavingsType;
-  totalSaved: number;
-  totalInterest: number;
-  finalAmount: number;
-  effectiveRate: number;
-  schedule: Array<{
-    month: number;
-    monthlyDeposit: number;
-    accumulatedPrincipal: number;
-    accumulatedInterest: number;
-    totalBalance: number;
-  }>;
+interface Product { rate: string; months: string; tax: TaxKey; compound: boolean }
+const DEFAULT_CMP: Product[] = [
+  { rate: '3.5', months: '12', tax: 'normal', compound: false },
+  { rate: '4', months: '24', tax: 'normal', compound: false },
+  { rate: '3.2', months: '12', tax: 'coop', compound: false },
+]
+const parseCmp = (s: string | null): Product[] | null => {
+  if (!s) return null
+  const list = s.split('~').slice(0, 3).map((x) => {
+    const [rate, months, tax, c] = x.split('_')
+    return isTax(tax) && +rate >= 0 && +months > 0 ? { rate, months, tax, compound: c === '1' } : null
+  })
+  return list.length && list.every(Boolean) ? (list as Product[]) : null
 }
 
-const SavingsCalculatorContent = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const t = useTranslations('savings');
-  const [monthlyAmount, setMonthlyAmount] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [savingsPeriod, setSavingsPeriod] = useState('');
-  const [periodUnit, setPeriodUnit] = useState<'year' | 'month'>('year');
-  const [targetAmount, setTargetAmount] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState<SavingsType[]>(['regular']);
-  const [results, setResults] = useState<SavingsResult[]>([]);
-  const [activeTab, setActiveTab] = useState<'calculator' | 'goal' | 'comparison'>('calculator');
-  const [isCopied, setIsCopied] = useState(false);
-  const [showSaveButton, setShowSaveButton] = useState(false);
+const LINKS = [
+  { key: 'finlife', href: 'https://finlife.fss.or.kr' },
+  { key: 'taxAct', href: 'https://www.law.go.kr/법령/소득세법/제129조' },
+  { key: 'tsfa', href: 'https://www.law.go.kr/법령/조세특례제한법/제88조의2' },
+  { key: 'coop', href: 'https://www.law.go.kr/법령/조세특례제한법/제89조의3' },
+  { key: 'kinfa', href: 'https://www.kinfa.or.kr' },
+]
 
-  // 계산 이력 관리
-  const {
-    histories,
-    isLoading: historyLoading,
-    saveCalculation,
-    removeHistory,
-    clearHistories,
-    loadFromHistory
-  } = useCalculationHistory('savings');
+export default function SavingsCalculator() {
+  const t = useTranslations('savings')
+  const sp = useSearchParams()
 
-  const savingsTypes = {
-    'regular': '정기적금',
-    'free': '자유적금',
-    'target': '목표적금',
-    'compound': '복리적금'
-  };
+  const [kind, setKind] = useState<Kind>(() => (sp.get('k') === 'd' ? 'deposit' : 'saving'))
+  const [amountText, setAmountText] = useState(() => commas(sp.get('a') || (sp.get('k') === 'd' ? '10000000' : '500000')))
+  const [rateText, setRateText] = useState(() => sp.get('r') || '3.5')
+  const [monthsText, setMonthsText] = useState(() => sp.get('n') || '12')
+  const [compound, setCompound] = useState(() => sp.get('c') === '1')
+  const [tax, setTax] = useState<TaxKey>(() => { const x = sp.get('tax'); return isTax(x) ? x : 'normal' })
+  const [cmpRateText, setCmpRateText] = useState(() => sp.get('dr') || '3')
+  const [goalText, setGoalText] = useState(() => commas(sp.get('g') || '10000000'))
+  const [products, setProducts] = useState<Product[]>(() => parseCmp(sp.get('cmp')) || DEFAULT_CMP)
 
-  // 정기적금 계산 (매월 일정 금액)
-  const calculateRegularSavings = (monthly: number, rate: number, months: number): SavingsResult => {
-    const monthlyRate = rate / 100 / 12;
-    let totalBalance = 0;
-    let totalPrincipal = 0;
-    
-    const schedule = [];
-    
-    for (let i = 1; i <= months; i++) {
-      totalPrincipal += monthly;
-      // 적금 이자 계산: 각 월 납입금에 대한 이자를 납입 시점부터 만기까지 계산
-      const interestForThisMonth = monthly * monthlyRate * (months - i + 1);
-      totalBalance = totalPrincipal;
-      
-      // 중간 계산을 위해 현재까지의 누적 이자 계산
-      let accumulatedInterest = 0;
-      for (let j = 1; j <= i; j++) {
-        accumulatedInterest += monthly * monthlyRate * (months - j + 1);
-      }
-      
-      schedule.push({
-        month: i,
-        monthlyDeposit: monthly,
-        accumulatedPrincipal: totalPrincipal,
-        accumulatedInterest: accumulatedInterest,
-        totalBalance: totalPrincipal + accumulatedInterest
-      });
-    }
-    
-    // 총 이자 계산
-    let totalInterest = 0;
-    for (let i = 1; i <= months; i++) {
-      totalInterest += monthly * monthlyRate * (months - i + 1);
-    }
-    
-    const finalAmount = totalPrincipal + totalInterest;
-    const effectiveRate = (totalInterest / totalPrincipal) * 100;
+  const amount = num(amountText)
+  const rate = Math.min(100, num(rateText))
+  const months = Math.min(600, Math.floor(num(monthsText)))
+  const goal = num(goalText)
+  const cmpRate = Math.min(100, num(cmpRateText))
+  const plan = { kind, amount, rate, months, compound, tax }
+  const r = useMemo(() => calc(plan), [kind, amount, rate, months, compound, tax]) // eslint-disable-line react-hooks/exhaustive-deps
+  const rows = useMemo(() => schedule(plan), [kind, amount, rate, months, compound, tax]) // eslint-disable-line react-hooks/exhaustive-deps
+  const isSaving = kind === 'saving'
 
-    return {
-      type: 'regular',
-      totalSaved: totalPrincipal,
-      totalInterest: Math.round(totalInterest),
-      finalAmount: Math.round(finalAmount),
-      effectiveRate: effectiveRate,
-      schedule: schedule.map(s => ({
-        ...s,
-        accumulatedInterest: Math.round(s.accumulatedInterest),
-        totalBalance: Math.round(s.totalBalance)
-      }))
-    };
-  };
-
-  // 자유적금 계산 (불규칙 납입, 평균으로 계산)
-  const calculateFreeSavings = (monthly: number, rate: number, months: number): SavingsResult => {
-    const regular = calculateRegularSavings(monthly, rate, months);
-    // 자유적금은 일반적으로 정기적금보다 이자율이 약간 낮음 (90% 적용)
-    const adjustedInterest = regular.totalInterest * 0.9;
-    
-    return {
-      ...regular,
-      type: 'free',
-      totalInterest: Math.round(adjustedInterest),
-      finalAmount: regular.totalSaved + Math.round(adjustedInterest),
-      effectiveRate: (adjustedInterest / regular.totalSaved) * 100
-    };
-  };
-
-  // 목표적금 계산 (목표금액 달성을 위한 월 납입액 계산)
-  const calculateTargetSavings = (target: number, rate: number, months: number): SavingsResult => {
-    const monthlyRate = rate / 100 / 12;
-    
-    // 목표금액을 달성하기 위한 월 납입액 계산
-    let totalInterestRatio = 0;
-    for (let i = 1; i <= months; i++) {
-      totalInterestRatio += monthlyRate * (months - i + 1);
-    }
-    
-    const requiredMonthly = target / (months + totalInterestRatio);
-    const totalPrincipal = requiredMonthly * months;
-    const totalInterest = target - totalPrincipal;
-    
-    const schedule = [];
-    let accumulatedPrincipal = 0;
-    
-    for (let i = 1; i <= Math.min(12, months); i++) {
-      accumulatedPrincipal += requiredMonthly;
-      let accumulatedInterest = 0;
-      for (let j = 1; j <= i; j++) {
-        accumulatedInterest += requiredMonthly * monthlyRate * (months - j + 1);
-      }
-      
-      schedule.push({
-        month: i,
-        monthlyDeposit: Math.round(requiredMonthly),
-        accumulatedPrincipal: Math.round(accumulatedPrincipal),
-        accumulatedInterest: Math.round(accumulatedInterest),
-        totalBalance: Math.round(accumulatedPrincipal + accumulatedInterest)
-      });
-    }
-
-    return {
-      type: 'target',
-      totalSaved: Math.round(totalPrincipal),
-      totalInterest: Math.round(totalInterest),
-      finalAmount: target,
-      effectiveRate: totalPrincipal > 0 ? (totalInterest / totalPrincipal) * 100 : 0,
-      schedule
-    };
-  };
-
-  // 복리적금 계산 (월복리 적용)
-  const calculateCompoundSavings = (monthly: number, rate: number, months: number): SavingsResult => {
-    const monthlyRate = rate / 100 / 12;
-    let totalBalance = 0;
-    const schedule = [];
-    
-    for (let i = 1; i <= months; i++) {
-      totalBalance = (totalBalance + monthly) * (1 + monthlyRate);
-      
-      schedule.push({
-        month: i,
-        monthlyDeposit: monthly,
-        accumulatedPrincipal: monthly * i,
-        accumulatedInterest: Math.round(totalBalance - (monthly * i)),
-        totalBalance: Math.round(totalBalance)
-      });
-    }
-    
-    const totalPrincipal = monthly * months;
-    const totalInterest = totalBalance - totalPrincipal;
-    const effectiveRate = (totalInterest / totalPrincipal) * 100;
-
-    return {
-      type: 'compound',
-      totalSaved: totalPrincipal,
-      totalInterest: Math.round(totalInterest),
-      finalAmount: Math.round(totalBalance),
-      effectiveRate: effectiveRate,
-      schedule
-    };
-  };
-
-  const calculateSavings = React.useCallback((
-    monthly: string, 
-    rate: string, 
-    period: string, 
-    unit: 'year' | 'month',
-    target: string, 
-    types: SavingsType[]
-  ): SavingsResult[] => {
-    const monthlyNum = parseFloat(monthly.replace(/,/g, '')) || 0;
-    const rateNum = parseFloat(rate) || 0;
-    const periodNum = parseInt(period) || 0;
-    const months = unit === 'year' ? periodNum * 12 : periodNum;
-    const targetNum = parseFloat(target.replace(/,/g, '')) || 0;
-
-    if (rateNum <= 0 || months <= 0) return [];
-
-    const results: SavingsResult[] = [];
-
-    types.forEach(type => {
-      try {
-        switch (type) {
-          case 'regular':
-            if (monthlyNum > 0) {
-              results.push(calculateRegularSavings(monthlyNum, rateNum, months));
-            }
-            break;
-          case 'free':
-            if (monthlyNum > 0) {
-              results.push(calculateFreeSavings(monthlyNum, rateNum, months));
-            }
-            break;
-          case 'target':
-            if (targetNum > 0) {
-              results.push(calculateTargetSavings(targetNum, rateNum, months));
-            }
-            break;
-          case 'compound':
-            if (monthlyNum > 0) {
-              results.push(calculateCompoundSavings(monthlyNum, rateNum, months));
-            }
-            break;
-        }
-      } catch (error) {
-        console.error(`Error calculating ${type}:`, error);
-      }
-    });
-
-    return results;
-  }, []);
-
-  const handleCalculate = React.useCallback(() => {
-    if (!interestRate || !savingsPeriod || selectedTypes.length === 0) {
-      setResults([]);
-      return;
-    }
-    
-    const hasMonthlyAmount = monthlyAmount && parseFloat(monthlyAmount.replace(/,/g, '')) > 0;
-    const hasTargetAmount = targetAmount && parseFloat(targetAmount.replace(/,/g, '')) > 0;
-    
-    if (!hasMonthlyAmount && !hasTargetAmount) {
-      setResults([]);
-      return;
-    }
-    
-    // 목표적금이 선택되었지만 목표금액이 없는 경우
-    if (selectedTypes.includes('target') && !hasTargetAmount) {
-      const filteredTypes = selectedTypes.filter(type => type !== 'target');
-      if (filteredTypes.length === 0) {
-        setResults([]);
-        return;
-      }
-      const calculations = calculateSavings(monthlyAmount, interestRate, savingsPeriod, periodUnit, targetAmount, filteredTypes);
-      setResults(calculations);
-      return;
-    }
-    
-    const calculations = calculateSavings(monthlyAmount, interestRate, savingsPeriod, periodUnit, targetAmount, selectedTypes);
-    setResults(calculations);
-    setShowSaveButton(calculations.length > 0);
-  }, [monthlyAmount, interestRate, savingsPeriod, periodUnit, targetAmount, selectedTypes, calculateSavings]);
-
-  const formatNumber = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
-  const handleShare = async () => {
-    try {
-      const currentUrl = window.location.href;
-      
-      // Modern clipboard API
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = currentUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-      // 복사 실패시에도 사용자에게 피드백
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
-    }
-  };
-
-  // 계산 결과 저장
-  const handleSaveCalculation = () => {
-    if (results.length === 0) return;
-
-    const inputs = {
-      monthlyAmount,
-      interestRate,
-      savingsPeriod,
-      periodUnit,
-      targetAmount,
-      selectedTypes
-    };
-
-    const success = saveCalculation(inputs, { results });
-    if (success) {
-      setShowSaveButton(false);
-    }
-  };
-
-  // 이력에서 불러오기
-  const handleLoadFromHistory = (historyId: string) => {
-    const inputs = loadFromHistory(historyId);
-    if (inputs) {
-      setMonthlyAmount(inputs.monthlyAmount || '');
-      setInterestRate(inputs.interestRate || '');
-      setSavingsPeriod(inputs.savingsPeriod || '');
-      setPeriodUnit(inputs.periodUnit || 'year');
-      setTargetAmount(inputs.targetAmount || '');
-      setSelectedTypes(inputs.selectedTypes || ['regular']);
-      
-      // URL도 업데이트
-      updateURL({
-        monthly: inputs.monthlyAmount?.replace(/,/g, '') || '',
-        rate: inputs.interestRate || '',
-        period: inputs.savingsPeriod || '',
-        unit: inputs.periodUnit || 'year',
-        target: inputs.targetAmount?.replace(/,/g, '') || '',
-        types: inputs.selectedTypes?.join(',') || 'regular'
-      });
-    }
-  };
-
-  // 이력 결과 포맷팅
-  const formatHistoryResult = (result: Record<string, unknown>) => {
-    const r = result as { results?: SavingsResult[] };
-    if (!r?.results || r.results.length === 0) return '';
-    const firstResult = r.results[0];
-    return `월 ${formatNumber(Math.round(firstResult.totalSaved / (firstResult.schedule?.length || 12)))}원 → ${formatNumber(Math.round(firstResult.finalAmount))}원`;
-  };
-
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams);
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    });
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-
-  const handleMonthlyAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/,/g, '');
-    if (/^\d*$/.test(value)) {
-      const formattedValue = formatNumber(Number(value));
-      setMonthlyAmount(formattedValue);
-      updateURL({ monthly: value });
-    }
-  };
-
-  const handleTargetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/,/g, '');
-    if (/^\d*$/.test(value)) {
-      const formattedValue = formatNumber(Number(value));
-      setTargetAmount(formattedValue);
-      updateURL({ target: value });
-    }
-  };
-
-  const handleInterestRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*\.?\d*$/.test(value)) {
-      setInterestRate(value);
-      updateURL({ rate: value });
-    }
-  };
-
-  const handlePeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value)) {
-      setSavingsPeriod(value);
-      updateURL({ period: value });
-    }
-  };
-
-  const handleTypeToggle = (type: SavingsType) => {
-    setSelectedTypes(prev => {
-      if (prev.includes(type)) {
-        return prev.filter(t => t !== type);
-      } else {
-        return [...prev, type];
-      }
-    });
-  };
-
-  // URL에서 초기값 로드
-  useEffect(() => {
-    const monthlyParam = searchParams.get('monthly');
-    const targetParam = searchParams.get('target');
-    const rateParam = searchParams.get('rate');
-    const periodParam = searchParams.get('period');
-    const unitParam = searchParams.get('unit');
-
-    if (monthlyParam && /^\d+$/.test(monthlyParam)) {
-      setMonthlyAmount(formatNumber(Number(monthlyParam)));
-    }
-    if (targetParam && /^\d+$/.test(targetParam)) {
-      setTargetAmount(formatNumber(Number(targetParam)));
-    }
-    if (rateParam && /^\d*\.?\d*$/.test(rateParam)) {
-      setInterestRate(rateParam);
-    }
-    if (periodParam && /^\d+$/.test(periodParam)) {
-      setSavingsPeriod(periodParam);
-    }
-    if (unitParam && (unitParam === 'year' || unitParam === 'month')) {
-      setPeriodUnit(unitParam);
-    }
-  }, [searchParams]);
+  // 같은 총원금을 반대 상품(예금↔적금)에 cmpRate% 로 넣었을 때
+  const other = calc(isSaving
+    ? { kind: 'deposit', amount: r.principal, rate: cmpRate, months, compound: false, tax }
+    : { kind: 'saving', amount: months > 0 ? amount / months : 0, rate: cmpRate, months, compound: false, tax })
+  const equiv = isSaving ? savingToDepositRate(rate, months) : depositToSavingRate(rate, months)
+  const need = requiredAmount(goal, kind, rate, months, compound, tax)
+  const cmp = products.map((p) => {
+    const n = Math.floor(num(p.months))
+    return { p, n, ...calc({ kind, amount, rate: num(p.rate), months: n, compound: p.compound, tax: p.tax }) }
+  })
+  const best = cmp.reduce((b, x, i) => (x.yearly > cmp[b].yearly ? i : b), 0)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleCalculate();
-    }, 100); // 100ms 디바운스 추가
+    const p = new URLSearchParams()
+    if (!isSaving) p.set('k', 'd')
+    p.set('a', String(amount)); p.set('r', rateText); p.set('n', String(months))
+    if (compound) p.set('c', '1')
+    if (tax !== 'normal') p.set('tax', tax)
+    p.set('dr', cmpRateText); p.set('g', String(goal))
+    p.set('cmp', products.map((x) => `${x.rate}_${x.months}_${x.tax}_${x.compound ? 1 : 0}`).join('~'))
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    return () => clearTimeout(id)
+  }, [isSaving, amount, rateText, months, compound, tax, cmpRateText, goal, products])
 
-    return () => clearTimeout(timer);
-  }, [handleCalculate]);
+  const switchKind = (k: Kind) => {
+    if (k === kind) return
+    setKind(k)
+    setAmountText(k === 'deposit' ? '10,000,000' : '500,000')
+  }
+  const setProduct = (i: number, patch: Partial<Product>) =>
+    setProducts((list) => list.map((x, j) => (j === i ? { ...x, ...patch } : x)))
 
-  const getTypeColor = (type: SavingsType) => {
-    const colors = {
-      'regular': 'bg-primary hover:bg-blue-700',
-      'free': 'bg-primary hover:bg-blue-700',
-      'target': 'bg-primary hover:bg-blue-700',
-      'compound': 'bg-primary hover:bg-blue-700'
-    };
-    return colors[type];
-  };
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const taxLabel = (k: TaxKey) => `${t(`c.tax.${k}`)} ${pct(TAX_RATES[k] * 100)}%`
+  const kindLabel = t(isSaving ? 'c.kindShort.saving' : 'c.kindShort.deposit')
+  const amountLabel = isSaving ? t('c.share.monthly', { a: won(amount) }) : t('c.share.lump', { a: won(amount) })
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">적금 계산기</h1>
-          <p className="text-sm text-muted mt-1">
-            다양한 적금 상품을 비교하고 목표 금액 달성을 위한 최적의 저축 계획을 세워보세요
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={historyLoading}
-          onLoadHistory={handleLoadFromHistory}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={formatHistoryResult}
-        />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-soft p-1 rounded-lg">
-          <button
-            onClick={() => setActiveTab('calculator')}
-            className={`px-6 py-2 rounded-md transition-colors ${
-              activeTab === 'calculator'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-sub'
-            }`}
-          >
-            <Calculator className="w-4 h-4 inline mr-2" />
-            계산기
+      <div className="grid grid-cols-2 gap-2 max-w-sm" role="tablist">
+        {(['saving', 'deposit'] as Kind[]).map((k) => (
+          <button key={k} role="tab" aria-selected={kind === k} onClick={() => switchKind(k)} className={seg(kind === k)}>
+            {t(`c.kind.${k}`)}
           </button>
-          <button
-            onClick={() => setActiveTab('goal')}
-            className={`px-6 py-2 rounded-md transition-colors ${
-              activeTab === 'goal'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-sub'
-            }`}
-          >
-            <Target className="w-4 h-4 inline mr-2" />
-            목표 설정
-          </button>
-          <button
-            onClick={() => setActiveTab('comparison')}
-            className={`px-6 py-2 rounded-md transition-colors ${
-              activeTab === 'comparison'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-sub'
-            }`}
-          >
-            <BarChart3 className="w-4 h-4 inline mr-2" />
-            상품 비교
-          </button>
-        </div>
+        ))}
       </div>
 
-      {activeTab === 'calculator' && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Input Section */}
-          <div className={`${glassCard} ${glassInset} p-8`}>
-            <h2 className="text-2xl font-semibold mb-6 text-fg">적금 정보 입력</h2>
-            
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  월 납입금액
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={monthlyAmount}
-                    onChange={handleMonthlyAmountChange}
-                    placeholder="500,000"
-                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                  />
-                  <span className="absolute right-4 top-4 text-sub font-medium">원</span>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 입력 */}
+        <div className="ui-card p-6 space-y-5">
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t(isSaving ? 'c.in.monthly' : 'c.in.principal')}</span>
+            <div className="relative">
+              <input inputMode="numeric" value={amountText} onChange={(e) => setAmountText(commas(e.target.value))}
+                className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.won')}</span>
+            </div>
+          </label>
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.rate')}</span>
+            <div className="relative">
+              <input inputMode="decimal" value={rateText} onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setRateText(e.target.value)}
+                className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
+            </div>
+          </label>
+          <div>
+            <label className="block">
+              <span className="block text-sm font-medium text-body mb-2">{t('c.in.months')}</span>
+              <div className="relative">
+                <input inputMode="numeric" value={monthsText} onChange={(e) => /^\d{0,3}$/.test(e.target.value) && setMonthsText(e.target.value)}
+                  className="ui-field w-full px-4 py-3 pr-14 text-lg font-semibold tabular-nums" />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.monthsUnit')}</span>
               </div>
+            </label>
+            <div className="grid grid-cols-4 gap-2 mt-2">
+              {PERIODS.map((m) => (
+                <button key={m} onClick={() => setMonthsText(String(m))} aria-pressed={months === m} className={seg(months === m)}>
+                  {t('c.nMonths', { n: m })}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.method')}</span>
+            <div className="grid grid-cols-2 gap-2">
+              <button onClick={() => setCompound(false)} aria-pressed={!compound} className={seg(!compound)}>{t('c.simple')}</button>
+              <button onClick={() => setCompound(true)} aria-pressed={compound} className={seg(compound)}>{t('c.compound')}</button>
+            </div>
+          </div>
+          <div>
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.tax')}</span>
+            <div className="grid grid-cols-2 gap-2">
+              {TAX_KEYS.map((k) => (
+                <button key={k} onClick={() => setTax(k)} aria-pressed={tax === k} className={seg(tax === k)}>{taxLabel(k)}</button>
+              ))}
+            </div>
+            <p className="text-xs text-muted mt-2 leading-relaxed">{t(`c.taxHint.${tax}`)}</p>
+          </div>
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  연 이자율
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={interestRate}
-                    onChange={handleInterestRateChange}
-                    placeholder="4.5"
-                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                  />
-                  <span className="absolute right-4 top-4 text-sub font-medium">%</span>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6">
+            <p className="text-sm text-sub">{t('c.res.maturity', { n: months })}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(r.maturity)}{t('c.won')}</p>
+            <p className="text-sm text-muted mt-1">{t('c.res.gross', { a: won(r.maturityGross) })}</p>
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+              {[
+                ['principal', r.principal], ['grossInterest', r.gross], ['tax', r.tax], ['netInterest', r.net],
+              ].map(([k, v]) => (
+                <div key={k} className="bg-subtle rounded-xl p-3">
+                  <dt className="text-xs text-sub">{t(`c.res.${k}`)}</dt>
+                  <dd className={`text-base font-semibold tabular-nums mt-0.5 ${k === 'netInterest' ? 'text-primary' : 'text-fg'}`}>
+                    {k === 'tax' && Number(v) > 0 ? '−' : ''}{won(Number(v))}{t('c.won')}
+                  </dd>
                 </div>
-              </div>
+              ))}
+            </dl>
+            {isSaving && !compound && months > 0 && (
+              <p className="text-xs text-muted mt-3 tabular-nums">
+                {t('c.res.formula', { a: won(amount), r: pct(rate), n: months, k: (months * (months + 1)) / 2, g: won(r.gross) })}
+              </p>
+            )}
+            <ShareResult className="mt-5" fileName="savings"
+              card={{
+                tool: t('title'),
+                label: t('c.share.label', { kind: kindLabel, a: amountLabel, n: months, r: pct(rate) }),
+                headline: `${won(r.maturity)}${t('c.won')}`,
+                sub: t('c.share.sub', { i: won(r.net), tax: taxLabel(tax) }),
+                rows: [
+                  { label: t('c.res.principal'), value: `${won(r.principal)}${t('c.won')}` },
+                  { label: t('c.res.grossInterest'), value: `${won(r.gross)}${t('c.won')}` },
+                  { label: t('c.res.netInterest'), value: `${won(r.net)}${t('c.won')}` },
+                  { label: t('c.real.yearly'), value: `${pct(r.yearly)}%` },
+                ],
+              }} />
+          </div>
 
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  저축기간
-                </label>
-                <div className="flex space-x-2">
-                  <div className="relative flex-1">
-                    <input
-                      type="text"
-                      value={savingsPeriod}
-                      onChange={handlePeriodChange}
-                      placeholder={periodUnit === 'year' ? '3' : '36'}
-                      className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex bg-soft rounded-xl p-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPeriodUnit('year');
-                        updateURL({ unit: 'year' });
-                      }}
-                      className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                        periodUnit === 'year'
-                          ? 'bg-primary text-white shadow-sm'
-                          : 'text-sub'
-                      }`}
-                    >
-                      년
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPeriodUnit('month');
-                        updateURL({ unit: 'month' });
-                      }}
-                      className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                        periodUnit === 'month'
-                          ? 'bg-primary text-white shadow-sm'
-                          : 'text-sub'
-                      }`}
-                    >
-                      개월
-                    </button>
-                  </div>
-                </div>
+          {/* 실질 연수익률 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('c.real.title')}</h2>
+            <p className="text-2xl font-bold text-fg tabular-nums mt-3">
+              {t(isSaving ? 'c.real.savingIs' : 'c.real.depositIs', { r: pct(rate), e: pct(equiv) })}
+            </p>
+            <p className="text-sm text-sub mt-2 leading-relaxed">
+              {t(isSaving ? 'c.real.whySaving' : 'c.real.whyDeposit', { n: months, avg: won(isSaving ? (amount * (months + 1)) / 2 : amount) })}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+              <div className="bg-primary-soft rounded-xl p-4">
+                <p className="text-sm text-primary font-medium">{t('c.real.thisOne', { kind: kindLabel, r: pct(rate) })}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{t('c.real.net', { a: won(r.net) })}</p>
+                <p className="text-xs text-sub mt-1">{t('c.real.yearlyIs', { y: pct(r.yearly) })}</p>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  목표금액 (목표적금용)
+              <div className="bg-subtle rounded-xl p-4">
+                <label className="flex items-center gap-2 text-sm text-body font-medium">
+                  {t(isSaving ? 'c.real.ifDeposit' : 'c.real.ifSaving')}
+                  <input inputMode="decimal" value={cmpRateText} onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setCmpRateText(e.target.value)}
+                    aria-label={t('c.real.otherRate')} className="ui-field w-20 px-2 py-1 text-right tabular-nums" />
+                  %
                 </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={targetAmount}
-                    onChange={handleTargetAmountChange}
-                    placeholder="20,000,000"
-                    className="w-full px-4 py-4 text-lg font-semibold text-fg dark:bg-gray-700 border border-line-strong rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                  />
-                  <span className="absolute right-4 top-4 text-sub font-medium">원</span>
-                </div>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{t('c.real.net', { a: won(other.net) })}</p>
+                <p className="text-xs text-sub mt-1">{t('c.real.yearlyIs', { y: pct(other.yearly) })}</p>
               </div>
+            </div>
+            <p className="text-sm text-body mt-3">
+              {r.net === other.net ? t('c.real.same')
+                : r.net > other.net ? t('c.real.better', { kind: kindLabel, d: won(r.net - other.net) })
+                  : t('c.real.worse', { kind: t(isSaving ? 'c.kindShort.deposit' : 'c.kindShort.saving'), d: won(other.net - r.net) })}
+            </p>
+            {isSaving && <p className="text-xs text-muted mt-1">{t('c.real.note')}</p>}
+          </div>
 
-              <div>
-                <label className="block text-sm font-medium text-body mb-3">
-                  적금 유형 선택
-                </label>
-                <div className="space-y-2">
-                  {Object.entries(savingsTypes).map(([type, name]) => (
-                    <label key={type} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedTypes.includes(type as SavingsType)}
-                        onChange={() => handleTypeToggle(type as SavingsType)}
-                        className="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <span className="ml-2 text-sm text-body">{name}</span>
-                    </label>
+          {/* 월별 잔액 */}
+          <details className="ui-card p-6">
+            <summary className="font-semibold text-fg cursor-pointer">{t('c.sched.title', { n: months })}</summary>
+            <div className="overflow-x-auto mt-4 max-h-96">
+              <table className="w-full text-sm tabular-nums">
+                <thead className="text-sub">
+                  <tr className="border-b border-line">
+                    <th className="text-left py-2 font-medium">{t('c.sched.month')}</th>
+                    <th className="text-right py-2 font-medium">{t('c.sched.principal')}</th>
+                    <th className="text-right py-2 font-medium">{t('c.sched.interest')}</th>
+                    <th className="text-right py-2 font-medium">{t('c.sched.balance')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((x) => (
+                    <tr key={x.month} className="border-b border-line">
+                      <td className="py-2 text-body">{t('c.nMonths', { n: x.month })}</td>
+                      <td className="py-2 text-right text-body">{won(x.principal)}</td>
+                      <td className="py-2 text-right text-body">{won(x.interest)}</td>
+                      <td className="py-2 text-right text-fg font-medium">{won(x.balance)}</td>
+                    </tr>
                   ))}
-                </div>
-              </div>
+                </tbody>
+              </table>
             </div>
-          </div>
-
-          {/* Results Section */}
-          <div className="lg:col-span-2 space-y-6">
-            {results.length > 0 ? (
-              results.map((result) => (
-                <div key={result.type} className={`${glassCard} ${glassInset} p-8`}>
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-fg">
-                      {savingsTypes[result.type]}
-                    </h3>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={handleShare}
-                        className="inline-flex items-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-body transition-colors"
-                      >
-                        {isCopied ? (
-                          <>
-                            <Check className="w-4 h-4" />
-                            <span className="text-sm">복사됨!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Share2 className="w-4 h-4" />
-                            <span className="text-sm">공유</span>
-                          </>
-                        )}
-                      </button>
-                      
-                      {showSaveButton && (
-                        <button
-                          onClick={handleSaveCalculation}
-                          className="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-900 hover:bg-emerald-200 dark:hover:bg-emerald-800 px-3 py-2 rounded-lg text-sub transition-colors"
-                        >
-                          <Save className="w-4 h-4" />
-                          <span className="text-sm">저장</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-4 gap-4">
-                    <div className={`${getTypeColor(result.type)} rounded-xl p-4 text-white`}>
-                      <div className="text-sm opacity-90 mb-1">
-                        {result.type === 'target' ? '필요 월납입액' : '만기 수령액'}
-                      </div>
-                      <div className="text-xl font-bold">
-                        {result.type === 'target' 
-                          ? `${formatNumber(Math.round(result.totalSaved / (periodUnit === 'year' ? parseInt(savingsPeriod) * 12 : parseInt(savingsPeriod))))}원`
-                          : `${formatNumber(result.finalAmount)}원`
-                        }
-                      </div>
-                    </div>
-                    
-                    <div className="bg-subtle rounded-xl p-4">
-                      <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">총 납입액</div>
-                      <div className="text-lg font-bold text-fg">
-                        {formatNumber(result.totalSaved)}원
-                      </div>
-                    </div>
-                    
-                    <div className="bg-subtle rounded-xl p-4">
-                      <div className="text-sm text-green-600 dark:text-green-400 mb-1">총 이자</div>
-                      <div className="text-lg font-bold text-fg">
-                        {formatNumber(result.totalInterest)}원
-                      </div>
-                    </div>
-                    
-                    <div className="bg-subtle rounded-xl p-4">
-                      <div className="text-sm text-purple-600 dark:text-purple-400 mb-1">실질 수익률</div>
-                      <div className="text-lg font-bold text-fg">
-                        {result.effectiveRate.toFixed(2)}%
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 적금 스케줄 미리보기 */}
-                  <div className="mt-6">
-                    <h4 className="font-medium text-fg mb-3">적금 스케줄 (첫 6개월)</h4>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="border-b border-line">
-                            <th className="text-left py-2 font-medium text-body">월차</th>
-                            <th className="text-right py-2 font-medium text-body">월납입</th>
-                            <th className="text-right py-2 font-medium text-body">누적원금</th>
-                            <th className="text-right py-2 font-medium text-body">누적이자</th>
-                            <th className="text-right py-2 font-medium text-body">잔액</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {result.schedule.slice(0, 6).map((row) => (
-                            <tr key={row.month} className="border-b border-line">
-                              <td className="py-2 text-fg">{row.month}개월</td>
-                              <td className="py-2 text-right text-fg">
-                                {formatNumber(row.monthlyDeposit)}원
-                              </td>
-                              <td className="py-2 text-right text-blue-600 dark:text-blue-400">
-                                {formatNumber(row.accumulatedPrincipal)}원
-                              </td>
-                              <td className="py-2 text-right text-green-600 dark:text-green-400">
-                                {formatNumber(row.accumulatedInterest)}원
-                              </td>
-                              <td className="py-2 text-right text-purple-600 dark:text-purple-400">
-                                {formatNumber(row.totalBalance)}원
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className={`${glassCard} ${glassInset} p-8`}>
-                <div className="flex flex-col items-center justify-center h-64 text-faint">
-                  <Calculator className="w-16 h-16 mb-4" />
-                  <p>적금 정보와 상품 유형을 선택하시면 계산 결과가 나타납니다</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'goal' && (
-        <div className="max-w-4xl mx-auto">
-          <div className={`${glassCard} ${glassInset} p-8`}>
-            <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-              목표 금액 달성 계획
-            </h2>
-            
-            {results.find(r => r.type === 'target') ? (
-              <div className="space-y-6">
-                <div className="bg-primary rounded-xl p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-4">목표 달성 정보</h3>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div>
-                      <div className="text-purple-100 text-sm">목표 금액</div>
-                      <div className="text-2xl font-bold">{formatNumber(results.find(r => r.type === 'target')!.finalAmount)}원</div>
-                    </div>
-                    <div>
-                      <div className="text-purple-100 text-sm">필요 월납입액</div>
-                      <div className="text-2xl font-bold">
-                        {formatNumber(Math.round(results.find(r => r.type === 'target')!.totalSaved / (periodUnit === 'year' ? parseInt(savingsPeriod) * 12 : parseInt(savingsPeriod))))}원
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-purple-100 text-sm">예상 이자수익</div>
-                      <div className="text-2xl font-bold">{formatNumber(results.find(r => r.type === 'target')!.totalInterest)}원</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-subtle rounded-lg p-6">
-                    <h4 className="font-semibold text-fg mb-3">목표 달성 팁</h4>
-                    <ul className="text-sm text-sub space-y-2">
-                      <li>• 자동이체를 설정하여 꾸준히 납입하세요</li>
-                      <li>• 금리가 높은 상품을 선택하세요</li>
-                      <li>• 중간에 해지하지 않도록 주의하세요</li>
-                    </ul>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-6">
-                    <h4 className="font-semibold text-fg mb-3">추가 절약 방법</h4>
-                    <ul className="text-sm text-sub space-y-2">
-                      <li>• 보너스가 있을 때 추가 납입하세요</li>
-                      <li>• 가계부를 써서 불필요한 지출을 줄이세요</li>
-                      <li>• 부업이나 투자로 추가 수입을 만드세요</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-faint">
-                <Target className="w-16 h-16 mb-4" />
-                <p>목표 금액과 저축 기간을 입력하고 '목표적금'을 선택하세요</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'comparison' && (
-        <div className="space-y-8">
-          {results.length > 1 ? (
-            <>
-              <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-                  적금 상품 비교
-                </h2>
-                
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div>
-                    <h3 className="font-medium text-body mb-4">만기 수령액 비교</h3>
-                    <div className="space-y-3">
-                      {results.map((result) => (
-                        <div key={`final-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-sub">
-                            {savingsTypes[result.type]}
-                          </span>
-                          <span className="font-medium text-fg">
-                            {formatNumber(result.finalAmount)}원
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-body mb-4">총 이자 비교</h3>
-                    <div className="space-y-3">
-                      {results.map((result) => (
-                        <div key={`interest-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-sub">
-                            {savingsTypes[result.type]}
-                          </span>
-                          <span className="font-medium text-green-600 dark:text-green-400">
-                            {formatNumber(result.totalInterest)}원
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-body mb-4">실질 수익률 비교</h3>
-                    <div className="space-y-3">
-                      {results.map((result) => (
-                        <div key={`rate-${result.type}`} className="flex items-center justify-between">
-                          <span className="text-sm text-sub">
-                            {savingsTypes[result.type]}
-                          </span>
-                          <span className="font-medium text-purple-600 dark:text-purple-400">
-                            {result.effectiveRate.toFixed(2)}%
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-fg">상품별 특징</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-subtle rounded-lg p-6">
-                    <h3 className="font-semibold text-fg mb-2">
-                      최고 수익률: {savingsTypes[results.sort((a, b) => b.effectiveRate - a.effectiveRate)[0].type]}
-                    </h3>
-                    <p className="text-sub text-sm">
-                      가장 높은 수익률을 제공하는 상품입니다.
-                    </p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-6">
-                    <h3 className="font-semibold text-fg mb-2">
-                      최대 수령액: {savingsTypes[results.sort((a, b) => b.finalAmount - a.finalAmount)[0].type]}
-                    </h3>
-                    <p className="text-sub text-sm">
-                      만기 시 가장 많은 금액을 받을 수 있는 상품입니다.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-8`}>
-              <div className="flex flex-col items-center justify-center h-64 text-faint">
-                <BarChart3 className="w-16 h-16 mb-4" />
-                <p>2개 이상의 적금 상품을 선택하시면 비교 분석을 제공합니다</p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 적금 상품 설명 */}
-      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">적금 상품 안내</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold text-fg">정기적금</h3>
-              <p className="text-sm text-sub">
-                매월 일정한 금액을 납입하는 가장 기본적인 적금 상품
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-fg">자유적금</h3>
-              <p className="text-sm text-sub">
-                납입금액과 횟수를 자유롭게 조절할 수 있는 유연한 적금 상품
-              </p>
-            </div>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold text-fg">목표적금</h3>
-              <p className="text-sm text-sub">
-                목표 금액을 설정하고 이를 달성하기 위한 월 납입액을 계산
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-fg">복리적금</h3>
-              <p className="text-sm text-sub">
-                매월 이자가 원금에 더해져 복리 효과를 누리는 적금 상품
-              </p>
-            </div>
-          </div>
+            <p className="text-xs text-muted mt-3">{t('c.sched.note')}</p>
+          </details>
         </div>
       </div>
 
-      {/* 저축 팁 */}
-      <div className={`mt-8 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">오늘의 저축 팁</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-subtle rounded-lg p-6">
-            <h3 className="font-semibold text-fg mb-2">적금 선택 요령</h3>
-            <p className="text-sub text-sm">
-              금리뿐만 아니라 우대조건, 중도해지 시 이자율 등을 종합적으로 고려하세요.
-            </p>
-          </div>
-          <div className="bg-subtle rounded-lg p-6">
-            <h3 className="font-semibold text-fg mb-2">자동이체 활용</h3>
-            <p className="text-sub text-sm">
-              급여일 다음날 자동이체를 설정하여 저축을 우선순위로 만들어 보세요.
-            </p>
-          </div>
-          <div className="bg-subtle rounded-lg p-6">
-            <h3 className="font-semibold text-fg mb-2">비상금 준비</h3>
-            <p className="text-sub text-sm">
-              적금과 별도로 생활비 3-6개월분의 비상금을 예금으로 준비하세요.
-            </p>
+      {/* 목표 금액 역산 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('c.goal.title')}</h2>
+        <p className="text-sm text-muted mt-1">{t('c.goal.desc', { n: months, r: pct(rate), tax: taxLabel(tax) })}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 items-end">
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t('c.goal.target')}</span>
+            <div className="relative">
+              <input inputMode="numeric" value={goalText} onChange={(e) => setGoalText(commas(e.target.value))}
+                className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.won')}</span>
+            </div>
+          </label>
+          <div className="bg-subtle rounded-xl p-4">
+            <p className="text-sm text-sub">{t(isSaving ? 'c.goal.needMonthly' : 'c.goal.needPrincipal', { n: months })}</p>
+            <p className="text-2xl font-bold text-fg tabular-nums mt-1">{need > 0 ? `${won(need)}${t('c.won')}` : '—'}</p>
           </div>
         </div>
+        {need > 0 && (
+          <button onClick={() => setAmountText(won(need))} className="ui-btn-soft px-4 py-2 rounded-xl text-sm mt-4">
+            {t('c.goal.apply')}
+          </button>
+        )}
       </div>
 
-      {/* 상세 가이드 섹션 */}
+      {/* 상품 비교 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('c.cmp.title')}</h2>
+        <p className="text-sm text-muted mt-1">{t('c.cmp.desc', { kind: kindLabel, a: amountLabel })}</p>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full text-sm tabular-nums min-w-[520px]">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="text-left py-2 font-medium text-sub w-28" />
+                {cmp.map((_, i) => (
+                  <th key={i} className={`text-right py-2 px-2 font-semibold ${i === best ? 'text-primary' : 'text-fg'}`}>
+                    {t('c.cmp.product', { n: i + 1 })}{i === best ? ` · ${t('c.cmp.best')}` : ''}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-line">
+                <td className="py-2 text-sub">{t('c.in.rate')}</td>
+                {products.map((p, i) => (
+                  <td key={i} className="py-2 px-2 text-right">
+                    <input inputMode="decimal" value={p.rate} aria-label={`${t('c.cmp.product', { n: i + 1 })} ${t('c.in.rate')}`}
+                      onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setProduct(i, { rate: e.target.value })}
+                      className="ui-field w-20 px-2 py-1 text-right" /> %
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b border-line">
+                <td className="py-2 text-sub">{t('c.in.months')}</td>
+                {products.map((p, i) => (
+                  <td key={i} className="py-2 px-2 text-right">
+                    <input inputMode="numeric" value={p.months} aria-label={`${t('c.cmp.product', { n: i + 1 })} ${t('c.in.months')}`}
+                      onChange={(e) => /^\d{0,3}$/.test(e.target.value) && setProduct(i, { months: e.target.value })}
+                      className="ui-field w-20 px-2 py-1 text-right" /> {t('c.monthsUnit')}
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b border-line">
+                <td className="py-2 text-sub">{t('c.in.tax')}</td>
+                {products.map((p, i) => (
+                  <td key={i} className="py-2 px-2 text-right">
+                    <select value={p.tax} onChange={(e) => setProduct(i, { tax: e.target.value as TaxKey })}
+                      aria-label={`${t('c.cmp.product', { n: i + 1 })} ${t('c.in.tax')}`} className="ui-field px-2 py-1">
+                      {TAX_KEYS.map((k) => <option key={k} value={k}>{taxLabel(k)}</option>)}
+                    </select>
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b border-line">
+                <td className="py-2 text-sub">{t('c.in.method')}</td>
+                {products.map((p, i) => (
+                  <td key={i} className="py-2 px-2 text-right">
+                    <select value={p.compound ? '1' : '0'} onChange={(e) => setProduct(i, { compound: e.target.value === '1' })}
+                      aria-label={`${t('c.cmp.product', { n: i + 1 })} ${t('c.in.method')}`} className="ui-field px-2 py-1">
+                      <option value="0">{t('c.simple')}</option>
+                      <option value="1">{t('c.compound')}</option>
+                    </select>
+                  </td>
+                ))}
+              </tr>
+              {([['principal', 'principal'], ['grossInterest', 'gross'], ['tax', 'tax'], ['netInterest', 'net'], ['maturity', 'maturity']] as const).map(([label, key]) => (
+                <tr key={key} className="border-b border-line">
+                  <td className="py-2 text-sub">{t(`c.cmp.${label}`)}</td>
+                  {cmp.map((x, i) => (
+                    <td key={i} className={`py-2 px-2 text-right ${key === 'maturity' ? 'font-semibold text-fg' : 'text-body'}`}>{won(x[key])}</td>
+                  ))}
+                </tr>
+              ))}
+              <tr>
+                <td className="py-2 text-sub">{t('c.real.yearly')}</td>
+                {cmp.map((x, i) => (
+                  <td key={i} className={`py-2 px-2 text-right font-semibold ${i === best ? 'text-primary' : 'text-fg'}`}>{pct(x.yearly)}%</td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-muted mt-3">{t('c.cmp.note')}</p>
+      </div>
+
+      {/* 정책 상품·과세 기준 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {(['policy', 'taxRules'] as const).map((k) => (
+          <section key={k} className="bg-subtle rounded-2xl p-5">
+            <h2 className="font-semibold text-fg mb-3">{t(`c.${k}.title`)}</h2>
+            <ul className="space-y-2 list-disc pl-5 text-sm text-sub">
+              {(t.raw(`c.${k}.items`) as string[]).map((s, i) => <li key={i}>{s}</li>)}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <section>
+        <h2 className="text-lg font-semibold text-fg mb-3">{t('c.links.title')}</h2>
+        <div className="flex flex-wrap gap-2">
+          {LINKS.map((l) => (
+            <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-soft hover:bg-subtle text-body text-sm">
+              {t(`c.links.${l.key}`)} <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          ))}
+        </div>
+        <p className="text-xs text-muted mt-3">{t('c.links.note')}</p>
+      </section>
+
       <GuideSection namespace="savings" />
     </div>
-  );
-};
-
-const SavingsCalculator = () => {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-      <SavingsCalculatorContent />
-    </Suspense>
-  );
-};
-
-export default SavingsCalculator;
+  )
+}

@@ -906,8 +906,131 @@
     }
   },
   "savings": {
+    "c": {
+      "kind": {
+        "saving": "Installment savings",
+        "deposit": "Fixed deposit"
+      },
+      "in": {
+        "monthly": "Monthly deposit",
+        "principal": "Principal",
+        "rate": "Annual rate",
+        "months": "Term",
+        "method": "Interest",
+        "tax": "Interest tax"
+      },
+      "won": " KRW",
+      "monthsUnit": "mo",
+      "nMonths": "{n} mo",
+      "simple": "Simple",
+      "compound": "Monthly compound",
+      "tax": {
+        "normal": "Standard",
+        "pref": "Preferential",
+        "coop": "Co-op",
+        "free": "Tax-free"
+      },
+      "taxHint": {
+        "normal": "Income tax 14% + local income tax 1.4%. Applies to most bank deposits and savings.",
+        "pref": "Income tax 9% + rural special tax 0.5%. Applies to legacy tax-preferred accounts.",
+        "coop": "Co-op deposits (Nonghyup, Suhyup, Shinhyup, MG) up to KRW 30M: income tax exempt, only 1.4% rural special tax (associate members earning over KRW 70M pay 5% from 2026).",
+        "free": "Tax-free savings (KRW 50M limit), Youth Future Savings, Youth Leap Account, etc. No tax."
+      },
+      "res": {
+        "maturity": "After-tax amount at maturity ({n} months)",
+        "gross": "Before tax: {a} KRW",
+        "principal": "Total principal",
+        "grossInterest": "Interest (pre-tax)",
+        "tax": "Tax",
+        "netInterest": "Interest (after tax)",
+        "formula": "Formula: {a} × {r}% ÷ 12 × {k} (= {n}×({n}+1)÷2) = pre-tax interest {g} KRW"
+      },
+      "share": {
+        "label": "{kind} · {a} · {n} mo · {r}%/yr",
+        "sub": "After-tax interest {i} KRW ({tax})",
+        "monthly": "{a} KRW/mo",
+        "lump": "{a} KRW"
+      },
+      "real": {
+        "title": "Effective annual yield: savings rates are not deposit rates",
+        "savingIs": "Savings {r}% ≈ deposit {e}%",
+        "depositIs": "Deposit {r}% ≈ savings {e}%",
+        "whySaving": "In installment savings the first payment earns interest for {n} months but the last earns only one month. On average only monthly × (term+1)/2 = {avg} KRW is working the whole time, so compared with depositing the full amount up front the rate is roughly halved.",
+        "whyDeposit": "A deposit earns interest on the full principal for all {n} months. A monthly savings plan would need the rate above to earn the same interest.",
+        "thisOne": "This {kind} ({r}%/yr)",
+        "net": "After-tax interest {a} KRW",
+        "yearlyIs": "Effective yield (after tax, on total principal) {y}%",
+        "ifDeposit": "Same total as a deposit at",
+        "ifSaving": "Same amount as savings at",
+        "otherRate": "Rate to compare",
+        "same": "Both earn the same after-tax interest.",
+        "better": "This {kind} earns {d} KRW more after tax.",
+        "worse": "The {kind} earns {d} KRW more after tax.",
+        "note": "The deposit comparison assumes you have the full amount up front. Without a lump sum, installment savings may be the only option.",
+        "yearly": "Effective yield"
+      },
+      "sched": {
+        "title": "Monthly balance ({n} months)",
+        "month": "Month",
+        "principal": "Principal",
+        "interest": "Accrued interest (pre-tax)",
+        "balance": "Balance (pre-tax)",
+        "note": "Accrued interest assumes you hold to maturity. Early termination pays a much lower early-withdrawal rate."
+      },
+      "goal": {
+        "title": "Reverse: how much to reach a goal",
+        "desc": "Using the conditions above ({n} months, {r}%/yr, {tax}), find how much you need to reach an after-tax goal.",
+        "target": "After-tax goal",
+        "needMonthly": "Monthly deposit for {n} months",
+        "needPrincipal": "Principal to deposit now",
+        "apply": "Use this amount"
+      },
+      "cmp": {
+        "title": "Compare 3 products",
+        "desc": "Based on {kind} · {a}; change rate, term, tax and interest type.",
+        "product": "Product {n}",
+        "best": "Best",
+        "principal": "Total principal",
+        "grossInterest": "Pre-tax interest",
+        "tax": "Tax",
+        "netInterest": "After-tax interest",
+        "maturity": "At maturity",
+        "note": "When terms differ, compare effective yield (after-tax interest ÷ principal ÷ years) rather than total interest. Bonus rates apply only if you meet the conditions, so try the base rate too."
+      },
+      "policy": {
+        "title": "2026 policy products (confirmed)",
+        "items": [
+          "Youth Future Savings: launched June 2026. Ages 19-34, personal income up to KRW 60M and household up to 200% of median income. Up to KRW 500k/month, 3-year term, government match 6% (standard) or 12% (preferred), tax-free interest.",
+          "Youth Leap Account: new sign-ups closed in December 2025. Existing holders keep the match and tax exemption until their 5-year maturity.",
+          "Tax-free comprehensive savings: available until end of 2028, KRW 50M principal limit across all institutions. From 2026, new applicants aged 65+ must be basic pension recipients (disabled persons, independence patriots, basic livelihood recipients etc. remain eligible).",
+          "Government matching contributions are not included in the interest here; they are added separately at maturity."
+        ]
+      },
+      "taxRules": {
+        "title": "Tax on interest",
+        "items": [
+          "Standard 15.4% = income tax 14% (Income Tax Act Art. 129) + local income tax 1.4%, withheld by the bank.",
+          "Co-op deposits (up to KRW 30M): income tax exempt, 1.4% rural special tax. Exemption kept through 2028 for total salary up to KRW 70M; higher-income associate members pay 5% separate tax in 2026-2028 and 9% from 2029.",
+          "Preferential 9.5% = income tax 9% + rural special tax 0.5%; new general tax-preferred accounts are no longer offered.",
+          "Interest and dividends above KRW 20M a year are subject to comprehensive financial income taxation."
+        ]
+      },
+      "links": {
+        "title": "Official sources",
+        "finlife": "Financial product comparison (FSS)",
+        "taxAct": "Income Tax Act Art. 129 (withholding rates)",
+        "tsfa": "Restriction of Special Taxation Act Art. 88-2 (tax-free savings)",
+        "coop": "Restriction of Special Taxation Act Art. 89-3 (co-op deposits)",
+        "kinfa": "Korea Inclusive Finance Agency (youth products)",
+        "note": "As of October 2026. Actual interest may differ slightly due to bank day-count, bonus-rate conditions and payment dates. Check rates on the FSS comparison site."
+      },
+      "kindShort": {
+        "saving": "savings",
+        "deposit": "deposit"
+      }
+    },
     "title": "Savings Calculator",
-    "description": "Calculate interest and maturity amount for various savings products.",
+    "description": "Calculate maturity amounts and pre/after-tax interest for installment savings and fixed deposits, the same way banks do. Standard 15.4%, preferential and tax-free, effective yield, 3-product comparison and goal reverse calculation.",
     "input": {
       "savingsType": "Savings Type",
       "regularSavings": "Regular Savings",
@@ -926,49 +1049,76 @@
       "effectiveRate": "Effective Interest Rate"
     },
     "guide": {
-      "title": "Savings Calculator Guide",
+      "howItWorks": {
+        "title": "How it is calculated",
+        "items": [
+          "Savings, simple: pre-tax interest = monthly × rate/12 × n(n+1)/2, the method used by the FSS comparison site and bank apps.",
+          "Savings, monthly compound: each payment grows by (1 + rate/12)^k for its remaining k months.",
+          "Deposit, simple: principal × rate × months/12; monthly compound: principal × ((1 + rate/12)^months − 1).",
+          "Tax = pre-tax interest × tax rate (truncated to the won). Standard 15.4%, preferential 9.5%, co-op 1.4%, tax-free 0%.",
+          "Effective yield = after-tax interest ÷ total principal ÷ years. A savings rate r equals a deposit rate of r × (n+1)/(2n) (about 0.54× for 12 months)."
+        ]
+      },
+      "comparison": {
+        "title": "Savings vs deposit, simple vs compound",
+        "items": [
+          "If you have a lump sum, a deposit pays more unless the savings rate is nearly double.",
+          "If you don't, save monthly first and move the matured amount into a deposit.",
+          "Simple vs monthly compound: a 1-2% difference over 12 months, larger over 3+ years.",
+          "High-rate special savings often cap monthly payments (e.g. KRW 300k), so total interest can be smaller than it looks."
+        ]
+      },
+      "title": "Savings interest guide",
       "whatIs": {
-        "title": "What is the Savings Calculator?",
-        "description": "A savings calculator that accurately handles four types of Korean savings accounts: regular, flexible, goal-based, and compound interest. Using the same calculation method as actual bank products, you can instantly see the maturity amount, monthly interest, and after-tax payout."
+        "title": "The one thing to know",
+        "description": "In installment savings each monthly payment earns interest for a different length of time: the first for n months, the last for one. Simple-interest savings therefore earn monthly × rate/12 × n(n+1)/2. KRW 1M/month for 12 months at 5% earns KRW 325,000 before tax and KRW 274,950 after the 15.4% tax, a little over half of the KRW 600,000 a 12M deposit at 5% would earn. A 5% savings plan equals roughly a 2.7% deposit."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Select a savings type: Regular, Flexible, Goal-based, or Compound.",
-          "2. Enter the monthly deposit (or target amount), term, and annual interest rate.",
-          "3. Click Calculate to see the maturity amount, total deposits, total interest, and after-tax payout.",
-          "4. Check the monthly schedule tab to view how your balance grows each month."
+          "Choose installment savings (monthly) or fixed deposit (lump sum).",
+          "Enter the monthly amount (or principal), annual rate, term in months and simple/monthly compound. Most bank products use simple interest.",
+          "Pick the interest tax type; pre/after-tax interest and the maturity amount update instantly.",
+          "Use the effective-yield card to compare with a deposit (or savings), and the 3-product table to compare different rates, terms and taxes.",
+          "Use the goal reverse calculation to see how much to save each month, and share results by link or image."
         ]
       },
       "tips": {
-        "title": "Savings Tips",
+        "title": "Tips",
         "items": [
-          "Compare products based on after-tax returns (15.4% interest income tax).",
-          "Internet banks often offer base rates 0.5–1%p higher than traditional banks.",
-          "Check preferential rate conditions carefully (payroll deposit, card usage, auto-transfer).",
-          "Set monthly deposits within 30% of your income to reduce early termination risk.",
-          "For long-term goals (5+ years), compound savings offer better returns.",
-          "Splitting deposits into short-, mid-, and long-term accounts maintains liquidity while pursuing higher returns."
+          "Compare after-tax interest. Co-op (1.4%) and tax-free products give 15%+ more after-tax interest at the same rate.",
+          "If you can't meet bonus-rate conditions you only get the base rate, so calculate with it too.",
+          "Ages 19-34: check Youth Future Savings first (6-12% government match, tax-free).",
+          "Early-termination rates are far below the contract rate; keep an emergency fund and set a comfortable monthly amount.",
+          "Compare bank rates on the FSS comparison site (finlife.fss.or.kr)."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Which is better: regular or flexible savings?",
-            "a": "Salaried workers benefit from regular savings with higher rates. Freelancers with irregular income are better suited for flexible savings."
+            "q": "How much interest for KRW 1M/month for a year at 5%?",
+            "a": "With simple interest, KRW 325,000 before tax; minus 15.4% tax (KRW 50,050) leaves KRW 274,950, for a maturity amount of KRW 12,274,950. It is not 5% of 12M because each payment earns interest for a different period."
           },
           {
-            "q": "How much interest for early withdrawal?",
-            "a": "Early termination applies a much lower rate (typically 30–50% of the base rate). Try to keep accounts until maturity."
+            "q": "What deposit rate is a 5% savings plan equal to?",
+            "a": "A 12-month 5% savings plan earns the same as about 2.71% on a 1-year deposit; about 2.60% for 24 months and 2.57% for 36 months (r × (n+1)/(2n))."
           },
           {
-            "q": "Compound vs simple interest savings?",
-            "a": "Simple interest applies only to principal. Compound interest adds interest to principal each period. The longer the term, the greater the compound advantage."
+            "q": "What if I terminate early?",
+            "a": "You get the bank's early-termination rate instead of the contract rate (a fraction of the base rate depending on elapsed time, as low as about 0.1% early on). Check the product description."
           },
           {
-            "q": "How to combine housing subscription with regular savings?",
-            "a": "Open a housing subscription account first for lottery eligibility, then use remaining capacity for high-rate regular savings."
+            "q": "When is interest paid?",
+            "a": "Regular savings and deposits pay principal and interest at maturity, with tax withheld then. Some deposits pay interest monthly, which earns slightly less because there is no compounding."
+          },
+          {
+            "q": "Who can open tax-free comprehensive savings?",
+            "a": "Available until end of 2028 with a KRW 50M principal limit across institutions. From 2026, new applicants aged 65+ must be basic pension recipients; disabled persons, independence patriots and basic livelihood recipients remain eligible (Restriction of Special Taxation Act Art. 88-2)."
+          },
+          {
+            "q": "How much tax on co-op (Nonghyup, Shinhyup) deposits?",
+            "a": "Up to KRW 30M per member, income tax is exempt and only 1.4% rural special tax applies. From 2026, associate members with total salary above KRW 70M pay a 5% separate tax (Art. 89-3)."
           }
         ]
       }
