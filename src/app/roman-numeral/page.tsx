@@ -6,14 +6,14 @@ import RelatedTools from '@/components/RelatedTools'
 export const metadata: Metadata = {
   title: '로마 숫자 변환기 - 아라비아↔로마 숫자 변환 | 툴허브',
   description: '로마 숫자 변환기 - 아라비아 숫자를 로마 숫자로, 로마 숫자를 아라비아 숫자로 변환합니다. I, V, X, L, C, D, M 기호 학습.',
-  keywords: '로마 숫자 변환, 로마 숫자 변환기, roman numeral converter, 로마 숫자 표, 로마자 변환',
+  keywords: '로마 숫자 변환, 로마 숫자 변환기, roman numeral converter, 로마 숫자 표, 로마자 변환, 2026 로마숫자, 로마숫자 날짜, Ⅻ 뜻',
   openGraph: { title: '로마 숫자 변환기 | 툴허브', description: '아라비아↔로마 숫자 변환', url: 'https://toolhub.ai.kr/roman-numeral', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/roman-numeral.png', width: 1200, height: 630, alt: '로마 숫자 변환기' }] },
   twitter: { card: 'summary_large_image', title: '로마 숫자 변환기 | 툴허브', description: '로마 숫자 변환', images: ['https://toolhub.ai.kr/og/roman-numeral.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/roman-numeral/' },
 }
 
 export default function RomanNumeralPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '로마 숫자 변환기', description: '아라비아↔로마 숫자 변환', url: 'https://toolhub.ai.kr/roman-numeral', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['숫자→로마 변환', '로마→숫자 변환', '표기 규칙', '빠른 참조표'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '로마 숫자 변환기', description: '아라비아↔로마 숫자 변환', url: 'https://toolhub.ai.kr/roman-numeral', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['아라비아↔로마 숫자 자동 양방향 변환', '잘못된 표기 검사와 표준형 안내', '자리별 분해 설명', '날짜를 로마 숫자로 변환', '유니코드 Ⅰ~Ⅻ 문자 복사', '4,000 이상 확장 표기(윗줄)', '1~100·연도 로마 숫자 표'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

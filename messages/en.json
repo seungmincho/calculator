@@ -617,8 +617,95 @@
     }
   },
   "loan": {
+    "mode": {
+      "calc": "Loan → monthly",
+      "rev": "Monthly → max loan"
+    },
+    "payBudget": "Affordable monthly payment",
+    "payBudgetHint": "what you can spend on repayment each month",
+    "graceHint": "Interest-only during the grace period; principal is repaid over the remaining term",
+    "none": "None",
+    "unitManwon": "×10K",
+    "wonUnit": " KRW",
+    "unit": {
+      "eok": "×100M",
+      "man": "×10K"
+    },
+    "term": {
+      "years": "{n} yr",
+      "months": "{n} mo",
+      "mixed": "{y} yr {m} mo"
+    },
+    "hero": {
+      "label": "{amount} · {rate}% p.a. · {term} · {method}",
+      "monthly": "Monthly payment",
+      "firstMonth": "First-month payment (decreases monthly)",
+      "lastMonth": "Last month {amount}",
+      "monthlyInterest": "Monthly interest",
+      "bulletEnd": "Principal {amount} repaid in full at maturity",
+      "graceNote": "Interest-only {amount}/month during the {months}-month grace period",
+      "revLabel": "{pay}/month · {rate}% p.a. · {term} · {method}",
+      "revTitle": "Maximum loan amount",
+      "revSub": "First payment {pay} · total interest {interest}",
+      "revByMethod": "Max loan by method for the same monthly payment"
+    },
+    "history": {
+      "save": "Save result",
+      "saved": "Saved",
+      "format": "{monthly}/month (total {total})"
+    },
+    "cmp": {
+      "title": "Repayment methods side by side",
+      "desc": "Same loan, only the repayment method changes. Tap a row to use that method.",
+      "first": "First payment",
+      "last": "Last month",
+      "cheapest": "Least interest",
+      "note": "Equal principal costs {amount} less interest than equal installment, but the first payment is {first} higher.",
+      "bulletNote": "Bullet repayment has the lowest monthly burden (interest only), but costs {amount} more interest than equal installment and needs the full principal at maturity."
+    },
+    "rate": {
+      "title": "What if the rate changes?",
+      "desc": "Based on {method}. With a variable rate, your payment shifts like this.",
+      "col": "Rate",
+      "change": "Monthly change",
+      "current": "Current",
+      "note": "A 1%p rate rise adds {amount} per month and {interest} in total interest."
+    },
+    "dsr": {
+      "title": "Quick DSR check (reference)",
+      "desc": "Annual principal + interest of all loans divided by annual income.",
+      "income": "Annual income (pre-tax)",
+      "existing": "Existing loans, annual repayment",
+      "existingHint": "Principal + interest you repay on other loans per year",
+      "needIncome": "Enter your income to see DSR.",
+      "result": "Estimated DSR",
+      "thisLoan": "This loan's annual repayment {amount}",
+      "room": "Room left up to 40% DSR: {amount}/year ({monthly}/month)",
+      "over": "Exceeds the 40% bank limit by {pct}%p",
+      "limitNote": "Borrower-level DSR: when total loans exceed KRW 100M, banks cap DSR at 40% and non-bank lenders at 50%.",
+      "stressNote": "For variable, hybrid and periodic-rate loans, lenders add a stress rate when computing the limit (stress DSR), so your actual limit may be lower.",
+      "calcNote": "This uses the first year of actual payments after any grace period. Bullet loans, credit loans, etc. are counted differently (e.g. principal spread over a set period), so a bank's result may differ.",
+      "more": "Calculate in detail with the DSR calculator"
+    },
+    "note": {
+      "rounding": "Interest is computed monthly (annual rate ÷ 12) and truncated to whole won. Banks use actual days, so figures may differ by a few to a few hundred won per month."
+    },
+    "links": {
+      "title": "Next steps",
+      "schedule": "See the monthly repayment schedule",
+      "scheduleDesc": "Full schedule, prepayment and rate-change simulation with these inputs",
+      "jeonse": "Jeonse loan calculator",
+      "jeonseDesc": "Jeonse deposit loan limits and monthly interest",
+      "bogeumjari": "Bogeumjari loan calculator",
+      "bogeumjariDesc": "Rates, limits and payments for the government mortgage"
+    },
+    "warn": {
+      "invalid": "Check the loan amount (or monthly budget) and term. Maximum term is 50 years.",
+      "graceTooLong": "The grace period must be shorter than the loan term.",
+      "unlimited": "With a 0% rate, a bullet loan has no monthly interest, so a limit can't be computed."
+    },
     "title": "Loan Calculator",
-    "description": "Calculate monthly payments for various loan types including equal installment, equal principal, and bullet payment loans.",
+    "description": "See your monthly payment instantly. Compare equal installment, equal principal and bullet repayment, add a grace period, reverse-calculate the max loan from a monthly budget, and check rate changes and DSR.",
     "input": {
       "loanAmount": "Loan Amount",
       "interestRate": "Annual Interest Rate",
@@ -628,11 +715,12 @@
       "equalPrincipal": "Equal Principal",
       "bulletPayment": "Bullet Payment",
       "graceType": "Grace Period Type",
-      "gracePeriod": "Grace Period (months)",
+      "gracePeriod": "Grace period",
       "years": "years",
       "months": "months"
     },
     "result": {
+      "interestRatio": "Interest / principal",
       "monthlyPayment": "Monthly Payment",
       "totalPayment": "Total Payment",
       "totalInterest": "Total Interest",
@@ -647,45 +735,53 @@
       "title": "Loan Calculator Guide",
       "whatIs": {
         "title": "What is the Loan Calculator?",
-        "description": "A precision loan calculator that uses the same formulas as Korean banks to compute monthly payments, total interest, and full repayment schedules for four repayment methods: equal principal-and-interest, equal principal, lump-sum at maturity, and deferred repayment."
+        "description": "Enter the loan amount, rate and term to compare monthly payments and total interest across equal installment, equal principal and bullet repayment. You can also add a grace period, find the maximum loan for a monthly budget, see how payments move with rate changes, and run a quick DSR check."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter the loan principal, annual interest rate, and loan term.",
-          "2. Choose a repayment method: equal principal-and-interest, equal principal, lump-sum, or deferred.",
-          "3. Click 'Calculate' to see the monthly payment, total repayment, and total interest.",
-          "4. Check the monthly repayment schedule and save multiple scenarios to compare."
+          "1. Enter the loan amount, annual rate and term — results appear immediately.",
+          "2. Pick a repayment method (equal installment / equal principal / bullet) and a grace period.",
+          "3. In the 'Monthly → max loan' tab, enter what you can pay each month to see the maximum you can borrow.",
+          "4. Use the comparison table, rate-change table and DSR check below; open the repayment schedule calculator for the full month-by-month table."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "Even a 0.1% rate difference adds up to roughly ₩3.88M extra interest on a ₩300M 30-year loan.",
-          "Equal principal repayment minimizes total interest but starts with higher monthly payments.",
-          "Maintaining a good credit score lowers your spread rate and improves loan terms.",
-          "In falling rate environments, choose variable rates; in rising ones, lock in a fixed rate.",
-          "If making early repayments, do so early in the loan term when interest savings are greatest."
+          "Even 0.1%p matters: for KRW 300M over 30 years (equal installment, around 4%), total interest differs by about KRW 6M, so compare lenders.",
+          "Equal principal has the lowest total interest but higher early payments — choose it if you have room in your early budget.",
+          "Manage your credit score (no late payments, moderate card utilization) to lower the spread on your rate.",
+          "If you choose a variable rate, check the 'What if the rate changes?' table to make sure you can handle a 1–2%p rise.",
+          "Prepaying early saves the most interest. Prepayment fees usually stop after 3 years."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Which is better: equal installment or equal principal?",
-            "a": "Equal principal results in lower total interest but higher initial payments. Choose it if you have sufficient upfront cash. For predictable monthly expenses, equal installment is more convenient."
+            "q": "Equal installment or equal principal — which is better?",
+            "a": "Equal principal costs less total interest but has higher early payments. Choose equal principal if you have early cash flow, or equal installment for a steady monthly payment."
           },
           {
-            "q": "What is a deferred (grace period) loan?",
-            "a": "During the grace period you pay only interest; principal repayment begins afterward. It reduces early pressure but results in higher total interest."
+            "q": "What is a grace period loan?",
+            "a": "You pay only interest for a set period, then repay principal and interest over the remaining term. It lowers early payments but increases total interest because principal is repaid later."
+          },
+          {
+            "q": "If I can pay KRW 1.5M a month, how much can I borrow?",
+            "a": "Use the 'Monthly → max loan' tab. For example, at 4.5% over 30 years with equal installment it is about KRW 296M. Actual limits can be lower due to DSR/LTV rules and bank review."
+          },
+          {
+            "q": "What is DSR and how does the 40% rule apply?",
+            "a": "DSR is the ratio of annual principal + interest on all loans to annual income. When total loans exceed KRW 100M, banks cap it at 40% and non-bank lenders at 50%, and variable-rate loans are assessed with an added stress rate. The DSR here is for reference only."
           },
           {
             "q": "How do LTV and DTI affect a loan?",
-            "a": "LTV caps the loan relative to collateral value, DTI limits annual payments as a percentage of income. Lower ratios increase borrowing limits and help secure better rates."
+            "a": "LTV limits the loan relative to collateral value; DTI limits annual repayment relative to income. Lower ratios mean higher limits and better rates."
           },
           {
-            "q": "When is the early repayment fee waived?",
-            "a": "Most banks waive early repayment fees after 3 years from origination. Government-backed loans may differ."
+            "q": "When is the prepayment fee waived?",
+            "a": "Most prepayment fees are waived 3 years after the loan starts. Government policy loans may differ, so check with your bank."
           }
         ]
       }
@@ -8998,69 +9094,134 @@
     }
   },
   "notepad": {
+    "localOnly": "A notepad you can use right away, no login. Notes are stored only in this device's browser and never sent to a server.",
+    "untitled": "Untitled",
+    "openList": "Notes ({n})",
+    "closeList": "Close list",
+    "searchPlaceholder": "Search notes",
+    "noResults": "No matching notes",
+    "pin": "Pin to top",
+    "unpin": "Unpin",
+    "pinned": "Pinned",
+    "delete": "Delete",
+    "backupHint": "Clearing browser data deletes your notes too. Download a backup now and then.",
+    "backup": "Back up all",
+    "import": "Import",
+    "titlePlaceholder": "Title (leave blank to use the first line)",
+    "contentPlaceholder": "Start typing. Everything is saved automatically.",
+    "toolbar": "Editing tools",
+    "fontSize": "Font size",
+    "mono": "Monospace",
+    "wrap": "Word wrap",
+    "focus": "Focus mode",
+    "exitFocus": "Exit focus mode",
+    "exportShortcut": "Ctrl+S also saves",
+    "find": {
+      "button": "Find & replace",
+      "find": "Find",
+      "replace": "Replace with",
+      "caseSensitive": "Match case",
+      "count": "{n} matches",
+      "next": "Find next",
+      "replaceOne": "Replace",
+      "replaceAll": "Replace all"
+    },
+    "status": {
+      "saving": "Saving…",
+      "saved": "Saved on this device",
+      "error": "Storage is full, so the latest changes were not saved. Download a backup, then delete notes you no longer need."
+    },
+    "toast": {
+      "undo": "Undo",
+      "close": "Close",
+      "deleted": "Deleted '{name}'",
+      "imported": "Imported {n} notes",
+      "importFailed": "Imported {n} notes ({bad} files could not be read)",
+      "replaced": "Replaced {n} matches"
+    },
+    "time": {
+      "justNow": "Just now",
+      "minutes": "{n} min ago",
+      "hours": "{n} h ago"
+    },
     "title": "Notepad",
-    "description": "Manage multiple notes with auto-save in your browser",
+    "description": "An online notepad you can use without logging in: multiple notes, auto-save, find & replace, and backup/restore.",
     "newNote": "New Note",
     "noNotes": "No notes yet",
     "createFirstNote": "Click New Note to get started",
-    "export": "Export",
+    "export": "Save .txt",
     "autoSaved": "Auto-saved",
     "stats": {
+      "charsNoSpace": "No spaces",
+      "manuscript": "Manuscript",
+      "sheets": "{n} sheets",
       "chars": "Characters",
       "words": "Words",
       "lines": "Lines",
       "bytes": "Bytes"
     },
     "guide": {
+      "shortcuts": {
+        "title": "Keyboard shortcuts",
+        "items": [
+          "Ctrl+S (Cmd+S on Mac): save the current note as a .txt file",
+          "Ctrl+F (while editing): open find & replace. Press Enter in the Find box or F3 in the editor to jump to the next match",
+          "Tab: insert a tab character. To leave the editor with the keyboard, press Esc, then Tab",
+          "Esc: exit focus mode"
+        ]
+      },
       "title": "User Guide",
       "features": {
         "title": "Key Features",
         "items": [
-          "Create and manage multiple notes",
-          "Freely edit titles and content",
-          "Auto-saves after 500ms",
-          "Real-time stats: characters, words, lines, bytes",
-          "Export notes as .txt files",
-          "Automatically saved to browser localStorage"
+          "Create multiple notes, search them, and pin the ones you use most",
+          "Auto-saves to this browser as soon as you pause typing; notes survive refreshes and closed tabs",
+          "Multiple notepad tabs in the same browser stay in sync",
+          "Live counts: characters (with/without spaces), words, lines, 200-cell manuscript sheets, and UTF-8 bytes",
+          "Find & replace, font size, monospace font, word wrap, and a full-screen focus mode",
+          "Save one note as .txt, or back up all notes to a JSON file and restore them later"
         ]
       },
       "usage": {
         "title": "How to Use",
         "items": [
-          "Click New Note button to create a note",
-          "Select a note from the left sidebar to edit",
-          "Title and content auto-save as you type",
-          "Click the trash icon to delete a note",
-          "Click Export to download as a text file"
+          "A blank note is ready when you open the page, so just start typing",
+          "Add notes with New Note and switch by tapping one in the list (on mobile, use the Notes button)",
+          "Use the pin icon to keep a note on top and the trash icon to delete. Deleted by mistake? Tap Undo in the message at the bottom",
+          "Import a backup JSON file on another device or browser to move your notes. Plain .txt files can be imported too"
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Notes are stored in browser localStorage",
-          "Clearing browser data will also delete notes",
-          "Use export feature to back up important notes",
-          "On mobile, use the menu button to open/close sidebar"
+          "Notes live only in this browser's localStorage, not on a server. In private/incognito windows they disappear when the window closes",
+          "Clearing browser site data deletes your notes, so keep a backup of anything important",
+          "Manuscript sheets are an estimate based on Korean 200-cell manuscript paper, with each line break starting an indented paragraph",
+          "For essays with length limits, check both the with-spaces and without-spaces counts"
         ]
       },
       "whatIs": {
         "title": "What is the Notepad?",
-        "description": "An online notepad that manages multiple notes in tabs with auto-save. Notes are stored securely in your browser's localStorage without any login, and work offline without an internet connection. Use it for quick text editing, checklists, code snippets, work notes, and more."
+        "description": "A browser notepad that works instantly with no login or install. Notes are auto-saved only in this device's browser (localStorage) and never sent to a server. Manage multiple notes in a list, find & replace, count characters, and back up or restore everything. Handy for work notes, to-do lists, drafts, and code snippets."
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Where are notes saved?",
-            "a": "Notes are saved in your browser's localStorage. They are never sent to a server and your privacy is protected. However, clearing your browser cache may also delete your notes."
+            "q": "Where are my notes stored?",
+            "a": "In this browser's localStorage on this device. Nothing is sent to a server, so no one else can see them. Clearing the browser's site data deletes them, so back up anything important."
           },
           {
-            "q": "Can I view my notes on another device?",
-            "a": "localStorage is tied to the specific browser, so notes are not accessible on other devices. To share with another device, copy the content and send it via email or a messaging app."
+            "q": "Can I see my notes on another device?",
+            "a": "There is no automatic sync. Download a full backup (JSON) and use Import on the other device. If the same note exists in both, the more recently edited version is kept."
           },
           {
-            "q": "Is there a limit on the number of notes?",
-            "a": "You can save notes up to the localStorage capacity (typically 5–10 MB). Ordinary text notes won't come close to filling that limit even with hundreds of entries."
+            "q": "Is there a limit on notes or size?",
+            "a": "You can store any number of notes up to the browser's storage quota (usually around 5 MB). Hundreds of plain-text notes fit easily, and you'll see a warning if storage runs out."
+          },
+          {
+            "q": "I deleted a note by mistake.",
+            "a": "Tap Undo in the message that appears at the bottom right after deleting or replacing all. Once the message is gone it can't be undone, so restore from a backup file if you have one."
           }
         ]
       }
@@ -11817,8 +11978,71 @@
     }
   },
   "romanNumeral": {
+    "inputLabel": "Number or Roman numeral",
+    "inputPlaceholder": "e.g. 2026, XII, Ⅻ",
+    "inputHint": "Type a number to get Roman numerals, or a Roman numeral (including Ⅻ or xii) to get the number.",
+    "labelToRoman": "{n} in Roman numerals",
+    "labelToArabic": "{r} means",
+    "extended": "Extended notation · overline = ×1,000",
+    "nonStandard": "{r} is not a standard Roman numeral",
+    "lenientRead": "Read left to right by the rules it equals {v}; the standard form is {c}.",
+    "useCanonical": "Use {c}",
+    "breakdown": "Broken down by place value",
+    "swap": "Convert back",
+    "variants": "Other forms",
+    "variant": {
+      "upper": "Uppercase",
+      "lower": "Lowercase (front-matter pages)",
+      "unicode": "Unicode single character",
+      "unicodeLower": "Unicode lowercase"
+    },
+    "reason": {
+      "empty": "Enter a number (e.g. 2026) or a Roman numeral (e.g. XII).",
+      "badChar": "Not a Roman numeral character: {d}. Only I, V, X, L, C, D, M are allowed.",
+      "repeat": "A symbol can't repeat four or more times like {d}. Three times at most.",
+      "repeatFive": "{d} can appear only once. V, L and D never repeat (use X, not VV).",
+      "badSubtract": "{d} is not a valid subtraction. Only IV, IX, XL, XC, CD and CM are allowed.",
+      "overline": "The overline (×1,000) goes at the front and only for 4,000 and above.",
+      "order": "The symbols are not in standard order. Write the largest place value first.",
+      "notInteger": "Roman numerals only express whole numbers from 1 (no decimals or negatives).",
+      "zero": "Roman numerals have no zero. They start at 1.",
+      "tooBig": "Only numbers up to 3,999,999 can be converted."
+    },
+    "date": {
+      "title": "Date to Roman numerals",
+      "desc": "Popular for tattoos, anniversaries, wedding invitations and engravings.",
+      "label": "Date",
+      "order": "Order",
+      "order_ymd": "Year.Month.Day",
+      "order_mdy": "Month.Day.Year (US)",
+      "order_dmy": "Day.Month.Year (EU)",
+      "sep": "Separator",
+      "sep_dot": "Period",
+      "sep_mid": "Middle dot",
+      "sep_dash": "Hyphen",
+      "sep_slash": "Slash",
+      "sep_space": "Space",
+      "resultLabel": "{date} in Roman numerals",
+      "year": "Year",
+      "month": "Month",
+      "day": "Day",
+      "invalid": "Pick a date to convert it to Roman numerals."
+    },
+    "unicode": {
+      "title": "Roman numeral characters (Ⅰ–Ⅻ)",
+      "desc": "Single-character Roman numerals used for outline numbering and clock faces. Tap to copy.",
+      "upper": "Uppercase",
+      "lower": "Lowercase",
+      "note": "Ⅻ is one character, so it looks different across fonts and search engines or screen readers may not read it as XII. Plain letters (XII) are safer for web text and file names."
+    },
+    "table": {
+      "title": "Roman numeral chart",
+      "tabNumbers": "1–100",
+      "tabYears": "Years 1980–2035",
+      "hint": "Tap a cell to load it into the converter above."
+    },
     "title": "Roman Numeral Converter",
-    "description": "Convert between Arabic numbers and Roman numerals.",
+    "description": "Convert numbers and Roman numerals both ways, with a place-value breakdown, standard-form checks, date conversion and Ⅰ–Ⅻ characters to copy.",
     "mode": {
       "toRoman": "Number → Roman",
       "toArabic": "Roman → Number"
@@ -11831,11 +12055,11 @@
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "maxNumber": "Maximum convertible: 3,999",
+    "maxNumber": "Standard notation covers 1–3,999; above that, the extended overline notation (×1,000) goes up to 3,999,999.",
     "invalidRoman": "Please enter a valid Roman numeral",
     "invalidNumber": "Enter a number between 1 and 3999",
     "quickNumbers": "Quick Input",
-    "referenceTable": "Roman Numeral Table",
+    "referenceTable": "Basic symbols",
     "symbols": {
       "I": "1",
       "V": "5",
@@ -11850,56 +12074,70 @@
       "rules": {
         "title": "Notation Rules",
         "items": [
-          "Same symbol can repeat up to 3 times (III=3, XXX=30)",
-          "Smaller value before larger means subtraction (IV=4, IX=9, XL=40, XC=90)",
-          "Larger value first means addition (VI=6, XI=11, LX=60)",
-          "Expressible range: 1 to 3,999"
+          "Seven symbols: I(1), V(5), X(10), L(50), C(100), D(500), M(1000)",
+          "Write from largest to smallest and add (VI=6, LX=60, MMXXVI=2026)",
+          "A smaller value before a larger one is subtracted, but only six pairs are allowed: IV(4), IX(9), XL(40), XC(90), CD(400), CM(900). IC, VX and IL are invalid",
+          "I, X, C and M may repeat up to three times (III=3, XXX=30); V, L and D appear only once (X, not VV)",
+          "Standard range is 1–3,999. For 4,000 and above, an overline (vinculum) multiplies a symbol by 1,000 (V̅=5,000)"
         ]
       },
       "examples": {
         "title": "Conversion Examples",
         "items": [
-          "2024 = MMXXIV (M+M+X+X+IV)",
-          "1999 = MCMXCIX (M+CM+XC+IX)",
-          "58 = LVIII (L+V+III)",
-          "3999 = MMMCMXCIX (maximum value)"
+          "2026 = MMXXVI (MM 2000 + XX 20 + VI 6)",
+          "2025 = MMXXV (MM 2000 + XX 20 + V 5)",
+          "1999 = MCMXCIX (M 1000 + CM 900 + XC 90 + IX 9)",
+          "Ⅻ = XII = 12 (X 10 + II 2)",
+          "3999 = MMMCMXCIX (largest standard value)",
+          "4000 = I̅V̅ (extended, overline = ×1000)"
         ]
       },
       "whatIs": {
         "title": "What are Roman Numerals?",
-        "description": "Roman numerals are an ancient numeral system from Rome that uses seven symbols — I, V, X, L, C, D, and M — to represent numbers. They are still widely used today on clock faces, movie release years, legal documents, and chapter numbering. This tool instantly converts between Arabic numbers (1–3999) and Roman numerals in both directions."
+        "description": "Roman numerals are the ancient Roman number system, combining seven symbols — I, V, X, L, C, D and M. They still appear on clock faces, film and book sequels, regnal names (Elizabeth II), Super Bowl numbers and outline numbering. This tool detects which way to convert automatically, supports standard notation from 1 to 3,999 and the overline extension up to 3,999,999."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter a number (1–3999) in the Arabic numeral field to automatically convert it to Roman numerals.",
-          "2. Enter a combination of I, V, X, L, C, D, M in the Roman numeral field to convert back to an Arabic number.",
-          "3. Click the copy button next to the result to copy it to your clipboard.",
-          "4. If the input is out of range or incorrectly formatted, an error message will be displayed."
+          "1. Type a number (2026) or a Roman numeral (MMXXVI, Ⅻ, xii); the direction is detected automatically.",
+          "2. Check the place-value breakdown to see which symbols each digit becomes.",
+          "3. Enter a non-standard form such as IIII or IC and the tool explains why and offers the standard form in one tap.",
+          "4. Use 'Date to Roman numerals' to pick a date, order and separator for tattoos or anniversaries, then save or share it as an image.",
+          "5. Share the page link (?n=2026) to open the same result."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Use this tool to decode movie release years (e.g., MMXXIV = 2024) or clock numerals instantly.",
-          "For lowercase Roman numerals (i, ii, iii) used in book prefaces, convert the uppercase result then switch case manually.",
-          "Numbers above 3999 lack a standardized Roman numeral notation, which is why this tool supports up to 3999."
+          "Convert each place value separately and join them: 2026 → MM + XX + VI = MMXXVI.",
+          "Lowercase numerals (i, ii, iii) used for front-matter pages work as input too.",
+          "Copy Ⅰ, Ⅱ, Ⅲ-style characters from the character section. There is no single character above 12, so use letters instead.",
+          "For a date tattoo, decide the order first (Y.M.D vs US M.D.Y) to avoid confusion later.",
+          "The overline notation for 4,000+ is widely used but was never fully standardized, so add Arabic numerals in official documents."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What is the difference between IV and VI?",
-            "a": "In Roman numerals, placing a smaller value before a larger one indicates subtraction. IV = 5−1 = 4, while VI = 5+1 = 6."
+            "q": "How do you write 2026 in Roman numerals?",
+            "a": "MMXXVI: MM (2000) + XX (20) + VI (6), written from the largest place. 2025 is MMXXV and 2027 is MMXXVII."
+          },
+          {
+            "q": "What does Ⅻ mean?",
+            "a": "12. It is a single Unicode character for XII (X 10 + II 2), used on clock faces and in outline numbering. Single characters exist from Ⅰ (1) to Ⅻ (12)."
           },
           {
             "q": "Is IIII or IV correct for 4?",
-            "a": "IV is the modern standard. However, some clock faces use IIII for historical reasons, so both forms exist in practice."
+            "a": "IV is the standard form; a symbol repeats at most three times. Clock faces, however, traditionally often use IIII."
           },
           {
-            "q": "Can Roman numerals represent zero?",
-            "a": "No. The Roman numeral system has no symbol for zero. Only numbers from 1 to 3999 can be expressed."
+            "q": "Can 99 be written as IC?",
+            "a": "No. Only IV, IX, XL, XC, CD and CM are valid subtractions, so 99 is XC (90) + IX (9) = XCIX."
+          },
+          {
+            "q": "Can Roman numerals show zero or numbers above 4,000?",
+            "a": "There is no symbol for zero. For 4,000 and above, a line over a symbol multiplies it by 1,000 (vinculum): 4,000 = I̅V̅, 10,000 = X̅. This tool supports up to 3,999,999."
           }
         ]
       }
@@ -33791,15 +34029,96 @@
     }
   },
   "colorBlindnessSimulator": {
+    "typeLabel": "Color vision type",
+    "cvd": {
+      "normal": {
+        "name": "Normal vision",
+        "desc": "Original image"
+      },
+      "protan": {
+        "name": "Red-weak (protan)",
+        "desc": "L-cone deficiency — reds look darker and get confused with greens and browns",
+        "prevalence": "~1–2% of men"
+      },
+      "deutan": {
+        "name": "Green-weak (deutan)",
+        "desc": "M-cone deficiency — the most common type; red, green and orange get confused",
+        "prevalence": "~5–6% of men"
+      },
+      "tritan": {
+        "name": "Blue-yellow (tritan)",
+        "desc": "S-cone deficiency — blue vs. green and yellow vs. pink get confused",
+        "prevalence": "<1 in 10,000"
+      },
+      "achroma": {
+        "name": "Achromatopsia",
+        "desc": "Almost no color perception — only lightness is seen",
+        "prevalence": "~1 in 30,000"
+      }
+    },
+    "severity": "Severity",
+    "severityPreset": {
+      "30": "Mild",
+      "60": "Strong",
+      "100": "Dichromat"
+    },
+    "severityHint": "100% means the cone type does not work at all (dichromacy, \"color blind\"); lower values are anomalous trichromacy (\"color weak\"). Most people with CVD are color weak.",
+    "severityLevel": {
+      "none": "Same as original",
+      "mild": "Mild anomaly",
+      "strong": "Strong anomaly",
+      "full": "Dichromacy",
+      "achroma": "Mostly lightness"
+    },
+    "viewSplit": "Compare slider",
+    "viewGrid": "All types",
+    "gridHint": "At {sev}% severity · tap a tile to compare that type with the slider",
+    "sampleChart": "Chart",
+    "upload": "Upload image",
+    "uploadHint": "Drag and drop an image or paste a screenshot with Ctrl+V. Images are processed in your browser and never uploaded.",
+    "palette": {
+      "title": "Palette distinguishability check",
+      "desc": "Enter your chart/UI colors to see how each color vision type perceives them and which pairs become hard to tell apart.",
+      "remove": "Remove color",
+      "add": "Add color",
+      "placeholder": "Paste HEX list (e.g. #e53935, #43a047, #1e88e5)",
+      "apply": "Apply",
+      "presetRisky": "Red–green example",
+      "presetSafe": "Okabe-Ito (CVD-friendly)",
+      "summaryBad": "{n} pair(s) look alike for {type}",
+      "summaryOk": "Distinguishable for protan, deutan and tritan vision",
+      "severityNote": "At {sev}% severity",
+      "issues": "{n} confusable pair(s)",
+      "ok": "All distinct",
+      "minDe": "min ΔE {v}",
+      "threshold": "Color difference uses CIEDE2000 (ΔE); pairs below {n} are flagged. Small legends and thin lines make it worse. If you can't change the hues, increase the lightness difference or add labels, patterns or icons.",
+      "shareLabel": "CVD check of my {n} chart colors",
+      "shareBad": "{n} confusable pair(s)",
+      "shareOk": "All distinguishable"
+    },
+    "stats": {
+      "title": "How common is color vision deficiency?",
+      "maleLabel": "Korean men",
+      "maleValue": "~5.9%",
+      "femaleLabel": "Korean women",
+      "femaleValue": "~0.4%",
+      "oneInLabel": "Among men",
+      "oneInValue": "1 in 17",
+      "note": "Approximate figures commonly cited for Korea; they vary by study and test method. Among men of Northern European descent it is ~8% (women ~0.5%). Red–green CVD is X-linked, so it is far more common in men, and most cases are anomalous (color weak) rather than full dichromacy."
+    },
+    "links": {
+      "test": "Curious about your own vision? — Color Blind Test",
+      "contrast": "Text/background contrast (WCAG) — Contrast Checker"
+    },
     "title": "Color Blindness Simulator",
-    "description": "Apply color vision deficiency (CVD) filters to images to experience how color-blind people see the world.",
+    "description": "See how images and colors look to people with color blindness or color weakness, and check whether your chart/UI colors stay distinguishable.",
     "uploadPrompt": "Drag & drop an image or click to upload",
     "uploadSubPrompt": "Supports JPG, PNG, WebP, GIF · Max 10MB",
     "cameraButton": "Take a Photo",
     "sampleImages": "Sample Images",
     "sampleColorWheel": "Color Wheel",
     "sampleIshihara": "Ishihara Pattern",
-    "sampleTrafficLight": "Traffic Light / Nature",
+    "sampleTrafficLight": "Traffic light",
     "typeSelector": "Color Vision Deficiency Type",
     "original": "Original",
     "simulated": "Simulated",
@@ -33880,42 +34199,58 @@
       }
     },
     "guide": {
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Protan, deutan and tritan simulation uses the physiologically based matrices of Machado, Oliveira & Fernandes (2009), published in 10% severity steps; values in between are linearly interpolated.",
+          "Matrices are applied in linear RGB, not to gamma-encoded sRGB values — applying them directly to sRGB distorts dark colors.",
+          "Achromatopsia is approximated by discarding color and keeping only lightness (linear luminance Y).",
+          "The palette check converts simulated colors to CIELAB, computes CIEDE2000 differences and flags pairs below 10 as confusable.",
+          "Everything runs in your browser; images are never sent to a server."
+        ]
+      },
       "title": "Color Blindness Simulator Guide",
       "whatIs": {
         "title": "What is this tool?",
-        "description": "The Color Blindness Simulator shows how uploaded images appear to users with various color vision deficiencies (red-green, blue-yellow, total color blindness). Useful for web/app designers to verify accessibility."
+        "description": "This simulator shows how images and colors appear to people with color vision deficiency. It covers protan, deutan and tritan deficiencies plus achromatopsia with a 0–100% severity control, and automatically checks whether your chart/UI palette stays distinguishable. To check your own color vision, try ToolHub's Color Blind Test."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Drag and drop or select an image to upload.",
-          "Select the color vision type to simulate (protanopia, deuteranopia, tritanopia, achromatopsia, etc.).",
-          "Compare the original and simulated images side by side.",
-          "Adjust your color palette and retest if issues are found."
+          "Pick a sample (chart, traffic light, color wheel) or upload an image. You can paste a screenshot with Ctrl+V.",
+          "Choose a color vision type and adjust severity. 100% is dichromacy (\"color blind\"); lower values are anomalous trichromacy (\"color weak\").",
+          "Use the compare slider to overlay the original, or \"All types\" to view every type at once.",
+          "Paste your chart HEX colors into the palette check to see confusable pairs and their color difference (ΔE) per type.",
+          "Settings and palette are stored in the URL, so copy the link to share with your team. Save the simulated image as PNG."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Red-green color blindness affects ~8% of males worldwide - always test for this.",
-          "Don't rely on color alone to convey information. Use icons, patterns, and text labels.",
-          "Mild deficiencies (anomaly types) can also be simulated for comprehensive coverage."
+          "Don't encode status (success/failure) with red vs. green alone — add icons, text or patterns.",
+          "Use a CVD-friendly palette such as Okabe-Ito for charts, or keep a large lightness difference between colors.",
+          "Most people with CVD are color weak, so also check at 50–70% severity, not only 100%.",
+          "Check text/background contrast against WCAG (4.5:1 for body text) with the Contrast Checker."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What's the difference between color blindness and color weakness?",
-            "a": "Color blindness (-opia) means complete loss of certain cone cell function, while color weakness (-omaly) means partial reduction. Both are simulated here."
-          },
-          {
-            "q": "Can this be used for accessibility auditing?",
-            "a": "Yes. WCAG 2.1 recommends not relying solely on color for information. Use this tool to verify your designs are accessible."
+            "q": "What is the difference between color blindness and color weakness?",
+            "a": "Dichromacy (\"color blindness\") means one of the three cone types does not work; anomalous trichromacy (\"color weakness\") means a cone type's sensitivity is shifted. Color weakness is far more common. Here, 100% severity corresponds to dichromacy and anything lower to anomalous trichromacy."
           },
           {
             "q": "How accurate is the simulation?",
-            "a": "It uses the Brettel/Viénot algorithm, a well-established method in academic research with high correlation to actual color vision deficiency experience."
+            "a": "The Machado 2009 model is widely used in research and accessibility tools, but actual perception varies between individuals and depends on your monitor's color settings. Treat it as an approximation for design review."
+          },
+          {
+            "q": "Can this tell me if I am color blind?",
+            "a": "No — it only shows how things look. Try ToolHub's Color Blind Test for a quick screening, and see an ophthalmologist for a proper diagnosis."
+          },
+          {
+            "q": "Are uploaded images stored on a server?",
+            "a": "No. Images are processed only in your browser and never sent anywhere."
           }
         ]
       }

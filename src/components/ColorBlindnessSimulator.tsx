@@ -1,760 +1,537 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { Upload, Camera, Download, Info, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Upload, Camera, Download, Plus, X, ChevronRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import ShareResult from '@/components/ShareResult'
+import {
+  CVD_LIST, simulatePixels, checkPalette, parseHexList, normalizeHex, DE_WARN, MAX_COLORS,
+  PALETTE_RISKY, PALETTE_OKABE_ITO, type Cvd,
+} from '@/utils/colorBlindnessSim'
 
-// ── CVD Transformation Matrices ──────────────────────────────────────────────
-// Based on Brettel/Viénot algorithm (simplified linear approximation)
-type Matrix3x3 = [
-  [number, number, number],
-  [number, number, number],
-  [number, number, number]
-]
+type SampleKey = 'chart' | 'trafficLight' | 'colorWheel'
+const SAMPLES: SampleKey[] = ['chart', 'trafficLight', 'colorWheel']
+type View = 'split' | 'grid'
+const DEF = { type: 'deutan' as Cvd, sev: 100, view: 'split' as View, sample: 'chart' as SampleKey }
 
-const CVD_MATRICES: Record<string, Matrix3x3> = {
-  protanopia: [
-    [0.567, 0.433, 0.0],
-    [0.558, 0.442, 0.0],
-    [0.0,   0.242, 0.758],
-  ],
-  deuteranopia: [
-    [0.625, 0.375, 0.0],
-    [0.7,   0.3,   0.0],
-    [0.0,   0.3,   0.7],
-  ],
-  tritanopia: [
-    [0.95,  0.05,  0.0],
-    [0.0,   0.433, 0.567],
-    [0.0,   0.475, 0.525],
-  ],
-  achromatopsia: [
-    [0.299, 0.587, 0.114],
-    [0.299, 0.587, 0.114],
-    [0.299, 0.587, 0.114],
-  ],
+// ── 샘플 이미지 (캔버스로 생성) ──────────────────────────────────────────────
+function makeCanvas(w: number, h: number) {
+  const c = document.createElement('canvas')
+  c.width = w
+  c.height = h
+  return [c, c.getContext('2d')!] as const
 }
 
-// Anomaly types blend 50% original + 50% simulated (weak version)
-const ANOMALY_BASE: Record<string, string> = {
-  protanomaly: 'protanopia',
-  deuteranomaly: 'deuteranopia',
-  tritanomaly: 'tritanopia',
-}
-
-const CVD_TYPES = [
-  'normal',
-  'protanopia',
-  'deuteranopia',
-  'tritanopia',
-  'protanomaly',
-  'deuteranomaly',
-  'tritanomaly',
-  'achromatopsia',
-] as const
-
-type CvdType = typeof CVD_TYPES[number]
-
-// ── Apply CVD filter to ImageData ─────────────────────────────────────────────
-function applyFilter(imageData: ImageData, type: CvdType): ImageData {
-  if (type === 'normal') return imageData
-
-  const output = new ImageData(
-    new Uint8ClampedArray(imageData.data),
-    imageData.width,
-    imageData.height
-  )
-
-  const isAnomaly = type in ANOMALY_BASE
-  const matrixKey = isAnomaly ? ANOMALY_BASE[type] : type
-  const matrix = CVD_MATRICES[matrixKey]
-
-  const data = imageData.data
-  const out = output.data
-
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i] / 255
-    const g = data[i + 1] / 255
-    const b = data[i + 2] / 255
-
-    const nr = matrix[0][0] * r + matrix[0][1] * g + matrix[0][2] * b
-    const ng = matrix[1][0] * r + matrix[1][1] * g + matrix[1][2] * b
-    const nb = matrix[2][0] * r + matrix[2][1] * g + matrix[2][2] * b
-
-    if (isAnomaly) {
-      // Blend 50% original + 50% simulated for "weak" types
-      out[i]     = Math.round((r * 0.5 + nr * 0.5) * 255)
-      out[i + 1] = Math.round((g * 0.5 + ng * 0.5) * 255)
-      out[i + 2] = Math.round((b * 0.5 + nb * 0.5) * 255)
-    } else {
-      out[i]     = Math.round(nr * 255)
-      out[i + 1] = Math.round(ng * 255)
-      out[i + 2] = Math.round(nb * 255)
-    }
-    out[i + 3] = data[i + 3] // alpha unchanged
+function sampleChart(): ImageData {
+  const W = 720, H = 480
+  const [, ctx] = makeCanvas(W, H)
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, W, H)
+  const colors = PALETTE_RISKY.slice(0, 4)
+  const data = [[62, 48, 30, 22], [70, 55, 38, 30], [58, 66, 45, 35], [80, 72, 50, 41]]
+  const x0 = 70, y0 = 420, ch = 300, gw = 150
+  ctx.strokeStyle = '#e5e8eb'
+  ctx.lineWidth = 1
+  for (let i = 0; i <= 4; i++) {
+    const y = y0 - (ch * i) / 4
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(W - 30, y); ctx.stroke()
   }
-
-  return output
-}
-
-// ── Generate Sample Images with Canvas ────────────────────────────────────────
-type SampleKey = 'colorWheel' | 'ishihara' | 'trafficLight'
-
-function generateColorWheel(size: number): ImageData {
-  const canvas = document.createElement('canvas')
-  canvas.width = size
-  canvas.height = size
-  const ctx = canvas.getContext('2d')!
-  const cx = size / 2
-  const cy = size / 2
-  const radius = size / 2 - 4
-
-  // Hue ring + luminance gradient
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const dx = x - cx
-      const dy = y - cy
-      const dist = Math.sqrt(dx * dx + dy * dy)
-      if (dist <= radius) {
-        const angle = Math.atan2(dy, dx)
-        const hue = ((angle * 180) / Math.PI + 360) % 360
-        const saturation = dist / radius
-        ctx.fillStyle = `hsl(${hue}, ${saturation * 100}%, 50%)`
-        ctx.fillRect(x, y, 1, 1)
-      }
-    }
-  }
-
-  // Inner white circle
-  ctx.beginPath()
-  ctx.arc(cx, cy, radius * 0.18, 0, Math.PI * 2)
-  ctx.fillStyle = 'white'
-  ctx.fill()
-
-  return ctx.getImageData(0, 0, size, size)
-}
-
-function generateIshihara(size: number): ImageData {
-  const canvas = document.createElement('canvas')
-  canvas.width = size
-  canvas.height = size
-  const ctx = canvas.getContext('2d')!
-
-  // Background: random green/yellow dots
-  const rng = (seed: number) => {
-    let s = seed
-    return () => {
-      s = (s * 9301 + 49297) % 233280
-      return s / 233280
-    }
-  }
-  const rand = rng(42)
-
-  // Fill background
-  ctx.fillStyle = '#f5f5f0'
-  ctx.fillRect(0, 0, size, size)
-
-  // Clip to circle
-  ctx.save()
-  ctx.beginPath()
-  ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2)
-  ctx.clip()
-
-  // Draw many small dots (Ishihara style)
-  const numDots = 800
-  const cx = size / 2
-  const cy = size / 2
-  const R = size / 2 - 4
-
-  // Define the number "74" region roughly (for demonstration)
-  // We use a simple bitmask approach: define regions where red/orange dots appear
-  const isInDigitRegion = (x: number, y: number) => {
-    const nx = (x - cx) / R  // -1 to 1
-    const ny = (y - cy) / R  // -1 to 1
-    // Approximate "7" on the left, "4" on the right using simple shapes
-    const inSeven = (
-      (ny < -0.1 && ny > -0.6 && nx > -0.5 && nx < 0.1 && Math.abs(ny + 0.1) < 0.08) || // top bar
-      (nx > 0.0 && nx < 0.1 && ny > -0.6 && ny < 0.4) // diagonal
-    )
-    const inFour = (
-      (nx > 0.1 && nx < 0.5 && ny > -0.5 && ny < 0.0 && Math.abs(nx - 0.1) < 0.06) || // left arm
-      (ny > -0.1 && ny < 0.0 && nx > 0.1 && nx < 0.5) || // horizontal bar
-      (nx > 0.35 && nx < 0.45 && ny > -0.5 && ny < 0.4) // vertical
-    )
-    return inSeven || inFour
-  }
-
-  for (let i = 0; i < numDots; i++) {
-    const angle = rand() * Math.PI * 2
-    const r = Math.sqrt(rand()) * R
-    const x = cx + r * Math.cos(angle)
-    const y = cy + r * Math.sin(angle)
-    const dotR = 4 + rand() * 10
-
-    if (isInDigitRegion(x, y)) {
-      // Red/orange spectrum dots for the digit
-      const hue = 10 + rand() * 30
-      ctx.fillStyle = `hsl(${hue}, 80%, 50%)`
-    } else {
-      // Green spectrum dots for background
-      const hue = 80 + rand() * 60
-      const light = 35 + rand() * 30
-      ctx.fillStyle = `hsl(${hue}, 60%, ${light}%)`
-    }
-    ctx.beginPath()
-    ctx.arc(x, y, dotR, 0, Math.PI * 2)
-    ctx.fill()
-  }
-
-  ctx.restore()
-
-  // Border circle
-  ctx.beginPath()
-  ctx.arc(cx, cy, R, 0, Math.PI * 2)
-  ctx.strokeStyle = '#999'
-  ctx.lineWidth = 2
-  ctx.stroke()
-
-  return ctx.getImageData(0, 0, size, size)
-}
-
-function generateTrafficLight(size: number): ImageData {
-  const canvas = document.createElement('canvas')
-  canvas.width = size
-  canvas.height = size
-  const ctx = canvas.getContext('2d')!
-
-  // Sky background gradient
-  const sky = ctx.createLinearGradient(0, 0, 0, size * 0.65)
-  sky.addColorStop(0, '#87ceeb')
-  sky.addColorStop(1, '#d4f1f9')
-  ctx.fillStyle = sky
-  ctx.fillRect(0, 0, size, size * 0.65)
-
-  // Ground
-  const ground = ctx.createLinearGradient(0, size * 0.65, 0, size)
-  ground.addColorStop(0, '#4a7c59')
-  ground.addColorStop(1, '#2d5a3a')
-  ctx.fillStyle = ground
-  ctx.fillRect(0, size * 0.65, size, size * 0.35)
-
-  // Road
-  ctx.fillStyle = '#555'
-  ctx.fillRect(size * 0.3, size * 0.55, size * 0.4, size * 0.45)
-  ctx.fillStyle = '#fff'
-  for (let i = 0; i < 4; i++) {
-    ctx.fillRect(size * 0.47, size * 0.62 + i * size * 0.1, size * 0.06, size * 0.06)
-  }
-
-  // Traffic light pole
-  ctx.fillStyle = '#333'
-  ctx.fillRect(size * 0.44, size * 0.1, size * 0.04, size * 0.55)
-
-  // Traffic light housing
-  const housingX = size * 0.32
-  const housingY = size * 0.05
-  const housingW = size * 0.28
-  const housingH = size * 0.42
-  ctx.fillStyle = '#222'
-  ctx.beginPath()
-  ctx.roundRect(housingX, housingY, housingW, housingH, 8)
-  ctx.fill()
-
-  // Lights: red, yellow, green
-  const lights = [
-    { color: '#ff2200', glowColor: 'rgba(255,34,0,0.4)', y: 0.11 },
-    { color: '#ffcc00', glowColor: 'rgba(255,204,0,0.4)', y: 0.21 },
-    { color: '#00cc44', glowColor: 'rgba(0,204,68,0.4)', y: 0.31 },
-  ]
-
-  lights.forEach(({ color, glowColor, y }) => {
-    const lx = size * 0.46
-    const ly = size * y
-    const lr = size * 0.07
-
-    // Glow
-    const grd = ctx.createRadialGradient(lx, ly, 0, lx, ly, lr * 2.5)
-    grd.addColorStop(0, glowColor)
-    grd.addColorStop(1, 'transparent')
-    ctx.fillStyle = grd
-    ctx.beginPath()
-    ctx.arc(lx, ly, lr * 2.5, 0, Math.PI * 2)
-    ctx.fill()
-
-    // Main light
-    ctx.fillStyle = color
-    ctx.beginPath()
-    ctx.arc(lx, ly, lr, 0, Math.PI * 2)
-    ctx.fill()
+  data.forEach((g, gi) => g.forEach((v, si) => {
+    ctx.fillStyle = colors[si]
+    ctx.fillRect(x0 + 20 + gi * gw + si * 30, y0 - (v / 80) * ch, 26, (v / 80) * ch)
+  }))
+  ctx.font = 'bold 18px sans-serif'
+  colors.forEach((c, i) => {
+    ctx.fillStyle = c
+    ctx.beginPath(); ctx.arc(x0 + 10 + i * 110, 50, 9, 0, Math.PI * 2); ctx.fill()
+    ctx.fillStyle = '#4e5968'
+    ctx.fillText(String.fromCharCode(65 + i), x0 + 26 + i * 110, 57)
   })
-
-  // Some foliage for variety
-  const foliage = [
-    { x: 0.07, y: 0.52, r: 0.1, color: '#2d6b3f' },
-    { x: 0.12, y: 0.45, r: 0.09, color: '#3a7a4a' },
-    { x: 0.82, y: 0.50, r: 0.11, color: '#2d6b3f' },
-    { x: 0.87, y: 0.43, r: 0.09, color: '#3a7a4a' },
-  ]
-  foliage.forEach(({ x, y, r, color }) => {
-    ctx.fillStyle = color
-    ctx.beginPath()
-    ctx.arc(x * size, y * size, r * size, 0, Math.PI * 2)
-    ctx.fill()
+  // 상태 점 (빨강/초록으로만 구분하는 흔한 실수)
+  ;['#e53935', '#43a047'].forEach((c, i) => {
+    ctx.fillStyle = c
+    ctx.beginPath(); ctx.roundRect(W - 190 + i * 80, 34, 64, 30, 15); ctx.fill()
   })
+  return ctx.getImageData(0, 0, W, H)
+}
 
-  return ctx.getImageData(0, 0, size, size)
+function sampleTrafficLight(): ImageData {
+  const S = 600
+  const [, ctx] = makeCanvas(S, S)
+  ctx.fillStyle = '#bfe3f2'; ctx.fillRect(0, 0, S, S * 0.65)
+  ctx.fillStyle = '#4a7c59'; ctx.fillRect(0, S * 0.65, S, S * 0.35)
+  ctx.fillStyle = '#555555'; ctx.fillRect(S * 0.3, S * 0.55, S * 0.4, S * 0.45)
+  ctx.fillStyle = '#ffffff'
+  for (let i = 0; i < 4; i++) ctx.fillRect(S * 0.47, S * 0.62 + i * S * 0.1, S * 0.06, S * 0.06)
+  ctx.fillStyle = '#333333'; ctx.fillRect(S * 0.44, S * 0.1, S * 0.04, S * 0.55)
+  ctx.fillStyle = '#222222'
+  ctx.beginPath(); ctx.roundRect(S * 0.32, S * 0.05, S * 0.28, S * 0.42, 8); ctx.fill()
+  ;[['#ff2200', 0.11], ['#ffcc00', 0.21], ['#00cc44', 0.31]].forEach(([c, y]) => {
+    ctx.fillStyle = c as string
+    ctx.beginPath(); ctx.arc(S * 0.46, S * (y as number), S * 0.07, 0, Math.PI * 2); ctx.fill()
+  })
+  ;[[0.07, 0.52, 0.1, '#2d6b3f'], [0.12, 0.45, 0.09, '#c0392b'], [0.82, 0.5, 0.11, '#2d6b3f'], [0.87, 0.43, 0.09, '#e67e22']].forEach(([x, y, r, c]) => {
+    ctx.fillStyle = c as string
+    ctx.beginPath(); ctx.arc(S * (x as number), S * (y as number), S * (r as number), 0, Math.PI * 2); ctx.fill()
+  })
+  return ctx.getImageData(0, 0, S, S)
+}
+
+function sampleColorWheel(): ImageData {
+  const S = 600, cx = S / 2, R = S / 2 - 4
+  const [, ctx] = makeCanvas(S, S)
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, S, S)
+  const hue = ctx.createConicGradient(0, cx, cx)
+  for (let d = 0; d <= 360; d += 30) hue.addColorStop(d / 360, `hsl(${d}, 100%, 50%)`)
+  ctx.fillStyle = hue
+  ctx.beginPath(); ctx.arc(cx, cx, R, 0, Math.PI * 2); ctx.fill()
+  const sat = ctx.createRadialGradient(cx, cx, 0, cx, cx, R)
+  sat.addColorStop(0, '#ffffff'); sat.addColorStop(1, 'rgba(255,255,255,0)')
+  ctx.fillStyle = sat
+  ctx.beginPath(); ctx.arc(cx, cx, R, 0, Math.PI * 2); ctx.fill()
+  return ctx.getImageData(0, 0, S, S)
+}
+
+const SAMPLE_FN: Record<SampleKey, () => ImageData> = { chart: sampleChart, trafficLight: sampleTrafficLight, colorWheel: sampleColorWheel }
+
+// 한 캔버스 = 한 시뮬레이션. props가 바뀌면 스스로 다시 그린다.
+function SimCanvas({ img, type, sev, className, style }: { img: ImageData; type: Cvd; sev: number; className?: string; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const c = ref.current
+    if (!c) return
+    c.width = img.width
+    c.height = img.height
+    const out = type === 'normal' ? img : new ImageData(simulatePixels(img.data, type, sev), img.width, img.height)
+    c.getContext('2d')!.putImageData(out, 0, 0)
+  }, [img, type, sev])
+  return <canvas ref={ref} className={className} style={style} />
+}
+
+const clampNum = (v: string | null, lo: number, hi: number, def: number) => {
+  const n = Number(v)
+  return v !== null && Number.isFinite(n) ? Math.min(hi, Math.max(lo, Math.round(n))) : def
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
 export default function ColorBlindnessSimulator() {
   const t = useTranslations('colorBlindnessSimulator')
+  const sp = useSearchParams()
 
-  const [selectedType, setSelectedType] = useState<CvdType>('deuteranomaly')
-  const [originalImageData, setOriginalImageData] = useState<ImageData | null>(null)
-  const [naturalWidth, setNaturalWidth] = useState(0)
-  const [naturalHeight, setNaturalHeight] = useState(0)
-  const [processing, setProcessing] = useState(false)
-  const [sliderX, setSliderX] = useState(50) // percent
-  const [isDraggingSlider, setIsDraggingSlider] = useState(false)
-  const [showInfo, setShowInfo] = useState(false)
-  const [isDraggingFile, setIsDraggingFile] = useState(false)
+  const [type, setType] = useState<Cvd>(() => {
+    const v = sp.get('t') as Cvd | null
+    return v && CVD_LIST.includes(v) ? v : DEF.type
+  })
+  const [sev, setSev] = useState(() => clampNum(sp.get('s'), 0, 100, DEF.sev))
+  const [view, setView] = useState<View>(() => (sp.get('v') === 'grid' ? 'grid' : DEF.view))
+  const [sample, setSample] = useState<SampleKey | null>(() => {
+    const v = sp.get('img') as SampleKey | null
+    return v && SAMPLES.includes(v) ? v : DEF.sample
+  })
+  const [palette, setPalette] = useState<string[]>(() => {
+    const p = parseHexList(sp.get('pal') ?? '')
+    return p.length >= 2 ? p : PALETTE_RISKY
+  })
+  const [palText, setPalText] = useState('')
+  const [img, setImg] = useState<ImageData | null>(null)
+  const [fileName, setFileName] = useState('sample')
+  const [split, setSplit] = useState(50)
+  const [dragFile, setDragFile] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
-  const originalCanvasRef = useRef<HTMLCanvasElement>(null)
-  const filteredCanvasRef = useRef<HTMLCanvasElement>(null)
-  const sliderContainerRef = useRef<HTMLDivElement>(null)
+  const splitRef = useRef<HTMLDivElement>(null)
 
-  // Draw both canvases whenever image or type changes
+  // 샘플은 마운트 후 생성 (canvas 필요)
   useEffect(() => {
-    if (!originalImageData) return
-    const origCanvas = originalCanvasRef.current
-    const filtCanvas = filteredCanvasRef.current
-    if (!origCanvas || !filtCanvas) return
+    if (sample) setImg(SAMPLE_FN[sample]())
+  }, [sample])
 
-    // Original
-    origCanvas.width = originalImageData.width
-    origCanvas.height = originalImageData.height
-    const origCtx = origCanvas.getContext('2d')!
-    origCtx.putImageData(originalImageData, 0, 0)
+  // URL 동기화 (기본값과 다른 것만)
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const p = new URLSearchParams()
+      if (type !== DEF.type) p.set('t', type)
+      if (sev !== DEF.sev) p.set('s', String(sev))
+      if (view !== DEF.view) p.set('v', view)
+      if (sample && sample !== DEF.sample) p.set('img', sample)
+      if (palette.join() !== PALETTE_RISKY.join()) p.set('pal', palette.map((h) => h.slice(1)).join('-'))
+      const qs = p.toString()
+      window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+    }, 300)
+    return () => clearTimeout(id)
+  }, [type, sev, view, sample, palette])
 
-    // Filtered
-    filtCanvas.width = originalImageData.width
-    filtCanvas.height = originalImageData.height
-    const filtCtx = filtCanvas.getContext('2d')!
-
-    setProcessing(true)
-    // Use rAF so UI stays responsive for large images
-    requestAnimationFrame(() => {
-      const filtered = applyFilter(originalImageData, selectedType)
-      filtCtx.putImageData(filtered, 0, 0)
-      setProcessing(false)
-    })
-  }, [originalImageData, selectedType])
-
-  // Load image from File or Blob
-  const loadImage = useCallback((file: File) => {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const img = new Image()
-      img.onload = () => {
-        // Cap resolution for performance
-        const MAX = 1200
-        let w = img.naturalWidth
-        let h = img.naturalHeight
-        if (w > MAX || h > MAX) {
-          const scale = MAX / Math.max(w, h)
-          w = Math.round(w * scale)
-          h = Math.round(h * scale)
-        }
-        const tmpCanvas = document.createElement('canvas')
-        tmpCanvas.width = w
-        tmpCanvas.height = h
-        const ctx = tmpCanvas.getContext('2d')!
-        ctx.drawImage(img, 0, 0, w, h)
-        setNaturalWidth(w)
-        setNaturalHeight(h)
-        setOriginalImageData(ctx.getImageData(0, 0, w, h))
-        setSliderX(50)
-      }
-      img.src = e.target!.result as string
+  const loadFile = useCallback((file: File) => {
+    if (!file.type.startsWith('image/')) return
+    const url = URL.createObjectURL(file)
+    const el = new Image()
+    el.onload = () => {
+      const MAX = 1200 // 성능상 긴 변 1,200px로 축소
+      const k = Math.min(1, MAX / Math.max(el.naturalWidth, el.naturalHeight))
+      const w = Math.max(1, Math.round(el.naturalWidth * k)), h = Math.max(1, Math.round(el.naturalHeight * k))
+      const [, ctx] = makeCanvas(w, h)
+      ctx.drawImage(el, 0, 0, w, h)
+      URL.revokeObjectURL(url)
+      setSample(null)
+      setFileName(file.name.replace(/\.[^.]+$/, '') || 'image')
+      setImg(ctx.getImageData(0, 0, w, h))
+      setSplit(50)
     }
-    reader.readAsDataURL(file)
+    el.onerror = () => URL.revokeObjectURL(url)
+    el.src = url
   }, [])
+
+  // Ctrl+V 스크린샷 붙여넣기
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const file = Array.from(e.clipboardData?.files ?? []).find((f) => f.type.startsWith('image/'))
+      if (file) { e.preventDefault(); loadFile(file) }
+    }
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [loadFile])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) loadImage(file)
+    if (file) loadFile(file)
     e.target.value = ''
   }
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDraggingFile(false)
-    const file = e.dataTransfer.files?.[0]
-    if (file && file.type.startsWith('image/')) loadImage(file)
+  const pickSample = (k: SampleKey) => {
+    setSample(k)
+    setFileName('sample')
+    setSplit(50)
   }
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDraggingFile(true)
+  // 비교 슬라이더 (pointer events — 마우스·터치 공통, 세로 스크롤은 유지)
+  const moveSplit = (clientX: number) => {
+    const r = splitRef.current?.getBoundingClientRect()
+    if (r) setSplit(Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100)))
   }
 
-  const handleDragLeave = () => setIsDraggingFile(false)
-
-  // Load a sample image
-  const loadSample = useCallback((key: SampleKey) => {
-    const size = 600
-    let imageData: ImageData
-    if (key === 'colorWheel') {
-      imageData = generateColorWheel(size)
-    } else if (key === 'ishihara') {
-      imageData = generateIshihara(size)
-    } else {
-      imageData = generateTrafficLight(size)
-    }
-    setNaturalWidth(size)
-    setNaturalHeight(size)
-    setOriginalImageData(imageData)
-    setSliderX(50)
-  }, [])
-
-  // Slider drag logic
-  const handleSliderMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setIsDraggingSlider(true)
-  }
-
-  useEffect(() => {
-    if (!isDraggingSlider) return
-    const move = (e: MouseEvent | TouchEvent) => {
-      const container = sliderContainerRef.current
-      if (!container) return
-      const rect = container.getBoundingClientRect()
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-      const pct = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100))
-      setSliderX(pct)
-    }
-    const up = () => setIsDraggingSlider(false)
-    window.addEventListener('mousemove', move)
-    window.addEventListener('mouseup', up)
-    window.addEventListener('touchmove', move)
-    window.addEventListener('touchend', up)
-    return () => {
-      window.removeEventListener('mousemove', move)
-      window.removeEventListener('mouseup', up)
-      window.removeEventListener('touchmove', move)
-      window.removeEventListener('touchend', up)
-    }
-  }, [isDraggingSlider])
-
-  // Download filtered image
   const handleDownload = () => {
-    const canvas = filteredCanvasRef.current
-    if (!canvas) return
-    const link = document.createElement('a')
-    link.download = `color-blind-${selectedType}.png`
-    link.href = canvas.toDataURL('image/png')
-    link.click()
+    if (!img) return
+    const [c, ctx] = makeCanvas(img.width, img.height)
+    ctx.putImageData(new ImageData(simulatePixels(img.data, type, sev), img.width, img.height), 0, 0)
+    c.toBlob((blob) => {
+      if (!blob) return
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = `${fileName}-${type}-${sev}.png`
+      a.click()
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+    }, 'image/png')
   }
 
-  const hasImage = !!originalImageData
+  const levelKey = type === 'normal' || sev === 0 ? 'none' : type === 'achroma' ? 'achroma' : sev >= 100 ? 'full' : sev >= 60 ? 'strong' : 'mild'
+  const typeName = (c: Cvd) => t(`cvd.${c}.name`)
+
+  // 팔레트 점검
+  const rows = useMemo(() => checkPalette(palette, sev), [palette, sev])
+  const cvdRows = rows.filter((r) => r.type !== 'normal')
+  const worst = cvdRows.filter((r) => r.type !== 'achroma').reduce((a, b) => (b.issues.length > a.issues.length ? b : a), cvdRows[0])
+  const setColor = (i: number, hex: string) => {
+    const h = normalizeHex(hex)
+    if (h) setPalette((p) => p.map((c, j) => (j === i ? h : c)))
+  }
+  const applyPalText = () => {
+    const p = parseHexList(palText)
+    if (p.length) { setPalette(p); setPalText('') }
+  }
+
+  const segBtn = (on: boolean) =>
+    `min-h-10 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Upload Zone + Sample Buttons */}
-      {!hasImage && (
-        <div
-          className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors ${
-            isDraggingFile
-              ? 'border-blue-500 bg-subtle'
-              : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500 bg-surface'
-          }`}
-          onClick={() => fileInputRef.current?.click()}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-        >
-          <Upload className="w-10 h-10 text-faint mx-auto mb-3" />
-          <p className="text-body font-medium">{t('uploadPrompt')}</p>
-          <p className="text-xs text-faint mt-1">{t('uploadSubPrompt')}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 설정 */}
+        <div className="lg:col-span-1 min-w-0">
+          <div className="ui-card p-5 space-y-5">
+            <div>
+              <p className="text-sm font-semibold text-body mb-2">{t('typeLabel')}</p>
+              <div className="space-y-2">
+                {CVD_LIST.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setType(c)}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl border transition-colors ${
+                      type === c ? 'bg-primary-soft border-primary' : 'border-line hover:bg-subtle'
+                    }`}
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className={`text-sm font-semibold ${type === c ? 'text-primary' : 'text-fg'}`}>{typeName(c)}</span>
+                      {c !== 'normal' && <span className="text-xs text-muted whitespace-nowrap">{t(`cvd.${c}.prevalence`)}</span>}
+                    </div>
+                    <p className="text-xs text-muted mt-0.5 leading-snug">{t(`cvd.${c}.desc`)}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          <div className="flex flex-wrap justify-center gap-2 mt-6">
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); cameraInputRef.current?.click() }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm transition-colors"
-            >
-              <Camera className="w-4 h-4" />
-              {t('cameraButton')}
-            </button>
+            <div className={type === 'normal' ? 'opacity-50' : ''}>
+              <label className="flex items-center justify-between text-sm font-semibold text-body mb-2">
+                <span>{t('severity')}</span>
+                <span className="tabular-nums text-fg">{sev}%</span>
+              </label>
+              <input
+                type="range" min={0} max={100} step={5} value={sev}
+                disabled={type === 'normal'}
+                onChange={(e) => setSev(Number(e.target.value))}
+                className="w-full h-10 accent-[var(--primary)]"
+                aria-label={t('severity')}
+              />
+              <div className="flex gap-2 mt-1">
+                {[30, 60, 100].map((v) => (
+                  <button key={v} disabled={type === 'normal'} onClick={() => setSev(v)} className={`flex-1 ${segBtn(sev === v)}`}>
+                    {t(`severityPreset.${v}`)}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-2 leading-relaxed">{t('severityHint')}</p>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* Sample Images */}
-      <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-sm text-muted font-medium">{t('sampleImages')}:</span>
-        {(['colorWheel', 'ishihara', 'trafficLight'] as SampleKey[]).map((key) => (
-          <button
-            key={key}
-            onClick={() => loadSample(key)}
-            className="px-3 py-1.5 bg-surface border border-line-strong hover:border-blue-400 dark:hover:border-blue-500 rounded-lg text-sm text-body transition-colors"
-          >
-            {t(`sample${key.charAt(0).toUpperCase() + key.slice(1)}` as `sampleColorWheel` | `sampleIshihara` | `sampleTrafficLight`)}
-          </button>
-        ))}
-        {hasImage && (
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-line-strong hover:border-blue-400 rounded-lg text-sm text-body transition-colors"
-          >
-            <Upload className="w-3.5 h-3.5" />
-            {t('uploadPrompt').split(' ')[0]}
-          </button>
-        )}
-      </div>
-
-      {/* Type Selector */}
-      <div className={`${glassCard} ${glassInset} p-4`}>
-        <p className="text-sm font-semibold text-body mb-3">{t('typeSelector')}</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {CVD_TYPES.map((type) => {
-            const typeName = t(`types.${type}.name`)
-            const typeDesc = t(`types.${type}.description`)
-            const prevalence = type !== 'normal' ? t(`types.${type}.prevalence` as `types.protanopia.prevalence`) : null
-            return (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`text-left p-2.5 rounded-lg border-2 transition-all ${
-                  selectedType === type
-                    ? 'border-blue-500 bg-subtle'
-                    : 'border-line hover:border-blue-300 dark:hover:border-blue-700 bg-surface'
-                }`}
-              >
-                <div className="text-xs font-semibold text-fg leading-tight">{typeName}</div>
-                <div className="text-xs text-muted mt-0.5 leading-tight">{typeDesc}</div>
-                {prevalence && (
-                  <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">{prevalence}</div>
-                )}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Image Comparison View */}
-      {hasImage && (
-        <div className="space-y-4">
-          {processing && (
-            <div className="text-center text-sm text-muted animate-pulse">
-              {t('processing')}
-            </div>
-          )}
-
-          {/* Side-by-side on mobile, slider on desktop */}
-          <div className="space-y-4 lg:hidden">
-            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-sub border-b border-line">
-                {t('original')}
+        {/* 결과 */}
+        <div className="lg:col-span-2 min-w-0 space-y-4">
+          <div className="ui-card p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex gap-2">
+                <button onClick={() => setView('split')} className={segBtn(view === 'split')}>{t('viewSplit')}</button>
+                <button onClick={() => setView('grid')} className={segBtn(view === 'grid')}>{t('viewGrid')}</button>
               </div>
-              <canvas
-                ref={originalCanvasRef}
-                className="w-full h-auto block"
-                style={{ maxHeight: '320px', objectFit: 'contain' }}
-              />
+              <p className="text-sm text-fg font-semibold">
+                {typeName(type)} <span className="text-muted font-normal">· {t(`severityLevel.${levelKey}`)}</span>
+              </p>
             </div>
-            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-sub border-b border-line">
-                {t('simulated')} — {t(`types.${selectedType}.name`)}
-              </div>
-              <canvas
-                ref={filteredCanvasRef}
-                className="w-full h-auto block"
-                style={{ maxHeight: '320px', objectFit: 'contain' }}
-              />
-            </div>
-          </div>
 
-          {/* Slider comparison — desktop */}
-          <div className="hidden lg:block">
             <div
-              ref={sliderContainerRef}
-              className="relative rounded-xl overflow-hidden shadow-md select-none cursor-ew-resize bg-gray-100 dark:bg-gray-900"
-              style={{
-                aspectRatio: naturalWidth > 0 ? `${naturalWidth}/${naturalHeight}` : '4/3',
-              }}
-              onMouseDown={handleSliderMouseDown}
-              onTouchStart={() => setIsDraggingSlider(true)}
+              onDragOver={(e) => { e.preventDefault(); setDragFile(true) }}
+              onDragLeave={() => setDragFile(false)}
+              onDrop={(e) => { e.preventDefault(); setDragFile(false); const f = e.dataTransfer.files?.[0]; if (f) loadFile(f) }}
+              className={`rounded-xl transition-colors ${dragFile ? 'outline-2 outline-dashed outline-[var(--primary)]' : ''}`}
             >
-              {/* Filtered (full) */}
-              <canvas
-                ref={filteredCanvasRef}
-                className="absolute inset-0 w-full h-full"
-                style={{ objectFit: 'contain' }}
-              />
-              {/* Original (clipped to left side) */}
-              <div
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${sliderX}%` }}
-              >
-                <canvas
-                  ref={originalCanvasRef}
-                  className="absolute inset-0 w-full h-full"
-                  style={{
-                    width: `${100 / (sliderX / 100)}%`,
-                    maxWidth: 'none',
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-
-              {/* Divider line + handle */}
-              <div
-                className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10"
-                style={{ left: `${sliderX}%`, transform: 'translateX(-50%)' }}
-              >
-                <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center cursor-ew-resize">
-                  <svg className="w-4 h-4 text-gray-600" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M5 8l3-3v6L5 8zm6 0l-3 3V5l3 3z" />
-                  </svg>
+              {!img ? (
+                <div className="aspect-[3/2] bg-subtle rounded-xl flex items-center justify-center text-sm text-faint">{t('processing')}</div>
+              ) : view === 'split' ? (
+                <div>
+                  <div
+                    ref={splitRef}
+                    role="slider"
+                    tabIndex={0}
+                    aria-label={t('sliderHint')}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(split)}
+                    onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); moveSplit(e.clientX) }}
+                    onPointerMove={(e) => { if (e.currentTarget.hasPointerCapture(e.pointerId)) moveSplit(e.clientX) }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'ArrowLeft') setSplit((s) => Math.max(0, s - 5))
+                      if (e.key === 'ArrowRight') setSplit((s) => Math.min(100, s + 5))
+                    }}
+                    className="relative mx-auto w-fit max-w-full select-none cursor-ew-resize rounded-xl overflow-hidden bg-subtle"
+                    style={{ touchAction: 'pan-y' }}
+                  >
+                    <SimCanvas img={img} type={type} sev={sev} className="block max-w-full max-h-[70vh] w-auto h-auto" />
+                    <SimCanvas
+                      img={img} type="normal" sev={0}
+                      className="absolute inset-0 w-full h-full"
+                      style={{ clipPath: `inset(0 ${100 - split}% 0 0)` }}
+                    />
+                    <div className="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none" style={{ left: `${split}%`, transform: 'translateX(-50%)' }}>
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-line flex items-center justify-center text-sub">
+                        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 8l3-3v6L5 8zm6 0l-3 3V5l3 3z" /></svg>
+                      </div>
+                    </div>
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-xs pointer-events-none">{t('original')}</span>
+                    <span className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-primary text-white text-xs pointer-events-none">{t('simulated')}</span>
+                  </div>
+                  <p className="text-center text-xs text-faint mt-2">{t('sliderHint')}</p>
                 </div>
-              </div>
-
-              {/* Labels */}
-              <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/60 text-white text-xs rounded">
-                {t('original')}
-              </div>
-              <div className="absolute top-2 right-2 px-2 py-0.5 bg-blue-600/80 text-white text-xs rounded">
-                {t('simulated')}
-              </div>
+              ) : (
+                <div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {CVD_LIST.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => { if (c !== 'normal') setType(c); setView('split') }}
+                        className={`text-left rounded-xl overflow-hidden border transition-colors ${type === c ? 'border-primary' : 'border-line hover:border-line-strong'}`}
+                      >
+                        <SimCanvas img={img} type={c} sev={sev} className="block w-full h-auto bg-subtle" />
+                        <span className={`block px-2 py-1.5 text-xs font-medium ${type === c ? 'text-primary' : 'text-body'}`}>
+                          {c === 'normal' ? t('original') : typeName(c)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-faint mt-2">{t('gridHint', { sev })}</p>
+                </div>
+              )}
             </div>
-            <p className="text-center text-xs text-faint mt-1">{t('sliderHint')}</p>
-          </div>
 
-          {/* Download */}
-          <div className="flex justify-end">
-            <button
-              onClick={handleDownload}
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              {t('download')}
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted">{t('sampleImages')}</span>
+              {SAMPLES.map((k) => (
+                <button key={k} onClick={() => pickSample(k)} className={segBtn(sample === k)}>
+                  {t(`sample${k[0].toUpperCase()}${k.slice(1)}`)}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => fileInputRef.current?.click()} className="ui-btn-soft min-h-10 px-4 py-2 text-sm">
+                <Upload className="w-4 h-4" />{t('upload')}
+              </button>
+              <button onClick={() => cameraInputRef.current?.click()} className="ui-btn-soft min-h-10 px-4 py-2 text-sm sm:hidden">
+                <Camera className="w-4 h-4" />{t('cameraButton')}
+              </button>
+              <button onClick={handleDownload} disabled={!img} className="ui-btn min-h-10 px-4 py-2 text-sm ml-auto">
+                <Download className="w-4 h-4" />{t('download')}
+              </button>
+            </div>
+            <p className="text-xs text-muted">{t('uploadHint')}</p>
           </div>
         </div>
-      )}
-
-      {!hasImage && (
-        <div className="text-center text-faint py-4 text-sm">{t('noImage')}</div>
-      )}
-
-      {/* Info Panel */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          onClick={() => setShowInfo(!showInfo)}
-          className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <div className="flex items-center gap-2 font-semibold text-fg">
-            <Info className="w-4 h-4 text-blue-500" />
-            {t('infoPanel.title')}
-          </div>
-          {showInfo ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-        </button>
-
-        {showInfo && (
-          <div className="px-5 pb-5 space-y-4 border-t border-line pt-4">
-            <div>
-              <h3 className="text-sm font-semibold text-fg mb-2">{t('infoPanel.whatIs')}</h3>
-              <p className="text-sm text-sub leading-relaxed">{t('infoPanel.whatIsText')}</p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold text-fg mb-2">{t('infoPanel.designTip')}</h3>
-              <ul className="space-y-1.5">
-                {(t.raw('infoPanel.designTipItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-sub">
-                    <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* CVD type table */}
-            <div>
-              <h3 className="text-sm font-semibold text-fg mb-2">{t('typeSelector')}</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                  <thead>
-                    <tr className="bg-subtle">
-                      <th className="text-left px-3 py-2 text-body font-medium border border-line">유형</th>
-                      <th className="text-left px-3 py-2 text-body font-medium border border-line">설명</th>
-                      <th className="text-left px-3 py-2 text-body font-medium border border-line">{t('prevalence')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {CVD_TYPES.filter(t2 => t2 !== 'normal').map((type) => (
-                      <tr key={type} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-3 py-2 border border-line text-fg font-medium whitespace-nowrap">
-                          {t(`types.${type}.name`)}
-                        </td>
-                        <td className="px-3 py-2 border border-line text-sub">
-                          {t(`types.${type}.description`)}
-                        </td>
-                        <td className="px-3 py-2 border border-line text-blue-600 dark:text-blue-400 whitespace-nowrap">
-                          {t(`types.${type}.prevalence` as `types.protanopia.prevalence`)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* FAQ */}
-            <div>
-              <h3 className="text-sm font-semibold text-fg mb-2">FAQ</h3>
-              <div className="space-y-3">
-                {(['q1', 'q2', 'q3', 'q4'] as const).map((key) => (
-                  <div key={key} className="bg-subtle rounded-lg p-3">
-                    <p className="text-sm font-medium text-fg mb-1">Q. {t(`faq.${key}.q`)}</p>
-                    <p className="text-sm text-sub leading-relaxed">A. {t(`faq.${key}.a`)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Hidden inputs */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={handleFileChange}
-      />
+      {/* 팔레트 구분 점검 */}
+      <div className="ui-card p-5 sm:p-6 space-y-5">
+        <div>
+          <h2 className="text-lg font-semibold text-fg">{t('palette.title')}</h2>
+          <p className="text-sm text-muted mt-1">{t('palette.desc')}</p>
+        </div>
 
-      <GuideSection namespace="colorBlindnessSimulator" />
+        <div className="flex flex-wrap gap-2">
+          {palette.map((hex, i) => (
+            <div key={i} className="flex items-center gap-1.5 pl-1.5 pr-1 py-1 rounded-xl border border-line">
+              <input
+                type="color" value={hex} onChange={(e) => setColor(i, e.target.value)}
+                className="w-10 h-10 rounded-lg cursor-pointer bg-transparent"
+                aria-label={hex}
+              />
+              <span className="text-xs font-mono text-body w-[4.5rem]">{hex}</span>
+              <button
+                onClick={() => setPalette((p) => p.filter((_, j) => j !== i))}
+                disabled={palette.length <= 2}
+                className="w-10 h-10 flex items-center justify-center rounded-lg text-faint hover:bg-soft disabled:opacity-30"
+                aria-label={t('palette.remove')}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          {palette.length < MAX_COLORS && (
+            <button
+              onClick={() => setPalette((p) => [...p, '#888888'])}
+              className="ui-btn-soft min-h-10 px-3 py-2 text-sm"
+            >
+              <Plus className="w-4 h-4" />{t('palette.add')}
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            value={palText}
+            onChange={(e) => setPalText(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') applyPalText() }}
+            placeholder={t('palette.placeholder')}
+            className="ui-field px-4 py-2.5 text-sm flex-1 min-w-0 font-mono"
+          />
+          <button onClick={applyPalText} className="ui-btn min-h-10 px-4 py-2 text-sm">{t('palette.apply')}</button>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={() => setPalette(PALETTE_RISKY)} className={segBtn(palette.join() === PALETTE_RISKY.join())}>{t('palette.presetRisky')}</button>
+          <button onClick={() => setPalette(PALETTE_OKABE_ITO)} className={segBtn(palette.join() === PALETTE_OKABE_ITO.join())}>{t('palette.presetSafe')}</button>
+        </div>
+
+        {/* 요약 */}
+        <div className="bg-subtle rounded-2xl p-4">
+          {worst && worst.issues.length > 0 ? (
+            <p className="text-base font-bold text-fg">{t('palette.summaryBad', { type: typeName(worst.type), n: worst.issues.length })}</p>
+          ) : (
+            <p className="text-base font-bold text-fg">{t('palette.summaryOk')}</p>
+          )}
+          <p className="text-xs text-muted mt-1">{t('palette.severityNote', { sev })}</p>
+        </div>
+
+        {/* 유형별 */}
+        <div className="space-y-3">
+          {rows.map((r) => (
+            <div key={r.type} className="border-t border-line pt-3 first:border-0 first:pt-0">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2">
+                <span className="text-sm font-semibold text-fg">{r.type === 'normal' ? t('original') : typeName(r.type)}</span>
+                <span className={`text-xs font-medium ${r.issues.length ? 'text-amber-700' : 'text-muted'}`}>
+                  {r.issues.length ? t('palette.issues', { n: r.issues.length }) : t('palette.ok')}
+                  <span className="text-faint font-normal"> · {t('palette.minDe', { v: Number.isFinite(r.minDe) ? r.minDe.toFixed(1) : '-' })}</span>
+                </span>
+              </div>
+              <div className="flex rounded-lg overflow-hidden h-10">
+                {r.colors.map((c, i) => <div key={i} className="flex-1" style={{ background: c }} title={c} />)}
+              </div>
+              {r.issues.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {r.issues.slice(0, 6).map(({ i, j, de }) => (
+                    <span key={`${i}-${j}`} className="inline-flex items-center gap-1.5 text-xs text-body bg-soft rounded-lg px-2 py-1">
+                      <span className="w-4 h-4 rounded" style={{ background: palette[i] }} />
+                      <span className="w-4 h-4 rounded" style={{ background: palette[j] }} />
+                      <span className="tabular-nums">ΔE {de.toFixed(1)}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-muted leading-relaxed">{t('palette.threshold', { n: DE_WARN })}</p>
+
+        <ShareResult
+          card={{
+            tool: t('title'),
+            label: t('palette.shareLabel', { n: palette.length }),
+            headline: worst && worst.issues.length ? t('palette.shareBad', { n: worst.issues.length }) : t('palette.shareOk'),
+            sub: t('palette.severityNote', { sev }),
+            rows: cvdRows.map((r) => ({ label: typeName(r.type), value: r.issues.length ? t('palette.issues', { n: r.issues.length }) : t('palette.ok') })),
+          }}
+          fileName="color-blindness-palette"
+        />
+      </div>
+
+      {/* 얼마나 흔할까 */}
+      <div className="ui-card p-5 sm:p-6 space-y-4">
+        <h2 className="text-lg font-semibold text-fg">{t('stats.title')}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {(['male', 'female', 'oneIn'] as const).map((k) => (
+            <div key={k} className="bg-subtle rounded-2xl p-4">
+              <p className="text-xs text-muted">{t(`stats.${k}Label`)}</p>
+              <p className="text-xl sm:text-2xl font-bold text-fg tabular-nums mt-1">{t(`stats.${k}Value`)}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-muted leading-relaxed">{t('stats.note')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <Link href="/color-blind-test/" className="flex items-center justify-between gap-2 min-h-10 px-4 py-3 rounded-xl bg-soft hover:bg-subtle text-sm text-body">
+            {t('links.test')}<ChevronRight className="w-4 h-4 text-faint shrink-0" />
+          </Link>
+          <Link href="/contrast-checker/" className="flex items-center justify-between gap-2 min-h-10 px-4 py-3 rounded-xl bg-soft hover:bg-subtle text-sm text-body">
+            {t('links.contrast')}<ChevronRight className="w-4 h-4 text-faint shrink-0" />
+          </Link>
+        </div>
+      </div>
+
+      <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFileChange} />
+
+      <GuideSection namespace="colorBlindnessSimulator" defaultOpen />
     </div>
   )
 }
