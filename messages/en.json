@@ -34220,6 +34220,33 @@
   },
   "csatGrade": {
     "u": {
+      "cut": {
+        "korHj": "Korean · Speech & Writing",
+        "korLm": "Korean · Language & Media",
+        "mathProb": "Math · Probability & Statistics",
+        "mathCalc": "Math · Calculus",
+        "mathGeo": "Math · Geometry",
+        "english": "English (absolute)",
+        "koreanHistory": "Korean History (absolute)",
+        "ethics": "Ethics & Life",
+        "thought": "Ethics & Ideas",
+        "kgeo": "Korean Geography",
+        "wgeo": "World Geography",
+        "eastAsia": "East Asian History",
+        "world": "World History",
+        "econ": "Economics",
+        "law": "Politics & Law",
+        "society": "Society & Culture",
+        "phy1": "Physics I",
+        "chem1": "Chemistry I",
+        "bio1": "Life Science I",
+        "earth1": "Earth Science I",
+        "phy2": "Physics II",
+        "chem2": "Chemistry II",
+        "bio2": "Life Science II",
+        "earth2": "Earth Science II"
+      },
+      "dataSource": "Source: KICE {year} CSAT scoring results (standard scores), Jongro Academy confirmed cutoffs (raw scores)",
       "dday": "{year} CSAT {d}",
       "examDate": "Thu, Nov 19, 2026",
       "heroLabel": "Average grade (Korean·Math·English·Inquiry)",
@@ -34232,7 +34259,7 @@
       "shareRow": "Grade {g} ({s} pts)",
       "shareText": "My CSAT average grade {avg}, best-3 sum {s3}",
       "inputTitle": "Raw scores by subject",
-      "inputNote": "Results update as you type. Korean, Math and Inquiry use estimated cutoffs from the {year} CSAT.",
+      "inputNote": "Results update as you type. Korean, Math and Inquiry use the confirmed {year} CSAT cutoffs for each elective/subject.",
       "selectAria": "{s} elective",
       "sel": {
         "lm": "Language & Media",
@@ -34258,7 +34285,7 @@
       "minMine": "Your best-{n} sum {sum} / required {target} or less",
       "histNote": "Korean History grade {g} — check each university's Korean History requirement separately. Some universities average both Inquiry subjects.",
       "tableAbs": "Absolutely graded subjects use the same fixed cutoffs every year.",
-      "tableRel": "Raw cutoffs are private-institute estimates from the {year} CSAT; standard scores are the (estimated) values at each cutoff. Cumulative shares follow KICE's 9-grade system.",
+      "tableRel": "Standard-score cutoffs are KICE's official {year} results; raw cutoffs are back-calculated by a private institute (Jongro). This year's cutoffs will depend on difficulty.",
       "stdAtCut": "Std. score at cut (est.)",
       "cumTop": "Cumulative top"
     },
@@ -34302,7 +34329,7 @@
     "shareButton": "Share Result",
     "copyLinkButton": "Copy Link",
     "linkCopied": "Link copied!",
-    "disclaimer": "Relative-grading cutoffs are estimates based on the 2025 CSAT; actual cutoffs change every year. Check the official KICE score report for your real results.",
+    "disclaimer": "Cutoffs are the confirmed 2026 CSAT (held Nov 2025) cutoffs; this year's real cutoffs depend on difficulty. Check the official KICE score report for your results.",
     "guide": {
       "title": "CSAT Grade Guide",
       "grading": {
@@ -34318,7 +34345,7 @@
       "tips": {
         "title": "Notes",
         "items": [
-          "Grades, standard scores and percentiles shown here are estimates based on 2025 CSAT cutoffs. Real grades depend on that year's score distribution.",
+          "Grades, standard scores and percentiles shown here are estimates based on the confirmed 2026 CSAT cutoffs. Real grades depend on that year's score distribution.",
           "KICE does not publish raw-score cutoffs. Score reports list only standard scores, percentiles and grades; widely shared raw cutoffs are private-institute estimates.",
           "Minimum CSAT requirements differ by university (areas counted, best one vs. average of two Inquiry subjects, Korean History rule). Always check the admission guide.",
           "Inquiry cutoffs vary a lot by subject, so only an average-level estimate for Social Studies / Science is provided.",
@@ -34368,7 +34395,7 @@
       },
       "whatIs": {
         "title": "What is the CSAT Grade Calculator?",
-        "description": "Enter raw scores for Korean, Math, English, Korean History and Inquiry at once to see estimated grades per subject, estimated standard scores and percentiles, your average grade and whether you meet minimum CSAT requirements. It also shows the countdown to the 2027 CSAT (Nov 19, 2026). Relatively graded subjects use estimates based on 2025 CSAT cutoffs."
+        "description": "Enter raw scores for Korean, Math, English, Korean History and Inquiry at once to see estimated grades per subject, estimated standard scores and percentiles, your average grade and whether you meet minimum CSAT requirements. It also shows the countdown to the 2027 CSAT (Nov 19, 2026). Relatively graded subjects use estimates based on the confirmed 2026 CSAT cutoffs."
       },
       "howToUse": {
         "title": "How to Use",

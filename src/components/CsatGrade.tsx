@@ -5,7 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import {
-  CUTS, CUT_YEAR, CSAT_YEAR, TOP_PCT, type CutKey, type Grades,
+  CUTS, CUT_YEAR, CSAT_YEAR, TOP_PCT, INQ_SOC, INQ_SCI, type CutKey, type Grades,
   gradeOf, clampScore, topRange, pointsToNext, estimate, daysUntil, bestSum, gradeAverages,
 } from '@/utils/csatGrade'
 
@@ -14,24 +14,28 @@ type Sel = { kor: string; math: string; inq1: string; inq2: string }
 
 const IDS: Id[] = ['kor', 'math', 'eng', 'hist', 'inq1', 'inq2']
 const DEFAULT_SCORES: Record<Id, string> = { kor: '84', math: '80', eng: '85', hist: '42', inq1: '44', inq2: '41' }
-const DEFAULT_SEL: Sel = { kor: 'lm', math: 'prob', inq1: 'soc', inq2: 'soc' }
-const SEL_OPTS: Record<keyof Sel, string[]> = { kor: ['lm', 'hj'], math: ['prob', 'calc', 'geo'], inq1: ['soc', 'sci'], inq2: ['soc', 'sci'] }
+const INQ: string[] = [...INQ_SOC, ...INQ_SCI]
+const DEFAULT_SEL: Sel = { kor: 'lm', math: 'prob', inq1: 'society', inq2: 'ethics' }
+const SEL_OPTS: Record<keyof Sel, string[]> = { kor: ['lm', 'hj'], math: ['prob', 'calc', 'geo'], inq1: INQ, inq2: INQ }
 const SEL_PARAM: Record<keyof Sel, string> = { kor: 'korSel', math: 'mathSel', inq1: 'inq1Type', inq2: 'inq2Type' }
-const TABLE_KEYS: CutKey[] = ['korean', 'mathProb', 'mathCalc', 'english', 'koreanHistory', 'socialStudies', 'science']
+const TABLE_KEYS = Object.keys(CUTS) as CutKey[]
+const MATH_CUT: Record<string, CutKey> = { prob: 'mathProb', calc: 'mathCalc', geo: 'mathGeo' }
+// 예전 링크의 탐구 구분(soc/sci) → 응시자가 가장 많은 과목
+const INQ_LEGACY: Record<string, string> = { soc: 'society', sci: 'earth1' }
 
 // 구버전 링크(?subject=&score=) 호환
 const LEGACY: Record<string, [Id, Partial<Sel>]> = {
   korean: ['kor', {}], mathCalc: ['math', { math: 'calc' }], mathProb: ['math', { math: 'prob' }],
-  english: ['eng', {}], koreanHistory: ['hist', {}], socialStudies: ['inq1', { inq1: 'soc' }], science: ['inq1', { inq1: 'sci' }],
+  english: ['eng', {}], koreanHistory: ['hist', {}], socialStudies: ['inq1', { inq1: 'society' }], science: ['inq1', { inq1: 'earth1' }],
 }
 
 function cutOf(id: Id, sel: Sel): CutKey {
   switch (id) {
-    case 'kor': return 'korean'
-    case 'math': return sel.math === 'prob' ? 'mathProb' : 'mathCalc' // 기하는 미적분 컷으로 근사 (기존 데이터 구분)
+    case 'kor': return sel.kor === 'hj' ? 'korHj' : 'korLm'
+    case 'math': return MATH_CUT[sel.math]
     case 'eng': return 'english'
     case 'hist': return 'koreanHistory'
-    default: return sel[id] === 'sci' ? 'science' : 'socialStudies'
+    default: return sel[id] as CutKey
   }
 }
 
@@ -47,7 +51,8 @@ export default function CsatGrade() {
   const [sel, setSel] = useState<Sel>(() => {
     const s = { ...DEFAULT_SEL }
     for (const k of Object.keys(SEL_OPTS) as (keyof Sel)[]) {
-      const v = sp.get(SEL_PARAM[k])
+      const raw = sp.get(SEL_PARAM[k])
+      const v = raw && (k === 'inq1' || k === 'inq2') ? INQ_LEGACY[raw] ?? raw : raw
       if (v && SEL_OPTS[k].includes(v)) s[k] = v
     }
     const legacy = LEGACY[sp.get('subject') ?? '']
@@ -69,7 +74,7 @@ export default function CsatGrade() {
     const v = Number(sp.get('minSum'))
     return Number.isInteger(v) && v >= 2 && v <= 36 ? v : 7
   })
-  const [tableKey, setTableKey] = useState<CutKey>('korean')
+  const [tableKey, setTableKey] = useState<CutKey>('korLm')
   const [today, setToday] = useState<string | null>(null)
   useEffect(() => setToday(localToday()), [])
 
@@ -102,7 +107,7 @@ export default function CsatGrade() {
   const name = (id: Id) =>
     id === 'kor' ? t('subjects.korean') : id === 'math' ? t('subjects.math') : id === 'eng' ? t('subjects.english')
       : id === 'hist' ? t('subjects.koreanHistory') : t(id === 'inq1' ? 'u.inq1' : 'u.inq2')
-  const selLabel = (k: keyof Sel, v: string) => (k === 'inq1' || k === 'inq2' ? t(v === 'sci' ? 'subjects.science' : 'subjects.socialStudies') : t(`u.sel.${v}`))
+  const selLabel = (k: keyof Sel, v: string) => (k === 'inq1' || k === 'inq2' ? t(`u.cut.${v}`) : t(`u.sel.${v}`))
   const gradeText = (gr: number | string) => t('u.gradeN', { g: gr })
 
   const setScore = (id: Id, v: string, cut: CutKey) =>
@@ -182,7 +187,13 @@ export default function CsatGrade() {
                         onChange={(e) => setSel((s) => ({ ...s, [selKey]: e.target.value }))}
                         className="ui-field px-2 py-1.5 mt-1 text-sm w-full max-w-[11rem]"
                       >
-                        {SEL_OPTS[selKey].map((v) => <option key={v} value={v}>{selLabel(selKey, v)}</option>)}
+                        {selKey === 'inq1' || selKey === 'inq2'
+                          ? ([['subjects.socialStudies', INQ_SOC], ['subjects.science', INQ_SCI]] as const).map(([label, keys]) => (
+                            <optgroup key={label} label={t(label)}>
+                              {keys.map((v) => <option key={v} value={v}>{selLabel(selKey, v)}</option>)}
+                            </optgroup>
+                          ))
+                          : SEL_OPTS[selKey].map((v) => <option key={v} value={v}>{selLabel(selKey, v)}</option>)}
                       </select>
                     ) : (
                       <span className="inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full bg-primary-soft text-primary">{t('absoluteGrade')}</span>
@@ -215,7 +226,6 @@ export default function CsatGrade() {
                     })}</>
                   )}
                   {r.next != null && <> · {t('u.toNext', { g: r.grade - 1, n: r.next })}</>}
-                  {r.id === 'math' && sel.math === 'geo' && <> · {t('u.geoNote')}</>}
                 </p>
               </li>
             )
@@ -274,10 +284,11 @@ export default function CsatGrade() {
             onChange={(e) => setTableKey(e.target.value as CutKey)}
             className="ui-field px-3 py-2 text-sm"
           >
-            {TABLE_KEYS.map((k) => <option key={k} value={k}>{t(`subjectDetail.${k}`)}</option>)}
+            {TABLE_KEYS.map((k) => <option key={k} value={k}>{t(`u.cut.${k}`)}</option>)}
           </select>
         </div>
         <p className="text-xs text-muted">{table.absolute ? t('u.tableAbs') : t('u.tableRel', { year: CUT_YEAR })}</p>
+        {!table.absolute && <p className="text-xs text-faint">{t('u.dataSource', { year: CUT_YEAR })}</p>}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

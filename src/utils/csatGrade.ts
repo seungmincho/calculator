@@ -1,16 +1,20 @@
 // 수능 원점수 → 등급/표준점수/백분위 추정. 순수 로직 (scripts/check-csat-grade.ts로 회귀 체크).
 //
-// 상대평가 등급컷(국어·수학·탐구)은 2025학년도 수능 기준 참고치이며 공식 원점수 컷이 아니다
-// (평가원은 표준점수 컷만 발표, 원점수 컷은 입시기관 추정). 매년 달라지므로 화면에 '추정'으로 표기.
+// 상대평가 등급컷(국어·수학·탐구)은 2026학년도 수능(2025-11-13 시행) 확정 등급컷.
+// 등급 구분 표준점수는 평가원 채점 결과 발표치, 원점수 컷은 종로학원이 표준점수로 역산한 값
+// (평가원은 원점수 컷을 발표하지 않음) → 화면에 '추정'으로 표기. 매년 12월 채점 결과 발표 후 갱신.
 // 영어(100점, 10점 단위)·한국사(50점, 5점 단위)는 절대평가라 고정 규칙.
 
 /** 2027학년도 수능 시행일. ponytail: 매년 갱신 (평가원 시행기본계획 공고 기준) */
 export const CSAT_EXAM_DATE = '2026-11-19'
 export const CSAT_YEAR = 2027
 /** 상대평가 등급컷 데이터의 학년도 */
-export const CUT_YEAR = 2025
+export const CUT_YEAR = 2026
 
-export type CutKey = 'korean' | 'mathCalc' | 'mathProb' | 'english' | 'koreanHistory' | 'socialStudies' | 'science'
+export const INQ_SOC = ['ethics', 'thought', 'kgeo', 'wgeo', 'eastAsia', 'world', 'econ', 'law', 'society'] as const
+export const INQ_SCI = ['phy1', 'chem1', 'bio1', 'earth1', 'phy2', 'chem2', 'bio2', 'earth2'] as const
+export type InqKey = (typeof INQ_SOC)[number] | (typeof INQ_SCI)[number]
+export type CutKey = 'korHj' | 'korLm' | 'mathProb' | 'mathCalc' | 'mathGeo' | 'english' | 'koreanHistory' | InqKey
 
 export interface Cut {
   grade: number
@@ -22,67 +26,49 @@ export interface Cut {
 export interface CutTable {
   max: number
   absolute: boolean
+  /** 만점자 표준점수·백분위 (보간 상단점) */
+  top?: { std: number; pct: number }
   cuts: Cut[] // 1등급 → 9등급 (raw 내림차순)
 }
 
 const absCuts = (step: number, first: number): Cut[] =>
   Array.from({ length: 9 }, (_, i) => ({ grade: i + 1, raw: i === 8 ? 0 : first - step * i }))
 
+/** '만점raw,std,pct|1컷raw,std,pct|…|8컷' → CutTable */
+function rel(s: string): CutTable {
+  const [top, ...cuts] = s.split('|').map((r) => r.split(',').map(Number))
+  return {
+    max: top[0], absolute: false, top: { std: top[1], pct: top[2] },
+    cuts: [...cuts.map(([raw, std, pct], i) => ({ grade: i + 1, raw, std, pct })), { grade: 9, raw: 0, std: null, pct: 0 }],
+  }
+}
+
+// 2026학년도 수능 확정 등급컷 — 원점수(종로학원 역산) / 등급 구분 표준점수(평가원) / 백분위
 export const CUTS: Record<CutKey, CutTable> = {
-  // 2025학년도 수능 기준 추정치 (기존 데이터 유지)
-  korean: {
-    max: 100, absolute: false,
-    cuts: [
-      { grade: 1, raw: 92, std: 131, pct: 96 },
-      { grade: 2, raw: 85, std: 124, pct: 89 },
-      { grade: 3, raw: 77, std: 116, pct: 77 },
-      { grade: 4, raw: 68, std: 107, pct: 60 },
-      { grade: 5, raw: 58, std: 97, pct: 40 },
-      { grade: 6, raw: 47, std: 86, pct: 23 },
-      { grade: 7, raw: 36, std: 75, pct: 11 },
-      { grade: 8, raw: 27, std: 66, pct: 4 },
-      { grade: 9, raw: 0, std: null, pct: 0 },
-    ],
-  },
-  mathCalc: {
-    max: 100, absolute: false,
-    cuts: [
-      { grade: 1, raw: 92, std: 135, pct: 96 },
-      { grade: 2, raw: 85, std: 131, pct: 90 },
-      { grade: 3, raw: 76, std: 123, pct: 77 },
-      { grade: 4, raw: 64, std: 112, pct: 60 },
-      { grade: 5, raw: 48, std: 96, pct: 40 },
-      { grade: 6, raw: 32, std: 80, pct: 23 },
-      { grade: 7, raw: 20, std: 68, pct: 11 },
-      { grade: 8, raw: 12, std: 60, pct: 4 },
-      { grade: 9, raw: 0, std: null, pct: 0 },
-    ],
-  },
-  mathProb: {
-    max: 100, absolute: false,
-    cuts: [
-      { grade: 1, raw: 88, std: 130, pct: 95 },
-      { grade: 2, raw: 80, std: 124, pct: 88 },
-      { grade: 3, raw: 68, std: 114, pct: 76 },
-      { grade: 4, raw: 52, std: 100, pct: 58 },
-      { grade: 5, raw: 36, std: 86, pct: 39 },
-      { grade: 6, raw: 24, std: 74, pct: 22 },
-      { grade: 7, raw: 16, std: 66, pct: 10 },
-      { grade: 8, raw: 8, std: 58, pct: 4 },
-      { grade: 9, raw: 0, std: null, pct: 0 },
-    ],
-  },
+  korHj: rel('100,142,99|90,133,96|83,126,89|73,117,77|63,107,61|49,94,40|37,83,23|27,73,11|20,66,4'),
+  korLm: rel('100,147,100|85,133,96|78,126,89|69,117,77|59,107,61|46,94,40|35,83,23|25,73,11|17,66,4'),
+  mathProb: rel('100,137,100|87,128,96|82,124,88|76,119,76|65,111,60|41,92,40|24,79,23|17,74,12|13,71,5'),
+  mathCalc: rel('100,139,100|85,128,96|80,124,88|73,119,76|62,111,60|37,92,40|20,79,23|14,74,12|10,71,5'),
+  mathGeo: rel('100,139,100|85,128,96|81,124,88|74,119,76|63,111,60|37,92,40|20,79,23|14,74,12|10,71,5'),
+  ethics: rel('50,71,100|45,66,95|42,64,90|37,59,78|30,53,60|23,46,39|18,42,23|12,36,9|9,33,3'),
+  thought: rel('50,70,100|45,66,95|43,64,89|37,59,76|30,53,60|20,45,39|15,41,22|12,38,12|7,34,3'),
+  kgeo: rel('50,72,100|45,68,96|41,65,91|34,59,76|26,52,59|17,45,40|12,41,24|10,39,13|6,36,4'),
+  wgeo: rel('50,73,100|44,68,97|38,63,88|34,59,77|27,53,60|17,45,39|12,40,21|9,38,10|6,35,3'),
+  eastAsia: rel('50,68,99|46,65,96|42,62,88|38,59,76|33,55,61|22,46,41|14,40,22|10,37,12|8,35,5'),
+  world: rel('50,72,100|45,68,96|40,64,88|35,59,76|26,52,59|18,45,39|13,41,22|10,38,11|7,36,5'),
+  econ: rel('50,70,99|47,68,96|44,65,90|36,59,76|27,52,60|18,45,41|13,41,24|10,39,11|6,36,4'),
+  law: rel('50,67,99|47,65,97|44,62,87|40,59,76|35,55,60|23,46,39|15,40,23|12,37,12|8,34,3'),
+  society: rel('50,70,100|44,65,95|41,62,89|38,59,77|32,54,61|24,47,39|17,41,23|11,36,11|8,33,4'),
+  phy1: rel('50,70,100|45,66,96|43,64,90|38,60,79|29,53,59|21,46,39|15,41,24|11,38,14|7,35,4'),
+  chem1: rel('50,71,100|45,67,95|41,64,89|35,59,77|27,52,60|20,46,41|13,41,24|10,38,11|7,36,5'),
+  bio1: rel('50,74,100|42,67,97|39,63,89|35,59,77|30,54,60|22,47,39|17,42,24|12,37,11|8,33,4'),
+  earth1: rel('50,68,99|46,65,95|43,63,89|38,59,75|32,54,60|21,46,40|13,40,22|9,37,11|7,35,4'),
+  phy2: rel('50,68,99|47,66,95|43,63,88|39,60,79|32,54,61|20,45,39|13,40,22|11,38,12|8,36,6'),
+  chem2: rel('50,70,99|47,68,96|42,64,89|36,59,77|28,53,61|18,45,40|13,41,24|10,39,15|6,36,5'),
+  bio2: rel('50,69,99|45,65,95|42,63,88|38,60,76|30,54,60|18,45,40|13,41,24|8,37,10|5,35,4'),
+  earth2: rel('50,69,98|48,68,95|44,65,88|38,60,77|25,51,61|15,44,39|11,41,20|8,39,10|7,38,6'),
   english: { max: 100, absolute: true, cuts: absCuts(10, 90) },
   koreanHistory: { max: 50, absolute: true, cuts: absCuts(5, 40) },
-  // 탐구는 과목별 편차가 큼 — 사탐/과탐 평균적 추정치 (기존 데이터 유지)
-  socialStudies: {
-    max: 50, absolute: false,
-    cuts: [47, 44, 40, 35, 29, 23, 17, 11, 0].map((raw, i) => ({ grade: i + 1, raw })),
-  },
-  science: {
-    max: 50, absolute: false,
-    cuts: [46, 42, 38, 33, 27, 21, 15, 9, 0].map((raw, i) => ({ grade: i + 1, raw })),
-  },
 }
 
 /** 상대평가 등급별 누적 비율 상한(%) — 1등급 상위 4%, 2등급 11% … (평가원 9등급 기준) */
@@ -115,8 +101,8 @@ const lerp = (x: number, x0: number, y0: number, x1: number, y1: number) =>
  * 백분위: (만점,100) … 등급컷 … (0,0) 사이 보간.
  */
 export function estimate(key: CutKey, score: number): { std: number; bound: 'ge' | 'lt' | null; pct: number } | null {
-  const { max, cuts } = CUTS[key]
-  const stdPts = cuts.filter((c) => c.std != null) as { raw: number; std: number }[]
+  const { max, cuts, top } = CUTS[key]
+  const stdPts = [...(top ? [{ raw: max, std: top.std }] : []), ...cuts.filter((c) => c.std != null)] as { raw: number; std: number }[]
   if (!stdPts.length) return null
 
   let std: number, bound: 'ge' | 'lt' | null = null
@@ -127,7 +113,7 @@ export function estimate(key: CutKey, score: number): { std: number; bound: 'ge'
     std = lerp(score, stdPts[i].raw, stdPts[i].std, stdPts[i - 1].raw, stdPts[i - 1].std)
   }
 
-  const pctPts: [number, number][] = [[max, 100], ...cuts.filter((c) => c.grade < 9).map((c) => [c.raw, c.pct ?? 0] as [number, number]), [0, 0]]
+  const pctPts: [number, number][] = [[max, top?.pct ?? 100], ...cuts.filter((c) => c.grade < 9).map((c) => [c.raw, c.pct ?? 0] as [number, number]), [0, 0]]
   let pct = 0
   for (let i = 1; i < pctPts.length; i++) {
     if (score >= pctPts[i][0]) { pct = lerp(score, pctPts[i][0], pctPts[i][1], pctPts[i - 1][0], pctPts[i - 1][1]); break }
