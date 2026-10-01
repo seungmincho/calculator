@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Thu, 01 Oct 2026 06:28:39 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 01 Oct 2026 08:07:15 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[15퍼즐]]></title>
@@ -181,6 +181,11 @@
     <title><![CDATA[자동차 취등록세 계산기]]></title>
     <link>https://toolhub.ai.kr/car-tax-calculator/</link>
     <guid>https://toolhub.ai.kr/car-tax-calculator/</guid>
+  </item>
+  <item>
+    <title><![CDATA[내용증명 작성기]]></title>
+    <link>https://toolhub.ai.kr/certified-letter/</link>
+    <guid>https://toolhub.ai.kr/certified-letter/</guid>
   </item>
   <item>
     <title><![CDATA[글자수 세기]]></title>
@@ -408,6 +413,11 @@
     <guid>https://toolhub.ai.kr/emoji-picker/</guid>
   </item>
   <item>
+    <title><![CDATA[근로계약서 작성기]]></title>
+    <link>https://toolhub.ai.kr/employment-contract/</link>
+    <guid>https://toolhub.ai.kr/employment-contract/</guid>
+  </item>
+  <item>
     <title><![CDATA[에니어그램 테스트]]></title>
     <link>https://toolhub.ai.kr/enneagram/</link>
     <guid>https://toolhub.ai.kr/enneagram/</guid>
@@ -611,6 +621,11 @@
     <title><![CDATA[견적서·세금계산서 생성기]]></title>
     <link>https://toolhub.ai.kr/invoice-generator/</link>
     <guid>https://toolhub.ai.kr/invoice-generator/</guid>
+  </item>
+  <item>
+    <title><![CDATA[차용증 작성기]]></title>
+    <link>https://toolhub.ai.kr/iou-generator/</link>
+    <guid>https://toolhub.ai.kr/iou-generator/</guid>
   </item>
   <item>
     <title><![CDATA[IP 주소 확인]]></title>
@@ -933,6 +948,11 @@
     <guid>https://toolhub.ai.kr/port-reference/</guid>
   </item>
   <item>
+    <title><![CDATA[위임장 작성기]]></title>
+    <link>https://toolhub.ai.kr/power-of-attorney/</link>
+    <guid>https://toolhub.ai.kr/power-of-attorney/</guid>
+  </item>
+  <item>
     <title><![CDATA[프레젠테이션 타이머]]></title>
     <link>https://toolhub.ai.kr/presentation-timer/</link>
     <guid>https://toolhub.ai.kr/presentation-timer/</guid>
@@ -998,6 +1018,11 @@
     <guid>https://toolhub.ai.kr/resident-number/</guid>
   </item>
   <item>
+    <title><![CDATA[사직서 작성기]]></title>
+    <link>https://toolhub.ai.kr/resignation-letter/</link>
+    <guid>https://toolhub.ai.kr/resignation-letter/</guid>
+  </item>
+  <item>
     <title><![CDATA[퇴직금 계산기]]></title>
     <link>https://toolhub.ai.kr/retirement-calculator/</link>
     <guid>https://toolhub.ai.kr/retirement-calculator/</guid>
@@ -1061,11 +1086,6 @@
     <title><![CDATA[화면 녹화기]]></title>
     <link>https://toolhub.ai.kr/screen-recorder/</link>
     <guid>https://toolhub.ai.kr/screen-recorder/</guid>
-  </item>
-  <item>
-    <title><![CDATA[퇴직금 계산기]]></title>
-    <link>https://toolhub.ai.kr/severance-pay/</link>
-    <guid>https://toolhub.ai.kr/severance-pay/</guid>
   </item>
   <item>
     <title><![CDATA[배송비 계산]]></title>
