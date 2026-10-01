@@ -50952,5 +50952,346 @@
       ]
     }
   },
-  "leaseContract": {}
+  "leaseContract": {
+    "title": "Housing Lease Agreement Generator",
+    "description": "Create a Korean jeonse or monthly-rent lease based on the official Standard Housing Lease Agreement (rev. 2023-10-06). Add anti-fraud special terms and save as an A4 PDF.",
+    "section": {
+      "kind": "Contract type",
+      "money": "Deposit, rent and fees",
+      "period": "Lease term",
+      "property": "Property",
+      "notice": "Landlord disclosures",
+      "repair": "Repairs before move-in",
+      "lessor": "Landlord",
+      "lessee": "Tenant",
+      "specials": "Special terms"
+    },
+    "sectionHint": {
+      "money": "The down payment is usually 10% of the deposit. The balance is calculated as deposit minus down payment and interim payment.",
+      "property": "Copy exactly what the property register and building ledger say.",
+      "notice": "Under Article 3-7 of the Housing Lease Protection Act, the landlord must show prior fixed-date records and a tax payment certificate when signing.",
+      "lessor": "Check the landlord's ID against the owner on the property register. All co-owners must sign.",
+      "specials": "Checking an item adds its clause to the special terms. You can edit the text freely below."
+    },
+    "kind": "Lease type",
+    "kinds": {
+      "jeonse": "Jeonse",
+      "monthly": "Monthly rent with deposit"
+    },
+    "contractType": "Contract kind",
+    "contractTypes": {
+      "new": "New",
+      "agreed": "Re-signed by agreement",
+      "renew": "Renewal right exercised"
+    },
+    "contractTypeHint": {
+      "agreed": "A new contract by agreement has no 5% cap, and the tenant's one-time renewal right remains.",
+      "renew": "A renewal under Article 6-3 runs 2 years, and deposit/rent increases are capped at 5%."
+    },
+    "prevDeposit": "Previous deposit",
+    "prevRent": "Previous monthly rent",
+    "deposit": "Deposit",
+    "down": "Down payment",
+    "contractDate": "Contract date",
+    "middle": "Interim payment (0 if none)",
+    "middleDate": "Interim payment date",
+    "middleHint": "Without an interim payment, either party can cancel until the balance is paid by forfeiting or returning double the down payment.",
+    "balance": "Balance",
+    "balanceDate": "Balance date",
+    "rent": "Monthly rent",
+    "rentDay": "Rent due day",
+    "dayUnit": "th",
+    "wonUnit": "KRW",
+    "rentAccount": "Rent account",
+    "rentAccountPlaceholder": "Bank 000-0000-0000 (holder: landlord)",
+    "mgmt": "Maintenance fee",
+    "mgmts": {
+      "fixed": "Fixed",
+      "variable": "By usage",
+      "none": "None"
+    },
+    "mgmtTotal": "Monthly maintenance total",
+    "mgmtItemsToggle": "Itemize (required on the standard form for fixed fees of {min} KRW or more)",
+    "mgmtItems": {
+      "general": "General",
+      "electric": "Electricity",
+      "water": "Water",
+      "gas": "Gas",
+      "heating": "Heating",
+      "internet": "Internet",
+      "tv": "TV",
+      "other": "Other"
+    },
+    "mgmtNote": "Fee items and calculation",
+    "mgmtNotePlaceholder": "e.g. as billed by the management office (common + household usage)",
+    "summary": {
+      "jeonse": "Jeonse deposit",
+      "monthly": "Deposit / rent",
+      "perMonth": "{rent} KRW/mo"
+    },
+    "start": "Handover (move-in) date",
+    "startHint": "Usually the same day as the balance payment.",
+    "end": "End date",
+    "twoYears": "Set to 2 years",
+    "startFromBalance": "Move in on balance date",
+    "termLabel": "{y}y {m}m {d}d",
+    "address": "Address",
+    "addressPlaceholder": "00 ○○-ro, ○○-gu, Seoul, Unit 000",
+    "landCategory": "Land category",
+    "landArea": "Land area (㎡)",
+    "structure": "Building structure",
+    "structurePlaceholder": "Reinforced concrete",
+    "use": "Building use",
+    "usePlaceholder": "Apartment / multi-unit house",
+    "buildingArea": "Building area (㎡)",
+    "leasePart": "Leased part",
+    "leasePartPlaceholder": "e.g. all of unit 301, 3rd floor",
+    "leaseArea": "Leased area (㎡)",
+    "areaHint": "For apartments, land area is usually the land-right share and building area the exclusive area. For part of a multi-household house, describe the unit precisely.",
+    "taxArrears": "Unpaid national/local taxes",
+    "taxArrearsOpt": {
+      "none": "None",
+      "some": "Yes"
+    },
+    "priorLease": "Prior fixed-date tenants",
+    "priorLeaseOpt": {
+      "none": "None",
+      "some": "Yes"
+    },
+    "noticeNote": "Details (amount, count)",
+    "repair": "Repairs needed before move-in",
+    "repairHint": "Agreeing on what to fix and by when prevents disputes.",
+    "repairWhat": "What to repair",
+    "repairWhatPlaceholder": "e.g. bathroom leak, living room wallpaper",
+    "repairBy": "Repair deadline",
+    "repairDeduct": "If not repaired by the deadline, deduct the cost from the deposit or rent",
+    "special": "Special terms (one per line)",
+    "specialHint": "Numbered after the standard printed terms (move-in registration, cancellation for undisclosed info, etc.).",
+    "specials": {
+      "rights": {
+        "label": "No changes to title until the day after the balance date",
+        "hint": "Tenant protection starts at 00:00 the day after move-in registration. This blocks a mortgage in that gap."
+      },
+      "ownerAccount": {
+        "label": "Pay only to the registered owner's account",
+        "hint": "Requests to pay an agent's or relative's account are a classic fraud sign."
+      },
+      "tax": {
+        "label": "Landlord declares no unpaid taxes",
+        "hint": "Unpaid taxes can be paid out before your deposit in an auction."
+      },
+      "prior": {
+        "label": "Cancel if prior-tenant disclosures are false",
+        "hint": "In multi-household houses, large earlier deposits put yours at risk."
+      },
+      "loan": {
+        "label": "Void and refund if the jeonse loan is refused",
+        "hint": "Covers refusals caused by the property or landlord (illegal building, mortgage, etc.)."
+      },
+      "insurance": {
+        "label": "Landlord cooperates with deposit insurance (cancel if refused)",
+        "hint": "HUG/HF/SGI deposit return guarantee. Check eligibility before signing."
+      },
+      "returnDeposit": {
+        "label": "Return the deposit on the end date regardless of a new tenant",
+        "hint": "Prevents 'I'll pay when the next tenant moves in'."
+      },
+      "settle": {
+        "label": "Settle maintenance fees, utilities and long-term repair reserve",
+        "hint": "Avoid inheriting unpaid fees from before move-in."
+      },
+      "restore": {
+        "label": "Restoration scope (based on move-in photos)",
+        "hint": "Normal wear and nail holes excluded. Take photos together on move-in day."
+      },
+      "pet": {
+        "label": "Pets allowed",
+        "hint": "States permission and responsibility for damage."
+      },
+      "earlyExit": {
+        "label": "Tenant pays brokerage fee on early exit",
+        "hint": "Sets when the deposit is returned and who pays the broker if the tenant leaves early."
+      }
+    },
+    "standardSpecials": "Standard printed terms",
+    "mediation": "Agree to mediation by the Housing Lease Dispute Mediation Committee before suing",
+    "mediationHint": "Mediation is faster and almost free compared with litigation.",
+    "demolish": "Demolition or rebuilding is planned",
+    "demolishNote": "Timing and duration",
+    "demolishNotePlaceholder": "e.g. late 2029, about 24 months",
+    "addressConsent": "Owner consents to the tenant applying for a detailed address",
+    "addressConsentHint": "Without a unit number, the registered address may be inaccurate and weaken tenant protection.",
+    "brokered": "Signed through a licensed broker",
+    "brokeredHint": "Adds the brokerage fee and disclosure clauses and a broker signature block. Leave unchecked for a direct deal.",
+    "insight": {
+      "noAmount": "Enter a deposit or monthly rent.",
+      "endBeforeStart": "The end date is before the handover date.",
+      "payGap": "Down + interim + balance ({sum} KRW) is {diff} KRW {dir} the deposit ({deposit} KRW). Please match them.",
+      "over": "more than",
+      "under": "less than",
+      "middleAfterBalance": "The interim payment date is after the balance date.",
+      "balanceBeforeContract": "The balance date is before the contract date.",
+      "shortTerm": "Even with a term under 2 years, the tenant may claim 2 years (Housing Lease Protection Act Art. 4(1)). The landlord cannot.",
+      "renewCap": "For a renewal under the renewal right, increases are capped at 5% (Art. 7(2)): deposit up to {maxDeposit} KRW, rent up to {maxRent} KRW. When converting between deposit and rent, compare using the conversion rate.",
+      "agreedCap": "This is more than {pct}% above the previous terms. No cap applies to a re-signed contract, but if the tenant uses the renewal right the maximum is {maxDeposit} KRW deposit / {maxRent} KRW rent.",
+      "taxArrears": "Unpaid taxes can be paid out before your deposit at auction. Add a term requiring full payment before the balance.",
+      "priorLease": "With prior tenants, check that their deposits plus mortgages are safe relative to the property value.",
+      "noSpecials": "No special terms yet. Anti-fraud terms such as no title changes and tax disclosure are recommended.",
+      "moveIn": "On {date}, when you pay the balance, register your move-in and get a fixed date the same day. Protection starts at 00:00 the next day.",
+      "in30": "30 days from the contract date",
+      "report": "This lease must be reported (deposit over {deposit} KRW or rent over {rent} KRW). Report by {deadline} at a community center or RTMS; a fixed date is granted automatically.",
+      "reportMaybe": "Deposit over {deposit} KRW or rent over {rent} KRW: if the property is in the capital area, a metropolitan city, Sejong, Jeju or a city in a province, report by {deadline}.",
+      "mgmtGap": "Itemized fees ({sum} KRW) differ from the total ({total} KRW).",
+      "mgmtDetail": "Fixed fees of 100,000 KRW or more must be itemized on the standard form (rev. 2023-10). Open 'Itemize' and fill in the items."
+    },
+    "guide": {
+      "title": "Lease essentials",
+      "intro": "Follows the clause structure of the Ministry of Justice / MOLIT Standard Housing Lease Agreement (rev. 2023-10-06). For direct deals without a broker, checks before signing and special terms matter more than the form. Housing only; commercial leases fall under a separate act.",
+      "sections": [
+        {
+          "title": "Documents to check first",
+          "items": [
+            "Property register (iros.go.kr): owner, seizures and trusts in section A; mortgage amounts in section B.",
+            "Building ledger (gov.kr / eais.go.kr): illegal buildings or neighborhood-facility use can block loans and insurance.",
+            "Resident registration check: see whether earlier tenants or the owner's family are registered.",
+            "Tax certificate: for deposits over 10 million KRW you can view unpaid national taxes without the landlord's consent after signing.",
+            "If mortgage maximum + earlier deposits + your deposit exceed 70-80% of market value, be careful."
+          ]
+        },
+        {
+          "title": "Signing day",
+          "items": [
+            "Re-issue the property register and compare the owner with their ID.",
+            "For an agent, get a power of attorney with the owner's seal certificate and call the owner.",
+            "Pay the down payment only to the owner's account.",
+            "Sign two copies, seal across pages, and keep one each."
+          ]
+        },
+        {
+          "title": "Balance and move-in day",
+          "items": [
+            "Check the register again right before paying the balance.",
+            "Receive the keys with the balance and register your move-in and fixed date that day.",
+            "Protection starts at 00:00 the next day, which is why the 'no title changes' term matters.",
+            "Settle fees and photograph any defects."
+          ]
+        },
+        {
+          "title": "Move-in registration, fixed date, lease report",
+          "items": [
+            "Register within 14 days of moving. Handover + registration = opposability.",
+            "Get a fixed date at a community center, iros.go.kr or gov.kr. Opposability + fixed date = priority repayment.",
+            "Deposits over 60 million KRW or rent over 300,000 KRW must be reported within 30 days (capital area, metro cities, Sejong, Jeju, cities in provinces).",
+            "Late reports incur fines. Renewals with unchanged amounts need no report."
+          ]
+        },
+        {
+          "title": "Deposit insurance",
+          "items": [
+            "HUG, HF and SGI offer deposit return guarantees.",
+            "Eligibility depends on the deposit-to-value ratio and building status, so check before signing.",
+            "Add a term allowing cancellation if insurance is refused."
+          ]
+        },
+        {
+          "title": "During and at the end of the lease",
+          "items": [
+            "The tenant may request renewal 6 to 2 months before the end (once, for 2 years).",
+            "Renewal increases are capped at 5%, and no further increase within a year.",
+            "Without notice the lease renews automatically; the tenant may then terminate with 3 months' notice.",
+            "If the deposit isn't returned, apply for a lease registration order before moving out."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is a lease signed without a broker valid?",
+            "a": "Yes. A lease is formed by agreement, and a contract you draft and sign yourself is equally valid. Without a broker's checks and insurance, verify the register, building ledger and tax certificate yourself and pay only to the owner's account."
+          },
+          {
+            "q": "If I sign for 1 year, must I leave after a year?",
+            "a": "No. Under Article 4 of the Housing Lease Protection Act a term under 2 years is deemed 2 years. The tenant may leave after a year or stay 2 years; the landlord cannot insist on less than 2."
+          },
+          {
+            "q": "When should I register my move-in and get a fixed date?",
+            "a": "On the day you pay the balance and move in. Protection starts at 00:00 the next day, so a mortgage registered the same day ranks ahead. Hence the 'no title changes until the day after the balance date' term."
+          },
+          {
+            "q": "Who reports the lease and by when?",
+            "a": "Leases with a deposit over 60 million KRW or rent over 300,000 KRW must be reported within 30 days of signing at a community center or RTMS (one party submitting the contract counts as a joint report). Applies in the capital area, metro cities, Sejong, Jeju and cities in provinces, and a fixed date is granted automatically."
+          },
+          {
+            "q": "How much can the deposit rise on renewal?",
+            "a": "If the tenant uses the renewal right, deposit and rent may rise by at most 5%. A new contract by agreement has no cap, but the renewal right then remains unused."
+          },
+          {
+            "q": "Can I cancel after paying only the down payment?",
+            "a": "Until the interim payment (or balance) is paid, the tenant can cancel by forfeiting the down payment and the landlord by returning double (standard form Art. 5, Civil Act Art. 565). If a cancellation event in the special terms occurs, the down payment is refunded."
+          },
+          {
+            "q": "Can I make a commercial lease?",
+            "a": "This tool covers housing jeonse and monthly rent only. Shops and offices fall under the Commercial Building Lease Protection Act; use the Ministry of Justice commercial standard lease."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Jeonse checklist",
+          "href": "/jeonse-checklist/"
+        },
+        {
+          "label": "Brokerage fee calculator",
+          "href": "/brokerage-fee/"
+        },
+        {
+          "label": "Jeonse-rent converter",
+          "href": "/rent-converter/"
+        },
+        {
+          "label": "Certified letter generator",
+          "href": "/certified-letter/"
+        },
+        {
+          "label": "Jeonse loan calculator",
+          "href": "/jeonse-loan/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Housing Lease Protection Act (Korean Law Information Center)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법"
+        },
+        {
+          "label": "Housing Lease Protection Act Art. 3-7 (landlord disclosure duty)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법/제3조의7"
+        },
+        {
+          "label": "Ministry of Justice Standard Housing Lease Agreement (rev. 2023-10-06)",
+          "url": "https://www.moj.go.kr/bbs/moj/118/575868/artclView.do"
+        },
+        {
+          "label": "Act on Report on Real Estate Transactions Art. 6-2 (lease report)",
+          "url": "https://www.law.go.kr/법령/부동산거래신고등에관한법률/제6조의2"
+        },
+        {
+          "label": "RTMS (lease reporting)",
+          "url": "https://rtms.molit.go.kr"
+        },
+        {
+          "label": "Internet Registry Office (register, fixed date)",
+          "url": "https://www.iros.go.kr"
+        },
+        {
+          "label": "National Tax Collection Act Art. 109 (viewing unpaid taxes)",
+          "url": "https://www.law.go.kr/법령/국세징수법/제109조"
+        },
+        {
+          "label": "HUG deposit return guarantee",
+          "url": "https://www.khug.or.kr"
+        }
+      ]
+    }
+  }
 }
