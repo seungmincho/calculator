@@ -49910,7 +49910,314 @@
       "lease-contract": "Lease contract"
     }
   },
-  "annualCarTax": {},
+  "annualCarTax": {
+    "title": "Annual Car Tax Calculator",
+    "subtitle": "Enter engine size and first registration date to get your 2026 Korean annual car tax, the June/December installments, and the January lump-sum discount.",
+    "u": {
+      "won": " KRW",
+      "kind": {
+        "label": "Vehicle type",
+        "car": "Passenger (by cc)",
+        "ev": "Electric/Hydrogen",
+        "van": "Van/Bus",
+        "truck": "Truck"
+      },
+      "kindHint": {
+        "car": "Gasoline, diesel, LPG and hybrid cars. Taxed per cc, with age reductions from year 3.",
+        "ev": "Electric, hydrogen and solar passenger cars pay a flat rate regardless of size. No age reduction.",
+        "van": "11-15 seat vans are taxed at the small general bus flat rate.",
+        "truck": "Flat rate by payload. 1-ton trucks fall under 'up to 1 ton'."
+      },
+      "use": {
+        "label": "Use",
+        "private": "Non-commercial",
+        "business": "Commercial",
+        "hint": "Commercial means licensed transport businesses such as taxis and rental cars. Company cars are usually non-commercial."
+      },
+      "cc": "Engine displacement",
+      "ccPresets": [
+        "Compact 998",
+        "1.6 1,598",
+        "2.0 1,999",
+        "2.5 2,497",
+        "3.5 3,470"
+      ],
+      "ccHint": "Enter the displacement (cc) shown on your registration certificate.",
+      "reg": "First registration",
+      "regYear": "Registration year",
+      "regMonth": "Registration month",
+      "yearOpt": "{y}",
+      "monthOpt": "Month {m}",
+      "regHint": "Based on the first registration date, not the model year. Cars registered in Jul-Dec have different ages for the June and December installments.",
+      "van": {
+        "label": "Bus size",
+        "small": "Small (up to 35 seats)",
+        "large": "Large (36+ seats)"
+      },
+      "ton": "Max payload",
+      "tonLabel": "Up to {ton} t",
+      "tonHint": "Trucks over 10 tons pay extra per 10 tons; check with your local tax office.",
+      "year": "Tax year",
+      "yearNote": "2027 is an estimate assuming current rates and the 5% lump-sum rate stay the same.",
+      "resultLabel": "{year} car tax (incl. local education tax, annual)",
+      "descCar": "{cc}cc × {rate} KRW/cc · {use}",
+      "h1": "June (1st half)",
+      "h2": "December (2nd half)",
+      "ageOf": "Age {age} yrs · {pct}% off",
+      "row": {
+        "base": "Annual tax before reduction",
+        "age": "Age reduction (year {age}, 2nd half)",
+        "noAge": "None (starts in year 3)",
+        "tax": "Car tax",
+        "edu": "Local education tax (30% of car tax)",
+        "noEdu": "None (non-commercial passenger only)"
+      },
+      "lumpHighlight": "Pay the full year in January {year} and save {saved} KRW (pay {pay} KRW at once)",
+      "lumpNext": "Next lump-sum window: day 16 to end of month {m}, about {pct}% off.",
+      "lumpNextYear": "This year's lump-sum windows ended in September. Apply again from January 16.",
+      "lumpWhen": "Lump-sum payment is available from the 16th to month-end in Jan, Mar, Jun and Sep.",
+      "share": {
+        "label": "My {year} car tax (annual)",
+        "lump": "If paid in January",
+        "text": "My {year} car tax is {total} KRW a year. Paying in January saves {saved} KRW."
+      },
+      "lump": {
+        "title": "How much a lump-sum payment saves",
+        "desc": "Paying the whole year in advance deducts {rate}% annual interest on the tax for the remaining period. The earlier, the more you save.",
+        "when": "Payment",
+        "pay": "Annual payment",
+        "saved": "Saved",
+        "pct": "Discount",
+        "split": "June + December",
+        "month": "Lump sum in month {m}",
+        "note": "Deduction = tax for the period from the next month to December (pro rata by day) × 5%. Education tax shrinks with it. May differ from your bill by tens of won."
+      },
+      "schedule": {
+        "title": "Payment schedule",
+        "rows": [
+          [
+            "Jan 16-31",
+            "Lump-sum application and payment (max discount, ~4.58%)"
+          ],
+          [
+            "Mar 16-31",
+            "Lump-sum application (~3.77%)"
+          ],
+          [
+            "Jun 16-30",
+            "1st-half regular payment (Jan-Jun) · lump sum (~2.52%)"
+          ],
+          [
+            "Sep 16-30",
+            "Lump-sum application (~1.26%)"
+          ],
+          [
+            "Dec 16-31",
+            "2nd-half regular payment (Jul-Dec)"
+          ]
+        ],
+        "wetax": "Check and pay on Wetax",
+        "etax": "Seoul ETAX"
+      },
+      "prorate": {
+        "title": "Selling or scrapping mid-year (pro rata)",
+        "desc": "If ownership changes or the car is deregistered during the year, tax is charged only for the days owned. Enter the transfer or deregistration date to see each share.",
+        "date": "Transfer/deregistration date",
+        "before": "Jan 1 to day before ({days} days) · seller",
+        "after": "That day to Dec 31 ({days} days) · buyer",
+        "refund": "If you paid in January, about {amount} KRW refundable",
+        "note": "Enforcement Decree Art. 126: annual tax × days owned ÷ days in year. The refund is an estimate reflecting the discount you received."
+      },
+      "series": {
+        "title": "Tax by vehicle age",
+        "desc": "How the annual tax (incl. education tax) on the same {cc}cc car falls as it ages. Assumes Jan-Jun registration.",
+        "age": "Age",
+        "cut": "Reduction",
+        "total": "Annual tax (KRW)",
+        "ageN": "Year {n}",
+        "ageMax": "Year 13+",
+        "note": "5% per year from year 3, capped at 50% from year 12 (Local Tax Act Art. 127(3))."
+      },
+      "disclaimer": "Estimate based on the Local Tax Act. Exemptions for disabled persons, veterans, etc., trucks over 10 tons, special vehicles and express/charter buses are not included. Check your Wetax bill for the exact amount."
+    },
+    "guide": {
+      "title": "Car tax essentials",
+      "rateTable": {
+        "head": [
+          "Type",
+          "Non-commercial",
+          "Commercial"
+        ],
+        "rows": [
+          [
+            "Passenger up to 1,000cc",
+            "80 KRW/cc",
+            "18 KRW/cc"
+          ],
+          [
+            "Passenger up to 1,600cc",
+            "140 KRW/cc",
+            "18 KRW/cc"
+          ],
+          [
+            "Passenger up to 2,500cc",
+            "200 KRW/cc",
+            "19 KRW/cc"
+          ],
+          [
+            "Passenger over 2,500cc",
+            "200 KRW/cc",
+            "24 KRW/cc"
+          ],
+          [
+            "Electric/hydrogen passenger",
+            "100,000",
+            "20,000"
+          ],
+          [
+            "Small general bus",
+            "65,000",
+            "25,000"
+          ],
+          [
+            "Large general bus (36+ seats)",
+            "115,000",
+            "42,000"
+          ],
+          [
+            "Truck up to 1 t",
+            "28,500",
+            "6,600"
+          ],
+          [
+            "Truck up to 2 t",
+            "34,500",
+            "9,600"
+          ],
+          [
+            "Truck up to 5 t",
+            "79,500",
+            "22,500"
+          ],
+          [
+            "Truck up to 10 t",
+            "157,500",
+            "45,000"
+          ]
+        ],
+        "note": "Annual amounts. Non-commercial passenger cars (incl. EVs) add 30% local education tax."
+      },
+      "lump": {
+        "title": "How to pay in a lump sum",
+        "items": [
+          "Apply and pay between the 16th and month-end in January, March, June or September. Applying without paying gets no discount.",
+          "Use Wetax (wetax.go.kr) or the Smart Wetax app; Seoul residents can use ETAX. District tax offices also accept it.",
+          "Auto-debit for regular installments does not cover lump-sum payment.",
+          "After one January lump-sum payment, a January bill may be sent in following years. The 2026 rate is 5%, same as 2024-2025."
+        ]
+      },
+      "age": {
+        "title": "Vehicle age reduction",
+        "items": [
+          "Age counts from the first registration date, not the model year.",
+          "Registered Jan-Jun: tax year − registration year + 1.",
+          "Registered Jul-Dec: June installment uses the year difference, December adds 1.",
+          "5% from year 3, +5% each year, up to 50% from year 12. Applies only to cc-based passenger cars."
+        ]
+      },
+      "refund": {
+        "title": "Selling, scrapping, moving",
+        "items": [
+          "After a lump-sum payment, selling or deregistering refunds the unowned days pro rata.",
+          "When you buy a used car, you owe the share from the transfer date to year-end.",
+          "Moving to another district after paying does not trigger a new charge that year.",
+          "Regular bills go to the owner as of June 1 and December 1, split by ownership period."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "Car tax is an annual property-type tax. The one-time acquisition tax on purchase is calculated in the car acquisition tax calculator.",
+          "Compact cars get no car tax exemption; they simply pay 80 KRW/cc. Their perks are acquisition tax relief and fuel tax refunds.",
+          "Hybrids are taxed by engine displacement, not at the EV flat rate.",
+          "Late payment adds a 3% penalty plus monthly late-payment interest; unpaid tax can lead to plate seizure."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is the 2026 lump-sum discount?",
+            "a": "The rate is 5%, applied only to the period after the payment month, so January saves about 4.58% of the annual tax, March ~3.77%, June ~2.52% and September ~1.26%. Education tax falls too."
+          },
+          {
+            "q": "How do I apply for lump-sum payment?",
+            "a": "Between the 16th and month-end in January, March, June or September, look up your car on Wetax/Smart Wetax (ETAX in Seoul) and pay. Auto-debit does not apply."
+          },
+          {
+            "q": "Do I get a refund if I sell or scrap the car?",
+            "a": "Yes. Tax for the period after the transfer or deregistration date is refunded pro rata (Enforcement Decree Art. 126). Moving districts does not trigger a new charge."
+          },
+          {
+            "q": "Are compact cars exempt?",
+            "a": "No car tax exemption. Up to 1,000cc is 80 KRW/cc, so a 998cc car pays about 100,000 KRW a year including education tax."
+          },
+          {
+            "q": "How much is car tax on an EV?",
+            "a": "Non-commercial EVs and hydrogen cars pay 100,000 KRW plus 30,000 KRW education tax = 130,000 KRW. Commercial: 20,000 KRW. No age reduction."
+          },
+          {
+            "q": "How is vehicle age calculated?",
+            "a": "From the first registration date. Jan-Jun registrations: tax year − registration year + 1. Jul-Dec: June uses the difference, December adds 1. 5% off from year 3, up to 50% from year 12."
+          },
+          {
+            "q": "Are company cars taxed as commercial?",
+            "a": "No. Commercial means licensed transport businesses such as taxis, rental cars and freight carriers. Company passenger cars usually pay non-commercial rates."
+          },
+          {
+            "q": "How is this different from acquisition tax?",
+            "a": "Acquisition tax is paid once when you buy a car; car tax is paid every June and December while you own it."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Legal basis and official sites",
+        "items": [
+          {
+            "label": "Local Tax Act Art. 127 (rates, age reduction)",
+            "url": "https://www.law.go.kr/법령/지방세법/제127조"
+          },
+          {
+            "label": "Local Tax Act Art. 128 (due dates, lump sum)",
+            "url": "https://www.law.go.kr/법령/지방세법/제128조"
+          },
+          {
+            "label": "Enforcement Decree Arts. 122, 125, 126",
+            "url": "https://www.law.go.kr/법령/지방세법시행령"
+          },
+          {
+            "label": "Local Tax Act Art. 151 (education tax)",
+            "url": "https://www.law.go.kr/법령/지방세법/제151조"
+          },
+          {
+            "label": "Wetax",
+            "url": "https://www.wetax.go.kr"
+          },
+          {
+            "label": "Seoul ETAX",
+            "url": "https://etax.seoul.go.kr"
+          }
+        ],
+        "asOf": "Based on the 2026 Local Tax Act and Enforcement Decree (5% lump-sum rate)"
+      },
+      "links": {
+        "car-tax-calculator": "Car acquisition tax",
+        "car-loan-calculator": "Car loan",
+        "fuel-calculator": "Fuel cost",
+        "car-maintenance": "Car maintenance"
+      }
+    }
+  },
   "paySlip": {},
   "receiptGenerator": {
     "title": "Receipt Generator",

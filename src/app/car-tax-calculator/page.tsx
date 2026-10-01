@@ -140,6 +140,7 @@ export default function CarTaxCalculatorPage() {
             <li><strong>공채 즉시 매도:</strong> 의무 매입 공채는 즉시 할인 매도하면 차액만 부담해 비용을 최소화합니다.</li>
             <li><strong>지역별 공채율 확인:</strong> 공채 매입률은 등록 지역에 따라 다르므로 관할 시·도를 확인하세요.</li>
             <li><strong>중고차 시가표준액:</strong> 중고차는 실거래가와 시가표준액 중 높은 값 기준이니 차액을 미리 파악하세요.</li>
+            <li><strong>매년 내는 자동차세:</strong> 6월·12월 자동차세와 1월 연납 할인은 <a href="/annual-car-tax/" className="text-primary underline">자동차세 계산기</a>에서 계산하세요.</li>
           </ul>
         </div>
       </section>
