@@ -49669,6 +49669,237 @@
   "brokerageFee": {},
   "annualCarTax": {},
   "paySlip": {},
-  "receiptGenerator": {},
+  "receiptGenerator": {
+    "title": "Receipt Generator",
+    "description": "Rent, club dues, second-hand sales or money received between individuals: fill in the blanks and get a simple Korean receipt with the amount in Korean words, two copies with a cut line, a seal and PDF export.",
+    "won": "KRW",
+    "section": {
+      "purpose": "What was the payment for",
+      "amount": "Amount",
+      "buyer": "Payer (who paid)",
+      "issuer": "Issuer (who received the money)",
+      "info": "Receipt details"
+    },
+    "sectionHint": {
+      "purpose": "Pick a purpose to prefill the description, wording and items. Edit freely afterwards.",
+      "buyer": "The person who takes the receipt. Printed as 'To: ○○○'.",
+      "issuer": "The person who received the money and signs the receipt (supplier). Add a business registration number if you are a business."
+    },
+    "purpose": "Purpose",
+    "purposes": {
+      "general": "General (goods/services)",
+      "rent": "Rent & maintenance",
+      "dues": "Club dues",
+      "money": "Money received",
+      "used": "Second-hand sale",
+      "lesson": "Lesson fee",
+      "custom": "Custom"
+    },
+    "subject": "Description",
+    "subjectPlaceholder": "e.g. October rent, club dues, repair fee",
+    "inputMode": "Input",
+    "inputModes": {
+      "items": "Itemized",
+      "amount": "Amount only"
+    },
+    "item": {
+      "name": "Item",
+      "namePlaceholder": "Item name",
+      "qty": "Qty",
+      "price": "Unit price",
+      "add": "Add item",
+      "remove": "Remove item"
+    },
+    "amount": "Amount received",
+    "amountSupply": "Supply value (before VAT)",
+    "amountOverride": "Amount received (optional)",
+    "amountOverrideHint": "Leave empty to use the item total of {sum} KRW. Enter only if the money actually received differs.",
+    "vat": "VAT",
+    "vats": {
+      "none": "None",
+      "excl": "Excluded (added)",
+      "incl": "Included in price"
+    },
+    "pay": "Payment method",
+    "pays": {
+      "cash": "Cash",
+      "transfer": "Bank transfer",
+      "card": "Card"
+    },
+    "summary": {
+      "total": "Amount received",
+      "supply": "Supply value",
+      "vat": "VAT"
+    },
+    "buyer": "Payer name / company",
+    "buyerPlaceholder": "Hong Gildong",
+    "issuerName": "Issuer name / company",
+    "issuerNamePlaceholder": "Kim Cheolsu or ○○ Store",
+    "issuerBiz": "Business registration no. (optional)",
+    "issuerBizHint": "Leave empty if you are an individual.",
+    "bizValid": "Format and check digit are valid.",
+    "bizInvalid": "Invalid number. Check the 10 digits and the final check digit.",
+    "issuerAddress": "Address",
+    "issuerAddressPlaceholder": "00 ○○-ro, ○○-gu, Seoul",
+    "issuerPhone": "Phone",
+    "no": "Receipt no.",
+    "date": "Date (payment received)",
+    "note": "Note",
+    "notePlaceholder": "e.g. bank account, item condition, balance due",
+    "copies": "Print 2 copies (supplier / payer)",
+    "copiesHint": "Prints the same receipt twice on one A4 sheet with a cut line. Cut and keep one each.",
+    "insight": {
+      "noAmount": "Enter the amount received.",
+      "mismatch": "The item total is {sum} KRW but the amount received is {total} KRW. Make them match.",
+      "bizInvalid": "The business registration number is invalid. Leave it empty if you are an individual.",
+      "vatNoBiz": "Only registered businesses may charge VAT. For transactions between individuals, set VAT to 'None'.",
+      "cashReceipt": "If your business is in a mandatory cash-receipt industry, you must issue a cash receipt for cash or bank-transfer payments of {min} KRW or more even if the customer does not ask. This receipt does not replace it, and the penalty is 20% of the unissued amount.",
+      "tooMany": "With 2 copies, more than {n} items may not fit on half a page. Group items or turn off 2-copy printing.",
+      "card": "For card payments, the card sales slip is the official proof. Use this receipt for confirmation only.",
+      "proof": "If the payer is a business claiming this as an expense, transactions over {limit} KRW need a tax invoice, card slip or cash receipt. With only a simple receipt, a 2% penalty applies.",
+      "notSubstitute": "A simple receipt confirms that money changed hands. It does not replace a tax invoice or cash receipt."
+    },
+    "guide": {
+      "title": "Receipt essentials",
+      "intro": "A receipt is a document in which the recipient confirms 'I received this amount for this purpose'. There is no fixed format: the amount, purpose, date and the recipient's signature or seal are enough. For business tax purposes, however, statutory proof such as tax invoices or cash receipts is required separately.",
+      "sections": [
+        {
+          "title": "Receipts between individuals",
+          "items": [
+            "The payer may demand a receipt from the person who received the payment (Civil Act Article 474).",
+            "For rent, club dues or second-hand sales between non-businesses, a receipt prevents disputes about whether payment was made.",
+            "Write the amount in both Korean words and digits to make alteration difficult.",
+            "Make two copies and keep one each."
+          ]
+        },
+        {
+          "title": "Simple receipts and expenses (30,000 KRW rule)",
+          "items": [
+            "For business expenses of 30,000 KRW or less per transaction (VAT included), a simple receipt is acceptable proof (Corporate Tax Act Enforcement Decree Art. 158).",
+            "Above 30,000 KRW, you must obtain a tax invoice, invoice, card sales slip or cash receipt.",
+            "With only a simple receipt, the expense may still be deductible but a 2% penalty on the amount applies (Corporate Tax Act Art. 75-5, Income Tax Act Art. 81-6).",
+            "Business entertainment expenses over 30,000 KRW per transaction without a card slip or tax invoice are not deductible at all (200,000 KRW for congratulatory/condolence gifts)."
+          ]
+        },
+        {
+          "title": "Tax invoice vs cash receipt vs simple receipt",
+          "items": [
+            "Tax invoice: issued between businesses. Counts for input VAT credit and expense proof.",
+            "Card sales slip: the card payment itself is official proof. No separate receipt needed.",
+            "Cash receipt: reported to the National Tax Service for cash or transfer payments. Individuals get an income deduction; businesses use it as expense proof.",
+            "Simple receipt (this form): confirms payment. Valid as expense proof up to 30,000 KRW and as evidence between individuals; no VAT credit."
+          ]
+        },
+        {
+          "title": "Mandatory cash-receipt industries",
+          "items": [
+            "Clinics, academies, professionals such as lawyers and tax accountants, restaurants and lodging, real-estate brokers, interior work and other designated industries must issue a cash receipt for cash transactions of 100,000 KRW or more even without a request (Income Tax Act Art. 162-3).",
+            "Bank transfers count as cash transactions for tax purposes.",
+            "If you do not know the customer's details, self-issue within 5 days using the NTS designated number 010-000-1234.",
+            "Failure to issue incurs a penalty of 20% of the unissued amount. A simple receipt cannot replace it."
+          ]
+        },
+        {
+          "title": "Proof tips for personal money transfers",
+          "items": [
+            "Use bank transfers when possible and put the purpose (e.g. October rent) in the memo.",
+            "If you paid in cash, get a receipt on the spot.",
+            "A receipt only proves payment was received. For a loan, write a separate IOU with repayment terms.",
+            "For second-hand sales, note the item's condition and any disclosed defects in the note field."
+          ]
+        },
+        {
+          "title": "How to fill it in",
+          "items": [
+            "Numbering receipts makes it easy to match them with your ledger or bank statement.",
+            "Be specific in the description, e.g. 'October rent and maintenance'.",
+            "The recipient must sign or seal it. Seal any corrections too.",
+            "Only registered businesses may charge VAT. Set VAT to 'None' for transactions between individuals."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is there a required receipt format?",
+            "a": "No. A receipt needs the amount, purpose, date, the payer, and the recipient's signature or seal. Write the amount in Korean words and digits, and make two copies so each side keeps one."
+          },
+          {
+            "q": "Up to what amount is a simple receipt accepted as an expense?",
+            "a": "Business expenses of 30,000 KRW or less per transaction (VAT included) can be proven with a simple receipt. Above that, you need a tax invoice, card slip or cash receipt; otherwise a 2% penalty applies."
+          },
+          {
+            "q": "Do individuals need receipts when trading with each other?",
+            "a": "It is not mandatory but it is safer. Under Civil Act Article 474, the payer may demand a receipt, and for cash payments a receipt is often the only evidence."
+          },
+          {
+            "q": "Can I give this receipt instead of a cash receipt?",
+            "a": "No. Businesses in mandatory cash-receipt industries must issue a cash receipt for cash or transfer payments of 100,000 KRW or more. A simple receipt cannot replace it, and the penalty is 20% of the unissued amount."
+          },
+          {
+            "q": "Can an individual add VAT to a receipt?",
+            "a": "VAT is collected and filed by registered taxable businesses. In transactions between non-business individuals, do not add VAT; just write the amount."
+          },
+          {
+            "q": "How is a receipt different from an IOU?",
+            "a": "A receipt only confirms that money was received. If the money was lent, write a separate IOU with the repayment date and interest so you have grounds to get it back."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Quote & statement generator",
+          "href": "/invoice-generator/"
+        },
+        {
+          "label": "Number to Korean amount",
+          "href": "/number-to-korean/"
+        },
+        {
+          "label": "Stamp generator",
+          "href": "/stamp-generator/"
+        },
+        {
+          "label": "IOU generator",
+          "href": "/iou-generator/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Civil Act Art. 474 (Right to demand a receipt) — Korean Law Information Center",
+          "url": "https://www.law.go.kr/법령/민법/제474조"
+        },
+        {
+          "label": "Corporate Tax Act Art. 116 (Receipt and retention of expense proof)",
+          "url": "https://www.law.go.kr/법령/법인세법/제116조"
+        },
+        {
+          "label": "Corporate Tax Act Enforcement Decree Art. 158 (30,000 KRW exception)",
+          "url": "https://www.law.go.kr/법령/법인세법시행령/제158조"
+        },
+        {
+          "label": "Corporate Tax Act Art. 75-5 (2% penalty for missing proof)",
+          "url": "https://www.law.go.kr/법령/법인세법/제75조의5"
+        },
+        {
+          "label": "Income Tax Act Art. 160-2 (Expense proof)",
+          "url": "https://www.law.go.kr/법령/소득세법/제160조의2"
+        },
+        {
+          "label": "Income Tax Act Art. 162-3 (Cash receipt merchant obligations)",
+          "url": "https://www.law.go.kr/법령/소득세법/제162조의3"
+        },
+        {
+          "label": "Corporate Tax Act Art. 25 (Entertainment expenses)",
+          "url": "https://www.law.go.kr/법령/법인세법/제25조"
+        },
+        {
+          "label": "NTS Hometax — cash receipts",
+          "url": "https://www.hometax.go.kr"
+        }
+      ]
+    }
+  },
   "leaseContract": {}
 }
