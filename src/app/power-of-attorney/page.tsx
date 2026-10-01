@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/power-of-attorney.png', width: 1200, height: 630, alt: '위임장 양식 작성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '위임장 양식 작성기',
     description: '용도별 위임장을 빈칸만 채워 PDF로',
+    images: ['https://toolhub.ai.kr/og/power-of-attorney.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/power-of-attorney/',

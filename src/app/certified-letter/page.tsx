@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/certified-letter.png', width: 1200, height: 630, alt: '내용증명 양식 작성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '내용증명 양식 작성기',
     description: '목적만 고르면 완성되는 내용증명 PDF',
+    images: ['https://toolhub.ai.kr/og/certified-letter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/certified-letter/',

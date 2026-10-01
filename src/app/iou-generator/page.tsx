@@ -13,13 +13,11 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/iou-generator',
     siteName: '툴허브',
     locale: 'ko_KR',
-    type: 'website',
-  },
+    type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/iou-generator.png', width: 1200, height: 630, alt: '차용증 양식 작성기' }] },
   twitter: {
     card: 'summary_large_image',
     title: '차용증 양식 작성기',
-    description: '빈칸만 채우면 완성되는 차용증 PDF',
-  },
+    description: '빈칸만 채우면 완성되는 차용증 PDF', images: ['https://toolhub.ai.kr/og/iou-generator.png'] },
   alternates: {
     canonical: 'https://toolhub.ai.kr/iou-generator/',
   },

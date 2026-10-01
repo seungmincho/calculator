@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/resignation-letter.png', width: 1200, height: 630, alt: '사직서 양식 작성기' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '사직서 양식 작성기',
     description: '사유만 고르면 완성되는 사직서 PDF',
+    images: ['https://toolhub.ai.kr/og/resignation-letter.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/resignation-letter/',
