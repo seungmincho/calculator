@@ -1,1187 +1,523 @@
 'use client'
 
-// ============================================================
-// Translation keys used (namespace: incomeTaxCalc)
-// ============================================================
-// title, description, disclaimer
-//
-// --- Tabs ---
-// tabIncome, tabDeduction, tabResult
-//
-// --- Income Tab ---
-// incomeType, incomeTypeBusiness, incomeTypeOther
-// totalRevenue, totalRevenuePlaceholder
-// expenseMethod, expenseSimple, expenseStandard, expenseDirect
-// occupation, occupationCustom
-// occupationIT, occupationSW, occupationWriter, occupationDesigner
-// occupationLecturer, occupationAcademyLecturer, occupationYoutuber
-// occupationRider, occupationDriver, occupationInsurance
-// simpleExpenseRate, standardExpenseRate, customExpenseRate
-// otherIncome, otherIncomePlaceholder, otherIncomeDesc
-// withholdingTax, withholdingTaxAuto, withholdingTaxManual, withholdingTaxDesc
-// majorExpenses, majorExpensesPurchase, majorExpensesRent, majorExpensesLabor
-// directExpenseAmount, directExpensePlaceholder
-// won, percent
-//
-// --- Deduction Tab ---
-// personalDeduction, personalDeductionSelf, personalDeductionSpouse
-// personalDeductionParents, personalDeductionChildren, personalDeductionDependents
-// persons, personalDeductionDesc
-// nationalPension, nationalPensionPlaceholder, nationalPensionDesc
-// healthInsurance, healthInsurancePlaceholder, healthInsuranceDesc
-// pensionSavings, pensionSavingsPlaceholder, pensionSavingsDesc, pensionSavingsLimit
-// childTaxCredit, childTaxCreditDesc
-// childCount
-//
-// --- Result Tab ---
-// resultTitle, resultSummary
-// stepRevenue, stepExpense, stepBusinessIncome, stepTaxBase
-// stepCalculatedTax, stepFinalTax
-// appliedExpenseRate, expenseAmount
-// incomeDeductionTotal, personalDeductionAmount
-// nationalPensionDeduction, healthInsuranceDeduction
-// taxableBase, taxRate, progressiveDeduction
-// calculatedTax, taxCredits
-// standardTaxCredit, childTaxCreditAmount, pensionTaxCredit, efilingCredit
-// determinedTax, localIncomeTax, totalTaxDue
-// prepaidIncomeTax, prepaidLocalTax, prepaidTotal
-// finalResult, refund, additionalPayment, breakeven
-//
-// --- Comparison ---
-// comparisonTitle, comparisonDesc
-// comparisonSimple, comparisonStandard
-// comparisonExpense, comparisonTax, comparisonDiff, comparisonBetter
-//
-// --- Guide ---
-// guideTitle
-// guideWhoTitle, guideWhoItems
-// guideExpenseTitle, guideExpenseItems
-// guideDeadlineTitle, guideDeadlineItems
-// guideTipTitle, guideTipItems
-// ============================================================
+// 종합소득세 계산기 (2025년 귀속, 2026년 5월 신고). 계산 로직: src/utils/incomeTax.ts (회귀 체크 scripts/check-income-tax.ts)
+// i18n: incomeTaxCalc.it.* (새 키), title·won·disclaimer (기존 키). 업종명은 freelancerTax.ft.ind.* 재사용.
 
-import { useState, useCallback, useMemo, Suspense } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Calculator, FileText, Settings, BarChart3, AlertTriangle, Info, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { AlertCircle, ExternalLink } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import { INDUSTRIES, industryOf, isDoubleEntry, SIMPLE_PREV_LIMIT } from '@/utils/freelancerTax'
+import { calc, eligibleMethod, BRACKETS, OTHER_SEPARATE_LIMIT, type Input, type Method } from '@/utils/incomeTax'
 
-// --- Occupation data ---
-interface OccupationInfo {
-  code: string
-  labelKey: string
-  simpleRate: number     // 단순경비율 (일반)
-  simpleExcessRate: number // 단순경비율 (초과, 4000만 이상분)
-  standardRate: number   // 기준경비율
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const man = (n: number) => won(n / 10_000)
+const digits = (v: string) => v.replace(/[^0-9]/g, '').slice(0, 12)
+const num = (v: string) => parseInt(v, 10) || 0
+
+const METHODS: Method[] = ['simple', 'standard', 'book']
+const TYPES = ['b', 'w', 'o', 'f'] as const // 사업·근로·기타·금융
+type TypeKey = (typeof TYPES)[number]
+const TYPE_NAME: Record<TypeKey, string> = { b: 'biz', w: 'wage', o: 'other', f: 'fin' }
+
+// 금액 입력 → URL 파라미터 (revenue·occ·method는 예전 링크와 호환)
+const MONEY = {
+  revenue: 'revenue', prev: 'prev', major: 'major', book: 'book', salary: 'salary', wageTax: 'wtax',
+  otherDeduction: 'odd', otherCredit: 'ocr', otherPay: 'other', finIncome: 'fin', pension: 'np', yellow: 'yu',
+  pensionSavings: 'ps', irp: 'irp', midterm: 'mid',
+} as const
+type MoneyKey = keyof typeof MONEY
+const DEFAULT_MONEY: Record<MoneyKey, string> = {
+  revenue: '30000000', prev: '25000000', major: '0', book: '0', salary: '40000000', wageTax: '',
+  otherDeduction: '0', otherCredit: '0', otherPay: '5000000', finIncome: '30000000', pension: '0', yellow: '0',
+  pensionSavings: '0', irp: '0', midterm: '0',
 }
+const COUNTS = { persons: 'p', elderly: 'el', disabled: 'dis', children: 'c' } as const
+type CountKey = keyof typeof COUNTS
+const DEFAULT_COUNTS: Record<CountKey, number> = { persons: 1, elderly: 0, disabled: 0, children: 0 }
 
-const OCCUPATIONS: OccupationInfo[] = [
-  { code: '940909', labelKey: 'occupationIT', simpleRate: 0.641, simpleExcessRate: 0.641, standardRate: 0.117 },
-  { code: '940926', labelKey: 'occupationSW', simpleRate: 0.641, simpleExcessRate: 0.641, standardRate: 0.117 },
-  { code: '940100', labelKey: 'occupationWriter', simpleRate: 0.587, simpleExcessRate: 0.587, standardRate: 0.103 },
-  { code: '940200', labelKey: 'occupationDesigner', simpleRate: 0.723, simpleExcessRate: 0.723, standardRate: 0.138 },
-  { code: '940600', labelKey: 'occupationLecturer', simpleRate: 0.584, simpleExcessRate: 0.584, standardRate: 0.101 },
-  { code: '940903', labelKey: 'occupationAcademyLecturer', simpleRate: 0.617, simpleExcessRate: 0.617, standardRate: 0.113 },
-  { code: '940306', labelKey: 'occupationYoutuber', simpleRate: 0.641, simpleExcessRate: 0.641, standardRate: 0.117 },
-  { code: '940918', labelKey: 'occupationRider', simpleRate: 0.794, simpleExcessRate: 0.794, standardRate: 0.222 },
-  { code: '940913', labelKey: 'occupationDriver', simpleRate: 0.737, simpleExcessRate: 0.737, standardRate: 0.186 },
-  { code: '940906', labelKey: 'occupationInsurance', simpleRate: 0.776, simpleExcessRate: 0.776, standardRate: 0.201 },
-]
-
-// --- Helper functions ---
-function formatWon(value: number): string {
-  return Math.round(value).toLocaleString('ko-KR')
-}
-
-function parseNum(str: string): number {
-  return Number(str.replace(/,/g, '')) || 0
-}
-
-function formatInput(str: string): string {
-  const num = str.replace(/[^\d]/g, '')
-  if (!num) return ''
-  return Number(num).toLocaleString('ko-KR')
-}
-
-// 누진세율 계산 (8구간)
-function calcProgressiveTax(taxBase: number): { rate: number; deduction: number; tax: number } {
-  const brackets = [
-    { limit: 14_000_000, rate: 0.06, deduction: 0 },
-    { limit: 50_000_000, rate: 0.15, deduction: 1_260_000 },
-    { limit: 88_000_000, rate: 0.24, deduction: 5_760_000 },
-    { limit: 150_000_000, rate: 0.35, deduction: 15_440_000 },
-    { limit: 300_000_000, rate: 0.38, deduction: 19_940_000 },
-    { limit: 500_000_000, rate: 0.40, deduction: 25_940_000 },
-    { limit: 1_000_000_000, rate: 0.42, deduction: 35_940_000 },
-    { limit: Infinity, rate: 0.45, deduction: 65_940_000 },
-  ]
-  for (const b of brackets) {
-    if (taxBase <= b.limit) {
-      return { rate: b.rate, deduction: b.deduction, tax: Math.max(0, taxBase * b.rate - b.deduction) }
-    }
-  }
-  return { rate: 0.45, deduction: 65_940_000, tax: Math.max(0, taxBase * 0.45 - 65_940_000) }
-}
-
-type IncomeType = 'business' | 'other'
-type ExpenseMethod = 'simple' | 'standard' | 'direct'
-type TabType = 'income' | 'deduction' | 'result'
-
-interface CalcResult {
-  revenue: number
-  expenseMethod: ExpenseMethod
-  expenseRate: number
-  expenseAmount: number
-  businessIncome: number
-  // other income
-  otherIncome: number
-  otherIncomeIncluded: boolean // 300만 초과 시 합산
-  // deductions
-  personalDeduction: number
-  pensionDeduction: number
-  healthDeduction: number
-  totalDeduction: number
-  taxBase: number
-  // tax
-  taxRate: number
-  progressiveDeduction: number
-  calculatedTax: number
-  // credits
-  standardCredit: number
-  childCredit: number
-  pensionCredit: number
-  efilingCredit: number
-  totalCredits: number
-  determinedTax: number
-  localTax: number
-  totalTaxDue: number
-  // prepaid
-  prepaidIncome: number
-  prepaidLocal: number
-  prepaidTotal: number
-  // final
-  finalAmount: number // negative = refund
-  // comparison
-  compSimpleExpense: number
-  compSimpleTax: number
-  compStandardExpense: number
-  compStandardTax: number
-}
-
-function IncomeTaxContent() {
-  const searchParams = useSearchParams()
+export default function IncomeTaxCalculator() {
   const t = useTranslations('incomeTaxCalc')
+  const tf = useTranslations('freelancerTax')
+  const searchParams = useSearchParams()
 
-  // --- Tab ---
-  const [activeTab, setActiveTab] = useState<TabType>('income')
+  const [types, setTypes] = useState<TypeKey[]>(['b'])
+  const [m, setM] = useState<Record<MoneyKey, string>>(DEFAULT_MONEY)
+  const [counts, setCounts] = useState<Record<CountKey, number>>(DEFAULT_COUNTS)
+  const [code, setCode] = useState('940909')
+  const [cSimple, setCSimple] = useState('64.1')
+  const [cStandard, setCStandard] = useState('17.4')
+  const [method, setMethod] = useState<Method | ''>('') // '' = 적용 대상 자동
+  const [w33, setW33] = useState(true)
+  const [oRate, setORate] = useState('60')
+  const [efiling, setEfiling] = useState(true)
+  const setMoney = (k: MoneyKey) => (v: string) => setM((s) => ({ ...s, [k]: v }))
 
-  // --- Income inputs ---
-  const [incomeType, setIncomeType] = useState<IncomeType>('business')
-  const [revenue, setRevenue] = useState(() => {
-    const v = searchParams.get('revenue')
-    return v ? formatInput(v) : ''
-  })
-  const [expenseMethod, setExpenseMethod] = useState<ExpenseMethod>(() => {
-    const v = searchParams.get('method')
-    return (v === 'simple' || v === 'standard' || v === 'direct') ? v : 'simple'
-  })
-  const [selectedOccupation, setSelectedOccupation] = useState<string>(() => {
-    return searchParams.get('occ') || '940909'
-  })
-  const [customSimpleRate, setCustomSimpleRate] = useState('64.1')
-  const [customStandardRate, setCustomStandardRate] = useState('11.7')
-  const [directExpense, setDirectExpense] = useState('')
-  // 기준경비율 주요경비
-  const [majorPurchase, setMajorPurchase] = useState('')
-  const [majorRent, setMajorRent] = useState('')
-  const [majorLabor, setMajorLabor] = useState('')
-  // 기타소득
-  const [otherIncome, setOtherIncome] = useState('')
-  // 기납부세액
-  const [withholdingMode, setWithholdingMode] = useState<'auto' | 'manual'>('auto')
-  const [manualWithholding, setManualWithholding] = useState('')
+  // URL → 상태 (최초 1회)
+  const loaded = useRef(false)
+  useEffect(() => {
+    if (loaded.current) return
+    loaded.current = true
+    const g = (k: string) => searchParams.get(k)
+    const inc = g('inc')
+    if (inc) { const v = TYPES.filter((x) => inc.includes(x)); if (v.length) setTypes(v) }
+    const money: Partial<Record<MoneyKey, string>> = {}
+    for (const k of Object.keys(MONEY) as MoneyKey[]) { const v = g(MONEY[k]); if (v != null && /^\d{0,12}$/.test(v)) money[k] = v }
+    if (Object.keys(money).length) setM((s) => ({ ...s, ...money }))
+    const c: Partial<Record<CountKey, number>> = {}
+    for (const k of Object.keys(COUNTS) as CountKey[]) { const v = Number(g(COUNTS[k])); if (g(COUNTS[k]) && Number.isInteger(v) && v >= 0 && v <= 10) c[k] = v }
+    if (Object.keys(c).length) setCounts((s) => ({ ...s, ...c, persons: Math.max(1, c.persons ?? s.persons) }))
+    const occ = g('occ')
+    if (occ && (occ === 'custom' || INDUSTRIES.some((x) => x.code === occ))) setCode(occ)
+    const rate = (k: string, set: (v: string) => void) => { const v = g(k); if (v && /^\d{1,3}(\.\d)?$/.test(v)) set(v) }
+    rate('cs', setCSimple); rate('cd', setCStandard); rate('or', setORate)
+    const mt = g('method')
+    if (mt === 'simple' || mt === 'standard' || mt === 'book') setMethod(mt)
+    else if (mt === 'direct') setMethod('book') // 예전 '직접입력'
+    if (g('w33') === '0') setW33(false)
+    if (g('ef') === '0') setEfiling(false)
+  }, [searchParams])
 
-  // --- Deduction inputs ---
-  const [hasSpouse, setHasSpouse] = useState(false)
-  const [parentCount, setParentCount] = useState('0')
-  const [childrenCount, setChildrenCount] = useState('0')
-  const [dependentCount, setDependentCount] = useState('0')
-  const [pensionAmount, setPensionAmount] = useState('')
-  const [healthAmount, setHealthAmount] = useState('')
-  const [pensionSavings, setPensionSavings] = useState('')
-  const [childCreditCount, setChildCreditCount] = useState('0')
-
-  // --- Guide toggle ---
-  const [showGuide, setShowGuide] = useState(false)
-
-  // --- Get occupation info ---
-  const getOccupation = useCallback((): OccupationInfo => {
-    if (selectedOccupation === 'custom') {
-      return {
-        code: 'custom',
-        labelKey: 'occupationCustom',
-        simpleRate: (parseFloat(customSimpleRate) || 0) / 100,
-        simpleExcessRate: (parseFloat(customSimpleRate) || 0) / 100,
-        standardRate: (parseFloat(customStandardRate) || 0) / 100,
-      }
-    }
-    return OCCUPATIONS.find(o => o.code === selectedOccupation) || OCCUPATIONS[0]
-  }, [selectedOccupation, customSimpleRate, customStandardRate])
-
-  // --- Calculation ---
-  const result = useMemo<CalcResult | null>(() => {
-    const rev = parseNum(revenue)
-    if (rev <= 0) return null
-
-    const occ = getOccupation()
-
-    // 1. 필요경비 계산
-    let expenseAmt = 0
-    let expRate = 0
-
-    if (expenseMethod === 'simple') {
-      // 단순경비율: 인적용역 수입 4000만 이하분 × 일반율, 초과분 × 초과율(배율 적용)
-      const threshold = 40_000_000
-      if (rev <= threshold) {
-        expenseAmt = rev * occ.simpleRate
-      } else {
-        expenseAmt = threshold * occ.simpleRate + (rev - threshold) * occ.simpleExcessRate
-      }
-      expRate = occ.simpleRate
-    } else if (expenseMethod === 'standard') {
-      // 기준경비율: 주요경비 + (수입 × 기준경비율)
-      const purchase = parseNum(majorPurchase)
-      const rent = parseNum(majorRent)
-      const labor = parseNum(majorLabor)
-      expenseAmt = purchase + rent + labor + rev * occ.standardRate
-      expRate = occ.standardRate
-    } else {
-      // 직접입력
-      expenseAmt = parseNum(directExpense)
-      expRate = rev > 0 ? expenseAmt / rev : 0
-    }
-
-    expenseAmt = Math.floor(expenseAmt)
-    const businessIncome = Math.max(0, rev - expenseAmt)
-
-    // 2. 기타소득 합산 여부 (연 300만 초과 시)
-    const otherInc = parseNum(otherIncome)
-    const otherExpense = otherInc * 0.6 // 기타소득 필요경비 60%
-    const otherNet = Math.max(0, otherInc - otherExpense)
-    const otherIncluded = otherNet > 3_000_000
-
-    // 3. 총소득
-    const totalIncome = businessIncome + (otherIncluded ? otherNet : 0)
-
-    // 4. 소득공제
-    const selfDeduction = 1_500_000
-    const spouseDeduction = hasSpouse ? 1_500_000 : 0
-    const parentDed = (parseInt(parentCount) || 0) * 1_500_000
-    const childDed = (parseInt(childrenCount) || 0) * 1_500_000
-    const dependentDed = (parseInt(dependentCount) || 0) * 1_500_000
-    const personalDeduction = selfDeduction + spouseDeduction + parentDed + childDed + dependentDed
-
-    const pensionDed = parseNum(pensionAmount) // 국민연금 전액
-    const healthDed = parseNum(healthAmount) // 건강보험 전액
-
-    const totalDeduction = personalDeduction + pensionDed + healthDed
-
-    // 5. 과세표준
-    const taxBase = Math.max(0, totalIncome - totalDeduction)
-
-    // 6. 산출세액
-    const { rate, deduction: progDed, tax: calcTax } = calcProgressiveTax(taxBase)
-    const calculatedTax = Math.floor(calcTax)
-
-    // 7. 세액공제
-    const standardCredit = 70_000 // 표준세액공제 7만원
-    const efilingCredit = 20_000 // 전자신고세액공제 2만원
-
-    // 자녀세액공제
-    const childCnt = parseInt(childCreditCount) || 0
-    let childCredit = 0
-    if (childCnt === 1) childCredit = 250_000
-    else if (childCnt === 2) childCredit = 550_000
-    else if (childCnt >= 3) childCredit = 550_000 + (childCnt - 2) * 400_000
-
-    // 연금저축/IRP 세액공제
-    const savingsAmt = parseNum(pensionSavings)
-    const savingsLimit = 9_000_000 // 한도 900만
-    const savingsBase = Math.min(savingsAmt, savingsLimit)
-    // 총급여 5500만 이하: 16.5%, 초과: 13.2%
-    // 사업소득자: 종합소득금액 4500만 이하 16.5%, 초과 13.2%
-    const pensionRate = totalIncome <= 45_000_000 ? 0.165 : 0.132
-    const pensionCredit = Math.floor(savingsBase * pensionRate)
-
-    const totalCredits = standardCredit + childCredit + pensionCredit + efilingCredit
-
-    // 8. 결정세액
-    const determinedTax = Math.max(0, calculatedTax - totalCredits)
-
-    // 9. 지방소득세
-    const localTax = Math.floor(determinedTax * 0.1)
-
-    const totalTaxDue = determinedTax + localTax
-
-    // 10. 기납부세액
-    let prepaidIncome = 0
-    let prepaidLocal = 0
-    if (withholdingMode === 'auto') {
-      // 사업소득 3.3% = 소득세 3% + 지방 0.3%
-      prepaidIncome = Math.floor(rev * 0.03)
-      prepaidLocal = Math.floor(rev * 0.003)
-      // 기타소득 22% 원천징수 (소득세 20% + 지방 2%)
-      if (otherInc > 0) {
-        prepaidIncome += Math.floor(otherInc * 0.20)
-        prepaidLocal += Math.floor(otherInc * 0.02)
-      }
-    } else {
-      prepaidIncome = parseNum(manualWithholding)
-      prepaidLocal = Math.floor(prepaidIncome * 0.1)
-    }
-    const prepaidTotal = prepaidIncome + prepaidLocal
-
-    // 11. 최종
-    const finalAmount = totalTaxDue - prepaidTotal // 양수: 추가납부, 음수: 환급
-
-    // 12. 비교 (단순 vs 기준)
-    // 단순경비율 기준 세금
-    let compSimpleExp = 0
-    if (rev <= 40_000_000) {
-      compSimpleExp = rev * occ.simpleRate
-    } else {
-      compSimpleExp = 40_000_000 * occ.simpleRate + (rev - 40_000_000) * occ.simpleExcessRate
-    }
-    compSimpleExp = Math.floor(compSimpleExp)
-    const compSimpleIncome = Math.max(0, rev - compSimpleExp)
-    const compSimpleBase = Math.max(0, compSimpleIncome - totalDeduction)
-    const compSimpleTaxCalc = calcProgressiveTax(compSimpleBase)
-    const compSimpleDetermined = Math.max(0, Math.floor(compSimpleTaxCalc.tax) - totalCredits)
-    const compSimpleFinal = compSimpleDetermined + Math.floor(compSimpleDetermined * 0.1)
-
-    // 기준경비율 기준 세금 (주요경비 현재 입력값 사용)
-    const purchase = parseNum(majorPurchase)
-    const rent = parseNum(majorRent)
-    const labor = parseNum(majorLabor)
-    const compStdExp = Math.floor(purchase + rent + labor + rev * occ.standardRate)
-    const compStdIncome = Math.max(0, rev - compStdExp)
-    const compStdBase = Math.max(0, compStdIncome - totalDeduction)
-    const compStdTaxCalc = calcProgressiveTax(compStdBase)
-    const compStdDetermined = Math.max(0, Math.floor(compStdTaxCalc.tax) - totalCredits)
-    const compStdFinal = compStdDetermined + Math.floor(compStdDetermined * 0.1)
-
-    return {
-      revenue: rev,
-      expenseMethod,
-      expenseRate: expRate,
-      expenseAmount: expenseAmt,
-      businessIncome,
-      otherIncome: otherNet,
-      otherIncomeIncluded: otherIncluded,
-      personalDeduction,
-      pensionDeduction: pensionDed,
-      healthDeduction: healthDed,
-      totalDeduction,
-      taxBase,
-      taxRate: rate,
-      progressiveDeduction: progDed,
-      calculatedTax,
-      standardCredit,
-      childCredit,
-      pensionCredit,
-      efilingCredit,
-      totalCredits,
-      determinedTax,
-      localTax,
-      totalTaxDue,
-      prepaidIncome,
-      prepaidLocal,
-      prepaidTotal,
-      finalAmount,
-      compSimpleExpense: compSimpleExp,
-      compSimpleTax: compSimpleFinal,
-      compStandardExpense: compStdExp,
-      compStandardTax: compStdFinal,
-    }
-  }, [
-    revenue, expenseMethod, selectedOccupation, customSimpleRate, customStandardRate,
-    directExpense, majorPurchase, majorRent, majorLabor, otherIncome,
-    hasSpouse, parentCount, childrenCount, dependentCount,
-    pensionAmount, healthAmount, pensionSavings, childCreditCount,
-    withholdingMode, manualWithholding, getOccupation,
-  ])
-
-  // --- URL sync ---
-  const updateURL = useCallback((params: Record<string, string>) => {
-    if (typeof window === 'undefined') return
+  // 상태 → URL (기본값과 다른 값만)
+  useEffect(() => {
+    if (!loaded.current) return
     const url = new URL(window.location.href)
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) url.searchParams.set(key, value)
-      else url.searchParams.delete(key)
-    })
-    window.history.replaceState({}, '', url)
-  }, [])
+    const q: Record<string, string> = {}
+    const inc = TYPES.filter((x) => types.includes(x)).join('')
+    if (inc !== 'b') q.inc = inc
+    for (const k of Object.keys(MONEY) as MoneyKey[]) if (m[k] !== DEFAULT_MONEY[k]) q[MONEY[k]] = m[k]
+    for (const k of Object.keys(COUNTS) as CountKey[]) if (counts[k] !== DEFAULT_COUNTS[k]) q[COUNTS[k]] = String(counts[k])
+    if (code !== '940909') q.occ = code
+    if (code === 'custom') { q.cs = cSimple; q.cd = cStandard }
+    if (method) q.method = method
+    if (oRate !== '60') q.or = oRate
+    if (!w33) q.w33 = '0'
+    if (!efiling) q.ef = '0'
+    const all = ['inc', 'occ', 'cs', 'cd', 'method', 'or', 'w33', 'ef', ...Object.values(MONEY), ...Object.values(COUNTS)]
+    for (const k of all) url.searchParams.delete(k)
+    for (const [k, v] of Object.entries(q)) url.searchParams.set(k, v)
+    window.history.replaceState(window.history.state, '', url)
+  }, [types, m, counts, code, cSimple, cStandard, method, oRate, w33, efiling])
 
-  const handleRevenueChange = useCallback((val: string) => {
-    const formatted = formatInput(val)
-    setRevenue(formatted)
-    updateURL({ revenue: val.replace(/[^\d]/g, '') })
-  }, [updateURL])
+  const on = (k: TypeKey) => types.includes(k)
+  const toggle = (k: TypeKey) => setTypes((s) => (s.includes(k) ? (s.length > 1 ? s.filter((x) => x !== k) : s) : [...s, k]))
 
-  const handleMethodChange = useCallback((method: ExpenseMethod) => {
-    setExpenseMethod(method)
-    updateURL({ method })
-  }, [updateURL])
+  const industry = useMemo(
+    () => industryOf(code, Math.min(99, parseFloat(cSimple) || 0), Math.min(99, parseFloat(cStandard) || 0)),
+    [code, cSimple, cStandard],
+  )
+  const rev = num(m.revenue), prv = num(m.prev)
+  const eligible = eligibleMethod(rev, prv)
+  const active: Method = method || eligible
 
-  const handleOccupationChange = useCallback((code: string) => {
-    setSelectedOccupation(code)
-    updateURL({ occ: code })
-  }, [updateURL])
+  const input: Input = {
+    biz: on('b'), revenue: rev, prev: prv, industry, method: active, major: num(m.major), bookExpense: num(m.book), withheld33: w33,
+    wage: on('w'), salary: num(m.salary), wageTax: m.wageTax === '' ? null : num(m.wageTax),
+    otherDeduction: num(m.otherDeduction), otherCredit: num(m.otherCredit),
+    other: on('o'), otherPay: num(m.otherPay), otherExpenseRate: Math.min(100, parseFloat(oRate) || 0),
+    fin: on('f'), finIncome: num(m.finIncome),
+    ...counts, pension: num(m.pension), yellow: num(m.yellow), pensionSavings: num(m.pensionSavings), irp: num(m.irp),
+    midterm: num(m.midterm), efiling,
+  }
+  const res = calc(input)
+  const compare = on('b') ? METHODS.map((x) => calc({ ...input, method: x })) : []
 
-  // --- Tab components ---
-  const tabs: { key: TabType; labelKey: string; icon: React.ReactNode }[] = [
-    { key: 'income', labelKey: 'tabIncome', icon: <FileText className="w-4 h-4" /> },
-    { key: 'deduction', labelKey: 'tabDeduction', icon: <Settings className="w-4 h-4" /> },
-    { key: 'result', labelKey: 'tabResult', icon: <BarChart3 className="w-4 h-4" /> },
-  ]
+  const kind = res.refund > 0 ? 'refund' : res.refund < 0 ? 'pay' : 'zero'
+  const headline = kind === 'zero' ? t('it.hero.zero') : t(`it.hero.${kind}`, { amount: won(Math.abs(res.refund)) })
+  const methodName = (x: Method) => t(`it.method.${x}`)
+  const typeNames = TYPES.filter(on).map((x) => t(`it.type.${TYPE_NAME[x]}`)).join(' + ')
+  const rateIdx = BRACKETS.findIndex((b) => b.rate === res.marginal)
+  const nextGap = rateIdx < BRACKETS.length - 1 && res.fin === 0 ? BRACKETS[rateIdx].upTo - res.taxBase : null
+  const pct = (r: number) => `${Math.round(r * 1000) / 10}%`
 
-  const inputClass = `${glassInput} px-3 py-2`
-  const labelClass = 'block text-sm font-medium text-body mb-1'
-  const cardClass = `${glassCard} ${glassInset} p-6`
-  const selectClass = `${glassInput} px-3 py-2`
+  const field = 'ui-field w-full px-4 py-3 text-sm'
+  const seg = (sel: boolean) => `flex-1 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${sel ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const W = t('won')
+  const minus = (n: number) => `−${won(n)}`
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('it.subtitle')}</p>
       </div>
 
-      {/* Disclaimer */}
-      <div className="flex items-start gap-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-        <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-amber-800 dark:text-amber-300">{t('disclaimer')}</p>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex border-b border-line">
-        {tabs.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === tab.key
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
-            }`}
-          >
-            {tab.icon}
-            {t(tab.labelKey)}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab: Income */}
-      {activeTab === 'income' && (
-        <div className={cardClass}>
-          <div className="space-y-5">
-            {/* Income Type */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-1 space-y-4 min-w-0">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className={labelClass}>{t('incomeType')}</label>
-              <div className="flex gap-3">
-                {(['business', 'other'] as const).map(type => (
-                  <label key={type} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="incomeType"
-                      checked={incomeType === type}
-                      onChange={() => setIncomeType(type)}
-                      className="accent-blue-600"
-                    />
-                    <span className="text-sm text-body">
-                      {t(type === 'business' ? 'incomeTypeBusiness' : 'incomeTypeOther')}
-                    </span>
-                  </label>
+              <div className="block text-sm font-medium text-body mb-1.5">{t('it.in.types')}</div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {TYPES.map((x) => (
+                  <button key={x} type="button" aria-pressed={on(x)} onClick={() => toggle(x)} className={seg(on(x))}>
+                    {t(`it.type.${TYPE_NAME[x]}`)}
+                  </button>
                 ))}
               </div>
+              <p className="text-xs text-muted mt-1.5">{t('it.in.typesHint')}</p>
             </div>
 
-            {/* Revenue */}
-            <div>
-              <label className={labelClass}>{t('totalRevenue')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={revenue}
-                  onChange={e => handleRevenueChange(e.target.value)}
-                  placeholder={t('totalRevenuePlaceholder')}
-                  className={inputClass}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-            </div>
-
-            {/* Occupation */}
-            {incomeType === 'business' && (
-              <div>
-                <label className={labelClass}>{t('occupation')}</label>
-                <select
-                  value={selectedOccupation}
-                  onChange={e => handleOccupationChange(e.target.value)}
-                  className={selectClass}
-                >
-                  {OCCUPATIONS.map(occ => (
-                    <option key={occ.code} value={occ.code}>
-                      {t(occ.labelKey)} ({occ.code}) - {t('simpleExpenseRate')} {(occ.simpleRate * 100).toFixed(1)}%
-                    </option>
-                  ))}
-                  <option value="custom">{t('occupationCustom')}</option>
-                </select>
-
-                {selectedOccupation === 'custom' && (
-                  <div className="mt-3 grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-xs text-muted">{t('simpleExpenseRate')}</label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={customSimpleRate}
-                          onChange={e => setCustomSimpleRate(e.target.value)}
-                          className={inputClass}
-                        />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('percent')}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted">{t('standardExpenseRate')}</label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={customStandardRate}
-                          onChange={e => setCustomStandardRate(e.target.value)}
-                          className={inputClass}
-                        />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('percent')}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Expense Method */}
-            {incomeType === 'business' && (
-              <div>
-                <label className={labelClass}>{t('expenseMethod')}</label>
-                <div className="flex flex-wrap gap-2">
-                  {(['simple', 'standard', 'direct'] as const).map(method => (
-                    <button
-                      key={method}
-                      onClick={() => handleMethodChange(method)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        expenseMethod === method
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                      }`}
-                    >
-                      {t(method === 'simple' ? 'expenseSimple' : method === 'standard' ? 'expenseStandard' : 'expenseDirect')}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Simple rate display */}
-                {expenseMethod === 'simple' && revenue && (
-                  <div className="mt-3 bg-subtle rounded-lg p-3">
-                    <p className="text-sm text-sub">
-                      {t('appliedExpenseRate')}: {(getOccupation().simpleRate * 100).toFixed(1)}% → {t('expenseAmount')}: {formatWon(parseNum(revenue) * getOccupation().simpleRate)}{t('won')}
-                    </p>
-                  </div>
-                )}
-
-                {/* Standard: major expenses */}
-                {expenseMethod === 'standard' && (
-                  <div className="mt-3 space-y-3">
-                    <p className="text-sm text-muted flex items-center gap-1">
-                      <Info className="w-4 h-4" />
-                      {t('majorExpenses')}
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="text-xs text-muted">{t('majorExpensesPurchase')}</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={majorPurchase}
-                          onChange={e => setMajorPurchase(formatInput(e.target.value))}
-                          className={inputClass}
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs text-muted">{t('majorExpensesRent')}</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={majorRent}
-                          onChange={e => setMajorRent(formatInput(e.target.value))}
-                          className={inputClass}
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs text-muted">{t('majorExpensesLabor')}</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={majorLabor}
-                          onChange={e => setMajorLabor(formatInput(e.target.value))}
-                          className={inputClass}
-                        />
-                      </div>
-                    </div>
-                    <div className="bg-subtle rounded-lg p-3">
-                      <p className="text-sm text-sub">
-                        {t('standardExpenseRate')}: {(getOccupation().standardRate * 100).toFixed(1)}%
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Direct expense */}
-                {expenseMethod === 'direct' && (
-                  <div className="mt-3">
-                    <label className="text-xs text-muted">{t('directExpenseAmount')}</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        value={directExpense}
-                        onChange={e => setDirectExpense(formatInput(e.target.value))}
-                        placeholder={t('directExpensePlaceholder')}
-                        className={inputClass}
-                      />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Other income */}
-            <div>
-              <label className={labelClass}>{t('otherIncome')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={otherIncome}
-                  onChange={e => setOtherIncome(formatInput(e.target.value))}
-                  placeholder={t('otherIncomePlaceholder')}
-                  className={inputClass}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-              <p className="text-xs text-faint mt-1">{t('otherIncomeDesc')}</p>
-            </div>
-
-            {/* Withholding tax */}
-            <div>
-              <label className={labelClass}>{t('withholdingTax')}</label>
-              <div className="flex gap-3 mb-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="withholding"
-                    checked={withholdingMode === 'auto'}
-                    onChange={() => setWithholdingMode('auto')}
-                    className="accent-blue-600"
-                  />
-                  <span className="text-sm text-body">{t('withholdingTaxAuto')}</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="withholding"
-                    checked={withholdingMode === 'manual'}
-                    onChange={() => setWithholdingMode('manual')}
-                    className="accent-blue-600"
-                  />
-                  <span className="text-sm text-body">{t('withholdingTaxManual')}</span>
-                </label>
-              </div>
-              {withholdingMode === 'auto' && revenue && (
-                <p className="text-sm text-muted">
-                  {t('withholdingTaxDesc')}: {formatWon(parseNum(revenue) * 0.033)}{t('won')} (3.3%)
-                </p>
-              )}
-              {withholdingMode === 'manual' && (
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={manualWithholding}
-                    onChange={e => setManualWithholding(formatInput(e.target.value))}
-                    className={inputClass}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Next tab button */}
-            <button
-              onClick={() => setActiveTab('deduction')}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
-            >
-              {t('tabDeduction')} →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Tab: Deduction */}
-      {activeTab === 'deduction' && (
-        <div className={cardClass}>
-          <div className="space-y-5">
-            {/* Personal deduction */}
-            <div>
-              <label className={labelClass}>{t('personalDeduction')}</label>
-              <p className="text-xs text-faint mb-3">{t('personalDeductionDesc')}</p>
-              <div className="space-y-3">
-                {/* Self - always checked */}
-                <div className="flex items-center justify-between py-2 px-3 bg-subtle rounded-lg">
-                  <span className="text-sm text-body">{t('personalDeductionSelf')}</span>
-                  <span className="text-sm font-medium text-blue-600 dark:text-blue-400">150{t('won')}</span>
-                </div>
-
-                {/* Spouse */}
-                <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={hasSpouse}
-                      onChange={e => setHasSpouse(e.target.checked)}
-                      className="accent-blue-600 w-4 h-4"
-                    />
-                    <span className="text-sm text-body">{t('personalDeductionSpouse')}</span>
-                  </label>
-                  <span className="text-sm text-muted">150{t('won')}</span>
-                </div>
-
-                {/* Parents */}
-                <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-body">{t('personalDeductionParents')}</span>
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={parentCount}
-                      onChange={e => setParentCount(e.target.value)}
-                      className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
-                    >
-                      {[0, 1, 2, 3, 4].map(n => (
-                        <option key={n} value={n}>{n}{t('persons')}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Children */}
-                <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-body">{t('personalDeductionChildren')}</span>
-                  <select
-                    value={childrenCount}
-                    onChange={e => setChildrenCount(e.target.value)}
-                    className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
-                  >
-                    {[0, 1, 2, 3, 4, 5].map(n => (
-                      <option key={n} value={n}>{n}{t('persons')}</option>
-                    ))}
+            {on('b') && (
+              <section className="border-t border-line pt-5 space-y-4">
+                <h2 className="text-sm font-semibold text-fg">{t('it.type.biz')}</h2>
+                <Money label={t('it.in.revenue')} value={m.revenue} onChange={setMoney('revenue')} hint={t('it.in.revenueHint')} unit={W} />
+                <div>
+                  <label htmlFor="it-ind" className="block text-sm font-medium text-body mb-1.5">{t('it.in.industry')}</label>
+                  <select id="it-ind" value={code} onChange={(e) => setCode(e.target.value)} className={field}>
+                    {INDUSTRIES.map((x) => <option key={x.code} value={x.code}>{tf(`ft.ind.${x.code}`)} ({x.code})</option>)}
+                    <option value="custom">{tf('ft.ind.custom')}</option>
                   </select>
-                </div>
-
-                {/* Other dependents */}
-                <div className="flex items-center justify-between py-2 px-3 rounded-lg">
-                  <span className="text-sm text-body">{t('personalDeductionDependents')}</span>
-                  <select
-                    value={dependentCount}
-                    onChange={e => setDependentCount(e.target.value)}
-                    className="px-2 py-1 border border-line-strong rounded bg-field text-sm text-fg"
-                  >
-                    {[0, 1, 2, 3, 4, 5].map(n => (
-                      <option key={n} value={n}>{n}{t('persons')}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* National pension */}
-            <div>
-              <label className={labelClass}>{t('nationalPension')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={pensionAmount}
-                  onChange={e => setPensionAmount(formatInput(e.target.value))}
-                  placeholder={t('nationalPensionPlaceholder')}
-                  className={inputClass}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-              <p className="text-xs text-faint mt-1">{t('nationalPensionDesc')}</p>
-            </div>
-
-            {/* Health insurance */}
-            <div>
-              <label className={labelClass}>{t('healthInsurance')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={healthAmount}
-                  onChange={e => setHealthAmount(formatInput(e.target.value))}
-                  placeholder={t('healthInsurancePlaceholder')}
-                  className={inputClass}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-              <p className="text-xs text-faint mt-1">{t('healthInsuranceDesc')}</p>
-            </div>
-
-            {/* Pension savings / IRP */}
-            <div>
-              <label className={labelClass}>{t('pensionSavings')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={pensionSavings}
-                  onChange={e => setPensionSavings(formatInput(e.target.value))}
-                  placeholder={t('pensionSavingsPlaceholder')}
-                  className={inputClass}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
-              </div>
-              <p className="text-xs text-faint mt-1">{t('pensionSavingsDesc')}</p>
-              <p className="text-xs text-blue-600 dark:text-blue-400 mt-0.5">{t('pensionSavingsLimit')}</p>
-            </div>
-
-            {/* Child tax credit */}
-            <div>
-              <label className={labelClass}>{t('childTaxCredit')}</label>
-              <select
-                value={childCreditCount}
-                onChange={e => setChildCreditCount(e.target.value)}
-                className={selectClass}
-              >
-                {[0, 1, 2, 3, 4, 5].map(n => (
-                  <option key={n} value={n}>{n}{t('childCount')}</option>
-                ))}
-              </select>
-              <p className="text-xs text-faint mt-1">{t('childTaxCreditDesc')}</p>
-            </div>
-
-            {/* Nav buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => setActiveTab('income')}
-                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
-                ← {t('tabIncome')}
-              </button>
-              <button
-                onClick={() => setActiveTab('result')}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
-              >
-                {t('tabResult')} →
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab: Result */}
-      {activeTab === 'result' && (
-        <div className="space-y-6">
-          {!result ? (
-            <div className={cardClass}>
-              <p className="text-center text-muted py-8">
-                {t('totalRevenuePlaceholder')}
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* Summary card */}
-              <div className={`${cardClass} ${result.finalAmount < 0 ? 'ring-2 ring-blue-500' : result.finalAmount > 0 ? 'ring-2 ring-red-500' : ''}`}>
-                <h2 className="text-lg font-semibold text-fg mb-2">{t('resultSummary')}</h2>
-                <div className={`text-3xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
-                  {result.finalAmount < 0 ? (
-                    <>{t('refund')} {formatWon(Math.abs(result.finalAmount))}{t('won')}</>
-                  ) : result.finalAmount > 0 ? (
-                    <>{t('additionalPayment')} {formatWon(result.finalAmount)}{t('won')}</>
+                  {code === 'custom' ? (
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <Rate label={t('it.method.simple')} value={cSimple} onChange={setCSimple} />
+                      <Rate label={t('it.method.standard')} value={cStandard} onChange={setCStandard} />
+                      <p className="col-span-2 text-xs text-muted">{t('it.in.customHint')}</p>
+                    </div>
                   ) : (
-                    <>{t('breakeven')}</>
+                    <p className="text-xs text-muted mt-1.5">{t('it.in.rateLine', { simple: industry.simple, excess: industry.excess, standard: industry.standard })}</p>
                   )}
                 </div>
-              </div>
-
-              {/* Waterfall breakdown */}
-              <div className={cardClass}>
-                <h2 className="text-lg font-semibold text-fg mb-4">{t('resultTitle')}</h2>
-                <div className="space-y-0">
-                  {/* Step 1: Revenue */}
-                  <WaterfallRow label={t('stepRevenue')} value={result.revenue} step={1} />
-
-                  {/* Step 2: Expense */}
-                  <WaterfallRow
-                    label={`${t('stepExpense')} (${t('appliedExpenseRate')}: ${(result.expenseRate * 100).toFixed(1)}%)`}
-                    value={-result.expenseAmount}
-                    step={2}
-                  />
-
-                  {/* Step 3: Business income */}
-                  <WaterfallRow label={t('stepBusinessIncome')} value={result.businessIncome} step={3} isSubtotal />
-
-                  {/* Deductions detail */}
-                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
-                    <DetailRow label={t('personalDeductionAmount')} value={result.personalDeduction} />
-                    {result.pensionDeduction > 0 && (
-                      <DetailRow label={t('nationalPensionDeduction')} value={result.pensionDeduction} />
-                    )}
-                    {result.healthDeduction > 0 && (
-                      <DetailRow label={t('healthInsuranceDeduction')} value={result.healthDeduction} />
-                    )}
-                    <DetailRow label={t('incomeDeductionTotal')} value={result.totalDeduction} isBold />
+                <Money label={t('it.in.prev')} value={m.prev} onChange={setMoney('prev')} hint={t('it.in.prevHint')} unit={W} />
+                <div>
+                  <div className="block text-sm font-medium text-body mb-1.5">{t('it.in.method')}</div>
+                  <div className="flex gap-1.5" role="radiogroup" aria-label={t('it.in.method')}>
+                    {METHODS.map((x) => (
+                      <button key={x} type="button" role="radio" aria-checked={active === x} onClick={() => setMethod(x === eligible ? '' : x)} className={seg(active === x)}>
+                        {methodName(x)}
+                      </button>
+                    ))}
                   </div>
-
-                  {/* Step 4: Tax base */}
-                  <WaterfallRow label={t('stepTaxBase')} value={result.taxBase} step={4} isSubtotal />
-
-                  {/* Tax rate info */}
-                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
-                    <DetailRow label={t('taxRate')} value={`${(result.taxRate * 100).toFixed(0)}%`} isText />
-                    <DetailRow label={t('progressiveDeduction')} value={result.progressiveDeduction} />
-                  </div>
-
-                  {/* Step 5: Calculated tax */}
-                  <WaterfallRow label={t('stepCalculatedTax')} value={result.calculatedTax} step={5} isSubtotal />
-
-                  {/* Tax credits detail */}
-                  <div className="ml-4 border-l-2 border-line pl-4 py-2 space-y-1">
-                    <p className="text-xs font-medium text-muted mb-1">{t('taxCredits')}</p>
-                    <DetailRow label={t('standardTaxCredit')} value={result.standardCredit} />
-                    {result.childCredit > 0 && (
-                      <DetailRow label={t('childTaxCreditAmount')} value={result.childCredit} />
-                    )}
-                    {result.pensionCredit > 0 && (
-                      <DetailRow label={t('pensionTaxCredit')} value={result.pensionCredit} />
-                    )}
-                    <DetailRow label={t('efilingCredit')} value={result.efilingCredit} />
-                  </div>
-
-                  {/* Step 6: Final */}
-                  <WaterfallRow label={t('stepFinalTax')} value={result.determinedTax} step={6} isSubtotal />
-
-                  {/* Local + totals */}
-                  <div className="mt-3 pt-3 border-t border-line space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-sub">{t('determinedTax')}</span>
-                      <span className="text-fg font-medium">{formatWon(result.determinedTax)}{t('won')}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-sub">{t('localIncomeTax')} (10%)</span>
-                      <span className="text-fg font-medium">{formatWon(result.localTax)}{t('won')}</span>
-                    </div>
-                    <div className="flex justify-between text-sm font-semibold border-t border-line pt-2">
-                      <span className="text-fg">{t('totalTaxDue')}</span>
-                      <span className="text-fg">{formatWon(result.totalTaxDue)}{t('won')}</span>
-                    </div>
-                  </div>
-
-                  {/* Prepaid */}
-                  <div className="mt-3 pt-3 border-t border-line space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-sub">{t('prepaidIncomeTax')}</span>
-                      <span className="text-fg">-{formatWon(result.prepaidIncome)}{t('won')}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-sub">{t('prepaidLocalTax')}</span>
-                      <span className="text-fg">-{formatWon(result.prepaidLocal)}{t('won')}</span>
-                    </div>
-                    <div className="flex justify-between text-sm font-semibold">
-                      <span className="text-sub">{t('prepaidTotal')}</span>
-                      <span className="text-fg">-{formatWon(result.prepaidTotal)}{t('won')}</span>
-                    </div>
-                  </div>
-
-                  {/* Final result */}
-                  <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-primary-soft text-primary' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-subtle'}`}>
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-fg">{t('finalResult')}</span>
-                      <span className={`text-xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
-                        {result.finalAmount < 0
-                          ? `${t('refund')} ${formatWon(Math.abs(result.finalAmount))}${t('won')}`
-                          : result.finalAmount > 0
-                            ? `${t('additionalPayment')} ${formatWon(result.finalAmount)}${t('won')}`
-                            : t('breakeven')
-                        }
-                      </span>
-                    </div>
-                  </div>
+                  <p className="text-xs text-muted mt-1.5">
+                    {t('it.in.eligible', { method: methodName(eligible) })}{isDoubleEntry(prv) ? ` · ${t('it.in.doubleEntry')}` : ''}
+                  </p>
+                  {active === 'simple' && eligible !== 'simple' && (
+                    <p className="text-xs text-amber-700 mt-1">{t('it.in.notEligible', { limit: man(SIMPLE_PREV_LIMIT), limitWon: won(SIMPLE_PREV_LIMIT) })}</p>
+                  )}
                 </div>
-              </div>
+                {active === 'standard' && <Money label={t('it.in.major')} value={m.major} onChange={setMoney('major')} hint={t('it.in.majorHint')} unit={W} />}
+                {active === 'book' && <Money label={t('it.in.book')} value={m.book} onChange={setMoney('book')} hint={t('it.in.bookHint')} unit={W} />}
+                <Check label={t('it.in.w33', { amount: won(Math.floor(rev * 0.033)) })} checked={w33} onChange={setW33} />
+              </section>
+            )}
 
-              {/* Comparison: Simple vs Standard */}
-              <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl shadow-lg p-6">
-                <h2 className="text-lg font-semibold text-fg mb-2">{t('comparisonTitle')}</h2>
-                <p className="text-sm text-muted mb-4">{t('comparisonDesc')}</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-surface rounded-lg p-4">
-                    <h3 className="text-sm font-medium text-body mb-3">{t('comparisonSimple')}</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted">{t('comparisonExpense')}</span>
-                        <span className="text-fg">{formatWon(result.compSimpleExpense)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold">
-                        <span className="text-body">{t('comparisonTax')}</span>
-                        <span className="text-fg">{formatWon(result.compSimpleTax)}{t('won')}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-surface rounded-lg p-4">
-                    <h3 className="text-sm font-medium text-body mb-3">{t('comparisonStandard')}</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted">{t('comparisonExpense')}</span>
-                        <span className="text-fg">{formatWon(result.compStandardExpense)}{t('won')}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold">
-                        <span className="text-body">{t('comparisonTax')}</span>
-                        <span className="text-fg">{formatWon(result.compStandardTax)}{t('won')}</span>
-                      </div>
-                    </div>
-                  </div>
+            {on('w') && (
+              <section className="border-t border-line pt-5 space-y-4">
+                <h2 className="text-sm font-semibold text-fg">{t('it.type.wage')}</h2>
+                <Money label={t('it.in.salary')} value={m.salary} onChange={setMoney('salary')} hint={t('it.in.salaryHint')} unit={W} />
+                <Money label={t('it.in.wageTax')} value={m.wageTax} onChange={setMoney('wageTax')} unit={W}
+                  hint={m.wageTax === '' ? t('it.in.wageTaxAuto', { amount: won(res.wageTax) }) : t('it.in.wageTaxHint')} />
+                <Money label={t('it.in.otherDeduction')} value={m.otherDeduction} onChange={setMoney('otherDeduction')} hint={t('it.in.otherDeductionHint')} unit={W} />
+                <Money label={t('it.in.otherCredit')} value={m.otherCredit} onChange={setMoney('otherCredit')} hint={t('it.in.otherCreditHint')} unit={W} />
+              </section>
+            )}
+
+            {on('o') && (
+              <section className="border-t border-line pt-5 space-y-4">
+                <h2 className="text-sm font-semibold text-fg">{t('it.type.other')}</h2>
+                <Money label={t('it.in.otherPay')} value={m.otherPay} onChange={setMoney('otherPay')} hint={t('it.in.otherPayHint')} unit={W} />
+                <div className="max-w-[10rem]">
+                  <Rate label={t('it.in.otherRate')} value={oRate} onChange={setORate} />
                 </div>
-                {result.compSimpleTax !== result.compStandardTax && (
-                  <div className="mt-4 bg-surface rounded-lg p-3">
-                    <p className="text-sm font-medium text-center">
-                      <span className="text-sub">{t('comparisonDiff')}: </span>
-                      <span className="text-blue-600 dark:text-blue-400 font-bold">
-                        {formatWon(Math.abs(result.compSimpleTax - result.compStandardTax))}{t('won')}
-                      </span>
-                      <span className="text-muted ml-1">
-                        ({t('comparisonBetter')}: {result.compSimpleTax <= result.compStandardTax ? t('comparisonSimple') : t('comparisonStandard')})
-                      </span>
-                    </p>
-                  </div>
-                )}
-              </div>
+                <p className="text-xs text-muted -mt-2">{t('it.in.otherRateHint', { limit: man(OTHER_SEPARATE_LIMIT), limitWon: won(OTHER_SEPARATE_LIMIT) })}</p>
+              </section>
+            )}
 
-              {/* Back to income */}
-              <button
-                onClick={() => setActiveTab('income')}
-                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
-                ← {t('tabIncome')}
-              </button>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Guide section */}
-      <div className={cardClass}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between"
-        >
-          <h2 className="text-xl font-semibold text-fg">{t('guideTitle')}</h2>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
-        </button>
-        {showGuide && (
-          <div className="mt-6 space-y-6">
-            <GuideSection t={t} titleKey="guideWhoTitle" itemsKey="guideWhoItems" />
-            <GuideSection t={t} titleKey="guideExpenseTitle" itemsKey="guideExpenseItems" />
-            <GuideSection t={t} titleKey="guideDeadlineTitle" itemsKey="guideDeadlineItems" />
-            <GuideSection t={t} titleKey="guideTipTitle" itemsKey="guideTipItems" />
+            {on('f') && (
+              <section className="border-t border-line pt-5 space-y-4">
+                <h2 className="text-sm font-semibold text-fg">{t('it.type.fin')}</h2>
+                <Money label={t('it.in.fin')} value={m.finIncome} onChange={setMoney('finIncome')} hint={t('it.in.finHint')} unit={W} />
+              </section>
+            )}
           </div>
-        )}
+
+          <div className="ui-card p-6 space-y-4">
+            <h2 className="text-sm font-semibold text-fg">{t('it.in.deductTitle')}</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {(Object.keys(COUNTS) as CountKey[]).map((k) => (
+                <div key={k}>
+                  <label htmlFor={`it-${k}`} className="block text-xs font-medium text-body mb-1">{t(`it.in.${k}`)}</label>
+                  <select id={`it-${k}`} value={counts[k]} className="ui-field w-full px-3 py-2 text-sm"
+                    onChange={(e) => setCounts((s) => ({ ...s, [k]: Number(e.target.value) }))}>
+                    {Array.from({ length: k === 'persons' ? 10 : 6 }, (_, i) => (k === 'persons' ? i + 1 : i)).map((n) => (
+                      <option key={n} value={n}>{t('it.people', { n })}</option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted -mt-1">{t('it.in.personsHint')}</p>
+            <Money label={t('it.in.pension')} value={m.pension} onChange={setMoney('pension')} hint={t('it.in.pensionHint')} unit={W} />
+            {on('b') && (
+              <Money label={t('it.in.yellow')} value={m.yellow} onChange={setMoney('yellow')} hint={t('it.in.yellowHint', { limit: man(res.yellowLimit), limitWon: won(res.yellowLimit) })} unit={W} />
+            )}
+            <div className="grid grid-cols-2 gap-2">
+              <Money label={t('it.in.pensionSavings')} value={m.pensionSavings} onChange={setMoney('pensionSavings')} unit={W} />
+              <Money label={t('it.in.irp')} value={m.irp} onChange={setMoney('irp')} unit={W} />
+            </div>
+            <p className="text-xs text-muted -mt-2">{t('it.in.pensionAccountHint')}</p>
+            <Money label={t('it.in.midterm')} value={m.midterm} onChange={setMoney('midterm')} hint={t('it.in.midtermHint')} unit={W} />
+            <Check label={t('it.in.efiling')} checked={efiling} onChange={setEfiling} />
+          </div>
+        </div>
+
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-6 min-w-0">
+          <div className="ui-hero p-6">
+            <div className="text-sm text-white/70">{t('it.hero.label', { types: typeNames })}</div>
+            <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
+            <div className="text-sm text-white/80 mt-2 tabular-nums">
+              {t('it.hero.vs', { tax: won(res.totalTax), paid: won(res.prepaid.total) })}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('it.hero.eff', { rate: res.effRate.toFixed(1) })}</span>
+              <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('it.hero.marginal', { rate: pct(res.marginal), withLocal: pct(res.marginal * 1.1) })}</span>
+            </div>
+          </div>
+
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: t('it.share.label', { types: typeNames }),
+              headline,
+              sub: t('it.hero.eff', { rate: res.effRate.toFixed(1) }),
+              rows: [
+                { label: t('it.row.total'), value: `${won(res.total)}${W}` },
+                { label: t('it.row.taxBase'), value: `${won(res.taxBase)}${W}` },
+                { label: t('it.row.totalTax'), value: `${won(res.totalTax)}${W}` },
+                { label: t('it.row.prepaid'), value: `${won(res.prepaid.total)}${W}` },
+              ],
+            }}
+            text={t('it.share.text', { types: typeNames, result: headline })}
+          />
+
+          {/* 세율 구간 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('it.bracket.title')}</h2>
+            <p className="text-sm text-muted mt-1">
+              {t('it.bracket.desc', { base: won(res.taxBase), rate: pct(res.marginal) })}
+              {nextGap != null ? ` ${t('it.bracket.next', { gap: won(nextGap), rate: pct(BRACKETS[rateIdx + 1].rate) })}` : ''}
+            </p>
+            <ol className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 mt-4">
+              {BRACKETS.map((b, i) => {
+                const sel = i === rateIdx
+                return (
+                  <li key={i} className={`rounded-xl px-2 py-2.5 text-center ${sel ? 'bg-primary text-white' : 'bg-subtle text-sub'}`} aria-current={sel ? 'true' : undefined}>
+                    <div className="text-sm font-bold tabular-nums">{Math.round(b.rate * 100)}%</div>
+                    <div className={`text-[11px] mt-0.5 tabular-nums ${sel ? 'text-white/80' : 'text-muted'}`}>
+                      {b.upTo === Infinity ? t('it.bracket.over', { lo: man(BRACKETS[i - 1].upTo), loM: won(BRACKETS[i - 1].upTo / 1e6) }) : t('it.bracket.upTo', { hi: man(b.upTo), hiM: won(b.upTo / 1e6) })}
+                    </div>
+                  </li>
+                )
+              })}
+            </ol>
+            <p className="text-xs text-muted mt-3">{t('it.bracket.note')}</p>
+          </div>
+
+          {/* 계산 내역 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-4">{t('it.row.title')}</h2>
+            <dl className="space-y-2 text-sm tabular-nums">
+              {on('b') && <>
+                <Row label={t('it.row.revenue')} value={won(rev)} />
+                <Row label={t('it.row.expense', { method: methodName(active) })} value={minus(res.biz.expense)} sub />
+                <Row label={t('it.row.bizIncome')} value={won(res.biz.income)} />
+              </>}
+              {on('w') && <>
+                <Row label={t('it.row.salary')} value={won(res.salary)} />
+                <Row label={t('it.row.earnedDeduction')} value={minus(res.earnedDeduction)} sub />
+                <Row label={t('it.row.earned')} value={won(res.earned)} />
+              </>}
+              {on('o') && (
+                <Row label={res.otherSeparated ? t('it.row.otherSeparated') : t('it.row.other')} value={res.otherSeparated ? won(0) : won(res.other)} />
+              )}
+              {on('f') && <Row label={res.fin > 0 ? t('it.row.fin') : t('it.row.finSeparated')} value={won(res.fin)} />}
+              <Row label={t('it.row.total')} value={won(res.total)} strong />
+              <Row label={t('it.row.basic')} value={minus(res.basic)} sub />
+              {res.pension > 0 && <Row label={t('it.row.pension')} value={minus(res.pension)} sub />}
+              {res.yellow > 0 && <Row label={t('it.row.yellow')} value={minus(res.yellow)} sub />}
+              {res.otherDed > 0 && <Row label={t('it.row.otherDeduction')} value={minus(res.otherDed)} sub />}
+              <Row label={t('it.row.taxBase')} value={won(res.taxBase)} strong />
+              <Row label={res.fin > 0 ? t('it.row.computedFin') : t('it.row.computed', { rate: pct(res.marginal) })} value={won(res.computed)} />
+              {res.cr.earned > 0 && <Row label={t('it.row.crEarned')} value={minus(res.cr.earned)} sub />}
+              {res.cr.child > 0 && <Row label={t('it.row.crChild')} value={minus(res.cr.child)} sub />}
+              {res.cr.pension > 0 && <Row label={t('it.row.crPension')} value={minus(res.cr.pension)} sub />}
+              {res.cr.other > 0 && <Row label={t('it.row.crOther')} value={minus(res.cr.other)} sub />}
+              {res.cr.standard > 0 && <Row label={t('it.row.crStandard', { amount: won(res.cr.standard) })} value={minus(res.cr.standard)} sub />}
+              {res.cr.efiling > 0 && <Row label={t('it.row.crEfiling')} value={minus(res.cr.efiling)} sub />}
+              {res.credits < res.cr.earned + res.cr.child + res.cr.pension + res.cr.other + res.cr.standard + res.cr.efiling && (
+                <Row label={t('it.row.crCapped', { amount: won(res.credits) })} value="" sub />
+              )}
+              {res.penalty > 0 && <Row label={t('it.row.penalty')} value={`+${won(res.penalty)}`} sub />}
+              <Row label={t('it.row.determined')} value={won(res.determined)} />
+              <Row label={t('it.row.localTax')} value={won(res.localTax)} />
+              <Row label={t('it.row.totalTax')} value={won(res.totalTax)} strong />
+              {res.prepaid.items.biz > 0 && <Row label={t('it.row.pBiz')} value={minus(res.prepaid.items.biz)} sub />}
+              {res.prepaid.items.wage > 0 && <Row label={t('it.row.pWage')} value={minus(res.prepaid.items.wage)} sub />}
+              {res.prepaid.items.other > 0 && <Row label={t('it.row.pOther')} value={minus(res.prepaid.items.other)} sub />}
+              {res.prepaid.items.fin > 0 && <Row label={t('it.row.pFin')} value={minus(res.prepaid.items.fin)} sub />}
+              {res.prepaid.items.midterm > 0 && <Row label={t('it.row.pMid')} value={minus(res.prepaid.items.midterm)} sub />}
+              {res.prepaid.local > 0 && <Row label={t('it.row.pLocal')} value={minus(res.prepaid.local)} sub />}
+              <Row label={t('it.row.prepaid')} value={won(res.prepaid.total)} strong />
+              <div className="rounded-xl bg-subtle px-3 py-2.5 mt-2 space-y-1">
+                <Row label={t(res.refundIncome >= 0 ? 'it.row.refundIncome' : 'it.row.payIncome')} value={won(Math.abs(res.refundIncome))} />
+                <Row label={t(res.refundLocal >= 0 ? 'it.row.refundLocal' : 'it.row.payLocal')} value={won(Math.abs(res.refundLocal))} />
+                <div className="flex justify-between gap-3 font-bold pt-1">
+                  <dt className="text-fg">{t(res.refund >= 0 ? 'it.row.refund' : 'it.row.pay')}</dt>
+                  <dd className={res.refund < 0 ? 'text-red-600' : 'text-primary'}>{won(Math.abs(res.refund))}{W}</dd>
+                </div>
+              </div>
+            </dl>
+            <Notes t={t} res={res} wageOnly={types.length === 1 && on('w')} />
+          </div>
+
+          {/* 경비 방식 비교 */}
+          {on('b') && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg">{t('it.cmp.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('it.cmp.desc')}</p>
+              <div className="overflow-x-auto mt-4">
+                <table className="w-full text-sm tabular-nums">
+                  <thead>
+                    <tr className="text-xs text-muted border-b border-line">
+                      <th className="py-2 text-left font-medium">{t('it.in.method')}</th>
+                      <th className="py-2 text-right font-medium">{t('it.row.bizIncome')}</th>
+                      <th className="py-2 text-right font-medium">{t('it.row.totalTax')}</th>
+                      <th className="py-2 pr-2 text-right font-medium">{t('it.cmp.result')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {METHODS.map((x, i) => {
+                      const r = compare[i]
+                      return (
+                        <tr key={x} className={`border-b border-line last:border-0 ${active === x ? 'bg-primary-soft text-primary' : 'text-body'}`}>
+                          <td className="py-2.5 pl-2">
+                            <button type="button" onClick={() => setMethod(x === eligible ? '' : x)} className="font-medium text-left">
+                              {methodName(x)}{x === eligible && <span className="ml-1 text-xs text-muted">{t('it.cmp.eligibleTag')}</span>}
+                            </button>
+                          </td>
+                          {x === 'book' && num(m.book) === 0 ? (
+                            <td colSpan={3} className="py-2.5 pr-2 text-right text-xs text-muted">{t('it.cmp.bookEmpty')}</td>
+                          ) : (
+                            <>
+                              <td className="py-2.5 text-right">{won(r.biz.income)}</td>
+                              <td className="py-2.5 text-right">{won(r.totalTax)}</td>
+                              <td className={`py-2.5 pr-2 text-right font-semibold ${r.refund < 0 ? 'text-red-600' : ''}`}>
+                                {r.refund >= 0 ? '+' : '−'}{won(Math.abs(r.refund))}
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-muted mt-3">{t('it.cmp.note')}</p>
+            </div>
+          )}
+
+          {/* 연계 */}
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-fg">{t('it.links.title')}</p>
+            <p>{t('it.links.freelancer')} <Link href="/freelancer-tax/" className="text-primary underline">{t('it.links.freelancerLink')}</Link></p>
+            <p>{t('it.links.yearEnd')} <Link href="/year-end-tax/" className="text-primary underline">{t('it.links.yearEndLink')}</Link></p>
+            <p>
+              {t('it.links.hometax')}{' '}
+              <a href="https://www.hometax.go.kr" target="_blank" rel="noopener noreferrer" className="text-primary underline inline-flex items-center gap-0.5">
+                {t('it.links.hometaxLink')}<ExternalLink className="w-3 h-3" aria-hidden="true" />
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 가이드 */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('it.guide.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-body">
+          {(['who', 'flow', 'income', 'deductions', 'filing', 'tips'] as const).map((s) => (
+            <section key={s}>
+              <h3 className="font-semibold text-fg mb-2">{t(`it.guide.${s}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-1.5">
+                {(t.raw(`it.guide.${s}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </section>
+          ))}
+        </div>
+        <p className="text-xs text-muted mt-6">{t('it.guide.sources')}</p>
+      </div>
+
+      <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 flex items-start gap-3">
+        <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
+        <p className="text-xs">{t('it.disclaimer')}</p>
       </div>
     </div>
   )
 }
 
-// --- Sub-components ---
-
-function WaterfallRow({ label, value, step, isSubtotal }: {
-  label: string
-  value: number
-  step: number
-  isSubtotal?: boolean
-}) {
+function Notes({ t, res, wageOnly }: { t: ReturnType<typeof useTranslations>; res: ReturnType<typeof calc>; wageOnly: boolean }) {
+  const notes: string[] = []
+  if (wageOnly) notes.push(t('it.note.wageOnly'))
+  if (res.wageTaxEstimated) notes.push(t('it.note.wageEstimated'))
+  if (res.otherSeparated) notes.push(t('it.note.otherSeparated', { tax: won(res.otherSepTax) }))
+  if (res.otherMustInclude) notes.push(t('it.note.otherMust', { limit: man(OTHER_SEPARATE_LIMIT), limitWon: won(OTHER_SEPARATE_LIMIT) }))
+  if (res.finSeparated) notes.push(t('it.note.finSeparated'))
+  if (res.fin > 0) notes.push(t('it.note.finGrossUp'))
+  if (res.biz.capped) notes.push(t('it.note.capped'))
+  if (!notes.length && res.penalty === 0) return null
   return (
-    <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg ${isSubtotal ? 'bg-subtle font-semibold' : ''}`}>
-      <div className="flex items-center gap-2">
-        <span className="w-6 h-6 rounded-full bg-soft text-sub text-xs flex items-center justify-center font-bold">{step}</span>
-        <span className="text-sm text-body">{label}</span>
-      </div>
-      <span className={`text-sm ${value < 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'} ${isSubtotal ? 'font-semibold' : ''}`}>
-        {value < 0 ? '-' : ''}{formatWon(Math.abs(value))}
+    <div className="bg-subtle rounded-2xl p-4 mt-4 text-sm text-sub space-y-1">
+      {notes.map((n, i) => <p key={i}>{n}</p>)}
+      {res.penalty > 0 && <p className="text-amber-700">{t('it.note.penalty', { amount: won(res.penalty) })}</p>}
+    </div>
+  )
+}
+
+function Money({ label, value, onChange, hint, unit }: { label: string; value: string; onChange: (v: string) => void; hint?: string; unit: string }) {
+  const shown = value ? num(value).toLocaleString('ko-KR') : ''
+  return (
+    <label className="block min-w-0">
+      <span className="block text-sm font-medium text-body mb-1.5">{label}</span>
+      <span className="relative block">
+        <input type="text" inputMode="numeric" value={shown} onChange={(e) => onChange(digits(e.target.value))}
+          className="ui-field w-full px-4 py-3 pr-9 text-sm tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-faint">{unit}</span>
       </span>
-    </div>
+      {hint && <span className="block text-xs text-muted mt-1.5">{hint}</span>}
+    </label>
   )
 }
 
-function DetailRow({ label, value, isBold, isText }: {
-  label: string
-  value: number | string
-  isBold?: boolean
-  isText?: boolean
-}) {
+function Rate({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
-    <div className={`flex justify-between text-xs ${isBold ? 'font-semibold' : ''}`}>
-      <span className="text-muted">{label}</span>
-      <span className="text-body">
-        {isText ? value : `${formatWon(value as number)}`}
+    <label className="block">
+      <span className="block text-xs text-muted mb-1">{label}</span>
+      <span className="relative block">
+        <input type="text" inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, '').slice(0, 5))}
+          className="ui-field w-full px-3 py-2 pr-7 text-sm tabular-nums" />
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-faint">%</span>
       </span>
-    </div>
+    </label>
   )
 }
 
-interface GuideSectionProps {
-  t: ReturnType<typeof useTranslations>
-  titleKey: string
-  itemsKey: string
-}
-
-function GuideSection({ t, titleKey, itemsKey }: GuideSectionProps) {
-  const items = t.raw(itemsKey) as string[]
+function Check({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div>
-      <h3 className="text-base font-semibold text-fg mb-2">{t(titleKey)}</h3>
-      <ul className="space-y-1.5">
-        {items.map((item, i) => (
-          <li key={i} className="text-sm text-sub flex items-start gap-2">
-            <span className="text-blue-500 mt-0.5">&#8226;</span>
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 w-4 h-4 accent-primary" />
+      <span>{label}</span>
+    </label>
   )
 }
 
-// --- Export with Suspense ---
-export default function IncomeTaxCalculator() {
+function Row({ label, value, strong, sub }: { label: string; value: string; strong?: boolean; sub?: boolean }) {
   return (
-    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
-      <IncomeTaxContent />
-    </Suspense>
+    <div className={`flex justify-between gap-3 ${sub ? 'pl-4 text-xs text-muted' : strong ? 'font-semibold text-fg' : 'text-body'}`}>
+      <dt className="min-w-0">{label}</dt>
+      <dd className="shrink-0">{value}</dd>
+    </div>
   )
 }

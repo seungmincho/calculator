@@ -71,9 +71,11 @@ export function simpleExpense(revenue: number, ind: Industry): number {
   return Math.floor((base * ind.simple + over * ind.excess) / 100 + 1e-6)
 }
 
-/** 기준경비율 소득금액 = 수입 - 주요경비(증빙) - 수입×기준경비율, 한도 = 단순경비율 소득금액 × 2.8(간편장부)/3.4(복식부기) */
+/** 기준경비율 소득금액 = 수입 - 주요경비(증빙) - 수입×기준경비율(복식부기의무자는 1/2, 소득세법 시행령 §143③1호 단서),
+ *  한도 = 단순경비율 소득금액 × 2.8(간편장부)/3.4(복식부기) */
 export function standardIncome(revenue: number, major: number, ind: Industry, doubleEntry: boolean) {
-  const raw = Math.max(0, revenue - major - Math.floor((revenue * ind.standard) / 100 + 1e-6))
+  const rate = doubleEntry ? ind.standard / 2 : ind.standard
+  const raw = Math.max(0, revenue - major - Math.floor((revenue * rate) / 100 + 1e-6))
   const cap = Math.floor((revenue - simpleExpense(revenue, ind)) * (doubleEntry ? 3.4 : 2.8))
   return { income: Math.min(raw, cap), capped: raw > cap, cap }
 }

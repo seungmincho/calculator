@@ -14689,25 +14689,72 @@
     }
   },
   "reactionTest": {
+    "vs": {
+      "banner": "Your friend averaged {ms}ms. Can you beat it?",
+      "win": "{d}ms faster than your friend. You win!",
+      "lose": "{d}ms slower than your friend. Try again!",
+      "tie": "Exactly tied with your friend"
+    },
+    "falseStarts": "{n} false start(s)",
+    "anticipation": "{ms}ms is too fast",
+    "anticipationSubtext": "Responses under {min}ms are treated as anticipation (pressed before seeing the signal), so this round is repeated",
+    "tapToRetry": "Tap to retry this round",
+    "tapToRetryAll": "Tap to try again",
+    "a11yDone": "Test complete. Average {ms} milliseconds",
+    "keyHint": "Mouse click, touch, Space and Enter all work. Held-down key repeats are ignored.",
+    "percentileNote": "For reference only: compared with an approximate distribution of online reaction tests (median about 255ms). Not precise population statistics.",
+    "median": "Median",
+    "worst": "Slowest",
+    "newPb": "New personal best!",
+    "consistency": "Round-to-round spread ±{sd}ms (smaller = more consistent)",
+    "outlierNote": "Round {rounds} was much slower than your median ({median}ms) and pulled the average up. The median better reflects your skill.",
+    "falseStartsNote": "{n} false start(s) were excluded",
+    "deviceUsed": "Input: {device}",
+    "device": {
+      "mouse": "Mouse",
+      "touch": "Touch",
+      "pen": "Pen",
+      "keyboard": "Keyboard"
+    },
+    "tier": {
+      "t1": "Lightning reflexes",
+      "t2": "Pro-gamer level",
+      "t3": "Sharp",
+      "t4": "Typical human",
+      "t5": "Laid-back",
+      "t6": "Sleepy sloth"
+    },
+    "share": {
+      "label": "Average reaction time ({n} rounds)",
+      "input": "Input",
+      "cta": "Test your reaction time",
+      "text": "My reaction time: {ms}ms average, top {percent}%! Can you beat it?"
+    },
+    "clearConfirm": "Delete all reaction test records saved in this browser?",
+    "sessions": "Sessions",
+    "chartSession": "Session {n}",
+    "chartHint": "Do one more session to see your trend chart.",
+    "historyLocal": "Records are stored only in this browser (last 50). The dashed line is your best average.",
+    "deviceNote": "Results include input-device and display latency. Wireless/Bluetooth devices and touchscreens usually add a few to tens of milliseconds, and a 60Hz display refreshes every ~16.7ms, which adds error of up to one frame. Compare records using the same device and input method.",
     "title": "Reaction Time Test",
-    "description": "Click as fast as you can when the screen changes color to measure your reaction time.",
-    "clickToStart": "Click to Start!",
-    "idleSubtext": "Click as fast as you can when the screen turns green",
+    "description": "Press as fast as you can the moment the red screen turns green to measure your reaction time in ms and see what percentile you're in.",
+    "clickToStart": "Tap to start",
+    "idleSubtext": "When the red screen turns green with \"NOW!\", press immediately",
     "roundInfo": "Results shown after {total} rounds of testing",
     "waiting": "Wait...",
-    "waitSubtext": "Wait until the screen turns green!",
-    "clickNow": "Click NOW!",
-    "tooEarly": "Too Early!",
-    "tooEarlySubtext": "You must wait until the screen turns green",
+    "waitSubtext": "Wait for the green \"NOW!\" screen",
+    "clickNow": "NOW!",
+    "tooEarly": "Too soon!",
+    "tooEarlySubtext": "You pressed before the signal. This round won't count and will be repeated",
     "ms": "ms",
     "percentileText": "Faster than {percentile}% of people",
-    "clickForNext": "Click to start round {next}",
+    "clickForNext": "Tap to start round {next}",
     "clickForResult": "Click to see final results",
     "sessionComplete": "Test Complete!",
     "newSession": "Test Again",
     "average": "Average",
     "best": "Best",
-    "yourRanking": "Your Ranking",
+    "yourRanking": "Your position vs. online tests (reference)",
     "topPercent": "Top {percent}%",
     "comparison": "Compare with Others",
     "compProGamer": "Pro Gamer",
@@ -14719,7 +14766,7 @@
     "currentRound": "Current Round",
     "totalAttempts": "Total Attempts",
     "sessionAvg": "Session Average",
-    "allTimeBest": "All-Time Best",
+    "allTimeBest": "Best average",
     "rating": {
       "excellent": "Excellent",
       "good": "Good",
@@ -14727,38 +14774,41 @@
       "slow": "Slow",
       "verySlow": "Very Slow"
     },
-    "history": "History",
+    "history": "My records",
     "clearHistory": "Clear History",
     "guide": {
       "title": "Reaction Time Guide",
       "howTo": {
         "title": "How to Test",
         "items": [
-          "Click the blue screen to start",
-          "Click as fast as you can when the screen turns green",
-          "Clicking before green is counted as invalid",
-          "After 5 rounds, see your average reaction time and comparison with others"
+          "Tap the blue screen or press Space/Enter to start",
+          "When the red screen (\"Wait\") turns green (\"NOW!\"), press immediately. The signal appears at a random time between 1.5 and 5 seconds",
+          "Pressing before the signal or reacting in under 100ms counts as a false start and the round is repeated",
+          "After 5 rounds, see your average, median, percentile (reference) and tier, and share a result card to challenge friends"
         ]
       },
       "standards": {
-        "title": "Reaction Time Standards",
+        "title": "Reaction Time Standards (approx., web + mouse)",
         "items": [
-          "Under 200ms: Excellent (pro gamer level)",
-          "200-300ms: Good (above average)",
-          "300-400ms: Average (typical adult)",
-          "Over 400ms: Slow"
+          "Under 180ms: Lightning reflexes (very rare)",
+          "180–210ms: Pro-gamer level",
+          "210–240ms: Sharp",
+          "240–280ms: Typical human",
+          "280–330ms: Laid-back",
+          "330ms and above: you may be tired or on a high-latency setup. Touchscreens normally score slower than these bands"
         ]
       },
       "whatIs": {
-        "title": "What is the Reaction Speed Test?",
-        "description": "The reaction speed test measures your visual-motor reaction time in milliseconds (ms) — click as fast as possible the moment the screen changes color. The average human reaction time is 200–250 ms, while trained gamers and athletes can achieve under 150 ms. After 5 consecutive trials, compare your average and best scores to gauge your reflexes."
+        "title": "What is the Reaction Time Test?",
+        "description": "It measures your simple visual reaction time in milliseconds: press as fast as possible the moment the screen changes color. Simple visual reaction time measured in labs is typically 200–250ms; web tests add mouse and display latency, so around 250–280ms is common. You get the average, median and best of 5 rounds, and records are saved in this browser so you can track your trend."
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Keep your eyes focused on the center of the screen and your finger poised over the click area before the test starts to shave milliseconds off your reaction time.",
-          "After 5 trials, discard the highest and lowest values and average the middle three for a more reliable measure of your true performance.",
-          "Results may be worse when you are fatigued or if your monitor has high input lag — take that into account when comparing scores."
+          "Look at the center of the screen and keep your finger resting on the button while you wait.",
+          "One slow round now and then is normal. The median reflects your skill better than the average.",
+          "Fatigue, lack of sleep and alcohol noticeably slow reaction time. Testing at the same time of day shows how your condition changes.",
+          "A wired mouse and a high refresh-rate display (120Hz+) reduce equipment latency."
         ]
       },
       "faq": {
@@ -14766,15 +14816,19 @@
         "items": [
           {
             "q": "What is an average reaction time?",
-            "a": "For a typical adult, visual reaction time averages 200–250 ms. Under 150 ms is very fast; above 300 ms is below average."
-          },
-          {
-            "q": "Is reaction speed directly tied to gaming skill?",
-            "a": "Reaction speed is one factor in gaming performance, but situational awareness, strategy, and muscle memory also matter greatly. FPS players especially benefit from lower reaction times."
+            "a": "Simple visual reaction time in lab settings is typically 200–250ms. Web tests add input and display latency, so around 250–280ms is common; under 200ms is quite fast."
           },
           {
             "q": "Are touch-screen results accurate on mobile?",
-            "a": "Touchscreens introduce a slight input delay compared to a desktop mouse click, typically making mobile results 20–30 ms slower on average."
+            "a": "Touchscreens add input-detection and display latency, so results are usually tens of milliseconds slower than a wired desktop mouse. Compare records on the same device."
+          },
+          {
+            "q": "Why are results under 100ms invalid?",
+            "a": "It is generally accepted that a visual signal takes at least about 100ms to travel through the brain to the finger muscles. Faster inputs are treated as anticipation (guessing the timing) rather than reaction, so the round is repeated."
+          },
+          {
+            "q": "Is reaction speed directly tied to gaming skill?",
+            "a": "Reaction speed is only one factor; game sense, prediction and aim accuracy matter too. In fast-paced games like FPS, though, a lower reaction time is an advantage."
           }
         ]
       }
@@ -27274,25 +27328,121 @@
     }
   },
   "backgroundRemover": {
+    "chooseFile": "Choose photo",
+    "paste": "Paste",
+    "privacy": "Your photo never leaves this browser — nothing is uploaded.",
+    "loadFailed": "Couldn't open the image. Please use a PNG, JPG or WEBP file.",
+    "pasteFailed": "No image on the clipboard or paste permission denied. Try Ctrl+V.",
+    "exportFailed": "Saving failed. Very large images may run out of memory.",
+    "goodFor": "Works well for",
+    "goodForItems": [
+      "Product shots on white or solid backgrounds",
+      "Changing ID photo backgrounds (white, light blue, blue)",
+      "Making logos, stamps and signatures transparent",
+      "Green-screen (chroma key) photos"
+    ],
+    "notFor": "Struggles with",
+    "notForItems": [
+      "Busy backgrounds such as scenery or rooms",
+      "Subjects whose colors match the background",
+      "Very fine edges like curly hair or fur",
+      "This tool finds the background by color, not AI"
+    ],
+    "toolLabel": "Tool",
+    "toolPick": "Pick bg",
+    "toolErase": "Erase",
+    "toolKeep": "Restore",
+    "hintPick": "Tap leftover background to add that color. Tap enclosed areas (inside letters) to clear them too.",
+    "hintErase": "Brush over leftover background to erase it.",
+    "hintKeep": "Brush over wrongly removed parts to restore them.",
+    "undo": "Undo (Ctrl+Z)",
+    "redo": "Redo (Ctrl+Shift+Z)",
+    "canvasLabel": "Background removal preview",
+    "removedStat": "{pct}% removed",
+    "previewScaled": "Preview {w}×{h} · Save {W}×{H}",
+    "bgColors": "Background colors",
+    "autoDetect": "Start over (auto-detect)",
+    "removeColor": "Remove this color",
+    "noColors": "No background color yet. Use 'Pick bg' and tap the background.",
+    "busyBorder": "The photo edges aren't a single color, so results may be rough. Pick more background or touch up with the brush.",
+    "modeLabel": "What to remove",
+    "modeFlood": "From edges",
+    "modeGlobal": "All matching",
+    "modeFloodDesc": "Removes only background connected to the photo edges. Same colors inside the subject (white shirts, highlights) stay. Best for people and products.",
+    "modeGlobalDesc": "Removes every similar color in the whole image. Good for clearing holes inside logos and letters.",
+    "toleranceHint": "Color difference (ΔE). Raise it if background remains; lower it if the subject gets erased.",
+    "softnessHint": "Blends edge pixels semi-transparently to reduce jaggies. 0 = hard edge.",
+    "defringe": "Remove color fringe",
+    "defringeHint": "Reduces white halos from white backgrounds and green edges from green screens.",
+    "brushSize": "Brush size",
+    "clearBrush": "Clear all brush edits",
+    "bgReplace": "New background",
+    "bgTransparent": "Transparent",
+    "bgWhite": "White",
+    "bgGray": "Light gray",
+    "bgSky": "Light blue",
+    "bgBlue": "Blue",
+    "bgCustom": "Custom",
+    "bgHint": "Passport photos require a white background. Check the requirements for other ID photos.",
+    "formatLabel": "File format",
+    "jpgNote": "JPG doesn't support transparency, so it is saved on white.",
+    "downloadWithBg": "Save with background",
+    "exportSize": "Output {w} × {h}px",
+    "exportCapped": "slightly downscaled (very large original)",
+    "newImage": "Another photo",
     "title": "Background Remover",
-    "description": "Remove image backgrounds using color-based chroma key. Processed entirely in your browser — no server upload required.",
+    "description": "Remove solid backgrounds — white product shots, ID photos, logos, green screens — to a transparent PNG or a new color. Nothing is uploaded.",
     "uploadImage": "Upload Image",
     "pickColor": "Pick Background Color",
     "tolerance": "Tolerance",
     "edgeSoftening": "Edge Softening",
     "preview": "Background removed preview will appear here",
-    "original": "Original Image",
+    "original": "Original",
     "result": "Result",
     "download": "Download Transparent PNG",
     "reset": "Reset",
     "clickToSelect": "Picking color — click on background area...",
     "selectedColor": "Selected Color",
-    "processing": "Processing background removal...",
+    "processing": "Saving at full resolution...",
     "noImage": "Please upload an image",
-    "dragDrop": "Drag or click to upload (PNG, JPG, WEBP)",
+    "dragDrop": "Drop a file here or paste with Ctrl+V (PNG, JPG, WEBP)",
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "The most common color along the edges becomes the background color. You get a warning if the edges are not uniform.",
+          "Each pixel's difference from the background is measured as ΔE in CIE Lab color space, which matches human perception better than RGB distance.",
+          "'From edges' mode flood-fills from the borders through connected background only, so matching colors inside the subject are kept.",
+          "Pixels just outside the tolerance become semi-transparent and the mixed-in background color is subtracted (defringe) to reduce halos.",
+          "Brush edits live in a separate mask, so they persist when you move the sliders."
+        ]
+      },
+      "realWorld": {
+        "title": "Good for",
+        "items": [
+          "Turning white-background product shots into transparent PNGs for online stores",
+          "Changing ID photo backgrounds to white, light blue or blue",
+          "Putting paper stamps, signatures or white-background logos into documents and slides",
+          "Replacing green-screen backgrounds"
+        ]
+      },
+      "comparison": {
+        "title": "Versus AI background removers",
+        "items": [
+          "AI tools (e.g. remove.bg) recognize people and objects and can handle busy backgrounds, but often require uploading your photo.",
+          "This tool only looks at color, so on solid backgrounds it is fast and precise, and your photo never leaves the device.",
+          "Busy backgrounds or subjects that match the background color are beyond this tool — use an AI tool or Photoshop for those."
+        ]
+      },
       "title": "Background Remover Guide",
       "howToUse": {
+        "items": [
+          "Upload or paste (Ctrl+V) a photo. The edge color is detected and removed right away.",
+          "If some background remains, use 'Pick bg' and tap it to add that color.",
+          "Adjust Tolerance for how much color is removed and Edge softening for smoother outlines.",
+          "Touch up with the Erase and Restore brushes. Ctrl+Z undoes.",
+          "Choose a new background (transparent, white, light blue…) and format (PNG/JPG), then save. Saving recomputes at the original resolution."
+        ],
         "title": "How to Use",
         "steps": [
           "Upload your image by dragging it onto the upload area or clicking to browse.",
@@ -27303,13 +27453,13 @@
         ]
       },
       "tips": {
-        "title": "Tips & Recommendations",
+        "title": "Tips for clean cutouts",
         "items": [
-          "Works best with solid-color backgrounds (white backgrounds, green screen, etc.).",
-          "Try clicking different parts of the background and adjust tolerance for better results.",
-          "Edge softening of 1–2px creates a natural-looking edge.",
-          "Lower the tolerance when the subject has similar colors to the background.",
-          "The checkerboard pattern in the result represents transparency — actual PNG will have no background."
+          "When shooting, make the subject and background clearly different and light evenly to avoid shadows on the background.",
+          "If white shirts or white products disappear, make sure 'From edges' is selected and lower the tolerance.",
+          "If holes inside letters (like O) remain, tap inside them with 'Pick bg' or switch to 'All matching'.",
+          "For green screens, raise tolerance to 25–40 and keep color fringe removal on.",
+          "The checkerboard in the preview means transparency; the PNG itself has no background."
         ]
       },
       "limitations": {
@@ -27345,23 +27495,27 @@
         }
       },
       "whatIs": {
-        "title": "What is Background Remover?",
-        "description": "A browser-based tool that makes image backgrounds transparent using color-based chroma key technology. Unlike AI-powered background removal, you specify the color range directly — making it very effective for solid-color backgrounds (white, green screen, etc.). Images are never uploaded to a server, protecting your privacy. Download as a PNG with transparent background."
+        "title": "What is solid background removal?",
+        "description": "This tool detects the background color from the photo edges and makes similar colors transparent. It judges the background by color difference rather than AI recognition, so it works best when the background is a single color: product shots on white, ID photos, logos and green screens. Save a transparent PNG or put in a new background color — everything runs in your browser and the photo is never uploaded."
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "How is this different from AI background removal?",
-            "a": "AI tools automatically detect object/person edges and can handle complex backgrounds but may be inaccurate. This tool uses chroma key — specialized for solid-color background removal with fine control over tolerance/range."
+            "q": "Is my photo uploaded?",
+            "a": "No. Loading, removing and saving all happen inside your browser."
           },
           {
-            "q": "What if the background color is similar to the subject?",
-            "a": "Lower the tolerance setting to minimize removal of subject areas that match the background color. For precise work, professional editing software like Photoshop is recommended."
+            "q": "Can I change my ID photo background?",
+            "a": "Changing only the background color is usually accepted, but passport photos require white and facial retouching is not allowed. Always check the requirements."
           },
           {
-            "q": "Can it remove gradient or complex backgrounds?",
-            "a": "Chroma key is optimized for solid-color backgrounds. It has limitations with gradients or complex patterns. For complex backgrounds, use an AI-specialized service like remove.bg."
+            "q": "Hair edges look messy.",
+            "a": "Increase edge softening and keep fringe removal on. Photos with lots of fine hair hit the limits of color-based removal; an AI tool will do better."
+          },
+          {
+            "q": "Does it handle large photos?",
+            "a": "The preview is downscaled for speed, but saving recomputes at the original resolution (up to about 12.5 megapixels)."
           }
         ]
       }
@@ -30977,6 +31131,229 @@
     }
   },
   "incomeTaxCalc": {
+    "it": {
+      "subtitle": "Combine business, employment, other and interest/dividend income to estimate your 2025 Korean comprehensive income tax (filed May 2026) and your refund or balance due.",
+      "disclaimer": "Estimate for reference only. Tax reductions, bookkeeping credits, pension income, dividend gross-up and industry-specific rules are not included. Confirm with Hometax or a tax professional before filing.",
+      "people": "{n}",
+      "type": {
+        "biz": "Business",
+        "wage": "Employment",
+        "other": "Other income",
+        "fin": "Interest/dividends"
+      },
+      "method": {
+        "simple": "Simple rate",
+        "standard": "Standard rate",
+        "book": "Books"
+      },
+      "in": {
+        "types": "Your income types (select all that apply)",
+        "typesHint": "Pick every type you had. They are combined in the May filing.",
+        "revenue": "Annual revenue (before 3.3% withholding)",
+        "revenueHint": "Total paid amounts on withholding receipts / Hometax payment statements, or your sales",
+        "industry": "Industry code",
+        "customHint": "Enter the rates from Hometax → expense-rate lookup by industry code. The rate above ₩40M is approximated as 100−(100−simple)×1.4.",
+        "rateLine": "Simple rate {simple}% ({excess}% above ₩40M) · standard rate {standard}% — 2025 official rates",
+        "prev": "Previous-year (2024) revenue",
+        "prevHint": "Enter 0 if you started in 2025. Used to decide which expense method and bookkeeping duty apply.",
+        "method": "Expense method",
+        "eligible": "Applies to you: {method}",
+        "doubleEntry": "Double-entry bookkeeping required (estimated filing uses half the standard rate)",
+        "notEligible": "With previous-year revenue of ₩{limitWon} or more (personal services), the simple rate is not available. Shown for comparison only.",
+        "major": "Major expenses (documented purchases, rent, wages)",
+        "majorHint": "Only amounts backed by tax invoices, invoices or card slips count.",
+        "book": "Expenses in your books",
+        "bookHint": "Total expenses from simplified or double-entry books. Include regional health insurance premiums here.",
+        "w33": "3.3% was withheld from my pay (about ₩{amount})",
+        "salary": "Total salary (excluding non-taxable pay)",
+        "salaryHint": "Total salary on your employment withholding receipt",
+        "wageTax": "Year-end settlement tax (income tax)",
+        "wageTaxHint": "The determined income tax on your employment withholding receipt. Counted as tax already paid.",
+        "wageTaxAuto": "Leave blank to use an estimate from salary alone: ₩{amount}.",
+        "otherDeduction": "Other income deductions (from year-end settlement)",
+        "otherDeductionHint": "Credit cards, housing funds, employee health/employment insurance, etc. Capped at employment income.",
+        "otherCredit": "Other tax credits (special credits, etc.)",
+        "otherCreditHint": "Insurance, medical, education, donation and rent credits. Entering this removes the ₩130,000 standard credit.",
+        "otherPay": "Other income paid (before tax)",
+        "otherPayHint": "One-off income such as lecture or manuscript fees. Items with 60% deemed expenses usually have 8.8% withheld.",
+        "otherRate": "Deemed expense rate",
+        "otherRateHint": "60% for lecture/manuscript fees, 0% where no expenses are allowed. If other income is ₩{limitWon} or less, the cheaper of separate or combined taxation is chosen automatically.",
+        "fin": "Annual interest + dividends (before tax)",
+        "finHint": "Up to ₩20M is settled by 14% separate taxation; above that, all of it is combined (comparative taxation).",
+        "deductTitle": "Deductions · tax already paid",
+        "persons": "Basic deduction persons",
+        "elderly": "Aged 70+",
+        "disabled": "Disabled",
+        "children": "Children aged 8+",
+        "personsHint": "Including yourself, ₩1.5M each. +₩1M for 70+, +₩2M for disabled. Child credit counts dependent children aged 8 or older.",
+        "pension": "National pension contributions (your share, yearly)",
+        "pensionHint": "Fully deductible: regional-member payments or the employee share",
+        "yellow": "Yellow Umbrella contributions (yearly)",
+        "yellowHint": "Limit based on your business income: ₩{limitWon}",
+        "pensionSavings": "Pension savings",
+        "irp": "IRP",
+        "pensionAccountHint": "Pension savings up to ₩6M, combined with IRP up to ₩9M. 15% credit if total income ≤ ₩45M (salary ≤ ₩55M if employment only), otherwise 12%.",
+        "midterm": "Interim prepayment (income tax)",
+        "midtermHint": "Interim income tax billed and paid last November. 0 if none.",
+        "efiling": "I file electronically myself on Hometax (₩20,000 e-filing credit)"
+      },
+      "hero": {
+        "label": "2025 comprehensive income tax · {types}",
+        "refund": "₩{amount} refund",
+        "pay": "₩{amount} to pay",
+        "zero": "Nothing to pay, nothing to refund",
+        "vs": "Tax due ₩{tax} (incl. local tax) · already paid ₩{paid}",
+        "eff": "Effective rate {rate}% (of income)",
+        "marginal": "Marginal rate {rate} ({withLocal} incl. local)"
+      },
+      "share": {
+        "label": "2025 comprehensive income tax ({types})",
+        "text": "{types} income tax result: {result}"
+      },
+      "bracket": {
+        "title": "Your tax bracket",
+        "desc": "Tax base ₩{base} — any additional income is taxed at {rate}.",
+        "next": "The same rate applies for the next ₩{gap}; above that it is {rate}.",
+        "upTo": "≤ ₩{hiM}M",
+        "over": "> ₩{loM}M",
+        "note": "Basic rates under Income Tax Act Art. 55 (from tax year 2023). Progressive: only the part above each threshold is taxed at the higher rate. With financial income combined, the bracket used in comparative taxation is shown."
+      },
+      "row": {
+        "title": "Calculation breakdown",
+        "revenue": "Business revenue",
+        "expense": "Expenses ({method})",
+        "bizIncome": "Business income",
+        "salary": "Total salary",
+        "earnedDeduction": "Employment income deduction",
+        "earned": "Employment income",
+        "other": "Other income (combined)",
+        "otherSeparated": "Other income (separate taxation, excluded)",
+        "fin": "Financial income (combined)",
+        "finSeparated": "Financial income (≤ ₩20M, separate taxation)",
+        "total": "Total income",
+        "basic": "Personal deductions",
+        "pension": "Pension contribution deduction",
+        "yellow": "Yellow Umbrella deduction",
+        "otherDeduction": "Other income deductions",
+        "taxBase": "Tax base",
+        "computed": "Computed tax (marginal {rate})",
+        "computedFin": "Computed tax (comparative taxation)",
+        "crEarned": "Employment income tax credit",
+        "crChild": "Child tax credit",
+        "crPension": "Pension account credit",
+        "crOther": "Other tax credits",
+        "crStandard": "Standard tax credit (₩{amount})",
+        "crEfiling": "E-filing credit",
+        "crCapped": "Credits are limited to computed tax → ₩{amount} applied",
+        "penalty": "No-bookkeeping penalty",
+        "determined": "Determined tax (income tax)",
+        "localTax": "Local income tax (10% of determined tax)",
+        "totalTax": "Total tax",
+        "pBiz": "3.3% withheld income tax",
+        "pWage": "Year-end settlement tax",
+        "pOther": "Other income withheld tax",
+        "pFin": "Interest/dividend withheld tax (14%)",
+        "pMid": "Interim prepayment",
+        "pLocal": "Local income tax already paid",
+        "prepaid": "Tax already paid",
+        "refundIncome": "Income tax refund",
+        "payIncome": "Income tax due",
+        "refundLocal": "Local tax refund",
+        "payLocal": "Local tax due",
+        "refund": "Estimated refund",
+        "pay": "Amount to pay"
+      },
+      "note": {
+        "wageOnly": "With employment income only, year-end settlement completes your filing and no May return is needed. Missed deductions can still be claimed in May or via a correction claim.",
+        "wageEstimated": "Year-end settlement tax was left blank, so an estimate is used. Enter the amount from your withholding receipt for accuracy.",
+        "otherSeparated": "Separate taxation is cheaper, so other income is treated as settled by withholding (₩{tax} incl. local tax).",
+        "otherMust": "Other income exceeds ₩{limitWon}, so it must be combined.",
+        "finSeparated": "Interest/dividends are ₩20M or less, so they are settled by 14% (15.4% incl. local) separate taxation and not combined.",
+        "finGrossUp": "Dividend gross-up and the dividend tax credit are not reflected. Results may differ if dividends are large.",
+        "capped": "Standard-rate income hit its cap (2.8× simple-rate income, 3.4× for double-entry filers), so the cap is used.",
+        "penalty": "With previous-year revenue of ₩48M or more, estimated filing without books adds a ₩{amount} no-bookkeeping penalty."
+      },
+      "cmp": {
+        "title": "Expense method comparison",
+        "desc": "Only the business expense method changes; other income and deductions stay the same.",
+        "result": "Refund (+) / due (−)",
+        "eligibleTag": "applies",
+        "bookEmpty": "Enter book expenses to calculate",
+        "note": "Which method you may use depends on previous-year revenue and whether you keep books."
+      },
+      "links": {
+        "title": "Related tools",
+        "freelancer": "Only 3.3% freelance income?",
+        "freelancerLink": "Freelancer tax calculator",
+        "yearEnd": "To go through employment deductions item by item:",
+        "yearEndLink": "Year-end tax settlement calculator",
+        "hometax": "To file:",
+        "hometaxLink": "NTS Hometax"
+      },
+      "guide": {
+        "title": "Comprehensive income tax essentials",
+        "who": {
+          "title": "Who must file",
+          "items": [
+            "Anyone with business income (including 3.3% freelance income)",
+            "Employees with other income such as business or other income. Employment income alone is settled at year-end.",
+            "Anyone whose other income exceeds ₩3M a year (₩3M or less may be taxed separately)",
+            "Anyone with interest and dividends over ₩20M a year",
+            "Income this calculator does not cover, such as pension income, is filed together on Hometax."
+          ]
+        },
+        "flow": {
+          "title": "How it is calculated",
+          "items": [
+            "Income by type: business = revenue − expenses; employment = salary − employment deduction; other = payment − expenses",
+            "Total income − income deductions (personal, pension, Yellow Umbrella, etc.) = tax base",
+            "Tax base × basic rates (6–45%) = computed tax; with financial income combined, the larger of the comparative calculations",
+            "Computed tax − credits + penalties = determined tax; local income tax is 10% of it",
+            "Determined tax − tax already paid (withholding, year-end settlement, interim prepayment) = refund or balance due"
+          ]
+        },
+        "income": {
+          "title": "Key points by income type",
+          "items": [
+            "Business: personal services use the simple rate if previous-year revenue was under ₩36M (new businesses: under ₩75M this year); otherwise the standard rate or books.",
+            "Employment: year-end settlement tax counts as already paid. Adding other income can push you into a higher bracket, so a balance due is common.",
+            "Other income: lecture/manuscript fees get 60% deemed expenses, and 20% (22% incl. local) of the rest is withheld — 8.8% of the payment.",
+            "Interest/dividends: up to ₩20M in total is taxed at 14%; only the excess is taxed at basic rates (comparative taxation)."
+          ]
+        },
+        "deductions": {
+          "title": "Deductions",
+          "items": [
+            "Basic deduction ₩1.5M per person, plus ₩1M for aged 70+ and ₩2M for disabled",
+            "National pension contributions are fully deductible. Regional health insurance is not an income deduction but a business expense when filing with books.",
+            "Yellow Umbrella: up to ₩6M if business income ≤ ₩40M, ₩4M if ≤ ₩100M, ₩2M above",
+            "Pension accounts: pension savings up to ₩6M, with IRP up to ₩9M, credited at 15% or 12%",
+            "Child tax credit (from tax year 2025): children aged 8+ — 1 child ₩250K, 2 children ₩550K, ₩400K for each from the third",
+            "Standard credit: ₩70K without employment income; ₩130K for employees who claim no special deductions"
+          ]
+        },
+        "filing": {
+          "title": "Filing period",
+          "items": [
+            "File and pay May 1–31 each year. If the 31st is a weekend or holiday, the next business day (June 1 in 2026).",
+            "Businesses subject to sincere-filing confirmation file by June 30.",
+            "If tax due exceeds ₩10M, it can be paid in installments within 2 months after the deadline.",
+            "Local income tax is filed via Wetax, but it is linked automatically after filing on Hometax.",
+            "Late filing adds a non-filing penalty (generally 20%) plus late-payment penalties."
+          ]
+        },
+        "tips": {
+          "title": "Ways to save",
+          "items": [
+            "Check which expense method applies first. If it is the standard rate, collect every documented major expense.",
+            "Pension savings and IRP contributions count for the year they are paid by December 31.",
+            "Side income is added to your salary and can raise your rate, so set aside money for May.",
+            "If other income is ₩3M or less, you can choose separate or combined taxation (this calculator picks the cheaper)."
+          ]
+        },
+        "sources": "Sources: Income Tax Act Arts. 14, 47, 51, 51-3, 55, 59, 59-2, 59-3, 59-4, 62, 77, 81-5, 129; Enforcement Decree Arts. 87, 143; Restriction of Special Taxation Act Arts. 86-3, 104-8; Local Tax Act Art. 92; NTS 2025 expense-rate notice."
+      }
+    },
     "title": "Income Tax Calculator",
     "description": "Auto-calculate 2025 comprehensive income tax for freelancers and business owners",
     "disclaimer": "This calculator is for reference only. Please consult the NTS Hometax or a tax advisor for actual filing.",
@@ -31717,9 +32094,75 @@
     }
   },
   "weddingCalculator": {
+    "amount": {
+      "man": "₩{mil}M",
+      "eok": "₩{mil}M",
+      "eokOnly": "₩{mil}M"
+    },
+    "hero": {
+      "label": "Net burden (excl. housing)",
+      "labelSurplus": "Gift money exceeds costs (excl. housing)",
+      "sub": "Wedding costs {cost} − expected gift money {gift}",
+      "total": "Total incl. housing {n}",
+      "coverage": "Gift coverage {n}%",
+      "basis": "Items with an actual amount use the actual; others use the budget. The housing deposit is refundable, so it is shown separately from the net burden."
+    },
+    "stats": {
+      "prepCost": "Wedding costs",
+      "housing": "Housing",
+      "gifts": "Expected gift money"
+    },
+    "share": {
+      "text": "Wedding costs {cost}, net burden after gift money {net}"
+    },
+    "costs": {
+      "current": "Current total"
+    },
+    "econ": {
+      "title": "Gift money vs meal cost",
+      "diners": "Diners",
+      "envelopes": "Gift givers (envelopes)",
+      "mealPer": "Meal per person",
+      "avgGift": "Average gift",
+      "breakEven": "Break-even gift",
+      "breakEvenHint": "Break-even gift = meal per person × diners ÷ envelopes. If the average gift is higher, gift money covers the guests' meals.",
+      "margin": "Gift money − total meal cost",
+      "surplus": "surplus",
+      "deficit": "short",
+      "groupAbove": "Covers meal",
+      "groupBelow": "Below meal cost",
+      "mismatch": "{d} diners vs {e} gift givers — families often give one envelope, so diners usually outnumber envelopes.",
+      "sync": "Set diners to {n}"
+    },
+    "schedule": {
+      "date": "Wedding date",
+      "today": "D-Day",
+      "progress": "{done}/{total} done",
+      "overdue": "Overdue",
+      "done": "Done",
+      "hint": "A typical preparation order counted back from the wedding date. Popular venues and peak-season dates can be booked out a year ahead.",
+      "tasks": {
+        "meetParents": "Families' first meeting",
+        "budget": "Agree on total budget and family split",
+        "venue": "Tour and book the venue (check cancellation terms)",
+        "sdm": "Book studio, dress and makeup",
+        "housing": "Find a home and consult on loans",
+        "honeymoon": "Book honeymoon flights and stay",
+        "photo": "Wedding photo shoot",
+        "gifts": "Prepare wedding gifts (yemul/yedan)",
+        "appliances": "Buy appliances and furniture",
+        "invitations": "Make invitations (paper/mobile)",
+        "sendInvites": "Hand out invitations",
+        "finalGuests": "Confirm final guest count (guarantee)",
+        "ceremony": "Finalize program, MC, song, snaps",
+        "payment": "Final payments, return gifts, day-of plan",
+        "registration": "Register the marriage and move-in"
+      }
+    },
     "title": "Wedding Cost Planner",
-    "description": "From budget planning to congratulatory money estimates and family cost splitting",
+    "description": "Itemized budget, net burden after gift money, family split and a prep timeline in one place",
     "tabs": {
+      "schedule": "Timeline",
       "costs": "Cost Entry",
       "congratulatory": "Gift Money",
       "split": "Family Split",
@@ -31778,6 +32221,7 @@
     },
     "guestUnit": "guests",
     "congratulatory": {
+      "remove": "Remove group",
       "guestGroup": "Guest Groups",
       "addGroup": "Add Group",
       "groupName": "Group Name",
@@ -31797,6 +32241,7 @@
       "excludingHousing": "Excl. Housing Coverage"
     },
     "split": {
+      "amountGap": "Entered split total {sum} differs from the total cost {total}.",
       "method": "Split Method",
       "byItem": "By Item",
       "byRatio": "By Ratio",
@@ -31809,6 +32254,7 @@
       "summary": "Split Summary"
     },
     "dashboard": {
+      "unitNote": "Unit: 10,000 KRW (man won). Differences reflect only items with actual amounts.",
       "totalCost": "Total Cost",
       "congratulatoryMoney": "Gift Money",
       "netBurden": "Net Burden",
@@ -31828,20 +32274,23 @@
     "guide": {
       "title": "Wedding Cost Guide",
       "averageCosts": {
-        "title": "2025 Average Wedding Costs",
+        "note": "Default values are estimates based on the surveys above. Real quotes vary widely by region, date and options.",
+        "title": "Reference figures (source and survey date)",
         "items": [
-          "Seoul/Metro average: 35M~50M won (excl. housing)",
-          "Regional average: 20M~30M won (excl. housing)",
-          "Including housing: 100M~300M+ won"
+          "Duo 2025 wedding cost report (1,000 couples married 1–2 years): average total about 361.7M KRW, of which housing about 304.1M KRW (~84%) — as reported in the press",
+          "Korea Consumer Agency wedding service price survey (Aug 2025, 504 vendors): venue + studio/dress/makeup average about 21.6M KRW; capital area about 26.65M vs. elsewhere about 15.11M — as reported",
+          "Same survey: median meal price about 60K KRW per person (Gangnam about 88K), median hall rental about 3.5M KRW",
+          "Korea Consumer Agency June 2025 survey: median studio/dress/makeup package about 2.92M KRW, median venue total about 15.6M KRW",
+          "Gift money: press reports say the average KakaoPay wedding gift transfer has passed 100K KRW (reference only)"
         ]
       },
       "savingTips": {
         "title": "Saving Tips",
         "items": [
-          "Small wedding: under 50 guests, save up to 50%",
-          "Off-season (Jan-Feb, Jul-Aug) venue discounts",
-          "Compare package vs individual vendor quotes",
-          "DIY invitations/return gifts save 300K~500K won"
+          "Meal price × guests is the biggest part of venue cost. A realistic guaranteed guest count is the surest saving.",
+          "Off-season, morning and weekday ceremonies usually leave more room to negotiate rental fees or minimum guest counts.",
+          "Get both package and individual quotes for studio/dress/makeup, and check option fees such as original photo files in advance.",
+          "Mobile invitations and DIY return gifts cut smaller costs."
         ]
       },
       "guide": {
@@ -31892,35 +32341,40 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Set your target wedding date and total budget.",
-          "2. Enter estimated costs for each category: venue, photo/dress/makeup, honeymoon, household items, etc.",
-          "3. Enter the expected number of guests for an automatic gift money estimate.",
-          "4. Adjust each family's cost-sharing ratio to see the net amount each side bears."
+          "1. Pick a region (Seoul/Metro or Regional) to fill in default budgets. Uncheck items you don't need.",
+          "2. Enter quotes or contract prices in 'Actual'. Items with an actual amount use it; others use the budget.",
+          "3. In Gift Money, enter guests and gift per person by relationship to see expected gifts and the break-even vs. meal cost.",
+          "4. In Family Split, divide costs by item, ratio or fixed amount between the groom's and bride's sides.",
+          "5. Enter the wedding date in Timeline to get a D-day checklist. Sharing the link restores all inputs."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "The 스드메 package price is often negotiable. Itemized contracts can sometimes cost less than a package, so get individual quotes too.",
-          "Booking a venue for weekend mornings (before 11 AM) or off-peak months (January–February, July–August) can save 20–30%.",
-          "Average gift amounts: coworkers and acquaintances typically give 50,000–100,000 KRW; close friends and relatives give 100,000–200,000 KRW.",
-          "The new home deposit is the largest single wedding expense. Compare jeonse loan interest against monthly rent to choose the best option."
+          "A housing deposit is refundable, so the net burden is shown excluding housing first.",
+          "Groups whose gift per person is below the meal price add cost the more you invite — see the 'Below meal cost' label.",
+          "Gift givers are counted per envelope while diners include accompanying family, so diners are usually more.",
+          "Check gift-tax deduction limits for money received from parents (see FAQ)."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What is the average cost of a wedding in 2025?",
-            "a": "Statistics suggest the average total is approximately 200–300 million KRW including a new home. Excluding the home, ceremony, photo/dress/makeup, household items, and honeymoon typically total around 50–80 million KRW."
+            "q": "How much does a wedding cost on average?",
+            "a": "According to Duo's 2025 wedding cost report (as reported), couples spent about 361.7M KRW in total, around 84% of it on housing. For the ceremony itself, the Korea Consumer Agency's August 2025 survey found an average of about 21.6M KRW for venue plus studio/dress/makeup (about 26.65M in the capital area). Surveys differ in scope, so treat these as references only."
+          },
+          {
+            "q": "How much of the cost can gift money cover?",
+            "a": "It depends heavily on guests and gift amounts. This calculator multiplies guests by gift per relationship, then shows coverage of wedding costs excluding housing and the surplus over meal costs."
           },
           {
             "q": "Is parental financial support subject to gift tax?",
-            "a": "Up to 50 million KRW over 10 years from direct lineal ascendants is tax-free. Amounts above that require a gift tax filing. A special marriage gift deduction allows an additional 100 million KRW tax-free."
+            "a": "Gifts to an adult child from lineal ascendants are deductible up to 50M KRW over 10 years. Since 2024, gifts received within 2 years before or after the marriage registration qualify for an additional marriage/childbirth deduction of up to 100M KRW (lifetime, combined with the childbirth deduction). Amounts above the deductions must be reported; check National Tax Service guidance."
           },
           {
-            "q": "What is the cancellation fee policy for wedding venues?",
-            "a": "Per consumer dispute resolution guidelines: 10% penalty 1+ year out, 20% at 6 months–1 year, 30% at 3–6 months, 50% at 1–3 months, and 80% within 1 month of the event."
+            "q": "Can I get my venue deposit back if I cancel?",
+            "a": "Under the Fair Trade Commission's consumer dispute resolution standards for wedding halls, the deposit is in principle refundable if the consumer cancels at least 150 days before the wedding. After that, penalties apply depending on timing, so check the refund terms before signing."
           }
         ]
       }

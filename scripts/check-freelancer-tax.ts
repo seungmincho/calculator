@@ -30,6 +30,8 @@ const custom = industryOf('custom', 60, 20)
 assert.equal(custom.excess, 44)
 // 기준경비율 = 수입 - 주요경비 - 수입×기준경비율
 assert.deepEqual(standardIncome(50_000_000, 5_000_000, etc, false).income, 50_000_000 - 5_000_000 - 8_700_000)
+// 복식부기의무자는 기준경비율 1/2 (시행령 §143③1호 단서): 17.4% → 8.7%
+assert.equal(standardIncome(50_000_000, 5_000_000, etc, true).income, 50_000_000 - 5_000_000 - 4_350_000)
 // 한도: 단순경비율 소득금액 × 2.8 (퀵서비스 3천만: 618만 × 2.8)
 const quick = standardIncome(30_000_000, 0, industryOf('940918'), false)
 assert.equal(quick.capped, true)

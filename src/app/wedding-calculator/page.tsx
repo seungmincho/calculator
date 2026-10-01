@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '결혼비용 계산기, 결혼 예산, 웨딩 비용, 축의금 계산, 양가 분담, 예식장 비용, 스드메 비용, 예물 예단, 신혼여행 비용, 신혼집 비용, 결혼 준비 체크리스트',
   openGraph: {
     title: '결혼비용 계산기 - 예산 계획부터 양가 분담까지 | 툴허브',
-    description: '결혼 총 비용 항목별 계획, 축의금 예상, 양가 분담 비율 계산. 서울/지방 평균 비용 자동 추정.',
+    description: '결혼 총 비용 항목별 계획, 축의금 예상, 양가 분담 비율 계산. 서울/지방 참고 추정치.',
     url: 'https://toolhub.ai.kr/wedding-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -32,15 +32,17 @@ export default function WeddingCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '결혼비용 계산기',
-    description: '결혼 총 비용 항목별 계획, 축의금 예상, 양가 분담 계산. 서울/수도권·지방 평균 비용 자동 추정.',
+    description: '결혼 총 비용 항목별 계획, 축의금 예상, 양가 분담 계산. 서울/수도권·지방 참고 추정치.',
     url: 'https://toolhub.ai.kr/wedding-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '8개 카테고리 30+ 항목별 비용 관리',
-      '서울/수도권 vs 지방 기준 자동 추정',
+      '8개 카테고리 항목별 예산·실제 비용 관리',
+      '축의금 vs 식대 본전 계산',
+      'D-day 결혼 준비 일정 체크리스트',
+      '서울/수도권 vs 지방 참고 추정치',
       '예산 vs 실제 비용 비교',
       '축의금 예상 및 커버율 계산',
       '양가 분담 (항목별/비율/금액)',
@@ -59,7 +61,7 @@ export default function WeddingCalculatorPage() {
         name: '결혼 비용은 평균 얼마나 드나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2025년 기준 서울/수도권 평균 결혼 비용은 신혼집 제외 3,500~5,000만원이며, 지방은 2,000~3,000만원입니다. 신혼집 포함 시 1억~3억원 이상이 소요됩니다.',
+          text: '한국소비자원 참가격 조사(2025년 8월)에 따르면 예식장과 스드메 등 결혼서비스 비용은 평균 약 2,160만원(수도권 2,665만원, 비수도권 1,511만원)이었습니다. 예물·예단·신혼여행·혼수와 신혼집은 별도이며, 신혼집 비용이 전체에서 가장 큰 비중을 차지합니다.',
         },
       },
       {
@@ -67,7 +69,7 @@ export default function WeddingCalculatorPage() {
         name: '축의금으로 결혼 비용을 얼마나 충당할 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '일반적으로 축의금은 신혼집 비용을 제외한 결혼 비용의 50~80%를 커버합니다. 하객 수, 관계별 축의금 금액에 따라 달라지며, 직장동료·친구는 5만원, 가족·친척은 10만원이 평균입니다.',
+          text: '축의금으로 얼마나 충당되는지는 하객 수와 관계별 축의금, 식대에 따라 크게 달라집니다. 2025년 조사 기준 식대 중간값이 1인 6만원 수준이라, 식사하는 하객 1명당 축의금이 식대보다 적으면 오히려 부담이 늘 수 있습니다. 계산기의 "축의금 vs 식대"에서 본전 축의금을 확인하세요.',
         },
       },
       {
