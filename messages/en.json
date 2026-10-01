@@ -48755,7 +48755,285 @@
       ]
     }
   },
-  "powerOfAttorney": {},
+  "powerOfAttorney": {
+    "title": "Power of Attorney Generator",
+    "description": "Pick a purpose and the delegated matters and required documents fill in automatically. Make Korean power of attorney forms for community centers, vehicles, banks, real estate and companies as A4 with seal and PDF.",
+    "section": {
+      "purpose": "What is this power of attorney for?",
+      "principal": "Principal (person delegating)",
+      "agent": "Agent (person going on their behalf)",
+      "matters": "Delegated matters",
+      "period": "Period and date"
+    },
+    "sectionHint": {
+      "purpose": "Choosing a purpose updates the delegated matters and required documents.",
+      "principal": "The person granting authority. The principal signs or stamps the document personally.",
+      "agent": "The person who visits the office. Bring your own ID card.",
+      "matters": "The more specific, the safer. Uncheck anything you don't need."
+    },
+    "purposes": {
+      "resident": "Community center documents",
+      "seal": "Seal certificate",
+      "car": "Vehicle registration/transfer",
+      "bank": "Banking",
+      "realty": "Real estate contract/registry",
+      "court": "Court/government office",
+      "corp": "Company (corporate)",
+      "custom": "Custom"
+    },
+    "docsTitle": "What to bring",
+    "docs": {
+      "resident": [
+        "This power of attorney (signed or stamped by the principal)",
+        "Agent's original ID",
+        "Principal's ID (a copy for family relation certificates; ask the office whether a copy is accepted for resident registration copies)",
+        "Household members can get resident registration copies without a POA; spouses and lineal relatives (parents, children) can get family relation certificates without one. Siblings need a POA.",
+        "The family relation certificate defaults to the general version; the detailed version requires a stated reason."
+      ],
+      "seal": [
+        "Not this form: the official 'Seal Certificate Issuance POA' (Form No. 13, Enforcement Decree of the Certification of Seal Imprints Act), handwritten by the principal — available at community centers or Gov24",
+        "Principal's original ID (overseas residents/inmates may use consulate/prison confirmation instead)",
+        "Agent's original ID (age 17 or older)",
+        "For real estate sale use, you must provide the buyer's name, address and resident number.",
+        "The POA is valid for 6 months from the date of delegation."
+      ],
+      "car": [
+        "This power of attorney (registered seal recommended)",
+        "Principal's seal certificate (vehicle-sale use when selling) or signature verification certificate",
+        "Agent's original ID",
+        "Vehicle registration certificate, transfer certificate (for transfers), mandatory insurance certificate",
+        "Acquisition tax etc. is paid at the registration counter."
+      ],
+      "bank": [
+        "This power of attorney — many banks require their own form, so call ahead",
+        "Principal's registered seal + seal certificate (usually issued within 3 months)",
+        "Principal's ID and agent's original ID",
+        "Bankbook, seal and other items related to the transaction",
+        "For withdrawals or closing accounts, the bank may call the principal to confirm."
+      ],
+      "realty": [
+        "This power of attorney (stamped with the registered seal)",
+        "Principal's seal certificate (real estate sale use for sale registration) or signature verification certificate",
+        "Agent's original ID",
+        "State the property precisely: address, lot number, area.",
+        "The counterparty should call the principal directly to confirm the delegation."
+      ],
+      "court": [
+        "This power of attorney (signed or stamped by the principal)",
+        "Copy of principal's ID, agent's original ID",
+        "Put the case number and party names in the target field.",
+        "Litigation representation is in principle for attorneys only. In small claims, a spouse, lineal relative or sibling can represent without court permission by proving the relationship."
+      ],
+      "corp": [
+        "This power of attorney (corporate seal)",
+        "Corporate seal certificate (usually within 3 months)",
+        "Corporate registry certificate, business registration copy (as required)",
+        "Agent's original ID, certificate of employment or employee ID"
+      ],
+      "custom": [
+        "This power of attorney (signed or stamped by the principal)",
+        "Agent's original ID",
+        "Copy of principal's ID",
+        "If property is involved, many places also require the principal's seal certificate. Check with the recipient."
+      ]
+    },
+    "principalType": "Principal type",
+    "principalTypes": {
+      "person": "Individual",
+      "corp": "Corporation"
+    },
+    "corp": {
+      "name": "Company name",
+      "namePlaceholder": "○○ Co., Ltd.",
+      "rep": "Representative",
+      "regNo": "Corporate registration no."
+    },
+    "relation": "Relationship to principal",
+    "relationPlaceholder": "e.g. child, spouse, friend",
+    "relationPlaceholderCorp": "e.g. General Affairs, Assistant Manager",
+    "extra": "Other matters (free input)",
+    "extraPlaceholder": {
+      "custom": "One item per line.\ne.g. Apply for and receive apartment maintenance fee refund",
+      "other": "Add anything not in the checklist, one per line."
+    },
+    "extraHint": "Each line becomes a numbered item.",
+    "target": {
+      "resident": "Document subject (optional)",
+      "seal": "Seal certificate use / recipient (optional)",
+      "car": "Vehicle",
+      "bank": "Account",
+      "realty": "Property",
+      "court": "Case / subject (optional)",
+      "corp": "Task (optional)",
+      "custom": "Subject (optional)"
+    },
+    "targetPlaceholder": {
+      "resident": "e.g. 1 copy of principal's resident registration",
+      "seal": "e.g. 1 general-use copy, for ○○ Bank loan",
+      "car": "e.g. 12가 3456 (VIN KMH…)",
+      "bank": "e.g. ○○ Bank 123-456-789012 (holder Hong Gil-dong)",
+      "realty": "e.g. Unit 1001, Bldg 101, ○○ Apt, 123-4 ○○-dong, Seoul",
+      "court": "e.g. Seoul Central District Court 2026가소12345",
+      "corp": "e.g. 2026 2nd-half VAT return",
+      "custom": "e.g. Unit 1001, Bldg 101, ○○ Apt"
+    },
+    "submitTo": "Submitted to",
+    "submitToPlaceholder": {
+      "resident": "e.g. ○○-dong Community Service Center",
+      "seal": "e.g. ○○-dong Community Service Center",
+      "car": "e.g. ○○ City Vehicle Registration Office",
+      "bank": "e.g. ○○ Bank, ○○ Branch",
+      "realty": "e.g. ○○ Registry Office",
+      "court": "e.g. ○○ District Court",
+      "corp": "e.g. ○○ Tax Office",
+      "custom": "e.g. ○○ Co., Ltd."
+    },
+    "periodMode": "Delegation period",
+    "periodModes": {
+      "range": "Set dates",
+      "done": "Until the task is done"
+    },
+    "from": "Start date",
+    "to": "End date",
+    "written": "Date written",
+    "attach": "Listed attachments",
+    "attachId": "Copy of principal's ID",
+    "attachIdCorp": "Agent's employment certificate or ID copy",
+    "attachSeal": "Principal's seal certificate",
+    "attachSealCorp": "Corporate seal certificate",
+    "attachSealHint": "For bank, real estate or vehicle matters a seal certificate is usually attached.",
+    "insight": {
+      "noMatters": "No delegated matters. Check items or type them in — offices won't accept a POA without them.",
+      "periodOrder": "The end date is before the start date. Please check the dates.",
+      "periodLong": "The period is over 1 year. A long period risks misuse after the task is done. Banks and offices usually want a POA written within the last 1–3 months.",
+      "sealForm": "A seal certificate cannot be issued to an agent with this form. The principal must handwrite the official 'Seal Certificate Issuance POA' (Form No. 13) and sign or stamp it (the registered seal is safest). If the principal can visit in person, a signature verification certificate (no seal needed, but no proxy issuance) is an alternative. For uses other than courts or financial institutions, the principal can also get it online at Gov24.",
+      "sealOver6m": "A seal certificate POA is valid only for {months} months from the date of delegation. Shorten the end date.",
+      "broad": "Words like 'all', 'any and all' or 'comprehensive' found. An unlimited POA can be abused to sell property or take on debt, and banks or registries may reject it. Be specific about tasks and targets.",
+      "noTarget": "Stating the target (account, vehicle, property address) makes the scope clear, avoids rejections and reduces misuse."
+    },
+    "guide": {
+      "title": "Power of attorney essentials",
+      "intro": "A power of attorney records that you are entrusting a task to someone else. What the agent does within that authority binds you as if you did it yourself (Civil Act Art. 114). So keep who, what and until when narrow and clear.",
+      "sections": [
+        {
+          "title": "Must-have items",
+          "items": [
+            "Name, date of birth (first 6 digits of resident number), address and phone of principal and agent",
+            "Delegated matters, one by one (e.g. apply for and receive 1 resident registration copy)",
+            "Target and recipient: account, vehicle, property address, and which office",
+            "Period, date written, principal's signature or seal"
+          ]
+        },
+        {
+          "title": "Documents by purpose",
+          "items": [
+            "Community center certificates: POA + agent's ID + principal's ID (copy)",
+            "Seal certificate: official handwritten POA form + original IDs of both",
+            "Vehicle: POA (registered seal) + principal's seal certificate + agent's ID + vehicle registration etc.",
+            "Bank: check bank's own form + registered seal + seal certificate + both IDs",
+            "Real estate: POA (registered seal) + seal certificate (real estate sale use for selling) + agent's ID",
+            "Company: POA (corporate seal) + corporate seal certificate + agent's ID/employment certificate"
+          ]
+        },
+        {
+          "title": "Registered seal vs signature",
+          "items": [
+            "A general POA is valid with a signature alone. Any stamp is also fine.",
+            "Property matters (bank, real estate, vehicle) often require the registered seal plus a seal certificate.",
+            "A signature verification certificate can replace the seal; sign the POA with the same signature.",
+            "The signature verification certificate cannot be issued to an agent — the principal must visit in person."
+          ]
+        },
+        {
+          "title": "For the agent",
+          "items": [
+            "The agent's own original ID is always required (resident card, driver's license, passport).",
+            "Only those aged 17+ can obtain a seal certificate as agent.",
+            "Offices may call the principal to confirm, so make sure they can answer.",
+            "Many offices keep the original. Print and sign one per office if needed."
+          ]
+        },
+        {
+          "title": "Avoid blanket authority",
+          "items": [
+            "'All rights' or 'any and all acts' with no scope can be abused to sell property or take on debt.",
+            "An agent with undefined authority may only preserve and manage property (Civil Act Art. 118), so banks and registries ask for specific delegation.",
+            "Keep the period short and take back or revoke the POA when done.",
+            "Handing over your seal and seal certificate together is like a blank check."
+          ]
+        }
+      ],
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Does a family member need a POA to get documents for me?",
+            "a": "It depends. Household members can get resident registration copies without one. Spouses and lineal relatives (parents, children, grandparents) can request family relation certificates without a POA, but siblings need a POA and a copy of the principal's ID. A seal certificate always requires the official POA form and the principal's original ID, even for family."
+          },
+          {
+            "q": "How long is a power of attorney valid?",
+            "a": "A general POA has no statutory validity period: it lasts until the stated end date, or until the task is done or revoked. Only the seal certificate POA is fixed at 6 months from delegation (Enforcement Decree of the Certification of Seal Imprints Act Art. 13). Banks and offices usually want one written within 1–3 months."
+          },
+          {
+            "q": "Can I just sign without a seal?",
+            "a": "For ordinary tasks like community center documents, the principal's handwritten signature is enough. Property matters often require the registered seal and seal certificate, but you may submit a signature verification certificate and sign the POA identically instead."
+          },
+          {
+            "q": "Can I use this form to have someone get my seal certificate?",
+            "a": "No. You must use the official 'Seal Certificate Issuance POA' (Form No. 13), handwritten by the principal. It is available at community centers and on Gov24. Choose the seal certificate purpose here to see what to bring."
+          },
+          {
+            "q": "Is a typed and printed POA valid?",
+            "a": "Yes. A general POA has no fixed format, so a printed one is valid. The principal should sign or stamp it by hand after printing. Only official forms that require handwriting, like the seal certificate POA, are exceptions."
+          }
+        ]
+      },
+      "related": [
+        {
+          "label": "Seal stamp maker",
+          "href": "/stamp-generator/"
+        },
+        {
+          "label": "Signature maker",
+          "href": "/signature-generator/"
+        },
+        {
+          "label": "Resident number validator",
+          "href": "/resident-number/"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Civil Act Art. 114, 118 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/민법"
+        },
+        {
+          "label": "Enforcement Decree of the Resident Registration Act — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/주민등록법시행령"
+        },
+        {
+          "label": "Enforcement Decree of the Certification of Seal Imprints Act Art. 13 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/인감증명법시행령"
+        },
+        {
+          "label": "Act on the Registration of Family Relationships Art. 14 — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/가족관계의등록등에관한법률"
+        },
+        {
+          "label": "Act on Verification of Personal Signatures — Korea Law Information Center",
+          "url": "https://www.law.go.kr/법령/본인서명사실확인등에관한법률"
+        },
+        {
+          "label": "Gov24 (forms, online seal certificate)",
+          "url": "https://www.gov.kr"
+        },
+        {
+          "label": "Supreme Court e-Family Registration System",
+          "url": "https://efamily.scourt.go.kr"
+        }
+      ]
+    }
+  },
   "certifiedLetter": {},
   "employmentContract": {}
 }
