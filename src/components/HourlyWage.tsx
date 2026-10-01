@@ -4,40 +4,15 @@ import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { MIN_WAGE_2026, WEEKS_PER_MONTH } from '@/utils/workHours'
+import { MIN_WAGE_2026, calcPay, shiftMinutes } from '@/utils/workHours'
+import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
+import ShareResult from '@/components/ShareResult'
 
-type InputType = 'hourly' | 'daily' | 'monthly' | 'yearly'
-const TYPES: InputType[] = ['hourly', 'daily', 'monthly', 'yearly']
+type InputType = WageType
+const TYPES: InputType[] = ['hourly', 'daily', 'weekly', 'monthly', 'yearly']
 const PRESETS = [15, 20, 30, 40]
 const AVG_ANNUAL_SALARY_KR = 42_000_000 // 한국 근로자 평균 연봉 약 4,200만원 (2024 기준)
-
-/**
- * 주휴시간 = 주 소정근로시간/40 × 8 (주 15시간 이상, 최대 8)
- * 월 소정근로시간 = (주 소정근로 + 주휴) × 365/7/12, 정수 반올림 → 주 40시간 = 209시간
- */
-export function wageTable(type: InputType, amount: number, weeklyHours: number, daysPerWeek: number, holiday: boolean) {
-  const holidayHours = holiday && weeklyHours >= 15 ? Math.min(8, (weeklyHours / 40) * 8) : 0
-  const monthlyHours = Math.round((weeklyHours + holidayHours) * WEEKS_PER_MONTH)
-  const dailyHours = weeklyHours / daysPerWeek
-  const hourly =
-    type === 'hourly' ? amount
-    : type === 'daily' ? amount / dailyHours
-    : type === 'monthly' ? amount / monthlyHours
-    : amount / 12 / monthlyHours
-  const monthly = hourly * monthlyHours
-  return {
-    hourly,
-    daily: hourly * dailyHours,
-    weekly: hourly * (weeklyHours + holidayHours),
-    monthly,
-    yearly: monthly * 12,
-    holidayHours,
-    monthlyHours,
-    dailyHours,
-    holidayPayMonthly: hourly * holidayHours * WEEKS_PER_MONTH,
-  }
-}
 
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 
@@ -66,7 +41,11 @@ function HourlyWageInner() {
     return h > 0 ? Math.min(68, h * d) : 40
   })
   const [holiday, setHoliday] = useState<boolean>(() => sp.get('hol') !== '0')
-  const [copied, setCopied] = useState(false)
+  const hm = (v: string | null, d: string) => (v && /^\d{2}:\d{2}$/.test(v) ? v : d)
+  const [dStart, setDStart] = useState(() => hm(sp.get('ds'), '09:00'))
+  const [dEnd, setDEnd] = useState(() => hm(sp.get('de'), '18:00'))
+  const [dHoliday, setDHoliday] = useState(() => sp.get('dhol') === '1')
+  const [small, setSmall] = useState(() => sp.get('small') === '1')
 
   const shareUrl = useCallback(() => {
     const p = new URLSearchParams()
@@ -76,9 +55,13 @@ function HourlyWageInner() {
     if (weeklyHours !== 40) p.set('wh', String(weeklyHours))
     if (daysPerWeek !== 5) p.set('days', String(daysPerWeek))
     if (!holiday) p.set('hol', '0')
+    if (dStart !== '09:00') p.set('ds', dStart)
+    if (dEnd !== '18:00') p.set('de', dEnd)
+    if (dHoliday) p.set('dhol', '1')
+    if (small) p.set('small', '1')
     const qs = p.toString()
     return `${window.location.pathname}${qs ? '?' + qs : ''}`
-  }, [amount, inputType, weeklyHours, daysPerWeek, holiday])
+  }, [amount, inputType, weeklyHours, daysPerWeek, holiday, dStart, dEnd, dHoliday, small])
 
   useEffect(() => {
     const id = setTimeout(() => window.history.replaceState(null, '', shareUrl()), 300)
@@ -100,27 +83,12 @@ function HourlyWageInner() {
     setHoliday(true)
   }
 
-  const handleCopyLink = useCallback(async () => {
-    const url = window.location.origin + shareUrl()
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url)
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = url
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch {
-      // silent
-    }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }, [shareUrl])
+  // 하루 근무 (연장·야간·휴일 가산) — 법정 최소 휴게 자동 적용
+  const day = useMemo(
+    () => (r ? calcPay([{ week: 'd', start: dStart, end: dEnd, breakMin: -1, holiday: dHoliday }], r.hourly, small) : null),
+    [r, dStart, dEnd, dHoliday, small]
+  )
+  const typeLabel = (ty: InputType) => (ty === 'weekly' ? t('u.weeklyShort') : t(ty))
 
   const minPct = r ? Math.round((r.hourly / MIN_WAGE_2026) * 100) : 0
   const isAbove = r ? Math.round(r.hourly) >= MIN_WAGE_2026 : true
@@ -144,28 +112,25 @@ function HourlyWageInner() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <button onClick={handleCopyLink} className="ui-btn-soft px-3 py-2 text-sm font-medium shrink-0">
-          {copied ? t('copied') : t('copyLink')}
-        </button>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('inputType')}</label>
-              <div className="grid grid-cols-4 gap-1.5">
+              <div className="grid grid-cols-5 gap-1">
                 {TYPES.map((type) => (
                   <button
                     key={type}
                     onClick={() => setInputType(type)}
                     aria-pressed={inputType === type}
-                    className={`px-2 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                       inputType === type ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
-                    {t(type)}
+                    {typeLabel(type)}
                   </button>
                 ))}
               </div>
@@ -173,7 +138,7 @@ function HourlyWageInner() {
 
             <div>
               <label htmlFor="hw-amount" className="block text-sm font-medium text-body mb-2">
-                {t(inputType)} {t('amount')}
+                {typeLabel(inputType)} {t('amount')}
               </label>
               <input
                 id="hw-amount"
@@ -264,7 +229,7 @@ function HourlyWageInner() {
         </div>
 
         {/* 결과 */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-4">
           <div className="ui-card p-6 space-y-6">
             {r ? (
               <>
@@ -297,7 +262,7 @@ function HourlyWageInner() {
                       {rows.map((row) => (
                         <tr key={row.key} className={`border-b border-line ${row.key === inputType ? 'bg-subtle' : ''}`}>
                           <td className="py-2.5 pl-1 text-body">
-                            {row.key === 'weekly' ? t('weekly') : t(`result.${row.key}Wage`)}
+                            {row.key === 'weekly' ? (holiday ? t('weekly') : t('u.weeklyShort')) : t(`result.${row.key}Wage`)}
                             {row.key === inputType && <span className="ml-1.5 text-xs text-primary">{t('inputMark')}</span>}
                           </td>
                           <td className="py-2.5 text-right font-semibold text-fg tabular-nums">{won(row.gross)}{t('result.won')}</td>
@@ -351,25 +316,78 @@ function HourlyWageInner() {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-2 border-t border-line">
-                  <Link href="/weekly-holiday-pay/" className="ui-btn-soft px-3 py-2 text-sm">
-                    {t('links.weeklyHolidayPay')}
-                  </Link>
-                  <Link href="/work-hours-calculator/" className="ui-btn-soft px-3 py-2 text-sm">
-                    {t('links.workHours')}
-                  </Link>
-                </div>
+                <ShareResult
+                  className="pt-4 border-t border-line"
+                  card={{
+                    tool: t('title'),
+                    label: t('u.share.label', { type: typeLabel(inputType), amount: amount, hours: weeklyHours }),
+                    headline: `${t('hourly')} ${won(r.hourly)}${t('result.won')}`,
+                    sub: t('u.share.sub', { pct: minPct }),
+                    rows: [
+                      { label: t('result.dailyWage'), value: `${won(r.daily)}${t('result.won')}` },
+                      { label: t('u.weeklyShort'), value: `${won(r.weekly)}${t('result.won')}` },
+                      { label: t('result.monthlyWage'), value: `${won(r.monthly)}${t('result.won')}` },
+                      { label: t('result.yearlyWage'), value: `${won(r.yearly)}${t('result.won')}` },
+                    ],
+                  }}
+                />
               </>
             ) : (
               <p className="text-center py-12 text-muted">{t('amountPlaceholder')}</p>
             )}
           </div>
+
+          {/* 하루 근무 가산수당 */}
+          {r && day && (
+            <div className="ui-card p-6 space-y-4">
+              <div>
+                <h2 className="text-lg font-semibold text-fg">{t('u.day.title')}</h2>
+                <p className="text-sm text-muted mt-1">{t('u.day.desc', { wage: won(r.hourly) })}</p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 items-end">
+                <label className="block">
+                  <span className="block text-sm font-medium text-body mb-1.5">{t('u.day.start')}</span>
+                  <input type="time" value={dStart} onChange={(e) => e.target.value && setDStart(e.target.value)} className="ui-field w-full px-3 py-2 tabular-nums" />
+                </label>
+                <label className="block">
+                  <span className="block text-sm font-medium text-body mb-1.5">{t('u.day.end')}</span>
+                  <input type="time" value={dEnd} onChange={(e) => e.target.value && setDEnd(e.target.value)} className="ui-field w-full px-3 py-2 tabular-nums" />
+                </label>
+                <button onClick={() => setDHoliday(!dHoliday)} aria-pressed={dHoliday}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${dHoliday ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                  {t('u.day.holiday')}
+                </button>
+                <button onClick={() => setSmall(!small)} aria-pressed={small}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${small ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                  {t('u.day.small')}
+                </button>
+              </div>
+              <div className="flex items-baseline justify-between gap-3 flex-wrap">
+                <span className="text-sm text-sub">{t('u.day.total', { hours: +day.totalHours.toFixed(2), brk: shiftMinutes({ start: dStart, end: dEnd, breakMin: -1 }).brk })}</span>
+                <span className="text-2xl font-bold text-fg tabular-nums">{won(day.totalPay)}{t('result.won')}</span>
+              </div>
+              <div className="bg-subtle rounded-2xl p-4 space-y-1.5 text-sm">
+                {([
+                  ['basic', day.basicPay, day.basicHours],
+                  ['overtime', day.overtimePay, day.overtimeHours],
+                  ['night', day.nightPay, day.nightHours],
+                  ['holidayWork', day.holidayPay + day.holidayOverPay, day.holidayHours + day.holidayOver8Hours],
+                ] as const).filter(([k, v]) => k === 'basic' || v > 0).map(([k, v, h]) => (
+                  <div key={k} className="flex justify-between">
+                    <span className="text-sub">{t(`u.day.${k}`, { hours: +h.toFixed(2) })}</span>
+                    <span className="text-fg tabular-nums">{won(v)}{t('result.won')}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted">{small ? t('u.day.smallNote') : t('u.day.note')}</p>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="ui-card p-6">
-        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {(['conversion', 'tips'] as const).map((sec) => (
             <div key={sec}>
               <h3 className="font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
@@ -380,6 +398,35 @@ function HourlyWageInner() {
               </ul>
             </div>
           ))}
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-fg mb-3">{t('u.faq.title')}</h3>
+          <div className="divide-y divide-line border-y border-line">
+            {(t.raw('u.faq.items') as { q: string; a: string }[]).map((f) => (
+              <details key={f.q} className="py-3">
+                <summary className="cursor-pointer text-sm font-medium text-body">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('u.sources.title')}</p>
+          <ul className="space-y-1">
+            {(t.raw('u.sources.items') as { label: string; url: string }[]).map((src) => (
+              <li key={src.url}>
+                <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{src.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Link href="/weekly-holiday-pay/" className="ui-btn-soft px-3 py-2 text-sm">{t('links.weeklyHolidayPay')}</Link>
+          <Link href="/work-hours-calculator/" className="ui-btn-soft px-3 py-2 text-sm">{t('links.workHours')}</Link>
+          <Link href="/salary-calculator/" className="ui-btn-soft px-3 py-2 text-sm">{t('u.links.salary')}</Link>
         </div>
       </div>
     </div>

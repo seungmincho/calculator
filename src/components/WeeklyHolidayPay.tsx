@@ -1,652 +1,412 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, usePathname } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Copy, Check, BookOpen, AlertTriangle, Info, Link, Sparkles, Loader2, X } from 'lucide-react'
-import { useChromeAI } from '@/hooks/useChromeAI'
-import dynamic from 'next/dynamic'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import { calculateNetSalary } from '@/utils/netSalary'
+import { requiredBreak } from '@/utils/workHours'
+import {
+  calcWeek, evenDays, netDayHours, monthlyDeduction, MIN_WAGE_2026, type DeductMode,
+} from '@/utils/weeklyHolidayPay'
 
-const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const hrs = (n: number) => +n.toFixed(2)
+const DEDUCTS: DeductMode[] = ['none', 'tax33', 'ins']
+const SCENARIOS = [14.5, 15, 20, 30, 40]
+const clampH = (v: number) => Math.max(0, Math.min(24, Number.isFinite(v) ? v : 0))
 
-const formatWon = (n: number) => Math.round(n).toLocaleString('ko-KR') + '원'
-
-interface CalcResult {
-  weeklyHours: number
-  holidayHours: number
-  weeklyBase: number
-  holidayPay: number
-  weeklyTotal: number
-  monthlyBase: number
-  monthlyTotal: number
-  annualTotal: number
-  eligible: boolean
-  baseRatio: number
-  holidayRatio: number
-}
-
-// Scenario comparison row for a given weekly total hours
-function calcScenario(hourlyWage: number, totalWeeklyHours: number, weeksPerMonth: number) {
-  const eligible = totalWeeklyHours >= 15
-  const holidayHours = eligible ? Math.min((totalWeeklyHours / 40) * 8, 8) : 0
-  const weeklyBase = hourlyWage * totalWeeklyHours
-  const holidayPay = eligible ? hourlyWage * holidayHours : 0
-  const weeklyTotal = weeklyBase + holidayPay
-  const monthlyTotal = weeklyTotal * weeksPerMonth
-  return { weeklyBase, holidayPay, weeklyTotal, monthlyTotal, eligible, holidayHours }
-}
-
-const SCENARIO_HOURS = [15, 20, 30, 40]
-
-function WeeklyHolidayPayInner() {
+export default function WeeklyHolidayPay() {
   const t = useTranslations('weeklyHolidayPay')
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const sp = useSearchParams()
+  const dayNames = t.raw('u.dayNames') as string[]
 
-  // Parse initial state from URL params
-  const [hourlyWage, setHourlyWage] = useState(() => {
-    const v = searchParams.get('wage')
-    return v ? Number(v) : 10320
+  const [wageText, setWageText] = useState(() => {
+    const w = parseInt(sp.get('wage') || '')
+    return (w > 0 ? w : MIN_WAGE_2026).toLocaleString('ko-KR')
   })
-  const [workDays, setWorkDays] = useState(() => {
-    const v = searchParams.get('days')
-    return v ? Number(v) : 5
+  const [mode, setMode] = useState<'even' | 'days'>(() => (sp.get('mode') === 'd' ? 'days' : 'even'))
+  const [days, setDays] = useState(() => {
+    const d = parseInt(sp.get('days') || '')
+    return d >= 1 && d <= 7 ? d : 5
   })
-  const [dailyHours, setDailyHours] = useState(() => {
-    const v = searchParams.get('hours')
-    return v ? Number(v) : 8
+  const [hours, setHours] = useState(() => {
+    const h = parseFloat(sp.get('hours') || '')
+    return h > 0 && h <= 24 ? h : 4
   })
-  const [weeksPerMonth, setWeeksPerMonth] = useState(() => {
-    const v = searchParams.get('weeks')
-    return v ? Number(v) : 4.345
+  const [perDay, setPerDay] = useState<number[]>(() => {
+    const dh = (sp.get('dh') || '').split(',').map(Number)
+    return dh.length === 7 && dh.every((x) => x >= 0 && x <= 24) ? dh : evenDays(5, 4)
+  })
+  const [brk, setBrk] = useState(() => {
+    const b = parseInt(sp.get('brk') || '')
+    return b >= 0 && b <= 240 ? b : 0
+  })
+  const [deduct, setDeduct] = useState<DeductMode>(() => {
+    const d = sp.get('ded') as DeductMode
+    return DEDUCTS.includes(d) ? d : 'none'
   })
 
-  const [copied, setCopied] = useState(false)
-  const [copiedLink, setCopiedLink] = useState(false)
+  const wage = parseInt(wageText.replace(/,/g, '')) || 0
+  const stay = mode === 'even' ? evenDays(days, hours) : perDay
+  const work = stay.map((h) => netDayHours(h, brk))
+  const r = useMemo(() => calcWeek(wage, work), [wage, work.join()]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Chrome AI (Gemini Nano) — progressive enhancement
-  const { isAvailable: aiAvailable, status: aiStatus, summary: aiSummary, loading: aiLoading, downloadProgress, summarize: aiSummarize, clearSummary: aiClear } = useChromeAI()
-
-  // Sync state to URL whenever inputs change
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('wage', String(hourlyWage))
-    params.set('days', String(workDays))
-    params.set('hours', String(dailyHours))
-    params.set('weeks', String(weeksPerMonth))
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
-  }, [hourlyWage, workDays, dailyHours, weeksPerMonth, router, pathname])
+    const p = new URLSearchParams()
+    p.set('wage', String(wage))
+    if (mode === 'days') { p.set('mode', 'd'); p.set('dh', perDay.join(',')) }
+    else { p.set('days', String(days)); p.set('hours', String(hours)) }
+    if (brk) p.set('brk', String(brk))
+    if (deduct !== 'none') p.set('ded', deduct)
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    return () => clearTimeout(id)
+  }, [wage, mode, days, hours, perDay, brk, deduct])
 
-  const result = useMemo<CalcResult>(() => {
-    const weeklyHours = workDays * dailyHours
-    const eligible = weeklyHours >= 15
-    const holidayHours = eligible ? Math.min((weeklyHours / 40) * 8, 8) : 0
-    const weeklyBase = hourlyWage * dailyHours * workDays
-    const holidayPay = eligible ? hourlyWage * holidayHours : 0
-    const weeklyTotal = weeklyBase + holidayPay
-    const monthlyBase = weeklyBase * weeksPerMonth
-    const monthlyTotal = weeklyTotal * weeksPerMonth
-    const annualTotal = monthlyTotal * 12
-    const baseRatio = weeklyTotal > 0 ? (weeklyBase / weeklyTotal) * 100 : 100
-    const holidayRatio = weeklyTotal > 0 ? (holidayPay / weeklyTotal) * 100 : 0
+  const ded = monthlyDeduction(r.monthlyTotal, deduct)
+  const incomeTax = useMemo(() => {
+    if (deduct !== 'ins' || r.monthlyTotal <= 0) return 0
+    const n = calculateNetSalary(r.monthlyTotal * 12, { nonTaxableMonthly: 0 })
+    return n ? Math.floor((n.deductions.incomeTax + n.deductions.localIncomeTax) / 12 / 10) * 10 : 0
+  }, [deduct, r.monthlyTotal])
+  const totalDeduct = ded.total + incomeTax
+  const netMonthly = r.monthlyTotal - totalDeduct
 
-    return {
-      weeklyHours,
-      holidayHours,
-      weeklyBase,
-      holidayPay,
-      weeklyTotal,
-      monthlyBase,
-      monthlyTotal,
-      annualTotal,
-      eligible,
-      baseRatio,
-      holidayRatio,
-    }
-  }, [hourlyWage, workDays, dailyHours, weeksPerMonth])
+  const belowMin = wage > 0 && wage < MIN_WAGE_2026
+  const breakShort = work.some((h, i) => stay[i] > 0 && brk < requiredBreak(h * 60))
+  const under = calcWeek(wage, [5, 5, 4.5])
+  const at15 = calcWeek(wage, evenDays(3, 5))
+  const scenarios = SCENARIOS.map((h) => ({ h, ...calcWeek(wage, evenDays(5, h / 5)) }))
+  const holidayShare = r.monthlyTotal > 0 ? ((r.monthlyTotal - r.monthlyBase) / r.monthlyTotal) * 100 : 0
 
-  // Scenario comparison data
-  const scenarios = useMemo(() =>
-    SCENARIO_HOURS.map(h => ({
-      hours: h,
-      ...calcScenario(hourlyWage, h, weeksPerMonth),
-    })),
-    [hourlyWage, weeksPerMonth]
-  )
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
-  const chartOption = useMemo(() => {
-    if (!result.eligible || result.weeklyTotal === 0) return {}
-    return {
-      tooltip: {
-        trigger: 'item' as const,
-        formatter: (params: { name: string; value: number; percent: number; marker: string }) =>
-          `${params.marker} ${params.name}: ${Math.round(params.value).toLocaleString('ko-KR')}원 (${Math.round(params.percent ?? 0)}%)`
-      },
-      legend: {
-        bottom: 0,
-        textStyle: { fontSize: 12 }
-      },
-      series: [{
-        type: 'pie' as const,
-        radius: ['38%', '65%'],
-        center: ['50%', '45%'],
-        avoidLabelOverlap: true,
-        itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
-        label: { show: true, formatter: '{b}\n{d}%', fontSize: 12 },
-        data: [
-          {
-            value: result.weeklyBase,
-            name: t('result.weeklyBase'),
-            itemStyle: { color: '#3B82F6' }
-          },
-          {
-            value: result.holidayPay,
-            name: t('result.holidayPay'),
-            itemStyle: { color: '#10B981' }
-          }
-        ]
-      }]
-    }
-  }, [result, t])
+  const setDay = (i: number, v: number) => setPerDay((p) => p.map((x, j) => (j === i ? clampH(v) : x)))
+  const switchMode = (m: 'even' | 'days') => {
+    if (m === 'days' && mode === 'even') setPerDay(evenDays(days, hours))
+    setMode(m)
+  }
 
-  const copyResult = useCallback(async () => {
-    const lines = [
-      `[${t('title')}]`,
-      `${t('input.hourlyWage')}: ${formatWon(hourlyWage)}`,
-      `${t('input.workDays')}: ${workDays}${t('input.daysUnit')}`,
-      `${t('input.dailyHours')}: ${dailyHours}${t('input.hoursUnit')}`,
-      `${t('input.weeksPerMonth')}: ${weeksPerMonth}${t('input.weeksUnit')}`,
-      '',
-      `${t('result.weeklyHours')}: ${result.weeklyHours}${t('input.hoursUnit')}`,
-      `${t('result.holidayHours')}: ${result.holidayHours.toFixed(2)}${t('input.hoursUnit')}`,
-      `${t('result.weeklyBase')}: ${formatWon(result.weeklyBase)}`,
-      `${t('result.holidayPay')}: ${formatWon(result.holidayPay)}`,
-      `${t('result.weeklyTotal')}: ${formatWon(result.weeklyTotal)}`,
-      `${t('result.monthlyTotal')}: ${formatWon(result.monthlyTotal)}`,
-      `${t('result.annualTotal')}: ${formatWon(result.annualTotal)}`,
-    ]
-    const text = lines.join('\n')
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch {
-      // ignore
-    }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }, [hourlyWage, workDays, dailyHours, weeksPerMonth, result, t])
-
-  const copyLink = useCallback(async () => {
-    const url = window.location.href
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url)
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = url
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch {
-      // ignore
-    }
-    setCopiedLink(true)
-    setTimeout(() => setCopiedLink(false), 2000)
-  }, [])
+  const faq = t.raw('u.faq.items') as { q: string; a: string }[]
+  const sources = t.raw('u.sources.items') as { label: string; url: string }[]
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button
-          onClick={copyLink}
-          className="flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex-shrink-0"
-          aria-label={t('copyLink')}
-        >
-          {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          <span>{copiedLink ? t('linkCopied') : t('copyLink')}</span>
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
       </div>
 
-      {/* 메인 그리드 */}
-      <div className="grid lg:grid-cols-3 gap-8">
-
-        {/* 입력 패널 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg">{t('input.title')}</h2>
-
-            {/* 시급 */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('input.hourlyWage')}
-              </label>
+              <label htmlFor="whp-wage" className="block text-sm font-medium text-body mb-2">{t('input.hourlyWage')}</label>
               <div className="relative">
                 <input
-                  type="number"
-                  min={0}
-                  value={hourlyWage}
-                  onChange={e => setHourlyWage(Number(e.target.value))}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8`}
+                  id="whp-wage"
+                  type="text"
+                  inputMode="numeric"
+                  value={wageText}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/,/g, '')
+                    if (v === '' || /^\d{0,7}$/.test(v)) setWageText(v ? parseInt(v).toLocaleString('ko-KR') : '')
+                  }}
+                  className="ui-field w-full px-4 py-3 pr-10 text-lg tabular-nums"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">원</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
               </div>
-              <p className="text-xs text-faint mt-1">{t('input.hourlyWageHint')}</p>
+              <div className="flex items-center justify-between mt-1.5">
+                <p className={`text-xs ${belowMin ? 'text-red-600' : 'text-muted'}`}>
+                  {belowMin ? t('u.belowMin', { min: won(MIN_WAGE_2026) }) : t('input.hourlyWageHint')}
+                </p>
+                {wage !== MIN_WAGE_2026 && (
+                  <button onClick={() => setWageText(MIN_WAGE_2026.toLocaleString('ko-KR'))} className="text-xs text-primary font-medium">
+                    {t('u.useMin')}
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* 주간 근무일수 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('input.workDays')}
-              </label>
-              <div className="flex gap-2 flex-wrap">
-                {[1, 2, 3, 4, 5, 6].map(d => (
-                  <button
-                    key={d}
-                    onClick={() => setWorkDays(d)}
-                    className={`flex-1 min-w-[2.5rem] py-2 rounded-lg text-sm font-medium transition-colors ${
-                      workDays === d
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {d}{t('input.daysUnit')}
+              <span className="block text-sm font-medium text-body mb-2">{t('u.inputMode')}</span>
+              <div className="grid grid-cols-2 gap-1.5">
+                <button onClick={() => switchMode('even')} aria-pressed={mode === 'even'} className={seg(mode === 'even')}>{t('u.modeEven')}</button>
+                <button onClick={() => switchMode('days')} aria-pressed={mode === 'days'} className={seg(mode === 'days')}>{t('u.modeDays')}</button>
+              </div>
+            </div>
+
+            {mode === 'even' ? (
+              <>
+                <div>
+                  <span className="block text-sm font-medium text-body mb-2">{t('input.workDays')}</span>
+                  <div className="grid grid-cols-7 gap-1">
+                    {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                      <button key={d} onClick={() => setDays(d)} aria-pressed={days === d} className={seg(days === d)}>{d}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="whp-hours" className="block text-sm font-medium text-body mb-2">{t('u.dailyStay')}</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="whp-hours"
+                      type="number" min={0} max={24} step={0.5}
+                      value={hours}
+                      onChange={(e) => setHours(clampH(parseFloat(e.target.value)))}
+                      className="ui-field w-full px-4 py-2.5 tabular-nums"
+                    />
+                    <span className="text-sm text-muted">{t('input.hoursUnit')}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div>
+                <span className="block text-sm font-medium text-body mb-2">{t('u.dailyStay')}</span>
+                <div className="grid grid-cols-7 gap-1">
+                  {dayNames.map((name, i) => (
+                    <label key={name} className="text-center">
+                      <span className="block text-xs text-muted mb-1">{name}</span>
+                      <input
+                        type="number" min={0} max={24} step={0.5}
+                        value={perDay[i]}
+                        onChange={(e) => setDay(i, parseFloat(e.target.value))}
+                        aria-label={`${name} ${t('u.dailyStay')}`}
+                        className="ui-field w-full px-0.5 py-2 text-center text-sm tabular-nums"
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="whp-break" className="block text-sm font-medium text-body mb-2">{t('u.breakLabel')}</label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {[0, 30, 60].map((b) => (
+                  <button key={b} onClick={() => setBrk(b)} aria-pressed={brk === b} className={seg(brk === b)}>
+                    {t('u.minutes', { n: b })}
+                  </button>
+                ))}
+                <input
+                  id="whp-break"
+                  type="number" min={0} max={240} step={10}
+                  value={brk}
+                  onChange={(e) => setBrk(Math.max(0, Math.min(240, parseInt(e.target.value) || 0)))}
+                  className="ui-field w-full px-2 py-2 text-center text-sm tabular-nums"
+                />
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t('u.breakHint')}</p>
+            </div>
+
+            <div>
+              <span className="block text-sm font-medium text-body mb-2">{t('u.deductLabel')}</span>
+              <div className="grid grid-cols-3 gap-1.5">
+                {DEDUCTS.map((d) => (
+                  <button key={d} onClick={() => setDeduct(d)} aria-pressed={deduct === d} className={seg(deduct === d)}>
+                    {t(`u.deduct.${d}`)}
                   </button>
                 ))}
               </div>
             </div>
-
-            {/* 1일 근무시간 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('input.dailyHours')}
-                <span className="ml-1 text-blue-600 dark:text-blue-400 font-semibold">{dailyHours}{t('input.hoursUnit')}</span>
-              </label>
-              <input
-                type="range"
-                min={1}
-                max={12}
-                step={0.5}
-                value={dailyHours}
-                onChange={e => setDailyHours(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-              <div className="flex justify-between text-xs text-faint mt-0.5">
-                <span>1{t('input.hoursUnit')}</span>
-                <span>12{t('input.hoursUnit')}</span>
-              </div>
-            </div>
-
-            {/* 월 근무 주수 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('input.weeksPerMonth')}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  min={1}
-                  max={6}
-                  step={0.001}
-                  value={weeksPerMonth}
-                  onChange={e => setWeeksPerMonth(Number(e.target.value))}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12`}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">{t('input.weeksUnit')}</span>
-              </div>
-              <p className="text-xs text-faint mt-1">{t('input.weeksPerMonthHint')}</p>
-            </div>
-
-            {/* 주간 근무시간 요약 */}
-            <div className={`rounded-lg p-3 text-sm font-medium text-center ${
-              result.eligible
-                ? 'bg-primary-soft text-primary'
-                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-            }`}>
-              {t('result.weeklyHours')}: {result.weeklyHours}{t('input.hoursUnit')} &nbsp;|&nbsp;
-              {result.eligible ? t('eligible') : t('notEligible')}
-            </div>
           </div>
         </div>
 
-        {/* 결과 패널 */}
-        <div className="lg:col-span-2 space-y-6">
-
-          {/* 주휴수당 미발생 경고 */}
-          {!result.eligible && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 flex gap-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-yellow-800 dark:text-yellow-200">{t('warning.title')}</p>
-                <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">{t('warning.message')}</p>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="ui-card p-6 space-y-6">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-sub">{t('u.weeklyHolidayPay')}</span>
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${r.eligible ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
+                  {r.eligible ? t('eligible') : t('notEligible')}
+                </span>
               </div>
-            </div>
-          )}
-
-          {/* 결과 카드 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
-              <button
-                onClick={copyResult}
-                className="flex items-center gap-1.5 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                aria-label={t('copyResult')}
-              >
-                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                {copied ? t('copied') : t('copy')}
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {/* 주간 분석 */}
-              <div className="bg-subtle rounded-lg p-4">
-                <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('result.weeklySection')}</p>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('result.weeklyHours')}</span>
-                    <span className="text-sm font-medium text-fg">{result.weeklyHours}{t('input.hoursUnit')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('result.holidayHours')}</span>
-                    <span className="text-sm font-medium text-fg">
-                      {result.eligible ? `${result.holidayHours.toFixed(2)}${t('input.hoursUnit')}` : '-'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('result.weeklyBase')}</span>
-                    <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{formatWon(result.weeklyBase)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('result.holidayPay')}</span>
-                    <span className={`text-sm font-medium ${result.eligible ? 'text-green-600 dark:text-green-400' : 'text-faint'}`}>
-                      {result.eligible ? formatWon(result.holidayPay) : '-'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
-                    <span className="text-sm font-semibold text-body">{t('result.weeklyTotal')}</span>
-                    <span className="text-base font-bold text-fg">{formatWon(result.weeklyTotal)}</span>
-                  </div>
-                </div>
+              <div className="text-3xl font-bold text-fg tabular-nums mt-1">
+                {won(r.holidayPay)}<span className="text-lg font-semibold ml-1">{t('u.won')}</span>
               </div>
-
-              {/* 월/연 환산 */}
-              <div className="bg-subtle rounded-lg p-4">
-                <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-3">{t('result.monthlySection')}</p>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('result.monthlyBase')}</span>
-                    <span className="text-sm font-medium text-fg">{formatWon(result.monthlyBase)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-semibold text-body">{t('result.monthlyTotal')}</span>
-                    <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatWon(result.monthlyTotal)}</span>
-                  </div>
-                  <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
-                    <span className="text-sm font-semibold text-body">{t('result.annualTotal')}</span>
-                    <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{formatWon(result.annualTotal)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 월 급여 구성 시각화 (스택 바) */}
-              {result.monthlyTotal > 0 && (
-                <div className="bg-subtle rounded-lg p-4">
-                  <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">{t('result.monthlyBarTitle')}</p>
-                  <div className="space-y-2">
-                    <div className="flex h-7 rounded-lg overflow-hidden w-full">
-                      <div
-                        className="bg-blue-500 flex items-center justify-center transition-all duration-300"
-                        style={{ width: `${result.baseRatio}%` }}
-                        title={`${t('result.monthlyBase')}: ${formatWon(result.monthlyBase)}`}
-                      >
-                        {result.baseRatio > 20 && (
-                          <span className="text-white text-xs font-semibold px-1 truncate">
-                            {result.baseRatio.toFixed(0)}%
-                          </span>
-                        )}
-                      </div>
-                      {result.eligible && result.holidayRatio > 0 && (
-                        <div
-                          className="bg-emerald-500 flex items-center justify-center transition-all duration-300"
-                          style={{ width: `${result.holidayRatio}%` }}
-                          title={`${t('result.holidayPay')}: ${formatWon(result.holidayPay)}`}
-                        >
-                          {result.holidayRatio > 10 && (
-                            <span className="text-white text-xs font-semibold px-1 truncate">
-                              {result.holidayRatio.toFixed(0)}%
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 text-xs text-sub">
-                      <span className="flex items-center gap-1.5">
-                        <span className="inline-block w-3 h-3 rounded-sm bg-blue-500"></span>
-                        {t('result.monthlyBase')} {formatWon(result.monthlyBase)}
-                      </span>
-                      {result.eligible && (
-                        <span className="flex items-center gap-1.5">
-                          <span className="inline-block w-3 h-3 rounded-sm bg-emerald-500"></span>
-                          {t('result.holidayPay')} {formatWon(result.monthlyTotal - result.monthlyBase)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* AI 요약 (Chrome Built-in AI — progressive enhancement) */}
-          {aiAvailable && result.monthlyTotal > 0 && (
-            <div className="bg-subtle border border-line rounded-xl p-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                  <span className="text-sm font-semibold text-fg">AI 요약</span>
-                  <span className="text-[10px] px-1.5 py-0.5 bg-soft text-sub rounded-full">Chrome AI</span>
-                </div>
-                {aiSummary && (
-                  <button onClick={aiClear} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {!aiSummary && !aiLoading && (
-                <button
-                  onClick={() => {
-                    const text = [
-                      `주휴수당 계산 결과:`,
-                      `시급: ${formatWon(hourlyWage)}`,
-                      `주 ${workDays}일, 하루 ${dailyHours}시간 근무 (주 ${result.weeklyHours}시간)`,
-                      `주휴수당 대상: ${result.eligible ? '해당 (주 15시간 이상)' : '미해당 (주 15시간 미만)'}`,
-                      result.eligible ? `주휴수당: ${formatWon(result.holidayPay)} (주휴시간 ${result.holidayHours.toFixed(1)}시간)` : '',
-                      `월 기본급: ${formatWon(result.monthlyBase)}`,
-                      `월 총액 (주휴수당 포함): ${formatWon(result.monthlyTotal)}`,
-                      `연간 총액: ${formatWon(result.annualTotal)}`,
-                      `급여 구성: 기본급 ${result.baseRatio.toFixed(0)}% + 주휴수당 ${result.holidayRatio.toFixed(0)}%`,
-                    ].filter(Boolean).join('\n')
-                    aiSummarize(text, '한국 근로기준법 기반 주휴수당 계산 결과입니다. 핵심 수치와 근로자에게 중요한 정보를 한국어로 간단히 요약해주세요.')
-                  }}
-                  className="w-full text-sm text-sub hover:text-purple-900 dark:hover:text-purple-100 bg-white/60 dark:bg-gray-800/60 hover:bg-white dark:hover:bg-gray-800 rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  계산 결과 AI로 요약하기
-                </button>
-              )}
-
-              {aiLoading && (
-                <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 py-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  {downloadProgress !== null ? `AI 모델 다운로드 중... ${downloadProgress}%` : 'AI가 분석 중...'}
-                </div>
-              )}
-
-              {aiSummary && (
-                <p className="text-sm text-body leading-relaxed whitespace-pre-line">
-                  {aiSummary}
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* Chrome AI 미지원 안내 */}
-          {aiStatus === 'not-supported' && result.monthlyTotal > 0 && (
-            <div className="flex items-center gap-2 text-xs text-faint px-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Chrome 브라우저에서는 AI가 계산 결과를 요약해드립니다</span>
-            </div>
-          )}
-
-          {/* 도넛 차트 */}
-          {result.eligible && result.weeklyTotal > 0 && (
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <h3 className="text-base font-semibold text-fg mb-2">{t('result.chartTitle')}</h3>
-              <p className="text-xs text-muted mb-4">
-                {t('result.baseRatio')}: {result.baseRatio.toFixed(1)}% &nbsp;|&nbsp;
-                {t('result.holidayRatio')}: {result.holidayRatio.toFixed(1)}%
+              <p className="text-xs text-muted mt-1">
+                {r.eligible
+                  ? t('u.formula', { contract: hrs(r.contractHours), holiday: hrs(r.holidayHours), wage: won(wage) })
+                  : t('u.formulaNone', { contract: hrs(r.contractHours) })}
               </p>
-              <ReactECharts option={chartOption} style={{ height: '280px' }} />
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* 시나리오 비교 테이블 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-lg font-semibold text-fg mb-1">{t('scenario.title')}</h3>
-        <p className="text-sm text-muted mb-4">{t('scenario.description')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-line">
-                <th className="text-left py-2 pr-4 font-semibold text-body whitespace-nowrap">{t('scenario.colHours')}</th>
-                <th className="text-right py-2 px-3 font-semibold text-body whitespace-nowrap">{t('scenario.colEligible')}</th>
-                <th className="text-right py-2 px-3 font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">{t('scenario.colWeeklyBase')}</th>
-                <th className="text-right py-2 px-3 font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{t('scenario.colHolidayPay')}</th>
-                <th className="text-right py-2 pl-3 font-semibold text-body whitespace-nowrap">{t('scenario.colMonthlyTotal')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scenarios.map((s) => {
-                const isCurrent = result.weeklyHours === s.hours
-                return (
-                  <tr
-                    key={s.hours}
-                    className={`border-b border-line transition-colors ${
-                      isCurrent
-                        ? 'bg-primary-soft text-primary'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
-                    }`}
-                  >
-                    <td className="py-3 pr-4 font-medium text-fg whitespace-nowrap">
-                      {s.hours}{t('input.hoursUnit')}
-                      {isCurrent && (
-                        <span className="ml-2 text-xs bg-blue-600 text-white rounded px-1.5 py-0.5">{t('scenario.current')}</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-3 text-right">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                        s.eligible
-                          ? 'bg-primary-soft text-primary'
-                          : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'
-                      }`}>
-                        {s.eligible ? t('eligible') : t('notEligible')}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 text-right text-blue-600 dark:text-blue-400 font-medium">{formatWon(s.weeklyBase)}</td>
-                    <td className="py-3 px-3 text-right font-medium">
-                      {s.eligible
-                        ? <span className="text-emerald-600 dark:text-emerald-400">{formatWon(s.holidayPay)}</span>
-                        : <span className="text-faint">-</span>
-                      }
-                    </td>
-                    <td className="py-3 pl-3 text-right font-bold text-fg">{formatWon(s.monthlyTotal)}</td>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: t('u.weeklyHours'), value: `${hrs(r.workedHours)}${t('input.hoursUnit')}` },
+                { label: t('result.weeklyTotal'), value: `${won(r.weeklyTotal)}${t('u.won')}` },
+                { label: t('u.monthlyTotal'), value: `${won(r.monthlyTotal)}${t('u.won')}` },
+                { label: t('u.effectiveHourly'), value: `${won(r.effectiveHourly)}${t('u.won')}` },
+              ].map((s) => (
+                <div key={s.label} className="bg-subtle rounded-xl p-3">
+                  <div className="text-xs text-muted">{s.label}</div>
+                  <div className="text-base font-bold text-fg tabular-nums mt-0.5">{s.value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* 월 구성 */}
+            {r.monthlyTotal > 0 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-sub">{t('u.monthlyHoursLine', { hours: r.monthlyHours })}</span>
+                  <span className="text-muted tabular-nums">{t('u.holidayShare', { pct: holidayShare.toFixed(1) })}</span>
+                </div>
+                <div className="flex h-3 rounded-full overflow-hidden bg-track">
+                  <div className="bg-primary" style={{ width: `${100 - holidayShare}%` }} />
+                  <div className="bg-primary opacity-40" style={{ width: `${holidayShare}%` }} />
+                </div>
+                <div className="flex flex-wrap justify-between gap-2 text-xs text-muted tabular-nums">
+                  <span>{t('result.monthlyBase')} {won(r.monthlyBase)}{t('u.won')}</span>
+                  <span>{t('u.monthlyHolidayPart')} {won(r.monthlyTotal - r.monthlyBase)}{t('u.won')}</span>
+                </div>
+              </div>
+            )}
+
+            {/* 공제 후 실수령 */}
+            {deduct !== 'none' && r.monthlyTotal > 0 && (
+              <div className="bg-subtle rounded-2xl p-5 space-y-2 text-sm">
+                <div className="flex justify-between"><span className="text-sub">{t('u.monthlyTotal')}</span><span className="text-fg tabular-nums">{won(r.monthlyTotal)}{t('u.won')}</span></div>
+                {deduct === 'tax33' ? (
+                  <div className="flex justify-between"><span className="text-sub">{t('u.ded.tax33')}</span><span className="text-fg tabular-nums">-{won(ded.tax)}{t('u.won')}</span></div>
+                ) : (
+                  <>
+                    {(['pension', 'health', 'care', 'employment'] as const).map((k) => (
+                      <div key={k} className="flex justify-between"><span className="text-sub">{t(`u.ded.${k}`)}</span><span className="text-fg tabular-nums">-{won(ded[k])}{t('u.won')}</span></div>
+                    ))}
+                    <div className="flex justify-between"><span className="text-sub">{t('u.ded.incomeTax')}</span><span className="text-fg tabular-nums">-{won(incomeTax)}{t('u.won')}</span></div>
+                  </>
+                )}
+                <div className="flex justify-between items-baseline border-t border-line pt-2">
+                  <span className="font-semibold text-body">{t('u.netMonthly')}</span>
+                  <span className="text-xl font-bold text-primary tabular-nums">{won(netMonthly)}{t('u.won')}</span>
+                </div>
+                <p className="text-xs text-muted">{t(deduct === 'tax33' ? 'u.ded.tax33Note' : 'u.ded.insNote')}</p>
+              </div>
+            )}
+
+            {(!r.eligible || belowMin || r.overtimeHours > 0 || breakShort) && (
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm space-y-1">
+                {!r.eligible && <p>{t('u.warnUnder15', { need: hrs(Math.max(0, 15 - r.contractHours)) })}</p>}
+                {belowMin && <p>{t('u.warnMinWage', { min: won(MIN_WAGE_2026), diff: won(MIN_WAGE_2026 - wage) })}</p>}
+                {r.overtimeHours > 0 && <p>{t('u.warnOvertime', { ot: hrs(r.overtimeHours) })}</p>}
+                {breakShort && <p>{t('u.warnBreak')}</p>}
+              </div>
+            )}
+
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: t('u.share.label', { wage: won(wage), hours: hrs(r.workedHours) }),
+                headline: `${won(r.holidayPay)}${t('u.won')}`,
+                sub: t('u.share.sub'),
+                rows: [
+                  { label: t('result.weeklyTotal'), value: `${won(r.weeklyTotal)}${t('u.won')}` },
+                  { label: t('u.monthlyTotal'), value: `${won(r.monthlyTotal)}${t('u.won')}` },
+                  { label: t('u.effectiveHourly'), value: `${won(r.effectiveHourly)}${t('u.won')}` },
+                ],
+              }}
+              text={t('u.share.text', { hours: hrs(r.workedHours), pay: won(r.holidayPay), monthly: won(r.monthlyTotal) })}
+            />
+          </div>
+
+          {/* 15시간 쪼개기 비교 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('u.split.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.split.desc')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[{ k: 'under', c: under, h: 14.5 }, { k: 'at15', c: at15, h: 15 }].map(({ k, c, h }) => (
+                <div key={k} className={`rounded-xl p-4 ${k === 'at15' ? 'bg-primary-soft' : 'bg-subtle'}`}>
+                  <div className={`text-sm font-medium ${k === 'at15' ? 'text-primary' : 'text-sub'}`}>{t('u.split.week', { h })}</div>
+                  <div className="text-xl font-bold text-fg tabular-nums mt-1">{won(c.monthlyTotal)}{t('u.won')}</div>
+                  <div className="text-xs text-muted mt-1">{t('u.split.detail', { holiday: hrs(c.holidayHours), hours: c.monthlyHours })}</div>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-body">
+              {t('u.split.result', { diff: won(at15.monthlyTotal - under.monthlyTotal) })}
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    <th className="text-left font-medium py-2">{t('scenario.colHours')}</th>
+                    <th className="text-right font-medium py-2">{t('scenario.colHolidayPay')}</th>
+                    <th className="text-right font-medium py-2">{t('scenario.colMonthlyTotal')}</th>
+                    <th className="text-right font-medium py-2">{t('u.effectiveHourly')}</th>
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {scenarios.map((s) => {
+                    const cur = Math.abs(s.h - r.workedHours) < 0.01
+                    return (
+                      <tr key={s.h} className={`border-b border-line ${cur ? 'bg-primary-soft' : ''}`}>
+                        <td className={`py-2.5 pl-1 ${cur ? 'text-primary font-semibold' : 'text-body'}`}>
+                          {s.h}{t('input.hoursUnit')}{cur && <span className="ml-1.5 text-xs">{t('scenario.current')}</span>}
+                        </td>
+                        <td className="py-2.5 text-right tabular-nums text-fg">{s.eligible ? `${won(s.holidayPay)}${t('u.won')}` : '-'}</td>
+                        <td className="py-2.5 text-right tabular-nums font-semibold text-fg">{won(s.monthlyTotal)}{t('u.won')}</td>
+                        <td className="py-2.5 pr-1 text-right tabular-nums text-sub">{won(s.effectiveHourly)}{t('u.won')}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+              <p className="text-xs text-faint mt-2">{t('u.split.footnote')}</p>
+            </div>
+          </div>
         </div>
-        <p className="text-xs text-faint mt-3">{t('scenario.footnote')}</p>
       </div>
 
-      {/* 15시간 룰 안내 */}
-      <div className="bg-subtle rounded-xl p-6 flex gap-4">
-        <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(['calc', 'notes'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="font-semibold text-fg mb-3">{t(`u.guide.${sec}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-sub">
+                {(t.raw(`u.guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+
         <div>
-          <h3 className="font-semibold text-fg mb-2">{t('info.title')}</h3>
-          <ul className="text-sm text-fg space-y-1 list-disc list-inside">
-            {(t.raw('info.items') as string[]).map((item, i) => (
-              <li key={i}>{item}</li>
+          <h3 className="font-semibold text-fg mb-3">{t('u.faq.title')}</h3>
+          <div className="divide-y divide-line border-y border-line">
+            {faq.map((f) => (
+              <details key={f.q} className="py-3 group">
+                <summary className="cursor-pointer text-sm font-medium text-body">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('u.sources.title')}</p>
+          <ul className="space-y-1">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
             ))}
           </ul>
         </div>
-      </div>
 
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex items-center gap-2 mb-6">
-          <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* 섹션 1: 계산 방법 */}
-          <div>
-            <h3 className="font-semibold text-fg mb-3">{t('guide.calc.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.calc.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-soft text-sub text-xs flex items-center justify-center font-bold">{i + 1}</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* 섹션 2: 주의사항 */}
-          <div>
-            <h3 className="font-semibold text-fg mb-3">{t('guide.notes.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.notes.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 text-amber-500">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/hourly-wage/" className="ui-btn-soft px-3 py-2 text-sm">{t('u.links.hourlyWage')}</Link>
+          <Link href="/work-hours-calculator/" className="ui-btn-soft px-3 py-2 text-sm">{t('u.links.workHours')}</Link>
+          <Link href="/salary-calculator/" className="ui-btn-soft px-3 py-2 text-sm">{t('u.links.salary')}</Link>
         </div>
       </div>
     </div>
-  )
-}
-
-export default function WeeklyHolidayPay() {
-  return (
-    <Suspense fallback={<div className="text-center py-12 text-muted">Loading...</div>}>
-      <WeeklyHolidayPayInner />
-    </Suspense>
   )
 }
