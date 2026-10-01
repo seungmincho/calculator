@@ -1,4 +1,12 @@
-# NEXT-SESSION (2026-10-01, main 푸시 완료 81ab455)
+# NEXT-SESSION (2026-10-01 오후, main 푸시 완료 8ccaf66)
+
+## 2026-10-01 오후 배치 (배포·푸시)
+- **입력창 전역 수정**: `ui-field` 회색 채움+투명 테두리 → 흰 바탕+`--line-strong` 테두리+hover (친구 피드백 "입력 폼처럼 안 생김", globals.css 한 곳)
+- nutrition-calculator(g/ml·나트륨·1일 기준치%·영양성분표 직접입력·ShareResult, ECharts 제거), csat-grade(전과목 한 번에·수능최저·D-day 2026-11-19 확인), css-unit-converter(16단위·px→rem 일괄·clamp()), picross(오늘의 #N·유일해 생성·드래그 칠하기)
+- **TODO csat**: 등급컷이 2025학년도 기준(추정 표기). 2026학년도 평가원 채점결과로 교체 필요 + 수학 미적분/확통 표준점수 컷이 서로 다름(통합수능에선 같아야 함) → `src/utils/csatGrade.ts`
+- 모바일 함정: `grid lg:grid-cols-3`만 쓰면 모바일 암묵 열이 overflow-x-auto 자식 폭만큼 늘어남 → `grid-cols-1` 같이 쓸 것
+- dev 서버(Turbopack)는 ko.json 병합 후 클라이언트 번들이 갱신 안 됨(서버 HTML만 갱신) → 빌드본으로 확인
+
 
 ## 2026-09-30 ~ 10-01 세션에서 한 것 (전부 배포·푸시)
 - 토스 스타일 전역 디자인 시스템, ToolIcon, 새 로고, 결정 도구 9개 URL 분리 (이전 인계 내용)
@@ -14,7 +22,7 @@
 - 실기기 확인 권장: 한글 IME 입력(타자연습·워들·십자말), 마이크(소음측정), 음성(TTS)
 
 ## 2. 다음 후보 (popular_tools 클릭 순)
-- 다음: css-unit-converter, picross, morse-code, spirit-level, nutrition-calculator, markdown-editor, screen-info, emoji-picker, retirement-calculator, image-ocr, image-compressor, reaction-test, background-remover, wedding-calculator, income-tax, invoice-generator (popular_tools offset 70~)
+- 다음: morse-code, spirit-level, markdown-editor, screen-info, emoji-picker, retirement-calculator, image-ocr, image-compressor, reaction-test, background-remover, wedding-calculator, income-tax, invoice-generator (popular_tools offset 70~)
 - **성능 과제**: ko.json 전체(2.1MB, gzip 511KB)가 모든 페이지 번들에 포함 → 도구별 네임스페이스 분리 로딩 검토(src/lib/i18n.ts 정적 import 구조). 미사용 키 정리로도 일부 감소
 - 기준금리 변경 시 `src/utils/rentConvert.ts` BASE_RATE, 전기차 지방비 추경 시 `src/utils/evSubsidy.ts` RAW/DATA_DATE, LLM 단가 `src/utils/llmPricing.ts` 갱신
 - 쓰지 않게 된 i18n 키 정리 (에이전트 보고서마다 목록 있음), ko.json `*.guide.guide.*` 중복 블록, `aspectRatio.businessNumber` 중첩 쓰레기
@@ -25,7 +33,7 @@
 - 병합: `python scripts/merge-i18n.py <ns> new.json` → `... over.json --overwrite` → node로 키 확인. 기존 키와 충돌하는 "새" 키는 병합 안 되니 over로 다시 넣을 것
 - 유입 유지: 기존 page `<title>`은 바꾸지 말 것(판매수수료·메뉴 선택기 사례)
 - 빌드 후 verify: `python -m http.server 3040 -d out` + `node scripts/verify-page.mjs <path> --check-i18n [--dark --mobile --screenshot n]`
-- 배포: SW 버전 bump(public/sw.js, 현재 v4.24.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
+- 배포: SW 버전 bump(public/sw.js, 현재 v4.25.0) → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out --commit-dirty=true --commit-message=... --branch=main`
 
 ## 4. 재개 프롬프트
 "docs/handoff/NEXT-SESSION.md 읽고, popular_tools 클릭 순위(offset 70~)에서 아직 안 한 도구 4개를 골라 같은 배치 방식(에이전트 4개 → i18n 병합 → tsc·check → build → verify-page → deploy → commit/push)으로 이어서 개선해줘. 단, 아래 확인 대기 답이 '번들 분리 먼저'면 그것부터."
