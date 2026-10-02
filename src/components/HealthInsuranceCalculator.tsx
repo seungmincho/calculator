@@ -1,1183 +1,443 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { CheckCircle2, XCircle } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, BookOpen, Building2, Home, Users, BarChart3, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, XCircle, Info, Link } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { HI, workplace, extraIncome, regional, dependent, afterRetirement, type Relation } from '@/utils/healthInsurance'
 
-// ── Constants: 4대보험 요율은 utils/insuranceRates.ts (2026) 단일 관리 ──
-const HEALTH_RATE = INSURANCE.healthRateTotal
-const HEALTH_RATE_HALF = INSURANCE.healthRate
-const LONG_TERM_CARE_RATE = INSURANCE.longTermCareRate
-const PENSION_RATE = INSURANCE.pensionRateTotal
-const PENSION_RATE_HALF = INSURANCE.pensionRate
-const PENSION_CAP_MONTHLY = INSURANCE.pensionMonthlyCap
-const EMPLOYMENT_RATE_EMPLOYEE = INSURANCE.employmentRate
-const POINT_VALUE = 208.4
-const REGIONAL_MIN_PREMIUM = 19_780
-const INCOME_THRESHOLD_MONTHLY = 280_000
+type Tab = 'workplace' | 'regional' | 'dependent' | 'retire'
+const TABS: Tab[] = ['workplace', 'regional', 'dependent', 'retire']
+const RELATIONS: Relation[] = ['spouse', 'parent', 'child', 'grandparent', 'grandchild', 'sibling']
+const TABLE_SALARIES = [30, 40, 50, 60, 70, 80, 100, 150] // 백만원
 
-// ── Property score table (simplified from 별표4) ──
-const PROPERTY_SCORE_TABLE: { min: number; max: number; score: number }[] = [
-  { min: 0, max: 4_500_000, score: 22 },
-  { min: 4_500_001, max: 9_000_000, score: 44 },
-  { min: 9_000_001, max: 13_500_000, score: 66 },
-  { min: 13_500_001, max: 18_000_000, score: 88 },
-  { min: 18_000_001, max: 22_500_000, score: 110 },
-  { min: 22_500_001, max: 27_000_000, score: 132 },
-  { min: 27_000_001, max: 31_500_000, score: 154 },
-  { min: 31_500_001, max: 36_000_000, score: 176 },
-  { min: 36_000_001, max: 40_500_000, score: 198 },
-  { min: 40_500_001, max: 45_000_000, score: 220 },
-  { min: 45_000_001, max: 50_000_000, score: 242 },
-  { min: 50_000_001, max: 55_000_000, score: 264 },
-  { min: 55_000_001, max: 60_000_000, score: 286 },
-  { min: 60_000_001, max: 65_000_000, score: 308 },
-  { min: 65_000_001, max: 70_000_000, score: 330 },
-  { min: 70_000_001, max: 80_000_000, score: 363 },
-  { min: 80_000_001, max: 90_000_000, score: 396 },
-  { min: 90_000_001, max: 100_000_000, score: 429 },
-  { min: 100_000_001, max: 120_000_000, score: 473 },
-  { min: 120_000_001, max: 140_000_000, score: 517 },
-  { min: 140_000_001, max: 160_000_000, score: 561 },
-  { min: 160_000_001, max: 180_000_000, score: 605 },
-  { min: 180_000_001, max: 200_000_000, score: 649 },
-  { min: 200_000_001, max: 250_000_000, score: 715 },
-  { min: 250_000_001, max: 300_000_000, score: 781 },
-  { min: 300_000_001, max: 400_000_000, score: 869 },
-  { min: 400_000_001, max: 500_000_000, score: 957 },
-  { min: 500_000_001, max: 700_000_000, score: 1067 },
-  { min: 700_000_001, max: 900_000_000, score: 1133 },
-  { min: 900_000_001, max: 1_200_000_000, score: 1199 },
-  { min: 1_200_000_001, max: 1_500_000_000, score: 1257 },
-  { min: 1_500_000_001, max: Infinity, score: 1315 },
-]
-
-function getPropertyScore(amount: number): number {
-  if (amount <= 0) return 0
-  for (const bracket of PROPERTY_SCORE_TABLE) {
-    if (amount >= bracket.min && amount <= bracket.max) {
-      return bracket.score
-    }
-  }
-  return PROPERTY_SCORE_TABLE[PROPERTY_SCORE_TABLE.length - 1].score
+// URL 파라미터 = 상태. 금액은 숫자 문자열(콤마 없음). 기본값이면 URL에서 생략
+const DEFAULTS = {
+  tab: 'workplace',
+  salary: '3500000', annual: '0', nonTaxable: '200000', extra: '',
+  biz: '30000000', fin: '', wage: '', pen: '', oth: '', prop: '150000000', dep: '', rent: '',
+  rel: 'parent', dinc: '15000000', dbiz: '', dreg: '0', dprop: '300000000', dsp: '0',
+  ravg: '4000000', rprop: '200000000', rdep: '', rpen: '',
 }
+type Key = keyof typeof DEFAULTS
 
-function formatNumber(n: number): string {
-  return Math.round(n).toLocaleString('ko-KR')
-}
-
-function parseCommaNumber(s: string): number {
-  return parseInt(s.replace(/,/g, ''), 10) || 0
-}
-
-function formatInputValue(value: string): string {
-  const num = value.replace(/[^\d]/g, '')
-  if (!num) return ''
-  return parseInt(num, 10).toLocaleString('ko-KR')
-}
-
-// ── Calculation functions ──
-
-interface WorkplaceResult {
-  remuneration: number
-  healthInsurance: number
-  healthEmployee: number
-  healthEmployer: number
-  longTermCare: number
-  longTermEmployee: number
-  longTermEmployer: number
-  nationalPension: number
-  pensionEmployee: number
-  pensionEmployer: number
-  employmentInsurance: number
-  totalEmployee: number
-  totalEmployer: number
-  totalAll: number
-  netSalary: number
-}
-
-function calcWorkplace(monthlySalary: number, nonTaxable: number): WorkplaceResult {
-  // 4대보험은 전체 보수월액 기준, 비과세는 소득세 계산에만 적용
-  // 단, 실비변상적 급여(출장비 등 법정 비과세)는 보수월액에서 제외 가능
-  const remuneration = Math.max(0, monthlySalary - nonTaxable)
-
-  const healthInsurance = Math.floor(remuneration * HEALTH_RATE)
-  const healthEmployee = Math.floor(remuneration * HEALTH_RATE_HALF)
-  const healthEmployer = Math.floor(remuneration * HEALTH_RATE_HALF)
-
-  const longTermCare = Math.floor(healthInsurance * LONG_TERM_CARE_RATE)
-  const longTermEmployee = Math.floor(longTermCare / 2)
-  const longTermEmployer = Math.floor(longTermCare / 2)
-
-  const pensionBase = Math.min(remuneration, PENSION_CAP_MONTHLY)
-  const nationalPension = Math.floor(pensionBase * PENSION_RATE)
-  const pensionEmployee = Math.floor(pensionBase * PENSION_RATE_HALF)
-  const pensionEmployer = Math.floor(pensionBase * PENSION_RATE_HALF)
-
-  const employmentInsurance = Math.floor(remuneration * EMPLOYMENT_RATE_EMPLOYEE)
-
-  const totalEmployee = healthEmployee + longTermEmployee + pensionEmployee + employmentInsurance
-  // 사업주 고용보험: 0.9%(실업급여) + 0.25~0.85%(고용안정·직능개발, 150인 미만 기준 0.25%)
-  const employerEmploymentRate = 0.009 + 0.0025 // 150인 미만 기준
-  const totalEmployer = healthEmployer + longTermEmployer + pensionEmployer + Math.floor(remuneration * employerEmploymentRate)
-  const totalAll = totalEmployee + totalEmployer
-
-  return {
-    remuneration,
-    healthInsurance,
-    healthEmployee,
-    healthEmployer,
-    longTermCare,
-    longTermEmployee,
-    longTermEmployer,
-    nationalPension,
-    pensionEmployee,
-    pensionEmployer,
-    employmentInsurance,
-    totalEmployee,
-    totalEmployer,
-    totalAll,
-    netSalary: monthlySalary - totalEmployee,
-  }
-}
-
-interface RegionalResult {
-  totalAnnualIncome: number
-  monthlyIncome: number
-  incomePremium: number
-  propertyAmount: number
-  propertyScore: number
-  propertyPremium: number
-  healthPremium: number
-  longTermCare: number
-  totalPremium: number
-}
-
-function calcRegional(
-  businessIncome: number,
-  employmentIncome: number,
-  financialIncome: number,
-  otherIncome: number,
-  pensionIncome: number,
-  propertyTaxBase: number,
-  deposit: number,
-): RegionalResult {
-  const totalAnnualIncome = businessIncome + employmentIncome + financialIncome + otherIncome + pensionIncome
-  const monthlyIncome = Math.floor(totalAnnualIncome / 12)
-
-  const calculatedIncomePremium = Math.floor(monthlyIncome * HEALTH_RATE)
-  const incomePremium = Math.max(calculatedIncomePremium, REGIONAL_MIN_PREMIUM)
-
-  const depositEvaluation = Math.floor(deposit * 0.30)
-  const propertyAmount = Math.max(0, propertyTaxBase + depositEvaluation - 100_000_000)
-
-  const propertyScore = getPropertyScore(propertyAmount)
-  const propertyPremium = Math.floor(propertyScore * POINT_VALUE)
-
-  let healthPremium = incomePremium + propertyPremium
-  healthPremium = Math.max(healthPremium, REGIONAL_MIN_PREMIUM)
-
-  const longTermCare = Math.floor(healthPremium * LONG_TERM_CARE_RATE)
-  const totalPremium = healthPremium + longTermCare
-
-  return {
-    totalAnnualIncome,
-    monthlyIncome,
-    incomePremium,
-    propertyAmount,
-    propertyScore,
-    propertyPremium,
-    healthPremium,
-    longTermCare,
-    totalPremium,
-  }
-}
-
-interface DependentResult {
-  eligible: boolean
-  incomePass: boolean
-  businessPass: boolean
-  propertyPass: boolean
-  relationPass: boolean
-  incomeDetail: string
-  propertyDetail: string
-  estimatedRegionalPremium: number | null
-}
-
-function calcDependent(
-  relationship: string,
-  annualIncome: number,
-  hasBusinessIncome: boolean,
-  businessIncome: number,
-  propertyTaxBase: number,
-  cohabitation: boolean,
-  t: (key: string) => string,
-): DependentResult {
-  // Income condition
-  const incomePass = annualIncome < 20_000_000
-  const incomeDetail = `${formatNumber(annualIncome)}${t('unit.won')} ${incomePass ? '<' : '>='} 2,000${t('unit.man')}${t('unit.won')}`
-
-  // Business income condition
-  const businessPass = !hasBusinessIncome || businessIncome === 0
-
-  // Property condition
-  let propertyPass = false
-  if (propertyTaxBase <= 540_000_000) {
-    propertyPass = true
-  } else if (propertyTaxBase <= 900_000_000) {
-    propertyPass = annualIncome <= 10_000_000
-  }
-  const propertyDetail = `${formatNumber(propertyTaxBase)}${t('unit.won')} ${propertyPass ? '<=' : '>'} 5.4${t('unit.eok')}${t('unit.won')}`
-
-  // Relationship condition
-  let relationPass = true
-  if (relationship === 'sibling') {
-    relationPass = cohabitation
-  }
-
-  const eligible = incomePass && businessPass && propertyPass && relationPass
-
-  // Estimate regional premium if not eligible
-  let estimatedRegionalPremium: number | null = null
-  if (!eligible) {
-    const result = calcRegional(
-      hasBusinessIncome ? businessIncome : 0,
-      annualIncome - (hasBusinessIncome ? businessIncome : 0),
-      0, 0, 0,
-      propertyTaxBase,
-      0,
-    )
-    estimatedRegionalPremium = result.totalPremium
-  }
-
-  return {
-    eligible,
-    incomePass,
-    businessPass,
-    propertyPass,
-    relationPass,
-    incomeDetail,
-    propertyDetail,
-    estimatedRegionalPremium,
-  }
-}
-
-// ── Tabs type ──
-type TabId = 'workplace' | 'regional' | 'dependent' | 'comparison'
+const n = (s: string) => Number(s) || 0
+const fmt = (v: number) => Math.round(v).toLocaleString('ko-KR')
 
 export default function HealthInsuranceCalculator() {
   const t = useTranslations('healthInsurance')
   const searchParams = useSearchParams()
-  const [activeTab, setActiveTab] = useState<TabId>(() => {
-    const p = searchParams.get('tab')
-    return (p && ['workplace', 'regional', 'dependent', 'comparison'].includes(p)) ? p as TabId : 'workplace'
+  const [f, setF] = useState(() => {
+    const s = { ...DEFAULTS }
+    for (const k of Object.keys(DEFAULTS) as Key[]) {
+      const v = searchParams.get(k)
+      if (v !== null) s[k] = k === 'tab' || k === 'rel' ? v : v.replace(/\D/g, '')
+    }
+    if (s.tab === 'comparison') s.tab = 'retire' // 예전 탭 링크
+    if (!TABS.includes(s.tab as Tab)) s.tab = 'workplace'
+    if (!RELATIONS.includes(s.rel as Relation)) s.rel = 'parent'
+    return s
   })
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [linkCopied, setLinkCopied] = useState(false)
+  const set = (k: Key) => (v: string) => setF(p => ({ ...p, [k]: v }))
+  const tab = f.tab as Tab
 
-  // Tab 1: Workplace
-  const [wpSalary, setWpSalary] = useState(() => searchParams.get('salary') || '')
-  const [wpIsAnnual, setWpIsAnnual] = useState(() => searchParams.get('annual') === '1')
-  const [wpNonTaxable, setWpNonTaxable] = useState(() => searchParams.get('nonTaxable') || '')
-  const [showAllInsurance, setShowAllInsurance] = useState(false)
-
-  // Tab 2: Regional
-  const [rgBusinessIncome, setRgBusinessIncome] = useState('')
-  const [rgEmploymentIncome, setRgEmploymentIncome] = useState('')
-  const [rgFinancialIncome, setRgFinancialIncome] = useState('')
-  const [rgOtherIncome, setRgOtherIncome] = useState('')
-  const [rgPensionIncome, setRgPensionIncome] = useState('')
-  const [rgPropertyTaxBase, setRgPropertyTaxBase] = useState('')
-  const [rgDeposit, setRgDeposit] = useState('')
-
-  // Tab 3: Dependent
-  const [dpRelationship, setDpRelationship] = useState('spouse')
-  const [dpAnnualIncome, setDpAnnualIncome] = useState('')
-  const [dpHasBusinessIncome, setDpHasBusinessIncome] = useState(false)
-  const [dpBusinessIncome, setDpBusinessIncome] = useState('')
-  const [dpPropertyTaxBase, setDpPropertyTaxBase] = useState('')
-  const [dpCohabitation, setDpCohabitation] = useState(true)
-
-  // Tab 4: Comparison
-  const [cmpSalary, setCmpSalary] = useState('')
-  const [cmpNonTaxable, setCmpNonTaxable] = useState('')
-  const [cmpBusinessIncome, setCmpBusinessIncome] = useState('')
-  const [cmpEmploymentIncome, setCmpEmploymentIncome] = useState('')
-  const [cmpFinancialIncome, setCmpFinancialIncome] = useState('')
-  const [cmpOtherIncome, setCmpOtherIncome] = useState('')
-  const [cmpPensionIncome, setCmpPensionIncome] = useState('')
-  const [cmpPropertyTaxBase, setCmpPropertyTaxBase] = useState('')
-  const [cmpDeposit, setCmpDeposit] = useState('')
-  const [cmpCeoSalary, setCmpCeoSalary] = useState('')
-
-  // ── Guide expand ──
-  const [showGuide, setShowGuide] = useState(false)
-
-  // ── URL sync ──
   useEffect(() => {
     const url = new URL(window.location.href)
-    url.searchParams.set('tab', activeTab)
-    if (wpSalary) url.searchParams.set('salary', wpSalary); else url.searchParams.delete('salary')
-    if (wpIsAnnual) url.searchParams.set('annual', '1'); else url.searchParams.delete('annual')
-    if (wpNonTaxable) url.searchParams.set('nonTaxable', wpNonTaxable); else url.searchParams.delete('nonTaxable')
-    window.history.replaceState({}, '', url)
-  }, [activeTab, wpSalary, wpIsAnnual, wpNonTaxable])
-
-  const copyLink = useCallback(() => {
-    navigator.clipboard?.writeText(window.location.href).then(() => {
-      setLinkCopied(true)
-      setTimeout(() => setLinkCopied(false), 2000)
-    })
-  }, [])
-
-  // ── Copy ──
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
+    for (const k of Object.keys(DEFAULTS) as Key[]) {
+      if (f[k] === DEFAULTS[k]) url.searchParams.delete(k)
+      else url.searchParams.set(k, f[k])
     }
-  }, [])
+    window.history.replaceState(window.history.state, '', url)
+  }, [f])
 
-  // ── Computed results ──
-  const workplaceResult = useMemo(() => {
-    const salary = parseCommaNumber(wpSalary)
-    if (salary <= 0) return null
-    const monthly = wpIsAnnual ? Math.floor(salary / 12) : salary
-    return calcWorkplace(monthly, parseCommaNumber(wpNonTaxable))
-  }, [wpSalary, wpIsAnnual, wpNonTaxable])
+  const won = (v: number) => `${fmt(v)}${t('unit.won')}`
 
-  const regionalResult = useMemo(() => {
-    const bi = parseCommaNumber(rgBusinessIncome)
-    const ei = parseCommaNumber(rgEmploymentIncome)
-    const fi = parseCommaNumber(rgFinancialIncome)
-    const oi = parseCommaNumber(rgOtherIncome)
-    const pi = parseCommaNumber(rgPensionIncome)
-    const pt = parseCommaNumber(rgPropertyTaxBase)
-    const dp = parseCommaNumber(rgDeposit)
-    if (bi + ei + fi + oi + pi + pt + dp <= 0) return null
-    return calcRegional(bi, ei, fi, oi, pi, pt, dp)
-  }, [rgBusinessIncome, rgEmploymentIncome, rgFinancialIncome, rgOtherIncome, rgPensionIncome, rgPropertyTaxBase, rgDeposit])
+  // ── 직장 ──
+  const wageMonthly = f.annual === '1' ? Math.floor(n(f.salary) / 12) : n(f.salary)
+  const base = Math.max(0, wageMonthly - n(f.nonTaxable))
+  const wp = workplace(base)
+  const ex = extraIncome(n(f.extra))
+  const exTotal = ex.health + ex.ltc
+  const myMonthly = wp.employeeTotal + exTotal
+  const pension = base > 0 ? Math.floor(Math.min(Math.max(base, INSURANCE.pensionMonthlyFloor), INSURANCE.pensionMonthlyCap) * INSURANCE.pensionRate / 10) * 10 : 0
+  const employment = Math.floor(base * INSURANCE.employmentRate / 10) * 10
 
-  const dependentResult = useMemo(() => {
-    const income = parseCommaNumber(dpAnnualIncome)
-    const property = parseCommaNumber(dpPropertyTaxBase)
-    if (income <= 0 && property <= 0) return null
-    return calcDependent(
-      dpRelationship,
-      income,
-      dpHasBusinessIncome,
-      parseCommaNumber(dpBusinessIncome),
-      property,
-      dpCohabitation,
-      t,
-    )
-  }, [dpRelationship, dpAnnualIncome, dpHasBusinessIncome, dpBusinessIncome, dpPropertyTaxBase, dpCohabitation, t])
+  // ── 지역 ──
+  const rg = regional({
+    business: n(f.biz), financial: n(f.fin), wage: n(f.wage), pension: n(f.pen), other: n(f.oth),
+    propertyTaxBase: n(f.prop), deposit: n(f.dep), monthlyRent: n(f.rent),
+  })
 
-  const comparisonResult = useMemo(() => {
-    const ceoMonthly = parseCommaNumber(cmpCeoSalary)
-    if (ceoMonthly <= 0) return null
+  // ── 피부양자 ──
+  const dpIn = {
+    relation: f.rel as Relation, income: n(f.dinc), business: n(f.dbiz), bizRegistered: f.dreg === '1',
+    propertyTaxBase: n(f.dprop), siblingSpecial: f.dsp === '1',
+  }
+  const dp = dependent(dpIn)
+  // 소득 유형을 모르므로 사업 외 소득을 100% 반영한 보수적 추정
+  const dpRegional = regional({ business: dpIn.business, other: Math.max(0, dpIn.income - dpIn.business), propertyTaxBase: dpIn.propertyTaxBase }).total
 
-    const wp = calcWorkplace(ceoMonthly, parseCommaNumber(cmpNonTaxable))
-
-    const bi = parseCommaNumber(cmpBusinessIncome)
-    const ei = parseCommaNumber(cmpEmploymentIncome)
-    const fi = parseCommaNumber(cmpFinancialIncome)
-    const oi = parseCommaNumber(cmpOtherIncome)
-    const pi = parseCommaNumber(cmpPensionIncome)
-    const pt = parseCommaNumber(cmpPropertyTaxBase)
-    const dp = parseCommaNumber(cmpDeposit)
-    const rg = calcRegional(bi, ei, fi, oi, pi, pt, dp)
-
-    // For workplace as CEO: employer portion is effectively also personal cost
-    const wpRealCost = wp.healthEmployee + wp.longTermEmployee + wp.healthEmployer + wp.longTermEmployer
-    const wpPensionReal = wp.pensionEmployee + wp.pensionEmployer
-
-    return { wp, rg, wpRealCost, wpPensionReal }
-  }, [cmpCeoSalary, cmpNonTaxable, cmpBusinessIncome, cmpEmploymentIncome, cmpFinancialIncome, cmpOtherIncome, cmpPensionIncome, cmpPropertyTaxBase, cmpDeposit])
-
-  // ── Tabs ──
-  const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
-    { id: 'workplace', label: t('tabs.workplace'), icon: <Building2 className="w-4 h-4" /> },
-    { id: 'regional', label: t('tabs.regional'), icon: <Home className="w-4 h-4" /> },
-    { id: 'dependent', label: t('tabs.dependent'), icon: <Users className="w-4 h-4" /> },
-    { id: 'comparison', label: t('tabs.comparison'), icon: <BarChart3 className="w-4 h-4" /> },
+  // ── 퇴직 후 ──
+  const rt = afterRetirement(n(f.ravg), { pension: n(f.rpen), propertyTaxBase: n(f.rprop), deposit: n(f.rdep) })
+  const rtOptions = [
+    { key: 'continued', label: t('rt.optContinued'), value: rt.continued },
+    { key: 'withWage', label: t('rt.optWithWage'), value: rt.withWage },
+    { key: 'withoutWage', label: t('rt.optWithoutWage'), value: rt.withoutWage },
   ]
+  const rtMax = Math.max(...rtOptions.map(o => o.value), 1)
+  const rtBest = rtOptions.reduce((a, b) => (b.value < a.value ? b : a))
+  const rtSaving = rt.withWage - rt.continued
 
-  // ── Helper: number input ──
-  const NumberInput = ({ value, onChange, placeholder, label, ariaLabel }: {
-    value: string; onChange: (v: string) => void; placeholder?: string; label?: string; ariaLabel?: string
-  }) => (
-    <div>
-      {label && <label className="block text-sm font-medium text-body mb-1">{label}</label>}
-      <div className="relative">
+  const table = useMemo(() => TABLE_SALARIES.map(m => {
+    const w = workplace(Math.max(0, Math.floor(m * 1_000_000 / 12) - n(f.nonTaxable)))
+    return { salary: m * 100, monthly: w.employeeTotal }
+  }), [f.nonTaxable])
+
+  const share = {
+    workplace: {
+      label: t('share.wpLabel', { wage: won(base) }), headline: won(myMonthly),
+      rows: [
+        { label: t('wp.health'), value: won(wp.employee.health) },
+        { label: t('wp.ltc'), value: won(wp.employee.ltc) },
+        { label: t('unit.perYear'), value: won(myMonthly * 12) },
+      ],
+    },
+    regional: {
+      label: t('share.rgLabel'), headline: won(rg.total),
+      rows: [
+        { label: t('rg.incomePremiumShort'), value: won(rg.incomePremium) },
+        { label: t('rg.propertyPremiumShort'), value: won(rg.propertyPremium) },
+        { label: t('rg.ltcShort'), value: won(rg.ltc) },
+      ],
+    },
+    dependent: {
+      label: t('share.dpLabel'), headline: dp.eligible ? t('dp.eligible') : t('dp.notEligible'),
+      rows: [
+        { label: t('dp.rowIncome'), value: dp.income ? t('dp.pass') : t('dp.fail') },
+        { label: t('dp.rowBusiness'), value: dp.business ? t('dp.pass') : t('dp.fail') },
+        { label: t('dp.rowProperty'), value: dp.property ? t('dp.pass') : t('dp.fail') },
+      ],
+    },
+    retire: {
+      label: t('share.rtLabel'), headline: won(rtBest.value), sub: rtBest.label,
+      rows: rtOptions.map(o => ({ label: o.label, value: won(o.value) })),
+    },
+  }[tab]
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <p className="text-xs text-sub mt-2">
+          {t('rateBadge', { rate: pct(HI.rate), ltc: pct(HI.ltcRate, 2), point: HI.pointValue })}
+        </p>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto" role="tablist">
+        {TABS.map(id => (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={tab === id}
+            onClick={() => set('tab')(id)}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${tab === id ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+          >
+            {t(`tabs.${id}`)}
+          </button>
+        ))}
+      </div>
+
+      <div role="tabpanel" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ── 입력 ── */}
+        <div className="ui-card p-6 space-y-4 h-fit">
+          {tab === 'workplace' && (
+            <>
+              <Segment
+                value={f.annual}
+                onChange={set('annual')}
+                options={[{ v: '0', label: t('wp.modeMonthly') }, { v: '1', label: t('wp.modeAnnual') }]}
+              />
+              <Money label={f.annual === '1' ? t('wp.annual') : t('wp.monthly')} value={f.salary} onChange={set('salary')} unit={t('unit.won')} />
+              <Money label={t('wp.nonTaxable')} hint={t('wp.nonTaxableHint')} value={f.nonTaxable} onChange={set('nonTaxable')} unit={t('unit.won')} />
+              <Money label={t('wp.extra')} hint={t('wp.extraHint')} value={f.extra} onChange={set('extra')} unit={t('unit.won')} />
+            </>
+          )}
+          {tab === 'regional' && (
+            <>
+              <h2 className="text-sm font-semibold text-fg">{t('rg.income')}</h2>
+              <Money label={t('rg.business')} value={f.biz} onChange={set('biz')} unit={t('unit.won')} />
+              <Money label={t('rg.financial')} hint={t('rg.financialHint')} value={f.fin} onChange={set('fin')} unit={t('unit.won')} />
+              <Money label={t('rg.wage')} hint={t('rg.halfHint')} value={f.wage} onChange={set('wage')} unit={t('unit.won')} />
+              <Money label={t('rg.pension')} hint={t('rg.halfHint')} value={f.pen} onChange={set('pen')} unit={t('unit.won')} />
+              <Money label={t('rg.other')} value={f.oth} onChange={set('oth')} unit={t('unit.won')} />
+              <h2 className="text-sm font-semibold text-fg pt-2">{t('rg.property')}</h2>
+              <Money label={t('rg.taxBase')} hint={t('rg.taxBaseHint')} value={f.prop} onChange={set('prop')} unit={t('unit.won')} />
+              <Money label={t('rg.deposit')} value={f.dep} onChange={set('dep')} unit={t('unit.won')} />
+              <Money label={t('rg.rent')} value={f.rent} onChange={set('rent')} unit={t('unit.won')} />
+            </>
+          )}
+          {tab === 'dependent' && (
+            <>
+              <label className="block">
+                <span className="block text-sm font-medium text-body mb-1.5">{t('dp.relation')}</span>
+                <select value={f.rel} onChange={e => set('rel')(e.target.value)} className="ui-field w-full px-4 py-3">
+                  {RELATIONS.map(r => <option key={r} value={r}>{t(`dependent.relationships.${r}`)}</option>)}
+                </select>
+              </label>
+              <Money label={t('dp.income')} hint={t('dp.incomeHint')} value={f.dinc} onChange={set('dinc')} unit={t('unit.won')} />
+              <Money label={t('dp.business')} value={f.dbiz} onChange={set('dbiz')} unit={t('unit.won')} />
+              {n(f.dbiz) > 0 && <Check label={t('dp.bizReg')} checked={f.dreg === '1'} onChange={v => set('dreg')(v ? '1' : '0')} />}
+              <Money label={t('dp.taxBase')} hint={t('rg.taxBaseHint')} value={f.dprop} onChange={set('dprop')} unit={t('unit.won')} />
+              {f.rel === 'sibling' && <Check label={t('dp.siblingSpecial')} checked={f.dsp === '1'} onChange={v => set('dsp')(v ? '1' : '0')} />}
+            </>
+          )}
+          {tab === 'retire' && (
+            <>
+              <Money label={t('rt.avgWage')} hint={t('rt.avgWageHint')} value={f.ravg} onChange={set('ravg')} unit={t('unit.won')} />
+              <Money label={t('rg.taxBase')} hint={t('rg.taxBaseHint')} value={f.rprop} onChange={set('rprop')} unit={t('unit.won')} />
+              <Money label={t('rg.deposit')} value={f.rdep} onChange={set('rdep')} unit={t('unit.won')} />
+              <Money label={t('rt.pension')} hint={t('rg.halfHint')} value={f.rpen} onChange={set('rpen')} unit={t('unit.won')} />
+            </>
+          )}
+        </div>
+
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-6" aria-live="polite">
+          {tab === 'workplace' && (
+            <>
+              <div className="ui-card p-6">
+                <p className="text-sm text-muted">{t('wp.headline')}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(myMonthly)}</p>
+                <p className="text-sm text-sub mt-1">{t('wp.headlineSub', { annual: won(myMonthly * 12) })}</p>
+                <p className="text-sm text-sub">{t('wp.employerSame', { amount: won(wp.employeeTotal) })}</p>
+
+                <table className="w-full text-sm mt-6 tabular-nums">
+                  <thead>
+                    <tr className="border-b border-line text-muted">
+                      <th scope="col" className="text-left font-medium py-2">{t('wp.item')}</th>
+                      <th scope="col" className="text-right font-medium py-2">{t('wp.employee')}</th>
+                      <th scope="col" className="text-right font-medium py-2">{t('wp.employer')}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-body">
+                    <tr><td className="py-2">{t('wp.health')}</td><td className="text-right">{won(wp.employee.health)}</td><td className="text-right">{won(wp.employer.health)}</td></tr>
+                    <tr><td className="py-2">{t('wp.ltc')}</td><td className="text-right">{won(wp.employee.ltc)}</td><td className="text-right">{won(wp.employer.ltc)}</td></tr>
+                    {exTotal > 0 && <tr><td className="py-2">{t('wp.extraRow')}</td><td className="text-right">{won(exTotal)}</td><td className="text-right text-faint">-</td></tr>}
+                    <tr className="border-t border-line font-semibold text-fg"><td className="py-2">{t('wp.sum')}</td><td className="text-right">{won(myMonthly)}</td><td className="text-right">{won(wp.employeeTotal)}</td></tr>
+                  </tbody>
+                </table>
+                <p className="text-xs text-muted mt-3">{t('wp.base', { amount: won(base) })}</p>
+                {wp.capped && <p className="text-xs text-amber-700 mt-1">{t('wp.capped')}</p>}
+
+                <details className="mt-4 bg-subtle rounded-2xl p-4">
+                  <summary className="text-sm font-medium text-body cursor-pointer">{t('wp.all4')}</summary>
+                  <div className="mt-3 space-y-2">
+                    <Row label={t('wp.healthLtc')} value={won(wp.employeeTotal)} />
+                    <Row label={t('wp.pension', { rate: pct(INSURANCE.pensionRate) })} value={won(pension)} />
+                    <Row label={t('wp.employment', { rate: pct(INSURANCE.employmentRate) })} value={won(employment)} />
+                    <Row label={t('wp.all4Sum')} value={won(wp.employeeTotal + pension + employment)} strong />
+                    <Row label={t('wp.afterIns')} value={won(wageMonthly - wp.employeeTotal - pension - employment)} />
+                  </div>
+                </details>
+              </div>
+
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg">{t('wp.tableTitle')}</h2>
+                <p className="text-xs text-muted mt-1">{t('wp.tableNote', { amount: won(n(f.nonTaxable)) })}</p>
+                <table className="w-full text-sm mt-4 tabular-nums">
+                  <thead>
+                    <tr className="border-b border-line text-muted">
+                      <th scope="col" className="text-left font-medium py-2">{t('wp.colSalary')}</th>
+                      <th scope="col" className="text-right font-medium py-2">{t('wp.colMonthly')}</th>
+                      <th scope="col" className="text-right font-medium py-2">{t('wp.colAnnual')}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-body">
+                    {table.map(r => (
+                      <tr key={r.salary} className="border-b border-line last:border-0">
+                        <td className="py-2">{t('wp.salaryMan', { n: fmt(r.salary), m: r.salary / 100 })}</td>
+                        <td className="text-right">{won(r.monthly)}</td>
+                        <td className="text-right">{won(r.monthly * 12)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+
+          {tab === 'regional' && (
+            <div className="ui-card p-6">
+              <p className="text-sm text-muted">{t('rg.headline')}</p>
+              <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(rg.total)}</p>
+              <p className="text-sm text-sub mt-1">{t('wp.headlineSub', { annual: won(rg.total * 12) })}</p>
+              <div className="mt-6 space-y-2">
+                <Row label={t('rg.assessed')} value={won(rg.assessedIncome)} />
+                <Row label={t('rg.incomeMonthly')} value={won(rg.incomeMonthly)} />
+                <Row label={t('rg.incomePremium', { rate: pct(HI.rate) })} value={won(rg.incomePremium)} strong />
+                {rg.minApplied && <p className="text-xs text-muted">{t('rg.minApplied', { amount: won(HI.premiumFloor) })}</p>}
+                <div className="border-t border-line my-3" />
+                <Row label={t('rg.rentValue')} value={won(rg.rentValue)} />
+                <Row label={t('rg.propertyAmount')} value={won(rg.propertyAmount)} />
+                <Row label={t('rg.grade')} value={rg.grade ? t('rg.gradeValue', { grade: rg.grade, score: fmt(rg.score) }) : '-'} />
+                <Row label={t('rg.propertyPremium', { score: fmt(rg.score), point: HI.pointValue })} value={won(rg.propertyPremium)} strong />
+                <div className="border-t border-line my-3" />
+                <Row label={t('rg.healthSum')} value={won(rg.health)} />
+                <Row label={t('rg.ltc', { rate: pct(HI.ltcRate, 2) })} value={won(rg.ltc)} />
+                <Row label={t('rg.total')} value={won(rg.total)} strong />
+              </div>
+              <p className="text-xs text-muted mt-4">{t('rg.carNote')}</p>
+            </div>
+          )}
+
+          {tab === 'dependent' && (
+            <div className="ui-card p-6">
+              <p className={`text-3xl font-bold ${dp.eligible ? 'text-primary' : 'text-red-600'}`}>
+                {dp.eligible ? t('dp.eligible') : t('dp.notEligible')}
+              </p>
+              <p className="text-sm text-sub mt-1">{dp.eligible ? t('dp.eligibleSub') : t('dp.notEligibleSub')}</p>
+              <ul className="mt-6 space-y-3">
+                <Cond pass={dp.income} label={t('dp.cIncome')} />
+                <Cond pass={dp.business} label={t('dp.cBusiness')} />
+                <Cond pass={dp.property} label={f.rel === 'sibling' ? t('dp.cPropertySibling') : t('dp.cProperty')} />
+                {f.rel === 'sibling' && <Cond pass={dp.relation} label={t('dp.cRelation')} />}
+              </ul>
+              {!dp.eligible && (
+                <div className="mt-6 bg-subtle rounded-2xl p-5">
+                  <p className="text-sm text-sub">{t('dp.estimate')}</p>
+                  <p className="text-2xl font-bold text-fg tabular-nums mt-1">{won(dpRegional)}</p>
+                  <p className="text-xs text-muted mt-1">{t('dp.estimateNote')}</p>
+                </div>
+              )}
+              <p className="text-xs text-muted mt-4">{t('dp.marriedNote')}</p>
+            </div>
+          )}
+
+          {tab === 'retire' && (
+            <>
+              <div className="ui-card p-6">
+                <p className="text-sm text-muted">{t('rt.headline')}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(rtBest.value)}</p>
+                <p className="text-sm text-sub mt-1">{rtBest.label}</p>
+                <div className="mt-6 space-y-4">
+                  {rtOptions.map(o => (
+                    <div key={o.key}>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-body">{o.label}</span>
+                        <span className="font-semibold text-fg tabular-nums">{won(o.value)}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-track mt-1.5">
+                        <div className={`h-2 rounded-full ${o.key === rtBest.key ? 'bg-primary' : 'bg-faint'}`} style={{ width: `${(o.value / rtMax) * 100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-body">{t('rt.optDependent')}</span>
+                    <button onClick={() => set('tab')('dependent')} className="text-primary font-semibold">{t('rt.checkDependent')}</button>
+                  </div>
+                </div>
+                {rtSaving > 0 && (
+                  <p className="text-sm text-fg font-medium mt-6">{t('rt.saving', { month: won(rtSaving), total: won(rtSaving * 36) })}</p>
+                )}
+                <p className="text-xs text-muted mt-3">{t('rt.timingNote')}</p>
+              </div>
+              <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+                <p className="font-semibold text-fg mb-2">{t('rt.rulesTitle')}</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  {(t.raw('rt.rules') as string[]).map((r, i) => <li key={i}>{r}</li>)}
+                </ul>
+              </div>
+            </>
+          )}
+
+          <ShareResult card={{ tool: t('title'), ...share }} fileName="health-insurance" />
+          <p className="text-xs text-muted">{t('disclaimer')}</p>
+        </div>
+      </div>
+
+      <GuideSection namespace="healthInsurance" defaultOpen />
+
+      <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+        <p>{t('sources')}</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+          <a href="https://www.nhis.or.kr" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkNhis')}</a>
+          <a href="https://www.nhis.or.kr/nhis/policy/wbhada07500m01.do" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkDependent')}</a>
+          <a href="https://www.law.go.kr/법령/국민건강보험법시행령" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkLaw')}</a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── 작은 부품 (컴포넌트 밖에 둬서 입력 중 포커스가 풀리지 않게) ──
+
+function Money({ label, hint, value, onChange, unit }: {
+  label: string; hint?: string; value: string; onChange: (v: string) => void; unit: string
+}) {
+  return (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-1.5">{label}</span>
+      <span className="relative block">
         <input
           type="text"
           inputMode="numeric"
-          value={value}
-          onChange={(e) => onChange(formatInputValue(e.target.value))}
-          placeholder={placeholder || '0'}
-          aria-label={ariaLabel || label}
-          className={`w-full px-3 py-2 ${glassInput} px-3 py-2 text-right pr-8`}
+          value={value ? fmt(Number(value)) : ''}
+          onChange={e => onChange(e.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 13))}
+          placeholder="0"
+          className="ui-field w-full px-4 py-3 pr-10 text-right tabular-nums"
         />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{t('unit.won')}</span>
-      </div>
-    </div>
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-faint">{unit}</span>
+      </span>
+      {hint && <span className="block text-xs text-muted mt-1">{hint}</span>}
+    </label>
   )
+}
 
-  // ── Build copy text ──
-  const buildWorkplaceCopyText = () => {
-    if (!workplaceResult) return ''
-    const r = workplaceResult
-    const lines = [
-      `[${t('title')} - ${t('tabs.workplace')}]`,
-      `${t('workplace.remuneration')}: ${formatNumber(r.remuneration)}${t('unit.won')}`,
-      '',
-      `${t('insurance.healthInsurance')}:`,
-      `  ${t('workplace.employee')}: ${formatNumber(r.healthEmployee)}${t('unit.won')}`,
-      `  ${t('workplace.employer')}: ${formatNumber(r.healthEmployer)}${t('unit.won')}`,
-      `${t('insurance.longTermCare')}:`,
-      `  ${t('workplace.employee')}: ${formatNumber(r.longTermEmployee)}${t('unit.won')}`,
-      `  ${t('workplace.employer')}: ${formatNumber(r.longTermEmployer)}${t('unit.won')}`,
-      '',
-      `${t('insurance.myShare')}: ${formatNumber(r.healthEmployee + r.longTermEmployee)}${t('unit.won')}`,
-    ]
-    if (showAllInsurance) {
-      lines.push(
-        `${t('insurance.nationalPension')}: ${formatNumber(r.pensionEmployee)}${t('unit.won')}`,
-        `${t('insurance.employmentInsurance')}: ${formatNumber(r.employmentInsurance)}${t('unit.won')}`,
-        `${t('insurance.total4')}: ${formatNumber(r.totalEmployee)}${t('unit.won')}`,
-        `${t('workplace.netSalary')}: ${formatNumber(r.netSalary)}${t('unit.won')}`,
-      )
-    }
-    return lines.join('\n')
-  }
-
-  // ── Render ──
+function Segment({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { v: string; label: string }[] }) {
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
-          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div className="border-b border-line overflow-x-auto" role="tablist">
-        <div className="flex min-w-max">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                  : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Tab panels */}
-      <div role="tabpanel">
-        {/* ═══════════════ Tab 1: Workplace ═══════════════ */}
-        {activeTab === 'workplace' && (
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Settings */}
-            <div className="lg:col-span-1">
-              <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                <h2 className="text-lg font-semibold text-fg">{t('tabs.workplace')}</h2>
-
-                <NumberInput
-                  value={wpSalary}
-                  onChange={setWpSalary}
-                  label={wpIsAnnual ? t('workplace.annualSalary') : t('workplace.monthlySalary')}
-                  placeholder={wpIsAnnual ? '50,000,000' : '4,000,000'}
-                />
-
-                <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={wpIsAnnual}
-                    onChange={(e) => setWpIsAnnual(e.target.checked)}
-                    className="accent-blue-600"
-                  />
-                  {t('workplace.inputAsAnnual')}
-                </label>
-
-                <NumberInput
-                  value={wpNonTaxable}
-                  onChange={setWpNonTaxable}
-                  label={t('workplace.nonTaxable')}
-                  placeholder="200,000"
-                />
-
-                <div className="bg-subtle rounded-lg p-3 text-xs text-sub">
-                  <Info className="w-4 h-4 inline mr-1" />
-                  {t('workplace.rateInfo')}
-                </div>
-              </div>
-            </div>
-
-            {/* Results */}
-            <div className="lg:col-span-2">
-              {workplaceResult ? (
-                <div className="space-y-4">
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-fg">
-                        {t('insurance.healthInsurance')} ({t('insurance.rate2025')})
-                      </h3>
-                      <button
-                        onClick={() => copyToClipboard(buildWorkplaceCopyText(), 'wp')}
-                        className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                      >
-                        {copiedId === 'wp' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                        {copiedId === 'wp' ? t('copied') : t('copy')}
-                      </button>
-                    </div>
-
-                    <div className="text-sm text-muted mb-4">
-                      {t('workplace.remuneration')}: <span className="font-medium text-fg">{formatNumber(workplaceResult.remuneration)}{t('unit.won')}</span>
-                    </div>
-
-                    {/* Health insurance breakdown */}
-                    <div className="space-y-3">
-                      <PremiumRow
-                        label={t('insurance.healthInsurance')}
-                        employee={workplaceResult.healthEmployee}
-                        employer={workplaceResult.healthEmployer}
-                        t={t}
-                      />
-                      <PremiumRow
-                        label={t('insurance.longTermCare')}
-                        employee={workplaceResult.longTermEmployee}
-                        employer={workplaceResult.longTermEmployer}
-                        t={t}
-                      />
-                      <div className="border-t border-line pt-3">
-                        <div className="flex justify-between text-sm font-semibold">
-                          <span className="text-fg">{t('insurance.myShare')}</span>
-                          <span className="text-blue-600 dark:text-blue-400">{formatNumber(workplaceResult.healthEmployee + workplaceResult.longTermEmployee)}{t('unit.won')}</span>
-                        </div>
-                        <div className="flex justify-between text-sm mt-1">
-                          <span className="text-muted">{t('workplace.employerShare')}</span>
-                          <span className="text-body">{formatNumber(workplaceResult.healthEmployer + workplaceResult.longTermEmployer)}{t('unit.won')}</span>
-                        </div>
-                        <div className="flex justify-between text-sm mt-1">
-                          <span className="text-muted">{t('insurance.total')}</span>
-                          <span className="text-body">{formatNumber(workplaceResult.healthInsurance + workplaceResult.longTermCare)}{t('unit.won')}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Toggle 4 insurances */}
-                    <button
-                      onClick={() => setShowAllInsurance(!showAllInsurance)}
-                      className="mt-4 flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      {showAllInsurance ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      {t('insurance.showAll4')}
-                    </button>
-
-                    {showAllInsurance && (
-                      <div className="mt-4 space-y-3 border-t border-line pt-4">
-                        <PremiumRow
-                          label={t('insurance.nationalPension')}
-                          employee={workplaceResult.pensionEmployee}
-                          employer={workplaceResult.pensionEmployer}
-                          t={t}
-                        />
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-body">{t('insurance.employmentInsurance')}</span>
-                          <span className="text-fg font-medium">{formatNumber(workplaceResult.employmentInsurance)}{t('unit.won')}</span>
-                        </div>
-
-                        <div className="border-t border-line pt-3">
-                          <div className="flex justify-between text-sm font-semibold">
-                            <span className="text-fg">{t('insurance.total4')}</span>
-                            <span className="text-blue-600 dark:text-blue-400">{formatNumber(workplaceResult.totalEmployee)}{t('unit.won')}</span>
-                          </div>
-                        </div>
-
-                        <div className="bg-subtle rounded-lg p-4 mt-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-semibold text-fg">{t('workplace.netSalary')}</span>
-                            <span className="text-lg font-bold text-sub">{formatNumber(workplaceResult.netSalary)}{t('unit.won')}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Annual projection */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-fg mb-4">{t('workplace.annualProjection')}</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-subtle rounded-lg p-4">
-                        <div className="text-xs text-blue-600 dark:text-blue-400">{t('insurance.healthInsurance')} + {t('insurance.longTermCare')}</div>
-                        <div className="text-lg font-bold text-sub mt-1">
-                          {formatNumber((workplaceResult.healthEmployee + workplaceResult.longTermEmployee) * 12)}{t('unit.won')}
-                        </div>
-                        <div className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{t('unit.perYear')}</div>
-                      </div>
-                      {showAllInsurance && (
-                        <div className="bg-subtle rounded-lg p-4">
-                          <div className="text-xs text-purple-600 dark:text-purple-400">{t('insurance.total4')}</div>
-                          <div className="text-lg font-bold text-sub mt-1">
-                            {formatNumber(workplaceResult.totalEmployee * 12)}{t('unit.won')}
-                          </div>
-                          <div className="text-xs text-purple-500 dark:text-purple-400 mt-0.5">{t('unit.perYear')}</div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-                  {t('placeholder.enterSalary')}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════ Tab 2: Regional ═══════════════ */}
-        {activeTab === 'regional' && (
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1 space-y-4">
-              {/* Income section */}
-              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-fg">{t('regional.incomeSection')}</legend>
-                <NumberInput value={rgBusinessIncome} onChange={setRgBusinessIncome} label={t('regional.businessIncome')} />
-                <NumberInput value={rgEmploymentIncome} onChange={setRgEmploymentIncome} label={t('regional.employmentIncome')} />
-                <NumberInput value={rgFinancialIncome} onChange={setRgFinancialIncome} label={t('regional.financialIncome')} />
-                <NumberInput value={rgOtherIncome} onChange={setRgOtherIncome} label={t('regional.otherIncome')} />
-                <NumberInput value={rgPensionIncome} onChange={setRgPensionIncome} label={t('regional.pensionIncome')} />
-              </fieldset>
-
-              {/* Property section */}
-              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-fg">{t('regional.propertySection')}</legend>
-                <NumberInput value={rgPropertyTaxBase} onChange={setRgPropertyTaxBase} label={t('regional.propertyTaxBase')} />
-                <NumberInput value={rgDeposit} onChange={setRgDeposit} label={t('regional.deposit')} />
-              </fieldset>
-            </div>
-
-            <div className="lg:col-span-2">
-              {regionalResult ? (
-                <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                  <h3 className="text-lg font-semibold text-fg">{t('regional.result')}</h3>
-
-                  {/* Income premium */}
-                  <div className="space-y-2">
-                    <div className="text-sm text-muted">
-                      {t('regional.totalAnnualIncome')}: <span className="font-medium text-fg">{formatNumber(regionalResult.totalAnnualIncome)}{t('unit.won')}</span>
-                    </div>
-                    <div className="text-sm text-muted">
-                      {t('regional.monthlyIncome')}: <span className="font-medium text-fg">{formatNumber(regionalResult.monthlyIncome)}{t('unit.won')}</span>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-line pt-4 space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-body">{t('regional.incomePremium')}</span>
-                      <span className="text-fg font-medium">{formatNumber(regionalResult.incomePremium)}{t('unit.won')}</span>
-                    </div>
-
-                    {regionalResult.propertyAmount > 0 && (
-                      <>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-body">{t('regional.propertyPoints')}</span>
-                          <span className="text-fg font-medium">{regionalResult.propertyScore}{t('regional.points')}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-body">{t('regional.propertyPremium')} ({regionalResult.propertyScore} x {POINT_VALUE}{t('unit.won')})</span>
-                          <span className="text-fg font-medium">{formatNumber(regionalResult.propertyPremium)}{t('unit.won')}</span>
-                        </div>
-                      </>
-                    )}
-
-                    <div className="border-t border-line pt-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-body">{t('insurance.healthInsurance')}</span>
-                        <span className="text-fg font-medium">{formatNumber(regionalResult.healthPremium)}{t('unit.won')}</span>
-                      </div>
-                      <div className="flex justify-between text-sm mt-1">
-                        <span className="text-body">{t('insurance.longTermCare')} ({(LONG_TERM_CARE_RATE * 100).toFixed(2)}%)</span>
-                        <span className="text-fg font-medium">{formatNumber(regionalResult.longTermCare)}{t('unit.won')}</span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-line pt-3">
-                      <div className="flex justify-between font-semibold">
-                        <span className="text-fg">{t('regional.monthlyTotal')}</span>
-                        <span className="text-blue-600 dark:text-blue-400 text-lg">{formatNumber(regionalResult.totalPremium)}{t('unit.won')}</span>
-                      </div>
-                      <div className="flex justify-between text-sm text-muted mt-1">
-                        <span>{t('unit.perYear')}</span>
-                        <span>{formatNumber(regionalResult.totalPremium * 12)}{t('unit.won')}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {regionalResult.incomePremium === REGIONAL_MIN_PREMIUM && (
-                    <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-3 text-xs text-yellow-700 dark:text-yellow-300 flex items-start gap-2">
-                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-                      {t('regional.minimumApplied')}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-                  {t('placeholder.enterIncome')}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════ Tab 3: Dependent ═══════════════ */}
-        {activeTab === 'dependent' && (
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
-              <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-                <h2 className="text-lg font-semibold text-fg">{t('tabs.dependent')}</h2>
-
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">{t('dependent.relationship')}</label>
-                  <select
-                    value={dpRelationship}
-                    onChange={(e) => setDpRelationship(e.target.value)}
-                    className={`w-full px-3 py-2 ${glassInput} px-3 py-2`}
-                  >
-                    {(['spouse', 'parent', 'child', 'sibling', 'grandparent', 'grandchild'] as const).map(rel => (
-                      <option key={rel} value={rel}>{t(`dependent.relationships.${rel}`)}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <NumberInput value={dpAnnualIncome} onChange={setDpAnnualIncome} label={t('dependent.annualIncome')} />
-
-                <div>
-                  <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={dpHasBusinessIncome}
-                      onChange={(e) => setDpHasBusinessIncome(e.target.checked)}
-                      className="accent-blue-600"
-                    />
-                    {t('dependent.hasBusinessIncome')}
-                  </label>
-                </div>
-
-                {dpHasBusinessIncome && (
-                  <NumberInput value={dpBusinessIncome} onChange={setDpBusinessIncome} label={t('dependent.businessIncomeAmount')} />
-                )}
-
-                <NumberInput value={dpPropertyTaxBase} onChange={setDpPropertyTaxBase} label={t('dependent.propertyTaxBase')} />
-
-                {dpRelationship === 'sibling' && (
-                  <label className="flex items-center gap-2 text-sm text-body cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={dpCohabitation}
-                      onChange={(e) => setDpCohabitation(e.target.checked)}
-                      className="accent-blue-600"
-                    />
-                    {t('dependent.cohabitation')}
-                  </label>
-                )}
-              </div>
-            </div>
-
-            <div className="lg:col-span-2">
-              {dependentResult ? (
-                <div className={`${glassCard} ${glassInset} p-6`} role="status" aria-live="polite">
-                  {/* Result header */}
-                  <div className={`flex items-center gap-3 mb-6 p-4 rounded-xl ${
-                    dependentResult.eligible
-                      ? 'bg-primary-soft text-primary'
-                      : 'bg-red-50 dark:bg-red-950'
-                  }`}>
-                    {dependentResult.eligible ? (
-                      <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400 shrink-0" />
-                    ) : (
-                      <XCircle className="w-8 h-8 text-red-600 dark:text-red-400 shrink-0" />
-                    )}
-                    <div>
-                      <div className={`text-lg font-bold ${
-                        dependentResult.eligible ? 'text-sub' : 'text-red-700 dark:text-red-300'
-                      }`}>
-                        {dependentResult.eligible ? t('dependent.eligible') : t('dependent.notEligible')}
-                      </div>
-                      <div className={`text-sm ${
-                        dependentResult.eligible ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                      }`}>
-                        {dependentResult.eligible ? t('dependent.noPremium') : t('dependent.mustPayRegional')}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Condition breakdown */}
-                  <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-fg">{t('dependent.conditions')}</h4>
-
-                    <ConditionRow
-                      pass={dependentResult.incomePass}
-                      label={t('dependent.incomeCondition')}
-                      detail={dependentResult.incomeDetail}
-                    />
-
-                    <ConditionRow
-                      pass={dependentResult.businessPass}
-                      label={t('dependent.businessCondition')}
-                      detail={dependentResult.businessPass ? t('dependent.noBusinessIncome') : t('dependent.hasBusinessIncomeDetail')}
-                    />
-
-                    <ConditionRow
-                      pass={dependentResult.propertyPass}
-                      label={t('dependent.propertyCondition')}
-                      detail={dependentResult.propertyDetail}
-                    />
-
-                    {dpRelationship === 'sibling' && (
-                      <ConditionRow
-                        pass={dependentResult.relationPass}
-                        label={t('dependent.relationCondition')}
-                        detail={dependentResult.relationPass ? t('dependent.cohabitationMet') : t('dependent.cohabitationRequired')}
-                      />
-                    )}
-                  </div>
-
-                  {/* Estimated regional premium if not eligible */}
-                  {!dependentResult.eligible && dependentResult.estimatedRegionalPremium !== null && (
-                    <div className="mt-6 bg-subtle rounded-xl p-4">
-                      <div className="text-sm text-sub font-medium mb-1">
-                        {t('dependent.switchToRegional')}
-                      </div>
-                      <div className="text-2xl font-bold text-fg">
-                        {t('unit.monthly')} {formatNumber(dependentResult.estimatedRegionalPremium)}{t('unit.won')}
-                      </div>
-                      <div className="text-sm text-orange-600 dark:text-orange-400 mt-1">
-                        {t('unit.perYear')} {formatNumber(dependentResult.estimatedRegionalPremium * 12)}{t('unit.won')}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-                  {t('placeholder.enterDependentInfo')}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════ Tab 4: Comparison ═══════════════ */}
-        {activeTab === 'comparison' && (
-          <div className="space-y-8">
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Regional (freelancer) inputs */}
-              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-fg">{t('comparison.freelancer')}</legend>
-                <NumberInput value={cmpBusinessIncome} onChange={setCmpBusinessIncome} label={t('regional.businessIncome')} />
-                <NumberInput value={cmpEmploymentIncome} onChange={setCmpEmploymentIncome} label={t('regional.employmentIncome')} />
-                <NumberInput value={cmpFinancialIncome} onChange={setCmpFinancialIncome} label={t('regional.financialIncome')} />
-                <NumberInput value={cmpOtherIncome} onChange={setCmpOtherIncome} label={t('regional.otherIncome')} />
-                <NumberInput value={cmpPensionIncome} onChange={setCmpPensionIncome} label={t('regional.pensionIncome')} />
-                <NumberInput value={cmpPropertyTaxBase} onChange={setCmpPropertyTaxBase} label={t('regional.propertyTaxBase')} />
-                <NumberInput value={cmpDeposit} onChange={setCmpDeposit} label={t('regional.deposit')} />
-              </fieldset>
-
-              {/* Workplace (incorporated CEO) inputs */}
-              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
-                <legend className="text-lg font-semibold text-fg">{t('comparison.incorporated')}</legend>
-                <NumberInput value={cmpCeoSalary} onChange={setCmpCeoSalary} label={t('comparison.ceoSalary')} placeholder="4,000,000" />
-                <NumberInput value={cmpNonTaxable} onChange={setCmpNonTaxable} label={t('workplace.nonTaxable')} />
-                <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-3 text-xs text-yellow-700 dark:text-yellow-300">
-                  <AlertTriangle className="w-4 h-4 inline mr-1" />
-                  {t('comparison.ceoNote')}
-                </div>
-              </fieldset>
-            </div>
-
-            {/* Comparison results */}
-            {comparisonResult ? (
-              <div className="space-y-6">
-                {/* Comparison table */}
-                <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('comparison.result')}</h3>
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-line">
-                        <th scope="col" className="text-left py-2 text-muted font-medium">{t('comparison.item')}</th>
-                        <th scope="col" className="text-right py-2 text-red-600 dark:text-red-400 font-medium">{t('comparison.freelancer')}</th>
-                        <th scope="col" className="text-right py-2 text-blue-600 dark:text-blue-400 font-medium">{t('comparison.incorporated')}</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                      <tr>
-                        <td className="py-2 text-body">{t('insurance.healthInsurance')}</td>
-                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.rg.healthPremium)}{t('unit.won')}</td>
-                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.healthEmployee + comparisonResult.wp.healthEmployer)}{t('unit.won')} *</td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 text-body">{t('insurance.longTermCare')}</td>
-                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.rg.longTermCare)}{t('unit.won')}</td>
-                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.longTermEmployee + comparisonResult.wp.longTermEmployer)}{t('unit.won')} *</td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 text-body">{t('insurance.nationalPension')}</td>
-                        <td className="py-2 text-right text-fg">
-                          {formatNumber(Math.floor(Math.min(comparisonResult.rg.monthlyIncome, PENSION_CAP_MONTHLY) * PENSION_RATE))}{t('unit.won')} **
-                        </td>
-                        <td className="py-2 text-right text-fg">{formatNumber(comparisonResult.wp.pensionEmployee + comparisonResult.wp.pensionEmployer)}{t('unit.won')} *</td>
-                      </tr>
-                      <tr className="font-semibold bg-subtle">
-                        <td className="py-3 text-fg">{t('insurance.total')} ({t('insurance.myShare')})</td>
-                        <td className="py-3 text-right text-red-600 dark:text-red-400">
-                          {formatNumber(
-                            comparisonResult.rg.totalPremium +
-                            Math.floor(Math.min(comparisonResult.rg.monthlyIncome, PENSION_CAP_MONTHLY) * PENSION_RATE)
-                          )}{t('unit.won')}
-                        </td>
-                        <td className="py-3 text-right text-blue-600 dark:text-blue-400">
-                          {formatNumber(comparisonResult.wpRealCost + comparisonResult.wpPensionReal)}{t('unit.won')}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <div className="mt-3 text-xs text-muted space-y-1">
-                    <p>* {t('comparison.ceoEmployerNote')}</p>
-                    <p>** {t('comparison.regionalPensionNote')}</p>
-                  </div>
-
-                  {/* Difference summary */}
-                  {(() => {
-                    const rgTotal = comparisonResult.rg.totalPremium +
-                      Math.floor(Math.min(comparisonResult.rg.monthlyIncome, PENSION_CAP_MONTHLY) * PENSION_RATE)
-                    const wpTotal = comparisonResult.wpRealCost + comparisonResult.wpPensionReal
-                    const diff = rgTotal - wpTotal
-                    const annualDiff = diff * 12
-
-                    return (
-                      <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-primary-soft text-primary' : 'bg-red-50 dark:bg-red-950'}`}>
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                          <div>
-                            <div className="text-sm font-medium text-body">{t('comparison.difference')}</div>
-                            <div className={`text-xl font-bold ${diff > 0 ? 'text-sub' : 'text-red-700 dark:text-red-300'}`}>
-                              {diff > 0 ? t('comparison.freelancerMore') : t('comparison.workplaceMore')} {formatNumber(Math.abs(diff))}{t('unit.won')}/{t('unit.month')}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-sm text-muted">{t('comparison.annualDifference')}</div>
-                            <div className="text-lg font-bold text-fg">{formatNumber(Math.abs(annualDiff))}{t('unit.won')}</div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })()}
-                </div>
-
-                {/* Chart */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <h3 className="text-lg font-semibold text-fg mb-4">{t('comparison.chartTitle')}</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart
-                      data={[
-                        {
-                          name: t('insurance.healthInsurance'),
-                          regional: comparisonResult.rg.healthPremium,
-                          workplace: comparisonResult.wp.healthEmployee + comparisonResult.wp.healthEmployer,
-                        },
-                        {
-                          name: t('insurance.longTermCare'),
-                          regional: comparisonResult.rg.longTermCare,
-                          workplace: comparisonResult.wp.longTermEmployee + comparisonResult.wp.longTermEmployer,
-                        },
-                        {
-                          name: t('insurance.nationalPension'),
-                          regional: Math.floor(Math.min(comparisonResult.rg.monthlyIncome, PENSION_CAP_MONTHLY) * PENSION_RATE),
-                          workplace: comparisonResult.wp.pensionEmployee + comparisonResult.wp.pensionEmployer,
-                        },
-                      ]}
-                      layout="vertical"
-                      margin={{ left: 20, right: 20, top: 5, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" tickFormatter={(v: number) => `${Math.round(v / 10000)}${t('unit.man')}`} />
-                      <YAxis type="category" dataKey="name" width={80} />
-                      <Tooltip formatter={(value) => `${formatNumber((value as number) ?? 0)}${t('unit.won')}`} />
-                      <Legend />
-                      <Bar dataKey="regional" name={t('comparison.freelancer')} fill="#ef4444" barSize={20} />
-                      <Bar dataKey="workplace" name={t('comparison.incorporated')} fill="#3b82f6" barSize={20} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Corporate note */}
-                <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                    <div className="text-sm text-amber-800 dark:text-amber-200">
-                      <strong>{t('comparison.importantNote')}</strong>
-                      <p className="mt-1">{t('comparison.corporateNote')}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-                {t('placeholder.enterComparison')}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* ═══════════════ Guide Section ═══════════════ */}
-      <div className={`${glassCard} ${glassInset}`}>
+    <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl">
+      {options.map(o => (
         <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between p-6 text-left"
+          key={o.v}
+          type="button"
+          aria-pressed={value === o.v}
+          onClick={() => onChange(o.v)}
+          className={`py-2 rounded-lg text-sm font-semibold transition-colors ${value === o.v ? 'bg-primary text-white' : 'text-body'}`}
         >
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
-          </div>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
+          {o.label}
         </button>
-
-        {showGuide && (
-          <div className="px-6 pb-6 space-y-6">
-            {/* Rates */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.rates.title')}</h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.rates.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-body">
-                    <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Dependent rules */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.dependentRules.title')}</h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.dependentRules.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-body">
-                    <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Regional calc */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.regionalCalc.title')}</h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.regionalCalc.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-body">
-                    <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tips */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-body">
-                    <span className="text-blue-500 mt-1 shrink-0">&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      ))}
     </div>
   )
 }
 
-// ── Sub-components ──
-
-function PremiumRow({ label, employee, employer, t }: {
-  label: string; employee: number; employer: number; t: (key: string) => string
-}) {
+function Check({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div>
-      <div className="flex justify-between items-center text-sm mb-1">
-        <span className="font-medium text-body">{label}</span>
-        <span className="text-muted text-xs">{formatNumber(employee + employer)}{t('unit.won')}</span>
-      </div>
-      <div className="flex gap-4 ml-4 text-sm">
-        <div className="flex justify-between flex-1">
-          <span className="text-muted">{t('workplace.employee')}</span>
-          <span className="text-fg">{formatNumber(employee)}{t('unit.won')}</span>
-        </div>
-        <div className="flex justify-between flex-1">
-          <span className="text-muted">{t('workplace.employer')}</span>
-          <span className="text-fg">{formatNumber(employer)}{t('unit.won')}</span>
-        </div>
-      </div>
+    <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+      <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)} className="mt-0.5 accent-[var(--primary)]" />
+      {label}
+    </label>
+  )
+}
+
+function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+  return (
+    <div className={`flex justify-between gap-4 text-sm ${strong ? 'font-semibold text-fg' : 'text-body'}`}>
+      <span>{label}</span>
+      <span className="tabular-nums text-right">{value}</span>
     </div>
   )
 }
 
-function ConditionRow({ pass, label, detail }: { pass: boolean; label: string; detail: string }) {
+function Cond({ pass, label }: { pass: boolean; label: string }) {
   return (
-    <div className={`flex items-start gap-2 p-3 rounded-lg ${pass ? 'bg-primary-soft text-primary' : 'bg-red-50 dark:bg-red-950/50'}`}>
-      {pass ? (
-        <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
-      ) : (
-        <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
-      )}
-      <div>
-        <div className={`text-sm font-medium ${pass ? 'text-sub' : 'text-red-700 dark:text-red-300'}`}>
-          {label}
-        </div>
-        <div className="text-xs text-sub mt-0.5">{detail}</div>
-      </div>
-    </div>
+    <li className="flex items-start gap-2 text-sm text-body">
+      {pass ? <CheckCircle2 className="w-5 h-5 text-primary shrink-0" /> : <XCircle className="w-5 h-5 text-red-500 shrink-0" />}
+      {label}
+    </li>
   )
 }

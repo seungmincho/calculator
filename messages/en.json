@@ -34976,9 +34976,134 @@
     }
   },
   "healthInsurance": {
+    "rateBadge": "2026 rates · Health {rate} · Long-term care {ltc} of health premium · {point} KRW per property point",
+    "wp": {
+      "modeMonthly": "Monthly pay",
+      "modeAnnual": "Annual salary",
+      "monthly": "Monthly pay (gross)",
+      "annual": "Annual salary (gross)",
+      "nonTaxable": "Non-taxable allowance (monthly)",
+      "nonTaxableHint": "Non-taxable items such as meal allowance (up to 200,000 KRW/month) are excluded",
+      "extra": "Income besides salary (annual)",
+      "extraHint": "Rental, business, interest, dividend and other income. Only the part above 20M KRW/year is charged",
+      "headline": "My monthly health insurance (incl. long-term care)",
+      "headlineSub": "{annual} per year",
+      "employerSame": "Your employer pays another {amount} every month",
+      "item": "Item",
+      "employee": "Employee",
+      "employer": "Employer",
+      "health": "Health insurance",
+      "ltc": "Long-term care",
+      "extraRow": "Premium on non-salary income",
+      "sum": "Total",
+      "base": "Based on monthly remuneration {amount} (pay − non-taxable)",
+      "capped": "The premium cap (9,183,480 KRW/month, 4,591,740 KRW for the employee) applies.",
+      "all4": "Show all 4 social insurances",
+      "healthLtc": "Health + long-term care",
+      "pension": "National pension ({rate})",
+      "employment": "Employment insurance ({rate})",
+      "all4Sum": "My total for 4 insurances",
+      "afterIns": "Pay after 4 insurances (before income tax)",
+      "tableTitle": "Health insurance by salary (employee share, 2026)",
+      "tableNote": "Monthly non-taxable {amount} deducted; non-salary income excluded.",
+      "colSalary": "Salary",
+      "colMonthly": "Monthly",
+      "colAnnual": "Annual",
+      "salaryMan": "{m}M KRW"
+    },
+    "rg": {
+      "income": "Income (annual, previous year)",
+      "business": "Business income (incl. rental)",
+      "financial": "Interest & dividends",
+      "financialHint": "Not counted if the total is 10M KRW/year or less",
+      "wage": "Earned income",
+      "pension": "Pension income",
+      "halfHint": "Only 50% is counted",
+      "other": "Other income",
+      "property": "Property",
+      "taxBase": "Property tax base (land, housing, buildings)",
+      "taxBaseHint": "The tax base on your property tax bill, not market or official price",
+      "deposit": "Lease deposit (jeonse/wolse)",
+      "rent": "Monthly rent",
+      "headline": "Regional subscriber monthly premium (incl. long-term care)",
+      "assessed": "Income counted (annual)",
+      "incomeMonthly": "Monthly income amount",
+      "incomePremium": "Income premium (monthly income × {rate})",
+      "incomePremiumShort": "Income premium",
+      "minApplied": "Income is low, so the minimum premium {amount} applies to the income part.",
+      "rentValue": "Lease valuation ((deposit + rent×40) × 30%)",
+      "propertyAmount": "Property amount (after 100M KRW deduction)",
+      "grade": "Property grade · points",
+      "gradeValue": "Grade {grade} · {score} pts",
+      "propertyPremium": "Property premium ({score} pts × {point} KRW)",
+      "propertyPremiumShort": "Property premium",
+      "healthSum": "Health insurance",
+      "ltc": "Long-term care (health × {rate})",
+      "ltcShort": "Long-term care",
+      "total": "Monthly total",
+      "carNote": "Car-based premiums were abolished in February 2024 and are not included. Housing loan deductions are not applied."
+    },
+    "dp": {
+      "relation": "Relationship to the employee subscriber",
+      "income": "Total annual income",
+      "incomeHint": "Interest, dividends, business, earned, pension and other income (incl. public pensions)",
+      "business": "Of which business income",
+      "bizReg": "Has a business registration",
+      "taxBase": "Property tax base total",
+      "siblingSpecial": "Under 30, 65 or older, registered disabled, or a wounded national merit/veteran",
+      "eligible": "Eligible as a dependent",
+      "notEligible": "Not eligible as a dependent",
+      "eligibleSub": "Covered by the family member's workplace insurance with no premium of your own.",
+      "notEligibleSub": "You become a regional subscriber and pay your own premium.",
+      "cIncome": "Income: 20M KRW/year or less",
+      "cBusiness": "Business income: none (up to 5M KRW/year if not registered)",
+      "cProperty": "Property: tax base 540M KRW or less (540M–900M only with income ≤ 10M KRW)",
+      "cPropertySibling": "Property: tax base 180M KRW or less (siblings)",
+      "cRelation": "Sibling support requirement (age, disability, etc.)",
+      "pass": "Met",
+      "fail": "Not met",
+      "rowIncome": "Income",
+      "rowBusiness": "Business income",
+      "rowProperty": "Property",
+      "estimate": "Estimated monthly premium as a regional subscriber",
+      "estimateNote": "Conservative estimate counting all income at 100%. Earned and pension income count only 50% — enter them separately in the Regional tab.",
+      "marriedNote": "If married, both spouses must meet the income requirement. Support requirements are confirmed by NHIS."
+    },
+    "rt": {
+      "avgWage": "Average monthly pay, last 12 months",
+      "avgWageHint": "Monthly remuneration excluding non-taxable items",
+      "pension": "Pension income after retirement (annual)",
+      "headline": "Lowest monthly premium after retirement",
+      "optContinued": "Voluntary continuation (up to 36 months)",
+      "optWithWage": "Regional · last salary still counted",
+      "optWithoutWage": "Regional · after salary drops out",
+      "optDependent": "Family dependent (0 KRW if eligible)",
+      "checkDependent": "Check eligibility",
+      "saving": "Voluntary continuation is {month} cheaper per month — up to {total} over 36 months.",
+      "timingNote": "Regional premiums use the previous year's income and update every November, so right after retiring your salary (at 50%) is often still counted.",
+      "rulesTitle": "Voluntary continuation requirements",
+      "rules": [
+        "At least 1 year of workplace coverage in the 18 months before leaving",
+        "Apply within 2 months of the due date of your first regional premium bill (NHIS branch, fax or mail, 1577-1000)",
+        "Premium = average monthly remuneration of the last 12 months × 7.19% × 50% (same level as your employee share)",
+        "Up to 36 months from the day after leaving. Property is not counted"
+      ]
+    },
+    "share": {
+      "wpLabel": "Monthly health insurance on {wage}",
+      "rgLabel": "Regional subscriber monthly premium",
+      "dpLabel": "Health insurance dependent check",
+      "rtLabel": "Monthly premium after retirement"
+    },
+    "disclaimer": "Estimate for reference only. Actual bills may differ depending on NHIS records and rounding.",
+    "sources": "Based on: MOHW 2026 health insurance rate (7.19%) and point value (211.5 KRW), premium cap/floor notice (from Jan 2026), NHI Act Enforcement Decree Table 4, Enforcement Rule Table 1-2",
+    "linkNhis": "National Health Insurance Service",
+    "linkDependent": "Check dependent eligibility (NHIS)",
+    "linkLaw": "NHI Act Enforcement Decree",
     "title": "Health Insurance Premium Calculator",
-    "description": "Calculate 2025 workplace/regional subscriber premiums, dependent eligibility, and compare plans",
+    "description": "Calculate 2026 health and long-term care insurance premiums for employees and regional subscribers, check dependent eligibility, and compare voluntary continuation vs regional coverage after retirement.",
     "tabs": {
+      "retire": "After retirement",
       "workplace": "Workplace Subscriber",
       "regional": "Regional Subscriber",
       "dependent": "Dependent Eligibility",
@@ -35092,6 +35217,16 @@
       "enterComparison": "Enter income information and CEO salary on both sides to compare."
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it is calculated",
+        "items": [
+          "Employees: monthly remuneration (pay − non-taxable) × 7.19%, split 50/50 (3.595% each) with the employer. 2026 cap 9,183,480 KRW/month (4,591,740 for the employee), floor 20,160 KRW.",
+          "Long-term care: health premium × 13.14% (0.9448% of income), also split 50/50 for employees.",
+          "Employees with non-salary income above 20M KRW/year pay (excess ÷ 12) × 7.19% in full themselves.",
+          "Regional income premium: business, interest, dividend and other income at 100%, earned and pension income at 50%, divided by 12, × 7.19%. Interest + dividends of 10M KRW or less are not counted.",
+          "Regional property premium: property tax base + lease valuation minus 100M KRW, converted to points with the 60-grade table, × 211.5 KRW. Cars have not been charged since February 2024."
+        ]
+      },
       "title": "Health Insurance Guide",
       "rates": {
         "title": "2025 Premium Rates",
@@ -35123,12 +35258,13 @@
         ]
       },
       "tips": {
-        "title": "Useful Tips",
+        "title": "Tips",
         "items": [
-          "Workplace subscribers can voluntarily continue for 2 months after leaving (same premium)",
-          "If regional premiums are burdensome, consider registering as spouse's workplace dependent",
-          "Incorporating should be compared comprehensively including taxes and operating costs",
-          "Annual remuneration report in April settles previous year's premiums"
+          "Non-taxable meal allowance (up to 200,000 KRW/month) is excluded from the premium — subtract it when entering pay.",
+          "If your regional premium after retiring is higher, apply for voluntary continuation within 2 months of the due date of your first regional bill.",
+          "If a family member is an employee subscriber and you meet the income (20M KRW) and property requirements, you can register as a dependent and pay nothing.",
+          "Regional subscribers with loans taken to buy or rent a home can apply to NHIS for a property deduction.",
+          "Employee premiums are settled every April based on the previous year's total pay, which may lead to extra payments or refunds."
         ]
       },
       "guide": {
@@ -35173,32 +35309,49 @@
         }
       },
       "whatIs": {
-        "title": "What is the Health Insurance Calculator?",
-        "description": "The Health Insurance Calculator accurately computes national health insurance and long-term care insurance premiums for both employee-insured and locally-insured individuals based on 2025 rates. It also determines dependent eligibility, compares employee versus local insurance status, and reflects property and financial income, giving you a clear view of your actual monthly premium."
+        "title": "What is the health insurance calculator?",
+        "description": "It applies the 2026 health insurance rate of 7.19%, long-term care at 13.14% of the health premium, the premium cap and floor, and the 211.5 KRW property point value. Employees get the employee and employer shares from their pay, regional subscribers from income and property tax base, and retirees can compare voluntary continuation with regional coverage."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Select your insurance type (employee-insured, locally-insured, or dependent).",
-          "2. For employees: enter your monthly salary (pre-tax).",
-          "3. For locally-insured: enter annual income, assets (real estate, vehicles, financial), and number of dependents.",
-          "4. View your health insurance premium, long-term care premium, and total monthly payment."
+          "Employees: enter monthly pay (or annual salary) and non-taxable allowances to see employee/employer shares and the yearly total. Add non-salary income if it exceeds 20M KRW/year.",
+          "Regional subscribers: enter last year's income by type, property tax base and lease deposit/rent.",
+          "Dependent check: enter relationship, income, business income and property tax base to see each requirement.",
+          "After retirement: enter your average monthly pay and property to compare voluntary continuation with regional premiums.",
+          "Inputs are saved in the URL, so copying the link or sharing the result card reproduces the same result."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Are non-salary incomes (rental, financial) also subject to premiums?",
-            "a": "Yes. Employees with annual non-salary income exceeding 20 million KRW are assessed additional premiums on rental income, financial income, and business income."
+            "q": "What is the 2026 health insurance rate?",
+            "a": "7.19% (up 0.1%p from 7.09% in 2025). Employees and employers each pay 3.595%, and long-term care is 13.14% of the health premium (0.9448% of income)."
           },
           {
-            "q": "Is long-term care insurance billed separately?",
-            "a": "No, it is collected together with the health insurance premium. The 2025 long-term care rate is 12.95% of the health insurance premium."
+            "q": "How much is the premium on 3M KRW monthly pay?",
+            "a": "With no non-taxable items, 3,000,000 × 3.595% = 107,850 KRW plus 14,170 KRW long-term care, about 122,020 KRW per month for the employee. The employer pays the same."
           },
           {
-            "q": "Are freelancers employee-insured or locally-insured?",
-            "a": "Freelancers not obligated to enroll in workplace insurance are locally-insured. Even those with 3.3% withholding are classified as locally-insured based on business income."
+            "q": "What are the premium cap and floor?",
+            "a": "From January 2026 the employee salary-based premium ranges from 20,160 to 9,183,480 KRW/month (employee share up to 4,591,740). The cap for non-salary income premiums and regional premiums is 4,591,740 KRW; the regional floor is 20,160 KRW."
+          },
+          {
+            "q": "Is non-salary income (rent, interest) charged?",
+            "a": "If it exceeds 20M KRW/year, the excess divided by 12 × 7.19% is charged as an extra premium paid entirely by you."
+          },
+          {
+            "q": "What are the dependent requirements?",
+            "a": "Annual income of 20M KRW or less, no business income (up to 5M KRW if not registered), and a property tax base of 540M KRW or less (540M–900M only with income ≤ 10M KRW). Siblings need a tax base of 180M KRW or less and must be under 30, 65+, or disabled, etc."
+          },
+          {
+            "q": "How is the regional premium calculated?",
+            "a": "Income premium (business, interest, dividend, other income at 100%, earned and pension income at 50%, per month × 7.19%) plus property premium (tax base + lease valuation − 100M KRW, converted to 60-grade points × 211.5 KRW), plus long-term care. Car premiums were abolished in February 2024."
+          },
+          {
+            "q": "What happens after I retire?",
+            "a": "You become a family dependent or a regional subscriber. With at least 1 year of workplace coverage in the last 18 months, you can apply for voluntary continuation and pay your former employee-share level (average remuneration × 7.19% × 50%) for up to 36 months."
           }
         ]
       }
