@@ -2168,8 +2168,101 @@
     }
   },
   "imageResizer": {
+    "dropzone": "Choose photos or drop them here",
+    "dropzoneHint": "Multiple files OK · Paste with Ctrl+V · JPG, PNG, WebP and more (up to 50MB each)",
+    "privacyNote": "Photos are processed only in this browser and never sent to a server.",
+    "skippedFiles": "Skipped {n} file(s) that are not images or exceed 50MB.",
+    "presetsTitle": "Common sizes",
+    "preset": {
+      "idPhoto": "ID / resume photo",
+      "passport": "Passport photo",
+      "instaSquare": "Instagram square",
+      "instaPortrait": "Instagram portrait",
+      "story": "Story / Reels",
+      "youtube": "YouTube thumbnail",
+      "kakao": "KakaoTalk profile",
+      "fhd": "FHD wallpaper"
+    },
+    "presetHint": "ID photo sizes are the cm spec converted at 300dpi. Presets crop from the center to the exact size.",
+    "sizeTitle": "Resize by",
+    "mode": {
+      "px": "Pixels",
+      "pct": "Percent",
+      "long": "Long side"
+    },
+    "width": "Width (px)",
+    "height": "Height (px)",
+    "auto": "Auto",
+    "lockRatio": "Lock aspect ratio",
+    "lockOnHint": "Ratio locked: fits inside width × height without distortion. You can fill in just one side.",
+    "lockOffHint": "Exact size: output is exactly width × height. Choose a fit mode below.",
+    "cmTitle": "Set in cm (print / ID photo)",
+    "cmWidth": "Width cm",
+    "cmHeight": "Height cm",
+    "dpi": "Resolution dpi",
+    "cmApply": "Apply {w}×{h}px",
+    "cmHint": "Pixels = cm ÷ 2.54 × dpi. Print usually uses 300dpi.",
+    "percent": "Percent of original",
+    "longSide": "Long side length",
+    "longHint": "Sets the longer side to this length and keeps the ratio. Smaller images are not enlarged.",
+    "fitTitle": "Fit mode",
+    "fit": {
+      "stretch": "Stretch",
+      "contain": "Fit",
+      "cover": "Fill"
+    },
+    "fitHint": {
+      "stretch": "Ignores the ratio and stretches to width × height. The photo may look distorted.",
+      "contain": "Shows the whole photo and fills the leftover space with the padding color.",
+      "cover": "Fills the frame and crops overflow from the center. Best for ID photos and thumbnails."
+    },
+    "format": "Format",
+    "formatHint": {
+      "jpeg": "The safe choice for photos and accepted everywhere. No transparency.",
+      "png": "Lossless: great for text, logos and screenshots, keeps transparency. Large for photos.",
+      "webp": "Usually smaller than JPG at the same quality. Some government sites and older apps don't accept it."
+    },
+    "webpUnsupported": "This browser can't save WebP.",
+    "quality": "Quality",
+    "qualityMax": "Max quality (within size limit)",
+    "qualityPng": "PNG is lossless, so there is no quality setting.",
+    "targetTitle": "Max file size",
+    "targetOff": "No limit",
+    "targetCustom": "Custom (KB or less)",
+    "targetHint": "Use this for upload limits like \"500KB or less\". Lowers quality first, then shrinks dimensions if needed.",
+    "targetFixedHint": "You set an exact size, so dimensions stay and only quality is lowered.",
+    "targetPngWarn": "PNG quality can't be lowered, so hitting a size limit is hard. Pick JPG for photos.",
+    "bgColor": "Padding / background color",
+    "bgHint": "Fills the leftover space in Fit mode.",
+    "bgHintJpg": "JPG has no transparency, so transparent areas and padding use this color.",
+    "metaNote": "Phone photo orientation (EXIF) is corrected automatically, and metadata such as location and device info is not kept in the output.",
+    "statusProcessing": "Processed {done} of {n}",
+    "statusDone": "{n} done",
+    "heroLabel": "{n} image(s) resized",
+    "heroTarget": "Within {kb}: {ok} of {n}",
+    "download": "Download",
+    "downloadZip": "Download {n} as ZIP",
+    "targetMissed": "{n} image(s) couldn't get under the size limit. Try a smaller size or JPG/WebP.",
+    "previewTitle": "Result preview",
+    "resultAlt": "Resized {name}",
+    "original": "Original",
+    "noImages": "No photos yet",
+    "emptyHint": "Pick photos on the left and the results update instantly with your settings.",
+    "listTitle": "{n} photo(s)",
+    "removeAll": "Remove all",
+    "previewOf": "Preview result of {name}",
+    "downloadOf": "Download {name}",
+    "removeOf": "Remove {name}",
+    "remove": "Remove",
+    "qualityUsed": "Quality {q}%",
+    "rowMissed": "Larger than the limit",
+    "processing": "Processing",
+    "waiting": "Waiting",
+    "errHeic": "This browser can't open HEIC. Shoot in 'Most Compatible' (Settings > Camera > Formats) or convert to JPG first.",
+    "errFormat": "This browser can't save in the selected format. Try JPG.",
+    "errDecode": "Couldn't open this image. The file may be damaged or unsupported.",
     "title": "Image Resizer",
-    "description": "Resize images online while maintaining quality.",
+    "description": "Change pixel size, shrink file size and fit ID-photo dimensions for many photos at once. Everything runs in your browser and nothing is uploaded.",
     "input": {
       "selectImage": "Select Image",
       "width": "Width",
@@ -2182,18 +2275,46 @@
       "reset": "Reset"
     },
     "guide": {
+      "principle": {
+        "title": "Why the file gets smaller",
+        "items": [
+          "File size roughly follows pixel count. Halving width and height leaves 1/4 of the pixels.",
+          "JPG and WebP drop less-visible detail as quality goes down. 80–90% is usually hard to tell apart.",
+          "PNG is lossless with no quality setting. Shrink the dimensions or switch to JPG to save space.",
+          "Large reductions are done in half-size steps to avoid jagged edges and moiré."
+        ]
+      },
+      "formats": {
+        "title": "JPG vs PNG vs WebP",
+        "items": [
+          "JPG: the standard for photos, accepted everywhere, small files. No transparency.",
+          "PNG: lossless with transparency. Good for logos, text-heavy images and screenshots.",
+          "WebP: usually smaller at the same quality and supports transparency. For official submissions, JPG is safer."
+        ]
+      },
+      "idPhoto": {
+        "title": "ID photo pixel math",
+        "items": [
+          "Pixels = cm ÷ 2.54 × dpi, using 300dpi print quality.",
+          "3×4cm → 354×472px, passport 3.5×4.5cm → 413×531px.",
+          "Fill mode crops from the center, so use a photo with the face centered.",
+          "Passport photos also have rules on face size and background, and each organization sets its own pixel, file size and format limits. Check the submission notice first."
+        ],
+        "linkPassport": "MOFA Passport Portal (photo rules)",
+        "linkGov24": "Gov24"
+      },
       "title": "Image Resizer Guide",
       "whatIs": {
         "title": "What is this tool?",
-        "description": "The Image Resizer changes photo dimensions to your desired resolution, converts between JPEG/PNG/WebP formats, and adjusts quality to reduce file size. Includes presets for social media profiles and thumbnails."
+        "description": "Change a photo's pixel dimensions and file size. Fit ID-photo specs, social media sizes and \"under XX KB\" upload limits in one place. All processing happens in your browser, so photos never leave your device."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Drag and drop or select an image file to upload.",
-          "Choose a preset or enter custom width × height dimensions.",
-          "Adjust the quality slider and select output format.",
-          "Click resize, preview the result, and download."
+          "Choose or drop photos. Multiple files work, and you can paste a copied image with Ctrl+V.",
+          "Pick a common size, or set the size by pixels, percent or long side.",
+          "If there is an upload limit, enter the KB value under Max file size.",
+          "Check the resulting size and file size, then download one by one or all as a ZIP."
         ]
       },
       "tips": {
@@ -2208,16 +2329,24 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Does resizing reduce image quality?",
-            "a": "Enlarging beyond original size will reduce quality. When shrinking, keep quality at 80%+ for minimal visible degradation."
+            "q": "The site says \"500KB or less\". What do I do?",
+            "a": "Enter 500 as Max file size and save as JPG. Quality is lowered first, then dimensions if needed. 1KB is counted as 1,000 bytes, so it passes even if the site uses 1,024. With an exact pixel size, only quality is adjusted."
           },
           {
-            "q": "JPEG, PNG, or WebP - which is best?",
-            "a": "JPEG for photos (small size), PNG for transparency needs, WebP for web optimization."
+            "q": "How many pixels for an ID photo?",
+            "a": "At 300dpi, 3×4cm is 354×472px and 3.5×4.5cm is 413×531px. If the organization specifies pixels, turn off the ratio lock and enter them as an exact size."
           },
           {
-            "q": "What's the maximum upload size?",
-            "a": "Processing is done in-browser with no server limits, but images over 50MB may take longer to process."
+            "q": "Are my photos uploaded?",
+            "a": "No. Decoding, resizing and saving all happen with Canvas in your browser. Once the page is open, it works even offline."
+          },
+          {
+            "q": "Does enlarging a small photo make it sharper?",
+            "a": "No. Enlarging invents pixels, so it gets blurry. That's why Long side mode never enlarges."
+          },
+          {
+            "q": "Will phone photos come out sideways?",
+            "a": "No. The orientation stored in the photo (EXIF) is applied first. Metadata like location is not kept in the output."
           }
         ]
       }

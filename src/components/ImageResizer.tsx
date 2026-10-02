@@ -1,529 +1,781 @@
 'use client'
 
-import { glassCard, glassInset } from '@/lib/glass';
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Upload, Download, Trash2, Loader2, Archive, Lock, Unlock } from 'lucide-react'
+import { detectEncoders, formatBytes, outputName, uniqueNames, isHeic } from '@/utils/imageCompress'
+import {
+  resizeFile, cmToPx, clampInt, PRESETS, MAX_SIDE, isFixedSize,
+  type SizeMode, type Fit, type ResizeFormat, type ResizeOutput, type Preset,
+} from '@/utils/imageResize'
 
-import React, { useState, useRef, useCallback } from 'react';
-import { Upload, Download, RotateCcw, Maximize, Image as ImageIcon, Info, Settings, X } from 'lucide-react';
-import GuideSection from '@/components/GuideSection';
+// ── Types / constants ──
 
-interface ImageDimensions {
-  width: number;
-  height: number;
+type ErrCode = 'heic' | 'decode' | 'format'
+
+interface Item {
+  id: string
+  file: File
+  previewUrl: string
+  status: 'pending' | 'processing' | 'done' | 'error'
+  key?: string // 어떤 설정으로 처리됐는지 — 설정이 바뀌면 다시 처리
+  out?: ResizeOutput & { url: string }
+  error?: ErrCode
 }
 
-interface ResizeOptions {
-  width: number;
-  height: number;
-  maintainAspectRatio: boolean;
-  quality: number;
-  format: 'jpeg' | 'png' | 'webp';
-}
+const MODES: SizeMode[] = ['px', 'pct', 'long']
+const FITS: Fit[] = ['stretch', 'contain', 'cover']
+const FORMATS: ResizeFormat[] = ['jpeg', 'png', 'webp']
+const PCTS = [25, 50, 75]
+const SIDES = [3840, 1920, 1280, 1080, 800]
+const TARGETS = [0, 100, 200, 500, 1000]
+const MAX_FILE = 50 * 1024 * 1024
+const DEF = { mode: 'px' as SizeMode, pct: 50, long: 1920, q: 90, bg: '#ffffff' }
 
-const ImageResizer = () => {
-  const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null);
-  const [originalDimensions, setOriginalDimensions] = useState<ImageDimensions | null>(null);
-  const [resizedImageUrl, setResizedImageUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+const kbLabel = (kb: number) => (kb >= 1000 ? `${kb / 1000}MB` : `${kb}KB`)
+const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+const fmtLabel = (f: ResizeFormat) => (f === 'jpeg' ? 'JPG' : f === 'webp' ? 'WebP' : 'PNG')
 
-  const [options, setOptions] = useState<ResizeOptions>({
-    width: 800,
-    height: 600,
-    maintainAspectRatio: true,
-    quality: 0.9,
-    format: 'jpeg'
-  });
+// 44px 터치 타깃. 선택 = 파랑, 미선택 = 회색 칩
+const chip = (on: boolean) =>
+  `min-h-11 px-3 rounded-xl text-sm font-semibold tabular-nums transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+    on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
+  }`
+const seg = (on: boolean) =>
+  `min-h-11 rounded-lg text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+// ── Component ──
 
-  const presetSizes = [
-    { name: '소셜미디어 (1080x1080)', width: 1080, height: 1080 },
-    { name: '인스타그램 스토리 (1080x1920)', width: 1080, height: 1920 },
-    { name: '페이스북 커버 (1200x630)', width: 1200, height: 630 },
-    { name: '유튜브 썸네일 (1280x720)', width: 1280, height: 720 },
-    { name: '웹 사이트 (1920x1080)', width: 1920, height: 1080 },
-    { name: '모바일 (375x667)', width: 375, height: 667 },
-    { name: '프로필 사진 (400x400)', width: 400, height: 400 },
-    { name: '이메일 헤더 (600x200)', width: 600, height: 200 }
-  ];
+export default function ImageResizer() {
+  const t = useTranslations('imageResizer')
+  const sp = useSearchParams()
 
-  const handleFileSelect = useCallback((file: File) => {
-    if (!file.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 가능합니다.');
-      return;
-    }
+  // 설정 (URL 공유)
+  const [mode, setMode] = useState<SizeMode>(() => {
+    const m = sp.get('m') as SizeMode
+    return MODES.includes(m) ? m : DEF.mode
+  })
+  const [width, setWidth] = useState(() => clampInt(sp.get('w'), 0, MAX_SIDE, 0))
+  const [height, setHeight] = useState(() => clampInt(sp.get('h'), 0, MAX_SIDE, 0))
+  const [lock, setLock] = useState(() => sp.get('l') !== '0')
+  const [percent, setPercent] = useState(() => clampInt(sp.get('p'), 1, 400, DEF.pct))
+  const [longSide, setLongSide] = useState(() => clampInt(sp.get('ls'), 1, MAX_SIDE, DEF.long))
+  const [fit, setFit] = useState<Fit>(() => {
+    const f = sp.get('fit') as Fit
+    return FITS.includes(f) ? f : 'cover'
+  })
+  const [format, setFormat] = useState<ResizeFormat>(() => {
+    const f = sp.get('f') as ResizeFormat
+    return FORMATS.includes(f) ? f : 'jpeg'
+  })
+  const [quality, setQuality] = useState(() => clampInt(sp.get('q'), 10, 100, DEF.q))
+  const [targetKB, setTargetKB] = useState(() => clampInt(sp.get('kb'), 0, 20000, 0))
+  const [bg, setBg] = useState(() => {
+    const b = sp.get('bg')
+    return b && /^[0-9a-f]{6}$/i.test(b) ? `#${b.toLowerCase()}` : DEF.bg
+  })
+  const [cm, setCm] = useState({ w: '3.5', h: '4.5', dpi: '300' })
 
-    setFileName(file.name);
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        setOriginalImage(img);
-        setOriginalDimensions({ width: img.width, height: img.height });
-        setOptions(prev => ({
-          ...prev,
-          width: img.width,
-          height: img.height
-        }));
-        setResizedImageUrl(null);
-      };
-      img.src = e.target?.result as string;
-    };
-    
-    reader.readAsDataURL(file);
-  }, []);
+  const [images, setImages] = useState<Item[]>([])
+  const [enc, setEnc] = useState<{ webp: boolean } | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [zipping, setZipping] = useState(false)
+  const [skipped, setSkipped] = useState(0)
+  const [selId, setSelId] = useState<string | null>(null)
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFileSelect(file);
-    }
-  };
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const imagesRef = useRef<Item[]>([])
+  const runGen = useRef(0)
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-    
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      handleFileSelect(file);
-    }
-  };
+  // 입력 중간값(예: "1" → "1080")도 그대로 처리되지만 1px 미만/빈 값은 막는다
+  const kb = targetKB > 0 ? Math.max(10, targetKB) : 0
+  const pct = Math.max(1, percent || 0)
+  const ls = Math.max(16, longSide || 0)
+  const fixed = isFixedSize({ mode, width, height, lock, percent: pct, longSide: ls, fit })
+  const key = [mode, width, height, lock, pct, ls, fit, format, quality, kb, bg].join('|')
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(true);
-  };
+  useEffect(() => { imagesRef.current = images }, [images])
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-  };
+  useEffect(() => {
+    detectEncoders().then((e) => setEnc({ webp: e.webp })).catch(() => setEnc({ webp: false }))
+  }, [])
 
-  const updateDimensions = (newWidth: number, newHeight: number) => {
-    if (!originalDimensions) return;
-
-    if (options.maintainAspectRatio && originalImage) {
-      const aspectRatio = originalDimensions.width / originalDimensions.height;
-      setOptions(prev => ({
-        ...prev,
-        width: newWidth,
-        height: Math.round(newWidth / aspectRatio)
-      }));
-    } else {
-      setOptions(prev => ({
-        ...prev,
-        width: newWidth,
-        height: newHeight
-      }));
-    }
-  };
-
-  const handlePresetSelect = (preset: { width: number; height: number }) => {
-    setOptions(prev => ({
-      ...prev,
-      width: preset.width,
-      height: preset.height
-    }));
-  };
-
-  const resizeImage = useCallback(() => {
-    if (!originalImage || !canvasRef.current) return;
-
-    setIsProcessing(true);
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) return;
-
-    canvas.width = options.width;
-    canvas.height = options.height;
-
-    // 고품질 리샘플링을 위한 설정
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-
-    // 이미지 그리기
-    ctx.drawImage(originalImage, 0, 0, options.width, options.height);
-
-    // 포맷에 따른 출력
-    const mimeType = `image/${options.format}`;
-    const quality = options.format === 'png' ? undefined : options.quality;
-    
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        setResizedImageUrl(url);
+  // URL 동기화 (기본값과 다른 것만)
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const p = new URLSearchParams()
+      if (mode !== DEF.mode) p.set('m', mode)
+      if (mode === 'px') {
+        if (width) p.set('w', String(width))
+        if (height) p.set('h', String(height))
+        if (!lock) { p.set('l', '0'); if (fit !== 'cover') p.set('fit', fit) }
       }
-      setIsProcessing(false);
-    }, mimeType, quality);
-  }, [originalImage, options]);
+      if (mode === 'pct' && pct !== DEF.pct) p.set('p', String(pct))
+      if (mode === 'long' && ls !== DEF.long) p.set('ls', String(ls))
+      if (format !== 'jpeg') p.set('f', format)
+      if (quality !== DEF.q) p.set('q', String(quality))
+      if (kb) p.set('kb', String(kb))
+      if (bg !== DEF.bg) p.set('bg', bg.slice(1))
+      const qs = p.toString()
+      window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+    }, 300)
+    return () => clearTimeout(id)
+  }, [mode, width, height, lock, fit, pct, ls, format, quality, kb, bg])
 
-  const downloadImage = () => {
-    if (!resizedImageUrl) return;
+  // ── 파일 추가 ──
 
-    const link = document.createElement('a');
-    link.href = resizedImageUrl;
-    link.download = `resized_${fileName.replace(/\.[^/.]+$/, '')}.${options.format}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const addFiles = useCallback((list: FileList | File[]) => {
+    const ok: Item[] = []
+    let bad = 0
+    Array.from(list).forEach((file) => {
+      if (!(file.type.startsWith('image/') || isHeic(file)) || file.type === 'image/svg+xml' || file.size > MAX_FILE) { bad++; return }
+      ok.push({ id: uid(), file, previewUrl: URL.createObjectURL(file), status: 'pending' })
+    })
+    setSkipped(bad)
+    if (ok.length) setImages((prev) => [...prev, ...ok])
+  }, [])
 
-  const resetImage = () => {
-    setOriginalImage(null);
-    setOriginalDimensions(null);
-    setResizedImageUrl(null);
-    setFileName('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const files = Array.from(e.clipboardData?.files ?? [])
+      if (files.length) { e.preventDefault(); addFiles(files) }
     }
-  };
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [addFiles])
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+  const patch = (id: string, p: Partial<Item>) =>
+    setImages((prev) => prev.map((i) => (i.id === id ? { ...i, ...p } : i)))
 
-  const calculateEstimatedSize = () => {
-    if (!originalDimensions) return 0;
-    
-    // 추정 파일 크기 계산 (매우 대략적)
-    const pixels = options.width * options.height;
-    let bytesPerPixel = 3; // RGB
-    
-    if (options.format === 'png') {
-      bytesPerPixel = 4; // RGBA
-    } else if (options.format === 'jpeg') {
-      bytesPerPixel = 3 * options.quality;
-    } else if (options.format === 'webp') {
-      bytesPerPixel = 2.5 * options.quality;
+  // ── 자동 처리: 설정 변경/파일 추가 시 한 장씩 순차 처리 (메모리·UI 반응성) ──
+  // ponytail: 설정이 바뀔 때마다 원본을 다시 디코드. 수십 장 × 고해상도면 느림 → 그때 ImageBitmap 캐시
+  useEffect(() => {
+    const gen = ++runGen.current
+    const opts = { mode, width, height, lock, percent: pct, longSide: ls, fit, format, quality, targetKB: kb, bg }
+    const timer = setTimeout(async () => {
+      const todo = imagesRef.current.filter((i) => i.key !== key || i.status === 'pending' || i.status === 'processing')
+      if (!todo.length) { setBusy(false); return }
+      setBusy(true)
+      for (const it of todo) {
+        if (runGen.current !== gen) return
+        if (!imagesRef.current.some((i) => i.id === it.id)) continue
+        patch(it.id, { status: 'processing' })
+        let next: Partial<Item>
+        try {
+          const out = await resizeFile(it.file, opts)
+          if (runGen.current !== gen) return
+          if (!imagesRef.current.some((i) => i.id === it.id)) continue
+          next = { status: 'done', key, out: { ...out, url: URL.createObjectURL(out.blob) }, error: undefined }
+        } catch (e) {
+          if (runGen.current !== gen) return
+          const msg = e instanceof Error ? e.message : ''
+          next = { status: 'error', key, out: undefined, error: msg === 'format' ? 'format' : isHeic(it.file) ? 'heic' : 'decode' }
+        }
+        const old = imagesRef.current.find((i) => i.id === it.id)?.out?.url
+        if (old) URL.revokeObjectURL(old)
+        patch(it.id, next)
+      }
+      if (runGen.current === gen) setBusy(false)
+    }, 300)
+    return () => clearTimeout(timer)
+    // key가 모든 설정을 담고 있음
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, images.length])
+
+  // 언마운트 시 진행 중단 + object URL 해제
+  useEffect(() => () => {
+    runGen.current++
+    imagesRef.current.forEach((i) => { URL.revokeObjectURL(i.previewUrl); if (i.out) URL.revokeObjectURL(i.out.url) })
+  }, [])
+
+  // ── 삭제 ──
+
+  const revoke = (i: Item) => { URL.revokeObjectURL(i.previewUrl); if (i.out) URL.revokeObjectURL(i.out.url) }
+  const removeImage = (id: string) => {
+    const it = images.find((i) => i.id === id)
+    if (it) revoke(it)
+    setImages((prev) => prev.filter((i) => i.id !== id))
+  }
+  const removeAll = () => {
+    images.forEach(revoke)
+    setImages([])
+    setSkipped(0)
+  }
+
+  // ── 다운로드 ──
+
+  const saveBlob = (href: string, name: string) => {
+    const a = document.createElement('a')
+    a.href = href
+    a.download = name
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+  const nameOf = (i: Item) => outputName(i.file.name, i.out!.mime, `_${i.out!.width}x${i.out!.height}`)
+
+  const done = images.filter((i) => i.status === 'done' && i.key === key && i.out)
+
+  const downloadZip = async () => {
+    if (!done.length) return
+    setZipping(true)
+    try {
+      const JSZip = (await import('jszip')).default
+      const zip = new JSZip()
+      const names = uniqueNames(done.map(nameOf))
+      done.forEach((i, n) => zip.file(names[n], i.out!.blob))
+      // 이미 압축된 이미지라 재압축 이득 없음 → STORE
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' })
+      const url = URL.createObjectURL(blob)
+      saveBlob(url, `resized_${done.length}.zip`)
+      setTimeout(() => URL.revokeObjectURL(url), 10000)
+    } finally {
+      setZipping(false)
     }
-    
-    return pixels * bytesPerPixel;
-  };
+  }
+
+  // ── 설정 ──
+
+  // 비율 고정 중 한쪽을 바꾸면 다른 쪽을 첫 이미지 비율로 채워 보여 준다 (실제 출력은 이미지마다 상자 안에 맞춤)
+  const ref = images.find((i) => i.out)?.out
+  const setDim = (axis: 'w' | 'h', raw: string) => {
+    const v = clampInt(raw, 0, MAX_SIDE, 0)
+    if (axis === 'w') setWidth(v); else setHeight(v)
+    if (!lock || !ref || !v) return
+    if (axis === 'w') setHeight(Math.round((v * ref.srcHeight) / ref.srcWidth))
+    else setWidth(Math.round((v * ref.srcWidth) / ref.srcHeight))
+  }
+  const applyBox = (w: number, h: number) => {
+    setMode('px'); setWidth(w); setHeight(h); setLock(false)
+    if (fit === 'stretch') setFit('cover')
+  }
+  const presetActive = (p: Preset) => mode === 'px' && !lock && width === p.width && height === p.height
+  const cmPx = {
+    w: cmToPx(Number(cm.w) || 0, clampInt(cm.dpi, 72, 1200, 300)),
+    h: cmToPx(Number(cm.h) || 0, clampInt(cm.dpi, 72, 1200, 300)),
+  }
+  const cmValid = cmPx.w >= 1 && cmPx.h >= 1 && cmPx.w <= MAX_SIDE && cmPx.h <= MAX_SIDE
+
+  const showBg = format === 'jpeg' || (fixed && fit === 'contain')
+
+  // ── 요약 ──
+
+  const totalOrig = done.reduce((s, i) => s + i.file.size, 0)
+  const totalOut = done.reduce((s, i) => s + i.out!.blob.size, 0)
+  const finished = images.filter((i) => i.key === key && (i.status === 'done' || i.status === 'error')).length
+  const missed = done.filter((i) => !i.out!.ok).length
+  const sel = done.find((i) => i.id === selId) ?? done[0]
+  const status = !images.length
+    ? ''
+    : busy
+      ? t('statusProcessing', { done: finished, n: images.length })
+      : t('statusDone', { n: done.length })
 
   return (
-    <div className={`min-h-screen ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-fg">
-              이미지 리사이저
-            </h1>
-            <p className="text-sm text-muted mt-1">
-              브라우저에서 바로 이미지 크기를 조정하고 다운로드하세요.
-            </p>
-          </div>
-          {!isFullscreen && (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* ── 왼쪽: 업로드 + 설정 ── */}
+        <div className="lg:col-span-1 space-y-6 min-w-0">
+          <div className="ui-card p-5 space-y-3">
             <button
-              onClick={() => setIsFullscreen(true)}
-              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-              title="전체화면"
+              type="button"
+              className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
+                isDragging ? 'border-primary bg-primary-soft' : 'border-line-strong hover:border-primary'
+              }`}
+              onClick={() => fileInputRef.current?.click()}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files) }}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragging(false) }}
+              aria-describedby="ir-drop-hint"
             >
-              <Maximize className="w-5 h-5 text-sub" />
+              <Upload className="mx-auto mb-3 text-faint" size={36} aria-hidden />
+              <span className="block text-sm font-medium text-body">{t('dropzone')}</span>
+              <span id="ir-drop-hint" className="block text-xs text-muted mt-1">{t('dropzoneHint')}</span>
             </button>
-          )}
-        </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              multiple
+              className="hidden"
+              tabIndex={-1}
+              aria-hidden
+              onChange={(e) => { if (e.target.files?.length) addFiles(e.target.files); e.target.value = '' }}
+            />
+            <p className="text-xs text-muted leading-relaxed">{t('privacyNote')}</p>
+            {skipped > 0 && <p className="text-xs text-amber-700" role="alert">{t('skippedFiles', { n: skipped })}</p>}
+          </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Upload Section */}
-          <div className="lg:col-span-1">
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-xl font-semibold mb-4 text-fg">
-                이미지 업로드
-              </h2>
-
-              {!originalImage ? (
-                <div
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
-                    dragOver
-                      ? 'border-purple-500 bg-subtle'
-                      : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-sub mb-2">
-                    클릭하거나 이미지를 드래그하세요
-                  </p>
-                  <p className="text-sm text-muted">
-                    JPG, PNG, WebP 파일 지원
-                  </p>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileInputChange}
-                    className="hidden"
-                  />
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative">
-                    <img
-                      src={originalImage.src}
-                      alt="Original"
-                      className="w-full h-48 object-contain bg-soft rounded-lg"
-                    />
+          <div className="ui-card p-5 space-y-6">
+            {/* 프리셋 */}
+            <div>
+              <h2 className="text-sm font-semibold text-fg mb-2">{t('presetsTitle')}</h2>
+              <div className="grid grid-cols-2 gap-2">
+                {PRESETS.map((p) => {
+                  const on = presetActive(p)
+                  return (
                     <button
-                      onClick={resetImage}
-                      className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
+                      key={p.id}
+                      type="button"
+                      onClick={() => applyBox(p.width, p.height)}
+                      aria-pressed={on}
+                      className={`min-h-11 text-left rounded-xl border px-3 py-2 transition-colors ${
+                        on ? 'border-primary bg-primary-soft text-primary' : 'border-line text-body hover:bg-subtle'
+                      }`}
                     >
-                      <RotateCcw className="w-4 h-4" />
+                      <span className="block text-sm font-semibold">{t(`preset.${p.id}`)}</span>
+                      <span className="block text-xs opacity-80 tabular-nums">
+                        {p.cm ? `${p.cm[0]}×${p.cm[1]}cm · ` : ''}{p.width}×{p.height}
+                      </span>
                     </button>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-muted mt-2 leading-relaxed">{t('presetHint')}</p>
+            </div>
+
+            {/* 크기 지정 방식 */}
+            <div>
+              <h2 className="text-sm font-semibold text-fg mb-2">{t('sizeTitle')}</h2>
+              <div role="group" aria-label={t('sizeTitle')} className="grid grid-cols-3 gap-1 bg-soft rounded-xl p-1">
+                {MODES.map((m) => (
+                  <button key={m} type="button" onClick={() => setMode(m)} aria-pressed={mode === m} className={seg(mode === m)}>
+                    {t(`mode.${m}`)}
+                  </button>
+                ))}
+              </div>
+
+              {mode === 'px' && (
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1 min-w-0">
+                      <label htmlFor="ir-w" className="block text-xs font-medium text-sub mb-1">{t('width')}</label>
+                      <input
+                        id="ir-w" type="number" inputMode="numeric" min={0} max={MAX_SIDE}
+                        value={width || ''} placeholder={t('auto')}
+                        onChange={(e) => setDim('w', e.target.value)}
+                        className="ui-field px-3 min-h-11 tabular-nums"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setLock((v) => !v)}
+                      aria-pressed={lock}
+                      aria-label={t('lockRatio')}
+                      title={t('lockRatio')}
+                      className={`shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
+                        lock ? 'bg-primary text-white' : 'bg-soft text-sub hover:text-fg'
+                      }`}
+                    >
+                      {lock ? <Lock size={18} aria-hidden /> : <Unlock size={18} aria-hidden />}
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <label htmlFor="ir-h" className="block text-xs font-medium text-sub mb-1">{t('height')}</label>
+                      <input
+                        id="ir-h" type="number" inputMode="numeric" min={0} max={MAX_SIDE}
+                        value={height || ''} placeholder={t('auto')}
+                        onChange={(e) => setDim('h', e.target.value)}
+                        className="ui-field px-3 min-h-11 tabular-nums"
+                      />
+                    </div>
                   </div>
-                  
-                  <div className="bg-subtle rounded-lg p-4">
-                    <h3 className="font-medium text-fg mb-2">원본 정보</h3>
-                    <div className="text-sm text-sub space-y-1">
-                      <p>파일명: {fileName}</p>
-                      <p>크기: {originalDimensions?.width} × {originalDimensions?.height}px</p>
+                  <p className="text-xs text-muted leading-relaxed">{t(lock ? 'lockOnHint' : 'lockOffHint')}</p>
+
+                  {/* cm → px (인쇄용) */}
+                  <details className="bg-subtle rounded-xl px-4 [&[open]]:pb-3">
+                    <summary className="py-3 text-sm font-medium text-body cursor-pointer">{t('cmTitle')}</summary>
+                    <div className="grid grid-cols-3 gap-2 mt-3">
+                      {(['w', 'h', 'dpi'] as const).map((k) => (
+                        <div key={k} className="min-w-0">
+                          <label htmlFor={`ir-cm-${k}`} className="block text-xs font-medium text-sub mb-1">
+                            {t(k === 'w' ? 'cmWidth' : k === 'h' ? 'cmHeight' : 'dpi')}
+                          </label>
+                          <input
+                            id={`ir-cm-${k}`} type="number" inputMode="decimal" min={0} step={k === 'dpi' ? 1 : 0.1}
+                            value={cm[k]}
+                            onChange={(e) => setCm((c) => ({ ...c, [k]: e.target.value }))}
+                            className="ui-field px-3 min-h-11 tabular-nums"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      disabled={!cmValid}
+                      onClick={() => applyBox(cmPx.w, cmPx.h)}
+                      className="ui-btn-soft w-full min-h-11 mt-3 text-sm tabular-nums"
+                    >
+                      {t('cmApply', { w: cmPx.w, h: cmPx.h })}
+                    </button>
+                    <p className="text-xs text-muted mt-2 leading-relaxed">{t('cmHint')}</p>
+                  </details>
+                </div>
+              )}
+
+              {mode === 'pct' && (
+                <div className="mt-4 space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    {PCTS.map((v) => (
+                      <button key={v} type="button" onClick={() => setPercent(v)} aria-pressed={pct === v} className={chip(pct === v)}>{v}%</button>
+                    ))}
+                  </div>
+                  <div>
+                    <label htmlFor="ir-pct" className="block text-xs font-medium text-sub mb-1">{t('percent')}</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="ir-pct" type="number" inputMode="numeric" min={1} max={400}
+                        value={percent || ''} onChange={(e) => setPercent(clampInt(e.target.value, 0, 400, 0))}
+                        className="ui-field px-3 min-h-11 tabular-nums"
+                      />
+                      <span className="text-sm text-sub shrink-0">%</span>
                     </div>
                   </div>
                 </div>
               )}
+
+              {mode === 'long' && (
+                <div className="mt-4 space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    {SIDES.map((v) => (
+                      <button key={v} type="button" onClick={() => setLongSide(v)} aria-pressed={ls === v} className={chip(ls === v)}>{v}</button>
+                    ))}
+                  </div>
+                  <div>
+                    <label htmlFor="ir-long" className="block text-xs font-medium text-sub mb-1">{t('longSide')}</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="ir-long" type="number" inputMode="numeric" min={16} max={MAX_SIDE}
+                        value={longSide || ''} onChange={(e) => setLongSide(clampInt(e.target.value, 0, MAX_SIDE, 0))}
+                        className="ui-field px-3 min-h-11 tabular-nums"
+                      />
+                      <span className="text-sm text-sub shrink-0">px</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted leading-relaxed">{t('longHint')}</p>
+                </div>
+              )}
             </div>
 
-            {/* Presets */}
-            {originalImage && (
-              <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-                <h3 className="text-lg font-semibold mb-4 text-fg">
-                  사전 설정
-                </h3>
-                <div className="space-y-2">
-                  {presetSizes.map((preset, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handlePresetSelect(preset)}
-                      className="w-full text-left p-3 rounded-lg border border-line hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
-                    >
-                      <div className="font-medium text-fg text-sm">
-                        {preset.name}
-                      </div>
-                      <div className="text-xs text-muted">
-                        {preset.width} × {preset.height}px
-                      </div>
+            {/* 맞추기 방식 — 정확한 크기(비율 고정 끔)일 때만 의미 있음 */}
+            {fixed && (
+              <div>
+                <h2 className="text-sm font-semibold text-fg mb-2">{t('fitTitle')}</h2>
+                <div role="group" aria-label={t('fitTitle')} className="grid grid-cols-3 gap-1 bg-soft rounded-xl p-1">
+                  {FITS.map((f) => (
+                    <button key={f} type="button" onClick={() => setFit(f)} aria-pressed={fit === f} className={seg(fit === f)}>
+                      {t(`fit.${f}`)}
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{t(`fitHint.${fit}`)}</p>
               </div>
             )}
-          </div>
 
-          {/* Settings Section */}
-          <div className="lg:col-span-1">
-            {originalImage && (
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-fg">
-                  리사이즈 설정
-                </h2>
-
-                <div className="space-y-6">
-                  {/* Dimensions */}
-                  <div>
-                    <label className="block text-sm font-medium text-body mb-3">
-                      크기 설정
-                    </label>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs text-sub mb-1">폭 (px)</label>
-                        <input
-                          type="number"
-                          value={options.width}
-                          onChange={(e) => updateDimensions(parseInt(e.target.value) || 0, options.height)}
-                          className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-sub mb-1">높이 (px)</label>
-                        <input
-                          type="number"
-                          value={options.height}
-                          onChange={(e) => updateDimensions(options.width, parseInt(e.target.value) || 0)}
-                          disabled={options.maintainAspectRatio}
-                          className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg disabled:bg-gray-100 dark:disabled:bg-gray-600"
-                        />
-                      </div>
-                    </div>
-                    
-                    <label className="flex items-center mt-3">
-                      <input
-                        type="checkbox"
-                        checked={options.maintainAspectRatio}
-                        onChange={(e) => setOptions(prev => ({ ...prev, maintainAspectRatio: e.target.checked }))}
-                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <span className="ml-2 text-sm text-body">비율 유지</span>
-                    </label>
-                  </div>
-
-                  {/* Format */}
-                  <div>
-                    <label className="block text-sm font-medium text-body mb-2">
-                      출력 형식
-                    </label>
-                    <select
-                      value={options.format}
-                      onChange={(e) => setOptions(prev => ({ ...prev, format: e.target.value as 'jpeg' | 'png' | 'webp' }))}
-                      className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-field text-fg"
+            {/* 출력 */}
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-sm font-semibold text-fg mb-2">{t('format')}</h2>
+                <div role="group" aria-label={t('format')} className="grid grid-cols-3 gap-1 bg-soft rounded-xl p-1">
+                  {FORMATS.map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setFormat(f)}
+                      aria-pressed={format === f}
+                      disabled={f === 'webp' && enc !== null && !enc.webp}
+                      className={`${seg(format === f)} disabled:opacity-40`}
                     >
-                      <option value="jpeg">JPEG</option>
-                      <option value="png">PNG</option>
-                      <option value="webp">WebP</option>
-                    </select>
-                  </div>
-
-                  {/* Quality */}
-                  {options.format !== 'png' && (
-                    <div>
-                      <label className="block text-sm font-medium text-body mb-2">
-                        품질: {Math.round(options.quality * 100)}%
-                      </label>
-                      <input
-                        type="range"
-                        min="0.1"
-                        max="1"
-                        step="0.1"
-                        value={options.quality}
-                        onChange={(e) => setOptions(prev => ({ ...prev, quality: parseFloat(e.target.value) }))}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                      />
-                    </div>
-                  )}
-
-                  {/* Info */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="flex items-start space-x-2">
-                      <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
-                      <div className="text-sm">
-                        <p className="text-sub font-medium mb-1">예상 결과</p>
-                        <p className="text-sub">
-                          크기: {options.width} × {options.height}px<br />
-                          예상 용량: {formatFileSize(calculateEstimatedSize())}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Process Button */}
-                  <button
-                    onClick={resizeImage}
-                    disabled={isProcessing}
-                    className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        <span>처리 중...</span>
-                      </>
-                    ) : (
-                      <>
-                        <ImageIcon className="w-4 h-4" />
-                        <span>리사이즈 실행</span>
-                      </>
-                    )}
-                  </button>
+                      {fmtLabel(f)}
+                    </button>
+                  ))}
                 </div>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{t(`formatHint.${format}`)}</p>
+                {enc && !enc.webp && <p className="text-xs text-faint mt-1">{t('webpUnsupported')}</p>}
               </div>
-            )}
-          </div>
 
-          {/* Result Section */}
-          <div className="lg:col-span-1">
-            {resizedImageUrl && (
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-xl font-semibold mb-4 text-fg">
-                  결과 미리보기
-                </h2>
+              <div>
+                <label htmlFor="ir-q" className="flex items-center justify-between text-sm font-medium text-body mb-2">
+                  <span>{t(kb ? 'qualityMax' : 'quality')}</span>
+                  <span className="text-primary font-semibold tabular-nums">{format === 'png' ? '—' : `${quality}%`}</span>
+                </label>
+                <input
+                  id="ir-q" type="range" min={10} max={100} value={quality}
+                  disabled={format === 'png'}
+                  onChange={(e) => setQuality(Number(e.target.value))}
+                  className="w-full h-11 accent-blue-600 disabled:opacity-40"
+                />
+                {format === 'png' && <p className="text-xs text-muted leading-relaxed">{t('qualityPng')}</p>}
+              </div>
 
-                <div className="space-y-4">
-                  <div className="relative">
-                    <img
-                      src={resizedImageUrl}
-                      alt="Resized"
-                      className="w-full h-48 object-contain bg-soft rounded-lg"
-                    />
-                  </div>
+              <div>
+                <h2 className="text-sm font-semibold text-fg mb-2">{t('targetTitle')}</h2>
+                <div className="flex flex-wrap gap-2">
+                  {TARGETS.map((v) => (
+                    <button key={v} type="button" onClick={() => setTargetKB(v)} aria-pressed={kb === v} className={chip(kb === v)}>
+                      {v === 0 ? t('targetOff') : kbLabel(v)}
+                    </button>
+                  ))}
+                </div>
+                <label htmlFor="ir-kb" className="block text-xs font-medium text-sub mt-3 mb-1">{t('targetCustom')}</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="ir-kb" type="number" inputMode="numeric" min={0}
+                    value={targetKB || ''} placeholder={t('targetOff')}
+                    onChange={(e) => setTargetKB(clampInt(e.target.value, 0, 20000, 0))}
+                    className="ui-field px-3 min-h-11 tabular-nums"
+                  />
+                  <span className="text-sm text-sub shrink-0">KB</span>
+                </div>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{t(kb && fixed ? 'targetFixedHint' : 'targetHint')}</p>
+                {kb > 0 && format === 'png' && <p className="text-xs text-amber-700 mt-1 leading-relaxed">{t('targetPngWarn')}</p>}
+              </div>
 
-                  <button
-                    onClick={downloadImage}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>다운로드</span>
-                  </button>
-
-                  <div className="bg-subtle rounded-lg p-4">
-                    <h3 className="font-medium text-fg mb-2">결과 정보</h3>
-                    <div className="text-sm text-sub space-y-1">
-                      <p>크기: {options.width} × {options.height}px</p>
-                      <p>형식: {options.format.toUpperCase()}</p>
-                      {options.format !== 'png' && <p>품질: {Math.round(options.quality * 100)}%</p>}
-                    </div>
+              {showBg && (
+                <div className="flex items-center gap-3">
+                  <input
+                    id="ir-bg" type="color" value={bg} onChange={(e) => setBg(e.target.value)}
+                    className="w-11 h-11 rounded-xl border border-line-strong bg-surface cursor-pointer shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <label htmlFor="ir-bg" className="block text-sm font-medium text-body">{t('bgColor')}</label>
+                    <p className="text-xs text-muted leading-relaxed">{t(format === 'jpeg' ? 'bgHintJpg' : 'bgHint')}</p>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+              )}
 
-        {/* Info Section */}
-        <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 리사이저 사용법</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-subtle rounded-lg p-6">
-              <h3 className="font-semibold text-fg mb-2">주요 기능</h3>
-              <ul className="text-sub text-sm space-y-1">
-                <li>• 브라우저에서 직접 처리 (서버 업로드 없음)</li>
-                <li>• JPG, PNG, WebP 형식 지원</li>
-                <li>• 비율 유지 옵션</li>
-                <li>• 품질 조정 기능</li>
-                <li>• 사전 설정된 크기 템플릿</li>
-                <li>• 즉시 다운로드</li>
-              </ul>
-            </div>
-            <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-              <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">사용 팁</h3>
-              <ul className="text-amber-800 dark:text-amber-300 text-sm space-y-1">
-                <li>• 웹용 이미지는 JPEG 또는 WebP 추천</li>
-                <li>• 투명 배경이 필요하면 PNG 사용</li>
-                <li>• 품질 70-90%가 적절한 품질/용량 균형</li>
-                <li>• 큰 이미지는 단계적으로 줄이는 것이 좋음</li>
-                <li>• 모바일용은 2배 해상도로 준비</li>
-              </ul>
+              <p className="text-xs text-muted leading-relaxed bg-subtle rounded-xl p-3">{t('metaNote')}</p>
             </div>
           </div>
         </div>
 
-        {/* Canvas for processing */}
-        <canvas ref={canvasRef} className="hidden" />
+        {/* ── 오른쪽: 결과 ── */}
+        <div className="lg:col-span-2 space-y-6 min-w-0">
+          <p role="status" aria-live="polite" className={status ? 'text-sm text-sub' : 'sr-only'}>{status}</p>
 
-        <GuideSection namespace="imageResizer" />
+          {done.length > 0 && (
+            <div className="ui-hero p-6 space-y-4">
+              <div>
+                <p className="text-sm text-white/70">{t('heroLabel', { n: done.length })}</p>
+                <p className="text-3xl font-bold tabular-nums mt-1">
+                  {formatBytes(totalOrig)} → {formatBytes(totalOut)}
+                </p>
+                {done.length === 1 && (
+                  <p className="text-lg font-semibold tabular-nums mt-1">
+                    {done[0].out!.srcWidth}×{done[0].out!.srcHeight} → {done[0].out!.width}×{done[0].out!.height}px
+                  </p>
+                )}
+                {kb > 0 && (
+                  <p className="text-sm text-white/70 mt-1">{t('heroTarget', { kb: kbLabel(kb), ok: done.length - missed, n: done.length })}</p>
+                )}
+              </div>
+              {done.length > 1 ? (
+                <button
+                  type="button"
+                  onClick={downloadZip}
+                  disabled={zipping || busy}
+                  className="inline-flex items-center gap-2 min-h-11 bg-surface text-primary rounded-xl px-4 text-sm font-semibold disabled:opacity-60"
+                >
+                  {zipping ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Archive size={16} aria-hidden />}
+                  {t('downloadZip', { n: done.length })}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => saveBlob(done[0].out!.url, nameOf(done[0]))}
+                  className="inline-flex items-center gap-2 min-h-11 bg-surface text-primary rounded-xl px-4 text-sm font-semibold"
+                >
+                  <Download size={16} aria-hidden />
+                  {t('download')}
+                </button>
+              )}
+            </div>
+          )}
 
-        {/* Fullscreen close button */}
-        {isFullscreen && (
-          <button
-            onClick={() => setIsFullscreen(false)}
-            className="fixed top-4 right-4 z-50 p-2 bg-gray-900 bg-opacity-50 hover:bg-opacity-70 text-white rounded-full transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        )}
+          {missed > 0 && (
+            <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm" role="alert">{t('targetMissed', { n: missed })}</div>
+          )}
+
+          {/* 결과 미리보기 */}
+          {sel?.out && (
+            <div className="ui-card p-5 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-semibold text-fg">{t('previewTitle')}</h2>
+                <p className="text-xs text-muted truncate min-w-0">{sel.file.name}</p>
+              </div>
+              <div className="w-full h-72 sm:h-96 bg-soft rounded-xl flex items-center justify-center overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={sel.out.url}
+                  alt={t('resultAlt', { name: sel.file.name })}
+                  className="max-w-full max-h-full object-contain border border-line"
+                  style={{ aspectRatio: `${sel.out.width} / ${sel.out.height}` }}
+                />
+              </div>
+              <p className="text-sm tabular-nums text-sub">
+                {t('original')} {sel.out.srcWidth}×{sel.out.srcHeight} · {formatBytes(sel.file.size)}
+                <span className="text-faint"> → </span>
+                <span className="font-semibold text-fg">{sel.out.width}×{sel.out.height} · {formatBytes(sel.out.blob.size)}</span>
+              </p>
+            </div>
+          )}
+
+          {/* 파일 목록 */}
+          <div className="ui-card p-5">
+            {images.length === 0 ? (
+              <div className="text-center py-14">
+                <p className="text-body font-medium">{t('noImages')}</p>
+                <p className="text-sm text-muted mt-2">{t('emptyHint')}</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <h2 className="text-sm font-semibold text-fg tabular-nums">
+                    {t('listTitle', { n: images.length })}
+                    {busy && <Loader2 size={14} className="ml-2 inline animate-spin text-primary" aria-hidden />}
+                  </h2>
+                  <button type="button" onClick={removeAll} className="min-h-11 text-sm text-sub hover:text-fg px-3 rounded-lg hover:bg-soft">
+                    {t('removeAll')}
+                  </button>
+                </div>
+
+                <ul className="space-y-3">
+                  {images.map((it) => {
+                    const out = it.status === 'done' && it.key === key ? it.out : undefined
+                    const selected = sel?.id === it.id
+                    const name = it.file.name
+                    return (
+                      <li key={it.id} className={`flex gap-3 items-center border rounded-xl p-3 ${selected ? 'border-primary' : 'border-line'}`}>
+                        <button
+                          type="button"
+                          onClick={() => setSelId(it.id)}
+                          disabled={!out}
+                          aria-pressed={selected}
+                          aria-label={t('previewOf', { name })}
+                          className="shrink-0 w-16 h-16 bg-soft rounded-lg overflow-hidden flex items-center justify-center"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={out?.url || it.previewUrl}
+                            alt={name}
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => { e.currentTarget.style.visibility = 'hidden' }}
+                          />
+                        </button>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-fg truncate">{name}</p>
+                          {out ? (
+                            <>
+                              <p className="text-sm tabular-nums mt-0.5">
+                                <span className="text-sub">{out.srcWidth}×{out.srcHeight}</span>
+                                <span className="text-faint"> → </span>
+                                <span className="font-semibold text-fg">{out.width}×{out.height}px</span>
+                              </p>
+                              <p className="text-xs text-muted tabular-nums mt-0.5 truncate">
+                                {formatBytes(it.file.size)} → <span className="text-body font-medium">{formatBytes(out.blob.size)}</span>
+                                {out.mime !== 'image/png' && ` · ${t('qualityUsed', { q: Math.round(out.quality * 100) })}`}
+                              </p>
+                              {!out.ok && <p className="text-xs text-amber-700 mt-0.5">{t('rowMissed')}</p>}
+                            </>
+                          ) : it.status === 'error' ? (
+                            <p className="text-xs text-red-600 mt-1 leading-relaxed">
+                              {t(it.error === 'heic' ? 'errHeic' : it.error === 'format' ? 'errFormat' : 'errDecode')}
+                            </p>
+                          ) : (
+                            <p className="text-xs text-muted mt-1 inline-flex items-center gap-1">
+                              {it.status === 'processing' && <Loader2 size={12} className="animate-spin" aria-hidden />}
+                              {formatBytes(it.file.size)} · {t(it.status === 'processing' ? 'processing' : 'waiting')}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="flex items-center shrink-0">
+                          {out && (
+                            <button
+                              type="button"
+                              onClick={() => saveBlob(out.url, nameOf(it))}
+                              className="w-11 h-11 flex items-center justify-center text-primary hover:bg-primary-soft rounded-lg"
+                              aria-label={t('downloadOf', { name })}
+                              title={t('download')}
+                            >
+                              <Download size={18} aria-hidden />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => removeImage(it.id)}
+                            className="w-11 h-11 flex items-center justify-center text-faint hover:text-fg hover:bg-soft rounded-lg"
+                            aria-label={t('removeOf', { name })}
+                            title={t('remove')}
+                          >
+                            <Trash2 size={18} aria-hidden />
+                          </button>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 가이드 ── */}
+      <div className="ui-card p-6 space-y-8">
+        <div>
+          <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+          <p className="text-sm text-sub leading-relaxed mt-3">{t('guide.whatIs.description')}</p>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.howToUse.title')}</h3>
+          <ol className="space-y-2 list-decimal pl-5 marker:text-faint">
+            {(t.raw('guide.howToUse.items') as string[]).map((item, i) => (
+              <li key={i} className="text-sm text-sub leading-relaxed">{item}</li>
+            ))}
+          </ol>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {(['principle', 'formats', 'idPhoto'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="text-sm font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="space-y-2 list-disc pl-4 marker:text-faint">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => (
+                  <li key={i} className="text-sm text-sub leading-relaxed">{item}</li>
+                ))}
+              </ul>
+              {sec === 'idPhoto' && (
+                <p className="text-sm mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                  <a href="https://www.passport.go.kr/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
+                    {t('guide.idPhoto.linkPassport')}
+                  </a>
+                  <a href="https://www.gov.kr/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
+                    {t('guide.idPhoto.linkGov24')}
+                  </a>
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.faq.title')}</h3>
+          <div className="space-y-4">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i}>
+                <p className="text-sm font-semibold text-body">Q. {f.q}</p>
+                <p className="text-sm text-sub mt-1 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
-  );
-};
-
-export default ImageResizer;
+  )
+}
