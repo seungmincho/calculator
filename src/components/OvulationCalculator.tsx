@@ -1,583 +1,391 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import DatePicker from '@/components/ui/DatePicker'
+import GuideSection from '@/components/GuideSection'
+import { Minus, Plus, X, Download } from 'lucide-react'
+import { todayKST, isValidDate, addDays, daysBetween, weekday, monthGrid, ddayLabel } from '@/utils/dday'
+import { dueDate } from '@/utils/dueDate'
 import {
-  Calendar,
-  Heart,
-  Copy,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink,
-  BookOpen,
-  RefreshCw,
-  Plus,
-  Minus,
-} from 'lucide-react'
+  type Settings, type DayType, type IcsSpan,
+  CYCLE_MIN, CYCLE_MAX, LUTEAL_MIN, LUTEAL_MAX, PERIOD_MIN, PERIOD_MAX,
+  cycleFrom, currentStart, forecast, cycleStats, rangeWindow, dayType, buildIcs,
+} from '@/utils/ovulation'
 
-interface CycleInfo {
-  periodStart: Date
-  periodEnd: Date
-  fertileStart: Date
-  fertileEnd: Date
-  ovulationDate: Date
-  safeEarlyStart: Date
-  safeEarlyEnd: Date
-  safeLateStart: Date
-  safeLateEnd: Date
-  nextPeriod: Date
+// 개인 건강 정보 → URL 대신 이 브라우저 localStorage에만 저장
+const STORE_KEY = 'toolhub-ovulation'
+const MONTHS_SHOWN = 6
+const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
+
+const CELL: Record<DayType, string> = {
+  period: 'bg-rose-500/20 text-fg',
+  fertile: 'bg-primary-soft text-fg',
+  peak: 'bg-primary/40 text-fg font-semibold',
+  ovulation: 'bg-primary text-white font-bold',
+  range: 'border border-dashed border-primary/60 text-body',
 }
+const LEGEND: DayType[] = ['period', 'fertile', 'peak', 'ovulation', 'range']
 
-type DayType = 'period' | 'fertile' | 'ovulation' | 'safe' | 'normal'
-
-function formatDate(d: Date): string {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
-}
-
-function parseDate(s: string): Date {
-  return new Date(s + 'T00:00:00')
-}
-
-function addDays(d: Date, n: number): Date {
-  const result = new Date(d)
-  result.setDate(result.getDate() + n)
-  return result
-}
-
-function isSameDay(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-}
-
-function isInRange(d: Date, start: Date, end: Date): boolean {
-  const t = d.getTime()
-  const s = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime()
-  const e = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime()
-  return t >= s && t <= e
-}
-
-function getDefaultDate(): string {
-  const d = new Date()
-  d.setDate(d.getDate() - 14)
-  return formatDate(d)
+function Stepper({ id, label, hint, value, min, max, unit, onChange }: {
+  id: string; label: string; hint?: string; value: number; min: number; max: number; unit: string; onChange: (n: number) => void
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={() => onChange(clamp(value - 1, min, max))} aria-label={`${label} -1`} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
+          <Minus className="w-4 h-4" />
+        </button>
+        <input
+          id={id} type="number" inputMode="numeric" min={min} max={max} value={value}
+          onChange={e => { const n = parseInt(e.target.value, 10); if (Number.isFinite(n)) onChange(clamp(n, min, max)) }}
+          className="ui-field w-20 px-3 py-3 text-center tabular-nums"
+        />
+        <button type="button" onClick={() => onChange(clamp(value + 1, min, max))} aria-label={`${label} +1`} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
+          <Plus className="w-4 h-4" />
+        </button>
+        <span className="text-sm text-sub">{unit}</span>
+      </div>
+      {hint && <p className="text-xs text-muted mt-2">{hint}</p>}
+    </div>
+  )
 }
 
 export default function OvulationCalculator() {
   const t = useTranslations('ovulationCalculator')
+  const sp = useSearchParams()
 
-  const [lastPeriod, setLastPeriod] = useState(getDefaultDate())
-  const [cycleLength, setCycleLength] = useState(28)
-  const [periodLength, setPeriodLength] = useState(5)
-  const [calculated, setCalculated] = useState(false)
-  const [copiedLink, setCopiedLink] = useState(false)
-  const [guideOpen, setGuideOpen] = useState(false)
+  const [today, setToday] = useState('')
+  const [s, setS] = useState<Settings>({ lastPeriod: '', cycle: 28, period: 5, luteal: 14 })
+  const [history, setHistory] = useState<string[]>([])
+  const [newRecord, setNewRecord] = useState('')
+  const touched = useRef(false)
 
-  // URL param restore
+  // 초기화: localStorage → 예전 공유 링크(?date=&cycle=&period=)는 읽고 주소에서 지움 → 없으면 오늘 기준 예시
+  const inited = useRef(false)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const date = params.get('date')
-    const cycle = params.get('cycle')
-    const period = params.get('period')
-    if (date) setLastPeriod(date)
-    if (cycle) {
-      const c = parseInt(cycle, 10)
-      if (c >= 21 && c <= 45) setCycleLength(c)
-    }
-    if (period) {
-      const p = parseInt(period, 10)
-      if (p >= 3 && p <= 7) setPeriodLength(p)
-    }
-    if (date) setCalculated(true)
-  }, [])
-
-  const updateURL = useCallback((date: string, cycle: number, period: number) => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('date', date)
-    url.searchParams.set('cycle', String(cycle))
-    url.searchParams.set('period', String(period))
-    window.history.replaceState({}, '', url)
-  }, [])
-
-  // Calculate cycles for 3 months
-  const cycles = useMemo<CycleInfo[]>(() => {
-    if (!calculated) return []
-    const result: CycleInfo[] = []
-    let currentStart = parseDate(lastPeriod)
-
-    for (let i = 0; i < 3; i++) {
-      const periodStart = new Date(currentStart)
-      const periodEnd = addDays(periodStart, periodLength - 1)
-      const ovulationDate = addDays(periodStart, cycleLength - 14)
-      const fertileStart = addDays(ovulationDate, -5)
-      const fertileEnd = addDays(ovulationDate, 1)
-      const nextPeriod = addDays(periodStart, cycleLength)
-      const safeEarlyStart = addDays(periodEnd, 1)
-      const safeEarlyEnd = addDays(fertileStart, -1)
-      const safeLateStart = addDays(fertileEnd, 1)
-      const safeLateEnd = addDays(nextPeriod, -1)
-
-      result.push({
-        periodStart, periodEnd, fertileStart, fertileEnd,
-        ovulationDate, safeEarlyStart, safeEarlyEnd,
-        safeLateStart, safeLateEnd, nextPeriod,
-      })
-      currentStart = nextPeriod
-    }
-    return result
-  }, [calculated, lastPeriod, cycleLength, periodLength])
-
-  const getDayType = useCallback((date: Date): DayType => {
-    for (const cycle of cycles) {
-      if (isSameDay(date, cycle.ovulationDate)) return 'ovulation'
-      if (isInRange(date, cycle.periodStart, cycle.periodEnd)) return 'period'
-      if (isInRange(date, cycle.fertileStart, cycle.fertileEnd)) return 'fertile'
-      if (isInRange(date, cycle.safeEarlyStart, cycle.safeEarlyEnd)) return 'safe'
-      if (isInRange(date, cycle.safeLateStart, cycle.safeLateEnd)) return 'safe'
-    }
-    return 'normal'
-  }, [cycles])
-
-  const handleCalculate = useCallback(() => {
-    setCalculated(true)
-    updateURL(lastPeriod, cycleLength, periodLength)
-  }, [lastPeriod, cycleLength, periodLength, updateURL])
-
-  const handleReset = useCallback(() => {
-    setLastPeriod(getDefaultDate())
-    setCycleLength(28)
-    setPeriodLength(5)
-    setCalculated(false)
-    window.history.replaceState({}, '', window.location.pathname)
-  }, [])
-
-  const copyLink = useCallback(async () => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('date', lastPeriod)
-    url.searchParams.set('cycle', String(cycleLength))
-    url.searchParams.set('period', String(periodLength))
+    if (inited.current) return
+    inited.current = true
+    const now = todayKST()
+    setToday(now)
+    let next: Settings = { lastPeriod: addDays(now, -10), cycle: 28, period: 5, luteal: 14 }
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url.toString())
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = url.toString()
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
+      const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null')
+      if (saved && isValidDate(saved.lastPeriod)) {
+        next = {
+          lastPeriod: saved.lastPeriod,
+          cycle: clamp(Number(saved.cycle) || 28, CYCLE_MIN, CYCLE_MAX),
+          period: clamp(Number(saved.period) || 5, PERIOD_MIN, PERIOD_MAX),
+          luteal: clamp(Number(saved.luteal) || 14, LUTEAL_MIN, LUTEAL_MAX),
+        }
+        if (Array.isArray(saved.history)) setHistory(saved.history.filter(isValidDate))
       }
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
-    } catch {
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2000)
+    } catch { /* 저장 안 됨 */ }
+    const d = sp.get('date')
+    if (isValidDate(d)) {
+      next = { ...next, lastPeriod: d }
+      const c = parseInt(sp.get('cycle') ?? '', 10)
+      if (c >= CYCLE_MIN && c <= CYCLE_MAX) next.cycle = c
+      const p = parseInt(sp.get('period') ?? '', 10)
+      if (p >= PERIOD_MIN && p <= PERIOD_MAX) next.period = p
+      window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [lastPeriod, cycleLength, periodLength])
+    setS(next)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleShare = useCallback(async () => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('date', lastPeriod)
-    url.searchParams.set('cycle', String(cycleLength))
-    url.searchParams.set('period', String(periodLength))
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: t('title'), url: url.toString() })
-      } catch { /* cancelled */ }
-    } else {
-      await copyLink()
-    }
-  }, [lastPeriod, cycleLength, periodLength, t, copyLink])
+  useEffect(() => {
+    if (!touched.current) return
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ ...s, history })) } catch { /* 사생활 모드 등 */ }
+  }, [s, history])
 
-  const formatDisplayDate = useCallback((d: Date) => {
-    const months = t.raw('months') as string[]
-    return `${d.getFullYear()}. ${months[d.getMonth()]} ${d.getDate()}${t('days').charAt(0) === '일' ? '일' : ''}`
-  }, [t])
+  const update = useCallback((patch: Partial<Settings>) => { touched.current = true; setS(prev => ({ ...prev, ...patch })) }, [])
 
-  const formatShortDate = useCallback((d: Date) => {
-    return `${d.getMonth() + 1}/${d.getDate()}`
+  const stats = useMemo(() => cycleStats(history), [history])
+
+  const setRecords = useCallback((list: string[]) => {
+    touched.current = true
+    const sorted = [...new Set(list)].sort()
+    setHistory(sorted)
+    const st = cycleStats(sorted)
+    setS(prev => ({
+      ...prev,
+      lastPeriod: sorted.length && sorted[sorted.length - 1] > prev.lastPeriod ? sorted[sorted.length - 1] : prev.lastPeriod,
+      cycle: st ? st.avg : prev.cycle,
+    }))
   }, [])
 
-  // Calendar rendering
-  const calendarMonths = useMemo(() => {
-    if (!calculated) return []
-    const start = parseDate(lastPeriod)
-    const months: { year: number; month: number }[] = []
-    const seen = new Set<string>()
-    for (let i = 0; i < 90; i++) {
-      const d = addDays(start, i)
-      const key = `${d.getFullYear()}-${d.getMonth()}`
-      if (!seen.has(key)) {
-        seen.add(key)
-        months.push({ year: d.getFullYear(), month: d.getMonth() })
-      }
-      if (months.length >= 3) break
-    }
-    return months
-  }, [calculated, lastPeriod])
+  const addRecord = useCallback(() => {
+    if (!isValidDate(newRecord)) return
+    setRecords([...history, newRecord])
+    setNewRecord('')
+  }, [newRecord, history, setRecords])
 
-  const today = useMemo(() => new Date(), [])
+  const clearAll = useCallback(() => {
+    try { localStorage.removeItem(STORE_KEY) } catch { /* noop */ }
+    touched.current = false
+    setHistory([])
+    setS({ lastPeriod: addDays(today, -10), cycle: 28, period: 5, luteal: 14 })
+  }, [today])
 
-  const renderCalendar = useCallback((year: number, month: number) => {
-    const monthNames = t.raw('months') as string[]
-    const weekdays = t.raw('weekdays') as string[]
-    const firstDay = new Date(year, month, 1)
-    const lastDay = new Date(year, month + 1, 0)
-    const startDow = firstDay.getDay()
-    const daysInMonth = lastDay.getDate()
+  // ── 결과 ──
+  const r = useMemo(() => {
+    if (!today || !isValidDate(s.lastPeriod)) return null
+    const cur = cycleFrom(currentStart(s, today), s)
+    const [y, m] = today.split('-').map(Number)
+    const months = Array.from({ length: MONTHS_SHOWN }, (_, i) => ({ y: y + Math.floor((m - 1 + i) / 12), m: ((m - 1 + i) % 12) + 1 }))
+    const last = months[MONTHS_SHOWN - 1]
+    const until = addDays(`${last.y + (last.m === 12 ? 1 : 0)}-${String((last.m % 12) + 1).padStart(2, '0')}-01`, -1)
+    const cycles = forecast(s, today, until)
+    const upcoming = Array.from({ length: MONTHS_SHOWN }, (_, i) => cycleFrom(addDays(cur.start, i * s.cycle), s))
+    const ranges = stats?.irregular ? cycles.map(c => rangeWindow(c.start, stats.min, stats.max, s.luteal)) : []
+    const lateBy = daysBetween(addDays(s.lastPeriod, s.cycle), today) // ≥0 이면 입력한 생리일 기준 예정일이 지남
+    return { cur, months, cycles, upcoming, ranges, lateBy, todayType: dayType(today, [cur]), edd: dueDate({ method: 'conception', date: cur.ovulation }) }
+  }, [today, s, stats])
 
-    const cells: (number | null)[] = []
-    for (let i = 0; i < startDow; i++) cells.push(null)
-    for (let d = 1; d <= daysInMonth; d++) cells.push(d)
-    while (cells.length % 7 !== 0) cells.push(null)
+  const fmt = useCallback((d: string) => {
+    const months = t.raw('months') as string[]
+    const wd = t.raw('weekdays') as string[]
+    const [, m, day] = d.split('-').map(Number)
+    return t('dateFmt', { mon: months[m - 1], d: day, w: wd[weekday(d)] })
+  }, [t])
+  const fmtFull = useCallback((d: string) => t('dateFull', { y: d.slice(0, 4), rest: fmt(d) }), [t, fmt])
 
-    return (
-      <div key={`${year}-${month}`} className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-        <h3 className="text-lg font-bold text-fg text-center mb-4">
-          {year}. {monthNames[month]}
-        </h3>
-        <div className="grid grid-cols-7 gap-1">
-          {weekdays.map((wd: string, i: number) => (
-            <div key={i} className={`text-center text-xs font-semibold py-1 ${
-              i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-muted'
-            }`}>
-              {wd}
-            </div>
-          ))}
-          {cells.map((day, i) => {
-            if (day === null) return <div key={`e-${i}`} />
-            const date = new Date(year, month, day)
-            const type = getDayType(date)
-            const isToday = isSameDay(date, today)
-            let cellClass = 'text-body'
-            if (type === 'period') cellClass = 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200'
-            else if (type === 'ovulation') cellClass = 'bg-purple-500 text-white font-bold'
-            else if (type === 'fertile') cellClass = 'bg-soft text-sub'
-            else if (type === 'safe') cellClass = 'bg-soft text-sub'
+  const status = useMemo(() => {
+    if (!r) return ''
+    const { cur, todayType } = r
+    if (todayType === 'period') return t('status.period', { n: daysBetween(cur.start, today) + 1 })
+    if (todayType === 'ovulation') return t('status.ovulation')
+    if (todayType === 'peak') return t('status.peak')
+    if (todayType === 'fertile') return t('status.fertile')
+    if (today < cur.fertileStart) return t('status.beforeFertile', { n: daysBetween(today, cur.fertileStart) })
+    return t('status.afterFertile', { n: daysBetween(today, cur.nextStart) })
+  }, [r, t, today])
 
-            return (
-              <div
-                key={`d-${day}`}
-                className={`text-center text-sm py-1.5 rounded-lg ${cellClass} ${
-                  isToday ? 'ring-2 ring-purple-500 ring-offset-1 dark:ring-offset-gray-800' : ''
-                }`}
-              >
-                {day}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }, [getDayType, t, today])
+  const exportIcs = useCallback(() => {
+    if (!r) return
+    const spans: IcsSpan[] = []
+    r.upcoming.forEach((c, i) => {
+      if (c.fertileEnd >= today) spans.push({ uid: `ovu-f-${c.start}`, start: c.fertileStart, end: c.fertileEnd, title: t('ics.fertile') })
+      if (c.ovulation >= today) spans.push({ uid: `ovu-o-${c.start}`, start: c.ovulation, end: c.ovulation, title: t('ics.ovulation') })
+      spans.push({ uid: `ovu-p-${c.nextStart}-${i}`, start: c.nextStart, end: addDays(c.nextStart, s.period - 1), title: t('ics.period') })
+    })
+    const blob = new Blob([buildIcs(spans, today)], { type: 'text/calendar;charset=utf-8' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = 'cycle-forecast.ics'
+    a.click()
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+  }, [r, s.period, t, today])
+
+  const weekdays = t.raw('weekdays') as string[]
+  const monthNames = t.raw('months') as string[]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Heart className="w-7 h-7 text-pink-500" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Input Section */}
-      <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-        {/* Last period date */}
-        <div>
-          <label className="block text-sm font-medium text-body mb-1">
-            {t('lastPeriod')}
-          </label>
-          <input
-            type="date"
-            value={lastPeriod}
-            onChange={(e) => setLastPeriod(e.target.value)}
-            className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
-          />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ── 입력 ── */}
+        <div className="lg:col-span-1 space-y-4">
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <p className="text-sm font-medium text-body mb-2">{t('lastPeriod')}</p>
+              <DatePicker
+                value={s.lastPeriod}
+                onChange={d => update({ lastPeriod: d })}
+                maxDate={today ? new Date(today + 'T00:00:00') : undefined}
+                placeholder={t('lastPeriod')}
+              />
+            </div>
+            <Stepper id="ov-cycle" label={t('cycleLength')} hint={t('cycleHint')} value={s.cycle} min={CYCLE_MIN} max={CYCLE_MAX} unit={t('days')} onChange={n => update({ cycle: n })} />
+            <Stepper id="ov-period" label={t('periodLength')} value={s.period} min={PERIOD_MIN} max={PERIOD_MAX} unit={t('days')} onChange={n => update({ period: n })} />
+            <Stepper id="ov-luteal" label={t('luteal')} hint={t('lutealHint')} value={s.luteal} min={LUTEAL_MIN} max={LUTEAL_MAX} unit={t('days')} onChange={n => update({ luteal: n })} />
+          </div>
 
-        {/* Cycle length */}
-        <div>
-          <label className="block text-sm font-medium text-body mb-1">
-            {t('cycleLength')}
-          </label>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCycleLength(Math.max(21, cycleLength - 1))}
-              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
-              aria-label="Decrease cycle length"
-            >
-              <Minus className="w-4 h-4 text-body" />
-            </button>
-            <input
-              type="number"
-              min={21}
-              max={45}
-              value={cycleLength}
-              onChange={(e) => {
-                const v = parseInt(e.target.value, 10)
-                if (v >= 21 && v <= 45) setCycleLength(v)
-              }}
-              className={`w-20 text-center px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
-            />
-            <button
-              onClick={() => setCycleLength(Math.min(45, cycleLength + 1))}
-              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
-              aria-label="Increase cycle length"
-            >
-              <Plus className="w-4 h-4 text-body" />
-            </button>
-            <span className="text-sm text-muted">{t('days')}</span>
+          {/* 기록 → 평균 주기 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-base font-semibold text-fg">{t('records.title')}</h2>
+              <p className="text-xs text-muted mt-1">{t('records.hint')}</p>
+            </div>
+            <div className="flex gap-2">
+              <DatePicker
+                value={newRecord}
+                onChange={setNewRecord}
+                maxDate={today ? new Date(today + 'T00:00:00') : undefined}
+                placeholder={t('records.pick')}
+                className="flex-1"
+              />
+              <button type="button" onClick={addRecord} disabled={!newRecord} className="ui-btn px-4 py-2 text-sm disabled:opacity-40">
+                {t('records.add')}
+              </button>
+            </div>
+            {history.length > 0 && (
+              <ul className="flex flex-wrap gap-2">
+                {history.map(d => (
+                  <li key={d} className="inline-flex items-center gap-1 pl-3 pr-1 py-1 rounded-full bg-soft text-sm text-body tabular-nums">
+                    {d}
+                    <button type="button" onClick={() => setRecords(history.filter(x => x !== d))} aria-label={t('records.remove')} className="p-1 rounded-full hover:bg-track">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {stats ? (
+              <div className="bg-subtle rounded-2xl p-4 text-sm text-sub space-y-1">
+                <p className="text-body font-medium">{t('records.stats', { n: stats.lengths.length, avg: stats.avg, min: stats.min, max: stats.max })}</p>
+                {s.cycle === stats.avg ? (
+                  <p>{t('records.applied', { avg: stats.avg })}</p>
+                ) : (
+                  <button type="button" onClick={() => update({ cycle: stats.avg })} className="text-primary font-medium hover:underline">
+                    {t('records.apply', { avg: stats.avg })}
+                  </button>
+                )}
+                {stats.excluded > 0 && <p>{t('records.excluded', { n: stats.excluded })}</p>}
+              </div>
+            ) : history.length > 0 && <p className="text-xs text-muted">{t('records.needMore')}</p>}
+            <button type="button" onClick={clearAll} className="text-xs text-muted hover:text-body underline">{t('records.clear')}</button>
           </div>
         </div>
 
-        {/* Period length */}
-        <div>
-          <label className="block text-sm font-medium text-body mb-1">
-            {t('periodLength')}
-          </label>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setPeriodLength(Math.max(3, periodLength - 1))}
-              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
-              aria-label="Decrease period length"
-            >
-              <Minus className="w-4 h-4 text-body" />
-            </button>
-            <input
-              type="number"
-              min={3}
-              max={7}
-              value={periodLength}
-              onChange={(e) => {
-                const v = parseInt(e.target.value, 10)
-                if (v >= 3 && v <= 7) setPeriodLength(v)
-              }}
-              className={`w-20 text-center px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
-            />
-            <button
-              onClick={() => setPeriodLength(Math.min(7, periodLength + 1))}
-              className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
-              aria-label="Increase period length"
-            >
-              <Plus className="w-4 h-4 text-body" />
-            </button>
-            <span className="text-sm text-muted">{t('days')}</span>
-          </div>
-        </div>
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-4">
+          {!r ? (
+            <div className="ui-card p-6 text-center text-muted">{t('enterDate')}</div>
+          ) : (
+            <>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{t('nextPeriod')}</p>
+                <p className="text-3xl sm:text-4xl font-bold mt-1 tabular-nums">{fmtFull(r.cur.nextStart)}</p>
+                <p className="text-sm text-white/80 mt-1 tabular-nums">{ddayLabel(daysBetween(today, r.cur.nextStart))}</p>
+                <p className="mt-5 text-base font-semibold">{status}</p>
+              </div>
 
-        {/* Buttons */}
-        <div className="flex gap-3">
-          <button
-            onClick={handleCalculate}
-            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
-          >
-            <Calendar className="w-5 h-5" />
-            {t('calculate')}
-          </button>
-          <button
-            onClick={handleReset}
-            className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors flex items-center gap-2"
-          >
-            <RefreshCw className="w-4 h-4" />
-            {t('reset')}
-          </button>
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('contraceptionWarning')}</div>
+
+              {r.lateBy >= 0 && (
+                <div className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('lateNote', { date: fmt(addDays(s.lastPeriod, s.cycle)), n: r.lateBy })}</div>
+              )}
+
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: t('ovulationDate'), value: fmt(r.cur.ovulation) },
+                  { label: t('fertileWindow'), value: `${fmt(r.cur.fertileStart)} ~ ${fmt(r.cur.fertileEnd)}` },
+                  { label: t('peakDays'), value: `${fmt(r.cur.peakStart)} ~ ${fmt(r.cur.ovulation)}` },
+                  { label: t('dueIfPregnant'), value: fmtFull(r.edd) },
+                ].map(x => (
+                  <div key={x.label} className="ui-card p-4">
+                    <p className="text-xs text-muted">{x.label}</p>
+                    <p className="text-base sm:text-lg font-bold text-fg tabular-nums mt-0.5">{x.value}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-sub">
+                {t('dueHint')}{' '}
+                <Link href="/due-date/" className="text-primary font-medium hover:underline">{t('dueDateLink')}</Link>
+              </p>
+
+              {stats?.irregular && (
+                <div className="ui-card p-5 text-sm space-y-2">
+                  <p className="font-semibold text-fg">{t('irregular.title', { min: stats.min, max: stats.max })}</p>
+                  <p className="text-sub">{t('irregular.ovulation', { from: fmt(addDays(r.cur.start, stats.min - s.luteal)), to: fmt(addDays(r.cur.start, stats.max - s.luteal)) })}</p>
+                  <p className="text-sub">{t('irregular.period', { from: fmt(addDays(r.cur.start, stats.min)), to: fmt(addDays(r.cur.start, stats.max)) })}</p>
+                  <p className="text-sub">{t('irregular.range', { from: fmt(rangeWindow(r.cur.start, stats.min, stats.max, s.luteal).start), to: fmt(rangeWindow(r.cur.start, stats.min, stats.max, s.luteal).end) })}</p>
+                  <p className="text-muted text-xs">{t('irregular.note')}</p>
+                </div>
+              )}
+
+              {/* 향후 6주기 */}
+              <div className="ui-card p-5">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <h2 className="text-base font-semibold text-fg">{t('upcoming')}</h2>
+                  <button type="button" onClick={exportIcs} className="ui-btn-soft px-3 py-2 text-sm inline-flex items-center gap-1.5">
+                    <Download className="w-4 h-4" />{t('ics.button')}
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm tabular-nums">
+                    <thead>
+                      <tr className="text-left text-xs text-muted">
+                        <th className="py-2 pr-3 font-medium">{t('ovulationDate')}</th>
+                        <th className="py-2 pr-3 font-medium">{t('fertileWindow')}</th>
+                        <th className="py-2 font-medium">{t('nextPeriod')}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line">
+                      {r.upcoming.map(c => (
+                        <tr key={c.start} className="text-body">
+                          <td className="py-2 pr-3 whitespace-nowrap">{fmt(c.ovulation)}</td>
+                          <td className="py-2 pr-3 whitespace-nowrap">{fmt(c.fertileStart)} ~ {fmt(c.fertileEnd)}</td>
+                          <td className="py-2 whitespace-nowrap font-medium text-fg">{c.nextStart.slice(0, 4) !== today.slice(0, 4) ? fmtFull(c.nextStart) : fmt(c.nextStart)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-muted mt-3">{t('ics.hint')}</p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Results */}
-      {calculated && cycles.length > 0 && (
-        <>
-          {/* Summary Cards */}
-          <div>
-            <h2 className="text-xl font-bold text-fg mb-4 flex items-center gap-2">
-              {t('result')}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Ovulation */}
-              <div className="bg-subtle rounded-xl p-5 text-center">
-                <div className="text-3xl mb-2">🥚</div>
-                <div className="text-sm text-purple-600 dark:text-purple-400 font-medium mb-1">
-                  {t('ovulationDate')}
-                </div>
-                <div className="text-lg font-bold text-fg">
-                  {formatShortDate(cycles[0].ovulationDate)}
-                </div>
-                <div className="text-xs text-purple-500 dark:text-purple-400 mt-1">
-                  {formatDisplayDate(cycles[0].ovulationDate)}
-                </div>
-              </div>
-
-              {/* Fertile Window */}
-              <div className="bg-subtle rounded-xl p-5 text-center">
-                <div className="text-3xl mb-2">🔥</div>
-                <div className="text-sm text-orange-600 dark:text-orange-400 font-medium mb-1">
-                  {t('fertileWindow')}
-                </div>
-                <div className="text-lg font-bold text-fg">
-                  {formatShortDate(cycles[0].fertileStart)} {t('to')} {formatShortDate(cycles[0].fertileEnd)}
-                </div>
-              </div>
-
-              {/* Next Period */}
-              <div className="bg-red-50 dark:bg-red-950 rounded-xl p-5 text-center">
-                <div className="text-3xl mb-2">📅</div>
-                <div className="text-sm text-red-600 dark:text-red-400 font-medium mb-1">
-                  {t('nextPeriod')}
-                </div>
-                <div className="text-lg font-bold text-red-800 dark:text-red-200">
-                  {formatShortDate(cycles[0].nextPeriod)}
-                </div>
-                <div className="text-xs text-red-500 dark:text-red-400 mt-1">
-                  {formatDisplayDate(cycles[0].nextPeriod)}
+      {/* ── 6개월 달력 ── */}
+      {r && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-fg">{t('calendar')}</h2>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-sub" aria-label={t('legend')}>
+            {LEGEND.filter(k => k !== 'range' || r.ranges.length > 0).map(k => (
+              <li key={k} className="flex items-center gap-2">
+                <span className={`w-4 h-4 rounded inline-block ${CELL[k]}`} />{t(`legendItems.${k}`)}
+              </li>
+            ))}
+            <li className="flex items-center gap-2"><span className="w-4 h-4 rounded inline-block ring-2 ring-fg ring-inset" />{t('legendItems.today')}</li>
+          </ul>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {r.months.map(({ y, m }) => (
+              <div key={`${y}-${m}`} className="ui-card p-4">
+                <h3 className="text-sm font-semibold text-fg text-center mb-3">{t('monthTitle', { y, mon: monthNames[m - 1] })}</h3>
+                <div className="grid grid-cols-7 gap-1">
+                  {weekdays.map((wd, i) => <div key={i} className="text-center text-xs text-muted py-1">{wd}</div>)}
+                  {monthGrid(y, m).map((d, i) => {
+                    if (!d) return <div key={`e-${i}`} />
+                    const type = dayType(d, r.cycles, r.ranges)
+                    return (
+                      <div
+                        key={d}
+                        title={type ? t(`legendItems.${type}`) : undefined}
+                        className={`text-center text-sm py-1.5 rounded-lg tabular-nums ${type ? CELL[type] : 'text-body'} ${d === today ? 'ring-2 ring-fg ring-inset' : ''}`}
+                      >
+                        {Number(d.slice(8))}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-
-              {/* Safe Periods */}
-              <div className="bg-subtle rounded-xl p-5 text-center">
-                <div className="text-3xl mb-2">🛡️</div>
-                <div className="text-sm text-green-600 dark:text-green-400 font-medium mb-1">
-                  {t('safeEarly')}
-                </div>
-                <div className="text-sm font-bold text-fg">
-                  {formatShortDate(cycles[0].safeEarlyStart)} {t('to')} {formatShortDate(cycles[0].safeEarlyEnd)}
-                </div>
-                <div className="text-sm text-green-600 dark:text-green-400 font-medium mt-2 mb-1">
-                  {t('safeLate')}
-                </div>
-                <div className="text-sm font-bold text-fg">
-                  {formatShortDate(cycles[0].safeLateStart)} {t('to')} {formatShortDate(cycles[0].safeLateEnd)}
-                </div>
-              </div>
-            </div>
-
-            {/* Due date link */}
-            <div className="mt-4 text-center">
-              <a
-                href="/due-date"
-                className="inline-flex items-center gap-1 text-pink-600 dark:text-pink-400 hover:underline text-sm font-medium"
-              >
-                {t('dueDateLink')}
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
+            ))}
           </div>
-
-          {/* Share buttons */}
-          <div className="flex gap-3 justify-center">
-            <button
-              onClick={handleShare}
-              className="px-4 py-2 bg-pink-100 dark:bg-pink-900 hover:bg-pink-200 dark:hover:bg-pink-800 text-sub rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
-            >
-              <Heart className="w-4 h-4" />
-              {t('shareButton')}
-            </button>
-            <button
-              onClick={copyLink}
-              className="px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
-            >
-              {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copiedLink ? t('linkCopied') : t('copyLinkButton')}
-            </button>
-          </div>
-
-          {/* 3-Month Calendar */}
-          <div>
-            <h2 className="text-xl font-bold text-fg mb-4 flex items-center gap-2">
-              {t('calendar')}
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {calendarMonths.map(({ year, month }) => renderCalendar(year, month))}
-            </div>
-
-            {/* Legend */}
-            <div className={`mt-4 ${glassCard} ${glassInset} p-4`}>
-              <h3 className="text-sm font-semibold text-body mb-3">
-                {t('legend')}
-              </h3>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded bg-red-200 dark:bg-red-800 inline-block" />
-                  <span className="text-sub">{t('legendPeriod')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded bg-orange-200 dark:bg-orange-800 inline-block" />
-                  <span className="text-sub">{t('legendFertile')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded bg-purple-500 inline-block" />
-                  <span className="text-sub">{t('legendOvulation')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded bg-green-100 dark:bg-green-900 inline-block" />
-                  <span className="text-sub">{t('legendSafe')}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
+        </div>
       )}
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-        <button
-          onClick={() => setGuideOpen(!guideOpen)}
-          className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <span className="flex items-center gap-2 text-lg font-semibold text-fg">
-            <BookOpen className="w-5 h-5 text-pink-500" />
-            {t('guide.title')}
-          </span>
-          {guideOpen ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
-        </button>
-        {guideOpen && (
-          <div className="px-6 pb-6 space-y-6">
-            <div>
-              <h3 className="text-base font-semibold text-body mb-2">
-                {t('guide.howItWorks.title')}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw('guide.howItWorks.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-sub flex items-start gap-2">
-                    <span className="text-pink-500 mt-0.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-body mb-2">
-                {t('guide.tips.title')}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-sub flex items-start gap-2">
-                    <span className="text-purple-500 mt-0.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      <GuideSection namespace="ovulationCalculator" />
 
-      {/* Disclaimer */}
-      <p className="text-xs text-faint text-center">
-        {t('disclaimer')}
-      </p>
+      <div className="ui-card p-6 text-sm">
+        <h2 className="text-base font-semibold text-fg mb-3">{t('sources.title')}</h2>
+        <ul className="space-y-1.5 text-sub">
+          {(t.raw('sources.items') as { label: string; url: string }[]).map(x => (
+            <li key={x.url}><a href={x.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{x.label}</a></li>
+          ))}
+        </ul>
+        <p className="text-xs text-muted mt-4">{t('disclaimer')}</p>
+      </div>
     </div>
   )
 }

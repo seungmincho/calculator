@@ -39892,8 +39892,89 @@
     }
   },
   "ovulationCalculator": {
+    "cycleHint": "Days from the first day of one period to the day before the next. Log recent periods below to fill in your average automatically.",
+    "luteal": "Luteal phase length",
+    "lutealHint": "The time from ovulation to your next period. Usually 14 days, but it can range from 10 to 16. Change it if you know yours from ovulation tests or basal body temperature.",
+    "records": {
+      "title": "Recent period start dates",
+      "hint": "Add two or more to calculate and apply your average cycle. Records are stored only in this browser and never sent to a server.",
+      "pick": "Pick a start date",
+      "add": "Add",
+      "remove": "Delete record",
+      "stats": "Last {n} cycles: average {avg} days · shortest {min} · longest {max}",
+      "applied": "Your average cycle of {avg} days has been applied.",
+      "excluded": "{n} cycle(s) outside 21–45 days were left out of the average. If that is not a missed entry, consider seeing a gynecologist.",
+      "needMore": "Add one more start date to calculate your average cycle.",
+      "clear": "Clear all saved records",
+      "apply": "Apply average cycle ({avg} days)"
+    },
+    "enterDate": "Select the first day of your last period",
+    "contraceptionWarning": "Do not use this for birth control. Calendar estimates can be off by several days, and with typical use up to 23 in 100 people relying on fertility awareness methods get pregnant in a year (US CDC).",
+    "lateNote": "Your period was expected on {date} based on the date you entered — {n} day(s) ago. If you have had a period since, update the start date. If it is more than a week late, consider taking a pregnancy test.",
+    "peakDays": "Most fertile days",
+    "dueIfPregnant": "Due date if you conceive this cycle",
+    "dueHint": "Calculated as ovulation (conception) + 266 days. For weeks and checkups, use the",
+    "irregular": {
+      "title": "Your cycles are irregular (shortest {min} · longest {max} days)",
+      "ovulation": "Possible ovulation this cycle: {from} – {to}",
+      "period": "Next period expected: {from} – {to}",
+      "range": "Possible fertile range (calendar method): {from} – {to}",
+      "note": "Based on the calendar (rhythm) method: day (shortest − 18) to day (longest − 11). When cycles vary by 8+ days, an average is unreliable — ovulation tests are recommended. Shown with a dashed outline on the calendar."
+    },
+    "upcoming": "Next 6 cycles",
+    "ics": {
+      "button": "Add to calendar (.ics)",
+      "hint": "Import expected periods, fertile windows and ovulation days into Google, Apple or your phone calendar. The file is generated on your device.",
+      "fertile": "Fertile window",
+      "ovulation": "Expected ovulation",
+      "period": "Expected period"
+    },
+    "legendItems": {
+      "period": "Period (expected)",
+      "fertile": "Fertile window",
+      "peak": "Most fertile",
+      "ovulation": "Ovulation day",
+      "range": "Possible fertile range (irregular)",
+      "today": "Today"
+    },
+    "monthTitle": "{mon} {y}",
+    "dateFmt": "{mon} {d} ({w})",
+    "dateFull": "{rest}, {y}",
+    "status": {
+      "period": "Day {n} of your period",
+      "ovulation": "Today is your expected ovulation day — peak fertility",
+      "peak": "Ovulation is near — peak fertility",
+      "fertile": "You are in your fertile window",
+      "beforeFertile": "{n} day(s) until your fertile window",
+      "afterFertile": "Fertile window has passed · {n} day(s) until your next period"
+    },
+    "sources": {
+      "title": "Sources",
+      "items": [
+        {
+          "label": "MSD Manual — The menstrual cycle (ovulation ~14 days before menses)",
+          "url": "https://www.msdmanuals.com/home/women-s-health-issues/biology-of-the-female-reproductive-system/menstrual-cycle"
+        },
+        {
+          "label": "Wilcox et al., NEJM 1995 — six-day fertile window ending on ovulation",
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJM199512073332301"
+        },
+        {
+          "label": "MSD Manual — Normal Menstrual Parameters (FIGO 2018)",
+          "url": "https://www.msdmanuals.com/professional/multimedia/table/normal-menstrual-parameters"
+        },
+        {
+          "label": "Planned Parenthood — Calendar method (shortest − 18, longest − 11)",
+          "url": "https://www.plannedparenthood.org/learn/birth-control/fertility-awareness/whats-calendar-method-fams"
+        },
+        {
+          "label": "US CDC — Contraceptive effectiveness",
+          "url": "https://www.cdc.gov/mmwr/preview/mmwrhtml/rr6304a5.htm"
+        }
+      ]
+    },
     "title": "Ovulation Calculator",
-    "description": "Enter your menstrual cycle to predict ovulation and fertile window",
+    "description": "Calculate your ovulation day, fertile window and next period from your last period and cycle length, shown on a 6-month calendar",
     "lastPeriod": "Last Period Start Date",
     "cycleLength": "Cycle Length",
     "periodLength": "Period Length",
@@ -39907,14 +39988,14 @@
     "safeEarly": "Safe Period (Early)",
     "safeLate": "Safe Period (Late)",
     "to": "~",
-    "calendar": "3-Month Calendar",
+    "calendar": "6-month calendar",
     "legend": "Legend",
     "legendPeriod": "Period",
     "legendFertile": "Fertile Window",
     "legendOvulation": "Ovulation Day",
     "legendSafe": "Safe Period",
-    "dueDateLink": "Go to Due Date Calculator",
-    "disclaimer": "This calculator is for reference only. Consult a gynecologist for accurate diagnosis.",
+    "dueDateLink": "Due Date Calculator",
+    "disclaimer": "This calculator gives estimates based on an average cycle. It is not a medical diagnosis or a method of birth control. See a gynecologist if your cycles are shorter than 21 or longer than 45 days, you have had no period for 3+ months, or you have been trying to conceive for a year (6 months if 35 or older).",
     "shareButton": "Share Result",
     "copyLinkButton": "Copy Link",
     "linkCopied": "Link copied!",
@@ -39944,21 +40025,23 @@
     "guide": {
       "title": "Ovulation Calculator Guide",
       "howItWorks": {
-        "title": "How It Works",
+        "title": "How it works",
         "items": [
-          "Ovulation typically occurs 14 days before the next period starts",
-          "The fertile window is 5 days before ovulation to 1 day after",
-          "Predictions may be less accurate with irregular cycles",
-          "Combining with basal body temperature and ovulation tests improves accuracy"
+          "Next period = last period start + average cycle length.",
+          "Ovulation = next period − luteal phase (default 14 days). Cycle length differences mostly come from the pre-ovulation (follicular) phase, so we count back from the next period. In a 28-day cycle that is around day 14 after your period starts.",
+          "Fertile window = 5 days before ovulation to the day after. Sperm can survive up to 5 days; the egg lives 12–24 hours after ovulation.",
+          "The most fertile days are the 2 days before ovulation and ovulation day (Wilcox, NEJM 1995: about 10% five days before, about 33% on ovulation day).",
+          "For irregular cycles the calendar (rhythm) method is used as a reference: day (shortest cycle − 18) to day (longest cycle − 11)."
         ]
       },
       "tips": {
-        "title": "Important Notes",
+        "title": "Good to know",
         "items": [
-          "Average menstrual cycle is 28 days, but 21-35 days is normal",
-          "Ovulation can vary due to individual differences, stress, and health",
-          "For conception, intercourse every 2-3 days during fertile window is recommended",
-          "This calculator alone is insufficient for contraception; always use proper birth control"
+          "Normal cycles usually last 21–35 days (24–38 days per FIGO 2018), and varying by a few days is common.",
+          "Stress, rapid weight change, poor sleep, breastfeeding and illness can shift ovulation. Treat calendar dates as approximate.",
+          "For more accuracy combine ovulation tests (ovulation 24–36 hours after the LH surge), basal body temperature (rises 0.3–0.5°C after ovulation) and cervical mucus (clear and stretchy).",
+          "If trying to conceive, having sex every 1–2 days during the fertile window works well — consistency matters more than precise timing.",
+          "Do not use this for contraception. With typical use, up to 23 in 100 people relying on fertility awareness methods get pregnant in a year (US CDC)."
         ]
       },
       "guide": {
@@ -40003,32 +40086,45 @@
         }
       },
       "whatIs": {
-        "title": "What is the Ovulation Calculator?",
-        "description": "The Ovulation Calculator predicts your ovulation date, fertile window, and next expected period by entering your last menstrual period start date and average cycle length, displayed visually on a calendar. It is used by couples planning to conceive to time intercourse and as a reference for natural family planning. A cycle-tracking feature helps you monitor your own patterns over time."
+        "title": "What is an ovulation calculator?",
+        "description": "Enter the first day of your last period and your average cycle length to estimate your next period, ovulation day and fertile window on a 6-month calendar. It relies on the fact that ovulation happens about 14 days (the luteal phase) before the next period. Logging several recent periods calculates your average cycle, and for irregular cycles it also shows a possible range based on your shortest and longest cycles. It is for planning only and must not be used for birth control."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Enter the start date of your last menstrual period.",
-          "2. Enter your average cycle length in days (typically 21–35 days).",
-          "3. Optionally adjust the luteal phase length (default: 14 days).",
-          "4. View the predicted ovulation date, fertile window start/end, and next expected period on the calendar."
+          "Pick the first day of your last period (the first day of bleeding).",
+          "Enter your average cycle and period length. If unsure, keep the defaults (28 and 5 days).",
+          "Log two or more recent start dates to apply your average cycle; if cycles vary by 8+ days, an irregular range is shown.",
+          "If you know your luteal phase from ovulation tests or temperature charting, adjust it between 10 and 16 days.",
+          "Check the calendar and the next 6 cycles, and export an .ics file to your phone calendar if you like."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "My cycle isn't 28 days. Can I still use this?",
-            "a": "Yes. You enter your actual cycle length, so any cycle between 21 and 35 days is supported. 28 days is just a statistical average—normal cycles range from 21 to 35 days."
+            "q": "Isn't ovulation always on day 14?",
+            "a": "Only in a 28-day cycle. Ovulation happens about 14 days before the next period, so in a 35-day cycle it is around day 21 and in a 24-day cycle around day 10. That is why this calculator subtracts the luteal phase from your next expected period."
           },
           {
-            "q": "Can stress or dieting affect my ovulation date?",
-            "a": "Yes. Extreme stress, rapid weight changes, and excessive exercise can shift ovulation timing earlier or later. Consult a gynecologist if your cycle suddenly changes significantly."
+            "q": "How long is the fertile window?",
+            "a": "About 7 days: from 5 days before ovulation to the day after. The 2 days before ovulation and ovulation day are the most fertile."
           },
           {
-            "q": "Can I use this calculator to confirm pregnancy?",
-            "a": "No. This tool only estimates ovulation. Pregnancy must be confirmed with a home pregnancy test or medical examination. Use a test if your period is more than two weeks late."
+            "q": "What if my cycles are irregular?",
+            "a": "Log several recent start dates (ideally 6 or more). The average is used for predictions, and if your shortest and longest cycles differ by 8+ days a possible range is shown with a dashed outline. The wider the range, the less reliable a calendar is — use ovulation tests too. See a doctor if cycles are shorter than 21 or longer than 45 days."
+          },
+          {
+            "q": "When should I take a pregnancy test?",
+            "a": "Tests are most reliable after your period is due (about 2–3 weeks after sex). Testing too early can give a false negative, so if it is negative and your period is still late, retest in a few days or see a doctor."
+          },
+          {
+            "q": "Can I use this for birth control?",
+            "a": "No. Ovulation can vary from cycle to cycle even in the same person, and a calendar cannot identify 'safe days'. Use proven methods such as condoms or the pill."
+          },
+          {
+            "q": "Where is my data stored?",
+            "a": "Your inputs and period records are saved only in this browser's local storage. They are never sent to a server or added to the link (URL). You can delete them anytime with 'Clear all saved records'."
           }
         ]
       }
