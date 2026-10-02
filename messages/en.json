@@ -33499,6 +33499,192 @@
     "noResult": "Enter the acquisition price on the left to see the tax calculation results."
   },
   "dsrCalc": {
+    "subtitle": "As of October 2026 — reflects Stage 3 stress DSR and the Oct 15 measures (+3.0%p for mortgages in the capital area / regulated zones). Add your existing loans to see how much more you can borrow.",
+    "units": {
+      "won": " KRW",
+      "year": "y"
+    },
+    "form": {
+      "income": "Annual income (pre-tax)",
+      "incomeHint": "or use the slider below",
+      "sector": "Lender type",
+      "sectors": {
+        "bank": "Bank · DSR 40%",
+        "nonbank": "Non-bank · DSR 50%"
+      },
+      "newTitle": "New loan",
+      "kinds": {
+        "mortgage": "Mortgage",
+        "credit": "Credit loan"
+      },
+      "amount": "Desired amount",
+      "rate": "Interest rate (annual)",
+      "region": "Property location",
+      "regions": {
+        "capital": "Capital area / regulated",
+        "local": "Other regions"
+      },
+      "years": "Term",
+      "method": "Repayment",
+      "methods": {
+        "equalPayment": "Level payment",
+        "equalPrincipal": "Level principal",
+        "bullet": "Bullet"
+      },
+      "capitalTerm": "Mortgages in the capital area / regulated zones are capped at 30 years (June 27 measures, from 2025-06-28).",
+      "creditBasis": "Credit loans are counted as \"principal ÷ 5 years + annual interest\" regardless of the actual term.",
+      "rateType": "Rate type",
+      "rateTypes": {
+        "variable": "Variable",
+        "mixed": "Hybrid",
+        "periodic": "Periodic",
+        "fixed": "Fixed"
+      },
+      "fixedYears": {
+        "mixed": "Fixed-rate period",
+        "periodic": "Reset period"
+      },
+      "stressHint": "Stress add-on +{add}%p → the limit is tested at {rate}% a year.",
+      "creditStress": "For credit loans the add-on applies only when total credit balances (incl. overdraft limits) exceed KRW 100M.",
+      "localStress": "The 0.75%p regional mortgage rate is a grace level that applies through 2026-12-31."
+    },
+    "ex": {
+      "title": "Existing loans",
+      "add": "Add",
+      "kind": "Loan type",
+      "remove": "Remove",
+      "empty": "Leave empty if you have no loans. The more you already repay, the less you can borrow.",
+      "kinds": {
+        "mortgage": "Mortgage",
+        "credit": "Credit loan",
+        "revolving": "Overdraft line",
+        "installment": "Card loan / installment",
+        "jeonse": "Jeonse loan"
+      },
+      "limit": "Credit limit (KRW)",
+      "amount": "Remaining balance (KRW)",
+      "rate": "Rate (annual %)",
+      "years": "Years left",
+      "jeonseCounted": "One-home owner, capital area / regulated zone, new loan from 2025-10-29 (interest only counts)",
+      "basis": {
+        "mortgage": "Actual repayments (bullet: principal ÷ up to 10 years)",
+        "credit": "Principal ÷ 5 years + interest",
+        "revolving": "Counted on the full limit, not the amount used",
+        "installment": "Actual level payments",
+        "jeonse": "Interest only, principal excluded (if applicable)"
+      },
+      "annual": "{amount} KRW/yr",
+      "stressTip": "In real underwriting, existing loans are also counted with the stress add-on that applied when they were made. Add that add-on to the rate for a closer estimate."
+    },
+    "res": {
+      "limitLabel": "Maximum additional {kind} you can take now ({sector})",
+      "stressSub": "Stress add-on +{add}%p · tested at {rate}% a year",
+      "noStress": "Without stress DSR: {amount} KRW ({diff} KRW less now)",
+      "noRoom": "Your existing loans already use up the DSR {cap}% limit — no room for more.",
+      "regCapMortgage": "DSR allows more, but home-purchase mortgages in the capital area / regulated zones are capped at KRW 600M (price ≤ 1.5B), 400M (1.5–2.5B) or 200M (over 2.5B) under the Oct 15 measures. LTV limits (40% in regulated zones for non-owners, 70% for first-time buyers) also apply.",
+      "regCapCredit": "DSR allows more, but credit loans are capped at your annual income ({amount} KRW) under the June 27 measures.",
+      "dsrNow": "Current DSR (existing loans)",
+      "dsrWith": "With a {amount} KRW {kind}",
+      "over": "Above DSR {cap}% — this amount is unlikely to be approved",
+      "under": "Within DSR {cap}%",
+      "plainLine": "{pct} without stress",
+      "notApplied": "If existing plus new loans total KRW 100M or less, the borrower-level DSR rule does not apply (lenders still run their own checks)."
+    },
+    "share": {
+      "label": "Income {income} KRW · {sector} {kind} limit",
+      "text": "With {income} KRW income, up to {amount} KRW {kind} (stress DSR applied)"
+    },
+    "cmp": {
+      "title": "Bank vs non-bank, before and after stress DSR",
+      "desc": "Same income and loan terms, compared by lender type and stress rate. Non-bank lenders use the same stress rates.",
+      "sector": "Lender",
+      "plain": "Without stress",
+      "stress": "With stress"
+    },
+    "rt": {
+      "title": "Limit by rate type",
+      "note": "Hybrid and periodic loans carry only part of the add-on, depending on how much of the term is fixed — now {fy}y of {years}y. Fixed-rate loans have no add-on. Tap a card to switch.",
+      "noteCredit": "When credit balances exceed KRW 100M, variable-rate loans get +1.5%p; fixed-rate loans get none."
+    },
+    "inc": {
+      "title": "Loan limit by income",
+      "desc": "{sector}; loan terms and existing loans unchanged, only income varies. Use the slider under the income field.",
+      "now": "You"
+    },
+    "bd": {
+      "title": "Annual repayment breakdown",
+      "existing": "Existing loans per year",
+      "newLoan": "New {kind} {amount} KRW (tested at {rate}%)",
+      "total": "Total per year",
+      "formula": "DSR = {annual} KRW ÷ {income} KRW = {pct}"
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "How much can I borrow on a KRW 50M salary?",
+          "a": "At the bank DSR of 40%, up to KRW 20M of repayments a year. With no other loans and a 4%, 30-year level-payment mortgage that is about KRW 349M without stress, but about KRW 250M for a capital-area variable loan (+3.0%p, tested at 7%)."
+        },
+        {
+          "q": "Do I pay more interest under stress DSR?",
+          "a": "No. The add-on is only used to calculate the limit; you pay your contracted rate."
+        },
+        {
+          "q": "Do jeonse loans count toward DSR?",
+          "a": "Since 2025-10-29, interest (not principal) on new jeonse loans taken by one-home owners in the capital area / regulated zones counts. Loans to non-owners, policy jeonse loans and rollovers without an increase are excluded."
+        },
+        {
+          "q": "Does an overdraft line count only what I use?",
+          "a": "No. The full limit counts like a credit loan, principal ÷ 5 years + interest. An unused KRW 30M line still adds over KRW 6M a year."
+        },
+        {
+          "q": "Is DSR checked if my loans total KRW 100M or less?",
+          "a": "The borrower-level DSR (40% / 50%) applies only above KRW 100M in total. Below that, lenders still run their own checks and other rules such as the income cap on credit loans still apply."
+        },
+        {
+          "q": "Why is the add-on lower for regional mortgages?",
+          "a": "Given weak regional housing markets, regional mortgages keep the Stage 2 level of 0.75%p instead of 1.5%p. It was extended again in June 2026 through 2026-12-31; check FSC announcements for what follows."
+        },
+        {
+          "q": "How is DSR different from DTI?",
+          "a": "DTI counts only interest on other loans, while DSR also counts their principal — so credit loans and overdraft lines push DSR much higher."
+        }
+      ]
+    },
+    "sources": {
+      "title": "Sources",
+      "asOf": "Checked 2026-10-02. The calculator is updated when rules change.",
+      "items": [
+        {
+          "label": "FSC — Stage 3 stress DSR plan (2025-05-20)",
+          "url": "https://www.fsc.go.kr/no010101/84617"
+        },
+        {
+          "label": "KFB consumer portal — stress rate overview",
+          "url": "https://portal.kfb.or.kr/compare/stress_loan_overview.php"
+        },
+        {
+          "label": "KB Think — June 27 household debt measures",
+          "url": "https://kbthink.com/loan-guide/627-regulation.html"
+        },
+        {
+          "label": "KB Think — Oct 15 real estate measures",
+          "url": "https://kbthink.com/realestate/basics/10-15-measures.html"
+        },
+        {
+          "label": "KB Think — regional mortgage stress DSR extension (2026-07)",
+          "url": "https://kbthink.com/realestate/issue/hosing-260701.html"
+        }
+      ]
+    },
+    "links": {
+      "loan-calculator": "Loan interest calculator",
+      "loan-schedule": "Loan repayment schedule",
+      "jeonse-loan": "Jeonse loan calculator",
+      "bogeumjari-loan": "Bogeumjari loan calculator",
+      "acquisition-tax": "Acquisition tax calculator",
+      "salary-calculator": "Take-home pay calculator"
+    },
     "title": "DSR Calculator",
     "description": "Auto-calculate Debt Service Ratio (DSR) based on 2025 regulations",
     "income": {
@@ -33596,10 +33782,67 @@
     "reset": "Reset",
     "disclaimer": {
       "title": "Disclaimer",
-      "text": "This calculator is for reference only. Actual loan approval depends on financial institution criteria."
+      "text": "Simplified estimate under rules as of October 2026. Actual limits depend on how lenders recognise income, the stress rate applied to existing loans when they were made, LTV and internal underwriting."
     },
     "guide": {
-      "title": "DSR Guide",
+      "basics": {
+        "title": "What is DSR",
+        "items": [
+          "DSR (debt service ratio) = annual principal and interest on all household loans ÷ annual income × 100.",
+          "It applies to borrowers whose existing plus new loans exceed KRW 100M: banks cap it at 40%, non-banks (savings banks, card, capital, mutual finance) at 50%.",
+          "Income is pre-tax income proven by withholding receipts, income certificates and similar documents.",
+          "Interim (jungdogeum) and relocation loans, low-income support products and policy jeonse loans are exempt from the DSR test, but interim/relocation loan repayments are counted when you later apply for another loan."
+        ]
+      },
+      "stress": {
+        "title": "Stress DSR (as of October 2026)",
+        "items": [
+          "DSR is tested at a higher \"stress\" rate to reflect future rate rises. You still pay your contracted rate — only the limit shrinks.",
+          "Stage 3 (from 2025-07-01): a base 1.5%p on virtually all household loans at banks and non-banks. Credit loans get it only when credit balances exceed KRW 100M.",
+          "Mortgages in the capital area / regulated zones: floor raised to 3.0%p by the Oct 15 measures (from 2025-10-16). Regional mortgages: 0.75%p (grace through 2026-12-31).",
+          "Hybrid loans count 80% of the add-on if the fixed period is under 30% of the term, 60% if 30–50%. Periodic loans: 40% under 30%, 30% for 30–50%. Fixed-rate: none. E.g. a 30-year capital-area loan: variable 3.0%p, 5-year hybrid 2.4%p, 5-year periodic 1.2%p.",
+          "Not retroactive: when you apply for a new loan, existing loans are counted with the stress rate that applied when they were made."
+        ]
+      },
+      "calc": {
+        "title": "How each loan is counted",
+        "items": [
+          "Mortgage: actual annual repayments. Bullet loans count principal ÷ term (max 10 years) + interest.",
+          "Credit loan: even with a 1-year term, principal is spread over 5 years — \"principal ÷ 5 + annual interest\".",
+          "Overdraft line: the full limit is counted like a credit loan, not just the amount used.",
+          "Card loans, car installments and other amortising loans: actual repayments.",
+          "Jeonse loan: interest only. Applies only to one-home owners borrowing in the capital area / regulated zones (from 2025-10-29); non-owners and policy jeonse loans are excluded."
+        ]
+      },
+      "regs": {
+        "title": "Other rules that apply alongside DSR",
+        "items": [
+          "Home-purchase mortgage cap in the capital area / regulated zones: KRW 600M (price ≤ 1.5B), 400M (1.5–2.5B), 200M (over 2.5B) — Oct 15 measures.",
+          "LTV: 40% for non-owners in regulated zones, 70% elsewhere, 70% for first-time buyers in the capital area / regulated zones. Multi-home owners cannot get home-purchase mortgages there.",
+          "Capital area / regulated-zone mortgages are capped at 30 years; credit loans at your annual income (June 27 measures).",
+          "From 2026-04-17, apartment-backed loans in the capital area / regulated zones held by multi-home owners generally cannot be rolled over."
+        ]
+      },
+      "raise": {
+        "title": "How to raise your limit",
+        "items": [
+          "Cut or close unused overdraft lines — the whole limit counts as principal ÷ 5 years.",
+          "Pay down credit and card loans first: the same balance counts several times more than a 30-year mortgage.",
+          "Fixed or periodic rates reduce the stress add-on to 0–40%, raising the limit.",
+          "A longer term lowers annual repayments, but capital-area mortgages are capped at 30 years.",
+          "Non-banks (DSR 50%) can lend more, but higher rates mean the extra principal is smaller than it looks."
+        ]
+      },
+      "compare": {
+        "title": "DSR vs DTI vs LTV",
+        "items": [
+          "LTV (loan-to-value): loan as a share of the home price — a cap based on collateral, not income.",
+          "DTI (debt-to-income): repayments on the new mortgage plus only the interest on other loans, divided by income.",
+          "DSR: principal and interest on every loan divided by income — the strictest income test and usually the binding one.",
+          "What you can actually borrow is the smallest of the LTV limit, the DSR limit and any regional cap (e.g. KRW 600M)."
+        ]
+      },
+      "title": "DSR guide (2026)",
       "whatIsDsr": {
         "title": "What is DSR?",
         "items": [

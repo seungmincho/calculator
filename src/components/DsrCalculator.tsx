@@ -1,1055 +1,504 @@
 'use client'
 
-/**
- * DSR (총부채원리금상환비율) 계산기
- *
- * 번역 네임스페이스: dsrCalc
- *
- * === 번역 키 목록 ===
- *
- * dsrCalc.title
- * dsrCalc.description
- *
- * -- 소득 --
- * dsrCalc.income.title
- * dsrCalc.income.annual
- * dsrCalc.income.placeholder
- * dsrCalc.income.unit
- *
- * -- 신규 대출 --
- * dsrCalc.newLoan.title
- * dsrCalc.newLoan.type
- * dsrCalc.newLoan.types.mortgage
- * dsrCalc.newLoan.types.credit
- * dsrCalc.newLoan.types.carInstallment
- * dsrCalc.newLoan.amount
- * dsrCalc.newLoan.amountPlaceholder
- * dsrCalc.newLoan.rate
- * dsrCalc.newLoan.ratePlaceholder
- * dsrCalc.newLoan.term
- * dsrCalc.newLoan.termUnit
- * dsrCalc.newLoan.repayment
- * dsrCalc.newLoan.repayment.equalPayment
- * dsrCalc.newLoan.repayment.equalPrincipal
- * dsrCalc.newLoan.repayment.bullet
- * dsrCalc.newLoan.rateType
- * dsrCalc.newLoan.rateTypes.variable
- * dsrCalc.newLoan.rateTypes.mixed
- * dsrCalc.newLoan.rateTypes.periodic
- * dsrCalc.newLoan.rateTypes.fixed
- * dsrCalc.newLoan.location
- * dsrCalc.newLoan.locations.capital
- * dsrCalc.newLoan.locations.nonCapital
- *
- * -- 기존 대출 --
- * dsrCalc.existing.title
- * dsrCalc.existing.add
- * dsrCalc.existing.remove
- * dsrCalc.existing.loanLabel
- * dsrCalc.existing.types.mortgage
- * dsrCalc.existing.types.credit
- * dsrCalc.existing.types.revolving
- * dsrCalc.existing.types.cardLoan
- * dsrCalc.existing.types.carInstallment
- * dsrCalc.existing.balance
- * dsrCalc.existing.balancePlaceholder
- * dsrCalc.existing.rate
- * dsrCalc.existing.ratePlaceholder
- * dsrCalc.existing.remainingTerm
- * dsrCalc.existing.termUnit
- * dsrCalc.existing.repayment
- * dsrCalc.existing.forcedTerm
- *
- * -- 결과 --
- * dsrCalc.result.title
- * dsrCalc.result.currentDsr
- * dsrCalc.result.safe
- * dsrCalc.result.caution
- * dsrCalc.result.danger
- * dsrCalc.result.safeDesc
- * dsrCalc.result.cautionDesc
- * dsrCalc.result.dangerDesc
- * dsrCalc.result.annualRepayment
- * dsrCalc.result.annualRepaymentTitle
- * dsrCalc.result.newLoanLabel
- * dsrCalc.result.existingLoanLabel
- * dsrCalc.result.totalAnnual
- * dsrCalc.result.annualIncome
- *
- * -- 대출한도 역산 --
- * dsrCalc.limit.title
- * dsrCalc.limit.maxAdditional
- * dsrCalc.limit.basedOn
- * dsrCalc.limit.availableAnnual
- * dsrCalc.limit.noRoom
- *
- * -- 스트레스 DSR --
- * dsrCalc.stress.title
- * dsrCalc.stress.description
- * dsrCalc.stress.appliedRate
- * dsrCalc.stress.additionalRate
- * dsrCalc.stress.resultDsr
- * dsrCalc.stress.resultLimit
- * dsrCalc.stress.nonCapitalNote
- *
- * -- 계산 버튼 --
- * dsrCalc.calculate
- * dsrCalc.reset
- *
- * -- 면책 --
- * dsrCalc.disclaimer.title
- * dsrCalc.disclaimer.text
- *
- * -- 가이드 --
- * dsrCalc.guide.title
- * dsrCalc.guide.whatIsDsr.title
- * dsrCalc.guide.whatIsDsr.items  (string[])
- * dsrCalc.guide.stressDsr.title
- * dsrCalc.guide.stressDsr.items  (string[])
- * dsrCalc.guide.tips.title
- * dsrCalc.guide.tips.items  (string[])
- */
-
-import { useState, useCallback, useEffect } from 'react'
+// DSR 계산기 — 계산 로직은 src/utils/dsr.ts (근거·확인 필요 항목도 거기 주석). i18n: dsrCalc
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
+import { Plus, X } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
 import {
-  Calculator,
-  Plus,
-  X,
-  AlertTriangle,
-  BookOpen,
-  TrendingUp,
-  Shield,
-} from 'lucide-react'
+  DSR_CAP, DSR_APPLY_OVER, CAPITAL_MAX_TERM, annualRepay, existingAnnual, newLoanAnnual, maxNewLoan, stressAdd, regulatoryCap, dsr,
+  type Loan, type LoanKind, type Method, type RateType, type Region, type Sector, type NewLoanSpec,
+} from '@/utils/dsr'
 
-// ── 타입 정의 ──
+const EOK = 100_000_000
+const MAN = 10_000
+const SECTORS: Sector[] = ['bank', 'nonbank']
+const KINDS = ['mortgage', 'credit'] as const
+const METHODS: Method[] = ['equalPayment', 'equalPrincipal', 'bullet']
+const RATE_TYPES: RateType[] = ['variable', 'mixed', 'periodic', 'fixed']
+const REGIONS: Region[] = ['capital', 'local']
+const EX_KINDS: LoanKind[] = ['mortgage', 'credit', 'revolving', 'installment', 'jeonse']
+const TERMS = [10, 15, 20, 25, 30, 35, 40]
+const FIXED_YEARS = [5, 10, 15, 20]
+const LINKS = ['loan-calculator', 'loan-schedule', 'jeonse-loan', 'bogeumjari-loan', 'acquisition-tax', 'salary-calculator'] as const
+const DEFAULT_EX: Loan[] = [{ kind: 'credit', amount: 30_000_000, rate: 5, years: 5, method: 'equalPayment' }]
 
-type NewLoanType = 'mortgage' | 'credit' | 'carInstallment'
-type ExistingLoanType = 'mortgage' | 'credit' | 'revolving' | 'cardLoan' | 'carInstallment'
-type RepaymentMethod = 'equalPayment' | 'equalPrincipal' | 'bullet'
-type RateType = 'variable' | 'mixed' | 'periodic' | 'fixed'
-type Location = 'capital' | 'nonCapital'
-
-interface ExistingLoan {
-  id: number
-  type: ExistingLoanType
-  balance: string
-  rate: string
-  remainingTerm: string
-  repayment: RepaymentMethod
+const parseNum = (s: string) => Number(s.replace(/[^\d]/g, '')) || 0
+const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
+const num = (v: string | null, def: number, min: number, max: number) => {
+  const n = parseFloat(v ?? '')
+  return Number.isFinite(n) && n >= min && n <= max ? n : def
 }
-
-interface LoanAnnualRepayment {
-  label: string
-  annual: number
+function eokMan(v: number): string {
+  const eok = Math.floor(v / EOK)
+  const man = Math.floor((v % EOK) / MAN)
+  return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
 }
+const pct = (v: number) => `${v.toFixed(1)}%`
+const rateStr = (v: number) => `${+v.toFixed(2)}`
 
-interface DsrResult {
-  dsr: number
-  newLoanAnnual: number
-  existingLoansAnnual: LoanAnnualRepayment[]
-  totalAnnual: number
-  maxAdditionalLoan: number
-  stressDsr: number
-  stressRate: number
-  stressAdditional: number
-  stressMaxLoan: number
-}
-
-// ── 스트레스 DSR 가산금리 (2025년 3단계) ──
-
-const STRESS_RATE: Record<RateType, number> = {
-  variable: 1.50,
-  mixed: 1.20,
-  periodic: 0.60,
-  fixed: 0,
-}
-
-const NON_CAPITAL_MORTGAGE_DISCOUNT = 0.75
-
-const DSR_THRESHOLD = 40
-
-// ── 계산 유틸 ──
-
-function calcEqualPaymentMonthly(principal: number, annualRate: number, months: number): number {
-  if (principal <= 0 || months <= 0) return 0
-  if (annualRate <= 0) return principal / months
-  const r = annualRate / 100 / 12
-  return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1)
-}
-
-function calcEqualPrincipalFirstMonthly(principal: number, annualRate: number, months: number): number {
-  if (principal <= 0 || months <= 0) return 0
-  const monthlyPrincipal = principal / months
-  const firstInterest = principal * (annualRate / 100 / 12)
-  return monthlyPrincipal + firstInterest
-}
-
-function calcAnnualRepayment(
-  principal: number,
-  annualRate: number,
-  termYears: number,
-  repayment: RepaymentMethod,
-  loanType: ExistingLoanType | NewLoanType
-): number {
-  if (principal <= 0) return 0
-
-  // DSR 산입 기준에 따른 기간/방식 결정
-  let effectiveTermMonths: number
-  let effectiveRepayment: RepaymentMethod = repayment
-
-  switch (loanType) {
-    case 'credit':
-      effectiveTermMonths = 5 * 12 // 신용대출: 5년 원리금균등 환산
-      effectiveRepayment = 'equalPayment'
-      break
-    case 'revolving':
-      effectiveTermMonths = 5 * 12 // 마이너스통장: 5년 원리금균등
-      effectiveRepayment = 'equalPayment'
-      break
-    case 'cardLoan':
-      effectiveTermMonths = 3 * 12 // 카드론: 3년 원리금균등
-      effectiveRepayment = 'equalPayment'
-      break
-    default:
-      effectiveTermMonths = termYears * 12
-      break
+// 기존 대출 URL 인코딩: kind.amount.rate.years.method.counted (숫자·코드만)
+const KIND_CODE: Record<LoanKind, string> = { mortgage: 'm', credit: 'c', revolving: 'r', installment: 'i', jeonse: 'j' }
+const METHOD_CODE: Record<Method, string> = { equalPayment: 'e', equalPrincipal: 'p', bullet: 'b' }
+const encodeEx = (ls: Loan[]) =>
+  ls.map((l) => [KIND_CODE[l.kind], l.amount, l.rate, l.years, METHOD_CODE[l.method ?? 'equalPayment'], l.counted ? 1 : 0].join('.')).join('_')
+function decodeEx(s: string | null): Loan[] | null {
+  if (s === null) return null
+  if (s === '') return []
+  const out: Loan[] = []
+  for (const part of s.split('_').slice(0, 10)) {
+    const [k, a, r, y, m, c] = part.split('.')
+    const kind = EX_KINDS.find((x) => KIND_CODE[x] === k)
+    if (!kind) continue
+    const method = METHODS.find((x) => METHOD_CODE[x] === m) ?? 'equalPayment'
+    out.push({ kind, amount: Math.min(parseNum(a ?? ''), 100 * EOK), rate: num(r ?? null, 5, 0, 30), years: num(y ?? null, 5, 1, 50), method, counted: c === '1' })
   }
-
-  if (effectiveTermMonths <= 0) return 0
-
-  let monthly: number
-
-  switch (effectiveRepayment) {
-    case 'equalPayment':
-      monthly = calcEqualPaymentMonthly(principal, annualRate, effectiveTermMonths)
-      break
-    case 'equalPrincipal':
-      monthly = calcEqualPrincipalFirstMonthly(principal, annualRate, effectiveTermMonths)
-      break
-    case 'bullet':
-      // 만기일시: 원리금균등 환산
-      if (loanType === 'mortgage') {
-        monthly = calcEqualPaymentMonthly(principal, annualRate, effectiveTermMonths)
-      } else {
-        monthly = calcEqualPaymentMonthly(principal, annualRate, 5 * 12)
-      }
-      break
-    default:
-      monthly = calcEqualPaymentMonthly(principal, annualRate, effectiveTermMonths)
-  }
-
-  return monthly * 12
+  return out
 }
-
-function calcMaxLoan(
-  availableAnnual: number,
-  annualRate: number,
-  termYears: number
-): number {
-  if (availableAnnual <= 0 || termYears <= 0) return 0
-  const monthlyAvailable = availableAnnual / 12
-  if (annualRate <= 0) return monthlyAvailable * termYears * 12
-  const r = annualRate / 100 / 12
-  const n = termYears * 12
-  return monthlyAvailable * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n))
-}
-
-// ── 포맷 ──
-
-function formatNumber(value: string): string {
-  const num = value.replace(/[^0-9]/g, '')
-  if (!num) return ''
-  return parseInt(num, 10).toLocaleString('ko-KR')
-}
-
-function parseNumber(value: string): number {
-  return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0
-}
-
-function formatCurrency(num: number): string {
-  if (num >= 100_000_000) {
-    const eok = Math.floor(num / 100_000_000)
-    const remainder = num % 100_000_000
-    if (remainder >= 10_000) {
-      return `${eok}억 ${Math.floor(remainder / 10_000).toLocaleString()}만원`
-    }
-    return `${eok}억원`
-  }
-  if (num >= 10_000) return `${Math.floor(num / 10_000).toLocaleString()}만원`
-  return `${num.toLocaleString()}원`
-}
-
-// ── 컴포넌트 ──
-
-let nextLoanId = 1
 
 export default function DsrCalculator() {
   const t = useTranslations('dsrCalc')
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  // 소득
-  const [annualIncome, setAnnualIncome] = useState('')
+  const [income, setIncome] = useState(() => Math.min(parseNum(sp.get('inc') ?? '') || 60_000_000, 10 * EOK))
+  const [sector, setSector] = useState<Sector>(() => pick(sp.get('sec'), SECTORS, 'bank'))
+  const [kind, setKind] = useState<'mortgage' | 'credit'>(() => pick(sp.get('k'), KINDS, 'mortgage'))
+  const [amount, setAmount] = useState(() => (sp.get('a') !== null ? Math.min(parseNum(sp.get('a') ?? ''), 100 * EOK) : 300_000_000))
+  const [rate, setRate] = useState(() => num(sp.get('r'), 4, 0, 30))
+  const [years, setYears] = useState(() => num(sp.get('y'), 30, 1, 50))
+  const [method, setMethod] = useState<Method>(() => pick(sp.get('m'), METHODS, 'equalPayment'))
+  const [rateType, setRateType] = useState<RateType>(() => pick(sp.get('rt'), RATE_TYPES, 'variable'))
+  const [fixedYears, setFixedYears] = useState(() => num(sp.get('fy'), 5, 1, 50))
+  const [region, setRegion] = useState<Region>(() => pick(sp.get('reg'), REGIONS, 'capital'))
+  const [ex, setEx] = useState<Loan[]>(() => decodeEx(sp.get('ex')) ?? DEFAULT_EX)
 
-  // 신규 대출
-  const [newLoanType, setNewLoanType] = useState<NewLoanType>('mortgage')
-  const [newLoanAmount, setNewLoanAmount] = useState('')
-  const [newLoanRate, setNewLoanRate] = useState('4.0')
-  const [newLoanTerm, setNewLoanTerm] = useState('30')
-  const [newLoanRepayment, setNewLoanRepayment] = useState<RepaymentMethod>('equalPayment')
-  const [rateType, setRateType] = useState<RateType>('variable')
-  const [location, setLocation] = useState<Location>('capital')
-
-  // 기존 대출
-  const [existingLoans, setExistingLoans] = useState<ExistingLoan[]>([])
-
-  // 결과
-  const [result, setResult] = useState<DsrResult | null>(null)
-
-  // URL 파라미터 동기화 (읽기)
   useEffect(() => {
-    const income = searchParams.get('income')
-    const amount = searchParams.get('amount')
-    const rate = searchParams.get('rate')
-    const term = searchParams.get('term')
-    const ltype = searchParams.get('ltype')
-    const repay = searchParams.get('repay')
-    const rt = searchParams.get('rt')
-    const loc = searchParams.get('loc')
-
-    if (income) setAnnualIncome(formatNumber(income))
-    if (amount) setNewLoanAmount(formatNumber(amount))
-    if (rate) setNewLoanRate(rate)
-    if (term) setNewLoanTerm(term)
-    if (ltype && ['mortgage', 'credit', 'carInstallment'].includes(ltype)) {
-      setNewLoanType(ltype as NewLoanType)
+    const q = new URLSearchParams()
+    q.set('inc', String(income))
+    if (sector !== 'bank') q.set('sec', sector)
+    if (kind !== 'mortgage') q.set('k', kind)
+    q.set('a', String(amount))
+    q.set('r', String(rate))
+    if (kind === 'mortgage') {
+      q.set('y', String(years))
+      if (method !== 'equalPayment') q.set('m', method)
+      if (region !== 'capital') q.set('reg', region)
     }
-    if (repay && ['equalPayment', 'equalPrincipal', 'bullet'].includes(repay)) {
-      setNewLoanRepayment(repay as RepaymentMethod)
+    if (rateType !== 'variable') q.set('rt', rateType)
+    if (rateType === 'mixed' || rateType === 'periodic') q.set('fy', String(fixedYears))
+    q.set('ex', encodeEx(ex))
+    window.history.replaceState(null, '', `?${q}`)
+  }, [income, sector, kind, amount, rate, years, method, rateType, fixedYears, region, ex])
+
+  const changeKind = (k: 'mortgage' | 'credit') => {
+    if (k === kind) return
+    setKind(k)
+    if (k === 'credit') { setAmount(50_000_000); setRate(5); if (rateType === 'mixed' || rateType === 'periodic') setRateType('variable') }
+    else { setAmount(300_000_000); setRate(4) }
+  }
+  // 수도권·규제지역 주담대 만기 30년 상한 (지역 변경·URL 입력 모두)
+  useEffect(() => { if (region === 'capital' && years > CAPITAL_MAX_TERM) setYears(CAPITAL_MAX_TERM) }, [region, years])
+  const updEx = (i: number, patch: Partial<Loan>) => setEx((ls) => ls.map((l, j) => (j === i ? { ...l, ...patch } : l)))
+
+  const cap = DSR_CAP[sector]
+  const spec: NewLoanSpec = { kind, rate, years: kind === 'credit' ? 5 : years, method, rateType, fixedYears, region }
+  const exAnnual = existingAnnual(ex)
+  const limit = maxNewLoan(income, cap, ex, spec, true)
+  const limitPlain = maxNewLoan(income, cap, ex, spec, false)
+  const withLoan = newLoanAnnual(spec, amount, ex, true)
+  const withLoanPlain = newLoanAnnual(spec, amount, ex, false)
+  const dsrNow = dsr(income, exAnnual)
+  const dsrWith = dsr(income, exAnnual + withLoan.annual)
+  const dsrWithPlain = dsr(income, exAnnual + withLoanPlain.annual)
+  const addAtLimit = stressAdd(spec, ex.filter((l) => l.kind === 'credit' || l.kind === 'revolving').reduce((s, l) => s + l.amount, 0) + limit)
+  const regCap = regulatoryCap(spec, income)
+  const totalDebt = ex.filter((l) => l.kind !== 'jeonse' || l.counted).reduce((s, l) => s + l.amount, 0) + amount
+  const kindLabel = t(`form.kinds.${kind}`)
+  const sectorLabel = t(`form.sectors.${sector}`)
+  const won = t('units.won')
+
+  const compare = SECTORS.map((s) => ({ s, plain: maxNewLoan(income, DSR_CAP[s], ex, spec, false), stress: maxNewLoan(income, DSR_CAP[s], ex, spec, true) }))
+  const rtList: RateType[] = kind === 'credit' ? ['variable', 'fixed'] : RATE_TYPES
+  const byRateType = rtList.map((rt) => {
+    const s2 = { ...spec, rateType: rt }
+    return { rt, add: kind === 'credit' ? stressAdd(s2, Infinity) : stressAdd(s2), limit: maxNewLoan(income, cap, ex, s2, true) }
+  })
+  const chart = useMemo(() => {
+    const pts = []
+    for (let inc = 20_000_000; inc <= 200_000_000; inc += 5_000_000) {
+      pts.push({ inc: inc / MAN, plain: maxNewLoan(inc, cap, ex, spec, false) / EOK, stress: maxNewLoan(inc, cap, ex, spec, true) / EOK })
     }
-    if (rt && ['variable', 'mixed', 'periodic', 'fixed'].includes(rt)) {
-      setRateType(rt as RateType)
-    }
-    if (loc && ['capital', 'nonCapital'].includes(loc)) {
-      setLocation(loc as Location)
-    }
-  }, [searchParams])
+    return pts
+  }, [cap, ex, kind, rate, years, method, rateType, fixedYears, region]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // URL 파라미터 동기화 (쓰기)
-  const updateURL = useCallback(() => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('income', annualIncome.replace(/,/g, ''))
-    url.searchParams.set('amount', newLoanAmount.replace(/,/g, ''))
-    url.searchParams.set('rate', newLoanRate)
-    url.searchParams.set('term', newLoanTerm)
-    url.searchParams.set('ltype', newLoanType)
-    url.searchParams.set('repay', newLoanRepayment)
-    url.searchParams.set('rt', rateType)
-    url.searchParams.set('loc', location)
-    window.history.replaceState({}, '', url)
-  }, [annualIncome, newLoanAmount, newLoanRate, newLoanTerm, newLoanType, newLoanRepayment, rateType, location])
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const lbl = 'block text-sm font-medium text-body mb-2'
 
-  // 기존 대출 추가
-  const addExistingLoan = useCallback(() => {
-    setExistingLoans(prev => [
-      ...prev,
-      {
-        id: nextLoanId++,
-        type: 'credit',
-        balance: '',
-        rate: '5.0',
-        remainingTerm: '5',
-        repayment: 'equalPayment',
-      },
-    ])
-  }, [])
+  const money = (id: string, label: string, value: number, set: (v: number) => void, quick: number[], hint?: string) => (
+    <div>
+      <label htmlFor={id} className={lbl}>{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="numeric" value={value ? value.toLocaleString('ko-KR') : ''}
+          onChange={(e) => set(Math.min(parseNum(e.target.value), 100 * EOK))}
+          className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+        />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{won}</span>
+      </div>
+      <div className="flex items-center justify-between mt-1.5 gap-2">
+        <span className="text-xs text-muted">{eokMan(value)}{won}{hint ? ` · ${hint}` : ''}</span>
+        <div className="flex gap-1">
+          {quick.map((q) => (
+            <button key={q} type="button" onClick={() => set(value + q)} className="px-2 py-1 rounded-lg bg-soft text-xs text-body hover:bg-subtle">+{eokMan(q)}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+  const rateInput = (id: string, label: string, value: number, set: (v: number) => void) => (
+    <div>
+      <label htmlFor={id} className={lbl}>{label}</label>
+      <div className="relative">
+        <input id={id} type="number" step="0.1" min="0" max="30" value={value} onChange={(e) => set(Math.min(30, Math.max(0, parseFloat(e.target.value) || 0)))} className="ui-field w-full px-4 py-3 pr-10 tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
+      </div>
+    </div>
+  )
 
-  // 기존 대출 삭제
-  const removeExistingLoan = useCallback((id: number) => {
-    setExistingLoans(prev => prev.filter(loan => loan.id !== id))
-  }, [])
-
-  // 기존 대출 수정
-  const updateExistingLoan = useCallback((id: number, field: keyof ExistingLoan, value: string) => {
-    setExistingLoans(prev =>
-      prev.map(loan => {
-        if (loan.id !== id) return loan
-        const updated = { ...loan, [field]: value }
-        // 신용대출, 카드론은 기간 강제
-        if (field === 'type') {
-          if (value === 'credit' || value === 'revolving') {
-            updated.remainingTerm = '5'
-            updated.repayment = 'equalPayment'
-          } else if (value === 'cardLoan') {
-            updated.remainingTerm = '3'
-            updated.repayment = 'equalPayment'
-          }
-        }
-        return updated
-      })
-    )
-  }, [])
-
-  // 스트레스 가산금리 계산
-  const getStressAdditionalRate = useCallback((): number => {
-    let additional = STRESS_RATE[rateType]
-    // 비수도권 주담대: 한시 할인
-    if (location === 'nonCapital' && newLoanType === 'mortgage') {
-      additional = Math.max(0, additional - NON_CAPITAL_MORTGAGE_DISCOUNT)
-    }
-    return additional
-  }, [rateType, location, newLoanType])
-
-  // DSR 계산
-  const calculate = useCallback(() => {
-    const income = parseNumber(annualIncome)
-    const loanAmount = parseNumber(newLoanAmount)
-    const rate = parseFloat(newLoanRate) || 0
-    const term = parseInt(newLoanTerm) || 0
-
-    if (income <= 0 || loanAmount <= 0) return
-
-    // 신규 대출 연간 원리금
-    const newLoanAnnual = calcAnnualRepayment(loanAmount, rate, term, newLoanRepayment, newLoanType)
-
-    // 기존 대출 연간 원리금
-    const existingLoansAnnual: LoanAnnualRepayment[] = existingLoans.map((loan, idx) => {
-      const balance = parseNumber(loan.balance)
-      const loanRate = parseFloat(loan.rate) || 0
-      const remainingTerm = parseInt(loan.remainingTerm) || 1
-      const annual = calcAnnualRepayment(balance, loanRate, remainingTerm, loan.repayment, loan.type)
-
-      const typeLabels: Record<ExistingLoanType, string> = {
-        mortgage: t('existing.types.mortgage'),
-        credit: t('existing.types.credit'),
-        revolving: t('existing.types.revolving'),
-        cardLoan: t('existing.types.cardLoan'),
-        carInstallment: t('existing.types.carInstallment'),
-      }
-
-      return {
-        label: `${typeLabels[loan.type]} ${idx + 1}`,
-        annual,
-      }
-    })
-
-    const existingTotal = existingLoansAnnual.reduce((sum, l) => sum + l.annual, 0)
-    const totalAnnual = newLoanAnnual + existingTotal
-
-    // 기본 DSR
-    const dsr = (totalAnnual / income) * 100
-
-    // 스트레스 DSR
-    const stressAdditional = getStressAdditionalRate()
-    const stressRate = rate + stressAdditional
-    const stressNewLoanAnnual = calcAnnualRepayment(loanAmount, stressRate, term, newLoanRepayment, newLoanType)
-    const stressTotalAnnual = stressNewLoanAnnual + existingTotal
-    const stressDsr = (stressTotalAnnual / income) * 100
-
-    // 대출한도 역산 (DSR 40% 기준, 스트레스 가산 후 금리 적용)
-    const availableAnnual = income * (DSR_THRESHOLD / 100) - existingTotal
-    const maxAdditionalLoan = calcMaxLoan(availableAnnual, stressRate, term)
-
-    // 스트레스 기준 한도
-    const stressMaxLoan = calcMaxLoan(availableAnnual, stressRate, term)
-
-    setResult({
-      dsr,
-      newLoanAnnual,
-      existingLoansAnnual,
-      totalAnnual,
-      maxAdditionalLoan: Math.max(0, maxAdditionalLoan),
-      stressDsr,
-      stressRate,
-      stressAdditional,
-      stressMaxLoan: Math.max(0, stressMaxLoan),
-    })
-
-    updateURL()
-  }, [annualIncome, newLoanAmount, newLoanRate, newLoanTerm, newLoanRepayment, newLoanType, existingLoans, getStressAdditionalRate, updateURL, t])
-
-  // 초기화
-  const handleReset = useCallback(() => {
-    setAnnualIncome('')
-    setNewLoanAmount('')
-    setNewLoanRate('4.0')
-    setNewLoanTerm('30')
-    setNewLoanType('mortgage')
-    setNewLoanRepayment('equalPayment')
-    setRateType('variable')
-    setLocation('capital')
-    setExistingLoans([])
-    setResult(null)
-    const url = new URL(window.location.href)
-    url.search = ''
-    window.history.replaceState({}, '', url)
-  }, [])
-
-  // 기간 강제 여부
-  const isTermForced = (type: ExistingLoanType): boolean => {
-    return type === 'credit' || type === 'revolving' || type === 'cardLoan'
-  }
-
-  const getForcedTermLabel = (type: ExistingLoanType): string => {
-    if (type === 'credit' || type === 'revolving') return `5${t('existing.termUnit')} (${t('existing.forcedTerm')})`
-    if (type === 'cardLoan') return `3${t('existing.termUnit')} (${t('existing.forcedTerm')})`
-    return ''
-  }
-
-  // DSR 색상
-  const getDsrColor = (dsr: number): string => {
-    if (dsr <= 40) return 'bg-green-500'
-    if (dsr <= 50) return 'bg-yellow-500'
-    return 'bg-red-500'
-  }
-
-  const getDsrTextColor = (dsr: number): string => {
-    if (dsr <= 40) return 'text-green-600 dark:text-green-400'
-    if (dsr <= 50) return 'text-yellow-600 dark:text-yellow-400'
-    return 'text-red-600 dark:text-red-400'
-  }
-
-  const getDsrLabel = (dsr: number): string => {
-    if (dsr <= 40) return t('result.safe')
-    if (dsr <= 50) return t('result.caution')
-    return t('result.danger')
-  }
-
-  const getDsrDesc = (dsr: number): string => {
-    if (dsr <= 40) return t('result.safeDesc')
-    if (dsr <= 50) return t('result.cautionDesc')
-    return t('result.dangerDesc')
-  }
-
-  // ── 입력 핸들러 (숫자 쉼표 포맷) ──
-
-  const handleIncomeChange = (value: string) => setAnnualIncome(formatNumber(value))
-  const handleAmountChange = (value: string) => setNewLoanAmount(formatNumber(value))
-
-  // ── 셀렉트 옵션 ──
-
-  const newLoanTypeOptions: { value: NewLoanType; label: string }[] = [
-    { value: 'mortgage', label: t('newLoan.types.mortgage') },
-    { value: 'credit', label: t('newLoan.types.credit') },
-    { value: 'carInstallment', label: t('newLoan.types.carInstallment') },
-  ]
-
-  const existingLoanTypeOptions: { value: ExistingLoanType; label: string }[] = [
-    { value: 'mortgage', label: t('existing.types.mortgage') },
-    { value: 'credit', label: t('existing.types.credit') },
-    { value: 'revolving', label: t('existing.types.revolving') },
-    { value: 'cardLoan', label: t('existing.types.cardLoan') },
-    { value: 'carInstallment', label: t('existing.types.carInstallment') },
-  ]
-
-  const repaymentOptions: { value: RepaymentMethod; label: string }[] = [
-    { value: 'equalPayment', label: t('newLoan.repayment.equalPayment') },
-    { value: 'equalPrincipal', label: t('newLoan.repayment.equalPrincipal') },
-    { value: 'bullet', label: t('newLoan.repayment.bullet') },
-  ]
-
-  const rateTypeOptions: { value: RateType; label: string }[] = [
-    { value: 'variable', label: t('newLoan.rateTypes.variable') },
-    { value: 'mixed', label: t('newLoan.rateTypes.mixed') },
-    { value: 'periodic', label: t('newLoan.rateTypes.periodic') },
-    { value: 'fixed', label: t('newLoan.rateTypes.fixed') },
-  ]
-
-  const locationOptions: { value: Location; label: string }[] = [
-    { value: 'capital', label: t('newLoan.locations.capital') },
-    { value: 'nonCapital', label: t('newLoan.locations.nonCapital') },
-  ]
-
-  const inputClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
-  const selectClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
-  const labelClass = 'block text-sm font-medium text-body mb-1'
+  const faq = t.raw('faq.items') as { q: string; a: string }[]
+  const sources = t.raw('sources.items') as { label: string; url: string }[]
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('subtitle')}</p>
       </div>
 
-      {/* 메인 그리드 */}
-      <div className="grid lg:grid-cols-5 gap-6">
-        {/* ── 왼쪽: 입력 (2/5) ── */}
-        <div className="lg:col-span-2 space-y-6">
-
-          {/* 소득 정보 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              {t('income.title')}
-            </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className={labelClass}>{t('income.annual')}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  className={inputClass}
-                  placeholder={t('income.placeholder')}
-                  value={annualIncome}
-                  onChange={e => handleIncomeChange(e.target.value)}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('income.unit')}</span>
+              {money('dsr-inc', t('form.income'), income, setIncome, [], t('form.incomeHint'))}
+              <input
+                type="range" min={20_000_000} max={200_000_000} step={1_000_000} value={Math.min(Math.max(income, 20_000_000), 200_000_000)}
+                onChange={(e) => setIncome(Number(e.target.value))} aria-label={t('form.income')}
+                className="w-full mt-2 accent-[var(--primary)]"
+              />
+            </div>
+            <div>
+              <p className={lbl}>{t('form.sector')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {SECTORS.map((s) => <button key={s} type="button" onClick={() => setSector(s)} className={seg(sector === s)}>{t(`form.sectors.${s}`)}</button>)}
               </div>
             </div>
           </div>
 
-          {/* 신규 대출 정보 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              {t('newLoan.title')}
-            </h2>
-            <div className="space-y-4">
-              {/* 대출 유형 */}
-              <div>
-                <label className={labelClass}>{t('newLoan.type')}</label>
-                <select className={selectClass} value={newLoanType} onChange={e => setNewLoanType(e.target.value as NewLoanType)}>
-                  {newLoanTypeOptions.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 대출 금액 */}
-              <div>
-                <label className={labelClass}>{t('newLoan.amount')}</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    className={inputClass}
-                    placeholder={t('newLoan.amountPlaceholder')}
-                    value={newLoanAmount}
-                    onChange={e => handleAmountChange(e.target.value)}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('income.unit')}</span>
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('form.newTitle')}</h2>
+            <div className="grid grid-cols-2 gap-2" role="tablist">
+              {KINDS.map((k) => <button key={k} type="button" role="tab" aria-selected={kind === k} onClick={() => changeKind(k)} className={seg(kind === k)}>{t(`form.kinds.${k}`)}</button>)}
+            </div>
+            {money('dsr-amt', t('form.amount'), amount, setAmount, kind === 'mortgage' ? [1_000 * MAN, EOK] : [1_000 * MAN])}
+            {rateInput('dsr-rate', t('form.rate'), rate, setRate)}
+            {kind === 'mortgage' ? (
+              <>
+                <div>
+                  <p className={lbl}>{t('form.region')}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {REGIONS.map((r) => <button key={r} type="button" onClick={() => setRegion(r)} className={seg(region === r)}>{t(`form.regions.${r}`)}</button>)}
+                  </div>
                 </div>
-              </div>
-
-              {/* 금리 */}
-              <div>
-                <label className={labelClass}>{t('newLoan.rate')}</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="30"
-                    className={inputClass}
-                    placeholder={t('newLoan.ratePlaceholder')}
-                    value={newLoanRate}
-                    onChange={e => setNewLoanRate(e.target.value)}
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">%</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="dsr-years" className={lbl}>{t('form.years')}</label>
+                    <select id="dsr-years" value={years} onChange={(e) => { const y = Number(e.target.value); setYears(y); if (fixedYears >= y) setFixedYears(5) }} className="ui-field w-full px-3 py-3">
+                      {TERMS.filter((y) => region === 'local' || y <= CAPITAL_MAX_TERM).map((y) => <option key={y} value={y}>{y}{t('units.year')}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="dsr-method" className={lbl}>{t('form.method')}</label>
+                    <select id="dsr-method" value={method} onChange={(e) => setMethod(e.target.value as Method)} className="ui-field w-full px-3 py-3">
+                      {METHODS.map((m) => <option key={m} value={m}>{t(`form.methods.${m}`)}</option>)}
+                    </select>
+                  </div>
                 </div>
+                {region === 'capital' && <p className="text-xs text-muted -mt-2">{t('form.capitalTerm')}</p>}
+              </>
+            ) : (
+              <p className="text-xs text-muted">{t('form.creditBasis')}</p>
+            )}
+            <div>
+              <p className={lbl}>{t('form.rateType')}</p>
+              <div className={`grid gap-2 ${kind === 'mortgage' ? 'grid-cols-4' : 'grid-cols-2'}`}>
+                {(kind === 'mortgage' ? RATE_TYPES : (['variable', 'fixed'] as RateType[])).map((rt) => (
+                  <button key={rt} type="button" onClick={() => setRateType(rt)} className={seg(rateType === rt)}>{t(`form.rateTypes.${rt}`)}</button>
+                ))}
               </div>
-
-              {/* 대출 기간 */}
-              <div>
-                <label className={labelClass}>{t('newLoan.term')}</label>
-                <div className="relative">
-                  <select className={selectClass} value={newLoanTerm} onChange={e => setNewLoanTerm(e.target.value)}>
-                    {[1, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40].map(y => (
-                      <option key={y} value={String(y)}>{y}{t('newLoan.termUnit')}</option>
-                    ))}
+              {(rateType === 'mixed' || rateType === 'periodic') && kind === 'mortgage' && (
+                <div className="mt-3">
+                  <label htmlFor="dsr-fy" className={lbl}>{t(`form.fixedYears.${rateType}`)}</label>
+                  <select id="dsr-fy" value={fixedYears} onChange={(e) => setFixedYears(Number(e.target.value))} className="ui-field w-full px-3 py-3">
+                    {FIXED_YEARS.filter((f) => f < years).map((f) => <option key={f} value={f}>{f}{t('units.year')}</option>)}
                   </select>
                 </div>
-              </div>
-
-              {/* 상환 방식 */}
-              <div>
-                <label className={labelClass}>{t('newLoan.repayment')}</label>
-                <select className={selectClass} value={newLoanRepayment} onChange={e => setNewLoanRepayment(e.target.value as RepaymentMethod)}>
-                  {repaymentOptions.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 금리 유형 (스트레스 DSR용) */}
-              <div>
-                <label className={labelClass}>{t('newLoan.rateType')}</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {rateTypeOptions.map(o => (
-                    <button
-                      key={o.value}
-                      type="button"
-                      onClick={() => setRateType(o.value)}
-                      className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
-                        rateType === o.value
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-field text-body border-line-strong hover:bg-gray-50 dark:hover:bg-gray-600'
-                      }`}
-                    >
-                      {o.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* 소재지 (스트레스 DSR용) */}
-              <div>
-                <label className={labelClass}>{t('newLoan.location')}</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {locationOptions.map(o => (
-                    <button
-                      key={o.value}
-                      type="button"
-                      onClick={() => setLocation(o.value)}
-                      className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
-                        location === o.value
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-field text-body border-line-strong hover:bg-gray-50 dark:hover:bg-gray-600'
-                      }`}
-                    >
-                      {o.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
+              <p className="text-xs text-muted mt-1.5">
+                {t('form.stressHint', { add: rateStr(stressAdd(spec, Infinity)), rate: rateStr(rate + stressAdd(spec, Infinity)) })}
+                {kind === 'credit' && ` ${t('form.creditStress')}`}
+                {kind === 'mortgage' && region === 'local' && ` ${t('form.localStress')}`}
+              </p>
             </div>
           </div>
 
           {/* 기존 대출 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-fg">
-                {t('existing.title')}
-              </h2>
-              <button
-                type="button"
-                onClick={addExistingLoan}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm bg-subtle text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                {t('existing.add')}
+          <div className="ui-card p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-fg">{t('ex.title')}</h2>
+              <button type="button" onClick={() => setEx((ls) => [...ls, { kind: 'credit', amount: 10_000_000, rate: 5, years: 5, method: 'equalPayment' }])} disabled={ex.length >= 10} className="ui-btn-soft px-3 py-1.5 text-sm inline-flex items-center gap-1">
+                <Plus className="w-4 h-4" />{t('ex.add')}
               </button>
             </div>
+            {ex.length === 0 && <p className="text-sm text-muted">{t('ex.empty')}</p>}
+            {ex.map((l, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <select aria-label={t('ex.kind')} value={l.kind} onChange={(e) => updEx(i, { kind: e.target.value as LoanKind })} className="ui-field flex-1 px-3 py-2 text-sm">
+                    {EX_KINDS.map((k) => <option key={k} value={k}>{t(`ex.kinds.${k}`)}</option>)}
+                  </select>
+                  <button type="button" onClick={() => setEx((ls) => ls.filter((_, j) => j !== i))} aria-label={t('ex.remove')} className="p-2 rounded-lg text-muted hover:bg-soft">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="col-span-2">
+                    <label htmlFor={`dsr-ex-a${i}`} className="block text-xs text-muted mb-1">{t(l.kind === 'revolving' ? 'ex.limit' : 'ex.amount')}</label>
+                    <input id={`dsr-ex-a${i}`} type="text" inputMode="numeric" value={l.amount ? l.amount.toLocaleString('ko-KR') : ''} onChange={(e) => updEx(i, { amount: Math.min(parseNum(e.target.value), 100 * EOK) })} className="ui-field w-full px-3 py-2 text-sm tabular-nums" />
+                  </div>
+                  <div>
+                    <label htmlFor={`dsr-ex-r${i}`} className="block text-xs text-muted mb-1">{t('ex.rate')}</label>
+                    <input id={`dsr-ex-r${i}`} type="number" step="0.1" min="0" max="30" value={l.rate} onChange={(e) => updEx(i, { rate: Math.min(30, Math.max(0, parseFloat(e.target.value) || 0)) })} className="ui-field w-full px-3 py-2 text-sm tabular-nums" />
+                  </div>
+                  {(l.kind === 'mortgage' || l.kind === 'installment') && (
+                    <div>
+                      <label htmlFor={`dsr-ex-y${i}`} className="block text-xs text-muted mb-1">{t('ex.years')}</label>
+                      <input id={`dsr-ex-y${i}`} type="number" min="1" max="50" value={l.years} onChange={(e) => updEx(i, { years: Math.min(50, Math.max(1, parseInt(e.target.value) || 1)) })} className="ui-field w-full px-3 py-2 text-sm tabular-nums" />
+                    </div>
+                  )}
+                  {l.kind === 'mortgage' && (
+                    <select aria-label={t('form.method')} value={l.method ?? 'equalPayment'} onChange={(e) => updEx(i, { method: e.target.value as Method })} className="ui-field col-span-2 px-3 py-2 text-sm">
+                      {METHODS.map((m) => <option key={m} value={m}>{t(`form.methods.${m}`)}</option>)}
+                    </select>
+                  )}
+                </div>
+                {l.kind === 'jeonse' && (
+                  <label className="flex items-start gap-2 text-xs text-body">
+                    <input type="checkbox" checked={!!l.counted} onChange={(e) => updEx(i, { counted: e.target.checked })} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+                    {t('ex.jeonseCounted')}
+                  </label>
+                )}
+                <p className="text-xs text-muted flex justify-between gap-2">
+                  <span>{t(`ex.basis.${l.kind}`)}</span>
+                  <span className="tabular-nums text-body shrink-0">{t('ex.annual', { amount: eokMan(annualRepay(l)) })}</span>
+                </p>
+              </div>
+            ))}
+            {ex.length > 0 && <p className="text-xs text-muted">{t('ex.stressTip')}</p>}
+          </div>
+        </div>
 
-            {existingLoans.length === 0 && (
-              <p className="text-sm text-faint text-center py-4">
-                {t('existing.add')}
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <p className="text-sm text-muted">{t('res.limitLabel', { sector: sectorLabel, kind: kindLabel })}</p>
+              {limit > 0 ? (
+                <>
+                  <p className="text-3xl font-bold text-fg tabular-nums mt-1">{eokMan(limit)}{won}</p>
+                  <p className="text-sm text-sub mt-1">
+                    {t('res.stressSub', { add: rateStr(addAtLimit), rate: rateStr(rate + addAtLimit) })}
+                    {limitPlain > limit && <span className="text-muted"> · {t('res.noStress', { amount: eokMan(limitPlain), diff: eokMan(limitPlain - limit) })}</span>}
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg font-semibold text-amber-700 dark:text-amber-400 mt-1">{t('res.noRoom', { cap })}</p>
+              )}
+            </div>
+
+            {regCap !== null && limit > regCap && (
+              <p className="bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300 rounded-2xl p-4 text-sm">
+                {t(kind === 'credit' ? 'res.regCapCredit' : 'res.regCapMortgage', { amount: eokMan(regCap) })}
               </p>
             )}
 
-            <div className="space-y-4">
-              {existingLoans.map((loan, idx) => (
-                <div key={loan.id} className="border border-line rounded-lg p-4 relative">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-body">
-                      {t('existing.loanLabel')} {idx + 1}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeExistingLoan(loan.id)}
-                      className="text-red-400 hover:text-red-600 transition-colors"
-                      aria-label={t('existing.remove')}
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+            {/* DSR 게이지 */}
+            <div className="space-y-3">
+              {[
+                { k: 'now', label: t('res.dsrNow'), v: dsrNow },
+                { k: 'with', label: t('res.dsrWith', { amount: eokMan(amount), kind: kindLabel }), v: dsrWith },
+              ].map((g) => (
+                <div key={g.k}>
+                  <div className="flex items-baseline justify-between mb-1.5">
+                    <span className="text-sm text-body">{g.label}</span>
+                    <span className={`text-lg font-bold tabular-nums ${g.v > cap ? 'text-amber-700 dark:text-amber-400' : 'text-fg'}`}>{pct(g.v)}</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* 유형 */}
-                    <div className="col-span-2">
-                      <label className={labelClass}>{t('newLoan.type')}</label>
-                      <select
-                        className={selectClass}
-                        value={loan.type}
-                        onChange={e => updateExistingLoan(loan.id, 'type', e.target.value)}
-                      >
-                        {existingLoanTypeOptions.map(o => (
-                          <option key={o.value} value={o.value}>{o.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                    {/* 잔액 */}
-                    <div className="col-span-2">
-                      <label className={labelClass}>{t('existing.balance')}</label>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        className={inputClass}
-                        placeholder={t('existing.balancePlaceholder')}
-                        value={loan.balance}
-                        onChange={e => updateExistingLoan(loan.id, 'balance', formatNumber(e.target.value))}
-                      />
-                    </div>
-                    {/* 금리 */}
-                    <div>
-                      <label className={labelClass}>{t('existing.rate')}</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        min="0"
-                        max="30"
-                        className={inputClass}
-                        placeholder={t('existing.ratePlaceholder')}
-                        value={loan.rate}
-                        onChange={e => updateExistingLoan(loan.id, 'rate', e.target.value)}
-                      />
-                    </div>
-                    {/* 잔여 기간 */}
-                    <div>
-                      <label className={labelClass}>{t('existing.remainingTerm')}</label>
-                      {isTermForced(loan.type) ? (
-                        <div className="px-3 py-2 text-sm text-muted bg-gray-100 dark:bg-gray-600 rounded-lg">
-                          {getForcedTermLabel(loan.type)}
-                        </div>
-                      ) : (
-                        <div className="relative">
-                          <input
-                            type="number"
-                            min="1"
-                            max="50"
-                            className={inputClass}
-                            value={loan.remainingTerm}
-                            onChange={e => updateExistingLoan(loan.id, 'remainingTerm', e.target.value)}
-                          />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('existing.termUnit')}</span>
-                        </div>
-                      )}
-                    </div>
-                    {/* 상환 방식 (강제가 아닌 경우만) */}
-                    {!isTermForced(loan.type) && (
-                      <div className="col-span-2">
-                        <label className={labelClass}>{t('existing.repayment')}</label>
-                        <select
-                          className={selectClass}
-                          value={loan.repayment}
-                          onChange={e => updateExistingLoan(loan.id, 'repayment', e.target.value as RepaymentMethod)}
-                        >
-                          {repaymentOptions.map(o => (
-                            <option key={o.value} value={o.value}>{o.label}</option>
-                          ))}
-                        </select>
-                      </div>
-                    )}
+                  <div className="relative h-3 bg-track rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${g.v > cap ? 'bg-amber-500' : 'bg-primary'}`} style={{ width: `${Math.min(100, g.v)}%` }} />
+                    <div className="absolute top-0 h-3 w-0.5 bg-fg" style={{ left: `${cap}%` }} aria-hidden />
                   </div>
                 </div>
               ))}
+              <p className="text-xs text-muted">
+                {t(dsrWith > cap ? 'res.over' : 'res.under', { cap })} · {t('res.plainLine', { pct: pct(dsrWithPlain) })}
+              </p>
+              {totalDebt <= DSR_APPLY_OVER && <p className="text-xs text-muted">{t('res.notApplied')}</p>}
             </div>
+
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: t('share.label', { income: eokMan(income), sector: sectorLabel, kind: kindLabel }),
+                headline: `${eokMan(limit)}${won}`,
+                sub: t('res.stressSub', { add: rateStr(addAtLimit), rate: rateStr(rate + addAtLimit) }),
+                rows: [
+                  { label: t('res.dsrNow'), value: pct(dsrNow) },
+                  { label: t('cmp.plain'), value: `${eokMan(limitPlain)}${won}` },
+                  { label: t('bd.existing'), value: `${eokMan(exAnnual)}${won}` },
+                ],
+              }}
+              text={t('share.text', { income: eokMan(income), kind: kindLabel, amount: eokMan(limit) })}
+            />
           </div>
 
-          {/* 계산/초기화 버튼 */}
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={calculate}
-              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
-            >
-              <Calculator className="w-5 h-5" />
-              {t('calculate')}
-            </button>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
-            >
-              {t('reset')}
-            </button>
-          </div>
-        </div>
-
-        {/* ── 오른쪽: 결과 (3/5) ── */}
-        <div className="lg:col-span-3 space-y-6">
-          {result ? (
-            <>
-              {/* DSR 게이지 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4">
-                  {t('result.title')}
-                </h2>
-
-                <div className="text-center mb-6">
-                  <div className={`text-4xl font-bold ${getDsrTextColor(result.dsr)}`}>
-                    {result.dsr.toFixed(1)}%
-                  </div>
-                  <div className={`text-sm font-medium mt-1 ${getDsrTextColor(result.dsr)}`}>
-                    {getDsrLabel(result.dsr)}
-                  </div>
-                </div>
-
-                {/* 게이지 바 */}
-                <div className="relative mb-2">
-                  <div className="w-full h-6 bg-track rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-700 ease-out ${getDsrColor(result.dsr)}`}
-                      style={{ width: `${Math.min(100, result.dsr)}%` }}
-                    />
-                  </div>
-                  {/* 40% / 50% 마커 */}
-                  <div className="absolute top-0 left-[40%] h-6 w-px bg-gray-900 dark:bg-gray-100 opacity-50" />
-                  <div className="absolute top-0 left-[50%] h-6 w-px bg-gray-900 dark:bg-gray-100 opacity-50" />
-                </div>
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>0%</span>
-                  <span className="ml-[30%]">40%</span>
-                  <span>50%</span>
-                  <span>100%</span>
-                </div>
-
-                <p className="text-sm text-muted mt-4">{getDsrDesc(result.dsr)}</p>
-              </div>
-
-              {/* 연간 원리금 내역 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4">
-                  {t('result.annualRepaymentTitle')}
-                </h2>
-                <div className="space-y-3">
-                  {/* 신규 대출 */}
-                  <div className="flex justify-between items-center py-2 border-b border-line">
-                    <span className="text-sm text-sub">{t('result.newLoanLabel')}</span>
-                    <span className="text-sm font-semibold text-fg">{formatCurrency(Math.round(result.newLoanAnnual))}</span>
-                  </div>
-                  {/* 기존 대출들 */}
-                  {result.existingLoansAnnual.map((loan, idx) => (
-                    <div key={idx} className="flex justify-between items-center py-2 border-b border-line">
-                      <span className="text-sm text-sub">{loan.label}</span>
-                      <span className="text-sm font-semibold text-fg">{formatCurrency(Math.round(loan.annual))}</span>
-                    </div>
+          {/* 은행 vs 2금융권 · 금리 유형 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('cmp.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('cmp.desc')}</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    <th className="text-left font-medium py-2">{t('cmp.sector')}</th>
+                    <th className="text-right font-medium py-2">{t('cmp.plain')}</th>
+                    <th className="text-right font-medium py-2">{t('cmp.stress')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {compare.map((c) => (
+                    <tr key={c.s} className={`border-b border-line ${c.s === sector ? 'bg-primary-soft' : ''}`}>
+                      <td className={`py-2.5 pl-1 ${c.s === sector ? 'text-primary font-semibold' : 'text-body'}`}>{t(`form.sectors.${c.s}`)}</td>
+                      <td className="py-2.5 text-right tabular-nums text-sub">{eokMan(c.plain)}{won}</td>
+                      <td className="py-2.5 pr-1 text-right tabular-nums font-semibold text-fg">{eokMan(c.stress)}{won}</td>
+                    </tr>
                   ))}
-                  {/* 합계 */}
-                  <div className="flex justify-between items-center py-2 bg-subtle rounded-lg px-3">
-                    <span className="text-sm font-medium text-sub">{t('result.totalAnnual')}</span>
-                    <span className="text-sm font-bold text-sub">{formatCurrency(Math.round(result.totalAnnual))}</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 px-3">
-                    <span className="text-sm text-muted">{t('result.annualIncome')}</span>
-                    <span className="text-sm text-body">{formatCurrency(parseNumber(annualIncome))}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 대출한도 역산 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  {t('limit.title')}
-                </h2>
-                {result.maxAdditionalLoan > 0 ? (
-                  <div className="space-y-3">
-                    <div className="text-center bg-subtle rounded-xl p-6">
-                      <p className="text-sm text-green-600 dark:text-green-400 mb-1">{t('limit.maxAdditional')}</p>
-                      <p className="text-3xl font-bold text-sub">{formatCurrency(Math.round(result.maxAdditionalLoan))}</p>
-                      <p className="text-xs text-green-500 dark:text-green-400 mt-2">{t('limit.basedOn')}</p>
-                    </div>
-                    <div className="flex justify-between items-center py-2 px-3">
-                      <span className="text-sm text-muted">{t('limit.availableAnnual')}</span>
-                      <span className="text-sm font-medium text-body">
-                        {formatCurrency(Math.round(Math.max(0, parseNumber(annualIncome) * 0.4 - result.existingLoansAnnual.reduce((s, l) => s + l.annual, 0))))}
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center bg-red-50 dark:bg-red-900/20 rounded-xl p-6">
-                    <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
-                    <p className="text-sm text-red-600 dark:text-red-400">{t('limit.noRoom')}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* 스트레스 DSR */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-2 flex items-center gap-2">
-                  {t('stress.title')}
-                </h2>
-                <p className="text-xs text-muted mb-4">{t('stress.description')}</p>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.additionalRate')}</p>
-                    <p className="text-xl font-bold text-sub">+{result.stressAdditional.toFixed(2)}%p</p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.appliedRate')}</p>
-                    <p className="text-xl font-bold text-sub">{result.stressRate.toFixed(2)}%</p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultDsr')}</p>
-                    <p className={`text-xl font-bold ${getDsrTextColor(result.stressDsr)}`}>{result.stressDsr.toFixed(1)}%</p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultLimit')}</p>
-                    <p className="text-xl font-bold text-sub">{formatCurrency(Math.round(result.stressMaxLoan))}</p>
-                  </div>
-                </div>
-
-                {location === 'nonCapital' && newLoanType === 'mortgage' && (
-                  <p className="text-xs text-muted mt-3 flex items-start gap-1">
-                    <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    {t('stress.nonCapitalNote')}
-                  </p>
-                )}
-              </div>
-
-              {/* 면책문구 */}
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-1 flex items-center gap-1">
-                  {t('disclaimer.title')}
-                </h3>
-                <p className="text-xs text-yellow-700 dark:text-yellow-400 leading-relaxed">{t('disclaimer.text')}</p>
-              </div>
-            </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-faint">{t('description')}</p>
+                </tbody>
+              </table>
             </div>
-          )}
+            <h3 className="font-semibold text-fg pt-2">{t('rt.title')}</h3>
+            <div className={`grid grid-cols-2 gap-3 ${kind === 'mortgage' ? 'sm:grid-cols-4' : ''}`}>
+              {byRateType.map((b) => (
+                <button key={b.rt} type="button" onClick={() => setRateType(b.rt)} className={`text-left rounded-2xl p-4 ${b.rt === rateType ? 'bg-primary-soft' : 'bg-subtle hover:bg-soft'}`}>
+                  <p className={`text-xs ${b.rt === rateType ? 'text-primary' : 'text-muted'}`}>{t(`form.rateTypes.${b.rt}`)} · +{rateStr(b.add)}%p</p>
+                  <p className={`text-lg font-bold tabular-nums mt-1 ${b.rt === rateType ? 'text-primary' : 'text-fg'}`}>{eokMan(b.limit)}{won}</p>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-faint">{t(kind === 'credit' ? 'rt.noteCredit' : 'rt.note', { fy: fixedYears, years })}</p>
+          </div>
+
+          {/* 연소득별 한도 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('inc.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('inc.desc', { sector: sectorLabel })}</p>
+            <div className="h-64 mt-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                  <XAxis dataKey="inc" type="number" domain={[2000, 20000]} tickFormatter={(v: number) => eokMan(v * MAN)} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
+                  <YAxis tickFormatter={(v: number) => `${+v.toFixed(1)}억`} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={48} stroke="var(--line)" />
+                  <Tooltip
+                    labelFormatter={(v) => `${t('form.income')} ${eokMan(Number(v ?? 0) * MAN)}${won}`}
+                    formatter={(v, name) => [`${eokMan(Number(v ?? 0) * EOK)}${won}`, name === 'stress' ? t('cmp.stress') : t('cmp.plain')]}
+                  />
+                  <ReferenceLine x={income / MAN} stroke="var(--fg)" strokeDasharray="2 3" label={{ value: t('inc.now'), position: 'insideTopRight', fontSize: 10, fill: 'var(--fg)' }} />
+                  <Line type="monotone" dataKey="plain" stroke="var(--faint)" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="stress" stroke="var(--primary)" strokeWidth={2.5} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* 연간 원리금 내역 */}
+          <div className="ui-card p-6 space-y-3">
+            <h2 className="text-lg font-semibold text-fg">{t('bd.title')}</h2>
+            <div className="divide-y divide-line border-y border-line">
+              {ex.map((l, i) => (
+                <div key={i} className="flex items-center justify-between py-2.5 text-sm">
+                  <span className="text-body">{t(`ex.kinds.${l.kind}`)} {eokMan(l.amount)}{won}</span>
+                  <span className="tabular-nums text-fg">{Math.round(annualRepay(l)).toLocaleString('ko-KR')}{won}</span>
+                </div>
+              ))}
+              <div className="flex items-center justify-between py-2.5 text-sm">
+                <span className="text-body">{t('bd.newLoan', { kind: kindLabel, amount: eokMan(amount), rate: rateStr(rate + withLoan.add) })}</span>
+                <span className="tabular-nums text-fg">{Math.round(withLoan.annual).toLocaleString('ko-KR')}{won}</span>
+              </div>
+              <div className="flex items-center justify-between py-2.5 text-sm font-semibold">
+                <span className="text-fg">{t('bd.total')}</span>
+                <span className="tabular-nums text-fg">{Math.round(exAnnual + withLoan.annual).toLocaleString('ko-KR')}{won}</span>
+              </div>
+            </div>
+            <p className="text-sm text-sub tabular-nums">{t('bd.formula', { annual: eokMan(exAnnual + withLoan.annual), income: eokMan(income), pct: pct(dsrWith) })}</p>
+          </div>
+
+          <p className="text-xs text-faint">{t('disclaimer.text')}</p>
         </div>
       </div>
 
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* DSR이란? */}
-          <div>
-            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.whatIsDsr.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.whatIsDsr.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-1 flex-shrink-0">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(['basics', 'stress', 'calc', 'regs', 'raise', 'compare'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-sub">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-fg mb-3">{t('faq.title')}</h3>
+          <div className="divide-y divide-line border-y border-line">
+            {faq.map((f) => (
+              <details key={f.q} className="py-3">
+                <summary className="cursor-pointer text-sm font-medium text-body">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
           </div>
-          {/* 스트레스 DSR */}
-          <div>
-            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.stressDsr.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.stressDsr.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-purple-500 mt-1 flex-shrink-0">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* 팁 */}
-          <div>
-            <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-green-500 mt-1 flex-shrink-0">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+        </div>
+
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('sources.title')}</p>
+          <ul className="space-y-1">
+            {sources.map((s) => (
+              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">{t('sources.asOf')}</p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {LINKS.map((href) => <Link key={href} href={`/${href}/`} className="ui-btn-soft px-3 py-2 text-sm">{t(`links.${href}`)}</Link>)}
         </div>
       </div>
     </div>
