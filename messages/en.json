@@ -37234,6 +37234,265 @@
     }
   },
   "comprehensivePropertyTax": {
+    "u": {
+      "h1": "Korean Property Holding Tax Calculator 2026",
+      "subtitle": "Enter the official assessed (gongsi) price of your homes to get your 2026 annual holding tax: property tax (July/September) plus comprehensive real estate tax (December). Includes one-home credits, joint-ownership comparison and price scenarios.",
+      "houses": {
+        "title": "Homes owned",
+        "label": "Home {n} assessed price",
+        "short": "Home {n}",
+        "add": "Add home",
+        "remove": "Remove home {n}",
+        "max": "You can add up to 10 homes.",
+        "total": "Total assessed price ({n} homes)",
+        "hint": "Use the official assessed price, not the market price (look it up on realtyprice.kr). A partly owned home counts as one home."
+      },
+      "oneHouse": "One home per household",
+      "oneHouseHint": "The whole household owns only this home. Property tax ratio 43–45%, KRW 1.2B deduction and age/holding credits for the comprehensive tax.",
+      "multi": "With 2+ homes: 60% property tax ratio, KRW 900M deduction and regular rates.",
+      "multiHeavy": "With 3+ homes, the part of the tax base above KRW 1.2B is taxed at 2.0–5.0%.",
+      "owner": {
+        "label": "Ownership",
+        "single": "Sole",
+        "joint": "Joint with spouse"
+      },
+      "shareLabel": "Your share",
+      "shareHint": "Spouse share {other}%. The one-home special treatment uses the larger shareholder (either one if equal).",
+      "age": "Age (as of June 1, 2026)",
+      "ageUnit": "yrs",
+      "years": "Holding period",
+      "yearsUnit": "yrs",
+      "creditNow": "Credit {total} = age {e} + holding {h} (max 80%)",
+      "urban": "Home in an urban area",
+      "urbanHint": "Adds the urban-area property tax (0.14% of the tax base). Applies to most city apartments.",
+      "prev": "Last year's property + comprehensive tax (optional)",
+      "prevHint": "Roughly applies the 150% burden cap",
+      "result": {
+        "label": "Annual holding tax (property + comprehensive)",
+        "effective": "{rate}% of assessed price · about KRW {monthly} a month",
+        "property": "Property tax",
+        "propertyHint": "Incl. urban-area tax and local education tax, paid July & September",
+        "jongbu": "Comprehensive real estate tax",
+        "jongbuHint": "After property-tax offset and credits, paid in December",
+        "notJongbu": "No comprehensive tax: assessed price is within the KRW {deduction} deduction",
+        "nong": "Special tax for rural development",
+        "nongHint": "20% of the comprehensive tax, paid together",
+        "mode": {
+          "jointEach": "Joint ownership: separate KRW 900M deductions each come out lower, so they are used.",
+          "jointSpecial": "Joint ownership: applying the one-home special treatment (KRW 1.2B + credits) comes out lower, so it is used."
+        },
+        "capApplied": "The burden cap (150% of last year) reduced the comprehensive tax by KRW {amount}.",
+        "approx": "Property tax base caps, burden caps, the regional resource facility tax and reliefs are not modelled, so your bill may differ."
+      },
+      "share": {
+        "label": "Annual holding tax on a KRW {price} home",
+        "sub": "{n} home(s) · about KRW {monthly} a month",
+        "text": "KRW {price} home: annual holding tax KRW {tax}"
+      },
+      "schedule": {
+        "title": "When you pay",
+        "jul": "July 16–31",
+        "julWhat": "Half of property tax (local government)",
+        "julWhatAll": "All property tax (KRW 200K or less, paid at once)",
+        "sep": "September 16–30",
+        "sepWhat": "Other half of property tax",
+        "dec": "December 1–15",
+        "decWhat": "Comprehensive tax + rural special tax (NTS)",
+        "none": "None",
+        "split": "Because the comprehensive tax exceeds KRW 3M, KRW {amount} can be paid in installments by June 15 next year (no interest).",
+        "note": "Property tax is billed by the local government via Wetax; the comprehensive tax by the NTS via Hometax. Whether property tax of KRW 200K or less is billed all in July depends on local ordinance."
+      },
+      "links": {
+        "wetax": "Wetax (property tax)",
+        "wetaxUrl": "https://www.wetax.go.kr",
+        "hometax": "Hometax (comprehensive tax)",
+        "hometaxUrl": "https://www.hometax.go.kr",
+        "newWindow": "(opens in new window)"
+      },
+      "steps": {
+        "title": "How it is calculated",
+        "propertyTitle": "1. Property tax (per home)",
+        "propertyNote": "Tax base = assessed price × fair market value ratio. Progressive 0.1–0.4% (one-home households with price ≤ KRW 900M: 0.05–0.35%), urban-area tax 0.14%, local education tax = property tax × 20%.",
+        "specialRate": "Special rate",
+        "jongbuTitle": "2. Comprehensive real estate tax",
+        "general": "Regular",
+        "heavy": "3+ homes",
+        "col": {
+          "house": "Home",
+          "price": "Assessed",
+          "ratio": "Ratio",
+          "base": "Tax base",
+          "main": "Property tax",
+          "urban": "Urban",
+          "edu": "Education",
+          "item": "Item",
+          "calc": "Calculation",
+          "amount": "Amount (KRW)"
+        },
+        "j": {
+          "total": "Total assessed price",
+          "deduct": "Basic deduction",
+          "base": "Tax base",
+          "gross": "Calculated tax",
+          "prop": "Property tax offset",
+          "credit": "Age / holding credit",
+          "cap": "Burden cap",
+          "tax": "Comprehensive tax",
+          "nong": "Rural special tax"
+        },
+        "c": {
+          "total": "{n} home(s)",
+          "deduct": "KRW 900M",
+          "deductOne": "One home: KRW 1.2B",
+          "deductJoint": "KRW 900M each spouse",
+          "base": "(total − deduction) × 60%",
+          "gross": "{name} progressive rates from 0.5%",
+          "prop": "Property tax paid on the same tax base",
+          "credit": "Rate {rate} (max 80%)",
+          "cap": "Excess over 150% of last year",
+          "nong": "Comprehensive tax × 20%"
+        },
+        "jointNote": "Sum of both spouses calculated separately (shares {shares})."
+      },
+      "rates": {
+        "title": "Show comprehensive tax rates",
+        "base": "Tax base",
+        "general": "Up to 2 homes",
+        "heavy": "3+ homes",
+        "upTo": "Up to KRW {v}",
+        "over": "Over KRW {v}",
+        "propNote": "Property tax rates (on tax base): up to 60M 0.1%, 150M 0.15%, 300M 0.25%, above 0.4%. One-home (price ≤ KRW 900M): 0.05% / 0.1% / 0.2% / 0.35%."
+      },
+      "compare": {
+        "title": "Sole vs joint ownership",
+        "desc": "Compares owning the home alone with joint spouse ownership ({shares}) using separate KRW 900M deductions. Joint owners who apply for the one-home special treatment are taxed like sole owners.",
+        "solo": "Sole (or joint with special treatment)",
+        "jointEach": "Joint, separate deductions ({shares})",
+        "each9": "KRW 900M × 2",
+        "noCredit": "None",
+        "deduction": "Deduction",
+        "credit": "Credit",
+        "jongbu": "Comprehensive + rural tax",
+        "total": "Annual holding tax",
+        "best": "Lower",
+        "note": "Property tax is the same regardless of ownership (split by share). The joint one-home special treatment is applied for at the NTS each year from September 16–30 and continues while nothing changes. Per-person burden caps for joint owners are omitted here."
+      },
+      "scenario": {
+        "title": "What if the assessed price changes?",
+        "label": "Assessed price change",
+        "result": "Annual holding tax at {pct} (total KRW {price})",
+        "diff": "KRW {diff} vs now",
+        "split": "Property KRW {property} · comprehensive + rural KRW {jongbu}",
+        "note": "2026 apartment assessed prices kept the 69% realization rate and only reflected market moves: +9.16% nationwide, +18.67% in Seoul (March draft). Base caps and burden caps can make actual increases smaller."
+      },
+      "guide": {
+        "title": "Holding tax guide (2026)",
+        "basics": {
+          "title": "Basics",
+          "items": [
+            "Holding tax = property tax (local, July/September) + comprehensive real estate tax (national, December). Both are levied on whoever owns the home on June 1.",
+            "If the balance is paid on June 1 the buyer pays that year's tax; from June 2 the seller does.",
+            "Taxes use the official assessed price, not market price. Apartment prices are finalized at the end of April.",
+            "The rural special tax is 20% of the comprehensive tax. Property tax comes with the urban-area tax and local education tax."
+          ]
+        },
+        "property": {
+          "title": "Property tax",
+          "items": [
+            "Tax base = assessed price × ratio. For 2026, one-home households: 43% (≤ KRW 300M), 44% (≤ 600M), 45% (above); other homes 60%.",
+            "Progressive 0.1–0.4%. One-home households with assessed price ≤ KRW 900M get 0.05–0.35%.",
+            "Urban-area tax (0.14% of base) and local education tax (20% of property tax) are billed together. The building regional resource facility tax is not included.",
+            "Base caps and burden caps limit yearly increases, so after a big price jump your bill may be lower than this estimate.",
+            "Paid half in July (16–31) and half in September (16–30)."
+          ]
+        },
+        "jongbu": {
+          "title": "Comprehensive real estate tax",
+          "items": [
+            "Tax base = (total assessed price − KRW 900M) × 60%. One-home households deduct KRW 1.2B.",
+            "Rates: up to 2 homes 0.5–2.7%; with 3+ homes the same up to a KRW 1.2B base, then 2.0–5.0%.",
+            "Property tax already paid on the same base is subtracted (double-taxation offset).",
+            "One-home credits: age 60 20%, 65 30%, 70 40%; holding 5 yrs 20%, 10 yrs 40%, 15 yrs 50%; combined max 80%.",
+            "Burden cap: if this year's property + comprehensive tax exceeds 150% of last year's, the excess is removed from the comprehensive tax.",
+            "Paid December 1–15. Above KRW 3M, part can be paid in installments within six months."
+          ]
+        },
+        "tips": {
+          "title": "Good to know",
+          "items": [
+            "Joint spouse owners of one home can choose separate KRW 900M deductions or the one-home special treatment (KRW 1.2B + credits). The older the owner and the longer the holding, the better the special treatment.",
+            "Temporary two homes, inherited homes and low-priced regional homes can be treated as one home on application (not modelled here).",
+            "One-home owners aged 60+ or holding 5+ years who meet income limits can defer comprehensive tax above KRW 1M (collateral required).",
+            "If the assessed price looks too high, comment during the March–April review or file an objection after publication.",
+            "If your bill differs, check Wetax/Hometax details for base caps, burden caps and reliefs."
+          ]
+        },
+        "reform": {
+          "title": "Possible changes from 2027 (government proposal, under review)",
+          "body": "The 2026 tax reform proposal would raise the comprehensive tax fair market value ratio to 70% from 2027 (80% in 2028 for regulated areas and 3+ homes), raise the owner-occupied one-home deduction to KRW 1.4B, raise the KRW 600M–1.2B bracket from 1.0% to 1.3%, and base credits on actual residence. It does not apply to the December 2026 bill and may change in the National Assembly."
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When is the comprehensive tax billed and due?",
+            "a": "The NTS bills in late November and payment is due December 1–15. You can check and pay on Hometax; above KRW 3M part can be paid by June 15 next year."
+          },
+          {
+            "q": "Does a one-home owner with a KRW 1.2B assessed price pay comprehensive tax?",
+            "a": "No. One-home households deduct KRW 1.2B, so they pay only property tax. Joint spouse owners with separate deductions pay nothing while each share is KRW 900M or less (e.g. KRW 1.8B split 50:50)."
+          },
+          {
+            "q": "Isn't paying both taxes double taxation?",
+            "a": "That is why property tax paid on the same base is subtracted from the comprehensive tax — the 'property tax offset' line above."
+          },
+          {
+            "q": "My assessed price jumped but my property tax rose less.",
+            "a": "Property tax increases are limited by the base cap and burden cap. This calculator uses only this year's price, so your bill may be lower."
+          },
+          {
+            "q": "Is joint ownership always better?",
+            "a": "No. Separate deductions total KRW 1.8B but give no age/holding credits. Older or long-term owners may pay less with the one-home special treatment (KRW 1.2B + up to 80% credit), applied for each September 16–30. Check the comparison table."
+          },
+          {
+            "q": "Does it cover corporate-owned homes?",
+            "a": "No. Corporations get no deduction and pay a flat 2.7% (up to 2 homes) or 5.0% (3+ homes) with no credits or burden cap, so they are not covered."
+          }
+        ]
+      },
+      "related": {
+        "title": "Related calculators",
+        "acquisition": "Acquisition tax",
+        "capitalGains": "Capital gains tax",
+        "realEstate": "Real estate calculator",
+        "inheritance": "Inheritance & gift tax",
+        "healthInsurance": "Health insurance",
+        "brokerage": "Brokerage fee"
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "NTS — comprehensive real estate tax calculation flow",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7735&mi=2353"
+          },
+          {
+            "label": "Korea Law — Comprehensive Real Estate Holding Tax Act",
+            "url": "https://www.law.go.kr/법령/종합부동산세법"
+          },
+          {
+            "label": "Korea Law — Local Tax Act (property tax)",
+            "url": "https://www.law.go.kr/법령/지방세법"
+          },
+          {
+            "label": "Realty Price — assessed price lookup",
+            "url": "https://www.realtyprice.kr"
+          }
+        ],
+        "basis": "Estimate under laws in force for tax year 2026 (assessment date June 1, 2026). Check your Wetax/Hometax bill for the exact amount."
+      }
+    },
     "title": "Comprehensive Real Estate Tax Calculator 2025",
     "description": "Automatically calculate Korea's Comprehensive Real Estate Tax (종부세) for 2025. Check tax rates by taxpayer type, credits, burden ceiling, and farmland surtax step by step.",
     "taxpayerType": {
