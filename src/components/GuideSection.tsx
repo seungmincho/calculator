@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useId } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 interface GuideSectionProps {
   namespace: string
@@ -13,6 +12,7 @@ interface GuideSectionProps {
 export default function GuideSection({ namespace, defaultOpen = false }: GuideSectionProps) {
   const t = useTranslations(namespace)
   const [isOpen, setIsOpen] = useState(defaultOpen)
+  const panelId = useId()
 
   const whatIs = useMemo(() => {
     try {
@@ -102,24 +102,27 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
   if (!hasContent) return null
 
   return (
-    <div className={`${glassCard} ${glassInset} p-6`}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between"
-        aria-expanded={isOpen}
-      >
-        <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
+    <div className="ui-card p-6">
+      {/* 제목 안에 버튼(디스클로저 패턴) — 버튼 안 h2는 제목으로 인식되지 않음 */}
+      <h2 className="text-xl font-semibold text-fg">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full min-h-11 flex items-center justify-between gap-2 text-left rounded-lg"
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+        >
           {guideTitle}
-        </h2>
-        {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-faint" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-faint" />
-        )}
-      </button>
+          {isOpen ? (
+            <ChevronUp className="w-5 h-5 text-faint shrink-0" aria-hidden="true" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-faint shrink-0" aria-hidden="true" />
+          )}
+        </button>
+      </h2>
 
       {isOpen && (
-        <div className="mt-6 space-y-6">
+        <div id={panelId} className="mt-6 space-y-6">
           {whatIs && (
             <div>
               <h3 className="text-base font-bold text-fg mb-2">
