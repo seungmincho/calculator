@@ -161,7 +161,7 @@ export default function ParentalLeaveCalculator() {
 
             <div>
               <span className={label}>{both ? t('p.startFirst') : t('p.start')}</span>
-              <DatePicker value={start} onChange={setStart} />
+              <DatePicker label={both ? t('p.startFirst') : t('p.start')} value={start} onChange={setStart} />
             </div>
 
             {wageField('pl-mw', both ? t('p.wageOf', { who: t('p.mom') }) : t('p.wage'), momWage, setMomWage)}
@@ -179,7 +179,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
                 <div>
                   <span className={label}>{t('p.birth')}</span>
-                  <DatePicker value={birth} onChange={setBirth} />
+                  <DatePicker label={t('p.birth')} value={birth} onChange={setBirth} />
                   <p className="text-xs text-muted mt-1.5">{t('p.birthHint')}</p>
                 </div>
               </>

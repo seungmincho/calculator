@@ -157,11 +157,11 @@ export default function CapitalGainsTax() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <p className="text-sm font-medium text-body mb-1">{t('acqDate')}</p>
-                <DatePicker value={acqDate} onChange={setAcqDate} />
+                <DatePicker label={t('acqDate')} value={acqDate} onChange={setAcqDate} />
               </div>
               <div>
                 <p className="text-sm font-medium text-body mb-1">{t('saleDate')}</p>
-                <DatePicker value={saleDate} onChange={setSaleDate} />
+                <DatePicker label={t('saleDate')} value={saleDate} onChange={setSaleDate} />
               </div>
             </div>
             {holdLabel && <p className="text-sm text-sub -mt-2">{t('holdingPeriod')} <strong className="text-fg">{holdLabel}</strong></p>}
@@ -186,7 +186,7 @@ export default function CapitalGainsTax() {
                   <div className="bg-subtle rounded-2xl p-4 space-y-3">
                     <div>
                       <p className="text-sm font-medium text-body mb-1">{t('input.newAcqDate')}</p>
-                      <DatePicker value={newAcqDate} onChange={setNewAcqDate} />
+                      <DatePicker label={t('input.newAcqDate')} value={newAcqDate} onChange={setNewAcqDate} />
                     </div>
                     {check('cgt-na', newAdjusted, setNewAdjusted, t('input.newAdjusted'))}
                   </div>

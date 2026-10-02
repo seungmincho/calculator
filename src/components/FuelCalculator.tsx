@@ -992,6 +992,7 @@ const FuelCalculator = () => {
                   </label>
                   <div className="flex gap-2 items-start">
                     <DatePicker
+                      label={t('region.date')}
                       value={selectedDate}
                       onChange={(date) => {
                         setSelectedDate(date)

@@ -146,7 +146,7 @@ export default function UnemploymentBenefit() {
 
             <div>
               <span className={label}>{t('u.leave')}</span>
-              <DatePicker value={leave} onChange={setLeave} />
+              <DatePicker label={t('u.leave')} value={leave} onChange={setLeave} />
             </div>
 
             <div>

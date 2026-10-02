@@ -140,12 +140,12 @@ export default function AnnualLeave() {
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('joinDate')}</label>
-              <DatePicker value={join} onChange={setJoin} maxDate={ref ? new Date(ref + 'T00:00:00') : undefined} />
+              <DatePicker label={t('joinDate')} value={join} onChange={setJoin} maxDate={ref ? new Date(ref + 'T00:00:00') : undefined} />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('refDate')}</label>
-              <DatePicker value={ref} onChange={setRef} />
+              <DatePicker label={t('refDate')} value={ref} onChange={setRef} />
               <p className="text-xs text-muted mt-1.5">{t('refDateHint')}</p>
               <label className="flex items-center gap-2 mt-2 text-sm text-body cursor-pointer">
                 <input type="checkbox" checked={retire} onChange={e => setRetire(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />

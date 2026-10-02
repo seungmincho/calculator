@@ -196,10 +196,10 @@ export default function OvulationCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
-            {/* DatePicker는 label 연결을 지원하지 않아 group 이름으로 맥락 제공 */}
             <div role="group" aria-labelledby="ov-last">
               <p id="ov-last" className="text-sm font-medium text-body mb-2">{t('lastPeriod')}</p>
               <DatePicker
+                label={t('lastPeriod')}
                 value={s.lastPeriod}
                 onChange={d => update({ lastPeriod: d })}
                 maxDate={today ? new Date(today + 'T00:00:00') : undefined}
@@ -222,6 +222,7 @@ export default function OvulationCalculator() {
             </div>
             <div className="flex gap-2" role="group" aria-label={t('records.pick')}>
               <DatePicker
+                label={t('records.pick')}
                 value={newRecord}
                 onChange={setNewRecord}
                 maxDate={today ? new Date(today + 'T00:00:00') : undefined}
