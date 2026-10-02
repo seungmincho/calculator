@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og-image-1200x630.png?v=2',
         width: 1200,
         height: 630,
         alt: '툴허브 - 240+ 무료 온라인 도구 모음',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '툴허브 - 240+ 무료 온라인 도구 모음',
     description: '금융, 개발, 건강, 게임까지 240+ 무료 도구',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og-image-1200x630.png?v=2'],
   },
   robots: {
     index: true,

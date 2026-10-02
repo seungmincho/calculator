@@ -58,13 +58,13 @@ export const metadata: Metadata = {
     description: '연봉, 대출, 시간변환부터 바코드 생성, JSON 포맷터까지 모든 계산을 한 곳에서 해결하세요',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og-image-1200x630.png?v=2',
         width: 1200,
         height: 630,
         alt: '툴허브 - 온라인 계산기와 개발자 도구 모음',
       },
       {
-        url: 'https://toolhub.ai.kr/og-image-600x315.png',
+        url: 'https://toolhub.ai.kr/og-image-600x315.png?v=2',
         width: 600,
         height: 315,
         alt: '툴허브 - 온라인 계산기와 개발자 도구 모음',
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     creator: '@toolhub_kr',
     title: '툴허브 - 필수 계산기와 개발자 도구 모음',
     description: '연봉, 대출, 시간변환부터 바코드 생성까지 모든 계산을 한 곳에서',
-    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og-image-1200x630.png?v=2'],
   },
   robots: {
     index: true,

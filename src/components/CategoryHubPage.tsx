@@ -90,7 +90,7 @@ export function hubMetadata(category: HubKey): Metadata {
     title: c.title,
     description: c.description,
     keywords: c.keywords,
-    openGraph: { title: c.title, description: c.description, url, siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og-image-1200x630.png', width: 1200, height: 630 }] },
+    openGraph: { title: c.title, description: c.description, url, siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og-image-1200x630.png?v=2', width: 1200, height: 630 }] },
     twitter: { card: 'summary_large_image', title: c.title, description: c.description },
     alternates: { canonical: url },
   }
