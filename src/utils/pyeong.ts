@@ -43,3 +43,28 @@ export function popularSizes(sizes = POPULAR_EXCLUSIVE_M2) {
 
 /** 가격 ÷ 평. 면적 0이면 0 */
 export const perPyeong = (price: number, m2: number) => (m2 > 0 ? price / toPyeong(m2) : 0)
+
+/** 평당가 → ㎡당가 (같은 금액 단위). 평당가 ÷ (1평의 ㎡) */
+export const perM2FromPerPyeong = (p: number) => p / M2_PER_PYEONG
+/** ㎡당가 → 평당가 */
+export const perPyeongFromPerM2 = (p: number) => p * M2_PER_PYEONG
+
+/** 면적 감 잡기: 정사각형 한 변, 가로:세로 4:3 직사각형의 두 변 (m) */
+export function roomSides(m2: number) {
+  const s = Math.sqrt(Math.max(m2, 0))
+  return { square: s, long: s * Math.sqrt(4 / 3), short: s * Math.sqrt(3 / 4) }
+}
+
+/**
+ * 면적 구성. 공급 = 전용 + 주거공용, 계약 = 공급 + 기타공용(주차장·관리동 등),
+ * 서비스면적(발코니)은 어디에도 포함되지 않음 — 확장 시 실사용 ≈ 전용 + 서비스.
+ */
+export function areaBreakdown(exclusive: number, supply: number, otherCommon: number, service: number) {
+  return {
+    exclusive,
+    residentialCommon: Math.max(supply - exclusive, 0),
+    supply,
+    contract: supply + otherCommon,
+    usable: exclusive + service,
+  }
+}

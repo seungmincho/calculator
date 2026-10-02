@@ -11824,6 +11824,54 @@
     }
   },
   "pyeongCalculator": {
+    "quickExclusive": "Popular exclusive areas (m²)",
+    "copyItem": "Copy {label} value",
+    "heroLabel": "{type} {m2} m² is",
+    "roomNote": "1 pyeong is about 1.8 m × 1.8 m (two tatami mats); 3 pyeong is about 3.1 m × 3.1 m, roughly one small bedroom. The ranges above are customary categories.",
+    "breakdown": {
+      "otherCommonInput": "Other common area (m²)",
+      "serviceInput": "Service area / balcony (m²)",
+      "optional": "Optional",
+      "inputHint": "These two vary widely by complex, so there is no default. Enter the values from the unit area table in the sales notice or contract to get the contract area and the usable area after balcony extension.",
+      "caption": "Area types in m² and pyeong",
+      "colType": "Type",
+      "needInput": "Enter above to calculate",
+      "rows": {
+        "exclusive": {
+          "name": "Exclusive area",
+          "desc": "Inside your front door: rooms, living room, kitchen, bathrooms. Type names like 59 m² and 84 m² refer to this"
+        },
+        "residentialCommon": {
+          "name": "Residential common area",
+          "desc": "Stairs, corridors, elevators and lobby shared by residents of the building"
+        },
+        "supply": {
+          "name": "Supply area",
+          "desc": "Exclusive + residential common. The basis of the customary '34-pyeong type'"
+        },
+        "otherCommon": {
+          "name": "Other common area",
+          "desc": "Underground parking, management office, senior center and other complex-wide facilities"
+        },
+        "contract": {
+          "name": "Contract area",
+          "desc": "Supply + other common. Often used for officetels and retail units"
+        },
+        "service": {
+          "name": "Service area (balcony)",
+          "desc": "Balcony area, not included in exclusive, supply or contract area"
+        },
+        "usable": {
+          "name": "Usable area if extended",
+          "desc": "With the balcony extended you can use roughly exclusive + service"
+        }
+      }
+    },
+    "links": {
+      "realEstate": "Total cash needed to buy a home",
+      "acquisitionTax": "Acquisition tax calculator",
+      "brokerageFee": "Brokerage fee calculator"
+    },
     "inputMethod": "Input method",
     "methodArea": "Area",
     "methodDim": "Width × Depth",
@@ -11836,15 +11884,20 @@
     "formulaTitle": "Formula",
     "copyLink": "Copy link",
     "linkCopied": "Link copied",
-    "heroSupply": "Supply area ≈ {m2} m² · ≈ {pyeong} pyeong type (assuming {ratio}% ratio)",
-    "heroExclusive": "Exclusive area ≈ {m2} m² · ≈ {pyeong} pyeong (assuming {ratio}% ratio)",
+    "heroSupply": "Customary size (supply area basis): about {pyeong}-pyeong type, supply area about {m2} m² (assuming {ratio}% efficiency)",
+    "heroExclusive": "Actual living space (exclusive area): about {pyeong} pyeong, about {m2} m² (assuming {ratio}% efficiency)",
     "ratio": {
-      "title": "Exclusive ↔ Supply Area",
+      "entered": "entered",
+      "title": "Exclusive, supply, contract and service area",
       "label": "Exclusive ratio",
       "estimated": "estimated",
-      "note": "The exclusive ratio (exclusive ÷ supply area) varies by complex and unit type — typically 70–80% for apartments and 50–60% for officetels. Results are estimates; check the sales notice or building register for exact figures."
+      "note": "Efficiency ratio = exclusive ÷ supply area. It varies by complex and unit type, so results are approximate. Apartments are usually 70–80%, officetels roughly 50–60%, so lower the slider for officetels. Check the area table in the sales notice or contract for exact values."
     },
     "price": {
+      "convTitle": "Price per pyeong ↔ per m²",
+      "convPerPyeong": "Per pyeong (10k KRW)",
+      "convPerM2": "Per m² (10k KRW)",
+      "convNote": "Price per m² = price per pyeong ÷ 3.3058. Official statistics use per m²; news articles often say 'per 3.3 m²' (= per pyeong).",
       "title": "Price per Pyeong",
       "label": "Sale price (10,000 KRW)",
       "placeholder": "e.g. 90,000 (900M KRW)",
@@ -11853,26 +11906,29 @@
       "perM2": "Per exclusive m²",
       "manwon": "×10,000 KRW",
       "empty": "Enter a sale price to calculate price per pyeong.",
-      "note": "Market reports usually quote price per supply-area pyeong. Supply area is based on the ratio set above.",
+      "note": "Prices per pyeong in news and sales notices are usually based on supply area (contract area for many officetels). Supply area here is estimated from the efficiency ratio above.",
       "link": "Calculate acquisition tax & brokerage fee"
     },
     "popular": {
+      "select": "Calculate exclusive {m2} m²",
       "title": "Popular Apartment Sizes",
-      "desc": "Based on exclusive area. Supply area and pyeong type assume a {min}–{max}% exclusive ratio and are approximate. Click a row to calculate.",
+      "desc": "Based on exclusive area. Supply area and pyeong type assume {min}–{max}% efficiency and vary by complex. Tap an exclusive area to calculate it.",
       "colExclusive": "Exclusive",
       "colExclusivePyeong": "Exclusive pyeong",
       "colSupply": "Supply (approx.)",
       "colType": "Pyeong type (approx.)"
     },
     "visual": {
+      "ratioText": "{pct}% of {ref} pyeong.",
+      "sides": "As a square, each side is about {s} m; as a 4:3 rectangle, about {l} m × {w} m.",
       "title": "Area Visualization",
-      "desc": "Current area vs. 33 pyeong (≈109 m²)",
+      "desc": "Compared with a 33-pyeong (about 109 m²) square.",
       "current": "Current",
       "ref": "Reference",
       "ratio": "of 33 pyeong"
     },
     "title": "Pyeong Calculator",
-    "description": "Convert between Pyeong (坪) and square meters (m²). Useful for real estate and interior design.",
+    "description": "Convert pyeong and square meters both ways, and see exclusive, supply, contract and service areas, the customary pyeong type and price per pyeong at once.",
     "pyeongToSqm": "Pyeong → m²",
     "sqmToPyeong": "m² → Pyeong",
     "inputPyeong": "Enter Pyeong",
@@ -11884,7 +11940,7 @@
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "quickValues": "Quick Values",
+    "quickValues": "Quick input in pyeong",
     "areaComparison": "Area Comparison",
     "roomSize": "Room Size Reference",
     "sizes": {
@@ -11895,23 +11951,33 @@
     },
     "formula": "1 pyeong = 400/121 m² ≈ 3.305785 m² ≈ 35.5832 ft²",
     "guide": {
+      "law": {
+        "title": "Why m² instead of pyeong",
+        "items": [
+          "Since July 2007, Korea's Measures Act requires legal units such as m² and g instead of non-legal units like pyeong or don in trade, advertising and official documents; violations can be fined.",
+          "That is why sales notices and real-estate statistics use m², and the press writes 'price per 3.3 m²' instead of per pyeong.",
+          "Saying 'how many pyeong' in conversation is fine, but check the official m² figures in contracts and ads.",
+          "National housing size is an exclusive area of 85 m² or less (100 m² in eup/myeon areas outside the capital region), used for subscription, tax and loan rules. That is why 84 m² units are so common."
+        ]
+      },
       "title": "Pyeong Calculator Guide",
       "what": {
         "title": "What is Pyeong?",
         "items": [
-          "Pyeong (坪) is a traditional area unit used in Korea and Japan",
-          "1 Pyeong = approximately 3.3058 m² (exactly 400/121 m²)",
-          "Commonly used in real estate and interior design",
-          "Officially m² is the standard, but Pyeong is still widely used"
+          "A pyeong is the area of a square 6 ja (尺) on each side. Since 1 ja = 10/33 m, 1 pyeong = (60/33)² = 400/121 m² ≈ 3.305785 m².",
+          "1 m² = 121/400 pyeong = 0.3025 pyeong, so m² × 0.3025 = pyeong and pyeong × 3.3058 = m².",
+          "The shortcut 'pyeong × 3.3' is off by about 0.6 m² per 100 pyeong. Use this calculator when you need exact values.",
+          "1 pyeong ≈ 35.58 ft², handy when comparing with listings abroad."
         ]
       },
       "reference": {
         "title": "Apartment Area Reference",
         "items": [
-          "Exclusive area: Actual usable space (rooms, living room, kitchen)",
-          "Supply area: Exclusive area + common residential area",
-          "Contract area: Supply area + other common areas (parking, management)",
-          "A '25-pyeong apartment' typically means about 82.6 m² in supply area"
+          "Exclusive area: the living space inside the unit. Sales notices and transaction records use it, and type names like 59 m² and 84 m² are exclusive areas.",
+          "Supply area: exclusive + residential common (stairs, corridors, elevators). The customary '34-pyeong type' is based on supply area.",
+          "Contract area: supply + other common (underground parking, management office). More common for officetels and retail units than apartments.",
+          "Service area: space like balconies that is not counted in any of the above. Extending the balcony makes the usable area larger than the exclusive area.",
+          "Exclusive 84 m² is 25.4 pyeong, but on a supply basis it is about a 33–35-pyeong type, hence '34 pyeong'. Don't compare the two bases with each other."
         ]
       },
       "whatIs": {
@@ -11940,15 +12006,27 @@
         "items": [
           {
             "q": "How many m² is exactly 1 pyeong?",
-            "a": "Exactly 400/121 m² ≈ 3.30579 m². In practice, 3.3058 m² or 3.306 m² are used for convenience."
+            "a": "A pyeong is a square 6 ja on each side (1 ja = 10/33 m), so exactly 400/121 m² ≈ 3.305785 m². Conversely, 1 m² is 0.3025 pyeong."
           },
           {
-            "q": "What is the difference between supply area and exclusive-use area?",
-            "a": "Exclusive-use area (전용면적) is the total of interior spaces — rooms, living room, kitchen, and bathrooms. Supply area (공급면적) adds each household's share of common spaces such as staircases, corridors, and elevators. Korean real estate ads usually quote the supply area."
+            "q": "How many pyeong is an 84 m² apartment?",
+            "a": "The 84 m² in sales notices is exclusive area, which is about 25.4 pyeong. It is called '34 pyeong' because that figure is based on supply area (about 110–115 m²), which adds residential common area. A 59 m² unit is about 17.8 pyeong exclusive, roughly a 24-pyeong type on a supply basis."
           },
           {
-            "q": "Are other area units like square feet supported?",
-            "a": "Yes. Conversions to and from square feet (ft²), square yards (yd²), and acres are also available, useful when browsing overseas real estate listings."
+            "q": "What efficiency ratio should I use?",
+            "a": "Apartments are usually 70–80%; officetels are much lower at roughly 50–60%. For an exact value, divide exclusive area by supply area from the sales notice's area table."
+          },
+          {
+            "q": "Is an extended balcony counted in the pyeong figure?",
+            "a": "No. Balconies are service area and are not included in exclusive, supply or contract area. Extending one increases the space you actually use, so two 84 m² units can feel different."
+          },
+          {
+            "q": "Is it illegal to use pyeong?",
+            "a": "Since July 2007, Korea's Measures Act requires legal units like m² in trade and advertising. Saying 'pyeong' in conversation is fine, but official figures in contracts, ads and statistics are in m²."
+          },
+          {
+            "q": "How do I convert price per pyeong to price per m²?",
+            "a": "Price per m² = price per pyeong ÷ 3.3058. 40 million KRW per pyeong is about 12.1 million KRW per m². 'Price per 3.3 m²' in the news means the same as price per pyeong."
           }
         ]
       }

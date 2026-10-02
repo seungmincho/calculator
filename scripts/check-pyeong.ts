@@ -1,5 +1,5 @@
 // 평수 계산 회귀 체크: node scripts/check-pyeong.ts
-import { toPyeong, toM2, parseNum, splitArea, popularSizes, perPyeong } from '../src/utils/pyeong.ts'
+import { toPyeong, toM2, parseNum, splitArea, popularSizes, perPyeong, perM2FromPerPyeong, perPyeongFromPerM2, roomSides, areaBreakdown, M2_PER_PYEONG } from '../src/utils/pyeong.ts'
 let fail = 0
 const near = (a: number, b: number, eps = 0.01) => Math.abs(a - b) < eps
 const ok = (cond: boolean, msg: string) => { if (!cond) { fail++; console.log('FAIL', msg) } }
@@ -18,4 +18,13 @@ ok(rows[84].typeMin === 33 && rows[84].typeMax === 35, `84㎡ → 33~35평형 ($
 ok(rows[59].typeMin >= 23 && rows[59].typeMax <= 25, `59㎡ → 23~25평형 (${rows[59].typeMin}~${rows[59].typeMax})`)
 ok(near(perPyeong(100000, toM2(34)), 2941.18), '10억 / 34평 = 2941만원')
 ok(perPyeong(100, 0) === 0, '면적 0')
+ok(M2_PER_PYEONG === 400 / 121 && near(M2_PER_PYEONG, 3.305785, 1e-6), '1평 = 400/121㎡ 정확값')
+ok(near(perM2FromPerPyeong(3305.785), 1000, 0.01), '평당 3305.8만 = ㎡당 1000만')
+ok(near(perPyeongFromPerM2(perM2FromPerPyeong(4000)), 4000, 1e-9), '평당가↔㎡당가 왕복')
+const r3 = roomSides(toM2(3))
+ok(near(r3.square, 3.15, 0.01) && near(r3.long * r3.short, toM2(3), 1e-9) && near(r3.long / r3.short, 4 / 3, 1e-9), `방 3평 ≈ 3.15m 정사각 (${r3.square.toFixed(2)})`)
+ok(roomSides(-1).square === 0, '음수 면적 → 0')
+const b = areaBreakdown(84, 112, 50, 25)
+ok(b.residentialCommon === 28 && b.contract === 162 && b.usable === 109, '면적 구성: 주거공용·계약·실사용')
+ok(areaBreakdown(84, 80, 0, 0).residentialCommon === 0, '공급<전용 입력 시 주거공용 0')
 console.log(fail ? `${fail} failed` : 'all passed'); if (fail) process.exit(1)
