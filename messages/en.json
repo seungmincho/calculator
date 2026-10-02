@@ -9339,13 +9339,96 @@
     }
   },
   "passwordGenerator": {
+    "modesLabel": "Generator type",
+    "presets": {
+      "title": "Site rule presets",
+      "hint": "Pick the rule closest to the site's sign-up instructions. If the site's maximum length is shorter, lower the length to match.",
+      "koStandard": "8–16 letters, digits, symbols",
+      "koLimited": "Only !@#$ symbols allowed",
+      "koNoSymbol": "Letters & digits only (no symbols)",
+      "max": "Maximum security, 32 chars"
+    },
+    "copyNth": "Copy password {n}",
+    "time": {
+      "instant": "under 1 second",
+      "seconds": "about {n} seconds",
+      "minutes": "about {n} minutes",
+      "hours": "about {n} hours",
+      "days": "about {n} days",
+      "years": "about {n} years",
+      "overMillionYears": "over 1 million years",
+      "overBillionYears": "over 1 billion years"
+    },
+    "announce": {
+      "generated": "Generated {n} new passwords",
+      "copied": "Copied password {n}",
+      "copiedAll": "Copied all {n} passwords",
+      "copyFailed": "Could not copy. Please select and copy manually"
+    },
+    "check": {
+      "title": "Check my password strength",
+      "privacy": "Your password is analyzed only inside this browser. It is never stored, sent to a server, or placed in the URL.",
+      "label": "Password to check",
+      "placeholder": "Enter a password",
+      "showLabel": "Show password",
+      "empty": "Type a password to analyze its strength and weak patterns.",
+      "estimateNote": "This is an estimate that accounts for common patterns. Real attackers use dictionaries of leaked passwords, so a password you've used elsewhere may fall much faster.",
+      "length": "Length",
+      "lengthValue": "{n} chars",
+      "types": "Character types",
+      "type": {
+        "upper": "Uppercase",
+        "lower": "Lowercase",
+        "digit": "Digits",
+        "symbol": "Symbols",
+        "other": "Non-Latin"
+      },
+      "has": "present",
+      "none": "absent",
+      "patterns": "Weak patterns found",
+      "noPatterns": "No common patterns found.",
+      "pattern": {
+        "common": "Common password",
+        "keyboard": "Keyboard sequence",
+        "sequence": "Sequential letters/digits",
+        "repeat": "Repetition",
+        "date": "Date (e.g. birthday)",
+        "year": "Year",
+        "phone": "Phone number"
+      },
+      "suggestions": "Suggestions",
+      "suggest": {
+        "common": "This is a common password found in leak dictionaries. Attackers try it first — change it now.",
+        "length": "Use at least 12, ideally 16+ characters. Length matters most.",
+        "mix": "Mix at least 3 of uppercase, lowercase, digits and symbols — or simply make it longer.",
+        "sequence": "Sequences like qwerty, 1234 or abc are in attack dictionaries.",
+        "repeat": "Repeats like aaa or abcabc are weak for their length.",
+        "personal": "Remove birthdays, years and phone numbers that people who know you could guess.",
+        "passphrase": "If you need to memorize it, use a passphrase of 6+ random words.",
+        "manager": "Use a different password for every site, with a password manager and two-factor authentication."
+      }
+    },
     "title": "Password Generator",
-    "description": "Generate secure passwords and passphrases quickly and easily",
+    "description": "Create random passwords, passphrases and PINs, and check the strength of your own password. Everything runs in your browser.",
     "modes": {
+      "random": "Random",
+      "pin": "PIN",
+      "check": "Strength check",
       "password": "Password",
       "passphrase": "Passphrase"
     },
     "settings": {
+      "lengthValue": "{n} chars",
+      "lengthInput": "Type a length",
+      "wordValue": "{n} words",
+      "noRepeat": "No identical characters in a row",
+      "noRepeatDesc": "Prevents runs like aa or 11",
+      "symbolsUsed": "{n} symbols will be used: {chars}",
+      "symbolsReset": "Default",
+      "addNumber": "Add one digit",
+      "addNumberDesc": "For sites that require a number — appends one digit to a random word",
+      "pinLength": "PIN length",
+      "countN": "{n}",
       "title": "Settings",
       "length": "Password Length",
       "characters": "Character Types",
@@ -9353,11 +9436,11 @@
       "lowercase": "Lowercase (a-z)",
       "numbers": "Numbers (0-9)",
       "specialChars": "Special Characters",
-      "customSpecialChars": "Custom Special Characters",
-      "customSpecialCharsPlaceholder": "e.g., !@#$%",
-      "excludeAmbiguous": "Exclude Ambiguous",
-      "excludeAmbiguousDesc": "Exclude easily confused characters: 0, O, o, l, 1, I",
-      "count": "Generate Count",
+      "customSpecialChars": "Allowed symbols",
+      "customSpecialCharsPlaceholder": "e.g. !@#$",
+      "excludeAmbiguous": "Exclude look-alike characters",
+      "excludeAmbiguousDesc": "Removes 0 O 1 l I |",
+      "count": "How many at once",
       "wordCount": "Word Count",
       "separator": "Separator",
       "separators": {
@@ -9368,16 +9451,25 @@
       },
       "capitalizeFirst": "Capitalize First Letter"
     },
-    "generate": "Generate Passwords",
+    "generate": "Regenerate",
     "copyAll": "Copy All",
     "copied": "Copied!",
     "copy": "Copy",
     "result": {
+      "legend": "Digits are shown in bold blue, symbols are underlined.",
+      "notStored": "Passwords are generated in this browser with cryptographic randomness and are never stored or sent to a server. The URL only keeps settings such as length and character types.",
+      "weakHint": "To make it stronger, increase the length or add character types. Length has the biggest effect.",
+      "pinNote": "A PIN is only safe where wrong attempts are limited (e.g. locked after 5 tries). The crack time above assumes an unlimited offline attack. Avoid PINs like 1234, 0000 or your birthday.",
       "title": "Generated Passwords",
       "empty": "Select options and click Generate",
       "count": "{count} generated"
     },
     "strength": {
+      "title": "Strength",
+      "estimated": "estimate",
+      "crack": "Average crack time",
+      "assumption": "Assumes an offline attack where the attacker has the hash and tries 10 billion (10¹⁰) guesses per second, searching half of all possibilities on average. Slow hashes (bcrypt, etc.) or login rate limits make it take far longer.",
+      "basis": "Based on every password these settings can produce (accounts for the required character types and excluded characters).",
       "veryWeak": "Very Weak",
       "weak": "Weak",
       "medium": "Medium",
@@ -9394,27 +9486,50 @@
       "clear": "Clear History"
     },
     "errors": {
+      "symbolEmpty": "Enter at least one allowed symbol. Letters, digits and spaces are not used as symbols.",
+      "tooShort": "The length is shorter than the number of selected character types. Increase the length or select fewer types.",
       "noCharType": "Please select at least one character type"
     },
     "guide": {
+      "manager": {
+        "title": "Password managers & two-factor authentication",
+        "items": [
+          "Store passwords in a password manager (built into your browser/phone, or Bitwarden, 1Password, KeePass, etc.) so you never have to memorize long random passwords.",
+          "You only need to remember the manager's master password — make that one a long passphrase.",
+          "Turn on two-factor authentication for important accounts (email, banking, portals). Authenticator apps or passkeys are safer than SMS.",
+          "Don't keep passwords in notes apps, messengers or screenshots."
+        ]
+      },
+      "nist": {
+        "title": "NIST SP 800-63B in brief",
+        "items": [
+          "Services using a password as the only factor should require at least 15 characters; at least 8 when combined with multi-factor authentication.",
+          "Allow a maximum length of at least 64 characters, including spaces and Unicode.",
+          "Don't impose composition rules (\"mix upper, lower, digits, symbols\") — length and blocking breached passwords work better.",
+          "Don't require periodic password changes; require a change when there is evidence of compromise.",
+          "Check new passwords against lists of breached and common passwords, and allow pasting and password managers.",
+          "Many Korean sites still enforce composition rules, so presets are provided above."
+        ],
+        "link": "Read NIST SP 800-63B"
+      },
       "title": "Password Security Guide",
       "tips": {
-        "title": "Secure Password Tips",
+        "title": "Password principles",
         "items": [
-          "Use passwords with at least 12 characters",
-          "Combine uppercase, lowercase, numbers, and special characters",
-          "Don't include personal information (birthday, phone number)",
-          "Use different passwords for each site",
-          "Use a password manager"
+          "Length matters most: 16+ characters for random strings, 6+ words for passphrases.",
+          "Use a different password for every site. One leak otherwise exposes every account sharing it (credential stuffing).",
+          "Birthdays, phone numbers, names, years and keyboard patterns (qwer1234) are the first things attackers try.",
+          "Rather than changing passwords on a schedule, change them immediately when a leak is suspected.",
+          "This generator uses the browser's cryptographic randomness (crypto.getRandomValues) without bias and never stores or sends results."
         ]
       },
       "passphrase": {
-        "title": "Benefits of Passphrases",
+        "title": "Why passphrases work",
         "items": [
-          "Easy to remember with high security",
-          "Random word combinations provide sufficient entropy",
-          "Recommended to use 4 or more words",
-          "Adding separators further improves security"
+          "Randomly chosen words joined together are long yet easy to remember, e.g. Ocean-Table-Frost-Lunar-Pilot-Grape.",
+          "The strength only holds when words are picked at random. Sentences, lyrics or proverbs you pick yourself are weak.",
+          "This tool's list has 819 words, about 9.7 bits per word: 6 words ≈ 58 bits, 8 words ≈ 77 bits.",
+          "If a site requires digits and symbols, turn on \"Add one digit\" and use the hyphen separator."
         ]
       },
       "whatIs": {
@@ -9434,16 +9549,24 @@
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "Are generated passwords stored on a server?",
-            "a": "No. Passwords are generated entirely in the browser using the Web Crypto API (crypto.getRandomValues) and are never transmitted anywhere."
+            "q": "Are generated passwords stored or sent anywhere?",
+            "a": "No. They are created on your device with the Web Crypto API (crypto.getRandomValues) and are never sent to a server or saved to localStorage. Share links (URL) only contain settings such as length and character types."
           },
           {
-            "q": "Aren't passphrases weaker than random character passwords?",
-            "a": "A passphrase of 4–5 or more words has sufficient entropy. A passphrase like 'correct-horse-battery-staple' can actually be stronger than a random character string while being much easier to remember."
+            "q": "Is it truly random?",
+            "a": "It uses cryptographic randomness and discards out-of-range values so no character is favored by modulo bias. Results missing a required character type are regenerated entirely, so digits and symbols don't cluster in particular positions."
           },
           {
-            "q": "How should I manage my passwords?",
-            "a": "Use a password manager such as Bitwarden, 1Password, or KeePass to safely store unique passwords for each site. Enable two-factor authentication (2FA) on all important accounts."
+            "q": "How are entropy and crack time calculated?",
+            "a": "Entropy is log2 of the number of passwords the current settings can produce (accounting for required types and excluded characters). Crack time is the average time to try half of them at 10 billion guesses per second offline. Real-world time depends heavily on the site's hashing and login rate limits."
+          },
+          {
+            "q": "How long should my password be?",
+            "a": "16+ characters for random passwords (about 100 bits with all character types) or 6+ words for passphrases. If a site caps the length (e.g. 8–16), use the longest length allowed."
+          },
+          {
+            "q": "Is it safe to type my password into the strength checker?",
+            "a": "Input is analyzed only on this page and is never stored or sent. If you're still worried, test an example with a similar shape instead of your real password."
           }
         ]
       }
