@@ -1,4 +1,17 @@
-# NEXT-SESSION (2026-10-02 오후, main 푸시·배포 완료)
+# NEXT-SESSION (2026-10-02 저녁 — 로컬 커밋만, 빌드·배포·푸시 대기)
+
+## 2026-10-02 저녁 — 검색량 큰 계산기 7개 고도화 (미배포)
+- **빌드가 자동 모드 권한에 막혀 배포 못 함** → 다음: SW v4.30.0→v4.31.0 bump → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out ...` → verify → push
+- 대상: compound-calculator, health-insurance, national-pension, dsr-calculator, ovulation-calculator, exchange-calculator, real-estate-calculator. 각 `src/utils/<x>.ts` + `scripts/check-<x>.ts`
+- 큰 버그: 국민연금 기본연금액 약 1/3 과소(계수 1.29 자리에 0.43), DSR 스트레스 전·후 한도 동일값·수도권 가산 1.5→3.0, 건보 재산 점수표 가짜·2025 점수당 금액, 복리 연복리 월적립 이자 0, 부동산 취득세 6천만~6억 선형보간·등록세 이중부과, 환율 API 실패 시 가짜 환율을 "지금"으로 표시
+- 부동산 계산기는 "집 살 때 총 필요 현금" 한 화면으로 재구성(종부세·양도세·전세대출 탭 제거 → 전용 도구 링크). 기존 acquisitionTax/brokerageFee/loanSchedule utils 재사용
+- 배란일: 생리일 URL 파라미터 제거(localStorage만), ShareResult 없음(건강 정보)
+- dev 서버 검증 함정: **내장 브라우저에 SW(toolhub-static-*)가 등록돼 옛 청크를 줌** → 번역 키 노출·hydration 오류처럼 보임. `navigator.serviceWorker.getRegistrations()` unregister + `caches.delete` 후 재확인 (7개 모바일·다크 OK)
+- 확인 필요(에이전트 보고): 건보 10원 미만 절사 시점·지역 최저보험료 방식·전월세 월세×40, 국민연금 부양가족연금 2026 금액·A값 3,193,511 고시 원문, DSR 혼합형 고정비중 50%+ 반영비율·신용대출 산식, 환율 비주요 통화 스프레드 5%(대략치), 부동산 조정대상지역 목록 기준일
+- 미사용 i18n 키 대량: compoundCalculator(result/comparison/common…), healthInsurance(workplace/regional/comparison/insurance…), nationalPension(u·title·description 외 전부), dsrCalc(income/newLoan/existing/result/limit/stress, guide.* 틀린 내용), ovulationCalculator(calculate/result/safe*…), realEstate(description/input/result/guide), 최상위 `exchange`. localStorage.ts의 'real-estate'·'exchange' 히스토리 타이틀도 미사용
+- 다음 후보: car-tax-calculator(annual-car-tax와 중복 정리), 연말·신년 인사말 생성기(12월 전), 재직·경력증명서
+
+## (이전) 2026-10-02 오후 919fc6b
 
 ## 2026-10-02 오후 — 웹 조사 기반 신규 5종 + 양도세 + 소득세 버그
 - 선정 근거: 비즈폼 실시간 인기 검색어(영수증·부동산임대차계약서·인사말·급여·위임장), 메뉴에 없던 고검색 계산기(복비·연간 자동차세)
