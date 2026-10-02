@@ -5828,13 +5828,67 @@
     }
   },
   "qrGenerator": {
+    "scan": {
+      "title": "Scan test",
+      "items": [
+        "Point your phone's camera at the QR on screen.",
+        "Tap the prompt and check it opens the right place.",
+        "Before printing, print at actual size and scan again with both iPhone and Android."
+      ]
+    },
+    "trust": {
+      "title": "Safe to use",
+      "items": [
+        "Generated in your browser — nothing you type is sent to a server.",
+        "Static QR: no expiry date and no scan limits.",
+        "Free with no sign-up or watermark — fine for print and commercial use."
+      ]
+    },
+    "alt": {
+      "url": "QR code linking to {v}",
+      "text": "QR code containing the text \"{v}\"",
+      "wifi": "QR code to join Wi-Fi {v}",
+      "vcard": "QR code to save the contact {v}",
+      "sms": "QR code to text {v}",
+      "email": "QR code to email {v}",
+      "phone": "QR code to call {v}",
+      "geo": "QR code opening the location {v}"
+    },
+    "print": {
+      "title": "Print sheet (A4)",
+      "hint": "Prints the same QR in a grid on one A4 page — cut along the dotted lines for tables or stickers.",
+      "layout": "Layout",
+      "option": "{cols}×{rows} · {count} codes · about {cm} cm",
+      "caption": "Caption under each QR",
+      "captionPlaceholder": "Scan to see the menu",
+      "button": "Print A4 ({count})",
+      "docTitle": "QR code print sheet"
+    },
     "title": "QR Code Generator",
-    "description": "Convert text, URLs, and contact information into QR codes. Create personalized QR codes with logo insertion, color customization, and various size options.",
+    "description": "Make QR codes for URLs, text, Wi-Fi, contacts, SMS, email, phone, and locations instantly. Free with no sign-up, expiry, or watermark — add a logo and colors, save as PNG or SVG, or print a sheet of codes on A4.",
     "input": {
+      "urlHint": "https:// is added automatically. Shorter URLs make simpler QR codes.",
+      "wifiWpa": "WPA/WPA2/WPA3",
+      "wifiWep": "WEP (older routers)",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "wifiPrivacy": "The password is never saved in the share link. Anyone who scans the QR can see it, so a guest network is recommended.",
+      "vcardPrivacy": "Contact details are never saved in the share link.",
+      "mailSubject": "Subject",
+      "mailSubjectPlaceholder": "Reservation inquiry",
+      "mailBody": "Body",
+      "mailBodyPlaceholder": "Text to prefill",
+      "place": "Address, place name, or coordinates",
+      "placePlaceholder": "Seoul City Hall or 37.5665, 126.9780",
+      "geoFormat": "Opens as",
+      "geoMap": "Map link",
+      "geoGeo": "geo: coordinates",
+      "geoMapHint": "A Google Maps search link — opens on both iPhone and Android (recommended).",
+      "geoGeoHint": "Opens Android map apps directly. The iPhone camera may not support it.",
       "title": "QR Data Input",
       "dataType": "Data Type",
       "text": "Text",
-      "url": "Website URL",
+      "url": "Website address",
       "email": "Email Address",
       "phone": "Phone Number",
       "textPlaceholder": "Enter text to convert to QR code...",
@@ -5846,13 +5900,13 @@
       "smsPhonePlaceholder": "010-1234-5678",
       "smsMessage": "Message Content",
       "smsMessagePlaceholder": "Enter message to send...",
-      "wifiSsid": "WiFi Network Name (SSID)",
+      "wifiSsid": "Wi-Fi name (SSID)",
       "wifiSsidPlaceholder": "MyWiFi",
-      "wifiPassword": "WiFi Password",
-      "wifiPasswordPlaceholder": "password123",
+      "wifiPassword": "Wi-Fi password",
+      "wifiPasswordPlaceholder": "Password",
       "wifiSecurity": "Security Type",
       "wifiNoPassword": "No Password",
-      "wifiHidden": "Hidden Network",
+      "wifiHidden": "Hidden network (name not broadcast)",
       "vcardName": "Name",
       "vcardNamePlaceholder": "John Doe",
       "vcardPhone": "Phone Number",
@@ -5865,28 +5919,44 @@
       "vcardUrlPlaceholder": "https://example.com"
     },
     "types": {
+      "geo": "Location",
       "text": "Text",
-      "url": "Website",
+      "url": "URL",
       "email": "Email",
       "phone": "Phone",
       "sms": "SMS",
-      "wifi": "WiFi",
+      "wifi": "Wi-Fi",
       "vcard": "Contact"
     },
     "logo": {
-      "title": "Logo Image",
-      "upload": "Click to upload image file",
-      "supportedFormats": "PNG, JPG, GIF supported",
+      "remove": "Remove logo",
+      "previewAlt": "Uploaded logo image",
+      "invalid": "Only image files up to 5 MB are supported",
+      "autoH": "Logo added, so error correction was switched to H",
+      "sizeHint": "Up to 30% of the QR width. Always test-scan after adding a logo.",
+      "needsH": "The logo covers part of the QR. Error correction H is recommended.",
+      "useH": "Switch to H",
+      "title": "Center logo",
+      "upload": "Choose logo image",
+      "supportedFormats": "PNG, JPG, SVG, etc. up to 5 MB. Adding one switches error correction to H.",
       "size": "Logo Size",
       "opacity": "Opacity"
     },
     "style": {
-      "title": "Style Settings",
+      "pick": "Pick {name}",
+      "contrast": "Contrast {ratio}:1 (4:1 or higher recommended)",
+      "lowContrast": "Contrast is only {ratio}:1, so scanning may fail. Make the dots darker or the background lighter ({min}:1 or higher recommended).",
+      "inverted": "The dots are lighter than the background. Some scanners can't read inverted QR codes.",
+      "swap": "Swap colors",
+      "margin": "Margin {n} modules",
+      "marginHint": "The standard recommends 4 modules. Surrounding graphics make scanning harder.",
+      "marginLow": "The margin is under 2 modules. Use 4 unless the QR sits on a plain light background.",
+      "title": "Design",
       "size": "QR Code Size",
-      "foregroundColor": "Foreground Color",
+      "foregroundColor": "Dot color",
       "backgroundColor": "Background Color",
-      "errorCorrection": "Error Correction Level",
-      "errorCorrectionHint": "Higher levels are better for logo insertion",
+      "errorCorrection": "Error correction level",
+      "errorCorrectionHint": "Higher levels survive dirt or covering but make the QR denser. H is recommended with a logo.",
       "errorLevels": {
         "low": "Low",
         "medium": "Medium",
@@ -5901,12 +5971,56 @@
       "xlarge": "X-Large (500px)"
     },
     "result": {
-      "title": "Generated QR Code",
+      "pngSize": "PNG size",
+      "png512": "512px — web & messengers",
+      "png1024": "1024px — documents & flyers",
+      "png2048": "2048px — posters & banners",
+      "downloadPng": "Save PNG",
+      "downloadSvg": "Save SVG",
+      "savedPng": "Saved {size}px PNG",
+      "savedSvg": "Saved SVG",
+      "copyFailed": "Image copy isn't supported in this browser. Please save as PNG.",
+      "info": "Version {v} · {n}×{n} modules · {bytes} bytes",
+      "density": {
+        "low": "Simple QR — reads well even when printed small",
+        "mid": "Medium density — at least 2 cm per side recommended",
+        "high": "Dense QR — print it larger or shorten the content"
+      },
+      "tooLong": "Too much data for a QR code. Shorten the content or lower the error correction level (max 2,953 bytes; Korean takes 3 bytes per character).",
+      "title": "QR code preview",
       "scanHint": "Scan the QR code with your smartphone",
-      "copyImage": "Copy Image",
-      "copiedImage": "Image Copied!"
+      "copyImage": "Copy image",
+      "copiedImage": "QR image copied to clipboard"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Your input becomes a standard string: a web address, WIFI:T:WPA;S:name;P:password;H:false;;, vCard 3.0, SMSTO:number:message, mailto:, tel:, geo:, and so on.",
+          "The QR version (1–40) is chosen automatically from the data length and error correction level. Each version adds 4 modules per side (21 to 177).",
+          "Reed–Solomon error correction recovers about 7% (L), 15% (M), 25% (Q), or 30% (H) damage. Higher levels make the same data use a larger version.",
+          "Maximum capacity is 2,953 bytes at version 40, level L. Korean characters take 3 bytes each in UTF-8.",
+          "Everything runs in your browser; nothing you type is sent to a server."
+        ]
+      },
+      "realWorld": {
+        "title": "Common uses",
+        "items": [
+          "Restaurant tables: menu or ordering URL and guest Wi-Fi, printed several per A4 sheet",
+          "Business cards: a vCard QR saves name, phone, and email at once",
+          "Posters and flyers: event page URL or store location (map link)",
+          "Bookings and inquiries: SMS (SMSTO) or email QR with recipient and message prefilled"
+        ]
+      },
+      "comparison": {
+        "title": "Static vs dynamic QR",
+        "items": [
+          "Static QR (this tool): the content is stored in the QR itself. No expiry, fees, or scan limits — but it can't be changed after printing.",
+          "Dynamic QR (paid services): the QR holds the service's short link and the destination is changed on their server. You get scan stats and editable targets, but the QR may stop working when the subscription ends.",
+          "Need to change the destination later? Put a page you control into a static QR and update that page instead.",
+          "Barcodes (1D) hold short, mostly numeric data; QR codes (2D) hold URLs and any text up to a few thousand bytes."
+        ]
+      },
       "title": "QR Code Generator Guide",
       "typesTitle": "Data Type Features",
       "types": {
@@ -5924,6 +6038,15 @@
       },
       "tipsTitle": "Usage Tips",
       "tips": {
+        "title": "Making QR codes that scan",
+        "items": [
+          "For print, at least 2 cm per side is recommended; make posters scanned from afar larger (a common rule of thumb is about 1/10 of the scanning distance).",
+          "Use dark dots on a light background with contrast of 4:1 or more. Inverted colors fail on some scanners.",
+          "Keep logos under 30% of the QR width and use error correction H. Never cover the three large corner squares (finder patterns).",
+          "The standard recommends a 4-module quiet zone. Graphics touching the QR lower the scan rate.",
+          "Shorter URLs make simpler codes that still read when printed small.",
+          "Before printing, print at actual size and scan with at least two devices (iPhone and Android)."
+        ],
         "0": "Keep logo size under 20% of total QR code size",
         "1": "Use high contrast colors for easier scanning",
         "2": "Print at minimum 3cm × 3cm size for best results",
@@ -5931,37 +6054,50 @@
         "4": "Use the copy image button to copy QR code as PNG image to clipboard"
       },
       "whatIs": {
-        "title": "What is this tool?",
-        "description": "The QR Code Generator converts text, URLs, email, phone numbers, SMS, WiFi credentials, and contact cards (vCard) into QR codes. Customize colors, error correction levels, and embed logos for branded QR codes."
+        "title": "What is the QR Code Generator?",
+        "description": "A free QR code generator that runs in your browser with no sign-up. It supports 8 types — URL, text, Wi-Fi, contact (vCard), SMS, email, phone, and location — with custom colors, error correction, margin, and a center logo. Save as PNG (up to 2048px) or SVG, or print many on one A4 sheet. These are static QR codes: the content lives in the image, so they never expire and have no scan limits."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Select the QR code type (text, URL, email, phone, SMS, WiFi, vCard).",
-          "Enter the information for your selected type.",
-          "Adjust size, colors, and error correction level. Upload a logo if needed.",
-          "Download the QR code as PNG or copy to clipboard."
+          "Pick a type from the tabs (with a tab focused, use the left/right arrow keys).",
+          "Type your content and the preview updates instantly, with QR version, module count, and data size below it.",
+          "Under Design, adjust dot and background colors, error correction, and margin, and add a center logo if needed.",
+          "Scan the preview with your phone's camera to confirm it opens correctly.",
+          "Save as PNG (choose a size) or SVG, copy the image, or print several on A4 for tables."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What is error correction level?",
-            "a": "It's the QR code's ability to remain readable even when partially damaged or covered by a logo. Choose from L(7%), M(15%), Q(25%), H(30%). H is recommended when embedding logos."
+            "q": "Do these QR codes expire?",
+            "a": "No. Static QR codes store the content in the image itself, so there is no expiry and no scan limit. A URL code keeps working as long as the web address does."
           },
           {
-            "q": "Do QR codes expire?",
-            "a": "QR codes themselves don't expire. If it contains a URL, it works as long as the web address is valid."
+            "q": "Is my Wi-Fi password or contact info stored on a server?",
+            "a": "No. QR codes are generated in your browser and nothing is sent. The share link only includes URL and text types — never Wi-Fi passwords or contacts. Anyone who scans a Wi-Fi QR can see the password, so a guest network is recommended."
           },
           {
-            "q": "Will colored QR codes still scan?",
-            "a": "Yes, as long as the foreground is sufficiently darker than the background. Light foreground on dark background may not scan properly."
+            "q": "Will a QR code with a logo still scan?",
+            "a": "Error correction lets it read even with the center covered. Keep the logo under 30% of the QR width, use level H, and test-scan before saving. Never cover the three large corner squares."
+          },
+          {
+            "q": "What size and format should I use for print?",
+            "a": "Use SVG for design tools and print shops since it scales without blur, and 2048px PNG for documents and banners. At least 2 cm per side is recommended; print denser codes larger."
+          },
+          {
+            "q": "Does a Wi-Fi QR connect on iPhone?",
+            "a": "Recent iPhone and Android camera apps recognize Wi-Fi QR codes and offer to join. Behavior can vary by device, so scan it yourself before posting."
+          },
+          {
+            "q": "Can I use QR codes commercially?",
+            "a": "Yes. QR Code is a registered trademark of DENSO WAVE, which does not exercise its patent rights, so anyone can create and use them freely. Images made here have no watermark."
           }
         ]
       }
     },
-    "placeholder": "QR code will be automatically generated when you enter data"
+    "placeholder": "Enter content and your QR code appears instantly"
   },
   "fuelCalculator": {
     "trip": {
