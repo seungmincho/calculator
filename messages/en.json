@@ -11412,8 +11412,115 @@
     }
   },
   "electricityCalculator": {
+    "input": {
+      "modeLabel": "Input method",
+      "modeKwh": "Enter kWh",
+      "modeAppliance": "From appliances",
+      "kwhHint": "Enter this month's usage from your bill or the KEPCO ON app.",
+      "baseKwh": "Usage besides listed appliances",
+      "baseHint": "Lighting, standby power, etc. If unsure, set 0 and add all appliances.",
+      "watt": "Power (W)",
+      "hours": "Hours/day",
+      "days": "Days/month",
+      "remove": "Remove {name}",
+      "empty": "No appliances added.",
+      "addLabel": "Appliance to add",
+      "add": "Add",
+      "approxWatt": "approx. {w}W",
+      "applianceNote": "Appliances total {kwh} kWh. Wattages are rough defaults; edit them from the product label.",
+      "month": "Month of use",
+      "monthN": "{n}",
+      "voltageHint": "Most houses and apartment units are low voltage. Some apartment complexes supplied at high voltage use the high-voltage rate.",
+      "welfare": "Welfare discount",
+      "prev": "Last month's usage",
+      "optional": "optional"
+    },
+    "seasonHint": {
+      "normal": "Regular season: tiers at {l1}/{l2} kWh",
+      "summer": "Summer (Jul–Aug): tiers relaxed to {l1}/{l2} kWh",
+      "winter": "Winter (Dec–Feb): tiers {l1}/{l2} kWh, super-user rate above 1,000 kWh"
+    },
+    "welfare": {
+      "none": "None",
+      "disabled": "Severe disability / veterans (16,000 KRW cap, 20,000 Jun–Aug)",
+      "basicLiving": "Basic livelihood/medical recipients (16,000 KRW cap, 20,000 Jun–Aug)",
+      "basicHousing": "Basic housing/education recipients (10,000 KRW cap, 12,000 Jun–Aug)",
+      "nearPoor": "Near-poverty households (8,000 KRW cap, 10,000 Jun–Aug)",
+      "family": "Large family / 3+ children / newborn (30%, 16,000 KRW cap)",
+      "lifeSupport": "Life-support equipment households (30%)"
+    },
+    "hero": {
+      "label": "Estimated bill for {kwh} kWh in month {month}",
+      "sub": "{tier} · avg {avg} KRW/kWh"
+    },
+    "tier": {
+      "n": "Tier {n}",
+      "super": "Super-user tier",
+      "rowRange": "Tier {n} ({from}–{to} kWh)",
+      "rowOver": "Tier {n} (over {from} kWh)",
+      "superRow": "Super-user (over {from} kWh)"
+    },
+    "bar": {
+      "summary": "This month's {kwh} kWh is in {tier}.",
+      "aria": "Tier bar: tier 1 up to {l1} kWh, tier 2 up to {l2} kWh, tier 3 above. Current usage {kwh} kWh, {tier}."
+    },
+    "tip": {
+      "above": "You are {over} kWh over a tier boundary. Cutting just {over} kWh drops you to tier {tier} and saves about {save} KRW this month.",
+      "below": "{left} more kWh puts you in tier {tier}, where the unit rate becomes {rate} KRW/kWh and the base fee {base} KRW.",
+      "super": "Usage above {kwh} kWh is charged the super-user rate of {rate} KRW/kWh."
+    },
+    "table": {
+      "item": "Item",
+      "calc": "Calculation",
+      "amount": "Amount (KRW)",
+      "baseCalc": "Tier {tier} base fee",
+      "floor": "truncated to the won",
+      "vatCalc": "10%, rounded",
+      "fundCalc": "{rate}%, truncated to 10 won",
+      "totalCalc": "truncated to 10 won"
+    },
+    "basis": "Rates as of {date} · KEPCO residential tariff (effective 2023-11-09) · climate charge 9.0 KRW/kWh · fuel adjustment +5.0 KRW/kWh (Q4 2026) · power industry fund 2.7%",
+    "basisNote": "Estimate only: excludes day-based proration by meter-reading date, TV license fee, apartment common electricity and the extra welfare reduction for 200 kWh or less.",
+    "compare": {
+      "title": "Compared with last month",
+      "chip": "{diff} KRW vs last month",
+      "prevBill": "Last month's bill",
+      "prevCol": "Month {n}",
+      "nowCol": "Month {n}",
+      "change": "Change",
+      "usage": "Usage",
+      "bill": "Bill",
+      "tier": "Tier",
+      "why": "Usage rose {u}% but the bill rose {b}% because progressive rates raise the unit price as you use more."
+    },
+    "ac": {
+      "title": "Run the A/C N more hours a day?",
+      "hours": "Extra hours per day",
+      "hoursValue": "{h} h",
+      "watt": "A/C power draw",
+      "wattHint": "Roughly 1,000 W (wall units lower, floor-standing higher). Edit from the product label.",
+      "result": "{h} h/day × 30 days = {kwh} kWh more",
+      "perMonth": "month",
+      "after": "Bill after: {total} KRW ({tier}) · about {perHour} KRW per hour",
+      "shareRow": "A/C {h} more hours a day"
+    },
+    "seasonCompare": {
+      "title": "Same {kwh} kWh by season",
+      "season": "Season",
+      "limits": "Tier limits",
+      "bill": "Estimated bill",
+      "current": "selected",
+      "normal": "Regular (Mar–Jun, Sep–Nov)",
+      "summer": "Summer (Jul–Aug)",
+      "winter": "Winter (Dec–Feb)",
+      "limitText": "{l1} / {l2} kWh",
+      "note": "Winter tiers equal the regular season; the super-user rate applies only above {kwh} kWh."
+    },
+    "share": {
+      "text": "Using {kwh} kWh in month {month}: estimated electricity bill {total} KRW"
+    },
     "title": "Electricity Bill Calculator",
-    "description": "Calculate Korean residential electricity bill with progressive rates",
+    "description": "Estimate this month's electricity bill from your kWh usage or appliance hours. Based on KEPCO residential progressive rates (Q4 2026), with tier breakdown, extra A/C cost and month-over-month comparison.",
     "usage": "Monthly Usage (kWh)",
     "usagePlaceholder": "Enter usage amount",
     "season": "Season",
@@ -11428,19 +11535,20 @@
       "highVoltage": "Residential High Voltage"
     },
     "result": {
-      "title": "Estimated Bill",
+      "discount": "Welfare discount",
+      "title": "Bill breakdown",
       "baseFee": "Base Fee",
-      "usageFee": "Usage Fee",
+      "usageFee": "Energy charge total",
       "climateFee": "Climate/Environment Fee",
-      "fuelAdjust": "Fuel Cost Adjustment",
-      "subtotal": "Subtotal",
-      "vat": "VAT (10%)",
-      "elecFund": "Electric Industry Fund (3.7%)",
-      "totalMonthly": "Estimated Monthly Bill",
+      "fuelAdjust": "Fuel cost adjustment",
+      "subtotal": "Electricity charge subtotal",
+      "vat": "VAT",
+      "elecFund": "Electric Power Industry Fund",
+      "totalMonthly": "Estimated bill",
       "perKwh": "Cost per kWh"
     },
     "tiers": {
-      "title": "Progressive Rate Tiers",
+      "title": "Where you are in the tiers",
       "tier": "Tier",
       "range": "Usage Range",
       "unitPrice": "Unit Price",
@@ -11449,21 +11557,89 @@
       "fee": "Fee"
     },
     "savingTips": {
-      "title": "Energy Saving Tips",
+      "title": "How to lower your bill",
       "items": [
-        "In summer/winter, bills increase rapidly as you enter higher progressive tiers",
-        "Unplug unused appliances to cut standby power consumption",
-        "Recommended AC temperature: 26°C in summer, 20°C in winter",
-        "Switching to LED lighting can reduce lighting costs by 80%"
+        "If you are just above a tier boundary (200/400 kWh, or 300/450 kWh in July–August), a small cut avoids the higher unit rate and base fee.",
+        "For inverter air conditioners, keeping a moderate setting (around 26°C) is usually better than switching on and off repeatedly. Clean filters and shade the outdoor unit.",
+        "Heating appliances such as electric blankets, heaters and dryers draw a lot of power, so trimming their hours cuts usage quickly.",
+        "Switch off standby power with power strips, and replace old fridges and lighting with efficient models.",
+        "Check real-time usage in the KEPCO ON app and see whether you can join the energy cashback program."
       ]
     },
     "common": {
       "calculate": "Calculate",
       "reset": "Reset",
-      "won": "KRW"
+      "won": " KRW"
     },
     "guide": {
-      "title": "User Guide",
+      "structure": {
+        "title": "What makes up your bill",
+        "items": [
+          "Base fee by tier: 910 / 1,600 / 7,300 KRW (high voltage 730 / 1,260 / 6,060).",
+          "Energy charge per tier: low voltage 120.0 / 214.6 / 307.3 KRW/kWh, high voltage 105.0 / 174.0 / 242.3.",
+          "Climate & environment charge: usage × 9.0 KRW.",
+          "Fuel cost adjustment: usage × quarterly rate; frozen at the +5.0 KRW cap for Q4 2026.",
+          "Plus 10% VAT and the 2.7% Electric Power Industry Fund."
+        ]
+      },
+      "calcOrder": {
+        "title": "Calculation order (same as the bill)",
+        "items": [
+          "Electricity charge = base + energy + climate + fuel adjustment (each truncated to the won)",
+          "VAT = charge × 10% (rounded)",
+          "Fund = charge × 2.7% (truncated to 10 won)",
+          "Bill = total truncated to 10 won",
+          "Check: August 2024 (fund 3.2%), summer 363 kWh gives 63,610 KRW, matching KEPCO's reported household average that month."
+        ]
+      },
+      "welfare": {
+        "title": "Welfare discounts",
+        "items": [
+          "Severe disability, veterans, basic livelihood/medical recipients: 16,000 KRW/month cap (20,000 Jun–Aug)",
+          "Basic housing/education: 10,000 (12,000 Jun–Aug); near-poverty: 8,000 (10,000 Jun–Aug)",
+          "Large families (5+), 3+ children, newborn households (3 years): 30%, 16,000 cap; life-support equipment: 30%",
+          "Apply via KEPCO (123) or KEPCO ON. This calculator subtracts the discount before VAT and the fund (approximation)."
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KEPCO residential tariff (low/high voltage)",
+            "url": "https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp"
+          },
+          {
+            "label": "KEPCO welfare discounts",
+            "url": "https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00208.jsp"
+          },
+          {
+            "label": "KEPCO fuel cost adjustment",
+            "url": "https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00210.jsp"
+          },
+          {
+            "label": "KEPCO climate & environment charge",
+            "url": "https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00211.jsp"
+          }
+        ]
+      },
+      "related": {
+        "title": "Related calculators",
+        "items": [
+          {
+            "label": "PC electricity cost",
+            "href": "/pc-electricity/"
+          },
+          {
+            "label": "Gas bill",
+            "href": "/gas-bill/"
+          },
+          {
+            "label": "Water bill",
+            "href": "/water-bill/"
+          }
+        ]
+      },
+      "title": "Electricity bill guide",
       "howToUse": {
         "title": "How to Use",
         "items": [
@@ -11495,19 +11671,31 @@
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "What is a progressive tariff?",
-            "a": "A system where the unit price increases as usage increases. Korea applies a 3-tier system; the Tier 3 rate is roughly 3 times the Tier 1 rate, so heavy users pay steeply more."
+            "q": "What are the progressive tiers?",
+            "a": "For residential low voltage outside summer: up to 200 kWh is tier 1 (120.0 KRW/kWh), 201–400 kWh tier 2 (214.6), over 400 kWh tier 3 (307.3). In July–August the boundaries widen to 300/450 kWh. The base fee is 910, 1,600 or 7,300 KRW by tier (tariff effective 2023-11-09)."
           },
           {
-            "q": "How much more will an air conditioner cost per month?",
-            "a": "Running a 1.5 kW AC for 8 hours/day over 30 days adds about 360 kWh. Depending on your existing usage, this can push you into Tier 2 or 3 and add tens of thousands of won. Try entering the combined usage in the calculator to compare."
+            "q": "How much more if I run the A/C a few more hours a day?",
+            "a": "A 1 kW air conditioner running 4 more hours a day for 30 days adds about 120 kWh. The extra cost depends on which tier that usage falls into, so use the A/C calculator above. Inverter units often draw less than their rated power on average."
           },
           {
-            "q": "Why might the result differ slightly from my actual bill?",
-            "a": "Items such as the fuel cost adjustment, TV license fee, and welfare discounts vary by individual circumstances. This calculator uses standard rates for a typical household, so small differences from your actual bill are normal."
+            "q": "What is the super-user rate?",
+            "a": "In summer (Jul–Aug) and winter (Dec–Feb), usage above 1,000 kWh a month is charged 736.2 KRW/kWh (593.3 for high voltage). It does not apply in other months."
+          },
+          {
+            "q": "How are VAT and the fund calculated?",
+            "a": "VAT is 10% of the electricity charge (rounded to the won) and the Electric Power Industry Fund is 2.7% (truncated to 10 won). The fund rate fell from 3.7% to 3.2% in July 2024 and to 2.7% in July 2025. The final bill is truncated to 10 won."
+          },
+          {
+            "q": "Why might my real bill differ?",
+            "a": "If your meter is read mid-month, months that span a season change are prorated by days. Apartment bills depend on the complex's contract type. TV license fees and the extra deduction for welfare households using 200 kWh or less are not included. Check the KEPCO ON app or call 123 for the exact amount."
+          },
+          {
+            "q": "Is the essential-use deduction still available?",
+            "a": "It was abolished for general households. It remains only as an additional reduction for welfare-discount households using 200 kWh or less a month."
           }
         ]
       }
@@ -11526,6 +11714,11 @@
       "apply": "Apply to Calculator"
     },
     "appliances": {
+      "blanket": "Electric blanket",
+      "heater": "Electric heater",
+      "dryer": "Clothes dryer",
+      "dishwasher": "Dishwasher",
+      "other": "Other appliance",
       "ac": "Air Conditioner",
       "fridge": "Refrigerator",
       "tv": "TV",

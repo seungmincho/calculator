@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function ElectricityCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전기요금 계산기', description: '한국 주택용 전기요금 누진제 기준 계산기', url: 'https://toolhub.ai.kr/electricity-calculator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['누진제 전기요금 계산', '계절별 요금 차이', '부가세/기금 포함', '절약 팁'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전기요금 계산기', description: '한국 주택용 전기요금 누진제 기준 계산기', url: 'https://toolhub.ai.kr/electricity-calculator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['누진제 전기요금 계산', '계절별 요금 차이', '부가세/기금 포함', '가전별 사용량 계산', '에어컨 추가 사용 요금', '지난달 비교', '복지할인', '주택용 고압', '슈퍼유저 요금', '절약 팁'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -23,7 +23,7 @@ export default function ElectricityCalculatorPage() {
         name: '주택용 전기요금 누진제 구간은 어떻게 되나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '주택용 전기요금은 사용량에 따라 3단계 누진제가 적용됩니다. 1구간(200kWh 이하)은 kWh당 약 120원, 2구간(201~400kWh)은 약 214원, 3구간(400kWh 초과)은 약 307원입니다. 여기에 기본요금, 부가가치세(10%), 전력산업기반기금(3.7%)이 추가됩니다.',
+          text: '주택용 전기요금은 사용량에 따라 3단계 누진제가 적용됩니다. 1구간(200kWh 이하)은 kWh당 120.0원, 2구간(201~400kWh)은 214.6원, 3구간(400kWh 초과)은 307.3원입니다(기타 계절 기준, 하계 7~8월은 구간이 300/450kWh로 넓어짐). 여기에 기본요금, 부가가치세(10%), 전력산업기반기금(2.7%)이 추가됩니다.',
         },
       },
       {
@@ -31,7 +31,7 @@ export default function ElectricityCalculatorPage() {
         name: '여름·겨울 전기요금이 더 비싼 이유는?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '한국전력은 냉방(7~8월)과 난방(12~2월) 시즌에는 전력 수요 급증으로 누진 구간이 동일하지만, 사용량이 급격히 증가하여 높은 누진 구간에 해당하는 경우가 많습니다. 다만 2024년부터 누진제가 완화되어 구간 간 격차가 이전보다 줄었습니다.',
+          text: '겨울(12~2월)에는 누진 구간이 기타 계절과 같은데 전기난방기기 사용으로 사용량이 늘어 높은 구간에 들어가기 쉽기 때문입니다. 여름(7~8월)은 구간이 300/450kWh로 넓어지고, 여름·겨울에 1,000kWh를 넘기면 초과분에 슈퍼유저 요금이 붙습니다.',
         },
       },
       {
@@ -51,8 +51,8 @@ export default function ElectricityCalculatorPage() {
     description: '월 전기 사용량을 입력하면 누진제 기준으로 전기요금을 계산합니다.',
     step: [
       { '@type': 'HowToStep', name: '사용량 입력', text: '월 전기 사용량(kWh)을 입력합니다. 전기 고지서에서 확인할 수 있습니다.' },
-      { '@type': 'HowToStep', name: '계절 선택', text: '여름(7~8월), 겨울(12~2월), 기타 계절을 선택합니다.' },
-      { '@type': 'HowToStep', name: '요금 확인', text: '누진 구간별 요금, 기본료, 부가세(10%), 전력기반기금(3.7%)이 포함된 최종 청구 금액을 확인합니다.' },
+      { '@type': 'HowToStep', name: '사용 월 선택', text: '사용 월을 고르면 하계(7~8월)·기타 계절 요금이 자동 적용됩니다.' },
+      { '@type': 'HowToStep', name: '요금 확인', text: '누진 구간별 요금, 기본료, 부가세(10%), 전력기반기금(2.7%)이 포함된 최종 청구 금액을 확인합니다.' },
     ],
   }
 
@@ -76,14 +76,14 @@ export default function ElectricityCalculatorPage() {
             전기요금 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            전기요금 계산기는 월 사용량(kWh)을 입력하면 한국전력(한전)의 주택용 전기요금을 누진제 기준으로 계산하는 도구입니다. 기본요금, 사용요금(3단계 누진제), 부가가치세(10%), 전력산업기반기금(3.7%)까지 포함한 최종 청구 금액을 예측할 수 있습니다. 여름·겨울 냉난방 시즌에 요금이 얼마나 늘어나는지 미리 확인하고 절약 계획을 세워보세요.
+            전기요금 계산기는 월 사용량(kWh)을 입력하면 한국전력(한전)의 주택용 전기요금을 누진제 기준으로 계산하는 도구입니다. 기본요금, 사용요금(3단계 누진제), 부가가치세(10%), 전력산업기반기금(2.7%)까지 포함한 최종 청구 금액을 예측할 수 있습니다. 여름·겨울 냉난방 시즌에 요금이 얼마나 늘어나는지 미리 확인하고 절약 계획을 세워보세요.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             전기요금 절약 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>누진 구간 관리:</strong> 월 200kWh 이하는 1구간, 201~400kWh는 2구간, 400kWh 초과는 3구간으로 요금이 크게 올라갑니다. 사용량이 구간 경계에 걸리지 않도록 관리하는 것이 중요합니다.</li>
-            <li><strong>에너지캐시백 활용:</strong> 전년 동월 대비 전기 사용량을 3% 이상 절감하면 kWh당 30원의 에너지캐시백을 받을 수 있습니다. 절감 목표를 계산기로 미리 확인하세요.</li>
+            <li><strong>에너지캐시백 활용:</strong> 한전 에너지캐시백에 신청하면 과거 같은 달보다 아낀 사용량에 따라 캐시백을 받을 수 있습니다. 조건은 한전에서 확인하세요.</li>
             <li><strong>대기전력 차단:</strong> TV, 셋톱박스, 컴퓨터의 대기전력은 가정 전기 사용량의 약 11%를 차지합니다. 멀티탭 스위치로 차단하면 연간 수만 원을 절약할 수 있습니다.</li>
             <li><strong>에너지효율 가전 선택:</strong> 1등급 에어컨은 5등급 대비 최대 40% 전기를 덜 씁니다. 가전 구입 시 에너지 소비효율 등급을 반드시 확인하세요.</li>
           </ul>
