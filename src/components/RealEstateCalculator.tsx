@@ -1,1325 +1,470 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { Home, Calculator, TrendingUp, Share2, Check, Building, Save } from 'lucide-react';
-import { useCalculationHistory } from '@/hooks/useCalculationHistory';
-import CalculationHistory from '@/components/CalculationHistory';
-import GuideSection from '@/components/GuideSection';
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useState, useEffect, useMemo, type ReactNode } from 'react'
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import { RELIEF_LIMIT, type Owner, type Relief } from '@/utils/acquisitionTax'
+import { totalCost, LEGAL_FEE, type CostInput, type RepayMethod } from '@/utils/realEstateCost'
 
-type CalculatorType = 'jeonse-loan' | 'mortgage-loan' | 'acquisition-tax' | 'property-tax' | 'capital-gains-tax';
+// 조정대상지역(2026.7.1): 서울 전역 + 경기 일부 — 목록은 /acquisition-tax 와 같음. 국민주택채권은 서울·광역시가 높은 요율
+const REGIONS = ['seoul', 'gyeonggiAdj', 'metroCity', 'other'] as const
+type Region = (typeof REGIONS)[number]
+const OWNERS: Owner[] = ['1', '2temp', '2', '3', '4']
+const RELIEFS: Relief[] = ['none', 'first', 'firstSmall', 'birth']
+const METHODS: RepayMethod[] = ['equalPayment', 'equalPrincipal']
+const YEARS = [10, 15, 20, 25, 30, 35, 40, 50]
+const SCENARIOS = [3, 5, 7, 9, 12, 15]
+const EOK = 100_000_000
+const MAX = 1_000_000_000_000
 
-interface LoanResult {
-  monthlyPayment: number;
-  totalPayment: number;
-  totalInterest: number;
-  loanToValue?: number;
+const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+const parseNum = (s: string | null) => Number((s ?? '').replace(/[^\d]/g, '')) || 0
+const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
+const numOr = (v: string | null, def: number) => (v !== null && v !== '' && Number.isFinite(Number(v)) ? Number(v) : def)
+
+function MoneyInput({ id, label, value, onChange, unit, hint }: {
+  id: string; label: ReactNode; value: number; onChange: (v: number) => void; unit: string; hint?: ReactNode
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="numeric" value={value ? value.toLocaleString('ko-KR') : ''}
+          onChange={(e) => onChange(Math.min(parseNum(e.target.value), MAX))}
+          className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+        />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{unit}</span>
+      </div>
+      {hint && <p className="text-xs text-muted mt-1.5">{hint}</p>}
+    </div>
+  )
 }
 
-interface TaxResult {
-  acquisitionTax?: number;
-  localTax?: number;
-  stampTax?: number;
-  registrationTax?: number;
-  totalTax: number;
-  propertyTax?: number;
-  educationTax?: number;
-  capitalGainsTax?: number;
-  localIncomeTax?: number;
-}
+export default function RealEstateCalculator() {
+  const t = useTranslations('realEstate')
+  const sp = useSearchParams()
 
-interface PropertyTaxResult extends TaxResult {
-  propertyTax: number;
-  educationTax: number;
-}
-
-interface CapitalGainsTaxResult extends TaxResult {
-  capitalGainsTax: number;
-  localIncomeTax: number;
-}
-
-const RealEstateCalculatorContent = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<CalculatorType>('jeonse-loan');
-  const [isCopied, setIsCopied] = useState(false);
-
-  // 전세자금대출 관련 상태
-  const [jeonseDeposit, setJeonseDeposit] = useState('');
-  const [jeonseInterestRate, setJeonseInterestRate] = useState('3.5');
-  const [jeonseLoanTerm, setJeonseLoanTerm] = useState('2');
-
-  // 주택담보대출 관련 상태
-  const [housePrice, setHousePrice] = useState('');
-  const [downPayment, setDownPayment] = useState('');
-  const [mortgageRate, setMortgageRate] = useState('4.0');
-  const [mortgageTerm, setMortgageTerm] = useState('30');
-
-  // 취득세 관련 상태
-  const [acquisitionPrice, setAcquisitionPrice] = useState('');
-  const [propertyType, setPropertyType] = useState<'apartment' | 'house' | 'land'>('apartment');
-  const [isFirstHome, setIsFirstHome] = useState(true);
-  const [area, setArea] = useState('');
-
-  // 종부세 관련 상태
-  const [propertyValue, setPropertyValue] = useState('');
-  const [propertyCount, setPropertyCount] = useState('1');
-  const [ownedYears, setOwnedYears] = useState('');
-
-  // 양도소득세 관련 상태
-  const [sellPrice, setSellPrice] = useState('');
-  const [buyPrice, setBuyPrice] = useState('');
-  const [sellDate, setSellDate] = useState('');
-  const [buyDate, setBuyDate] = useState('');
-  const [isMultipleHomes, setIsMultipleHomes] = useState(false);
-
-  const [result, setResult] = useState<LoanResult | TaxResult | null>(null);
-  const [showSaveButton, setShowSaveButton] = useState(false);
-
-  // 계산 이력 관리
-  const {
-    histories,
-    isLoading: historyLoading,
-    saveCalculation,
-    removeHistory,
-    clearHistories,
-    loadFromHistory
-  } = useCalculationHistory('real-estate');
-
-  const calculatorTypes = {
-    'jeonse-loan': '전세자금대출',
-    'mortgage-loan': '주택담보대출',
-    'acquisition-tax': '취득세 계산',
-    'property-tax': '종합부동산세',
-    'capital-gains-tax': '양도소득세'
-  };
-
-  // 전세자금대출 계산
-  const calculateJeonseLoan = (deposit: number, rate: number, termYears: number) => {
-    // LTV 80% 기준으로 대출 가능 금액 계산
-    const maxLoanAmount = deposit * 0.8;
-    const monthlyRate = rate / 100 / 12;
-    const termMonths = termYears * 12;
-    
-    const monthlyPayment = maxLoanAmount * (monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / 
-                          (Math.pow(1 + monthlyRate, termMonths) - 1);
-    const totalPayment = monthlyPayment * termMonths;
-    const totalInterest = totalPayment - maxLoanAmount;
-    
-    return {
-      monthlyPayment,
-      totalPayment,
-      totalInterest,
-      loanToValue: 80
-    };
-  };
-
-  // 주택담보대출 계산
-  const calculateMortgageLoan = (price: number, down: number, rate: number, termYears: number) => {
-    const loanAmount = price - down;
-    const monthlyRate = rate / 100 / 12;
-    const termMonths = termYears * 12;
-    
-    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / 
-                          (Math.pow(1 + monthlyRate, termMonths) - 1);
-    const totalPayment = monthlyPayment * termMonths;
-    const totalInterest = totalPayment - loanAmount;
-    const loanToValue = (loanAmount / price) * 100;
-    
-    return {
-      monthlyPayment,
-      totalPayment,
-      totalInterest,
-      loanToValue
-    };
-  };
-
-  // 취득세 계산 (2025년 기준)
-  const calculateAcquisitionTax = (price: number, type: string, firstHome: boolean, propertyArea: number) => {
-    let taxRate = 0;
-    
-    // 부동산 유형별 세율
-    if (type === 'apartment' || type === 'house') {
-      if (firstHome && price <= 600000000) {
-        // 1주택자 6억 이하 - 1~3% 누진
-        if (price <= 60000000) {
-          taxRate = 0.01;
-        } else if (price <= 600000000) {
-          taxRate = 0.01 + ((price - 60000000) / 540000000) * 0.02;
-        }
-      } else {
-        // 일반 주택 - 1~3% 누진
-        if (price <= 60000000) {
-          taxRate = 0.01;
-        } else if (price <= 600000000) {
-          taxRate = 0.01 + ((price - 60000000) / 540000000) * 0.02;
-        } else {
-          taxRate = 0.03;
-        }
-      }
-    } else {
-      // 토지 - 2~4% 누진
-      if (price <= 60000000) {
-        taxRate = 0.02;
-      } else if (price <= 600000000) {
-        taxRate = 0.02 + ((price - 60000000) / 540000000) * 0.02;
-      } else {
-        taxRate = 0.04;
-      }
-    }
-
-    const acquisitionTax = price * taxRate;
-    const localTax = acquisitionTax * 0.1; // 지방교육세
-    const stampTax = price * 0.00015; // 인지세 0.015%
-    const registrationTax = price * 0.002; // 등록세 0.2%
-    const totalTax = acquisitionTax + localTax + stampTax + registrationTax;
-
-    return {
-      acquisitionTax,
-      localTax,
-      stampTax,
-      registrationTax,
-      totalTax
-    };
-  };
-
-  // 종합부동산세 계산 (2025년 기준)
-  const calculatePropertyTax = (value: number, count: number, years: number) => {
-    // 1세대 1주택 공제 (9억원)
-    const deduction = count === 1 ? 900000000 : 600000000; // 다주택자는 6억원 공제
-    const taxableValue = Math.max(0, value - deduction);
-    
-    if (taxableValue <= 0) {
-      return {
-        propertyTax: 0,
-        educationTax: 0,
-        totalTax: 0
-      };
-    }
-
-    // 세율 적용 (누진세율)
-    let propertyTax = 0;
-    const isMultipleHome = count > 1;
-    
-    if (isMultipleHome) {
-      // 다주택자 중과세율 (0.6~3.2%)
-      if (taxableValue <= 300000000) {
-        propertyTax = taxableValue * 0.006;
-      } else if (taxableValue <= 600000000) {
-        propertyTax = 300000000 * 0.006 + (taxableValue - 300000000) * 0.008;
-      } else {
-        propertyTax = 300000000 * 0.006 + 300000000 * 0.008 + (taxableValue - 600000000) * 0.032;
-      }
-    } else {
-      // 1주택자 일반세율 (0.5~2.7%)
-      if (taxableValue <= 300000000) {
-        propertyTax = taxableValue * 0.005;
-      } else if (taxableValue <= 600000000) {
-        propertyTax = 300000000 * 0.005 + (taxableValue - 300000000) * 0.007;
-      } else {
-        propertyTax = 300000000 * 0.005 + 300000000 * 0.007 + (taxableValue - 600000000) * 0.027;
-      }
-    }
-
-    // 장기보유 공제 (3년 이상)
-    if (years >= 3) {
-      const discountRate = Math.min(0.8, 0.2 + (years - 3) * 0.04); // 최대 80% 공제
-      propertyTax *= (1 - discountRate);
-    }
-
-    const educationTax = propertyTax * 0.2; // 지방교육세 20%
-    const totalTax = propertyTax + educationTax;
-
-    return {
-      propertyTax,
-      educationTax,
-      totalTax
-    };
-  };
-
-  // 양도소득세 계산 (2025년 기준)
-  const calculateCapitalGainsTax = (sellPrice: number, buyPrice: number, sellDateStr: string, buyDateStr: string, multipleHomes: boolean) => {
-    const sellDate = new Date(sellDateStr);
-    const buyDate = new Date(buyDateStr);
-    const ownedMonths = Math.floor((sellDate.getTime() - buyDate.getTime()) / (1000 * 60 * 60 * 24 * 30));
-    const ownedYears = Math.floor(ownedMonths / 12);
-    
-    // 양도차익 계산
-    const capitalGains = sellPrice - buyPrice;
-    if (capitalGains <= 0) {
-      return {
-        capitalGainsTax: 0,
-        localIncomeTax: 0,
-        totalTax: 0
-      };
-    }
-
-    // 기본공제 (연간 250만원)
-    const basicDeduction = 2500000;
-    const taxableGains = Math.max(0, capitalGains - basicDeduction);
-    
-    if (taxableGains <= 0) {
-      return {
-        capitalGainsTax: 0,
-        localIncomeTax: 0,
-        totalTax: 0
-      };
-    }
-
-    // 세율 적용
-    let taxRate = 0;
-    
-    if (multipleHomes) {
-      // 다주택자 중과세
-      if (ownedYears < 1) {
-        taxRate = 0.5; // 1년 미만 50%
-      } else if (ownedYears < 2) {
-        taxRate = 0.4; // 2년 미만 40%
-      } else {
-        taxRate = 0.2; // 2년 이상 20%
-      }
-    } else {
-      // 1주택자 일반세율
-      if (ownedYears < 1) {
-        taxRate = 0.4; // 1년 미만 40%
-      } else if (ownedYears < 2) {
-        taxRate = 0.3; // 2년 미만 30%
-      } else {
-        taxRate = 0.15; // 2년 이상 15%
-      }
-    }
-
-    // 장기보유 특별공제 (3년 이상)
-    let finalTaxableGains = taxableGains;
-    if (ownedYears >= 3) {
-      const discountRate = Math.min(0.3, (ownedYears - 3) * 0.04); // 최대 30% 공제
-      finalTaxableGains = taxableGains * (1 - discountRate);
-    }
-
-    const capitalGainsTax = finalTaxableGains * taxRate;
-    const localIncomeTax = capitalGainsTax * 0.1; // 지방소득세 10%
-    const totalTax = capitalGainsTax + localIncomeTax;
-
-    return {
-      capitalGainsTax,
-      localIncomeTax,
-      totalTax
-    };
-  };
-
-  const formatNumber = (num: number) => {
-    return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
-  // 계산 결과 저장
-  const handleSaveCalculation = () => {
-    if (!result) return;
-
-    let inputs: Record<string, unknown> = { activeTab };
-    
-    switch (activeTab) {
-      case 'jeonse-loan':
-        inputs = { ...inputs, jeonseDeposit, jeonseInterestRate, jeonseLoanTerm };
-        break;
-      case 'mortgage-loan':
-        inputs = { ...inputs, housePrice, downPayment, mortgageRate, mortgageTerm };
-        break;
-      case 'acquisition-tax':
-        inputs = { ...inputs, acquisitionPrice, propertyType, isFirstHome, area };
-        break;
-      case 'property-tax':
-        inputs = { ...inputs, propertyValue, propertyCount, ownedYears };
-        break;
-      case 'capital-gains-tax':
-        inputs = { ...inputs, sellPrice, buyPrice, sellDate, buyDate, isMultipleHomes };
-        break;
-    }
-
-    const success = saveCalculation(inputs, result);
-    if (success) {
-      setShowSaveButton(false);
-    }
-  };
-
-  // 이력에서 불러오기
-  const handleLoadFromHistory = (historyId: string) => {
-    const inputs = loadFromHistory(historyId);
-    if (inputs) {
-      if (inputs.activeTab) {
-        setActiveTab(inputs.activeTab);
-        
-        switch (inputs.activeTab) {
-          case 'jeonse-loan':
-            if (inputs.jeonseDeposit) setJeonseDeposit(inputs.jeonseDeposit);
-            if (inputs.jeonseInterestRate) setJeonseInterestRate(inputs.jeonseInterestRate);
-            if (inputs.jeonseLoanTerm) setJeonseLoanTerm(inputs.jeonseLoanTerm);
-            break;
-          case 'mortgage-loan':
-            if (inputs.housePrice) setHousePrice(inputs.housePrice);
-            if (inputs.downPayment) setDownPayment(inputs.downPayment);
-            if (inputs.mortgageRate) setMortgageRate(inputs.mortgageRate);
-            if (inputs.mortgageTerm) setMortgageTerm(inputs.mortgageTerm);
-            break;
-          case 'acquisition-tax':
-            if (inputs.acquisitionPrice) setAcquisitionPrice(inputs.acquisitionPrice);
-            if (inputs.propertyType) setPropertyType(inputs.propertyType);
-            if (inputs.isFirstHome !== undefined) setIsFirstHome(inputs.isFirstHome);
-            if (inputs.area) setArea(inputs.area);
-            break;
-          case 'property-tax':
-            if (inputs.propertyValue) setPropertyValue(inputs.propertyValue);
-            if (inputs.propertyCount) setPropertyCount(inputs.propertyCount);
-            if (inputs.ownedYears) setOwnedYears(inputs.ownedYears);
-            break;
-          case 'capital-gains-tax':
-            if (inputs.sellPrice) setSellPrice(inputs.sellPrice);
-            if (inputs.buyPrice) setBuyPrice(inputs.buyPrice);
-            if (inputs.sellDate) setSellDate(inputs.sellDate);
-            if (inputs.buyDate) setBuyDate(inputs.buyDate);
-            if (inputs.isMultipleHomes !== undefined) setIsMultipleHomes(inputs.isMultipleHomes);
-            break;
-        }
-        
-        // URL도 업데이트
-        updateURL({ tab: inputs.activeTab });
-      }
-    }
-  };
-
-  // 이력 결과 포맷팅
-  const formatHistoryResult = (result: Record<string, unknown>) => {
-    if (!result) return '';
-
-    if ('totalTax' in result) {
-      const totalTax = Number(result.totalTax) || 0;
-      if ('acquisitionTax' in result) {
-        return `취득세: ${formatNumber(totalTax)}원`;
-      } else if ('propertyTax' in result) {
-        return `종부세: ${formatNumber(totalTax)}원`;
-      } else if ('capitalGainsTax' in result) {
-        return `양도세: ${formatNumber(totalTax)}원`;
-      }
-      return `총 세금: ${formatNumber(totalTax)}원`;
-    } else if ('monthlyPayment' in result) {
-      return `월 상환: ${formatNumber(Number(result.monthlyPayment) || 0)}원`;
-    }
-    return '';
-  };
-
-  const handleShare = async () => {
-    try {
-      const currentUrl = window.location.href;
-      
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        const textArea = document.createElement('textarea');
-        textArea.value = currentUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
-    }
-  };
-
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams);
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    });
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-
-  const handleCalculate = () => {
-    let calculation: LoanResult | TaxResult | null = null;
-
-    switch (activeTab) {
-      case 'jeonse-loan':
-        if (jeonseDeposit && jeonseInterestRate && jeonseLoanTerm) {
-          calculation = calculateJeonseLoan(
-            parseInt(jeonseDeposit.replace(/,/g, '')),
-            parseFloat(jeonseInterestRate),
-            parseInt(jeonseLoanTerm)
-          );
-        }
-        break;
-      case 'mortgage-loan':
-        if (housePrice && downPayment && mortgageRate && mortgageTerm) {
-          calculation = calculateMortgageLoan(
-            parseInt(housePrice.replace(/,/g, '')),
-            parseInt(downPayment.replace(/,/g, '')),
-            parseFloat(mortgageRate),
-            parseInt(mortgageTerm)
-          );
-        }
-        break;
-      case 'acquisition-tax':
-        if (acquisitionPrice && area) {
-          calculation = calculateAcquisitionTax(
-            parseInt(acquisitionPrice.replace(/,/g, '')),
-            propertyType,
-            isFirstHome,
-            parseFloat(area)
-          );
-        }
-        break;
-      case 'property-tax':
-        if (propertyValue && ownedYears) {
-          calculation = calculatePropertyTax(
-            parseInt(propertyValue.replace(/,/g, '')),
-            parseInt(propertyCount),
-            parseInt(ownedYears)
-          );
-        }
-        break;
-      case 'capital-gains-tax':
-        if (sellPrice && buyPrice && sellDate && buyDate) {
-          calculation = calculateCapitalGainsTax(
-            parseInt(sellPrice.replace(/,/g, '')),
-            parseInt(buyPrice.replace(/,/g, '')),
-            sellDate,
-            buyDate,
-            isMultipleHomes
-          );
-        }
-        break;
-    }
-
-    setResult(calculation);
-    setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
-  };
-
-  // 입력 핸들러들
-  const handleNumberInput = (value: string, setter: (value: string) => void, paramKey: string) => {
-    const numValue = value.replace(/,/g, '');
-    if (/^\d*$/.test(numValue)) {
-      const formattedValue = formatNumber(Number(numValue));
-      setter(formattedValue);
-      updateURL({ [paramKey]: numValue, tab: activeTab });
-    }
-  };
-
-  // URL에서 초기값 로드
-  useEffect(() => {
-    const tabParam = searchParams.get('tab') as CalculatorType;
-    if (tabParam && ['jeonse-loan', 'mortgage-loan', 'acquisition-tax', 'property-tax', 'capital-gains-tax'].includes(tabParam)) {
-      setActiveTab(tabParam);
-    }
-
-    // 각 탭별 파라미터 로드
-    const jeonseParam = searchParams.get('jeonse');
-    const housePriceParam = searchParams.get('housePrice');
-    const downParam = searchParams.get('down');
-    const acquisitionParam = searchParams.get('acquisition');
-    const areaParam = searchParams.get('area');
-    const typeParam = searchParams.get('type');
-    const firstHomeParam = searchParams.get('firstHome');
-    const propertyValueParam = searchParams.get('propertyValue');
-    const propertyCountParam = searchParams.get('propertyCount');
-    const ownedYearsParam = searchParams.get('ownedYears');
-    const sellPriceParam = searchParams.get('sellPrice');
-    const buyPriceParam = searchParams.get('buyPrice');
-    const sellDateParam = searchParams.get('sellDate');
-    const buyDateParam = searchParams.get('buyDate');
-    const multipleHomesParam = searchParams.get('multipleHomes');
-
-    if (jeonseParam && /^\d+$/.test(jeonseParam)) {
-      setJeonseDeposit(formatNumber(Number(jeonseParam)));
-    }
-    if (housePriceParam && /^\d+$/.test(housePriceParam)) {
-      setHousePrice(formatNumber(Number(housePriceParam)));
-    }
-    if (downParam && /^\d+$/.test(downParam)) {
-      setDownPayment(formatNumber(Number(downParam)));
-    }
-    if (acquisitionParam && /^\d+$/.test(acquisitionParam)) {
-      setAcquisitionPrice(formatNumber(Number(acquisitionParam)));
-    }
-    if (areaParam && /^\d*\.?\d*$/.test(areaParam)) {
-      setArea(areaParam);
-    }
-    if (typeParam && ['apartment', 'house', 'land'].includes(typeParam)) {
-      setPropertyType(typeParam as 'apartment' | 'house' | 'land');
-    }
-    if (firstHomeParam === 'false') {
-      setIsFirstHome(false);
-    }
-    if (propertyValueParam && /^\d+$/.test(propertyValueParam)) {
-      setPropertyValue(formatNumber(Number(propertyValueParam)));
-    }
-    if (propertyCountParam && /^\d+$/.test(propertyCountParam)) {
-      setPropertyCount(propertyCountParam);
-    }
-    if (ownedYearsParam && /^\d+$/.test(ownedYearsParam)) {
-      setOwnedYears(ownedYearsParam);
-    }
-    if (sellPriceParam && /^\d+$/.test(sellPriceParam)) {
-      setSellPrice(formatNumber(Number(sellPriceParam)));
-    }
-    if (buyPriceParam && /^\d+$/.test(buyPriceParam)) {
-      setBuyPrice(formatNumber(Number(buyPriceParam)));
-    }
-    if (sellDateParam) {
-      setSellDate(sellDateParam);
-    }
-    if (buyDateParam) {
-      setBuyDate(buyDateParam);
-    }
-    if (multipleHomesParam === 'true') {
-      setIsMultipleHomes(true);
-    }
-  }, [searchParams]);
+  const [price, setPrice] = useState(() => parseNum(sp.get('p')) || 7 * EOK)
+  const [region, setRegion] = useState<Region>(() => pick(sp.get('rg'), REGIONS, 'seoul'))
+  const [area, setArea] = useState(() => sp.get('a') ?? '84')
+  const [owner, setOwner] = useState<Owner>(() => pick(sp.get('o'), OWNERS, '1'))
+  const [relief, setRelief] = useState<Relief>(() => pick(sp.get('rl'), RELIEFS, 'none'))
+  const [byLtv, setByLtv] = useState(() => sp.get('lm') !== 'amt')
+  const [ltv, setLtv] = useState(() => Math.min(100, Math.max(0, numOr(sp.get('ltv'), 40))))
+  const [loanAmt, setLoanAmt] = useState(() => parseNum(sp.get('loan')) || 3 * EOK)
+  const [rate, setRate] = useState(() => sp.get('r') ?? '4.0')
+  const [years, setYears] = useState(() => numOr(sp.get('y'), 30))
+  const [method, setMethod] = useState<RepayMethod>(() => (sp.get('m') === 'ep' ? 'equalPrincipal' : 'equalPayment'))
+  const [income, setIncome] = useState(() => numOr(sp.get('inc'), 60_000_000))
+  const [vat, setVat] = useState(() => sp.get('vat') !== '0')
+  const [legal, setLegal] = useState(() => numOr(sp.get('lg'), LEGAL_FEE))
+  const [other, setOther] = useState(() => numOr(sp.get('etc'), 2_000_000))
 
   useEffect(() => {
-    handleCalculate();
-  }, [activeTab, jeonseDeposit, jeonseInterestRate, jeonseLoanTerm, housePrice, downPayment, mortgageRate, mortgageTerm, acquisitionPrice, propertyType, isFirstHome, area, propertyValue, propertyCount, ownedYears, sellPrice, buyPrice, sellDate, buyDate, isMultipleHomes]);
+    const q = new URLSearchParams()
+    q.set('p', String(price))
+    q.set('rg', region)
+    q.set('a', area)
+    if (owner !== '1') q.set('o', owner)
+    if (owner === '1' && relief !== 'none') q.set('rl', relief)
+    if (byLtv) q.set('ltv', String(ltv))
+    else { q.set('lm', 'amt'); q.set('loan', String(loanAmt)) }
+    q.set('r', rate)
+    q.set('y', String(years))
+    if (method === 'equalPrincipal') q.set('m', 'ep')
+    q.set('inc', String(income))
+    if (!vat) q.set('vat', '0')
+    if (legal !== LEGAL_FEE) q.set('lg', String(legal))
+    q.set('etc', String(other))
+    window.history.replaceState(null, '', `?${q}`)
+  }, [price, region, area, owner, relief, byLtv, ltv, loanAmt, rate, years, method, income, vat, legal, other])
 
-  const renderInputSection = () => {
-    switch (activeTab) {
-      case 'jeonse-loan':
-        return (
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                전세보증금
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={jeonseDeposit}
-                  onChange={(e) => handleNumberInput(e.target.value, setJeonseDeposit, 'jeonse')}
-                  placeholder="예: 500,000,000"
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                />
-                <span className="absolute right-3 top-3 text-muted">원</span>
-              </div>
-            </div>
+  const areaNum = parseFloat(area) || 0
+  const input: CostInput = {
+    price,
+    owner,
+    adjusted: region === 'seoul' || region === 'gyeonggiAdj',
+    metro: region === 'seoul' || region === 'metroCity',
+    over85: areaNum > 85,
+    relief: owner === '1' ? relief : 'none',
+    loan: byLtv ? Math.round((price * ltv) / 100 / 10_000) * 10_000 : loanAmt,
+    rate: parseFloat(rate) || 0,
+    years,
+    method,
+    brokerVat: vat,
+    legal,
+    other,
+    income,
+  }
+  const r = totalCost(input)
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  대출금리
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={jeonseInterestRate}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        setJeonseInterestRate(value);
-                        updateURL({ jeonseRate: value, tab: activeTab });
-                      }
-                    }}
-                    placeholder="3.5"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">%</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  대출기간
-                </label>
-                <select
-                  value={jeonseLoanTerm}
-                  onChange={(e) => {
-                    setJeonseLoanTerm(e.target.value);
-                    updateURL({ jeonseTerm: e.target.value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                >
-                  <option value="1">1년</option>
-                  <option value="2">2년</option>
-                  <option value="3">3년</option>
-                  <option value="4">4년</option>
-                  <option value="5">5년</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        );
+  // 매매가 시나리오: 같은 LTV 비율·조건으로 가격만 바꿈
+  const scenarios = useMemo(() => {
+    const ratio = price ? r.loan / price : 0
+    const list = [...new Set([...SCENARIOS.map((x) => x * EOK), price])].filter((p) => p > 0).sort((a, b) => a - b)
+    return list.map((p) => ({ p, res: totalCost({ ...input, price: p, loan: Math.round((p * ratio) / 10_000) * 10_000 }) }))
+  }, [price, r.loan, JSON.stringify(input)]) // eslint-disable-line react-hooks/exhaustive-deps
 
-      case 'mortgage-loan':
-        return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  주택가격
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={housePrice}
-                    onChange={(e) => handleNumberInput(e.target.value, setHousePrice, 'housePrice')}
-                    placeholder="예: 1,000,000,000"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  계약금/중도금
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={downPayment}
-                    onChange={(e) => handleNumberInput(e.target.value, setDownPayment, 'down')}
-                    placeholder="예: 300,000,000"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
-                </div>
-              </div>
-            </div>
+  const W = (v: number) => t('u.wonFmt', { v: won(v) })
+  const short = (v: number) => t('u.shortFmt', { eok: +(v / EOK).toFixed(2), m: won(v / 1_000_000) })
+  const pctOf = (v: number) => (price ? ((v / price) * 100).toFixed(2) : '0')
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  대출금리
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={mortgageRate}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        setMortgageRate(value);
-                        updateURL({ mortgageRate: value, tab: activeTab });
-                      }
-                    }}
-                    placeholder="4.0"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">%</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  대출기간
-                </label>
-                <select
-                  value={mortgageTerm}
-                  onChange={(e) => {
-                    setMortgageTerm(e.target.value);
-                    updateURL({ mortgageTerm: e.target.value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                >
-                  <option value="10">10년</option>
-                  <option value="15">15년</option>
-                  <option value="20">20년</option>
-                  <option value="25">25년</option>
-                  <option value="30">30년</option>
-                  <option value="35">35년</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        );
+  const chart = [
+    { k: 'tax', v: r.tax.total },
+    { k: 'broker', v: r.broker + r.brokerVat },
+    { k: 'registration', v: r.registration },
+    { k: 'other', v: r.other },
+  ].map((x) => ({ ...x, name: t(`u.chart.${x.k}`) }))
 
-      case 'acquisition-tax':
-        return (
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                취득가액
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={acquisitionPrice}
-                  onChange={(e) => handleNumberInput(e.target.value, setAcquisitionPrice, 'acquisition')}
-                  placeholder="예: 800,000,000"
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                />
-                <span className="absolute right-3 top-3 text-muted">원</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  부동산 유형
-                </label>
-                <select
-                  value={propertyType}
-                  onChange={(e) => {
-                    const value = e.target.value as 'apartment' | 'house' | 'land';
-                    setPropertyType(value);
-                    updateURL({ type: value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                >
-                  <option value="apartment">아파트</option>
-                  <option value="house">단독주택</option>
-                  <option value="land">토지</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  면적
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={area}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        setArea(value);
-                        updateURL({ area: value, tab: activeTab });
-                      }
-                    }}
-                    placeholder="84.3"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">㎡</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                주택 보유 현황
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={isFirstHome}
-                    onChange={() => {
-                      setIsFirstHome(true);
-                      updateURL({ firstHome: 'true', tab: activeTab });
-                    }}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">1주택자 (무주택 포함)</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={!isFirstHome}
-                    onChange={() => {
-                      setIsFirstHome(false);
-                      updateURL({ firstHome: 'false', tab: activeTab });
-                    }}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">다주택자</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'property-tax':
-        return (
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                부동산 공시가격
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={propertyValue}
-                  onChange={(e) => handleNumberInput(e.target.value, setPropertyValue, 'propertyValue')}
-                  placeholder="예: 1,500,000,000"
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                />
-                <span className="absolute right-3 top-3 text-muted">원</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  보유 주택수
-                </label>
-                <select
-                  value={propertyCount}
-                  onChange={(e) => {
-                    setPropertyCount(e.target.value);
-                    updateURL({ propertyCount: e.target.value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                >
-                  <option value="1">1주택</option>
-                  <option value="2">2주택</option>
-                  <option value="3">3주택 이상</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  보유기간
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={ownedYears}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*$/.test(value)) {
-                        setOwnedYears(value);
-                        updateURL({ ownedYears: value, tab: activeTab });
-                      }
-                    }}
-                    placeholder="5"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">년</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'capital-gains-tax':
-        return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  매도가격
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={sellPrice}
-                    onChange={(e) => handleNumberInput(e.target.value, setSellPrice, 'sellPrice')}
-                    placeholder="예: 1,200,000,000"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  매수가격
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={buyPrice}
-                    onChange={(e) => handleNumberInput(e.target.value, setBuyPrice, 'buyPrice')}
-                    placeholder="예: 800,000,000"
-                    className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                  />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  매도일
-                </label>
-                <input
-                  type="date"
-                  value={sellDate}
-                  onChange={(e) => {
-                    setSellDate(e.target.value);
-                    updateURL({ sellDate: e.target.value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  매수일
-                </label>
-                <input
-                  type="date"
-                  value={buyDate}
-                  onChange={(e) => {
-                    setBuyDate(e.target.value);
-                    updateURL({ buyDate: e.target.value, tab: activeTab });
-                  }}
-                  className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                주택 보유 현황
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={!isMultipleHomes}
-                    onChange={() => {
-                      setIsMultipleHomes(false);
-                      updateURL({ multipleHomes: 'false', tab: activeTab });
-                    }}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">1주택자</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={isMultipleHomes}
-                    onChange={() => {
-                      setIsMultipleHomes(true);
-                      updateURL({ multipleHomes: 'true', tab: activeTab });
-                    }}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">다주택자</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  const renderResult = () => {
-    if (!result) return null;
-
-    if (activeTab === 'acquisition-tax' || activeTab === 'property-tax' || activeTab === 'capital-gains-tax') {
-      const taxResult = result as TaxResult;
-      
-      let titleText = '총 세금';
-      
-      if (activeTab === 'property-tax') {
-        titleText = '종합부동산세';
-      } else if (activeTab === 'capital-gains-tax') {
-        titleText = '양도소득세';
-      } else {
-        titleText = '취득세';
-      }
-
-      return (
-        <div className="space-y-6">
-          <div className="text-center p-6 ui-hero">
-            <div className="text-sm opacity-90 mb-1">{titleText}</div>
-            <div className="text-3xl font-bold">{formatNumber(taxResult.totalTax)}원</div>
-            <button
-              onClick={handleShare}
-              className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-            >
-              {isCopied ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  <span>복사됨!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4" />
-                  <span>결과 공유</span>
-                </>
-              )}
-            </button>
-            
-            {showSaveButton && (
-              <button
-                onClick={handleSaveCalculation}
-                className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-              >
-                <Save className="w-4 h-4" />
-                <span>저장</span>
-              </button>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            {activeTab === 'acquisition-tax' && (
-              <>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">취득세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.acquisitionTax!)}원
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">지방교육세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.localTax!)}원
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">인지세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.stampTax!)}원
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">등록세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.registrationTax!)}원
-                  </span>
-                </div>
-              </>
-            )}
-            
-            {activeTab === 'property-tax' && (
-              <>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">종합부동산세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.propertyTax!)}원
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">지방교육세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.educationTax!)}원
-                  </span>
-                </div>
-              </>
-            )}
-            
-            {activeTab === 'capital-gains-tax' && (
-              <>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">양도소득세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.capitalGainsTax!)}원
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">지방소득세</span>
-                  <span className="font-semibold text-fg">
-                    {formatNumber(taxResult.localIncomeTax!)}원
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      );
-    } else {
-      const loanResult = result as LoanResult;
-      return (
-        <div className="space-y-6">
-          <div className="text-center p-6 bg-primary rounded-xl text-white">
-            <div className="text-sm opacity-90 mb-1">월 상환금액</div>
-            <div className="text-3xl font-bold">{formatNumber(loanResult.monthlyPayment)}원</div>
-            {loanResult.loanToValue && (
-              <div className="text-purple-100 text-sm mt-1">
-                LTV: {loanResult.loanToValue.toFixed(1)}%
-              </div>
-            )}
-            <button
-              onClick={handleShare}
-              className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-            >
-              {isCopied ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  <span>복사됨!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4" />
-                  <span>결과 공유</span>
-                </>
-              )}
-            </button>
-            
-            {showSaveButton && (
-              <button
-                onClick={handleSaveCalculation}
-                className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-              >
-                <Save className="w-4 h-4" />
-                <span>저장</span>
-              </button>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-line">
-              <span className="text-sub">총 상환금액</span>
-              <span className="font-semibold text-fg">
-                {formatNumber(loanResult.totalPayment)}원
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b border-line">
-              <span className="text-sub">총 이자비용</span>
-              <span className="font-semibold text-red-600 dark:text-red-400">
-                {formatNumber(loanResult.totalInterest)}원
-              </span>
-            </div>
-          </div>
-        </div>
-      );
-    }
-  };
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const toolLink = (href: string, key: string) => (
+    <Link href={href} className="inline-flex items-center text-xs font-medium text-primary hover:underline">
+      {t(key)}<ChevronRight className="w-3 h-3" />
+    </Link>
+  )
+  const faq = t.raw('u.faq.items') as { q: string; a: string }[]
+  const steps = t.raw('u.steps.items') as string[]
+  const sources = t.raw('u.sources.items') as { label: string; url: string }[]
+  const ownerLabel = `${t(`u.region.${region}`)} · ${t(`u.owner.${owner}`)}`
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">부동산 계산기</h1>
-          <p className="text-sm text-muted mt-1">
-            전세자금대출, 주택담보대출, 취득세를 정확하게 계산해보세요.
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={historyLoading}
-          onLoadHistory={handleLoadFromHistory}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={formatHistoryResult}
-        />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
       </div>
 
-      {/* 탭 메뉴 */}
-      <div className="flex flex-wrap justify-center mb-8 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
-        {Object.entries(calculatorTypes).map(([key, label]) => (
-          <button
-            key={key}
-            onClick={() => {
-              setActiveTab(key as CalculatorType);
-              updateURL({ tab: key });
-            }}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-              activeTab === key
-                ? 'bg-field text-purple-600 shadow-sm'
-                : 'text-sub hover:text-purple-600'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('u.house.title')}</h2>
+            <div>
+              <MoneyInput id="re-price" label={t('u.house.price')} value={price} onChange={setPrice} unit={t('u.won')} hint={short(price)} />
+              <input
+                type="range" min={EOK} max={30 * EOK} step={EOK / 10} value={Math.min(Math.max(price, EOK), 30 * EOK)}
+                onChange={(e) => setPrice(Number(e.target.value))} aria-label={t('u.house.price')}
+                className="w-full mt-2 accent-[var(--primary)]"
+              />
+            </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 섹션 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">
-            {calculatorTypes[activeTab]} 정보 입력
-          </h2>
-          
-          {renderInputSection()}
+            <div>
+              <label htmlFor="re-region" className="block text-sm font-medium text-body mb-2">{t('u.region.label')}</label>
+              <select id="re-region" value={region} onChange={(e) => setRegion(e.target.value as Region)} className="ui-field w-full px-4 py-3">
+                {REGIONS.map((g) => <option key={g} value={g}>{t(`u.region.${g}`)}</option>)}
+              </select>
+              <p className="text-xs text-muted mt-1.5">{t(input.adjusted ? 'u.region.isAdj' : 'u.region.isNon')}</p>
+            </div>
 
-          <div className="bg-subtle p-4 rounded-lg mt-6">
-            <h3 className="text-sm font-medium text-fg mb-2">
-              계산 기준
-            </h3>
-            <ul className="text-sm text-sub space-y-1">
-              {activeTab === 'jeonse-loan' && (
-                <>
-                  <li>• LTV 80% 기준 계산</li>
-                  <li>• 원리금균등상환 방식</li>
-                  <li>• 실제 대출조건은 은행별로 상이</li>
-                </>
-              )}
-              {activeTab === 'mortgage-loan' && (
-                <>
-                  <li>• 원리금균등상환 방식</li>
-                  <li>• LTV 계산 포함</li>
-                  <li>• 실제 금리는 신용등급별 차등</li>
-                </>
-              )}
-              {activeTab === 'acquisition-tax' && (
-                <>
-                  <li>• 2025년 취득세법 기준</li>
-                  <li>• 1주택자 감면 혜택 적용</li>
-                  <li>• 지방교육세, 인지세, 등록세 포함</li>
-                </>
-              )}
-            </ul>
+            <div>
+              <label htmlFor="re-area" className="block text-sm font-medium text-body mb-2">{t('u.house.area')}</label>
+              <div className="relative">
+                <input id="re-area" type="number" inputMode="decimal" min={0} value={area} onChange={(e) => setArea(e.target.value)} className="ui-field w-full px-4 py-3 pr-10" />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">㎡</span>
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t(input.over85 ? 'u.house.over85' : 'u.house.under85')}</p>
+            </div>
+
+            <div>
+              <p className="block text-sm font-medium text-body mb-2">{t('u.owner.label')}</p>
+              <div className="grid grid-cols-3 gap-2">
+                {OWNERS.map((o) => (
+                  <button key={o} onClick={() => setOwner(o)} className={seg(owner === o)}>{t(`u.owner.${o}`)}</button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t('u.owner.hint')}</p>
+            </div>
+
+            {owner === '1' && (
+              <div>
+                <label htmlFor="re-relief" className="block text-sm font-medium text-body mb-2">{t('u.relief.label')}</label>
+                <select id="re-relief" value={relief} onChange={(e) => setRelief(e.target.value as Relief)} className="ui-field w-full px-4 py-3">
+                  {RELIEFS.map((x) => <option key={x} value={x}>{t(`u.relief.${x}`)}</option>)}
+                </select>
+                {relief !== 'none' && <p className="text-xs text-muted mt-1.5">{t(`u.relief.${relief}Hint`, { limit: won(RELIEF_LIMIT[relief]) })}</p>}
+              </div>
+            )}
+          </div>
+
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('u.loan.title')}</h2>
+            <div className="grid grid-cols-2 gap-2">
+              <button onClick={() => setByLtv(true)} className={seg(byLtv)}>{t('u.loan.byLtv')}</button>
+              <button onClick={() => setByLtv(false)} className={seg(!byLtv)}>{t('u.loan.byAmount')}</button>
+            </div>
+            {byLtv ? (
+              <div>
+                <label htmlFor="re-ltv" className="flex justify-between text-sm font-medium text-body mb-2">
+                  <span>{t('u.loan.ltv')}</span><span className="tabular-nums text-fg">{ltv}% · {short(r.loan)}</span>
+                </label>
+                <input id="re-ltv" type="range" min={0} max={80} step={5} value={ltv} onChange={(e) => setLtv(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+              </div>
+            ) : (
+              <MoneyInput id="re-loan" label={t('u.loan.amount')} value={loanAmt} onChange={setLoanAmt} unit={t('u.won')}
+                hint={`${short(loanAmt)} · LTV ${r.ltv.toFixed(1)}%`} />
+            )}
+            <p className="text-xs text-muted -mt-2">{t('u.loan.ltvHint')}</p>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="re-rate" className="block text-sm font-medium text-body mb-2">{t('u.loan.rate')}</label>
+                <div className="relative">
+                  <input id="re-rate" type="text" inputMode="decimal" value={rate}
+                    onChange={(e) => /^\d{0,2}(\.\d{0,2})?$/.test(e.target.value) && setRate(e.target.value)}
+                    className="ui-field w-full px-4 py-3 pr-8 tabular-nums" />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label htmlFor="re-years" className="block text-sm font-medium text-body mb-2">{t('u.loan.years')}</label>
+                <select id="re-years" value={years} onChange={(e) => setYears(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {(YEARS.includes(years) ? YEARS : [...YEARS, years].sort((a, b) => a - b)).map((y) => <option key={y} value={y}>{t('u.loan.yearsOpt', { y })}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <p className="block text-sm font-medium text-body mb-2">{t('u.loan.method')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {METHODS.map((m) => <button key={m} onClick={() => setMethod(m)} className={seg(method === m)}>{t(`u.loan.${m}`)}</button>)}
+              </div>
+            </div>
+
+            <MoneyInput id="re-income" label={t('u.loan.income')} value={income} onChange={setIncome} unit={t('u.won')} hint={t('u.loan.incomeHint')} />
+          </div>
+
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('u.extra.title')}</h2>
+            <label htmlFor="re-vat" className="flex items-start gap-2.5 cursor-pointer">
+              <input id="re-vat" type="checkbox" checked={vat} onChange={(e) => setVat(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+              <span className="text-sm text-body">{t('u.extra.vat')}<span className="block text-xs text-muted mt-0.5">{t('u.extra.vatHint')}</span></span>
+            </label>
+            <MoneyInput id="re-legal" label={t('u.extra.legal')} value={legal} onChange={setLegal} unit={t('u.won')} hint={t('u.extra.legalHint')} />
+            <MoneyInput id="re-other" label={t('u.extra.other')} value={other} onChange={setOther} unit={t('u.won')}
+              hint={<>{t('u.extra.otherHint')} {toolLink('/moving-cost', 'u.link.moving')}</>} />
           </div>
         </div>
 
-        {/* 결과 섹션 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
-          
-          {result ? (
-            renderResult()
-          ) : (
-            <div className="text-center py-12">
-              <Building className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">
-                필요한 정보를 입력하면<br />
-                계산 결과를 보여드립니다.
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <p className="text-sm text-muted">{t('u.result.label', { price: short(price) })}</p>
+              <p className="text-3xl font-bold text-fg tabular-nums mt-1">{W(r.cash)}</p>
+              <p className="text-sm text-sub mt-1">
+                {t('u.result.sub', { equity: short(r.equity), fees: W(r.fees), pct: pctOf(r.fees) })}
               </p>
             </div>
-          )}
 
-          {result && (
-            <div className="bg-subtle p-4 rounded-lg mt-6">
-              <h3 className="text-sm font-medium text-fg mb-2">
-                참고사항
-              </h3>
-              <ul className="text-sm text-sub space-y-1">
-                {activeTab === 'jeonse-loan' && (
-                  <>
-                    <li>• 실제 대출한도는 소득과 신용등급에 따라 달라집니다</li>
-                    <li>• 중도상환수수료가 별도로 발생할 수 있습니다</li>
-                  </>
-                )}
-                {activeTab === 'mortgage-loan' && (
-                  <>
-                    <li>• DSR, DTI 규제로 실제 대출한도가 제한될 수 있습니다</li>
-                    <li>• 변동금리 선택시 이자 부담이 변동될 수 있습니다</li>
-                  </>
-                )}
-                {activeTab === 'acquisition-tax' && (
-                  <>
-                    <li>• 지역별 조례에 따라 감면 혜택이 추가될 수 있습니다</li>
-                    <li>• 신혼부부, 다자녀 등 추가 감면 조건을 확인하세요</li>
-                  </>
-                )}
-              </ul>
+            <div className="divide-y divide-line border-y border-line">
+              <div className="flex items-center justify-between py-3 gap-3">
+                <div>
+                  <p className="text-sm font-medium text-body">{t('u.result.equity')}</p>
+                  <p className="text-xs text-muted">{t('u.result.equityHint', { loan: short(r.loan) })}</p>
+                </div>
+                <p className="text-base font-semibold text-fg tabular-nums">{W(r.equity)}</p>
+              </div>
+              <div className="flex items-center justify-between py-3 gap-3">
+                <div>
+                  <p className="text-sm font-medium text-body">{t('u.result.tax')}</p>
+                  <p className="text-xs text-muted">
+                    {t('u.result.taxHint', { rate: (r.tax.rate * 100).toFixed(4).replace(/\.?0+$/, ''), eff: r.tax.effRate.toFixed(2) })} {toolLink('/acquisition-tax', 'u.link.tax')}
+                  </p>
+                </div>
+                <p className="text-base font-semibold text-fg tabular-nums">{W(r.tax.total)}</p>
+              </div>
+              <div className="flex items-center justify-between py-3 gap-3">
+                <div>
+                  <p className="text-sm font-medium text-body">{t('u.result.broker')}</p>
+                  <p className="text-xs text-muted">
+                    {vat ? t('u.result.brokerVat', { fee: won(r.broker), vat: won(r.brokerVat) }) : t('u.result.brokerNoVat')} {toolLink('/brokerage-fee', 'u.link.broker')}
+                  </p>
+                </div>
+                <p className="text-base font-semibold text-fg tabular-nums">{W(r.broker + r.brokerVat)}</p>
+              </div>
+              <div className="py-3 space-y-1.5">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-medium text-body">{t('u.result.registration')}</p>
+                  <p className="text-base font-semibold text-fg tabular-nums">{W(r.registration)}</p>
+                </div>
+                {(['bond', 'stamp', 'legal'] as const).map((k) => (
+                  <div key={k} className="flex items-center justify-between text-xs text-muted pl-3">
+                    <span>{t(`u.result.${k}`)}</span><span className="tabular-nums">{W(r[k])}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center justify-between py-3 gap-3">
+                <p className="text-sm font-medium text-body">{t('u.result.other')}</p>
+                <p className="text-base font-semibold text-fg tabular-nums">{W(r.other)}</p>
+              </div>
             </div>
-          )}
+
+            {r.tax.relief > 0 && (
+              <div className="bg-primary-soft text-primary rounded-2xl p-4 text-sm">
+                {t('u.result.reliefApplied', { name: t(`u.relief.${relief}`), amount: won(r.tax.relief + (r.tax.eduGross - r.tax.edu)) })}
+              </div>
+            )}
+            {(r.tax.heavy || r.tax.reliefBlocked === 'price') && (
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm space-y-1">
+                {r.tax.heavy && <p>{t('u.result.heavyWarn', { rate: (r.tax.rate * 100).toFixed(0) })}</p>}
+                {r.tax.reliefBlocked === 'price' && <p>{t('u.result.reliefPriceBlocked')}</p>}
+              </div>
+            )}
+
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: t('u.share.label', { price: short(price) }),
+                headline: W(r.cash),
+                sub: `${ownerLabel} · ${t('u.share.loan', { loan: short(r.loan), monthly: won(r.monthly) })}`,
+                rows: [
+                  { label: t('u.result.equity'), value: W(r.equity) },
+                  { label: t('u.result.tax'), value: W(r.tax.total) },
+                  { label: t('u.result.broker'), value: W(r.broker + r.brokerVat) },
+                  { label: t('u.result.registration'), value: W(r.registration) },
+                  { label: t('u.result.other'), value: W(r.other) },
+                ],
+              }}
+              text={t('u.share.text', { price: short(price), cash: W(r.cash), fees: W(r.fees) })}
+            />
+          </div>
+
+          {/* 대출 */}
+          <div className="ui-card p-6 space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <h2 className="text-lg font-semibold text-fg">{t('u.repay.title')}</h2>
+              {toolLink('/loan-calculator', 'u.link.loan')}
+            </div>
+            {r.loan > 0 ? (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    { k: method === 'equalPrincipal' ? 'firstMonth' : 'monthly', v: W(r.monthly), big: true },
+                    { k: 'interest', v: W(r.totalInterest) },
+                    { k: 'ltv', v: `${r.ltv.toFixed(1)}%` },
+                    { k: 'dsr', v: r.dsr === null ? '-' : `${r.dsr.toFixed(1)}%` },
+                  ].map((x) => (
+                    <div key={x.k} className="bg-subtle rounded-2xl p-4">
+                      <p className="text-xs text-muted">{t(`u.repay.${x.k}`)}</p>
+                      <p className={`${x.big ? 'text-xl' : 'text-lg'} font-bold text-fg tabular-nums mt-1`}>{x.v}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted">
+                  {t('u.repay.dsrNote')} {toolLink('/dsr-calculator', 'u.link.dsr')}
+                </p>
+                {r.dsr !== null && r.dsr > 40 && (
+                  <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('u.repay.dsrWarn', { dsr: r.dsr.toFixed(1) })}</div>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-muted">{t('u.repay.noLoan')}</p>
+            )}
+          </div>
+
+          {/* 부대비용 구성 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('u.chart.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('u.chart.desc', { fees: W(r.fees), pct: pctOf(r.fees) })}</p>
+            <div className="h-52 mt-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chart} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
+                  <XAxis type="number" hide />
+                  <YAxis type="category" dataKey="name" width={92} tick={{ fontSize: 12, fill: 'var(--muted)' }} stroke="var(--line)" />
+                  <Tooltip cursor={{ fill: 'var(--soft)' }} formatter={(v) => [W(Number(v ?? 0)), '']} />
+                  <Bar dataKey="v" radius={[0, 6, 6, 0]}>
+                    {chart.map((x) => <Cell key={x.k} fill={x.k === 'tax' ? 'var(--primary)' : 'var(--faint)'} />)}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* 매매가 시나리오 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('u.scenario.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.scenario.desc', { ltv: r.ltv.toFixed(0), cond: ownerLabel })}</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    {(['price', 'loan', 'fees', 'cash', 'monthly'] as const).map((k, i) => (
+                      <th key={k} className={`${i ? 'text-right' : 'text-left'} font-medium py-2 px-1`}>{t(`u.scenario.${k}`)}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {scenarios.map(({ p, res }) => {
+                    const cur = p === price
+                    return (
+                      <tr key={p} className={`border-b border-line ${cur ? 'bg-primary-soft' : ''}`}>
+                        <td className="py-2.5 px-1">
+                          <button onClick={() => setPrice(p)} className={`tabular-nums ${cur ? 'text-primary font-semibold' : 'text-body hover:text-primary'}`}>{short(p)}</button>
+                        </td>
+                        <td className="py-2.5 px-1 text-right tabular-nums text-sub">{short(res.loan)}</td>
+                        <td className="py-2.5 px-1 text-right tabular-nums text-sub">{W(res.fees)}</td>
+                        <td className="py-2.5 px-1 text-right tabular-nums font-semibold text-fg">{short(res.cash)}</td>
+                        <td className="py-2.5 px-1 text-right tabular-nums text-sub">{W(res.monthly)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-faint">{t('u.scenario.note')}</p>
+          </div>
         </div>
       </div>
 
-      {/* 상세 가이드 섹션 */}
-      <GuideSection namespace="realEstate" />
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-8">
+        <div>
+          <h2 className="text-xl font-semibold text-fg mb-4">{t('u.steps.title')}</h2>
+          <ol className="space-y-2 text-sm text-body list-decimal list-inside">
+            {steps.map((s) => <li key={s}>{s}</li>)}
+          </ol>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4">
+            {toolLink('/acquisition-tax', 'u.link.tax')}
+            {toolLink('/brokerage-fee', 'u.link.broker')}
+            {toolLink('/dsr-calculator', 'u.link.dsr')}
+            {toolLink('/loan-calculator', 'u.link.loan')}
+            {toolLink('/bogeumjari-loan', 'u.link.bogeumjari')}
+            {toolLink('/capital-gains-tax', 'u.link.capitalGains')}
+            {toolLink('/comprehensive-property-tax', 'u.link.propertyTax')}
+            {toolLink('/jeonse-loan', 'u.link.jeonse')}
+          </div>
+        </div>
 
+        <div>
+          <h2 className="text-xl font-semibold text-fg mb-4">{t('u.faq.title')}</h2>
+          <div className="divide-y divide-line">
+            {faq.map((f) => (
+              <details key={f.q} className="py-3 group">
+                <summary className="cursor-pointer text-sm font-medium text-fg">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('u.sources.title')}</p>
+          <ul className="space-y-1">
+            {sources.map((s) => (
+              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">{t('u.sources.asOf')}</p>
+        </div>
+      </div>
     </div>
-  );
-};
-
-const RealEstateCalculator = () => {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
-      <RealEstateCalculatorContent />
-    </Suspense>
-  );
-};
-
-export default RealEstateCalculator;
+  )
+}

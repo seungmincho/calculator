@@ -1463,6 +1463,209 @@
     }
   },
   "realEstate": {
+    "u": {
+      "subtitle": "Enter the price and your loan to see the cash you actually need to buy a home in Korea — acquisition tax, brokerage fee and registration costs included — plus the monthly repayment (2026 rules).",
+      "won": "KRW",
+      "wonFmt": "₩{v}",
+      "shortFmt": "₩{m}M",
+      "house": {
+        "title": "Home",
+        "price": "Purchase price",
+        "area": "Exclusive area",
+        "over85": "Over 85㎡ — 0.2% rural special tax applies",
+        "under85": "85㎡ or less — no rural special tax"
+      },
+      "region": {
+        "label": "Location",
+        "seoul": "Seoul (all 25 districts, adjusted area)",
+        "gyeonggiAdj": "Gyeonggi adjusted areas (Gwacheon, Gwangmyeong, Seongnam, Suwon, Anyang Dongan, Yongin Suji/Giheung, Uiwang, Hanam, Hwaseong Dongtan, Guri)",
+        "metroCity": "Busan, Daegu, Incheon and other metropolitan cities",
+        "other": "Elsewhere (incl. rest of Gyeonggi)",
+        "isAdj": "Adjusted area — heavy tax from the 2nd home (as of 2026-07-01)",
+        "isNon": "Non-adjusted area — heavy tax from the 3rd home"
+      },
+      "owner": {
+        "label": "Homes owned after purchase",
+        "hint": "All homes in the household including this one (incl. presale rights and residential officetels)",
+        "1": "1 home",
+        "2temp": "Temporary 2",
+        "2": "2 homes",
+        "3": "3 homes",
+        "4": "4+ homes"
+      },
+      "relief": {
+        "label": "Acquisition tax relief",
+        "none": "None",
+        "first": "First-time buyer",
+        "firstSmall": "First-time (small home / depopulating area)",
+        "birth": "Childbirth household",
+        "firstHint": "You and your spouse never owned a home, price ≤ ₩1.2B — up to ₩2M",
+        "firstSmallHint": "≤60㎡ small home (≤₩600M capital area, ≤₩300M elsewhere) or depopulating area — up to ₩3M",
+        "birthHint": "Child born 2024–2028, bought from 1 year before to 5 years after birth, ≤₩1.2B single home — up to ₩5M"
+      },
+      "loan": {
+        "title": "Mortgage",
+        "byLtv": "By LTV",
+        "byAmount": "By amount",
+        "ltv": "LTV (loan to value)",
+        "amount": "Loan amount",
+        "ltvHint": "LTV and loan caps depend on region, number of homes, first-time status and price, and change often with government measures. Enter what your bank offers.",
+        "rate": "Rate (annual)",
+        "years": "Term",
+        "yearsOpt": "{y} yrs",
+        "method": "Repayment",
+        "equalPayment": "Level payment",
+        "equalPrincipal": "Level principal",
+        "income": "Annual income (gross)",
+        "incomeHint": "For a rough DSR. Combine co-borrowers — 0 to skip"
+      },
+      "extra": {
+        "title": "Other costs",
+        "vat": "Include VAT on brokerage fee (10%)",
+        "vatHint": "For general taxable brokers. Simplified taxpayers charge 4%, and the fee itself is negotiable under the cap.",
+        "legal": "Legal & registration fees (approx.)",
+        "legalHint": "Judicial scrivener fee and registration charges. Default ₩600K — replace with your quote.",
+        "other": "Moving, cleaning, etc.",
+        "otherHint": "Moving, move-in cleaning, furniture, appliances."
+      },
+      "link": {
+        "moving": "Moving cost calculator",
+        "tax": "Acquisition tax calculator",
+        "broker": "Brokerage fee calculator",
+        "loan": "Loan calculator",
+        "dsr": "DSR calculator",
+        "bogeumjari": "Bogeumjari loan",
+        "capitalGains": "Capital gains tax",
+        "propertyTax": "Comprehensive property tax",
+        "jeonse": "Jeonse loan"
+      },
+      "result": {
+        "label": "Cash needed to buy a {price} home",
+        "sub": "Equity {equity} + extra costs {fees} ({pct}% of price)",
+        "equity": "Equity (price − loan)",
+        "equityHint": "Excludes loan {loan}. Includes deposit and interim payments, all due by closing",
+        "tax": "Acquisition, education & rural taxes",
+        "taxHint": "Acquisition tax rate {rate}% · effective {eff}% in total",
+        "broker": "Brokerage fee",
+        "brokerVat": "Legal cap ₩{fee} + VAT ₩{vat}",
+        "brokerNoVat": "Legal cap (excl. VAT)",
+        "registration": "Registration costs (approx.)",
+        "bond": "Housing bond discount",
+        "stamp": "Stamp duty (buyer's half)",
+        "legal": "Scrivener & registration fees",
+        "other": "Moving and other",
+        "reliefApplied": "{name} relief of ₩{amount} applied (incl. education tax)",
+        "heavyWarn": "Heavy multi-home rate of {rate}% applies. A temporary 2nd home (selling the old one within 3 years) gets the normal rate.",
+        "reliefPriceBlocked": "Homes over ₩1.2B are not eligible for first-time or childbirth relief."
+      },
+      "share": {
+        "label": "Cash needed for a {price} home",
+        "loan": "Loan {loan} · ₩{monthly}/mo",
+        "text": "Buying a {price} home takes {cash} in cash (extra costs {fees})"
+      },
+      "repay": {
+        "title": "Loan repayment",
+        "monthly": "Monthly payment",
+        "firstMonth": "First month",
+        "interest": "Total interest",
+        "ltv": "LTV",
+        "dsr": "Rough DSR",
+        "dsrNote": "DSR here is this loan's first-year payments ÷ income. Check the DSR calculator for the real limit with other loans and the stress rate.",
+        "dsrWarn": "Rough DSR {dsr}% exceeds the 40% bank limit. You may need a smaller loan or a longer term.",
+        "noLoan": "Calculated with no loan — fully paid in cash."
+      },
+      "chart": {
+        "title": "Extra cost breakdown",
+        "desc": "{fees} on top of the price ({pct}% of price).",
+        "tax": "Taxes",
+        "broker": "Brokerage",
+        "registration": "Registration",
+        "other": "Other"
+      },
+      "scenario": {
+        "title": "Compare by price",
+        "desc": "Same LTV {ltv}% and {cond}, only the price changes",
+        "price": "Price",
+        "loan": "Loan",
+        "fees": "Extra costs",
+        "cash": "Cash needed",
+        "monthly": "Monthly",
+        "note": "Tap a price to apply it above. Tax, brokerage and bond brackets change with price."
+      },
+      "steps": {
+        "title": "When the money goes out",
+        "items": [
+          "Contract day: pay the deposit (usually 10% of price). The deal must be reported within 30 days of the contract, usually by the broker.",
+          "Interim payment: pay the interim amount set in the contract (sometimes skipped).",
+          "Closing day: pay the balance (incl. the loan) and the brokerage fee, and pay the scrivener for the housing bond discount, stamp duty and registration.",
+          "Acquisition tax: report and pay within 60 days of acquisition (the earlier of closing or registration), usually together with registration.",
+          "After moving in: register your address. First-time buyer relief requires moving in within 3 months."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much extra does buying a home cost beyond the price?",
+            "a": "For a single home of 85㎡ or less, roughly 2–3% of the price. A ₩500M Seoul apartment costs about ₩5.5M in taxes, up to ₩2M brokerage (+₩200K VAT) and about ₩1.1M for bonds, stamp duty and scrivener — around ₩9M; a ₩700M home about ₩17M. Over 85㎡ adds 0.2% rural tax, and heavy multi-home rates of 8–12% raise it a lot."
+          },
+          {
+            "q": "What are the 2026 acquisition tax rates for homes?",
+            "a": "For one home (or a 2nd home outside adjusted areas): 1% up to ₩600M, 1–3% between ₩600M and ₩900M (formula), 3% above ₩900M. Adjusted areas: 8% for a 2nd home, 12% for 3+. Non-adjusted: 8% for a 3rd home, 12% for 4+. Local education tax, and rural special tax over 85㎡, are added."
+          },
+          {
+            "q": "Why is there a housing bond cost?",
+            "a": "Transfer registration requires buying Type-1 National Housing Bonds in proportion to the official value. Most buyers sell them back immediately and only bear the discount. The discount rate changes daily; here we assume an official value of 70% of price and a 5% discount. It is the 'bond discount' line in a scrivener's quote."
+          },
+          {
+            "q": "How much can I borrow?",
+            "a": "The limit is the tighter of LTV (loan to price) and DSR (annual payments on all loans ÷ income). LTV and mortgage caps vary by region, number of homes, first-time status and price, and change with government measures — check with your bank. The bank DSR limit is 40%, and the stress DSR assumes a higher rate, which can lower the limit further."
+          },
+          {
+            "q": "Level payment or level principal?",
+            "a": "Level payment keeps the same amount every month with a lower start. Level principal starts higher but pays down faster with less total interest, and gives a higher early DSR."
+          },
+          {
+            "q": "Do I have to pay the maximum brokerage fee?",
+            "a": "No. The legal rate is a cap and can be negotiated. Sale caps: 0.6% under ₩50M (max ₩250K), 0.5% under ₩200M (max ₩800K), 0.4% under ₩900M, 0.5% under ₩1.2B, 0.6% under ₩1.5B, 0.7% from ₩1.5B, plus VAT (10% general, 4% simplified)."
+          },
+          {
+            "q": "Where can the result differ from reality?",
+            "a": "Bond discount rates (daily), scrivener quotes, negotiated brokerage and the actual official value can shift costs by hundreds of thousands of won. Loan stamp duty and loan fees, and the heavy-tax exemption for homes with official value ≤ ₩100M, are not included. Use the acquisition tax calculator for exact tax."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Laws & official sites",
+        "items": [
+          {
+            "label": "Local Tax Act Art. 11 (acquisition tax rates)",
+            "url": "https://www.law.go.kr/법령/지방세법/제11조"
+          },
+          {
+            "label": "Licensed Real Estate Agents Act Enforcement Rule (fee caps)",
+            "url": "https://www.law.go.kr/법령/공인중개사법시행규칙"
+          },
+          {
+            "label": "Housing and Urban Fund Act Enforcement Decree (housing bonds)",
+            "url": "https://www.law.go.kr/법령/주택도시기금법시행령"
+          },
+          {
+            "label": "Stamp Tax Act",
+            "url": "https://www.law.go.kr/법령/인지세법"
+          },
+          {
+            "label": "Wetax — acquisition tax filing",
+            "url": "https://www.wetax.go.kr"
+          },
+          {
+            "label": "Financial Services Commission — household loan rules",
+            "url": "https://www.fsc.go.kr"
+          }
+        ],
+        "asOf": "As of October 2026. Tax, brokerage, bond and stamp duty use the same formulas as this site's acquisition tax and brokerage fee calculators. Adjusted areas as designated through 2026-07-01."
+      }
+    },
     "title": "Real Estate Calculator",
     "description": "Calculate real estate investment returns and acquisition tax.",
     "input": {
