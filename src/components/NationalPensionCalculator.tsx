@@ -1,717 +1,443 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Calculator, TrendingUp, Clock, AlertTriangle } from 'lucide-react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Legend } from 'recharts'
+import { ExternalLink } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import {
+  YEAR, A_VALUE, INCOME_FLOOR, INCOME_CAP, MIN_MONTHS, CPI_2026, calcPension, shifted, cumulative, crossoverAge,
+  paybackAge, workReduction, nominal, catchUpCost, replacementRate, childCreditMonths, premiumRate,
+} from '@/utils/nationalPension'
 
-// ── Constants ──
-const A_VALUE = 3_193_511 // 2026년 적용 A값 (전체 가입자 3년 평균소득월액)
-const MIN_INCOME = 410_000 // 2026.7~ 기준소득월액 하한
-const MAX_INCOME = 6_590_000 // 2026.7~ 기준소득월액 상한
-const MIN_CONTRIBUTION_YEARS = 10 // 최소 가입 기간
-
-// 소득대체율 43% — 2025.3 연금개혁으로 2026년 가입기간부터 43% 고정 (보험료율은 9.5%→2033년 13%)
-const REPLACEMENT_RATE = 0.43
-
-// 조기/연기 수령 조정
-const EARLY_REDUCTION_PER_YEAR = 0.06 // 연 6% 감액
-const DEFERRED_INCREASE_PER_YEAR = 0.072 // 연 7.2% 증액
-const MAX_EARLY_YEARS = 5
-const MAX_DEFERRED_YEARS = 5
-
-// 출생연도별 수급개시연령
-const PENSION_AGE_BRACKETS: { min: number; max: number; age: number }[] = [
-  { min: 0, max: 1952, age: 60 },
-  { min: 1953, max: 1956, age: 61 },
-  { min: 1957, max: 1960, age: 62 },
-  { min: 1961, max: 1964, age: 63 },
-  { min: 1965, max: 1968, age: 64 },
-  { min: 1969, max: 9999, age: 65 },
-]
-
-// ── Types ──
-interface PensionResult {
-  monthlyBasic: number
-  earlyMonthly: number
-  normalMonthly: number
-  deferredMonthly: number
-  earlyStartAge: number
-  normalStartAge: number
-  deferredStartAge: number
-  earlyReductionRate: number
-  deferredIncreaseRate: number
-  contributionYears: number
-  monthlyIncome: number
-  bValue: number
+const NPS_URL = 'https://www.nps.or.kr'
+const SHIFTS = [-5, -3, -1, 0, 1, 3, 5] as const
+const INCOME_PRESETS = [2_000_000, 3_000_000, 4_000_000, 5_000_000] as const
+const GROWTH = [0, 0.02, 0.03] as const
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const num = (v: string | null, def: number, min: number, max: number) => {
+  const n = Number(v)
+  return v != null && v !== '' && Number.isFinite(n) ? Math.min(max, Math.max(min, Math.round(n))) : def
 }
 
-// ── Helpers ──
-function getPensionStartAge(birthYear: number): number {
-  for (const bracket of PENSION_AGE_BRACKETS) {
-    if (birthYear <= bracket.max) return bracket.age
-  }
-  return 65
-}
-
-function calculatePension(birthYear: number, contributionYears: number, monthlyIncome: number): PensionResult | null {
-  if (contributionYears < MIN_CONTRIBUTION_YEARS) return null
-
-  const B = Math.max(MIN_INCOME, Math.min(MAX_INCOME, monthlyIncome))
-  const n = Math.max(0, contributionYears - 20)
-
-  // 기본연금액(월) = {소득대체율 × (A + B) × (1 + 0.05n)} / 12
-  const monthlyBasic = Math.round((REPLACEMENT_RATE * (A_VALUE + B) * (1 + 0.05 * n)) / 12)
-
-  const normalStartAge = getPensionStartAge(birthYear)
-  const earlyStartAge = normalStartAge - MAX_EARLY_YEARS
-  const deferredStartAge = normalStartAge + MAX_DEFERRED_YEARS
-
-  const earlyReductionRate = EARLY_REDUCTION_PER_YEAR * MAX_EARLY_YEARS // 30%
-  const deferredIncreaseRate = DEFERRED_INCREASE_PER_YEAR * MAX_DEFERRED_YEARS // 36%
-
-  const earlyMonthly = Math.round(monthlyBasic * (1 - earlyReductionRate))
-  const normalMonthly = monthlyBasic
-  const deferredMonthly = Math.round(monthlyBasic * (1 + deferredIncreaseRate))
-
-  return {
-    monthlyBasic,
-    earlyMonthly,
-    normalMonthly,
-    deferredMonthly,
-    earlyStartAge,
-    normalStartAge,
-    deferredStartAge,
-    earlyReductionRate,
-    deferredIncreaseRate,
-    contributionYears,
-    monthlyIncome: B,
-    bValue: B,
-  }
-}
-
-function formatKRW(value: number): string {
-  if (value >= 100_000_000) {
-    const eok = Math.floor(value / 100_000_000)
-    const remainder = value % 100_000_000
-    if (remainder >= 10_000) {
-      const man = Math.floor(remainder / 10_000)
-      return `${eok}억 ${man.toLocaleString()}만`
-    }
-    return `${eok}억`
-  }
-  if (value >= 10_000) {
-    const man = Math.floor(value / 10_000)
-    return `${man.toLocaleString()}만`
-  }
-  return value.toLocaleString()
-}
-
-function formatNumber(num: number): string {
-  return num.toLocaleString()
-}
-
-// ── Component ──
 export default function NationalPensionCalculator() {
   const t = useTranslations('nationalPension')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  // Input state
-  const [birthYear, setBirthYear] = useState(1970)
-  const [contributionYears, setContributionYears] = useState(20)
-  const [monthlyIncome, setMonthlyIncome] = useState('3000000')
-  const [result, setResult] = useState<PensionResult | null>(null)
-  const [linkCopied, setLinkCopied] = useState(false)
-  const [showGuide, setShowGuide] = useState(false)
-  const [showFaq, setShowFaq] = useState(false)
+  const [birth, setBirth] = useState(() => num(sp.get('b'), 1975, 1953, 2007))
+  const [start, setStart] = useState(() => num(sp.get('s'), 2002, 1988, 2070))
+  const [years, setYears] = useState(() => num(sp.get('y'), 30, 1, 47))
+  const [income, setIncome] = useState(() => num(sp.get('i'), 3_000_000, 0, 100_000_000))
+  const [employee, setEmployee] = useState(() => sp.get('t') !== 'l')
+  const [children, setChildren] = useState(() => num(sp.get('k'), 0, 0, 5))
+  const [childNew, setChildNew] = useState(() => sp.get('kn') === '1')
+  const [military, setMilitary] = useState(() => num(sp.get('m'), 0, 0, 12))
+  const [spouse, setSpouse] = useState(() => sp.get('sp') === '1')
+  const [depChildren, setDepChildren] = useState(() => num(sp.get('dc'), 0, 0, 5))
+  const [depParents, setDepParents] = useState(() => num(sp.get('dp'), 0, 0, 4))
+  const [work, setWork] = useState(() => num(sp.get('w'), 0, 0, 100_000_000))
+  const [life, setLife] = useState(() => num(sp.get('le'), 86, 70, 100))
+  const [growth, setGrowth] = useState(() => {
+    const g = sp.get('g') == null ? NaN : Number(sp.get('g')) / 100
+    return (GROWTH as readonly number[]).includes(g) ? g : 0.02
+  })
+  const [extra, setExtra] = useState(() => num(sp.get('x'), 3, 1, 10))
 
-  // Birth year options
-  const birthYearOptions = useMemo(() => {
-    const options: number[] = []
-    for (let y = 1950; y <= 2005; y++) options.push(y)
-    return options
-  }, [])
+  // 가입 시작은 18세 이후, 가입 종료는 65세 전(임의계속가입 한도)
+  const minStart = Math.max(1988, birth + 18)
+  const maxStart = birth + 59
+  const s = Math.min(maxStart, Math.max(minStart, start))
+  const maxYears = Math.max(1, birth + 65 - s)
+  const y = Math.min(maxYears, years)
 
-  // Auto-calculated pension start age
-  const pensionStartAge = useMemo(() => getPensionStartAge(birthYear), [birthYear])
-
-  // URL param sync - restore
   useEffect(() => {
-    const birth = searchParams.get('birth')
-    const years = searchParams.get('years')
-    const income = searchParams.get('income')
-    let changed = false
-    if (birth && /^\d{4}$/.test(birth)) {
-      const b = Number(birth)
-      if (b >= 1950 && b <= 2005) { setBirthYear(b); changed = true }
-    }
-    if (years && /^\d+$/.test(years)) {
-      const y = Number(years)
-      if (y >= 1 && y <= 40) { setContributionYears(y); changed = true }
-    }
-    if (income && /^\d+$/.test(income)) {
-      const i = Number(income)
-      if (i >= MIN_INCOME && i <= MAX_INCOME) { setMonthlyIncome(income); changed = true }
-    }
-    if (changed) {
-      const b = birth ? Number(birth) : 1970
-      const y = years ? Number(years) : 20
-      const i = income ? Number(income) : 3_000_000
-      const res = calculatePension(b, y, i)
-      setResult(res)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const q = new URLSearchParams({ b: String(birth), s: String(s), y: String(y), i: String(income) })
+    if (!employee) q.set('t', 'l')
+    if (children) q.set('k', String(children))
+    if (childNew) q.set('kn', '1')
+    if (military) q.set('m', String(military))
+    if (spouse) q.set('sp', '1')
+    if (depChildren) q.set('dc', String(depChildren))
+    if (depParents) q.set('dp', String(depParents))
+    if (work) q.set('w', String(work))
+    if (life !== 86) q.set('le', String(life))
+    if (growth !== 0.02) q.set('g', String(Math.round(growth * 100)))
+    if (extra !== 3) q.set('x', String(extra))
+    window.history.replaceState(null, '', `?${q}`)
+  }, [birth, s, y, income, employee, children, childNew, military, spouse, depChildren, depParents, work, life, growth, extra])
 
-  // URL param sync - update
-  const updateURL = useCallback((birth: number, years: number, income: string) => {
-    const params = new URLSearchParams()
-    params.set('birth', String(birth))
-    params.set('years', String(years))
-    params.set('income', income.replace(/,/g, ''))
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }, [router])
+  const input = { birthYear: birth, startYear: s, years: y, income, employee, children, childNewRule: childNew, militaryMonths: military, spouse, depChildren, depParents }
+  const r = calcPension(input)
+  const plus = calcPension({ ...input, extraMonths: extra * 12 })
+  const gain = plus.monthly - r.monthly
+  const cost = catchUpCost(income, extra * 12)
+  const nominalMonthly = nominal(r.monthly, YEAR, r.pensionYear, growth)
+  const cut = work > 0 ? workReduction(r.basic, work) : 0
+  const received = cumulative(r.monthly, r.startAge, life)
+  const payback = paybackAge(r.paidSelf, r.monthly, r.startAge)
+  const needMonths = Math.max(0, MIN_MONTHS - r.totalMonths)
 
-  const handleCalculate = useCallback(() => {
-    const incomeNum = Number(monthlyIncome.replace(/,/g, ''))
-    if (!incomeNum || incomeNum <= 0) return
-    const res = calculatePension(birthYear, contributionYears, incomeNum)
-    setResult(res)
-    updateURL(birthYear, contributionYears, monthlyIncome)
-  }, [birthYear, contributionYears, monthlyIncome, updateURL])
+  const options = useMemo(() => SHIFTS.map((d) => {
+    const m = shifted(r.basic, r.dependent, d)
+    const age = r.startAge + d
+    return { d, age, m, total: cumulative(m, age, life), cross: d === 0 ? null : crossoverAge(r.monthly, r.startAge, m, age) }
+  }), [r.basic, r.dependent, r.startAge, r.monthly, life])
+  const best = options.reduce((a, b) => (b.total > a.total ? b : a), options[0])
 
-  const handleReset = useCallback(() => {
-    setBirthYear(1970)
-    setContributionYears(20)
-    setMonthlyIncome('3000000')
-    setResult(null)
-    router.replace('?', { scroll: false })
-  }, [router])
+  const chart = useMemo(() => {
+    const e = options[0], n = options[3], d = options[6]
+    const rows: { age: number; early: number; normal: number; deferred: number }[] = []
+    for (let age = e.age; age <= 100; age++) rows.push({ age, early: cumulative(e.m, e.age, age + 1), normal: cumulative(n.m, n.age, age + 1), deferred: cumulative(d.m, d.age, age + 1) })
+    return rows
+  }, [options])
 
-  const copyLink = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      setLinkCopied(true)
-      setTimeout(() => setLinkCopied(false), 2000)
-    } catch { /* ignore */ }
-  }, [])
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleCalculate()
-  }, [handleCalculate])
-
-  const incomeNum = Number(monthlyIncome.replace(/,/g, '')) || 0
-  const isUnderMinContribution = contributionYears < MIN_CONTRIBUTION_YEARS
-
-  // ── Chart Data ──
-  const totalComparisonData = useMemo(() => {
-    if (!result) return []
-    const ages = [80, 85, 90]
-    return ages.map(targetAge => {
-      const earlyYears = Math.max(0, targetAge - result.earlyStartAge)
-      const normalYears = Math.max(0, targetAge - result.normalStartAge)
-      const deferredYears = Math.max(0, targetAge - result.deferredStartAge)
-      return {
-        label: `${targetAge}${t('age')}`,
-        [t('earlyPension')]: earlyYears * result.earlyMonthly * 12,
-        [t('normalPension')]: normalYears * result.normalMonthly * 12,
-        [t('deferredPension')]: deferredYears * result.deferredMonthly * 12,
-      }
-    })
-  }, [result, t])
-
-  const cumulativeData = useMemo(() => {
-    if (!result) return []
-    const data: { age: number; early: number; normal: number; deferred: number }[] = []
-    let earlyTotal = 0
-    let normalTotal = 0
-    let deferredTotal = 0
-    const startAge = result.earlyStartAge
-    for (let age = startAge; age <= 95; age++) {
-      if (age >= result.earlyStartAge) earlyTotal += result.earlyMonthly * 12
-      if (age >= result.normalStartAge) normalTotal += result.normalMonthly * 12
-      if (age >= result.deferredStartAge) deferredTotal += result.deferredMonthly * 12
-      data.push({ age, early: earlyTotal, normal: normalTotal, deferred: deferredTotal })
-    }
-    return data
-  }, [result])
-
-  // Chart tooltip formatter
-  const chartTooltipFormatter = useCallback((value: number) => {
-    return `${formatKRW(value)}${t('won')}`
-  }, [t])
+  const big = (v: number) => (v >= 1e8 ? `${(v / 1e8).toFixed(1)}${t('u.eok')}` : `${won(v / 1e4)}${t('u.man')}`)
+  const ym = (months: number) => (months % 12 ? t('u.ym', { y: Math.floor(months / 12), m: months % 12 }) : t('u.yOnly', { y: months / 12 }))
+  const seg = (on: boolean) => `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const startYears = useMemo(() => Array.from({ length: maxStart - minStart + 1 }, (_, i) => minStart + i), [minStart, maxStart])
+  const births = useMemo(() => Array.from({ length: 2007 - 1953 + 1 }, (_, i) => 2007 - i), [])
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button
-          onClick={copyLink}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors shrink-0"
-        >
-          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          {linkCopied ? t('linkCopied') : t('copyLink')}
-        </button>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* ── Left: Input Panel ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 입력 */}
         <div className="lg:col-span-1 space-y-4">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            {/* 출생연도 */}
+          <div className="ui-card p-6 space-y-5">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="np-birth" className="block text-sm font-medium text-body mb-2">{t('u.in.birth')}</label>
+                <select id="np-birth" value={birth} onChange={(e) => setBirth(Number(e.target.value))} className="ui-field w-full px-3 py-3">
+                  {births.map((b) => <option key={b} value={b}>{t('u.yearOf', { y: b })}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="np-start" className="block text-sm font-medium text-body mb-2">{t('u.in.start')}</label>
+                <select id="np-start" value={s} onChange={(e) => setStart(Number(e.target.value))} className="ui-field w-full px-3 py-3">
+                  {startYears.map((v) => <option key={v} value={v}>{t('u.yearOf', { y: v })}</option>)}
+                </select>
+              </div>
+            </div>
+
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('birthYear')}
-              </label>
-              <select
-                value={birthYear}
-                onChange={(e) => setBirthYear(Number(e.target.value))}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              >
-                {birthYearOptions.map(y => (
-                  <option key={y} value={y}>{y}{t('year')}</option>
+              <div className="flex items-baseline justify-between mb-2">
+                <label htmlFor="np-years" className="text-sm font-medium text-body">{t('u.in.years')}</label>
+                <span className="text-sm font-semibold text-fg tabular-nums">{t('u.yOnly', { y })} <span className="text-muted font-normal">({s}~{s + y - 1})</span></span>
+              </div>
+              <input id="np-years" type="range" min={1} max={maxYears} value={y} onChange={(e) => setYears(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+              <p className="text-xs text-muted mt-1">{t('u.in.yearsHint')}</p>
+            </div>
+
+            <div>
+              <label htmlFor="np-income" className="block text-sm font-medium text-body mb-2">{t('u.in.income')}</label>
+              <div className="relative">
+                <input
+                  id="np-income" inputMode="numeric" value={income ? won(income) : ''}
+                  onChange={(e) => setIncome(Math.min(100_000_000, Number(e.target.value.replace(/[^\d]/g, '')) || 0))}
+                  className="ui-field w-full px-4 py-3 pr-10 tabular-nums" placeholder="3,000,000"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {INCOME_PRESETS.map((p) => (
+                  <button key={p} onClick={() => setIncome(p)} className={`px-2.5 py-1 rounded-lg text-xs ${income === p ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>{big(p)}</button>
                 ))}
-              </select>
+              </div>
+              <p className="text-xs text-muted mt-2">{t('u.in.incomeHint', { min: won(INCOME_FLOOR), max: won(INCOME_CAP) })}</p>
             </div>
 
-            {/* 가입기간 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('contributionYears')}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  min={1}
-                  max={40}
-                  value={contributionYears}
-                  onChange={(e) => setContributionYears(Math.max(1, Math.min(40, Number(e.target.value) || 1)))}
-                  onKeyDown={handleKeyDown}
-                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm">
-                  {t('yearUnit')}
-                </span>
+              <p className="text-sm font-medium text-body mb-2">{t('u.in.type')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => setEmployee(true)} className={seg(employee)}>{t('u.in.employee')}</button>
+                <button onClick={() => setEmployee(false)} className={seg(!employee)}>{t('u.in.local')}</button>
               </div>
-              {isUnderMinContribution && (
-                <p className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 mt-1">
-                  <AlertTriangle className="w-3 h-3" />
-                  {t('minContribution')}
-                </p>
-              )}
             </div>
 
-            {/* 월 평균 소득 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('monthlyIncome')}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={incomeNum > 0 ? formatNumber(incomeNum) : ''}
-                  onChange={(e) => {
-                    const raw = e.target.value.replace(/,/g, '').replace(/[^\d]/g, '')
-                    setMonthlyIncome(raw)
-                  }}
-                  onKeyDown={handleKeyDown}
-                  placeholder="3,000,000"
-                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-sm">
-                  {t('won')}
-                </span>
+            <details className="group border-t border-line pt-4" open={!!(children || military || spouse || depChildren || depParents || work)}>
+              <summary className="cursor-pointer text-sm font-semibold text-fg">{t('u.in.more')}</summary>
+              <div className="space-y-4 mt-4">
+                <div>
+                  <p className="text-sm font-medium text-body mb-2">{t('u.in.children')}</p>
+                  <div className="grid grid-cols-6 gap-1.5">
+                    {[0, 1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setChildren(n)} className={seg(children === n)}>{n}</button>)}
+                  </div>
+                  <label className="flex items-start gap-2 mt-2 text-sm text-body">
+                    <input type="checkbox" checked={childNew} onChange={(e) => setChildNew(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+                    <span>{t('u.in.childNew')}</span>
+                  </label>
+                  <p className="text-xs text-muted mt-1">{t('u.in.childCredit', { m: childCreditMonths(children, childNew) })}</p>
+                </div>
+                <div>
+                  <label htmlFor="np-mil" className="block text-sm font-medium text-body mb-2">{t('u.in.military')}</label>
+                  <select id="np-mil" value={military} onChange={(e) => setMilitary(Number(e.target.value))} className="ui-field w-full px-3 py-3">
+                    <option value={0}>{t('u.in.mil0')}</option>
+                    <option value={6}>{t('u.in.mil6')}</option>
+                    <option value={12}>{t('u.in.mil12')}</option>
+                  </select>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-body mb-2">{t('u.in.dependents')}</p>
+                  <label className="flex items-center gap-2 text-sm text-body">
+                    <input type="checkbox" checked={spouse} onChange={(e) => setSpouse(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                    {t('u.in.spouse')}
+                  </label>
+                  <div className="grid grid-cols-2 gap-3 mt-2">
+                    <label className="text-xs text-muted">{t('u.in.depChildren')}
+                      <select value={depChildren} onChange={(e) => setDepChildren(Number(e.target.value))} className="ui-field w-full px-3 py-2 mt-1 text-sm">
+                        {[0, 1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    </label>
+                    <label className="text-xs text-muted">{t('u.in.depParents')}
+                      <select value={depParents} onChange={(e) => setDepParents(Number(e.target.value))} className="ui-field w-full px-3 py-2 mt-1 text-sm">
+                        {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="np-work" className="block text-sm font-medium text-body mb-2">{t('u.in.work')}</label>
+                  <div className="relative">
+                    <input
+                      id="np-work" inputMode="numeric" value={work ? won(work) : ''} placeholder="0"
+                      onChange={(e) => setWork(Math.min(100_000_000, Number(e.target.value.replace(/[^\d]/g, '')) || 0))}
+                      className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
+                  </div>
+                  <p className="text-xs text-muted mt-1">{t('u.in.workHint', { v: won(A_VALUE + 2_000_000) })}</p>
+                </div>
               </div>
-              <p className="text-xs text-faint mt-1">
-                {t('incomeMin')}: {formatNumber(MIN_INCOME)}{t('won')} ~ {t('incomeMax')}: {formatNumber(MAX_INCOME)}{t('won')}
-              </p>
-            </div>
-
-            {/* 수급개시연령 (auto) */}
-            <div className="bg-subtle rounded-lg p-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-body">
-                  {t('pensionStartAge')}
-                </span>
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {pensionStartAge}{t('age')}
-                </span>
-              </div>
-              <p className="text-xs text-faint mt-0.5">
-                {t('autoCalculated')}
-              </p>
-            </div>
-
-            {/* Action buttons */}
-            <div className="flex gap-2">
-              <button
-                onClick={handleCalculate}
-                disabled={isUnderMinContribution || incomeNum <= 0}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                <Calculator className="w-5 h-5" />
-                {t('calculate')}
-              </button>
-              <button
-                onClick={handleReset}
-                className="flex items-center justify-center gap-1 px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              >
-                <RotateCcw className="w-4 h-4" />
-                {t('reset')}
-              </button>
-            </div>
+            </details>
           </div>
         </div>
 
-        {/* ── Right: Result Panel ── */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {!result && (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <TrendingUp className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-faint text-lg">{t('enterToCalculate')}</p>
+          <div className="ui-card p-6 space-y-5">
+            {r.eligible ? (
+              <>
+                <div>
+                  <p className="text-sm text-muted">{t('u.res.label', { age: r.startAge, year: r.pensionYear })}</p>
+                  <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(r.monthly)}{t('u.won')}</p>
+                  <p className="text-sm text-sub mt-1 flex flex-wrap items-center gap-x-2">
+                    <span>{t('u.res.pv')}</span>
+                    <span className="text-faint">·</span>
+                    <span>{t('u.res.nominal', { v: won(nominalMonthly), year: r.pensionYear })}</span>
+                    <select aria-label={t('u.res.growth')} value={growth} onChange={(e) => setGrowth(Number(e.target.value))} className="ui-field px-2 py-1 text-xs">
+                      {GROWTH.map((g) => <option key={g} value={g}>{t('u.res.growthOpt', { p: Math.round(g * 100) })}</option>)}
+                    </select>
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-subtle rounded-2xl p-4">
+                    <p className="text-sm text-muted">{t('u.res.paid')}</p>
+                    <p className="text-xl font-bold text-fg tabular-nums mt-1">{big(r.paidSelf)}{t('u.won')}</p>
+                    <p className="text-xs text-muted mt-0.5">{employee ? t('u.res.paidEmp', { v: big(r.paidTotal) }) : t('u.res.paidLocal')}</p>
+                  </div>
+                  <div className="bg-subtle rounded-2xl p-4">
+                    <p className="text-sm text-muted">{t('u.res.received', { age: life })}</p>
+                    <p className="text-xl font-bold text-fg tabular-nums mt-1">{big(received)}{t('u.won')}</p>
+                    <p className="text-xs text-muted mt-0.5">{t('u.res.ratio', { x: r.paidSelf ? (received / r.paidSelf).toFixed(1) : '-' })}</p>
+                  </div>
+                  <div className="bg-subtle rounded-2xl p-4">
+                    <p className="text-sm text-muted">{t('u.res.payback')}</p>
+                    <p className="text-xl font-bold text-primary tabular-nums mt-1">{payback != null ? t('u.ageOf', { a: payback }) : '-'}</p>
+                    <p className="text-xs text-muted mt-0.5">{t('u.res.paybackHint')}</p>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-line border-y border-line text-sm">
+                  <Row label={t('u.res.annual')} value={`${won(r.monthly * 12)}${t('u.won')}`} />
+                  <Row label={t('u.res.months')} value={r.creditMonths ? t('u.res.monthsCredit', { total: ym(r.totalMonths), credit: r.creditMonths }) : ym(r.totalMonths)} />
+                  {r.dependent > 0 && <Row label={t('u.res.dependent')} value={`+${won(r.dependent)}${t('u.won')}`} />}
+                  {cut > 0 && <Row label={t('u.res.workCut')} value={`-${won(cut)}${t('u.won')}`} />}
+                  {work > 0 && cut === 0 && <Row label={t('u.res.workCut')} value={t('u.res.noCut')} />}
+                </div>
+              </>
+            ) : (
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-5 space-y-1">
+                <p className="font-semibold">{t('u.res.ineligible', { m: r.totalMonths })}</p>
+                <p className="text-sm">{t('u.res.ineligibleHint', { need: needMonths })}</p>
+              </div>
+            )}
+
+            <div className="bg-subtle rounded-2xl p-4 text-sm text-sub">
+              <p>{t('u.res.notice')}</p>
+              <a href={NPS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mt-2 font-semibold text-primary hover:underline">
+                {t('u.res.npsLink')} <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {r.eligible && (
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('u.share.label', { birth, years: y, income: big(income) }),
+                  headline: `${won(r.monthly)}${t('u.won')}`,
+                  sub: t('u.res.label', { age: r.startAge, year: r.pensionYear }),
+                  rows: [
+                    { label: t('u.res.paid'), value: `${big(r.paidSelf)}${t('u.won')}` },
+                    { label: t('u.res.received', { age: life }), value: `${big(received)}${t('u.won')}` },
+                    { label: t('u.cmp.early5'), value: `${won(options[0].m)}${t('u.won')}` },
+                    { label: t('u.cmp.defer5'), value: `${won(options[6].m)}${t('u.won')}` },
+                  ],
+                }}
+                text={t('u.share.text', { v: won(r.monthly), age: r.startAge })}
+              />
+            )}
+          </div>
+
+          {r.eligible && (
+            <div className="ui-card p-6 space-y-4">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-semibold text-fg">{t('u.cmp.title')}</h2>
+                  <p className="text-sm text-muted mt-1">{t('u.cmp.desc')}</p>
+                </div>
+                <label className="text-sm text-body w-full sm:w-56">
+                  <span className="flex justify-between"><span>{t('u.cmp.life')}</span><span className="font-semibold tabular-nums">{t('u.ageOf', { a: life })}</span></span>
+                  <input type="range" min={70} max={100} value={life} onChange={(e) => setLife(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+                </label>
+              </div>
+              <div className="overflow-x-auto -mx-2">
+                <table className="w-full text-sm min-w-[480px]">
+                  <thead>
+                    <tr className="text-muted border-b border-line text-left">
+                      <th className="py-2 px-2 font-medium">{t('u.cmp.when')}</th>
+                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.monthly')}</th>
+                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.total', { age: life })}</th>
+                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.cross')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {options.map((o) => (
+                      <tr key={o.d} className={`border-b border-line ${o === best ? 'bg-primary-soft' : ''}`}>
+                        <td className="py-2 px-2 text-body">
+                          {o.d === 0 ? t('u.cmp.normal') : o.d < 0 ? t('u.cmp.early', { n: -o.d }) : t('u.cmp.defer', { n: o.d })}
+                          <span className="text-muted"> · {t('u.ageOf', { a: o.age })}</span>
+                          {o.d !== 0 && <span className="text-xs text-muted"> ({o.d < 0 ? '-' : '+'}{Math.round(Math.abs(o.d) * (o.d < 0 ? 6 : 7.2) * 10) / 10}%)</span>}
+                        </td>
+                        <td className="py-2 px-2 text-right tabular-nums text-fg">{won(o.m)}</td>
+                        <td className={`py-2 px-2 text-right tabular-nums ${o === best ? 'text-primary font-semibold' : 'text-fg'}`}>{big(o.total)}</td>
+                        <td className="py-2 px-2 text-right tabular-nums text-muted">{o.cross != null ? t('u.ageOf', { a: o.cross }) : '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-muted">{t('u.cmp.note')}</p>
+              <div className="h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                    <XAxis dataKey="age" tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
+                    <YAxis tickFormatter={(v: number) => big(v ?? 0)} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={56} stroke="var(--line)" />
+                    <Tooltip labelFormatter={(v) => t('u.ageOf', { a: v ?? 0 })} formatter={(v, name) => [`${big(Number(v ?? 0))}${t('u.won')}`, name ?? '']} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} />
+                    <ReferenceLine x={life} stroke="var(--fg)" strokeDasharray="2 3" label={{ value: t('u.cmp.lifeMark'), position: 'insideTopRight', fontSize: 10, fill: 'var(--fg)' }} />
+                    <Line type="linear" dataKey="early" name={t('u.cmp.early5')} stroke="var(--faint)" strokeDasharray="5 4" strokeWidth={2} dot={false} />
+                    <Line type="linear" dataKey="normal" name={t('u.cmp.normal')} stroke="var(--primary)" strokeWidth={2.5} dot={false} />
+                    <Line type="linear" dataKey="deferred" name={t('u.cmp.defer5')} stroke="var(--fg)" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           )}
 
-          {result && (
-            <>
-              {/* 3가지 수령 방식 비교 카드 */}
-              <div className="grid sm:grid-cols-3 gap-4">
-                {/* 조기수령 */}
-                <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-primary px-4 py-3">
-                    <div className="flex items-center gap-2 text-white">
-                      <Clock className="w-5 h-5" />
-                      <span className="font-bold">{t('earlyPension')}</span>
-                    </div>
-                    <p className="text-amber-100 text-xs mt-0.5">{t('earlyDesc')}</p>
-                  </div>
-                  <div className="p-4 space-y-3">
-                    <div>
-                      <p className="text-xs text-muted">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-fg">{result.earlyStartAge}{t('age')}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
-                      <p className="text-xl font-bold text-amber-600 dark:text-amber-400">
-                        {formatNumber(result.earlyMonthly)}{t('won')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-body">
-                        {formatKRW(result.earlyMonthly * 12)}{t('won')}
-                      </p>
-                    </div>
-                    <div className="pt-2 border-t border-line">
-                      <p className="text-xs text-red-500 dark:text-red-400">
-                        {t('earlyReduction')}: -{Math.round(result.earlyReductionRate * 100)}%
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 정상수령 */}
-                <div className={`${glassCard} ${glassInset} overflow-hidden ring-2 ring-blue-500`}>
-                  <div className="bg-primary px-4 py-3">
-                    <div className="flex items-center gap-2 text-white">
-                      <TrendingUp className="w-5 h-5" />
-                      <span className="font-bold">{t('normalPension')}</span>
-                      <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">{t('recommended')}</span>
-                    </div>
-                    <p className="text-blue-100 text-xs mt-0.5">{t('normalDesc')}</p>
-                  </div>
-                  <div className="p-4 space-y-3">
-                    <div>
-                      <p className="text-xs text-muted">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-fg">{result.normalStartAge}{t('age')}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
-                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                        {formatNumber(result.normalMonthly)}{t('won')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-body">
-                        {formatKRW(result.normalMonthly * 12)}{t('won')}
-                      </p>
-                    </div>
-                    <div className="pt-2 border-t border-line">
-                      <p className="text-xs text-blue-500 dark:text-blue-400">
-                        {t('standardAmount')}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 연기수령 */}
-                <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-primary px-4 py-3">
-                    <div className="flex items-center gap-2 text-white">
-                      <TrendingUp className="w-5 h-5" />
-                      <span className="font-bold">{t('deferredPension')}</span>
-                    </div>
-                    <p className="text-emerald-100 text-xs mt-0.5">{t('deferredDesc')}</p>
-                  </div>
-                  <div className="p-4 space-y-3">
-                    <div>
-                      <p className="text-xs text-muted">{t('startAge')}</p>
-                      <p className="text-lg font-bold text-fg">{result.deferredStartAge}{t('age')}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('monthlyAmount')}</p>
-                      <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                        {formatNumber(result.deferredMonthly)}{t('won')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted">{t('yearlyAmount')}</p>
-                      <p className="text-sm font-medium text-body">
-                        {formatKRW(result.deferredMonthly * 12)}{t('won')}
-                      </p>
-                    </div>
-                    <div className="pt-2 border-t border-line">
-                      <p className="text-xs text-emerald-500 dark:text-emerald-400">
-                        {t('deferredIncrease')}: +{Math.round(result.deferredIncreaseRate * 100)}%
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          {/* 가입기간 늘리기 */}
+          <div className="ui-card p-6 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-fg">{t('u.sim.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.sim.desc')}</p>
+            </div>
+            <label className="block text-sm text-body">
+              <span className="flex justify-between"><span>{t('u.sim.extra')}</span><span className="font-semibold tabular-nums">+{t('u.yOnly', { y: extra })}</span></span>
+              <input type="range" min={1} max={10} value={extra} onChange={(e) => setExtra(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-muted">{t('u.sim.gain')}</p>
+                <p className="text-xl font-bold text-primary tabular-nums mt-1">+{won(gain)}{t('u.won')}</p>
+                <p className="text-xs text-muted mt-0.5">{t('u.sim.after', { v: won(plus.monthly) })}</p>
               </div>
-
-              {/* 총 수령액 비교 (BarChart) */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-fg mb-1">
-                  {t('totalComparison')}
-                </h2>
-                <p className="text-xs text-faint mb-4">
-                  {t('totalBy80')} / {t('totalBy85')} / {t('totalBy90')}
-                </p>
-                <div className="h-72">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={totalComparisonData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-                      <YAxis
-                        tick={{ fontSize: 11 }}
-                        tickFormatter={(v: number) => formatKRW(v)}
-                      />
-                      <Tooltip
-                        formatter={(value) => chartTooltipFormatter(Number(value))}
-                        contentStyle={{
-                          backgroundColor: 'var(--tooltip-bg, #fff)',
-                          borderColor: '#e5e7eb',
-                          borderRadius: '8px',
-                          fontSize: '12px',
-                        }}
-                      />
-                      <Legend wrapperStyle={{ fontSize: '12px' }} />
-                      <Bar dataKey={t('earlyPension')} fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey={t('normalPension')} fill="#3b82f6" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey={t('deferredPension')} fill="#10b981" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-muted">{t('u.sim.cost')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{big(cost)}{t('u.won')}</p>
+                <p className="text-xs text-muted mt-0.5">{t('u.sim.costHint', { p: Math.round(premiumRate(YEAR) * 1000) / 10 })}</p>
               </div>
-
-              {/* 누적 수령액 시뮬레이션 (LineChart) */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-fg mb-1">
-                  {t('cumulativeChart')}
-                </h2>
-                <p className="text-xs text-faint mb-4">
-                  {t('cumulativeDesc')}
-                </p>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={cumulativeData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        dataKey="age"
-                        tick={{ fontSize: 11 }}
-                        label={{ value: t('age'), position: 'insideBottomRight', offset: -5, fontSize: 11 }}
-                      />
-                      <YAxis
-                        tick={{ fontSize: 11 }}
-                        tickFormatter={(v: number) => formatKRW(v)}
-                      />
-                      <Tooltip
-                        labelFormatter={(label) => `${label}${t('age')}`}
-                        formatter={(value, name) => [chartTooltipFormatter(Number(value)), name]}
-                        contentStyle={{
-                          backgroundColor: 'var(--tooltip-bg, #fff)',
-                          borderColor: '#e5e7eb',
-                          borderRadius: '8px',
-                          fontSize: '12px',
-                        }}
-                      />
-                      <Legend wrapperStyle={{ fontSize: '12px' }} />
-                      <Line
-                        type="monotone"
-                        dataKey="early"
-                        name={t('earlyPension')}
-                        stroke="#f59e0b"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="normal"
-                        name={t('normalPension')}
-                        stroke="#3b82f6"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="deferred"
-                        name={t('deferredPension')}
-                        stroke="#10b981"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+              <div className="bg-subtle rounded-2xl p-4">
+                <p className="text-sm text-muted">{t('u.sim.payback')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{gain > 0 ? t('u.sim.years', { n: (cost / (gain * 12)).toFixed(1) }) : '-'}</p>
+                <p className="text-xs text-muted mt-0.5">{t('u.sim.paybackHint')}</p>
               </div>
+            </div>
+            {!r.eligible && plus.eligible && <p className="text-sm font-semibold text-primary">{t('u.sim.unlock')}</p>}
+            <p className="text-xs text-muted">{t('u.sim.note')}</p>
+          </div>
 
-              {/* 계산 상세 정보 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-bold text-fg mb-4">
-                  {t('calculationDetails')}
-                </h2>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-muted mb-1">{t('aValue')}</p>
-                    <p className="text-sm font-bold text-fg">
-                      {formatNumber(A_VALUE)}{t('won')}
-                    </p>
-                    <p className="text-xs text-faint mt-0.5">{t('aValueDesc')}</p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-muted mb-1">{t('bValue')}</p>
-                    <p className="text-sm font-bold text-fg">
-                      {formatNumber(result.bValue)}{t('won')}
-                    </p>
-                    <p className="text-xs text-faint mt-0.5">{t('bValueDesc')}</p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-muted mb-1">{t('replacementRate')}</p>
-                    <p className="text-sm font-bold text-fg">
-                      {REPLACEMENT_RATE * 100}% ({t('year2025')})
-                    </p>
-                  </div>
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-xs text-muted mb-1">{t('extraYears')}</p>
-                    <p className="text-sm font-bold text-fg">
-                      {Math.max(0, contributionYears - 20)}{t('yearUnit')} (n)
-                    </p>
-                    <p className="text-xs text-faint mt-0.5">{t('extraYearsDesc')}</p>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+          {/* 산출 근거 */}
+          <div className="ui-card p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-fg">{t('u.detail.title')}</h2>
+            <div className="divide-y divide-line border-y border-line text-sm">
+              <Row label={t('u.detail.a')} value={`${won(A_VALUE)}${t('u.won')}`} />
+              <Row label={t('u.detail.b')} value={`${won(r.B)}${t('u.won')}`} />
+              {r.periods.map((p) => (
+                <Row
+                  key={p.from}
+                  label={t('u.detail.period', { from: p.from, to: p.to, m: p.months })}
+                  value={p.from >= 2008 && p.from <= 2025 && p.to > p.from
+                    ? `${(replacementRate(p.from) * 100).toFixed(1)}% → ${(replacementRate(p.to) * 100).toFixed(1)}%`
+                    : `${(p.rate * 100).toFixed(1)}%`}
+                />
+              ))}
+              {r.creditMonths > 0 && <Row label={t('u.detail.credit')} value={t('u.detail.creditVal', { m: r.creditMonths })} />}
+            </div>
+            <p className="text-xs text-muted">{t('u.detail.formula')}</p>
+            <p className="text-xs text-muted">{t('u.detail.cpi', { p: Math.round(CPI_2026 * 1000) / 10 })}</p>
+          </div>
         </div>
       </div>
 
-      {/* ── Guide Section ── */}
-      <div className={`${glassCard} ${glassInset}`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between p-6"
-        >
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
-          </div>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-        </button>
-        {showGuide && (
-          <div className="px-6 pb-6 space-y-6">
-            {/* 계산 공식 */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
-                {t('guide.formula.title')}
-              </h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.formula.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* 조기 vs 연기 */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
-                {t('guide.earlyVsDeferred.title')}
-              </h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.earlyVsDeferred.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* 수급 자격 */}
-            <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
-                {t('guide.requirements.title')}
-              </h3>
-              <ul className="space-y-2">
-                {(t.raw('guide.requirements.items') as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* ── FAQ Section ── */}
-      <div className={`${glassCard} ${glassInset}`}>
-        <button
-          onClick={() => setShowFaq(!showFaq)}
-          className="w-full flex items-center justify-between p-6"
-        >
-          <h2 className="text-xl font-semibold text-fg">{t('faqTitle')}</h2>
-          {showFaq ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-        </button>
-        {showFaq && (
-          <div className="px-6 pb-6 space-y-4">
-            {[1, 2, 3].map(n => (
-              <div key={n} className="border-b border-line pb-4 last:border-0 last:pb-0">
-                <h3 className="font-semibold text-fg mb-2">
-                  Q. {t(`faq.q${n}.question`)}
-                </h3>
-                <p className="text-sm text-sub leading-relaxed">
-                  {t(`faq.q${n}.answer`)}
-                </p>
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('u.guide.title')}</h2>
+        {(['formula', 'reform', 'timing', 'boost', 'work'] as const).map((k) => (
+          <section key={k}>
+            <h3 className="text-base font-semibold text-fg mb-2">{t(`u.guide.${k}.title`)}</h3>
+            <ul className="space-y-1.5 list-disc pl-5 text-sm text-sub leading-relaxed">
+              {(t.raw(`u.guide.${k}.items`) as string[]).map((it, i) => <li key={i}>{it}</li>)}
+            </ul>
+          </section>
+        ))}
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-3">{t('u.faq.title')}</h3>
+          <div className="space-y-4">
+            {(t.raw('u.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                <h4 className="font-semibold text-fg mb-1">Q. {f.q}</h4>
+                <p className="text-sm text-sub leading-relaxed">{f.a}</p>
               </div>
             ))}
           </div>
-        )}
+        </section>
+        <p className="text-xs text-muted">{t('u.guide.source')}</p>
       </div>
+    </div>
+  )
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 py-2.5">
+      <span className="text-sub">{label}</span>
+      <span className="text-fg font-medium tabular-nums text-right">{value}</span>
     </div>
   )
 }

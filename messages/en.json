@@ -39974,8 +39974,191 @@
     }
   },
   "nationalPension": {
+    "u": {
+      "subtitle": "Enter birth year, contribution years and monthly income to estimate your old-age pension under the 2026 reform (43% replacement rate, 9.5% contribution rate)",
+      "won": " KRW",
+      "man": "×10k",
+      "eok": "×100M",
+      "ym": "{y}y {m}m",
+      "yOnly": "{y} yrs",
+      "yearOf": "{y}",
+      "ageOf": "age {a}",
+      "in": {
+        "birth": "Birth year",
+        "start": "First contribution year",
+        "years": "Total contribution period",
+        "yearsHint": "Years already paid + years you will pay (assumed continuous). Exclude exempt/unpaid periods",
+        "income": "Average monthly income (gross, today's value)",
+        "incomeHint": "Capped between {min} and {max} KRW (Jul 2026–Jun 2027)",
+        "type": "Insured type",
+        "employee": "Employee",
+        "local": "Self-employed / voluntary",
+        "more": "More accurate (credits, dependents, earnings)",
+        "children": "Number of children (birth credit)",
+        "childNew": "Had a child in 2026 or later (credit from the first child)",
+        "childCredit": "Birth credit: {m} months (one parent)",
+        "military": "Military service credit",
+        "mil0": "None",
+        "mil6": "6 months (discharged 2008–2025)",
+        "mil12": "Up to 12 months (discharged 2026+)",
+        "dependents": "Dependents (dependent pension)",
+        "spouse": "Spouse",
+        "depChildren": "Children under 19",
+        "depParents": "Parents aged 60+",
+        "work": "Monthly earnings while receiving (after deductions)",
+        "workHint": "At {v} KRW (A value + 2M) or more, the pension is reduced for up to 5 years"
+      },
+      "res": {
+        "label": "Estimated monthly pension from age {age} ({year})",
+        "pv": "In today's money",
+        "nominal": "≈ {v} KRW nominal in {year}",
+        "growth": "Assumed annual growth",
+        "growthOpt": "{p}%/yr",
+        "paid": "Your contributions",
+        "paidEmp": "{v} KRW incl. employer share",
+        "paidLocal": "Self-employed/voluntary pay the full amount",
+        "received": "Pension received until {age}",
+        "ratio": "{x}× what you paid",
+        "payback": "Break-even age",
+        "paybackHint": "Based on your own share",
+        "annual": "Annual pension",
+        "months": "Credited period",
+        "monthsCredit": "{total} (incl. {credit} months of credits)",
+        "dependent": "Dependent pension (monthly)",
+        "workCut": "Earnings reduction (up to 5 yrs, monthly)",
+        "noCut": "No reduction",
+        "ineligible": "{m} months — under 10 years (120 months), so no old-age pension",
+        "ineligibleHint": "At 60 you get a lump-sum refund of contributions plus interest. Add {need} more months (voluntary/continued enrollment, catch-up payment) to receive a lifetime pension.",
+        "notice": "This is an estimate from your inputs. Actual benefits depend on yearly income revaluation, payment history and credits — check the exact amount on the National Pension Service (NPS) website.",
+        "npsLink": "Check my pension at NPS"
+      },
+      "share": {
+        "label": "Born {birth} · {years} yrs · {income} KRW/mo",
+        "text": "My estimated national pension: {v} KRW a month from age {age}"
+      },
+      "cmp": {
+        "title": "When should you start?",
+        "desc": "Compare early (up to 5 yrs, −6%/yr), normal and deferred (up to 5 yrs, +7.2%/yr) pensions by the total received until your life expectancy",
+        "life": "Life expectancy",
+        "when": "Start",
+        "monthly": "Monthly (KRW)",
+        "total": "Total until {age}",
+        "cross": "Crosses normal at",
+        "normal": "Normal",
+        "early": "{n} yr early",
+        "defer": "{n} yr deferred",
+        "note": "Living past the crossover age makes early claiming worse and deferring better than normal. Dependent pension is added unchanged.",
+        "lifeMark": "Life exp.",
+        "early5": "5 yr early",
+        "defer5": "5 yr deferred"
+      },
+      "sim": {
+        "title": "How much does a longer contribution period add?",
+        "desc": "Extending your period via catch-up payments (for exempt/career-break periods) or voluntary/continued enrollment",
+        "extra": "Extra period",
+        "gain": "Monthly increase",
+        "after": "Becomes {v} KRW/month",
+        "cost": "Extra contributions",
+        "costHint": "Current income × {p}% (2026 rate, paid in full)",
+        "payback": "Payback period",
+        "years": "≈ {n} yrs",
+        "paybackHint": "Time for the extra pension to repay the extra contributions",
+        "unlock": "Reaching 10 years turns the lump-sum refund into a lifetime pension.",
+        "note": "Extra periods use the post-2026 43% rate. Catch-up payments cover up to 119 months at the current premium; voluntary rates rise yearly to 13% in 2033."
+      },
+      "detail": {
+        "title": "How it's calculated",
+        "a": "A value (2026, average income of all insured)",
+        "b": "B value (your average income, capped)",
+        "period": "{from}–{to}: {m} months · replacement rate",
+        "credit": "Credits (birth at A, military at A/2)",
+        "creditVal": "{m} months",
+        "formula": "Monthly pension ≈ Σ(year factor × (A + B) × months) ÷ 240 ÷ 12 + dependent pension. Factor: 2.4 for 1988–1998 (B weighted 0.75), 1.8 for 1999–2007, 1.5 in 2008 falling 0.015/yr to 1.245 in 2025, 1.29 from 2026",
+        "cpi": "All amounts are in 2026 money. Pensions rise every January by last year's CPI ({p}% in 2026)."
+      },
+      "guide": {
+        "title": "National pension in a nutshell",
+        "source": "Sources: National Pension Act (effective 2026-01-01, Act No. 20903), Art. 63-2 (effective 2026-06-17), 2026 A value 3,193,511 KRW, dependent pension (spouse 306,630, child/parent 204,360 KRW per year). Laws: law.go.kr.",
+        "formula": {
+          "title": "How the amount is set",
+          "items": [
+            "Basic pension = factor × (A + B) × (1 + 5% per year over 20). With 10–20 years you get 50% plus 5% per year over 10, so the pension is almost proportional to months contributed.",
+            "A is the average monthly income of all insured over the 3 years before you claim (3,193,511 KRW for 2026). It is the same for everyone, so lower earners get more per won paid.",
+            "B is your own average income revalued to today. This calculator treats your input as B, capped at 6.59M and floored at 0.41M KRW.",
+            "The factor depends on when you contributed. As a 40-year replacement rate: 70% for 1988–1998, 60% for 1999–2007, 50% in 2008 falling 0.5%p a year to 41.5% in 2025, and 43% from 2026.",
+            "Contribution rate: 3% (1988–92), 6% (1993–97), 9% (1998–2025), 9.5% in 2026 rising 0.5%p a year to 13% in 2033. Employees split it with the employer."
+          ]
+        },
+        "reform": {
+          "title": "What changed with the 2026 reform",
+          "items": [
+            "43% replacement rate for periods from 1 Jan 2026; earlier periods keep their old rates.",
+            "Contribution rate 9% → 9.5% in 2026, +0.5%p a year to 13% in 2033 (employee share 4.75% in 2026).",
+            "Birth credit: for children from 2026, 12 months each for the 1st and 2nd child and 18 months for each from the 3rd, with no 50-month cap. Credited at the A value, to one parent or split.",
+            "Military credit: up to 12 months of actual service for those discharged from 2026 (was 6). Credited at half the A value.",
+            "State guarantee: the state's duty to ensure stable, continuous payment is written into law (Art. 3-2)."
+          ]
+        },
+        "timing": {
+          "title": "Early, normal or deferred",
+          "items": [
+            "Pension age: 61 (born 1953–56), 62 (1957–60), 63 (1961–64), 64 (1965–68), 65 (1969+).",
+            "Early pension: up to 5 years early, −6% per year (0.5%/month), 70% for life at 5 years. Requires 10+ years and no income-earning work; payment stops if you start earning.",
+            "Deferred pension: up to 5 years, +0.6% per month (7.2%/yr), 136% at 5 years. You can also defer 50–90% only.",
+            "Versus normal, 5-year early breaks even around 77 and 5-year deferral around 84 (pension age 65)."
+          ]
+        },
+        "boost": {
+          "title": "Ways to increase your pension",
+          "items": [
+            "Catch-up payment: pay later for exempt or career-break periods, up to 119 months, at the current premium (instalments allowed).",
+            "Voluntary enrollment: people aged 18–59 not required to join (homemakers, students) can join.",
+            "Continued enrollment: keep contributing from 60 until 65.",
+            "Repayment: return a past lump-sum refund with interest to restore that period.",
+            "Credits: claim birth/military credits with your pension; an unemployment credit covers 75% of premiums while on job-seeking benefits."
+          ]
+        },
+        "work": {
+          "title": "Working while receiving",
+          "items": [
+            "From 17 Jun 2026, no reduction if monthly earnings (after deductions) are below A + 2M KRW (about 5.19M).",
+            "Excess = earnings − A. 2M–3M: 150k + 15% over 2M; 3M–4M: 300k + 20% over 3M; 4M+: 500k + 25% over 4M. Capped at half the pension; dependent pension is not reduced.",
+            "The reduction applies only for up to 5 years after the pension starts."
+          ]
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What if I don't reach 10 years?",
+            "a": "No old-age pension; at 60 you get a refund of contributions (incl. employer share) plus interest. Reaching 10 years via continued enrollment or catch-up payment usually pays off far more."
+          },
+          {
+            "q": "Why does NPS show a different amount?",
+            "a": "NPS revalues each year's actual income and knows your exempt periods and credits. This tool assumes a constant average income, so check NPS for the exact figure."
+          },
+          {
+            "q": "Does the pension rise with inflation?",
+            "a": "Yes, every January by last year's CPI (2.1% in 2026). Amounts here are in today's money; the nominal amount uses the growth rate you pick."
+          },
+          {
+            "q": "Is the pension taxed?",
+            "a": "Only the part from contributions paid since 2002. After pension income and personal deductions, tax is small without other income; NPS withholds monthly and settles in January."
+          },
+          {
+            "q": "Can both spouses receive it?",
+            "a": "Yes, each receives their own pension. If one dies, the survivor chooses between their own pension and the survivor's pension; choosing their own adds 30% of the survivor's pension."
+          },
+          {
+            "q": "Will I get nothing if the fund runs out?",
+            "a": "The 2025 reform wrote the state's duty to guarantee payment into law (Art. 3-2), so pensions continue from contributions and state responsibility."
+          }
+        ]
+      }
+    },
     "title": "National Pension Calculator",
-    "description": "Estimate your national pension benefits based on contribution period and average income (2025 standards)",
+    "description": "Estimate your national pension from birth year, contribution period and income (2026 reform applied)",
     "birthYear": "Birth Year",
     "year": "",
     "contributionYears": "Contribution Period",
