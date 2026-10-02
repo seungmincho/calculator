@@ -94,7 +94,7 @@ export default function NationalPensionCalculator() {
 
   const big = (v: number) => (v >= 1e8 ? `${(v / 1e8).toFixed(1)}${t('u.eok')}` : `${won(v / 1e4)}${t('u.man')}`)
   const ym = (months: number) => (months % 12 ? t('u.ym', { y: Math.floor(months / 12), m: months % 12 }) : t('u.yOnly', { y: months / 12 }))
-  const seg = (on: boolean) => `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const seg = (on: boolean) => `min-h-10 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const startYears = useMemo(() => Array.from({ length: maxStart - minStart + 1 }, (_, i) => minStart + i), [minStart, maxStart])
   const births = useMemo(() => Array.from({ length: 2007 - 1953 + 1 }, (_, i) => 2007 - i), [])
 
@@ -129,8 +129,8 @@ export default function NationalPensionCalculator() {
                 <label htmlFor="np-years" className="text-sm font-medium text-body">{t('u.in.years')}</label>
                 <span className="text-sm font-semibold text-fg tabular-nums">{t('u.yOnly', { y })} <span className="text-muted font-normal">({s}~{s + y - 1})</span></span>
               </div>
-              <input id="np-years" type="range" min={1} max={maxYears} value={y} onChange={(e) => setYears(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
-              <p className="text-xs text-muted mt-1">{t('u.in.yearsHint')}</p>
+              <input id="np-years" type="range" min={1} max={maxYears} value={y} aria-valuetext={t('u.yOnly', { y })} aria-describedby="np-years-h" onChange={(e) => setYears(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+              <p id="np-years-h" className="text-xs text-muted mt-1">{t('u.in.yearsHint')}</p>
             </div>
 
             <div>
@@ -140,22 +140,23 @@ export default function NationalPensionCalculator() {
                   id="np-income" inputMode="numeric" value={income ? won(income) : ''}
                   onChange={(e) => setIncome(Math.min(100_000_000, Number(e.target.value.replace(/[^\d]/g, '')) || 0))}
                   className="ui-field w-full px-4 py-3 pr-10 tabular-nums" placeholder="3,000,000"
+                  aria-describedby="np-income-u np-income-h"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
+                <span id="np-income-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
               </div>
-              <div className="flex flex-wrap gap-1.5 mt-2">
+              <div className="flex flex-wrap gap-1.5 mt-2" role="group" aria-label={t('a11y.incomePresets')}>
                 {INCOME_PRESETS.map((p) => (
-                  <button key={p} onClick={() => setIncome(p)} className={`px-2.5 py-1 rounded-lg text-xs ${income === p ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>{big(p)}</button>
+                  <button key={p} type="button" onClick={() => setIncome(p)} aria-pressed={income === p} className={`min-h-10 px-2.5 py-1 rounded-lg text-xs ${income === p ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>{big(p)}</button>
                 ))}
               </div>
-              <p className="text-xs text-muted mt-2">{t('u.in.incomeHint', { min: won(INCOME_FLOOR), max: won(INCOME_CAP) })}</p>
+              <p id="np-income-h" className="text-xs text-muted mt-2">{t('u.in.incomeHint', { min: won(INCOME_FLOOR), max: won(INCOME_CAP) })}</p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-body mb-2">{t('u.in.type')}</p>
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => setEmployee(true)} className={seg(employee)}>{t('u.in.employee')}</button>
-                <button onClick={() => setEmployee(false)} className={seg(!employee)}>{t('u.in.local')}</button>
+              <p id="np-type" className="text-sm font-medium text-body mb-2">{t('u.in.type')}</p>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="np-type">
+                <button type="button" onClick={() => setEmployee(true)} aria-pressed={employee} className={seg(employee)}>{t('u.in.employee')}</button>
+                <button type="button" onClick={() => setEmployee(false)} aria-pressed={!employee} className={seg(!employee)}>{t('u.in.local')}</button>
               </div>
             </div>
 
@@ -163,9 +164,9 @@ export default function NationalPensionCalculator() {
               <summary className="cursor-pointer text-sm font-semibold text-fg">{t('u.in.more')}</summary>
               <div className="space-y-4 mt-4">
                 <div>
-                  <p className="text-sm font-medium text-body mb-2">{t('u.in.children')}</p>
-                  <div className="grid grid-cols-6 gap-1.5">
-                    {[0, 1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setChildren(n)} className={seg(children === n)}>{n}</button>)}
+                  <p id="np-children" className="text-sm font-medium text-body mb-2">{t('u.in.children')}</p>
+                  <div className="grid grid-cols-6 gap-1.5" role="group" aria-labelledby="np-children">
+                    {[0, 1, 2, 3, 4, 5].map((n) => <button key={n} type="button" onClick={() => setChildren(n)} aria-pressed={children === n} className={seg(children === n)}>{n}</button>)}
                   </div>
                   <label className="flex items-start gap-2 mt-2 text-sm text-body">
                     <input type="checkbox" checked={childNew} onChange={(e) => setChildNew(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
@@ -207,10 +208,11 @@ export default function NationalPensionCalculator() {
                       id="np-work" inputMode="numeric" value={work ? won(work) : ''} placeholder="0"
                       onChange={(e) => setWork(Math.min(100_000_000, Number(e.target.value.replace(/[^\d]/g, '')) || 0))}
                       className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+                      aria-describedby="np-work-u np-work-h"
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
+                    <span id="np-work-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
                   </div>
-                  <p className="text-xs text-muted mt-1">{t('u.in.workHint', { v: won(A_VALUE + 2_000_000) })}</p>
+                  <p id="np-work-h" className="text-xs text-muted mt-1">{t('u.in.workHint', { v: won(A_VALUE + 2_000_000) })}</p>
                 </div>
               </div>
             </details>
@@ -224,7 +226,7 @@ export default function NationalPensionCalculator() {
               <>
                 <div>
                   <p className="text-sm text-muted">{t('u.res.label', { age: r.startAge, year: r.pensionYear })}</p>
-                  <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(r.monthly)}{t('u.won')}</p>
+                  <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(r.monthly)}{t('u.won')}</p>
                   <p className="text-sm text-sub mt-1 flex flex-wrap items-center gap-x-2">
                     <span>{t('u.res.pv')}</span>
                     <span className="text-faint">·</span>
@@ -262,7 +264,7 @@ export default function NationalPensionCalculator() {
                 </div>
               </>
             ) : (
-              <div className="bg-amber-50 text-amber-800 rounded-2xl p-5 space-y-1">
+              <div className="bg-amber-50 text-amber-800 rounded-2xl p-5 space-y-1" role="status">
                 <p className="font-semibold">{t('u.res.ineligible', { m: r.totalMonths })}</p>
                 <p className="text-sm">{t('u.res.ineligibleHint', { need: needMonths })}</p>
               </div>
@@ -271,7 +273,7 @@ export default function NationalPensionCalculator() {
             <div className="bg-subtle rounded-2xl p-4 text-sm text-sub">
               <p>{t('u.res.notice')}</p>
               <a href={NPS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mt-2 font-semibold text-primary hover:underline">
-                {t('u.res.npsLink')} <ExternalLink className="w-3.5 h-3.5" />
+                {t('u.res.npsLink')} <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
 
@@ -303,17 +305,17 @@ export default function NationalPensionCalculator() {
                 </div>
                 <label className="text-sm text-body w-full sm:w-56">
                   <span className="flex justify-between"><span>{t('u.cmp.life')}</span><span className="font-semibold tabular-nums">{t('u.ageOf', { a: life })}</span></span>
-                  <input type="range" min={70} max={100} value={life} onChange={(e) => setLife(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+                  <input type="range" min={70} max={100} value={life} aria-valuetext={t('u.ageOf', { a: life })} onChange={(e) => setLife(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
                 </label>
               </div>
               <div className="overflow-x-auto -mx-2">
                 <table className="w-full text-sm min-w-[480px]">
                   <thead>
                     <tr className="text-muted border-b border-line text-left">
-                      <th className="py-2 px-2 font-medium">{t('u.cmp.when')}</th>
-                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.monthly')}</th>
-                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.total', { age: life })}</th>
-                      <th className="py-2 px-2 font-medium text-right">{t('u.cmp.cross')}</th>
+                      <th scope="col" className="py-2 px-2 font-medium">{t('u.cmp.when')}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right">{t('u.cmp.monthly')}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right">{t('u.cmp.total', { age: life })}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right">{t('u.cmp.cross')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -325,7 +327,7 @@ export default function NationalPensionCalculator() {
                           {o.d !== 0 && <span className="text-xs text-muted"> ({o.d < 0 ? '-' : '+'}{Math.round(Math.abs(o.d) * (o.d < 0 ? 6 : 7.2) * 10) / 10}%)</span>}
                         </td>
                         <td className="py-2 px-2 text-right tabular-nums text-fg">{won(o.m)}</td>
-                        <td className={`py-2 px-2 text-right tabular-nums ${o === best ? 'text-primary font-semibold' : 'text-fg'}`}>{big(o.total)}</td>
+                        <td className={`py-2 px-2 text-right tabular-nums ${o === best ? 'text-primary font-semibold' : 'text-fg'}`}>{big(o.total)}{o === best && <span className="sr-only"> ({t('a11y.best')})</span>}</td>
                         <td className="py-2 px-2 text-right tabular-nums text-muted">{o.cross != null ? t('u.ageOf', { a: o.cross }) : '-'}</td>
                       </tr>
                     ))}
@@ -333,7 +335,8 @@ export default function NationalPensionCalculator() {
                 </table>
               </div>
               <p className="text-xs text-muted">{t('u.cmp.note')}</p>
-              <div className="h-72">
+              {/* 위 표(수령 시기별 월 연금·누적 수령액·역전 나이)와 같은 내용 → 스크린리더에서는 숨김 */}
+              <div className="h-72" aria-hidden="true">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
@@ -359,7 +362,7 @@ export default function NationalPensionCalculator() {
             </div>
             <label className="block text-sm text-body">
               <span className="flex justify-between"><span>{t('u.sim.extra')}</span><span className="font-semibold tabular-nums">+{t('u.yOnly', { y: extra })}</span></span>
-              <input type="range" min={1} max={10} value={extra} onChange={(e) => setExtra(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+              <input type="range" min={1} max={10} value={extra} aria-valuetext={`+${t('u.yOnly', { y: extra })}`} onChange={(e) => setExtra(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="bg-subtle rounded-2xl p-4">

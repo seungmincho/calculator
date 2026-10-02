@@ -29,27 +29,29 @@ const CELL: Record<DayType, string> = {
 }
 const LEGEND: DayType[] = ['period', 'fertile', 'peak', 'ovulation', 'range']
 
-function Stepper({ id, label, hint, value, min, max, unit, onChange }: {
+function Stepper({ id, label, hint, value, min, max, unit, onChange, decLabel, incLabel }: {
   id: string; label: string; hint?: string; value: number; min: number; max: number; unit: string; onChange: (n: number) => void
+  decLabel: string; incLabel: string
 }) {
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="flex items-center gap-2">
-        <button type="button" onClick={() => onChange(clamp(value - 1, min, max))} aria-label={`${label} -1`} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
-          <Minus className="w-4 h-4" />
+        <button type="button" onClick={() => onChange(clamp(value - 1, min, max))} aria-label={decLabel} aria-controls={id} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
+          <Minus className="w-4 h-4" aria-hidden="true" />
         </button>
         <input
           id={id} type="number" inputMode="numeric" min={min} max={max} value={value}
           onChange={e => { const n = parseInt(e.target.value, 10); if (Number.isFinite(n)) onChange(clamp(n, min, max)) }}
+          aria-describedby={hint ? `${id}-u ${id}-h` : `${id}-u`}
           className="ui-field w-20 px-3 py-3 text-center tabular-nums"
         />
-        <button type="button" onClick={() => onChange(clamp(value + 1, min, max))} aria-label={`${label} +1`} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
-          <Plus className="w-4 h-4" />
+        <button type="button" onClick={() => onChange(clamp(value + 1, min, max))} aria-label={incLabel} aria-controls={id} className="p-3 rounded-xl bg-soft hover:bg-track text-body">
+          <Plus className="w-4 h-4" aria-hidden="true" />
         </button>
-        <span className="text-sm text-sub">{unit}</span>
+        <span id={`${id}-u`} className="text-sm text-sub">{unit}</span>
       </div>
-      {hint && <p className="text-xs text-muted mt-2">{hint}</p>}
+      {hint && <p id={`${id}-h`} className="text-xs text-muted mt-2">{hint}</p>}
     </div>
   )
 }
@@ -194,8 +196,9 @@ export default function OvulationCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
-            <div>
-              <p className="text-sm font-medium text-body mb-2">{t('lastPeriod')}</p>
+            {/* DatePicker는 label 연결을 지원하지 않아 group 이름으로 맥락 제공 */}
+            <div role="group" aria-labelledby="ov-last">
+              <p id="ov-last" className="text-sm font-medium text-body mb-2">{t('lastPeriod')}</p>
               <DatePicker
                 value={s.lastPeriod}
                 onChange={d => update({ lastPeriod: d })}
@@ -203,9 +206,12 @@ export default function OvulationCalculator() {
                 placeholder={t('lastPeriod')}
               />
             </div>
-            <Stepper id="ov-cycle" label={t('cycleLength')} hint={t('cycleHint')} value={s.cycle} min={CYCLE_MIN} max={CYCLE_MAX} unit={t('days')} onChange={n => update({ cycle: n })} />
-            <Stepper id="ov-period" label={t('periodLength')} value={s.period} min={PERIOD_MIN} max={PERIOD_MAX} unit={t('days')} onChange={n => update({ period: n })} />
-            <Stepper id="ov-luteal" label={t('luteal')} hint={t('lutealHint')} value={s.luteal} min={LUTEAL_MIN} max={LUTEAL_MAX} unit={t('days')} onChange={n => update({ luteal: n })} />
+            <Stepper id="ov-cycle" label={t('cycleLength')} hint={t('cycleHint')} value={s.cycle} min={CYCLE_MIN} max={CYCLE_MAX} unit={t('days')} onChange={n => update({ cycle: n })}
+              decLabel={t('a11y.decrease', { label: t('cycleLength') })} incLabel={t('a11y.increase', { label: t('cycleLength') })} />
+            <Stepper id="ov-period" label={t('periodLength')} value={s.period} min={PERIOD_MIN} max={PERIOD_MAX} unit={t('days')} onChange={n => update({ period: n })}
+              decLabel={t('a11y.decrease', { label: t('periodLength') })} incLabel={t('a11y.increase', { label: t('periodLength') })} />
+            <Stepper id="ov-luteal" label={t('luteal')} hint={t('lutealHint')} value={s.luteal} min={LUTEAL_MIN} max={LUTEAL_MAX} unit={t('days')} onChange={n => update({ luteal: n })}
+              decLabel={t('a11y.decrease', { label: t('luteal') })} incLabel={t('a11y.increase', { label: t('luteal') })} />
           </div>
 
           {/* 기록 → 평균 주기 */}
@@ -214,7 +220,7 @@ export default function OvulationCalculator() {
               <h2 className="text-base font-semibold text-fg">{t('records.title')}</h2>
               <p className="text-xs text-muted mt-1">{t('records.hint')}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2" role="group" aria-label={t('records.pick')}>
               <DatePicker
                 value={newRecord}
                 onChange={setNewRecord}
@@ -222,17 +228,18 @@ export default function OvulationCalculator() {
                 placeholder={t('records.pick')}
                 className="flex-1"
               />
-              <button type="button" onClick={addRecord} disabled={!newRecord} className="ui-btn px-4 py-2 text-sm disabled:opacity-40">
+              <button type="button" onClick={addRecord} disabled={!newRecord} className="ui-btn min-h-10 px-4 py-2 text-sm disabled:opacity-40">
                 {t('records.add')}
               </button>
             </div>
             {history.length > 0 && (
-              <ul className="flex flex-wrap gap-2">
+              <ul className="flex flex-wrap gap-2" aria-label={t('records.title')}>
                 {history.map(d => (
                   <li key={d} className="inline-flex items-center gap-1 pl-3 pr-1 py-1 rounded-full bg-soft text-sm text-body tabular-nums">
                     {d}
-                    <button type="button" onClick={() => setRecords(history.filter(x => x !== d))} aria-label={t('records.remove')} className="p-1 rounded-full hover:bg-track">
-                      <X className="w-3.5 h-3.5" />
+                    {/* after: 가상 요소로 레이아웃은 그대로 두고 터치 영역만 40px 가까이 확장 */}
+                    <button type="button" onClick={() => setRecords(history.filter(x => x !== d))} aria-label={t('a11y.removeRecord', { date: d })} className="relative p-1 rounded-full hover:bg-track after:absolute after:-inset-2.5 after:content-['']">
+                      <X className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                   </li>
                 ))}
@@ -251,7 +258,7 @@ export default function OvulationCalculator() {
                 {stats.excluded > 0 && <p>{t('records.excluded', { n: stats.excluded })}</p>}
               </div>
             ) : history.length > 0 && <p className="text-xs text-muted">{t('records.needMore')}</p>}
-            <button type="button" onClick={clearAll} className="text-xs text-muted hover:text-body underline">{t('records.clear')}</button>
+            <button type="button" onClick={clearAll} className="min-h-10 text-xs text-muted hover:text-body underline">{t('records.clear')}</button>
           </div>
         </div>
 
@@ -261,7 +268,7 @@ export default function OvulationCalculator() {
             <div className="ui-card p-6 text-center text-muted">{t('enterDate')}</div>
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div className="ui-hero p-6 sm:p-8" aria-live="polite">
                 <p className="text-sm text-white/70">{t('nextPeriod')}</p>
                 <p className="text-3xl sm:text-4xl font-bold mt-1 tabular-nums">{fmtFull(r.cur.nextStart)}</p>
                 <p className="text-sm text-white/80 mt-1 tabular-nums">{ddayLabel(daysBetween(today, r.cur.nextStart))}</p>
@@ -307,16 +314,16 @@ export default function OvulationCalculator() {
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <h2 className="text-base font-semibold text-fg">{t('upcoming')}</h2>
                   <button type="button" onClick={exportIcs} className="ui-btn-soft px-3 py-2 text-sm inline-flex items-center gap-1.5">
-                    <Download className="w-4 h-4" />{t('ics.button')}
+                    <Download className="w-4 h-4" aria-hidden="true" />{t('ics.button')}
                   </button>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm tabular-nums">
                     <thead>
                       <tr className="text-left text-xs text-muted">
-                        <th className="py-2 pr-3 font-medium">{t('ovulationDate')}</th>
-                        <th className="py-2 pr-3 font-medium">{t('fertileWindow')}</th>
-                        <th className="py-2 font-medium">{t('nextPeriod')}</th>
+                        <th scope="col" className="py-2 pr-3 font-medium">{t('ovulationDate')}</th>
+                        <th scope="col" className="py-2 pr-3 font-medium">{t('fertileWindow')}</th>
+                        <th scope="col" className="py-2 font-medium">{t('nextPeriod')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-line">
@@ -344,10 +351,10 @@ export default function OvulationCalculator() {
           <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-sub" aria-label={t('legend')}>
             {LEGEND.filter(k => k !== 'range' || r.ranges.length > 0).map(k => (
               <li key={k} className="flex items-center gap-2">
-                <span className={`w-4 h-4 rounded inline-block ${CELL[k]}`} />{t(`legendItems.${k}`)}
+                <span className={`w-4 h-4 rounded inline-block ${CELL[k]}`} aria-hidden="true" />{t(`legendItems.${k}`)}
               </li>
             ))}
-            <li className="flex items-center gap-2"><span className="w-4 h-4 rounded inline-block ring-2 ring-fg ring-inset" />{t('legendItems.today')}</li>
+            <li className="flex items-center gap-2"><span className="w-4 h-4 rounded inline-block ring-2 ring-fg ring-inset" aria-hidden="true" />{t('legendItems.today')}</li>
           </ul>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {r.months.map(({ y, m }) => (
@@ -365,6 +372,9 @@ export default function OvulationCalculator() {
                         className={`text-center text-sm py-1.5 rounded-lg tabular-nums ${type ? CELL[type] : 'text-body'} ${d === today ? 'ring-2 ring-fg ring-inset' : ''}`}
                       >
                         {Number(d.slice(8))}
+                        {/* 색으로만 구분되는 날짜 유형을 스크린리더에 텍스트로 */}
+                        {type && <span className="sr-only"> {t(`legendItems.${type}`)}</span>}
+                        {d === today && <span className="sr-only"> {t('legendItems.today')}</span>}
                       </div>
                     )
                   })}

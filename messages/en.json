@@ -1463,6 +1463,10 @@
     }
   },
   "realEstate": {
+    "a11y": {
+      "loanInput": "Loan input method",
+      "usePrice": "Calculate with price {price}"
+    },
     "u": {
       "subtitle": "Enter the price and your loan to see the cash you actually need to buy a home in Korea — acquisition tax, brokerage fee and registration costs included — plus the monthly repayment (2026 rules).",
       "won": "KRW",
@@ -10565,6 +10569,11 @@
     }
   },
   "compoundCalculator": {
+    "a11y": {
+      "mode": "Calculation mode",
+      "periodUnit": "Period unit",
+      "item": "Item"
+    },
     "c": {
       "mode": {
         "lump": "Lump sum",
@@ -34267,6 +34276,15 @@
     "noResult": "Enter the acquisition price on the left to see the tax calculation results."
   },
   "dsrCalc": {
+    "a11y": {
+      "addAmount": "Add {amount} KRW to {label}",
+      "kind": "New loan type",
+      "loanN": "Existing loan {n}",
+      "removeLoan": "Remove existing loan {n}",
+      "overCap": "Over the {cap}% DSR cap",
+      "selected": "selected",
+      "chart": "Loan limit by annual income chart. At your income of {income}, the limit is {limit} with stress DSR and {plain} without"
+    },
     "subtitle": "As of October 2026 — reflects Stage 3 stress DSR and the Oct 15 measures (+3.0%p for mortgages in the capital area / regulated zones). Add your existing loans to see how much more you can borrow.",
     "units": {
       "won": " KRW",
@@ -35987,6 +36005,10 @@
     }
   },
   "healthInsurance": {
+    "a11y": {
+      "tabs": "Coverage type",
+      "wageBasis": "Wage input basis"
+    },
     "rateBadge": "2026 rates · Health {rate} · Long-term care {ltc} of health premium · {point} KRW per property point",
     "wp": {
       "modeMonthly": "Monthly pay",
@@ -40716,6 +40738,11 @@
     }
   },
   "ovulationCalculator": {
+    "a11y": {
+      "decrease": "Decrease {label} by 1 day",
+      "increase": "Increase {label} by 1 day",
+      "removeRecord": "Remove record {date}"
+    },
     "cycleHint": "Days from the first day of one period to the day before the next. Log recent periods below to fill in your average automatically.",
     "luteal": "Luteal phase length",
     "lutealHint": "The time from ovulation to your next period. Usually 14 days, but it can range from 10 to 16. Change it if you know yours from ovulation tests or basal body temperature.",
@@ -41340,6 +41367,10 @@
     }
   },
   "nationalPension": {
+    "a11y": {
+      "incomePresets": "Quick monthly income options",
+      "best": "highest total"
+    },
     "u": {
       "subtitle": "Enter birth year, contribution years and monthly income to estimate your old-age pension under the 2026 reform (43% replacement rate, 9.5% contribution rate)",
       "won": " KRW",

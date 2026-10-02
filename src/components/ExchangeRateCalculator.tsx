@@ -142,16 +142,17 @@ export default function ExchangeRateCalculator() {
   }
 
   const seg = (on: boolean) =>
-    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
-  const percent = (value: string, set: (s: string) => void, label: string) => (
-    <label className="block">
-      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+    `min-h-10 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const percent = (key: string, value: string, set: (s: string) => void, label: string) => (
+    <div>
+      <label htmlFor={`fx-${key}`} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="relative">
-        <input inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && e.target.value.length <= 5 && set(e.target.value)}
+        <input id={`fx-${key}`} inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && e.target.value.length <= 5 && set(e.target.value)}
+          aria-describedby={`fx-${key}-u`}
           className="ui-field w-full px-4 py-3 pr-10 font-semibold tabular-nums" />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
+        <span id={`fx-${key}-u`} className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
       </div>
-    </label>
+    </div>
   )
   /** 행 금액: 외화 입력 → 원화, 원화 입력 → 외화 */
   const amountAt = (rate: number) => (side === 'f' ? `${won(foreign * rate)}${t('won')}` : `${fx(krw / rate, cur.dec)} ${code}`)
@@ -170,11 +171,11 @@ export default function ExchangeRateCalculator() {
         {/* 입력 */}
         <div className="ui-card p-6 space-y-5 self-start">
           <div>
-            <span className="block text-sm font-medium text-body mb-2">{t('in.currency')}</span>
-            <div className="grid grid-cols-3 gap-2 mb-2">
+            <span id="fx-cur" className="block text-sm font-medium text-body mb-2">{t('in.currency')}</span>
+            <div className="grid grid-cols-3 gap-2 mb-2" role="group" aria-labelledby="fx-cur">
               {QUICK.map((c) => (
-                <button key={c} onClick={() => pick(c)} aria-pressed={code === c} className={seg(code === c)}>
-                  {currency(c).flag} {c}
+                <button key={c} type="button" onClick={() => pick(c)} aria-pressed={code === c} aria-label={`${c} ${t(`cur.${c}`)}`} className={seg(code === c)}>
+                  <span aria-hidden="true">{currency(c).flag}</span> {c}
                 </button>
               ))}
             </div>
@@ -183,44 +184,44 @@ export default function ExchangeRateCalculator() {
             </select>
           </div>
 
-          <label className="block">
-            <span className="block text-sm font-medium text-body mb-2">{t('in.foreign', { name })}</span>
+          <div>
+            <label htmlFor="fx-foreign" className="block text-sm font-medium text-body mb-2">{t('in.foreign', { name })}</label>
             <div className="relative">
-              <input inputMode="decimal" value={side === 'f' ? amtText : base ? fx(foreign, cur.dec) : ''} onChange={(e) => editForeign(e.target.value)}
+              <input id="fx-foreign" inputMode={fDec ? 'decimal' : 'numeric'} aria-describedby="fx-foreign-u" value={side === 'f' ? amtText : base ? fx(foreign, cur.dec) : ''} onChange={(e) => editForeign(e.target.value)}
                 onFocus={() => side === 'k' && base && editForeign(fx(foreign, cur.dec))}
                 className="ui-field w-full px-4 py-3 pr-16 text-lg font-semibold tabular-nums" />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{code}</span>
+              <span id="fx-foreign-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{code}</span>
             </div>
-          </label>
+          </div>
           <div className="flex justify-center -my-2">
-            <button onClick={swap} aria-label={t('in.swap')} title={t('in.swap')} className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-soft hover:bg-subtle text-body">
-              <ArrowUpDown className="w-4 h-4" />
+            <button type="button" onClick={swap} aria-label={t('in.swap')} title={t('in.swap')} className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-soft hover:bg-subtle text-body">
+              <ArrowUpDown className="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
-          <label className="block">
-            <span className="block text-sm font-medium text-body mb-2">{t('in.krw')}</span>
+          <div>
+            <label htmlFor="fx-krw" className="block text-sm font-medium text-body mb-2">{t('in.krw')}</label>
             <div className="relative">
-              <input inputMode="numeric" value={side === 'k' ? amtText : base ? won(krw) : ''} onChange={(e) => editKrw(e.target.value)}
+              <input id="fx-krw" inputMode="numeric" aria-describedby="fx-krw-u fx-krw-h" value={side === 'k' ? amtText : base ? won(krw) : ''} onChange={(e) => editKrw(e.target.value)}
                 onFocus={() => side === 'f' && base && editKrw(won(krw))}
                 className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
+              <span id="fx-krw-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
             </div>
-            <span className="block text-xs text-muted mt-1">{t('in.bothHint')}</span>
-          </label>
+            <span id="fx-krw-h" className="block text-xs text-muted mt-1">{t('in.bothHint')}</span>
+          </div>
 
           <div className="pt-4 border-t border-line space-y-4">
             <div>
-              <span className="block text-sm font-medium text-body mb-2">{t('in.pref')}</span>
-              <div className="grid grid-cols-5 gap-1.5 mb-2">
+              <span id="fx-pref-l" className="block text-sm font-medium text-body mb-2">{t('in.pref')}</span>
+              <div className="grid grid-cols-5 gap-1.5 mb-2" role="group" aria-labelledby="fx-pref-l">
                 {PREFS.map((v) => (
-                  <button key={v} onClick={() => setPrefText(String(v))} aria-pressed={pref === v} className={seg(pref === v)}>{v}%</button>
+                  <button key={v} type="button" onClick={() => setPrefText(String(v))} aria-pressed={pref === v} className={seg(pref === v)}>{v}%</button>
                 ))}
               </div>
-              {percent(prefText, setPrefText, t('in.prefCustom'))}
+              {percent('pref', prefText, setPrefText, t('in.prefCustom'))}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              {percent(cashText, setCashText, t('in.cash'))}
-              {percent(wireText, setWireText, t('in.wire'))}
+              {percent('cash', cashText, setCashText, t('in.cash'))}
+              {percent('wire', wireText, setWireText, t('in.wire'))}
             </div>
             <p className="text-xs text-muted leading-relaxed">{t('in.spreadHint', { code, cash: cur.cash, wire: cur.wire })}</p>
           </div>
@@ -235,17 +236,17 @@ export default function ExchangeRateCalculator() {
                 {' · '}
                 <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-fg">{t('src.by')}</a>
               </span>
-              <button onClick={load} disabled={status === 'loading'} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-50">
-                <RefreshCw className={`w-3.5 h-3.5 ${status === 'loading' ? 'animate-spin' : ''}`} />{t('src.refresh')}
+              <button type="button" onClick={load} disabled={status === 'loading'} aria-busy={status === 'loading'} className="min-h-10 inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${status === 'loading' ? 'animate-spin' : ''}`} aria-hidden="true" />{t('src.refresh')}
               </button>
             </div>
-            {status === 'cache' && <p className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.cached', { time: updatedAt })}</p>}
-            {status === 'error' && !data && <p className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.error')}</p>}
+            {status === 'cache' && <p role="status" className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.cached', { time: updatedAt })}</p>}
+            {status === 'error' && !data && <p role="alert" className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.error')}</p>}
 
             {base && r0 && rp ? (
               <>
                 <p className="text-sm text-sub mt-5">{t('res.label', { input: inputLabel })}</p>
-                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1 break-all">{headline}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1 break-all" aria-live="polite">{headline}</p>
                 <p className="text-sm text-muted mt-1 tabular-nums">{t('res.base', { unit: unitLabel, rate: rate2(base * cur.unit) })}</p>
 
                 <dl className="grid grid-cols-2 gap-3 mt-5">
@@ -295,10 +296,10 @@ export default function ExchangeRateCalculator() {
                 <table className="w-full min-w-[560px] text-sm tabular-nums">
                   <thead>
                     <tr className="text-left text-sub border-b border-line">
-                      <th className="py-2 px-2 font-medium">{t('bank.kind')}</th>
-                      <th className="py-2 px-2 font-medium text-right">{t('bank.rate', { unit: unitLabel })}</th>
-                      <th className="py-2 px-2 font-medium text-right">{t('bank.noPref')}</th>
-                      <th className="py-2 px-2 font-medium text-right text-primary">{t('res.prefShort', { p: pref })}</th>
+                      <th scope="col" className="py-2 px-2 font-medium">{t('bank.kind')}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right">{t('bank.rate', { unit: unitLabel })}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right">{t('bank.noPref')}</th>
+                      <th scope="col" className="py-2 px-2 font-medium text-right text-primary">{t('res.prefShort', { p: pref })}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -310,7 +311,7 @@ export default function ExchangeRateCalculator() {
                     {BANK_KEYS.map((k) => (
                       <tr key={k} className="border-b border-line last:border-0">
                         <td className="py-2.5 px-2 text-fg font-medium">{t(`bank.${k}`)}<span className="block text-xs text-muted font-normal">{t(`bank.desc.${side}.${k}`)}</span></td>
-                        <td className="py-2.5 px-2 text-right text-body">{rate2(r0[k] * cur.unit)}<span className="block text-xs text-primary">{rate2(rp[k] * cur.unit)}</span></td>
+                        <td className="py-2.5 px-2 text-right text-body">{rate2(r0[k] * cur.unit)}<span className="block text-xs text-primary"><span className="sr-only">{t('res.prefShort', { p: pref })} </span>{rate2(rp[k] * cur.unit)}</span></td>
                         <td className="py-2.5 px-2 text-right text-body">{amountAt(r0[k])}</td>
                         <td className="py-2.5 px-2 text-right font-semibold text-fg">{amountAt(rp[k])}</td>
                       </tr>
@@ -329,22 +330,23 @@ export default function ExchangeRateCalculator() {
         <div className="ui-card p-6">
           <h2 className="text-lg font-semibold text-fg">{t('budget.title')}</h2>
           <p className="text-sm text-muted mt-1">{t('budget.desc', { p: pref })}</p>
-          <label className="block mt-4 max-w-xs">
-            <span className="block text-sm font-medium text-body mb-2">{t('budget.input')}</span>
+          <div className="mt-4 max-w-xs">
+            <label htmlFor="fx-budget" className="block text-sm font-medium text-body mb-2">{t('budget.input')}</label>
             <div className="relative">
-              <input inputMode="numeric" value={budgetText} onChange={(e) => setBudgetText(fmtIn(e.target.value, false))}
+              <input id="fx-budget" inputMode="numeric" value={budgetText} onChange={(e) => setBudgetText(fmtIn(e.target.value, false))}
+                aria-describedby="fx-budget-u"
                 className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
+              <span id="fx-budget-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
             </div>
-          </label>
+          </div>
           <div className="overflow-x-auto mt-4 -mx-2">
             <table className="w-full min-w-[520px] text-sm tabular-nums">
               <thead>
                 <tr className="text-left text-sub border-b border-line">
-                  <th className="py-2 px-2 font-medium">{t('budget.currency')}</th>
-                  <th className="py-2 px-2 font-medium text-right">{t('budget.base')}</th>
-                  <th className="py-2 px-2 font-medium text-right">{t('budget.mid')}</th>
-                  <th className="py-2 px-2 font-medium text-right text-primary">{t('budget.cash', { p: pref })}</th>
+                  <th scope="col" className="py-2 px-2 font-medium">{t('budget.currency')}</th>
+                  <th scope="col" className="py-2 px-2 font-medium text-right">{t('budget.base')}</th>
+                  <th scope="col" className="py-2 px-2 font-medium text-right">{t('budget.mid')}</th>
+                  <th scope="col" className="py-2 px-2 font-medium text-right text-primary">{t('budget.cash', { p: pref })}</th>
                 </tr>
               </thead>
               <tbody>
@@ -353,7 +355,12 @@ export default function ExchangeRateCalculator() {
                   return (
                     <tr key={r.code} onClick={() => pick(r.code)}
                       className={`border-b border-line last:border-0 cursor-pointer ${r.code === code ? 'bg-primary-soft' : 'hover:bg-subtle'}`}>
-                      <td className="py-2 px-2 text-fg whitespace-nowrap">{c.flag} {r.code} <span className="text-muted">{t(`cur.${r.code}`)}</span></td>
+                      <td className="py-2 px-2 text-fg whitespace-nowrap">
+                        {/* 행 클릭은 마우스용, 키보드·스크린리더는 이 버튼으로 통화 선택 */}
+                        <button type="button" onClick={(e) => { e.stopPropagation(); pick(r.code) }} aria-pressed={r.code === code} className="min-h-10 text-left">
+                          <span aria-hidden="true">{c.flag}</span> {r.code} <span className="text-muted">{t(`cur.${r.code}`)}</span>
+                        </button>
+                      </td>
                       <td className="py-2 px-2 text-right text-body whitespace-nowrap">{rate2(r.base * c.unit)}{t('won')}{c.unit === 100 && <span className="text-xs text-muted"> /100</span>}</td>
                       <td className="py-2 px-2 text-right text-body">{fx(r.mid, c.dec)}</td>
                       <td className="py-2 px-2 text-right font-semibold text-fg">{fx(r.cash, c.dec)}</td>
@@ -374,7 +381,7 @@ export default function ExchangeRateCalculator() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {LINKS.map((l) => (
             <Link key={l.key} href={l.href} className="flex items-center justify-between rounded-xl bg-subtle hover:bg-soft px-4 py-3 text-sm text-body">
-              {t(`links.${l.key}`)}<ChevronRight className="w-4 h-4 text-faint" />
+              {t(`links.${l.key}`)}<ChevronRight className="w-4 h-4 text-faint" aria-hidden="true" />
             </Link>
           ))}
         </div>

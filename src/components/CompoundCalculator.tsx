@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useId } from 'react'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
@@ -38,6 +38,7 @@ const LINKS = [
 export default function CompoundCalculator() {
   const t = useTranslations('compoundCalculator')
   const sp = useSearchParams()
+  const uid = useId()
 
   // 예전 공유 링크(p·r·t·pt·f·md) 그대로 복원, md>0 이면 적립식
   const [mode, setMode] = useState<Mode>(() => oneOf(sp.get('m'), ['lump', 'dca', 'goal'] as const, Number(sp.get('md')) > 0 ? 'dca' : 'lump'))
@@ -122,7 +123,7 @@ export default function CompoundCalculator() {
   }
 
   const seg = (on: boolean) =>
-    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+    `min-h-10 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const taxLabel = (k: TaxKey) => `${t(`c.tax.${k}`)} ${pct(TAX_RATES[k] * 100)}%`
   const freqLabel = t(`frequency.${freq}`)
   const n = dur(months)
@@ -135,27 +136,29 @@ export default function CompoundCalculator() {
     ? t('c.res.perMonth', { a: won(solvedMonthly ?? 0) })
     : solvedRate === null ? '—' : t('c.res.perYear', { r: pct(solvedRate) })
 
-  const money = (value: string, set: (s: string) => void, label: string) => (
-    <label className="block">
-      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+  const money = (key: string, value: string, set: (s: string) => void, label: string) => (
+    <div>
+      <label htmlFor={`${uid}-${key}`} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="relative">
-        <input inputMode="numeric" value={value} onChange={(e) => set(commas(e.target.value))}
+        <input id={`${uid}-${key}`} inputMode="numeric" value={value} onChange={(e) => set(commas(e.target.value))}
+          aria-describedby={`${uid}-${key}-u${value ? ` ${uid}-${key}-h` : ''}`}
           className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.won')}</span>
+        <span id={`${uid}-${key}-u`} className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.won')}</span>
       </div>
-      {value && <span className="block text-xs text-muted mt-1 tabular-nums">{compact.format(num(value))}{t('c.won')}</span>}
-    </label>
+      {value && <span id={`${uid}-${key}-h`} className="block text-xs text-muted mt-1 tabular-nums">{compact.format(num(value))}{t('c.won')}</span>}
+    </div>
   )
-  const percent = (value: string, set: (s: string) => void, label: string, hint?: string) => (
-    <label className="block">
-      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+  const percent = (key: string, value: string, set: (s: string) => void, label: string, hint?: string) => (
+    <div>
+      <label htmlFor={`${uid}-${key}`} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="relative">
-        <input inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && set(e.target.value)}
+        <input id={`${uid}-${key}`} inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && set(e.target.value)}
+          aria-describedby={`${uid}-${key}-u${hint ? ` ${uid}-${key}-h` : ''}`}
           className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
+        <span id={`${uid}-${key}-u`} className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
       </div>
-      {hint && <span className="block text-xs text-muted mt-1">{hint}</span>}
-    </label>
+      {hint && <span id={`${uid}-${key}-h`} className="block text-xs text-muted mt-1">{hint}</span>}
+    </div>
   )
 
   return (
@@ -165,9 +168,9 @@ export default function CompoundCalculator() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 max-w-md" role="tablist">
+      <div className="grid grid-cols-3 gap-2 max-w-md" role="group" aria-label={t('a11y.mode')}>
         {(['lump', 'dca', 'goal'] as Mode[]).map((m) => (
-          <button key={m} role="tab" aria-selected={mode === m} onClick={() => switchMode(m)} className={seg(mode === m)}>
+          <button key={m} type="button" aria-pressed={mode === m} onClick={() => switchMode(m)} className={seg(mode === m)}>
             {t(`c.mode.${m}`)}
           </button>
         ))}
@@ -178,56 +181,56 @@ export default function CompoundCalculator() {
         <div className="ui-card p-6 space-y-5 self-start">
           {isGoal && (
             <>
-              {money(goalText, setGoalText, t('c.in.goal'))}
+              {money('goal', goalText, setGoalText, t('c.in.goal'))}
               <div>
-                <span className="block text-sm font-medium text-body mb-2">{t('c.in.solve')}</span>
-                <div className="grid grid-cols-2 gap-2">
+                <span id={`${uid}-solve`} className="block text-sm font-medium text-body mb-2">{t('c.in.solve')}</span>
+                <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby={`${uid}-solve`}>
                   {(['monthly', 'rate'] as Solve[]).map((s) => (
-                    <button key={s} onClick={() => setSolve(s)} aria-pressed={solve === s} className={seg(solve === s)}>{t(`c.solve.${s}`)}</button>
+                    <button key={s} type="button" onClick={() => setSolve(s)} aria-pressed={solve === s} className={seg(solve === s)}>{t(`c.solve.${s}`)}</button>
                   ))}
                 </div>
               </div>
             </>
           )}
-          {money(principalText, setPrincipalText, t(mode === 'lump' ? 'c.in.principal' : 'c.in.initial'))}
-          {usesMonthly && money(monthlyText, setMonthlyText, t('c.in.monthly'))}
-          {!(isGoal && solve === 'rate') && percent(rateText, setRateText, t('c.in.rate'))}
+          {money('principal', principalText, setPrincipalText, t(mode === 'lump' ? 'c.in.principal' : 'c.in.initial'))}
+          {usesMonthly && money('monthly', monthlyText, setMonthlyText, t('c.in.monthly'))}
+          {!(isGoal && solve === 'rate') && percent('rate', rateText, setRateText, t('c.in.rate'))}
           <div>
-            <span className="block text-sm font-medium text-body mb-2">{t('c.in.period')}</span>
+            <label htmlFor={`${uid}-period`} className="block text-sm font-medium text-body mb-2">{t('c.in.period')}</label>
             <div className="grid grid-cols-3 gap-2">
-              <input inputMode="decimal" value={periodText} aria-label={t('c.in.period')}
+              <input id={`${uid}-period`} inputMode="decimal" value={periodText}
                 onChange={(e) => isDecimal(e.target.value) && e.target.value.length <= 5 && setPeriodText(e.target.value)}
                 className="ui-field col-span-2 w-full px-4 py-3 text-lg font-semibold tabular-nums" />
-              <select value={unit} onChange={(e) => setUnit(e.target.value as 'years' | 'months')} aria-label={t('c.in.period')} className="ui-field px-3 py-3">
+              <select value={unit} onChange={(e) => setUnit(e.target.value as 'years' | 'months')} aria-label={t('a11y.periodUnit')} className="ui-field px-3 py-3">
                 <option value="years">{t('periodUnit.years')}</option>
                 <option value="months">{t('periodUnit.months')}</option>
               </select>
             </div>
             {unit === 'years' && months % 12 !== 0 && <span className="block text-xs text-muted mt-1">{n}</span>}
           </div>
-          <label className="block">
-            <span className="block text-sm font-medium text-body mb-2">{t('c.in.freq')}</span>
-            <select value={freq} onChange={(e) => setFreq(e.target.value as Freq)} className="ui-field w-full px-4 py-3">
+          <div>
+            <label htmlFor={`${uid}-freq`} className="block text-sm font-medium text-body mb-2">{t('c.in.freq')}</label>
+            <select id={`${uid}-freq`} value={freq} onChange={(e) => setFreq(e.target.value as Freq)} aria-describedby={`${uid}-freq-h`} className="ui-field w-full px-4 py-3">
               {FREQS.map((f) => <option key={f} value={f}>{t(`frequency.${f}`)}</option>)}
             </select>
-            <span className="block text-xs text-muted mt-1">{t('c.freqHint', { r: pct(plan.rate), e: pct(eff) })}</span>
-          </label>
+            <span id={`${uid}-freq-h`} className="block text-xs text-muted mt-1">{t('c.freqHint', { r: pct(plan.rate), e: pct(eff) })}</span>
+          </div>
           {showMonthly && (
             <div>
-              <span className="block text-sm font-medium text-body mb-2">{t('c.in.timing')}</span>
-              <div className="grid grid-cols-2 gap-2">
+              <span id={`${uid}-timing`} className="block text-sm font-medium text-body mb-2">{t('c.in.timing')}</span>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby={`${uid}-timing`}>
                 {(['begin', 'end'] as DepositTiming[]).map((x) => (
-                  <button key={x} onClick={() => setTiming(x)} aria-pressed={timing === x} className={seg(timing === x)}>{t(`c.timing.${x}`)}</button>
+                  <button key={x} type="button" onClick={() => setTiming(x)} aria-pressed={timing === x} className={seg(timing === x)}>{t(`c.timing.${x}`)}</button>
                 ))}
               </div>
               <p className="text-xs text-muted mt-2 leading-relaxed">{t('c.timingHint')}</p>
             </div>
           )}
           <div>
-            <span className="block text-sm font-medium text-body mb-2">{t('c.in.tax')}</span>
-            <div className="grid grid-cols-3 gap-2">
+            <span id={`${uid}-tax`} className="block text-sm font-medium text-body mb-2">{t('c.in.tax')}</span>
+            <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby={`${uid}-tax`}>
               {TAX_KEYS.map((k) => (
-                <button key={k} onClick={() => setTax(k)} aria-pressed={tax === k} className={`${seg(tax === k)} leading-tight`}>
+                <button key={k} type="button" onClick={() => setTax(k)} aria-pressed={tax === k} className={`${seg(tax === k)} leading-tight`}>
                   {t(`c.tax.${k}`)}<span className="block text-xs opacity-80">{pct(TAX_RATES[k] * 100)}%</span>
                 </button>
               ))}
@@ -235,16 +238,16 @@ export default function CompoundCalculator() {
           </div>
           {tax !== 'free' && (
             <div>
-              <span className="block text-sm font-medium text-body mb-2">{t('c.in.taxTiming')}</span>
-              <div className="grid grid-cols-2 gap-2">
+              <span id={`${uid}-taxTiming`} className="block text-sm font-medium text-body mb-2">{t('c.in.taxTiming')}</span>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby={`${uid}-taxTiming`}>
                 {(['maturity', 'yearly'] as TaxTiming[]).map((x) => (
-                  <button key={x} onClick={() => setTaxTiming(x)} aria-pressed={taxTiming === x} className={seg(taxTiming === x)}>{t(`c.taxTiming.${x}`)}</button>
+                  <button key={x} type="button" onClick={() => setTaxTiming(x)} aria-pressed={taxTiming === x} className={seg(taxTiming === x)}>{t(`c.taxTiming.${x}`)}</button>
                 ))}
               </div>
               <p className="text-xs text-muted mt-2 leading-relaxed">{t(`c.taxHint.${taxTiming}`)}</p>
             </div>
           )}
-          {percent(infText, setInfText, t('c.in.inflation'), t('c.inflationHint'))}
+          {percent('inf', infText, setInfText, t('c.in.inflation'), t('c.inflationHint'))}
         </div>
 
         {/* 결과 */}
@@ -253,14 +256,14 @@ export default function CompoundCalculator() {
             {isGoal && (
               <div className="mb-5 pb-5 border-b border-line">
                 <p className="text-sm text-sub">{t(solve === 'monthly' ? 'c.res.goalMonthly' : 'c.res.goalRate', { n, g: won(goal) })}</p>
-                <p className="text-3xl sm:text-4xl font-bold text-primary tabular-nums mt-1">{goalHeadline}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-primary tabular-nums mt-1" aria-live="polite">{goalHeadline}</p>
                 {solve === 'monthly' && solvedMonthly === 0 && <p className="text-sm text-muted mt-1">{t('c.res.goalEnough')}</p>}
                 {solve === 'rate' && solvedRate === 0 && <p className="text-sm text-muted mt-1">{t('c.res.goalEnough')}</p>}
                 {solve === 'rate' && solvedRate === null && <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">{t('c.res.goalImpossible')}</p>}
               </div>
             )}
             <p className="text-sm text-sub">{t('c.res.value', { n })}</p>
-            <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(res.value)}{t('c.won')}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live={isGoal ? undefined : 'polite'}>{won(res.value)}{t('c.won')}</p>
             <p className="text-sm text-muted mt-1 tabular-nums">
               {compact.format(res.value)}{t('c.won')}{tax !== 'free' && ` · ${t('c.res.preTax', { a: won(res.preTax) })}`}
             </p>
@@ -336,7 +339,8 @@ export default function CompoundCalculator() {
           {res.rows.length > 0 && (
             <div className="ui-card p-6">
               <h2 className="text-lg font-semibold text-fg mb-4">{t('c.chart.title')}</h2>
-              <div className="h-64 sm:h-72">
+              {/* 같은 데이터가 아래 연도별 표에 있으므로 스크린리더에서는 숨김 */}
+              <div className="h-64 sm:h-72" aria-hidden="true">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chart} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
@@ -351,7 +355,7 @@ export default function CompoundCalculator() {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex justify-center gap-6 mt-2 text-xs text-muted">
+              <div className="flex justify-center gap-6 mt-2 text-xs text-muted" aria-hidden="true">
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block bg-faint opacity-60" />{t('c.chart.principal')}</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block bg-primary opacity-60" />{t('c.chart.interest')}</span>
               </div>
@@ -405,7 +409,7 @@ export default function CompoundCalculator() {
           <table className="w-full text-sm tabular-nums min-w-[480px]">
             <thead>
               <tr className="border-b border-line">
-                <th className="text-left py-2 font-medium text-sub" />
+                <th scope="col" className="text-left py-2 font-medium text-sub"><span className="sr-only">{t('a11y.item')}</span></th>
                 <th className="text-right py-2 px-2 font-semibold text-primary">{t('c.sc.current')}</th>
                 {scenarios.map((_, i) => <th key={i} className="text-right py-2 px-2 font-semibold text-fg">{t('c.sc.name', { n: i + 1 })}</th>)}
               </tr>
@@ -490,7 +494,7 @@ export default function CompoundCalculator() {
                 <span className="block font-medium text-fg">{t(`c.links.${l.key}.title`)}</span>
                 <span className="block text-xs text-muted mt-0.5">{t(`c.links.${l.key}.desc`)}</span>
               </span>
-              <ChevronRight className="w-4 h-4 text-faint shrink-0" />
+              <ChevronRight className="w-4 h-4 text-faint shrink-0" aria-hidden="true" />
             </Link>
           ))}
         </div>

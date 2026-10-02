@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useId } from 'react'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
@@ -137,26 +137,30 @@ export default function HealthInsuranceCalculator() {
         </p>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto" role="tablist">
+      <div className="flex gap-2 overflow-x-auto" role="tablist" aria-label={t('a11y.tabs')}>
         {TABS.map(id => (
           <button
             key={id}
+            type="button"
+            id={`hi-tab-${id}`}
             role="tab"
             aria-selected={tab === id}
+            aria-controls="hi-panel"
             onClick={() => set('tab')(id)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${tab === id ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+            className={`min-h-10 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${tab === id ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
           >
             {t(`tabs.${id}`)}
           </button>
         ))}
       </div>
 
-      <div role="tabpanel" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div id="hi-panel" role="tabpanel" aria-labelledby={`hi-tab-${tab}`} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── 입력 ── */}
         <div className="ui-card p-6 space-y-4 h-fit">
           {tab === 'workplace' && (
             <>
               <Segment
+                label={t('a11y.wageBasis')}
                 value={f.annual}
                 onChange={set('annual')}
                 options={[{ v: '0', label: t('wp.modeMonthly') }, { v: '1', label: t('wp.modeAnnual') }]}
@@ -206,12 +210,12 @@ export default function HealthInsuranceCalculator() {
         </div>
 
         {/* ── 결과 ── */}
-        <div className="lg:col-span-2 space-y-6" aria-live="polite">
+        <div className="lg:col-span-2 space-y-6">
           {tab === 'workplace' && (
             <>
               <div className="ui-card p-6">
                 <p className="text-sm text-muted">{t('wp.headline')}</p>
-                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(myMonthly)}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(myMonthly)}</p>
                 <p className="text-sm text-sub mt-1">{t('wp.headlineSub', { annual: won(myMonthly * 12) })}</p>
                 <p className="text-sm text-sub">{t('wp.employerSame', { amount: won(wp.employeeTotal) })}</p>
 
@@ -273,7 +277,7 @@ export default function HealthInsuranceCalculator() {
           {tab === 'regional' && (
             <div className="ui-card p-6">
               <p className="text-sm text-muted">{t('rg.headline')}</p>
-              <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(rg.total)}</p>
+              <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(rg.total)}</p>
               <p className="text-sm text-sub mt-1">{t('wp.headlineSub', { annual: won(rg.total * 12) })}</p>
               <div className="mt-6 space-y-2">
                 <Row label={t('rg.assessed')} value={won(rg.assessedIncome)} />
@@ -296,15 +300,15 @@ export default function HealthInsuranceCalculator() {
 
           {tab === 'dependent' && (
             <div className="ui-card p-6">
-              <p className={`text-3xl font-bold ${dp.eligible ? 'text-primary' : 'text-red-600'}`}>
+              <p className={`text-3xl font-bold ${dp.eligible ? 'text-primary' : 'text-red-600'}`} aria-live="polite">
                 {dp.eligible ? t('dp.eligible') : t('dp.notEligible')}
               </p>
               <p className="text-sm text-sub mt-1">{dp.eligible ? t('dp.eligibleSub') : t('dp.notEligibleSub')}</p>
               <ul className="mt-6 space-y-3">
-                <Cond pass={dp.income} label={t('dp.cIncome')} />
-                <Cond pass={dp.business} label={t('dp.cBusiness')} />
-                <Cond pass={dp.property} label={f.rel === 'sibling' ? t('dp.cPropertySibling') : t('dp.cProperty')} />
-                {f.rel === 'sibling' && <Cond pass={dp.relation} label={t('dp.cRelation')} />}
+                <Cond pass={dp.income} label={t('dp.cIncome')} status={dp.income ? t('dp.pass') : t('dp.fail')} />
+                <Cond pass={dp.business} label={t('dp.cBusiness')} status={dp.business ? t('dp.pass') : t('dp.fail')} />
+                <Cond pass={dp.property} label={f.rel === 'sibling' ? t('dp.cPropertySibling') : t('dp.cProperty')} status={dp.property ? t('dp.pass') : t('dp.fail')} />
+                {f.rel === 'sibling' && <Cond pass={dp.relation} label={t('dp.cRelation')} status={dp.relation ? t('dp.pass') : t('dp.fail')} />}
               </ul>
               {!dp.eligible && (
                 <div className="mt-6 bg-subtle rounded-2xl p-5">
@@ -321,7 +325,7 @@ export default function HealthInsuranceCalculator() {
             <>
               <div className="ui-card p-6">
                 <p className="text-sm text-muted">{t('rt.headline')}</p>
-                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(rtBest.value)}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(rtBest.value)}</p>
                 <p className="text-sm text-sub mt-1">{rtBest.label}</p>
                 <div className="mt-6 space-y-4">
                   {rtOptions.map(o => (
@@ -330,14 +334,14 @@ export default function HealthInsuranceCalculator() {
                         <span className="text-body">{o.label}</span>
                         <span className="font-semibold text-fg tabular-nums">{won(o.value)}</span>
                       </div>
-                      <div className="h-2 rounded-full bg-track mt-1.5">
+                      <div className="h-2 rounded-full bg-track mt-1.5" aria-hidden="true">
                         <div className={`h-2 rounded-full ${o.key === rtBest.key ? 'bg-primary' : 'bg-faint'}`} style={{ width: `${(o.value / rtMax) * 100}%` }} />
                       </div>
                     </div>
                   ))}
                   <div className="flex justify-between text-sm">
                     <span className="text-body">{t('rt.optDependent')}</span>
-                    <button onClick={() => set('tab')('dependent')} className="text-primary font-semibold">{t('rt.checkDependent')}</button>
+                    <button type="button" onClick={() => set('tab')('dependent')} className="text-primary font-semibold">{t('rt.checkDependent')}</button>
                   </div>
                 </div>
                 {rtSaving > 0 && (
@@ -378,35 +382,38 @@ export default function HealthInsuranceCalculator() {
 function Money({ label, hint, value, onChange, unit }: {
   label: string; hint?: string; value: string; onChange: (v: string) => void; unit: string
 }) {
+  const id = useId()
   return (
-    <label className="block">
-      <span className="block text-sm font-medium text-body mb-1.5">{label}</span>
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-1.5">{label}</label>
       <span className="relative block">
         <input
+          id={id}
           type="text"
           inputMode="numeric"
           value={value ? fmt(Number(value)) : ''}
           onChange={e => onChange(e.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 13))}
           placeholder="0"
+          aria-describedby={hint ? `${id}-u ${id}-h` : `${id}-u`}
           className="ui-field w-full px-4 py-3 pr-10 text-right tabular-nums"
         />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-faint">{unit}</span>
+        <span id={`${id}-u`} className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-faint">{unit}</span>
       </span>
-      {hint && <span className="block text-xs text-muted mt-1">{hint}</span>}
-    </label>
+      {hint && <span id={`${id}-h`} className="block text-xs text-muted mt-1">{hint}</span>}
+    </div>
   )
 }
 
-function Segment({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { v: string; label: string }[] }) {
+function Segment({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { v: string; label: string }[] }) {
   return (
-    <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl">
+    <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl" role="group" aria-label={label}>
       {options.map(o => (
         <button
           key={o.v}
           type="button"
           aria-pressed={value === o.v}
           onClick={() => onChange(o.v)}
-          className={`py-2 rounded-lg text-sm font-semibold transition-colors ${value === o.v ? 'bg-primary text-white' : 'text-body'}`}
+          className={`min-h-10 py-2 rounded-lg text-sm font-semibold transition-colors ${value === o.v ? 'bg-primary text-white' : 'text-body'}`}
         >
           {o.label}
         </button>
@@ -433,10 +440,11 @@ function Row({ label, value, strong }: { label: string; value: string; strong?: 
   )
 }
 
-function Cond({ pass, label }: { pass: boolean; label: string }) {
+function Cond({ pass, label, status }: { pass: boolean; label: string; status: string }) {
   return (
     <li className="flex items-start gap-2 text-sm text-body">
-      {pass ? <CheckCircle2 className="w-5 h-5 text-primary shrink-0" /> : <XCircle className="w-5 h-5 text-red-500 shrink-0" />}
+      {pass ? <CheckCircle2 className="w-5 h-5 text-primary shrink-0" aria-hidden="true" /> : <XCircle className="w-5 h-5 text-red-500 shrink-0" aria-hidden="true" />}
+      <span className="sr-only">{status}: </span>
       {label}
     </li>
   )

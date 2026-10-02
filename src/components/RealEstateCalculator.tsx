@@ -36,11 +36,12 @@ function MoneyInput({ id, label, value, onChange, unit, hint }: {
         <input
           id={id} type="text" inputMode="numeric" value={value ? value.toLocaleString('ko-KR') : ''}
           onChange={(e) => onChange(Math.min(parseNum(e.target.value), MAX))}
+          aria-describedby={hint ? `${id}-u ${id}-h` : `${id}-u`}
           className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
         />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{unit}</span>
+        <span id={`${id}-u`} className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{unit}</span>
       </div>
-      {hint && <p className="text-xs text-muted mt-1.5">{hint}</p>}
+      {hint && <p id={`${id}-h`} className="text-xs text-muted mt-1.5">{hint}</p>}
     </div>
   )
 }
@@ -122,10 +123,10 @@ export default function RealEstateCalculator() {
   ].map((x) => ({ ...x, name: t(`u.chart.${x.k}`) }))
 
   const seg = (on: boolean) =>
-    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+    `min-h-10 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const toolLink = (href: string, key: string) => (
     <Link href={href} className="inline-flex items-center text-xs font-medium text-primary hover:underline">
-      {t(key)}<ChevronRight className="w-3 h-3" />
+      {t(key)}<ChevronRight className="w-3 h-3" aria-hidden="true" />
     </Link>
   )
   const faq = t.raw('u.faq.items') as { q: string; a: string }[]
@@ -149,33 +150,33 @@ export default function RealEstateCalculator() {
               <MoneyInput id="re-price" label={t('u.house.price')} value={price} onChange={setPrice} unit={t('u.won')} hint={short(price)} />
               <input
                 type="range" min={EOK} max={30 * EOK} step={EOK / 10} value={Math.min(Math.max(price, EOK), 30 * EOK)}
-                onChange={(e) => setPrice(Number(e.target.value))} aria-label={t('u.house.price')}
+                onChange={(e) => setPrice(Number(e.target.value))} aria-label={t('u.house.price')} aria-valuetext={short(price)}
                 className="w-full mt-2 accent-[var(--primary)]"
               />
             </div>
 
             <div>
               <label htmlFor="re-region" className="block text-sm font-medium text-body mb-2">{t('u.region.label')}</label>
-              <select id="re-region" value={region} onChange={(e) => setRegion(e.target.value as Region)} className="ui-field w-full px-4 py-3">
+              <select id="re-region" value={region} onChange={(e) => setRegion(e.target.value as Region)} aria-describedby="re-region-h" className="ui-field w-full px-4 py-3">
                 {REGIONS.map((g) => <option key={g} value={g}>{t(`u.region.${g}`)}</option>)}
               </select>
-              <p className="text-xs text-muted mt-1.5">{t(input.adjusted ? 'u.region.isAdj' : 'u.region.isNon')}</p>
+              <p id="re-region-h" className="text-xs text-muted mt-1.5">{t(input.adjusted ? 'u.region.isAdj' : 'u.region.isNon')}</p>
             </div>
 
             <div>
               <label htmlFor="re-area" className="block text-sm font-medium text-body mb-2">{t('u.house.area')}</label>
               <div className="relative">
-                <input id="re-area" type="number" inputMode="decimal" min={0} value={area} onChange={(e) => setArea(e.target.value)} className="ui-field w-full px-4 py-3 pr-10" />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">㎡</span>
+                <input id="re-area" type="number" inputMode="decimal" min={0} value={area} onChange={(e) => setArea(e.target.value)} aria-describedby="re-area-u re-area-h" className="ui-field w-full px-4 py-3 pr-10" />
+                <span id="re-area-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">㎡</span>
               </div>
-              <p className="text-xs text-muted mt-1.5">{t(input.over85 ? 'u.house.over85' : 'u.house.under85')}</p>
+              <p id="re-area-h" className="text-xs text-muted mt-1.5">{t(input.over85 ? 'u.house.over85' : 'u.house.under85')}</p>
             </div>
 
             <div>
-              <p className="block text-sm font-medium text-body mb-2">{t('u.owner.label')}</p>
-              <div className="grid grid-cols-3 gap-2">
+              <p id="re-owner" className="block text-sm font-medium text-body mb-2">{t('u.owner.label')}</p>
+              <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="re-owner">
                 {OWNERS.map((o) => (
-                  <button key={o} onClick={() => setOwner(o)} className={seg(owner === o)}>{t(`u.owner.${o}`)}</button>
+                  <button key={o} type="button" onClick={() => setOwner(o)} aria-pressed={owner === o} className={seg(owner === o)}>{t(`u.owner.${o}`)}</button>
                 ))}
               </div>
               <p className="text-xs text-muted mt-1.5">{t('u.owner.hint')}</p>
@@ -194,16 +195,16 @@ export default function RealEstateCalculator() {
 
           <div className="ui-card p-6 space-y-5">
             <h2 className="text-lg font-semibold text-fg">{t('u.loan.title')}</h2>
-            <div className="grid grid-cols-2 gap-2">
-              <button onClick={() => setByLtv(true)} className={seg(byLtv)}>{t('u.loan.byLtv')}</button>
-              <button onClick={() => setByLtv(false)} className={seg(!byLtv)}>{t('u.loan.byAmount')}</button>
+            <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('a11y.loanInput')}>
+              <button type="button" onClick={() => setByLtv(true)} aria-pressed={byLtv} className={seg(byLtv)}>{t('u.loan.byLtv')}</button>
+              <button type="button" onClick={() => setByLtv(false)} aria-pressed={!byLtv} className={seg(!byLtv)}>{t('u.loan.byAmount')}</button>
             </div>
             {byLtv ? (
               <div>
                 <label htmlFor="re-ltv" className="flex justify-between text-sm font-medium text-body mb-2">
                   <span>{t('u.loan.ltv')}</span><span className="tabular-nums text-fg">{ltv}% · {short(r.loan)}</span>
                 </label>
-                <input id="re-ltv" type="range" min={0} max={80} step={5} value={ltv} onChange={(e) => setLtv(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
+                <input id="re-ltv" type="range" min={0} max={80} step={5} value={ltv} aria-valuetext={`${ltv}% · ${short(r.loan)}`} onChange={(e) => setLtv(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
               </div>
             ) : (
               <MoneyInput id="re-loan" label={t('u.loan.amount')} value={loanAmt} onChange={setLoanAmt} unit={t('u.won')}
@@ -217,8 +218,9 @@ export default function RealEstateCalculator() {
                 <div className="relative">
                   <input id="re-rate" type="text" inputMode="decimal" value={rate}
                     onChange={(e) => /^\d{0,2}(\.\d{0,2})?$/.test(e.target.value) && setRate(e.target.value)}
+                    aria-describedby="re-rate-u"
                     className="ui-field w-full px-4 py-3 pr-8 tabular-nums" />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
+                  <span id="re-rate-u" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
                 </div>
               </div>
               <div>
@@ -230,9 +232,9 @@ export default function RealEstateCalculator() {
             </div>
 
             <div>
-              <p className="block text-sm font-medium text-body mb-2">{t('u.loan.method')}</p>
-              <div className="grid grid-cols-2 gap-2">
-                {METHODS.map((m) => <button key={m} onClick={() => setMethod(m)} className={seg(method === m)}>{t(`u.loan.${m}`)}</button>)}
+              <p id="re-method" className="block text-sm font-medium text-body mb-2">{t('u.loan.method')}</p>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="re-method">
+                {METHODS.map((m) => <button key={m} type="button" onClick={() => setMethod(m)} aria-pressed={method === m} className={seg(method === m)}>{t(`u.loan.${m}`)}</button>)}
               </div>
             </div>
 
@@ -256,7 +258,7 @@ export default function RealEstateCalculator() {
           <div className="ui-card p-6 space-y-5">
             <div>
               <p className="text-sm text-muted">{t('u.result.label', { price: short(price) })}</p>
-              <p className="text-3xl font-bold text-fg tabular-nums mt-1">{W(r.cash)}</p>
+              <p className="text-3xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{W(r.cash)}</p>
               <p className="text-sm text-sub mt-1">
                 {t('u.result.sub', { equity: short(r.equity), fees: W(r.fees), pct: pctOf(r.fees) })}
               </p>
@@ -372,7 +374,8 @@ export default function RealEstateCalculator() {
           <div className="ui-card p-6">
             <h2 className="text-lg font-semibold text-fg">{t('u.chart.title')}</h2>
             <p className="text-sm text-muted mt-1">{t('u.chart.desc', { fees: W(r.fees), pct: pctOf(r.fees) })}</p>
-            <div className="h-52 mt-4">
+            {/* 위 결과 카드의 항목별 금액과 같은 데이터 → 스크린리더에서는 숨김 */}
+            <div className="h-52 mt-4" aria-hidden="true">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chart} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
                   <XAxis type="number" hide />
@@ -397,7 +400,7 @@ export default function RealEstateCalculator() {
                 <thead>
                   <tr className="border-b border-line text-muted">
                     {(['price', 'loan', 'fees', 'cash', 'monthly'] as const).map((k, i) => (
-                      <th key={k} className={`${i ? 'text-right' : 'text-left'} font-medium py-2 px-1`}>{t(`u.scenario.${k}`)}</th>
+                      <th key={k} scope="col" className={`${i ? 'text-right' : 'text-left'} font-medium py-2 px-1`}>{t(`u.scenario.${k}`)}</th>
                     ))}
                   </tr>
                 </thead>
@@ -407,7 +410,7 @@ export default function RealEstateCalculator() {
                     return (
                       <tr key={p} className={`border-b border-line ${cur ? 'bg-primary-soft' : ''}`}>
                         <td className="py-2.5 px-1">
-                          <button onClick={() => setPrice(p)} className={`tabular-nums ${cur ? 'text-primary font-semibold' : 'text-body hover:text-primary'}`}>{short(p)}</button>
+                          <button type="button" onClick={() => setPrice(p)} aria-pressed={cur} aria-label={t('a11y.usePrice', { price: short(p) })} className={`min-h-10 tabular-nums ${cur ? 'text-primary font-semibold' : 'text-body hover:text-primary'}`}>{short(p)}</button>
                         </td>
                         <td className="py-2.5 px-1 text-right tabular-nums text-sub">{short(res.loan)}</td>
                         <td className="py-2.5 px-1 text-right tabular-nums text-sub">{W(res.fees)}</td>
