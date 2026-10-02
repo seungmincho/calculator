@@ -5,29 +5,29 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '타이머/스톱워치 - 카운트다운, 뽀모도로 타이머 | 툴허브',
-  description: '온라인 타이머, 스톱워치, 뽀모도로 타이머 - 랩 기록, 카운트다운 알람, 집중 시간 관리를 한 곳에서.',
-  keywords: '타이머, 스톱워치, 뽀모도로, 카운트다운, 온라인 타이머, stopwatch, pomodoro timer',
+  description: '온라인 타이머·스톱워치 - 1·3·5·10분 바로 시작, 전체화면 큰 숫자, 랩 기록, 종료 알림음. 다른 탭으로 옮겨도 정확하게 끝납니다.',
+  keywords: '타이머, 스톱워치, 1분 타이머, 3분 타이머, 5분 타이머, 10분 타이머, 30분 타이머, 전체화면 타이머, 수업 타이머, 랩 스톱워치, 뽀모도로, 카운트다운, 온라인 타이머, stopwatch, pomodoro timer',
   openGraph: {
     title: '타이머/스톱워치 | 툴허브',
-    description: '스톱워치, 카운트다운 타이머, 뽀모도로 타이머',
+    description: '온라인 타이머·스톱워치, 1·3·5·10분 바로 시작, 전체화면, 랩 기록',
     url: 'https://toolhub.ai.kr/timer',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/timer.png', width: 1200, height: 630, alt: '타이머/스톱워치' }],
   },
-  twitter: { card: 'summary_large_image', title: '타이머/스톱워치 | 툴허브', description: '스톱워치, 타이머, 뽀모도로', images: ['https://toolhub.ai.kr/og/timer.png'] },
+  twitter: { card: 'summary_large_image', title: '타이머/스톱워치 | 툴허브', description: '온라인 타이머·스톱워치, 전체화면·알림음', images: ['https://toolhub.ai.kr/og/timer.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/timer/' },
 }
 
 export default function TimerPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
-    name: '타이머/스톱워치', description: '스톱워치, 카운트다운 타이머, 뽀모도로 타이머',
+    name: '타이머/스톱워치', description: '온라인 타이머·스톱워치, 1·3·5·10분 바로 시작, 전체화면, 랩 기록',
     url: 'https://toolhub.ai.kr/timer', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['스톱워치 (랩 기록)', '카운트다운 타이머', '뽀모도로 타이머'],
+    featureList: ['카운트다운 타이머', '1·3·5·10·15·30분 바로 시작', '+1분 추가', '전체화면 큰 숫자', '스톱워치 랩 간격·최고·최저 랩, CSV 복사', '키보드 단축키(Space·R·F·L)', '화면 꺼짐 방지', '공유 링크(?m=10)', '종료 알림음·진동·브라우저 알림'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -71,15 +71,15 @@ export default function TimerPage() {
             온라인 타이머·스톱워치란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            온라인 타이머·스톱워치는 설치 없이 브라우저에서 바로 사용할 수 있는 시간 측정 도구입니다. 카운트다운 타이머, 스톱워치(랩 기록), 뽀모도로 타이머를 하나의 도구에서 지원합니다. 요리, 운동, 공부, 회의, 시험 준비 등 다양한 상황에서 집중력과 시간 관리를 도와줍니다.
+            온라인 타이머·스톱워치는 설치 없이 브라우저에서 바로 사용할 수 있는 시간 측정 도구입니다. 카운트다운 타이머, 스톱워치(랩 기록), 전체화면 모드를 하나의 도구에서 지원합니다. 요리, 운동, 공부, 회의, 시험 준비 등 다양한 상황에서 집중력과 시간 관리를 도와줍니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             타이머·스톱워치 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>뽀모도로 기법:</strong> 25분 집중 후 5분 휴식을 반복하는 시간 관리법으로, 뽀모도로 모드를 선택하면 자동으로 집중·휴식 사이클을 관리해 드립니다.</li>
+            <li><strong>뽀모도로 기법:</strong> 25분 집중 후 5분 휴식을 반복하는 시간 관리법은 전용 뽀모도로 타이머(/pomodoro)에서 자동으로 관리할 수 있습니다.</li>
             <li><strong>스톱워치 랩 기록:</strong> 운동 구간 기록, 프리젠테이션 파트별 소요 시간 측정 등 여러 구간을 연속으로 기록하고 비교할 수 있습니다.</li>
-            <li><strong>요리 타이머:</strong> 여러 음식의 조리 시간을 동시에 측정하려면 카운트다운 타이머를 설정하고 알람을 활용하세요.</li>
+            <li><strong>수업·발표:</strong> 전체화면(F 키)으로 큰 숫자를 띄워 두면 멀리서도 남은 시간을 확인할 수 있습니다.</li>
             <li><strong>시험 시간 연습:</strong> 수험생이 실전과 동일하게 시간을 재며 문제를 풀 때 카운트다운 타이머가 효과적입니다.</li>
           </ul>
         </div>

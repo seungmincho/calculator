@@ -10694,26 +10694,98 @@
     }
   },
   "timer": {
+    "modeTabs": "Choose mode",
+    "pomodoroLink": "Pomodoro timer →",
+    "unit": {
+      "h": "{n} hr",
+      "m": "{n} min",
+      "s": "{n} sec"
+    },
+    "options": {
+      "title": "Alerts",
+      "sound": "Alarm sound",
+      "repeat": "Repeat until stopped (up to 3 min)",
+      "vibrate": "Vibrate (mobile)",
+      "wakeLock": "Keep screen on while running",
+      "wakeLockActive": "Screen is being kept on",
+      "testSound": "Test sound",
+      "notify": "Enable browser notifications",
+      "notifyOn": "You'll get a browser notification even from another tab",
+      "notifyDenied": "Notifications are blocked. Allow them in the site settings next to the address bar"
+    },
+    "share": {
+      "title": "Share link",
+      "hint": "Opening the link prepares a {time} timer",
+      "copy": "Copy link",
+      "copied": "Copied"
+    },
+    "fullscreen": {
+      "enter": "Fullscreen",
+      "exit": "Exit fullscreen",
+      "hint": "Space start/pause · R reset · Esc or F to exit"
+    },
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "space": "Start / pause",
+      "r": "Reset",
+      "f": "Fullscreen",
+      "l": "Lap (stopwatch)",
+      "esc": "Stop alarm · exit fullscreen",
+      "note": "Shortcuts are off while the cursor is in a time field"
+    },
+    "announce": {
+      "started": "Timer started, {time}",
+      "paused": "Paused, {time} remaining",
+      "resumed": "Resumed",
+      "reset": "Reset",
+      "oneMinute": "One minute left",
+      "added": "Added 1 minute, {time} remaining",
+      "swStarted": "Stopwatch started",
+      "swStopped": "Stopwatch stopped, {time}"
+    },
+    "notification": {
+      "title": "Time's up",
+      "body": "Your {time} timer has finished"
+    },
     "title": "Timer / Stopwatch",
-    "description": "Stopwatch, countdown timer, and Pomodoro timer in one place",
+    "description": "Online timer with one-tap 1·3·5·10-minute presets and a lap stopwatch. Fullscreen big digits, keyboard shortcuts, and accurate alarms even in a background tab",
     "modes": {
       "stopwatch": "Stopwatch",
       "timer": "Timer",
       "pomodoro": "Pomodoro"
     },
     "stopwatch": {
+      "currentLap": "Current lap",
+      "fastest": "Fastest",
+      "slowest": "Slowest",
+      "average": "Average lap",
+      "statsTitle": "Lap stats",
+      "copyCsv": "Copy laps as CSV",
+      "lapRecorded": "Lap {n}, {time}",
       "title": "Stopwatch",
       "start": "Start",
       "stop": "Stop",
       "reset": "Reset",
       "lap": "Lap",
       "laps": "Lap Records",
-      "noLaps": "No lap records",
+      "noLaps": "Press Lap (L) while running to record splits and see the fastest and slowest laps here",
       "lapNumber": "Lap",
       "lapTime": "Lap Time",
       "totalTime": "Total Time"
     },
     "countdown": {
+      "presetStart": "Start a {n}-minute timer",
+      "presetLabel": "{n} min",
+      "addMinute": "+1 min",
+      "endsAt": "Ends at {time}",
+      "paused": "Paused",
+      "remainingText": "{time} remaining",
+      "progress": "Timer progress",
+      "dismiss": "Stop alarm",
+      "finishedHint": "Add a minute with +1 min, or press Start to run the same time again",
+      "zeroError": "Enter at least 1 second",
+      "readyFromLink": "A {time} timer is ready. Press Start",
+      "setTime": "Set timer duration",
       "title": "Countdown Timer",
       "hours": "Hours",
       "minutes": "Minutes",
@@ -10723,7 +10795,7 @@
       "resume": "Resume",
       "reset": "Reset",
       "finished": "Time's up!",
-      "presets": "Quick Set",
+      "presets": "Quick start",
       "preset1min": "1 min",
       "preset3min": "3 min",
       "preset5min": "5 min",
@@ -10773,40 +10845,50 @@
         ]
       },
       "whatIs": {
-        "title": "What is the Timer / Stopwatch?",
-        "description": "Three tools in one: a stopwatch, a countdown timer, and a Pomodoro timer. Use it for timing workouts, cooking, presentation practice, or focused work sessions (Pomodoro technique). It continues running in background tabs and plays an alert sound when the timer ends."
+        "title": "What is this online timer / stopwatch?",
+        "description": "A countdown timer and stopwatch that run right in your browser, no install needed. Use it for instant noodles, a 10-minute break, meetings and talks, or workout intervals. Fullscreen mode makes the digits readable from across a classroom or meeting room, and because time is calculated from the end time, switching tabs never makes it drift."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. In the Stopwatch tab, start and stop with the button, and use Lap to record split times.",
-          "2. In the Timer tab, enter hours/minutes/seconds and start the countdown — an alert plays when it ends.",
-          "3. In the Pomodoro tab, set your focus time (default 25 min) and break time (5 min) and start a cycle.",
-          "4. The timer keeps running even if you switch to another tab."
+          "1. On the Timer tab, press 1, 3, 5, 10, 15 or 30 min to start right away, or enter hours, minutes and seconds and press Start (or Enter).",
+          "2. While running, use +1 min to extend, Space to pause/resume and R to reset. The remaining time also shows in the browser tab title.",
+          "3. Press Fullscreen (F) for big digits. Space and R keep working during a class or talk; press Esc to exit.",
+          "4. On the Stopwatch tab, press Lap (L) to record splits. You'll see each split, the fastest and slowest laps and the average, and can copy them as CSV.",
+          "5. Copy the share link to get an address with the same timer ready (e.g. /timer/?m=10). Because of autoplay rules, the person opening the link presses Start."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Pomodoro technique: 25 minutes of focus → 5-minute break → after 4 cycles, a 15–30 minute long break. A proven time management method for improving concentration and productivity.",
-          "Use the stopwatch lap feature during interval training to record each set's time.",
-          "Set the timer during presentation rehearsals to practice fitting within your allotted time."
+          "Bookmark a share link to open a '10-minute timer' in one click. Your last duration and alert settings are remembered in this browser.",
+          "For classes and meetings, turn on fullscreen and 'Keep screen on' so the laptop display doesn't go dark.",
+          "If you'll be working in another tab, enable browser notifications so a pop-up appears along with the sound.",
+          "To alternate focus and breaks use the Pomodoro timer; for per-section talk timing use the presentation timer."
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "Does the timer reset if I close the browser?",
-            "a": "Yes — closing the browser resets the timer. Keep the tab open for important timers, or use a dedicated app with notification support."
+            "q": "Is it still accurate in a background tab?",
+            "a": "Yes. Instead of subtracting one every second, the timer stores the end time and compares it with the current time, so browser throttling of background tabs can't make it drift. The alarm is also scheduled for the end time and fires within about a second. If the computer goes to sleep the browser pauses, and the timer finishes as soon as it wakes."
           },
           {
-            "q": "Why isn't the alert sound playing?",
-            "a": "Check whether the browser tab is muted and whether your system volume is on. Some browsers require a user interaction before they can play audio."
+            "q": "Why is there no sound?",
+            "a": "Browsers block audio until you interact with the page (autoplay policy). The timer unlocks sound when you press Start, which is also why a shared link never starts on its own. Try 'Test sound'; if you hear nothing, check tab mute, system volume and your phone's silent mode (on iPhone, the silent switch mutes web audio)."
           },
           {
-            "q": "Can I set a timer longer than one hour?",
-            "a": "Yes — use the hours input to set timers of several hours. Great for cooking, fermentation, or sleep timers."
+            "q": "How do I use fullscreen?",
+            "a": "Press the Fullscreen button or F to fill the screen with the digits. Space (start/pause) and R (reset) still work, and Esc or F exits. On browsers without fullscreen support, such as Safari on iPhone, a large overlay covers the page instead."
+          },
+          {
+            "q": "What happens if I close the browser?",
+            "a": "Closing the tab or browser stops a running timer. Only your last duration and alert settings are saved on this device, so you can start the same time again right away."
+          },
+          {
+            "q": "Can I set more than an hour?",
+            "a": "Yes, up to 99 hours 59 minutes 59 seconds. Minutes or seconds over 60 are added up automatically (e.g. 90 minutes = 1 hour 30 minutes)."
           }
         ]
       }
