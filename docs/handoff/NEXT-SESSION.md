@@ -1,4 +1,13 @@
-# NEXT-SESSION (2026-10-02 저녁 — 로컬 커밋만, 빌드·배포·푸시 대기)
+# NEXT-SESSION (2026-10-02 밤 — 로컬 커밋만, 사용자가 직접 배포)
+
+## 2026-10-02 밤 — 연속 배치 2 (미배포, 로컬 커밋)
+- 고도화: pyeong-calculator, car-loan-calculator, inheritance-gift-tax(개정안 2024·2025 무산 → 현행법), comprehensive-property-tax(종부세+재산세 보유세, 과세표준 공식 버그), qr-generator, image-resizer, barcode-generator, password-generator(모듈로 편향), + 마무리 배치 electricity-calculator·image-converter·pdf-tools·timer
+- 신규: /greeting-generator 인사말 생성기(문구는 src/utils/greetings.ts에 한국어로, 명절 날짜는 45일 이내만 표시)
+- 홈 OG 이미지 교체(scripts/generate-home-og.mjs, URL ?v=2) — 배포 후 카카오 디버거 캐시 초기화 권장
+- 접근성: 7개 계산기 a11y 패스, 공용 DatePicker(키보드·label prop), GuideSection(h2>button) — 전 도구 반영
+- 배포 전 할 일: `node scripts/generate-redirects-rss.js`(인사말 생성기 RSS), SW v4.31.0
+- 확인 필요: 상속세 세대생략 20억 기준(10년 합산 여부), 종부세 재산세 공제 45% vs 60%, 이미지 HEIC 크롬 지원(heic2any 도입 여부), 인사말 승진 문구가 합격 등에 섞임
+- 함정: python 일괄 치환에서 2칸 들여쓴 문자열이 4칸 줄에도 매칭됨 → count 확인 / 작은따옴표 TS 문자열 안에 ' 넣지 말 것
 
 ## 2026-10-02 저녁 — 검색량 큰 계산기 7개 고도화 (미배포)
 - **빌드가 자동 모드 권한에 막혀 배포 못 함** → 다음: SW v4.30.0→v4.31.0 bump → `pnpm build && cp public/rss.xml public/_redirects out/ && npx wrangler pages deploy out ...` → verify → push
