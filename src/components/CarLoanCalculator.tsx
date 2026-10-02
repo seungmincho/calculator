@@ -1,477 +1,444 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Car, Calculator, Percent, Calendar, DollarSign, TrendingUp, Share2, Check, Save } from 'lucide-react'
-import CalculationHistory from './CalculationHistory'
-import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import { useState, useEffect, type ReactNode } from 'react'
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import { carLoan, burden, burdenLevel, FUELS, TERMS, MAX_RATE, type Fuel, type CarLoanInput } from '@/utils/carLoan'
 
-interface CarLoanResult {
-  monthlyPayment: number
-  totalPayment: number
-  totalInterest: number
-  monthlyBreakdown: Array<{
-    month: number
-    payment: number
-    principal: number
-    interest: number
-    balance: number
-  }>
-}
+const DOWN_PCTS = [0, 20, 30] as const
+const CMP_TERMS = [36, 48, 60] as const
+const MAX = 10_000_000_000
+
+const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+const parseNum = (s: string | null) => Number((s ?? '').replace(/[^\d]/g, '')) || 0
+const numOr = (v: string | null, def: number) => (v !== null && v !== '' && Number.isFinite(Number(v)) ? Number(v) : def)
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
 export default function CarLoanCalculator() {
-  let t: ReturnType<typeof useTranslations>;
-  try {
-    t = useTranslations('carLoan')
-  } catch (error) {
-    console.error('Translation error:', error)
-    // Fallback function
-    t = ((key: string) => key) as ReturnType<typeof useTranslations>
-  }
-  const [carPrice, setCarPrice] = useState<string>('')
-  const [downPayment, setDownPayment] = useState<string>('')
-  const [loanTerm, setLoanTerm] = useState<string>('60')
-  const [interestRate, setInterestRate] = useState<string>('4.5')
-  const [result, setResult] = useState<CarLoanResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-  const [showSaveButton, setShowSaveButton] = useState(false)
-  
-  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('car-loan')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const t = useTranslations('carLoan')
+  const sp = useSearchParams()
 
-  const calculateCarLoan = () => {
-    const price = parseFloat(carPrice)
-    const down = parseFloat(downPayment) || 0
-    const term = parseInt(loanTerm)
-    const rate = parseFloat(interestRate)
-
-    if (!price || !term || !rate || price <= 0) return
-
-    const loanAmount = price - down
-    if (loanAmount <= 0) return
-
-    const monthlyRate = rate / 100 / 12
-    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, term)) / (Math.pow(1 + monthlyRate, term) - 1)
-    const totalPayment = monthlyPayment * term
-    const totalInterest = totalPayment - loanAmount
-
-    // 월별 상환 내역 계산
-    const monthlyBreakdown: Array<{
-      month: number
-      payment: number
-      principal: number
-      interest: number
-      balance: number
-    }> = []
-
-    let balance = loanAmount
-    for (let month = 1; month <= term; month++) {
-      const interestPayment = balance * monthlyRate
-      const principalPayment = monthlyPayment - interestPayment
-      balance -= principalPayment
-
-      monthlyBreakdown.push({
-        month,
-        payment: monthlyPayment,
-        principal: principalPayment,
-        interest: interestPayment,
-        balance: Math.max(0, balance)
-      })
-    }
-
-    const calculationResult = {
-      monthlyPayment,
-      totalPayment,
-      totalInterest,
-      monthlyBreakdown
-    }
-
-    setResult(calculationResult)
-    setShowSaveButton(true)
-
-    // 계산 기록은 저장 버튼을 눌렀을 때만 저장하도록 제거
-  }
+  const [price, setPrice] = useState(() => parseNum(sp.get('p')) || 35_000_000)
+  const [options, setOptions] = useState(() => parseNum(sp.get('o')))
+  const [discount, setDiscount] = useState(() => parseNum(sp.get('dc')))
+  const [byPct, setByPct] = useState(() => sp.get('dm') !== 'amt')
+  const [downPct, setDownPct] = useState(() => clamp(numOr(sp.get('dp'), 30), 0, 100))
+  const [downAmt, setDownAmt] = useState(() => parseNum(sp.get('d')) || 10_000_000)
+  const [months, setMonths] = useState(() => { const m = numOr(sp.get('m'), 48); return (TERMS as readonly number[]).includes(m) ? m : 48 })
+  const [rate, setRate] = useState(() => (/^\d{1,2}(\.\d{1,2})?$/.test(sp.get('r') ?? '') ? sp.get('r')! : '6.0'))
+  const [balloonOn, setBalloonOn] = useState(() => numOr(sp.get('b'), 0) > 0)
+  const [balloonPct, setBalloonPct] = useState(() => clamp(numOr(sp.get('b'), 0), 0, 60) || 30)
+  const [fuel, setFuel] = useState<Fuel>(() => (FUELS.includes(sp.get('f') as Fuel) ? (sp.get('f') as Fuel) : 'normal'))
+  const [extra, setExtra] = useState(() => parseNum(sp.get('x')))
+  const [income, setIncome] = useState(() => numOr(sp.get('inc'), 3_000_000))
+  const [insurance, setInsurance] = useState(() => numOr(sp.get('ins'), 100_000))
+  const [running, setRunning] = useState(() => numOr(sp.get('run'), 150_000))
 
   useEffect(() => {
-    if (carPrice && loanTerm && interestRate) {
-      calculateCarLoan()
-      updateURL({
-        carPrice: carPrice.replace(/,/g, ''),
-        downPayment: downPayment || '0',
-        loanTerm,
-        interestRate
-      })
-    }
-  }, [carPrice, downPayment, loanTerm, interestRate])
+    const q = new URLSearchParams()
+    q.set('p', String(price))
+    if (options) q.set('o', String(options))
+    if (discount) q.set('dc', String(discount))
+    if (byPct) q.set('dp', String(downPct))
+    else { q.set('dm', 'amt'); q.set('d', String(downAmt)) }
+    q.set('m', String(months))
+    q.set('r', rate)
+    if (balloonOn) q.set('b', String(balloonPct))
+    if (fuel !== 'normal') q.set('f', fuel)
+    if (extra) q.set('x', String(extra))
+    q.set('inc', String(income))
+    q.set('ins', String(insurance))
+    q.set('run', String(running))
+    window.history.replaceState(null, '', `?${q}`)
+  }, [price, options, discount, byPct, downPct, downAmt, months, rate, balloonOn, balloonPct, fuel, extra, income, insurance, running])
 
-  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
-  useEffect(() => {
-    const priceParam = searchParams.get('carPrice')
-    if (!priceParam) return // URL 파라미터가 없으면 복원하지 않음
-    
-    const downParam = searchParams.get('downPayment')
-    const termParam = searchParams.get('loanTerm')
-    const rateParam = searchParams.get('interestRate')
+  const carPrice = Math.max(0, price + options - discount)
+  const input: CarLoanInput = {
+    price, options, discount,
+    down: byPct ? Math.round((carPrice * downPct) / 100) : downAmt,
+    months, rate: parseFloat(rate) || 0,
+    balloonPct: balloonOn ? balloonPct : 0,
+    fuel, extra,
+  }
+  const r = carLoan(input)
+  const cmpBalloon = balloonOn ? balloonPct : 30
+  const normal = carLoan({ ...input, balloonPct: 0 })
+  const deferred = carLoan({ ...input, balloonPct: cmpBalloon })
+  const curDownPct = carPrice ? Math.round((r.down / carPrice) * 100) : 0
 
-    if (priceParam && /^\d+$/.test(priceParam)) {
-      setCarPrice(new Intl.NumberFormat('ko-KR').format(Number(priceParam)))
-    }
-    if (downParam && /^\d+$/.test(downParam) && downParam !== '0') {
-      setDownPayment(new Intl.NumberFormat('ko-KR').format(Number(downParam)))
-    }
-    if (termParam && /^\d+$/.test(termParam)) {
-      setLoanTerm(termParam)
-    }
-    if (rateParam && /^\d+(\.\d+)?$/.test(rateParam)) {
-      setInterestRate(rateParam)
-    }
-  }, []) // 의존성 배열을 빈 배열로 변경하여 초기 로드시에만 실행
+  const carMonthly = r.monthly + insurance + running
+  const bp = burden(carMonthly, income)
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ko-KR').format(Math.round(amount))
+  const W = (v: number) => t('u.wonFmt', { v: won(v) })
+  const kor = (v: number) => {
+    const eok = Math.floor(v / 1e8), man = Math.floor((v % 1e8) / 1e4)
+    const key = v < 1e4 ? 'won' : eok && man ? 'eokMan' : eok ? 'eok' : 'man'
+    return t(`u.kor.${key}`, { eok, man: man.toLocaleString('ko-KR'), v: won(v) })
   }
 
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value !== '0') {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
-    })
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }
+  const seg = (on: boolean) =>
+    `min-h-[44px] px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const toolLink = (href: string, key: string) => (
+    <Link key={href} href={href} className="inline-flex items-center text-xs font-medium text-primary hover:underline">
+      {t(key)}<ChevronRight className="w-3 h-3" aria-hidden="true" />
+    </Link>
+  )
 
-  const handleShare = async () => {
-    if (!result) return
-    
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const money = (id: string, label: ReactNode, value: number, onChange: (v: number) => void, hint?: ReactNode) => (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="numeric" autoComplete="off"
+          value={value ? value.toLocaleString('ko-KR') : ''} placeholder="0"
+          onChange={(e) => onChange(Math.min(parseNum(e.target.value), MAX))}
+          aria-describedby={`${id}-hint`}
+          className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+        />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted" aria-hidden="true">{t('u.won')}</span>
+      </div>
+      <p id={`${id}-hint`} className="text-xs text-muted mt-1.5">{value ? kor(value) : null}{hint && value ? ' · ' : null}{hint}</p>
+    </div>
+  )
 
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(currentUrl)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea')
-        textArea.value = currentUrl
-        document.body.appendChild(textArea)
-        textArea.select()
-        try {
-          document.execCommand('copy')
-          setIsCopied(true)
-          setTimeout(() => setIsCopied(false), 2000)
-        } catch (fallbackErr) {
-          console.error('Fallback copy failed: ', fallbackErr)
-        }
-        document.body.removeChild(textArea)
-      }
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
+  const row = (label: ReactNode, value: string, hint?: ReactNode, strong = false) => (
+    <div className="flex items-center justify-between py-3 gap-3">
+      <div>
+        <p className={`text-sm ${strong ? 'font-semibold text-fg' : 'font-medium text-body'}`}>{label}</p>
+        {hint && <p className="text-xs text-muted">{hint}</p>}
+      </div>
+      <p className={`tabular-nums text-right ${strong ? 'text-lg font-bold text-fg' : 'text-base font-semibold text-fg'}`}>{value}</p>
+    </div>
+  )
 
-  const handleSaveCalculation = () => {
-    if (!result) return
-    
-    const price = parseFloat(carPrice)
-    const down = parseFloat(downPayment) || 0
-    const term = parseInt(loanTerm)
-    const rate = parseFloat(interestRate)
-    
-    saveCalculation(
-      {
-        carPrice: price,
-        downPayment: down,
-        loanTerm: term,
-        interestRate: rate
-      },
-      {
-        monthlyPayment: result.monthlyPayment,
-        totalPayment: result.totalPayment,
-        totalInterest: result.totalInterest
-      }
-    )
-    
-    setShowSaveButton(false)
-  }
+  const level = bp === null ? null : burdenLevel(bp)
+  const kinds = ['loan', 'lease', 'rent'] as const
+  const aspects = t.raw('u.kinds.aspects') as string[]
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={false}
-          onLoadHistory={(historyId) => {
-            const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setCarPrice(inputs.carPrice.toString())
-              setDownPayment(inputs.downPayment?.toString() || '')
-              setLoanTerm(inputs.loanTerm.toString())
-              setInterestRate(inputs.interestRate.toString())
-            }
-          }}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={(result: Record<string, unknown>) => {
-            const monthlyPayment = Number(result.monthlyPayment) || 0
-            const totalPayment = Number(result.totalPayment) || 0
-            if (!monthlyPayment) return '계산 정보 없음'
-            return `월납입금: ${formatCurrency(monthlyPayment)}원, 총납입금: ${formatCurrency(totalPayment)}원`
-          }}
-        />
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 폼 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            할부 정보 입력
-          </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('u.car.title')}</h2>
+            {money('cl-price', t('u.car.price'), price, setPrice)}
+            <div className="grid grid-cols-2 gap-3">
+              {money('cl-options', t('u.car.options'), options, setOptions)}
+              {money('cl-discount', t('u.car.discount'), discount, setDiscount)}
+            </div>
+            <p className="text-xs text-muted -mt-2">{t('u.car.carPrice', { v: W(carPrice) })}</p>
+            <fieldset>
+              <legend className="block text-sm font-medium text-body mb-2">{t('u.car.fuel')}</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {FUELS.map((f) => <button key={f} type="button" aria-pressed={fuel === f} onClick={() => setFuel(f)} className={seg(fuel === f)}>{t(`u.fuel.${f}`)}</button>)}
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t(`u.fuel.${fuel}Hint`)}</p>
+            </fieldset>
+          </div>
 
-          <div className="space-y-6">
-            {/* 차량 가격 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                차량 가격 (원)
-              </label>
-              <input
-                type="text"
-                value={carPrice}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, '')
-                  setCarPrice(value)
-                }}
-                placeholder="30000000"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-              {carPrice && (
-                <p className="text-sm text-gray-500 mt-1">
-                  {formatCurrency(parseFloat(carPrice))}원
-                </p>
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('u.loan.title')}</h2>
+            <fieldset>
+              <legend className="block text-sm font-medium text-body mb-2">{t('u.loan.down')}</legend>
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                <button type="button" aria-pressed={byPct} onClick={() => setByPct(true)} className={seg(byPct)}>{t('u.loan.byPct')}</button>
+                <button type="button" aria-pressed={!byPct} onClick={() => setByPct(false)} className={seg(!byPct)}>{t('u.loan.byAmount')}</button>
+              </div>
+              {byPct ? (
+                <div>
+                  <label htmlFor="cl-downpct" className="flex justify-between text-sm text-body mb-1">
+                    <span>{t('u.loan.downPct')}</span><span className="tabular-nums text-fg">{downPct}% · {kor(r.down)}</span>
+                  </label>
+                  <input id="cl-downpct" type="range" min={0} max={70} step={5} value={downPct} onChange={(e) => setDownPct(Number(e.target.value))} className="w-full h-11 accent-[var(--primary)]" />
+                </div>
+              ) : (
+                money('cl-down', t('u.loan.downAmount'), downAmt, setDownAmt, t('u.loan.downPctOf', { pct: curDownPct }))
               )}
+            </fieldset>
+
+            <fieldset>
+              <legend className="block text-sm font-medium text-body mb-2">{t('u.loan.months')}</legend>
+              <div className="grid grid-cols-5 gap-2">
+                {TERMS.map((m) => <button key={m} type="button" aria-pressed={months === m} onClick={() => setMonths(m)} className={seg(months === m)}>{m}</button>)}
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t('u.loan.monthsHint', { y: months / 12 })}</p>
+            </fieldset>
+
+            <div>
+              <label htmlFor="cl-rate" className="block text-sm font-medium text-body mb-2">{t('u.loan.rate')}</label>
+              <div className="relative">
+                <input id="cl-rate" type="text" inputMode="decimal" autoComplete="off" value={rate} aria-describedby="cl-rate-hint"
+                  onChange={(e) => /^\d{0,2}(\.\d{0,2})?$/.test(e.target.value) && setRate(e.target.value)}
+                  className="ui-field w-full px-4 py-3 pr-8 tabular-nums" />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted" aria-hidden="true">%</span>
+              </div>
+              <p id="cl-rate-hint" className="text-xs text-muted mt-1.5">{t('u.loan.rateHint', { max: MAX_RATE })}</p>
+              {(parseFloat(rate) || 0) > MAX_RATE && <p className="text-xs text-amber-800 mt-1" role="alert">{t('u.loan.rateOver', { max: MAX_RATE })}</p>}
             </div>
 
-            {/* 선수금 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                선수금 (원)
-              </label>
-              <input
-                type="text"
-                value={downPayment}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, '')
-                  setDownPayment(value)
-                }}
-                placeholder="3000000"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-              {downPayment && (
-                <p className="text-sm text-gray-500 mt-1">
-                  {formatCurrency(parseFloat(downPayment))}원
-                </p>
+            <fieldset>
+              <legend className="block text-sm font-medium text-body mb-2">{t('u.loan.type')}</legend>
+              <div className="grid grid-cols-2 gap-2">
+                <button type="button" aria-pressed={!balloonOn} onClick={() => setBalloonOn(false)} className={seg(!balloonOn)}>{t('u.loan.normal')}</button>
+                <button type="button" aria-pressed={balloonOn} onClick={() => setBalloonOn(true)} className={seg(balloonOn)}>{t('u.loan.balloon')}</button>
+              </div>
+              {balloonOn && (
+                <div className="mt-3">
+                  <label htmlFor="cl-balloon" className="flex justify-between text-sm text-body mb-1">
+                    <span>{t('u.loan.balloonPct')}</span><span className="tabular-nums text-fg">{balloonPct}% · {kor(r.balloon)}</span>
+                  </label>
+                  <input id="cl-balloon" type="range" min={10} max={60} step={5} value={balloonPct} onChange={(e) => setBalloonPct(Number(e.target.value))} className="w-full h-11 accent-[var(--primary)]" />
+                </div>
               )}
-            </div>
+              <p className="text-xs text-muted mt-1.5">{t(balloonOn ? 'u.loan.balloonHint' : 'u.loan.normalHint')}</p>
+            </fieldset>
 
-            {/* 할부 기간 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                할부 기간 (개월)
-              </label>
-              <select
-                value={loanTerm}
-                onChange={(e) => setLoanTerm(e.target.value)}
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              >
-                <option value="12">12개월 (1년)</option>
-                <option value="24">24개월 (2년)</option>
-                <option value="36">36개월 (3년)</option>
-                <option value="48">48개월 (4년)</option>
-                <option value="60">60개월 (5년)</option>
-                <option value="72">72개월 (6년)</option>
-                <option value="84">84개월 (7년)</option>
-              </select>
-            </div>
-
-            {/* 금리 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                연 금리 (%)
-              </label>
-              <input
-                type="number"
-                value={interestRate}
-                onChange={(e) => setInterestRate(e.target.value)}
-                step="0.1"
-                min="0"
-                max="30"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-            </div>
+            {money('cl-extra', t('u.loan.extra'), extra, setExtra, t('u.loan.extraHint'))}
           </div>
         </div>
 
         {/* 결과 */}
-        <div className="space-y-6">
-          {result && (
-            <>
-              {/* 주요 결과 */}
-              <div className="bg-primary rounded-2xl shadow-lg p-8 text-white">
-                <h3 className="text-xl font-bold mb-6 flex items-center">
-                  할부 계산 결과
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center py-3 border-b border-white/20">
-                    <span className="text-blue-100">월 납입금</span>
-                    <span className="text-2xl font-bold">
-                      {formatCurrency(result.monthlyPayment)}원
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-3 border-b border-white/20">
-                    <span className="text-blue-100">총 납입금</span>
-                    <span className="text-xl font-semibold">
-                      {formatCurrency(result.totalPayment)}원
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-3">
-                    <span className="text-blue-100">총 이자</span>
-                    <span className="text-xl font-semibold text-yellow-200">
-                      {formatCurrency(result.totalInterest)}원
-                    </span>
-                  </div>
-
-                  {/* 공유/저장 버튼 */}
-                  <div className="flex space-x-2 mt-4">
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>복사됨!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>결과 공유</span>
-                        </>
-                      )}
-                    </button>
-                    
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>저장</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* 할부 정보 요약 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-fg mb-4">
-                  할부 정보 요약
-                </h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-sub">차량 가격</span>
-                    <p className="font-semibold text-fg">
-                      {formatCurrency(parseFloat(carPrice))}원
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">선수금</span>
-                    <p className="font-semibold text-fg">
-                      {formatCurrency(parseFloat(downPayment) || 0)}원
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">할부 원금</span>
-                    <p className="font-semibold text-fg">
-                      {formatCurrency(parseFloat(carPrice) - (parseFloat(downPayment) || 0))}원
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">할부 기간</span>
-                    <p className="font-semibold text-fg">
-                      {loanTerm}개월
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {!result && (
-            <div className="bg-subtle rounded-2xl p-8 text-center">
-              <Car className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-sub">
-                차량 가격과 할부 조건을 입력하면<br />
-                할부 계산 결과가 표시됩니다
+        <div className="lg:col-span-2 space-y-6">
+          <section className="ui-card p-6 space-y-5" aria-labelledby="cl-result-title">
+            <div aria-live="polite">
+              <h2 id="cl-result-title" className="text-sm text-muted">{t('u.result.label', { price: kor(r.carPrice), months })}</h2>
+              <p className="text-3xl font-bold text-fg tabular-nums mt-1">{W(r.monthly)}</p>
+              <p className="text-sm text-sub mt-1">
+                {t('u.result.sub', { principal: kor(r.principal), rate: input.rate, interest: W(r.totalInterest) })}
               </p>
+              {r.balloon > 0 && <p className="text-sm text-body mt-2">{t('u.result.balloonDue', { months, v: W(r.balloon) })}</p>}
             </div>
-          )}
+
+            <div className="divide-y divide-line border-y border-line">
+              {row(t('u.result.carPrice'), W(r.carPrice))}
+              {row(t('u.result.down'), W(r.down), t('u.result.downHint', { pct: curDownPct }))}
+              {row(t('u.result.principal'), W(r.principal))}
+              {row(t('u.result.interest'), W(r.totalInterest), t('u.result.interestHint', { pct: r.principal ? ((r.totalInterest / r.principal) * 100).toFixed(1) : '0' }))}
+              {row(t('u.result.tax'), W(r.tax.pay),
+                <>{r.tax.relief > 0 ? t('u.result.taxRelief', { tax: W(r.tax.tax), relief: W(r.tax.relief) }) : t('u.result.taxHint', { rate: fuel === 'light' ? 4 : 7 })} {toolLink('/car-tax-calculator', 'u.link.carTax')}</>)}
+              {row(t('u.result.extra'), W(r.extra), extra ? undefined : t('u.result.extraZero'))}
+              {row(t('u.result.total'), W(r.total), t('u.result.totalHint'), true)}
+            </div>
+
+            <div className="bg-subtle rounded-2xl p-4 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium text-body">{t('u.result.upfront')}</p>
+                <p className="text-xs text-muted">{t('u.result.upfrontHint')}</p>
+              </div>
+              <p className="text-lg font-bold text-fg tabular-nums">{W(r.upfront)}</p>
+            </div>
+
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: t('u.share.label', { price: kor(r.carPrice), months }),
+                headline: W(r.monthly),
+                sub: t('u.share.sub', { down: kor(r.down), rate: input.rate }),
+                rows: [
+                  { label: t('u.result.principal'), value: W(r.principal) },
+                  { label: t('u.result.interest'), value: W(r.totalInterest) },
+                  ...(r.balloon > 0 ? [{ label: t('u.compare.balloonDue'), value: W(r.balloon) }] : []),
+                  { label: t('u.result.tax'), value: W(r.tax.pay) },
+                  { label: t('u.result.total'), value: W(r.total) },
+                ],
+              }}
+              text={t('u.share.text', { price: kor(r.carPrice), months, monthly: W(r.monthly), total: W(r.total) })}
+            />
+          </section>
+
+          {/* 기간·선수금 비교 */}
+          <section className="ui-card p-6 space-y-4" aria-labelledby="cl-grid-title">
+            <div>
+              <h2 id="cl-grid-title" className="text-lg font-semibold text-fg">{t('u.grid.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.grid.desc', { rate: input.rate })}</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
+                <caption className="sr-only">{t('u.grid.title')}</caption>
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    <th scope="col" className="text-left font-medium py-2 px-1">{t('u.grid.term')}</th>
+                    {DOWN_PCTS.map((d) => <th key={d} scope="col" className="text-right font-medium py-2 px-1">{t('u.grid.down', { pct: d })}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {CMP_TERMS.map((m) => (
+                    <tr key={m} className="border-b border-line">
+                      <th scope="row" className="text-left font-medium text-body py-2.5 px-1">{t('u.grid.months', { m })}</th>
+                      {DOWN_PCTS.map((d) => {
+                        const x = carLoan({ ...input, months: m, down: Math.round((carPrice * d) / 100) })
+                        const cur = months === m && byPct && downPct === d
+                        return (
+                          <td key={d} className={`py-1.5 px-1 text-right ${cur ? 'bg-primary-soft' : ''}`}>
+                            <button type="button" onClick={() => { setMonths(m); setByPct(true); setDownPct(d) }}
+                              aria-label={t('u.grid.apply', { m, pct: d, monthly: W(x.monthly) })}
+                              className="min-h-[44px] w-full text-right rounded-lg px-2 hover:bg-soft">
+                              <span className={`block tabular-nums ${cur ? 'text-primary font-bold' : 'text-fg font-semibold'}`}>{W(x.monthly)}{cur && <span className="ml-1 text-xs">{t('u.grid.current')}</span>}</span>
+                              <span className="block text-xs text-muted tabular-nums">{t('u.grid.interest', { v: W(x.totalInterest) })}</span>
+                            </button>
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-faint">{t('u.grid.note')}</p>
+          </section>
+
+          {/* 일반 vs 유예 */}
+          <section className="ui-card p-6 space-y-4" aria-labelledby="cl-cmp-title">
+            <div>
+              <h2 id="cl-cmp-title" className="text-lg font-semibold text-fg">{t('u.compare.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.compare.desc', { pct: cmpBalloon })}</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
+                <caption className="sr-only">{t('u.compare.title')}</caption>
+                <thead>
+                  <tr className="border-b border-line text-muted">
+                    <th scope="col" className="text-left font-medium py-2 px-1"><span className="sr-only">{t('u.compare.item')}</span></th>
+                    <th scope="col" className="text-right font-medium py-2 px-1">{t('u.loan.normal')}</th>
+                    <th scope="col" className="text-right font-medium py-2 px-1">{t('u.compare.balloonCol', { pct: cmpBalloon })}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    ['monthly', normal.monthly, deferred.monthly],
+                    ['balloonDue', 0, deferred.balloon],
+                    ['interest', normal.totalInterest, deferred.totalInterest],
+                    ['total', normal.total, deferred.total],
+                  ] as const).map(([k, a, b]) => (
+                    <tr key={k} className="border-b border-line">
+                      <th scope="row" className="text-left font-medium text-body py-2.5 px-1">{t(`u.compare.${k}`)}</th>
+                      <td className="py-2.5 px-1 text-right tabular-nums text-fg">{W(a)}</td>
+                      <td className="py-2.5 px-1 text-right tabular-nums text-fg">{W(b)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-sm text-sub">
+              {t('u.compare.summary', { diff: W(Math.abs(normal.monthly - deferred.monthly)), extra: W(deferred.totalInterest - normal.totalInterest), due: W(deferred.balloon) })}
+            </p>
+          </section>
+
+          {/* 상환 스케줄 */}
+          <details className="ui-card p-6 group">
+            <summary className="cursor-pointer min-h-[44px] flex items-center justify-between text-lg font-semibold text-fg">
+              {t('u.schedule.title', { n: r.rows.length })}
+              <ChevronRight className="w-5 h-5 text-muted transition-transform group-open:rotate-90" aria-hidden="true" />
+            </summary>
+            {r.rows.length ? (
+              <div className="overflow-x-auto mt-4">
+                <table className="w-full text-sm whitespace-nowrap">
+                  <caption className="sr-only">{t('u.schedule.caption')}</caption>
+                  <thead>
+                    <tr className="border-b border-line text-muted">
+                      {(['n', 'payment', 'principal', 'interest', 'balance'] as const).map((k, i) => (
+                        <th key={k} scope="col" className={`${i ? 'text-right' : 'text-left'} font-medium py-2 px-1`}>{t(`u.schedule.${k}`)}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {r.rows.map((x) => (
+                      <tr key={x.n} className="border-b border-line">
+                        <td className="py-2 px-1 text-body tabular-nums">{x.n}</td>
+                        <td className="py-2 px-1 text-right tabular-nums text-fg">{won(x.payment)}</td>
+                        <td className="py-2 px-1 text-right tabular-nums text-sub">{won(x.principal)}</td>
+                        <td className="py-2 px-1 text-right tabular-nums text-sub">{won(x.interest)}</td>
+                        <td className="py-2 px-1 text-right tabular-nums text-sub">{won(x.balance)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-xs text-faint mt-3">{t(r.balloon > 0 ? 'u.schedule.noteBalloon' : 'u.schedule.note')}</p>
+              </div>
+            ) : (
+              <p className="text-sm text-muted mt-4">{t('u.schedule.empty')}</p>
+            )}
+          </details>
+
+          {/* 월 소득 대비 */}
+          <section className="ui-card p-6 space-y-5" aria-labelledby="cl-budget-title">
+            <div>
+              <h2 id="cl-budget-title" className="text-lg font-semibold text-fg">{t('u.budget.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.budget.desc')}</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {money('cl-income', t('u.budget.income'), income, setIncome)}
+              {money('cl-ins', t('u.budget.insurance'), insurance, setInsurance)}
+              {money('cl-run', t('u.budget.running'), running, setRunning)}
+            </div>
+            <div aria-live="polite" className="bg-subtle rounded-2xl p-5 space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm text-body">{t('u.budget.carMonthly', { pay: W(r.monthly), etc: W(insurance + running) })}</p>
+                <p className="text-lg font-bold text-fg tabular-nums">{W(carMonthly)}</p>
+              </div>
+              {bp !== null && level ? (
+                <>
+                  <div className="h-2 rounded-full bg-track overflow-hidden" aria-hidden="true">
+                    <div className={`h-full rounded-full ${level === 'high' ? 'bg-amber-500' : 'bg-primary'}`} style={{ width: `${Math.min(100, bp)}%` }} />
+                  </div>
+                  <p className="text-sm font-medium text-fg">{t(`u.budget.${level}`, { pct: bp.toFixed(1) })}</p>
+                </>
+              ) : (
+                <p className="text-sm text-muted">{t('u.budget.noIncome')}</p>
+              )}
+              <p className="text-xs text-muted">{t('u.budget.note')} {toolLink('/annual-car-tax', 'u.link.annualTax')}</p>
+            </div>
+          </section>
         </div>
       </div>
 
-
-      {/* 할부 가이드 */}
-      <div className="bg-subtle rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-fg mb-6">
-          자동차 할부 가이드
-        </h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              할부 선택 시 고려사항
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• 월 소득의 30% 이내로 월납입금 설정</li>
-              <li>• 선수금이 많을수록 월납입금 감소</li>
-              <li>• 할부 기간이 길수록 총 이자 증가</li>
-              <li>• 금리 비교를 통한 최적 조건 선택</li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              할부 금리 현황 (2024년 기준)
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• 신차 할부: 연 3~7%</li>
-              <li>• 중고차 할부: 연 5~10%</li>
-              <li>• 캐피탈 할부: 연 7~15%</li>
-              <li>• 은행 자동차대출: 연 3~6%</li>
-            </ul>
-          </div>
+      {/* 할부·리스·렌트 개념 비교 */}
+      <section className="ui-card p-6 space-y-4" aria-labelledby="cl-kinds-title">
+        <div>
+          <h2 id="cl-kinds-title" className="text-xl font-semibold text-fg">{t('u.kinds.title')}</h2>
+          <p className="text-sm text-muted mt-1">{t('u.kinds.desc')}</p>
         </div>
-      </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <caption className="sr-only">{t('u.kinds.title')}</caption>
+            <thead>
+              <tr className="border-b border-line text-muted">
+                <th scope="col" className="text-left font-medium py-2 px-2 whitespace-nowrap"><span className="sr-only">{t('u.compare.item')}</span></th>
+                {kinds.map((k) => <th key={k} scope="col" className="text-left font-medium py-2 px-2 whitespace-nowrap">{t(`u.kinds.${k}.name`)}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {aspects.map((a, i) => (
+                <tr key={a} className="border-b border-line align-top">
+                  <th scope="row" className="text-left font-medium text-body py-2.5 px-2 whitespace-nowrap">{a}</th>
+                  {kinds.map((k) => <td key={k} className="py-2.5 px-2 text-sub min-w-[9rem]">{(t.raw(`u.kinds.${k}.cells`) as string[])[i]}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-sub">{t('u.kinds.note')}</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 pt-2">
+          {toolLink('/car-tax-calculator', 'u.link.carTax')}
+          {toolLink('/annual-car-tax', 'u.link.annualTax')}
+          {toolLink('/fuel-calculator', 'u.link.fuel')}
+          {toolLink('/car-maintenance', 'u.link.maintenance')}
+          {toolLink('/ev-subsidy', 'u.link.ev')}
+          {toolLink('/loan-calculator', 'u.link.loan')}
+          {toolLink('/loan-schedule', 'u.link.schedule')}
+          {toolLink('/dsr-calculator', 'u.link.dsr')}
+        </div>
+      </section>
 
       <GuideSection namespace="carLoan" />
     </div>

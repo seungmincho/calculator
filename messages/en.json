@@ -3072,6 +3072,183 @@
     }
   },
   "carLoan": {
+    "u": {
+      "subtitle": "Enter the car price, down payment, term and rate to see the monthly payment, total interest, and total cost including acquisition tax. Balloon (deferred) installments are supported.",
+      "won": "KRW",
+      "wonFmt": "₩{v}",
+      "kor": {
+        "won": "₩{v}",
+        "eokMan": "₩{v}",
+        "eok": "₩{v}",
+        "man": "₩{v}"
+      },
+      "car": {
+        "title": "Car",
+        "price": "Car price (incl. VAT)",
+        "options": "Options",
+        "discount": "Discount",
+        "carPrice": "Purchase price {v}",
+        "fuel": "Vehicle type (acquisition tax)"
+      },
+      "fuel": {
+        "normal": "Passenger car",
+        "light": "Compact (kyungcha)",
+        "ev": "EV / hydrogen",
+        "normalHint": "Non-commercial passenger car acquisition tax 7% on the supply value (purchase price ÷ 1.1)",
+        "lightHint": "Compact passenger car: 4%, with up to ₩750,000 exempted",
+        "evHint": "7% with up to ₩1,400,000 exempted (until Dec 31, 2026)"
+      },
+      "loan": {
+        "title": "Installment terms",
+        "down": "Down payment",
+        "byPct": "Percent",
+        "byAmount": "Amount",
+        "downPct": "Of purchase price",
+        "downAmount": "Down payment amount",
+        "downPctOf": "{pct}% of purchase price",
+        "months": "Term (months)",
+        "monthsHint": "{y} yr",
+        "rate": "Annual rate",
+        "rateHint": "Use the annual rate on your quote. Rates vary widely by credit, model, maker promotions and lender; the legal maximum is {max}% per year.",
+        "rateOver": "Above the legal maximum of {max}% — calculated at {max}%.",
+        "type": "Repayment type",
+        "normal": "Standard",
+        "balloon": "Balloon",
+        "normalHint": "Equal monthly payments of principal and interest.",
+        "balloonPct": "Balloon (of purchase price)",
+        "balloonHint": "You pay only interest on the balloon each month and repay it in full at maturity. Lower monthly payments, but more total interest.",
+        "extra": "Other upfront costs",
+        "extraHint": "Bonds (by region), plates, stamp duty, delivery — from your quote"
+      },
+      "result": {
+        "label": "{price} · {months}-month monthly payment",
+        "sub": "Financed {principal} · {rate}% APR · total interest {interest}",
+        "balloonDue": "A balloon payment of {v} is due in month {months}.",
+        "carPrice": "Purchase price",
+        "down": "Down payment",
+        "downHint": "{pct}% of purchase price",
+        "principal": "Amount financed",
+        "interest": "Total interest",
+        "interestHint": "{pct}% of amount financed",
+        "tax": "Acquisition tax",
+        "taxHint": "Supply value × {rate}%",
+        "taxRelief": "{tax} minus {relief} exemption",
+        "extra": "Other upfront costs",
+        "extraZero": "Add bonds, plates etc. from your quote",
+        "total": "Total cost",
+        "totalHint": "Purchase price + interest + acquisition tax + other",
+        "upfront": "Cash needed at delivery",
+        "upfrontHint": "Down payment + acquisition tax + other upfront costs (insurance excluded)"
+      },
+      "share": {
+        "label": "{price} · {months}-month installment",
+        "sub": "Down {down} · {rate}% APR",
+        "text": "A {price} car over {months} months: {monthly}/month, {total} in total"
+      },
+      "grid": {
+        "title": "Monthly payment by term and down payment",
+        "desc": "Same price, {rate}% APR. Tap a cell to apply it.",
+        "term": "Term",
+        "down": "{pct}% down",
+        "months": "{m} mo",
+        "apply": "Apply {m} months, {pct}% down — {monthly}/month",
+        "current": "Current",
+        "interest": "Interest {v}",
+        "note": "Actual rates can differ by term, down payment and credit. Ask for the rate for each option when you get a quote."
+      },
+      "compare": {
+        "title": "Standard vs balloon",
+        "desc": "Same term, rate and down payment; {pct}% balloon",
+        "item": "Item",
+        "balloonCol": "Balloon {pct}%",
+        "monthly": "Monthly payment",
+        "balloonDue": "Balloon due at maturity",
+        "interest": "Total interest",
+        "total": "Total cost",
+        "summary": "The balloon plan costs {diff} less per month but {extra} more in interest, and {due} is due at maturity."
+      },
+      "schedule": {
+        "title": "Repayment schedule ({n} payments)",
+        "caption": "Payment, principal, interest and balance by month",
+        "n": "No.",
+        "payment": "Payment",
+        "principal": "Principal",
+        "interest": "Interest",
+        "balance": "Balance",
+        "note": "Interest = balance × annual rate ÷ 12 (truncated to the won). Lenders use actual days, so each month may differ by a few won.",
+        "noteBalloon": "The last payment includes the balloon. Interest = balance × annual rate ÷ 12 (truncated to the won).",
+        "empty": "Nothing to finance (down payment covers the purchase price)."
+      },
+      "budget": {
+        "title": "Car cost vs monthly income",
+        "desc": "Adds insurance and fuel to the monthly payment to see how much of your income goes to the car.",
+        "income": "Monthly income (after tax)",
+        "insurance": "Insurance (monthly)",
+        "running": "Fuel / charging / parking (monthly)",
+        "carMonthly": "Payment {pay} + insurance & running {etc}",
+        "ok": "{pct}% of monthly income — comfortable.",
+        "mid": "{pct}% of monthly income — review it alongside other fixed costs.",
+        "high": "{pct}% of monthly income — heavy. Try a longer term, larger down payment or cheaper car.",
+        "noIncome": "Enter your monthly income to see the ratio.",
+        "note": "The 15% / 25% bands are this tool's reference values, not an official standard. Check car tax and maintenance separately."
+      },
+      "kinds": {
+        "title": "Installment vs lease vs long-term rental",
+        "desc": "The same car is paid for differently. The key differences:",
+        "aspects": [
+          "Registered owner",
+          "Acquisition & car tax",
+          "Insurance",
+          "License plate",
+          "At contract end",
+          "What the monthly cost covers"
+        ],
+        "loan": {
+          "name": "Installment",
+          "cells": [
+            "You (a lien is usually registered until paid off)",
+            "You pay",
+            "You buy it",
+            "Regular plate",
+            "Lien released when paid off; the car is yours",
+            "Principal + interest"
+          ]
+        },
+        "lease": {
+          "name": "Lease",
+          "cells": [
+            "Usually the lessor (operating lease)",
+            "Often included in the lease fee (varies)",
+            "Usually the lessee",
+            "Regular plate",
+            "Return, buy out (residual value) or extend",
+            "Usage fee (taxes/maintenance vary by product)"
+          ]
+        },
+        "rent": {
+          "name": "Long-term rental",
+          "cells": [
+            "Rental company",
+            "Included in the rental fee",
+            "Included (rental company policy)",
+            "Commercial 'heo/ha/ho' plate",
+            "Return or buy out",
+            "Usage + insurance + taxes (maintenance varies)"
+          ]
+        },
+        "note": "Lease and rental quotes depend on residual value, insurance and maintenance terms, so this calculator does not estimate their monthly fees. Compare 'monthly fee × months + non-refundable deposit + buyout price (if buying)' from the quote with the total cost above."
+      },
+      "link": {
+        "carTax": "Car acquisition tax",
+        "annualTax": "Annual car tax",
+        "fuel": "Fuel cost calculator",
+        "maintenance": "Car maintenance schedule",
+        "ev": "EV subsidy",
+        "loan": "Loan calculator",
+        "schedule": "Loan schedule",
+        "dsr": "DSR calculator"
+      }
+    },
     "title": "Car Loan Calculator",
     "description": "Calculate monthly payments and total interest for car installment purchases",
     "input": {
@@ -3095,7 +3272,7 @@
       "loanPeriod": "Loan Period"
     },
     "guide": {
-      "title": "Car Loan Guide",
+      "title": "Car installment guide",
       "considerationsTitle": "Considerations when choosing installments",
       "considerations": {
         "0": "Set monthly payment within 30% of monthly income",
@@ -3111,40 +3288,54 @@
         "3": "Bank Auto Loan: 3-6% annually"
       },
       "whatIs": {
-        "title": "What is the Car Loan Calculator?",
-        "description": "This tool calculates monthly payments, total interest, and total repayment for car loans. Enter vehicle price, down payment, loan term, and interest rate to get a monthly repayment schedule."
+        "title": "What is the car installment calculator?",
+        "description": "Enter price, options, discount, down payment, term and rate to get the monthly payment, total interest and total cost including acquisition tax. It also handles balloon (deferred) installments and compares terms, down payments, and standard vs balloon plans side by side."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Enter the vehicle price including tax.",
-          "Enter the down payment amount.",
-          "Set the loan term (12-84 months) and annual interest rate.",
-          "Review monthly payment, total interest, and the repayment schedule."
+          "Enter the car price (incl. VAT), options and discount to set the purchase price.",
+          "Set the down payment as a percent or amount, the term (12–60 months) and the annual rate from your quote.",
+          "For a balloon plan, choose 'Balloon' and set the balloon percentage; the amount due at maturity is shown.",
+          "Add other upfront costs from your quote (bonds, plates, delivery) to include them in cash at delivery and total cost.",
+          "Tap a cell in the comparison table to apply it, and share the result as a link or image."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Compare manufacturer financing rates with bank auto loans.",
-          "Longer terms mean lower monthly payments but more total interest.",
-          "A 20-30% down payment improves approval rates and reduces interest burden."
+          "Rates differ by credit, maker promotions and lender. Enter rates from 2–3 quotes to compare total interest.",
+          "A longer term lowers the monthly payment but raises total interest — check 36/48/60 months in the table.",
+          "Balloon plans look cheaper monthly, but the balloon accrues interest every month and must be repaid at once.",
+          "Look beyond the payment: add insurance and fuel and check the total against your income."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "What's the typical car loan interest rate?",
-            "a": "As of 2025, finance companies charge 5-9% annually, while bank auto loans range from 3.5-6%."
+            "q": "How is a balloon installment calculated?",
+            "a": "You pay only interest on the balloon throughout the term and repay it in full at maturity; the rest is repaid in equal installments. Monthly payments drop but total interest rises. Whether the balloon can be refinanced at maturity depends on the lender."
           },
           {
-            "q": "Loan vs lease - which is better?",
-            "a": "Loans give you ownership after payoff, better for long-term keeping. Leases have lower upfront costs, ideal for 3-5 year vehicle cycling."
+            "q": "Is there an early repayment fee?",
+            "a": "The rate and period are set by your contract, and some products have none. Under Korea's Financial Consumer Protection Act, no early repayment fee may be charged once 3 years have passed since the loan (including installment finance) contract."
           },
           {
-            "q": "Can I get a car loan with no down payment?",
-            "a": "Some finance companies offer 100% financing, but rates are higher and approval criteria stricter."
+            "q": "Installment finance vs auto loan?",
+            "a": "With installment finance, a finance company pays the dealer and you repay it over time. With an auto loan you borrow from a bank or card company (or pay by card and split it). Pricing, liens and perks vary by product, so compare total interest for the same amount and term."
+          },
+          {
+            "q": "How much is acquisition tax?",
+            "a": "Non-commercial passenger cars: 7% of the supply value (purchase price ÷ 1.1); compact cars: 4%. Compact cars get up to ₩750,000 exempted, EV/hydrogen cars up to ₩1,400,000 until Dec 31, 2026. Regional bonds, plates and stamp duty are extra."
+          },
+          {
+            "q": "What is a typical car installment rate?",
+            "a": "It varies widely by credit, new vs used, maker promotions and lender, so there is no single number. The legal maximum is 20% per year. Enter the rate on your quote."
+          },
+          {
+            "q": "Can I compare leases or rentals?",
+            "a": "Lease and rental quotes depend on residual value, insurance, taxes and maintenance, so this calculator does not estimate them. Compare the quote's total (monthly fee × months + non-refundable deposit + buyout if any) with the total cost here."
           }
         ]
       }
