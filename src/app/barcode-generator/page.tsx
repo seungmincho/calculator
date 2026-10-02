@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '바코드 생성기 - EAN·CODE128 | 툴허브',
-  description: '다양한 형식의 바코드를 생성하고 다운로드하세요. EAN-13, CODE128, UPC 등 8가지 바코드 형식 지원. 제품 관리, 재고 관리, 이벤트 티켓 제작에 최적화',
+  description: '다양한 형식의 바코드를 생성하고 다운로드하세요. CODE128·EAN-13·EAN-8·UPC-A·CODE39·ITF-14 6가지 형식, 체크디지트 자동 계산, A4 라벨지 대량 인쇄 지원. 제품 관리, 재고 관리, 이벤트 티켓 제작에 최적화',
   keywords: [
     '바코드 생성기',
     'barcode generator',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: '바코드 생성기 | 툴허브',
-    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. EAN-13, CODE128, UPC 등 8가지 바코드 형식 지원',
+    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. CODE128·EAN-13·EAN-8·UPC-A·CODE39·ITF-14 6가지 형식, 체크디지트 자동 계산, A4 라벨지 대량 인쇄 지원',
     type: 'website',
     locale: 'ko_KR',
     siteName: '툴허브',
@@ -47,13 +47,13 @@ export default function BarcodeGeneratorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '바코드 생성기',
-    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. EAN-13, CODE128, UPC 등 8가지 바코드 형식 지원',
+    description: '다양한 형식의 바코드를 생성하고 다운로드하세요. CODE128·EAN-13·EAN-8·UPC-A·CODE39·ITF-14 6가지 형식, 체크디지트 자동 계산, A4 라벨지 대량 인쇄 지원',
     url: 'https://toolhub.ai.kr/barcode-generator',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['EAN-13 바코드', 'CODE128 바코드', 'UPC 바코드', 'CODE39 바코드', '바코드 다운로드']
+    featureList: ['CODE128·EAN-13·EAN-8·UPC-A·CODE39·ITF-14', '체크디지트 자동 계산·검증', '여러 개 붙여넣기(CSV)·일련번호 대량 생성', 'A4 라벨지 인쇄(2×5·3×8 등 칸 수, 여백·간격 조정)', 'PNG·SVG 저장, 이미지 복사', 'GS1 Korea 880 발급 안내']
   }
 
   const faqJsonLd = {
@@ -73,7 +73,7 @@ export default function BarcodeGeneratorPage() {
         name: '바코드를 직접 만들어 상품에 사용할 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '네, 하지만 소매 유통용 EAN-13 바코드를 사용하려면 GS1 Korea(대한상공회의소 유통물류진흥원)에서 업체코드를 발급받아야 합니다. 연회비가 발생하며 업체 규모에 따라 다릅니다. 내부 재고관리나 비유통 목적이라면 CODE128이나 CODE39를 자유롭게 사용할 수 있습니다.'
+          text: '네, 하지만 소매 유통용 EAN-13 바코드를 사용하려면 GS1 Korea(대한상공회의소 유통물류진흥원)에서 업체코드를 발급받아야 합니다. 가입비·연회비는 GS1 Korea(gs1kr.org)에서 확인하세요. 내부 재고관리나 비유통 목적이라면 CODE128이나 CODE39를 자유롭게 사용할 수 있습니다.'
         }
       },
       {
@@ -81,7 +81,7 @@ export default function BarcodeGeneratorPage() {
         name: '바코드가 잘 인식되지 않는 원인은?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '주요 원인: ① 인쇄 해상도 부족 (300dpi 이상 권장) ② 바코드 크기가 너무 작음 (EAN-13 최소 폭 31.35mm) ③ 대비 부족 (검은 바와 흰 배경 필요) ④ 여백(Quiet Zone) 부족 (바코드 양쪽에 최소 5mm 여백) ⑤ 잉크 번짐이나 인쇄 불량. SVG 형식으로 생성하면 해상도 손실 없이 어떤 크기로든 인쇄할 수 있습니다.'
+          text: '주요 원인: ① 인쇄 해상도 부족 (300dpi 이상 권장) ② 바코드 크기가 너무 작음 (EAN-13 표준 100% 크기 약 37.3×25.9mm, 80% 미만 축소 비권장) ③ 대비 부족 (검은 바와 흰 배경 필요) ④ 여백(Quiet Zone) 부족 (가장 가는 바 너비의 약 10배, EAN-13은 왼쪽 11배·오른쪽 7배) ⑤ 잉크 번짐이나 인쇄 불량. SVG 형식으로 생성하면 해상도 손실 없이 어떤 크기로든 인쇄할 수 있습니다.'
         }
       },
     ],
@@ -115,9 +115,9 @@ export default function BarcodeGeneratorPage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>용도별 형식 선택:</strong> 소매 상품은 EAN-13, 물류·재고 관리는 CODE128, 미국·캐나다 유통은 UPC-A, 내부 관리용 문자 포함은 CODE39를 사용하세요.</li>
             <li><strong>SVG 형식 권장:</strong> PNG보다 SVG로 저장하면 확대해도 선명도가 유지되어 라벨 프린터나 인쇄 작업에 적합합니다.</li>
-            <li><strong>여백(Quiet Zone) 확보:</strong> 바코드 스캐너가 정확히 인식하려면 바코드 좌우에 최소 5mm 이상의 흰 여백을 유지해야 합니다.</li>
+            <li><strong>여백(Quiet Zone) 확보:</strong> 바코드 스캐너가 정확히 인식하려면 바코드 좌우에 가장 가는 바 너비의 약 10배(EAN-13은 왼쪽 11배·오른쪽 7배) 이상의 흰 여백을 유지해야 합니다.</li>
             <li><strong>EAN-13 국가 코드:</strong> 한국 제품 바코드의 국가 코드는 880으로 시작합니다. 공식 유통용으로는 GS1 Korea에서 업체 코드를 발급받아야 합니다.</li>
-            <li><strong>인쇄 해상도:</strong> 바코드 인쇄 시 300dpi 이상을 권장하며, 바코드 최소 폭은 EAN-13 기준 31.35mm 이상이 스캔에 안정적입니다.</li>
+            <li><strong>인쇄 해상도:</strong> 바코드 인쇄 시 300dpi 이상을 권장하며, EAN-13은 표준 크기(약 37.3×25.9mm)의 80% 미만으로 줄이지 않는 것이 좋습니다.</li>
           </ul>
         </div>
       </section>

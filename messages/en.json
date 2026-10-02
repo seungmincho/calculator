@@ -8617,8 +8617,123 @@
     }
   },
   "barcodeGenerator": {
+    "u": {
+      "mode": {
+        "label": "Mode",
+        "single": "Single",
+        "bulk": "Bulk",
+        "serial": "Serial"
+      },
+      "rule": {
+        "CODE128": "Letters, digits and symbols (up to 80 characters, no Korean). The safest choice for inventory, asset and shipping labels.",
+        "EAN13": "Enter 12 digits and the check digit is added automatically. Enter 13 digits to verify the check digit.",
+        "EAN8": "7 digits (check digit added) or 8 digits. For small packages.",
+        "UPC": "11 digits (check digit added) or 12 digits. US/Canada retail.",
+        "CODE39": "Uppercase A–Z, digits and - . space $ / + % only. Lowercase is converted to uppercase.",
+        "ITF14": "13 digits (check digit added) or 14 digits. Case/carton-level logistics code (GTIN-14)."
+      },
+      "value": {
+        "label": "Barcode value"
+      },
+      "err": {
+        "empty": "Enter a barcode value",
+        "digits": "{name} accepts digits only",
+        "length": "{name}: enter {a} or {b} digits (currently {len})",
+        "check": "The check digit is wrong. The correct number is {expected}",
+        "ascii": "CODE128 accepts letters, digits and symbols only (no Korean or emoji)",
+        "code39": "Contains characters CODE39 cannot encode (A–Z, 0–9, - . space $ / + % only)",
+        "tooLong": "Enter {max} characters or fewer"
+      },
+      "fix": "Fix",
+      "added": "Check digit calculated: {d} → {value}",
+      "prefix": {
+        "kr": "880 is the GS1 prefix assigned to Korea. Only numbers built from a company prefix issued by GS1 Korea can be used in retail.",
+        "isbn": "Numbers starting with 978/979 are book ISBNs. In Korea, ISBNs are issued by the National Library of Korea (Korean Library Information Center)."
+      },
+      "bulk": {
+        "label": "Code list",
+        "hint": "One per line. Text after a comma or tab is printed as the label caption (you can paste two columns from Excel). Up to {max}.",
+        "over": "Lines beyond {max} were skipped.",
+        "sample": "A-0001,Black pen\nA-0002,Red pen\nA-0003,A5 notebook\nA-0004,Yellow highlighter"
+      },
+      "serial": {
+        "prefix": "Prefix",
+        "start": "Start",
+        "count": "Count",
+        "pad": "Digits (zero-pad)",
+        "range": "{first} ~ {last}",
+        "hint": "Make it {n} digits including the prefix and the check digit is added automatically."
+      },
+      "opts": {
+        "title": "Appearance",
+        "width": "Bar width",
+        "height": "Height",
+        "margin": "Margin (quiet zone)",
+        "fontSize": "Font size",
+        "showText": "Show human-readable text",
+        "bar": "Bar color",
+        "bg": "Background",
+        "px": "{v}px"
+      },
+      "warn": {
+        "inverted": "Bars are lighter than the background. Most scanners only read dark bars on a light background.",
+        "low": "Low contrast ({ratio}:1). Red or orange bars are nearly invisible to red-light scanners. Black on white is recommended."
+      },
+      "preview": {
+        "title": "Preview",
+        "aria": "{format} barcode: {value}",
+        "empty": "Enter a valid value to see the barcode"
+      },
+      "dl": {
+        "png": "Save PNG",
+        "svg": "Save SVG",
+        "copy": "Copy image",
+        "print": "Print labels"
+      },
+      "status": {
+        "png": "PNG saved (3× resolution)",
+        "svg": "SVG saved",
+        "copied": "Barcode image copied",
+        "copyFail": "This browser can't copy images. Use Save PNG instead."
+      },
+      "list": {
+        "count": "{n} barcodes",
+        "errors": "{n} lines need attention",
+        "row": "Line {n} \"{code}\": {msg}",
+        "more": "and {n} more",
+        "next": "Pick a label layout below and print."
+      },
+      "gs1": {
+        "title": "Retail product barcodes need an issued number",
+        "body": "GS1 barcodes (EAN-13, EAN-8, UPC-A, ITF-14) on products sold in stores or online must be built from a company prefix assigned to a GS1 member. Korean companies get theirs from GS1 Korea (Korea Chamber of Commerce and Industry). A made-up 880 number may collide with another company's product and can't be used for retail. For internal inventory, supplies or asset tracking, CODE128 is recommended.",
+        "link": "GS1 Korea barcode registration",
+        "useCode128": "Switch to CODE128"
+      },
+      "sheet": {
+        "title": "A4 label sheet",
+        "preset": "Common label layouts (columns×rows)",
+        "presetItem": "{c}×{r} ({n} labels)",
+        "cols": "Columns",
+        "rows": "Rows",
+        "skip": "Skip labels",
+        "top": "Top/bottom margin",
+        "side": "Side margin",
+        "gapX": "Horizontal gap",
+        "gapY": "Vertical gap",
+        "mm": "mm",
+        "copies": "Label count",
+        "copiesHint": "Leave empty to fill one sheet ({n} labels)",
+        "showLabel": "Print captions (second column of the list)",
+        "size": "Each label {w} × {h} mm",
+        "pages": "{n} A4 sheets · {count} labels",
+        "invalid": "Margins or gaps are too large to fit labels. Reduce them.",
+        "previewAria": "Preview of the first A4 label sheet ({c} columns, {r} rows)",
+        "print": "Print label sheet ({n} pages)",
+        "note": "Match the label size above with the size and margins printed on your label pack. In the print dialog, set scale to 100% (actual size), margins to none, and turn off headers/footers. Test on plain paper and hold it against the label sheet first. For a partly used sheet, enter the used count in Skip labels."
+      }
+    },
     "title": "Barcode Generator",
-    "description": "Generate and download various barcode formats. Perfect for product management, inventory control, event tickets, and more.",
+    "description": "Create barcodes for products, inventory and assets for free. CODE128, EAN-13, EAN-8, UPC-A, CODE39, ITF-14 with automatic check digits, bulk and serial generation, A4 label sheet printing, PNG and SVG download.",
     "input": {
       "title": "Barcode Information",
       "data": "Barcode Data",
@@ -8641,12 +8756,12 @@
       "barcodeAlignRight": "Right Align"
     },
     "formats": {
-      "CODE128": "CODE128 (Universal)",
-      "CODE39": "CODE39 (Alphanumeric)",
-      "EAN13": "EAN-13 (Product Code)",
-      "EAN8": "EAN-8 (Small Product)",
-      "UPC": "UPC (North America)",
-      "ITF14": "ITF-14 (Logistics)",
+      "CODE128": "CODE128 (general / inventory)",
+      "CODE39": "CODE39 (uppercase & digits)",
+      "EAN13": "EAN-13 (retail products)",
+      "EAN8": "EAN-8 (small products)",
+      "UPC": "UPC-A (North America)",
+      "ITF14": "ITF-14 (shipping cartons)",
       "MSI": "MSI (Inventory)",
       "pharmacode": "Pharmacode (Pharmaceutical)"
     },
@@ -8722,7 +8837,38 @@
       }
     },
     "guide": {
-      "title": "Barcode Generation Guide",
+      "howItWorks": {
+        "title": "How the Check Digit Works",
+        "items": [
+          "The last digit of EAN-13, EAN-8, UPC-A and ITF-14 is a check digit computed from the others, so a single misread digit is rejected by the scanner.",
+          "Formula: starting from the digit just left of the check digit, multiply by 3, 1, 3, 1… moving left, add everything up, and subtract (sum mod 10) from 10. If the remainder is 0, the check digit is 0.",
+          "Example: 400638133393 → weighted sum 89 → 10 − 9 = 1 → 4006381333931",
+          "CODE128 embeds its own checksum character automatically, so you never add a check digit yourself.",
+          "2D codes like QR are not generated here. Use the QR code generator."
+        ]
+      },
+      "realWorld": {
+        "title": "Use Cases",
+        "items": [
+          "Store and warehouse inventory: CODE128 labels (e.g. A-0001) scanned at receiving and shipping",
+          "Office or school assets: print a serial range (ASSET-0001…) on label sheets in one go",
+          "Retail products: build EAN-13 numbers from a GS1 Korea company prefix and print on packaging",
+          "Shipping cartons: ITF-14 printed on the outside of the box",
+          "Library or equipment lending, event ticket numbers, internal parcel tracking"
+        ]
+      },
+      "comparison": {
+        "title": "Format Comparison",
+        "items": [
+          "CODE128 — letters, digits and symbols; the most compact for the same content. Default for internal use",
+          "CODE39 — uppercase, digits and a few symbols; longer than CODE128 for the same content. Legacy compatibility",
+          "EAN-13 — 13 digits, the global retail standard (Korea 880). Retail use requires an issued GS1 number",
+          "EAN-8 — 8 digits, for packages too small for EAN-13 (separate application to GS1 Korea)",
+          "UPC-A — 12 digits, US/Canada retail. North American scanners also read EAN-13, so Korean products usually keep EAN-13",
+          "ITF-14 — 14 digits, for cartons and other logistics units. Thick bars survive rough printing surfaces"
+        ]
+      },
+      "title": "Barcode Generator Guide",
       "description": "Characteristics and usage of different barcode types",
       "formats": {
         "title": "Barcode Format Guide",
@@ -8758,7 +8904,14 @@
         }
       },
       "tips": {
-        "title": "Barcode Usage Tips",
+        "items": [
+          "Keep the quiet zone. Leave about 10× the narrowest bar width of blank space on each side (EAN-13: 11× left, 7× right) so scanners find the start and end.",
+          "Black bars on white read best. Red or orange bars, dark backgrounds and inverted (white) bars may fail.",
+          "EAN-13 at 100% is about 37.3 × 25.9 mm including quiet zones. Shrinking below 80% or cutting the height reduces read rates.",
+          "Use SVG or the 3× PNG for print; label and thermal printers should be 300 dpi or higher.",
+          "Before a large print run, print one sheet and test it with a scanner or phone app."
+        ],
+        "title": "Printing & Scanning Tips",
         "printing": {
           "title": "Printing Guide",
           "content": "Print barcodes at minimum 2cm width with clear contrast"
@@ -8774,31 +8927,44 @@
       },
       "whatIs": {
         "title": "What is the Barcode Generator?",
-        "description": "A free online tool for generating various barcode formats — CODE128, EAN-13, EAN-8, UPC-A, QR code, and more. Create barcodes instantly for product management, inventory, event tickets, library books, and other applications, then download them in PNG or SVG format."
+        "description": "A free in-browser tool for 1D barcodes used on product, inventory, asset and shipping labels. It supports CODE128, EAN-13, EAN-8, UPC-A, CODE39 and ITF-14 and calculates EAN/UPC/ITF-14 check digits automatically. Save a single barcode as PNG or SVG, or print many (or a serial range) on A4 label sheets. Everything runs in your browser; nothing is sent to a server."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select the barcode format (CODE128, EAN-13, EAN-8, UPC-A, etc.).",
-          "2. Enter the data to encode in the barcode.",
-          "3. Configure options such as width, height, color, and whether to display the human-readable text.",
-          "4. Preview the barcode and download it as a PNG or SVG file."
+          "Pick a format. Use CODE128 for internal inventory and EAN-13 (with an issued number) for retail products.",
+          "Enter one value, paste two columns (code, name) from Excel for many, or generate a serial range (prefix + start + count).",
+          "Adjust bar width, height, margin, font size and colors. You'll be warned if contrast is too low.",
+          "Save a single barcode as PNG (3× resolution) or SVG, or copy the image into a document.",
+          "Match the label layout (e.g. 3×8), margins and gaps, then press Print label sheet. Keep print scale at 100%."
         ]
       },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "What data do I need to create an EAN-13 barcode?",
-            "a": "EAN-13 consists of 13 digits. The first 3 are the country code (Korea: 880), the next 4–6 are the company code, the rest are the product code, and the final digit is a check digit. Official GS1 code registration is required."
+            "q": "Can I make my own barcode and sell products with it?",
+            "a": "Internal-use barcodes are fine, but EAN-13 numbers for retail (supermarkets, convenience stores, online malls) must be built from a company prefix issued by GS1 Korea. A made-up 880 number may collide with another company's product and can't be used for listing or distribution. Check fees at gs1kr.org."
           },
           {
-            "q": "Can the generated barcode be read by a scanner?",
-            "a": "Yes — the generated barcodes can be read by standard barcode scanners and smartphone camera apps. We recommend doing a scan test after printing."
+            "q": "How do I add the EAN-13 check digit?",
+            "a": "Enter only the first 12 digits and the 13th is calculated for you. If you enter 13 digits, the last digit is verified and, if wrong, the correct number is shown with a Fix button."
           },
           {
-            "q": "Which format should I download — SVG or PNG?",
-            "a": "Use SVG for print materials where scalability matters; use PNG for web or general documents. Label printer software typically has better PNG support."
+            "q": "Does starting with 880 mean made in Korea?",
+            "a": "No. 880 means the number was issued by GS1 Korea, not the country of origin. Products made abroad by Korean companies can also start with 880."
+          },
+          {
+            "q": "Can a barcode contain Korean text?",
+            "a": "1D barcodes such as CODE128 hold only letters, digits and symbols. Print Korean product names as captions (second column in Bulk mode) under the barcode, or use a QR code if the text itself must be encoded."
+          },
+          {
+            "q": "My labels are misaligned when printed.",
+            "a": "Set scale to Actual size (100%), margins to None and disable headers/footers in the print dialog. If it's still off, enter the top margin, side margin and gaps from your label pack, test on plain paper and adjust in 1 mm steps."
+          },
+          {
+            "q": "Should I save as SVG or PNG?",
+            "a": "Use SVG for print and design tools (Illustrator, Figma), since it stays sharp at any size; use PNG for documents, spreadsheets and shop images. PNG is saved at 3× the preview resolution."
           }
         ]
       }
