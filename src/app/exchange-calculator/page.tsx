@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
-  description: '실시간 환율로 원화·달러·유로·엔화·위안 등 주요 통화를 즉시 환산합니다. 해외여행, 직구, 해외송금 전 환전 금액을 미리 계산하세요.',
+  description: '최신 환율(매일 갱신)로 달러·엔화·유로·위안 등 18개 통화를 즉시 환산합니다. 현찰 살 때·송금 보낼 때 환율, 환율 우대 90% 적용 금액, 여행 예산 환산까지 계산하세요.',
   keywords: '환율계산기, 환전계산기, 실시간환율, 달러환율, 엔화환율, 유로환율, 원화환전, 환율변환, 통화계산기',
   openGraph: {
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
-    description: '원화·달러·유로·엔화 등 주요 통화를 실시간 환율로 즉시 환산',
+    description: '달러·엔화·유로 등 18개 통화 환산, 현찰·송금 환율과 환율 우대 적용 금액',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/exchange-calculator',
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
-    description: '원화·달러·유로·엔화 등 주요 통화를 실시간 환율로 즉시 환산',
+    description: '달러·엔화·유로 등 18개 통화 환산, 현찰·송금 환율과 환율 우대 적용 금액',
     images: ['https://toolhub.ai.kr/og/exchange-calculator.png'],
   },
   alternates: {
@@ -37,7 +37,7 @@ export default function ExchangeCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '환율 계산기',
-    description: '실시간 환율 데이터를 사용하여 정확한 환전 금액을 계산하는 도구',
+    description: '매일 갱신되는 환율로 현찰·송금·우대 적용 환전 금액을 계산하는 도구',
     url: 'https://toolhub.ai.kr/exchange-calculator',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Web',
@@ -47,9 +47,12 @@ export default function ExchangeCalculatorPage() {
       priceCurrency: 'KRW'
     },
     featureList: [
-      '실시간 환율 계산',
-      '12개 주요 통화 지원',
-      '환율 히스토리',
+      '최신 환율 계산(매일 갱신)',
+      '18개 통화 지원',
+      '현찰·송금 환율 계산',
+      '환율 우대 적용 금액',
+      '여행 예산 다중 통화 환산',
+      '양방향 입력',
       '통화 변환',
       '환전 수수료 안내'
     ]
@@ -64,7 +67,7 @@ export default function ExchangeCalculatorPage() {
         name: '환전할 때 매매기준율과 현찰매도율의 차이는 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '매매기준율은 은행 간 거래 기준 환율이고, 현찰매도율은 고객에게 외화를 팔 때 적용하는 환율입니다. 현찰매도율에는 1.5~2% 수준의 환전 수수료(스프레드)가 포함되어 있어 매매기준율보다 높습니다. 송금 시에는 전신환매도율이 적용되어 수수료가 더 낮습니다.',
+          text: '매매기준율은 은행 간 거래 기준 환율이고, 현찰매도율은 고객에게 외화를 팔 때 적용하는 환율입니다. 현찰매도율에는 환전 수수료(스프레드)가 포함되어(주요 통화 기준 대략 1.75~2%, 통화별로 다름) 있어 매매기준율보다 높습니다. 송금 시에는 전신환매도율이 적용되어 수수료가 더 낮습니다.',
         },
       },
       {
@@ -72,7 +75,7 @@ export default function ExchangeCalculatorPage() {
         name: '환전 수수료를 줄이는 방법이 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '인터넷뱅킹/모바일뱅킹으로 환전하면 50~90% 환율 우대를 받을 수 있습니다. 또한 환율 우대쿠폰 사용, 거래실적에 따른 우대, 대량 환전 시 협상 등의 방법이 있습니다. 시중은행보다 공항 환전소가 수수료가 높으므로 미리 환전하는 것이 유리합니다.',
+          text: '은행 앱·인터넷뱅킹 환전 신청, 환율 우대쿠폰, 거래실적 우대 등으로 스프레드의 일부(많게는 90% 이상)를 깎을 수 있습니다. 우대율은 은행·통화·시기마다 다르니 이 계산기의 우대율을 바꿔 가며 절약액을 비교해 보세요. 공항에서 급하게 환전하면 우대를 받기 어려운 경우가 많아 미리 신청해 두는 편이 유리합니다.',
         },
       },
       {
@@ -90,11 +93,11 @@ export default function ExchangeCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: '환율 계산하는 방법',
-    description: '통화를 선택하고 금액을 입력하면 실시간 환율로 환전 금액을 계산합니다.',
+    description: '통화를 선택하고 외화 또는 원화 금액을 입력하면 환전 금액을 계산합니다.',
     step: [
-      { '@type': 'HowToStep', name: '통화 선택', text: '변환할 출발 통화(예: KRW)와 도착 통화(예: USD)를 선택합니다.' },
-      { '@type': 'HowToStep', name: '금액 입력', text: '환전하려는 금액을 입력합니다. 실시간 환율이 자동으로 적용됩니다.' },
-      { '@type': 'HowToStep', name: '환전 결과 확인', text: '환전 금액과 적용 환율, 환전 수수료 정보를 확인합니다.' },
+      { '@type': 'HowToStep', name: '통화 선택', text: '환전할 외화(예: USD, JPY)를 빠른 선택 버튼이나 목록에서 고릅니다.' },
+      { '@type': 'HowToStep', name: '금액 입력', text: '외화 칸이나 원화 칸 중 아무 곳에 금액을 입력하면 반대쪽이 자동으로 계산됩니다.' },
+      { '@type': 'HowToStep', name: '환전 결과 확인', text: '매매기준율 환산 금액과 현찰·송금·환율 우대 적용 금액을 확인합니다.' },
     ],
   }
 
@@ -128,15 +131,15 @@ export default function ExchangeCalculatorPage() {
             환율 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            환율 계산기는 실시간 환율 데이터를 기반으로 원화(KRW), 미국 달러(USD), 유로(EUR), 일본 엔(JPY) 등 주요 통화 간 환전 금액을 정확하게 계산하는 도구입니다. 해외여행 전 환전 금액 예측, 해외 직구 시 실제 원화 금액 확인, 외화 송금 계획 수립 등에 활용할 수 있습니다. 환율 우대율과 수수료 정보도 함께 제공하여 가장 유리한 환전 방법을 찾을 수 있습니다.
+            환율 계산기는 매일 갱신되는 환율 데이터를 기반으로 원화(KRW), 미국 달러(USD), 유로(EUR), 일본 엔(JPY) 등 주요 통화 간 환전 금액을 정확하게 계산하는 도구입니다. 해외여행 전 환전 금액 예측, 해외 직구 시 실제 원화 금액 확인, 외화 송금 계획 수립 등에 활용할 수 있습니다. 환율 우대율과 수수료 정보도 함께 제공하여 가장 유리한 환전 방법을 찾을 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             환율 계산기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>환전 수수료 비교:</strong> 공항 환전소보다 시중은행 인터넷뱅킹이 50~90% 환율 우대를 받을 수 있어 유리합니다. 환전 금액이 클수록 우대율 차이가 큰 영향을 미칩니다.</li>
+            <li><strong>환전 수수료 비교:</strong> 은행 앱으로 미리 환전 신청하면 환율 우대를 받기 쉽습니다. 환전 금액이 클수록 우대율 차이가 큰 영향을 미칩니다.</li>
             <li><strong>분할 환전 전략:</strong> 환율 변동이 클 때는 한 번에 모두 환전하지 않고 여러 번에 나눠 환전하면 평균 환율로 위험을 분산할 수 있습니다.</li>
-            <li><strong>해외 직구 계산:</strong> 상품 가격에 현재 환율을 곱하고 관세(일반 8%)와 부가세(10%)를 추가하면 실제 수령 비용을 예측할 수 있습니다. 150달러 이하 면세 한도도 확인하세요.</li>
+            <li><strong>해외 직구 계산:</strong> 상품 가격에 현재 환율을 곱하면 원화 금액을 알 수 있습니다. 면세 한도(목록통관 기준 미국발 200달러, 그 외 150달러)를 넘으면 품목별 관세와 부가세가 붙으니 관세청 기준을 확인하세요.</li>
             <li><strong>외화 통장 활용:</strong> 환율이 낮을 때 외화 통장에 미리 달러를 사두면 환율 상승 시 환차익을 얻거나 해외여행 시 유리한 환율로 활용할 수 있습니다.</li>
           </ul>
         </div>

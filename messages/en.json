@@ -41438,49 +41438,183 @@
     }
   },
   "exchangeRateCalculator": {
+    "title": "Exchange Rate Calculator",
+    "description": "Convert dollars, yen, euros, yuan, dong and more to Korean won, and see what you actually pay at a bank (cash buy/sell, wire transfer, preferential rate).",
+    "won": " KRW",
+    "in": {
+      "currency": "Currency",
+      "foreign": "Foreign currency ({name})",
+      "swap": "Swap input direction",
+      "krw": "Korean won",
+      "bothHint": "Type in either field and the other one is calculated.",
+      "pref": "Preferential rate",
+      "prefCustom": "Custom preferential rate",
+      "cash": "Cash spread",
+      "wire": "Wire spread",
+      "spreadHint": "The spread is the gap (%) between the base rate and the cash/wire rate. The {code} defaults (cash {cash}%, wire {wire}%) are rough typical levels at Korean banks. They vary by bank and time, so adjust them using your bank's posted rates."
+    },
+    "src": {
+      "updated": "Rates as of {time} (updated once a day)",
+      "loading": "Loading exchange rates…",
+      "by": "Source: ExchangeRate-API",
+      "refresh": "Refresh",
+      "cached": "Could not load the latest rates. Using rates saved on this device as of {time}.",
+      "error": "Could not load exchange rates. Check your connection and press Refresh.",
+      "noCurrency": "No rate available for {code}. Please choose another currency."
+    },
+    "res": {
+      "label": "{input} converted (base rate)",
+      "base": "Base rate {unit} = {rate} KRW · may differ from bank base rates",
+      "baseShort": "Base rate {unit}",
+      "prefShort": "{p}% preferential",
+      "savedKrw": "A {p}% preferential rate saves you {v} KRW when buying cash.",
+      "savedForeign": "A {p}% preferential rate gets you {v} more when buying cash."
+    },
+    "share": {
+      "sub": "Base rate · {time}"
+    },
+    "bank": {
+      "title": "What you actually get at a bank",
+      "introF": "Korean won you pay or receive when trading {input} at bank rates.",
+      "introK": "Foreign currency you get or need when trading {input} at bank rates.",
+      "kind": "Type",
+      "rate": "Rate ({unit}, KRW)",
+      "noPref": "No discount",
+      "base": "Base rate",
+      "baseDesc": "Reference rate without fees",
+      "cashBuy": "Cash buy",
+      "cashSell": "Cash sell",
+      "wireSend": "Wire send",
+      "wireRecv": "Wire receive",
+      "desc": {
+        "f": {
+          "cashBuy": "KRW you pay to buy foreign cash",
+          "cashSell": "KRW you get for selling foreign cash",
+          "wireSend": "KRW needed to send money abroad",
+          "wireRecv": "KRW you get from an incoming transfer"
+        },
+        "k": {
+          "cashBuy": "Foreign cash this KRW buys",
+          "cashSell": "Foreign cash to sell to get this KRW",
+          "wireSend": "Foreign amount this KRW can send abroad",
+          "wireRecv": "Incoming foreign amount needed for this KRW"
+        }
+      },
+      "note": "Estimates based on a {cash}% cash spread and a {wire}% wire spread. The preferential rate only discounts the spread (fee) part. Overseas transfers may also carry separate transfer, cable and intermediary bank fees."
+    },
+    "budget": {
+      "title": "Travel budget converter",
+      "desc": "See how far a KRW budget goes in each currency. Cash amounts use each currency's default spread with a {p}% preferential rate. Tap a row to switch the calculator above to that currency.",
+      "input": "Budget in KRW",
+      "currency": "Currency",
+      "base": "Base rate",
+      "mid": "At base rate",
+      "cash": "Cash exchange ({p}% pref.)",
+      "note": "Minor currencies such as the Vietnamese dong or Thai baht have cash spreads that vary widely between banks and branches, so check your bank's posted rates before exchanging."
+    },
+    "disclaimer": "Rates come from ExchangeRate-API and are updated once a day. They may differ from the base rates Korean banks post several times a day. Cash and wire amounts are estimates from the spread and preferential rate you enter; actual amounts follow your bank's posted rates and fees.",
+    "links": {
+      "title": "Related tools",
+      "worldClock": "World clock",
+      "dutchPay": "Dutch pay calculator",
+      "stock": "Stock return calculator"
+    },
+    "cur": {
+      "USD": "US dollar",
+      "JPY": "Japanese yen",
+      "EUR": "Euro",
+      "CNY": "Chinese yuan",
+      "VND": "Vietnamese dong",
+      "THB": "Thai baht",
+      "TWD": "Taiwan dollar",
+      "PHP": "Philippine peso",
+      "HKD": "Hong Kong dollar",
+      "GBP": "British pound",
+      "AUD": "Australian dollar",
+      "CAD": "Canadian dollar",
+      "SGD": "Singapore dollar",
+      "CHF": "Swiss franc",
+      "NZD": "New Zealand dollar",
+      "IDR": "Indonesian rupiah",
+      "MYR": "Malaysian ringgit",
+      "MNT": "Mongolian tugrik"
+    },
     "guide": {
-      "title": "Exchange Rate Calculator Guide",
+      "howItWorks": {
+        "title": "Rate types and how they are calculated",
+        "items": [
+          "Base rate: the reference rate a bank uses for buying and selling currency. Actual trades use this rate plus or minus the bank's margin (spread).",
+          "Cash buy/sell: buying foreign cash uses base × (1 + spread), selling uses base × (1 − spread). Cash costs money to store and ship, so its spread is the largest.",
+          "Wire send/receive (telegraphic transfer): used for account transfers, with a smaller spread than cash. Overseas transfers may add transfer, cable and intermediary bank fees on top.",
+          "Preferential rate: a discount on the spread. With 90%, you pay only 10% of the spread. E.g. base 1,300 KRW, spread 1.75% → 1,322.75 KRW without discount, 1,302.28 KRW with 90%.",
+          "Korean banks quote JPY, VND and IDR per 100 units, so this tool shows them per 100 as well."
+        ]
+      },
+      "comparison": {
+        "title": "Cash vs wire transfer vs card payment",
+        "items": [
+          "Cash exchange: uses the cash buy rate. Ordering through a bank app and picking up at a branch or the airport often gets a high preferential rate. Converting back uses the cash sell rate, so you pay the spread twice on a round trip.",
+          "Overseas transfer: the wire rate is better than the cash rate, but check per-transfer fees, cable fees and intermediary bank fees too.",
+          "Card payments abroad: the local amount is converted to US dollars by the card network (Visa, Mastercard, etc.), then the card issuer converts it to KRW at the rate on the purchase settlement date and adds network and overseas usage fees. Because the settlement date rate applies, the bill can differ from what you expected at checkout.",
+          "Beware of DCC (paying in KRW abroad): the merchant side adds its own conversion fee, so it is usually more expensive. Pay in local currency and turn on your card issuer's overseas KRW payment block."
+        ]
+      },
+      "realWorld": {
+        "title": "When to use it",
+        "items": [
+          "Estimating how much to exchange before a trip and how much a preferential rate saves",
+          "Checking overseas shopping prices (USD, JPY, EUR) in KRW",
+          "Estimating the KRW needed for overseas transfers such as tuition or living costs",
+          "Seeing how much leftover foreign cash is worth when converted back",
+          "Splitting a KRW budget across currencies for multi-country trips"
+        ]
+      },
+      "title": "Exchange rate guide",
       "whatIs": {
-        "title": "What is the Exchange Rate Calculator?",
-        "description": "A real-time currency converter supporting 12 major world currencies including USD, EUR, JPY, GBP, and CNY. Use it for travel budgets, international remittances, or trade payments."
+        "title": "What is this calculator?",
+        "description": "It converts between foreign currencies and Korean won, and shows the rates a bank actually applies (cash buy/sell, wire send/receive) along with the effect of a preferential rate. Market rates come from ExchangeRate-API, updated once a day, and the timestamp is shown."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Click 'Refresh Rates' to load the latest exchange rate data.",
-          "2. Enter the amount and select source and target currencies.",
-          "3. The converted amount is displayed immediately with reverse conversion.",
-          "4. Save results or share via URL for later reference."
+          "Tap a currency button (USD, JPY, EUR, CNY, VND, THB) or pick one from the list.",
+          "Type the amount you know in either the foreign or the KRW field; the other is calculated instantly.",
+          "Choose your bank's preferential rate (e.g. 90% via app) and adjust the cash/wire spreads to your bank's posted rates for better accuracy.",
+          "Compare cash and wire amounts with and without the preferential rate in the bank table.",
+          "Enter a KRW budget in the travel table to convert it into many currencies at once, and share the result as an image or link."
         ]
       },
       "tips": {
-        "title": "Pro Tips",
+        "title": "Tips to cut exchange costs",
         "items": [
-          "Airport exchange charges 3–5% — the most expensive. Apply for online bank exchange (0.5–1.5%) before your trip.",
-          "Japanese yen has large nominal values. Pre-convert JPY prices to your currency to gauge actual costs.",
-          "Combine a small amount of cash with a no-foreign-fee credit card for cost-effective overseas spending.",
-          "Rate volatility spikes after central bank decisions and economic data releases — time conversions carefully.",
-          "Keep exchange receipts on business trips for tax reporting and expense reimbursement."
+          "Ordering currency through a bank app often gets a higher preferential rate than exchanging at the counter. Choose the pickup place (branch or airport) in advance.",
+          "Exchanging and re-exchanging means paying the spread twice. Convert only the cash you need and use a card for the rest.",
+          "Korean banks tend to charge large spreads on minor currencies (dong, baht, peso), so compare with taking US dollars and exchanging locally. Check local exchange rates too.",
+          "Many banks do not accept foreign coins or buy them at worse rates than notes, so spend them before you leave."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
+            "q": "Why does this rate differ from my bank's rate?",
+            "a": "This tool uses market rates from ExchangeRate-API, updated once a day. Bank base rates are posted several times a day based on the FX market, so they differ depending on timing. Check your bank's posted rates for exact amounts."
+          },
+          {
+            "q": "Does a 90% preferential rate cut the fee by 90%?",
+            "a": "It cuts 90% of the spread (bank margin) built into the rate. With a 1,300 KRW base rate and a 1.75% cash spread, you buy dollars at 1,322.75 KRW without a discount and at 1,302.28 KRW with 90%. Separate fees such as transfer fees are not affected."
+          },
+          {
+            "q": "Why do cash and wire rates differ?",
+            "a": "Cash requires storage, transport and insurance, so banks add a larger spread. Wire transfers move between accounts with a smaller spread, though transfer and cable fees may apply separately."
+          },
+          {
+            "q": "Why is the yen shown per 100?",
+            "a": "Korean banks quote small-unit currencies such as the yen, Vietnamese dong and Indonesian rupiah per 100 units. If 100 yen is 900 KRW, 1 yen is 9 KRW."
+          },
+          {
             "q": "How often are rates updated?",
-            "a": "Rates are fetched from an external API each time you click Refresh. On weekends and holidays, the previous business day's closing rate is used."
-          },
-          {
-            "q": "Where is the cheapest exchange?",
-            "a": "Online bank exchange (mobile apps) at 0.5–1.5% is cheapest. Bank branches charge 1.5–3%, airports 3–5%."
-          },
-          {
-            "q": "What factors influence exchange rates?",
-            "a": "Interest rates, GDP growth, inflation, trade balances, and political instability. US Fed rate decisions particularly impact most currencies."
-          },
-          {
-            "q": "Are HKD and CNY the same currency?",
-            "a": "No. HKD is Hong Kong's currency, CNY is mainland China's. They are traded separately with different exchange rates."
+            "a": "Market data is updated once a day, and the timestamp is shown on screen. If loading fails, the calculator uses the last rates saved on this device and tells you so."
           }
         ]
       }

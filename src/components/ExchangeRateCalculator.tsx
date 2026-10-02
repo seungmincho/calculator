@@ -1,497 +1,386 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { ArrowUpDown, Globe, TrendingUp, Calculator, Share2, Check, RefreshCw, Save } from 'lucide-react';
-import { useCalculationHistory } from '@/hooks/useCalculationHistory';
-import CalculationHistory from '@/components/CalculationHistory';
-import GuideSection from '@/components/GuideSection';
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
+import { ArrowUpDown, RefreshCw, ChevronRight } from 'lucide-react'
+import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  CURRENCIES, CODES, BANK_KEYS, currency, krwPer, bankRates, budgetRows, parseCache,
+  type RateCache,
+} from '@/utils/exchangeRate'
 
-interface ExchangeRate {
-  [key: string]: number;
+type Side = 'f' | 'k'
+type Status = 'loading' | 'live' | 'cache' | 'error'
+
+const API = 'https://open.er-api.com/v6/latest/USD'
+const CACHE_KEY = 'toolhub-fx-rates'
+const QUICK = ['USD', 'JPY', 'EUR', 'CNY', 'VND', 'THB']
+const PREFS = [0, 50, 80, 90, 100]
+const LINKS = [
+  { key: 'worldClock', href: '/world-clock' },
+  { key: 'dutchPay', href: '/dutch-pay' },
+  { key: 'stock', href: '/stock-calculator' },
+]
+
+const num = (s: string) => parseFloat(String(s).replace(/,/g, '')) || 0
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const fx = (n: number, dec: number) => n.toLocaleString('ko-KR', { minimumFractionDigits: dec, maximumFractionDigits: dec })
+const rate2 = (n: number) => fx(n, 2)
+const isDecimal = (s: string) => /^\d*\.?\d*$/.test(s)
+/** 입력 칸 서식: 콤마 + (허용 시) 소수 2자리 */
+const fmtIn = (s: string, dec: boolean) => {
+  let v = s.replace(/[^\d.]/g, '')
+  if (!dec) v = v.replace(/\./g, '')
+  const [i, ...r] = v.split('.')
+  const int = i ? Number(i.slice(0, 15)).toLocaleString('ko-KR') : r.length ? '0' : ''
+  return r.length ? `${int}.${r.join('').slice(0, 2)}` : int
 }
+const pctParam = (v: string | null, d: number) => (v !== null && v !== '' && isDecimal(v) ? v : String(d))
 
-interface CurrencyInfo {
-  code: string;
-  name: string;
-  symbol: string;
-  flag: string;
-}
+export default function ExchangeRateCalculator() {
+  const t = useTranslations('exchangeRateCalculator')
+  const sp = useSearchParams()
 
-const ExchangeRateCalculatorContent = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [amount, setAmount] = useState('1');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('KRW');
-  const [exchangeRates, setExchangeRates] = useState<ExchangeRate>({});
-  const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [result, setResult] = useState<number | null>(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [showSaveButton, setShowSaveButton] = useState(false);
+  // 예전 공유 링크(amount·from·to)도 복원: KRW→외화면 원화 입력, 외화→* 면 외화 입력
+  const legacy = (() => {
+    const from = sp.get('from'), to = sp.get('to'), amount = sp.get('amount')
+    if (!amount || !isDecimal(amount)) return null
+    if (from === 'KRW' && to && CODES.includes(to)) return { c: to, s: 'k' as Side, a: amount }
+    if (from && CODES.includes(from)) return { c: from, s: 'f' as Side, a: amount }
+    return null
+  })()
+  const initCode = legacy?.c ?? (CODES.includes(sp.get('c') ?? '') ? sp.get('c')! : 'USD')
+  const initCur = currency(initCode)
 
-  // 계산 이력 관리
-  const {
-    histories,
-    isLoading: historyLoading,
-    saveCalculation,
-    removeHistory,
-    clearHistories,
-    loadFromHistory
-  } = useCalculationHistory('exchange');
+  const [code, setCode] = useState(initCode)
+  const [side, setSide] = useState<Side>(() => legacy?.s ?? (sp.get('s') === 'k' ? 'k' : 'f'))
+  const [amtText, setAmtText] = useState(() => {
+    const a = legacy?.a ?? sp.get('a')
+    const s = legacy?.s ?? (sp.get('s') === 'k' ? 'k' : 'f')
+    return a && isDecimal(a) ? fmtIn(a, s === 'f' && initCur.dec > 0) : s === 'k' ? '1,000,000' : '100'
+  })
+  const [cashText, setCashText] = useState(() => pctParam(sp.get('cs'), initCur.cash))
+  const [wireText, setWireText] = useState(() => pctParam(sp.get('ws'), initCur.wire))
+  const [prefText, setPrefText] = useState(() => pctParam(sp.get('p'), 90))
+  const [budgetText, setBudgetText] = useState(() => fmtIn(sp.get('b') && isDecimal(sp.get('b')!) ? sp.get('b')! : '1000000', false))
+  const [data, setData] = useState<RateCache | null>(null)
+  const [status, setStatus] = useState<Status>('loading')
 
-  // 주요 통화 정보
-  const currencies: CurrencyInfo[] = [
-    { code: 'KRW', name: '한국 원', symbol: '₩', flag: '🇰🇷' },
-    { code: 'USD', name: '미국 달러', symbol: '$', flag: '🇺🇸' },
-    { code: 'EUR', name: '유로', symbol: '€', flag: '🇪🇺' },
-    { code: 'JPY', name: '일본 엔', symbol: '¥', flag: '🇯🇵' },
-    { code: 'GBP', name: '영국 파운드', symbol: '£', flag: '🇬🇧' },
-    { code: 'CNY', name: '중국 위안', symbol: '¥', flag: '🇨🇳' },
-    { code: 'CAD', name: '캐나다 달러', symbol: 'C$', flag: '🇨🇦' },
-    { code: 'AUD', name: '호주 달러', symbol: 'A$', flag: '🇦🇺' },
-    { code: 'CHF', name: '스위스 프랑', symbol: 'CHF', flag: '🇨🇭' },
-    { code: 'SGD', name: '싱가포르 달러', symbol: 'S$', flag: '🇸🇬' },
-    { code: 'HKD', name: '홍콩 달러', symbol: 'HK$', flag: '🇭🇰' },
-    { code: 'NZD', name: '뉴질랜드 달러', symbol: 'NZ$', flag: '🇳🇿' }
-  ];
-
-  // 환율 API 호출 (exchangerate-api.com 사용 - 무료)
-  const fetchExchangeRates = async () => {
+  const load = useCallback(async () => {
+    setStatus('loading')
     try {
-      setLoading(true);
-      
-      // CORS 문제를 피하기 위해 다른 무료 API 사용
-      const response = await fetch('https://open.er-api.com/v6/latest/USD');
-      const data = await response.json();
-      
-      if (data && data.rates) {
-        setExchangeRates(data.rates);
-        setLastUpdated(new Date(data.time_last_update_utc || Date.now()));
-      } else {
-        throw new Error('Invalid API response');
-      }
-    } catch (error) {
-      console.error('환율 정보를 가져오는데 실패했습니다:', error);
-      // 실패시 더미 데이터 사용 (실제 근사치)
-      const fallbackRates = {
-        KRW: 1340.50,
-        USD: 1,
-        EUR: 0.85,
-        JPY: 150.25,
-        GBP: 0.79,
-        CNY: 7.25,
-        CAD: 1.36,
-        AUD: 1.52,
-        CHF: 0.88,
-        SGD: 1.34,
-        HKD: 7.83,
-        NZD: 1.62
-      };
-      
-      setExchangeRates(fallbackRates);
-      setLastUpdated(new Date());
-    } finally {
-      setLoading(false);
+      const res = await fetch(API)
+      const j = await res.json()
+      if (j?.result !== 'success' || !(j.rates?.KRW > 0)) throw new Error('bad response')
+      const next: RateCache = { rates: j.rates, updated: j.time_last_update_unix }
+      setData(next)
+      setStatus('live')
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(next)) } catch { /* 저장 불가: 무시 */ }
+    } catch {
+      let cached: RateCache | null = null
+      try { cached = parseCache(localStorage.getItem(CACHE_KEY)) } catch { /* 접근 불가 */ }
+      setData((d) => d ?? cached)
+      setStatus(cached ? 'cache' : 'error')
     }
-  };
+  }, [])
 
-  // 환율 계산
-  const calculateExchange = () => {
-    if (!amount || !exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
-      setResult(null);
-      return;
-    }
-
-    const amountNum = parseFloat(amount.replace(/,/g, ''));
-    if (isNaN(amountNum)) {
-      setResult(null);
-      return;
-    }
-
-    // USD 기준으로 환율 계산
-    const usdAmount = fromCurrency === 'USD' ? amountNum : amountNum / exchangeRates[fromCurrency];
-    const convertedAmount = toCurrency === 'USD' ? usdAmount : usdAmount * exchangeRates[toCurrency];
-    
-    setResult(convertedAmount);
-    setShowSaveButton(true); // 계산 결과가 있으면 저장 버튼 표시
-  };
-
-  const formatNumber = (num: number, decimals: number = 2) => {
-    return new Intl.NumberFormat('ko-KR', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
-    }).format(num);
-  };
-
-  const formatAmount = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
-  // 계산 결과 저장
-  const handleSaveCalculation = () => {
-    if (!result) return;
-
-    const inputs = {
-      amount,
-      fromCurrency,
-      toCurrency
-    };
-
-    const success = saveCalculation(inputs, { convertedAmount: result, exchangeRate: getExchangeRate() });
-    if (success) {
-      setShowSaveButton(false);
-    }
-  };
-
-  // 이력에서 불러오기
-  const handleLoadFromHistory = (historyId: string) => {
-    const inputs = loadFromHistory(historyId);
-    if (inputs) {
-      setAmount(inputs.amount || '1');
-      setFromCurrency(inputs.fromCurrency || 'USD');
-      setToCurrency(inputs.toCurrency || 'KRW');
-      
-      // URL도 업데이트
-      updateURL({
-        amount: inputs.amount || '1',
-        from: inputs.fromCurrency || 'USD',
-        to: inputs.toCurrency || 'KRW'
-      });
-    }
-  };
-
-  // 이력 결과 포맷팅
-  const formatHistoryResult = (result: Record<string, unknown>) => {
-    if (!result) return '';
-    return `${formatNumber(Number(result.convertedAmount) || 0)} (환율: ${formatNumber(Number(result.exchangeRate) || 0, 4)})`;
-  };
-
-  const handleShare = async () => {
+  useEffect(() => {
+    // 캐시를 먼저 보여 주고 최신 값으로 교체
     try {
-      const currentUrl = window.location.href;
-      
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        const textArea = document.createElement('textarea');
-        textArea.value = currentUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
-    }
-  };
+      const cached = parseCache(localStorage.getItem(CACHE_KEY))
+      if (cached) setData(cached)
+    } catch { /* 접근 불가 */ }
+    load()
+  }, [load])
 
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams);
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    });
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
+  const cur = currency(code)
+  const fDec = cur.dec > 0
+  const cash = Math.min(50, num(cashText))
+  const wire = Math.min(50, num(wireText))
+  const pref = Math.min(100, num(prefText))
+  const budget = num(budgetText)
+  const base = data ? krwPer(data.rates, code) : null
+  const amount = num(amtText)
+  const foreign = side === 'f' ? amount : base ? amount / base : 0
+  const krw = side === 'k' ? amount : base ? amount * base : 0
+  const r0 = base ? bankRates(base, cash, wire, 0) : null
+  const rp = base ? bankRates(base, cash, wire, pref) : null
+  const unitLabel = cur.unit === 100 ? `100 ${code}` : `1 ${code}`
+  const name = t(`cur.${code}`)
+  const updatedAt = data
+    ? new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', dateStyle: 'medium', timeStyle: 'short' }).format(new Date(data.updated * 1000))
+    : ''
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/,/g, '');
-    if (/^\d*\.?\d*$/.test(value)) {
-      setAmount(value);
-      updateURL({ amount: value });
-    }
-  };
-
-  const handleSwapCurrencies = () => {
-    const temp = fromCurrency;
-    setFromCurrency(toCurrency);
-    setToCurrency(temp);
-    updateURL({ from: toCurrency, to: temp });
-  };
-
-  const getCurrencyInfo = (code: string) => {
-    return currencies.find(c => c.code === code) || { code, name: code, symbol: code, flag: '🌐' };
-  };
-
-  const getExchangeRate = () => {
-    if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) return null;
-    
-    const rate = exchangeRates[toCurrency] / exchangeRates[fromCurrency];
-    return rate;
-  };
-
-  // URL에서 초기값 로드
   useEffect(() => {
-    const amountParam = searchParams.get('amount');
-    const fromParam = searchParams.get('from');
-    const toParam = searchParams.get('to');
+    const p = new URLSearchParams()
+    p.set('c', code); p.set('a', String(amount))
+    if (side === 'k') p.set('s', 'k')
+    if (num(cashText) !== cur.cash) p.set('cs', cashText)
+    if (num(wireText) !== cur.wire) p.set('ws', wireText)
+    if (pref !== 90) p.set('p', prefText)
+    if (budget !== 1_000_000) p.set('b', String(budget))
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    return () => clearTimeout(id)
+  }, [code, amount, side, cashText, wireText, prefText, pref, budget, cur.cash, cur.wire])
 
-    if (amountParam && /^\d*\.?\d*$/.test(amountParam)) {
-      setAmount(amountParam);
-    }
-    if (fromParam && currencies.some(c => c.code === fromParam)) {
-      setFromCurrency(fromParam);
-    }
-    if (toParam && currencies.some(c => c.code === toParam)) {
-      setToCurrency(toParam);
-    }
-  }, [searchParams]);
+  const pick = (c: string) => {
+    if (c === code) return
+    const next = currency(c)
+    // 외화 입력 중이면 소수 자리 맞춤 (엔·동 → 정수)
+    if (side === 'f' && !next.dec) setAmtText(fmtIn(String(Math.round(amount)), false))
+    setCode(c)
+    setCashText(String(next.cash))
+    setWireText(String(next.wire))
+  }
+  const editForeign = (s: string) => { setSide('f'); setAmtText(fmtIn(s, fDec)) }
+  const editKrw = (s: string) => { setSide('k'); setAmtText(fmtIn(s, false)) }
+  const swap = () => {
+    if (side === 'f') { setSide('k'); setAmtText(won(krw)) } else { setSide('f'); setAmtText(fx(foreign, cur.dec)) }
+  }
 
-  // 컴포넌트 마운트시 환율 정보 가져오기
-  useEffect(() => {
-    fetchExchangeRates();
-  }, []);
-
-  // 계산 실행
-  useEffect(() => {
-    calculateExchange();
-  }, [amount, fromCurrency, toCurrency, exchangeRates]);
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const percent = (value: string, set: (s: string) => void, label: string) => (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+      <div className="relative">
+        <input inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && e.target.value.length <= 5 && set(e.target.value)}
+          className="ui-field w-full px-4 py-3 pr-10 font-semibold tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
+      </div>
+    </label>
+  )
+  /** 행 금액: 외화 입력 → 원화, 원화 입력 → 외화 */
+  const amountAt = (rate: number) => (side === 'f' ? `${won(foreign * rate)}${t('won')}` : `${fx(krw / rate, cur.dec)} ${code}`)
+  const headline = side === 'f' ? `${won(krw)}${t('won')}` : `${fx(foreign, cur.dec)} ${code}`
+  const inputLabel = side === 'f' ? `${cur.flag} ${fx(foreign, cur.dec)} ${code}` : `${won(krw)}${t('won')}`
+  const saved = r0 && rp ? (side === 'f' ? foreign * (r0.cashBuy - rp.cashBuy) : krw / rp.cashBuy - krw / r0.cashBuy) : 0
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">환율 계산기</h1>
-          <p className="text-sm text-muted mt-1">
-            실시간 환율을 기반으로 정확한 환전 금액을 계산하세요
-            {lastUpdated && ` · 업데이트: ${lastUpdated.toLocaleString('ko-KR')}`}
-          </p>
-        </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={historyLoading}
-          onLoadHistory={handleLoadFromHistory}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={formatHistoryResult}
-        />
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 섹션 */}
-        <div className="bg-surface rounded-2xl shadow-xl p-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-fg">환전 계산</h2>
-            <button
-              onClick={fetchExchangeRates}
-              disabled={loading}
-              className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-sub transition-colors disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              <span className="text-sm">환율 갱신</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 입력 */}
+        <div className="ui-card p-6 space-y-5 self-start">
+          <div>
+            <span className="block text-sm font-medium text-body mb-2">{t('in.currency')}</span>
+            <div className="grid grid-cols-3 gap-2 mb-2">
+              {QUICK.map((c) => (
+                <button key={c} onClick={() => pick(c)} aria-pressed={code === c} className={seg(code === c)}>
+                  {currency(c).flag} {c}
+                </button>
+              ))}
+            </div>
+            <select value={code} onChange={(e) => pick(e.target.value)} aria-label={t('in.currency')} className="ui-field w-full px-4 py-3">
+              {CURRENCIES.map((c) => <option key={c.code} value={c.code}>{c.flag} {c.code} · {t(`cur.${c.code}`)}</option>)}
+            </select>
+          </div>
+
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t('in.foreign', { name })}</span>
+            <div className="relative">
+              <input inputMode="decimal" value={side === 'f' ? amtText : base ? fx(foreign, cur.dec) : ''} onChange={(e) => editForeign(e.target.value)}
+                onFocus={() => side === 'k' && base && editForeign(fx(foreign, cur.dec))}
+                className="ui-field w-full px-4 py-3 pr-16 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{code}</span>
+            </div>
+          </label>
+          <div className="flex justify-center -my-2">
+            <button onClick={swap} aria-label={t('in.swap')} title={t('in.swap')} className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-soft hover:bg-subtle text-body">
+              <ArrowUpDown className="w-4 h-4" />
             </button>
           </div>
-          
-          <div className="space-y-6">
-            {/* 금액 입력 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                금액
-              </label>
-              <input
-                type="text"
-                value={amount}
-                onChange={handleAmountChange}
-                placeholder="100"
-                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg text-lg"
-              />
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t('in.krw')}</span>
+            <div className="relative">
+              <input inputMode="numeric" value={side === 'k' ? amtText : base ? won(krw) : ''} onChange={(e) => editKrw(e.target.value)}
+                onFocus={() => side === 'f' && base && editKrw(won(krw))}
+                className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
             </div>
+            <span className="block text-xs text-muted mt-1">{t('in.bothHint')}</span>
+          </label>
 
-            {/* 기준 통화 */}
+          <div className="pt-4 border-t border-line space-y-4">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                보낸 통화
-              </label>
-              <select
-                value={fromCurrency}
-                onChange={(e) => {
-                  setFromCurrency(e.target.value);
-                  updateURL({ from: e.target.value });
-                }}
-                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
-              >
-                {currencies.map(currency => (
-                  <option key={currency.code} value={currency.code}>
-                    {currency.flag} {currency.code} - {currency.name}
-                  </option>
+              <span className="block text-sm font-medium text-body mb-2">{t('in.pref')}</span>
+              <div className="grid grid-cols-5 gap-1.5 mb-2">
+                {PREFS.map((v) => (
+                  <button key={v} onClick={() => setPrefText(String(v))} aria-pressed={pref === v} className={seg(pref === v)}>{v}%</button>
                 ))}
-              </select>
-            </div>
-
-            {/* 통화 교환 버튼 */}
-            <div className="flex justify-center">
-              <button
-                onClick={handleSwapCurrencies}
-                className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full text-blue-600 dark:text-blue-400 transition-colors"
-              >
-                <ArrowUpDown className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* 대상 통화 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                받을 통화
-              </label>
-              <select
-                value={toCurrency}
-                onChange={(e) => {
-                  setToCurrency(e.target.value);
-                  updateURL({ to: e.target.value });
-                }}
-                className="w-full px-4 py-3 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg"
-              >
-                {currencies.map(currency => (
-                  <option key={currency.code} value={currency.code}>
-                    {currency.flag} {currency.code} - {currency.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 환율 정보 */}
-            {!loading && Object.keys(exchangeRates).length > 0 && getExchangeRate() && (
-              <div className="bg-subtle p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-fg mb-2">
-                  현재 환율
-                </h3>
-                <p className="text-sub">
-                  1 {fromCurrency} = {formatNumber(getExchangeRate()!, 4)} {toCurrency}
-                </p>
               </div>
-            )}
-            
-            {/* 로딩 중일 때 */}
-            {loading && (
-              <div className="bg-subtle p-4 rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                  <span className="text-sm text-sub">환율 정보 로딩 중...</span>
-                </div>
-              </div>
-            )}
+              {percent(prefText, setPrefText, t('in.prefCustom'))}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {percent(cashText, setCashText, t('in.cash'))}
+              {percent(wireText, setWireText, t('in.wire'))}
+            </div>
+            <p className="text-xs text-muted leading-relaxed">{t('in.spreadHint', { code, cash: cur.cash, wire: cur.wire })}</p>
           </div>
         </div>
 
-        {/* 결과 섹션 */}
-        <div className="bg-surface rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-semibold mb-6 text-fg">환전 결과</h2>
-          
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-muted">환율 정보를 가져오는 중...</p>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
+              <span>
+                {data ? t('src.updated', { time: updatedAt }) : t('src.loading')}
+                {' · '}
+                <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-fg">{t('src.by')}</a>
+              </span>
+              <button onClick={load} disabled={status === 'loading'} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${status === 'loading' ? 'animate-spin' : ''}`} />{t('src.refresh')}
+              </button>
             </div>
-          ) : result !== null ? (
-            <div className="space-y-6">
-              <div className="text-center p-6 bg-primary rounded-xl text-white">
-                <div className="text-sm opacity-90 mb-1">환전 결과</div>
-                <div className="text-3xl font-bold mb-2">
-                  {getCurrencyInfo(toCurrency).symbol} {formatNumber(result)}
-                </div>
-                <div className="text-blue-100">
-                  {formatAmount(parseFloat(amount))} {fromCurrency} → {formatNumber(result)} {toCurrency}
-                </div>
-                <button
-                  onClick={handleShare}
-                  className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                >
-                  {isCopied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>복사됨!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="w-4 h-4" />
-                      <span>결과 공유</span>
-                    </>
-                  )}
-                </button>
-                
-                {showSaveButton && (
-                  <button
-                    onClick={handleSaveCalculation}
-                    className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>저장</span>
-                  </button>
+            {status === 'cache' && <p className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.cached', { time: updatedAt })}</p>}
+            {status === 'error' && !data && <p className="mt-3 text-sm rounded-xl p-3 bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">{t('src.error')}</p>}
+
+            {base && r0 && rp ? (
+              <>
+                <p className="text-sm text-sub mt-5">{t('res.label', { input: inputLabel })}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1 break-all">{headline}</p>
+                <p className="text-sm text-muted mt-1 tabular-nums">{t('res.base', { unit: unitLabel, rate: rate2(base * cur.unit) })}</p>
+
+                <dl className="grid grid-cols-2 gap-3 mt-5">
+                  {(['cashBuy', 'wireSend'] as const).map((k) => (
+                    <div key={k} className={`rounded-xl p-3 ${k === 'cashBuy' ? 'bg-primary-soft' : 'bg-subtle'}`}>
+                      <dt className={`text-xs ${k === 'cashBuy' ? 'text-primary font-medium' : 'text-sub'}`}>{t(`bank.${k}`)} · {t('res.prefShort', { p: pref })}</dt>
+                      <dd className="text-base sm:text-lg font-semibold text-fg tabular-nums mt-0.5">{amountAt(rp[k])}</dd>
+                      <dd className="text-xs text-muted tabular-nums">{unitLabel} = {rate2(rp[k] * cur.unit)}{t('won')}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {pref > 0 && saved > 0 && (
+                  <p className="text-sm text-body mt-3">
+                    {side === 'f'
+                      ? t('res.savedKrw', { p: pref, v: won(saved) })
+                      : t('res.savedForeign', { p: pref, v: `${fx(saved, cur.dec)} ${code}` })}
+                  </p>
                 )}
-              </div>
 
-              <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">보낸 금액</span>
-                  <span className="font-semibold text-fg">
-                    {getCurrencyInfo(fromCurrency).symbol} {formatAmount(parseFloat(amount))}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between items-center py-2 border-b border-line">
-                  <span className="text-sub">환율</span>
-                  <span className="font-semibold text-fg">
-                    1 {fromCurrency} = {formatNumber(getExchangeRate()!, 4)} {toCurrency}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
-                  <span className="text-fg">받을 금액</span>
-                  <span className="text-blue-600 dark:text-blue-400">
-                    {getCurrencyInfo(toCurrency).symbol} {formatNumber(result)}
-                  </span>
-                </div>
-              </div>
+                <ShareResult className="mt-5" fileName="exchange-rate"
+                  card={{
+                    tool: t('title'),
+                    label: inputLabel,
+                    headline,
+                    sub: t('share.sub', { time: updatedAt }),
+                    rows: [
+                      { label: t('res.baseShort', { unit: unitLabel }), value: `${rate2(base * cur.unit)}${t('won')}` },
+                      { label: `${t('bank.cashBuy')} (${t('res.prefShort', { p: pref })})`, value: amountAt(rp.cashBuy) },
+                      { label: `${t('bank.cashSell')} (${t('res.prefShort', { p: pref })})`, value: amountAt(rp.cashSell) },
+                      { label: `${t('bank.wireSend')} (${t('res.prefShort', { p: pref })})`, value: amountAt(rp.wireSend) },
+                    ],
+                  }} />
+              </>
+            ) : status === 'loading' ? (
+              <p className="text-sm text-muted mt-5">{t('src.loading')}</p>
+            ) : data ? (
+              <p className="text-sm text-muted mt-5">{t('src.noCurrency', { code })}</p>
+            ) : null}
+          </div>
 
-              <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">
-                  참고사항
-                </h3>
-                <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
-                  <li>• 실제 환전시 은행 수수료가 추가로 발생할 수 있습니다</li>
-                  <li>• 환율은 실시간으로 변동되므로 참고용으로만 사용하세요</li>
-                  <li>• 대량 환전시 더 유리한 환율을 제공받을 수 있습니다</li>
-                </ul>
+          {/* 은행 환율별 실제 금액 */}
+          {base && r0 && rp && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg">{t('bank.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t(side === 'f' ? 'bank.introF' : 'bank.introK', { input: inputLabel })}</p>
+              <div className="overflow-x-auto mt-4 -mx-2">
+                <table className="w-full min-w-[560px] text-sm tabular-nums">
+                  <thead>
+                    <tr className="text-left text-sub border-b border-line">
+                      <th className="py-2 px-2 font-medium">{t('bank.kind')}</th>
+                      <th className="py-2 px-2 font-medium text-right">{t('bank.rate', { unit: unitLabel })}</th>
+                      <th className="py-2 px-2 font-medium text-right">{t('bank.noPref')}</th>
+                      <th className="py-2 px-2 font-medium text-right text-primary">{t('res.prefShort', { p: pref })}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-line">
+                      <td className="py-2.5 px-2 text-fg font-medium">{t('bank.base')}<span className="block text-xs text-muted font-normal">{t('bank.baseDesc')}</span></td>
+                      <td className="py-2.5 px-2 text-right text-fg">{rate2(base * cur.unit)}</td>
+                      <td className="py-2.5 px-2 text-right text-fg" colSpan={2}>{side === 'f' ? `${won(krw)}${t('won')}` : `${fx(foreign, cur.dec)} ${code}`}</td>
+                    </tr>
+                    {BANK_KEYS.map((k) => (
+                      <tr key={k} className="border-b border-line last:border-0">
+                        <td className="py-2.5 px-2 text-fg font-medium">{t(`bank.${k}`)}<span className="block text-xs text-muted font-normal">{t(`bank.desc.${side}.${k}`)}</span></td>
+                        <td className="py-2.5 px-2 text-right text-body">{rate2(r0[k] * cur.unit)}<span className="block text-xs text-primary">{rate2(rp[k] * cur.unit)}</span></td>
+                        <td className="py-2.5 px-2 text-right text-body">{amountAt(r0[k])}</td>
+                        <td className="py-2.5 px-2 text-right font-semibold text-fg">{amountAt(rp[k])}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Globe className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">
-                금액을 입력하면<br />
-                환전 결과를 계산해드립니다.
-              </p>
+              <p className="text-xs text-muted mt-3 leading-relaxed">{t('bank.note', { cash, wire })}</p>
             </div>
           )}
         </div>
       </div>
 
+      {/* 여행 예산: 원화 → 여러 통화 */}
+      {data && (
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-semibold text-fg">{t('budget.title')}</h2>
+          <p className="text-sm text-muted mt-1">{t('budget.desc', { p: pref })}</p>
+          <label className="block mt-4 max-w-xs">
+            <span className="block text-sm font-medium text-body mb-2">{t('budget.input')}</span>
+            <div className="relative">
+              <input inputMode="numeric" value={budgetText} onChange={(e) => setBudgetText(fmtIn(e.target.value, false))}
+                className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('won')}</span>
+            </div>
+          </label>
+          <div className="overflow-x-auto mt-4 -mx-2">
+            <table className="w-full min-w-[520px] text-sm tabular-nums">
+              <thead>
+                <tr className="text-left text-sub border-b border-line">
+                  <th className="py-2 px-2 font-medium">{t('budget.currency')}</th>
+                  <th className="py-2 px-2 font-medium text-right">{t('budget.base')}</th>
+                  <th className="py-2 px-2 font-medium text-right">{t('budget.mid')}</th>
+                  <th className="py-2 px-2 font-medium text-right text-primary">{t('budget.cash', { p: pref })}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {budgetRows(budget, data.rates, pref, { code, cash }).map((r) => {
+                  const c = currency(r.code)
+                  return (
+                    <tr key={r.code} onClick={() => pick(r.code)}
+                      className={`border-b border-line last:border-0 cursor-pointer ${r.code === code ? 'bg-primary-soft' : 'hover:bg-subtle'}`}>
+                      <td className="py-2 px-2 text-fg whitespace-nowrap">{c.flag} {r.code} <span className="text-muted">{t(`cur.${r.code}`)}</span></td>
+                      <td className="py-2 px-2 text-right text-body whitespace-nowrap">{rate2(r.base * c.unit)}{t('won')}{c.unit === 100 && <span className="text-xs text-muted"> /100</span>}</td>
+                      <td className="py-2 px-2 text-right text-body">{fx(r.mid, c.dec)}</td>
+                      <td className="py-2 px-2 text-right font-semibold text-fg">{fx(r.cash, c.dec)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted mt-3 leading-relaxed">{t('budget.note')}</p>
+        </div>
+      )}
+
+      <div className="bg-subtle rounded-2xl p-5 text-sm text-sub leading-relaxed">{t('disclaimer')}</div>
+
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg mb-3">{t('links.title')}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {LINKS.map((l) => (
+            <Link key={l.key} href={l.href} className="flex items-center justify-between rounded-xl bg-subtle hover:bg-soft px-4 py-3 text-sm text-body">
+              {t(`links.${l.key}`)}<ChevronRight className="w-4 h-4 text-faint" />
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <GuideSection namespace="exchangeRateCalculator" />
     </div>
-  );
-};
-
-const ExchangeRateCalculator = () => {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-      <ExchangeRateCalculatorContent />
-    </Suspense>
-  );
-};
-
-export default ExchangeRateCalculator;
+  )
+}
