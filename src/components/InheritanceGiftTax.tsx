@@ -1,710 +1,516 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef, type ReactNode } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Calculator, Copy, Check, BookOpen, AlertCircle, Link, GitCompare } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import ShareResult from '@/components/ShareResult'
+import {
+  EOK, BRACKETS, RELATIONS, giftTax, giftDeductionLimit, marriageEligible, splitGift, viaParent,
+  inheritanceTax, filingDeadline, type Relation, type SpouseMode, type GiftInput, type InheritInput,
+} from '@/utils/inheritanceGiftTax'
 
-// ── 2025년 상속세/증여세 세율 (동일) ──
-const TAX_BRACKETS = [
-  { upTo: 100_000_000, rate: 0.10, deduction: 0 },
-  { upTo: 500_000_000, rate: 0.20, deduction: 10_000_000 },
-  { upTo: 1_000_000_000, rate: 0.30, deduction: 60_000_000 },
-  { upTo: 3_000_000_000, rate: 0.40, deduction: 160_000_000 },
-  { upTo: Infinity, rate: 0.50, deduction: 460_000_000 },
-]
+type Tab = 'gift' | 'inheritance'
+const SPOUSE_MODES: SpouseMode[] = ['legal', 'min', 'custom']
+const MAX = 1_000_000_000_000 // 1조
 
-function calcTax(taxable: number): { tax: number; rate: number; bracket: number } {
-  if (taxable <= 0) return { tax: 0, rate: 0, bracket: 0 }
-  for (let i = 0; i < TAX_BRACKETS.length; i++) {
-    if (taxable <= TAX_BRACKETS[i].upTo) {
-      const tax = Math.floor(taxable * TAX_BRACKETS[i].rate - TAX_BRACKETS[i].deduction)
-      return { tax: Math.max(0, tax), rate: TAX_BRACKETS[i].rate * 100, bracket: i }
-    }
-  }
-  return { tax: 0, rate: 0, bracket: 0 }
+const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+const parseNum = (s: string) => Math.min(Number(s.replace(/[^\d]/g, '')) || 0, MAX)
+function eokMan(v: number): string {
+  const eok = Math.floor(v / EOK)
+  const man = Math.floor((v % EOK) / 10_000)
+  return [eok > 0 ? `${eok.toLocaleString('ko-KR')}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
+}
+const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
+const num = (v: string | null, def: number) => (v === null ? def : parseNum(v))
+const today = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-type TaxType = 'inheritance' | 'gift' | 'compare'
-
-// 증여 관계
-type GiftRelation = 'spouse' | 'ascendantAdult' | 'ascendantMinor' | 'descendant' | 'otherRelative' | 'nonRelative'
-
-const GIFT_DEDUCTIONS: Record<GiftRelation, number> = {
-  spouse: 600_000_000,
-  ascendantAdult: 50_000_000,
-  ascendantMinor: 20_000_000,
-  descendant: 50_000_000,
-  otherRelative: 10_000_000,
-  nonRelative: 0,
-}
-
-const formatNumber = (num: number) => num.toLocaleString('ko-KR')
-const formatWon = (num: number) => `${formatNumber(num)}원`
-
-function parseNumInput(val: string): number {
-  return parseInt(val.replace(/[^0-9]/g, ''), 10) || 0
-}
+type Step = { label: string; value: number; op?: '+' | '−' | '=' | '×'; note?: string; rate?: boolean; total?: boolean }
 
 export default function InheritanceGiftTax() {
   const t = useTranslations('inheritanceGiftTax')
-  const searchParams = useSearchParams()
+  const sp = useSearchParams()
 
-  const [taxType, setTaxType] = useState<TaxType>(() => {
-    const p = searchParams.get('type')
-    return (p === 'gift' || p === 'compare') ? p : 'inheritance'
-  })
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showGuide, setShowGuide] = useState(false)
+  const [tab, setTab] = useState<Tab>(() => (sp.get('type') === 'inheritance' ? 'inheritance' : 'gift'))
+  // 증여
+  const [amount, setAmount] = useState(() => num(sp.get('g'), EOK))
+  const [relation, setRelation] = useState<Relation>(() => pick(sp.get('rel'), RELATIONS, 'parent'))
+  const [minor, setMinor] = useState(() => sp.get('minor') === '1')
+  const [marriage, setMarriage] = useState(() => sp.get('mar') === '1')
+  const [prior, setPrior] = useState(() => num(sp.get('prior'), 0))
+  // 상속
+  const [estate, setEstate] = useState(() => num(sp.get('e'), 20 * EOK))
+  const [debts, setDebts] = useState(() => num(sp.get('debt'), 0))
+  const [funeral, setFuneral] = useState(() => num(sp.get('fun'), 0))
+  const [bongan, setBongan] = useState(() => num(sp.get('bon'), 0))
+  const [fin, setFin] = useState(() => num(sp.get('fin'), 0))
+  const [house, setHouse] = useState(() => num(sp.get('house'), 0))
+  const [preGift, setPreGift] = useState(() => num(sp.get('pre'), 0))
+  const [spouse, setSpouse] = useState(() => sp.get('sp') !== '0')
+  const [spouseMode, setSpouseMode] = useState<SpouseMode>(() => pick(sp.get('spm'), SPOUSE_MODES, 'legal'))
+  const [spouseAmount, setSpouseAmount] = useState(() => num(sp.get('spa'), 5 * EOK))
+  const [children, setChildren] = useState(() => Math.min(num(sp.get('kids'), 2), 10))
+  const [elders, setElders] = useState(() => Math.min(num(sp.get('eld'), 0), 5))
+  const [minorAges, setMinorAges] = useState('') // 나이는 URL에 넣지 않음
+  // 기한 기준일 (클라이언트에서 오늘로: 정적 HTML 하이드레이션 불일치 방지)
+  const [date, setDate] = useState('')
+  useEffect(() => { setDate(today()) }, [])
 
-  // ── 상속세 입력 ──
-  const [totalEstate, setTotalEstate] = useState(() => searchParams.get('estate') ?? '') // 총 상속재산
-  const [debts, setDebts] = useState(() => searchParams.get('debts') ?? '') // 채무
-  const [hasSpouse, setHasSpouse] = useState(() => searchParams.get('spouse') !== '0')
-  const [childCount, setChildCount] = useState(() => searchParams.get('children') ?? '1')
-  const [useItemizedDeduction, setUseItemizedDeduction] = useState(() => searchParams.get('itemized') === '1') // 항목별 vs 일괄
-  const [funeralExpense, setFuneralExpense] = useState(() => searchParams.get('funeral') ?? '10000000') // 장례비
-  const [financialAssets, setFinancialAssets] = useState(() => searchParams.get('fin') ?? '') // 순금융재산
+  const tabRefs = useRef<Record<Tab, HTMLButtonElement | null>>({ gift: null, inheritance: null })
 
-  // ── 증여세 입력 ──
-  const [giftAmount, setGiftAmount] = useState(() => searchParams.get('gift') ?? '')
-  const [giftRelation, setGiftRelation] = useState<GiftRelation>(() => (searchParams.get('relation') as GiftRelation) ?? 'ascendantAdult')
-  const [isMarriageGift, setIsMarriageGift] = useState(() => searchParams.get('marriage') === '1') // 혼인·출산 추가공제
-
-  // ── URL 동기화 ──
+  // URL 동기화 (금액·선택값만)
   useEffect(() => {
     const url = new URL(window.location.href)
-    url.searchParams.set('type', taxType)
-    if (totalEstate) url.searchParams.set('estate', totalEstate); else url.searchParams.delete('estate')
-    if (debts) url.searchParams.set('debts', debts); else url.searchParams.delete('debts')
-    url.searchParams.set('spouse', hasSpouse ? '1' : '0')
-    url.searchParams.set('children', childCount)
-    url.searchParams.set('itemized', useItemizedDeduction ? '1' : '0')
-    if (funeralExpense !== '10000000') url.searchParams.set('funeral', funeralExpense); else url.searchParams.delete('funeral')
-    if (financialAssets) url.searchParams.set('fin', financialAssets); else url.searchParams.delete('fin')
-    if (giftAmount) url.searchParams.set('gift', giftAmount); else url.searchParams.delete('gift')
-    url.searchParams.set('relation', giftRelation)
-    url.searchParams.set('marriage', isMarriageGift ? '1' : '0')
+    const set = (k: string, v: string | number | null) => (v === null ? url.searchParams.delete(k) : url.searchParams.set(k, String(v)))
+    for (const k of ['estate', 'debts', 'spouse', 'children', 'itemized', 'funeral', 'gift', 'relation', 'marriage']) url.searchParams.delete(k) // 예전 파라미터
+    set('type', tab)
+    const g = tab === 'gift'
+    set('g', g ? amount : null); set('rel', g ? relation : null); set('minor', g && minor ? 1 : null)
+    set('mar', g && marriage ? 1 : null); set('prior', g && prior ? prior : null)
+    set('e', g ? null : estate); set('debt', !g && debts ? debts : null); set('fun', !g && funeral ? funeral : null)
+    set('bon', !g && bongan ? bongan : null); set('fin', !g && fin ? fin : null); set('house', !g && house ? house : null)
+    set('pre', !g && preGift ? preGift : null); set('sp', g ? null : spouse ? 1 : 0)
+    set('spm', !g && spouse ? spouseMode : null); set('spa', !g && spouse && spouseMode === 'custom' ? spouseAmount : null)
+    set('kids', g ? null : children); set('eld', !g && elders ? elders : null)
     window.history.replaceState({}, '', url)
-  }, [taxType, totalEstate, debts, hasSpouse, childCount, useItemizedDeduction, funeralExpense, financialAssets, giftAmount, giftRelation, isMarriageGift])
+  }, [tab, amount, relation, minor, marriage, prior, estate, debts, funeral, bongan, fin, house, preGift, spouse, spouseMode, spouseAmount, children, elders])
 
-  // ── 상속세 계산 ──
-  const inheritanceResult = useMemo(() => {
-    const estate = parseNumInput(totalEstate)
-    const debtAmt = parseNumInput(debts)
-    const children = parseInt(childCount) || 0
-    const funeral = parseNumInput(funeralExpense)
-    const finAssets = parseNumInput(financialAssets)
+  const showMinor = relation === 'parent' || relation === 'grandparent'
+  const gIn: GiftInput = { amount, relation, minor: showMinor && minor, marriage: marriageEligible(relation) && marriage, prior }
+  const g = useMemo(() => giftTax(gIn), [amount, relation, minor, marriage, prior]) // eslint-disable-line react-hooks/exhaustive-deps
+  const ages = useMemo(() => (minorAges.match(/\d+/g) ?? []).map(Number).slice(0, children), [minorAges, children])
+  const iIn: InheritInput = { estate, debts, funeral, bongan, fin, house, spouse, spouseMode, spouseAmount, children, minorAges: ages, elders, preGift }
+  const h = useMemo(() => inheritanceTax(iIn), [estate, debts, funeral, bongan, fin, house, spouse, spouseMode, spouseAmount, children, ages, elders, preGift]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (estate <= 0) return null
+  const isGift = tab === 'gift'
+  const payable = isGift ? g.payable : h.payable
+  const base = isGift ? g.base : h.base
+  const gross = isGift ? amount : estate
+  const deadline = date ? filingDeadline(date, isGift ? 3 : 6) : null
+  const giftLimit = giftDeductionLimit(relation, gIn.minor) + (gIn.marriage ? EOK : 0)
+  const giftRoom = Math.max(0, giftLimit - amount - prior)
 
-    // 총 상속재산가액 - 채무 - 장례비용
-    const funeralDeduction = Math.min(funeral, 15_000_000) // 최대 1,500만원
-    const netEstate = estate - debtAmt - funeralDeduction
+  // ── 산출 과정 ──
+  const pctStr = (r: number) => `${Math.round(r * 100)}%`
+  const bracketNote = (b: number) => {
+    const br = BRACKETS.find((x) => b <= x.upTo)!
+    return t('u.steps.bracketNote', { rate: pctStr(br.rate), ded: eokMan(br.deduction) })
+  }
+  const steps: Step[] = isGift
+    ? [
+        { label: t('u.steps.giftAmount'), value: amount },
+        ...(prior > 0 ? [{ label: t('u.steps.prior'), value: prior, op: '+' as const, note: t('u.steps.priorNote') }] : []),
+        { label: t('u.steps.giftValue'), value: g.total, op: '=' as const },
+        { label: t('u.steps.giftDeduction'), value: g.baseDeduction, op: '−' as const, note: t(`u.relation.${relation}.limit`) },
+        ...(g.marriageDeduction > 0 ? [{ label: t('u.steps.marriageDeduction'), value: g.marriageDeduction, op: '−' as const }] : []),
+        { label: t('u.steps.base'), value: g.base, op: '=' as const, total: true, note: g.base > 0 ? bracketNote(g.base) : undefined },
+        { label: t('u.steps.computed'), value: g.computed, op: '=' as const },
+        ...(g.surcharge > 0 ? [{ label: t('u.steps.surcharge'), value: g.surcharge, op: '+' as const, note: pctStr(g.surchargeRate) }] : []),
+        ...(g.priorCredit > 0 ? [{ label: t('u.steps.priorCredit'), value: g.priorCredit, op: '−' as const }] : []),
+        { label: t('u.steps.filingCredit'), value: g.filingCredit, op: '−' as const },
+        { label: t('u.steps.payable'), value: g.payable, op: '=' as const, total: true },
+      ]
+    : [
+        { label: t('u.steps.estate'), value: estate },
+        ...(debts > 0 ? [{ label: t('u.steps.debts'), value: debts, op: '−' as const }] : []),
+        { label: t('u.steps.funeral'), value: h.funeralDeduction, op: '−' as const, note: t('u.steps.funeralNote') },
+        ...(preGift > 0 ? [{ label: t('u.steps.preGift'), value: preGift, op: '+' as const }] : []),
+        { label: t('u.steps.taxableValue'), value: h.taxableValue, op: '=' as const },
+        { label: h.lumpSum ? t('u.steps.lumpSum') : t('u.steps.itemized'), value: h.general, op: '−' as const, note: h.spouseOnly ? t('u.steps.spouseOnlyNote') : h.lumpSum ? undefined : t('u.steps.itemizedNote', { personal: eokMan(h.personal) }) },
+        ...(spouse ? [{ label: t('u.steps.spouseDeduction'), value: h.spouseDeduction, op: '−' as const, note: t('u.steps.spouseNote', { legal: eokMan(h.spouseLegal) }) }] : []),
+        ...(h.finDeduction > 0 ? [{ label: t('u.steps.finDeduction'), value: h.finDeduction, op: '−' as const }] : []),
+        ...(h.houseDeduction > 0 ? [{ label: t('u.steps.houseDeduction'), value: h.houseDeduction, op: '−' as const }] : []),
+        ...(h.capped ? [{ label: t('u.steps.capped'), value: h.deduction, op: '−' as const, note: t('u.steps.cappedNote', { sum: eokMan(h.deductionSum) }) }] : []),
+        { label: t('u.steps.base'), value: h.base, op: '=' as const, total: true, note: h.base > 0 ? bracketNote(h.base) : undefined },
+        { label: t('u.steps.computed'), value: h.computed, op: '=' as const },
+        ...(h.giftCredit > 0 ? [{ label: t('u.steps.giftCredit'), value: h.giftCredit, op: '−' as const }] : []),
+        { label: t('u.steps.filingCredit'), value: h.filingCredit, op: '−' as const },
+        { label: t('u.steps.payable'), value: h.payable, op: '=' as const, total: true },
+      ]
 
-    if (netEstate <= 0) return { netEstate: 0, taxable: 0, tax: 0, effectiveRate: 0, totalDeduction: estate, funeralDeduction: 0, generalDeduction: 0, spouseDeduction: 0, financialDeduction: 0, rate: 0, deductionDetail: null }
+  // ── 절세 시나리오 ──
+  const scenarios: { label: string; tax: number }[] = isGift
+    ? [
+        ...(relation !== 'spouse' ? [2, 3].map((n) => ({ label: t('u.scenario.split', { n }), tax: splitGift(gIn, n, 1) })) : []),
+        { label: t('u.scenario.rounds', { n: 2 }), tax: splitGift(gIn, 1, 2) },
+        { label: t('u.scenario.rounds', { n: 3 }), tax: splitGift(gIn, 1, 3) },
+        ...(marriageEligible(relation) && !marriage ? [{ label: t('u.scenario.marriage'), tax: giftTax({ ...gIn, marriage: true, prior: 0 }).payable }] : []),
+        ...(relation === 'grandparent' ? [{ label: t('u.scenario.viaParent'), tax: viaParent(gIn).total }] : []),
+      ]
+    : [
+        ...(spouse
+          ? (['min', 'legal'] as const).filter((m) => m !== spouseMode).map((m) => ({ label: t(`u.scenario.spouse.${m}`), tax: inheritanceTax({ ...iIn, spouseMode: m }).payable }))
+          : []),
+        ...(children > 0 ? [{ label: t('u.scenario.preGiftOld', { n: children }), tax: inheritanceTax({ ...iIn, estate: Math.max(0, estate - children * 50_000_000) }).payable }] : []),
+      ]
+  const scenarioBase = isGift ? giftTax({ ...gIn, prior: 0 }).payable : h.payable
 
-    // 기초공제 + 인적공제 vs 일괄공제
-    const basicDeduction = 200_000_000 // 기초공제 2억
-    const childDeduction = children * 50_000_000 // 자녀공제 인당 5천만
-    const itemizedTotal = basicDeduction + childDeduction
+  const relLabel = t(`u.relation.${relation}.name`)
+  const card = {
+    tool: t('title'),
+    label: isGift ? t('u.share.giftLabel', { amount: eokMan(amount), relation: relLabel }) : t('u.share.inheritLabel', { amount: eokMan(estate) }),
+    headline: `${won(payable)}${t('u.won')}`,
+    sub: t('u.share.sub'),
+    rows: isGift
+      ? [
+          { label: t('u.steps.giftDeduction'), value: `${won(g.deduction)}${t('u.won')}` },
+          { label: t('u.steps.base'), value: `${won(g.base)}${t('u.won')}` },
+          { label: t('u.steps.computed'), value: `${won(g.computed + g.surcharge)}${t('u.won')}` },
+        ]
+      : [
+          { label: t('u.steps.taxableValue'), value: `${won(h.taxableValue)}${t('u.won')}` },
+          { label: t('u.result.deductionTotal'), value: `${won(h.deduction)}${t('u.won')}` },
+          { label: t('u.steps.base'), value: `${won(h.base)}${t('u.won')}` },
+        ],
+  }
 
-    // 일괄공제 5억 vs 항목별(기초+인적)
-    const generalDeduction = useItemizedDeduction
-      ? itemizedTotal
-      : Math.max(500_000_000, itemizedTotal) // 일괄공제 5억 vs 항목별 중 큰 것
+  const seg = (on: boolean) =>
+    `min-h-11 px-3 rounded-xl text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const opt = (on: boolean) =>
+    `flex items-start gap-2.5 min-h-11 px-3 py-2.5 rounded-xl border text-sm cursor-pointer transition-colors ${on ? 'border-primary bg-primary-soft text-primary font-medium' : 'border-line text-body hover:bg-subtle'}`
+  const check = (id: string, on: boolean, set: (v: boolean) => void, label: string, hint?: string) => (
+    <label htmlFor={id} className="flex items-start gap-2.5 min-h-11 py-1 cursor-pointer">
+      <input id={id} type="checkbox" checked={on} onChange={(e) => set(e.target.checked)} className="mt-0.5 w-5 h-5 shrink-0 accent-[var(--primary)]" />
+      <span className="text-sm text-body">{label}{hint && <span className="block text-xs text-muted mt-0.5">{hint}</span>}</span>
+    </label>
+  )
+  const countSelect = (id: string, label: string, value: number, set: (v: number) => void, max: number) => (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <select id={id} value={value} onChange={(e) => set(Number(e.target.value))} className="ui-field w-full px-4 py-3">
+        {Array.from({ length: max + 1 }, (_, i) => <option key={i} value={i}>{t('u.people', { n: i })}</option>)}
+      </select>
+    </div>
+  )
+  const onTabKey = (e: React.KeyboardEvent) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+    const next: Tab = tab === 'gift' ? 'inheritance' : 'gift'
+    setTab(next)
+    tabRefs.current[next]?.focus()
+  }
 
-    // 배우자 상속공제 (최소 5억, 최대 30억)
-    const spouseDeduction = hasSpouse ? 500_000_000 : 0
-
-    // 금융재산 상속공제
-    let financialDeduction = 0
-    if (finAssets > 0) {
-      if (finAssets <= 20_000_000) {
-        financialDeduction = finAssets
-      } else {
-        financialDeduction = Math.max(finAssets * 0.2, 20_000_000)
-        financialDeduction = Math.min(financialDeduction, 200_000_000)
-      }
-    }
-
-    const totalDeduction = generalDeduction + spouseDeduction + financialDeduction
-
-    const taxable = Math.max(0, netEstate - totalDeduction)
-    const { tax, rate } = calcTax(taxable)
-    const effectiveRate = estate > 0 ? (tax / estate) * 100 : 0
-
-    return {
-      netEstate,
-      funeralDeduction,
-      generalDeduction,
-      spouseDeduction,
-      financialDeduction,
-      totalDeduction,
-      taxable,
-      tax,
-      rate,
-      effectiveRate,
-      deductionDetail: {
-        basic: basicDeduction,
-        child: childDeduction,
-        isLumpSum: !useItemizedDeduction && 500_000_000 >= itemizedTotal,
-      },
-    }
-  }, [totalEstate, debts, hasSpouse, childCount, useItemizedDeduction, funeralExpense, financialAssets])
-
-  // ── 증여세 계산 ──
-  const giftResult = useMemo(() => {
-    const amount = parseNumInput(giftAmount)
-    if (amount <= 0) return null
-
-    const baseDeduction = GIFT_DEDUCTIONS[giftRelation]
-    // 혼인·출산 추가공제 (직계존속으로부터 증여 시에만 적용)
-    const marriageDeduction = isMarriageGift && (giftRelation === 'ascendantAdult' || giftRelation === 'ascendantMinor') ? 100_000_000 : 0
-    const totalDeduction = baseDeduction + marriageDeduction
-
-    const taxable = Math.max(0, amount - totalDeduction)
-    const { tax, rate } = calcTax(taxable)
-    const effectiveRate = amount > 0 ? (tax / amount) * 100 : 0
-
-    return {
-      amount,
-      baseDeduction,
-      marriageDeduction,
-      totalDeduction,
-      taxable,
-      tax,
-      rate,
-      effectiveRate,
-    }
-  }, [giftAmount, giftRelation, isMarriageGift])
-
-  // ── 비교 계산: 같은 금액을 상속/증여 시 세금 비교 ──
-  const compareAmount = parseNumInput(totalEstate) || parseNumInput(giftAmount)
-  const compareResult = useMemo(() => {
-    if (compareAmount <= 0) return null
-    // 상속세 시나리오 (배우자+자녀1, 일괄공제 기본)
-    const funeralDed = Math.min(10_000_000, 15_000_000)
-    const net = compareAmount - funeralDed
-    const generalDed = 500_000_000
-    const spouseDed = 500_000_000
-    const inheritTaxable = Math.max(0, net - generalDed - spouseDed)
-    const { tax: inheritTax } = calcTax(inheritTaxable)
-    // 증여세 시나리오 (직계존속→성인자녀, 비혼인)
-    const giftDed = GIFT_DEDUCTIONS['ascendantAdult']
-    const giftTaxable = Math.max(0, compareAmount - giftDed)
-    const { tax: giftTaxAmt } = calcTax(giftTaxable)
-    return {
-      amount: compareAmount,
-      inheritTax,
-      inheritTaxable,
-      giftTax: giftTaxAmt,
-      giftTaxable,
-      inheritRate: compareAmount > 0 ? (inheritTax / compareAmount) * 100 : 0,
-      giftRate: compareAmount > 0 ? (giftTaxAmt / compareAmount) * 100 : 0,
-      lowerIs: inheritTax <= giftTaxAmt ? 'inheritance' : 'gift',
-      diff: Math.abs(inheritTax - giftTaxAmt),
-    }
-  }, [compareAmount])
-
-  const currentResult = taxType === 'inheritance' ? inheritanceResult : giftResult
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const copyLink = useCallback(async () => {
-    await copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
-
-  const buildSummary = useCallback(() => {
-    if (taxType === 'inheritance' && inheritanceResult) {
-      const r = inheritanceResult
-      return [
-        `[상속세 계산 결과]`,
-        `총 상속재산: ${formatWon(parseNumInput(totalEstate))}`,
-        `과세표준: ${formatWon(r.taxable)}`,
-        `상속세: ${formatWon(r.tax)}`,
-        `실효세율: ${r.effectiveRate.toFixed(1)}%`,
-      ].join('\n')
-    }
-    if (taxType === 'gift' && giftResult) {
-      const r = giftResult
-      return [
-        `[증여세 계산 결과]`,
-        `증여금액: ${formatWon(r.amount)}`,
-        `공제금액: ${formatWon(r.totalDeduction)}`,
-        `과세표준: ${formatWon(r.taxable)}`,
-        `증여세: ${formatWon(r.tax)}`,
-        `실효세율: ${r.effectiveRate.toFixed(1)}%`,
-      ].join('\n')
-    }
-    return ''
-  }, [taxType, inheritanceResult, giftResult, totalEstate])
+  const faq = t.raw('u.faq.items') as { q: string; a: string }[]
+  const sources = t.raw('u.sources.items') as { label: string; url: string }[]
+  const fmtDate = (s: string) => new Date(`${s}T00:00:00`).toLocaleDateString(t('u.dateLocale'), { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })
 
   return (
-    <div className="space-y-6">
-      {/* 헤더 */}
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
       </div>
 
-      {/* 탭 + 링크 복사 */}
-      <div className="flex items-center gap-2">
-        <div className="flex flex-1 bg-soft rounded-lg p-1">
-          <button
-            onClick={() => setTaxType('inheritance')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
-          >
-            {t('inheritanceTab')}
-          </button>
-          <button
-            onClick={() => setTaxType('gift')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
-          >
-            {t('giftTab')}
-          </button>
-          <button
-            onClick={() => setTaxType('compare')}
-            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-1 ${taxType === 'compare' ? 'bg-surface text-purple-600 dark:text-purple-400 shadow' : 'text-sub'}`}
-          >
-            <GitCompare className="w-3.5 h-3.5" />
-            {t('compareTab')}
-          </button>
-        </div>
-        <button
-          onClick={copyLink}
-          title={t('copyLink')}
-          className="flex items-center gap-1.5 px-3 py-2.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors shrink-0"
-        >
-          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          <span className="hidden sm:inline">{copiedId === 'link' ? t('copied') : t('copyLink')}</span>
-        </button>
-      </div>
-
-      {/* 비교 패널 (compare 탭) */}
-      {taxType === 'compare' && (
-        <div className="space-y-4">
-          {compareResult ? (
-            <>
-              <div className="bg-subtle rounded-xl p-4 flex items-center gap-2 text-sm text-sub">
-                <GitCompare className="w-4 h-4 shrink-0" />
-                <span>{t('compareNote')}</span>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {/* 상속세 카드 */}
-                <div className={`${glassCard} ${glassInset} p-6 border-2 ${compareResult.lowerIs === 'inheritance' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-fg">{t('inheritanceTab')}</h3>
-                    {compareResult.lowerIs === 'inheritance' && (
-                      <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted mb-1">{t('compareAssumption.inheritance')}</p>
-                  <div className="mt-4 space-y-2 text-sm">
-                    <Row label={t('taxableAmount')} value={formatWon(compareResult.inheritTaxable)} />
-                    <Row label={t('inheritanceTax')} value={formatWon(compareResult.inheritTax)} highlight />
-                    <Row label={t('effectiveRate')} value={`${compareResult.inheritRate.toFixed(1)}%`} sub />
-                  </div>
-                </div>
-                {/* 증여세 카드 */}
-                <div className={`${glassCard} ${glassInset} p-6 border-2 ${compareResult.lowerIs === 'gift' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-fg">{t('giftTab')}</h3>
-                    {compareResult.lowerIs === 'gift' && (
-                      <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted mb-1">{t('compareAssumption.gift')}</p>
-                  <div className="mt-4 space-y-2 text-sm">
-                    <Row label={t('taxableAmount')} value={formatWon(compareResult.giftTaxable)} />
-                    <Row label={t('giftTax')} value={formatWon(compareResult.giftTax)} highlight />
-                    <Row label={t('effectiveRate')} value={`${compareResult.giftRate.toFixed(1)}%`} sub />
-                  </div>
-                </div>
-              </div>
-              <div className={`${glassCard} ${glassInset} p-4 text-center text-sm text-body`}>
-                {compareResult.lowerIs === 'inheritance'
-                  ? t('compareSummary.inheritanceLower', { diff: formatWon(compareResult.diff) })
-                  : t('compareSummary.giftLower', { diff: formatWon(compareResult.diff) })}
-              </div>
-            </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-              <GitCompare className="w-12 h-12 mx-auto mb-3 opacity-30" />
-              <p>{t('comparePrompt')}</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className={`grid lg:grid-cols-3 gap-6 ${taxType === 'compare' ? 'hidden' : ''}`}>
-        {/* 입력 패널 */}
-        <div className="lg:col-span-1 space-y-4">
-          {taxType === 'inheritance' ? (
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg">{t('inheritanceInput')}</h2>
-
-              <InputField
-                label={t('totalEstate')}
-                value={totalEstate}
-                onChange={setTotalEstate}
-                placeholder="1,000,000,000"
-                suffix="원"
-              />
-              <InputField
-                label={t('debts')}
-                value={debts}
-                onChange={setDebts}
-                placeholder="0"
-                suffix="원"
-              />
-              <InputField
-                label={t('funeralExpense')}
-                value={funeralExpense}
-                onChange={setFuneralExpense}
-                placeholder="10,000,000"
-                suffix="원"
-                hint={t('funeralHint')}
-              />
-              <InputField
-                label={t('financialAssets')}
-                value={financialAssets}
-                onChange={setFinancialAssets}
-                placeholder="0"
-                suffix="원"
-                hint={t('financialHint')}
-              />
-
-              <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={hasSpouse}
-                    onChange={e => setHasSpouse(e.target.checked)}
-                    className="accent-blue-600 w-4 h-4"
-                  />
-                  <span className="text-sm text-body">{t('hasSpouse')}</span>
-                </label>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('childCount')}</label>
-                <select
-                  value={childCount}
-                  onChange={e => setChildCount(e.target.value)}
-                  className={`${glassInput} px-3 py-2`}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
+            <div className="grid grid-cols-2 gap-2" role="tablist" aria-label={t('u.tabsLabel')}>
+              {(['gift', 'inheritance'] as const).map((k) => (
+                <button
+                  key={k} ref={(el) => { tabRefs.current[k] = el }} role="tab" id={`igt-tab-${k}`} aria-controls="igt-panel"
+                  aria-selected={tab === k} tabIndex={tab === k ? 0 : -1} onClick={() => setTab(k)} onKeyDown={onTabKey} className={seg(tab === k)}
                 >
-                  {Array.from({ length: 11 }, (_, i) => (
-                    <option key={i} value={i}>{i}{t('person')}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={useItemizedDeduction}
-                    onChange={e => setUseItemizedDeduction(e.target.checked)}
-                    className="accent-blue-600 w-4 h-4"
-                  />
-                  <span className="text-sm text-body">{t('useItemized')}</span>
-                </label>
-              </div>
+                  {t(`u.tab.${k}`)}
+                </button>
+              ))}
             </div>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-              <h2 className="text-lg font-semibold text-fg">{t('giftInput')}</h2>
 
-              <InputField
-                label={t('giftAmount')}
-                value={giftAmount}
-                onChange={setGiftAmount}
-                placeholder="500,000,000"
-                suffix="원"
-              />
-
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('giftRelation')}</label>
-                <select
-                  value={giftRelation}
-                  onChange={e => setGiftRelation(e.target.value as GiftRelation)}
-                  className={`${glassInput} px-3 py-2`}
-                >
-                  <option value="spouse">{t('relations.spouse')}</option>
-                  <option value="ascendantAdult">{t('relations.ascendantAdult')}</option>
-                  <option value="ascendantMinor">{t('relations.ascendantMinor')}</option>
-                  <option value="descendant">{t('relations.descendant')}</option>
-                  <option value="otherRelative">{t('relations.otherRelative')}</option>
-                  <option value="nonRelative">{t('relations.nonRelative')}</option>
-                </select>
-              </div>
-
-              {(giftRelation === 'ascendantAdult' || giftRelation === 'ascendantMinor') && (
-                <div className="flex items-center gap-3">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isMarriageGift}
-                      onChange={e => setIsMarriageGift(e.target.checked)}
-                      className="accent-blue-600 w-4 h-4"
-                    />
-                    <span className="text-sm text-body">{t('marriageDeduction')}</span>
-                  </label>
-                </div>
+            <div id="igt-panel" role="tabpanel" aria-labelledby={`igt-tab-${tab}`} className="space-y-5">
+              {isGift ? (
+                <>
+                  <Money id="igt-amount" label={t('u.input.giftAmount')} value={amount} onChange={setAmount} won={t('u.won')} quick={[10_000_000, EOK, 5 * EOK]} reset={t('u.input.reset')} />
+                  <fieldset>
+                    <legend className="block text-sm font-medium text-body mb-2">{t('u.input.relation')}</legend>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2">
+                      {RELATIONS.map((r) => (
+                        <label key={r} htmlFor={`igt-rel-${r}`} className={opt(relation === r)}>
+                          <input id={`igt-rel-${r}`} type="radio" name="igt-rel" value={r} checked={relation === r} onChange={() => setRelation(r)} className="mt-0.5 w-4 h-4 shrink-0 accent-[var(--primary)]" />
+                          <span>{t(`u.relation.${r}.name`)}<span className="block text-xs text-muted font-normal">{t(`u.relation.${r}.limit`)}</span></span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  {showMinor && check('igt-minor', minor, setMinor, t('u.input.minor'), t('u.input.minorHint'))}
+                  {marriageEligible(relation) && check('igt-marriage', marriage, setMarriage, t('u.input.marriage'), t('u.input.marriageHint'))}
+                  <Money id="igt-prior" label={t('u.input.prior')} value={prior} onChange={setPrior} won={t('u.won')} hint={t('u.input.priorHint')} />
+                </>
+              ) : (
+                <>
+                  <Money id="igt-estate" label={t('u.input.estate')} value={estate} onChange={setEstate} won={t('u.won')} hint={t('u.input.estateHint')} quick={[EOK, 5 * EOK, 10 * EOK]} reset={t('u.input.reset')} />
+                  <Money id="igt-debts" label={t('u.input.debts')} value={debts} onChange={setDebts} won={t('u.won')} />
+                  {check('igt-spouse', spouse, setSpouse, t('u.input.spouse'))}
+                  {spouse && (
+                    <fieldset>
+                      <legend className="block text-sm font-medium text-body mb-2">{t('u.input.spouseMode')}</legend>
+                      <div className="space-y-2">
+                        {SPOUSE_MODES.map((m) => (
+                          <label key={m} htmlFor={`igt-spm-${m}`} className={opt(spouseMode === m)}>
+                            <input id={`igt-spm-${m}`} type="radio" name="igt-spm" value={m} checked={spouseMode === m} onChange={() => setSpouseMode(m)} className="mt-0.5 w-4 h-4 shrink-0 accent-[var(--primary)]" />
+                            <span>{t(`u.spouseMode.${m}`)}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {spouseMode === 'custom' && (
+                        <div className="mt-3"><Money id="igt-spa" label={t('u.input.spouseAmount')} value={spouseAmount} onChange={setSpouseAmount} won={t('u.won')} /></div>
+                      )}
+                    </fieldset>
+                  )}
+                  <div className="grid grid-cols-2 gap-3">
+                    {countSelect('igt-kids', t('u.input.children'), children, setChildren, 10)}
+                    {countSelect('igt-elders', t('u.input.elders'), elders, setElders, 5)}
+                  </div>
+                  {children > 0 && (
+                    <div>
+                      <label htmlFor="igt-ages" className="block text-sm font-medium text-body mb-2">{t('u.input.minorAges')}</label>
+                      <input id="igt-ages" type="text" inputMode="numeric" value={minorAges} onChange={(e) => setMinorAges(e.target.value)} placeholder={t('u.input.minorAgesPlaceholder')} aria-describedby="igt-ages-hint" className="ui-field w-full px-4 py-3" />
+                      <p id="igt-ages-hint" className="text-xs text-muted mt-1.5">{t('u.input.minorAgesHint')}</p>
+                    </div>
+                  )}
+                  <details className="group" open={funeral + bongan + fin + house + preGift > 0 || undefined}>
+                    <summary className="cursor-pointer min-h-11 flex items-center text-sm font-semibold text-body">{t('u.input.more')}</summary>
+                    <div className="space-y-5 pt-3">
+                      <Money id="igt-fin" label={t('u.input.fin')} value={fin} onChange={setFin} won={t('u.won')} hint={t('u.input.finHint')} />
+                      <Money id="igt-house" label={t('u.input.house')} value={house} onChange={setHouse} won={t('u.won')} hint={t('u.input.houseHint')} />
+                      <Money id="igt-pre" label={t('u.input.preGift')} value={preGift} onChange={setPreGift} won={t('u.won')} hint={t('u.input.preGiftHint')} />
+                      <Money id="igt-fun" label={t('u.input.funeral')} value={funeral} onChange={setFuneral} won={t('u.won')} hint={t('u.input.funeralHint')} />
+                      <Money id="igt-bon" label={t('u.input.bongan')} value={bongan} onChange={setBongan} won={t('u.won')} hint={t('u.input.bonganHint')} />
+                    </div>
+                  </details>
+                </>
               )}
-
-              <div className="bg-subtle rounded-lg p-3">
-                <p className="text-xs text-sub">
-                  <AlertCircle className="w-3.5 h-3.5 inline mr-1" />
-                  {t('giftPeriodNote')}
-                </p>
-              </div>
             </div>
-          )}
+          </div>
         </div>
 
-        {/* 결과 패널 */}
-        <div className="lg:col-span-2 space-y-4">
-          {currentResult && 'tax' in currentResult ? (
-            <>
-              {/* 핵심 결과 카드 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-fg">{t('result')}</h2>
-                  <button
-                    onClick={() => copyToClipboard(buildSummary(), 'result')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                  >
-                    {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                    {copiedId === 'result' ? t('copied') : t('copyResult')}
-                  </button>
-                </div>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6" aria-live="polite">
+            <p className="text-sm text-muted">{isGift ? t('u.result.giftLabel', { amount: eokMan(amount), relation: relLabel }) : t('u.result.inheritLabel', { amount: eokMan(estate) })}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(payable)}{t('u.won')}</p>
+            <p className="text-sm text-sub mt-2">
+              {payable === 0
+                ? t(isGift ? 'u.result.zeroGift' : 'u.result.zeroInherit')
+                : t('u.result.effective', { rate: gross > 0 ? ((payable / gross) * 100).toFixed(1) : '0' })}
+            </p>
+            {isGift && giftRoom > 0 && <p className="text-sm text-sub mt-1">{t('u.result.room', { room: eokMan(giftRoom) })}</p>}
+            {isGift && marriageEligible(relation) && <p className="text-xs text-muted mt-1">{t('u.result.giftAssume')}</p>}
 
-                {/* 핵심 숫자 */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="bg-red-50 dark:bg-red-950/30 rounded-xl p-4 text-center">
-                    <p className="text-xs text-red-600 dark:text-red-400 mb-1">
-                      {taxType === 'inheritance' ? t('inheritanceTax') : t('giftTax')}
-                    </p>
-                    <p className="text-xl font-bold text-red-700 dark:text-red-400">
-                      {formatWon(currentResult.tax)}
-                    </p>
-                  </div>
-                  <div className="bg-subtle rounded-xl p-4 text-center">
-                    <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('taxableAmount')}</p>
-                    <p className="text-xl font-bold text-blue-700 dark:text-blue-400">
-                      {formatWon(currentResult.taxable)}
-                    </p>
-                  </div>
-                  <div className="bg-subtle rounded-xl p-4 text-center">
-                    <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('effectiveRate')}</p>
-                    <p className="text-xl font-bold text-green-700 dark:text-green-400">
-                      {currentResult.effectiveRate.toFixed(1)}%
-                    </p>
-                  </div>
+            <div className="grid grid-cols-3 gap-3 mt-5">
+              {[
+                [t('u.steps.base'), won(base)],
+                [t('u.result.rate'), base > 0 ? `${Math.round((isGift ? g.rate : h.rate) * 100)}%` : '-'],
+                [t('u.steps.filingCredit'), won(isGift ? g.filingCredit : h.filingCredit)],
+              ].map(([k, v]) => (
+                <div key={k} className="bg-subtle rounded-2xl p-3">
+                  <p className="text-xs text-muted">{k}</p>
+                  <p className="text-base font-semibold text-fg tabular-nums mt-0.5 break-all">{v}</p>
                 </div>
+              ))}
+            </div>
 
-                {/* 상세 내역 */}
-                <div className="border-t border-line pt-4">
-                  <h3 className="text-sm font-medium text-muted mb-3">{t('breakdown')}</h3>
-                  <div className="space-y-2 text-sm">
-                    {taxType === 'inheritance' && inheritanceResult && (
-                      <>
-                        <Row label={t('totalEstate')} value={formatWon(parseNumInput(totalEstate))} />
-                        {parseNumInput(debts) > 0 && (
-                          <Row label={t('debts')} value={`-${formatWon(parseNumInput(debts))}`} sub />
-                        )}
-                        {inheritanceResult.funeralDeduction > 0 && (
-                          <Row label={t('funeralExpense')} value={`-${formatWon(inheritanceResult.funeralDeduction)}`} sub />
-                        )}
-                        <Row label={t('netEstate')} value={formatWon(inheritanceResult.netEstate)} bold />
-                        <div className="border-t border-line my-2" />
-                        <Row
-                          label={inheritanceResult.deductionDetail?.isLumpSum ? t('lumpSumDeduction') : t('itemizedDeduction')}
-                          value={`-${formatWon(inheritanceResult.generalDeduction)}`}
-                        />
-                        {hasSpouse && (
-                          <Row label={t('spouseDeduction')} value={`-${formatWon(inheritanceResult.spouseDeduction)}`} sub />
-                        )}
-                        {inheritanceResult.financialDeduction > 0 && (
-                          <Row label={t('financialDeduction')} value={`-${formatWon(inheritanceResult.financialDeduction)}`} sub />
-                        )}
-                        <Row label={t('totalDeduction')} value={`-${formatWon(inheritanceResult.totalDeduction)}`} accent />
-                        <div className="border-t border-line my-2" />
-                        <Row label={t('taxableAmount')} value={formatWon(inheritanceResult.taxable)} bold />
-                        <Row label={t('appliedRate')} value={`${inheritanceResult.rate}%`} sub />
-                        <Row label={t('inheritanceTax')} value={formatWon(inheritanceResult.tax)} highlight />
-                      </>
-                    )}
-                    {taxType === 'gift' && giftResult && (
-                      <>
-                        <Row label={t('giftAmount')} value={formatWon(giftResult.amount)} />
-                        <Row label={t('baseDeduction')} value={`-${formatWon(giftResult.baseDeduction)}`} />
-                        {giftResult.marriageDeduction > 0 && (
-                          <Row label={t('marriageDeductionAmount')} value={`-${formatWon(giftResult.marriageDeduction)}`} sub />
-                        )}
-                        <Row label={t('totalDeduction')} value={`-${formatWon(giftResult.totalDeduction)}`} accent />
-                        <div className="border-t border-line my-2" />
-                        <Row label={t('taxableAmount')} value={formatWon(giftResult.taxable)} bold />
-                        <Row label={t('appliedRate')} value={`${giftResult.rate}%`} sub />
-                        <Row label={t('giftTax')} value={formatWon(giftResult.tax)} highlight />
-                      </>
-                    )}
-                  </div>
-                </div>
+            <h2 className="text-base font-semibold text-fg mt-6 mb-2">{t('u.steps.title')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[22rem]">
+                <caption className="sr-only">{t('u.steps.title')}</caption>
+                <thead>
+                  <tr className="text-xs text-muted border-b border-line">
+                    <th scope="col" className="py-2 pr-2 text-left font-medium w-6"><span className="sr-only">{t('u.steps.op')}</span></th>
+                    <th scope="col" className="py-2 pr-2 text-left font-medium">{t('u.steps.item')}</th>
+                    <th scope="col" className="py-2 text-right font-medium">{t('u.steps.amount')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {steps.map((s, i) => (
+                    <tr key={i} className={`border-b border-line last:border-0 ${s.total ? 'font-semibold text-fg' : 'text-body'}`}>
+                      <td className="py-2 pr-2 text-muted align-top" aria-hidden={!s.op}>{s.op}</td>
+                      <th scope="row" className={`py-2 pr-2 text-left align-top ${s.total ? 'font-semibold' : 'font-normal'}`}>
+                        {s.label}
+                        {s.note && <span className="block text-xs text-muted font-normal mt-0.5">{s.note}</span>}
+                      </th>
+                      <td className="py-2 text-right tabular-nums align-top whitespace-nowrap">{won(s.value)}{t('u.won')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {!isGift && h.capped && <p className="text-xs text-muted mt-2">{t('u.result.cappedHint')}</p>}
+            {!isGift && preGift > 0 && <p className="text-xs text-muted mt-2">{t('u.result.preGiftAssume')}</p>}
+
+            <ShareResult card={card} className="mt-6" fileName="toolhub-gift-tax" />
+          </div>
+
+          {/* 신고·납부 기한 */}
+          <div className="ui-card p-6 space-y-4">
+            <h2 className="text-base font-semibold text-fg">{t('u.deadline.title')}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+              <div>
+                <label htmlFor="igt-date" className="block text-sm font-medium text-body mb-2">{isGift ? t('u.deadline.giftDate') : t('u.deadline.deathDate')}</label>
+                <input id="igt-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} className="ui-field w-full px-4 py-3" />
               </div>
-
-              {/* 세율표 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h3 className="text-sm font-semibold text-fg mb-3">{t('rateTable')}</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm" aria-label={t('rateTable')}>
-                    <thead>
-                      <tr className="bg-subtle">
-                        <th className="px-3 py-2 text-left text-xs font-medium text-muted">{t('bracket')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('rateCol')}</th>
-                        <th className="px-3 py-2 text-right text-xs font-medium text-muted">{t('progressiveDeduction')}</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      {TAX_BRACKETS.map((b, i) => {
-                        const isActive = currentResult && 'tax' in currentResult && i === (taxType === 'inheritance' ? inheritanceResult : giftResult)?.rate
-                          ? false : false // We'll use bracket index
-                        const prev = i > 0 ? TAX_BRACKETS[i - 1].upTo : 0
-                        return (
-                          <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-primary-soft text-primary' : ''}>
-                            <td className="px-3 py-2 text-fg">
-                              {b.upTo === Infinity
-                                ? `${formatNumber(prev)}원 초과`
-                                : `${i === 0 ? '0' : formatNumber(prev)}원 ~ ${formatNumber(b.upTo)}원`
-                              }
-                            </td>
-                            <td className="px-3 py-2 text-right font-medium text-fg">{b.rate * 100}%</td>
-                            <td className="px-3 py-2 text-right text-sub">{formatWon(b.deduction)}</td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+              <div aria-live="polite">
+                <p className="text-xs text-muted">{isGift ? t('u.deadline.giftRule') : t('u.deadline.inheritRule')}</p>
+                <p className="text-xl font-bold text-fg mt-1">{deadline ? fmtDate(deadline.due) : '-'}</p>
               </div>
-            </>
-          ) : (
-            <div className={`${glassCard} ${glassInset} p-12 text-center text-faint`}>
-              <Calculator className="w-12 h-12 mx-auto mb-3 opacity-30" />
-              <p>{t('inputPrompt')}</p>
+            </div>
+            {deadline && deadline.due !== deadline.legal && <p className="text-xs text-muted">{t('u.deadline.shifted', { legal: fmtDate(deadline.legal) })}</p>}
+            <ul className="text-sm text-sub space-y-1 list-disc pl-5">
+              {payable > 10_000_000 && <li>{t('u.deadline.installment')}</li>}
+              {payable > 20_000_000 && <li>{t(isGift ? 'u.deadline.yearlyGift' : 'u.deadline.yearlyInherit')}</li>}
+              <li>{t('u.deadline.late')}</li>
+              {!isGift && <li>{t('u.deadline.abroad')}</li>}
+            </ul>
+            <div className="flex flex-wrap gap-2">
+              <a href="https://www.hometax.go.kr" target="_blank" rel="noopener noreferrer" className="ui-btn px-4 py-2.5 text-sm min-h-11 inline-flex items-center">{t('u.deadline.hometax')}</a>
+              <a href="https://www.nts.go.kr" target="_blank" rel="noopener noreferrer" className="ui-btn-soft px-4 py-2.5 text-sm min-h-11 inline-flex items-center">{t('u.deadline.nts')}</a>
+            </div>
+          </div>
+
+          {/* 절세 시나리오 */}
+          {scenarios.length > 0 && (
+            <div className="ui-card p-6">
+              <h2 className="text-base font-semibold text-fg">{t('u.scenario.title')}</h2>
+              <p className="text-xs text-muted mt-1">{isGift ? t('u.scenario.giftNote') : t('u.scenario.inheritNote')}</p>
+              <div className="overflow-x-auto mt-3">
+                <table className="w-full text-sm min-w-[22rem]">
+                  <caption className="sr-only">{t('u.scenario.title')}</caption>
+                  <thead>
+                    <tr className="text-xs text-muted border-b border-line">
+                      <th scope="col" className="py-2 pr-2 text-left font-medium">{t('u.scenario.case')}</th>
+                      <th scope="col" className="py-2 pr-2 text-right font-medium">{t('u.scenario.tax')}</th>
+                      <th scope="col" className="py-2 text-right font-medium">{t('u.scenario.diff')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-line text-fg font-semibold">
+                      <th scope="row" className="py-2 pr-2 text-left font-semibold">{isGift ? t('u.scenario.nowGift') : t('u.scenario.now')}</th>
+                      <td className="py-2 pr-2 text-right tabular-nums whitespace-nowrap">{won(scenarioBase)}{t('u.won')}</td>
+                      <td className="py-2 text-right text-muted">-</td>
+                    </tr>
+                    {scenarios.map((s) => {
+                      const d = s.tax - scenarioBase
+                      return (
+                        <tr key={s.label} className="border-b border-line last:border-0 text-body">
+                          <th scope="row" className="py-2 pr-2 text-left font-normal">{s.label}</th>
+                          <td className="py-2 pr-2 text-right tabular-nums whitespace-nowrap">{won(s.tax)}{t('u.won')}</td>
+                          <td className={`py-2 text-right tabular-nums whitespace-nowrap ${d < 0 ? 'text-primary font-semibold' : 'text-sub'}`}>
+                            {d === 0 ? t('u.scenario.same') : d < 0 ? t('u.scenario.save', { v: won(-d) }) : t('u.scenario.more', { v: won(d) })}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {!isGift && spouse && <p className="text-xs text-muted mt-3">{t('u.scenario.secondInherit')}</p>}
             </div>
           )}
+
+          {/* 세율표 */}
+          <div className="ui-card p-6">
+            <h2 className="text-base font-semibold text-fg mb-3">{t('u.rateTable.title')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[20rem]">
+                <caption className="sr-only">{t('u.rateTable.title')}</caption>
+                <thead>
+                  <tr className="text-xs text-muted border-b border-line">
+                    <th scope="col" className="py-2 pr-2 text-left font-medium">{t('u.rateTable.base')}</th>
+                    <th scope="col" className="py-2 pr-2 text-right font-medium">{t('u.rateTable.rate')}</th>
+                    <th scope="col" className="py-2 text-right font-medium">{t('u.rateTable.ded')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {BRACKETS.map((b, i) => {
+                    const on = base > 0 && base <= b.upTo && (i === 0 || base > BRACKETS[i - 1].upTo)
+                    return (
+                      <tr key={i} className={`border-b border-line last:border-0 ${on ? 'bg-primary-soft text-primary font-semibold' : 'text-body'}`} aria-current={on ? 'true' : undefined}>
+                        <td className="py-2 px-2">
+                          {b.upTo === Infinity ? t('u.rateTable.over', { v: eokMan(BRACKETS[i - 1].upTo) }) : t('u.rateTable.upTo', { v: eokMan(b.upTo) })}
+                          {on && <span className="ml-1 text-xs">({t('u.rateTable.mine')})</span>}
+                        </td>
+                        <td className="py-2 pr-2 text-right tabular-nums">{Math.round(b.rate * 100)}%</td>
+                        <td className="py-2 pr-2 text-right tabular-nums">{b.deduction ? `${eokMan(b.deduction)}${t('u.won')}` : '-'}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* 가이드 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between"
-          aria-expanded={showGuide}
-        >
-          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
-        </button>
-        {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-body">
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.inheritance.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.inheritance.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.gift.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.gift.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('u.guide.title')}</h2>
+        {(['gift', 'inheritance', 'burden', 'tips'] as const).map((k) => (
+          <section key={k}>
+            <h3 className="text-base font-semibold text-fg mb-2">{t(`u.guide.${k}.title`)}</h3>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm text-body leading-relaxed">
+              {(t.raw(`u.guide.${k}.items`) as string[]).map((s) => <li key={s}>{s}</li>)}
+            </ul>
+          </section>
+        ))}
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-1">{t('u.faq.title')}</h3>
+          <div className="divide-y divide-line">
+            {faq.map((f) => (
+              <details key={f.q} className="py-3">
+                <summary className="cursor-pointer text-sm font-medium text-body min-h-6">{f.q}</summary>
+                <p className="text-sm text-sub mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('u.sources.title')}</p>
+          <ul className="space-y-1">
+            {sources.map((s) => (
+              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">{t('u.sources.asOf')}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {(['acquisition-tax', 'capital-gains-tax', 'real-estate-calculator', 'comprehensive-property-tax'] as const).map((href) => (
+            <Link key={href} href={`/${href}/`} className="ui-btn-soft px-3 py-2 text-sm min-h-11 inline-flex items-center">{t(`u.links.${href}`)}</Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('u.disclaimer')}</div>
+    </div>
+  )
+}
+
+function Money({ id, label, value, onChange, won, hint, quick, reset }: {
+  id: string; label: string; value: number; onChange: (v: number) => void; won: string; hint?: string; quick?: number[]; reset?: string
+}): ReactNode {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="numeric" autoComplete="off" value={value ? value.toLocaleString('ko-KR') : ''}
+          onChange={(e) => onChange(parseNum(e.target.value))} placeholder="0" aria-describedby={`${id}-ko${hint ? ` ${id}-hint` : ''}`}
+          className="ui-field w-full px-4 py-3 pr-10 tabular-nums"
+        />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted" aria-hidden="true">{won}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2 mt-1.5">
+        <span id={`${id}-ko`} className="text-xs text-muted">{eokMan(value)}{won}</span>
+        {quick && (
+          <div className="flex gap-1">
+            {quick.map((q) => (
+              <button key={q} type="button" onClick={() => onChange(Math.min(value + q, MAX))} className="min-h-10 px-2.5 rounded-lg bg-soft text-xs text-body hover:bg-subtle">+{eokMan(q)}</button>
+            ))}
+            <button type="button" onClick={() => onChange(0)} className="min-h-10 px-2.5 rounded-lg bg-soft text-xs text-body hover:bg-subtle">{reset}</button>
           </div>
         )}
       </div>
-
-      {/* 면책 */}
-      <div className="bg-amber-50 dark:bg-amber-950/30 rounded-xl p-4 flex items-start gap-3">
-        <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-        <p className="text-xs text-amber-700 dark:text-amber-300">{t('disclaimer')}</p>
-      </div>
-    </div>
-  )
-}
-
-// ── 서브컴포넌트 ──
-
-function InputField({ label, value, onChange, placeholder, suffix, hint }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder: string; suffix: string; hint?: string
-}) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-body mb-1">{label}</label>
-      <div className="relative">
-        <input
-          type="text"
-          inputMode="numeric"
-          value={value ? parseInt(value.replace(/[^0-9]/g, '')).toLocaleString('ko-KR') : ''}
-          onChange={e => onChange(e.target.value.replace(/[^0-9]/g, ''))}
-          placeholder={placeholder}
-          className={`${glassInput} px-3 py-2 pr-8 text-sm`}
-        />
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">{suffix}</span>
-      </div>
-      {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
-    </div>
-  )
-}
-
-function Row({ label, value, bold, sub, accent, highlight }: {
-  label: string; value: string; bold?: boolean; sub?: boolean; accent?: boolean; highlight?: boolean
-}) {
-  return (
-    <div className={`flex justify-between items-center ${sub ? 'pl-4 text-xs text-muted' : ''} ${bold ? 'font-medium' : ''} ${highlight ? 'bg-red-50 dark:bg-red-950/30 -mx-2 px-2 py-1.5 rounded-lg font-bold text-red-700 dark:text-red-400' : ''}`}>
-      <span className={accent ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-body'}>{label}</span>
-      <span className={`${bold ? 'text-fg' : ''} ${accent ? 'text-blue-600 dark:text-blue-400 font-medium' : ''} ${highlight ? '' : 'text-fg'}`}>{value}</span>
+      {hint && <p id={`${id}-hint`} className="text-xs text-muted mt-1">{hint}</p>}
     </div>
   )
 }

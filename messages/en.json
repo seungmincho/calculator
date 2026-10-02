@@ -2281,6 +2281,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "greetingGenerator": "Greeting Message Generator",
       "csatDday": "CSAT D-day & Timetable",
       "salaryCalculator": "Salary Calculator",
       "loanCalculator": "Loan Calculator",
@@ -6352,6 +6353,10 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "greetingGenerator": {
+        "title": "Greeting Message Generator",
+        "description": "Year-end, New Year, holiday and thank-you messages by occasion and tone"
+      },
       "csatDday": {
         "title": "CSAT D-day, Timetable & Checklist",
         "description": "2027 CSAT countdown, period timetable, packing checklist and answer sheet"
@@ -22608,6 +22613,297 @@
     }
   },
   "inheritanceGiftTax": {
+    "u": {
+      "subtitle": "Calculates Korean gift and inheritance tax under the law in force as of October 2026 — parent-to-child gift deduction, marriage/childbirth deduction, 10-year aggregation and spouse deduction — with tax-saving scenarios and filing deadlines.",
+      "tabsLabel": "Calculation type",
+      "tab": {
+        "gift": "Gift tax",
+        "inheritance": "Inheritance tax"
+      },
+      "won": " KRW",
+      "people": "{n}",
+      "dateLocale": "en-US",
+      "relation": {
+        "parent": {
+          "name": "Parent → child",
+          "limit": "Adult 50M · minor 20M (10 yrs)"
+        },
+        "grandparent": {
+          "name": "Grandparent → grandchild",
+          "limit": "Adult 50M · minor 20M, generation-skip surcharge"
+        },
+        "spouse": {
+          "name": "Spouse",
+          "limit": "600M (10 yrs)"
+        },
+        "child": {
+          "name": "Child → parent",
+          "limit": "50M (10 yrs)"
+        },
+        "relative": {
+          "name": "Other relative",
+          "limit": "10M (in-laws, siblings, etc.)"
+        },
+        "other": {
+          "name": "Non-relative",
+          "limit": "No deduction"
+        }
+      },
+      "spouseMode": {
+        "legal": "Receives the statutory share (1.5× a child's share)",
+        "min": "Receives less than 500M or nothing (500M minimum deduction)",
+        "custom": "Enter the amount"
+      },
+      "input": {
+        "giftAmount": "Gift amount",
+        "relation": "Giver → receiver",
+        "minor": "Receiver is a minor (under 19)",
+        "minorHint": "The deduction from parents/grandparents drops to 20M KRW.",
+        "marriage": "Apply marriage/childbirth deduction (100M KRW)",
+        "marriageHint": "Gifts from parents/grandparents within 2 years before/after marriage registration or within 2 years of a child's birth/adoption. Lifetime limit of 100M KRW combined.",
+        "prior": "Already received from the same giver within 10 years",
+        "priorHint": "For parents/grandparents, gifts from their spouse are added too (total from mom and dad).",
+        "reset": "Clear",
+        "estate": "Total estate (market value)",
+        "estateHint": "Real estate, deposits, stocks, death insurance, severance pay",
+        "debts": "Debts and dues (loans, deposits to return, etc.)",
+        "spouse": "Surviving spouse",
+        "spouseMode": "Amount the spouse actually inherits",
+        "spouseAmount": "Spouse's amount",
+        "children": "Children",
+        "elders": "Heirs/household members aged 65+ (excl. spouse)",
+        "minorAges": "Ages of minor children (if any)",
+        "minorAgesPlaceholder": "e.g. 7, 15",
+        "minorAgesHint": "Extra 10M KRW per year until age 19. Separate with commas.",
+        "more": "More deductions (financial assets, co-residence home, prior gifts, funeral)",
+        "fin": "Net financial assets (deposits, stocks − financial debt)",
+        "finHint": "20% deduction; full amount if ≤20M, min 20M, max 200M",
+        "house": "Co-residence home value (net of mortgage)",
+        "houseHint": "Single home lived in with a child for 10+ years, inherited by a homeless child. Up to 600M",
+        "preGift": "Gifts to heirs within 10 years",
+        "preGiftHint": "Added back at the value when gifted. For non-heirs (grandchildren, in-laws) only the last 5 years.",
+        "funeral": "Funeral costs (with receipts)",
+        "funeralHint": "5M deducted even without receipts, up to 10M",
+        "bongan": "Columbarium / natural burial costs",
+        "bonganHint": "Up to 5M more with receipts"
+      },
+      "result": {
+        "giftLabel": "Gift of {amount} KRW ({relation}) · gift tax if filed on time",
+        "inheritLabel": "Estate of {amount} KRW · inheritance tax if filed on time",
+        "effective": "Effective rate {rate}% of the assets",
+        "zeroGift": "Within the deduction, so no gift tax is due. Filing anyway helps explain the source of funds later.",
+        "zeroInherit": "Deductions exceed the taxable value, so no inheritance tax is due.",
+        "room": "You can receive {room} KRW more from this group within 10 years tax-free.",
+        "giftAssume": "The gift deduction limit is shared by all lineal ascendants (parents, grandparents) per 10 years. If you already used it with another ascendant, only the remainder applies.",
+        "rate": "Rate",
+        "deductionTotal": "Total deductions",
+        "cappedHint": "With prior gifts, inheritance deductions are capped at taxable value minus the prior gifts' tax base (overall deduction limit).",
+        "preGiftAssume": "Prior gifts are assumed to be from a parent to an adult child (50M deduction); the gift tax paid then is credited."
+      },
+      "steps": {
+        "title": "How the tax is calculated",
+        "op": "Operator",
+        "item": "Item",
+        "amount": "Amount",
+        "giftAmount": "This gift",
+        "prior": "Received from the same giver within 10 years",
+        "priorNote": "10-year aggregation",
+        "giftValue": "Taxable gift value",
+        "giftDeduction": "Gift deduction",
+        "marriageDeduction": "Marriage/childbirth deduction",
+        "base": "Tax base",
+        "bracketNote": "Rate {rate} · progressive deduction {ded} KRW",
+        "computed": "Calculated tax",
+        "surcharge": "Generation-skip surcharge",
+        "priorCredit": "Credit for gift tax already paid",
+        "filingCredit": "Filing credit (3%)",
+        "payable": "Tax payable",
+        "estate": "Total estate",
+        "debts": "Debts and dues",
+        "funeral": "Funeral costs",
+        "funeralNote": "5M without receipts, up to 10M + 5M columbarium",
+        "preGift": "Prior gifts within 10 years",
+        "taxableValue": "Taxable estate value",
+        "lumpSum": "Lump-sum deduction",
+        "itemized": "Basic + personal deductions",
+        "itemizedNote": "Basic 200M + personal {personal} KRW exceeds the 500M lump sum",
+        "spouseOnlyNote": "Spouse as sole heir cannot use the lump sum; basic + personal only (no children = assumed sole heir)",
+        "spouseDeduction": "Spouse deduction",
+        "spouseNote": "Statutory-share cap {legal} KRW · min 500M, max 3B",
+        "finDeduction": "Financial asset deduction",
+        "houseDeduction": "Co-residence home deduction",
+        "capped": "Total deductions (after overall limit)",
+        "cappedNote": "Only up to the limit out of {sum} KRW",
+        "giftCredit": "Credit for gift tax on prior gifts"
+      },
+      "deadline": {
+        "title": "Filing and payment deadline",
+        "giftDate": "Gift date",
+        "deathDate": "Date of death",
+        "giftRule": "3 months from the end of the month of the gift",
+        "inheritRule": "6 months from the end of the month of death",
+        "shifted": "The legal deadline {legal} falls on a weekend/holiday, so the next business day is fine.",
+        "installment": "If the tax exceeds 10M KRW, you can split payment within 2 months (amount over 10M if ≤20M; up to half if more).",
+        "yearlyGift": "Over 20M KRW, you may pay in annual installments for up to 5 years with collateral (interest added).",
+        "yearlyInherit": "Over 20M KRW, you may pay in annual installments for up to 10 years (longer for family businesses) with collateral (interest added).",
+        "late": "Missing the deadline loses the 3% filing credit and adds a non-filing penalty (generally 20%) and late-payment penalty (0.022% per day).",
+        "abroad": "If the deceased or all heirs live abroad, the deadline is 9 months.",
+        "hometax": "File on Hometax",
+        "nts": "National Tax Service"
+      },
+      "scenario": {
+        "title": "Tax-saving scenarios",
+        "giftNote": "Assumes no prior gifts and the same relationship/deduction for each receiver. 10-year intervals assume today's law stays the same.",
+        "inheritNote": "Recalculated changing one condition at a time.",
+        "case": "Case",
+        "tax": "Tax payable",
+        "diff": "vs. now",
+        "now": "Your current inputs",
+        "nowGift": "All at once now (no prior gifts)",
+        "split": "Split equally among {n} people (e.g. {n} children)",
+        "rounds": "Split into {n} gifts 10 years apart",
+        "marriage": "With the marriage/childbirth deduction (100M)",
+        "viaParent": "Two gifts via the parent (each taxed)",
+        "spouse": {
+          "min": "If the spouse receives less than 500M",
+          "legal": "If the spouse receives the statutory share"
+        },
+        "preGiftOld": "If {n} children each got 50M more than 10 years earlier",
+        "save": "Save {v} KRW",
+        "more": "{v} KRW more",
+        "same": "Same",
+        "secondInherit": "The more the spouse inherits, the lower the tax now — but those assets may be taxed again when the spouse passes away (second inheritance). The spouse's share must be divided and registered within 9 months after the filing deadline to be deducted."
+      },
+      "rateTable": {
+        "title": "Inheritance & gift tax rates (same for both)",
+        "base": "Tax base",
+        "rate": "Rate",
+        "ded": "Progressive deduction",
+        "upTo": "Up to {v} KRW",
+        "over": "Over {v} KRW",
+        "mine": "your bracket"
+      },
+      "share": {
+        "giftLabel": "Gift tax on {amount} KRW ({relation})",
+        "inheritLabel": "Inheritance tax on a {amount} KRW estate",
+        "sub": "If filed on time · law in force in 2026"
+      },
+      "guide": {
+        "title": "Gift & inheritance tax essentials",
+        "gift": {
+          "title": "Gift tax: the essentials",
+          "items": [
+            "Gift deductions (10-year total): spouse 600M; parents/grandparents → adult child/grandchild 50M (minor 20M); child → parent 50M; other relatives (blood relatives within 6th degree, in-laws within 4th) 10M; none otherwise.",
+            "The limit is per receiver: gifts from father, mother and grandfather share one 50M limit per 10 years.",
+            "Gifts from the same giver (a parent/grandparent and their spouse count as one) within 10 years are added together for the rate, and gift tax already paid is credited.",
+            "Marriage/childbirth deduction: from 2024-01-01, an extra 100M for gifts from parents/grandparents within 2 years before/after marriage registration or within 2 years of a child's birth/adoption. Lifetime 100M combined, so up to 150M with the basic deduction.",
+            "Gifts that skip a generation (grandparent → grandchild) add 30% to the calculated tax, or 40% if the grandchild is a minor receiving over 2B. No surcharge if the parent has died.",
+            "Rates run in 5 brackets from 10% (tax base ≤100M) to 50% (over 3B); filing on time gives a 3% credit."
+          ]
+        },
+        "inheritance": {
+          "title": "Inheritance tax: it's all about deductions",
+          "items": [
+            "Taxable value = estate − debts/dues − funeral costs + gifts to heirs within 10 years (5 years for non-heirs).",
+            "You get the larger of a 500M lump sum or 200M basic + personal deductions (50M per child, 10M per year until 19 for minors, 50M for those 65+, 10M per year of life expectancy for the disabled). A spouse inheriting alone cannot use the lump sum.",
+            "Spouse deduction: what the spouse actually receives, capped at the statutory share and 3B, with a 500M minimum even if they receive less. So with a spouse and children, usually up to 1B is tax-free.",
+            "Financial asset deduction: 20% of net financial assets (all if ≤20M, min 20M, max 200M).",
+            "Co-residence home deduction: a single home lived in with the deceased for 10+ years, inherited by a homeless child, up to 600M (net of mortgage).",
+            "Funeral costs: 5M without receipts, up to 10M with receipts, plus up to 5M for a columbarium/natural burial.",
+            "With prior gifts, deductions are capped at taxable value minus the prior gifts' tax base. Gift tax paid on them is credited."
+          ]
+        },
+        "burden": {
+          "title": "Gifts with debt (loan or lease deposit assumed)",
+          "items": [
+            "If a home is gifted together with its loan or lease deposit, gift tax applies only to the value minus that debt.",
+            "The debt part is treated as a sale by the giver, so the giver owes capital gains tax on it. Favorable if the home qualifies for the one-home exemption; multi-home owners should check surcharges.",
+            "Between family members, the debt transfer must be proven. The receiver has to pay the interest and principal, and the NTS checks the source of repayment.",
+            "Acquisition tax is also split: purchase rates for the debt part, gift rates for the rest. This calculator covers only the gift tax part."
+          ]
+        },
+        "tips": {
+          "title": "Tax-saving tips",
+          "items": [
+            "The gift deduction renews every 10 years: 20M at birth, then the limit at 10 and 20, can pass over 100M tax-free by age 30 (if the law stays the same).",
+            "Splitting the same amount among several people lets each use their own deduction and lower brackets.",
+            "If a marriage or birth is coming up, use the 100M marriage/childbirth deduction within the window.",
+            "Gifts made more than 10 years before death are not added back to the estate. Assets likely to appreciate are best gifted early.",
+            "Even with no tax due, keep transfer memos and a gift contract and file a return; it helps if the source of funds is questioned later."
+          ]
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much can parents give a child tax-free?",
+            "a": "50M KRW per 10 years to an adult child, 20M to a minor, combined across all lineal ascendants. Within 2 years of marriage registration or a child's birth, the 100M marriage/childbirth deduction raises this to 150M."
+          },
+          {
+            "q": "How do I get the marriage/childbirth deduction?",
+            "a": "Gifts from parents/grandparents on or after 2024-01-01 received within 2 years before/after marriage registration or within 2 years of a child's birth/adoption get an extra 100M deduction. Lifetime limit 100M combined; claim it on your gift tax return."
+          },
+          {
+            "q": "Do gifts from mom and dad get two deductions?",
+            "a": "No. The deduction is per receiver and shared by all lineal ascendants (50M per 10 years). Parents are also treated as one giver for 10-year aggregation."
+          },
+          {
+            "q": "Up to what amount is there no inheritance tax?",
+            "a": "With a spouse and children, the 500M lump sum plus the 500M minimum spouse deduction usually make 1B tax-free. With children only, 500M; a spouse inheriting alone gets 200M basic plus the spouse deduction (min 500M). Funeral, financial asset and co-residence home deductions may add more."
+          },
+          {
+            "q": "Was the child deduction raised to 500M?",
+            "a": "No. The 2024 government bill (500M per child, 40% top rate) was voted down in the National Assembly on 2024-12-10, and the 2025 regular session did not pass any inheritance tax deduction/rate reform. As of October 2026, 50M per child, a 500M lump sum and 10–50% rates still apply."
+          },
+          {
+            "q": "Does gifting early reduce inheritance tax?",
+            "a": "Gifts within 10 years of death (5 years for non-heirs) are added back at their value when gifted, with the gift tax paid credited. Gifts older than 10 years are not added back, so earlier is better."
+          },
+          {
+            "q": "When must I file?",
+            "a": "Gift tax: within 3 months from the end of the month of the gift. Inheritance tax: within 6 months from the end of the month of death (9 months if living abroad). Filing on time gives a 3% credit; late filing adds penalties. You can file on Hometax."
+          },
+          {
+            "q": "Is it worse for grandparents to give directly to grandchildren?",
+            "a": "Skipping a generation adds 30% (40% for a minor receiving over 2B). But going through the parent means paying gift tax twice, so giving directly is often cheaper. Compare both in the scenarios above."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Legal basis & official guides",
+        "asOf": "Based on the Inheritance and Gift Tax Act in force as of October 2026. The 2024 government bill (500M child deduction, 40% top rate) was rejected in December 2024, and no inheritance tax deduction/rate reform has passed since.",
+        "items": [
+          {
+            "label": "NTS · Gift tax by item (deductions, rates)",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6533&cntntsId=7960"
+          },
+          {
+            "label": "NTS · Inheritance tax calculation flow",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=2326&cntntsId=7720"
+          },
+          {
+            "label": "NTS call center · Gift deduction Q&A",
+            "url": "https://call.nts.go.kr/call/qna/selectQnaInfo.do?mi=2787&ctgId=CTG11688"
+          },
+          {
+            "label": "NTS call center · Marriage/childbirth deduction Q&A",
+            "url": "https://call.nts.go.kr/call/qna/selectQnaInfo.do?mi=2787&ctgId=CTG12222"
+          },
+          {
+            "label": "Korea Law Information Center · Inheritance and Gift Tax Act",
+            "url": "https://www.law.go.kr/법령/상속세및증여세법"
+          }
+        ]
+      },
+      "links": {
+        "acquisition-tax": "Acquisition tax",
+        "capital-gains-tax": "Capital gains tax",
+        "real-estate-calculator": "Real estate calculator",
+        "comprehensive-property-tax": "Comprehensive property tax"
+      },
+      "disclaimer": "Estimate only: excludes real estate/unlisted share valuation, family business and farming deductions, disability deduction, appraisal fees, non-residents and per-heir tax allocation. Verify with a Hometax simulation or a tax accountant before filing."
+    },
     "title": "Inheritance & Gift Tax Calculator",
     "description": "Easily calculate Korean inheritance and gift tax based on 2025 rates. View detailed breakdown of all deductions.",
     "inheritanceTab": "Inheritance Tax",
@@ -52771,5 +53067,6 @@
         }
       ]
     }
-  }
+  },
+  "greetingGenerator": {}
 }
