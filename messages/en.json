@@ -10166,8 +10166,167 @@
     }
   },
   "compoundCalculator": {
+    "c": {
+      "mode": {
+        "lump": "Lump sum",
+        "dca": "Monthly deposits",
+        "goal": "Goal planner"
+      },
+      "in": {
+        "goal": "Target amount (after tax)",
+        "solve": "Solve for",
+        "principal": "Principal",
+        "initial": "Initial amount (0 if none)",
+        "monthly": "Monthly deposit",
+        "rate": "Annual rate (return)",
+        "period": "Period",
+        "freq": "Compounding",
+        "timing": "Deposit timing",
+        "tax": "Interest income tax",
+        "taxTiming": "When tax is withheld",
+        "inflation": "Inflation (annual)"
+      },
+      "solve": {
+        "monthly": "Monthly deposit",
+        "rate": "Required return"
+      },
+      "timing": {
+        "begin": "Start of month",
+        "end": "End of month"
+      },
+      "timingHint": "Start-of-month deposits earn interest from the month they are paid (typical for savings plans). End-of-month deposits start earning the following month.",
+      "freqHint": "Compounding {r}% at this frequency gives an effective annual rate of {e}%.",
+      "tax": {
+        "normal": "Standard",
+        "pref": "Preferential",
+        "free": "Tax-free"
+      },
+      "taxTiming": {
+        "maturity": "Once at maturity",
+        "yearly": "Every year"
+      },
+      "taxHint": {
+        "maturity": "Like Korean deposits and savings accounts, tax is withheld once at maturity on the total interest. Until then the pre-tax interest keeps compounding.",
+        "yearly": "Interest is paid out every year, taxed, and only the remainder is reinvested (interest-paying products, funds taxed annually). Less money compounds, so you end up with less than taxation at maturity."
+      },
+      "inflationHint": "The Bank of Korea inflation target is 2% a year.",
+      "won": " KRW",
+      "yearsDec": "{y} yrs",
+      "dur": {
+        "y": "{y} yrs",
+        "m": "{m} mo",
+        "ym": "{y} yrs {m} mo"
+      },
+      "res": {
+        "goalMonthly": "To reach {g} KRW after tax in {n}",
+        "goalRate": "Annual return needed to reach {g} KRW after tax in {n}",
+        "perMonth": "{a} KRW / month",
+        "perYear": "{r}% a year",
+        "goalEnough": "What you already put in reaches the target.",
+        "goalImpossible": "Not reachable even at 100% a year. Try a longer period or larger deposits.",
+        "value": "After-tax amount in {n}",
+        "preTax": "Pre-tax {a} KRW",
+        "principal": "Total principal",
+        "gross": "Pre-tax interest",
+        "tax": "Income tax",
+        "net": "After-tax interest",
+        "totalReturn": "Total return (after tax)",
+        "effective": "Effective annual rate (pre-tax)",
+        "irr": "Annualized return (after tax)"
+      },
+      "share": {
+        "lump": "{p} KRW · {r}% {f} · {n}",
+        "dca": "{m} KRW/month · {r}% {f} · {n}",
+        "dcaWithP": "{p} KRW + {m} KRW/month · {r}% {f} · {n}",
+        "goal": "To save {g} KRW in {n}",
+        "sub": "After-tax interest {i} KRW ({tax})",
+        "goalSub": "After-tax amount {v} KRW"
+      },
+      "double": {
+        "title": "Time to double (Rule of 72)",
+        "short": "Time to double",
+        "rule": "Rule of 72 estimate",
+        "exact": "Exact (pre-tax, {f})",
+        "afterTax": "After tax ({tax})",
+        "none": "At 0% your money does not grow.",
+        "note": "The Rule of 72 works best around 6–10%; at very low or high rates the error grows (2%: 36 yrs vs 35.0 actual, 20%: 3.6 vs 3.8). After tax means the point where the after-tax amount doubles."
+      },
+      "chart": {
+        "title": "Growth chart",
+        "principal": "Principal",
+        "interest": "Interest (after tax)",
+        "start": "Start"
+      },
+      "simple": {
+        "title": "Simple vs compound (pre-tax interest)",
+        "desc": "Simple interest is paid only on what you put in; compound interest also earns interest on interest. Same deposits, rate and period.",
+        "simple": "Simple interest",
+        "compound": "Compound interest ({f})",
+        "diff": "Extra from compounding",
+        "ratio": "Compound interest is {x}× simple",
+        "yearlyNote": "With yearly taxation, tax is removed before reinvesting, so compound interest (pre-tax) is also lower than in the tax-free case."
+      },
+      "real": {
+        "title": "Adjusted for inflation",
+        "today": "{a} KRW in today's money",
+        "desc": "If prices rise {i}% a year, the {v} KRW you receive in {n} buys what {a} KRW buys today.",
+        "rate": "Real return (after tax, annual)",
+        "formula": "(1 + annualized {r}%) ÷ (1 + inflation {i}%) − 1",
+        "loss": "Your real return is negative: money grows slower than prices and loses purchasing power."
+      },
+      "sc": {
+        "title": "Return scenarios",
+        "desc": "Same principal, deposits, period, compounding and tax; only the rate changes. Edit the rates directly.",
+        "current": "Current",
+        "name": "Scenario {n}",
+        "rate": "Annual rate",
+        "value": "After-tax amount",
+        "net": "After-tax interest",
+        "double": "Doubling (pre-tax)"
+      },
+      "table": {
+        "title": "Year-by-year",
+        "year": "Period",
+        "principal": "Principal",
+        "interest": "Interest that year (pre-tax)",
+        "gross": "Cumulative interest (pre-tax)",
+        "tax": "Cumulative tax",
+        "value": "After-tax balance",
+        "note": {
+          "maturity": "Tax at maturity: each row assumes the product matures at that point and subtracts tax on cumulative interest. Early termination of a real deposit pays a lower early-withdrawal rate.",
+          "yearly": "Yearly tax: each year's interest is taxed and the remainder reinvested."
+        },
+        "noteFree": "Tax-free: all interest keeps compounding."
+      },
+      "method": {
+        "title": "How it is calculated",
+        "items": [
+          "Lump sum: principal × (1 + rate ÷ n)^(n × years), where n is the number of compounding periods a year (1, 2, 4, 12 or 365). Same as Excel =FV(rate/n, n×years, 0, -principal).",
+          "Monthly deposits: the rate is converted to an equivalent monthly rate (1 + rate ÷ n)^(n ÷ 12) − 1 and compounded monthly. Same as Excel =FV(monthly rate, months, -deposit, -principal, 1) (start of month; 0 for end).",
+          "Interest tax: standard 15.4% (14% income tax + 1.4% local tax), preferential 9.5% (9% + 0.5% special rural tax), tax-free 0%. Interest and dividend income above 20 million KRW a year is taxed with other income; this calculator applies the 15.4% flat rate only.",
+          "Annualized return: the annual rate (IRR) that matches your cash flows to the after-tax amount. For monthly deposits, later deposits compound for less time, so 'total return ÷ years' understates it.",
+          "Real value = after-tax amount ÷ (1 + inflation)^years; real return = (1 + annualized return) ÷ (1 + inflation) − 1 (Fisher equation).",
+          "Bank products truncate fractions and count days, so results may differ by a few to a few hundred won. Stock and fund returns vary year to year; results here assume the same return every year."
+        ]
+      },
+      "links": {
+        "title": "Related calculators",
+        "savings": {
+          "title": "Savings calculator",
+          "desc": "Deposit and installment savings interest, product comparison"
+        },
+        "investment": {
+          "title": "Investment return calculator",
+          "desc": "Monthly investing, pension savings and ISA accounts"
+        },
+        "cagr": {
+          "title": "CAGR calculator",
+          "desc": "Turn actual gains into an annual average return"
+        }
+      }
+    },
     "title": "Compound Interest Calculator",
-    "description": "Calculate compound interest and investment returns with principal, rate, and period",
+    "description": "Calculate lump-sum and monthly compound interest after tax, solve for a savings goal, and see the Rule of 72, simple vs compound and inflation-adjusted real returns in one place.",
     "principal": "Principal ($)",
     "rate": "Annual Rate (%)",
     "period": "Investment Period",
@@ -10212,41 +10371,79 @@
       "won": ""
     },
     "guide": {
-      "title": "User Guide",
-      "howToUse": {
-        "title": "How to Use",
+      "howItWorks": {
+        "title": "How it works",
         "items": [
-          "Enter principal, annual rate, and investment period",
-          "Select compound frequency (annual/semi-annual/quarterly/monthly/daily)",
-          "Add monthly deposits to calculate investment returns with regular contributions"
+          "Lump sum future value = principal × (1 + r ÷ n)^(n × t), with r the annual rate, n compounding periods per year and t years.",
+          "10,000,000 KRW at 5% compounded yearly for 10 years becomes 16,288,946 KRW (6,288,946 interest before tax); simple interest would be 5,000,000.",
+          "At the same 5% compounded monthly, the effective annual rate is 5.12% and the result is 16,470,095 KRW.",
+          "With monthly deposits each payment compounds for its remaining time. 500,000 KRW a month at 5% monthly for 10 years (start of month) gives 60,000,000 principal and 17,964,644 pre-tax interest.",
+          "Korean deposits withhold 15.4% on total interest at maturity, so the 10M example pays 15,320,449 KRW after tax. If interest is paid and taxed every year and only the rest reinvested, you get 15,133,082 KRW."
+        ]
+      },
+      "comparison": {
+        "title": "Simple vs compound, lump sum vs monthly",
+        "items": [
+          "Simple vs compound: small difference over 1–2 years, growing with time. 10M KRW at 5% for 10 years: 5.0M simple vs 6.29M compound interest.",
+          "Yearly vs monthly compounding: at the same stated rate, monthly earns slightly more, especially at higher rates and longer periods (12% → 12.68% effective).",
+          "Lump sum vs monthly: with the same total principal, monthly deposits earn less because later money compounds for less time, but you can start without savings and spread market entry.",
+          "Tax at maturity vs every year: paying tax later lets that money compound too. That is why tax-deferred accounts (pension savings, IRP, ISA) help long-term investors."
+        ]
+      },
+      "title": "Compound interest guide",
+      "howToUse": {
+        "title": "How to use",
+        "items": [
+          "Pick lump sum, monthly deposits or goal planner at the top.",
+          "Enter the principal (or monthly deposit), annual rate and period in years or months.",
+          "Choose the compounding frequency and deposit timing. Bank savings plans usually use start-of-month deposits.",
+          "Choose the interest tax and when it is withheld; the after-tax amount updates instantly.",
+          "Review the Rule of 72, simple vs compound, inflation-adjusted value, scenarios and the yearly table, then share as a link or image."
         ]
       },
       "tips": {
-        "title": "The Magic of Compound Interest",
+        "title": "Making compounding work",
         "items": [
-          "Compound interest earns interest on interest, benefiting long-term investments",
-          "Shorter compounding periods (monthly > annual) generate more interest",
-          "Rule of 72: 72 ÷ rate = years to double your money"
+          "Time matters most. Starting 10 years earlier with the same monthly amount changes the result dramatically; check it with scenarios.",
+          "Compare bank products by after-tax amount or after-tax annualized return, not just the stated rate.",
+          "Stock and fund returns vary each year. Use conservative expected returns and check the low scenarios too.",
+          "If your return is below inflation, your balance grows but your purchasing power shrinks. Check the real return."
         ]
       },
       "whatIs": {
-        "title": "What is the Compound Interest Calculator?",
-        "description": "A financial tool that calculates compound interest and final returns from your principal, annual interest rate, and investment period. It also supports monthly additional contributions, letting you simulate the long-term growth of dollar-cost averaging investments. A chart visually shows how your assets grow exponentially over time thanks to the power of compounding."
+        "title": "What is this calculator?",
+        "description": "Compound interest earns interest on interest. This calculator covers lump sums, monthly deposits and a goal planner (how much per month, or what return, to reach a target), and applies Korean interest tax (15.4%, 9.5% or tax-free) and its timing (once at maturity or every year) so you see what you actually receive."
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
             "q": "What is the Rule of 72?",
-            "a": "Divide 72 by the annual return rate to estimate how many years it takes for your investment to double. For example, at a 6% annual rate: 72 ÷ 6 = 12 years to double."
+            "a": "Divide 72 by the annual return (%) to estimate the years needed to double your money: 6% → 12 years (11.9 exactly), 8% → 9 years. It works best around 6–10%; at 2% (36 vs 35 years) or 20% (3.6 vs 3.8) the error grows. This calculator shows the estimate, the exact value (ln 2 ÷ ln(1 + effective rate)) and the after-tax value."
           },
           {
-            "q": "How much does the compounding frequency (monthly vs. annual) affect returns?",
-            "a": "Monthly compounding reinvests interest more frequently than annual compounding, resulting in slightly higher returns. At 12% per year: annual compounding yields 12%, while monthly compounding yields an effective rate of about 12.68%."
+            "q": "Is tax deducted from compound interest every year?",
+            "a": "Korean compound deposits and savings usually withhold tax once at maturity on the total interest (15.4% standard), so pre-tax interest keeps compounding. Products that pay interest yearly or funds taxed every year withhold tax annually and reinvest only the rest, so you receive a little less. Compare both under 'When tax is withheld'."
           },
           {
-            "q": "How do I calculate real returns adjusted for inflation?",
-            "a": "Fisher equation: real return ≈ nominal return − inflation rate. For example, 8% nominal return with 3% inflation equals about 5% real return. Subtract the inflation rate from this calculator's output to assess the real value."
+            "q": "How much difference does monthly compounding make?",
+            "a": "At the same stated rate, monthly compounding earns more: 5% becomes 5.12% effective, 12% becomes 12.68%. 10M KRW at 5% for 10 years: 16,288,946 yearly vs 16,470,095 monthly (pre-tax), about 180,000 KRW more."
+          },
+          {
+            "q": "How much must I save monthly to have 100 million KRW in 10 years?",
+            "a": "At 5% compounded monthly, start-of-month deposits and 15.4% tax at maturity, about 664,911 KRW a month (641,317 tax-free). Use the goal planner to try other targets, periods and rates, or switch to 'Required return' if your monthly amount is fixed."
+          },
+          {
+            "q": "How is the real (inflation-adjusted) return calculated?",
+            "a": "By the Fisher equation: real return = (1 + nominal) ÷ (1 + inflation) − 1. 'Nominal minus inflation' is an approximation. The calculator applies it to the after-tax annualized return and also shows the final amount in today's money (after-tax amount ÷ (1 + inflation)^years)."
+          },
+          {
+            "q": "Why is the total return of monthly deposits lower than expected?",
+            "a": "The last deposits barely compound, so total interest ÷ total principal is far below rate × years. The after-tax annualized return (IRR) reflects the timing of your deposits."
+          },
+          {
+            "q": "Why does my bank app show a slightly different amount?",
+            "a": "Banks truncate fractions of a won, count interest by days, and apply product-specific bonus or early-termination rates, so results can differ by a few to a few hundred won. Interest and dividend income over 20 million KRW a year is subject to comprehensive taxation and may be taxed more."
           }
         ]
       }

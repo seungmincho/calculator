@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '복리 계산기 - 복리 이자, 투자 수익률 계산 | 툴허브',
-  description: '복리 계산기 - 원금, 이율, 기간을 입력하여 복리 이자와 투자 수익을 계산하세요. 월 적립식 투자, 단리 vs 복리 비교, 연도별 성장 그래프를 제공합니다.',
+  description: '복리 계산기 - 원금, 이율, 기간을 입력해 세후 복리 이자를 계산하세요. 거치식·적립식·목표 역산(월 적립액·필요 수익률), 72의 법칙, 단리 vs 복리 비교, 연도별 성장 그래프를 제공합니다.',
   keywords: '복리 계산기, 복리 이자 계산, 투자 수익률, 적립식 투자, compound interest calculator, 72법칙',
   openGraph: { title: '복리 계산기 | 툴허브', description: '복리 이자 계산, 투자 수익률 시뮬레이션', url: 'https://toolhub.ai.kr/compound-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/compound-calculator.png', width: 1200, height: 630, alt: '복리 계산기' }] },
   twitter: { card: 'summary_large_image', title: '복리 계산기 | 툴허브', description: '복리 이자 계산, 투자 수익률 시뮬레이션', images: ['https://toolhub.ai.kr/og/compound-calculator.png'] },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function CompoundCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '복리 계산기', description: '복리 이자 계산, 투자 수익률 시뮬레이션, 단리 vs 복리 비교', url: 'https://toolhub.ai.kr/compound-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['복리 이자 계산', '월 적립식 투자', '단리 vs 복리 비교', '연도별 성장 그래프'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '복리 계산기', description: '복리 이자 계산, 투자 수익률 시뮬레이션, 단리 vs 복리 비교', url: 'https://toolhub.ai.kr/compound-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['복리 이자 계산(연·반기·분기·월·일복리)', '월 적립식 투자(월초·월말 납입)', '세후 계산(15.4%·9.5%·비과세, 만기·매년 과세)', '목표 역산(월 적립액·필요 수익률)', '72의 법칙', '물가 반영 실질 수익률', '수익률 시나리오 비교', '단리 vs 복리 비교', '연도별 성장 그래프'] }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -33,12 +33,17 @@ export default function CompoundCalculatorPage() {
       {
         '@type': 'HowToStep',
         name: '복리 주기 선택',
-        text: '복리가 적용되는 주기(월간/분기/반기/연간)를 선택합니다. 주기가 짧을수록 수익이 커집니다.',
+        text: '복리가 적용되는 주기(일/월/분기/반기/연)를 선택합니다. 같은 표시 이율이면 주기가 짧을수록 수익이 커집니다.',
       },
       {
         '@type': 'HowToStep',
-        name: '추가 납입금 설정',
-        text: '매월 추가로 적립할 금액을 입력합니다. 적립식 투자의 장기 복리 효과를 확인할 수 있습니다.',
+        name: '거치식·적립식·목표 역산 모드 선택',
+        text: '목돈을 한 번에 넣는 거치식, 매월 넣는 적립식(월초·월말 납입), 목표 금액에 필요한 월 적립액·수익률을 구하는 목표 역산 중에서 고릅니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '이자소득세 선택',
+        text: '일반과세 15.4%, 세금우대 9.5%, 비과세 중에서 고르고, 세금을 만기에 한 번 떼는지 매년 떼는지 선택합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -57,7 +62,7 @@ export default function CompoundCalculatorPage() {
         name: '단리와 복리의 차이는 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '단리는 원금에만 이자가 붙고, 복리는 원금+이자에 이자가 붙습니다. 예를 들어 1,000만 원을 연 5%로 10년간 투자하면, 단리는 1,500만 원(이자 500만 원), 복리는 약 1,629만 원(이자 629만 원)이 됩니다. 기간이 길수록 복리 효과는 기하급수적으로 커집니다.',
+          text: '단리는 원금에만 이자가 붙고, 복리는 원금+이자에 이자가 붙습니다. 예를 들어 1,000만 원을 연 5%로 10년간 투자하면(세전), 단리는 1,500만 원(이자 500만 원), 복리는 약 1,629만 원(이자 629만 원)이 됩니다. 기간이 길수록 복리 효과는 기하급수적으로 커집니다.',
         },
       },
       {
@@ -73,7 +78,7 @@ export default function CompoundCalculatorPage() {
         name: '매월 적립식 투자가 왜 유리한가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '매월 적립식 투자는 시간 분산 효과(Dollar Cost Averaging)로 시장 변동 위험을 줄여줍니다. 또한 복리 효과가 매월 새로 투입되는 금액에도 적용되어 장기적으로 큰 차이를 만듭니다. 예를 들어 매월 50만 원을 연 7% 수익률로 20년간 투자하면, 투입 원금 1.2억 원이 약 2.6억 원으로 성장합니다.',
+          text: '매월 적립식 투자는 시간 분산 효과(Dollar Cost Averaging)로 시장 변동 위험을 줄여줍니다. 또한 복리 효과가 매월 새로 투입되는 금액에도 적용되어 장기적으로 큰 차이를 만듭니다. 예를 들어 매월 50만 원을 연 7%(월복리·월초 납입)로 20년간 투자하면 투입 원금 1.2억 원이 세전 약 2.6억 원, 이자소득세 15.4%를 만기에 떼면 약 2.4억 원이 됩니다.',
         },
       },
     ],
@@ -106,8 +111,8 @@ export default function CompoundCalculatorPage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>72법칙 활용:</strong> 72를 연이율로 나누면 원금이 2배 되는 기간을 빠르게 추정할 수 있습니다. 연 6%면 약 12년, 연 9%면 약 8년입니다.</li>
             <li><strong>월 적립식 투자:</strong> 목돈이 없어도 매월 일정액을 적립하면 복리 효과가 누적되어 장기적으로 큰 차이를 만듭니다. 적립 금액과 기간을 바꿔가며 목표 금액을 역산해보세요.</li>
-            <li><strong>단리 vs 복리 비교:</strong> 단기(1~3년)에는 차이가 미미하지만 10년 이상 장기 투자에서는 복리가 압도적으로 유리합니다. 그래프로 그 차이를 확인하세요.</li>
-            <li><strong>인플레이션 고려:</strong> 명목 수익률에서 물가상승률(연 2~3%)을 빼면 실질 수익률이 됩니다. 실질 수익률을 기준으로 장기 계획을 세우는 것이 정확합니다.</li>
+            <li><strong>단리 vs 복리 비교:</strong> 단기(1~3년)에는 차이가 미미하지만 10년 이상 장기 투자에서는 복리가 압도적으로 유리합니다. 단리 vs 복리 카드에서 그 차이를 확인하세요.</li>
+            <li><strong>인플레이션 고려:</strong> 명목 수익률에서 물가상승률(연 2~3%)을 빼면 대략의 실질 수익률이 됩니다(정확히는 (1+명목)÷(1+물가)−1). 실질 수익률을 기준으로 장기 계획을 세우는 것이 정확합니다.</li>
           </ul>
         </div>
       </section>

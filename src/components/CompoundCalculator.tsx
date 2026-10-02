@@ -1,698 +1,502 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import { useSearchParams } from '@/hooks/useSearchParams'
+import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useTranslations } from '@/lib/i18n'
-import { TrendingUp, Calculator, Copy, Check, BookOpen, RotateCcw, Link, GitCompare } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import {
+  simulate, simpleInterest, doublingYears, rule72, effectiveAnnual, annualizedReturn, realValue, realRate,
+  requiredMonthly, requiredRate, FREQS, TAX_KEYS, TAX_RATES,
+  type Freq, type TaxKey, type TaxTiming, type DepositTiming, type Plan,
+} from '@/utils/compound'
 
-interface YearlyData {
-  year: number
-  deposit: number
-  interest: number
-  balance: number
+type Mode = 'lump' | 'dca' | 'goal'
+type Solve = 'monthly' | 'rate'
+
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const pct = (n: number) => (Math.round(n * 100) / 100).toString()
+const yrs = (n: number) => (Math.round(n * 10) / 10).toString()
+const num = (s: string) => parseFloat(String(s).replace(/,/g, '')) || 0
+const commas = (s: string) => {
+  const d = String(s).replace(/[^\d]/g, '')
+  return d ? Number(d).toLocaleString('ko-KR') : ''
 }
-
-type CompoundFrequency = 'yearly' | 'semiannually' | 'quarterly' | 'monthly' | 'daily'
-type PeriodType = 'years' | 'months'
-
-const frequencyValues: Record<CompoundFrequency, number> = {
-  yearly: 1,
-  semiannually: 2,
-  quarterly: 4,
-  monthly: 12,
-  daily: 365,
-}
-
-function computeResults(
-  principal: number,
-  annualRate: number,
-  period: number,
-  periodType: PeriodType,
-  compoundFrequency: CompoundFrequency,
-  monthlyDeposit: number
-) {
-  const years = periodType === 'years' ? period : period / 12
-  const r = annualRate / 100
-  const n = frequencyValues[compoundFrequency]
-  const t = years
-
-  if (years <= 0 || annualRate < 0 || principal < 0 || monthlyDeposit < 0) {
-    return {
-      totalAmount: 0,
-      totalInterest: 0,
-      totalDeposited: 0,
-      effectiveRate: 0,
-      yearlyBreakdown: [] as YearlyData[],
-      simpleInterest: 0,
-      compoundAdvantage: 0,
-    }
-  }
-
-  const compoundMultiplier = Math.pow(1 + r / n, n * t)
-  const principalGrowth = principal * compoundMultiplier
-
-  let depositGrowth = 0
-  if (monthlyDeposit > 0 && r > 0) {
-    const ratePerPeriod = r / n
-    depositGrowth = (monthlyDeposit * 12 / n) * ((compoundMultiplier - 1) / ratePerPeriod)
-  } else if (monthlyDeposit > 0) {
-    depositGrowth = monthlyDeposit * 12 * t
-  }
-
-  const totalAmount = principalGrowth + depositGrowth
-  const totalDeposited = principal + monthlyDeposit * 12 * t
-  const totalInterest = totalAmount - totalDeposited
-  const effectiveRate = totalDeposited > 0 ? (totalInterest / totalDeposited) * 100 : 0
-
-  const simpleInterest = principal * r * t + (monthlyDeposit * 12 * t * r * t / 2)
-  const compoundAdvantage = totalInterest - simpleInterest
-
-  const yearlyBreakdown: YearlyData[] = []
-  for (let year = 1; year <= Math.ceil(years); year++) {
-    const yearT = year
-    const yearCompoundMultiplier = Math.pow(1 + r / n, n * yearT)
-    const yearPrincipalGrowth = principal * yearCompoundMultiplier
-
-    let yearDepositGrowth = 0
-    if (monthlyDeposit > 0 && r > 0) {
-      const ratePerPeriod = r / n
-      yearDepositGrowth = (monthlyDeposit * 12 / n) * ((Math.pow(1 + ratePerPeriod, n * yearT) - 1) / ratePerPeriod)
-    } else if (monthlyDeposit > 0) {
-      yearDepositGrowth = monthlyDeposit * 12 * yearT
-    }
-
-    const yearTotalAmount = yearPrincipalGrowth + yearDepositGrowth
-    const yearTotalDeposited = principal + monthlyDeposit * 12 * yearT
-    const yearInterest = yearTotalAmount - yearTotalDeposited
-
-    yearlyBreakdown.push({
-      year,
-      deposit: yearTotalDeposited,
-      interest: Math.max(0, yearInterest),
-      balance: yearTotalAmount,
-    })
-  }
-
-  return { totalAmount, totalInterest, totalDeposited, effectiveRate, yearlyBreakdown, simpleInterest, compoundAdvantage }
-}
-
-// ── Scenario comparison rates ──────────────────────────────────────────────
-interface ScenarioRate {
-  id: number
-  rate: number
-}
-
-const DEFAULT_SCENARIOS: ScenarioRate[] = [
-  { id: 1, rate: 3 },
-  { id: 2, rate: 5 },
-  { id: 3, rate: 7 },
+const compact = new Intl.NumberFormat('ko-KR', { notation: 'compact', maximumFractionDigits: 1 })
+const isDecimal = (s: string) => /^\d*\.?\d*$/.test(s)
+const oneOf = <T extends string>(v: string | null, list: readonly T[], d: T): T => (list.includes(v as T) ? (v as T) : d)
+const DEFAULT_SC = ['3', '5', '7']
+const LINKS = [
+  { key: 'savings', href: '/savings-calculator' },
+  { key: 'investment', href: '/investment-calculator' },
+  { key: 'cagr', href: '/cagr-calculator' },
 ]
-
-const SCENARIO_COLORS = [
-  { bg: 'bg-blue-500', text: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', light: 'bg-subtle' },
-  { bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', light: 'bg-subtle' },
-  { bg: 'bg-violet-500', text: 'text-violet-600 dark:text-violet-400', bar: 'bg-violet-500', light: 'bg-subtle' },
-]
-
-// ── Stacked bar chart helpers ──────────────────────────────────────────────
-function GrowthChart({ yearlyBreakdown, maxBalance }: { yearlyBreakdown: YearlyData[]; maxBalance: number }) {
-  if (yearlyBreakdown.length === 0) return null
-  return (
-    <div className="space-y-2">
-      {/* Legend */}
-      <div className="flex gap-4 text-xs text-muted mb-3">
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-sm bg-blue-500" />
-          원금+납입
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-sm bg-green-500" />
-          이자
-        </span>
-      </div>
-      {yearlyBreakdown.map((data) => {
-        const totalPct = (data.balance / maxBalance) * 100
-        const depositPct = (data.deposit / data.balance) * 100
-        const interestPct = 100 - depositPct
-        return (
-          <div key={data.year} className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-sub w-10 shrink-0">{data.year}년</span>
-              <span className="font-semibold text-fg">
-                ₩{data.balance.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-              </span>
-            </div>
-            <div className="w-full bg-track rounded-full h-4 overflow-hidden">
-              <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${totalPct}%` }}>
-                <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${depositPct}%` }} />
-                <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${interestPct}%` }} />
-              </div>
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
 
 export default function CompoundCalculator() {
   const t = useTranslations('compoundCalculator')
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const sp = useSearchParams()
 
-  // ── Init from URL params ─────────────────────────────────────────────────
-  const [principal, setPrincipal] = useState<number>(() => {
-    const v = searchParams.get('p')
-    return v ? Number(v) : 10000000
-  })
-  const [annualRate, setAnnualRate] = useState<number>(() => {
-    const v = searchParams.get('r')
-    return v ? Number(v) : 5
-  })
-  const [period, setPeriod] = useState<number>(() => {
-    const v = searchParams.get('t')
-    return v ? Number(v) : 10
-  })
-  const [periodType, setPeriodType] = useState<PeriodType>(() => {
-    const v = searchParams.get('pt')
-    return v === 'months' ? 'months' : 'years'
-  })
-  const [compoundFrequency, setCompoundFrequency] = useState<CompoundFrequency>(() => {
-    const v = searchParams.get('f')
-    const valid: CompoundFrequency[] = ['yearly', 'semiannually', 'quarterly', 'monthly', 'daily']
-    return valid.includes(v as CompoundFrequency) ? (v as CompoundFrequency) : 'yearly'
-  })
-  const [monthlyDeposit, setMonthlyDeposit] = useState<number>(() => {
-    const v = searchParams.get('md')
-    return v ? Number(v) : 0
+  // 예전 공유 링크(p·r·t·pt·f·md) 그대로 복원, md>0 이면 적립식
+  const [mode, setMode] = useState<Mode>(() => oneOf(sp.get('m'), ['lump', 'dca', 'goal'] as const, Number(sp.get('md')) > 0 ? 'dca' : 'lump'))
+  const [principalText, setPrincipalText] = useState(() => commas(sp.get('p') ?? '10000000'))
+  const [monthlyText, setMonthlyText] = useState(() => commas(sp.get('md') || '500000'))
+  const [rateText, setRateText] = useState(() => (isDecimal(sp.get('r') ?? '') && sp.get('r')) || '5')
+  const [periodText, setPeriodText] = useState(() => (isDecimal(sp.get('t') ?? '') && sp.get('t')) || '10')
+  const [unit, setUnit] = useState<'years' | 'months'>(() => (sp.get('pt') === 'months' ? 'months' : 'years'))
+  const [freq, setFreq] = useState<Freq>(() => oneOf(sp.get('f'), FREQS, 'yearly'))
+  const [timing, setTiming] = useState<DepositTiming>(() => (sp.get('dt') === 'end' ? 'end' : 'begin'))
+  const [tax, setTax] = useState<TaxKey>(() => oneOf(sp.get('tax'), TAX_KEYS, 'normal'))
+  const [taxTiming, setTaxTiming] = useState<TaxTiming>(() => (sp.get('tt') === 'yearly' ? 'yearly' : 'maturity'))
+  const [infText, setInfText] = useState(() => (isDecimal(sp.get('inf') ?? '') && sp.get('inf')) || '2')
+  const [goalText, setGoalText] = useState(() => commas(sp.get('g') || '100000000'))
+  const [solve, setSolve] = useState<Solve>(() => (sp.get('gs') === 'rate' ? 'rate' : 'monthly'))
+  const [scenarios, setScenarios] = useState<string[]>(() => {
+    const s = (sp.get('sc') ?? '').split('~')
+    return s.length === 3 && s.every((x) => x !== '' && isDecimal(x)) ? s : DEFAULT_SC
   })
 
-  // ── Scenario comparison state ────────────────────────────────────────────
-  const [showScenarios, setShowScenarios] = useState(false)
-  const [scenarios, setScenarios] = useState<ScenarioRate[]>(DEFAULT_SCENARIOS)
+  const principal = num(principalText)
+  const monthlyInput = num(monthlyText)
+  const rateInput = Math.min(100, num(rateText))
+  const months = Math.min(1200, Math.max(0, unit === 'years' ? Math.round(num(periodText) * 12) : Math.floor(num(periodText))))
+  const inf = Math.min(30, num(infText))
+  const goal = num(goalText)
+  const isGoal = mode === 'goal'
+  const usesMonthly = mode === 'dca' || (isGoal && solve === 'rate')
+  const showMonthly = mode === 'dca' || isGoal
 
-  // ── Sync URL when inputs change ──────────────────────────────────────────
+  const common = { principal, months, freq, timing, tax, taxTiming }
+  const solvedMonthly = isGoal && solve === 'monthly' ? requiredMonthly(goal, { ...common, rate: rateInput }) : null
+  const solvedRate = isGoal && solve === 'rate' ? requiredRate(goal, { ...common, monthly: monthlyInput }) : null
+  const plan: Plan = {
+    ...common,
+    monthly: mode === 'lump' ? 0 : solvedMonthly ?? monthlyInput,
+    rate: solvedRate ?? rateInput,
+  }
+  const res = useMemo(() => simulate(plan), [principal, plan.monthly, plan.rate, months, freq, timing, tax, taxTiming]) // eslint-disable-line react-hooks/exhaustive-deps
+  const simple = simpleInterest(plan)
+  const irr = annualizedReturn(plan, res.value)
+  const eff = effectiveAnnual(plan.rate, freq)
+  const dbl = doublingYears(plan.rate, freq)
+  const dblTax = tax === 'free' ? null : doublingYears(plan.rate, freq, tax, taxTiming)
+  const today = realValue(res.value, months, inf)
+  const real = irr === null ? null : realRate(irr, inf)
+  const sc = scenarios.map((s) => {
+    const rate = Math.min(100, num(s))
+    const r = simulate({ ...plan, rate })
+    return { rate, value: r.value, net: r.net, dbl: doublingYears(rate, freq) }
+  })
+  const chart = useMemo(() => [
+    { label: t('c.chart.start'), principal: plan.principal, interest: 0 },
+    ...res.rows.map((r) => ({ label: dur(r.months), principal: r.principal, interest: Math.max(0, r.value - r.principal) })),
+  ], [res]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('p', String(principal))
-    params.set('r', String(annualRate))
-    params.set('t', String(period))
-    params.set('pt', periodType)
-    params.set('f', compoundFrequency)
-    if (monthlyDeposit > 0) params.set('md', String(monthlyDeposit))
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
-  }, [principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit, router, pathname])
+    const p = new URLSearchParams()
+    p.set('m', mode); p.set('p', String(principal))
+    if (showMonthly) p.set('md', String(monthlyInput))
+    p.set('r', rateText); p.set('t', periodText); p.set('pt', unit); p.set('f', freq)
+    if (timing === 'end') p.set('dt', 'end')
+    p.set('tax', tax)
+    if (taxTiming === 'yearly') p.set('tt', 'yearly')
+    p.set('inf', infText)
+    if (isGoal) { p.set('g', String(goal)); p.set('gs', solve) }
+    if (scenarios.join('~') !== DEFAULT_SC.join('~')) p.set('sc', scenarios.join('~'))
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    return () => clearTimeout(id)
+  }, [mode, principal, showMonthly, monthlyInput, rateText, periodText, unit, freq, timing, tax, taxTiming, infText, isGoal, goal, solve, scenarios])
 
-  // ── Copy helpers ─────────────────────────────────────────────────────────
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
+  function dur(m: number) {
+    const y = Math.floor(m / 12), r = m % 12
+    return y && r ? t('c.dur.ym', { y, m: r }) : y ? t('c.dur.y', { y }) : t('c.dur.m', { m: r })
+  }
+  const switchMode = (m: Mode) => {
+    if (m === mode) return
+    if (m === 'dca') setPrincipalText('0')
+    if (m === 'lump' && principal === 0) setPrincipalText('10,000,000')
+    if (m !== 'lump' && monthlyInput === 0) setMonthlyText('500,000')
+    setMode(m)
+  }
 
-  const copyLink = useCallback(() => {
-    copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
+  const seg = (on: boolean) =>
+    `px-2 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const taxLabel = (k: TaxKey) => `${t(`c.tax.${k}`)} ${pct(TAX_RATES[k] * 100)}%`
+  const freqLabel = t(`frequency.${freq}`)
+  const n = dur(months)
+  const shareLabel = isGoal
+    ? t('c.share.goal', { n, g: won(goal) })
+    : plan.monthly > 0
+      ? t(principal > 0 ? 'c.share.dcaWithP' : 'c.share.dca', { p: won(principal), m: won(plan.monthly), r: pct(plan.rate), f: freqLabel, n })
+      : t('c.share.lump', { p: won(principal), r: pct(plan.rate), f: freqLabel, n })
+  const goalHeadline = solve === 'monthly'
+    ? t('c.res.perMonth', { a: won(solvedMonthly ?? 0) })
+    : solvedRate === null ? '—' : t('c.res.perYear', { r: pct(solvedRate) })
 
-  // ── Reset ────────────────────────────────────────────────────────────────
-  const handleReset = useCallback(() => {
-    setPrincipal(10000000)
-    setAnnualRate(5)
-    setPeriod(10)
-    setPeriodType('years')
-    setCompoundFrequency('yearly')
-    setMonthlyDeposit(0)
-    setScenarios(DEFAULT_SCENARIOS)
-  }, [])
-
-  // ── Main calculation ─────────────────────────────────────────────────────
-  const results = useMemo(
-    () => computeResults(principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit),
-    [principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit]
+  const money = (value: string, set: (s: string) => void, label: string) => (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+      <div className="relative">
+        <input inputMode="numeric" value={value} onChange={(e) => set(commas(e.target.value))}
+          className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">{t('c.won')}</span>
+      </div>
+      {value && <span className="block text-xs text-muted mt-1 tabular-nums">{compact.format(num(value))}{t('c.won')}</span>}
+    </label>
   )
-
-  const maxBalance = useMemo(() => Math.max(...results.yearlyBreakdown.map(d => d.balance), 1), [results.yearlyBreakdown])
-
-  // ── Scenario calculations ────────────────────────────────────────────────
-  const scenarioResults = useMemo(() =>
-    scenarios.map(s => ({
-      ...s,
-      result: computeResults(principal, s.rate, period, periodType, compoundFrequency, monthlyDeposit),
-    })),
-    [scenarios, principal, period, periodType, compoundFrequency, monthlyDeposit]
+  const percent = (value: string, set: (s: string) => void, label: string, hint?: string) => (
+    <label className="block">
+      <span className="block text-sm font-medium text-body mb-2">{label}</span>
+      <div className="relative">
+        <input inputMode="decimal" value={value} onChange={(e) => isDecimal(e.target.value) && set(e.target.value)}
+          className="ui-field w-full px-4 py-3 pr-10 text-lg font-semibold tabular-nums" />
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sub">%</span>
+      </div>
+      {hint && <span className="block text-xs text-muted mt-1">{hint}</span>}
+    </label>
   )
-
-  const scenarioMax = useMemo(() =>
-    Math.max(...scenarioResults.map(s => s.result.totalAmount), 1),
-    [scenarioResults]
-  )
-
-  const updateScenarioRate = useCallback((id: number, rate: number) => {
-    setScenarios(prev => prev.map(s => s.id === id ? { ...s, rate } : s))
-  }, [])
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        {/* Copy Link button */}
-        <button
-          onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-          title="현재 계산 결과 링크 복사"
-        >
-          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨!' : '링크 복사'}</span>
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel: Inputs */}
-        <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                설정
-              </h2>
-              <button
-                onClick={handleReset}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                title={t('common.reset')}
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-            </div>
+      <div className="grid grid-cols-3 gap-2 max-w-md" role="tablist">
+        {(['lump', 'dca', 'goal'] as Mode[]).map((m) => (
+          <button key={m} role="tab" aria-selected={mode === m} onClick={() => switchMode(m)} className={seg(mode === m)}>
+            {t(`c.mode.${m}`)}
+          </button>
+        ))}
+      </div>
 
-            {/* Principal */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('principal')}
-              </label>
-              <input
-                type="number"
-                value={principal}
-                onChange={(e) => setPrincipal(Number(e.target.value))}
-                className={`${glassInput} px-3 py-2`}
-                min="0"
-              />
-            </div>
-
-            {/* Annual Rate */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('rate')}
-              </label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  value={annualRate}
-                  onChange={(e) => setAnnualRate(Number(e.target.value))}
-                  className={`${glassInput} px-3 py-2`}
-                  min="0"
-                  step="0.1"
-                />
-                <span className="text-body">%</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 입력 */}
+        <div className="ui-card p-6 space-y-5 self-start">
+          {isGoal && (
+            <>
+              {money(goalText, setGoalText, t('c.in.goal'))}
+              <div>
+                <span className="block text-sm font-medium text-body mb-2">{t('c.in.solve')}</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {(['monthly', 'rate'] as Solve[]).map((s) => (
+                    <button key={s} onClick={() => setSolve(s)} aria-pressed={solve === s} className={seg(solve === s)}>{t(`c.solve.${s}`)}</button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Period */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('period')}
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  value={period}
-                  onChange={(e) => setPeriod(Number(e.target.value))}
-                  className={`${glassInput} flex-1 px-3 py-2`}
-                  min="1"
-                />
-                <select
-                  value={periodType}
-                  onChange={(e) => setPeriodType(e.target.value as PeriodType)}
-                  className={`${glassInput} px-3 py-2`}
-                >
-                  <option value="years">{t('periodUnit.years')}</option>
-                  <option value="months">{t('periodUnit.months')}</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Compound Frequency */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('compoundFrequency')}
-              </label>
-              <select
-                value={compoundFrequency}
-                onChange={(e) => setCompoundFrequency(e.target.value as CompoundFrequency)}
-                className={`${glassInput} px-3 py-2`}
-              >
-                <option value="yearly">{t('frequency.yearly')}</option>
-                <option value="semiannually">{t('frequency.semiannually')}</option>
-                <option value="quarterly">{t('frequency.quarterly')}</option>
-                <option value="monthly">{t('frequency.monthly')}</option>
-                <option value="daily">{t('frequency.daily')}</option>
+            </>
+          )}
+          {money(principalText, setPrincipalText, t(mode === 'lump' ? 'c.in.principal' : 'c.in.initial'))}
+          {usesMonthly && money(monthlyText, setMonthlyText, t('c.in.monthly'))}
+          {!(isGoal && solve === 'rate') && percent(rateText, setRateText, t('c.in.rate'))}
+          <div>
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.period')}</span>
+            <div className="grid grid-cols-3 gap-2">
+              <input inputMode="decimal" value={periodText} aria-label={t('c.in.period')}
+                onChange={(e) => isDecimal(e.target.value) && e.target.value.length <= 5 && setPeriodText(e.target.value)}
+                className="ui-field col-span-2 w-full px-4 py-3 text-lg font-semibold tabular-nums" />
+              <select value={unit} onChange={(e) => setUnit(e.target.value as 'years' | 'months')} aria-label={t('c.in.period')} className="ui-field px-3 py-3">
+                <option value="years">{t('periodUnit.years')}</option>
+                <option value="months">{t('periodUnit.months')}</option>
               </select>
             </div>
-
-            {/* Monthly Deposit */}
+            {unit === 'years' && months % 12 !== 0 && <span className="block text-xs text-muted mt-1">{n}</span>}
+          </div>
+          <label className="block">
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.freq')}</span>
+            <select value={freq} onChange={(e) => setFreq(e.target.value as Freq)} className="ui-field w-full px-4 py-3">
+              {FREQS.map((f) => <option key={f} value={f}>{t(`frequency.${f}`)}</option>)}
+            </select>
+            <span className="block text-xs text-muted mt-1">{t('c.freqHint', { r: pct(plan.rate), e: pct(eff) })}</span>
+          </label>
+          {showMonthly && (
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('monthlyDeposit')}
-              </label>
-              <input
-                type="number"
-                value={monthlyDeposit}
-                onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
-                className={`${glassInput} px-3 py-2`}
-                min="0"
-              />
-              <p className="text-xs text-muted mt-1">
-                {t('monthlyDepositDesc')}
-              </p>
-            </div>
-          </div>
-
-          {/* Guide Section */}
-          <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              {t('guide.title')}
-            </h2>
-            <div className="space-y-4 text-sm text-sub">
-              <div>
-                <h3 className="font-semibold text-fg mb-2">
-                  {t('guide.howToUse.title')}
-                </h3>
-                <ul className="space-y-1 list-disc list-inside">
-                  {(t.raw('guide.howToUse.items') as string[]).map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
+              <span className="block text-sm font-medium text-body mb-2">{t('c.in.timing')}</span>
+              <div className="grid grid-cols-2 gap-2">
+                {(['begin', 'end'] as DepositTiming[]).map((x) => (
+                  <button key={x} onClick={() => setTiming(x)} aria-pressed={timing === x} className={seg(timing === x)}>{t(`c.timing.${x}`)}</button>
+                ))}
               </div>
-              <div>
-                <h3 className="font-semibold text-fg mb-2">
-                  {t('guide.tips.title')}
-                </h3>
-                <ul className="space-y-1 list-disc list-inside">
-                  {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Panel: Results */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Total Results Cards */}
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Total Amount */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium opacity-90">{t('result.totalAmount')}</h3>
-                <button
-                  onClick={() => copyToClipboard(results.totalAmount.toFixed(0), 'totalAmount')}
-                  className="text-white/80 hover:text-white"
-                  title={t('common.copy')}
-                >
-                  {copiedId === 'totalAmount' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-3xl font-bold">₩{results.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}</p>
-            </div>
-
-            {/* Total Interest */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium opacity-90">{t('result.totalInterest')}</h3>
-                <button
-                  onClick={() => copyToClipboard(results.totalInterest.toFixed(0), 'totalInterest')}
-                  className="text-white/80 hover:text-white"
-                  title={t('common.copy')}
-                >
-                  {copiedId === 'totalInterest' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-3xl font-bold">₩{results.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}</p>
-            </div>
-
-            {/* Total Deposited */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium opacity-90">{t('result.totalDeposit')}</h3>
-                <button
-                  onClick={() => copyToClipboard(results.totalDeposited.toFixed(0), 'totalDeposited')}
-                  className="text-white/80 hover:text-white"
-                  title={t('common.copy')}
-                >
-                  {copiedId === 'totalDeposited' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-3xl font-bold">₩{results.totalDeposited.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}</p>
-            </div>
-
-            {/* Effective Rate */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium opacity-90">{t('result.effectiveRate')}</h3>
-                <button
-                  onClick={() => copyToClipboard(results.effectiveRate.toFixed(2) + '%', 'effectiveRate')}
-                  className="text-white/80 hover:text-white"
-                  title={t('common.copy')}
-                >
-                  {copiedId === 'effectiveRate' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-3xl font-bold">{results.effectiveRate.toFixed(2)}%</p>
-            </div>
-          </div>
-
-          {/* Simple vs Compound Comparison */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              {t('comparison.title')}
-            </h2>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sub">{t('comparison.simple')}</span>
-                <span className="font-semibold text-fg">
-                  ₩{results.simpleInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sub">{t('comparison.compound')}</span>
-                <span className="font-semibold text-fg">
-                  ₩{results.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                </span>
-              </div>
-              <div className="border-t border-line pt-3 flex justify-between items-center">
-                <span className="text-sub font-medium">{t('comparison.difference')}</span>
-                <span className="font-bold text-green-600 dark:text-green-400 text-lg">
-                  +₩{results.compoundAdvantage.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Growth Chart — stacked bars */}
-          {results.yearlyBreakdown.length > 0 && (
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <h2 className="text-lg font-semibold text-fg mb-4">
-                {t('result.growthChart')}
-              </h2>
-              <GrowthChart yearlyBreakdown={results.yearlyBreakdown} maxBalance={maxBalance} />
+              <p className="text-xs text-muted mt-2 leading-relaxed">{t('c.timingHint')}</p>
             </div>
           )}
-
-          {/* Scenario Comparison */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                금리 시나리오 비교
-              </h2>
-              <button
-                onClick={() => setShowScenarios(v => !v)}
-                className="text-sm px-3 py-1.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-              >
-                {showScenarios ? '접기' : '펼치기'}
-              </button>
+          <div>
+            <span className="block text-sm font-medium text-body mb-2">{t('c.in.tax')}</span>
+            <div className="grid grid-cols-3 gap-2">
+              {TAX_KEYS.map((k) => (
+                <button key={k} onClick={() => setTax(k)} aria-pressed={tax === k} className={`${seg(tax === k)} leading-tight`}>
+                  {t(`c.tax.${k}`)}<span className="block text-xs opacity-80">{pct(TAX_RATES[k] * 100)}%</span>
+                </button>
+              ))}
             </div>
-
-            {/* Always-visible summary bars */}
-            <div className="space-y-3">
-              {scenarioResults.map((s, idx) => {
-                const color = SCENARIO_COLORS[idx % SCENARIO_COLORS.length]
-                const pct = (s.result.totalAmount / scenarioMax) * 100
-                const depositPct = s.result.totalAmount > 0
-                  ? (s.result.totalDeposited / s.result.totalAmount) * 100
-                  : 100
-                return (
-                  <div key={s.id} className="space-y-1">
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-block w-3 h-3 rounded-sm ${color.bg}`} />
-                        <span className="text-body font-medium">{s.rate}%</span>
-                      </div>
-                      <span className={`font-bold ${color.text}`}>
-                        ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                      </span>
-                    </div>
-                    <div className="w-full bg-track rounded-full h-5 overflow-hidden">
-                      <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${pct}%` }}>
-                        <div className="h-full bg-blue-200 dark:bg-blue-900 transition-all duration-300" style={{ width: `${depositPct}%` }} />
-                        <div className={`h-full ${color.bar} transition-all duration-300`} style={{ width: `${100 - depositPct}%` }} />
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* Expandable rate editors + detail table */}
-            {showScenarios && (
-              <div className="mt-6 space-y-4">
-                {/* Rate inputs */}
-                <div className="grid grid-cols-3 gap-3">
-                  {scenarios.map((s, idx) => {
-                    const color = SCENARIO_COLORS[idx % SCENARIO_COLORS.length]
-                    return (
-                      <div key={s.id} className={`${color.light} rounded-lg p-3`}>
-                        <label className="block text-xs font-medium text-sub mb-1">
-                          시나리오 {s.id} 금리
-                        </label>
-                        <div className="flex items-center gap-1">
-                          <input
-                            type="number"
-                            value={s.rate}
-                            onChange={e => updateScenarioRate(s.id, Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-line-strong rounded bg-field text-fg focus:ring-2 focus:ring-blue-500"
-                            min="0"
-                            step="0.5"
-                          />
-                          <span className={`text-sm font-medium ${color.text}`}>%</span>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                {/* Detail comparison table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="border-b border-line">
-                      <tr className="text-sub">
-                        <th className="text-left py-2 px-2">항목</th>
-                        {scenarioResults.map((s, idx) => (
-                          <th key={s.id} className={`text-right py-2 px-2 ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
-                            {s.rate}%
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                      <tr>
-                        <td className="py-2 px-2 text-sub">최종 금액</td>
-                        {scenarioResults.map(s => (
-                          <td key={s.id} className="text-right py-2 px-2 font-semibold text-fg">
-                            ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="py-2 px-2 text-sub">총 이자</td>
-                        {scenarioResults.map((s, idx) => (
-                          <td key={s.id} className={`text-right py-2 px-2 font-medium ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
-                            ₩{s.result.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="py-2 px-2 text-sub">실질 수익률</td>
-                        {scenarioResults.map(s => (
-                          <td key={s.id} className="text-right py-2 px-2 text-fg">
-                            {s.result.effectiveRate.toFixed(2)}%
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="py-2 px-2 text-sub">복리 우위</td>
-                        {scenarioResults.map(s => (
-                          <td key={s.id} className="text-right py-2 px-2 text-green-600 dark:text-green-400">
-                            +₩{s.result.compoundAdvantage.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                          </td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          </div>
+          {tax !== 'free' && (
+            <div>
+              <span className="block text-sm font-medium text-body mb-2">{t('c.in.taxTiming')}</span>
+              <div className="grid grid-cols-2 gap-2">
+                {(['maturity', 'yearly'] as TaxTiming[]).map((x) => (
+                  <button key={x} onClick={() => setTaxTiming(x)} aria-pressed={taxTiming === x} className={seg(taxTiming === x)}>{t(`c.taxTiming.${x}`)}</button>
+                ))}
               </div>
+              <p className="text-xs text-muted mt-2 leading-relaxed">{t(`c.taxHint.${taxTiming}`)}</p>
+            </div>
+          )}
+          {percent(infText, setInfText, t('c.in.inflation'), t('c.inflationHint'))}
+        </div>
+
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6">
+            {isGoal && (
+              <div className="mb-5 pb-5 border-b border-line">
+                <p className="text-sm text-sub">{t(solve === 'monthly' ? 'c.res.goalMonthly' : 'c.res.goalRate', { n, g: won(goal) })}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-primary tabular-nums mt-1">{goalHeadline}</p>
+                {solve === 'monthly' && solvedMonthly === 0 && <p className="text-sm text-muted mt-1">{t('c.res.goalEnough')}</p>}
+                {solve === 'rate' && solvedRate === 0 && <p className="text-sm text-muted mt-1">{t('c.res.goalEnough')}</p>}
+                {solve === 'rate' && solvedRate === null && <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">{t('c.res.goalImpossible')}</p>}
+              </div>
+            )}
+            <p className="text-sm text-sub">{t('c.res.value', { n })}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(res.value)}{t('c.won')}</p>
+            <p className="text-sm text-muted mt-1 tabular-nums">
+              {compact.format(res.value)}{t('c.won')}{tax !== 'free' && ` · ${t('c.res.preTax', { a: won(res.preTax) })}`}
+            </p>
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+              {([['principal', res.principal], ['gross', res.gross], ['tax', res.tax], ['net', res.net]] as const).map(([k, v]) => (
+                <div key={k} className="bg-subtle rounded-xl p-3">
+                  <dt className="text-xs text-sub">{t(`c.res.${k}`)}</dt>
+                  <dd className={`text-base font-semibold tabular-nums mt-0.5 ${k === 'net' ? 'text-primary' : 'text-fg'}`}>
+                    {k === 'tax' && v > 0 ? '−' : ''}{won(v)}{t('c.won')}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <dl className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-2 mt-4 text-sm">
+              {[
+                ['totalReturn', res.principal > 0 ? `${pct((res.net / res.principal) * 100)}%` : '—'],
+                ['effective', `${pct(eff)}%`],
+                ['irr', irr === null ? '—' : `${pct(irr)}%`],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between sm:block">
+                  <dt className="text-sub">{t(`c.res.${k}`)}</dt>
+                  <dd className="font-semibold text-fg tabular-nums">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <ShareResult className="mt-5" fileName="compound"
+              card={{
+                tool: t('title'),
+                label: shareLabel,
+                headline: isGoal ? goalHeadline : `${won(res.value)}${t('c.won')}`,
+                sub: isGoal ? t('c.share.goalSub', { v: won(res.value) }) : t('c.share.sub', { i: won(res.net), tax: taxLabel(tax) }),
+                rows: [
+                  { label: t('c.res.principal'), value: `${won(res.principal)}${t('c.won')}` },
+                  { label: t('c.res.net'), value: `${won(res.net)}${t('c.won')}` },
+                  { label: t('c.simple.diff'), value: `${won(res.gross - simple)}${t('c.won')}` },
+                  ...(dbl === null ? [] : [{ label: t('c.double.short'), value: t('c.yearsDec', { y: yrs(dbl) }) }]),
+                ],
+              }} />
+          </div>
+
+          {/* 72의 법칙 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('c.double.title')}</h2>
+            {dbl === null ? (
+              <p className="text-sm text-muted mt-3">{t('c.double.none')}</p>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                  <div className="bg-subtle rounded-xl p-4">
+                    <p className="text-xs text-sub">{t('c.double.rule')}</p>
+                    <p className="text-xl font-bold text-fg tabular-nums mt-1">{t('c.yearsDec', { y: yrs(rule72(plan.rate) ?? 0) })}</p>
+                    <p className="text-xs text-muted mt-1 tabular-nums">72 ÷ {pct(plan.rate)}</p>
+                  </div>
+                  <div className="bg-primary-soft rounded-xl p-4">
+                    <p className="text-xs text-primary font-medium">{t('c.double.exact', { f: freqLabel })}</p>
+                    <p className="text-xl font-bold text-fg tabular-nums mt-1">{t('c.yearsDec', { y: yrs(dbl) })}</p>
+                    <p className="text-xs text-muted mt-1 tabular-nums">ln 2 ÷ ln(1 + {pct(eff)}%)</p>
+                  </div>
+                  {dblTax !== null && (
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-xs text-sub">{t('c.double.afterTax', { tax: taxLabel(tax) })}</p>
+                      <p className="text-xl font-bold text-fg tabular-nums mt-1">{t('c.yearsDec', { y: yrs(dblTax) })}</p>
+                      <p className="text-xs text-muted mt-1">{t(`c.taxTiming.${taxTiming}`)}</p>
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-muted mt-3 leading-relaxed">{t('c.double.note')}</p>
+              </>
             )}
           </div>
 
-          {/* Yearly Breakdown Table */}
-          {results.yearlyBreakdown.length > 0 && (
-            <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
-              <h2 className="text-lg font-semibold text-fg mb-4">
-                {t('result.yearlyBreakdown')}
-              </h2>
-              <table className="w-full text-sm">
-                <thead className="border-b border-line">
-                  <tr className="text-sub">
-                    <th className="text-left py-3 px-2">{t('result.year')}</th>
-                    <th className="text-right py-3 px-2">{t('result.deposit')}</th>
-                    <th className="text-right py-3 px-2">{t('result.interest')}</th>
-                    <th className="text-right py-3 px-2">{t('result.balance')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {results.yearlyBreakdown.map((data) => (
-                    <tr key={data.year} className="text-fg">
-                      <td className="py-3 px-2">{data.year}</td>
-                      <td className="text-right py-3 px-2">
-                        ₩{data.deposit.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                      </td>
-                      <td className="text-right py-3 px-2 text-green-600 dark:text-green-400">
-                        ₩{data.interest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                      </td>
-                      <td className="text-right py-3 px-2 font-semibold">
-                        ₩{data.balance.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {/* 자산 성장 그래프 */}
+          {res.rows.length > 0 && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg mb-4">{t('c.chart.title')}</h2>
+              <div className="h-64 sm:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chart} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                    <XAxis dataKey="label" tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" interval="preserveStartEnd" minTickGap={16} />
+                    <YAxis tickFormatter={(v) => compact.format(Number(v ?? 0))} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={52} stroke="var(--line)" />
+                    <Tooltip
+                      formatter={(value, name) => [`${won(Number(value ?? 0))}${t('c.won')}`, t(name === 'principal' ? 'c.chart.principal' : 'c.chart.interest')]}
+                      contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface)', color: 'var(--fg)' }}
+                    />
+                    <Area type="monotone" dataKey="principal" stackId="1" stroke="#8b95a1" fill="#8b95a1" fillOpacity={0.3} />
+                    <Area type="monotone" dataKey="interest" stackId="1" stroke="#3182F6" fill="#3182F6" fillOpacity={0.4} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex justify-center gap-6 mt-2 text-xs text-muted">
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block bg-faint opacity-60" />{t('c.chart.principal')}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block bg-primary opacity-60" />{t('c.chart.interest')}</span>
+              </div>
             </div>
           )}
+
+          {/* 단리 vs 복리 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('c.simple.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('c.simple.desc')}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+              <div className="bg-subtle rounded-xl p-4">
+                <p className="text-xs text-sub">{t('c.simple.simple')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{won(simple)}{t('c.won')}</p>
+              </div>
+              <div className="bg-subtle rounded-xl p-4">
+                <p className="text-xs text-sub">{t('c.simple.compound', { f: freqLabel })}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{won(res.gross)}{t('c.won')}</p>
+              </div>
+              <div className="bg-primary-soft rounded-xl p-4">
+                <p className="text-xs text-primary font-medium">{t('c.simple.diff')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">+{won(res.gross - simple)}{t('c.won')}</p>
+                {simple > 0 && <p className="text-xs text-muted mt-1">{t('c.simple.ratio', { x: pct(res.gross / simple) })}</p>}
+              </div>
+            </div>
+            {tax !== 'free' && taxTiming === 'yearly' && <p className="text-xs text-muted mt-3">{t('c.simple.yearlyNote')}</p>}
+          </div>
+
+          {/* 물가 반영 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('c.real.title')}</h2>
+            <p className="text-2xl font-bold text-fg tabular-nums mt-3">{t('c.real.today', { a: won(today) })}</p>
+            <p className="text-sm text-sub mt-2 leading-relaxed">{t('c.real.desc', { i: pct(inf), n, v: won(res.value), a: won(today) })}</p>
+            {real !== null && irr !== null && (
+              <div className="bg-subtle rounded-xl p-4 mt-4">
+                <p className="text-xs text-sub">{t('c.real.rate')}</p>
+                <p className="text-xl font-bold text-fg tabular-nums mt-1">{pct(real)}%</p>
+                <p className="text-xs text-muted mt-1 tabular-nums">{t('c.real.formula', { r: pct(irr), i: pct(inf) })}</p>
+              </div>
+            )}
+            {real !== null && real < 0 && <p className="text-sm text-amber-700 dark:text-amber-400 mt-3">{t('c.real.loss')}</p>}
+          </div>
         </div>
       </div>
+
+      {/* 수익률 시나리오 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('c.sc.title')}</h2>
+        <p className="text-sm text-muted mt-1">{t('c.sc.desc')}</p>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full text-sm tabular-nums min-w-[480px]">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="text-left py-2 font-medium text-sub" />
+                <th className="text-right py-2 px-2 font-semibold text-primary">{t('c.sc.current')}</th>
+                {scenarios.map((_, i) => <th key={i} className="text-right py-2 px-2 font-semibold text-fg">{t('c.sc.name', { n: i + 1 })}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-line">
+                <td className="py-2 text-sub">{t('c.sc.rate')}</td>
+                <td className="py-2 px-2 text-right text-fg">{pct(plan.rate)}%</td>
+                {scenarios.map((s, i) => (
+                  <td key={i} className="py-2 px-2 text-right">
+                    <input inputMode="decimal" value={s} aria-label={`${t('c.sc.name', { n: i + 1 })} ${t('c.sc.rate')}`}
+                      onChange={(e) => isDecimal(e.target.value) && setScenarios((l) => l.map((x, j) => (j === i ? e.target.value : x)))}
+                      className="ui-field w-20 px-2 py-1 text-right" /> %
+                  </td>
+                ))}
+              </tr>
+              {([['value', 'value'], ['net', 'net']] as const).map(([label, key]) => (
+                <tr key={key} className="border-b border-line">
+                  <td className="py-2 text-sub">{t(`c.sc.${label}`)}</td>
+                  <td className={`py-2 px-2 text-right ${key === 'value' ? 'font-semibold text-primary' : 'text-body'}`}>{won(res[key])}</td>
+                  {sc.map((x, i) => <td key={i} className={`py-2 px-2 text-right ${key === 'value' ? 'font-semibold text-fg' : 'text-body'}`}>{won(x[key])}</td>)}
+                </tr>
+              ))}
+              <tr>
+                <td className="py-2 text-sub">{t('c.sc.double')}</td>
+                <td className="py-2 px-2 text-right text-body">{dbl === null ? '—' : t('c.yearsDec', { y: yrs(dbl) })}</td>
+                {sc.map((x, i) => <td key={i} className="py-2 px-2 text-right text-body">{x.dbl === null ? '—' : t('c.yearsDec', { y: yrs(x.dbl) })}</td>)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 연도별 표 */}
+      {res.rows.length > 0 && (
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-semibold text-fg">{t('c.table.title')}</h2>
+          <div className="overflow-x-auto mt-4 max-h-[28rem]">
+            <table className="w-full text-sm tabular-nums min-w-[560px]">
+              <thead className="text-sub sticky top-0 bg-surface">
+                <tr className="border-b border-line">
+                  <th className="text-left py-2 font-medium">{t('c.table.year')}</th>
+                  <th className="text-right py-2 px-2 font-medium">{t('c.table.principal')}</th>
+                  <th className="text-right py-2 px-2 font-medium">{t('c.table.interest')}</th>
+                  <th className="text-right py-2 px-2 font-medium">{t('c.table.gross')}</th>
+                  {tax !== 'free' && <th className="text-right py-2 px-2 font-medium">{t('c.table.tax')}</th>}
+                  <th className="text-right py-2 pl-2 font-medium">{t('c.table.value')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {res.rows.map((r) => (
+                  <tr key={r.months} className="border-b border-line">
+                    <td className="py-2 text-body whitespace-nowrap">{dur(r.months)}</td>
+                    <td className="py-2 px-2 text-right text-body">{won(r.principal)}</td>
+                    <td className="py-2 px-2 text-right text-body">{won(r.interest)}</td>
+                    <td className="py-2 px-2 text-right text-body">{won(r.gross)}</td>
+                    {tax !== 'free' && <td className="py-2 px-2 text-right text-body">{won(r.tax)}</td>}
+                    <td className="py-2 pl-2 text-right text-fg font-medium">{won(r.value)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted mt-3">{t(tax === 'free' ? 'c.table.noteFree' : `c.table.note.${taxTiming}`)}</p>
+        </div>
+      )}
+
+      {/* 계산 방식 */}
+      <section className="bg-subtle rounded-2xl p-5">
+        <h2 className="font-semibold text-fg mb-3">{t('c.method.title')}</h2>
+        <ul className="space-y-2 list-disc pl-5 text-sm text-sub">
+          {(t.raw('c.method.items') as string[]).map((s, i) => <li key={i}>{s}</li>)}
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-lg font-semibold text-fg mb-3">{t('c.links.title')}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {LINKS.map((l) => (
+            <Link key={l.key} href={`${l.href}/`} className="ui-card p-4 flex items-center justify-between gap-2 hover:bg-subtle transition-colors">
+              <span>
+                <span className="block font-medium text-fg">{t(`c.links.${l.key}.title`)}</span>
+                <span className="block text-xs text-muted mt-0.5">{t(`c.links.${l.key}.desc`)}</span>
+              </span>
+              <ChevronRight className="w-4 h-4 text-faint shrink-0" />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <GuideSection namespace="compoundCalculator" />
     </div>
   )
 }
