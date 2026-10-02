@@ -19946,38 +19946,116 @@
     }
   },
   "pdfTools": {
+    "trust": "Your files are never uploaded. Everything runs inside this browser, so contracts and ID scans stay on your device.",
+    "drop": {
+      "pdfMulti": "Drop PDF files here or click to choose (multiple allowed)",
+      "pdfSingle": "Drop one PDF file here or click to choose",
+      "images": "Drop photos/images here or click to choose (multiple allowed)",
+      "more": "Add more files"
+    },
+    "a11y": {
+      "fileList": "File list",
+      "pageList": "Page list",
+      "moveUp": "Move file {n} up",
+      "moveDown": "Move file {n} down",
+      "moved": "Moved file {from} to position {to}",
+      "remove": "Remove {name}",
+      "removed": "Removed {name} from the list",
+      "pageMoveBack": "Move page {n} earlier",
+      "pageMoveForward": "Move page {n} later",
+      "pageMoved": "Moved page {n} to position {to}",
+      "pageRotateRight": "Rotate page {n} clockwise",
+      "pageDelete": "Delete page {n}",
+      "pageDeleted": "Deleted page {n}"
+    },
+    "working": {
+      "reading": "Reading files ({done}/{total})",
+      "saving": "Saving PDF",
+      "zipping": "Packing ZIP"
+    },
+    "result": {
+      "download": "Download again · {name} ({size})"
+    },
+    "suffix": {
+      "merged": "merged",
+      "split": "split",
+      "edited": "edited",
+      "images": "converted"
+    },
+    "organize": {
+      "hint": "Drag pages to reorder, or use the buttons to move, rotate or delete. The original is unchanged until you save.",
+      "pageN": "Page {n}",
+      "kept": "Pages kept",
+      "removed": "Pages deleted",
+      "rotateAllLeft": "Rotate all left",
+      "rotateAllRight": "Rotate all right",
+      "reset": "Reset",
+      "button": "Save changes",
+      "errorEmpty": "No pages left. Keep at least one page to save.",
+      "success": "Saved a {pages}-page PDF."
+    },
     "title": "PDF Tools",
-    "description": "Merge, split, rotate PDFs and convert images to PDF — all free, right in your browser.",
+    "description": "Merge, split, delete/rotate/reorder pages and convert JPG to PDF in one place. Free, no sign-up or install.",
     "tabs": {
+      "aria": "Choose a PDF task",
+      "organize": "Organize pages",
       "merge": "Merge",
       "split": "Split",
       "rotate": "Rotate",
       "imageToPdf": "Image→PDF"
     },
     "common": {
+      "meta": "{pages} pages · {size}",
+      "reorderHint": "Drag and drop, or use the up/down buttons to reorder.",
+      "sortName": "Sort by name",
+      "clear": "Clear all",
+      "outName": "File name: {name}",
       "pages": "pages",
       "pdfOnly": "Only PDF files are supported",
       "remove": "Remove"
     },
     "merge": {
+      "files": "Files",
+      "totalPages": "Total pages",
+      "working": "Merging file {done} of {total}",
       "dropzone": "Drag PDF files here or click to select",
       "button": "Merge PDFs",
       "processing": "Merging...",
-      "success": "PDFs merged successfully!",
+      "success": "Merged into a {pages}-page PDF.",
       "errorMin": "At least 2 PDF files are required",
       "reorderHint": "Drag to reorder files"
     },
     "split": {
+      "modeLabel": "Split method",
+      "modeEvery": "Every N pages",
+      "modeSingle": "Each page",
+      "rangePlaceholder": "e.g. 1-3, 5, 8-",
+      "separate": "Save each range as a separate file",
+      "everyLabel": "Pages per file",
+      "singleHint": "Every page becomes its own PDF, downloaded as one ZIP.",
+      "previewTitle": "Files to be saved",
+      "preview": "{count} file(s)",
+      "previewEmpty": "Enter a page range to preview the output files.",
+      "groupLabel": "p. {label} ({count} pages)",
+      "more": "+{count} more",
+      "zipNote": "Multiple files are downloaded as a single ZIP.",
+      "working": "Creating file {done} of {total}",
+      "err": {
+        "empty": "Enter a page range, e.g. 1-3, 5",
+        "invalid": "\"{token}\" is not a valid range. e.g. 1-3, 5, 8-",
+        "outOfRange": "\"{token}\": this document has pages 1–{pages}.",
+        "reversed": "\"{token}\": the first number is larger than the second. e.g. 3-5"
+      },
       "dropzone": "Select a PDF file to split",
       "button": "Split PDF",
       "processing": "Splitting...",
-      "success": "PDF split successfully!",
+      "success": "Split into {count} file(s).",
       "errorSelect": "Select pages to extract",
       "selectHint": "Click pages to select for extraction",
       "modeExtract": "Select Pages",
       "modeRange": "Page Range",
       "rangeLabel": "Page Range",
-      "rangeHint": "e.g., 1-3, 5, 7-9"
+      "rangeHint": "Separate with commas. \"8-\" means page 8 to the end."
     },
     "rotate": {
       "dropzone": "Select a PDF file to rotate",
@@ -19987,19 +20065,32 @@
       "allPages": "All Pages"
     },
     "imageToPdf": {
+      "paperOriginal": "Original size",
+      "originalHint": "Each page matches its image size (at 96 dpi).",
+      "orient": "Orientation",
+      "orientAuto": "Match photo",
+      "orientPortrait": "Portrait",
+      "orientLandscape": "Landscape",
+      "margin": "Margin",
+      "marginNone": "None",
+      "working": "Adding image {done} of {total}",
       "dropzone": "Drag images here or click to select",
-      "button": "Convert to PDF",
+      "button": "Create PDF",
       "processing": "Converting...",
-      "success": "PDF created successfully!",
+      "success": "Created a PDF from {count} image(s).",
       "errorEmpty": "Add at least one image",
-      "formats": "JPG, PNG, GIF, WebP supported",
-      "pageSize": "Page Size",
+      "formats": "JPG, PNG, WebP, GIF · phone photo orientation fixed automatically",
+      "pageSize": "Paper",
       "custom": "Custom",
-      "imagesAdded": "images"
+      "imagesAdded": "{count} image(s) · 1 image = 1 page"
     },
     "error": {
+      "encrypted": "\"{name}\" is password-protected or has editing restrictions, so it cannot be processed. Open it in a PDF viewer with the password, then use \"Print to PDF\" to save an unlocked copy.",
+      "skipped": "Skipped {count} non-PDF file(s).",
+      "skippedImages": "Skipped {count} non-image file(s).",
+      "image": "Could not read the image \"{name}\". Convert HEIC photos to JPG first.",
       "generic": "An error occurred",
-      "load": "Could not load file"
+      "load": "Could not open \"{name}\". The file is damaged or not a PDF."
     },
     "guide": {
       "title": "PDF Tools Guide",
@@ -20076,40 +20167,53 @@
         }
       },
       "whatIs": {
-        "title": "What is the PDF Tools?",
-        "description": "PDF Tools is an all-in-one browser-based utility for editing PDF files without any additional software. It offers four core functions: merging multiple PDFs, splitting out specific pages, rotating pages, and converting images to PDF. All processing is local — files are never uploaded to a server, keeping your documents private."
+        "title": "What are PDF Tools?",
+        "description": "Merge PDFs, split or extract pages, delete/rotate/reorder pages, and convert images (JPG, PNG) to PDF on one screen. Most online PDF sites upload your file to a server; this tool processes it inside your browser, so the file never leaves your device."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select the operation you need (Merge / Split / Rotate / Image to PDF) from the tabs.",
-          "2. Upload or drag and drop your PDF files or images.",
-          "3. Merge: reorder files. Split: specify page numbers to extract. Rotate: choose pages and angle. Image to PDF: arrange image order.",
-          "4. Click the process button and the output file will download automatically."
+          "Merge: add several PDFs, set the order by dragging (or with the up/down buttons), then press \"Merge PDFs\". The result is saved as \"firstfile_merged.pdf\".",
+          "Split: add one PDF and pick a method. For a range type \"1-3, 5, 8-\" (8- = page 8 to the end); \"Every N pages\" and \"Each page\" download several files as one ZIP.",
+          "Organize pages: every page has move earlier/later, rotate and delete buttons, and you can drag to reorder. Press \"Save changes\" to create the new PDF.",
+          "Image→PDF: add photos and choose the paper (A4, Letter, original size), orientation and margin. Each image becomes one page."
         ]
       },
       "tips": {
-        "title": "Pro Tips",
+        "title": "Tips",
         "items": [
-          "Use 'Image to PDF' to combine multiple scanned images into a single PDF document.",
-          "Use 'Split' to extract specific pages from contracts or reports.",
-          "Processing time may increase for very large PDF files due to browser memory constraints."
+          "Scans named scan_1, scan_2… can be put in order at once with \"Sort by name\" (numbers sorted numerically).",
+          "To get each range as its own file, turn on \"Save each range as a separate file\" under Split → Page Range.",
+          "Phone photos that used to come out sideways are straightened automatically using their EXIF orientation.",
+          "Merge, split and organize copy the original pages as-is, so text and image quality are unchanged."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Is there a file size limit?",
-            "a": "Processing is limited by browser memory. Files up to several dozen MB generally work fine. Very large files may slow down processing."
+            "q": "Are my files uploaded to a server?",
+            "a": "No. Files are read and processed only in this browser's memory and are never sent to any server. They disappear when you close the page."
           },
           {
             "q": "Can I process password-protected PDFs?",
-            "a": "Password-protected PDFs must be unlocked first. Password removal is not currently supported."
+            "a": "PDFs with an open password or editing restrictions cannot be processed. Open the file in a PDF viewer with the password and save a copy with \"Print to PDF\", then use that copy."
           },
           {
-            "q": "Will quality be degraded during conversion?",
-            "a": "Merge, split, and rotate operations preserve original data with no quality loss. Image-to-PDF conversion retains the original image resolution."
+            "q": "Is there a file size limit?",
+            "a": "There is no fixed limit, but processing uses browser memory, so files of several hundred MB may be slow or fail. A desktop can handle larger files than a phone."
+          },
+          {
+            "q": "Does quality drop?",
+            "a": "Merge, split and organize copy pages without re-rendering, so quality is unchanged. Image→PDF embeds JPG and PNG originals as-is; only photos that need orientation correction and WebP/GIF images are re-saved as high-quality JPG."
+          },
+          {
+            "q": "How is page rotation saved?",
+            "a": "It changes the page rotation value in the PDF, so the content is untouched and other PDF viewers show the same orientation."
+          },
+          {
+            "q": "Can I convert PDF to JPG?",
+            "a": "Only image→PDF is supported at the moment."
           }
         ]
       }

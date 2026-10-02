@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'PDF 도구 - PDF 합치기, 분할, 회전 | 툴허브',
   description:
     'PDF 파일을 온라인에서 무료로 합치기, 분할, 페이지 회전, 이미지를 PDF로 변환하세요. 개인정보 보호 - 모든 처리가 브라우저에서 완료됩니다.',
-  keywords: 'PDF 합치기, PDF 분할, PDF 회전, 이미지 PDF 변환, PDF 도구, 온라인 PDF',
+  keywords: 'PDF 합치기, PDF 분할, PDF 회전, PDF 페이지 삭제, PDF 순서 변경, JPG PDF 변환, PDF 페이지 추출, 이미지 PDF 변환, PDF 도구, 온라인 PDF',
   openGraph: {
     title: 'PDF 도구 - PDF 합치기, 분할, 회전 | 툴허브',
     description: 'PDF 합치기, 분할, 페이지 회전, 이미지→PDF 변환을 브라우저에서 무료로',
@@ -37,7 +37,7 @@ export default function PdfToolsPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['PDF 합치기', 'PDF 분할', 'PDF 페이지 회전', '이미지→PDF 변환'],
+    featureList: ['PDF 합치기', 'PDF 분할', 'PDF 페이지 회전', '이미지→PDF 변환', 'PDF 페이지 삭제·순서 변경', '페이지 범위 분할(1-3,5,8-)', 'N쪽마다 분할(ZIP)', 'JPG·PNG→PDF(A4 맞춤·여백)', '서버 업로드 없음'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -53,10 +53,10 @@ export default function PdfToolsPage() {
       },
       {
         '@type': 'Question',
-        name: 'PDF 파일 크기를 줄이는 방법은?',
+        name: '암호가 걸린 PDF도 합치거나 나눌 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '① 이미지 압축: PDF 내 이미지 해상도를 150dpi(화면용) 또는 72dpi(웹용)로 낮추기 ② 사용하지 않는 폰트 제거 및 서브셋 임베딩 ③ 불필요한 메타데이터 제거 ④ PDF 최적화 도구 사용(Adobe Acrobat, Ghostscript) ⑤ 스캔 문서는 흑백 모드로 변환 시 크기 대폭 감소. 브라우저 기반 도구로도 80% 이상 크기를 줄일 수 있습니다.',
+          text: '열기 암호가 걸린 PDF는 처리할 수 없습니다. PDF 뷰어에서 암호를 입력해 연 뒤 "PDF로 인쇄"로 암호 없는 사본을 만들어 올려 주세요. 모든 처리는 브라우저 안에서 이루어지며 파일이 서버로 전송되지 않습니다.',
         },
       },
     ],
@@ -92,7 +92,7 @@ export default function PdfToolsPage() {
             온라인 PDF 도구란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            온라인 PDF 도구는 PDF 파일 합치기, 분할, 페이지 회전, 이미지를 PDF로 변환하는 기능을 브라우저에서 무료로 제공하는 도구입니다. 모든 처리가 서버 전송 없이 브라우저 내에서 완결되어 개인정보 보호가 완벽하게 보장됩니다. 계약서, 보고서, 이력서 등 중요한 문서를 안심하고 편집할 수 있습니다.
+            온라인 PDF 도구는 PDF 파일 합치기, 분할, 페이지 회전, 이미지를 PDF로 변환하는 기능을 브라우저에서 무료로 제공하는 도구입니다. 모든 처리가 서버 전송 없이 브라우저 내에서 완결되어 파일이 서버로 전송되지 않습니다. 계약서, 보고서, 이력서 등 중요한 문서를 안심하고 편집할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             PDF 도구 활용 팁
@@ -101,7 +101,7 @@ export default function PdfToolsPage() {
             <li><strong>PDF 합치기:</strong> 여러 개의 계약서, 첨부 서류를 하나의 PDF로 합쳐 이메일 첨부 파일 수를 줄이고 관리를 편리하게 하세요.</li>
             <li><strong>페이지 분할:</strong> 대용량 PDF에서 필요한 페이지만 추출하여 별도 파일로 저장하면 공유와 보관이 편리합니다.</li>
             <li><strong>이미지→PDF 변환:</strong> 스마트폰으로 찍은 영수증, 계약서 사진을 PDF로 변환하면 공식 문서로 제출하기 좋은 형식이 됩니다.</li>
-            <li><strong>페이지 회전:</strong> 스캔 시 뒤집힌 페이지를 회전하여 올바른 방향으로 수정하세요. 90도·180도·270도 회전을 지원합니다.</li>
+            <li><strong>페이지 회전:</strong> 스캔 시 뒤집힌 페이지를 회전하여 올바른 방향으로 수정하세요. 쪽별·전체 90° 단위 회전과 페이지 삭제·순서 변경을 지원합니다.</li>
           </ul>
         </div>
       </section>
