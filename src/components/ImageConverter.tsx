@@ -1,404 +1,433 @@
 'use client'
 
-import { useState, useCallback, useRef, DragEvent } from 'react'
+import { useState, useCallback, useRef, useEffect, useId } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Image as ImageIcon, Upload, Download, RefreshCw, BookOpen } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Upload, Download, X, Loader2, Image as ImageIcon } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
+import { detectEncoders, formatBytes, savingsPct, uniqueNames } from '@/utils/imageCompress'
+import {
+  acceptFile, convertImage, convertName, detectFormat, nativeHeic, parseSettings, readHead,
+  needsBg, usesQuality, CONVERT_FORMATS, DEFAULTS, FORMAT_LABEL,
+  type ConvertFormat, type ConvertOptions, type SourceFormat,
+} from '@/utils/imageConvert'
 
-type OutputFormat = 'jpeg' | 'png' | 'webp'
+type ErrorKind = 'heic' | 'decode' | 'encode' | 'format'
 
-interface ConvertedImage {
+interface Item {
   id: string
-  originalFile: File
-  originalUrl: string
-  originalSize: number
-  originalWidth: number
-  originalHeight: number
-  convertedUrl: string
-  convertedSize: number
-  format: OutputFormat
-  quality: number
+  file: File
+  src: SourceFormat
+  key?: string // 마지막으로 처리한 설정
+  error?: ErrorKind
+  out?: { blob: Blob; url: string; width: number; height: number; downscaled: boolean; format: ConvertFormat }
+}
+
+interface CompareRow { name: string; use: string; alpha: string; compression: string; compat: string }
+
+const optKey = (o: ConvertOptions) => `${o.format}|${o.quality}|${o.bg}`
+const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+
+function saveBlob(blob: Blob, name: string) {
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = name
+  a.click()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
 export default function ImageConverter() {
   const t = useTranslations('imageConverter')
-  const [images, setImages] = useState<ConvertedImage[]>([])
-  const [outputFormat, setOutputFormat] = useState<OutputFormat>('jpeg')
-  const [quality, setQuality] = useState(85)
-  const [batchMode, setBatchMode] = useState(false)
+  const sp = useSearchParams()
+  const uidBase = useId()
+  const fmtLabelId = `${uidBase}-fmt`
+
+  // 설정 (URL 공유)
+  const [init] = useState(() => parseSettings(sp.get('f'), sp.get('q'), sp.get('bg')))
+  const [format, setFormat] = useState<ConvertFormat>(init.format)
+  const [quality, setQuality] = useState(init.quality)
+  const [bg, setBg] = useState(init.bg)
+  const [job, setJob] = useState<ConvertOptions>(init) // 슬라이더 연속 변경을 묶은 실제 변환 설정
+
+  const [items, setItems] = useState<Item[]>([])
+  const [working, setWorking] = useState<string | null>(null)
+  const [enc, setEnc] = useState<{ webp: boolean; avif: boolean } | null>(null)
+  const [heicNative, setHeicNative] = useState<boolean | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [skipped, setSkipped] = useState(0)
+  const [zipping, setZipping] = useState(false)
+
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const itemsRef = useRef<Item[]>([])
+  useEffect(() => { itemsRef.current = items }, [items])
+  useEffect(() => () => itemsRef.current.forEach((i) => i.out && URL.revokeObjectURL(i.out.url)), [])
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B'
-    const k = 1024
-    const sizes = ['B', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return `${(bytes / Math.pow(k, i)).toFixed(2)} ${sizes[i]}`
-  }
-
-  const handleFiles = useCallback(async (files: FileList | null) => {
-    if (!files || files.length === 0) return
-
-    const fileArray = Array.from(files)
-
-    for (const file of fileArray) {
-      if (!file.type.startsWith('image/')) continue
-
-      const img = new Image()
-      const originalUrl = URL.createObjectURL(file)
-
-      img.onload = async () => {
-        const canvas = document.createElement('canvas')
-        canvas.width = img.naturalWidth
-        canvas.height = img.naturalHeight
-
-        const ctx = canvas.getContext('2d')
-        if (!ctx) return
-
-        ctx.drawImage(img, 0, 0)
-
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) return
-
-            const convertedUrl = URL.createObjectURL(blob)
-            const convertedImage: ConvertedImage = {
-              id: `${Date.now()}-${Math.random()}`,
-              originalFile: file,
-              originalUrl,
-              originalSize: file.size,
-              originalWidth: img.naturalWidth,
-              originalHeight: img.naturalHeight,
-              convertedUrl,
-              convertedSize: blob.size,
-              format: outputFormat,
-              quality
-            }
-
-            setImages(prev => batchMode ? [...prev, convertedImage] : [convertedImage])
-          },
-          `image/${outputFormat}`,
-          quality / 100
-        )
-      }
-
-      img.src = originalUrl
-    }
-  }, [outputFormat, quality, batchMode])
-
-  const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(true)
+  useEffect(() => {
+    setHeicNative(nativeHeic(navigator.userAgent))
+    detectEncoders()
+      .then((e) => {
+        setEnc(e)
+        if (!e.avif) setFormat((f) => (f === 'avif' ? DEFAULTS.format : f))
+        if (!e.webp) setFormat((f) => (f === 'webp' ? DEFAULTS.format : f))
+      })
+      .catch(() => setEnc({ webp: false, avif: false }))
   }, [])
 
-  const handleDragLeave = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(false)
+  // 설정 → 변환 job(250ms 묶음) + URL(기본값과 다른 것만)
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setJob({ format, quality, bg })
+      const p = new URLSearchParams()
+      if (format !== DEFAULTS.format) p.set('f', format)
+      if (usesQuality(format) && quality !== DEFAULTS.quality) p.set('q', String(quality))
+      if (needsBg(format) && bg !== DEFAULTS.bg) p.set('bg', bg.slice(1))
+      const qs = p.toString()
+      window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+    }, 250)
+    return () => clearTimeout(id)
+  }, [format, quality, bg])
+
+  const jobKey = optKey(job)
+
+  // ── 파일 추가 ──
+  const addFiles = useCallback(async (list: FileList | File[]) => {
+    const files = Array.from(list)
+    const ok = files.filter(acceptFile)
+    setSkipped(files.length - ok.length)
+    if (!ok.length) return
+    const added = await Promise.all(ok.map(async (file) => {
+      let head: Uint8Array | null = null
+      try { head = await readHead(file) } catch { /* 이름·MIME으로 판별 */ }
+      return { id: uid(), file, src: detectFormat(head, file.name, file.type) } as Item
+    }))
+    setItems((prev) => [...prev, ...added])
   }, [])
 
-  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(false)
-    handleFiles(e.dataTransfer.files)
-  }, [handleFiles])
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const files = Array.from(e.clipboardData?.files ?? [])
+      if (files.length) { e.preventDefault(); addFiles(files) }
+    }
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [addFiles])
 
-  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    handleFiles(e.target.files)
-  }, [handleFiles])
+  // ── 순차 변환: 현재 설정으로 처리 안 된 항목을 하나씩 ──
+  useEffect(() => {
+    if (working) return
+    const next = items.find((i) => i.key !== jobKey)
+    if (!next) return
+    setWorking(next.id)
+    const opts = job
+    const key = jobKey
+    convertImage(next.file, opts)
+      .then((o) => ({ o, err: undefined as ErrorKind | undefined }))
+      .catch((e: Error) => ({
+        o: undefined,
+        err: (e.message === 'decode' ? (next.src === 'heic' ? 'heic' : 'decode') : e.message === 'format' ? 'format' : 'encode') as ErrorKind,
+      }))
+      .then(({ o, err }) => {
+        const prev = itemsRef.current.find((i) => i.id === next.id)
+        if (prev) {
+          const out = o && { blob: o.blob, url: URL.createObjectURL(o.blob), width: o.width, height: o.height, downscaled: o.downscaled, format: opts.format }
+          if (prev.out) URL.revokeObjectURL(prev.out.url)
+          setItems((p) => p.map((i) => (i.id === next.id ? { ...i, key, out, error: err } : i)))
+        }
+        setWorking(null)
+      })
+  }, [items, job, jobKey, working])
 
-  const handleUploadClick = () => {
-    fileInputRef.current?.click()
+  const removeItem = (id: string) => {
+    const it = itemsRef.current.find((i) => i.id === id)
+    if (it?.out) URL.revokeObjectURL(it.out.url)
+    setItems((p) => p.filter((i) => i.id !== id))
   }
 
-  const downloadImage = (image: ConvertedImage) => {
-    const a = document.createElement('a')
-    a.href = image.convertedUrl
-    const originalName = image.originalFile.name.replace(/\.[^/.]+$/, '')
-    a.download = `${originalName}.${image.format}`
-    a.click()
+  const reset = () => {
+    itemsRef.current.forEach((i) => i.out && URL.revokeObjectURL(i.out.url))
+    setItems([])
+    setSkipped(0)
   }
 
-  const downloadAll = () => {
-    images.forEach(image => downloadImage(image))
-  }
+  // ── 집계 ──
+  const done = items.filter((i) => i.key === jobKey && i.out)
+  const failed = items.filter((i) => i.key === jobKey && i.error)
+  const pending = items.length - done.length - failed.length
+  const totalIn = done.reduce((s, i) => s + i.file.size, 0)
+  const totalOut = done.reduce((s, i) => s + i.out!.blob.size, 0)
+  const totalPct = savingsPct(totalIn, totalOut)
+  const hasHeicError = failed.some((i) => i.error === 'heic')
 
-  const handleReset = () => {
-    images.forEach(image => {
-      URL.revokeObjectURL(image.originalUrl)
-      URL.revokeObjectURL(image.convertedUrl)
-    })
-    setImages([])
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+  const change = (pct: number) => (pct > 0 ? t('smaller', { pct }) : pct < 0 ? t('larger', { pct: -pct }) : t('same'))
+
+  const downloadAll = async () => {
+    if (done.length === 1) return saveBlob(done[0].out!.blob, convertName(done[0].file.name, done[0].out!.format))
+    setZipping(true)
+    try {
+      const JSZip = (await import('jszip')).default
+      const zip = new JSZip()
+      const names = uniqueNames(done.map((i) => convertName(i.file.name, i.out!.format)))
+      done.forEach((i, n) => zip.file(names[n], i.out!.blob))
+      saveBlob(await zip.generateAsync({ type: 'blob', compression: 'STORE' }), `images_${FORMAT_LABEL[job.format].toLowerCase()}.zip`)
+    } finally {
+      setZipping(false)
     }
   }
 
-  const handleConvert = () => {
-    if (fileInputRef.current?.files) {
-      handleFiles(fileInputRef.current.files)
-    }
-  }
+  const status = !items.length
+    ? ''
+    : pending > 0
+      ? t('statusWorking', { done: done.length + failed.length, total: items.length })
+      : t('statusDone', { n: done.length })
 
-  const calculateReduction = (original: number, converted: number): string => {
-    const diff = converted - original
-    const percent = (diff / original) * 100
-    if (percent > 0) {
-      return `+${formatFileSize(diff)} (+${percent.toFixed(1)}%)`
-    } else {
-      return `${formatFileSize(diff)} (${percent.toFixed(1)}%)`
-    }
-  }
+  const compareRows = t.raw('compare.rows') as CompareRow[]
+  const heicSteps = t.raw('heicHelp.items') as string[]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
-        <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">
-              {t('uploadLabel')}
-            </h2>
-
-            {/* Batch Mode Toggle */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setBatchMode(!batchMode)}
-                className="flex items-center gap-2 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
-              >
-                {batchMode ? t('batchMode') : t('singleMode')}
-              </button>
-            </div>
-
-            {/* Upload Area */}
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={handleUploadClick}
-              className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
-                isDragging
-                  ? 'border-blue-500 bg-subtle'
-                  : 'border-line-strong hover:border-blue-500'
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* ── 왼쪽: 업로드 + 설정 ── */}
+        <div className="lg:col-span-1 space-y-6 min-w-0">
+          <div className="ui-card p-5 space-y-3">
+            <button
+              type="button"
+              className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
+                isDragging ? 'border-primary bg-primary-soft' : 'border-line-strong hover:border-primary'
               }`}
+              onClick={() => fileInputRef.current?.click()}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files) }}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragging(false) }}
+              aria-describedby={`${uidBase}-drop-hint`}
             >
-              <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-              <p className="text-sm text-sub mb-2">{t('dragDrop')}</p>
-              <p className="text-xs text-muted">{t('supportedFormats')}</p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple={batchMode}
-                onChange={handleFileInputChange}
-                className="hidden"
-              />
-            </div>
-
-            {/* Output Format */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('outputFormat')}
-              </label>
-              <select
-                value={outputFormat}
-                onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="jpeg">JPEG</option>
-                <option value="png">PNG</option>
-                <option value="webp">WebP</option>
-              </select>
-            </div>
-
-            {/* Quality Slider (only for JPEG/WebP) */}
-            {(outputFormat === 'jpeg' || outputFormat === 'webp') && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  {t('quality')}: {t('qualityPercent', { value: quality })}
-                </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="100"
-                  step="5"
-                  value={quality}
-                  onChange={(e) => setQuality(Number(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-              </div>
+              <Upload className="mx-auto mb-3 text-faint" size={36} aria-hidden />
+              <span className="block text-sm font-medium text-body">{t('dropzone')}</span>
+              <span id={`${uidBase}-drop-hint`} className="block text-xs text-muted mt-1">{t('dropzoneHint')}</span>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              multiple
+              className="hidden"
+              tabIndex={-1}
+              aria-hidden
+              onChange={(e) => { if (e.target.files?.length) addFiles(e.target.files); e.target.value = '' }}
+            />
+            <p className="text-xs text-muted leading-relaxed">{t('privacyNote')}</p>
+            {heicNative !== null && (
+              <p className="text-xs text-muted leading-relaxed">
+                {heicNative ? t('heicNative') : t('heicNoNative')}{' '}
+                {!heicNative && <a href="#heic-help" className="text-primary underline underline-offset-2">{t('heicHelpLink')}</a>}
+              </p>
             )}
-
-            {/* Action Buttons */}
-            <div className="space-y-2">
-              <button
-                onClick={handleConvert}
-                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors flex items-center justify-center gap-2"
-              >
-                <ImageIcon className="w-5 h-5" />
-                {t('convert')}
-              </button>
-              <button
-                onClick={handleReset}
-                disabled={images.length === 0}
-                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <RefreshCw className="w-5 h-5" />
-                {t('reset')}
-              </button>
-            </div>
+            {skipped > 0 && <p className="text-xs text-amber-700" role="alert">{t('skippedFiles', { n: skipped })}</p>}
           </div>
-        </div>
 
-        {/* Results Panel */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-fg">
-                {t('preview')}
-              </h2>
-              {images.length > 1 && (
-                <button
-                  onClick={downloadAll}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('downloadAll')}
-                </button>
-              )}
-            </div>
-
-            {images.length === 0 ? (
-              <div className="text-center py-12">
-                <ImageIcon className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                <p className="text-muted">{t('dragDrop')}</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {images.map((image) => (
-                  <div key={image.id} className="border border-line rounded-lg p-4 space-y-4">
-                    {/* Image Comparison */}
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm font-medium text-body mb-2">
-                          {t('original')}
-                        </p>
-                        <img
-                          src={image.originalUrl}
-                          alt="Original"
-                          className="w-full h-auto rounded-lg border border-line"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-body mb-2">
-                          {t('converted')}
-                        </p>
-                        <img
-                          src={image.convertedUrl}
-                          alt="Converted"
-                          className="w-full h-auto rounded-lg border border-line"
-                        />
-                      </div>
-                    </div>
-
-                    {/* File Info */}
-                    <div className="bg-subtle rounded-lg p-4 space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-sub">{t('fileInfo.name')}:</span>
-                        <span className="text-fg font-medium">
-                          {image.originalFile.name}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sub">{t('fileInfo.format')}:</span>
-                        <span className="text-fg font-medium">
-                          {image.originalFile.type.split('/')[1].toUpperCase()} → {image.format.toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sub">{t('fileInfo.dimensions')}:</span>
-                        <span className="text-fg font-medium">
-                          {image.originalWidth} × {image.originalHeight}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sub">{t('fileInfo.size')}:</span>
-                        <span className="text-fg font-medium">
-                          {formatFileSize(image.originalSize)} → {formatFileSize(image.convertedSize)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sub">{t('fileInfo.reduction')}:</span>
-                        <span className={`font-medium ${
-                          image.convertedSize < image.originalSize
-                            ? 'text-green-600 dark:text-green-400'
-                            : 'text-red-600 dark:text-red-400'
-                        }`}>
-                          {calculateReduction(image.originalSize, image.convertedSize)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Download Button */}
-                    <button
-                      onClick={() => downloadImage(image)}
-                      className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Download className="w-4 h-4" />
-                      {t('download')}
-                    </button>
-                  </div>
+          <div className="ui-card p-5 space-y-6">
+            <div>
+              <p id={fmtLabelId} className="text-sm font-semibold text-fg mb-2">{t('outputFormat')}</p>
+              <div role="group" aria-labelledby={fmtLabelId} className="grid grid-cols-4 gap-1 bg-soft rounded-xl p-1">
+                {CONVERT_FORMATS.filter((f) => f !== 'avif' || enc?.avif).map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setFormat(f)}
+                    aria-pressed={format === f}
+                    disabled={f === 'webp' && enc?.webp === false}
+                    className={`min-h-11 rounded-lg text-sm font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                      format === f ? 'bg-primary text-white' : 'text-sub hover:text-fg'
+                    }`}
+                  >
+                    {FORMAT_LABEL[f]}
+                  </button>
                 ))}
               </div>
+              <p className="text-xs text-muted mt-2 leading-relaxed">{t(`formatHint.${format}`)}</p>
+              {enc?.webp === false && <p className="text-xs text-muted mt-1 leading-relaxed">{t('webpUnsupported')}</p>}
+            </div>
+
+            {usesQuality(format) ? (
+              <div>
+                <label htmlFor={`${uidBase}-q`} className="flex items-center justify-between text-sm font-medium text-body mb-2">
+                  <span>{t('quality')}</span>
+                  <span className="tabular-nums text-fg font-semibold">{t('qualityPercent', { value: quality })}</span>
+                </label>
+                <input
+                  id={`${uidBase}-q`}
+                  type="range" min={10} max={100} step={5}
+                  value={quality}
+                  onChange={(e) => setQuality(Number(e.target.value))}
+                  aria-describedby={`${uidBase}-q-hint`}
+                  className="w-full h-11 accent-primary cursor-pointer"
+                />
+                <p id={`${uidBase}-q-hint`} className="text-xs text-muted leading-relaxed">{t('qualityHint')}</p>
+              </div>
+            ) : (
+              <p className="text-xs text-muted leading-relaxed">{t('pngNote')}</p>
+            )}
+
+            {needsBg(format) && (
+              <div className="flex items-center gap-3">
+                <input
+                  id={`${uidBase}-bg`} type="color" value={bg} onChange={(e) => setBg(e.target.value)}
+                  aria-describedby={`${uidBase}-bg-hint`}
+                  className="w-11 h-11 rounded-xl border border-line-strong bg-surface cursor-pointer shrink-0"
+                />
+                <div className="min-w-0">
+                  <label htmlFor={`${uidBase}-bg`} className="block text-sm font-medium text-body">{t('bgColor')}</label>
+                  <p id={`${uidBase}-bg-hint`} className="text-xs text-muted leading-relaxed">{t('bgHint')}</p>
+                </div>
+              </div>
+            )}
+
+            <p className="text-xs text-muted leading-relaxed bg-subtle rounded-xl p-3">{t('metaNote')}</p>
+
+            <button type="button" onClick={reset} disabled={!items.length} className="ui-btn-soft w-full px-4 py-3 min-h-11 disabled:opacity-40 disabled:cursor-not-allowed">
+              {t('reset')}
+            </button>
+          </div>
+        </div>
+
+        {/* ── 오른쪽: 결과 ── */}
+        <div className="lg:col-span-2 space-y-6 min-w-0">
+          <p role="status" aria-live="polite" className={status ? 'text-sm text-sub' : 'sr-only'}>{status}</p>
+          {failed.length > 0 && (
+            <p role="alert" className="text-sm text-red-600">{t('statusFailed', { n: failed.length })}</p>
+          )}
+
+          {done.length > 0 && (
+            <div className="ui-card p-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                <p className="text-sm text-sub">{t('summaryLabel', { n: done.length })}</p>
+                <p className="text-3xl font-bold text-fg tabular-nums mt-1">{formatBytes(totalOut)}</p>
+                <p className="text-sm text-sub tabular-nums mt-1">
+                  {t('summaryFrom', { size: formatBytes(totalIn) })} · <span className={totalPct > 0 ? 'text-primary font-semibold' : ''}>{change(totalPct)}</span>
+                </p>
+              </div>
+              <button type="button" onClick={downloadAll} disabled={pending > 0 || zipping} className="ui-btn px-5 py-3 min-h-11 inline-flex items-center justify-center gap-2">
+                <Download size={18} aria-hidden />
+                {zipping ? t('zipping') : done.length > 1 ? t('downloadZip', { n: done.length }) : t('download')}
+              </button>
+            </div>
+          )}
+
+          {hasHeicError && (
+            <div role="alert" className="bg-amber-50 text-amber-800 rounded-2xl p-5 text-sm leading-relaxed">
+              <p className="font-semibold">{t('heicErrorTitle')}</p>
+              <p className="mt-1">{t('heicErrorBody')} <a href="#heic-help" className="underline underline-offset-2">{t('heicHelpLink')}</a></p>
+            </div>
+          )}
+
+          <div className="ui-card p-5">
+            <h2 className="text-lg font-semibold text-fg mb-2">{t('resultTitle')}</h2>
+            {items.length === 0 ? (
+              <div className="text-center py-12">
+                <ImageIcon className="mx-auto mb-3 text-faint" size={40} aria-hidden />
+                <p className="text-sm text-muted">{t('empty')}</p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-line">
+                {items.map((it) => {
+                  const fresh = it.key === jobKey
+                  const busy = working === it.id
+                  const outSize = it.out?.blob.size ?? 0
+                  return (
+                    <li key={it.id} className="flex items-center gap-3 py-3">
+                      <div className="w-16 h-16 rounded-xl bg-subtle overflow-hidden shrink-0 flex items-center justify-center">
+                        {it.out ? (
+                          <img src={it.out.url} alt={it.file.name} className="w-full h-full object-cover" />
+                        ) : busy ? (
+                          <Loader2 className="animate-spin text-faint" size={22} aria-hidden />
+                        ) : (
+                          <ImageIcon className="text-faint" size={22} aria-hidden />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-fg truncate" title={it.file.name}>{it.file.name}</p>
+                        <p className="text-xs text-sub tabular-nums mt-0.5">
+                          {FORMAT_LABEL[it.src]} {formatBytes(it.file.size)}
+                          {it.out && <> → {FORMAT_LABEL[it.out.format]} {formatBytes(outSize)} · {change(savingsPct(it.file.size, outSize))}</>}
+                        </p>
+                        {it.out && (
+                          <p className="text-xs text-muted tabular-nums mt-0.5">
+                            {it.out.width}×{it.out.height}px
+                            {it.out.downscaled && <> · {t('downscaled')}</>}
+                          </p>
+                        )}
+                        {!fresh && !it.error && <p className="text-xs text-muted mt-0.5">{busy ? t('itemWorking') : t('itemWaiting')}</p>}
+                        {fresh && it.error && <p className="text-xs text-red-600 mt-0.5 leading-relaxed">{t(`error.${it.error}`)}</p>}
+                      </div>
+                      {it.out && (
+                        <a
+                          href={it.out.url}
+                          download={convertName(it.file.name, it.out.format)}
+                          aria-label={t('downloadItem', { name: convertName(it.file.name, it.out.format) })}
+                          className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-xl bg-soft text-body hover:bg-subtle shrink-0"
+                        >
+                          <Download size={18} aria-hidden />
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeItem(it.id)}
+                        aria-label={t('remove', { name: it.file.name })}
+                        className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-xl text-muted hover:bg-soft hover:text-fg shrink-0"
+                      >
+                        <X size={18} aria-hidden />
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
             )}
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Format Features */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.formats.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.formats.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
+      {/* ── 형식 비교 ── */}
+      <section className="ui-card p-6" aria-labelledby={`${uidBase}-cmp`}>
+        <h2 id={`${uidBase}-cmp`} className="text-xl font-semibold text-fg mb-4">{t('compare.title')}</h2>
+        <div className="overflow-x-auto -mx-2 px-2">
+          <table className="w-full min-w-[640px] text-sm">
+            <thead>
+              <tr className="text-left text-sub border-b border-line">
+                {(['format', 'use', 'alpha', 'compression', 'compat'] as const).map((h) => (
+                  <th key={h} scope="col" className="py-2 pr-4 font-medium">{t(`compare.headers.${h}`)}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {compareRows.map((r) => (
+                <tr key={r.name} className="align-top">
+                  <th scope="row" className="py-3 pr-4 text-left font-semibold text-fg whitespace-nowrap">{r.name}</th>
+                  <td className="py-3 pr-4 text-body">{r.use}</td>
+                  <td className="py-3 pr-4 text-body">{r.alpha}</td>
+                  <td className="py-3 pr-4 text-body">{r.compression}</td>
+                  <td className="py-3 text-body">{r.compat}</td>
+                </tr>
               ))}
-            </ul>
-          </div>
-
-          {/* Tips */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+            </tbody>
+          </table>
         </div>
-      </div>
+        <p className="text-xs text-muted mt-3 leading-relaxed">{t('compare.note')}</p>
+      </section>
+
+      {/* ── HEIC 다른 방법 ── */}
+      <section id="heic-help" className="ui-card p-6 scroll-mt-24" aria-labelledby={`${uidBase}-heic`}>
+        <h2 id={`${uidBase}-heic`} className="text-xl font-semibold text-fg mb-4">{t('heicHelp.title')}</h2>
+        <ol className="space-y-2 list-decimal list-inside text-sm text-body leading-relaxed">
+          {heicSteps.map((s) => <li key={s}>{s}</li>)}
+        </ol>
+      </section>
+
+      <GuideSection namespace="imageConverter" />
     </div>
   )
 }

@@ -16253,8 +16253,118 @@
     }
   },
   "imageConverter": {
+    "dropzone": "Drop images here or click to choose",
+    "dropzoneHint": "Multiple files · Paste with Ctrl+V · HEIC, JPG, PNG, WebP, GIF, BMP, AVIF",
+    "privacyNote": "Photos are never uploaded — conversion happens entirely in this browser.",
+    "heicNative": "This browser can convert iPhone HEIC photos directly.",
+    "heicNoNative": "Chrome, Edge and Firefox can't open iPhone HEIC photos.",
+    "heicHelpLink": "See other ways",
+    "heicErrorTitle": "This browser can't open HEIC photos",
+    "heicErrorBody": "Open this page in Safari 17+ on iPhone or Mac to convert them right away.",
+    "skippedFiles": "Skipped {n} unsupported file(s) (not an image, SVG, or over 100MB).",
+    "formatHint": {
+      "jpeg": "For photos and uploads. Opens everywhere; transparent areas are filled with the background color.",
+      "png": "Lossless. Best for screenshots and logos; keeps transparency.",
+      "webp": "For the web. Smaller than JPG at the same quality and keeps transparency.",
+      "avif": "Smallest files. Opens only in modern browsers and may be slow to encode."
+    },
+    "webpUnsupported": "This browser can't save WebP. Use Chrome, Edge or Firefox.",
+    "qualityHint": "80–90% looks nearly identical while cutting file size a lot.",
+    "pngNote": "PNG is lossless, so there's no quality setting. Photos saved as PNG may get larger.",
+    "bgColor": "Background for transparent areas",
+    "bgHint": "JPG has no transparency, so transparent pixels are filled with this color.",
+    "metaNote": "Converted files carry no metadata such as GPS location or camera model, and rotation is applied to the pixels.",
+    "resultTitle": "Results",
+    "empty": "Add images and they'll be converted and listed here right away.",
+    "summaryLabel": "Total size of {n} converted",
+    "summaryFrom": "Original {size}",
+    "smaller": "{pct}% smaller",
+    "larger": "{pct}% larger",
+    "same": "No change",
+    "statusWorking": "Converting… {done}/{total}",
+    "statusDone": "{n} converted",
+    "statusFailed": "{n} could not be converted.",
+    "itemWorking": "Converting",
+    "itemWaiting": "Waiting",
+    "downscaled": "Downscaled to fit device limit",
+    "downloadZip": "Download {n} as ZIP",
+    "zipping": "Zipping…",
+    "downloadItem": "Download {name}",
+    "remove": "Remove {name}",
+    "error": {
+      "heic": "This browser can't open HEIC.",
+      "decode": "Can't open this file. It may be corrupted or in a format this browser doesn't support.",
+      "encode": "Conversion failed. The image may be too large or the device is out of memory.",
+      "format": "This browser can't save in this format. Choose JPG or PNG."
+    },
+    "compare": {
+      "title": "JPG vs PNG vs WebP vs HEIC",
+      "headers": {
+        "format": "Format",
+        "use": "Best for",
+        "alpha": "Transparency",
+        "compression": "Compression",
+        "compat": "Compatibility"
+      },
+      "rows": [
+        {
+          "name": "JPG",
+          "use": "Photos, form uploads, messaging",
+          "alpha": "No (filled with background)",
+          "compression": "Lossy",
+          "compat": "Almost every device and site"
+        },
+        {
+          "name": "PNG",
+          "use": "Screenshots, logos, text-heavy images",
+          "alpha": "Yes",
+          "compression": "Lossless (large for photos)",
+          "compat": "Almost every device and site"
+        },
+        {
+          "name": "WebP",
+          "use": "Website and blog images",
+          "alpha": "Yes",
+          "compression": "Lossy or lossless",
+          "compat": "All modern browsers; some older apps and upload forms reject it"
+        },
+        {
+          "name": "AVIF",
+          "use": "Web optimization (smallest)",
+          "alpha": "Yes",
+          "compression": "Lossy or lossless",
+          "compat": "Opens in modern browsers; only some can save it"
+        },
+        {
+          "name": "HEIC",
+          "use": "iPhone's default photo format",
+          "alpha": "Yes",
+          "compression": "Lossy (about half of JPG at similar quality)",
+          "compat": "Mainly Apple devices; many Windows/Android apps and websites don't support it"
+        },
+        {
+          "name": "GIF",
+          "use": "Short animations, simple graphics",
+          "alpha": "Fully transparent only",
+          "compression": "Lossless (256 colors)",
+          "compat": "Almost every device and site"
+        }
+      ],
+      "note": "HEIC, GIF and BMP are input-only (output: JPG, PNG, WebP, plus AVIF where supported). Only the first frame of a GIF is converted."
+    },
+    "heicHelp": {
+      "title": "Other ways to turn HEIC (iPhone photos) into JPG",
+      "items": [
+        "Open this page in Safari on your iPhone (iOS 17+) and pick the photos — they convert to JPG right away.",
+        "For future photos: Settings > Camera > Formats > 'Most Compatible' saves JPG from the start.",
+        "When copying to a PC: Settings > Photos > 'Transfer to Mac or PC' set to 'Automatic' converts to JPG over cable.",
+        "Mac: open in Preview, then File > Export and choose JPEG.",
+        "Windows: install 'HEIF Image Extensions' and 'HEVC Video Extensions' (may be paid) from the Microsoft Store, then open in Photos or Paint and save as JPEG.",
+        "Sending by email or messenger often converts photos to JPG for compatibility (depends on the app and settings)."
+      ]
+    },
     "title": "Image Converter",
-    "description": "Convert image file formats. Supports JPEG, PNG, WebP, GIF, and more.",
+    "description": "Convert iPhone HEIC, PNG, WebP and more to JPG, PNG or WebP in bulk. Photos stay in your browser and are never uploaded.",
     "uploadLabel": "Upload Image",
     "dragDrop": "Drag and drop or click to upload",
     "supportedFormats": "Supported: JPEG, PNG, WebP, GIF, BMP",
@@ -16289,41 +16399,58 @@
         ]
       },
       "tips": {
-        "title": "Conversion Tips",
+        "title": "Tips",
         "items": [
-          "WebP is the most efficient for web use",
-          "Use PNG when transparency is needed",
-          "JPEG 80-90% quality is optimal for photos",
-          "Conversion is processed locally, nothing uploaded to servers"
+          "JPG is the safest choice for government, shopping and school upload forms.",
+          "For blogs and websites, WebP is usually 25–35% smaller than JPG at the same quality.",
+          "Logos, screenshots and text-heavy images stay sharpest as PNG.",
+          "80–90% quality is enough for photos; 100% mostly just adds size.",
+          "Re-saving a JPG as JPG loses a little quality each time, so keep the original."
         ]
       },
       "whatIs": {
         "title": "What is the Image Converter?",
-        "description": "The image converter lets you convert image files between JPEG, PNG, WebP, GIF, BMP, and other formats directly in your browser — no software installation required. Simply drag and drop a file, choose the target format, and download the converted result instantly. Common use cases include converting to WebP for web performance optimization and compressing PNG files by converting to JPEG."
+        "description": "A free tool that converts iPhone HEIC, PNG, WebP, GIF, BMP and other images to JPG, PNG or WebP. Everything runs in your browser, so photos are never sent to a server. Convert many files at once and see the size change instantly."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Drag and drop an image file onto the upload area, or click to select a file.",
-          "2. Choose the target format from the dropdown (JPEG, PNG, WebP, GIF, etc.).",
-          "3. For JPEG or WebP, adjust the quality slider (0–100%) to balance file size and image quality.",
-          "4. Click Convert — the file is processed locally in your browser and the download starts immediately."
+          "1. Drop images, click to choose, or paste a copied image with Ctrl+V. You can add many at once.",
+          "2. Pick the output format (JPG, PNG, WebP). AVIF appears if your browser can save it.",
+          "3. Set quality for JPG/WebP and a background color for transparent areas in JPG. Changing settings reconverts every image automatically.",
+          "4. Download each file, or grab them all as a ZIP."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Why convert to WebP?",
-            "a": "WebP is a modern image format developed by Google that provides roughly 25–35% smaller file sizes compared to JPEG while maintaining similar quality — great for faster website loading."
+            "q": "How do I convert iPhone HEIC photos to JPG?",
+            "a": "Open this page in Safari 17+ on iPhone or Mac and add the photos — they're saved as JPG right away. Chrome, Edge and Firefox can't open HEIC, so instead set Settings > Photos > 'Transfer to Mac or PC' to 'Automatic' on your iPhone, or choose Settings > Camera > Formats > 'Most Compatible' for future photos."
           },
           {
-            "q": "What happens to transparent backgrounds when converting PNG to JPEG?",
-            "a": "JPEG does not support transparency, so transparent areas are filled with white. To preserve transparency, use PNG or WebP as the output format."
+            "q": "Are my photos uploaded to a server?",
+            "a": "No. Conversion uses the browser's Canvas on your own device; files are never sent anywhere."
           },
           {
-            "q": "Are uploaded images sent to a server?",
-            "a": "No. All conversion is performed locally using the browser's Canvas API. Your files are never transmitted to any external server."
+            "q": "What happens to transparency when converting PNG to JPG?",
+            "a": "JPG has no transparency, so transparent areas are filled with the background color you choose (white by default). Pick PNG or WebP to keep transparency."
+          },
+          {
+            "q": "Why did the file get bigger?",
+            "a": "This is common when the original is an already well-compressed HEIC or JPG. HEIC is about half the size of JPG at similar quality, so converting to JPG normally grows the file, as does saving a photo as PNG. Lower the quality or choose WebP."
+          },
+          {
+            "q": "Is EXIF data such as location kept?",
+            "a": "Converted files contain no metadata such as GPS location, camera model or capture date. Rotation is applied to the pixels so the photo displays upright. Keep the original if you need the capture date."
+          },
+          {
+            "q": "Can animated GIFs be converted?",
+            "a": "Only the first frame is converted to a still image. Keep the GIF if you need the animation."
+          },
+          {
+            "q": "How many images can I convert?",
+            "a": "There's no count limit; each file can be up to 100MB. Very large photos (e.g. 48MP) may be downscaled to about 16MP on some iPhones and iPads due to device limits, which is noted in the result."
           }
         ]
       }

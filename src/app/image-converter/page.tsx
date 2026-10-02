@@ -5,15 +5,15 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '이미지 변환기 - 포맷 변환 | 툴허브',
-  description: '이미지 변환기 - JPEG, PNG, WebP, GIF 등 이미지 파일 형식을 변환합니다. 품질 조절, 미리보기, 일괄 변환 지원.',
-  keywords: '이미지 변환기, 이미지 포맷 변환, JPEG PNG 변환, WebP 변환, image converter',
+  description: '아이폰 HEIC·PNG·WebP 사진을 JPG·PNG·WebP로 변환하세요. 여러 장 일괄 변환·ZIP 저장, 품질 조절, EXIF 회전 반영. 서버 업로드 없이 브라우저에서 처리합니다.',
+  keywords: 'HEIC JPG 변환, 아이폰 사진 JPG, PNG JPG 변환, 이미지 변환기, 이미지 포맷 변환, JPEG PNG 변환, WebP 변환, image converter',
   openGraph: { title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-converter.png', width: 1200, height: 630, alt: '이미지 변환기' }] },
   twitter: { card: 'summary_large_image', title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', images: ['https://toolhub.ai.kr/og/image-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-converter/' },
 }
 
 export default function ImageConverterPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 변환기', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['포맷 변환', '품질 조절', '일괄 변환', '미리보기'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 변환기', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['HEIC→JPG 변환(사파리)', 'JPG·PNG·WebP·AVIF 변환', '일괄 변환·ZIP 다운로드', 'EXIF 회전 반영·메타데이터 제거', '서버 업로드 없음'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -23,7 +23,7 @@ export default function ImageConverterPage() {
         name: '이미지 포맷 변환이 필요한 경우는?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '① 웹 업로드: HEIC(아이폰)을 JPEG로 변환 (대부분 사이트가 HEIC 미지원) ② 파일 크기 축소: PNG를 JPEG나 WebP로 변환하면 70-90% 크기 감소 ③ 투명 배경 필요: JPEG를 PNG로 변환 후 배경 제거 ④ 인쇄용: RGB 이미지를 CMYK TIFF로 변환 ⑤ 웹 최적화: JPEG/PNG를 WebP나 AVIF로 변환하면 페이지 로딩 속도 개선.',
+          text: '① 웹 업로드: HEIC(아이폰)을 JPEG로 변환 (대부분 사이트가 HEIC 미지원) ② 파일 크기 축소: PNG를 JPEG나 WebP로 변환하면 크기가 크게 줄어듦 ③ 투명 배경 필요: JPEG를 PNG로 변환 후 배경 제거 ④ 웹 최적화: JPEG/PNG를 WebP나 AVIF(지원 브라우저만)로 변환하면 페이지 로딩 속도 개선.',
         },
       },
       {
@@ -31,7 +31,7 @@ export default function ImageConverterPage() {
         name: 'HEIC 파일이란 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'HEIC(High Efficiency Image Container)는 Apple이 iOS 11부터 도입한 이미지 포맷으로, HEVC 코덱 기반입니다. JPEG 대비 약 50% 작은 파일 크기로 동일 화질을 제공합니다. 하지만 Windows, 일부 안드로이드, 웹 브라우저에서 호환성 문제가 있어 공유 시 JPEG 변환이 필요합니다. iPhone 설정에서 \'호환성 우선\'을 선택하면 처음부터 JPEG으로 저장할 수 있습니다.',
+          text: 'HEIC(High Efficiency Image Container)는 Apple이 iOS 11부터 도입한 이미지 포맷으로, HEVC 코덱 기반입니다. JPEG 대비 약 50% 작은 파일 크기로 동일 화질을 제공합니다. 하지만 Windows, 일부 안드로이드, 웹 브라우저에서 호환성 문제가 있어 공유 시 JPEG 변환이 필요합니다. iPhone 설정에서 \'높은 호환성\'을 선택하면 처음부터 JPEG으로 저장할 수 있습니다.',
         },
       },
     ],
@@ -55,7 +55,7 @@ export default function ImageConverterPage() {
             이미지 변환기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            이미지 변환기는 JPEG·PNG·WebP·GIF 등 이미지 파일 형식을 브라우저에서 즉시 변환하는 무료 온라인 도구입니다. 아이폰 HEIC 파일을 JPEG로 변환하거나, 투명 배경 보존을 위해 JPEG를 PNG로, 웹 최적화를 위해 PNG를 WebP로 변환하는 등 다양한 포맷 변환이 가능하며, 화질 조절과 실시간 미리보기를 지원합니다.
+            이미지 변환기는 JPEG·PNG·WebP·GIF 등 이미지 파일 형식을 브라우저에서 즉시 변환하는 무료 온라인 도구입니다. 아이폰 HEIC 파일을 JPEG로 변환(사파리 17 이상)하거나, 투명 배경 보존을 위해 JPEG를 PNG로, 웹 최적화를 위해 PNG를 WebP로 변환하는 등 다양한 포맷 변환이 가능하며, 화질 조절과 실시간 미리보기를 지원합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 변환기 활용 팁
@@ -63,7 +63,7 @@ export default function ImageConverterPage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>HEIC → JPEG 변환:</strong> 아이폰으로 찍은 HEIC 파일은 Windows·안드로이드·대부분의 웹사이트에서 열리지 않습니다. JPEG로 변환하면 호환성 문제가 해결됩니다.</li>
             <li><strong>PNG → WebP 변환:</strong> 웹사이트 이미지를 WebP로 변환하면 PNG 대비 파일 크기가 26% 줄어 Core Web Vitals(LCP) 점수를 향상시킬 수 있습니다.</li>
-            <li><strong>투명 배경 보존:</strong> PNG에서 PNG로 변환할 때는 투명 배경(alpha 채널)이 유지됩니다. JPEG 변환 시에는 배경이 흰색으로 채워집니다.</li>
+            <li><strong>투명 배경 보존:</strong> PNG·WebP로 저장하면 투명 배경(alpha 채널)이 유지됩니다. JPEG 변환 시에는 선택한 배경색(기본 흰색)으로 채워집니다.</li>
             <li><strong>일괄 변환:</strong> 여러 이미지를 한 번에 업로드하여 일괄 변환하면 개별 처리보다 훨씬 빠르게 작업을 완료할 수 있습니다.</li>
           </ul>
         </div>
