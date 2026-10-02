@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '부동산 계산기 - 대출·취득세 계산 | 툴허브',
-  description: '전세자금대출, 주택담보대출 월 상환금액과 취득세를 정확하게 계산해보세요. LTV 계산 및 한국 부동산 세법 기준 적용.',
-  keywords: '부동산계산기, 전세자금대출, 주택담보대출, 취득세계산, LTV계산, 부동산세금, 대출계산기',
+  description: '집 살 때 실제로 필요한 현금(자기자본+취득세+중개보수+국민주택채권·법무사 등기비용)과 주택담보대출 월 상환액·DSR을 한 번에 계산하세요. 2026년 세법 기준.',
+  keywords: '부동산계산기, 집 살 때 드는 비용, 내 집 마련 자금, 부대비용, 주택담보대출, 취득세계산, LTV계산, 부동산세금, 대출계산기',
   openGraph: {
-    title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
-    description: '부동산 관련 모든 계산을 한 곳에서 쉽게 해결하세요',
+    title: '부동산 계산기 - 집 살 때 필요한 현금·월 상환액',
+    description: '자기자본+취득세+중개보수+등기비용, 월 상환액·DSR까지 한 화면에서',
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/real-estate-calculator',
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
-    description: '전세자금대출, 주택담보대출 월 상환금액과 취득세를 정확하게 계산해보세요. LTV 계산 및 한국 부동산 세법 기준 적용.',
+    title: '부동산 계산기 - 집 살 때 필요한 현금·월 상환액',
+    description: '집 살 때 실제로 필요한 현금(자기자본+취득세+중개보수+국민주택채권·법무사 등기비용)과 주택담보대출 월 상환액·DSR을 한 번에 계산하세요. 2026년 세법 기준.',
     images: ['https://toolhub.ai.kr/og/real-estate-calculator.png'],
   },
   alternates: {
@@ -32,7 +32,7 @@ export default function RealEstateCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '부동산 계산기',
-    description: '전세자금대출, 주택담보대출 월 상환금액과 취득세를 정확하게 계산해보세요',
+    description: '집 살 때 실제로 필요한 현금(자기자본+취득세+중개보수+국민주택채권·법무사 등기비용)과 주택담보대출 월 상환액·DSR을 한 번에 계산하세요. 2026년 세법 기준.',
     url: 'https://toolhub.ai.kr/real-estate-calculator',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -47,10 +47,11 @@ export default function RealEstateCalculatorPage() {
       name: '툴허브'
     },
     featureList: [
-      '전세자금대출 계산',
-      '주택담보대출 계산',
-      '취득세 계산',
-      'LTV 계산'
+      '집 살 때 총 필요 현금',
+      '부대비용(취득세·중개보수·국민주택채권·법무사)',
+      '주택담보대출 월 상환(원리금·원금균등)',
+      'LTV·대략 DSR',
+      '매매가별 비용 비교'
     ]
   }
 
@@ -76,10 +77,10 @@ export default function RealEstateCalculatorPage() {
       },
       {
         '@type': 'Question',
-        name: '전세자금대출 한도는 얼마인가요?',
+        name: '집값 말고 얼마가 더 드나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '전세자금대출 한도는 전세보증금의 80% 이내이며, 최대 3억원(수도권)~2억원(비수도권)까지 가능합니다. 소득과 신용도에 따라 실제 한도는 달라질 수 있습니다.',
+          text: '1주택·전용 85㎡ 이하 기준으로 취득세·중개보수·국민주택채권·법무사 비용을 합쳐 대략 매매가의 2~3%입니다. 예를 들어 5억원이면 약 900만원, 7억원이면 약 1,700만원이 집값 외에 필요합니다(이사비 별도).',
         },
       },
       {
@@ -87,7 +88,7 @@ export default function RealEstateCalculatorPage() {
         name: '부동산 중개수수료는 어떻게 계산하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '부동산 중개수수료는 거래 금액에 따라 요율이 달라집니다. 매매 기준 5천만원 미만 0.6%, 5천만~2억 0.5%, 2~9억 0.4%, 9~12억 0.5%, 12억 초과 0.9% 이하 협의입니다.',
+          text: '부동산 중개수수료는 거래 금액에 따라 요율이 달라집니다. 매매 기준 5천만원 미만 0.6%, 5천만~2억 0.5%, 2~9억 0.4%, 9~12억 0.5%, 12~15억 0.6%, 15억 이상 0.7% 이내(부가세 별도)입니다. 0.9%는 주택 외 건물·오피스텔 등의 상한입니다.',
         },
       },
     ],
@@ -96,11 +97,11 @@ export default function RealEstateCalculatorPage() {
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name: '부동산 중개수수료 계산하는 방법',
-    description: '거래 유형과 금액을 입력하면 중개수수료, 취득세, 대출 상환액을 계산합니다.',
+    name: '집 살 때 필요한 돈 계산하는 방법',
+    description: '매매가와 대출 조건을 입력하면 총 필요 현금, 부대비용, 월 상환액을 계산합니다.',
     step: [
-      { '@type': 'HowToStep', name: '거래 유형 선택', text: '전세자금대출, 주택담보대출, 취득세 중 계산할 항목을 선택합니다.' },
-      { '@type': 'HowToStep', name: '부동산 정보 입력', text: '거래 금액, 주택 면적, 보유 주택 수 등 부동산 관련 정보를 입력합니다.' },
+      { '@type': 'HowToStep', name: '매매가·지역 입력', text: '매매가, 지역(조정대상지역 여부), 전용면적, 취득 후 주택 수를 입력합니다.' },
+      { '@type': 'HowToStep', name: '대출 조건 입력', text: 'LTV 또는 대출 금액, 금리, 기간, 상환 방식과 연소득을 입력합니다.' },
       { '@type': 'HowToStep', name: '비용 내역 확인', text: '중개수수료, 취득세, 대출 월 상환금 등 거래에 필요한 총 비용을 확인합니다.' },
     ],
   }
@@ -135,7 +136,7 @@ export default function RealEstateCalculatorPage() {
             부동산 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            부동산 계산기는 전세자금대출, 주택담보대출 월 상환금액, 취득세, LTV 등 부동산 거래에 필요한 핵심 수치를 한 번에 계산해 주는 종합 금융 계산 도구입니다. 한국 부동산 세법과 대출 규정을 반영해 내 집 마련 전 예산 계획을 세우거나 이사 비용을 미리 파악하는 데 활용할 수 있습니다.
+            부동산 계산기는 집을 살 때 실제로 필요한 현금(자기자본, 취득세, 중개보수, 국민주택채권·법무사 등기비용)과 주택담보대출 월 상환액, LTV·DSR을 한 번에 계산해 주는 내 집 마련 자금 계산 도구입니다. 한국 부동산 세법과 대출 규정을 반영해 내 집 마련 전 예산 계획을 세우거나 이사 비용을 미리 파악하는 데 활용할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             부동산 계산기 활용 팁
@@ -143,7 +144,7 @@ export default function RealEstateCalculatorPage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>취득세 미리 파악:</strong> 주택 매매 계약 전에 취득세를 계산해두면 계약금·잔금 외의 추가 비용을 정확히 준비할 수 있습니다. 주택 수와 가격에 따라 세율이 크게 다릅니다.</li>
             <li><strong>LTV 확인으로 대출 한도 예측:</strong> 내 주택의 LTV(담보인정비율)와 DSR(총부채원리금상환비율)을 파악하면 실제 받을 수 있는 대출 한도를 사전에 예측할 수 있습니다.</li>
-            <li><strong>전세자금대출 이자 비교:</strong> 대출 금리와 상환 기간을 바꾸어 가며 월 상환액을 비교하면 가장 부담이 적은 조건을 찾을 수 있습니다.</li>
+            <li><strong>매매가별 비교:</strong> 매매가별 비교 표에서 가격대를 바꿔 보면 6억·9억 같은 취득세 구간 경계에서 부대비용이 얼마나 달라지는지 바로 확인할 수 있습니다.</li>
             <li><strong>중개수수료 확인:</strong> 거래 금액에 따른 법정 중개수수료 상한을 미리 계산하면 과도한 수수료 요구에 대응할 수 있습니다.</li>
           </ul>
         </div>
