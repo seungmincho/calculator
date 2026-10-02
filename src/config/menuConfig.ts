@@ -203,6 +203,7 @@ export const menuConfig: MenuConfig = {
       { href: '/lease-contract', labelKey: 'footer.links.leaseContract', descriptionKey: 'toolsShowcase.tools.leaseContract.description', icon: '🏠', addedDate: '2026-10-02', subcategory: 'subcategory.generators' },
       { href: '/receipt-generator', labelKey: 'footer.links.receiptGenerator', descriptionKey: 'toolsShowcase.tools.receiptGenerator.description', icon: '🧾', addedDate: '2026-10-02', subcategory: 'subcategory.generators' },
       { href: '/pay-slip', labelKey: 'footer.links.paySlip', descriptionKey: 'toolsShowcase.tools.paySlip.description', icon: '💵', addedDate: '2026-10-02', subcategory: 'subcategory.generators' },
+      { href: '/greeting-generator', labelKey: 'footer.links.greetingGenerator', descriptionKey: 'toolsShowcase.tools.greetingGenerator.description', icon: '💌', addedDate: '2026-10-02', subcategory: 'subcategory.generators' },
       { href: '/kanban-board', labelKey: 'footer.links.kanbanBoard', descriptionKey: 'toolsShowcase.tools.kanbanBoard.description', icon: '📋', subcategory: 'subcategory.otherTools' },
       { href: '/meeting-minutes', labelKey: 'footer.links.meetingMinutes', descriptionKey: 'toolsShowcase.tools.meetingMinutes.description', icon: '📝', subcategory: 'subcategory.otherTools' },
       { href: '/crontab-generator', labelKey: 'footer.links.crontabGenerator', descriptionKey: 'toolsShowcase.tools.crontabGenerator.description', icon: '⏰', subcategory: 'subcategory.devTools' },

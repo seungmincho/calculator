@@ -140,6 +140,7 @@ const menuItems = [
   { href: '/pay-slip', labelKey: 'footer.links.paySlip' },
   { href: '/receipt-generator', labelKey: 'footer.links.receiptGenerator' },
   { href: '/lease-contract', labelKey: 'footer.links.leaseContract' },
+  { href: '/greeting-generator', labelKey: 'footer.links.greetingGenerator' },
   { href: '/ip-checker', labelKey: 'footer.links.ipChecker' },
   { href: '/jeonse-checklist', labelKey: 'footer.links.jeonseChecklist' },
   { href: '/jeonse-loan', labelKey: 'footer.links.jeonseLoan' },

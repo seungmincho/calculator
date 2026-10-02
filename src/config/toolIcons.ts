@@ -4,7 +4,7 @@
  */
 import type { LucideIcon } from 'lucide-react'
 import {
-  Wallet, Scale, Table2, Landmark, PiggyBank, CandlestickChart, Briefcase, Building2, Receipt, ArrowLeftRight,
+  MessageSquareHeart, Wallet, Scale, Table2, Landmark, PiggyBank, CandlestickChart, Briefcase, Building2, Receipt, ArrowLeftRight,
   House, Building, Car, CarFront, Fuel, TrendingDown, Percent, Cake, GraduationCap, TrendingUp, Zap, Tag, Ruler,
   FileText, Droplet, Coins, Umbrella, Flame, CarTaxiFront, CreditCard, Package, SquareParking, UtensilsCrossed,
   CalendarRange, Truck, Wrench, Gift, PaintRoller, LineChart, FileSearch, Clock, Medal, Ticket, BarChart3,
@@ -180,6 +180,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/lease-contract': KeyRound,
   '/receipt-generator': ReceiptText,
   '/pay-slip': Banknote,
+  '/greeting-generator': MessageSquareHeart,
   '/kanban-board': SquareKanban,
   '/meeting-minutes': ClipboardList,
   '/crontab-generator': CalendarClock,

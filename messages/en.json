@@ -53358,5 +53358,139 @@
       ]
     }
   },
-  "greetingGenerator": {}
+  "greetingGenerator": {
+    "title": "Greeting Message Generator",
+    "description": "Pick the occasion, the recipient and the tone to get several ready-to-send greetings.",
+    "koreanNote": "Messages are written in Korean, composed from hand-written sentences. Names you enter stay on this screen and are not added to the link.",
+    "settingsTitle": "Options",
+    "situationLabel": "Occasion",
+    "situations": {
+      "yearEnd": "Year-end",
+      "newYear": "New Year",
+      "seollal": "Seollal",
+      "chuseok": "Chuseok",
+      "thanks": "Thanks",
+      "birthday": "Birthday",
+      "congrats": "Promotion",
+      "farewell": "Leaving a job"
+    },
+    "recipientLabel": "Recipient",
+    "recipients": {
+      "boss": "Boss / senior",
+      "colleague": "Colleague",
+      "client": "Client / customer",
+      "friend": "Friend",
+      "family": "Parents / family",
+      "teacher": "Teacher"
+    },
+    "toneLabel": "Tone",
+    "tones": {
+      "formal": "Formal (hamnida)",
+      "polite": "Polite (haeyo)",
+      "casual": "Casual (banmal)"
+    },
+    "toneHint": "Changing the recipient picks a matching tone first. You can still change it.",
+    "lengthLabel": "Length",
+    "lengths": {
+      "short": "Short",
+      "medium": "Medium",
+      "long": "Long"
+    },
+    "nameLabel": "Recipient name (optional)",
+    "namePlaceholder": "e.g. 김 부장님, 민수",
+    "senderLabel": "From (optional)",
+    "senderPlaceholder": "e.g. 툴허브 홍길동",
+    "nameHint": "Names are added at the start and the end of each message. In casual messages to a friend, the name gets the vocative ending (민수야).",
+    "emojiLabel": "Add emoji for KakaoTalk",
+    "resultsTitle": "{count} greetings",
+    "yearInfo": "{year} is the year of {ganji} ({animal}).",
+    "shuffle": "Show other messages",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "charCount": "{chars} chars · {bytes} bytes",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyAria": "Copy message {n}",
+    "copiedAnnounce": "Message {n} copied",
+    "image": "Image",
+    "imageAria": "Save message {n} as a card image",
+    "imageSaved": "Card image saved",
+    "favAria": "Favorite message {n}",
+    "favAdded": "Message {n} added to favorites",
+    "favRemoved": "Message {n} removed from favorites",
+    "favoritesTitle": "Favorite messages",
+    "favCopyAria": "Copy favorite message {n}",
+    "favRemoveAria": "Delete favorite message {n}",
+    "smsHint": "With Korean bulk-texting services, up to 90 bytes (about 45 Korean characters) goes as SMS; longer messages or messages with emoji go as LMS. Pick Short when sending to many people.",
+    "guide": {
+      "title": "How to write a good greeting",
+      "whatIs": {
+        "title": "What is this?",
+        "description": "A tool that writes Korean greetings for year-end, New Year, Seollal, Chuseok, thanks, birthdays, promotions and farewells, matched to the recipient and the tone. Hand-written sentences are combined per relationship and tone, so honorific and casual speech never mix. New Year messages automatically include the coming year and its sexagenary name (e.g. 2027, 정미년)."
+      },
+      "howToUse": {
+        "title": "How to use",
+        "items": [
+          "Choose the occasion and the recipient. A matching tone is selected first.",
+          "Change the tone and length. Short messages fit in a single SMS for group texts.",
+          "Enter the recipient and sender names to add '김 부장님,' or '홍길동 드림' automatically.",
+          "Copy a message or save it as a card image. 'Show other messages' gives new combinations.",
+          "Star the messages you like to keep them in favorites on this device."
+        ]
+      },
+      "tips": {
+        "title": "Avoid the mass-text feel",
+        "items": [
+          "Put the recipient's name first. A name alone makes it feel personal.",
+          "Add one sentence about something you did together. A specific memory carries the sincerity.",
+          "When sending to many people, use 'Show other messages' to vary the text per person.",
+          "Use emoji only with friends and colleagues; leave them out for clients and seniors."
+        ]
+      },
+      "realWorld": {
+        "title": "When to send",
+        "items": [
+          "Year-end: mid to late December. For clients, around the third week of December, a few days before the last workday.",
+          "New Year: within the first week of January. Messages sent at midnight get buried.",
+          "Seollal and Chuseok: 2 to 3 days before the holidays start.",
+          "Birthdays and promotions: on the day you hear the news.",
+          "Leaving a job: on your last afternoon or the day before. Tell clients who takes over."
+        ]
+      },
+      "comparison": {
+        "title": "Etiquette with clients",
+        "items": [
+          "Formal speech is the default. Polite (haeyo) is fine if that is how you usually talk.",
+          "Sign with your company and name so they know who sent it.",
+          "Keep business out of it: thanks and good wishes only.",
+          "For new or formal relationships, a text or email is safer than KakaoTalk."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When should I send year-end greetings?",
+            "a": "Mid to late December. Messages pile up around Christmas and the last week, so for clients the third week of December works best. New Year greetings can go out within the first week of January."
+          },
+          {
+            "q": "When should I send Seollal or Chuseok greetings?",
+            "a": "Two to three days before the holidays begin. During the holidays people are with family, and the first morning is flooded with messages. For clients, send before noon on the last workday."
+          },
+          {
+            "q": "How do I keep it from looking like a mass text?",
+            "a": "Start with the recipient's name and add one sentence about something you shared. Names you enter here are added automatically, and 'Show other messages' gives each person a different text."
+          },
+          {
+            "q": "Is KakaoTalk okay for clients?",
+            "a": "Yes, if you already talk about work there. For new or formal relationships, a text message or email is safer, without emoji."
+          },
+          {
+            "q": "What is the difference between SMS and LMS?",
+            "a": "With Korean bulk-texting services, SMS carries up to 90 bytes (about 45 Korean characters); longer messages become LMS. Emoji often prevent sending as SMS too. LMS may cost more, so choose Short when texting many people."
+          }
+        ]
+      }
+    }
+  }
 }
