@@ -1,5 +1,5 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v4.31.4'
+const CACHE_NAME = 'toolhub-v4.31.5'
 const STATIC_CACHE_NAME = 'toolhub-static-v4.31.4'
 const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.31.4'
 

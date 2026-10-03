@@ -2553,6 +2553,7 @@
       "subnetCalculator": "IP Subnet Calculator",
       "htmlEntityConverter": "HTML Entity Converter",
       "exerciseCalorie": "Exercise Calorie Calculator",
+      "runningPace": "Running Pace Calculator",
       "noiseMeter": "Noise Meter",
       "spiritLevel": "Spirit Level & Compass",
       "metronome": "Metronome",
@@ -7174,6 +7175,10 @@
       "htmlEntityConverter": {
         "title": "HTML Entity Converter",
         "description": "Encode/decode HTML entities with reference table"
+      },
+      "runningPace": {
+        "title": "Running Pace Calculator",
+        "description": "Convert finish time and pace with 1km and 5km cumulative splits"
       },
       "exerciseCalorie": {
         "title": "Exercise Calorie Calculator",
@@ -24878,6 +24883,66 @@
           }
         ]
       }
+    }
+  },
+  "runningPace": {
+    "title": "Running & Marathon Pace Calculator",
+    "description": "Enter a distance and finish time or pace to calculate your average speed and cumulative splits.",
+    "input": {
+      "title": "Your target",
+      "distance": "Distance",
+      "customDistance": "Custom distance (km, up to 4 decimals)",
+      "mode": "Calculation",
+      "goalTime": "Goal finish time",
+      "targetPace": "Target pace (per km)",
+      "splitInterval": "Split interval"
+    },
+    "distance": {
+      "0": "5 km",
+      "1": "10 km",
+      "2": "Half",
+      "3": "Full",
+      "custom": "Custom"
+    },
+    "mode": {
+      "time": "Time → pace",
+      "pace": "Pace → time"
+    },
+    "unit": {
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "error": {
+      "distance": "Distance must be greater than 0 and at most 500 km, with up to 4 decimal places.",
+      "time": "Finish time must be positive, and minutes and seconds must each be 0–59.",
+      "pace": "Pace must be positive, and seconds must be 0–59."
+    },
+    "result": {
+      "title": "Result",
+      "finish": "Estimated finish",
+      "pace": "Average pace",
+      "speed": "Average speed",
+      "invalid": "Enter a valid distance and finish time or pace."
+    },
+    "splits": {
+      "title": "{interval}km cumulative splits",
+      "distance": "Distance",
+      "elapsed": "Elapsed time",
+      "finish": "Finish"
+    },
+    "action": {
+      "copy": "Copy result",
+      "print": "Print",
+      "copied": "Result copied.",
+      "failed": "Could not copy. Check your browser clipboard permission."
+    },
+    "guide": {
+      "title": "How it works",
+      "formula": "Average pace (seconds/km) = finish time (seconds) ÷ distance (km), and speed (km/h) = 3,600 ÷ pace (seconds/km). To calculate time from pace, multiply distance by pace.",
+      "splits": "Each split is calculated from the unrounded time and distance, rather than from the displayed rounded pace. The final row shows the exact finish distance once.",
+      "note": "This assumes an even pace on a flat course. Actual results vary with the course and conditions.",
+      "exerciseLink": "Estimate calories burned while running →"
     }
   },
   "exerciseCalorie": {

@@ -10,7 +10,7 @@ import { generate, sharedNamespaces, toolNamespaces } from './generate-scoped-me
 const require = createRequire(import.meta.url), ts = require('typescript')
 const root = fileURLToPath(new URL('..', import.meta.url))
 const ko = JSON.parse(readFileSync(resolve(root, 'messages/ko.json'), 'utf8'))
-assert.equal(generate(true), 10, 'both canonical languages match all generated subsets')
+assert.equal(generate(true), 12, 'both canonical languages match all generated subsets')
 const shared = JSON.parse(readFileSync(resolve(root, 'messages/generated/ko/shared.json'), 'utf8'))
 assert.deepEqual(Object.keys(shared), sharedNamespaces)
 for (const locale of ['ko', 'en']) {
@@ -60,7 +60,7 @@ assert.equal(createTranslations(shared)('missing')('title'), 'title')
 
 // Protect the initial dependency graph: migrating a shared component must not
 // silently reintroduce the full catalogue through another static import.
-for (const entry of ['src/app/layout.tsx', 'src/app/page.tsx', 'src/app/loan-calculator/page.tsx', 'src/app/salary-calculator/page.tsx', 'src/app/fuel-calculator/page.tsx']) {
+for (const entry of ['src/app/layout.tsx', 'src/app/page.tsx', 'src/app/loan-calculator/page.tsx', 'src/app/salary-calculator/page.tsx', 'src/app/fuel-calculator/page.tsx', 'src/app/running-pace/page.tsx']) {
   const visited = new Set()
   function visit(file) {
     if (visited.has(file)) return
@@ -81,4 +81,4 @@ for (const entry of ['src/app/layout.tsx', 'src/app/page.tsx', 'src/app/loan-cal
   }
   visit(resolve(root, entry))
 }
-console.log(`check-scoped-translations OK: 10 generated files, complete legacy reconstruction, ${compared} legacy parity cases, missing/interpolation/raw contract, 5 dependency graphs`)
+console.log(`check-scoped-translations OK: 12 generated files, complete legacy reconstruction, ${compared} legacy parity cases, missing/interpolation/raw contract, 6 dependency graphs`)

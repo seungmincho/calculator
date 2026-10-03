@@ -278,6 +278,7 @@ export const menuConfig: MenuConfig = {
       { href: '/alcohol-calculator', labelKey: 'footer.links.alcoholCalculator', descriptionKey: 'toolsShowcase.tools.alcoholCalculator.description', icon: '🍺' },
       { href: '/due-date', labelKey: 'footer.links.dueDateCalculator', descriptionKey: 'toolsShowcase.tools.dueDateCalculator.description', icon: '🤰' },
       { href: '/blood-pressure', labelKey: 'footer.links.bloodPressure', descriptionKey: 'toolsShowcase.tools.bloodPressure.description', icon: '🩺' },
+      { href: '/running-pace', labelKey: 'footer.links.runningPace', descriptionKey: 'toolsShowcase.tools.runningPace.description', icon: '🏃', addedDate: '2026-10-03' },
       { href: '/exercise-calorie', labelKey: 'footer.links.exerciseCalorie', descriptionKey: 'toolsShowcase.tools.exerciseCalorie.description', icon: '🔥' },
       { href: '/breathing-exercise', labelKey: 'footer.links.breathingExercise', descriptionKey: 'toolsShowcase.tools.breathingExercise.description', icon: '🧘' },
       { href: '/blood-sugar', labelKey: 'footer.links.bloodSugar', descriptionKey: 'toolsShowcase.tools.bloodSugar.description', icon: '🩸' },

@@ -7,7 +7,7 @@ import { resolve } from 'node:path'
 export const sharedNamespaces = ['accessibility', 'common', 'dailyTips', 'favorites', 'footer', 'header',
   'homePage', 'mobileNav', 'navigation', 'pushNotification', 'searchDialog', 'toolsShowcase',
   'subcategory', 'shareResult', 'relatedTools', 'analyticsDashboard', 'feedback', 'pdf']
-export const toolNamespaces = ['loan', 'salary', 'fuelCalculator']
+export const toolNamespaces = ['loan', 'salary', 'fuelCalculator', 'runningPace']
 
 export function generate(check = false) {
   let files = 0
