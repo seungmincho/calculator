@@ -100,6 +100,7 @@ export default function DiscountCalculator() {
 
   // Quick rate buttons
   const quickRates = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+  const invalidFinalPrice = mode === 'finalPrice' && finalPrice > originalPrice
 
   // ── Main calculation logic ─────────────────────────────────────────────────
   const result = useMemo(() => {
@@ -347,6 +348,8 @@ export default function DiscountCalculator() {
                   type="number"
                   value={finalPrice}
                   onChange={(e) => setFinalPrice(Math.max(0, Number(e.target.value)))}
+                  aria-invalid={invalidFinalPrice}
+                  aria-describedby={invalidFinalPrice ? 'discount-final-price-error' : undefined}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   min="0"
                 />
@@ -478,8 +481,9 @@ export default function DiscountCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+            {invalidFinalPrice && <p id="discount-final-price-error" role="alert" className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">{t('finalPriceAboveOriginal')}</p>}
             {/* Result Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${invalidFinalPrice ? 'hidden' : ''}`}>
               {/* Original Price */}
               <div className="bg-primary rounded-xl p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
@@ -558,7 +562,7 @@ export default function DiscountCalculator() {
             </div>
 
             {/* ── Savings Summary Bar ────────────────────────────────────────── */}
-            <div className="bg-subtle rounded-xl p-6">
+            <div className={`bg-subtle rounded-xl p-6 ${invalidFinalPrice ? 'hidden' : ''}`}>
               <h3 className="text-sm font-semibold text-body mb-5">
                 {t('savingsSummary')}
               </h3>

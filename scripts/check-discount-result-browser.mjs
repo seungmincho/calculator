@@ -66,6 +66,32 @@ try{
   await boundary.close()
 
   for(const [name,viewport] of [['desktop',{width:1280,height:900}],['mobile',{width:390,height:844}]]){
+    const invalid=await browser.newContext({viewport,serviceWorkers:'block'})
+    const invalidPage=await invalid.newPage(),invalidErrors=[]
+    invalidPage.on('pageerror',e=>invalidErrors.push(e.message))
+    await invalidPage.goto(origin+'/discount-calculator?mode=finalPrice&original=100&final=150',{waitUntil:'domcontentloaded'})
+    const finalInput=invalidPage.locator('input[type="number"]').nth(1)
+    await invalidPage.waitForFunction(()=>document.querySelectorAll('input[type="number"]')[1]?.value==='150')
+    assert.equal(await finalInput.getAttribute('aria-invalid'),'true')
+    await invalidPage.getByRole('alert').getByText(/최종 가격이 원래 가격보다 높습니다/).waitFor()
+    assert.equal(await invalidPage.locator('.bg-primary.rounded-xl.p-6.text-white').first().isVisible(),false)
+    assert.deepEqual(invalidErrors,[])
+    record(`${name}-higher-final-price-is-invalid`)
+    if(name==='desktop'){
+      await finalInput.fill('100')
+      await invalidPage.waitForFunction(()=>document.querySelector('input[aria-invalid="false"]')!==null)
+      await invalidPage.locator('#discount-final-price-error').waitFor({state:'detached'})
+      assert.equal(await invalidPage.locator('#discount-final-price-error').count(),0)
+      assert.equal(await invalidPage.locator('.bg-primary.rounded-xl.p-6.text-white').first().isVisible(),true)
+      await finalInput.fill('80')
+      await invalidPage.waitForFunction(()=>document.querySelectorAll('.bg-primary.rounded-xl.p-6.text-white')[1]?.textContent?.includes('20.0%'))
+      assert.match(await invalidPage.locator('.bg-primary.rounded-xl.p-6.text-white').nth(1).innerText(),/20\.0%/)
+      record('valid-final-price-restores-discount-results')
+    }
+    await invalid.close()
+  }
+
+  for(const [name,viewport] of [['desktop',{width:1280,height:900}],['mobile',{width:390,height:844}]]){
     const denied=await browser.newContext({viewport,serviceWorkers:'block'})
     await denied.addInitScript(()=>{
       Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw Error('denied')}}})

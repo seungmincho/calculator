@@ -12472,6 +12472,7 @@
     "copyFailed": "Could not copy. Check your browser clipboard permission.",
     "savingsSummary": "Discount summary",
     "summaryText": "From {original}, save {savings} with a {rate}% discount and pay {final}.",
+    "finalPriceAboveOriginal": "The final price is above the original price. Enter a final price no greater than the original price to calculate a discount.",
     "copy": "Copy",
     "copied": "Copied!",
     "enterPrice": "Enter price",
