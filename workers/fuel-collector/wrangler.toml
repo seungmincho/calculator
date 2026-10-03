@@ -1,0 +1,11 @@
+name = "toolhub-fuel-collector"
+main = "index.mjs"
+compatibility_date = "2026-10-03"
+workers_dev = false
+
+[vars]
+FUEL_PRICES_URL = "https://toolhub.ai.kr/api/fuel-prices?sido=all"
+
+[triggers]
+# Enable "0 1 * * *" only after secrets and an actual stored result are verified.
+crons = []
