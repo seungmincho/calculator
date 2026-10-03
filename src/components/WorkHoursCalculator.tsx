@@ -120,7 +120,10 @@ export default function WorkHoursCalculator() {
   })
   const [periodStartTime, setPeriodStartTime] = useState(() => searchParams.get('st') || '09:00')
   const [periodEndTime, setPeriodEndTime] = useState(() => searchParams.get('et') || '18:00')
-  const [periodBreakTime, setPeriodBreakTime] = useState(() => parseInt(searchParams.get('break') || '') || 60)
+  const [periodBreakTime, setPeriodBreakTime] = useState(() => {
+    const minutes = Number.parseInt(searchParams.get('break') ?? '', 10)
+    return Number.isFinite(minutes) && minutes >= 0 && minutes <= 1440 ? minutes : 60
+  })
 
   // 날짜별 입력 모드
   const [dailyWork, setDailyWork] = useState<DayWork[]>([
