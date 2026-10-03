@@ -137,7 +137,6 @@ export default function WorkHoursCalculator() {
   const [convWage, setConvWage] = useState(() => searchParams.get('cwage') || String(MIN_WAGE_2026))
   const [convWeeklyHours, setConvWeeklyHours] = useState(() => searchParams.get('chours') || '40')
   const [convDaysPerWeek, setConvDaysPerWeek] = useState(() => searchParams.get('cdays') || '5')
-  const [convResult, setConvResult] = useState<ConversionResult | null>(null)
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('workHours')
 
@@ -164,11 +163,11 @@ export default function WorkHoursCalculator() {
   useEffect(() => { if (result) setShowSaveButton(true) }, [result])
 
   // ─── 시급 환산 ─────────────────────────────────────────
-  useEffect(() => {
+  const convResult = useMemo<ConversionResult | null>(() => {
     const wage = parseFloat(convWage)
     const wh = parseFloat(convWeeklyHours)
     const days = parseFloat(convDaysPerWeek)
-    if (!wage || wage <= 0 || !wh || wh <= 0 || !days || days <= 0) return
+    if (![wage, wh, days].every(Number.isFinite) || wage <= 0 || wh <= 0 || days <= 0) return null
 
     const hpd = wh / days
     const daily = hpd * wage
@@ -191,10 +190,10 @@ export default function WorkHoursCalculator() {
     const ei = base * INSURANCE_RATES.employmentInsurance
     const total = np + hi + lt + ei
 
-    setConvResult({ daily, weekly, weeklyWithHoliday, monthly, monthlyWithHoliday,
+    return { daily, weekly, weeklyWithHoliday, monthly, monthlyWithHoliday,
       yearly, yearlyWithHoliday, weeklyHolidayPay, isEligibleWeeklyHoliday: isEligible,
       deductions: { nationalPension: np, healthInsurance: hi, longTermCare: lt, employmentInsurance: ei, total },
-      netMonthly: base - total })
+      netMonthly: base - total }
   }, [convWage, convWeeklyHours, convDaysPerWeek])
 
   // ─── URL 상태 동기화 ─────────────────────────────────────
