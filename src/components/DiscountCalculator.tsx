@@ -2,9 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { Tag, Copy, Check, RotateCcw, Plus, BookOpen, Percent, X, Link } from 'lucide-react'
+import { Tag, Copy, Check, RotateCcw, Plus, Percent, X, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CalculationMode = 'discountRate' | 'finalPrice' | 'discountAmount'
@@ -16,37 +14,14 @@ interface MultiDiscount {
 
 export default function DiscountCalculator() {
   const t = useTranslations('discountCalculator')
-  const router = useRouter()
-  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
-
-  // ── Initialise from URL params (first render) ──────────────────────────────
-  const initMode = (): CalculationMode => {
-    const m = searchParams.get('mode')
-    if (m === 'finalPrice' || m === 'discountAmount') return m
-    return 'discountRate'
-  }
-
-  // Calculation mode
-  const [mode, setMode] = useState<CalculationMode>(initMode)
-
-  // Input states — seeded from URL if present
-  const [originalPrice, setOriginalPrice] = useState<number>(() => {
-    const v = searchParams.get('original')
-    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 100000
-  })
-  const [discountRate, setDiscountRate] = useState<number>(() => {
-    const v = searchParams.get('rate')
-    return v !== null && !isNaN(Number(v)) ? Math.min(100, Math.max(0, Number(v))) : 20
-  })
-  const [discountAmount, setDiscountAmount] = useState<number>(() => {
-    const v = searchParams.get('amount')
-    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 20000
-  })
-  const [finalPrice, setFinalPrice] = useState<number>(() => {
-    const v = searchParams.get('final')
-    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 80000
-  })
+  const [copyError, setCopyError] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [mode, setMode] = useState<CalculationMode>('discountRate')
+  const [originalPrice, setOriginalPrice] = useState(100000)
+  const [discountRate, setDiscountRate] = useState(20)
+  const [discountAmount, setDiscountAmount] = useState(20000)
+  const [finalPrice, setFinalPrice] = useState(80000)
 
   // Multi discount states
   const [multiDiscounts, setMultiDiscounts] = useState<MultiDiscount[]>([
@@ -55,37 +30,68 @@ export default function DiscountCalculator() {
   ])
 
   // ── Sync main params to URL whenever they change ───────────────────────────
+  // Read a shared link after hydration so the first client render matches the static page.
   useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      const params = new URLSearchParams(window.location.search)
+      const requestedMode = params.get('mode')
+      if (requestedMode === 'finalPrice' || requestedMode === 'discountAmount') setMode(requestedMode)
+      const number = (name: string, fallback: number, max = Number.MAX_SAFE_INTEGER) => {
+        const raw = params.get(name)
+        if (raw === null || raw.trim() === '') return fallback
+        const value = Number(raw)
+        return Number.isFinite(value) ? Math.min(max, Math.max(0, value)) : fallback
+      }
+      setOriginalPrice(number('original', 100000))
+      setDiscountRate(number('rate', 20, 100))
+      setDiscountAmount(number('amount', 20000))
+      setFinalPrice(number('final', 80000))
+      setReady(true)
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  // Update the share URL without navigating or resetting the calculator.
+  useEffect(() => {
+    if (!ready) return
     const params = new URLSearchParams()
     params.set('mode', mode)
     params.set('original', String(originalPrice))
     params.set('rate', String(discountRate))
     params.set('amount', String(discountAmount))
     params.set('final', String(finalPrice))
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }, [mode, originalPrice, discountRate, discountAmount, finalPrice, router])
+    window.history.replaceState(null, '', window.location.pathname + '?' + params.toString())
+  }, [ready, mode, originalPrice, discountRate, discountAmount, finalPrice])
 
   // ── Copy helpers ───────────────────────────────────────────────────────────
   const copyToClipboard = useCallback(async (text: string, id: string) => {
+    const copyWithSelection = () => {
+      const textarea = document.createElement('textarea')
+      textarea.value = text
+      textarea.style.position = 'fixed'
+      textarea.style.left = '-999999px'
+      document.body.appendChild(textarea)
+      try {
+        textarea.select()
+        return document.execCommand('copy')
+      } finally {
+        textarea.remove()
+      }
+    }
+    let succeeded = false
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text)
+        succeeded = true
       } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
+        succeeded = copyWithSelection()
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
     } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
+      try { succeeded = copyWithSelection() } catch { /* Clipboard permission denied. */ }
     }
+    setCopiedId(succeeded ? id : null)
+    setCopyError(!succeeded)
+    if (succeeded) setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
   const copyLink = useCallback(() => {
@@ -97,7 +103,7 @@ export default function DiscountCalculator() {
 
   // ── Main calculation logic ─────────────────────────────────────────────────
   const result = useMemo(() => {
-    let calculatedOriginal = originalPrice
+    const calculatedOriginal = originalPrice
     let calculatedDiscount = discountRate
     let calculatedSavings = 0
     let calculatedFinal = 0
@@ -117,7 +123,7 @@ export default function DiscountCalculator() {
       }
     } else if (mode === 'discountAmount') {
       if (discountAmount >= calculatedOriginal) {
-        calculatedDiscount = 100
+        calculatedDiscount = calculatedOriginal > 0 ? 100 : 0
         calculatedSavings = calculatedOriginal
         calculatedFinal = 0
       } else {
@@ -148,7 +154,7 @@ export default function DiscountCalculator() {
     })
 
     const totalSavings = originalPrice - current
-    const effectiveRate = (totalSavings / originalPrice) * 100
+    const effectiveRate = originalPrice > 0 ? (totalSavings / originalPrice) * 100 : 0
 
     return {
       finalPrice: current,
@@ -216,6 +222,7 @@ export default function DiscountCalculator() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
+      {copyError && <p role="alert" className="fixed bottom-4 right-4 z-50 max-w-sm rounded-xl bg-red-700 px-4 py-3 text-sm text-white shadow-lg">{t('copyFailed')}</p>}
 
       {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
