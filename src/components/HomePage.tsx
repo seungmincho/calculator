@@ -87,7 +87,7 @@ export default function HomePage() {
   const ToolRow = ({ item }: { item: MenuItem }) => {
     const isFav = favorites.includes(item.href)
     return (
-      <Link
+      <Link prefetch={false}
         href={item.href}
         className="group relative flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors"
       >
@@ -143,7 +143,7 @@ export default function HomePage() {
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-sm">
           {popular.map(tool => (
-            <Link key={tool.href} href={tool.href} className="text-sub hover:text-primary transition-colors">
+            <Link prefetch={false} key={tool.href} href={tool.href} className="text-sub hover:text-primary transition-colors">
               {t(tool.labelKey)}
             </Link>
           ))}
@@ -165,7 +165,7 @@ export default function HomePage() {
           <ol className="ui-card divide-y divide-line overflow-hidden">
             {(isPopularLoading ? fallbackPopular : popular).map((tool, i) => (
               <li key={tool.href}>
-                <Link href={tool.href} className="flex items-center gap-4 px-4 py-3.5 hover:bg-subtle transition-colors">
+                <Link prefetch={false} href={tool.href} className="flex items-center gap-4 px-4 py-3.5 hover:bg-subtle transition-colors">
                   <span className={`w-5 text-center text-[15px] font-bold tabular-nums ${i < 3 ? 'text-primary' : 'text-faint'}`}>{i + 1}</span>
                   <ToolIcon href={tool.href} size="sm" />
                   <span className="flex-1 min-w-0">
@@ -232,7 +232,7 @@ export default function HomePage() {
                       <ToolIcon category={catKey} size="sm" />
                       {t(menuConfig[catKey].titleKey)}
                     </h3>
-                    <Link href={categoryHubs[catKey]} className="flex items-center text-sm font-medium text-muted hover:text-primary">
+                    <Link prefetch={false} href={categoryHubs[catKey]} className="flex items-center text-sm font-medium text-muted hover:text-primary">
                       {t('homePage.allTools.viewAll')} {items.length}
                       <ChevronRight className="w-4 h-4" />
                     </Link>
@@ -267,11 +267,11 @@ export default function HomePage() {
             {categoryKeys.map(catKey => (
               <div key={catKey}>
                 <h3 className="text-sm font-semibold text-fg mb-2">
-                  <Link href={categoryHubs[catKey]} className="hover:text-primary">{t(menuConfig[catKey].titleKey)}</Link>
+                  <Link prefetch={false} href={categoryHubs[catKey]} className="hover:text-primary">{t(menuConfig[catKey].titleKey)}</Link>
                 </h3>
                 <ul className="space-y-1 text-[13px] text-muted [&_a:hover]:text-primary">
                   {menuConfig[catKey].items.map(item => (
-                    <li key={item.href}><Link href={item.href}>{t(item.labelKey)}</Link></li>
+                    <li key={item.href}><Link prefetch={false} href={item.href}>{t(item.labelKey)}</Link></li>
                   ))}
                 </ul>
               </div>

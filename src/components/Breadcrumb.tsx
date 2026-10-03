@@ -67,7 +67,7 @@ export default function Breadcrumb() {
       >
         <ol className="flex items-center gap-1 text-sm text-muted flex-wrap">
           <li>
-            <Link
+            <Link prefetch={false}
               href="/"
               className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
@@ -79,7 +79,7 @@ export default function Breadcrumb() {
             <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />
           </li>
           <li>
-            <Link
+            <Link prefetch={false}
               href={categoryHubs[categoryKey]}
               className="text-faint hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >

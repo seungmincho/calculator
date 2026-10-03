@@ -177,7 +177,7 @@ const Header = () => {
     <header ref={headerRef} className="bg-surface border-b border-line sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-14 gap-6">
-          <Link href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
+          <Link prefetch={false} href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
             <BrandMark />
             <span className="text-[17px] font-bold tracking-tight text-fg">{t('header.title')}</span>
           </Link>
@@ -206,7 +206,7 @@ const Header = () => {
                         </div>
                         <div className="space-y-0.5">
                           {getRecentOrDefaultItems(key).map((item) => item && (
-                            <Link
+                            <Link prefetch={false}
                               key={item.href}
                               href={item.href}
                               onClick={() => handleToolClick(key, item.href)}
@@ -222,14 +222,14 @@ const Header = () => {
                       <div className="flex-1 p-3 min-w-0">
                         <div className="flex items-center justify-between px-2 pb-2">
                           <span className="text-xs font-semibold text-muted">{t('header.all')} {menuItems[key].items.length}</span>
-                          <Link href={categoryHubs[key]} onClick={closeDropdown} className="text-xs font-medium text-primary hover:underline">
+                          <Link prefetch={false} href={categoryHubs[key]} onClick={closeDropdown} className="text-xs font-medium text-primary hover:underline">
                             {t('homePage.allTools.viewAll')}
                           </Link>
                         </div>
                         <div className="max-h-[360px] overflow-y-auto pr-1 glass-scrollbar">
                           <div className="grid grid-cols-2 gap-x-1">
                             {menuItems[key].items.map((item) => (
-                              <Link
+                              <Link prefetch={false}
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => handleToolClick(key, item.href)}
@@ -248,10 +248,10 @@ const Header = () => {
               </div>
             ))}
 
-            <Link href="/algorithm" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
+            <Link prefetch={false} href="/algorithm" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
               {t('navigation.algorithm')}
             </Link>
-            <Link href="/tips" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
+            <Link prefetch={false} href="/tips" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
               {t('navigation.financialTips')}
             </Link>
           </nav>
@@ -330,7 +330,7 @@ const Header = () => {
                     return <div className="text-center py-6 text-muted text-sm">{t('searchDialog.noResults')}</div>
                   }
                   return results.slice(0, 15).map((item) => (
-                    <Link
+                    <Link prefetch={false}
                       key={item.href}
                       href={item.href}
                       onClick={() => { setIsMobileMenuOpen(false); setMobileSearchQuery('') }}
@@ -366,7 +366,7 @@ const Header = () => {
                   {expandedMobileCategory === key && (
                     <div className="pb-2 pl-11 grid grid-cols-1">
                       {menuItems[key].items.map((item) => (
-                        <Link
+                        <Link prefetch={false}
                           key={item.href}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
@@ -380,10 +380,10 @@ const Header = () => {
                 </div>
               ))}
               <div className="border-t border-line mt-2 pt-2">
-                <Link href="/algorithm" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
+                <Link prefetch={false} href="/algorithm" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
                   {t('navigation.algorithm')}
                 </Link>
-                <Link href="/tips" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
+                <Link prefetch={false} href="/tips" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
                   {t('navigation.financialTips')}
                 </Link>
               </div>
