@@ -2,6 +2,7 @@
 // 지원 쿼리:
 //   /api/fuel-prices                    → 전국 평균 (실시간, 2시간 캐시)
 //   /api/fuel-prices?sido=01            → 시도별 실시간 유가
+//   /api/fuel-prices?sido=all           → 전체 시도의 실시간 유가 (수집 접근 검증)
 //   /api/fuel-prices?date=2026-03-20    → 과거 날짜 유가 (Supabase)
 //   /api/fuel-prices?date=2026-03-20&sido=01 → 과거 날짜 + 특정 지역
 
@@ -13,7 +14,8 @@ interface Env {
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const url = new URL(context.request.url)
-  const sido = url.searchParams.get('sido')     // 시도코드 (01~19)
+  const allRegions = url.searchParams.get('sido') === 'all'
+  const sido = allRegions ? null : url.searchParams.get('sido') // 시도코드
   const date = url.searchParams.get('date')     // YYYY-MM-DD (과거 날짜)
   const headers = {
     'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   // 캐시 키: 지역별로 분리
-  const cacheId = sido ? `opinet-fuel-${sido}` : 'opinet-fuel-all'
+  const cacheId = allRegions ? 'opinet-fuel-regions-all' : sido ? `opinet-fuel-${sido}` : 'opinet-fuel-all'
   const cacheKey = new Request(`https://cache.internal/${cacheId}`, { method: 'GET' })
   const cache = caches.default
 
@@ -87,8 +89,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   try {
     // sido 파라미터가 있으면 시도별 API, 없으면 전국 평균 API
-    const apiUrl = sido
-      ? `https://www.opinet.co.kr/api/avgSidoPrice.do?out=json&code=${OPINET_KEY}&sido=${sido}`
+    const apiUrl = sido || allRegions
+      ? `https://www.opinet.co.kr/api/avgSidoPrice.do?out=json&code=${OPINET_KEY}${sido ? `&sido=${encodeURIComponent(sido)}` : ''}`
       : `https://www.opinet.co.kr/api/avgAllPrice.do?out=json&code=${OPINET_KEY}`
 
     const upstream = await fetch(apiUrl, {

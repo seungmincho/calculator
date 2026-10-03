@@ -1,16 +1,12 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
+// Next.js 16 exports native flat configs, including generated-output ignores.
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...nextVitals,
+  ...nextTypescript,
+  // Tool metadata can contain independent worktrees and generated bundles.
+  { ignores: [".claude/**", ".agents/**", ".omx/**", ".codex/**", ".wrangler/**"] },
 ];
 
 export default eslintConfig;

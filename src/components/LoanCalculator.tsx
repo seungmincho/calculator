@@ -10,6 +10,7 @@ import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
 import { schedule, type Method } from '@/utils/loanSchedule'
 import { maxPrincipal, annualRepay } from '@/utils/loanQuick'
+import { LEGACY_TYPE, saveLoanHistory, restoreLoanHistory } from '@/utils/loanHistory'
 
 type QMethod = Exclude<Method, 'graduated'>
 const METHODS: QMethod[] = ['equalPayment', 'equalPrincipal', 'bullet']
@@ -24,11 +25,6 @@ type State = typeof DEFAULTS
 const NUM_KEYS = ['am', 'pay', 'r', 't', 'gr', 'inc', 'ex'] as const
 
 // 예전 링크(amount=원, rate, term=년, types=equal-payment,...) 호환
-const LEGACY_TYPE: Record<string, Partial<State>> = {
-  'equal-payment': { m: 'equalPayment' }, 'equal-principal': { m: 'equalPrincipal' },
-  'interest-only': { m: 'bullet' }, balloon: { m: 'equalPayment', gr: 24 },
-}
-
 function decode(sp: URLSearchParams): State {
   let s = { ...DEFAULTS }
   const num = (k: string) => { const v = sp.get(k); const n = v === null || v === '' ? NaN : Number(v.replace(/,/g, '')); return Number.isFinite(n) ? Math.max(0, n) : undefined }
@@ -90,14 +86,13 @@ export default function LoanCalculator() {
     : null, [termOk, s.mode, s.pay, s.r, months, s.gr])
   const principal = revMax ? revMax[s.m] : Math.round(s.am * 1e4)
   const valid = termOk && principal > 0 && Number.isFinite(principal)
-  const base = { principal, rate: s.r, months, grace: s.gr }
-  const byMethod = useMemo(() => valid ? METHODS.map((m) => ({ m, r: schedule({ ...base, method: m }) })) : [],
-    [valid, principal, s.r, months, s.gr]) // eslint-disable-line react-hooks/exhaustive-deps
+  const byMethod = useMemo(() => valid ? METHODS.map((m) => ({ m, r: schedule({ principal, rate: s.r, months, grace: s.gr, method: m }) })) : [],
+    [valid, principal, s.r, months, s.gr])
   const res = byMethod.find((x) => x.m === s.m)?.r ?? null
   const cheapest = byMethod.length ? byMethod.reduce((a, b) => (b.r.totalInterest < a.r.totalInterest ? b : a)).m : null
   const rateRows = useMemo(() => valid
-    ? RATE_DELTAS.filter((d) => s.r + d >= 0).map((d) => ({ d, r: schedule({ ...base, rate: s.r + d, method: s.m }) }))
-    : [], [valid, principal, s.r, months, s.gr, s.m]) // eslint-disable-line react-hooks/exhaustive-deps
+    ? RATE_DELTAS.filter((d) => s.r + d >= 0).map((d) => ({ d, r: schedule({ principal, rate: s.r + d, months, grace: s.gr, method: s.m }) }))
+    : [], [valid, principal, s.r, months, s.gr, s.m])
   const rateCur = rateRows.find((x) => x.d === 0)?.r
   const ratePlus1 = rateRows.find((x) => x.d === 1)?.r
 
@@ -127,7 +122,7 @@ export default function LoanCalculator() {
   const handleSave = () => {
     if (!res) return
     const ok = saveCalculation(
-      { loanAmount: String(principal), interestRate: String(s.r), loanTerm: String(s.t), method: s.m, grace: s.gr, mode: s.mode, pay: s.pay },
+      saveLoanHistory(s, principal),
       { results: [{ monthlyPayment: res.firstPayment, totalPayment: res.totalPayment }] },
     )
     if (ok) { setSaved(true); setTimeout(() => setSaved(false), 2000) }
@@ -135,16 +130,7 @@ export default function LoanCalculator() {
   const handleLoad = (id: string) => {
     const inp = loadFromHistory(id) as Record<string, unknown> | null
     if (!inp) return
-    const n = (v: unknown) => { const x = Number(String(v ?? '').replace(/,/g, '')); return Number.isFinite(x) && x > 0 ? x : undefined }
-    const legacy = Array.isArray(inp.selectedTypes) ? LEGACY_TYPE[String(inp.selectedTypes[0])] : undefined
-    setS((p) => ({
-      ...p, ...legacy,
-      mode: inp.mode === 'rev' ? 'rev' : 'calc',
-      am: (n(inp.loanAmount) ?? p.am * 1e4) / 1e4, r: n(inp.interestRate) ?? p.r, t: n(inp.loanTerm) ?? p.t,
-      pay: n(inp.pay) ?? p.pay,
-      ...((METHODS as unknown[]).includes(inp.method) ? { m: inp.method as QMethod } : {}),
-      ...(typeof inp.grace === 'number' ? { gr: inp.grace } : {}),
-    }))
+    setS((p) => restoreLoanHistory(inp, p))
   }
   const formatHistory = (result: Record<string, unknown>) => {
     const r = (Array.isArray(result.results) ? result.results[0] : null) as Record<string, unknown> | null

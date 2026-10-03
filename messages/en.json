@@ -6246,7 +6246,8 @@
       "manual": "Manually entered price",
       "default": "Default (estimate) — live prices unavailable",
       "edit": "Edit",
-      "noData": "No price data for the selected date; keeping current prices."
+      "noData": "No price data for the selected date; keeping current prices.",
+      "fallback": "No data for {requestedDate}; calculations use prices from {actualDate}. Check the settlement date or enter prices manually."
     },
     "settlement": {
       "copy": "Copy statement",

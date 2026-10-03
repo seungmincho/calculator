@@ -31,6 +31,7 @@ import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
 import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSection'
+import { fuelPriceFallback } from '@/utils/fuelPriceFallback'
 
 type FuelType = 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
 
@@ -184,6 +185,7 @@ const FuelCalculator = () => {
   const [priceSource, setPriceSource] = useState<'default' | 'manual' | 'opinet'>('default')
   const [priceDate, setPriceDate] = useState<string>('') // 적용 유가의 기준일 (YYYY-MM-DD)
   const [priceNoData, setPriceNoData] = useState(false) // 요청한 날짜 데이터 없음 → 기존 가격 유지
+  const [priceFallback, setPriceFallback] = useState<ReturnType<typeof fuelPriceFallback>>(null)
   const [priceLoading, setPriceLoading] = useState(false)
   const [selectedSido, setSelectedSido] = useState<string>('')
   const [selectedDate, setSelectedDate] = useState<string>('') // YYYY-MM-DD, 빈 값이면 실시간
@@ -254,6 +256,7 @@ const FuelCalculator = () => {
   const fetchOpinetPrices = useCallback(async (sido?: string, date?: string) => {
     setPriceLoading(true)
     setPriceNoData(false)
+    setPriceFallback(null)
     const apply = (p: Partial<Record<FuelType, number>>, basis: string) => {
       setFuelPrices(prev => ({
         gasoline: p.gasoline || prev.gasoline,
@@ -262,6 +265,7 @@ const FuelCalculator = () => {
         lpg: p.lpg || prev.lpg,
       }))
       setPriceDate(basis)
+      setPriceFallback(fuelPriceFallback(date, basis))
       setPriceSource('opinet')
     }
     try {
@@ -397,6 +401,7 @@ const FuelCalculator = () => {
   const savePrices = useCallback(() => {
     setFuelPrices(tempPrices)
     setPriceSource('manual')
+    setPriceFallback(null)
     setPriceNoData(false)
     setIsEditingPrices(false)
   }, [tempPrices])
@@ -1017,6 +1022,11 @@ const FuelCalculator = () => {
                   {priceNoData && (
                     <p className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
                       {t('priceSource.noData')}
+                    </p>
+                  )}
+                  {priceSource === 'opinet' && priceFallback && (
+                    <p role="status" className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                      {t('priceSource.fallback', priceFallback)}
                     </p>
                   )}
                 </div>
