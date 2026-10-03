@@ -2242,6 +2242,18 @@
     "heroTarget": "Within {kb}: {ok} of {n}",
     "download": "Download",
     "downloadZip": "Download {n} as ZIP",
+    "passport": {
+      "note": "Sets 413×531 px JPG, up to 500 KB. Check the photo content and background separately. Acceptance is not guaranteed.",
+      "officialGuide": "Official passport photo rules",
+      "cropTitle": "Crop position for this photo",
+      "cropHint": "Move the crop horizontally or vertically. The preview and download update for each photo. This does not retouch the face or body.",
+      "cropX": "Horizontal position (left to right)",
+      "cropY": "Vertical position (top to bottom)",
+      "smallSource": "The source is smaller than the output and will be enlarged. Check image quality.",
+      "fileReady": "The file meets the selected size limit. Check the photo content and acceptance rules separately.",
+      "fileTooLarge": "Over 500 KB. This file does not meet the passport upload size limit.",
+      "targetMissed": "{n} image(s) exceed 500 KB. Check each file before download."
+    },
     "targetMissed": "{n} image(s) couldn't get under the size limit. Try a smaller size or JPG/WebP.",
     "previewTitle": "Result preview",
     "resultAlt": "Resized {name}",

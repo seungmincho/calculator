@@ -56,6 +56,18 @@ eq(drawPlan(4000, 2000, 1000, 1000, 'cover'), { sx: 1000, sy: 0, sw: 2000, sh: 2
 const idp = drawPlan(4000, 3000, 354, 472, 'cover')
 eq(Math.abs(idp.sw / idp.sh - 354 / 472) < 1e-9 && idp.sh === 3000, true, '증명사진 채우기 비율·세로 전체')
 eq(idp.sx, (4000 - idp.sw) / 2, '증명사진 가로 가운데')
+const wideLeft = drawPlan(1200, 600, 413, 531, 'cover', 0, 50)
+const wideRight = drawPlan(1200, 600, 413, 531, 'cover', 100, 50)
+eq(wideLeft.sx, 0, '여권 가로 왼쪽 크롭')
+eq(wideRight.sx + wideRight.sw, 1200, '여권 가로 오른쪽 크롭')
+eq(wideLeft.sy, 0, '가로 사진의 세로 빈 영역 없음')
+const tallTop = drawPlan(600, 1200, 413, 531, 'cover', 50, 0)
+const tallBottom = drawPlan(600, 1200, 413, 531, 'cover', 50, 100)
+eq(tallTop.sy, 0, '여권 세로 위쪽 크롭')
+eq(tallBottom.sy + tallBottom.sh, 1200, '여권 세로 아래쪽 크롭')
+eq(drawPlan(1200, 600, 413, 531, 'cover', -10, 50).sx, 0, '크롭 좌표 하한')
+eq(drawPlan(1200, 600, 413, 531, 'cover', 110, 50).sx, wideRight.sx, '크롭 좌표 상한')
+eq(drawPlan(1200, 600, 413, 531, 'cover', NaN, 50).sx, (1200 - wideLeft.sw) / 2, '잘못된 크롭 좌표는 중앙')
 
 // 단계적 축소
 eq(downscaleSteps(4000, 3000, 800, 600), [{ w: 2000, h: 1500 }, { w: 1000, h: 750 }], '절반씩 2단계')

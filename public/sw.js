@@ -1,7 +1,7 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v4.31.7'
-const STATIC_CACHE_NAME = 'toolhub-static-v4.31.7'
-const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.31.7'
+const CACHE_NAME = 'toolhub-v4.31.8'
+const STATIC_CACHE_NAME = 'toolhub-static-v4.31.8'
+const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.31.8'
 
 // Files to cache immediately (trailing slashes match trailingSlash:true in next.config)
 const STATIC_FILES = [

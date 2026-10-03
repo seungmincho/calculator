@@ -14,6 +14,8 @@ export interface SizeOptions {
   percent: number
   longSide: number
   fit: Fit
+  cropX?: number // cover: 0 = left, 50 = center, 100 = right
+  cropY?: number // cover: 0 = top, 50 = center, 100 = bottom
 }
 
 export const MAX_SIDE = 10000 // 브라우저 캔버스 한계(사파리 면적 제한 포함) 안쪽
@@ -46,7 +48,7 @@ export interface DrawPlan { sx: number; sy: number; sw: number; sh: number; dx: 
 export interface Resolved { width: number; height: number; plan: DrawPlan }
 
 /** 원본 영역(sx..)을 출력 캔버스(dx..)의 어디에 그릴지. contain = 여백, cover = 가운데 자르기 */
-export function drawPlan(srcW: number, srcH: number, outW: number, outH: number, fit: Fit): DrawPlan {
+export function drawPlan(srcW: number, srcH: number, outW: number, outH: number, fit: Fit, cropX = 50, cropY = 50): DrawPlan {
   if (fit === 'contain') {
     const s = Math.min(outW / srcW, outH / srcH)
     const dw = Math.max(1, Math.round(srcW * s)), dh = Math.max(1, Math.round(srcH * s))
@@ -55,7 +57,8 @@ export function drawPlan(srcW: number, srcH: number, outW: number, outH: number,
   if (fit === 'cover') {
     const s = Math.max(outW / srcW, outH / srcH)
     const sw = Math.min(srcW, outW / s), sh = Math.min(srcH, outH / s)
-    return { sx: (srcW - sw) / 2, sy: (srcH - sh) / 2, sw, sh, dx: 0, dy: 0, dw: outW, dh: outH }
+    const position = (value: number) => Math.min(1, Math.max(0, (Number.isFinite(value) ? value : 50) / 100))
+    return { sx: (srcW - sw) * position(cropX), sy: (srcH - sh) * position(cropY), sw, sh, dx: 0, dy: 0, dw: outW, dh: outH }
   }
   return { sx: 0, sy: 0, sw: srcW, sh: srcH, dx: 0, dy: 0, dw: outW, dh: outH }
 }
@@ -83,7 +86,7 @@ export function resolveSize(srcW: number, srcH: number, o: SizeOptions, scale = 
   const over = Math.max(w, h) / MAX_SIDE
   if (over > 1) { w /= over; h /= over }
   w = Math.max(1, Math.round(w * scale)); h = Math.max(1, Math.round(h * scale))
-  return { width: w, height: h, plan: drawPlan(srcW, srcH, w, h, fit) }
+  return { width: w, height: h, plan: drawPlan(srcW, srcH, w, h, fit, o.cropX, o.cropY) }
 }
 
 /** 단계적 축소: 원본 → 목표가 2배 이상 차이 나면 절반씩 줄인 중간 크기들 (계단 현상·모아레 방지) */

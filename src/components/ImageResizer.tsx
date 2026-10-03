@@ -22,6 +22,8 @@ interface Item {
   key?: string // 어떤 설정으로 처리됐는지 — 설정이 바뀌면 다시 처리
   out?: ResizeOutput & { url: string }
   error?: ErrCode
+  cropX?: number
+  cropY?: number
 }
 
 const MODES: SizeMode[] = ['px', 'pct', 'long']
@@ -84,6 +86,7 @@ export default function ImageResizer() {
   const [zipping, setZipping] = useState(false)
   const [skipped, setSkipped] = useState(0)
   const [selId, setSelId] = useState<string | null>(null)
+  const [cropRevision, setCropRevision] = useState(0)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imagesRef = useRef<Item[]>([])
@@ -95,6 +98,8 @@ export default function ImageResizer() {
   const ls = Math.max(16, longSide || 0)
   const fixed = isFixedSize({ mode, width, height, lock, percent: pct, longSide: ls, fit })
   const key = [mode, width, height, lock, pct, ls, fit, format, quality, kb, bg].join('|')
+  const passportActive = fixed && width === 413 && height === 531 && fit === 'cover' && format === 'jpeg' && kb === 500
+  const itemKey = (item: Item) => `${key}|${passportActive ? item.cropX ?? 50 : 50}|${passportActive ? item.cropY ?? 50 : 50}`
 
   useEffect(() => { imagesRef.current = images }, [images])
 
@@ -148,6 +153,10 @@ export default function ImageResizer() {
 
   const patch = (id: string, p: Partial<Item>) =>
     setImages((prev) => prev.map((i) => (i.id === id ? { ...i, ...p } : i)))
+  const updateCrop = (id: string, axis: 'cropX' | 'cropY', value: number) => {
+    setImages((prev) => prev.map((item) => item.id === id ? { ...item, [axis]: value } : item))
+    setCropRevision((revision) => revision + 1)
+  }
 
   // ── 자동 처리: 설정 변경/파일 추가 시 한 장씩 순차 처리 (메모리·UI 반응성) ──
   // ponytail: 설정이 바뀔 때마다 원본을 다시 디코드. 수십 장 × 고해상도면 느림 → 그때 ImageBitmap 캐시
@@ -155,7 +164,7 @@ export default function ImageResizer() {
     const gen = ++runGen.current
     const opts = { mode, width, height, lock, percent: pct, longSide: ls, fit, format, quality, targetKB: kb, bg }
     const timer = setTimeout(async () => {
-      const todo = imagesRef.current.filter((i) => i.key !== key || i.status === 'pending' || i.status === 'processing')
+      const todo = imagesRef.current.filter((i) => i.key !== itemKey(i) || i.status === 'pending' || i.status === 'processing')
       if (!todo.length) { setBusy(false); return }
       setBusy(true)
       for (const it of todo) {
@@ -164,14 +173,14 @@ export default function ImageResizer() {
         patch(it.id, { status: 'processing' })
         let next: Partial<Item>
         try {
-          const out = await resizeFile(it.file, opts)
+          const out = await resizeFile(it.file, { ...opts, cropX: passportActive ? it.cropX ?? 50 : 50, cropY: passportActive ? it.cropY ?? 50 : 50 })
           if (runGen.current !== gen) return
           if (!imagesRef.current.some((i) => i.id === it.id)) continue
-          next = { status: 'done', key, out: { ...out, url: URL.createObjectURL(out.blob) }, error: undefined }
+          next = { status: 'done', key: itemKey(it), out: { ...out, url: URL.createObjectURL(out.blob) }, error: undefined }
         } catch (e) {
           if (runGen.current !== gen) return
           const msg = e instanceof Error ? e.message : ''
-          next = { status: 'error', key, out: undefined, error: msg === 'format' ? 'format' : isHeic(it.file) ? 'heic' : 'decode' }
+          next = { status: 'error', key: itemKey(it), out: undefined, error: msg === 'format' ? 'format' : isHeic(it.file) ? 'heic' : 'decode' }
         }
         const old = imagesRef.current.find((i) => i.id === it.id)?.out?.url
         if (old) URL.revokeObjectURL(old)
@@ -182,7 +191,7 @@ export default function ImageResizer() {
     return () => clearTimeout(timer)
     // key가 모든 설정을 담고 있음
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, images.length])
+  }, [key, images.length, cropRevision])
 
   // 언마운트 시 진행 중단 + object URL 해제
   useEffect(() => () => {
@@ -216,7 +225,7 @@ export default function ImageResizer() {
   }
   const nameOf = (i: Item) => outputName(i.file.name, i.out!.mime, `_${i.out!.width}x${i.out!.height}`)
 
-  const done = images.filter((i) => i.status === 'done' && i.key === key && i.out)
+  const done = images.filter((i) => i.status === 'done' && i.key === itemKey(i) && i.out)
 
   const downloadZip = async () => {
     if (!done.length) return
@@ -251,7 +260,13 @@ export default function ImageResizer() {
     setMode('px'); setWidth(w); setHeight(h); setLock(false)
     if (fit === 'stretch') setFit('cover')
   }
-  const presetActive = (p: Preset) => mode === 'px' && !lock && width === p.width && height === p.height
+  const applyPreset = (p: Preset) => {
+    applyBox(p.width, p.height)
+    if (p.id === 'passport') { setFit('cover'); setFormat('jpeg'); setTargetKB(500) }
+  }
+  const presetActive = (p: Preset) => p.id === 'passport'
+    ? passportActive
+    : mode === 'px' && !lock && width === p.width && height === p.height
   const cmPx = {
     w: cmToPx(Number(cm.w) || 0, clampInt(cm.dpi, 72, 1200, 300)),
     h: cmToPx(Number(cm.h) || 0, clampInt(cm.dpi, 72, 1200, 300)),
@@ -264,9 +279,9 @@ export default function ImageResizer() {
 
   const totalOrig = done.reduce((s, i) => s + i.file.size, 0)
   const totalOut = done.reduce((s, i) => s + i.out!.blob.size, 0)
-  const finished = images.filter((i) => i.key === key && (i.status === 'done' || i.status === 'error')).length
+  const finished = images.filter((i) => i.key === itemKey(i) && (i.status === 'done' || i.status === 'error')).length
   const missed = done.filter((i) => !i.out!.ok).length
-  const sel = done.find((i) => i.id === selId) ?? done[0]
+  const sel = images.find((i) => i.id === selId) ?? images[0]
   const status = !images.length
     ? ''
     : busy
@@ -324,7 +339,7 @@ export default function ImageResizer() {
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => applyBox(p.width, p.height)}
+                      onClick={() => applyPreset(p)}
                       aria-pressed={on}
                       className={`min-h-11 text-left rounded-xl border px-3 py-2 transition-colors ${
                         on ? 'border-primary bg-primary-soft text-primary' : 'border-line text-body hover:bg-subtle'
@@ -339,6 +354,10 @@ export default function ImageResizer() {
                 })}
               </div>
               <p className="text-xs text-muted mt-2 leading-relaxed">{t('presetHint')}</p>
+              {passportActive && <p className="text-xs text-muted mt-2 leading-relaxed">
+                {t('passport.note')}{' '}
+                <a href="https://www.passport.go.kr/home/kor/contents.do?menuPos=12" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">{t('passport.officialGuide')}</a>
+              </p>}
             </div>
 
             {/* 크기 지정 방식 */}
@@ -599,11 +618,11 @@ export default function ImageResizer() {
           )}
 
           {missed > 0 && (
-            <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm" role="alert">{t('targetMissed', { n: missed })}</div>
+            <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm" role="alert">{passportActive ? t('passport.targetMissed', { n: missed }) : t('targetMissed', { n: missed })}</div>
           )}
 
           {/* 결과 미리보기 */}
-          {sel?.out && (
+          {sel?.out && sel.key === itemKey(sel) && (
             <div className="ui-card p-5 space-y-3">
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-sm font-semibold text-fg">{t('previewTitle')}</h2>
@@ -623,6 +642,28 @@ export default function ImageResizer() {
                 <span className="text-faint"> → </span>
                 <span className="font-semibold text-fg">{sel.out.width}×{sel.out.height} · {formatBytes(sel.out.blob.size)}</span>
               </p>
+              {passportActive && <p className={`text-xs ${sel.out.ok ? 'text-muted' : 'text-amber-700'}`}>
+                {t(sel.out.ok ? 'passport.fileReady' : 'passport.fileTooLarge')}
+              </p>}
+            </div>
+          )}
+
+          {passportActive && sel && (
+            <div className="ui-card p-5 space-y-4">
+              <h2 className="text-sm font-semibold text-fg">{t('passport.cropTitle')}</h2>
+              <p className="text-xs text-muted leading-relaxed">{t('passport.cropHint')}</p>
+              <div>
+                <label htmlFor="ir-crop-x" className="block text-sm text-body mb-2">{t('passport.cropX')}</label>
+                <input id="ir-crop-x" type="range" min="0" max="100" value={sel.cropX ?? 50}
+                  onChange={(e) => updateCrop(sel.id, 'cropX', Number(e.target.value))} className="w-full accent-primary" />
+              </div>
+              <div>
+                <label htmlFor="ir-crop-y" className="block text-sm text-body mb-2">{t('passport.cropY')}</label>
+                <input id="ir-crop-y" type="range" min="0" max="100" value={sel.cropY ?? 50}
+                  onChange={(e) => updateCrop(sel.id, 'cropY', Number(e.target.value))} className="w-full accent-primary" />
+              </div>
+              {sel.out && sel.key === itemKey(sel) && (sel.out.srcWidth < 413 || sel.out.srcHeight < 531) &&
+                <p className="text-xs text-amber-700" role="alert">{t('passport.smallSource')}</p>}
             </div>
           )}
 
@@ -647,7 +688,7 @@ export default function ImageResizer() {
 
                 <ul className="space-y-3">
                   {images.map((it) => {
-                    const out = it.status === 'done' && it.key === key ? it.out : undefined
+                    const out = it.status === 'done' && it.key === itemKey(it) ? it.out : undefined
                     const selected = sel?.id === it.id
                     const name = it.file.name
                     return (
@@ -655,7 +696,7 @@ export default function ImageResizer() {
                         <button
                           type="button"
                           onClick={() => setSelId(it.id)}
-                          disabled={!out}
+                          disabled={!out && !passportActive}
                           aria-pressed={selected}
                           aria-label={t('previewOf', { name })}
                           className="shrink-0 w-16 h-16 bg-soft rounded-lg overflow-hidden flex items-center justify-center"
@@ -682,7 +723,7 @@ export default function ImageResizer() {
                                 {formatBytes(it.file.size)} → <span className="text-body font-medium">{formatBytes(out.blob.size)}</span>
                                 {out.mime !== 'image/png' && ` · ${t('qualityUsed', { q: Math.round(out.quality * 100) })}`}
                               </p>
-                              {!out.ok && <p className="text-xs text-amber-700 mt-0.5">{t('rowMissed')}</p>}
+                              {!out.ok && <p className="text-xs text-amber-700 mt-0.5">{t(passportActive ? 'passport.fileTooLarge' : 'rowMissed')}</p>}
                             </>
                           ) : it.status === 'error' ? (
                             <p className="text-xs text-red-600 mt-1 leading-relaxed">
@@ -753,7 +794,7 @@ export default function ImageResizer() {
               </ul>
               {sec === 'idPhoto' && (
                 <p className="text-sm mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                  <a href="https://www.passport.go.kr/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
+                  <a href="https://www.passport.go.kr/home/kor/contents.do?menuPos=12" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
                     {t('guide.idPhoto.linkPassport')}
                   </a>
                   <a href="https://www.gov.kr/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
