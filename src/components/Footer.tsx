@@ -4,7 +4,7 @@ import Link from 'next/link';
 import BrandMark from './BrandMark';
 import { usePathname } from 'next/navigation';
 import { Calculator } from 'lucide-react';
-import { useTranslations } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n/shared';
 import { menuConfig, categoryKeys } from '@/config/menuConfig';
 
 // Each category shows top N popular tools in footer for SEO internal linking

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { History, Trash2, Download, Clock, X } from 'lucide-react';
 import { CalculationHistory as HistoryType } from '@/utils/localStorage';
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
 
 interface CalculationHistoryProps {

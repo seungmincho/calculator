@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Bell, BellOff, X } from 'lucide-react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {

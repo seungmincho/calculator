@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { DollarSign, TrendingUp, Calculator, Table, Save, BarChart3, ChevronRight } from 'lucide-react';
 import ShareResult from '@/components/ShareResult';
 import { topPercent, simulateRaise, hourlyNet, MONTHLY_HOURS, NTS_SOURCE_YEAR } from '@/utils/salaryInsights';
-import { useTranslations } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n/salary';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import FeedbackWidget from '@/components/FeedbackWidget';

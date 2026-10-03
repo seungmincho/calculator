@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 
 export default function SkipToContent() {
   const t = useTranslations()

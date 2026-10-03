@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Home, Star, Clock, Search, X } from 'lucide-react'
 import ToolIcon from './ToolIcon'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { usePathname, useRouter } from 'next/navigation'
 import { getFavorites } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'

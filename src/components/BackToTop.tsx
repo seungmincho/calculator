@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false)

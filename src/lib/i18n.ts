@@ -3,7 +3,7 @@
 /**
  * Synchronous i18n replacement for next-intl.
  *
- * Uses static import of ko.json — no async loading, no Provider needed.
+ * Uses synchronous generated message subsets — no async loading, no Provider needed.
  * Drop-in compatible with next-intl's useTranslations API:
  *   - t('key')
  *   - t('nested.key')
@@ -16,9 +16,11 @@
  *   3. Select messages by language
  */
 
-import koMessages from '../../messages/ko.json'
+import sharedMessages from '../../messages/generated/ko/shared.json'
+import toolMessages from '../../messages/generated/ko/legacy.json'
 
-const messages: Record<string, unknown> = koMessages as Record<string, unknown>
+// Unmigrated tools retain the complete catalogue without duplicating shared data.
+const messages: Record<string, unknown> = { ...sharedMessages, ...toolMessages }
 
 function getNestedValue(obj: Record<string, unknown>, key: string): unknown {
   if (!key.includes('.')) return obj[key]

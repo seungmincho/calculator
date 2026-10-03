@@ -8,7 +8,7 @@ import ToolIcon from './ToolIcon';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import SearchDialog from './SearchDialog';
-import { useTranslations } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n/shared';
 import { menuConfig, categoryKeys, categoryHubs, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
 

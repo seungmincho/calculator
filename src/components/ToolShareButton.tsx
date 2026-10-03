@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { Share2, Link as LinkIcon, Check, X as XIcon } from 'lucide-react'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 

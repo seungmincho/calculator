@@ -4,7 +4,7 @@ import ToolIcon from './ToolIcon'
 import { useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { glassCard, glassInset } from '@/lib/glass'
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Wrench, Star, ChevronDown } from 'lucide-react'

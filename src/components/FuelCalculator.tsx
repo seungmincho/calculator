@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/fuelCalculator'
 import {
   Car,
   Copy,
@@ -30,7 +30,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
 import DatePicker from '@/components/ui/DatePicker'
-import GuideSection from '@/components/GuideSection'
+import GuideSection from '@/components/GuideSectionContent'
 import { fuelPriceFallback } from '@/utils/fuelPriceFallback'
 
 type FuelType = 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
@@ -1795,7 +1795,7 @@ const FuelCalculator = () => {
         </div>
       )}
 
-      <GuideSection namespace="fuelCalculator" />
+      <GuideSection translate={t} />
     </div>
   )
 }

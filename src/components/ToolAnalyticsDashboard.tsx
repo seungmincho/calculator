@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import Link from 'next/link'
 import { X, BarChart3 } from 'lucide-react'
 import ToolIcon from './ToolIcon'

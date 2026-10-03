@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 import Link from 'next/link'
 import { Search, Star, ChevronRight, BarChart3 } from 'lucide-react'
 import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'

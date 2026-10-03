@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Lightbulb, X } from 'lucide-react';
 import { glassCard, glassInset } from '@/lib/glass';
-import { useTranslations } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n/shared';
 
 interface Tip {
   id: number;

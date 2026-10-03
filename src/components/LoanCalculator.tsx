@@ -3,11 +3,11 @@
 import { useState, useMemo, useEffect } from 'react'
 import { ArrowRight, Save, Check } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/loan'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import ShareResult from '@/components/ShareResult'
-import GuideSection from '@/components/GuideSection'
+import GuideSection from '@/components/GuideSectionContent'
 import { schedule, type Method } from '@/utils/loanSchedule'
 import { maxPrincipal, annualRepay } from '@/utils/loanQuick'
 import { LEGACY_TYPE, saveLoanHistory, restoreLoanHistory } from '@/utils/loanHistory'
@@ -425,7 +425,7 @@ export default function LoanCalculator() {
         </div>
       </div>
 
-      <GuideSection namespace="loan" defaultOpen />
+      <GuideSection translate={t} defaultOpen />
     </div>
   )
 }

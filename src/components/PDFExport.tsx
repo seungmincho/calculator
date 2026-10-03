@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Download, FileText, Loader } from 'lucide-react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 
 interface PDFExportProps {
   data: any

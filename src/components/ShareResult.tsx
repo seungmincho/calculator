@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { Download, Share2, Link2, Check } from 'lucide-react'
 import { renderShareCard, type ShareCardData } from '@/utils/shareCard'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 
 /**
  * 결과 공유 버튼 묶음: 이미지 저장 · 공유하기(모바일 공유 시트, 이미지+링크) · 링크 복사.
