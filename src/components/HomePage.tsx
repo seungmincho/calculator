@@ -17,29 +17,39 @@ const PER_CATEGORY = 12
 
 type Item = MenuItem & { categoryKey?: CategoryKey }
 
+function SectionTitle({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
+  return (
+    <div className="flex items-end justify-between mb-3 px-1">
+      <h2 className="text-xl font-bold text-fg">{children}</h2>
+      {action}
+    </div>
+  )
+}
+
 export default function HomePage() {
   const t = useTranslations()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<CategoryKey | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [favorites, setFavorites] = useState<string[]>([])
+  const [recentlyViewedItems, setRecentlyViewedItems] = useState<Item[]>([])
   const [isDashboardOpen, setIsDashboardOpen] = useState(false)
   const { popularTools, isLoading: isPopularLoading } = usePopularTools(5)
 
   useEffect(() => {
-    setFavorites(getFavorites())
-  }, [])
-
-  const recentlyViewedItems = useMemo(() => {
-    if (typeof window === 'undefined') return []
-    const items: Item[] = []
-    for (const recent of getAllRecentTools().slice(0, 6)) {
-      for (const catKey of categoryKeys) {
-        const found = menuConfig[catKey].items.find(i => i.href === recent.href)
-        if (found) { items.push(found); break }
+    // Keep the server HTML and first client render identical; storage is read after hydration.
+    const frame = requestAnimationFrame(() => {
+      setFavorites(getFavorites())
+      const items: Item[] = []
+      for (const recent of getAllRecentTools().slice(0, 6)) {
+        for (const catKey of categoryKeys) {
+          const found = menuConfig[catKey].items.find(i => i.href === recent.href)
+          if (found) { items.push(found); break }
+        }
       }
-    }
-    return items
+      setRecentlyViewedItems(items)
+    })
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   const totalTools = useMemo(() => categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.length, 0), [])
@@ -109,13 +119,6 @@ export default function HomePage() {
       </Link>
     )
   }
-
-  const SectionTitle = ({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) => (
-    <div className="flex items-end justify-between mb-3 px-1">
-      <h2 className="text-xl font-bold text-fg">{children}</h2>
-      {action}
-    </div>
-  )
 
   const chip = (active: boolean) =>
     `shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${

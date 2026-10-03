@@ -87,8 +87,7 @@ try{
     results.push({name:`${mode}:empty-and-escape`,status:'PASS'})
     await context.close()
   }
-  // The pre-existing homepage emits React #418 once per hydration in the baseline deployment.
-  assert.ok(runtimeErrors.every(message=>message.includes('Minified React error #418')),`Unexpected runtime error: ${runtimeErrors.join('; ')}`)
+  assert.equal(runtimeErrors.length,0,`Unexpected runtime errors: ${runtimeErrors.join('; ')}`)
 }catch(error){results.push({name:'browser-flow',status:'FAIL',message:error.message.slice(0,450)})}
 finally{
   await browser.close();if(server)await new Promise(done=>server.close(done))
