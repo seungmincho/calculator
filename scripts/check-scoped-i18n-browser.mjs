@@ -52,6 +52,10 @@ try {
       await page.goto(origin + route, { waitUntil: 'networkidle' })
       const main = page.locator('main').first()
       await main.waitFor()
+      if (route === '/fuel-calculator/') {
+        await page.getByRole('heading', { name: '비용 구성', exact: true }).scrollIntoViewIfNeeded()
+        await page.locator('.recharts-pie-label-text').first().waitFor()
+      }
       const snapshot = { name, headings: await main.locator('h1,h2,h3').allTextContents(), text: await main.innerText() }
       snapshots.push(snapshot)
       if (baseline) {

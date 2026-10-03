@@ -70,11 +70,12 @@ try {
       const top = await heading.evaluate(node => node.getBoundingClientRect().top + scrollY)
       const initialPlots = await page.locator('.recharts-surface').count()
       if (baseline && !fallback) {
-        assert.equal(initialPlots, 2, 'charts still render initially')
+        assert.equal(initialPlots, mobile ? 0 : 2, 'offscreen mobile charts wait for the viewport')
         const before = baseline.snapshots.find(item => item.mode === mode).initial
         assert.ok(initial.reduce((sum, x) => sum + x.decodedBytes, 0) < before.reduce((sum, x) => sum + x.decodedBytes, 0) - 1000000, 'speculative JavaScript requests decrease by at least 1 MB')
       }
       await page.locator('#fuel-distance').fill('250')
+      await page.getByRole('img', { name: /유류비 27,586원.*감가상각비 25,000원/ }).waitFor()
       await heading.scrollIntoViewIfNeeded()
       await page.waitForFunction(() => document.querySelectorAll('.recharts-pie-label-text').length === 2)
       assert.equal(await page.locator('.recharts-surface').count(), 2, 'both charts render when needed')

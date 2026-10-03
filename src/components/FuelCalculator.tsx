@@ -25,7 +25,7 @@ import {
   Fuel,
   Calculator
 } from 'lucide-react'
-import { PieChart, Pie, Cell as PieCell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import FuelCharts from '@/components/FuelCharts'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
@@ -1246,76 +1246,21 @@ const FuelCalculator = () => {
                 </div>
 
                 {/* 비용 구성 파이차트 + 연료별 비교 */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* 비용 구성 */}
-                  <div className={`ui-card p-6`}>
-                    <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
-                      비용 구성
-                    </h3>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
-                          <Pie
-                            data={[
-                              { name: '유류비', value: Math.round(calculation.fuelCost) },
-                              { name: '감가상각비', value: Math.round(calculation.depreciationCost) },
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={50}
-                            outerRadius={80}
-                            dataKey="value"
-                            label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                            labelLine={false}
-                          >
-                            <PieCell fill="#3b82f6" />
-                            <PieCell fill="#f97316" />
-                          </Pie>
-                          <Tooltip formatter={(value) => `${Number(value ?? 0).toLocaleString()}원`} />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-
-                  {/* 연료별 비교 */}
-                  <div className={`ui-card p-6`}>
-                    <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
-                      연료별 비용 비교
-                    </h3>
-                    {(() => {
-                      const selectedVehicle = VEHICLE_TYPES[vehicleType]
-                      const fuelLabels = { gasoline: '일반', premium_gasoline: '고급', diesel: '경유', lpg: 'LPG' }
-                      const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
-                      const compData = FUEL_TYPES.map(ft => {
-                        const eff = useCustomEfficiency && customEfficiency > 0
-                          ? customEfficiency
-                          : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
-                        const cost = (tripKm / eff) * fuelPrices[ft]
-                        return { name: fuelLabels[ft], cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
-                      })
-                      return (
-                        <div className="h-52">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={compData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                              <YAxis tickFormatter={(v) => `${Math.round(v / 1000)}천`} tick={{ fontSize: 11, fill: '#9ca3af' }} width={45} />
-                              <Tooltip formatter={(value) => [`${Number(value ?? 0).toLocaleString()}원`, '유류비']} />
-                              <Bar dataKey="cost" radius={[4, 4, 0, 0]}>
-                                {compData.map((entry, idx) => (
-                                  <PieCell key={idx} fill={entry.fill} opacity={entry.isCurrent ? 1 : 0.6} />
-                                ))}
-                              </Bar>
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </div>
-                      )
-                    })()}
-                    <p className="text-xs text-gray-400 mt-2 text-center">
-                      {tripKm.toLocaleString()}km 기준 · 굵은 바 = 현재 선택 연료
-                    </p>
-                  </div>
-                </div>
+                <FuelCharts
+                  fuelCost={Math.round(calculation.fuelCost)}
+                  depreciationCost={Math.round(calculation.depreciationCost)}
+                  tripKm={tripKm}
+                  comparison={FUEL_TYPES.map(ft => {
+                    const selectedVehicle = VEHICLE_TYPES[vehicleType]
+                    const fuelLabels = { gasoline: '일반', premium_gasoline: '고급', diesel: '경유', lpg: 'LPG' }
+                    const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
+                    const eff = useCustomEfficiency && customEfficiency > 0
+                      ? customEfficiency
+                      : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
+                    const cost = (tripKm / eff) * fuelPrices[ft]
+                    return { name: fuelLabels[ft], cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
+                  })}
+                />
               </>
             ) : (
               <div className={`ui-card p-12 text-center`}>
