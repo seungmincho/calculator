@@ -2437,6 +2437,7 @@
       "timeConverter": "Time Converter",
       "jsonFormatter": "JSON Formatter",
       "jsonXml": "JSON-XML Converter",
+      "jsonXmlConverter": "JSON-XML Converter",
       "jsonCsvConverter": "JSON-CSV Converter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",

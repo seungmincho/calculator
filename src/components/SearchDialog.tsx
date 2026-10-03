@@ -93,25 +93,32 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     )
   }, [query, allItems])
 
+  const showSuggested = !query.trim() &&
+    (suggestedItems.recentItems.length > 0 || suggestedItems.popularItems.length > 0)
+  // Keyboard selection must follow the rows currently rendered in the listbox.
+  const visibleItems = useMemo(() => showSuggested
+    ? [...suggestedItems.recentItems, ...suggestedItems.popularItems]
+    : filteredItems, [showSuggested, suggestedItems, filteredItems])
+
   // Pre-compute index map for O(1) lookup
   const indexMap = useMemo(
     () => new Map(filteredItems.map((item, i) => [item.href, i])),
     [filteredItems]
   )
 
-  // Reset selection when query changes
-  useEffect(() => {
+  const closeDialog = useCallback(() => {
+    setQuery('')
     setSelectedIndex(0)
-  }, [query])
+    onClose()
+  }, [onClose])
 
   // Focus input when dialog opens
   useEffect(() => {
     if (isOpen) {
-      setQuery('')
-      setSelectedIndex(0)
-      requestAnimationFrame(() => {
+      const frame = requestAnimationFrame(() => {
         inputRef.current?.focus()
       })
+      return () => cancelAnimationFrame(frame)
     }
   }, [isOpen])
 
@@ -121,12 +128,12 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        onClose()
+        closeDialog()
       }
     }
     document.addEventListener('keydown', handleGlobalKeyDown)
     return () => document.removeEventListener('keydown', handleGlobalKeyDown)
-  }, [isOpen, onClose])
+  }, [isOpen, closeDialog])
 
   // Scroll selected item into view
   useEffect(() => {
@@ -140,10 +147,10 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const navigateToItem = useCallback(
     (item: SearchItem) => {
       recordToolUsage(item.category, item.href)
-      onClose()
+      closeDialog()
       router.push(item.href)
     },
-    [onClose, router]
+    [closeDialog, router]
   )
 
   const handleKeyDown = useCallback(
@@ -151,25 +158,25 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault()
-          setSelectedIndex((prev) =>
-            prev < filteredItems.length - 1 ? prev + 1 : 0
+          if (visibleItems.length > 0) setSelectedIndex((prev) =>
+            prev < visibleItems.length - 1 ? prev + 1 : 0
           )
           break
         case 'ArrowUp':
           e.preventDefault()
-          setSelectedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredItems.length - 1
+          if (visibleItems.length > 0) setSelectedIndex((prev) =>
+            prev > 0 ? prev - 1 : visibleItems.length - 1
           )
           break
         case 'Enter':
           e.preventDefault()
-          if (filteredItems[selectedIndex]) {
-            navigateToItem(filteredItems[selectedIndex])
+          if (visibleItems[selectedIndex]) {
+            navigateToItem(visibleItems[selectedIndex])
           }
           break
         case 'Escape':
           e.preventDefault()
-          onClose()
+          closeDialog()
           break
         case 'Tab':
           // Trap focus within the dialog - keep focus on input
@@ -178,7 +185,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           break
       }
     },
-    [filteredItems, selectedIndex, navigateToItem, onClose]
+    [visibleItems, selectedIndex, navigateToItem, closeDialog]
   )
 
   if (!isOpen) return null
@@ -186,7 +193,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   return (
     <div
       className="fixed inset-0 z-[200] flex items-start justify-center pt-[15vh]"
-      onClick={onClose}
+      onClick={closeDialog}
       role="dialog"
       aria-modal="true"
       aria-label={t('common.search')}
@@ -207,7 +214,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             type="text"
             role="combobox"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0) }}
             onKeyDown={handleKeyDown}
             placeholder={t('searchDialog.placeholder')}
             className="flex-1 px-3 py-4 text-base bg-transparent text-fg placeholder-gray-400 outline-none"
@@ -215,7 +222,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             aria-expanded={true}
             aria-controls="search-listbox"
             aria-activedescendant={
-              filteredItems.length > 0
+              visibleItems[selectedIndex]
                 ? `search-option-${selectedIndex}`
                 : undefined
             }
@@ -223,7 +230,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           />
           {query && (
             <button
-              onClick={() => setQuery('')}
+              onClick={() => { setQuery(''); setSelectedIndex(0) }}
               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
               aria-label={t('common.clear')}
             >
@@ -242,7 +249,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           className="max-h-[50vh] overflow-y-auto overscroll-contain"
           role="listbox"
         >
-          {!query.trim() && (suggestedItems.recentItems.length > 0 || suggestedItems.popularItems.length > 0) ? (
+          {showSuggested ? (
             <>
               {/* Recent tools */}
               {suggestedItems.recentItems.length > 0 && (
@@ -254,6 +261,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                   {suggestedItems.recentItems.map((item, i) => (
                     <a
                       key={item.href}
+                      id={`search-option-${i}`}
                       href={item.href}
                       role="option"
                       aria-selected={i === selectedIndex}
@@ -287,6 +295,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                     return (
                       <a
                         key={item.href}
+                        id={`search-option-${idx}`}
                         href={item.href}
                         role="option"
                         aria-selected={idx === selectedIndex}
@@ -384,7 +393,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               {t('searchDialog.open')}
             </span>
           </div>
-          <span>{filteredItems.length} {t('searchDialog.results')}</span>
+          <span>{visibleItems.length} {t('searchDialog.results')}</span>
         </div>
 
         {/* Screen reader live region for result count */}
