@@ -114,6 +114,26 @@ function mulberry32(seed: number): () => number {
   }
 }
 
+// 시드 → 가로줄. 생성·공유 링크 복원이 같은 함수를 써야 같은 사다리가 나옴(인원·복잡도는 호출자가 명시).
+export function buildLadderLines(seed: number, count: number, complexity: number): LadderLine[] {
+  const rand = mulberry32(seed)
+  const lines: LadderLine[] = []
+  const ladderHeight = Math.max(8, 6 + complexity * 2)
+  const probMap: Record<number, number> = { 1: 0.25, 2: 0.4, 3: 0.6, 4: 0.8 }
+  const prob = probMap[complexity] ?? 0.5
+  for (let level = 0; level < ladderHeight; level++) {
+    const used = new Set<number>()
+    for (let i = 0; i < count - 1; i++) {
+      if (!used.has(i) && !used.has(i + 1) && rand() < prob) {
+        lines.push({ fromIndex: i, toIndex: i + 1, position: level })
+        used.add(i)
+        used.add(i + 1)
+      }
+    }
+  }
+  return lines
+}
+
 // Shuffle array with given random function
 function shuffleArray<T>(arr: T[], rand: () => number): T[] {
   const result = [...arr]
@@ -362,27 +382,11 @@ export default function LadderGame() {
   }
 
   // ── Generate ladder (seed-based) ───────────────────────────────
-  const generateLadder = useCallback((seed?: number) => {
+  // count/complexity: 같은 이벤트에서 setState한 직후 호출하면 state가 아직 옛 값 → 새 값을 직접 넘길 것
+  const generateLadder = useCallback((seed?: number, count = participants.length, complexity = ladderComplexity) => {
     const usedSeed = seed ?? Date.now()
-    const rand = mulberry32(usedSeed)
 
-    const lines: LadderLine[] = []
-    const ladderHeight = Math.max(8, 6 + ladderComplexity * 2)
-    const probMap: Record<number, number> = { 1: 0.25, 2: 0.4, 3: 0.6, 4: 0.8 }
-    const prob = probMap[ladderComplexity] ?? 0.5
-
-    for (let level = 0; level < ladderHeight; level++) {
-      const used = new Set<number>()
-      for (let i = 0; i < participants.length - 1; i++) {
-        if (!used.has(i) && !used.has(i + 1) && rand() < prob) {
-          lines.push({ fromIndex: i, toIndex: i + 1, position: level })
-          used.add(i)
-          used.add(i + 1)
-        }
-      }
-    }
-
-    setLadderLines(lines)
+    setLadderLines(buildLadderLines(usedSeed, count, complexity))
     setShowResults(false)
     setResults({})
     setAnimProgress({})
@@ -396,7 +400,7 @@ export default function LadderGame() {
     setCurrentSeed(usedSeed)
 
     // Enter position selection phase
-    setColAssignments(Array(participants.length).fill(null))
+    setColAssignments(Array(count).fill(null))
     setSelectedParticipant(null)
     setIsSelectionPhase(true)
 
@@ -746,19 +750,23 @@ export default function LadderGame() {
     img.src = url
   }, [results, participants, svgWidth, svgHeight])
 
-  // ── URL init ─────────────────────────────────────────────────────
+  // ── URL init (공유 링크 복원, 마운트 1회) ─────────────────────────
+  // 사다리는 state가 아니라 여기서 파싱한 인원·복잡도로 바로 만든다(같은 커밋의 state는 아직 기본값 3/3).
   useEffect(() => {
     const pp = searchParams.get('participants')
     const op = searchParams.get('outcomes')
     const cp = searchParams.get('complexity')
     const sp = searchParams.get('speed')
     const seedParam = searchParams.get('seed')
-
     const rp = searchParams.get('results')
 
-    if (pp) { try { const v = JSON.parse(pp); if (Array.isArray(v)) setParticipants(v) } catch { /* ignore */ } }
+    let count = participants.length
+    let complexity = ladderComplexity
+    let hasResults = false
+
+    if (pp) { try { const v = JSON.parse(pp); if (Array.isArray(v)) { setParticipants(v); count = v.length } } catch { /* ignore */ } }
     if (op) { try { const v = JSON.parse(op); if (Array.isArray(v)) setOutcomes(v) } catch { /* ignore */ } }
-    if (cp) { const v = parseInt(cp); if ([1, 2, 3, 4].includes(v)) setLadderComplexity(v) }
+    if (cp) { const v = parseInt(cp); if ([1, 2, 3, 4].includes(v)) { setLadderComplexity(v); complexity = v } }
     if (sp) { const v = parseInt(sp); if ([3000, 1500, 800].includes(v)) setAnimationSpeed(v) }
     if (rp) {
       try {
@@ -767,66 +775,27 @@ export default function LadderGame() {
           setResults(v)
           setShowResults(true)
           setRevealedResults(new Set(Object.keys(v)))
+          hasResults = true
         }
       } catch { /* ignore */ }
     }
 
-    // Restore seed-based ladder
-    if (seedParam) {
-      const seed = parseInt(seedParam)
-      if (!isNaN(seed)) {
-        setCurrentSeed(seed)
-        // Defer ladder generation to after state updates
-        setTimeout(() => {
-          // We need to use the parsed participants length for generation
-          // Since generateLadder reads from state, defer it
-        }, 0)
+    const seed = seedParam ? parseInt(seedParam) : NaN
+    if (!isNaN(seed)) {
+      setLadderLines(buildLadderLines(seed, count, complexity))
+      setCurrentSeed(seed)
+      if (hasResults) {
+        // 결과가 링크에 있으면 순서대로 배치, 위치 선택 생략
+        setColAssignments(Array.from({ length: count }, (_, i) => i))
+        setIsSelectionPhase(false)
+      } else {
+        setColAssignments(Array(count).fill(null))
+        setSelectedParticipant(null)
+        setIsSelectionPhase(true)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // Generate ladder from seed when seed is set from URL and participants are ready
-  const seedInitRef = useRef(false)
-  useEffect(() => {
-    if (seedInitRef.current) return
-    const seedParam = searchParams.get('seed')
-    if (seedParam && ladderLines.length === 0) {
-      const seed = parseInt(seedParam)
-      if (!isNaN(seed)) {
-        seedInitRef.current = true
-        // Need to generate with current participants/complexity
-        const rand = mulberry32(seed)
-        const lines: LadderLine[] = []
-        const ladderHeight = Math.max(8, 6 + ladderComplexity * 2)
-        const probMap: Record<number, number> = { 1: 0.25, 2: 0.4, 3: 0.6, 4: 0.8 }
-        const prob = probMap[ladderComplexity] ?? 0.5
-        for (let level = 0; level < ladderHeight; level++) {
-          const used = new Set<number>()
-          for (let i = 0; i < participants.length - 1; i++) {
-            if (!used.has(i) && !used.has(i + 1) && rand() < prob) {
-              lines.push({ fromIndex: i, toIndex: i + 1, position: level })
-              used.add(i)
-              used.add(i + 1)
-            }
-          }
-        }
-        setLadderLines(lines)
-        setCurrentSeed(seed)
-        // Enter selection phase for URL-restored ladders (unless results already exist)
-        const rp = searchParams.get('results')
-        if (rp) {
-          // Results from URL — assign in order, skip selection
-          setColAssignments(Array.from({ length: participants.length }, (_, i) => i))
-          setIsSelectionPhase(false)
-        } else {
-          setColAssignments(Array(participants.length).fill(null))
-          setSelectedParticipant(null)
-          setIsSelectionPhase(true)
-        }
-      }
-    }
-  }, [searchParams, participants.length, ladderComplexity, ladderLines.length])
 
   // ── Share / save ─────────────────────────────────────────────────
   const handleShare = async () => {
@@ -911,10 +880,12 @@ export default function LadderGame() {
           onLoadHistory={(historyId: string) => {
             const inputs = loadFromHistory(historyId)
             if (inputs) {
-              setParticipants(inputs.participants || [{ name: '참가자1', animal: '🐶' }, { name: '참가자2', animal: '🐱' }, { name: '참가자3', animal: '🐭' }])
+              const ps = inputs.participants || [{ name: '참가자1', animal: '🐶' }, { name: '참가자2', animal: '🐱' }, { name: '참가자3', animal: '🐭' }]
+              const cx = inputs.ladderComplexity || 3
+              setParticipants(ps)
               setOutcomes(inputs.outcomes || ['결과1', '결과2', '결과3'])
-              setLadderComplexity(inputs.ladderComplexity || 3)
-              generateLadder()
+              setLadderComplexity(cx)
+              generateLadder(undefined, ps.length, cx)
             }
           }}
           onRemoveHistory={removeHistory}

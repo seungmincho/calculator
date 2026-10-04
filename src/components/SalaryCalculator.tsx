@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from '@/hooks/useSearchParams';
 import Link from 'next/link';
@@ -1356,12 +1356,5 @@ const SalaryCalculatorContent = () => {
   );
 };
 
-const SalaryCalculator = () => {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-      <SalaryCalculatorContent />
-    </Suspense>
-  );
-};
-
-export default SalaryCalculator;
+// Suspense 래퍼 없음: 큰 경계는 정적 HTML에서 스피너 + 숨은 템플릿으로 빠져 색인이 안 됨
+export default SalaryCalculatorContent;

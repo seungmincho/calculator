@@ -36,7 +36,6 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/tax-calculator': Receipt,
   '/exchange-calculator': ArrowLeftRight,
   '/real-estate-calculator': House,
-  '/monthly-rent-subsidy': Building,
   '/bogeumjari-loan': Home,
   '/car-loan-calculator': Car,
   '/car-tax-calculator': CarFront,

@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import GitVisualizer from '@/components/GitVisualizer'
@@ -99,15 +98,9 @@ export default function GitVisualizerPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <Suspense
-            fallback={
-              <div />
-            }
-          >
-            <I18nWrapper>
-              <GitVisualizer />
-            </I18nWrapper>
-          </Suspense>
+          <I18nWrapper>
+            <GitVisualizer />
+          </I18nWrapper>
 
           <div className="mt-8">
             <RelatedTools />

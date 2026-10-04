@@ -1,5 +1,7 @@
 /severance-pay  /retirement-calculator/  301
 /severance-pay/  /retirement-calculator/  301
+/monthly-rent-subsidy  /youth-rent-subsidy/  301
+/monthly-rent-subsidy/  /youth-rent-subsidy/  301
 /15-puzzle  /15-puzzle/  301
 /2048  /2048/  301
 /3d-viewer  /3d-viewer/  301
@@ -234,7 +236,6 @@
 /military-discharge  /military-discharge/  301
 /minesweeper  /minesweeper/  301
 /monitor-test  /monitor-test/  301
-/monthly-rent-subsidy  /monthly-rent-subsidy/  301
 /morse-code  /morse-code/  301
 /moving-cost  /moving-cost/  301
 /name-compatibility  /name-compatibility/  301

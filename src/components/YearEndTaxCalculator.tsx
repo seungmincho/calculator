@@ -3,6 +3,7 @@
 /**
  * 연말정산 계산기 — 2026년 귀속 (2027년 1~2월 정산). 계산 로직: src/utils/yearEndTax.ts
  * Translation namespace: yearEndTaxCalc (새 UI 키는 'yt.*', 가이드는 GuideSection이 'guide.*' 사용)
+ * 모드: 연간 예상(기본) / 미리보기(?mode=preview — 1~9월 실적 ×12/9 또는 10~12월 직접 입력)
  */
 
 import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react'
@@ -12,7 +13,11 @@ import { ChevronDown } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
 import { calculateNetSalary } from '@/utils/netSalary'
-import { calc, tips, autoInsurance, DEFAULT_INPUT, TAX_YEAR, type YetInput } from '@/utils/yearEndTax'
+import {
+  calc, tips, autoInsurance, annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate,
+  CARD_KEYS, DEADLINE, PREVIEW_MONTHS, DEFAULT_INPUT, TAX_YEAR, type YetInput, type CardSpend,
+} from '@/utils/yearEndTax'
+import { todayKST, daysBetween, ddayLabel } from '@/utils/dday'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 const man = (n: number) => (Math.round(n / 10_000)).toLocaleString('ko-KR')
@@ -33,11 +38,33 @@ const BOOL_PARAMS: [BoolKey, string][] = [['spouse', 'sp'], ['marriage', 'mc'], 
 const OPT_PARAMS = [['pension', 'np'], ['healthEmp', 'he'], ['prepaid', 'pp']] as const
 type OptKey = (typeof OPT_PARAMS)[number][0]
 
+// 미리보기 모드 URL: mode=preview, 1~9월 y{코드}, 10~12월 직접 입력 q4=m + q{코드}, 1~9월 급여 ys (코드는 NUM_PARAMS와 같음: ycc, qdc …)
+type Mode = 'annual' | 'preview'
+const CODE = Object.fromEntries(NUM_PARAMS) as Record<NumKey, string>
+// 미리보기 기본값: 총급여 5,000만 직장인의 1~9월 사용액 (신용카드 위주)
+const PV_DEFAULT: CardSpend = { credit: 10_500_000, debit: 2_250_000, culture: 0, market: 0, transport: 450_000 }
+const mapCard = (f: (k: keyof CardSpend) => number): CardSpend =>
+  ({ credit: f('credit'), debit: f('debit'), culture: f('culture'), market: f('market'), transport: f('transport') })
+const sumCard = (s: CardSpend) => CARD_KEYS.reduce((a, k) => a + s[k], 0)
+const CHG_LINKS = [
+  'https://www.law.go.kr/법령/소득세법/제59조의2',
+  'https://www.law.go.kr/법령/조세특례제한법/제126조의2',
+  'https://www.law.go.kr/법령/소득세법/제59조의4',
+  'https://www.law.go.kr/법령/조세특례제한법/제95조의2',
+  'https://www.law.go.kr/법령/조세특례제한법/제92조',
+]
+
 export default function YearEndTaxCalculator() {
   const t = useTranslations('yearEndTaxCalc')
   const searchParams = useSearchParams()
   const [inp, setInp] = useState<YetInput>(DEFAULT_INPUT)
   const [opt, setOpt] = useState<Record<OptKey, string>>({ pension: '', healthEmp: '', prepaid: '' })
+  const [mode, setMode] = useState<Mode>('annual')
+  const [ytd, setYtd] = useState<CardSpend>(PV_DEFAULT)
+  const [q4, setQ4] = useState<CardSpend | null>(null)          // null = 1~9월 속도로 자동(×12/9)
+  const [ytdSalary, setYtdSalary] = useState<number | null>(null) // null = 총급여(연) 입력 사용
+  const [today, setToday] = useState<string | null>(null)         // 클라이언트에서만 (정적 HTML에 빌드 날짜가 박히지 않게)
+  useEffect(() => setToday(todayKST()), [])
   const set = <K extends keyof YetInput>(k: K, v: YetInput[K]) =>
     setInp((p) => { const n = { ...p, [k]: v }; n.kidsUnder8 = Math.min(n.kidsUnder8, n.children); return n })
 
@@ -52,6 +79,11 @@ export default function YearEndTaxCalculator() {
     const o = { pension: '', healthEmp: '', prepaid: '' }
     for (const [k, q] of OPT_PARAMS) { const v = searchParams.get(q); if (v && /^\d{1,11}$/.test(v)) o[k] = v }
     setInp(next); setOpt(o)
+    const num = (q: string) => { const v = searchParams.get(q); return v && /^\d{1,11}$/.test(v) ? Number(v) : null }
+    if (searchParams.get('mode') === 'preview') setMode('preview')
+    setYtd(mapCard((k) => num(`y${CODE[k]}`) ?? PV_DEFAULT[k]))
+    if (searchParams.get('q4') === 'm') setQ4(mapCard((k) => num(`q${CODE[k]}`) ?? 0))
+    setYtdSalary(num('ys'))
   }, [searchParams])
 
   // 상태 → URL (기본값과 다른 것만)
@@ -62,19 +94,34 @@ export default function YearEndTaxCalculator() {
     for (const [k, q] of NUM_PARAMS) put(q, inp[k] !== DEFAULT_INPUT[k] ? String(inp[k]) : null)
     for (const [k, q] of BOOL_PARAMS) put(q, inp[k] !== DEFAULT_INPUT[k] ? (inp[k] ? '1' : '0') : null)
     for (const [k, q] of OPT_PARAMS) put(q, opt[k] || null)
+    const pv = mode === 'preview'
+    put('mode', pv ? 'preview' : null)
+    put('ys', pv && ytdSalary !== null ? String(ytdSalary) : null)
+    put('q4', pv && q4 ? 'm' : null)
+    for (const k of CARD_KEYS) {
+      put(`y${CODE[k]}`, pv && ytd[k] !== PV_DEFAULT[k] ? String(ytd[k]) : null)
+      put(`q${CODE[k]}`, pv && q4 && q4[k] ? String(q4[k]) : null)
+    }
     window.history.replaceState(window.history.state, '', url)
-  }, [inp, opt])
+  }, [inp, opt, mode, ytd, q4, ytdSalary])
 
   const heads = 1 + (inp.spouse ? 1 : 0) + inp.children + inp.others
   const kids8 = Math.max(0, inp.children - inp.kidsUnder8)
+  // 미리보기: 1~9월 실적 → 연간 추정 (총급여·카드 사용액)
+  const pv = mode === 'preview'
+  const salary = pv && ytdSalary !== null ? annualize(ytdSalary) : inp.salary
+  const q4Auto = mapCard((k) => annualize(ytd[k]) - ytd[k])
+  const spend: CardSpend = pv ? annualSpend(ytd, q4) : inp
   // 기납부세액 자동 추정: netSalary(간이세액표와 같은 방식의 연 환산 소득세)
   const autoPrepaid = useMemo(
-    () => calculateNetSalary(inp.salary, { nonTaxableMonthly: 0, dependents: heads, children: kids8 })?.deductions.incomeTax ?? 0,
-    [inp.salary, heads, kids8],
+    () => calculateNetSalary(salary, { nonTaxableMonthly: 0, dependents: heads, children: kids8 })?.deductions.incomeTax ?? 0,
+    [salary, heads, kids8],
   )
-  const auto = autoInsurance(inp.salary)
+  const auto = autoInsurance(salary)
   const full: YetInput = {
     ...inp,
+    ...mapCard((k) => spend[k]),
+    salary,
     pension: opt.pension ? Number(opt.pension) : undefined,
     healthEmp: opt.healthEmp ? Number(opt.healthEmp) : undefined,
     prepaid: opt.prepaid ? Number(opt.prepaid) : autoPrepaid,
@@ -85,9 +132,22 @@ export default function YearEndTaxCalculator() {
 
   const kind = r.refund > 0 ? 'refund' : r.refund < 0 ? 'pay' : 'zero'
   const headline = kind === 'zero' ? t('yt.hero.zero') : t(`yt.hero.${kind}`, { amount: won(Math.abs(r.refund)) })
+  const absRefund = Math.abs(r.refund)
+  const shareHeadline = kind === 'zero' ? headline
+    : t(`yt.share.${kind}`, { amount: absRefund >= 10_000 ? `${man(absRefund)}만` : won(absRefund), amountWon: won(absRefund) })
   const effRate = r.salary ? (r.totalTax / r.salary) * 100 : 0
 
-  const seg = (on: boolean) => `flex-1 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  // 12월 31일까지 할 일
+  const ytdSpent = sumCard(ytd)
+  const ytdGap = cardThresholdGap(salary, ytdSpent)
+  const q4Credit = pv ? (q4 ?? q4Auto).credit : Math.round(inp.credit / 4) // 연간 모드: 남은 3개월 = 연간의 1/4 가정
+  const strat = q4Strategy(full, q4Credit)
+  const top = pensionTopUp(full)
+  const hometownGain = tipList.find((x) => x.id === 'hometown')?.gain ?? 0
+  const dd = (date: string) => (today ? ddayLabel(daysBetween(today, date)) : null)
+  const chg = (t.raw('yt.chg.items') as { title: string; desc: string; law: string }[] | undefined) ?? []
+
+  const seg = (on: boolean) => `flex-1 min-h-11 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const W = t('yt.won')
   const count = (k: NumKey, label: string, max = 6, min = 0) => (
     <label className="block">
@@ -129,13 +189,37 @@ export default function YearEndTaxCalculator() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('yt.subtitle', { year: TAX_YEAR, next: TAX_YEAR + 1 })}</p>
+        <div className="flex gap-1.5 mt-4 max-w-md" role="radiogroup" aria-label={t('yt.mode.label')}>
+          {(['annual', 'preview'] as const).map((m) => (
+            <button key={m} type="button" role="radio" aria-checked={mode === m} onClick={() => setMode(m)} className={seg(mode === m)}>
+              {t(`yt.mode.${m}`)}
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-muted mt-2">{t(`yt.mode.${mode}Hint`)}</p>
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── 입력 ── */}
         <div className="lg:col-span-2 space-y-4">
           <div className="ui-card p-6 space-y-5">
-            <Money label={t('yt.in.salary')} value={inp.salary} onChange={(v) => set('salary', v)} hint={t('yt.in.salaryHint')} unit={W} />
+            {pv && (
+              <div>
+                <div className="text-sm font-medium text-body mb-1.5">{t('yt.pv.salaryBasis')}</div>
+                <div className="flex gap-1.5" role="radiogroup" aria-label={t('yt.pv.salaryBasis')}>
+                  <button type="button" role="radio" aria-checked={ytdSalary === null} onClick={() => setYtdSalary(null)} className={seg(ytdSalary === null)}>
+                    {t('yt.pv.basisAnnual')}
+                  </button>
+                  <button type="button" role="radio" aria-checked={ytdSalary !== null}
+                    onClick={() => { if (ytdSalary === null) setYtdSalary(Math.round((inp.salary * PREVIEW_MONTHS) / 12)) }} className={seg(ytdSalary !== null)}>
+                    {t('yt.pv.basisYtd')}
+                  </button>
+                </div>
+              </div>
+            )}
+            {pv && ytdSalary !== null
+              ? <Money label={t('yt.pv.ytdSalary')} value={ytdSalary} onChange={setYtdSalary} hint={t('yt.pv.ytdSalaryHint', { amount: won(salary) })} unit={W} />
+              : <Money label={t('yt.in.salary')} value={inp.salary} onChange={(v) => set('salary', v)} hint={t('yt.in.salaryHint')} unit={W} />}
             <div>
               <div className="text-sm font-medium text-body mb-1.5">{t('yt.in.prepaid')}</div>
               <div className="flex gap-1.5" role="radiogroup" aria-label={t('yt.in.prepaid')}>
@@ -175,6 +259,39 @@ export default function YearEndTaxCalculator() {
             <p className="text-xs text-muted">{t('yt.in.familyHint')}</p>
           </Section>
 
+          {pv ? (
+            <Section title={t('yt.pv.cardTitle')} badge={`${won(r.card.total)}${W}`} open>
+              <p className="text-xs text-muted">{t('yt.pv.cardHint')}</p>
+              {CARD_KEYS.map((k) => (
+                <Money key={k} label={t(`yt.in.${k}`)} value={ytd[k]} onChange={(v) => setYtd((p) => ({ ...p, [k]: v }))} unit={W} />
+              ))}
+              <div className="bg-subtle rounded-2xl p-4 text-sm text-sub tabular-nums">
+                {ytdGap > 0
+                  ? t('yt.pv.ytdShort', { spent: won(ytdSpent), threshold: won(r.card.threshold), amount: won(ytdGap) })
+                  : t('yt.pv.ytdOver', { threshold: won(r.card.threshold), amount: won(ytdSpent - r.card.threshold) })}
+              </div>
+              <div>
+                <div className="text-sm font-medium text-body mb-1.5">{t('yt.pv.q4')}</div>
+                <div className="flex gap-1.5" role="radiogroup" aria-label={t('yt.pv.q4')}>
+                  <button type="button" role="radio" aria-checked={!q4} onClick={() => setQ4(null)} className={seg(!q4)}>{t('yt.pv.q4Auto')}</button>
+                  <button type="button" role="radio" aria-checked={!!q4} onClick={() => { if (!q4) setQ4(q4Auto) }} className={seg(!!q4)}>{t('yt.pv.q4Manual')}</button>
+                </div>
+                {!q4 && <p className="text-xs text-muted mt-1.5 tabular-nums">{t('yt.pv.q4AutoHint', { amount: won(sumCard(q4Auto)) })}</p>}
+              </div>
+              {q4 && CARD_KEYS.map((k) => (
+                <Money key={k} label={t('yt.pv.q4Item', { item: t(`yt.in.${k}`) })} value={q4[k]}
+                  onChange={(v) => setQ4((p) => (p ? { ...p, [k]: v } : p))} unit={W} />
+              ))}
+              <div className="bg-subtle rounded-2xl p-4 text-sm text-sub tabular-nums">
+                <p className="font-medium text-fg">{t('yt.pv.annual', { amount: won(r.card.spent) })}</p>
+                <p className="mt-1">
+                  {r.card.shortfall > 0
+                    ? t('yt.card.short', { threshold: won(r.card.threshold), amount: won(r.card.shortfall) })
+                    : t('yt.card.over', { threshold: won(r.card.threshold), amount: won(r.card.spent - r.card.threshold) })}
+                </p>
+              </div>
+            </Section>
+          ) : (
           <Section title={t('yt.sec.card')} badge={`${won(r.card.total)}${W}`} open>
             {money('credit')}
             {money('debit', t('yt.in.debitHint'))}
@@ -187,6 +304,7 @@ export default function YearEndTaxCalculator() {
                 : t('yt.card.over', { threshold: won(r.card.threshold), amount: won(r.card.spent - r.card.threshold) })}
             </div>
           </Section>
+          )}
 
           <Section title={t('yt.sec.pension')} badge={`${won(cr.pension + cr.insurance)}${W}`}>
             {money('pensionSavings', t('yt.in.pensionSavingsHint'))}
@@ -225,13 +343,14 @@ export default function YearEndTaxCalculator() {
         <div className="lg:col-span-3 space-y-6">
           <div className="ui-hero p-6">
             <div className="text-sm text-white/70">{t('yt.hero.label', { year: TAX_YEAR, salary: man(r.salary), salaryWon: won(r.salary) })}</div>
-            <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
+            <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums" aria-live="polite">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">
               {t('yt.hero.vs', { tax: won(r.totalTax), paid: won(r.prepaid + r.prepaidLocal) })}
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
               <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.rate', { rate: Math.round(r.rate * 100) })}</span>
               <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.eff', { rate: effRate.toFixed(1) })}</span>
+              {pv && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t(q4 ? 'yt.pv.chipManual' : 'yt.pv.chip')}</span>}
               {!opt.prepaid && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.estimated')}</span>}
               {r.standard && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('yt.hero.standard')}</span>}
             </div>
@@ -241,17 +360,43 @@ export default function YearEndTaxCalculator() {
             card={{
               tool: t('title'),
               label: t('yt.share.label', { salary: man(r.salary), salaryWon: won(r.salary) }),
-              headline,
-              sub: t('yt.share.sub', { year: TAX_YEAR }),
+              headline: shareHeadline,
+              sub: t(pv ? 'yt.share.subPreview' : 'yt.share.sub', { year: TAX_YEAR }),
               rows: [
                 { label: t('yt.row.determined'), value: `${won(r.totalTax)}${W}` },
                 { label: t('yt.row.prepaidAll'), value: `${won(r.prepaid + r.prepaidLocal)}${W}` },
-                { label: t('yt.row.taxBase'), value: `${won(r.taxBase)}${W}` },
+                pv
+                  ? { label: t('yt.pv.rowSpend'), value: `${won(r.card.spent)}${W}` }
+                  : { label: t('yt.row.taxBase'), value: `${won(r.taxBase)}${W}` },
               ],
             }}
-            text={t('yt.share.text', { salary: man(r.salary), salaryWon: won(r.salary), result: headline })}
+            text={t('yt.share.text', { salary: man(r.salary), salaryWon: won(r.salary), result: shareHeadline })}
             fileName="toolhub-year-end-tax"
           />
+
+          {/* 12월 31일까지 할 일 */}
+          <div className="ui-card p-6">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 className="text-lg font-semibold text-fg">{t('yt.todo.title')}</h2>
+              {dd(DEADLINE.yearEnd) && <span className="shrink-0 text-sm font-semibold text-primary tabular-nums">{dd(DEADLINE.yearEnd)}</span>}
+            </div>
+            <p className="text-sm text-muted mt-1">{t('yt.todo.desc')}</p>
+            <ul className="mt-4 divide-y divide-line">
+              <Todo title={t('yt.todo.pension')} dday={null}
+                gain={top.gain > 0 ? `+${won(top.gain)}${W}` : null}
+                desc={top.room === 0 ? t('yt.todo.pensionFull')
+                  : top.gain > 0 ? t('yt.todo.pensionDesc', { room: man(top.room), roomWon: won(top.room), rate: (pensionRate(salary) * 110).toFixed(1) })
+                  : t('yt.todo.pensionZero')} />
+              <Todo title={t('yt.todo.card')} dday={null}
+                gain={strat.gain > 0 ? `+${won(strat.gain)}${W}` : null}
+                desc={`${t(`yt.todo.advice.${strat.kind}`, { amount: won(strat.kind === 'short' ? strat.gap : strat.moved) })}${strat.kind === 'switch' && !pv ? ` ${t('yt.todo.cardAssume')}` : ''}`} />
+              <Todo title={t('yt.todo.donation')} dday={null}
+                gain={hometownGain > 0 ? `+${won(hometownGain)}${W}` : null}
+                desc={t(inp.hometown < 100_000 ? 'yt.todo.donationHometown' : 'yt.todo.donationDone')} />
+              <Todo title={t('yt.todo.simplified')} dday={dd(DEADLINE.simplified)} gain={null}
+                desc={t('yt.todo.simplifiedDesc', { year: TAX_YEAR + 1 })} />
+            </ul>
+          </div>
 
           {/* 더 돌려받는 방법 */}
           <div className="ui-card p-6">
@@ -326,6 +471,25 @@ export default function YearEndTaxCalculator() {
             )}
           </div>
 
+          {/* 2026년 귀속 달라진 점 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('yt.chg.title', { year: TAX_YEAR })}</h2>
+            <ul className="mt-4 space-y-3">
+              {chg.map((c, i) => (
+                <li key={i}>
+                  <div className="text-sm font-medium text-fg">{c.title}</div>
+                  <p className="text-sm text-sub mt-0.5">{c.desc}</p>
+                  <a href={CHG_LINKS[i]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-11 text-xs text-primary underline underline-offset-2">
+                    {c.law}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="https://www.nts.go.kr/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-11 text-sm font-medium text-primary">
+              {t('yt.chg.nts')}
+            </a>
+          </div>
+
           <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
             <p className="font-medium text-fg mb-2">{t('yt.scope.title')}</p>
             <ul className="list-disc pl-5 space-y-1">
@@ -353,6 +517,21 @@ function Section({ title, badge, open, children }: { title: string; badge: strin
       </summary>
       <div className="px-6 pb-6 space-y-4">{children}</div>
     </details>
+  )
+}
+
+function Todo({ title, desc, gain, dday }: { title: string; desc: string; gain: string | null; dday: string | null }) {
+  return (
+    <li className="flex items-start justify-between gap-3 py-3">
+      <div className="min-w-0">
+        <div className="text-sm font-medium text-fg">{title}</div>
+        <p className="text-xs text-muted mt-0.5">{desc}</p>
+      </div>
+      <div className="shrink-0 text-right tabular-nums">
+        {gain && <div className="text-base font-bold text-primary">{gain}</div>}
+        {dday && <div className="text-xs text-muted">{dday}</div>}
+      </div>
+    </li>
   )
 }
 

@@ -92,7 +92,7 @@ const allSorted = [...allHrefSet].sort();
 
 // Generate _redirects
 // 통합·이전된 도구: 옛 URL → 새 URL (쿼리스트링은 Cloudflare가 그대로 넘김)
-const movedRoutes = { '/severance-pay': '/retirement-calculator/' };
+const movedRoutes = { '/severance-pay': '/retirement-calculator/', '/monthly-rent-subsidy': '/youth-rent-subsidy/' };
 const redirectLines = [
   ...Object.entries(movedRoutes).flatMap(([from, to]) => [from + '  ' + to + '  301', from + '/  ' + to + '  301']),
   ...allSorted.map(h => h + '  ' + h + '/  301'),

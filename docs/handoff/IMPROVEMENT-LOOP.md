@@ -42,7 +42,8 @@
 | 10 | P1 | 2027 4대보험 요율 토글 + `/four-insurance` 신규 + `/salary-table?year=2027` — 공식 고시 후 (12/1까지) | 확정 대기 |
 | 11 | P1 | `/greeting-generator` 2027 정미년 연말·신년 문구 (12/1까지) | 후보 |
 | 12 | P3 | 결정 도구 3종(order-picker·ladder-game·menu-roulette) SSR 복구 | 완료(배치1) |
-| 12a | P3 | 큰 Suspense 제거: SalaryCalculator.tsx:1361·HourlyWage.tsx:438·bogeumjari page.tsx:158 (+ MonthlyRentSubsidy·TaxCalculator·time-converter·chess·git-visualizer) — 계산기가 `</main>` 뒤 숨김 영역에 렌더 | 1번 감사 병합 후 |
+| 12a | P3 | 큰 Suspense 제거: SalaryCalculator.tsx:1361·HourlyWage.tsx:438·bogeumjari page.tsx:158 (+ MonthlyRentSubsidy·TaxCalculator·time-converter·chess·git-visualizer) — 원인: React 19.2가 12.8KB 넘는 완료 Suspense 경계를 `</main>` 뒤 숨김 영역으로 빼냄. 7개 Suspense 제거(+HourlyWage useState URL 읽기 → effect) | 완료(배치2) |
+| 12k | P3 | 정적 HTML에 h1 없는 페이지: /games(허브)·/pomodoro·/svg-editor·/calculation-history (tips/[id] 400개는 의도적 noindex). 점검 스크립트: `node scripts/check-static-html.cjs out` — 배포 전마다 돌릴 것 | 후보 |
 | 12b | P3 | 보이는 FAQ 공용 서버 컴포넌트 `ToolFaq.tsx`(JSON-LD + `<details>`) → 39개 page.tsx 교체, JSON-LD url 끝 슬래시 통일(35개 불일치) | 1번 병합 후 |
 | 12c | P3 | sitemap lastmod `updatedDate?`, RSS·_redirects를 menuConfig에서 생성(누락 /running-pace 복구), RSS 최신순·description | 완료(배치1) |
 | 12d | P3 | 사실 오류: bonus FAQ 연금 상한 590만원(→ INSURANCE 참조), omok FAQ 15×15(실제 19×19), menu-roulette FAQ 프리셋 불일치, salary featureList "산재보험"(계산 안 함), salary-rank 2024 귀속 데이터 확인 | 1번 병합 후 |
@@ -55,13 +56,13 @@
 | 13b | P4 | AdSense·Axeptio를 lazyOnload로(TBT 1~1.5초) — 광고 수익·동의 요건 판단 필요 | 사용자 결정 |
 | 13c | P4 | Pretendard 웹폰트 385KB(woff2 16개, jsdelivr): 모바일 시스템 폰트 or 자체 호스팅 | 사용자 결정(디자인) |
 | 13d | P4 | SW 설치 시 HTML 10개 선캐시 축소·idle 이후로, en/shared.json 정적 import 지연 로드 | 후보 |
-| 12i | P3 | `DecisionToolClient.tsx`(/roulette 외 팀나누기·제비뽑기·동전 등 8개) ssr:false → 같은 방식으로 SSR | 다음 |
-| 12j | — | 사다리 공유 링크 버그: seed 복원 effect(LadderGame.tsx:791)가 participants·complexity 반영 전 기본값(3명·3)으로 생성 → 3명 아닌 공유 링크는 다른 사다리 | 다음 |
-| 19 | P0 | `/monthly-rent-subsidy` 계산 로직 공식 근거 없음("LH 월세지원금" 모델·지원율 20~40%·신혼 25만원 등) → `/youth-rent-subsidy` 301 통합 권장(방문 10/월) | 결정 필요 |
+| 12i | P3 | `DecisionToolClient.tsx`(/roulette 외 팀나누기·제비뽑기·동전 등 8개) ssr:false → dynamic(SSR+코드분할)으로, DecisionToolPage sr-only h1 중복 제거 | 완료(배치2) |
+| 12j | — | 사다리 공유 링크 버그: seed 복원 effect(LadderGame.tsx:791)가 participants·complexity 반영 전 기본값(3명·3)으로 생성 → buildLadderLines(seed,count,complexity)로 URL 값 직접 사용, 기록 불러오기 같은 버그도 수정 | 완료(배치2) |
+| 19 | P0 | `/monthly-rent-subsidy` 계산 로직 공식 근거 없음("LH 월세지원금" 모델·지원율 20~40%·신혼 25만원 등) → 사용자 결정으로 `/youth-rent-subsidy` 301 통합(movedRoutes), 페이지·컴포넌트·메뉴·OG 삭제, i18n `rentSubsidy`·footer/toolsShowcase 키는 미사용으로 남김 | 완료(배치2) |
 | 20 | P0 | 2027-01-01 전: YouthRentSubsidyCalculator `MEDIAN_INCOME_2026`·government-subsidy page 중위소득 → `utils/medianIncome.ts`(2027 고시 제2026-157호 포함) 참조로 | 12월 |
 | 21 | P1 | 법 개정 예정 반영: 근기법 제54조 휴게 생략(2026.12.10~), 고용보험 가입 소득기준 전환(2027.1.1~, weeklyHolidayPay·hourly-wage "월 60시간 미만" 문구), 시간단위 연차(2027.6.10~), 2028 이직자 기초일액 1년 보수 | 시행 전 |
-| 25 | P0 | 자녀세액공제 대상 2026~29 귀속 "2016년 이전 출생"(2026.4.21 개정, 2030~ 13세 이상) — netSalary `annualTaxEstimate`·간이세액표 자녀 집계(8~20세) 확인·정정 | 다음 |
-| 26 | P1 | 연말정산 시즌: /year-end-tax "2026 귀속 달라진 점 + 2027 개정안" 카드, 12/31 연금저축·IRP·카드 마감 D-day, 1/15 간소화 카운트다운, 공유 이미지 (백로그 3과 합침) | 10월 중 |
+| 25 | P0 | 자녀세액공제 대상 2026~29 귀속 "2016년 이전 출생"(2026.4.21 개정, 2030~ 13세 이상) — netSalary `annualTaxEstimate`·간이세액표 자녀 집계(8~20세) 확인·정정 — netSalary가 yearEndTax childCredit 사용(결과 불변). 남은 것: 급여 계산기 '8~20세 자녀' 입력 하나가 간이세액표·연간 추정 겸용이라 2017~18년생 자녀는 연간 추정 과대(참고값) | 부분 완료(배치2) |
+| 26 | P1 | 연말정산 시즌: /year-end-tax "2026 귀속 달라진 점 + 2027 개정안" 카드, 12/31 연금저축·IRP·카드 마감 D-day, 1/15 간소화 카운트다운, 공유 이미지 — 미리보기 모드(?mode=preview)·Q4 체크카드 전략·IRP 채우기 | 완료(배치2) |
 | 27 | P1 | 자동차 취등록세: 전기차 감면 2026.12.31 종료 D-day·인기 차종 프리셋 / 종부세 11월 고지 시즌 고지서 대조·일시적 2주택 처분기한 D-day | 11월 전 |
 | 28 | — | CarTaxCalculator·보금자리론 페이지 하드코딩 한국어·glass·light/dark 쌍 → i18n·토큰 / 양도세 일시적 2주택 계약일 입력(8.3 이전 계약 판정) / 로또 수령처(2등 지점) 확인 / 보금자리 전세사기피해자 조건·신용점수 LTV 차감 | 후보 |
 | 29 | P2 | 보금자리론 매월 1일 금리 갱신 예약 작업 + "지난달 대비" 배지, 시군구→규제지역 자동, ShareResult, 디딤돌 비교·DSR 연결 | 후보 |
@@ -81,3 +82,4 @@
 (배치 끝날 때마다 한 줄: 날짜 · 커밋 · 요약)
 
 - 2026-10-04 배치1 · 금융·생활비 48개 도구 공식 기준 점검(국민연금 계산기 10배 과대, 택시 15개 시·도 요금, 자동차 취등록세 등록세 이중부과, 실업급여 하한>상한, 보금자리 수도권 LTV 등) + 신규 4종(관부가세·김장·연휴 플래너·건강검진) + 홈 오늘의 퍼즐·시즌 카드 + 결정 도구 SSR + 성능 소규모(prefetch·_headers·supabase-js 제거) + RSS/sitemap. 검증: check 147개·tsc 0·messages:check. 배포 11bb5f43 (SW v4.32.0, 빌드 워커 cpus:4 — 기본 19개면 메모리 감시가 빌드 종료)
+- 2026-10-04 배치2 · Suspense 7곳 제거(React 19.2 12.8KB 경계 숨김 — 연봉·시급·보금자리·세금 등), 결정 도구 9종 SSR, 사다리 공유 버그, 연말정산 미리보기, 월세지원금→청년월세 301, CLAUDE.md 템플릿 Suspense 제거, scripts/check-static-html.cjs. 검증: check 147·tsc 0·브라우저(연말정산·연봉/시급 공유·동전·5명 사다리)

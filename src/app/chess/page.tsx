@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import ChessPageContent from '@/components/ChessPageContent'
 import RelatedTools from '@/components/RelatedTools'
@@ -90,21 +89,15 @@ export default function ChessPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen py-8 px-4">
-        <Suspense fallback={
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <I18nWrapper>
+          <ChessPageContent />
+          <div className="mt-8">
+
+            <RelatedTools />
+
           </div>
-        }>
-          <I18nWrapper>
-            <ChessPageContent />
-            <div className="mt-8">
 
-              <RelatedTools />
-
-            </div>
-
-          </I18nWrapper>
-        </Suspense>
+        </I18nWrapper>
       </div>
       {/* SEO Content */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

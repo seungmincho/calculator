@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { Metadata } from 'next';
 import BogeumjariLoanCalculator from '@/components/BogeumjariLoanCalculator';
 
@@ -155,22 +154,11 @@ export default function BogeumjariLoanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
 
-      <Suspense fallback={
-        <div className="min-h-screen py-8">
-          <div className="max-w-6xl mx-auto p-8">
-            <div className="animate-pulse space-y-8">
-              <div className="h-16 bg-track rounded-xl" />
-              <div className="h-96 bg-track rounded-xl" />
-            </div>
-          </div>
+      <div className="min-h-screen py-8 overflow-hidden">
+        <div className="relative z-10">
+          <BogeumjariLoanCalculator />
         </div>
-      }>
-        <div className="min-h-screen py-8 overflow-hidden">
-          <div className="relative z-10">
-            <BogeumjariLoanCalculator />
-          </div>
-        </div>
-      </Suspense>
+      </div>
 
       {/* ===== 2026년 종합 가이드 ===== */}
       <div className="bg-white dark:bg-gray-900">

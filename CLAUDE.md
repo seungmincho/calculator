@@ -506,7 +506,6 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 ```typescript
 // /src/app/new-tool/page.tsx
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import NewTool from '@/components/NewTool'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -551,11 +550,9 @@ export default function NewToolPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center">Loading...</div>}>
-            <I18nWrapper>
-              <NewTool />
-            </I18nWrapper>
-          </Suspense>
+          <I18nWrapper>
+            <NewTool />
+          </I18nWrapper>
         </div>
       </div>
     </>
@@ -782,6 +779,7 @@ export default function NewTool() {
 - Follow consistent naming conventions
 
 ### TypeScript Gotchas
+- **페이지 전체를 `<Suspense>`로 감싸지 말 것**: React 19.2는 12.8KB 넘는 완료 경계를 `</main>` 뒤 숨김 영역으로 빼고 원래 자리엔 fallback(스피너)만 남김 → 검색엔진이 스피너만 색인. 빌드 후 `node scripts/check-static-html.cjs out`으로 확인.
 - **`useSearchParams` 금지 (next/navigation)**: static export에서 프리렌더 bailout → 도구 본문이 HTML에서 빠져 Google 색인 불가. 반드시 `import { useSearchParams } from '@/hooks/useSearchParams'` 사용 (동일 API, 서버=빈 params).
 - **Recharts callback types**: `Tooltip formatter` and `Pie label` callbacks have optional params (`value?: number`, `name?: string`, `percent?: number`). Always use nullish coalescing (`value ?? 0`).
 - **`unknown` type in JSX**: When using `&&` short-circuit in JSX with `unknown`-typed values (e.g., `parsedResult?.data`), wrap with `!!` to cast to boolean. Otherwise TypeScript errors with "Type 'unknown' is not assignable to type 'ReactNode'".

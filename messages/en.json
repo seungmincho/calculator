@@ -36890,6 +36890,85 @@
   },
   "yearEndTaxCalc": {
     "yt": {
+      "mode": {
+        "label": "Calculation mode",
+        "annual": "Full-year estimate",
+        "preview": "Preview (Jan–Sep actuals)",
+        "annualHint": "Enter what you expect for the whole year.",
+        "previewHint": "Enter your Jan–Sep card spending and we project it to year-end. Find it in Hometax's November year-end preview or your card app."
+      },
+      "pv": {
+        "salaryBasis": "Salary input",
+        "basisAnnual": "Annual salary",
+        "basisYtd": "Jan–Sep pay",
+        "ytdSalary": "Total pay, Jan–Sep",
+        "ytdSalaryHint": "×12/9 → {amount} KRW a year. If you expect a year-end bonus, enter the annual salary instead",
+        "cardTitle": "Card spending, Jan–Sep",
+        "cardHint": "Copy the Jan–Sep amounts shown in Hometax's year-end settlement preview.",
+        "ytdShort": "Spent {spent} KRW in Jan–Sep. {amount} KRW to go until the 25% threshold ({threshold} KRW). Spending below the threshold earns no deduction.",
+        "ytdOver": "Jan–Sep spending already passed the 25% threshold ({threshold} KRW) by {amount} KRW. Everything you spend from now on counts.",
+        "q4": "Oct–Dec spending",
+        "q4Auto": "Same pace as Jan–Sep",
+        "q4Manual": "Enter manually",
+        "q4AutoHint": "Assumes another {amount} KRW in Oct–Dec at your Jan–Sep pace (×12/9).",
+        "q4Item": "Oct–Dec {item}",
+        "annual": "Projected annual spending {amount} KRW",
+        "chip": "Jan–Sep ×12/9 projection",
+        "chipManual": "Jan–Sep actuals + Oct–Dec plan",
+        "rowSpend": "Annual card spending (projected)"
+      },
+      "todo": {
+        "title": "Before December 31",
+        "desc": "These can't be changed once the year ends. Amounts are the extra refund (incl. local tax) based on your inputs.",
+        "pension": "Pension savings / IRP",
+        "pensionDesc": "Fill the remaining {roomWon} KRW of credit room and get {rate}% back. Payments through Dec 31 count.",
+        "pensionFull": "You've already used the full 9M KRW credit limit.",
+        "pensionZero": "Your final tax is already 0, so paying in more won't raise this year's refund.",
+        "card": "How to pay for the rest of the year",
+        "advice": {
+          "short": "Projected spending is {amount} KRW short of the 25% threshold, so the card deduction is 0. Pick cards for discounts and points instead.",
+          "switch": "Paying {amount} KRW of Oct–Dec credit card spending by debit card or cash receipt raises its deduction rate from 15% to 30%.",
+          "maxed": "You've hit the basic card deduction limit or owe no tax, so the payment method doesn't change the refund. Use the card with the best perks.",
+          "balanced": "Your credit card spending sits inside the 25% threshold, so switching payment methods doesn't change the deduction. The threshold is filled by credit card spending first."
+        },
+        "cardAssume": "(Oct–Dec credit card spending assumed to be 1/4 of the year)",
+        "donation": "Donations",
+        "donationHometown": "A 100,000 KRW hometown donation comes back in full (incl. local tax), plus a thank-you gift. Only donations paid by Dec 31 count this year.",
+        "donationDone": "Only donations paid by Dec 31 count this year. Receipts appear in the simplified service.",
+        "simplified": "Simplified year-end service opens",
+        "simplifiedDesc": "On January 15, {year}, Hometax lets you download medical, education and card data in one go."
+      },
+      "chg": {
+        "title": "What changed for tax year {year}",
+        "items": [
+          {
+            "title": "Child tax credit eligibility",
+            "desc": "For tax years 2026–2029 only children born in 2016 or earlier qualify (2017 births are excluded due to the expanded child allowance). From tax year 2030: age 13 and over.",
+            "law": "Income Tax Act §59-2 and addenda (2026.4.21)"
+          },
+          {
+            "title": "Higher card deduction limit for parents",
+            "desc": "The basic limit rises by 500,000 KRW per child, up to 1M KRW. Above 70M KRW salary: 250,000 KRW per child, up to 500,000 KRW.",
+            "law": "Restriction of Special Taxation Act §126-2"
+          },
+          {
+            "title": "Arts & sports academies for grades 1–2",
+            "desc": "Arts, music and sports academy fees for 1st and 2nd graders now qualify for the education credit (15%, up to 3M KRW per child).",
+            "law": "Income Tax Act §59-4"
+          },
+          {
+            "title": "Rent credit extended to spouses",
+            "desc": "Rent paid by the spouse of an eligible household head now qualifies (couple combined up to 10M KRW a year).",
+            "law": "Restriction of Special Taxation Act §95-2"
+          },
+          {
+            "title": "Marriage credit ends soon",
+            "desc": "Couples registering marriage in 2024–2026 get 500,000 KRW each (once per lifetime). Registrations must be made by December 31, 2026.",
+            "law": "Restriction of Special Taxation Act §92"
+          }
+        ],
+        "nts": "National Tax Service year-end settlement guide"
+      },
       "subtitle": "Tax year {year} (settled Jan–Feb {next}) — the more you enter, the more accurate",
       "won": " KRW",
       "people": "{n}",
@@ -36988,6 +37067,9 @@
         "standard": "Standard credit used"
       },
       "share": {
+        "refund": "Year-end refund +{amountWon} KRW",
+        "pay": "Extra tax due {amountWon} KRW",
+        "subPreview": "Tax year {year} preview (Jan–Sep actuals)",
         "label": "Year-end refund on {salaryWon} KRW salary",
         "sub": "Tax year {year} estimate",
         "text": "Salary {salaryWon} KRW, year-end settlement: {result}"

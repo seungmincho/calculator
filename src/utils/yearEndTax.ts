@@ -91,7 +91,22 @@ export function cardDeduction(salary: number, s: CardSpend, children = 0) {
   const lim = cardLimits(salary, children)
   const basic = Math.min(gross, lim.basic)
   const extra = Math.min(gross - basic, lim.extra, parts.market + parts.transport + parts.culture)
-  return { threshold, spent, shortfall: Math.max(0, threshold - spent), parts, gross, limits: lim, basic, extra, total: basic + extra }
+  return { threshold, spent, shortfall: cardThresholdGap(salary, spent), parts, gross, limits: lim, basic, extra, total: basic + extra }
+}
+
+/** 총급여 25%(최저사용금액)까지 더 써야 하는 금액. 0 = 이미 넘김 */
+export const cardThresholdGap = (salary: number, spent: number) => Math.max(0, Math.floor(salary * 0.25) - spent)
+
+// ── 미리보기: 1~9월 실적 → 연간 추정 (국세청 연말정산 미리보기도 1~9월 카드 사용액 기준) ──
+export const PREVIEW_MONTHS = 9
+export const CARD_KEYS: (keyof CardSpend)[] = ['credit', 'debit', 'transport', 'market', 'culture']
+/** months개월 실적 → 12개월 환산 (반올림) */
+export const annualize = (amount: number, months = PREVIEW_MONTHS) => (months > 0 ? Math.round((amount * 12) / months) : 0)
+/** 1~9월 실적 + 10~12월 예상(생략 시 같은 속도로 ×12/9) → 연간 사용액 */
+export function annualSpend(ytd: CardSpend, q4?: CardSpend | null): CardSpend {
+  const out = { ...ytd }
+  for (const k of CARD_KEYS) out[k] = q4 ? ytd[k] + q4[k] : annualize(ytd[k])
+  return out
 }
 
 // ── 조특법 §87 주택청약종합저축(총급여 7천만 이하 무주택 세대주, 납입 300만 한도 × 40%)
@@ -103,9 +118,10 @@ export function housingDeduction(salary: number, subscription: number, leaseLoan
 }
 
 // ── 소득세법 §59의3 연금계좌: 연금저축 600만, IRP 합산 900만. 총급여 5,500만 이하 15%, 초과 12% ──
+export const pensionRate = (salary: number) => (salary <= 55_000_000 ? 0.15 : 0.12)
 export function pensionCredit(salary: number, savings: number, irp: number) {
   const base = Math.min(Math.min(savings, 6_000_000) + irp, 9_000_000)
-  return Math.floor(base * (salary <= 55_000_000 ? 0.15 : 0.12))
+  return Math.floor(base * pensionRate(salary))
 }
 
 // ── 소득세법 §59의4① 보장성보험 12% (100만 한도) ──
@@ -272,6 +288,35 @@ export type YetResult = ReturnType<typeof calc>
 export type TipId = 'pension100' | 'pensionMax' | 'debit' | 'hometown' | 'housingSub' | 'rent'
 export interface Tip { id: TipId; amount: number; gain: number }
 
+// 연금계좌 남은 한도(연금저축 600 + IRP 합산 900만)와 amt만큼 더 넣을 때의 입력 (연금저축 먼저 채움)
+const pensionRoom = (x: YetInput) => Math.max(0, 9_000_000 - Math.min(x.pensionSavings, 6_000_000) - x.irp)
+function pensionPatch(x: YetInput, amt: number): Partial<YetInput> {
+  const toPs = Math.min(amt, Math.max(0, 6_000_000 - x.pensionSavings))
+  return { pensionSavings: x.pensionSavings + toPs, irp: x.irp + amt - toPs }
+}
+/** 12월 31일까지 연금저축·IRP 남은 한도를 채우면 늘어나는 환급액 (지방소득세 포함) */
+export function pensionTopUp(x: YetInput) {
+  const room = pensionRoom(x)
+  return { room, gain: room ? calc({ ...x, ...pensionPatch(x, room) }).refund - calc(x).refund : 0 }
+}
+
+// ── 10~12월 카드 전략: 남은 신용카드 사용분(q4Credit)을 체크카드·현금영수증(30%)으로 돌렸을 때 환급 차이.
+//    short = 연말까지 써도 25% 문턱 미달(공제 0) / switch = 바꾸면 이득 / maxed = 기본한도 소진·결정세액 0 /
+//    balanced = 신용카드가 전부 문턱 안이라 바꿔도 같음 ──
+export type CardAdvice = 'short' | 'switch' | 'maxed' | 'balanced'
+export function q4Strategy(x: YetInput, q4Credit: number) {
+  const base = calc(x)
+  const moved = Math.min(Math.max(0, q4Credit), x.credit)
+  const gain = calc({ ...x, credit: x.credit - moved, debit: x.debit + moved }).refund - base.refund
+  const gap = cardThresholdGap(base.salary, base.card.spent)
+  const kind: CardAdvice = gap > 0 ? 'short' : gain > 0 ? 'switch'
+    : base.determined === 0 || base.card.basic >= base.card.limits.basic ? 'maxed' : 'balanced'
+  return { kind, gap, moved, gain }
+}
+
+// 할 일 마감 (KST 날짜). 간소화 서비스는 매년 1월 15일 국세청 홈택스 오픈
+export const DEADLINE = { yearEnd: `${TAX_YEAR}-12-31`, simplified: `${TAX_YEAR + 1}-01-15` }
+
 export function tips(x: YetInput): Tip[] {
   const base = calc(x).refund
   const out: Tip[] = []
@@ -279,14 +324,9 @@ export function tips(x: YetInput): Tip[] {
     if (amount <= 0) return
     out.push({ id, amount, gain: calc({ ...x, ...patch }).refund - base })
   }
-  const ps = Math.min(x.pensionSavings, 6_000_000)
-  const room = Math.max(0, 9_000_000 - ps - x.irp)
-  const into = (amt: number): Partial<YetInput> => {
-    const toPs = Math.min(amt, 6_000_000 - ps)
-    return { pensionSavings: x.pensionSavings + toPs, irp: x.irp + amt - toPs }
-  }
-  add('pension100', Math.min(1_000_000, room), into(Math.min(1_000_000, room)))
-  if (room > 1_000_000) add('pensionMax', room, into(room))
+  const room = pensionRoom(x)
+  add('pension100', Math.min(1_000_000, room), pensionPatch(x, Math.min(1_000_000, room)))
+  if (room > 1_000_000) add('pensionMax', room, pensionPatch(x, room))
   const mv = Math.min(x.credit, 5_000_000)
   add('debit', mv, { credit: x.credit - mv, debit: x.debit + mv })
   add('hometown', Math.max(0, 100_000 - x.hometown), { hometown: Math.max(x.hometown, 100_000) })

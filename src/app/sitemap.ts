@@ -19,7 +19,6 @@ const categoryDefaults: Record<string, { priority: number; changeFrequency: Meta
 // 개별 페이지 priority 오버라이드 (검색량 높은 도구)
 const priorityOverrides: Record<string, number> = {
   '/salary-calculator': 0.9,
-  '/monthly-rent-subsidy': 0.9,
   '/bogeumjari-loan': 0.9,
   '/median-income': 0.9,
   '/percent-calculator': 0.9,

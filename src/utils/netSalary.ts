@@ -4,13 +4,16 @@
  */
 import { INSURANCE, PENSION_ANNUAL_CAP } from './insuranceRates'
 import { wageTax } from './wageTaxTable'
+import { childCredit } from './yearEndTax'
 
 export interface NetSalaryInput {
   /** 월 비과세액 (식대 등). 기본 20만 */
   nonTaxableMonthly?: number
   /** 공제대상가족 수, 본인 포함. 기본 1 */
   dependents?: number
-  /** 8세 이상 20세 이하 자녀 수 (dependents에 포함된 인원). 기본 0 */
+  /** 8세 이상 20세 이하 자녀 수 (dependents에 포함된 인원, 간이세액표 기준). 기본 0.
+   *  annualTaxEstimate의 자녀세액공제에도 이 수를 쓴다 — 2026 귀속 대상은 2016년 이전 출생·20세 이하라
+   *  2017~2018년생(8~9세)이 있으면 그만큼 공제가 과대. 정확한 값은 연말정산 계산기(yearEndTax.ts) */
   children?: number
   /** 실제 납부한 연 국민연금(연금보험료공제). 생략 시 과세급여 × 요율(상한 적용). 성과급처럼 기준소득월액에 안 잡히는 소득용 */
   nationalPensionAnnual?: number
@@ -66,13 +69,15 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   else creditCap = Math.max(200_000, 500_000 - (grossAnnual - 120_000_000) * 0.5)
   workTaxCredit = Math.min(workTaxCredit, creditCap)
 
-  // 자녀세액공제 (2025~): 1명 25만, 2명 55만, 3명째부터 +40만
-  const childTaxCredit = children === 0 ? 0 : children === 1 ? 250_000 : 550_000 + (children - 2) * 400_000
+  // 자녀세액공제 (소득세법 §59의2): yearEndTax.ts와 같은 공식(1명 25만, 2명 55만, 3명째부터 +40만).
+  // 2026 귀속 대상 = 2016년 이전 출생·20세 이하(부칙 2026.4.21). 입력이 간이세액표의 '8~20세' 수뿐이라 그대로 근사
+  const childTaxCredit = childCredit(children)
 
   const taxCredit = Math.min(computedTax, Math.floor(workTaxCredit + childTaxCredit))
   // 연말정산 결정세액 추정(특별공제·표준세액공제 제외) — 참고용
   const annualTaxEstimate = computedTax - taxCredit
-  // 매달 실제로 떼는 소득세 = 근로소득 간이세액표(2026.2.27 개정). 실수령액·기납부세액은 이 값 기준
+  // 매달 실제로 떼는 소득세 = 근로소득 간이세액표(2026.2.27 개정). 실수령액·기납부세액은 이 값 기준.
+  // 간이세액표의 자녀 공제는 표 자체 기준 '8세 이상 20세 이하' (연말정산 자녀세액공제 연령과 다름 — 의도적으로 그대로 둠)
   const incomeTax = wageTax(taxableAnnual / 12, dependents, children) * 12
   const localIncomeTax = Math.floor(incomeTax * 0.1)
 

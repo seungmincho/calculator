@@ -54,7 +54,6 @@ export const menuConfig: MenuConfig = {
       { href: '/tax-calculator', labelKey: 'footer.links.taxCalculator', descriptionKey: 'toolsShowcase.tools.tax.description', icon: '📋', subcategory: 'subcategory.tax' },
       { href: '/exchange-calculator', labelKey: 'footer.links.exchangeCalculator', descriptionKey: 'toolsShowcase.tools.exchange.description', icon: '💱', subcategory: 'subcategory.others' },
       { href: '/real-estate-calculator', labelKey: 'footer.links.realEstateCalculator', descriptionKey: 'toolsShowcase.tools.realEstate.description', icon: '🏠', subcategory: 'subcategory.realEstate' },
-      { href: '/monthly-rent-subsidy', labelKey: 'footer.links.monthlyRentSubsidy', descriptionKey: 'toolsShowcase.tools.monthlyRentSubsidy.description', icon: '🏘️', subcategory: 'subcategory.realEstate' },
       { href: '/bogeumjari-loan', labelKey: 'footer.links.bogeumjariLoan', descriptionKey: 'toolsShowcase.tools.bogeumjariLoan.description', icon: '🏡', subcategory: 'subcategory.loanFinance' },
       { href: '/car-loan-calculator', labelKey: 'footer.links.carLoanCalculator', descriptionKey: 'toolsShowcase.tools.carLoan.description', icon: '🚗', subcategory: 'subcategory.loanFinance' },
       { href: '/car-tax-calculator', labelKey: 'footer.links.carTaxCalculator', descriptionKey: 'toolsShowcase.tools.carTax.description', icon: '🚘', subcategory: 'subcategory.livingCost' },

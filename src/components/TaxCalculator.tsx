@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from '@/hooks/useSearchParams';
 import dynamic from 'next/dynamic'
@@ -881,12 +881,4 @@ const TaxCalculatorContent = () => {
   );
 };
 
-const TaxCalculator = () => {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
-      <TaxCalculatorContent />
-    </Suspense>
-  );
-};
-
-export default TaxCalculator;
+export default TaxCalculatorContent;

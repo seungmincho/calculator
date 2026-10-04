@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
@@ -17,36 +17,40 @@ const AVG_ANNUAL_SALARY_KR = 42_000_000 // 한국 근로자 평균 연봉 약 4,
 
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 
-function HourlyWageInner() {
+export default function HourlyWage() {
   const t = useTranslations('hourlyWage')
   const sp = useSearchParams()
 
-  const [inputType, setInputType] = useState<InputType>(() => {
+  const [inputType, setInputType] = useState<InputType>('hourly')
+  const [amount, setAmount] = useState<string>(MIN_WAGE_2026.toLocaleString('ko-KR'))
+  const [daysPerWeek, setDaysPerWeek] = useState<number>(5)
+  const [weeklyHours, setWeeklyHours] = useState<number>(40)
+  const [holiday, setHoliday] = useState<boolean>(true)
+  const [dStart, setDStart] = useState('09:00')
+  const [dEnd, setDEnd] = useState('18:00')
+  const [dHoliday, setDHoliday] = useState(false)
+  const [small, setSmall] = useState(false)
+
+  // 공유 링크 복원은 마운트 후 1회 → 정적 HTML과 hydration 첫 렌더는 항상 기본값
+  useEffect(() => {
     const ty = sp.get('type') as InputType
-    return TYPES.includes(ty) ? ty : 'hourly'
-  })
-  const [amount, setAmount] = useState<string>(() => {
+    if (TYPES.includes(ty)) setInputType(ty)
     const w = parseInt(sp.get('wage') || '')
-    return (w > 0 ? w : MIN_WAGE_2026).toLocaleString('ko-KR')
-  })
-  const [daysPerWeek, setDaysPerWeek] = useState<number>(() => {
+    if (w > 0) setAmount(w.toLocaleString('ko-KR'))
     const d = parseFloat(sp.get('days') || '')
-    return d > 0 && d <= 7 ? d : 5
-  })
-  const [weeklyHours, setWeeklyHours] = useState<number>(() => {
+    if (d > 0 && d <= 7) setDaysPerWeek(d)
     const wh = parseFloat(sp.get('wh') || '')
-    if (wh > 0 && wh <= 68) return wh
-    // 구버전 공유 링크: hours(1일) × days
-    const h = parseFloat(sp.get('hours') || '')
-    const d = parseFloat(sp.get('days') || '') || 5
-    return h > 0 ? Math.min(68, h * d) : 40
-  })
-  const [holiday, setHoliday] = useState<boolean>(() => sp.get('hol') !== '0')
-  const hm = (v: string | null, d: string) => (v && /^\d{2}:\d{2}$/.test(v) ? v : d)
-  const [dStart, setDStart] = useState(() => hm(sp.get('ds'), '09:00'))
-  const [dEnd, setDEnd] = useState(() => hm(sp.get('de'), '18:00'))
-  const [dHoliday, setDHoliday] = useState(() => sp.get('dhol') === '1')
-  const [small, setSmall] = useState(() => sp.get('small') === '1')
+    const h = parseFloat(sp.get('hours') || '') // 구버전 공유 링크: hours(1일) × days
+    if (wh > 0 && wh <= 68) setWeeklyHours(wh)
+    else if (h > 0) setWeeklyHours(Math.min(68, h * (d || 5)))
+    if (sp.get('hol') === '0') setHoliday(false)
+    const hm = (v: string | null) => v && /^\d{2}:\d{2}$/.test(v)
+    const ds = sp.get('ds'), de = sp.get('de')
+    if (hm(ds)) setDStart(ds!)
+    if (hm(de)) setDEnd(de!)
+    if (sp.get('dhol') === '1') setDHoliday(true)
+    if (sp.get('small') === '1') setSmall(true)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const shareUrl = useCallback(() => {
     const p = new URLSearchParams()
@@ -435,13 +439,5 @@ function HourlyWageInner() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default function HourlyWage() {
-  return (
-    <Suspense fallback={<div className="text-center py-12 text-muted">Loading...</div>}>
-      <HourlyWageInner />
-    </Suspense>
   )
 }

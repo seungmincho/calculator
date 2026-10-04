@@ -4,6 +4,7 @@ import {
   earnedIncomeDeduction, progressiveTax, earnedIncomeCredit, childCredit, birthCredit, cardDeduction, cardLimits,
   housingDeduction, pensionCredit, insuranceCredit, medicalCredit, educationCredit, donationCredit, hometownCredit,
   rentCredit, calc, tips, DEFAULT_INPUT, type YetInput,
+  annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate, DEADLINE,
 } from '../src/utils/yearEndTax.ts'
 
 const M = { special: 0, general: 0, premature: 0, infertility: 0 }
@@ -103,6 +104,47 @@ const p100 = tp.find((x) => x.id === 'pension100')!
 assert.ok(Math.abs(p100.gain - 165_000) <= 20, `pension100 ${p100.gain}`)
 for (let i = 1; i < tp.length; i++) assert.ok(tp[i - 1].gain >= tp[i].gain)
 assert.ok(tips({ ...DEFAULT_INPUT, salary: 15_000_000 }).every((x) => x.gain === 0)) // 결정세액 0 → 추가 환급 없음
+
+// ── 미리보기: 1~9월 실적 ×12/9, 25% 문턱까지 남은 금액 ──
+assert.equal(annualize(7_500_000), 10_000_000)
+assert.equal(annualize(450_000, 9), 600_000)
+assert.equal(annualize(100, 9), 133)
+assert.equal(annualize(1_000_000, 0), 0)
+assert.deepEqual(annualSpend({ ...S0, credit: 9_000_000, transport: 450_000 }),
+  { ...S0, credit: 12_000_000, transport: 600_000 })
+assert.deepEqual(annualSpend({ ...S0, credit: 9_000_000 }, { ...S0, credit: 1_000_000, debit: 2_000_000 }),
+  { ...S0, credit: 10_000_000, debit: 2_000_000 }) // 10~12월 직접 입력
+assert.equal(cardThresholdGap(50_000_000, 10_000_000), 2_500_000)
+assert.equal(cardThresholdGap(50_000_000, 12_500_000), 0)
+assert.equal(cardThresholdGap(50_000_000, 20_000_000), 0)
+assert.equal(cardDeduction(50_000_000, { ...S0, credit: 10_000_000 }).shortfall, cardThresholdGap(50_000_000, 10_000_000))
+
+// ── 10~12월 카드 전략 ──
+// 신용 1,400만(문턱 1,250만 초과) → 10~12월 신용 350만을 체크로: 공제 +22.5만 × 15% 구간 × 1.1
+let q = q4Strategy({ ...DEFAULT_INPUT, credit: 14_000_000, debit: 3_000_000 }, 3_500_000)
+assert.equal(q.kind, 'switch'); assert.equal(q.moved, 3_500_000)
+assert.ok(Math.abs(q.gain - 225_000 * 0.165) <= 20, `q4 switch ${q.gain}`)
+q = q4Strategy(DEFAULT_INPUT, 2_500_000) // 신용 1,000만 < 문턱 → 신용은 전부 문턱에 흡수, 바꿔도 같음
+assert.deepEqual([q.kind, q.gain], ['balanced', 0])
+q = q4Strategy({ ...DEFAULT_INPUT, credit: 5_000_000, debit: 0, transport: 0 }, 1_000_000)
+assert.deepEqual([q.kind, q.gap, q.gain], ['short', 7_500_000, 0])
+q = q4Strategy({ ...DEFAULT_INPUT, credit: 40_000_000, debit: 10_000_000 }, 10_000_000) // 기본한도 300만 소진
+assert.deepEqual([q.kind, q.gain], ['maxed', 0])
+assert.equal(q4Strategy({ ...DEFAULT_INPUT, credit: 14_000_000 }, 99_000_000).moved, 14_000_000) // 연간 신용카드 이상 못 옮김
+
+// ── 연금저축·IRP 남은 한도 채우기: 총급여 5,500만 이하 16.5%, 초과 13.2% (지방세 포함) ──
+assert.deepEqual([pensionRate(55_000_000), pensionRate(55_000_001)], [0.15, 0.12])
+let pt = pensionTopUp({ ...DEFAULT_INPUT, prepaid: 3_000_000 })
+assert.equal(pt.room, 9_000_000); assert.ok(Math.abs(pt.gain - 1_485_000) <= 20, `topup ${pt.gain}`)
+pt = pensionTopUp({ ...DEFAULT_INPUT, salary: 60_000_000, pensionSavings: 6_000_000, irp: 2_000_000 })
+assert.equal(pt.room, 1_000_000); assert.ok(Math.abs(pt.gain - 132_000) <= 20, `topup13.2 ${pt.gain}`)
+assert.equal(pensionTopUp({ ...DEFAULT_INPUT, pensionSavings: 7_000_000, irp: 1_000_000 }).room, 2_000_000) // 연금저축 600 초과분은 한도에 안 셈
+assert.deepEqual(pensionTopUp({ ...DEFAULT_INPUT, pensionSavings: 6_000_000, irp: 3_000_000 }), { room: 0, gain: 0 })
+assert.equal(pensionTopUp({ ...DEFAULT_INPUT, salary: 15_000_000 }).gain, 0) // 결정세액 0 → 늘지 않음
+// tips의 한도 채우기와 같은 값
+assert.equal(tips({ ...DEFAULT_INPUT, prepaid: 3_000_000 }).find((x) => x.id === 'pensionMax')!.gain,
+  pensionTopUp({ ...DEFAULT_INPUT, prepaid: 3_000_000 }).gain)
+assert.deepEqual(DEADLINE, { yearEnd: '2026-12-31', simplified: '2027-01-15' })
 
 // ── netSalary.ts와 교차검증: 특별공제 없는 경우 산출·결정세액 일치 ──
 try {
