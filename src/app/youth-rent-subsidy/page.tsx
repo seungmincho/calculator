@@ -4,11 +4,11 @@ import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
   title: '청년월세지원 자격 계산기 - 월 20만원 지원 확인 | 툴허브',
-  description: '2026년 청년월세 한시 특별지원 자격을 확인하세요. 만 19~34세 무주택 청년 대상, 월 최대 20만원(연 240만원) 지원. 중위소득 60% 기준, 재산 1.22억 이하 조건을 자동 판정합니다.',
+  description: '2026년 국가사업 청년월세지원의 간이 요건과 예상 지원금을 확인하세요. 월 최대 20만원, 생애 누적 최대 24회에서 기수혜 회차를 차감합니다. 신규 접수 종료와 서울시 자체사업(12개월)의 차이도 안내합니다.',
   keywords: '청년월세, 월세지원, 청년월세 한시 특별지원, 월세보조금, 청년주거, 복지로, 청년월세지원 자격, 월세 20만원, 중위소득 60%',
   openGraph: {
     title: '청년월세지원 자격 계산기 - 월 20만원 지원 확인 | 툴허브',
-    description: '2026년 청년월세 한시 특별지원 자격과 예상 지원금을 확인하세요. 7가지 조건 자동 판정.',
+    description: '국가사업 생애 누적 최대 24회·480만원. 기수혜 차감과 2026년 신규 신청 종료를 확인하세요.',
     url: 'https://toolhub.ai.kr/youth-rent-subsidy',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '청년월세지원 자격 계산기',
-    description: '월 최대 20만원, 12개월 지원. 자격 여부를 바로 확인하세요.',
+    description: '국가사업 월 최대 20만원, 생애 누적 최대 24회. 기수혜 차감·2026년 접수 종료 안내.',
     images: ['https://toolhub.ai.kr/og/youth-rent-subsidy.png'],
   },
   alternates: {
@@ -31,16 +31,17 @@ export default function YouthRentSubsidyPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '청년월세지원 자격 계산기',
-    description: '2026년 청년월세 한시 특별지원 자격 판정 및 예상 지원금 계산기',
+    description: '2026년 국가사업 청년월세지원 간이 요건 및 기수혜 회차 차감 예상액 계산기',
     url: 'https://toolhub.ai.kr/youth-rent-subsidy',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '청년월세 한시 특별지원 자격 7가지 조건 자동 판정',
+      '국가사업 청년월세지원 간이 요건 확인',
       '2026년 중위소득 기준 적용',
-      '예상 월 지원금 및 연간 총액 계산',
+      '생애 누적 최대 24회에서 기수혜 회차를 차감한 예상 총액 계산',
+      '2026년 신규 신청 종료와 서울시 자체사업 구분 안내',
       '원가구(부모) 소득 기준 판정',
       'URL 공유로 입력값 재현',
     ],
@@ -50,7 +51,7 @@ export default function YouthRentSubsidyPage() {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: '청년월세지원 자격 계산기 사용 방법',
-    description: '청년월세 한시 특별지원 자격 여부와 예상 지원금을 확인하는 방법입니다.',
+    description: '국가사업 청년월세지원의 간이 요건과 잔여 지급 횟수 기준 예상액을 확인하는 방법입니다.',
     step: [
       {
         '@type': 'HowToStep',
@@ -65,12 +66,12 @@ export default function YouthRentSubsidyPage() {
       {
         '@type': 'HowToStep',
         name: '주거 정보 입력',
-        text: '현재 월세, 보증금, 주거 유형을 입력합니다.',
+        text: '현재 월세, 보증금, 주거 유형과 국가사업 기수혜 회차를 입력합니다.',
       },
       {
         '@type': 'HowToStep',
         name: '자격 판정 결과 확인',
-        text: '자격 확인 버튼을 누르면 7가지 조건별 충족 여부와 예상 지원금이 표시됩니다.',
+        text: '자격 확인 버튼을 누르면 간이 요건과 생애 누적 24회 중 잔여 횟수 기준 예상 지원금이 표시됩니다. 2026년 신규 접수 종료 안내를 함께 확인합니다.',
       },
     ],
   }
@@ -84,7 +85,7 @@ export default function YouthRentSubsidyPage() {
         name: '청년월세 한시 특별지원 자격 요건은 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '만 19~34세 독립거주 무주택 청년으로, 본인 소득이 중위소득 60% 이하(1인 가구 약 143.5만원), 원가구(부모) 소득이 중위소득 100% 이하, 본인 재산 1.22억원 이하, 보증금 5,000만원 이하 및 월세 70만원 이하여야 합니다.',
+          text: '국가사업은 독립거주 무주택 청년의 소득·재산 등을 심사합니다. 2026년 신청 가능 출생연도는 1991~2007년이며 청년가구 소득은 중위소득 60% 이하, 원가구 소득은 100% 이하입니다. 30세 이상 등 원가구 소득 예외와 재산·가구 구성 등 세부 요건은 공식 안내에서 확인하세요. 이 도구는 간이 확인이며 실제 심사를 대신하지 않습니다.',
         },
       },
       {
@@ -92,7 +93,7 @@ export default function YouthRentSubsidyPage() {
         name: '청년월세지원금은 얼마나 받을 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '실제 월세와 20만원 중 적은 금액을 월 최대 20만원까지, 최대 12개월(총 240만원) 동안 지원받을 수 있습니다. 예를 들어 월세가 15만원이면 15만원, 월세가 50만원이면 20만원이 지급됩니다.',
+          text: '국가사업은 실제 납부 월세에서 월 최대 20만원을 생애 누적 최대 24회 지원합니다. 미수혜자는 최대 480만원, 12회 기수혜자는 잔여 최대 12회입니다. 1·2차에서 지급받은 회차를 차감합니다. 서울시 자체사업의 최대 12개월 기준과 다릅니다.',
         },
       },
       {
@@ -100,7 +101,7 @@ export default function YouthRentSubsidyPage() {
         name: '청년월세지원 신청은 어디서 하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '주민센터 방문, 복지로(bokjiro.go.kr) 온라인, 또는 마이홈 포털(myhome.go.kr)에서 신청할 수 있습니다. 필요 서류는 신분증, 임대차계약서, 소득증빙서류, 주민등록등본, 가족관계증명서, 통장사본입니다.',
+          text: '2026년 국가사업 신규 신청은 3월 30일 09시부터 5월 29일 16시까지였으며 종료됐습니다. 공식 접수기간에 복지로 온라인 또는 주소지 관할 주민센터에서 신청합니다. 2차 수혜자는 2차 사업 종료 이후 신청 가능하며, 다음 접수기간은 공식 공고를 확인하세요.',
         },
       },
     ],

@@ -18,19 +18,17 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // 2026년 중위소득 (월)
 const MEDIAN_INCOME_2026: Record<number, number> = {
-  1: 2392013,
-  2: 3932658,
-  3: 5025353,
-  4: 6097773,
-  5: 7108192,
-  6: 8064805,
+  1: 2564238,
+  2: 4199292,
+  3: 5359036,
+  4: 6494738,
+  5: 7556719,
+  6: 8555952,
 }
 
 const MAX_MONTHLY_SUPPORT = 200000 // 월 최대 20만원
-const MAX_MONTHS = 12
+const MAX_PAYMENTS = 24 // 국가사업 생애 누적 지급 한도
 const MAX_ASSET = 12200 // 1.22억 = 12,200만원
-const MAX_DEPOSIT = 5000 // 5,000만원
-const MAX_RENT = 70 // 70만원
 const MIN_AGE = 19
 const MAX_AGE = 34
 
@@ -42,6 +40,7 @@ interface CheckResult {
   parentIncome: boolean
   asset: boolean
   housing: boolean
+  remainingPayments: boolean
 }
 
 interface CalcResult {
@@ -51,6 +50,7 @@ interface CalcResult {
   totalSupport: number
   ownIncomeLimit: number
   parentIncomeLimit: number
+  remainingPayments: number
 }
 
 interface YouthForm {
@@ -64,14 +64,15 @@ interface YouthForm {
   rent: string
   deposit: string
   housingType: string
+  receivedPayments: string
 }
 
 type FormField = keyof YouthForm
-type ValidationIssue = 'required' | 'invalid' | 'selection'
+type ValidationIssue = 'required' | 'invalid' | 'selection' | 'payments'
 type FormErrors = Partial<Record<FormField, ValidationIssue>>
 const moneyFields = ['ownIncome', 'parentIncome', 'asset', 'rent', 'deposit'] as const
 const housingTypeValues = ['officetel', 'oneroom', 'apartment', 'goshiwon', 'sharehouse']
-const queryKeys = ['age', 'independent', 'homeless', 'ownIncome', 'parentIncome', 'household', 'asset', 'rent', 'deposit', 'type']
+const queryKeys = ['age', 'independent', 'homeless', 'ownIncome', 'parentIncome', 'household', 'asset', 'rent', 'deposit', 'type', 'received']
 const integerInput = /^(?:\d+|\d{1,3}(?:,\d{3})+)$/
 
 function formatNumber(value: string): string {
@@ -92,6 +93,7 @@ function validateYouth(form: YouthForm): FormErrors {
   else if (!/^\d+$/.test(form.age) || !Number.isSafeInteger(Number(form.age))) errors.age = 'invalid'
   if (!['1', '2', '3', '4', '5', '6'].includes(form.householdSize)) errors.householdSize = 'selection'
   if (!housingTypeValues.includes(form.housingType)) errors.housingType = 'selection'
+  if (!/^\d+$/.test(form.receivedPayments) || Number(form.receivedPayments) > MAX_PAYMENTS) errors.receivedPayments = 'payments'
   for (const field of moneyFields) {
     if (form[field].trim() === '') errors[field] = 'required'
     else {
@@ -102,14 +104,14 @@ function validateYouth(form: YouthForm): FormErrors {
   return errors
 }
 
-function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit }: YouthForm): CalcResult {
+function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, receivedPayments }: YouthForm): CalcResult {
   const ageNum = parseInt(age) || 0
   const ownIncomeNum = parseNumber(ownIncome)
   const parentIncomeNum = parseNumber(parentIncome)
   const assetNum = parseNumber(asset)
   const rentNum = parseNumber(rent)
-  const depositNum = parseNumber(deposit)
   const sizeNum = parseInt(householdSize) || 1
+  const remainingPayments = MAX_PAYMENTS - Number(receivedPayments)
 
   const ownIncomeLimit = Math.floor((MEDIAN_INCOME_2026[1] || 0) * 0.6)
   const parentIncomeLimit = MEDIAN_INCOME_2026[Math.min(sizeNum, 6)] || MEDIAN_INCOME_2026[6]
@@ -118,13 +120,14 @@ function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome
     independent: isIndependent,
     homeless: isHomeless,
     ownIncome: ownIncomeNum * 10000 <= ownIncomeLimit,
-    parentIncome: parentIncomeNum * 10000 <= parentIncomeLimit,
+    parentIncome: ageNum >= 30 || parentIncomeNum * 10000 <= parentIncomeLimit,
     asset: assetNum <= MAX_ASSET,
-    housing: depositNum <= MAX_DEPOSIT && rentNum <= MAX_RENT,
+    housing: rentNum > 0,
+    remainingPayments: remainingPayments > 0,
   }
   const eligible = Object.values(checks).every(Boolean)
   const monthlySupport = eligible ? Math.min(rentNum * 10000, MAX_MONTHLY_SUPPORT) : 0
-  return { eligible, checks, monthlySupport, totalSupport: monthlySupport * MAX_MONTHS, ownIncomeLimit, parentIncomeLimit }
+  return { eligible, checks, monthlySupport, totalSupport: monthlySupport * remainingPayments, ownIncomeLimit, parentIncomeLimit, remainingPayments }
 }
 
 export default function YouthRentSubsidyCalculator() {
@@ -141,6 +144,7 @@ export default function YouthRentSubsidyCalculator() {
   const [rent, setRent] = useState('')
   const [deposit, setDeposit] = useState('')
   const [housingType, setHousingType] = useState('officetel')
+  const [receivedPayments, setReceivedPayments] = useState('0')
 
   const [result, setResult] = useState<CalcResult | null>(null)
   const [errors, setErrors] = useState<FormErrors>({})
@@ -162,7 +166,7 @@ export default function YouthRentSubsidyCalculator() {
 
   // Calculation
   const calculate = useCallback(() => {
-    const form = { age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType }
+    const form = { age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType, receivedPayments }
     const nextErrors = validateYouth(form)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) {
@@ -184,8 +188,9 @@ export default function YouthRentSubsidyCalculator() {
       rent: rent.replace(/,/g, ''),
       deposit: deposit.replace(/,/g, ''),
       type: housingType,
+      received: receivedPayments,
     })
-  }, [age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType, updateURL])
+  }, [age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType, receivedPayments, updateURL])
 
   const invalidateCalculation = useCallback((event: React.ChangeEvent<HTMLDivElement>) => {
     const field = (event.target as HTMLInputElement).name as FormField
@@ -218,6 +223,7 @@ export default function YouthRentSubsidyCalculator() {
     setRent('')
     setDeposit('')
     setHousingType('officetel')
+    setReceivedPayments('0')
     setResult(null)
     setErrors({})
     window.history.replaceState({}, '', window.location.pathname)
@@ -249,6 +255,7 @@ export default function YouthRentSubsidyCalculator() {
       rent: formatNumber(params.get('rent') ?? ''),
       deposit: formatNumber(params.get('deposit') ?? ''),
       housingType: params.get('type') ?? 'officetel',
+      receivedPayments: params.get('received') ?? '0',
     }
     const restoredErrors = validateYouth(restored)
     for (const [param, field] of [['independent', 'isIndependent'], ['homeless', 'isHomeless']] as const) {
@@ -265,6 +272,7 @@ export default function YouthRentSubsidyCalculator() {
       setRent(restored.rent)
       setDeposit(restored.deposit)
       setHousingType(restored.housingType)
+      setReceivedPayments(restored.receivedPayments)
       setErrors(restoredErrors)
       setResult(Object.keys(restoredErrors).length ? null : evaluateYouth(restored))
     })
@@ -311,7 +319,7 @@ export default function YouthRentSubsidyCalculator() {
       {
         key: 'parentIncome',
         label: t('checks.parentIncome'),
-        detail: t('checks.parentIncomeDetail', { size, limit: Math.floor(parentLimit / 10000).toLocaleString('ko-KR') }),
+        detail: Number(age) >= 30 ? t('checks.parentIncomeExempt') : t('checks.parentIncomeDetail', { size, limit: Math.floor(parentLimit / 10000).toLocaleString('ko-KR') }),
         pass: result.checks.parentIncome,
       },
       {
@@ -323,14 +331,20 @@ export default function YouthRentSubsidyCalculator() {
       {
         key: 'housing',
         label: t('checks.housing'),
-        detail: t('checks.housingDetail', { depositLimit: MAX_DEPOSIT.toLocaleString('ko-KR'), rentLimit: MAX_RENT }),
+        detail: t('checks.housingDetail'),
         pass: result.checks.housing,
       },
+      {
+        key: 'remainingPayments',
+        label: t('checks.remainingPayments'),
+        detail: t('payments.remaining', { count: result.remainingPayments }),
+        pass: result.checks.remainingPayments,
+      },
     ]
-  }, [result, householdSize, t])
+  }, [result, householdSize, age, t])
 
   const passCount = result ? Object.values(result.checks).filter(Boolean).length : 0
-  const totalChecks = 7
+  const totalChecks = result ? Object.keys(result.checks).length : 8
 
   return (
     <div className="space-y-8">
@@ -338,19 +352,36 @@ export default function YouthRentSubsidyCalculator() {
       <div className="bg-primary rounded-2xl p-6 sm:p-8 text-white">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-emerald-100 text-sm sm:text-base mb-6">{t('description')}</p>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white/20 rounded-xl p-4 text-center">
-            <div className="text-2xl sm:text-3xl font-bold">{t('hero.monthly')}</div>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          <div className="bg-white/20 rounded-xl p-2 sm:p-4 text-center min-w-0">
+            <div className="text-lg sm:text-3xl font-bold break-words">{t('hero.monthly')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.monthlyLabel')}</div>
           </div>
-          <div className="bg-white/20 rounded-xl p-4 text-center">
-            <div className="text-2xl sm:text-3xl font-bold">{t('hero.months')}</div>
+          <div className="bg-white/20 rounded-xl p-2 sm:p-4 text-center min-w-0">
+            <div className="text-lg sm:text-3xl font-bold break-words">{t('hero.months')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.monthsLabel')}</div>
           </div>
-          <div className="bg-white/20 rounded-xl p-4 text-center">
-            <div className="text-2xl sm:text-3xl font-bold">{t('hero.total')}</div>
+          <div className="bg-white/20 rounded-xl p-2 sm:p-4 text-center min-w-0">
+            <div className="text-lg sm:text-3xl font-bold break-words">{t('hero.total')}</div>
             <div className="text-xs sm:text-sm text-emerald-100 mt-1">{t('hero.totalLabel')}</div>
           </div>
+        </div>
+      </div>
+
+      <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
+        <h2 className="font-semibold text-fg">{t('policy.closedTitle')}</h2>
+        <p className="text-sm text-body">{t('policy.applicationWindow')}</p>
+        <p className="text-sm text-body">{t('policy.seoulDifference')}</p>
+        <details className="text-sm text-body">
+          <summary className="cursor-pointer font-medium">{t('policy.details')}</summary>
+          <div className="space-y-2 mt-3">
+            <p>{t('policy.paymentWindow')}</p>
+            <p>{t('policy.secondRound')}</p>
+          </div>
+        </details>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <a href="https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1309500_1141.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">{t('policy.officialLink')}</a>
+          <a href="https://housing.seoul.go.kr/site/main/content/sh01_060513" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">{t('policy.seoulLink')}</a>
         </div>
       </div>
 
@@ -609,6 +640,25 @@ export default function YouthRentSubsidyCalculator() {
               {fieldError('housingType')}
             </div>
 
+            <div>
+              <label htmlFor="youth-receivedPayments" className="block text-sm font-medium text-body mb-1">{t('payments.label')}</label>
+              <select
+                id="youth-receivedPayments"
+                name="receivedPayments"
+                value={receivedPayments}
+                onChange={(e) => setReceivedPayments(e.target.value)}
+                aria-invalid={Boolean(errors.receivedPayments)}
+                aria-describedby={`youth-receivedPayments-hint${errors.receivedPayments ? ' youth-receivedPayments-error' : ''}`}
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+              >
+                {Array.from({ length: MAX_PAYMENTS + 1 }, (_, count) => (
+                  <option key={count} value={count}>{count === 0 ? t('payments.none') : t('payments.option', { count })}</option>
+                ))}
+              </select>
+              <p id="youth-receivedPayments-hint" className="text-xs text-muted mt-1">{t('payments.hint')}</p>
+              {fieldError('receivedPayments')}
+            </div>
+
             {/* Buttons */}
             {Object.keys(errors).length > 0 && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{t('validation.fixFields')}</p>}
             <div className="flex gap-3 pt-2">
@@ -673,6 +723,12 @@ export default function YouthRentSubsidyCalculator() {
                 </div>
               </div>
 
+              <div className={`${glassCard} ${glassInset} p-6 space-y-2`}>
+                <p id="youth-payment-summary" className="font-semibold text-fg">{t('payments.remaining', { count: result.remainingPayments })}</p>
+                {result.remainingPayments === 0 && <p className="text-sm text-body">{t('payments.exhausted')}</p>}
+                <p className="text-xs text-muted">{t('disclaimer')}</p>
+              </div>
+
               {/* Expected Support */}
               {result.eligible && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
@@ -691,11 +747,11 @@ export default function YouthRentSubsidyCalculator() {
                     </div>
                     <div className="bg-subtle rounded-xl p-5 text-center">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('totalSupport')}</div>
-                      <div className="text-3xl font-bold text-sub">
+                      <div id="youth-payment-total" className="text-3xl font-bold text-sub">
                         {(result.totalSupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
                       <div className="text-xs text-muted mt-1">
-                        ({t('months12')})
+                        ({t('payments.remaining', { count: result.remainingPayments })})
                       </div>
                     </div>
                   </div>
@@ -722,7 +778,7 @@ export default function YouthRentSubsidyCalculator() {
                 </div>
               )}
 
-              {/* 7-item Checklist */}
+              {/* Basic eligibility checklist */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
                   {t('checklistTitle')}
@@ -831,6 +887,7 @@ export default function YouthRentSubsidyCalculator() {
                   </table>
                 </div>
                 <p className="text-xs text-muted mt-3">{t('medianTableNote')}</p>
+                <a href="https://www.mohw.go.kr/menu.es?mid=a10708010300" target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 dark:text-blue-400 underline">{t('medianSource')}</a>
               </div>
             </>
           )}

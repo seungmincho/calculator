@@ -49950,8 +49950,8 @@
     }
   },
   "youthRentSubsidy": {
-    "title": "Youth Rent Subsidy Calculator",
-    "description": "Check your eligibility for Korea's Youth Rent Subsidy and estimate your support amount.",
+    "title": "National Youth Rent Support Calculator",
+    "description": "Estimate support under the 2026 national program, accounting for previous payments.",
     "age": "Age",
     "ageUnit": "years",
     "birthYear": "Birth Year",
@@ -49984,13 +49984,13 @@
     "check": "Check Eligibility",
     "reset": "Reset",
     "resultTitle": "Youth Rent Subsidy Eligibility Result",
-    "eligible": "Eligible",
-    "notEligible": "Not Eligible",
+    "eligible": "Basic checks passed",
+    "notEligible": "Basic checks not met",
     "borderline": "Borderline (Verify Required)",
     "estimatedMonthly": "Estimated Monthly Support",
-    "estimatedTotal": "Estimated Total Support (12 months)",
+    "estimatedTotal": "Estimated remaining total",
     "maxSupport": "Max ₩200K/month",
-    "supportPeriod": "Support Period: Up to 12 months",
+    "supportPeriod": "Up to 24 lifetime payments, less prior payments",
     "checklistTitle": "Eligibility Checklist",
     "conditions": {
       "ageRange": "Age 19-34",
@@ -49999,16 +49999,15 @@
       "incomeBelow": "Personal income below 60% of median",
       "householdIncomeBelow": "Parent household income below 100% of median",
       "assetBelow": "Personal assets below ₩122M",
-      "rentRange": "Rent and deposit within limits"
+      "rentRange": "Actual rent is paid"
     },
     "pass": "Met",
     "fail": "Not Met",
     "applicationInfo": "Application Info",
     "howToApply": "How to Apply",
     "applyMethods": [
-      "Online at bokjiro.go.kr",
-      "Visit local community center (resident registration address)",
-      "Online at gov.kr"
+      "Apply online through Bokjiro (2026 applications closed)",
+      "Apply at the local community center during an official application period"
     ],
     "requiredDocs": "Required Documents",
     "docsList": [
@@ -50019,71 +50018,75 @@
       "Resident registration transcript",
       "Family relations certificate"
     ],
-    "disclaimer": "※ Results are for reference based on 2026 standards. Verify actual eligibility at bokjiro.go.kr or your local community center.",
+    "disclaimer": "An estimate of basic checks and amounts only. Income deductions, debts, original-household assets, household composition, overlapping benefits, housing-benefit offsets and birth-year eligibility are not fully assessed. Official review determines selection and payments; a calculation does not reopen applications.",
     "medianIncomeRef": "2026 Standard Median Income",
     "guide": {
       "title": "Guide",
       "whatIs": {
-        "title": "What is the Youth Rent Subsidy?",
-        "description": "A Korean government program supporting ages 19-34 who live independently without home ownership, providing up to ₩200K/month for up to 12 months (total ₩2.4M). Both parent household income and personal income/assets are verified."
+        "title": "What is the national Youth Rent Support program?",
+        "description": "A national program providing up to ₩200K of actual rent per payment, with a lifetime limit of 24 payments (up to ₩4.8M before prior payments). Payments already received are deducted. Seoul’s 12-month program is separate."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Enter your age and independent living status",
-          "Enter personal income/assets and parent household income",
-          "Enter current rent and deposit amounts",
-          "Click 'Check Eligibility' to see pass/fail for each of 7 conditions",
-          "Review any failed conditions to see if they can be resolved"
+          "Read the notice that 2026 national applications have closed.",
+          "Enter age, living and ownership status, assessed income and assets.",
+          "Enter actual rent and deposit, then select 0–24 previous national payments.",
+          "Select Check Eligibility to see 8 basic checks and a total based on remaining payments.",
+          "Verify household composition, assets, deductions, overlapping benefits and application timing through official review."
         ]
       },
       "tips": {
         "title": "Useful Tips",
         "items": [
-          "If rent is below ₩200K, only the actual rent amount is supported",
-          "Deposit must be ₩50M or less and rent ₩700K or less",
-          "Living at the same address as parents does not count as independent",
-          "Income is calculated based on health insurance premiums",
-          "Results are typically notified within 1-2 months after application"
+          "Only actual rent is supported; deposits and management fees are excluded from monthly payments.",
+          "Deduct previous payments from the lifetime limit of 24. After 12 payments, up to 12 remain.",
+          "Payments for new 2026 recipients end in December 2028; unused installments are not paid automatically.",
+          "Original-household income has age-30 and marriage exemptions. Check omitted criteria, including the ₩470M original-household asset ceiling.",
+          "Rent/deposit caps have been removed, but contracts, payment evidence and asset review are still required."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I reapply if I received it before?",
-            "a": "You can apply for the remaining period only. Total support cannot exceed 12 months."
+            "q": "Can I reapply after receiving support?",
+            "a": "Previous national payments are deducted from the lifetime limit of 24. Round 1 recipients check remaining payments; round 2 recipients may apply after their program ends. The 2026 intake is closed. Reapplication requires an official period and reassessment."
           },
           {
-            "q": "Are gosiwon/dormitories eligible?",
-            "a": "Gosiwon with lease agreements are eligible, but school dormitories are generally excluded."
+            "q": "Is this Seoul’s 12-month program?",
+            "a": "They are separate. The national program allows up to 24 lifetime payments; Seoul’s own program allows up to 12 months. Check each official notice for applications, eligibility and overlapping benefits."
           },
           {
-            "q": "Why is parent income checked?",
-            "a": "To assess the youth's actual economic situation, parent household income is also verified. Parent income must be below 100% of median income."
+            "q": "Does a positive estimate mean I can apply now?",
+            "a": "No. The 2026 national intake closed on May 29 at 16:00 Korea time. Passing basic checks does not mean official selection or an open application period."
+          },
+          {
+            "q": "What if I have not received 24 payments by 2028?",
+            "a": "You may reapply in regular periods from 2029. Remaining unpaid installments may resume after reassessment of income and assets and selection."
           }
         ]
       }
     },
     "hero": {
-      "monthly": "Up to ₩200K",
-      "monthlyLabel": "Monthly support",
-      "months": "Up to 12 months",
-      "monthsLabel": "Support period",
-      "total": "Up to ₩2.4M",
-      "totalLabel": "Total support"
+      "monthly": "₩200K",
+      "monthlyLabel": "Monthly maximum",
+      "months": "24",
+      "monthsLabel": "Lifetime payments",
+      "total": "₩4.8M",
+      "totalLabel": "Total maximum"
     },
     "inputTitle": "Enter eligibility details",
     "ageLabel": "Age",
-    "ageHint": "Enter your age in full years.",
+    "ageHint": "This is an age estimate. Official 2026 applicants are born in 1991–2007; verify the birth-year rule.",
     "independentLabel": "Independent Living",
     "homelessLabel": "Home Ownership",
     "homeless": "No home",
-    "ownIncomeLabel": "Personal Monthly Income",
-    "parentIncomeLabel": "Parent Household Monthly Income",
+    "ownIncomeLabel": "Youth household assessed monthly income",
+    "parentIncomeLabel": "Original household assessed monthly income",
     "householdSizeLabel": "Parent Household Size",
     "householdSizeOption": "{n} people",
-    "assetLabel": "Personal Total Assets",
+    "assetLabel": "Youth household assessed assets",
     "rentLabel": "Current Monthly Rent",
     "depositLabel": "Current Deposit",
     "housingTypeLabel": "Housing Type",
@@ -50092,16 +50095,15 @@
     "resetButton": "Reset",
     "emptyTitle": "Enter your details to check eligibility",
     "emptyDescription": "Enter your details and select Check Eligibility to see the result.",
-    "ineligible": "Not Eligible",
+    "ineligible": "Basic checks not met",
     "checkSummary": "{pass} of {total} conditions met",
     "share": "Copy result link",
     "copied": "Copied!",
     "supportTitle": "Youth Rent Subsidy Eligibility Result",
     "monthlySupport": "Estimated Monthly Support",
-    "totalSupport": "Estimated Total Support (12 months)",
+    "totalSupport": "Estimated remaining total",
     "manwonUnit": " × ₩10K",
     "wonUnit": " KRW",
-    "months12": "For 12 months",
     "breakdown": {
       "actualRent": "Current rent",
       "maxSupport": "Maximum monthly support",
@@ -50115,14 +50117,16 @@
       "independentDetail": "Living at a separate address from parents",
       "homeless": "No home ownership",
       "homelessDetail": "No home",
-      "ownIncome": "Personal income below 60% of median",
-      "ownIncomeDetail": "Personal income below 60% of median",
+      "ownIncome": "Youth household income at most 60% of median",
+      "ownIncomeDetail": "Single-person youth household: up to {limit} × ₩10K/month; verify other household sizes separately",
       "parentIncome": "Parent household income below 100% of median",
-      "parentIncomeDetail": "Parent household income below 100% of median",
+      "parentIncomeDetail": "Original household of {size}: up to {limit} × ₩10K/month",
       "asset": "Personal assets below ₩122M",
       "assetDetail": "Personal assets below ₩122M",
-      "housing": "Rent and deposit within limits",
-      "housingDetail": "Rent and deposit within limits"
+      "housing": "Actual rent is paid",
+      "housingDetail": "The former national-program deposit/rent caps have been removed. Deposits still require asset assessment.",
+      "parentIncomeExempt": "Original-household income is not assessed from age 30. Check official guidance for marriage and other exemptions.",
+      "remainingPayments": "Payments remain within the lifetime limit of 24"
     },
     "applyInfoTitle": "Application Info",
     "applyMethodTitle": "How to Apply",
@@ -50136,7 +50140,32 @@
       "sizeUnit": "{n} people"
     },
     "medianTableNote": "This is an estimate. Confirm eligibility with the official program guidance.",
-    "validation": {"required":"Enter a value, including 0 if the amount is zero.","invalid":"Enter a valid whole number of 0 or more.","selection":"Choose a valid option.","fixFields":"Check the marked fields, then calculate again."}
+    "validation": {
+      "required": "Enter a value, including 0 if the amount is zero.",
+      "invalid": "Enter a valid whole number of 0 or more.",
+      "selection": "Choose a valid option.",
+      "fixFields": "Check the marked fields, then calculate again.",
+      "payments": "Select a whole number of prior payments from 0 to 24."
+    },
+    "payments": {
+      "label": "Previous national-program payments",
+      "none": "0 · No previous payments",
+      "option": "{count} payments",
+      "hint": "Select payments actually received across rounds 1 and 2 of the national program. Seoul runs a separate program.",
+      "remaining": "Remaining support: up to {count} payments",
+      "exhausted": "All 24 lifetime national-program payments have been received; no payments remain."
+    },
+    "policy": {
+      "closedTitle": "National program · 2026 applications closed",
+      "applicationWindow": "Applications ran from March 30, 2026 at 09:00 to May 29 at 16:00 (Korea time) and have closed. Check official notices for the next application period.",
+      "paymentWindow": "New 2026 recipients receive payments only through December 2028. Unpaid remaining installments may resume after reapplication, reassessment and selection in regular periods from 2029. The estimated total is a ceiling based on remaining payments.",
+      "secondRound": "The lifetime limit is 24 payments across both rounds. Round 1 payments are deducted; round 2 recipients may apply after that program ends in December 2027.",
+      "seoulDifference": "Seoul’s own Youth Rent Support (up to 12 months) is a separate program. This calculator uses the national 24-payment rule. Eligibility, application and overlapping-benefit rules differ.",
+      "officialLink": "Official 2026 national-program notice",
+      "seoulLink": "Seoul program guidance",
+      "details": "Previous recipients, reapplication and payment deadlines"
+    },
+    "medianSource": "Official 2026 median-income table"
   },
   "evSubsidy": {
     "ev": {
