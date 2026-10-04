@@ -10,12 +10,12 @@ import { todayKST } from '@/utils/dday'
 import { MIN_WAGE_2027 } from '@/utils/minimumWage'
 import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
+import { NTS_AVG_SALARY, NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
 import ShareResult from '@/components/ShareResult'
 
 type InputType = WageType
 const TYPES: InputType[] = ['hourly', 'daily', 'weekly', 'monthly', 'yearly']
 const PRESETS = [15, 20, 30, 40]
-const AVG_ANNUAL_SALARY_KR = 42_000_000 // 한국 근로자 평균 연봉 약 4,200만원 (2024 기준)
 
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 
@@ -326,7 +326,7 @@ export default function HourlyWage() {
                     {isAbove && Math.round(r.hourly) < MIN_WAGE_2027 && ` ${t('minWage.nextBelow', { diff: won(MIN_WAGE_2027 - r.hourly) })}`}
                   </p>
                   <p className="text-xs text-muted">
-                    {t('avgCompare', { percent: Math.round((r.yearly / AVG_ANNUAL_SALARY_KR) * 100) })}
+                    {t('avgCompare', { percent: Math.round((r.yearly / NTS_AVG_SALARY) * 100), avg: Math.round(NTS_AVG_SALARY / 10_000).toLocaleString('ko-KR'), year: NTS_SOURCE_YEAR })}
                   </p>
                 </div>
 

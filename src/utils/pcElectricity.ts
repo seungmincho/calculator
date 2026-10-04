@@ -5,7 +5,7 @@
  * - 주택용 저압 기본요금 910/1,600/7,300원, 전력량요금 120.0/214.6/307.3원/kWh,
  *   구간 200/400kWh(하계 7~8월 300/450kWh), 기후환경요금 9.0원/kWh
  *   https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp (한전 요금표, 2023.11.9 이후 주택용 동결)
- * - 연료비조정요금 +5.0원/kWh (2026년 3분기 유지): https://www.etoday.co.kr/news/view/2595748
+ * - 연료비조정요금 +5.0원/kWh (2026년 4분기 동결 — electricityBill.ts와 같음): https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00210.jsp
  * - 전력산업기반기금 3.7% → 3.2%(2024.7) → 2.7%(2025.7): https://www.etoday.co.kr/news/view/2375003
  * - 부가가치세 10%
  * ponytail: 슈퍼유저 요금(하계·동계 1,000kWh 초과 736.2원) 미반영 — 일반 가구 범위 밖.

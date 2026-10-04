@@ -115,11 +115,11 @@ const due = (ymd: string) => { const p = seasonalPicks(kst(ymd)); return upcomin
 assert.deepEqual(seasonalPicks(kst('2026-10-04'))[0].due, { key: 'csat', date: '2026-11-19' })
 assert.deepEqual(due('2026-10-04'), ['jongbu:72'])                      // 수능은 카드에 붙음, 카드 2개 + 1줄
 assert.deepEqual(due('2026-11-20'), ['jongbu:25'])                      // 카드 2개 + 1줄
-assert.deepEqual(due('2026-12-20'), ['simplified:26'])
+assert.deepEqual(due('2026-12-20'), ['hometown:11'])                    // 12/31 고향사랑기부 마감이 1/15 간소화보다 먼저
 assert.deepEqual(due('2027-01-20'), [])                                 // 연납 마감은 카드에 붙음
 assert.deepEqual(due('2027-05-20'), ['carTaxLumpStart:27'])
 assert.deepEqual(due('2027-06-20'), ['carTaxLumpDue:10'])
-assert.deepEqual(upcomingDeadlines(kst('2026-12-14')).map(d => d.key), ['jongbu', 'yearEnd', 'simplified'])
+assert.deepEqual(upcomingDeadlines(kst('2026-12-14')).map(d => d.key), ['jongbu', 'yearEnd', 'hometown'])
 
 // 모든 규칙의 href가 실제 메뉴에 있음
 for (const d of ['2026-10-04', '2026-11-19', '2026-12-20', '2027-01-20', '2027-01-28', '2027-05-20', '2026-09-20']) {

@@ -346,6 +346,7 @@ export default function YearEndTaxCalculator() {
           <Section title={t('yt.sec.etc')} badge={`${won(cr.donation + cr.hometown + cr.marriage)}${W}`}>
             {money('hometown', t('yt.in.hometownHint'))}
             {money('donation', t('yt.in.donationHint'))}
+            {detail('/hometown-donation/', t('yt.detail.hometown'), { a: inp.hometown })}
             {toggle('marriage', t('yt.in.marriage'), t('yt.in.marriageHint'))}
             {toggle('sme', t('yt.in.sme'), t('yt.in.smeHint'))}
             {optMoney('pension', t('yt.in.pension'), t('yt.in.autoHint'), auto.pension)}

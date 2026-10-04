@@ -10,6 +10,7 @@ const DETAILS = [
   { href: '/medical-tax-credit/', title: '의료비 세액공제 계산기', desc: '3% 문턱, 실손 차감, 맞벌이 누가 받을까' },
   { href: '/rent-tax-credit/', title: '월세 세액공제 계산기', desc: '대상 체크, 돌려받는 금액, 지난 5년 경정청구' },
   { href: '/pension-tax-credit/', title: '연금저축·IRP 세액공제 계산기', desc: '12월 31일 전 추가 납입 효과, 남은 한도' },
+  { href: '/hometown-donation/', title: '고향사랑기부금 계산기', desc: '세액공제·답례품을 빼고 실제로 드는 돈' },
 ]
 
 export const metadata: Metadata = {

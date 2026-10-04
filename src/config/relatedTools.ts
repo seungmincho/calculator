@@ -22,6 +22,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/medical-tax-credit': ['/year-end-tax', '/card-deduction', '/rent-tax-credit', '/pension-tax-credit', '/health-insurance', '/salary-calculator'],
   '/rent-tax-credit': ['/year-end-tax', '/youth-rent-subsidy', '/rent-converter', '/card-deduction', '/medical-tax-credit', '/pension-tax-credit'],
   '/pension-tax-credit': ['/year-end-tax', '/pension-calculator', '/national-pension', '/card-deduction', '/retirement-calculator', '/savings-calculator'],
+  '/hometown-donation': ['/year-end-tax', '/card-deduction', '/pension-tax-credit', '/medical-tax-credit', '/rent-tax-credit', '/greeting-generator'],
   '/income-tax': ['/year-end-tax', '/salary-calculator', '/freelancer-tax', '/tax-season'],
   '/vat-calculator': ['/freelancer-tax', '/margin-calculator', '/invoice-generator', '/receipt-generator', '/business-number', '/tax-season'],
   '/freelancer-tax': ['/vat-calculator', '/tax-season', '/income-tax', '/health-insurance', '/invoice-generator', '/national-pension'],

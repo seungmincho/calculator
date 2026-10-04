@@ -76,7 +76,7 @@ export default function GpaConverterPage() {
           <h3 className="text-lg font-semibold text-fg mb-3">함께 쓰면 좋은 도구</h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>학점 계산기:</strong> 과목별 성적을 입력해 학기·전체 평점(GPA)을 직접 계산.</li>
-            <li><strong>내신 등급 계산기:</strong> 석차와 총원으로 고등학교 내신 1~9등급과 백분위를 계산.</li>
+            <li><strong>내신 등급 계산기:</strong> 석차와 총원으로 고등학교 내신 등급(5등급제·9등급제)과 백분위를 계산.</li>
           </ul>
         </div>
       </section>

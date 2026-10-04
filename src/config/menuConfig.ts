@@ -102,6 +102,7 @@ export const menuConfig: MenuConfig = {
       { href: '/medical-tax-credit', labelKey: 'footer.links.medicalTaxCredit', descriptionKey: 'toolsShowcase.tools.medicalTaxCredit.description', icon: '🏥', addedDate: '2026-10-05', subcategory: 'subcategory.tax' },
       { href: '/rent-tax-credit', labelKey: 'footer.links.rentTaxCredit', descriptionKey: 'toolsShowcase.tools.rentTaxCredit.description', icon: '🏠', addedDate: '2026-10-05', subcategory: 'subcategory.tax' },
       { href: '/pension-tax-credit', labelKey: 'footer.links.pensionTaxCredit', descriptionKey: 'toolsShowcase.tools.pensionTaxCredit.description', icon: '🏦', addedDate: '2026-10-05', subcategory: 'subcategory.tax' },
+      { href: '/hometown-donation', labelKey: 'footer.links.hometownDonation', descriptionKey: 'toolsShowcase.tools.hometownDonation.description', icon: '🎁', addedDate: '2026-10-05', subcategory: 'subcategory.tax' },
       { href: '/income-tax', labelKey: 'footer.links.incomeTax', descriptionKey: 'toolsShowcase.tools.incomeTax.description', icon: '📑', addedDate: '2026-03-20', subcategory: 'subcategory.tax' },
       { href: '/lotto-tax', labelKey: 'footer.links.lottoTax', descriptionKey: 'toolsShowcase.tools.lottoTax.description', icon: '🎰', addedDate: '2026-03-22', subcategory: 'subcategory.tax' },
       { href: '/salary-rank', labelKey: 'footer.links.salaryRank', descriptionKey: 'toolsShowcase.tools.salaryRank.description', icon: '📊', addedDate: '2026-03-22', subcategory: 'subcategory.salaryWork' },

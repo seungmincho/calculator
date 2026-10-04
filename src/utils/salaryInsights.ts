@@ -33,6 +33,9 @@ const NTS_PAY_PERCENT = [
   12983, 11291, 9613, 8088, 6429, 4876, 3480, 1932, 450,
 ]
 
+/** 근로소득자 1인 평균 총급여(원) = 총급여 합계 ÷ 인원 (2024 귀속 약 4,475만원) */
+export const NTS_AVG_SALARY = Math.round(([...NTS_PAY_TOP_PERMILLE, ...NTS_PAY_PERCENT].reduce((a, b) => a + b, 0) * 1e8) / NTS_WORKERS)
+
 /** [하위 lo%, 하위 hi%, 1인 평균 총급여(만원)] — 하위 % 오름차순 */
 const NTS_BINS: [number, number, number][] = [
   ...NTS_PAY_PERCENT.map((pay, i): [number, number, number] => [98 - i, 99 - i, (pay * 1e6) / NTS_WORKERS]),

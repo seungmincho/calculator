@@ -5,7 +5,7 @@ const { outputFiles: [out] } = await build({
   entryPoints: [new URL('../src/utils/salaryInsights.ts', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1')],
   bundle: true, format: 'esm', write: false, logLevel: 'silent',
 })
-const { topPercent, simulateRaise, hourlyNet, percentileBelow, nextMilestone, shareBetween, NTS_INCOME_PERCENTILES: T, NTS_SOURCE_YEAR } = await import('data:text/javascript;base64,' + Buffer.from(out.text).toString('base64'))
+const { topPercent, simulateRaise, hourlyNet, percentileBelow, nextMilestone, shareBetween, NTS_INCOME_PERCENTILES: T, NTS_SOURCE_YEAR, NTS_AVG_SALARY } = await import('data:text/javascript;base64,' + Buffer.from(out.text).toString('base64'))
 
 const eq = (a, b, m) => { if (a !== b) throw new Error(`${m}: ${a} !== ${b}`) }
 // 국세청 근로소득 천분위 자료(2024년 귀속, data.go.kr/data/15082063) 분위 평균에서 추정한 경계
@@ -37,4 +37,6 @@ console.log('5,000만 +10% →', r)
 if (!(r.monthlyGain > 0 && r.netGainPct < 10 && r.keepPct > 50 && r.keepPct < 100)) throw new Error('인상 시뮬 범위 이탈')
 eq(simulateRaise(50_000_000, 0, {}).monthlyGain, 0, '0% 인상 = 증가 0')
 eq(hourlyNet(2_090_000), 10_000, '209만 / 209h')
+// 평균 총급여 = 합계 ÷ 인원 (2024 귀속 약 4,475만원 — 시급 계산기 '평균 연봉 대비' 기준)
+if (Math.abs(NTS_AVG_SALARY - 44_750_000) >= 100_000) throw new Error(`평균 연봉 ${NTS_AVG_SALARY}`)
 console.log('OK')

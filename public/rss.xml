@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 14:14:25 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 15:13:28 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[고향사랑기부금 계산기]]></title>
+    <link>https://toolhub.ai.kr/hometown-donation/</link>
+    <guid>https://toolhub.ai.kr/hometown-donation/</guid>
+    <description><![CDATA[기부액별 세액공제와 답례품(30%)을 빼고 실제로 드는 돈, 20만 원까지 이득인 이유]]></description>
+    <pubDate>Sun, 04 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[의료비 세액공제 계산기]]></title>
     <link>https://toolhub.ai.kr/medical-tax-credit/</link>
