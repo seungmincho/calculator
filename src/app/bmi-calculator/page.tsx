@@ -138,7 +138,7 @@ export default function BMICalculatorPage() {
             BMI 계산기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>아시아인 기준 주의:</strong> WHO 국제 기준(25 이상 비만)과 달리 한국을 포함한 아시아에서는 23 이상을 비만 전단계, 25 이상을 비만으로 더 엄격하게 적용합니다.</li>
+            <li><strong>아시아인 기준 주의:</strong> WHO 국제 기준(25 이상 과체중, 30 이상 비만)과 달리 한국을 포함한 아시아에서는 23 이상을 비만 전단계, 25 이상을 비만으로 더 엄격하게 적용합니다.</li>
             <li><strong>BMI의 한계:</strong> BMI는 근육량을 반영하지 않아 운동선수처럼 근육이 많으면 비만으로 오분류될 수 있으므로 체지방률과 함께 확인하세요.</li>
             <li><strong>표준 체중 목표:</strong> 표준 체중(BMI 22 기준) = 키(m)² × 22 공식으로 건강한 목표 체중을 설정하고 단계적으로 달성하세요.</li>
             <li><strong>어린이 BMI:</strong> 만 19세 미만은 2017 소아청소년 성장도표의 성별·연령별 백분위수로 판정해야 하며, 성인 기준 BMI 수치를 그대로 적용해서는 안 됩니다.</li>

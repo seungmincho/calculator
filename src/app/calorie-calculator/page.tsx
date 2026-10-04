@@ -91,7 +91,7 @@ export default function CalorieCalculatorPage() {
         name: '다이어트를 위한 적정 칼로리는 어떻게 계산하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '다이어트 적정 칼로리는 TDEE에서 300~500kcal을 뺀 값입니다. 예를 들어 TDEE가 2000kcal이면 1500~1700kcal을 목표로 합니다. 단, 여성은 최소 1200kcal, 남성은 최소 1500kcal 이상 섭취해야 영양결핍을 예방할 수 있습니다. 급격한 칼로리 감소는 요요현상의 원인이 됩니다.',
+          text: '다이어트 적정 칼로리는 TDEE에서 300~500kcal을 뺀 값입니다. 예를 들어 TDEE가 2000kcal이면 1500~1700kcal을 목표로 합니다. 단, 기초대사량이나 여성 1,200kcal·남성 1,500kcal 아래로는 내리지 않는 것이 일반적인 권고(의학적 기준은 아님)이며, 이 계산기도 그 아래로는 목표를 낮추지 않습니다. 급격한 칼로리 감소는 요요현상의 원인이 됩니다.',
         },
       },
       {
@@ -113,7 +113,7 @@ export default function CalorieCalculatorPage() {
     step: [
       { '@type': 'HowToStep', name: '신체 정보 입력', text: '성별, 나이, 키(cm), 체중(kg)을 입력합니다.' },
       { '@type': 'HowToStep', name: '활동량 선택', text: '평소 활동량 수준(비활동적~매우 활동적)을 선택합니다.' },
-      { '@type': 'HowToStep', name: '목표 설정 및 결과 확인', text: '체중 감량/유지/증량 목표에 따른 일일 권장 칼로리(TDEE)와 기초대사율(BMR)을 확인합니다.' },
+      { '@type': 'HowToStep', name: '목표 설정 및 결과 확인', text: '체중 감량/유지/증량 목표에 따른 하루 목표 칼로리와 유지 칼로리(TDEE), 기초대사율(BMR)을 확인합니다.' },
     ],
   }
 
@@ -142,7 +142,7 @@ export default function CalorieCalculatorPage() {
             칼로리 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            칼로리 계산기는 <strong>기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트·체중 증량·유지를 위한 일일 칼로리 목표</strong>를 제시하는 도구입니다. Mifflin-St Jeor 공식을 기반으로 성별·나이·키·몸무게·활동량을 반영한 정확한 에너지 소비량을 산출하며, 음식 칼로리와 운동 소모 칼로리도 함께 확인할 수 있어 체중 관리 계획 수립에 도움이 됩니다.
+            칼로리 계산기는 <strong>기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트·체중 증량·유지를 위한 일일 칼로리 목표</strong>를 제시하는 도구입니다. Mifflin-St Jeor 공식을 기반으로 성별·나이·키·몸무게·활동량을 반영해 하루 에너지 소비량을 추정하고(개인차 ±10% 안팎), 목표 체중 도달 예상일과 탄단지 목표량도 함께 보여 주어 체중 관리 계획 수립에 도움이 됩니다. 음식·운동 칼로리는 연결된 영양성분·운동 칼로리 계산기에서 확인할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             칼로리 계산기 활용 팁
@@ -151,7 +151,7 @@ export default function CalorieCalculatorPage() {
             <li><strong>다이어트 목표:</strong> TDEE보다 300~500kcal 적게 섭취하면 건강한 체중 감량이 가능합니다.</li>
             <li><strong>근육 증가:</strong> TDEE보다 200~300kcal 더 섭취하고 단백질을 체중 1kg당 1.6g 이상 섭취하세요.</li>
             <li><strong>활동량 정확 입력:</strong> 운동 빈도를 과대 평가하면 TDEE가 높게 나와 다이어트에 실패할 수 있습니다.</li>
-            <li><strong>최소 칼로리 준수:</strong> 여성 1,200kcal, 남성 1,500kcal 이하로 내려가면 근손실과 영양결핍이 발생합니다.</li>
+            <li><strong>최소 칼로리 준수:</strong> 여성 1,200kcal, 남성 1,500kcal(또는 기초대사량) 아래로 내려가면 근손실과 영양결핍 위험이 커집니다. 일반적인 권고이며 의학적 기준은 아닙니다.</li>
             <li><strong>주간 단위 관리:</strong> 일일 칼로리보다 7일 합계로 관리하면 하루 폭식해도 전략적으로 조절할 수 있습니다.</li>
           </ul>
         </div>

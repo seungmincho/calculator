@@ -71,6 +71,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/marginCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { COUPANG_SALES, NAVER_ORDER_MGMT, NAVER_SALES, ELEVENST_DEFAULT } from '@/utils/marketplaceFees'
 import {
   Calculator,
   TrendingUp,
@@ -115,10 +116,11 @@ interface CalcResult {
 
 // ── 상수 ──
 
+// 판매가 대비 수수료(부가세 별도 — 일반과세자는 수수료 부가세를 매입세액으로 공제). 단일 출처: marketplaceFees.ts
 const PLATFORMS: PlatformInfo[] = [
-  { key: 'coupang', rate: 10.9 },
-  { key: 'smartstore', rate: 5.5 },
-  { key: 'elevenst', rate: 10 },
+  { key: 'coupang', rate: COUPANG_SALES.fashion },                                  // 패션의류 10.5% (카테고리별 4~10.9%)
+  { key: 'smartstore', rate: Math.round((NAVER_ORDER_MGMT.micro + NAVER_SALES.normal) * 100) / 100 }, // 영세 주문관리 + 판매 = 4.5%
+  { key: 'elevenst', rate: ELEVENST_DEFAULT },                                      // 대표값(공개 범위 7~13% 상단)
   { key: 'custom', rate: 0 },
 ]
 

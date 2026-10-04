@@ -143,7 +143,7 @@ export default function LoanCalculatorPage() {
               대출 계산기 활용 팁
             </h3>
             <ul className="list-disc list-inside space-y-2 text-body">
-              <li><strong>상환 방식 비교:</strong> 원리금균등은 매달 동일 금액, 원금균등은 총 이자가 적어 장기 대출에서 수백만 원 차이가 납니다.</li>
+              <li><strong>상환 방식 비교:</strong> 원리금균등은 매달 동일 금액, 원금균등은 총 이자가 적어 장기 대출에서 수백만~수천만 원 차이가 납니다.</li>
               <li><strong>금리 시뮬레이션:</strong> 금리가 0.5%만 달라져도 30년 장기 대출에서는 총 이자 차이가 수천만 원에 달할 수 있습니다.</li>
               <li><strong>거치기간 주의:</strong> 거치기간 중 이자만 내면 초기 부담은 줄지만 총 이자가 증가하므로 신중하게 선택하세요.</li>
               <li><strong>중도상환 계획:</strong> 여윳돈이 생기면 중도상환으로 이자 절감 효과를 미리 계산해보세요.</li>

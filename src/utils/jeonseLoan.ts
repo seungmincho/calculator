@@ -112,6 +112,7 @@ export interface Check { key: string; pass: boolean; value?: number }
 export function checks(p: Product, x: Profile): Check[] {
   const list: Check[] = []
   if (p !== 'bank') list.push({ key: 'homeless', pass: x.homeless === 1 })
+  // ponytail: 39세 연장은 중소·중견 재직(창업) + 병역이행 기간만큼(최대 5년) — 병역 입력이 없어 sme만으로 최대치 허용, 라벨(check.age)에 조건 명시. 정확히 하려면 복무 기간 입력 추가
   if (p === 'youth') list.push({ key: 'age', pass: x.age >= 19 && x.age <= (x.sme === 1 ? 39 : 34) })
   if (p === 'newlywed') list.push({ key: 'married', pass: x.married === 1 })
   if (p === 'newborn') list.push({ key: 'newborn', pass: x.newborn === 1 })

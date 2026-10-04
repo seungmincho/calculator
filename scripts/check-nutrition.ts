@@ -30,7 +30,9 @@ eq([tot.cal, tot.carbs, tot.protein, r1(tot.fat), tot.sodium], [515, 79, 18, 10.
 const mr = macroRatio({ cal: 0, carbs: 50, protein: 25, fat: 100 / 9, sodium: 0 }) // 200 / 100 / 100 kcal
 eq([mr.carbs, mr.protein, mr.fat], [50, 25, 25], '탄단지 비율')
 eq(macroRatio({ cal: 340, carbs: 0, protein: 0, fat: 0, sodium: 0 }), { carbs: 0, protein: 0, fat: 0 }, '소주만: 0 나눗셈 방지')
-eq([ratioStatus('carbs', 50), ratioStatus('carbs', 60), ratioStatus('fat', 31)], [-1, 0, 1], '권장범위 판정')
+// 2025 섭취기준: 탄수화물 50~65%, 단백질 10~20% (2020: 55~65%, 7~20%)
+eq([ratioStatus('carbs', 49), ratioStatus('carbs', 50), ratioStatus('carbs', 60), ratioStatus('fat', 31)], [-1, 0, 0, 1], '권장범위 판정')
+eq([ratioStatus('protein', 9), ratioStatus('protein', 10)], [-1, 0], '단백질 하한 10%')
 eq(Math.round(dvPct(tot).sodium), 88, '나트륨 %')
 
 // URL 왕복

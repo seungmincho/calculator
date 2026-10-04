@@ -23,7 +23,7 @@ export default function ImageOcrPage() {
         name: 'OCR 인식률을 높이는 방법은?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '① 이미지 해상도 300dpi 이상 유지 ② 텍스트와 배경의 높은 대비 확보 (흰 배경에 검은 글씨) ③ 기울어진 이미지는 자동/수동 회전으로 보정 ④ 노이즈 제거와 이진화 전처리 적용 ⑤ 적절한 언어 모델 선택 (한국어, 영어, 일본어 등). 손글씨보다 인쇄된 텍스트의 인식률이 훨씬 높으며, 고딕체가 명조체보다 인식이 잘 됩니다.'
+          text: '① 이미지 해상도 300dpi 이상 유지 ② 텍스트와 배경의 높은 대비 확보 (흰 배경에 검은 글씨) ③ 기울어진 이미지는 회전 버튼으로 바로잡기 ④ 노이즈 제거와 이진화 전처리 적용 ⑤ 적절한 언어 모델 선택 (한국어, 영어, 일본어 등). 손글씨보다 인쇄된 텍스트의 인식률이 훨씬 높으며, 고딕체가 명조체보다 인식이 잘 됩니다.'
         }
       },
       {
@@ -31,7 +31,7 @@ export default function ImageOcrPage() {
         name: 'OCR로 어떤 언어를 인식할 수 있나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Tesseract.js는 100개 이상의 언어를 지원하며, 한국어(kor), 영어(eng), 일본어(jpn), 중국어 간체(chi_sim)/번체(chi_tra) 등이 포함됩니다. 여러 언어가 혼합된 문서는 다중 언어 모드(예: kor+eng)로 인식률을 높일 수 있습니다. 이 도구는 브라우저에서 Tesseract.js를 실행하므로 서버 없이 오프라인에서도 작동합니다.'
+          text: 'Tesseract.js 엔진은 100개 이상의 언어를 지원하며, 이 도구에서는 한국어(kor), 영어(eng), 일본어(jpn), 중국어 간체(chi_sim)/번체(chi_tra)를 고를 수 있습니다. 여러 언어가 혼합된 문서는 다중 언어 모드(예: kor+eng)로 인식률을 높일 수 있습니다. 이 도구는 브라우저에서 Tesseract.js를 실행하므로 이미지를 서버로 보내지 않습니다. 다만 처음 실행할 때는 인식 엔진과 언어 데이터를 인터넷에서 내려받아야 합니다.'
         }
       },
     ],
@@ -55,7 +55,7 @@ export default function ImageOcrPage() {
             이미지 OCR(광학 문자 인식)이란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            OCR(Optical Character Recognition, 광학 문자 인식)은 이미지나 사진 속에 있는 텍스트를 컴퓨터가 읽고 편집 가능한 텍스트로 변환하는 기술입니다. 이 도구는 Tesseract.js를 사용하여 브라우저에서 직접 한국어, 영어, 일본어, 중국어 등 100개 이상의 언어를 인식합니다. 서버에 이미지를 전송하지 않아 개인정보 보호에 안전합니다.
+            OCR(Optical Character Recognition, 광학 문자 인식)은 이미지나 사진 속에 있는 텍스트를 컴퓨터가 읽고 편집 가능한 텍스트로 변환하는 기술입니다. 이 도구는 100개 이상의 언어를 지원하는 Tesseract.js 엔진으로 브라우저에서 직접 한국어, 영어, 일본어, 중국어(간체·번체)를 인식합니다. 서버에 이미지를 전송하지 않아 개인정보 보호에 안전합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 텍스트 추출 활용 팁

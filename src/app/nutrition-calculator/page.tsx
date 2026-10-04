@@ -38,7 +38,7 @@ export default function NutritionCalculatorPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['한국 음식 영양소 계산', '탄단지 비율 차트', '일일 권장량 비교', '식단 구성 관리']
+    featureList: ['한국 음식 영양소 계산', '탄단지 비율 차트', '1일 영양성분 기준치 대비 %', '식단 구성 관리']
   }
 
   return (
@@ -70,8 +70,8 @@ export default function NutritionCalculatorPage() {
             영양소 계산기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>탄단지 비율 확인:</strong> 균형 잡힌 식단의 권장 탄단지 비율은 탄수화물 55~65%, 단백질 7~20%, 지방 15~30%입니다(2020 한국인 영양소 섭취기준). 계산기로 실제 비율을 확인하세요.</li>
-            <li><strong>다이어트 식단 설계:</strong> 하루 권장 칼로리(19~64세 기준 여성 1,700~2,000kcal, 남성 2,200~2,600kcal — 2020 한국인 영양소 섭취기준)를 목표로 세 끼 식단을 조절하면 효과적인 체중 관리가 가능합니다.</li>
+            <li><strong>탄단지 비율 확인:</strong> 균형 잡힌 식단의 권장 탄단지 비율은 탄수화물 50~65%, 단백질 10~20%, 지방 15~30%입니다(2025 한국인 영양소 섭취기준). 계산기로 실제 비율을 확인하세요.</li>
+            <li><strong>다이어트 식단 설계:</strong> 한국인 에너지필요추정량(19~64세 기준 여성 1,700~2,000kcal, 남성 2,200~2,600kcal — 2020 한국인 영양소 섭취기준)은 기준 체격의 체중 유지 열량입니다. 감량하려면 칼로리 계산기로 내 유지 칼로리를 구한 뒤 그보다 조금 적게 세 끼 식단을 계획하세요.</li>
             <li><strong>단백질 섭취 점검:</strong> 근육 증가를 목표로 한다면 체중(kg) × 1.5~2g의 단백질 섭취를 권장합니다. 닭가슴살, 두부, 계란이 단백질 대표 식품입니다.</li>
             <li><strong>식단 기록 습관:</strong> 매 끼 식사 후 영양소를 기록하는 습관을 들이면 열량 섭취 패턴을 파악하고 건강한 식습관을 형성하는 데 도움이 됩니다.</li>
           </ul>

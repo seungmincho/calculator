@@ -17,7 +17,7 @@ export default function AverageCalculatorPage() {
   const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
     { '@type': 'Question', name: '가중평균은 어떻게 계산하나요?', acceptedAnswer: { '@type': 'Answer', text: '가중평균 = (각 값 × 가중치)의 합 ÷ 가중치의 합 입니다. 예를 들어 점수 90(가중치 3), 80(가중치 1)이면 (90×3 + 80×1) ÷ (3+1) = 350÷4 = 87.5가 됩니다. 이 계산기에 값과 가중치를 입력하면 자동으로 구해집니다.' } },
     { '@type': 'Question', name: '산술평균과 가중평균의 차이는?', acceptedAnswer: { '@type': 'Answer', text: '산술평균은 모든 값을 동일하게 더해 개수로 나눕니다. 가중평균은 각 값에 가중치를 곱한 합을 가중치 합으로 나눠, 학점(과목별 이수학점)이나 투자 비중처럼 중요도가 다른 데이터에 적합합니다.' } },
-    { '@type': 'Question', name: '기하평균은 언제 사용하나요?', acceptedAnswer: { '@type': 'Answer', text: '기하평균은 성장률, 수익률 등 비율 데이터의 평균을 구할 때 사용합니다. 예를 들어 3년간 수익률이 10%, 20%, -5%일 때 기하평균으로 연평균 수익률을 구합니다.' } },
+    { '@type': 'Question', name: '기하평균은 언제 사용하나요?', acceptedAnswer: { '@type': 'Answer', text: '기하평균은 성장률, 수익률 등 비율 데이터의 평균을 구할 때 사용합니다. 예를 들어 3년간 수익률이 10%, 20%, -5%라면 1.10, 1.20, 0.95처럼 \'1+수익률\' 배수로 입력해 기하평균(약 1.0784)을 구하고, 1을 빼면 연평균 수익률 약 7.84%가 됩니다.' } },
   ]}
 
   return (

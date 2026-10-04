@@ -4,6 +4,9 @@ import {
   tieredCommission, rawCommission, withholding33, calc, supplyValue, nextBoundary, niceStep,
   encodePlan, decodePlan, DEFAULT_TIERS, PLAN_A, PLAN_B, type Plan,
 } from '../src/utils/salesCommission.ts'
+import {
+  marketFees, NAVER_ORDER_MGMT, NAVER_SALES, COUPANG_SALES, ELEVENST_DEFAULT, CATEGORY_KEYS, type MarketInput,
+} from '../src/utils/marketplaceFees.ts'
 
 const T = DEFAULT_TIERS // 0~1천만 3%, 1천만~3천만 5%, 3천만 이상 7%
 
@@ -81,5 +84,45 @@ assert.equal(decodePlan(null), null)
 assert.equal(decodePlan('x~m~1'), null)
 assert.equal(decodePlan(encodePlan(PLAN_A).replace(/^t/, 'z')), null)
 assert.equal(decodePlan(encodePlan({ ...PLAN_A, rate: -1 })), null)
+
+// ── 오픈마켓 건당 수수료 (요율 확인일 2026-10-05, 출처는 src/utils/marketplaceFees.ts) ──
+const mk: MarketInput = { price: 30_000, shipping: 3_000, category: 'fashion', tier: 'micro', inflow: 'normal', elevenstRate: ELEVENST_DEFAULT }
+// 요율 고정: 스마트스토어 주문관리(2025.10.1 인하 후)·판매수수료, 쿠팡 대분류 기본, 11번가 대표값
+assert.deepEqual(NAVER_ORDER_MGMT, { micro: 1.77, small1: 2.33, small2: 2.48, small3: 2.73, general: 3.3 })
+assert.deepEqual(NAVER_SALES, { normal: 2.73, marketing: 0.91 })
+assert.deepEqual(COUPANG_SALES, { fashion: 10.5, fashionAcc: 10.5, beauty: 9.6, food: 10.6, living: 7.8, electronics: 7.8, sports: 10.8, books: 10.8, baby: 10, furniture: 10.8 })
+assert.equal(ELEVENST_DEFAULT, 13)
+
+// 스마트스토어: 주문관리 1.77% × (판매가+배송비) + 판매 2.73% × 판매가, 부가세 10% 별도
+const ss = marketFees('smartstore', mk)
+assert.deepEqual(ss.lines.map((l) => [l.key, l.base, l.amount]), [['orderMgmt', 33_000, 584], ['sales', 30_000, 819]])
+assert.equal(ss.vat, 140)
+assert.equal(ss.total, 1_543)
+assert.equal(ss.settlement, 31_457)
+// 카테고리 무관
+for (const c of CATEGORY_KEYS) assert.equal(marketFees('smartstore', { ...mk, category: c }).total, 1_543)
+// 마케팅 링크 0.91%, 일반 등급 3.30%
+assert.equal(marketFees('smartstore', { ...mk, inflow: 'marketing' }).total, Math.round((584 + 273) * 1.1)) // 943
+assert.equal(marketFees('smartstore', { ...mk, tier: 'general' }).total, 1_089 + 819 + Math.round((1_089 + 819) * 0.1))
+// 배송비에도 주문관리 수수료(판매수수료는 아님)
+assert.equal(marketFees('smartstore', { ...mk, shipping: 0 }).lines[0].amount, 531)
+
+// 쿠팡: 판매가 × 카테고리 기본 수수료 + 배송비 × 3%, 부가세 별도
+const cp = marketFees('coupang', mk)
+assert.deepEqual(cp.lines.map((l) => [l.key, l.amount]), [['sales', 3_150], ['shipping', 90]])
+assert.equal(cp.total, 3_564)
+assert.equal(cp.settlement, 29_436)
+assert.equal(marketFees('coupang', { ...mk, category: 'electronics' }).total, Math.round((2_340 + 90) * 1.1)) // 2,673
+
+// 11번가: 입력 요율 × 판매가 + 배송비 × 3.3% (둘 다 부가세 포함으로 보고 그대로)
+const es = marketFees('elevenst', mk)
+assert.equal(es.vat, 0)
+assert.equal(es.total, 3_900 + 99)
+assert.equal(marketFees('elevenst', { ...mk, elevenstRate: 7 }).total, 2_100 + 99)
+
+// 비교: 같은 입력이면 기본값에서 스마트스토어가 가장 낮음, 실효율
+assert.equal([ss, cp, es].reduce((a, b) => (b.total < a.total ? b : a)).platform, 'smartstore')
+assert.equal(ss.effRate.toFixed(2), '4.68')
+assert.equal(marketFees('coupang', { ...mk, price: 0, shipping: 0 }).effRate, 0)
 
 console.log('check-sales-commission: all passed')

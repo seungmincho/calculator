@@ -88,8 +88,9 @@ export const findFood = (id: string) => FOOD_MAP.get(id)
 /** 식품등의 표시기준(식약처) 1일 영양성분 기준치. 열량은 영양성분표 %의 기준인 2,000kcal. */
 export const DV: Nutrients = { cal: 2000, carbs: 324, protein: 55, fat: 54, sodium: 2000 }
 
-/** 2020 한국인 영양소 섭취기준 에너지적정비율(성인) — 탄수화물 55~65%, 단백질 7~20%, 지방 15~30% */
-export const AMDR = { carbs: [55, 65], protein: [7, 20], fat: [15, 30] } as const
+/** 2025 한국인 영양소 섭취기준(보건복지부 2025-12-31 발표) 에너지적정비율(성인) — 탄수화물 50~65%, 단백질 10~20%, 지방 15~30%
+ *  (2020 기준 55~65%·7~20%에서 변경: https://www.ddaily.co.kr/page/view/2025123111291718936) */
+export const AMDR = { carbs: [50, 65], protein: [10, 20], fat: [15, 30] } as const
 export type Macro = keyof typeof AMDR
 
 export const PORTIONS = [0.5, 1, 1.5, 2] as const

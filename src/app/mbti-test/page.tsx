@@ -39,7 +39,7 @@ export default function MbtiTestPage() {
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '48문항 상세 MBTI 검사',
+      '48문항 16유형 성격 테스트(비공식)',
       '4가지 지표별 점수 분포 시각화',
       '16가지 유형 상세 프로필',
       '5점 척도·축별 균형 문항',
@@ -62,7 +62,7 @@ export default function MbtiTestPage() {
         name: 'MBTI 검사는 몇 문항인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '총 48문항으로 구성되며, E/I, S/N, T/F, J/P 각 축별로 12문항씩 배정됩니다. 검사 시간은 약 5~10분 소요됩니다.',
+          text: '공식 MBTI®(Form M)는 93문항이며 자격을 갖춘 전문가를 통해 받습니다. 툴허브의 비공식 16유형 테스트는 총 48문항으로, E/I, S/N, T/F, J/P 각 축별로 12문항씩 배정됩니다. 검사 시간은 약 5~10분 소요됩니다.',
         },
       },
       {

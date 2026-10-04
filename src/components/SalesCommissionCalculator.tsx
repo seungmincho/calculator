@@ -2,8 +2,8 @@
 
 /**
  * SalesCommissionCalculator — 영업 커미션·인센티브 계산기 + 오픈마켓 판매수수료 비교
- * Translation namespace: salesCommissionCalc  (영업 커미션 = sc.*, 오픈마켓 = input/category/platform/result/compare/notes/guide)
- * 계산 로직: src/utils/salesCommission.ts (회귀: node scripts/check-sales-commission.ts)
+ * Translation namespace: salesCommissionCalc  (영업 커미션 = sc.*, 오픈마켓 = input/category/platform/naver/elevenst/fee/result/compare/notes/guide)
+ * 계산 로직: src/utils/salesCommission.ts, 오픈마켓 src/utils/marketplaceFees.ts (회귀: node scripts/check-sales-commission.ts)
  */
 
 import { useState, useMemo, useEffect, useRef } from 'react'
@@ -18,17 +18,11 @@ import {
   PLAN_A, PLAN_B, calc, rawCommission, supplyValue, nextBoundary, niceStep, encodePlan, decodePlan,
   type Plan, type Structure, type TaxMode, type Tier,
 } from '@/utils/salesCommission'
-
-// ── 오픈마켓 수수료 데이터 (공시 대표 요율, 세분류·등급별로 다름) ──
-type CategoryKey = 'fashion' | 'fashionAcc' | 'beauty' | 'food' | 'living' | 'electronics' | 'sports' | 'books' | 'baby' | 'furniture'
-type PlatformKey = 'coupang' | 'smartstore' | 'elevenst'
-const COMMISSION_DATA: Record<PlatformKey, Record<CategoryKey, number>> = {
-  coupang: { fashion: 10.9, fashionAcc: 10.9, beauty: 10.9, food: 10.9, living: 10.9, electronics: 5.0, sports: 10.9, books: 10.9, baby: 10.9, furniture: 10.9 },
-  smartstore: { fashion: 5.5, fashionAcc: 5.5, beauty: 5.5, food: 5.5, living: 5.5, electronics: 4.5, sports: 5.5, books: 3.0, baby: 5.5, furniture: 5.5 },
-  elevenst: { fashion: 12.0, fashionAcc: 12.0, beauty: 10.0, food: 8.0, living: 10.0, electronics: 6.0, sports: 10.0, books: 8.0, baby: 10.0, furniture: 10.0 },
-}
-const CATEGORY_KEYS = Object.keys(COMMISSION_DATA.coupang) as CategoryKey[]
-const PLATFORM_KEYS = Object.keys(COMMISSION_DATA) as PlatformKey[]
+// 오픈마켓 요율·출처(확인일)·계산: src/utils/marketplaceFees.ts
+import {
+  marketFees, CATEGORY_KEYS, PLATFORM_KEYS, NAVER_TIERS, NAVER_ORDER_MGMT, NAVER_SALES, COUPANG_SALES, ELEVENST_DEFAULT,
+  type CategoryKey, type NaverTier, type NaverInflow, type MarketInput,
+} from '@/utils/marketplaceFees'
 
 const STRUCTURES: Structure[] = ['flat', 'tiered', 'target', 'perDeal']
 const TAXES: TaxMode[] = ['freelance', 'employee', 'none']
@@ -87,6 +81,9 @@ export default function SalesCommissionCalculator() {
   const [price, setPrice] = useState(30_000)
   const [shipping, setShipping] = useState(3_000)
   const [category, setCategory] = useState<CategoryKey>('fashion')
+  const [naverTier, setNaverTier] = useState<NaverTier>('micro')
+  const [inflow, setInflow] = useState<NaverInflow>('normal')
+  const [elevenstRate, setElevenstRate] = useState(ELEVENST_DEFAULT)
 
   // URL → 상태 (한 번)
   useEffect(() => {
@@ -101,6 +98,9 @@ export default function SalesCommissionCalculator() {
     if (a || b) setPlans([a ?? PLAN_A, ...(b ? [b] : [])])
     setPrice(num(g('p'), 30_000)); setShipping(num(g('sh'), 3_000))
     const c = CATEGORY_KEYS.find((k) => k === g('c')); if (c) setCategory(c)
+    const nt = NAVER_TIERS.find((k) => k === g('nt')); if (nt) setNaverTier(nt)
+    if (g('ni') === 'm') setInflow('marketing')
+    setElevenstRate(Math.min(30, num(g('er'), ELEVENST_DEFAULT)))
     ready.current = true
   }, [searchParams])
 
@@ -109,13 +109,15 @@ export default function SalesCommissionCalculator() {
     if (!ready.current) return
     const p = new URLSearchParams()
     if (mode === 'market') {
-      p.set('p', String(price)); p.set('sh', String(shipping)); p.set('c', category)
+      p.set('p', String(price)); p.set('sh', String(shipping)); p.set('c', category); p.set('nt', naverTier)
+      if (inflow === 'marketing') p.set('ni', 'm')
+      if (elevenstRate !== ELEVENST_DEFAULT) p.set('er', String(elevenstRate))
     } else {
       p.set('mode', 'commission'); p.set('s', String(sales)); if (vatIncl) p.set('v', '1'); p.set('tx', TAX_CODE[tax])
       p.set('a', encodePlan(plans[0])); if (plans[1]) p.set('b', encodePlan(plans[1]))
     }
     window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
-  }, [mode, sales, vatIncl, tax, plans, price, shipping, category])
+  }, [mode, sales, vatIncl, tax, plans, price, shipping, category, naverTier, inflow, elevenstRate])
 
   const idx = Math.min(active, plans.length - 1)
   const plan = plans[idx]
@@ -178,13 +180,14 @@ export default function SalesCommissionCalculator() {
     : t('sc.insight.noNext')
 
   // ── 오픈마켓 ──
-  const market = useMemo(() => PLATFORM_KEYS.map((platform) => {
-    const rate = COMMISSION_DATA[platform][category]
-    const base = platform === 'coupang' ? price + shipping : price // 쿠팡만 배송비 포함 기준
-    const commission = Math.round((base * rate) / 100)
-    return { platform, rate, commission, settlement: price + shipping - commission }
-  }), [price, shipping, category])
-  const best = market.reduce((a, b) => (b.commission < a.commission ? b : a))
+  // 세 곳 모두 같은 판매가·배송비, 건당 수수료(부가세 포함)로 비교. 월정액·광고비는 제외.
+  const mkInput: MarketInput = { price, shipping, category, tier: naverTier, inflow, elevenstRate }
+  const market = PLATFORM_KEYS.map((pk) => marketFees(pk, mkInput))
+  const best = market.reduce((a, b) => (b.total < a.total ? b : a))
+  const assumptions = t('result.assumptions', {
+    tier: t(`naver.tier.${naverTier}`), inflow: t(`naver.inflow.${inflow}`), category: t(`category.${category}`),
+    coupang: COUPANG_SALES[category], elevenst: elevenstRate,
+  })
 
   const rowsBreakdown: { label: string; m: number; strong?: boolean; minus?: boolean }[] = [
     ...(vatIncl ? [{ label: t('sc.table.supply'), m: res.sales }] : []),
@@ -571,8 +574,30 @@ export default function SalesCommissionCalculator() {
               <div>
                 <label htmlFor="mk-cat" className="block text-sm font-medium text-body mb-1.5">{t('input.category')}</label>
                 <select id="mk-cat" value={category} onChange={(e) => setCategory(e.target.value as CategoryKey)} className="ui-field w-full px-4 py-2.5">
-                  {CATEGORY_KEYS.map((key) => <option key={key} value={key}>{t(`category.${key}`)}</option>)}
+                  {CATEGORY_KEYS.map((key) => <option key={key} value={key}>{t(`category.${key}`)} · {COUPANG_SALES[key]}%</option>)}
                 </select>
+                <p className="text-xs text-muted mt-1">{t('input.categoryHint')}</p>
+              </div>
+              <div className="border-t border-line pt-4 space-y-4">
+                <p className="text-sm font-semibold text-fg">{t('naver.title')}</p>
+                <div>
+                  <label htmlFor="mk-tier" className="block text-sm font-medium text-body mb-1.5">{t('naver.tierLabel')}</label>
+                  <select id="mk-tier" value={naverTier} onChange={(e) => setNaverTier(e.target.value as NaverTier)} className="ui-field w-full px-4 py-2.5">
+                    {NAVER_TIERS.map((k) => <option key={k} value={k}>{t(`naver.tier.${k}`)} · {NAVER_ORDER_MGMT[k]}%</option>)}
+                  </select>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-body mb-1.5">{t('naver.inflowLabel')}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['normal', 'marketing'] as const).map((k) => (
+                      <button key={k} aria-pressed={inflow === k} className={seg(inflow === k)} onClick={() => setInflow(k)}>{t(`naver.inflow.${k}`)} · {NAVER_SALES[k]}%</button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted mt-1">{t('naver.inflowHint')}</p>
+                </div>
+              </div>
+              <div className="border-t border-line pt-4">
+                <Pct id="mk-11st" label={t('elevenst.rateLabel')} value={elevenstRate} max={30} hint={t('elevenst.rateHint')} onChange={setElevenstRate} />
               </div>
             </div>
           </div>
@@ -580,9 +605,9 @@ export default function SalesCommissionCalculator() {
             {price > 0 ? (
               <>
                 <div className="ui-hero p-6">
-                  <div className="text-sm text-white/70">{t('sc.market.heroLabel', { platform: t(`platform.${best.platform}`), rate: best.rate })}</div>
+                  <div className="text-sm text-white/70">{t('sc.market.heroLabel', { platform: t(`platform.${best.platform}`), rate: best.effRate.toFixed(2) })}</div>
                   <div className="text-4xl font-bold mt-2 tabular-nums">{won(best.settlement)}{t('input.unit')}</div>
-                  <div className="text-sm text-white/80 mt-2">{t('result.commissionAmount')} {won(best.commission)}{t('input.unit')}</div>
+                  <div className="text-sm text-white/80 mt-2">{t('result.commissionAmount')} {won(best.total)}{t('input.unit')}</div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {market.map((r) => (
@@ -592,13 +617,20 @@ export default function SalesCommissionCalculator() {
                         {r.platform === best.platform && <span className="text-xs font-semibold bg-primary text-white px-2 py-0.5 rounded-full">{t('result.bestLabel')}</span>}
                       </div>
                       <dl className="space-y-2 text-sm">
-                        <div className="flex justify-between"><dt className="text-muted">{t('result.commissionRate')}</dt><dd className="text-body">{r.rate}%</dd></div>
-                        <div className="flex justify-between"><dt className="text-muted">{t('result.commissionAmount')}</dt><dd className="text-body tabular-nums">{won(r.commission)}{t('input.unit')}</dd></div>
-                        <div className="flex justify-between border-t border-line pt-2"><dt className="font-medium text-body">{t('result.settlementAmount')}</dt><dd className="font-bold text-fg tabular-nums">{won(r.settlement)}{t('input.unit')}</dd></div>
+                        {r.lines.filter((l) => l.base > 0).map((l) => (
+                          <div key={l.key} className="flex justify-between gap-2">
+                            <dt className="text-muted">{t(`fee.${r.platform}.${l.key}`)} {l.rate}%</dt>
+                            <dd className="text-body tabular-nums">{won(l.amount)}</dd>
+                          </div>
+                        ))}
+                        {r.vat > 0 && <div className="flex justify-between gap-2"><dt className="text-muted">{t('fee.vat')}</dt><dd className="text-body tabular-nums">{won(r.vat)}</dd></div>}
+                        <div className="flex justify-between gap-2"><dt className="text-muted">{t('result.commissionAmount')} · {r.effRate.toFixed(2)}%</dt><dd className="text-body tabular-nums">{won(r.total)}{t('input.unit')}</dd></div>
+                        <div className="flex justify-between gap-2 border-t border-line pt-2"><dt className="font-medium text-body">{t('result.settlementAmount')}</dt><dd className="font-bold text-fg tabular-nums">{won(r.settlement)}{t('input.unit')}</dd></div>
                       </dl>
                     </div>
                   ))}
                 </div>
+                <p className="text-xs text-muted">{assumptions}</p>
               </>
             ) : (
               <div className="ui-card p-8 text-center text-muted">{t('result.noInput')}</div>
@@ -607,7 +639,8 @@ export default function SalesCommissionCalculator() {
         </div>
 
         <div className="ui-card p-6">
-          <h2 className="text-lg font-semibold text-fg mb-4">{t('compare.title')}</h2>
+          <h2 className="text-lg font-semibold text-fg">{t('compare.title')}</h2>
+          <p className="text-sm text-muted mt-1 mb-4">{t('compare.note')}</p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -619,16 +652,18 @@ export default function SalesCommissionCalculator() {
               </thead>
               <tbody className="divide-y divide-line">
                 {CATEGORY_KEYS.map((ck) => {
-                  const minRate = Math.min(...PLATFORM_KEYS.map((pk) => COMMISSION_DATA[pk][ck]))
+                  const row = PLATFORM_KEYS.map((pk) => marketFees(pk, { ...mkInput, category: ck }))
+                  const min = Math.min(...row.map((r) => r.total))
                   return (
                     <tr key={ck} className={ck === category ? 'bg-primary-soft' : ''}>
                       <td className="py-2.5 px-2 text-fg font-medium">{t(`category.${ck}`)}</td>
-                      {PLATFORM_KEYS.map((pk) => {
-                        const rate = COMMISSION_DATA[pk][ck]
-                        return <td key={pk} className={`text-center py-2.5 px-2 ${rate === minRate ? 'text-primary font-bold' : 'text-sub'}`}>{rate}%</td>
-                      })}
+                      {row.map((r) => (
+                        <td key={r.platform} className={`text-center py-2.5 px-2 tabular-nums ${r.total === min ? 'text-primary font-bold' : 'text-sub'}`}>
+                          {won(r.total)}{r.platform === 'coupang' && <span className="block text-xs font-normal text-muted">{COUPANG_SALES[ck]}%</span>}
+                        </td>
+                      ))}
                       <td className="text-center py-2.5 px-2 text-primary font-semibold text-xs">
-                        {PLATFORM_KEYS.filter((pk) => COMMISSION_DATA[pk][ck] === minRate).map((pk) => t(`platform.${pk}`)).join(', ')}
+                        {row.filter((r) => r.total === min).map((r) => t(`platform.${r.platform}`)).join(', ')}
                       </td>
                     </tr>
                   )

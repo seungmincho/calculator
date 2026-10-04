@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '체지방률 계산기 - Navy·YMCA 공식 | 툴허브',
-  description: 'Navy 공식, YMCA 공식을 사용해 허리, 목, 엉덩이 둘레로 체지방률을 계산하세요. 체성분 분석, 근육량 계산, 이상적인 체지방률 목표 설정까지 한번에!',
+  description: 'Navy·RFM·BMI 기반·YMCA 공식으로 허리, 목, 엉덩이 둘레에서 체지방률을 추정하세요. 공식별 비교와 오차 범위, 체지방량·제지방량, 목표 체지방률까지 한번에!',
   keywords: [
     '체지방률 계산기',
     '체지방률 측정',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: '툴허브' }],
   openGraph: {
     title: '체지방률 계산기 | Navy, YMCA 공식으로 정확한 체지방 측정',
-    description: 'Navy 공식, YMCA 공식을 사용해 허리, 목, 엉덩이 둘레로 체지방률을 계산하세요. 체성분 분석, 근육량 계산까지!',
+    description: 'Navy·RFM·BMI 기반·YMCA 공식으로 허리, 목, 엉덩이 둘레에서 체지방률을 추정하세요. 체지방량·제지방량, 목표 체지방률까지!',
     type: 'website',
     url: 'https://toolhub.ai.kr/body-fat-calculator',
     siteName: '툴허브',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '체지방률 계산기 | Navy, YMCA 공식으로 정확한 체지방 측정',
-    description: 'Navy 공식, YMCA 공식을 사용해 허리, 목, 엉덩이 둘레로 체지방률을 계산하세요.',
+    description: 'Navy·RFM·BMI 기반·YMCA 공식으로 허리, 목, 엉덩이 둘레에서 체지방률을 추정하세요.',
     images: ['https://toolhub.ai.kr/og/body-fat-calculator.png'],
   },
   alternates: {
@@ -67,7 +67,7 @@ export default function BodyFatCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '체지방률 계산기',
-    description: 'Navy 공식, YMCA 공식으로 체지방률을 측정하는 무료 온라인 도구',
+    description: 'Navy·RFM·BMI 기반·YMCA 공식으로 체지방률을 추정하는 무료 온라인 도구',
     url: 'https://toolhub.ai.kr/body-fat-calculator',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
@@ -109,11 +109,11 @@ export default function BodyFatCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: '체지방률 계산하는 방법',
-    description: '신체 둘레를 측정하여 입력하면 Navy·YMCA 공식으로 체지방률을 계산합니다.',
+    description: '신체 둘레를 측정하여 입력하면 Navy·RFM·BMI 기반·YMCA 공식으로 체지방률을 추정합니다.',
     step: [
-      { '@type': 'HowToStep', name: '기본 정보 입력', text: '성별, 키(cm), 체중(kg)을 입력합니다.' },
+      { '@type': 'HowToStep', name: '기본 정보 입력', text: '성별, 나이, 키(cm), 체중(kg)을 입력합니다.' },
       { '@type': 'HowToStep', name: '신체 둘레 측정', text: '허리둘레, 목둘레를 줄자로 측정하여 입력합니다. 여성은 엉덩이둘레도 입력합니다.' },
-      { '@type': 'HowToStep', name: '체성분 결과 확인', text: 'Navy·YMCA 공식 체지방률, 체지방량, 제지방량, 비만도 판정과 이상적인 목표 체지방률을 확인합니다.' },
+      { '@type': 'HowToStep', name: '체성분 결과 확인', text: '공식별 체지방률 추정치와 오차 범위, 체지방량, 제지방량, 체지방률 수준(ACE·연령별 건강 범위)과 목표 체지방률별 체중을 확인합니다.' },
     ],
   }
 
@@ -142,7 +142,7 @@ export default function BodyFatCalculatorPage() {
             체지방률 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            체지방률 계산기는 미 해군(Navy) 공식과 YMCA 공식을 이용해 허리·목·엉덩이 둘레 측정값으로 체지방률을 추정하는 무료 온라인 건강 도구입니다. 인바디 기계 없이 줄자만으로 체성분을 분석하고, 체지방량·제지방량·이상 체지방률 목표까지 한번에 계산할 수 있습니다. 다이어트, 운동 계획 수립, 체성분 관리에 관심 있는 분들에게 적합하며 남성·여성 기준을 각각 적용합니다.
+            체지방률 계산기는 미 해군(Navy)·RFM·BMI 기반(Deurenberg)·YMCA 공식을 이용해 허리·목·엉덩이 둘레와 키·체중·나이로 체지방률을 추정하는 무료 온라인 건강 도구입니다. 인바디 기계 없이 줄자만으로 체지방률을 어림하고(공식별 오차 약 ±3.5~5%p), 체지방량·제지방량·이상 체지방률 목표까지 한번에 계산할 수 있습니다. 다이어트, 운동 계획 수립, 체성분 관리에 관심 있는 분들에게 적합하며 남성·여성 기준을 각각 적용합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             체지방률 계산기 활용 팁
