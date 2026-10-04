@@ -84,4 +84,4 @@
 
 - 2026-10-04 배치1 · 금융·생활비 48개 도구 공식 기준 점검(국민연금 계산기 10배 과대, 택시 15개 시·도 요금, 자동차 취등록세 등록세 이중부과, 실업급여 하한>상한, 보금자리 수도권 LTV 등) + 신규 4종(관부가세·김장·연휴 플래너·건강검진) + 홈 오늘의 퍼즐·시즌 카드 + 결정 도구 SSR + 성능 소규모(prefetch·_headers·supabase-js 제거) + RSS/sitemap. 검증: check 147개·tsc 0·messages:check. 배포 11bb5f43 (SW v4.32.0, 빌드 워커 cpus:4 — 기본 19개면 메모리 감시가 빌드 종료)
 - 2026-10-04 배치2 · Suspense 7곳 제거(React 19.2 12.8KB 경계 숨김 — 연봉·시급·보금자리·세금 등), 결정 도구 9종 SSR, 사다리 공유 버그, 연말정산 미리보기, 월세지원금→청년월세 301, CLAUDE.md 템플릿 Suspense 제거, scripts/check-static-html.cjs. 검증: check 147·tsc 0·브라우저(연말정산·연봉/시급 공유·동전·5명 사다리) 배포 713f6873 (SW v4.32.1). 빌드: 사전 tsc 통과 후 SKIP_BUILD_TYPECHECK=1 (빌드 중 타입검사 ~5GB로 감시가 종료시킴)
-- 2026-10-04 배치3 · 번역 레지스트리 분할(legacy 2.3MB 제거, 345파일 ns import, scripts/i18n-namespaces.cjs --apply/--audit, CLAUDE.md 템플릿·체크리스트). 검증: messages:check·tsc 0·check 147·정적 키 노출 diff 0·브라우저 30페이지
+- 2026-10-04 배치3 · 번역 레지스트리 분할(legacy 2.3MB 제거, 345파일 ns import, scripts/i18n-namespaces.cjs --apply/--audit, CLAUDE.md 템플릿·체크리스트). 검증: messages:check·tsc 0·check 147·정적 키 노출 diff 0·브라우저 30페이지. 배포 c3989d24 (SW v4.32.2). 운영 초기 JS 전송: 숫자한글 257KB·택시 260KB(이전 1p JS 957KB·958KB)
