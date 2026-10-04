@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { recordToolClick, getPopularTools, type PopularTool } from '@/utils/toolAnalytics'
+import { recordToolClick, getPopularTools } from '@/utils/toolAnalytics'
+import { recordToolUsage } from '@/utils/recentTools'
 import { isSupabaseConfigured } from '@/utils/webrtc/supabaseClient'
 import { menuConfig, categoryKeys, type MenuItem } from '@/config/menuConfig'
 
@@ -24,15 +25,10 @@ export const useTrackToolVisit = () => {
     if (!pathname || pathname === '/') return
     const cleanPath = pathname.replace(/\/$/, '') || '/'
 
-    let isKnownTool = false
-    for (const catKey of categoryKeys) {
-      if (menuConfig[catKey].items.some(item => item.href === cleanPath)) {
-        isKnownTool = true
-        break
-      }
-    }
-    if (!isKnownTool) return
+    const category = categoryKeys.find(catKey => menuConfig[catKey].items.some(item => item.href === cleanPath))
+    if (!category) return
 
+    recordToolUsage(category, cleanPath)
     recordToolClick(cleanPath)
   }, [pathname])
 }

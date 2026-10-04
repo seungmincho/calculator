@@ -1,25 +1,19 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/subsidies'
 import {
   CheckCircle,
   XCircle,
   Home,
-  DollarSign,
-  Users,
-  Building2,
   ShieldCheck,
   ChevronDown,
   ChevronUp,
   RotateCcw,
-  Search,
   Share2,
-  Copy,
   Check,
 } from 'lucide-react'
-import GuideSection from '@/components/GuideSection'
+import GuideSectionContent from '@/components/GuideSectionContent'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // 2026년 중위소득 (월)
@@ -59,6 +53,19 @@ interface CalcResult {
   parentIncomeLimit: number
 }
 
+interface YouthForm {
+  age: string
+  isIndependent: boolean
+  isHomeless: boolean
+  ownIncome: string
+  parentIncome: string
+  householdSize: string
+  asset: string
+  rent: string
+  deposit: string
+  housingType: string
+}
+
 function formatNumber(value: string): string {
   const num = value.replace(/[^0-9]/g, '')
   if (!num) return ''
@@ -69,21 +76,45 @@ function parseNumber(value: string): number {
   return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0
 }
 
+function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit }: YouthForm): CalcResult {
+  const ageNum = parseInt(age) || 0
+  const ownIncomeNum = parseNumber(ownIncome)
+  const parentIncomeNum = parseNumber(parentIncome)
+  const assetNum = parseNumber(asset)
+  const rentNum = parseNumber(rent)
+  const depositNum = parseNumber(deposit)
+  const sizeNum = parseInt(householdSize) || 1
+
+  const ownIncomeLimit = Math.floor((MEDIAN_INCOME_2026[1] || 0) * 0.6)
+  const parentIncomeLimit = MEDIAN_INCOME_2026[Math.min(sizeNum, 6)] || MEDIAN_INCOME_2026[6]
+  const checks: CheckResult = {
+    age: ageNum >= MIN_AGE && ageNum <= MAX_AGE,
+    independent: isIndependent,
+    homeless: isHomeless,
+    ownIncome: ownIncomeNum * 10000 <= ownIncomeLimit,
+    parentIncome: parentIncomeNum * 10000 <= parentIncomeLimit,
+    asset: assetNum <= MAX_ASSET,
+    housing: depositNum <= MAX_DEPOSIT && rentNum <= MAX_RENT,
+  }
+  const eligible = Object.values(checks).every(Boolean)
+  const monthlySupport = eligible ? Math.min(rentNum * 10000, MAX_MONTHLY_SUPPORT) : 0
+  return { eligible, checks, monthlySupport, totalSupport: monthlySupport * MAX_MONTHS, ownIncomeLimit, parentIncomeLimit }
+}
+
 export default function YouthRentSubsidyCalculator() {
   const t = useTranslations('youthRentSubsidy')
-  const searchParams = useSearchParams()
 
   // Form state
-  const [age, setAge] = useState(searchParams.get('age') || '25')
-  const [isIndependent, setIsIndependent] = useState(searchParams.get('independent') !== 'false')
-  const [isHomeless, setIsHomeless] = useState(searchParams.get('homeless') !== 'false')
-  const [ownIncome, setOwnIncome] = useState(searchParams.get('ownIncome') || '')
-  const [parentIncome, setParentIncome] = useState(searchParams.get('parentIncome') || '')
-  const [householdSize, setHouseholdSize] = useState(searchParams.get('household') || '4')
-  const [asset, setAsset] = useState(searchParams.get('asset') || '')
-  const [rent, setRent] = useState(searchParams.get('rent') || '')
-  const [deposit, setDeposit] = useState(searchParams.get('deposit') || '')
-  const [housingType, setHousingType] = useState(searchParams.get('type') || 'officetel')
+  const [age, setAge] = useState('25')
+  const [isIndependent, setIsIndependent] = useState(true)
+  const [isHomeless, setIsHomeless] = useState(true)
+  const [ownIncome, setOwnIncome] = useState('')
+  const [parentIncome, setParentIncome] = useState('')
+  const [householdSize, setHouseholdSize] = useState('4')
+  const [asset, setAsset] = useState('')
+  const [rent, setRent] = useState('')
+  const [deposit, setDeposit] = useState('')
+  const [housingType, setHousingType] = useState('officetel')
 
   const [result, setResult] = useState<CalcResult | null>(null)
   const [showApplyInfo, setShowApplyInfo] = useState(false)
@@ -104,43 +135,7 @@ export default function YouthRentSubsidyCalculator() {
 
   // Calculation
   const calculate = useCallback(() => {
-    const ageNum = parseInt(age) || 0
-    const ownIncomeNum = parseNumber(ownIncome)
-    const parentIncomeNum = parseNumber(parentIncome)
-    const assetNum = parseNumber(asset)
-    const rentNum = parseNumber(rent)
-    const depositNum = parseNumber(deposit)
-    const sizeNum = parseInt(householdSize) || 1
-
-    const ownIncomeLimit = Math.floor((MEDIAN_INCOME_2026[1] || 0) * 0.6)
-    const parentIncomeLimit = MEDIAN_INCOME_2026[Math.min(sizeNum, 6)] || MEDIAN_INCOME_2026[6]
-
-    const checks: CheckResult = {
-      age: ageNum >= MIN_AGE && ageNum <= MAX_AGE,
-      independent: isIndependent,
-      homeless: isHomeless,
-      ownIncome: ownIncomeNum * 10000 <= ownIncomeLimit,
-      parentIncome: parentIncomeNum * 10000 <= parentIncomeLimit,
-      asset: assetNum <= MAX_ASSET,
-      housing: depositNum <= MAX_DEPOSIT && rentNum <= MAX_RENT,
-    }
-
-    const eligible = Object.values(checks).every(Boolean)
-
-    const actualRent = rentNum * 10000
-    const monthlySupport = eligible ? Math.min(actualRent, MAX_MONTHLY_SUPPORT) : 0
-    const totalSupport = monthlySupport * MAX_MONTHS
-
-    const calcResult: CalcResult = {
-      eligible,
-      checks,
-      monthlySupport,
-      totalSupport,
-      ownIncomeLimit,
-      parentIncomeLimit,
-    }
-
-    setResult(calcResult)
+    setResult(evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType }))
 
     updateURL({
       age,
@@ -184,29 +179,41 @@ export default function YouthRentSubsidyCalculator() {
 
   // Auto-calculate if URL params exist
   useEffect(() => {
-    if (searchParams.get('ownIncome')) {
-      const raw = searchParams.get('ownIncome') || ''
-      if (raw) setOwnIncome(formatNumber(raw))
-      const pRaw = searchParams.get('parentIncome') || ''
-      if (pRaw) setParentIncome(formatNumber(pRaw))
-      const aRaw = searchParams.get('asset') || ''
-      if (aRaw) setAsset(formatNumber(aRaw))
-      const rRaw = searchParams.get('rent') || ''
-      if (rRaw) setRent(formatNumber(rRaw))
-      const dRaw = searchParams.get('deposit') || ''
-      if (dRaw) setDeposit(formatNumber(dRaw))
-
-      // Delay to let state update
-      setTimeout(() => calculate(), 100)
+    const params = new URLSearchParams(window.location.search)
+    if (![ 'age', 'independent', 'homeless', 'ownIncome', 'parentIncome', 'household', 'asset', 'rent', 'deposit', 'type' ].some(key => params.has(key))) return
+    const restored: YouthForm = {
+      age: params.get('age') || '25',
+      isIndependent: params.get('independent') !== 'false',
+      isHomeless: params.get('homeless') !== 'false',
+      ownIncome: formatNumber(params.get('ownIncome') || ''),
+      parentIncome: formatNumber(params.get('parentIncome') || ''),
+      householdSize: params.get('household') || '4',
+      asset: formatNumber(params.get('asset') || ''),
+      rent: formatNumber(params.get('rent') || ''),
+      deposit: formatNumber(params.get('deposit') || ''),
+      housingType: params.get('type') || 'officetel',
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const frame = requestAnimationFrame(() => {
+      setAge(restored.age)
+      setIsIndependent(restored.isIndependent)
+      setIsHomeless(restored.isHomeless)
+      setOwnIncome(restored.ownIncome)
+      setParentIncome(restored.parentIncome)
+      setHouseholdSize(restored.householdSize)
+      setAsset(restored.asset)
+      setRent(restored.rent)
+      setDeposit(restored.deposit)
+      setHousingType(restored.housingType)
+      setResult(evaluateYouth(restored))
+    })
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   const housingTypes = useMemo(() => [
     { value: 'officetel', label: t('housingTypes.officetel') },
-    { value: 'oneroom', label: t('housingTypes.oneroom') },
+    { value: 'oneroom', label: t('housingTypes.oneRoom') },
     { value: 'apartment', label: t('housingTypes.apartment') },
-    { value: 'goshiwon', label: t('housingTypes.goshiwon') },
+    { value: 'goshiwon', label: t('housingTypes.gosiwon') },
     { value: 'sharehouse', label: t('housingTypes.sharehouse') },
   ], [t])
 
@@ -507,7 +514,7 @@ export default function YouthRentSubsidyCalculator() {
         </div>
 
         {/* Right Panel - Results */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 min-w-0 space-y-6">
           {!result ? (
             <div className={`${glassCard} ${glassInset} p-8 text-center`}>
               <div className="w-16 h-16 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mb-4">
@@ -714,7 +721,7 @@ export default function YouthRentSubsidyCalculator() {
       </div>
 
       {/* Guide Section */}
-      <GuideSection namespace="youthRentSubsidy" />
+      <GuideSectionContent translate={t} />
     </div>
   )
 }

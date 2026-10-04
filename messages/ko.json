@@ -49956,6 +49956,140 @@
           }
         ]
       }
+    },
+    "input": {
+      "title": "가구 정보 입력",
+      "householdSize": "가구원 수",
+      "persons": "{count}명",
+      "monthlyIncome": "월 가구소득",
+      "manwon": "만원",
+      "totalAssets": "총 재산",
+      "age": "신청자 나이",
+      "years": "세",
+      "housingType": "주거 형태",
+      "housing": {
+        "jeonse": "전세",
+        "monthly": "월세",
+        "own": "자가",
+        "other": "기타(기숙사 등)"
+      },
+      "monthlyRent": "월세 금액",
+      "deposit": "보증금",
+      "specialConditions": "해당 사항 선택",
+      "hasMinorChildren": "미성년 자녀 유무",
+      "childrenCount": "자녀 수",
+      "isSingleParent": "한부모 가정",
+      "isDisabled": "장애인 가구원 포함",
+      "isOver65": "65세 이상 가구원 포함",
+      "calculate": "자격 확인하기",
+      "reset": "초기화"
+    },
+    "status": {
+      "eligible": "수급 가능",
+      "borderline": "경계 (추가 확인 필요)",
+      "ineligible": "해당 없음"
+    },
+    "result": {
+      "summaryTitle": "종합 요약",
+      "shareLink": "결과 링크 복사",
+      "copied": "복사됨!",
+      "eligibleCount": "수급 가능 프로그램",
+      "programs": "개",
+      "monthlyTotal": "월 예상 총 지원금",
+      "yearlyTotal": "연 예상 총 지원금",
+      "medianComparison": "기준 중위소득 비교",
+      "yourIncome": "월 가구소득",
+      "medianPercent": "중위소득의 {percent}%",
+      "thresholdLabels": {
+        "livelihood": "생계",
+        "medical": "의료",
+        "housing": "주거",
+        "education": "교육",
+        "youth": "청년",
+        "median": "중위"
+      },
+      "estimatedMonthly": "월 예상 지원금",
+      "requirements": "자격 조건",
+      "benefitDetail": "지원 내용",
+      "monthlyEstimate": "월 예상액",
+      "yearlyEstimate": "연 예상액",
+      "howToApply": "신청 방법",
+      "emptyTitle": "가구 정보를 입력해 주세요",
+      "emptyDescription": "정보를 입력하고 자격 확인하기를 누르면 결과가 표시됩니다."
+    },
+    "programDetails": {
+      "livelihood": {
+        "name": "기초생활보장 생계급여",
+        "requirements": "중위소득 32% 이하 가구에 생계비 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "medical": {
+        "name": "기초생활보장 의료급여",
+        "requirements": "중위소득 40% 이하 가구에 의료비 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "housing": {
+        "name": "기초생활보장 주거급여",
+        "requirements": "중위소득 48% 이하 가구에 임차료/수선비 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "education": {
+        "name": "기초생활보장 교육급여",
+        "requirements": "중위소득 50% 이하 가구에 교육비 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "childCredit": {
+        "name": "자녀장려금",
+        "requirements": "18세 미만 자녀가 있는 저소득 가구에 장려금 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "eitc": {
+        "name": "근로장려금 (EITC)",
+        "requirements": "저소득 근로자·사업자에게 근로장려금 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "basicPension": {
+        "name": "기초연금",
+        "requirements": "65세 이상 소득 하위 70%에 월 최대 33.4만원 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "youthRent": {
+        "name": "청년월세 한시 특별지원",
+        "requirements": "만 19~34세 무주택 청년에게 월 최대 20만원 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "singleParent": {
+        "name": "한부모가족 양육비",
+        "requirements": "한부모가족 자녀 양육비 월 20만원+ 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "youthSavings": {
+        "name": "청년내일저축계좌",
+        "requirements": "저소득 청년이 매월 10만원 저축 시 정부가 매칭 적립",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "emergency": {
+        "name": "긴급복지지원",
+        "requirements": "위기 상황 시 생계·의료·주거비 긴급 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      },
+      "disabilityPension": {
+        "name": "장애인연금",
+        "requirements": "중증장애인에게 월 최대 40.3만원 지원",
+        "benefit": "지원 내용과 금액은 해당 사업의 공식 안내에서 확인하세요.",
+        "apply": "신청 절차와 최신 자격 요건은 해당 사업의 공식 안내를 확인하세요."
+      }
     }
   },
   "youthRentSubsidy": {
@@ -50073,7 +50207,78 @@
           }
         ]
       }
-    }
+    },
+    "hero": {
+      "monthly": "최대 20만원",
+      "monthlyLabel": "월 지원금",
+      "months": "최대 12개월",
+      "monthsLabel": "지원 기간",
+      "total": "최대 240만원",
+      "totalLabel": "총 지원 한도"
+    },
+    "inputTitle": "자격 정보 입력",
+    "ageLabel": "만 나이",
+    "ageHint": "만 나이를 입력하세요.",
+    "independentLabel": "독립 거주 여부",
+    "homelessLabel": "주택 소유 여부",
+    "homeless": "무주택",
+    "ownIncomeLabel": "본인 월 소득",
+    "parentIncomeLabel": "원가구(부모) 월 소득",
+    "householdSizeLabel": "원가구 가구원 수",
+    "householdSizeOption": "{n}명",
+    "assetLabel": "본인 총 재산",
+    "rentLabel": "현재 월세",
+    "depositLabel": "현재 보증금",
+    "housingTypeLabel": "주거 유형",
+    "manwon": "만원",
+    "checkButton": "자격 확인하기",
+    "resetButton": "초기화",
+    "emptyTitle": "자격 정보를 입력해 주세요",
+    "emptyDescription": "정보를 입력하고 자격 확인하기를 누르면 결과가 표시됩니다.",
+    "ineligible": "지원 대상 아님",
+    "checkSummary": "{pass}/{total}개 요건 충족",
+    "share": "결과 링크 복사",
+    "copied": "복사됨!",
+    "supportTitle": "청년월세 지원 자격 확인 결과",
+    "monthlySupport": "예상 월 지원금",
+    "totalSupport": "예상 총 지원금 (12개월)",
+    "manwonUnit": "만원",
+    "wonUnit": "원",
+    "months12": "12개월 기준",
+    "breakdown": {
+      "actualRent": "현재 월세",
+      "maxSupport": "월 최대 지원금",
+      "result": "예상 지원금",
+      "resultValue": "월 {monthly}만원 · 총 {total}만원"
+    },
+    "checks": {
+      "age": "만 19~34세",
+      "ageDetail": "만 19~34세",
+      "independent": "독립 거주 (부모와 별도 주소지)",
+      "independentDetail": "부모와 별도 주소지에서 거주 중",
+      "homeless": "무주택자",
+      "homelessDetail": "무주택",
+      "ownIncome": "본인 소득 중위소득 60% 이하",
+      "ownIncomeDetail": "본인 소득 중위소득 60% 이하",
+      "parentIncome": "원가구 소득 중위소득 100% 이하",
+      "parentIncomeDetail": "원가구 소득 중위소득 100% 이하",
+      "asset": "본인 재산 1.22억원 이하",
+      "assetDetail": "본인 재산 1.22억원 이하",
+      "housing": "월세 및 보증금 기준 충족",
+      "housingDetail": "월세 및 보증금 기준 충족"
+    },
+    "applyInfoTitle": "신청 안내",
+    "applyMethodTitle": "신청 방법",
+    "docsTitle": "필요 서류",
+    "medianTableTitle": "2026년 기준 중위소득",
+    "medianTable": {
+      "size": "가구원 수",
+      "median": "기준 중위소득",
+      "sixty": "중위소득 60%",
+      "hundred": "중위소득 100%",
+      "sizeUnit": "{n}명"
+    },
+    "medianTableNote": "입력값에 따른 간이 판정이며 실제 자격은 공식 안내에서 확인하세요."
   },
   "evSubsidy": {
     "ev": {

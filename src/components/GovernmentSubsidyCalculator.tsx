@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from '@/lib/i18n'
-import { useSearchParams } from '@/hooks/useSearchParams'
+import { useTranslations } from '@/lib/i18n/subsidies'
+import { useLanguage } from '@/contexts/LanguageContext'
 import {
-  Calculator, RotateCcw, ChevronDown, ChevronUp, Link, Copy, Check,
+  Calculator, RotateCcw, ChevronDown, ChevronUp, Link, Check,
   Heart, Home, GraduationCap, Stethoscope, Baby, Landmark, Wallet,
   Shield, HandCoins, Accessibility, AlertTriangle, Banknote
 } from 'lucide-react'
-import GuideSection from '@/components/GuideSection'
+import GuideSectionContent from '@/components/GuideSectionContent'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 2026 Median Income Table (중위소득) ──
@@ -74,8 +74,28 @@ const DEFAULT_INPUT: UserInput = {
   isOver65: false,
 }
 
+function inputFromUrl(params: URLSearchParams): UserInput {
+  const input = { ...DEFAULT_INPUT }
+  if (params.get('size')) input.householdSize = parseInt(params.get('size')!) || 4
+  if (params.get('income')) input.monthlyIncome = parseInt(params.get('income')!) || 200
+  if (params.get('assets')) input.totalAssets = parseInt(params.get('assets')!) || 5000
+  if (params.get('age')) input.age = parseInt(params.get('age')!) || 35
+  if (params.get('housing')) input.housingType = (params.get('housing') as HousingType) || 'monthly'
+  if (params.get('rent')) input.monthlyRent = parseInt(params.get('rent')!) || 40
+  if (params.get('deposit')) input.deposit = parseInt(params.get('deposit')!) || 3000
+  if (params.get('children') === '1') {
+    input.hasMinorChildren = true
+    input.childrenCount = parseInt(params.get('childCount')!) || 1
+  }
+  if (params.get('single') === '1') input.isSingleParent = true
+  if (params.get('disabled') === '1') input.isDisabled = true
+  if (params.get('over65') === '1') input.isOver65 = true
+  return input
+}
+
 // ── Number Formatting Helpers ──
-function formatKoreanMoney(won: number): string {
+function formatKoreanMoney(won: number, language: 'ko' | 'en'): string {
+  if (language === 'en') return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'KRW', maximumFractionDigits: 0 }).format(won)
   if (won >= 100_000_000) {
     const eok = Math.floor(won / 100_000_000)
     const remainder = won % 100_000_000
@@ -521,27 +541,10 @@ const PROGRAM_META: ProgramMeta[] = [
 // ── Component ──
 export default function GovernmentSubsidyCalculator() {
   const t = useTranslations('governmentSubsidy')
-  const searchParams = useSearchParams()
+  const { language } = useLanguage()
 
   // ── State ──
-  const [input, setInput] = useState<UserInput>(() => {
-    const defaults = { ...DEFAULT_INPUT }
-    if (typeof window !== 'undefined') {
-      const p = new URLSearchParams(window.location.search)
-      if (p.get('size')) defaults.householdSize = parseInt(p.get('size')!) || 4
-      if (p.get('income')) defaults.monthlyIncome = parseInt(p.get('income')!) || 200
-      if (p.get('assets')) defaults.totalAssets = parseInt(p.get('assets')!) || 5000
-      if (p.get('age')) defaults.age = parseInt(p.get('age')!) || 35
-      if (p.get('housing')) defaults.housingType = (p.get('housing') as HousingType) || 'monthly'
-      if (p.get('rent')) defaults.monthlyRent = parseInt(p.get('rent')!) || 40
-      if (p.get('deposit')) defaults.deposit = parseInt(p.get('deposit')!) || 3000
-      if (p.get('children') === '1') { defaults.hasMinorChildren = true; defaults.childrenCount = parseInt(p.get('childCount')!) || 1 }
-      if (p.get('single') === '1') defaults.isSingleParent = true
-      if (p.get('disabled') === '1') defaults.isDisabled = true
-      if (p.get('over65') === '1') defaults.isOver65 = true
-    }
-    return defaults
-  })
+  const [input, setInput] = useState<UserInput>(() => ({ ...DEFAULT_INPUT }))
 
   const [results, setResults] = useState<ProgramResult[] | null>(null)
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
@@ -581,12 +584,16 @@ export default function GovernmentSubsidyCalculator() {
     })
   }, [input, updateURL])
 
-  // Auto-calculate on mount if URL has params
+  // Restore a shared calculation after hydration, using the current URL values.
   useEffect(() => {
-    if (searchParams.get('size') || searchParams.get('income')) {
-      handleCalculate()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const params = new URLSearchParams(window.location.search)
+    if (!params.has('size') && !params.has('income')) return
+    const restored = inputFromUrl(params)
+    const frame = requestAnimationFrame(() => {
+      setInput(restored)
+      setResults(calculatePrograms(restored))
+    })
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   // ── Reset ──
@@ -951,13 +958,13 @@ export default function GovernmentSubsidyCalculator() {
                 <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.monthlyTotal')}</div>
                   <div className="text-2xl font-bold text-sub">
-                    {formatKoreanMoney(summary.totalMonthly)}
+                    {formatKoreanMoney(summary.totalMonthly, language)}
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.yearlyTotal')}</div>
                   <div className="text-2xl font-bold text-sub">
-                    {formatKoreanMoney(summary.totalYearly)}
+                    {formatKoreanMoney(summary.totalYearly, language)}
                   </div>
                 </div>
               </div>
@@ -1034,13 +1041,13 @@ export default function GovernmentSubsidyCalculator() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-medium text-fg text-sm">
-                            {t(`programs.${result.id}.name`)}
+                            {t(`programDetails.${result.id}.name`)}
                           </span>
                           <StatusBadge status={result.status} />
                         </div>
                         {result.status === 'eligible' && result.monthlyAmount > 0 && (
                           <div className="text-sm text-green-600 dark:text-green-400 mt-0.5">
-                            {t('result.estimatedMonthly')}: {formatKoreanMoney(result.monthlyAmount)}
+                            {t('result.estimatedMonthly')}: {formatKoreanMoney(result.monthlyAmount, language)}
                           </div>
                         )}
                       </div>
@@ -1057,7 +1064,7 @@ export default function GovernmentSubsidyCalculator() {
                             {t('result.requirements')}
                           </h4>
                           <p className="text-sm text-body">
-                            {t(`programs.${result.id}.requirements`)}
+                            {t(`programDetails.${result.id}.requirements`)}
                           </p>
                         </div>
 
@@ -1067,7 +1074,7 @@ export default function GovernmentSubsidyCalculator() {
                             {t('result.benefitDetail')}
                           </h4>
                           <p className="text-sm text-body">
-                            {t(`programs.${result.id}.benefit`)}
+                            {t(`programDetails.${result.id}.benefit`)}
                           </p>
                         </div>
 
@@ -1076,11 +1083,11 @@ export default function GovernmentSubsidyCalculator() {
                           <div className="bg-subtle rounded-lg p-3">
                             <div className="flex justify-between text-sm">
                               <span className="text-sub">{t('result.monthlyEstimate')}</span>
-                              <span className="font-bold text-fg">{formatKoreanMoney(result.monthlyAmount)}</span>
+                              <span className="font-bold text-fg">{formatKoreanMoney(result.monthlyAmount, language)}</span>
                             </div>
                             <div className="flex justify-between text-sm mt-1">
                               <span className="text-sub">{t('result.yearlyEstimate')}</span>
-                              <span className="font-bold text-fg">{formatKoreanMoney(result.yearlyAmount)}</span>
+                              <span className="font-bold text-fg">{formatKoreanMoney(result.yearlyAmount, language)}</span>
                             </div>
                           </div>
                         )}
@@ -1091,7 +1098,7 @@ export default function GovernmentSubsidyCalculator() {
                             {t('result.howToApply')}
                           </h4>
                           <p className="text-sm text-body">
-                            {t(`programs.${result.id}.apply`)}
+                            {t(`programDetails.${result.id}.apply`)}
                           </p>
                         </div>
                       </div>
@@ -1118,7 +1125,7 @@ export default function GovernmentSubsidyCalculator() {
       </div>
 
       {/* Guide Section */}
-      <GuideSection namespace="governmentSubsidy" />
+      <GuideSectionContent translate={t} />
     </div>
   )
 }

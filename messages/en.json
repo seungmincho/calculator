@@ -49812,6 +49812,140 @@
           }
         ]
       }
+    },
+    "input": {
+      "title": "Enter household details",
+      "householdSize": "Household Size",
+      "persons": "{count} people",
+      "monthlyIncome": "Monthly Household Income",
+      "manwon": " × ₩10K",
+      "totalAssets": "Total Assets",
+      "age": "Applicant Age",
+      "years": " years",
+      "housingType": "Housing Type",
+      "housing": {
+        "jeonse": "Jeonse (lump-sum deposit)",
+        "monthly": "Monthly rent",
+        "own": "Owned",
+        "other": "Other (dormitory, etc.)"
+      },
+      "monthlyRent": "Monthly Rent",
+      "deposit": "Deposit",
+      "specialConditions": "Select applicable conditions",
+      "hasMinorChildren": "Minor Children",
+      "childrenCount": "Number of Children",
+      "isSingleParent": "Single Parent Household",
+      "isDisabled": "Household Member with Disability",
+      "isOver65": "Household Member 65+",
+      "calculate": "Check Eligibility",
+      "reset": "Reset"
+    },
+    "status": {
+      "eligible": "Eligible",
+      "borderline": "Borderline (Verify Required)",
+      "ineligible": "Not Eligible"
+    },
+    "result": {
+      "summaryTitle": "Summary",
+      "shareLink": "Copy result link",
+      "copied": "Copied!",
+      "eligibleCount": "Eligible Programs",
+      "programs": " programs",
+      "monthlyTotal": "Est. Total Monthly Support",
+      "yearlyTotal": "Est. Total Yearly Support",
+      "medianComparison": "Median income comparison",
+      "yourIncome": "Monthly Household Income",
+      "medianPercent": "{percent}% of median income",
+      "thresholdLabels": {
+        "livelihood": "Living",
+        "medical": "Medical",
+        "housing": "Housing",
+        "education": "Education",
+        "youth": "Youth",
+        "median": "Median"
+      },
+      "estimatedMonthly": "Est. monthly support",
+      "requirements": "Eligibility Condition",
+      "benefitDetail": "Benefit details",
+      "monthlyEstimate": "Monthly estimate",
+      "yearlyEstimate": "Yearly estimate",
+      "howToApply": "How to Apply",
+      "emptyTitle": "Enter your household details",
+      "emptyDescription": "Enter your details and select Check Eligibility to see the results."
+    },
+    "programDetails": {
+      "livelihood": {
+        "name": "Basic Living Security (Livelihood)",
+        "requirements": "Living cost support for households below 32% of median income",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "medical": {
+        "name": "Basic Living Security (Medical)",
+        "requirements": "Medical cost support for households below 40% of median income",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "housing": {
+        "name": "Basic Living Security (Housing)",
+        "requirements": "Rent/maintenance support for households below 48% of median income",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "education": {
+        "name": "Basic Living Security (Education)",
+        "requirements": "Education cost support for households below 50% of median income",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "childCredit": {
+        "name": "Child Tax Credit",
+        "requirements": "Credit for low-income households with children under 18",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "eitc": {
+        "name": "Earned Income Tax Credit (EITC)",
+        "requirements": "Tax credit for low-income workers and business owners",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "basicPension": {
+        "name": "Basic Pension",
+        "requirements": "Up to ₩334K/month for ages 65+ in bottom 70% income bracket",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "youthRent": {
+        "name": "Youth Rent Subsidy",
+        "requirements": "Up to ₩200K/month for ages 19-34 without home ownership",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "singleParent": {
+        "name": "Single Parent Child-Rearing Allowance",
+        "requirements": "₩200K+/month child-rearing support for single-parent families",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "youthSavings": {
+        "name": "Youth Tomorrow Savings Account",
+        "requirements": "Government matching for low-income youth saving ₩100K/month",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "emergency": {
+        "name": "Emergency Welfare Support",
+        "requirements": "Emergency living/medical/housing support for crisis situations",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      },
+      "disabilityPension": {
+        "name": "Disability Pension",
+        "requirements": "Up to ₩403K/month for persons with severe disabilities",
+        "benefit": "Confirm the benefit and amount with the official program guidance.",
+        "apply": "Check the official program guidance for application steps and current eligibility."
+      }
     }
   },
   "youthRentSubsidy": {
@@ -49929,7 +50063,78 @@
           }
         ]
       }
-    }
+    },
+    "hero": {
+      "monthly": "Up to ₩200K",
+      "monthlyLabel": "Monthly support",
+      "months": "Up to 12 months",
+      "monthsLabel": "Support period",
+      "total": "Up to ₩2.4M",
+      "totalLabel": "Total support"
+    },
+    "inputTitle": "Enter eligibility details",
+    "ageLabel": "Age",
+    "ageHint": "Enter your age in full years.",
+    "independentLabel": "Independent Living",
+    "homelessLabel": "Home Ownership",
+    "homeless": "No home",
+    "ownIncomeLabel": "Personal Monthly Income",
+    "parentIncomeLabel": "Parent Household Monthly Income",
+    "householdSizeLabel": "Parent Household Size",
+    "householdSizeOption": "{n} people",
+    "assetLabel": "Personal Total Assets",
+    "rentLabel": "Current Monthly Rent",
+    "depositLabel": "Current Deposit",
+    "housingTypeLabel": "Housing Type",
+    "manwon": " × ₩10K",
+    "checkButton": "Check Eligibility",
+    "resetButton": "Reset",
+    "emptyTitle": "Enter your details to check eligibility",
+    "emptyDescription": "Enter your details and select Check Eligibility to see the result.",
+    "ineligible": "Not Eligible",
+    "checkSummary": "{pass} of {total} conditions met",
+    "share": "Copy result link",
+    "copied": "Copied!",
+    "supportTitle": "Youth Rent Subsidy Eligibility Result",
+    "monthlySupport": "Estimated Monthly Support",
+    "totalSupport": "Estimated Total Support (12 months)",
+    "manwonUnit": " × ₩10K",
+    "wonUnit": " KRW",
+    "months12": "For 12 months",
+    "breakdown": {
+      "actualRent": "Current rent",
+      "maxSupport": "Maximum monthly support",
+      "result": "Estimated support",
+      "resultValue": "{monthly} × ₩10K/month · {total} × ₩10K total"
+    },
+    "checks": {
+      "age": "Age 19-34",
+      "ageDetail": "Age 19-34",
+      "independent": "Independent living (separate address from parents)",
+      "independentDetail": "Living at a separate address from parents",
+      "homeless": "No home ownership",
+      "homelessDetail": "No home",
+      "ownIncome": "Personal income below 60% of median",
+      "ownIncomeDetail": "Personal income below 60% of median",
+      "parentIncome": "Parent household income below 100% of median",
+      "parentIncomeDetail": "Parent household income below 100% of median",
+      "asset": "Personal assets below ₩122M",
+      "assetDetail": "Personal assets below ₩122M",
+      "housing": "Rent and deposit within limits",
+      "housingDetail": "Rent and deposit within limits"
+    },
+    "applyInfoTitle": "Application Info",
+    "applyMethodTitle": "How to Apply",
+    "docsTitle": "Required Documents",
+    "medianTableTitle": "2026 Standard Median Income",
+    "medianTable": {
+      "size": "Household size",
+      "median": "Median income",
+      "sixty": "60% of median",
+      "hundred": "100% of median",
+      "sizeUnit": "{n} people"
+    },
+    "medianTableNote": "This is an estimate. Confirm eligibility with the official program guidance."
   },
   "evSubsidy": {
     "ev": {

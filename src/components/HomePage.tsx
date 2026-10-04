@@ -1,7 +1,10 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { useTranslations } from '@/lib/i18n/shared'
+import { createTranslations } from '@/lib/i18n/translationLookup'
+import koShared from '../../messages/generated/ko/shared.json'
+import enShared from '../../messages/generated/en/shared.json'
+import { useLanguage } from '@/contexts/LanguageContext'
 import Link from 'next/link'
 import { Search, Star, ChevronRight, BarChart3 } from 'lucide-react'
 import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
@@ -14,6 +17,8 @@ import ToolIcon from './ToolIcon'
 
 /** 카테고리별로 홈에서 바로 보여줄 도구 수 (나머지는 카테고리 허브 링크) */
 const PER_CATEGORY = 12
+const koTranslations = createTranslations(koShared)
+const enTranslations = createTranslations(enShared)
 
 type Item = MenuItem & { categoryKey?: CategoryKey }
 
@@ -27,7 +32,8 @@ function SectionTitle({ children, action }: { children: React.ReactNode; action?
 }
 
 export default function HomePage() {
-  const t = useTranslations()
+  const { language } = useLanguage()
+  const t = (language === 'en' ? enTranslations : koTranslations)()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<CategoryKey | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -111,7 +117,7 @@ export default function HomePage() {
         </div>
         <button
           onClick={(e) => handleToggleFavorite(e, item.href)}
-          className={`p-1 rounded-md transition-opacity ${isFav ? 'opacity-100 text-amber-400' : 'opacity-0 group-hover:opacity-100 focus:opacity-100 text-faint hover:text-amber-400'}`}
+          className={`shrink-0 p-1 rounded-md transition-opacity ${isFav ? 'opacity-100 text-amber-400' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 text-faint hover:text-amber-400'}`}
           aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
         >
           <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
@@ -154,8 +160,8 @@ export default function HomePage() {
       </section>
 
       {/* ===== 인기 / 최근 / 즐겨찾기 ===== */}
-      <div className="grid gap-10 lg:grid-cols-3 mb-14">
-        <section className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 mb-14">
+        <section className="min-w-0 lg:col-span-2">
           <SectionTitle
             action={
               <button onClick={() => setIsDashboardOpen(true)} className="flex items-center gap-1 text-sm text-muted hover:text-fg">
@@ -182,7 +188,7 @@ export default function HomePage() {
           </ol>
         </section>
 
-        <section>
+        <section className="min-w-0">
           <SectionTitle>
             {favoritedItems.length > 0 ? t('favorites.title')
               : recentlyViewedItems.length > 0 ? t('homePage.recentlyViewed.title') : t('header.recommended')}
