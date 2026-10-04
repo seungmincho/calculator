@@ -10,57 +10,12 @@ import {
 } from 'lucide-react'
 import GuideSectionContent from '@/components/GuideSectionContent'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
-
-// ── 2026 Median Income Table (중위소득) ──
-const MEDIAN_INCOME: Record<number, number> = {
-  1: 2_392_013,
-  2: 3_932_658,
-  3: 5_025_353,
-  4: 6_097_773,
-  5: 7_108_192,
-  6: 8_064_805,
-}
-
-// ── Housing Subsidy Base Rent by Region (주거급여 기준임대료, 월세, 단위: 원) ──
-const HOUSING_RENT_SEOUL: Record<number, number> = {
-  1: 341_000,
-  2: 382_000,
-  3: 455_000,
-  4: 527_000,
-  5: 545_000,
-  6: 545_000,
-}
-
-// ── Types ──
-type HousingType = 'jeonse' | 'monthly' | 'own' | 'other'
-
-interface UserInput {
-  householdSize: number
-  monthlyIncome: number // 만원
-  totalAssets: number   // 만원
-  age: number
-  housingType: HousingType
-  monthlyRent: number   // 만원
-  deposit: number       // 만원
-  hasMinorChildren: boolean
-  childrenCount: number
-  isSingleParent: boolean
-  isDisabled: boolean
-  isOver65: boolean
-}
-
-type EligibilityStatus = 'eligible' | 'ineligible' | 'borderline'
-
-interface ProgramResult {
-  id: string
-  status: EligibilityStatus
-  monthlyAmount: number  // 원
-  yearlyAmount: number   // 원
-  reason: string
-}
+import { calculatePrograms, getMedianIncome, PROGRAM_SOURCES, type SubsidyInput as UserInput, type HousingType, type HousingRegion, type EligibilityStatus, type ProgramResult } from '@/utils/welfarePolicy'
 
 const DEFAULT_INPUT: UserInput = {
   householdSize: 4,
+  incomeBasis: 'gross',
+  region: 'unknown',
   monthlyIncome: 200,
   totalAssets: 5000,
   age: 35,
@@ -74,7 +29,7 @@ const DEFAULT_INPUT: UserInput = {
   isOver65: false,
 }
 
-const sharedInputKeys = ['size', 'income', 'assets', 'age', 'housing', 'rent', 'deposit', 'children', 'childCount', 'single', 'disabled', 'over65']
+const sharedInputKeys = ['basis', 'region', 'size', 'income', 'assets', 'age', 'housing', 'rent', 'deposit', 'children', 'childCount', 'single', 'disabled', 'over65']
 
 function inputFromUrl(params: URLSearchParams): { input: UserInput; invalidFields: string[] } {
   const input = { ...DEFAULT_INPUT }
@@ -87,11 +42,22 @@ function inputFromUrl(params: URLSearchParams): { input: UserInput; invalidField
     const raw = params.get(param)
     if (raw === null) continue
     const value = Number(raw)
-    const valid = /^\d+$/.test(raw) && Number.isSafeInteger(value)
+    const wholeField = field === 'householdSize' || field === 'age'
+    const valid = (wholeField ? /^\d+$/.test(raw) && Number.isSafeInteger(value) : /^\d+(?:\.\d{1,4})?$/.test(raw) && Number.isSafeInteger(Math.round(value * 10_000)))
       && (field !== 'householdSize' || (value >= 1 && value <= 6))
-      && (field === 'householdSize' || field === 'age' || Number.isSafeInteger(value * 10_000))
+      && (field !== 'age' || value <= 120)
     if (valid) input[field] = value
     else invalidFields.push(param)
+  }
+  const basis = params.get('basis')
+  if (basis !== null) {
+    if (basis === 'gross' || basis === 'assessed') input.incomeBasis = basis
+    else invalidFields.push('basis')
+  }
+  const region = params.get('region')
+  if (region !== null) {
+    if (['unknown', 'seoul', 'gyeonggi', 'metro', 'other'].includes(region)) input.region = region as HousingRegion
+    else invalidFields.push('region')
   }
   const housing = params.get('housing')
   if (housing !== null) {
@@ -116,425 +82,19 @@ function inputFromUrl(params: URLSearchParams): { input: UserInput; invalidField
 
 // ── Number Formatting Helpers ──
 function formatKoreanMoney(won: number, language: 'ko' | 'en'): string {
-  if (language === 'en') return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'KRW', maximumFractionDigits: 0 }).format(won)
-  if (won >= 100_000_000) {
-    const eok = Math.floor(won / 100_000_000)
-    const remainder = won % 100_000_000
-    if (remainder >= 10_000) {
-      return `${eok}억 ${Math.round(remainder / 10_000).toLocaleString()}만원`
-    }
-    return `${eok}억원`
-  }
-  if (won >= 10_000) {
-    return `${Math.round(won / 10_000).toLocaleString()}만원`
-  }
-  return `${won.toLocaleString()}원`
+  if (language === 'ko') return new Intl.NumberFormat('ko-KR').format(won) + '원'
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'KRW', maximumFractionDigits: 0 }).format(won)
 }
 
 function formatNumber(num: number): string {
-  return num.toLocaleString()
+  return num.toLocaleString(undefined, { maximumFractionDigits: 4 })
 }
 
 function parseNumberInput(value: string): number {
-  return parseInt(value.replace(/,/g, ''), 10) || 0
-}
-
-// ── Calculation Logic ──
-function getMedianIncome(size: number): number {
-  return MEDIAN_INCOME[Math.min(Math.max(size, 1), 6)] ?? MEDIAN_INCOME[6]
-}
-
-function calculatePrograms(input: UserInput): ProgramResult[] {
-  const median = getMedianIncome(input.householdSize)
-  const incomeWon = input.monthlyIncome * 10_000 // 만원 → 원
-  const assetsWon = input.totalAssets * 10_000
-  const incomeRatio = incomeWon / median
-  const results: ProgramResult[] = []
-
-  // 1. 기초생활보장 생계급여 — 중위소득 32% 이하
-  const livelihood32 = Math.round(median * 0.32)
-  if (incomeWon <= livelihood32) {
-    const gap = livelihood32 - incomeWon
-    results.push({
-      id: 'livelihood',
-      status: 'eligible',
-      monthlyAmount: gap,
-      yearlyAmount: gap * 12,
-      reason: `income_below_32`,
-    })
-  } else if (incomeRatio <= 0.40) {
-    results.push({
-      id: 'livelihood',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: `income_above_32`,
-    })
-  } else {
-    results.push({
-      id: 'livelihood',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: `income_above_32`,
-    })
-  }
-
-  // 2. 의료급여 — 중위소득 40% 이하
-  const medical40 = Math.round(median * 0.40)
-  if (incomeWon <= medical40) {
-    results.push({
-      id: 'medical',
-      status: 'eligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_below_40',
-    })
-  } else if (incomeRatio <= 0.50) {
-    results.push({
-      id: 'medical',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_40',
-    })
-  } else {
-    results.push({
-      id: 'medical',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_40',
-    })
-  }
-
-  // 3. 주거급여 — 중위소득 48% 이하
-  const housing48 = Math.round(median * 0.48)
-  const housingRent = HOUSING_RENT_SEOUL[Math.min(Math.max(input.householdSize, 1), 6)] ?? HOUSING_RENT_SEOUL[6]
-  if (incomeWon <= housing48) {
-    let monthlyAmt = 0
-    if (input.housingType === 'monthly') {
-      const actualRent = input.monthlyRent * 10_000
-      monthlyAmt = Math.min(actualRent, housingRent)
-    } else if (input.housingType === 'own') {
-      // 자가: 수선비 지원 (연 평균 약 45만원으로 추정)
-      monthlyAmt = 37_500
-    } else if (input.housingType === 'jeonse') {
-      // 전세: 보증금 환산 월 임대료 적용
-      monthlyAmt = Math.min(Math.round((input.deposit * 10_000) * 0.04 / 12), housingRent)
-    }
-    results.push({
-      id: 'housing',
-      status: 'eligible',
-      monthlyAmount: monthlyAmt,
-      yearlyAmount: monthlyAmt * 12,
-      reason: 'income_below_48',
-    })
-  } else if (incomeRatio <= 0.55) {
-    results.push({
-      id: 'housing',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_48',
-    })
-  } else {
-    results.push({
-      id: 'housing',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_48',
-    })
-  }
-
-  // 4. 교육급여 — 중위소득 50% 이하 + 미성년 자녀
-  const edu50 = Math.round(median * 0.50)
-  if (input.hasMinorChildren && incomeWon <= edu50) {
-    // 평균 기준 중학생 가정: 연 654,000원
-    const perChildYearly = 654_000
-    const total = perChildYearly * Math.max(input.childrenCount, 1)
-    results.push({
-      id: 'education',
-      status: 'eligible',
-      monthlyAmount: Math.round(total / 12),
-      yearlyAmount: total,
-      reason: 'income_below_50_children',
-    })
-  } else if (input.hasMinorChildren && incomeRatio <= 0.60) {
-    results.push({
-      id: 'education',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_50',
-    })
-  } else {
-    results.push({
-      id: 'education',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: input.hasMinorChildren ? 'income_above_50' : 'no_children',
-    })
-  }
-
-  // 5. 자녀장려금 — 연소득 7,000만원 이하 + 18세 미만 자녀
-  const yearlyIncomeMan = input.monthlyIncome * 12
-  if (input.hasMinorChildren && yearlyIncomeMan <= 7000) {
-    const childCount = Math.max(input.childrenCount, 1)
-    const maxPerChild = 1_000_000 // 100만원
-    const amount = maxPerChild * childCount
-    results.push({
-      id: 'childCredit',
-      status: 'eligible',
-      monthlyAmount: Math.round(amount / 12),
-      yearlyAmount: amount,
-      reason: 'income_below_7000_children',
-    })
-  } else if (input.hasMinorChildren && yearlyIncomeMan <= 8000) {
-    results.push({
-      id: 'childCredit',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'income_above_7000',
-    })
-  } else {
-    results.push({
-      id: 'childCredit',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: input.hasMinorChildren ? 'income_above_7000' : 'no_children',
-    })
-  }
-
-  // 6. 근로장려금 (EITC)
-  // 가구 유형 판별: 단독(1인 미혼)/홑벌이(배우자 또는 부양가족)/맞벌이
-  let eitcType: 'single' | 'sole' | 'dual' = 'single'
-  if (input.householdSize >= 2) {
-    eitcType = 'sole' // 간소화: 2인 이상 = 홑벌이 기본
-  }
-  const eitcLimits = { single: 2200, sole: 3200, dual: 3800 }
-  const eitcMax = { single: 1_650_000, sole: 2_850_000, dual: 3_300_000 }
-  const eitcLimit = eitcLimits[eitcType]
-  const eitcMaxAmount = eitcMax[eitcType]
-
-  if (yearlyIncomeMan <= eitcLimit && assetsWon < 2_400_000_000) {
-    // 소득 구간별 장려금 (간소화 계산: 한도의 비율)
-    const ratio = 1 - (yearlyIncomeMan / eitcLimit) * 0.5
-    const amount = Math.round(eitcMaxAmount * Math.max(ratio, 0.3))
-    results.push({
-      id: 'eitc',
-      status: 'eligible',
-      monthlyAmount: Math.round(amount / 12),
-      yearlyAmount: amount,
-      reason: `eitc_eligible_${eitcType}`,
-    })
-  } else if (yearlyIncomeMan <= eitcLimit * 1.1) {
-    results.push({
-      id: 'eitc',
-      status: 'borderline',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'eitc_borderline',
-    })
-  } else {
-    results.push({
-      id: 'eitc',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'eitc_income_over',
-    })
-  }
-
-  // 7. 기초연금 — 65세 이상
-  if (input.isOver65 || input.age >= 65) {
-    // 소득인정액 하위 70% 기준 (간소화: 중위소득 70% 이하로 판정)
-    if (incomeRatio <= 0.70) {
-      results.push({
-        id: 'basicPension',
-        status: 'eligible',
-        monthlyAmount: 334_000,
-        yearlyAmount: 334_000 * 12,
-        reason: 'age_65_income_ok',
-      })
-    } else {
-      results.push({
-        id: 'basicPension',
-        status: 'borderline',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'age_65_income_high',
-      })
-    }
-  } else {
-    results.push({
-      id: 'basicPension',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'age_under_65',
-    })
-  }
-
-  // 8. 청년월세 한시 특별지원 — 19~34세, 중위소득 60% 이하(본인)
-  if (input.age >= 19 && input.age <= 34 && input.housingType === 'monthly') {
-    const youth60 = Math.round(getMedianIncome(1) * 0.60) // 1인 기준
-    const personalIncome = input.householdSize === 1 ? incomeWon : Math.round(incomeWon / input.householdSize)
-    if (personalIncome <= youth60) {
-      const actualRent = input.monthlyRent * 10_000
-      const support = Math.min(actualRent, 200_000)
-      results.push({
-        id: 'youthRent',
-        status: 'eligible',
-        monthlyAmount: support,
-        yearlyAmount: support * 12,
-        reason: 'youth_rent_eligible',
-      })
-    } else if (personalIncome <= getMedianIncome(1)) {
-      results.push({
-        id: 'youthRent',
-        status: 'borderline',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'youth_rent_income_high',
-      })
-    } else {
-      results.push({
-        id: 'youthRent',
-        status: 'ineligible',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'youth_rent_income_over',
-      })
-    }
-  } else {
-    results.push({
-      id: 'youthRent',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: input.age < 19 || input.age > 34 ? 'age_not_youth' : 'not_monthly_rent',
-    })
-  }
-
-  // 9. 한부모가족 양육비 — 한부모 + 중위소득 63% 이하
-  if (input.isSingleParent && input.hasMinorChildren) {
-    const singleParent63 = Math.round(median * 0.63)
-    if (incomeWon <= singleParent63) {
-      const childCount = Math.max(input.childrenCount, 1)
-      const perChild = 200_000
-      results.push({
-        id: 'singleParent',
-        status: 'eligible',
-        monthlyAmount: perChild * childCount,
-        yearlyAmount: perChild * childCount * 12,
-        reason: 'single_parent_eligible',
-      })
-    } else if (incomeRatio <= 0.72) {
-      results.push({
-        id: 'singleParent',
-        status: 'borderline',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'single_parent_income_high',
-      })
-    } else {
-      results.push({
-        id: 'singleParent',
-        status: 'ineligible',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'single_parent_income_over',
-      })
-    }
-  } else {
-    results.push({
-      id: 'singleParent',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: !input.isSingleParent ? 'not_single_parent' : 'no_children',
-    })
-  }
-
-  // 10. 청년내일저축계좌 — 19~34세, 근로소득 50~250만원, 중위소득 100% 이하
-  if (input.age >= 19 && input.age <= 34) {
-    const personalIncome = input.householdSize === 1 ? incomeWon : Math.round(incomeWon / input.householdSize)
-    const incomeOk = personalIncome >= 500_000 && personalIncome <= 2_500_000
-    if (incomeOk && incomeWon <= median) {
-      // 중위소득 50% 이하: 30만원 매칭, 초과: 10만원 매칭
-      const matching = incomeRatio <= 0.50 ? 300_000 : 100_000
-      results.push({
-        id: 'youthSavings',
-        status: 'eligible',
-        monthlyAmount: matching,
-        yearlyAmount: matching * 12,
-        reason: 'youth_savings_eligible',
-      })
-    } else if (input.age >= 19 && input.age <= 34 && incomeWon <= median * 1.1) {
-      results.push({
-        id: 'youthSavings',
-        status: 'borderline',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'youth_savings_borderline',
-      })
-    } else {
-      results.push({
-        id: 'youthSavings',
-        status: 'ineligible',
-        monthlyAmount: 0,
-        yearlyAmount: 0,
-        reason: 'youth_savings_ineligible',
-      })
-    }
-  } else {
-    results.push({
-      id: 'youthSavings',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: 'age_not_youth',
-    })
-  }
-
-  // 11. 긴급복지지원 — 위기 상황 (항상 안내만)
-  const emergencyAmounts: Record<number, number> = {
-    1: 713_000, 2: 1_178_000, 3: 1_508_000, 4: 1_621_000, 5: 1_621_000, 6: 1_621_000,
-  }
-  const emergencyAmt = emergencyAmounts[Math.min(Math.max(input.householdSize, 1), 6)] ?? 1_621_000
-  results.push({
-    id: 'emergency',
-    status: 'borderline', // 위기 상황은 별도 판정 필요
-    monthlyAmount: emergencyAmt,
-    yearlyAmount: emergencyAmt * 6, // 최대 6개월
-    reason: 'emergency_info',
-  })
-
-  // 12. 장애인연금 — 18세 이상 중증장애인
-  if (input.isDisabled && input.age >= 18) {
-    results.push({
-      id: 'disabilityPension',
-      status: 'eligible',
-      monthlyAmount: 403_000,
-      yearlyAmount: 403_000 * 12,
-      reason: 'disability_eligible',
-    })
-  } else {
-    results.push({
-      id: 'disabilityPension',
-      status: 'ineligible',
-      monthlyAmount: 0,
-      yearlyAmount: 0,
-      reason: input.isDisabled ? 'age_under_18' : 'not_disabled',
-    })
-  }
-
-  return results
+  if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,4})?$/.test(value)) return NaN
+  const clean = value.replace(/,/g, '')
+  const number = Number(clean)
+  return Number.isSafeInteger(Math.round(number * 10_000)) ? number : NaN
 }
 
 // ── Program metadata ──
@@ -569,6 +129,8 @@ export default function GovernmentSubsidyCalculator() {
 
   const [results, setResults] = useState<ProgramResult[] | null>(null)
   const [invalidSharedLink, setInvalidSharedLink] = useState(false)
+  const [amountText, setAmountText] = useState<Partial<Record<'monthlyIncome' | 'totalAssets' | 'monthlyRent' | 'deposit', string>>>({})
+  const [invalidAmounts, setInvalidAmounts] = useState<string[]>([])
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
   const [copiedLink, setCopiedLink] = useState(false)
 
@@ -588,10 +150,22 @@ export default function GovernmentSubsidyCalculator() {
 
   // ── Calculate ──
   const handleCalculate = useCallback(() => {
+    const fields: Array<'monthlyIncome' | 'totalAssets' | 'monthlyRent' | 'deposit'> = ['monthlyIncome', 'totalAssets']
+    if (input.housingType === 'monthly') fields.push('monthlyRent', 'deposit')
+    else if (input.housingType === 'jeonse') fields.push('deposit')
+    const invalid = fields.filter(field => !Number.isSafeInteger(Math.round(input[field] * 10_000)) || input[field] < 0)
+    setInvalidAmounts(invalid)
+    if (invalid.length) {
+      setResults(null)
+      document.getElementById(`government-${invalid[0]}`)?.focus()
+      return
+    }
     const r = calculatePrograms(input)
     setResults(r)
     setInvalidSharedLink(false)
     updateURL({
+      basis: input.incomeBasis,
+      region: input.region,
       size: input.householdSize,
       income: input.monthlyIncome,
       assets: input.totalAssets,
@@ -614,6 +188,8 @@ export default function GovernmentSubsidyCalculator() {
     const { input: restored, invalidFields } = inputFromUrl(params)
     const frame = requestAnimationFrame(() => {
       setInput(restored)
+      setAmountText({})
+      setInvalidAmounts([])
       setInvalidSharedLink(invalidFields.length > 0)
       setResults(invalidFields.length ? null : calculatePrograms(restored))
     })
@@ -623,8 +199,11 @@ export default function GovernmentSubsidyCalculator() {
   // ── Reset ──
   const handleReset = useCallback(() => {
     setInput({ ...DEFAULT_INPUT })
+    setAmountText({})
+    setInvalidAmounts([])
     setResults(null)
     setInvalidSharedLink(false)
+    setInvalidAmounts([])
     setExpandedCards(new Set())
     if (typeof window !== 'undefined') {
       window.history.replaceState({}, '', window.location.pathname)
@@ -670,10 +249,9 @@ export default function GovernmentSubsidyCalculator() {
 
   const summary = useMemo(() => {
     if (!results) return null
-    const eligible = results.filter(r => r.status === 'eligible')
-    const totalMonthly = eligible.reduce((sum, r) => sum + r.monthlyAmount, 0)
-    const totalYearly = eligible.reduce((sum, r) => sum + r.yearlyAmount, 0)
-    return { eligibleCount: eligible.length, totalMonthly, totalYearly }
+    return { eligibleCount: results.filter(r => r.status === 'eligible').length,
+      reviewCount: results.filter(r => r.status === 'borderline').length,
+      excludedCount: results.filter(r => r.status === 'ineligible').length }
   }, [results])
 
   const sortedResults = useMemo(() => {
@@ -693,6 +271,11 @@ export default function GovernmentSubsidyCalculator() {
     for (const param of sharedInputKeys) url.searchParams.delete(param)
     window.history.replaceState({}, '', url)
   }, [])
+
+  const updateAmount = useCallback((key: 'monthlyIncome' | 'totalAssets' | 'monthlyRent' | 'deposit', value: string) => {
+    setAmountText(prev => ({ ...prev, [key]: value }))
+    updateInput(key, parseNumberInput(value))
+  }, [updateInput])
 
   // ── Status badge ──
   const StatusBadge = ({ status }: { status: EligibilityStatus }) => {
@@ -723,8 +306,14 @@ export default function GovernmentSubsidyCalculator() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <p className="text-xs text-muted mt-2">{t('policyChecked')}</p>
       </div>
 
+      <div className={`${glassCard} p-5 space-y-2`}>
+        <h2 className="font-semibold text-fg">{t('screening.title')}</h2>
+        <p className="text-sm text-body">{t('screening.description')}</p>
+        <p className="text-sm text-muted">{t('screening.noTotal')}</p>
+      </div>
       {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input Panel */}
@@ -734,6 +323,7 @@ export default function GovernmentSubsidyCalculator() {
               {t('input.title')}
             </h2>
             {invalidSharedLink && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{t('input.invalidSharedLink')}</p>}
+            {invalidAmounts.length > 0 && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{t('input.invalidAmounts')}</p>}
 
             {/* 가구원수 */}
             <div>
@@ -751,16 +341,27 @@ export default function GovernmentSubsidyCalculator() {
               </select>
             </div>
 
+            <div>
+              <label htmlFor="government-income-basis" className="block text-sm font-medium text-body mb-1">{t('input.incomeBasis')}</label>
+              <select id="government-income-basis" value={input.incomeBasis} onChange={e => updateInput('incomeBasis', e.target.value as UserInput['incomeBasis'])} className={`w-full px-3 py-2 ${glassInput}`}>
+                <option value="gross">{t('input.gross')}</option>
+                <option value="assessed">{t('input.assessed')}</option>
+              </select>
+              <p className="text-xs text-muted mt-2">{t('input.incomeBasisHint')}</p>
+            </div>
             {/* 월 가구소득 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('input.monthlyIncome')}
+              <label htmlFor="government-monthlyIncome" className="block text-sm font-medium text-body mb-1">
+                {t(input.incomeBasis === 'assessed' ? 'input.assessedMonthlyIncome' : 'input.monthlyIncome')}
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  value={formatNumber(input.monthlyIncome)}
-                  onChange={e => updateInput('monthlyIncome', parseNumberInput(e.target.value))}
+                  id="government-monthlyIncome"
+                  inputMode="decimal"
+                  aria-invalid={invalidAmounts.includes('monthlyIncome')}
+                  value={amountText.monthlyIncome ?? formatNumber(input.monthlyIncome)}
+                  onChange={e => updateAmount('monthlyIncome', e.target.value)}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
@@ -769,14 +370,17 @@ export default function GovernmentSubsidyCalculator() {
 
             {/* 총 재산 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="government-totalAssets" className="block text-sm font-medium text-body mb-1">
                 {t('input.totalAssets')}
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  value={formatNumber(input.totalAssets)}
-                  onChange={e => updateInput('totalAssets', parseNumberInput(e.target.value))}
+                  id="government-totalAssets"
+                  inputMode="decimal"
+                  aria-invalid={invalidAmounts.includes('totalAssets')}
+                  value={amountText.totalAssets ?? formatNumber(input.totalAssets)}
+                  onChange={e => updateAmount('totalAssets', e.target.value)}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
@@ -801,6 +405,12 @@ export default function GovernmentSubsidyCalculator() {
               </div>
             </div>
 
+            <div>
+              <label htmlFor="government-region" className="block text-sm font-medium text-body mb-1">{t('input.region')}</label>
+              <select id="government-region" value={input.region} onChange={e => updateInput('region', e.target.value as HousingRegion)} className={`w-full px-3 py-2 ${glassInput}`}>
+                {(['unknown', 'seoul', 'gyeonggi', 'metro', 'other'] as const).map(region => <option key={region} value={region}>{t(`input.regions.${region}`)}</option>)}
+              </select>
+            </div>
             {/* 주거 형태 */}
             <div>
               <label className="block text-sm font-medium text-body mb-1">
@@ -827,28 +437,34 @@ export default function GovernmentSubsidyCalculator() {
             {input.housingType === 'monthly' && (
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-body mb-1">
+                  <label htmlFor="government-monthlyRent" className="block text-sm font-medium text-body mb-1">
                     {t('input.monthlyRent')}
                   </label>
                   <div className="relative">
                     <input
                       type="text"
-                      value={formatNumber(input.monthlyRent)}
-                      onChange={e => updateInput('monthlyRent', parseNumberInput(e.target.value))}
+                      id="government-monthlyRent"
+                      inputMode="decimal"
+                      aria-invalid={invalidAmounts.includes('monthlyRent')}
+                      value={amountText.monthlyRent ?? formatNumber(input.monthlyRent)}
+                      onChange={e => updateAmount('monthlyRent', e.target.value)}
                       className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-body mb-1">
+                  <label htmlFor="government-deposit" className="block text-sm font-medium text-body mb-1">
                     {t('input.deposit')}
                   </label>
                   <div className="relative">
                     <input
                       type="text"
-                      value={formatNumber(input.deposit)}
-                      onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
+                      id="government-deposit"
+                      inputMode="decimal"
+                      aria-invalid={invalidAmounts.includes('deposit')}
+                      value={amountText.deposit ?? formatNumber(input.deposit)}
+                      onChange={e => updateAmount('deposit', e.target.value)}
                       className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
@@ -859,14 +475,17 @@ export default function GovernmentSubsidyCalculator() {
 
             {input.housingType === 'jeonse' && (
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
+                <label htmlFor="government-deposit" className="block text-sm font-medium text-body mb-1">
                   {t('input.deposit')}
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    value={formatNumber(input.deposit)}
-                    onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
+                    id="government-deposit"
+                    inputMode="decimal"
+                    aria-invalid={invalidAmounts.includes('deposit')}
+                    value={amountText.deposit ?? formatNumber(input.deposit)}
+                    onChange={e => updateAmount('deposit', e.target.value)}
                     className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.manwon')}</span>
@@ -987,15 +606,15 @@ export default function GovernmentSubsidyCalculator() {
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
-                  <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.monthlyTotal')}</div>
+                  <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.reviewCount')}</div>
                   <div className="text-2xl font-bold text-sub">
-                    {formatKoreanMoney(summary.totalMonthly, language)}
+                    {summary.reviewCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
-                  <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.yearlyTotal')}</div>
+                  <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.excludedCount')}</div>
                   <div className="text-2xl font-bold text-sub">
-                    {formatKoreanMoney(summary.totalYearly, language)}
+                    {summary.excludedCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
                 </div>
               </div>
@@ -1058,12 +677,14 @@ export default function GovernmentSubsidyCalculator() {
                 return (
                   <div
                     key={result.id}
+                    id={`government-program-${result.id}`}
                     className={`${glassCard} ${glassInset} overflow-hidden transition-all ${
                       result.status === 'eligible' ? 'ring-2 ring-green-200 dark:ring-green-800' : ''
                     }`}
                   >
                     <button
                       onClick={() => toggleCard(result.id)}
+                      aria-expanded={isExpanded}
                       className="w-full px-6 py-4 flex items-center gap-4 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
                     >
                       <div className={`flex-shrink-0 ${meta?.color ?? 'text-gray-500'}`}>
@@ -1076,7 +697,8 @@ export default function GovernmentSubsidyCalculator() {
                           </span>
                           <StatusBadge status={result.status} />
                         </div>
-                        {result.status === 'eligible' && result.monthlyAmount > 0 && (
+                        <p className="text-xs text-muted mt-1">{t(`reasons.${result.reason}`)}</p>
+                        {result.monthlyAmount !== null && (
                           <div className="text-sm text-green-600 dark:text-green-400 mt-0.5">
                             {t('result.estimatedMonthly')}: {formatKoreanMoney(result.monthlyAmount, language)}
                           </div>
@@ -1089,6 +711,10 @@ export default function GovernmentSubsidyCalculator() {
 
                     {isExpanded && (
                       <div className="px-6 pb-4 border-t border-line pt-3 space-y-3">
+                        {result.threshold !== undefined && <p className="text-sm font-medium text-fg">
+                          {t('result.incomeThreshold')}: {formatKoreanMoney(result.threshold, language)}
+                        </p>}
+                        <p className="text-sm text-muted">{t(`programDetails.${result.id}.check`)}</p>
                         {/* Requirements */}
                         <div>
                           <h4 className="text-xs font-medium text-muted uppercase mb-1">
@@ -1110,7 +736,7 @@ export default function GovernmentSubsidyCalculator() {
                         </div>
 
                         {/* Amount breakdown for eligible */}
-                        {result.status === 'eligible' && result.monthlyAmount > 0 && (
+                        {result.monthlyAmount !== null && (
                           <div className="bg-subtle rounded-lg p-3">
                             <div className="flex justify-between text-sm">
                               <span className="text-sub">{t('result.monthlyEstimate')}</span>
@@ -1118,11 +744,13 @@ export default function GovernmentSubsidyCalculator() {
                             </div>
                             <div className="flex justify-between text-sm mt-1">
                               <span className="text-sub">{t('result.yearlyEstimate')}</span>
-                              <span className="font-bold text-fg">{formatKoreanMoney(result.yearlyAmount, language)}</span>
+                              <span className="font-bold text-fg">{formatKoreanMoney(result.yearlyAmount ?? 0, language)}</span>
                             </div>
                           </div>
                         )}
 
+                        <a className="inline-block text-sm text-blue-600 dark:text-blue-400 underline" href={PROGRAM_SOURCES[result.id]} target="_blank" rel="noopener noreferrer">{t('officialSite')}</a>
+                        {result.id === 'youthRent' && <a className="block text-sm text-blue-600 dark:text-blue-400 underline" href="/youth-rent-subsidy/">{t('result.youthCalculator')}</a>}
                         {/* How to apply */}
                         <div>
                           <h4 className="text-xs font-medium text-muted uppercase mb-1">

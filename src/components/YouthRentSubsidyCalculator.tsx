@@ -15,16 +15,7 @@ import {
 } from 'lucide-react'
 import GuideSectionContent from '@/components/GuideSectionContent'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
-
-// 2026년 중위소득 (월)
-const MEDIAN_INCOME_2026: Record<number, number> = {
-  1: 2564238,
-  2: 4199292,
-  3: 5359036,
-  4: 6494738,
-  5: 7556719,
-  6: 8555952,
-}
+import { MEDIAN_INCOME_2026 } from '@/utils/welfarePolicy'
 
 const MAX_MONTHLY_SUPPORT = 200000 // 월 최대 20만원
 const MAX_PAYMENTS = 24 // 국가사업 생애 누적 지급 한도

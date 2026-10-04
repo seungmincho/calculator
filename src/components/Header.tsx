@@ -157,17 +157,19 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-0.5 whitespace-nowrap text-[15px] font-medium flex-1" aria-label={t('common.menu')}>
+          <nav className="relative hidden lg:flex min-w-0 items-center gap-0.5 whitespace-nowrap text-[15px] font-medium flex-1" aria-label={t('common.menu')}>
             {categoryKeys.map((key) => (
-              <div key={key} className="relative">
+              <div key={key} className="min-w-0">
                 <button
                   onClick={() => handleDropdownToggle(key)}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-colors ${openDropdown === key ? 'text-fg bg-soft' : 'text-sub hover:text-fg hover:bg-soft'}`}
+                  className={`flex max-w-full items-center gap-1 px-3 py-1.5 rounded-lg transition-colors ${openDropdown === key ? 'text-fg bg-soft' : 'text-sub hover:text-fg hover:bg-soft'}`}
+                  title={menuItems[key].title}
+                  aria-label={menuItems[key].title}
                   aria-expanded={openDropdown === key}
                   aria-haspopup="true"
                 >
-                  <span>{menuItems[key].title}</span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-faint transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
+                  <span className="truncate">{menuItems[key].title}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 shrink-0 text-faint transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
                 </button>
 
                 {openDropdown === key && (
@@ -222,11 +224,11 @@ const Header = () => {
               </div>
             ))}
 
-            <Link prefetch={false} href="/algorithm" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
-              {t('navigation.algorithm')}
+            <Link prefetch={false} href="/algorithm" title={t('navigation.algorithm')} className="hidden xl:inline-flex min-w-0 px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
+              <span className="truncate">{t('navigation.algorithm')}</span>
             </Link>
-            <Link prefetch={false} href="/tips" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
-              {t('navigation.financialTips')}
+            <Link prefetch={false} href="/tips" title={t('navigation.financialTips')} className="hidden xl:inline-flex min-w-0 px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
+              <span className="truncate">{t('navigation.financialTips')}</span>
             </Link>
           </nav>
 

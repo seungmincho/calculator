@@ -1,6 +1,7 @@
 // Start before deployment, then deploy in another terminal while this browser remains open.
 // node scripts/check-pwa-live-update.mjs --url https://toolhub.ai.kr --from v4.31.18 --to v4.31.19 --result report.json
 // After deployment, --previous-deployment https://<old-deployment>.pages.dev bootstraps the real old assets through a browser-only proxy.
+// --government checks the 2026 government-policy screen, using a prior v4.31.20 deployment.
 import assert from 'node:assert/strict'
 import {mkdirSync,writeFileSync,readFileSync} from 'node:fs'
 import {resolve} from 'node:path'
@@ -9,7 +10,9 @@ import {chromium} from 'playwright'
 const args=process.argv.slice(2),option=key=>args[args.indexOf(key)+1]
 const origin=new URL(option('--url')).origin,from=option('--from'),to=option('--to'),report=resolve(option('--result'))
 const previousDeployment=args.includes('--previous-deployment')?new URL(option('--previous-deployment')).origin:null
-const m=JSON.parse(readFileSync(new URL('../messages/ko.json',import.meta.url))).youthRentSubsidy
+const government=args.includes('--government')
+const m=JSON.parse(readFileSync(new URL('../messages/ko.json',import.meta.url)))[government?'governmentSubsidy':'youthRentSubsidy']
+const toolPath=government?'/government-subsidy/?size=1&income=0&assets=0&age=30&housing=monthly&rent=40&deposit=0':'/youth-rent-subsidy/'
 const browser=await chromium.launch({headless:true}),results=[]
 try{
   const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow'})
@@ -37,9 +40,10 @@ try{
     await new Promise(done=>setTimeout(done,200))
   }
   assert.ok(initialized,'Previous service worker did not activate before the deadline')
-  await page.goto(origin+'/youth-rent-subsidy/',{waitUntil:'load'})
+  await page.goto(origin+toolPath,{waitUntil:'load'})
+  if(government)await page.getByText('월 예상 총 지원금',{exact:true}).waitFor()
   const oldText=await page.locator('main').innerText()
-  assert.ok(oldText.includes('12개월'),'Old production page must show the prior 12-month policy')
+  assert.ok(oldText.includes(government?'월 예상 총 지원금':'12개월'),'Old production page must show the prior policy')
   const oldKeys=await page.evaluate(()=>caches.keys())
   assert.ok(oldKeys.includes(`toolhub-static-${from}`))
   results.push({name:'existing-production-client-and-old-policy',status:'PASS',cacheNames:oldKeys})
@@ -61,17 +65,24 @@ try{
 
   await page.reload({waitUntil:'load'})
   await page.getByRole('heading',{level:1,name:m.title}).waitFor()
-  await page.getByRole('heading',{name:m.policy.closedTitle}).waitFor()
-  assert.ok((await page.locator('main').innerText()).includes(m.hero.months))
+  if(government){
+    await page.getByRole('heading',{name:m.screening.title}).waitFor()
+    await page.getByText(m.result.summaryTitle,{exact:true}).first().waitFor()
+    assert.ok(!(await page.locator('main').innerText()).includes('월 예상 총 지원금'))
+    await page.getByText(m.reasons.assessedRequired,{exact:true}).first().waitFor()
+  }else{
+    await page.getByRole('heading',{name:m.policy.closedTitle}).waitFor()
+    assert.ok((await page.locator('main').innerText()).includes(m.hero.months))
+  }
   results.push({name:'previous-client-reloads-new-policy',status:'PASS'})
   mkdirSync(resolve(report,'..'),{recursive:true})
-  await page.screenshot({path:resolve(report,'..','pwa-upgraded-production-mobile.png')})
+  await page.screenshot({path:resolve(report,'..',government?'government-pwa-upgraded-mobile.png':'pwa-upgraded-production-mobile.png')})
   await context.close()
 }catch(error){results.push({name:'pwa-live-update',status:'FAIL',message:error.stack?.slice(0,1600)||String(error)})}
 finally{
   await browser.close()
   mkdirSync(resolve(report,'..'),{recursive:true})
-  writeFileSync(report,JSON.stringify({at:new Date().toISOString(),origin,from,to,previousDeployment,bootstrap:previousDeployment?'archived-deployment-browser-proxy':'live-before-deployment',results},null,2))
+  writeFileSync(report,JSON.stringify({at:new Date().toISOString(),origin,from,to,tool:government?'government':'youthRent',previousDeployment,bootstrap:previousDeployment?'archived-deployment-browser-proxy':'live-before-deployment',results},null,2))
 }
 for(const result of results)console.log(JSON.stringify(result))
 process.exitCode=results.some(result=>result.status==='FAIL')?1:0

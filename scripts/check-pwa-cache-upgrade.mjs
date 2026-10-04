@@ -27,7 +27,7 @@ try{
   const page=await context.newPage();page.setDefaultTimeout(30000)
   await page.goto(origin+'/sitemap.xml',{waitUntil:'load'})
   await page.evaluate(async()=>{
-    for(const version of ['v4.31.16','v4.31.17','v4.31.18','v4.31.19']){
+    for(const version of ['v4.31.16','v4.31.17','v4.31.18','v4.31.19','v4.31.20']){
       await caches.open(`toolhub-static-${version}`)
       await caches.open(`toolhub-dynamic-${version}`)
     }
@@ -41,8 +41,8 @@ try{
       controlled:!!navigator.serviceWorker.controller,
       cacheNames:await caches.keys()
     }))
-    ready=state.active&&state.controlled&&state.cacheNames.includes('toolhub-static-v4.31.20')&&
-      !state.cacheNames.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:16|17|18|19)$/.test(key))
+    ready=state.active&&state.controlled&&state.cacheNames.includes('toolhub-static-v4.31.21')&&
+      !state.cacheNames.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:16|17|18|19|20)$/.test(key))
     if(ready)break
     await new Promise(done=>setTimeout(done,200))
   }
