@@ -69,6 +69,17 @@ eq('period 3y new nonadj', tempPeriod({ ...adjBoth, newAdjusted: false, saleDate
 eq('temp 2y fail', c({ ...tmp, ...adjBoth, saleDate: '2028-09-01' }).exempt, 'none')
 eq('temp 2y ok', c({ ...tmp, ...adjBoth, saleDate: '2028-08-10' }).exempt, 'full')
 eq('temp 3y nonadj new', c({ ...tmp, ...adjBoth, newAdjusted: false, saleDate: '2028-09-01' }).exempt, 'full')
+// 경과조치: 2026.8.3까지 계약·계약금 지급 → 취득이 8.4 이후여도 3년
+const late = { ...adjBoth, newAcqDate: '2026-09-01', saleDate: '2026-11-01' }
+eq('contract 8.3 → 3y', tempPeriod({ ...late, newContractDate: '2026-08-03' }), 3)
+eq('contract 8.10 → 2y', tempPeriod({ ...late, newContractDate: '2026-08-10' }), 2)
+eq('no contract → 2y', tempPeriod(late), 2)
+eq('contract empty → 2y', tempPeriod({ ...late, newContractDate: '' }), 2)
+r = c({ ...tmp, ...late, newContractDate: '2026-08-03', saleDate: '2029-08-01' })
+eq('contract 3y rule', r.tempRule, 'contract3'); eq('contract 3y exempt', r.exempt, 'full'); eq('contract 3y deadline', r.tempDeadline, '2029-09-01')
+r = c({ ...tmp, ...late, saleDate: '2029-08-01' })
+eq('no contract 2y rule', r.tempRule, 'adjusted2'); eq('no contract 2y fail', r.exempt, 'none')
+eq('base rule', c({ ...tmp, newAcqDate: '2024-03-01' }).tempRule, 'base3')
 
 // 분양권 70/60%, 장특 없음
 eq('presale <1y', c({ kind: 'presale', sale: 6 * E, acqDate: '2026-01-01' }).tax, 68_250_000)

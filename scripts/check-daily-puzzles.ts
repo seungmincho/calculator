@@ -90,7 +90,7 @@ const full = {
 const kst = (ymd: string, hh = 12) => new Date(Date.parse(`${ymd}T${String(hh).padStart(2, '0')}:00:00+09:00`))
 const picks = (ymd: string, hh?: number) => seasonalPicks(kst(ymd, hh)).map(p => `${p.key}:${p.n}`)
 
-assert.deepEqual(picks('2026-10-04'), ['csatDday:46'])
+assert.deepEqual(picks('2026-10-04'), ['csatDday:46', 'cardDeduction:27'])
 assert.deepEqual(picks('2026-08-10'), [])                         // D-101
 assert.deepEqual(picks('2026-08-11'), ['csatDday:100'])
 assert.deepEqual(picks('2026-11-18', 23), ['csatDday:1', 'yearEndPre:43'])
@@ -113,7 +113,7 @@ assert.equal(seasonalPicks(new Date(Date.UTC(2026, 10, 18, 15)))[0].key, 'csatTo
 // ── 다가오는 일정 (카드에 붙은 일정은 빼고, 카드와 합쳐 3개까지) ──
 const due = (ymd: string) => { const p = seasonalPicks(kst(ymd)); return upcomingDeadlines(kst(ymd), p).map(d => `${d.key}:${d.n}`) }
 assert.deepEqual(seasonalPicks(kst('2026-10-04'))[0].due, { key: 'csat', date: '2026-11-19' })
-assert.deepEqual(due('2026-10-04'), ['jongbu:72', 'yearEnd:88'])        // 수능은 카드에 붙음, 90일 넘는 1/15는 빠짐
+assert.deepEqual(due('2026-10-04'), ['jongbu:72'])                      // 수능은 카드에 붙음, 카드 2개 + 1줄
 assert.deepEqual(due('2026-11-20'), ['jongbu:25'])                      // 카드 2개 + 1줄
 assert.deepEqual(due('2026-12-20'), ['simplified:26'])
 assert.deepEqual(due('2027-01-20'), [])                                 // 연납 마감은 카드에 붙음

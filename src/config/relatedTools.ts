@@ -17,7 +17,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/sales-commission': ['/margin-calculator', '/vat-calculator', '/bonus-calculator', '/freelancer-tax', '/percent-calculator', '/salary-calculator'],
 
   // 세금
-  '/year-end-tax': ['/income-tax', '/salary-calculator', '/bonus-calculator', '/tax-season', '/health-insurance', '/pension-calculator'],
+  '/year-end-tax': ['/card-deduction', '/income-tax', '/salary-calculator', '/bonus-calculator', '/tax-season', '/pension-calculator'],
+  '/card-deduction': ['/year-end-tax', '/salary-calculator', '/installment-calculator', '/income-tax', '/budget-calculator', '/pension-calculator'],
   '/income-tax': ['/year-end-tax', '/salary-calculator', '/freelancer-tax', '/tax-season'],
   '/vat-calculator': ['/freelancer-tax', '/margin-calculator', '/invoice-generator', '/receipt-generator', '/business-number', '/tax-season'],
   '/freelancer-tax': ['/vat-calculator', '/tax-season', '/income-tax', '/health-insurance', '/invoice-generator', '/national-pension'],

@@ -98,6 +98,7 @@ export const menuConfig: MenuConfig = {
       { href: '/capital-gains-tax', labelKey: 'footer.links.capitalGainsTax', descriptionKey: 'toolsShowcase.tools.capitalGainsTax.description', icon: '🏢', addedDate: '2026-03-17', subcategory: 'subcategory.tax' },
       { href: '/military-discharge', labelKey: 'footer.links.militaryDischarge', descriptionKey: 'toolsShowcase.tools.militaryDischarge.description', icon: '🎖️', addedDate: '2026-03-17', subcategory: 'subcategory.others' },
       { href: '/year-end-tax', labelKey: 'footer.links.yearEndTax', descriptionKey: 'toolsShowcase.tools.yearEndTax.description', icon: '🧾', addedDate: '2026-03-20', subcategory: 'subcategory.tax' },
+      { href: '/card-deduction', labelKey: 'footer.links.cardDeduction', descriptionKey: 'toolsShowcase.tools.cardDeduction.description', icon: '💳', addedDate: '2026-10-04', subcategory: 'subcategory.tax' },
       { href: '/income-tax', labelKey: 'footer.links.incomeTax', descriptionKey: 'toolsShowcase.tools.incomeTax.description', icon: '📑', addedDate: '2026-03-20', subcategory: 'subcategory.tax' },
       { href: '/lotto-tax', labelKey: 'footer.links.lottoTax', descriptionKey: 'toolsShowcase.tools.lottoTax.description', icon: '🎰', addedDate: '2026-03-22', subcategory: 'subcategory.tax' },
       { href: '/salary-rank', labelKey: 'footer.links.salaryRank', descriptionKey: 'toolsShowcase.tools.salaryRank.description', icon: '📊', addedDate: '2026-03-22', subcategory: 'subcategory.salaryWork' },

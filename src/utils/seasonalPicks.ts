@@ -29,6 +29,7 @@ function rules(year: number): Rule[] {
     around('seollal', lunar('seollal')),
     { key: 'csatDday', href: '/csat-dday', from: addDays(exam, -100), to: addDays(exam, -1), target: exam, event: 'csat' },
     { key: 'csatToday', href: '/csat-dday', from: exam, to: exam },
+    { key: 'cardDeduction', href: '/card-deduction', from: `${year}-10-01`, to: `${year}-10-31` }, // 1~9월 실적 나온 뒤, 연말정산 미리보기 전
     { key: 'csatGrade', href: '/csat-grade', from: exam, to: addDays(exam, 21) },
     { key: 'incomeTax', href: '/freelancer-tax', from: `${year}-05-01`, to: filing, target: filing, event: 'incomeTax' },
     { key: 'carTaxPrepay', href: '/annual-car-tax', from: lump.start, to: lump.due, target: lump.due, event: 'carTaxLumpDue' },

@@ -3,7 +3,8 @@ const CACHE_NAME = 'toolhub-v4.34.0'
 const STATIC_CACHE_NAME = 'toolhub-static-v4.34.0'
 const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.34.0'
 
-// Files to cache immediately (trailing slashes match trailingSlash:true in next.config)
+// Files to cache immediately (trailing slashes match trailingSlash:true in next.config).
+// 도구 페이지는 미리 받지 않음 — 방문한 페이지만 fetch 핸들러가 캐시 (첫 방문 모바일 데이터 절약)
 const STATIC_FILES = [
   '/',
   '/manifest.json',
@@ -11,32 +12,7 @@ const STATIC_FILES = [
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png',
-  // Core calculator pages
-  '/lotto-generator/',
-  '/loan-calculator/',
-  '/real-estate-calculator/',
-  '/savings-calculator/',
-  '/retirement-calculator/',
-  // Popular utility pages
-  '/json-formatter/',
-  '/uuid-generator/',
-  '/qr-generator/',
-  // Offline page
   '/offline/'
-]
-
-// Files to cache dynamically
-const DYNAMIC_FILES = [
-  // Other calculator pages will be cached when visited
-  '/tax-calculator/',
-  '/stock-calculator/',
-  '/exchange-calculator/',
-  '/bmi-calculator/',
-  '/calorie-calculator/',
-  // Development tools
-  '/jwt-decoder/',
-  '/regex-extractor/',
-  '/sql-formatter/'
 ]
 
 // Install event - cache static files

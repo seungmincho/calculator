@@ -4,7 +4,7 @@ import {
   earnedIncomeDeduction, progressiveTax, earnedIncomeCredit, childCredit, birthCredit, cardDeduction, cardLimits,
   housingDeduction, pensionCredit, insuranceCredit, medicalCredit, educationCredit, donationCredit, hometownCredit,
   rentCredit, calc, tips, DEFAULT_INPUT, type YetInput,
-  annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate, DEADLINE,
+  annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate, DEADLINE, cardTaxSaving,
 } from '../src/utils/yearEndTax.ts'
 
 const M = { special: 0, general: 0, premature: 0, infertility: 0 }
@@ -163,5 +163,11 @@ try {
   if ((e as { code?: string }).code === 'ERR_MODULE_NOT_FOUND') console.log('esbuild 없음 — netSalary 교차검증 생략')
   else throw e
 }
+
+// ── /card-deduction 절세액: 공제액 × 한계세율(지방세 포함) ──
+assert.equal(cardTaxSaving(50_000_000, { ...S0, credit: 20_000_000 }), 185_625)      // 1,125,000 × 16.5%
+assert.equal(cardTaxSaving(100_000_000, { ...S0, credit: 40_000_000, debit: 10_000_000 }), 660_000) // 한도 250만 × 26.4%
+assert.equal(cardTaxSaving(50_000_000, { ...S0, credit: 10_000_000 }), 0)            // 25% 문턱 미달
+assert.equal(cardDeduction(50_000_000, { ...S0, credit: 12_500_000, debit: 7_500_000 }).total, 2_250_000) // /card-deduction 페이지 예시
 
 console.log('check-year-end-tax OK')

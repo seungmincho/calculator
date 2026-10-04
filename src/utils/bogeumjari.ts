@@ -4,6 +4,7 @@
 // - 금리: https://www.hf.go.kr/ko/sub01/sub01_01_04.do (2026-10-01 공시)
 // - 규제지역 정책모기지 LTV·DTI: 금융위 10.15 대책 FAQ https://www.fsc.go.kr/po020201/85466
 // - 수도권·규제지역 생애최초 LTV 80→70%: 금융위 6.27 대책 https://www.fsc.go.kr/no010101/84824
+// - CB점수 271점 이상·271~614점 LTV 10%p 차감, 전세사기피해자 특례: sub01_01_01.do · sub01_01_02.do (2026-10-04 확인)
 
 export type LoanType = 'general' | 'first' | 'newlywed' | 'multichild'
 export type Owned = '0' | '1' | '2'
@@ -11,6 +12,9 @@ export type HouseKind = 'apt' | 'other'
 /** 담보주택 소재지: 지방(비수도권) / 수도권(규제지역 외) / 규제지역(조정대상·투기과열·투기지역) */
 export type Region = 'local' | 'capital' | 'regulated'
 export const REGIONS: Region[] = ['local', 'capital', 'regulated']
+/** NICE CB점수: high 615점 이상 / mid 271~614점(LTV 10%p 차감) / low 270점 이하(취급 불가) — hf sub01_01_01 (2026-10-04 확인) */
+export type Credit = 'high' | 'mid' | 'low'
+export const CREDITS: Credit[] = ['high', 'mid', 'low']
 
 /** 금리 기준일 — 매월 1일 공사 공시. 바뀌면 PERIOD_RATES와 함께 여기만 수정 */
 export const RATE_BASIS = { date: '2026-10-01', label: '2026년 10월', url: 'https://www.hf.go.kr/ko/sub01/sub01_01_04.do' }
@@ -53,7 +57,12 @@ export const MAX_LOAN: Record<LoanType, number> = {
   newlywed: 36_000 * M,
   multichild: 40_000 * M,
 }
-const FRAUD_MAX_LOAN = 40_000 * M
+/**
+ * 전세사기피해자 보금자리론 (결정문 정본 확인): 9억 이하 주택·소득상한 없음·한도 4억,
+ * 신규주택 LTV 80%(낙찰주택 100%는 미반영)·DTI 100%, 규제지역 가산 없음.
+ * 출처: https://www.hf.go.kr/ko/sub01/sub01_01_02.do (2026-10-04 확인)
+ */
+export const FRAUD = { priceLimit: 90_000 * M, ltv: 0.80, dti: 100, maxLoan: 40_000 * M }
 
 /** 우대금리 (합산 최대 1.0%p). 신혼가구 0.3, 다자녀 2자녀 0.5 / 3자녀+ 0.7 은 입력값에서 자동 적용. 신혼가구와 신생아출산가구는 중복 불가 */
 export const PERKS: { id: string; label: string; rate: number; desc: string }[] = [
@@ -64,7 +73,7 @@ export const PERKS: { id: string; label: string; rate: number; desc: string }[] 
   { id: 'multicultural', label: '다문화가구', rate: 0.7, desc: '사회적 배려층' },
   { id: 'green', label: '녹색건축물', rate: 0.1, desc: '인증 주택 구입 시' },
   { id: 'unsold', label: '미분양주택', rate: 0.2, desc: '미분양관리지역 미분양주택' },
-  { id: 'fraud', label: '전세사기피해자', rate: 1.0, desc: '피해자 결정 시 · 한도 4억, 규제지역 가산·차감 없음' },
+  { id: 'fraud', label: '전세사기피해자', rate: 1.0, desc: '결정문 확인 시 · 소득 무관·9억 이하·LTV 80%·한도 4억' },
 ]
 
 export const LOAN_TYPE_INFO: Record<LoanType, { label: string; sublabel: string; benefit: string }> = {
@@ -105,6 +114,7 @@ export interface BogeumjariInput {
   debtMonthly: number // 기존 대출 월 원리금
   want: number // 희망 대출액 (0 = 최대)
   perks: string[]
+  credit?: Credit // 기본 'high'
 }
 
 export type CheckStatus = 'pass' | 'warn' | 'fail'
@@ -128,7 +138,8 @@ export const fmtKRW = (n: number) => {
 /**
  * LTV. 생애최초 80%(수도권·규제지역 70%), 그 외 아파트 70%·기타 65%.
  * 규제지역은 10%p 차감 — 생애최초·전세사기피해자·실수요자는 미차감.
- * ponytail: CB 614점 이하·소득추정 시 10%p 차감은 미반영(안내 문구만)
+ * CB점수 271~614점 10%p 추가 차감은 calcBogeumjari에서 적용.
+ * ponytail: 소득추정방법 사용 시 10%p 차감은 미반영(안내 문구만)
  */
 export function getLtv(type: LoanType, kind: HouseKind, region: Region, exempt: boolean): number {
   if (type === 'first') return region === 'local' ? 0.80 : 0.70
@@ -147,6 +158,11 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const regulated = i.region === 'regulated'
   const realDemand = i.owned === '0' && i.income <= REAL_DEMAND_INCOME && i.price <= HOUSE_PRICE_LIMIT
   const exempt = i.type === 'first' || fraud || realDemand // 규제지역 LTV·DTI 미차감
+  const credit = i.credit ?? 'high'
+  // CB 271~614점 차감: hf 원문상 미차감 예외는 '규제지역' 차감에만 명시 → 생애최초도 차감.
+  // 전세사기피해자는 별도 LTV(신규주택 80%) 기준이라 미적용 (공사 확인 필요)
+  const cbDeducted = credit === 'mid' && !fraud
+  const priceLimit = fraud ? FRAUD.priceLimit : HOUSE_PRICE_LIMIT
 
   // ── 우대금리 ──
   const discounts: { label: string; rate: number }[] = []
@@ -165,16 +181,19 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const rate = rateFor(baseRate, totalDiscount, surcharge)
 
   // ── 한도: LTV / 상품 상한 / DTI 중 가장 작은 값 ──
-  const ltv = getLtv(i.type, i.kind, i.region, exempt)
+  const ltv = fraud ? FRAUD.ltv : Math.round((getLtv(i.type, i.kind, i.region, exempt) - (cbDeducted ? 0.10 : 0)) * 100) / 100
   const ltvDeducted = regulated && !exempt
   const ltvLimit = Math.floor(i.price * ltv)
-  const capLimit = fraud ? Math.max(MAX_LOAN[i.type], FRAUD_MAX_LOAN) : MAX_LOAN[i.type]
-  const dtiCap = regulated && !exempt ? DTI_LIMIT - 10 : DTI_LIMIT
+  const capLimit = fraud ? Math.max(MAX_LOAN[i.type], FRAUD.maxLoan) : MAX_LOAN[i.type]
+  const dtiCap = fraud ? FRAUD.dti : regulated && !exempt ? DTI_LIMIT - 10 : DTI_LIMIT
   // DTI = (신규 원리금 + 기존 대출 원리금) / 연소득. 신규 대출은 원리금균등 기준으로 역산.
   // ponytail: 원금균등 선택 시에도 원리금균등으로 역산 — 실제 심사는 첫해 상환액 기준일 수 있음
   const monthlyBudget = (i.income / 12) * (dtiCap / 100) - i.debtMonthly
   const dtiLimit = monthlyBudget > 0 ? Math.floor(monthlyBudget / annuity(1, rate, months)) : 0
-  const ltvNote = ltvDeducted ? '규제지역 10%p 차감' : i.type === 'first' && i.region !== 'local' ? '수도권·규제지역 생애최초' : '주택가격 기준'
+  const deductions = [ltvDeducted && '규제지역', cbDeducted && '신용점수'].filter(Boolean)
+  const ltvNote = fraud ? '전세사기피해자 신규주택'
+    : deductions.length ? `${deductions.join('·')} 10%p${deductions.length > 1 ? '씩' : ''} 차감`
+    : i.type === 'first' && i.region !== 'local' ? '수도권·규제지역 생애최초' : '주택가격 기준'
   const limits = [
     { key: 'ltv' as const, label: `LTV ${Math.round(ltv * 100)}% (${ltvNote})`, amount: ltvLimit },
     { key: 'cap' as const, label: `${fraud ? '전세사기피해자' : LOAN_TYPE_INFO[i.type].label} 상품 상한`, amount: capLimit },
@@ -188,12 +207,16 @@ export function calcBogeumjari(i: BogeumjariInput) {
 
   // ── 자격 체크리스트 ──
   const checks: CheckItem[] = []
-  checks.push(i.income <= incomeLimit
-    ? { label: '소득', status: 'pass', detail: `연 ${fmtKRW(i.income)} ≤ 기준 ${fmtKRW(incomeLimit)}` }
-    : { label: '소득', status: 'fail', detail: `연 ${fmtKRW(i.income)} — 기준 ${fmtKRW(incomeLimit)} 초과` })
-  checks.push(i.price <= HOUSE_PRICE_LIMIT
-    ? { label: '주택가격', status: 'pass', detail: `${fmtKRW(i.price)} ≤ 6억원` }
-    : { label: '주택가격', status: 'fail', detail: `${fmtKRW(i.price)} — 6억원 초과 주택은 대상 아님` })
+  checks.push(fraud
+    ? { label: '소득', status: 'pass', detail: '전세사기피해자는 소득 상한 없음' }
+    : i.income <= incomeLimit
+      ? { label: '소득', status: 'pass', detail: `연 ${fmtKRW(i.income)} ≤ 기준 ${fmtKRW(incomeLimit)}` }
+      : { label: '소득', status: 'fail', detail: `연 ${fmtKRW(i.income)} — 기준 ${fmtKRW(incomeLimit)} 초과` })
+  checks.push(i.price <= priceLimit
+    ? { label: '주택가격', status: 'pass', detail: `${fmtKRW(i.price)} ≤ ${fmtKRW(priceLimit)}` }
+    : { label: '주택가격', status: 'fail', detail: `${fmtKRW(i.price)} — ${fmtKRW(priceLimit)} 초과 주택은 대상 아님` })
+  if (credit === 'low') checks.push({ label: '신용점수', status: 'fail', detail: 'NICE 신용점수 271점 이상만 신청 가능' })
+  else if (cbDeducted) checks.push({ label: '신용점수', status: 'warn', detail: 'NICE 271~614점 — LTV 10%p 차감 적용' })
   if (i.owned === '2') checks.push({ label: '주택 보유', status: 'fail', detail: '2주택 이상 보유 시 신청 불가 (무주택 또는 1주택만)' })
   else if (i.owned === '1' && i.type === 'first') checks.push({ label: '주택 보유', status: 'fail', detail: '생애최초는 신청일 현재 부부 모두 무주택이고 과거 소유 이력이 없어야 함' })
   else if (i.owned === '1') checks.push({ label: '주택 보유', status: 'warn', detail: '1주택자는 기존 주택을 대출실행일로부터 3년 내 처분하는 조건' })

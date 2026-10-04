@@ -2428,6 +2428,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "cardDeduction": "Card Deduction Calculator",
       "dailyWageTax": "Daily Worker Tax Calculator",
       "rentalYield": "Rental Yield Calculator",
       "oneRepMax": "1RM Calculator",
@@ -3803,6 +3804,217 @@
     }
   },
   "bogeumjariLoan": {
+    "heading": "Bogeumjari Loan Calculator",
+    "rateBadge": "Rates as of {date}",
+    "intro": "Check eligibility, loan limit, rate after discounts and monthly payment at once (base rate {min}–{max}%, discounts up to {cap}%p, lowest {minRate}%)",
+    "rateSource": {
+      "label": "Rate source:",
+      "link": "Korea Housing Finance Corporation rate notice",
+      "note": "(announced {date}, Akkim-e Bogeumjari Loan · updated monthly)"
+    },
+    "won": "₩{n}",
+    "years": "{n} yr",
+    "selected": "selected",
+    "region": {
+      "local": "Non-capital area",
+      "capital": "Capital area (non-regulated)",
+      "regulated": "Regulated area"
+    },
+    "method": {
+      "annuity": "Equal payment",
+      "principal": "Equal principal"
+    },
+    "status": {
+      "pass": "Met",
+      "warn": "Check",
+      "fail": "Not met"
+    },
+    "form": {
+      "title": "Loan conditions",
+      "type": "Application type",
+      "income": "Combined annual income (couple)",
+      "unitWon": "KRW",
+      "incomeHint": "Limit: {limit} or less",
+      "incomeHintFraud": "No income cap for jeonse fraud victims",
+      "children": "Minor children",
+      "childrenOption": {
+        "0": "None",
+        "1": "1 (income cap ₩90M)",
+        "2": "2 (income cap ₩100M · 0.5%p discount)",
+        "3plus": "3 or more (income cap ₩100M · 0.7%p discount)"
+      },
+      "multichildTip": "Choose the multi-child type to raise the limit to ₩400M",
+      "price": "Purchase price",
+      "priceHint": "Homes priced {limit} or less",
+      "priceHintFraud": "Jeonse fraud victims: homes priced {limit} or less",
+      "kind": "Housing type",
+      "kindOption": {
+        "apt": "Apartment (LTV 70%)",
+        "other": "Other housing (LTV 65%)"
+      },
+      "firstLtvHint": "First-time buyers get LTV 80% (70% in the capital area and regulated areas)",
+      "region": "Property location",
+      "regionHint": "Regulated areas: all of Seoul + Gyeonggi Gwacheon, Gwangmyeong, Seongnam, Suwon (Yeongtong, Jangan, Paldal), Anyang Dongan, Yongin (Suji, Giheung), Uiwang, Hanam, Hwaseong Dongtan, Guri (as of 2026-07-01). Regulated areas add 0.2%p to the rate and cut LTV/DTI by 10%p (not cut for first-time buyers, jeonse fraud victims, or homeless buyers with income ₩70M or less).",
+      "owned": "Homes currently owned",
+      "ownedOption": {
+        "0": "None",
+        "1": "1 home (must sell)",
+        "2": "2 or more"
+      },
+      "credit": "Credit score (NICE)",
+      "creditOption": {
+        "high": "615 or higher",
+        "mid": "271–614 (LTV −10%p)",
+        "low": "270 or lower (not eligible)"
+      },
+      "creditHint": "Only NICE scores of 271 or higher may apply; 271–614 cuts LTV by 10%p",
+      "age": "Age (borrower)",
+      "ageHint": "Used to check 40/50-year terms and graduated repayment",
+      "period": "Loan term",
+      "periodOption": "{years} years (base {rate}%)",
+      "method": "Repayment method",
+      "methodOption": {
+        "annuity": "Equal payment (same every month)",
+        "principal": "Equal principal (decreasing)"
+      },
+      "debt": "Existing loan monthly payment",
+      "optional": "(optional)",
+      "debtHint": "Credit loans, car installments, etc. — added to DTI",
+      "want": "Desired loan amount",
+      "wantPlaceholder": "Leave blank for the maximum",
+      "wantCapped": "Calculated at the maximum limit {amount}"
+    },
+    "perks": {
+      "title": "Rate discounts",
+      "sum": "Total {sum}%p",
+      "capped": "→ capped at {cap}%p",
+      "newlywed": "Newlywed household",
+      "newlywedAuto": "(automatic with the newlywed type)",
+      "multichild": "Multi-child household",
+      "multichildAuto": "(automatic from number of children)",
+      "note": "Discounts add up to {cap}%p, lowest rate {minRate}% (regulated areas +0.2%p, except jeonse fraud victims). Details:",
+      "noteLink": "Korea Housing Finance Corporation product guide"
+    },
+    "result": {
+      "empty": "Enter income and home price to see results automatically",
+      "eligible": "Eligible",
+      "eligibleWarn": "Eligible (some items need checking)",
+      "notEligible": "Not eligible",
+      "copied": "Copied",
+      "copy": "Copy result",
+      "referenceOnly": "Amounts below are for reference if the conditions are met.",
+      "maxLoan": "Maximum loan",
+      "bindingBy": "Set by {label}",
+      "equity": "Required down payment",
+      "rate": "Applied rate",
+      "monthly": "Monthly payment",
+      "firstMonth": " (first month)",
+      "manwon": "₩{won}",
+      "wantBasis": "Based on desired loan {amount}",
+      "baseRate": "Base rate ({years} yr)",
+      "discountCap": "Discount cap applied",
+      "discountCapValue": "max −{cap}%p",
+      "surcharge": "Regulated-area surcharge",
+      "finalRate": "Final rate",
+      "totalInterest": "Total interest",
+      "dti": "DTI (incl. existing loans)",
+      "checks": "Eligibility check",
+      "disclaimer": "If income is assessed by the estimation method, LTV is cut by another 10%p; actual limits and rates depend on appraisal and underwriting.",
+      "save": "Save"
+    },
+    "copy": {
+      "title": "Bogeumjari Loan result",
+      "type": "Type: {type} · {region} · {years} yr · {method}",
+      "eligible": "Eligibility: met",
+      "notEligible": "Eligibility: not met — {reasons}",
+      "maxLoan": "Maximum loan: {amount} (set by {basis})",
+      "loan": "Loan: {amount}",
+      "rate": "Applied rate: {rate}% (base {base}% - discount {discount}%p{surcharge}, announced {date})",
+      "surcharge": " + regulated area {rate}%p",
+      "monthly": "Monthly payment: {amount}{first}",
+      "interest": "Total interest: {amount}"
+    },
+    "methods": {
+      "title": "Repayment method comparison",
+      "basis": "Loan {loan} · {years} yr · rate {rate}%",
+      "colMethod": "Method",
+      "colFirst": "First month",
+      "colLast": "Last month",
+      "colInterest": "Total interest",
+      "graduated": "Graduated",
+      "graduatedOk": "Available — starts below equal payment and rises over time (HF pre-screening required)",
+      "graduatedNo": "Requires age under 40 and a term other than 50 years",
+      "note": "Equal principal costs {diff} less in total interest but {extra} more at the start."
+    },
+    "schedule": {
+      "title": "Yearly repayment schedule",
+      "manTick": "₩{m}M",
+      "principal": "Principal",
+      "interest": "Interest",
+      "yearN": "Year {n}",
+      "showTable": "Show yearly table",
+      "colYear": "Year",
+      "colPrincipal": "Principal",
+      "colInterest": "Interest",
+      "colPayment": "Annual payment",
+      "colBalance": "Balance"
+    },
+    "periods": {
+      "title": "Comparison by loan term",
+      "basis": "(loan {loan} · equal payment · {discount}%p discount applied)",
+      "colPeriod": "Term",
+      "colRate": "Rate",
+      "colMonthly": "Monthly payment",
+      "colInterest": "Total interest",
+      "note": "Shorter terms mean higher monthly payments but less total interest. 40 years requires age under 40, 50 years under 35 (relaxed for newlyweds)."
+    },
+    "sites": {
+      "title": "Related sites",
+      "hf": {
+        "name": "HF Bogeumjari Loan",
+        "desc": "Product conditions, discounts and latest rates"
+      },
+      "apply": {
+        "name": "Smart Housing Finance (apply)",
+        "desc": "Apply online for Akkim-e Bogeumjari Loan"
+      },
+      "molit": {
+        "name": "MOLIT real transaction prices",
+        "desc": "Apartment and housing transaction prices"
+      },
+      "realty": {
+        "name": "Real estate official price notice",
+        "desc": "Look up official apartment prices"
+      }
+    },
+    "summary": {
+      "title": "2026 Bogeumjari Loan key conditions by type",
+      "general": [
+        "Income ₩70M or less (₩90M with 1 child)",
+        "Limit up to ₩360M",
+        "LTV 70% (other housing 65%, regulated −10%p)",
+        "No type discount"
+      ],
+      "first": [
+        "Income ₩70M or less",
+        "Limit up to ₩420M",
+        "LTV 80% (70% in capital/regulated areas)",
+        "Neither spouse has ever owned a home"
+      ],
+      "newlywed": [
+        "Income ₩85M or less",
+        "Limit up to ₩360M",
+        "Married within 7 years",
+        "0.3%p rate discount"
+      ],
+      "multichild": [
+        "Income ₩100M or less",
+        "Limit up to ₩400M",
+        "2 or more minor children",
+        "0.5%p discount (0.7%p for 3+)"
+      ],
+      "note": "Common to all: home price ₩600M or less (₩900M for jeonse fraud victims), no home or one home to be sold within 3 years. NICE credit score must be 271 or higher; 271–614 cuts LTV by 10%p. Regulated areas add 0.2%p to the rate, and capital/regulated areas require moving in within 6 months. Rates change monthly, so check the latest rates with HF."
+    },
     "share": {
       "label": "Max {type} Bogeumjari loan",
       "sub": "Monthly {monthly} for a {loan} loan ({method})",
@@ -6921,6 +7133,10 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "cardDeduction": {
+        "title": "Card Deduction Calculator",
+        "description": "Card income deduction and tax saved from salary and spending, the 25% threshold, and an Oct–Dec payment strategy"
+      },
       "dailyWageTax": {
         "title": "Daily Worker Tax Calculator",
         "description": "Withholding tax and take-home pay from a daily wage"
@@ -7859,7 +8075,7 @@
       },
       "yearEndTax": {
         "title": "Year-End Tax Settlement Calculator",
-        "description": "Calculate 2025 year-end tax settlement refund with income/tax deduction analysis"
+        "description": "Tax year 2026 year-end settlement refund and final tax, with a Jan–Sep preview and what to do by Dec 31"
       },
       "incomeTax": {
         "title": "Comprehensive Income Tax Calculator",
@@ -23497,6 +23713,7 @@
   },
   "homePage": {
     "deadline": {
+      "cardYearEnd": "Card spending cutoff for year-end tax settlement",
       "label": "Coming up",
       "eventNote": "Details on ToolHub: {url}",
       "csat": "CSAT exam day",
@@ -23515,6 +23732,10 @@
       "todo": "Play today"
     },
     "season": {
+      "cardDeduction": {
+        "title": "Preview your card deduction",
+        "desc": "Use Jan–Sep spending to pick a card for the rest of the year"
+      },
       "label": "Right about now",
       "chuseok": {
         "title": "Chuseok greetings",
@@ -33836,6 +34057,11 @@
     ]
   },
   "capitalGainsTax": {
+    "tempRule": {
+      "adjusted2": "Both homes in adjusted areas, new home acquired on/after 2026-08-04 → 2-year deadline (decree amended 2026-10-01)",
+      "contract3": "Contract signed and deposit paid by 2026-08-03 → transitional rule keeps the 3-year deadline",
+      "base3": "3-year deadline (standard rule)"
+    },
     "kind": {
       "house": "House / right",
       "land": "Land / building",
@@ -33843,6 +34069,10 @@
       "presale": "Pre-sale right"
     },
     "input": {
+      "newContract": "New home contract date (deposit paid)",
+      "newContractClear": "Clear",
+      "newContractPlaceholder": "Leave empty if unsure",
+      "newContractHint": "If you signed the purchase contract (incl. presale rights) and paid the deposit by 2026-08-03, the 3-year deadline still applies. Enter the later of the two dates.",
       "estimate": "Estimate",
       "expenseHint": "Acquisition tax, brokerage, legal fees, capital improvements (not repairs). 'Estimate' = acquisition tax (current 1-house rate) + max brokerage for buying and selling",
       "holdShow": "{y}y {m}m",
@@ -57477,6 +57707,101 @@
         "calorie-calculator": "Daily calorie calculator",
         "body-fat-calculator": "Body fat calculator"
       }
+    }
+  },
+  "cardDeduction": {
+    "title": "Credit Card Income Deduction Calculator",
+    "subtitle": "Tax year {year}. From your salary and card spending: the income deduction, tax saved, and which card to use for the rest of the year.",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Gross salary (excluding non-taxable pay)",
+    "salaryHint": "Sets the threshold (25% of gross salary) and the limits.",
+    "period": {
+      "label": "Spending period entered",
+      "ytd": "Jan–{months} spending",
+      "year": "Full year",
+      "hint_ytd": "Enter Jan–Sep spending from your card app or Hometax and we project 12 months at the same pace (same as the NTS year-end preview).",
+      "hint_year": "Enter spending for the whole year (including expected)."
+    },
+    "kinds": {
+      "credit": "Credit card",
+      "debit": "Debit card · cash receipts",
+      "transport": "Public transit",
+      "market": "Traditional markets",
+      "culture": "Books · shows · museums · sports"
+    },
+    "debitHint": "Includes debit/prepaid cards and Zero Pay",
+    "cultureHint": "Books, performances, museums, galleries, movies, pools, gyms (30%)",
+    "cultureHintHigh": "Over 70M KRW gross salary the 30% rate doesn't apply; counted as credit card spending.",
+    "children": "Dependent children",
+    "childrenOpt": "{n}",
+    "childrenOpt2": "2 or more",
+    "childrenHint": "Each child raises the basic limit by {perM}M KRW (up to 2).",
+    "result": {
+      "label": "Estimated income deduction",
+      "labelYtd": "Estimated income deduction (annualized)",
+      "saving": "Cuts your tax by about {saving} KRW (incl. local income tax; estimate using only salary and children)",
+      "noSaving": "Nothing to deduct yet."
+    },
+    "threshold": {
+      "title": "Threshold (25% of gross salary)",
+      "of": "{spentM}M / {thresholdM}M KRW",
+      "short": "Annual spending is {gap} KRW below the threshold, so the card deduction is 0. Only spending above it is deducted.",
+      "over": "You're {over} KRW over the threshold. That excess gets each method's rate (the threshold is filled with lowest-rate credit card spending first).",
+      "ytdLeft": "You spent {spent} KRW in Jan–Sep. {left} KRW to the threshold — spend {monthly} KRW a month in Oct–Dec to pass it.",
+      "ytdOver": "Jan–Sep spending ({spent} KRW) already passes the threshold. See the Oct–Dec strategy below for how payment method matters."
+    },
+    "limit": {
+      "basic": "Basic limit",
+      "extra": "Extra limit (markets · transit · culture)",
+      "used": "{usedM}M / {capM}M KRW",
+      "capped": "{lost} KRW above the limits can't be deducted."
+    },
+    "table": {
+      "caption": "Spending, rate and deduction by payment method",
+      "kind": "Type",
+      "spent": "Spending",
+      "spentYtd": "Annualized spending",
+      "rate": "Rate",
+      "deduction": "Deduction (before limits)",
+      "total": "Total (after limits)",
+      "asCredit": "as credit",
+      "note": "The threshold (25% of gross salary) is taken from the lowest-rate spending first (Enforcement Decree of the Restriction of Special Taxation Act, Art. 121-2). The total applies the basic and extra limits."
+    },
+    "rows": {
+      "spent": "Annual spending",
+      "threshold": "Threshold (25%)",
+      "deduction": "Income deduction",
+      "saving": "Tax saved"
+    },
+    "share": {
+      "label": "Card deduction on a {salaryM}M KRW salary",
+      "headline": "Deduction {amount} KRW",
+      "sub": "About {saving} KRW less tax",
+      "subZero": "Still below the 25% threshold",
+      "text": "Salary {salaryM}M KRW: card income deduction {amount} KRW, about {saving} KRW tax saved"
+    },
+    "q4": {
+      "title": "Oct–Dec card strategy",
+      "desc": "At this pace you'll put about {credit} KRW on credit cards in Oct–Dec. What if you switch it to debit/cash receipts?",
+      "gain": "+{gain} KRW",
+      "switch": "Moving the remaining {moved} KRW of credit card spending to debit cards/cash receipts cuts your tax by another {gain} KRW.",
+      "short": "Even at this pace you'll fall {gap} KRW short of the threshold, so the deduction is 0. Pick the card with the best discounts or points instead.",
+      "maxed": "You've hit the basic limit or owe no tax, so switching won't raise your refund. Use the card with the best perks.",
+      "balanced": "All your credit card spending sits inside the threshold, so credit or debit gives the same deduction for the rest of the year.",
+      "full": "Calculate your full year-end tax refund"
+    },
+    "guide": {
+      "title": "Card income deduction essentials (tax year 2026)",
+      "items": [
+        "Only spending above 25% of gross salary is deducted. The threshold is filled with low-rate credit card spending first.",
+        "Rates: credit 15%, debit/cash receipts 30%, books·shows·museums·sports 30% (gross salary up to 70M KRW), traditional markets and public transit 40%.",
+        "Basic limit: 3M KRW up to 70M gross salary, 2.5M above. +500K (250K above 70M) per dependent child, up to 2 children.",
+        "Extra limit: market, transit and culture deductions can go beyond the basic limit, up to 3M KRW combined (2M above 70M).",
+        "Insurance premiums, taxes and utility bills, apartment management fees, gift cards, overseas spending and new car purchases don't count (used cars: 10% of the price).",
+        "Spending by a spouse or lineal relatives with income of 1M KRW or less can be added (not siblings)."
+      ],
+      "source": "Basis: Restriction of Special Taxation Act Art. 126-2 and Enforcement Decree Art. 121-2 (tax year 2026). Confirm actual amounts with Hometax's simplified year-end data, opening January 15."
     }
   }
 }

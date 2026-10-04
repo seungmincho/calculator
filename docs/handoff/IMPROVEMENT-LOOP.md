@@ -57,7 +57,7 @@
 | 13a | P4 | 완료: Link prefetch 끄기(ToolsShowcase·RelatedTools·Footer·DecisionToolsBar·ladder page — 스크롤 시 최대 2.8MB 비압축 HTML), `public/_headers` `/_next/static/*` immutable, 모든 페이지의 supabase-js 제거(toolAnalytics → fetch) | 완료(배치1) |
 | 13b | P4 | AdSense·Axeptio를 lazyOnload로(TBT 1~1.5초) — 사용자 결정(2026-10-04): 그대로 유지 | 종료 |
 | 13c | P4 | Pretendard 웹폰트 385KB(woff2 16개, jsdelivr): 사용자 결정(2026-10-04): 그대로 유지 | 종료 |
-| 13d | P4 | en/shared.json 지연 로드(navigation.ts, 영어 선택 시만) — 완료(배치4). 남은 것: SW 설치 시 HTML 10개 선캐시 축소·idle 이후로 | 일부 완료 |
+| 13d | P4 | en/shared.json 지연 로드(navigation.ts, 영어 선택 시만) — 완료(배치4). SW 설치 선캐시에서 도구 HTML 8개 제외 — 완료(배치9) | 완료 |
 | 12i | P3 | `DecisionToolClient.tsx`(/roulette 외 팀나누기·제비뽑기·동전 등 8개) ssr:false → dynamic(SSR+코드분할)으로, DecisionToolPage sr-only h1 중복 제거 | 완료(배치2) |
 | 12j | — | 사다리 공유 링크 버그: seed 복원 effect(LadderGame.tsx:791)가 participants·complexity 반영 전 기본값(3명·3)으로 생성 → buildLadderLines(seed,count,complexity)로 URL 값 직접 사용, 기록 불러오기 같은 버그도 수정 | 완료(배치2) |
 | 19 | P0 | `/monthly-rent-subsidy` 계산 로직 공식 근거 없음("LH 월세지원금" 모델·지원율 20~40%·신혼 25만원 등) → 사용자 결정으로 `/youth-rent-subsidy` 301 통합(movedRoutes), 페이지·컴포넌트·메뉴·OG 삭제, i18n `rentSubsidy`·footer/toolsShowcase 키는 미사용으로 남김 | 완료(배치2) |
@@ -66,7 +66,7 @@
 | 25 | P0 | 자녀세액공제 대상 2026~29 귀속 "2016년 이전 출생"(2026.4.21 개정, 2030~ 13세 이상) — netSalary `annualTaxEstimate`·간이세액표 자녀 집계(8~20세) 확인·정정 — netSalary가 yearEndTax childCredit 사용(결과 불변). 남은 것: 급여 계산기 '8~20세 자녀' 입력 하나가 간이세액표·연간 추정 겸용이라 2017~18년생 자녀는 연간 추정 과대(참고값) | 부분 완료(배치2) |
 | 26 | P1 | 연말정산 시즌: /year-end-tax "2026 귀속 달라진 점 + 2027 개정안" 카드, 12/31 연금저축·IRP·카드 마감 D-day, 1/15 간소화 카운트다운, 공유 이미지 — 미리보기 모드(?mode=preview)·Q4 체크카드 전략·IRP 채우기 | 완료(배치2) |
 | 27 | P1 | 자동차 취등록세 재작성(i18n·토큰·전기차 감면 D-day·예시 프리셋·공유, 가격 복원 버그) + 연납 KST D-day / 종부세 고지서 대조·납부기한·분납·일시적 2주택 | 완료(배치6) |
-| 28 | — | CarTaxCalculator·보금자리론 페이지 하드코딩 한국어·glass·light/dark 쌍 → i18n·토큰 / 양도세 일시적 2주택 계약일 입력(8.3 이전 계약 판정) / ~~로또 수령처~~(배치8: 2·3등 농협 전국 지점, 동행복권 lt645/intro 확인) / 보금자리 전세사기피해자 조건·신용점수 LTV 차감 | 후보 |
+| 28 | — | 보금자리론 토큰·i18n + 전세사기피해자(9억·소득 무관·LTV 80·DTI 100·4억)·신용점수(271점 미만 불가, 271~614 LTV −10%p) hf.go.kr 확인 반영, h1 'LH' 삭제 / 양도세 일시적 2주택 계약일 입력(8.3까지 계약·계약금 → 3년, 시행령 제155조 대통령령 제36737호) / 로또 수령처 | 완료(배치8·9). 남은 것: 보금자리 util 문구(PERKS·체크 라벨) 영어 UI에서 한국어, 신용점수 차감의 생애최초 적용 여부·소득추정 −10%p·낙찰주택 100% 미검증 |
 | 29 | P2 | 보금자리론 매월 1일 금리 갱신 예약 작업 + "지난달 대비" 배지, 시군구→규제지역 자동, ShareResult, 디딤돌 비교·DSR 연결 | 후보 |
 | 22 | — | CAGR 프리셋 수치(코스피 10년 3.5% 등) 출처 불명·낡음 → 수치 라벨 제거 | 완료(배치8): 칩은 '연 2·3.5·5·7·10%' 예시만, page FAQ·description의 자산별 수익률 주장 삭제 |
 | 23 | — | 미사용 옛 i18n 키 정리(parentalLeave.guide·reducedHours·hourlyWage.minimumWage·healthInsurance regional/guide·nationalPension aValueDesc 등 — 옛 수치 포함), PensionCalculator glass 스타일·하드코딩 문구 | 후순위 |
@@ -81,7 +81,9 @@
 | 33 | — | 게임 마무리: GameResultShare 닫기 버튼 aria-label·포커스 트랩, AI 대전 공유 제목이 '온라인 오목', Battleship 함선 이름 영어 | 완료(배치8): 다이얼로그 role·포커스 트랩·ESC·포커스 복귀, AI 공유 제목 "오목 AI 대전", 함선 이름 i18n, 죽은 `t()||'literal'` 폴백 제거. 남은 것: Battleship.tsx·ChessAI.tsx dark: 쌍 |
 | 18 | — | 기존 lint 오류(539) 범위 정해 점진 정리 | 후순위 |
 | 34 | — | 죽은 i18n 키(옛 수치 포함): pensionCalculator·salaryRank의 guide.guide/whatIs/howToUse/faq 등 — merge 스크립트 서식이 json.dumps와 달라 일괄 재작성 금지, 키 삭제 도구 필요 | 후보 |
-| 35 | — | Battleship.tsx·ChessAI.tsx dark: 색 쌍 → 토큰 | 후보 |
+| 35 | — | Battleship.tsx·ChessAI.tsx dark: 색 쌍 → 토큰 | 완료(배치9, 상태색 red·amber·green만 남김) |
+| 36 | P0 | 종부세 일시적 2주택도 계약일 경과조치 — propertyHoldingTax.tempDeadlines(newAcq, bothAdjusted, contract?) + ComprehensivePropertyTax 입력 (2027.6.1 과세기준일분부터, 양도세 tempRule 재사용) | 후보 |
+| 37 | P1 | 연말정산 시즌 롱테일 랜딩 추가 후보: 의료비 세액공제·월세 세액공제·연금저축 세액공제(yearEndTax 함수 재사용, /card-deduction 방식) — 사용자 기획 확인 후 | 후보 |
 
 조사 근거(2026-10-04 시즌 수요 조사): 2027 수치(최저임금 10,700원·국민연금 10%·건보 7.19% 동결·고용보험 1.0%)는 2차 출처 기준 — 반영 전 공식 고시 확인.
 
@@ -97,3 +99,4 @@
 - 2026-10-04 배치6 · 보드게임 7종(토큰·한 번에 시작·내 기록/연승·다시하기/난이도 올리기·?d= 공유), 자동차 취등록세 재작성·전기차 감면 D-day·연납 D-day, 종부세 고지서 대조·납부 일정·일시적 2주택. 검증: check 149·tsc 0·audit 0. 배포 보류
 - 2026-10-04 배치7 (96d0528) · 노동법 개정 반영(휴게 2026.12.10·고용보험 소득기준 2027.1.1·시간단위 연차 2027.6.10, 날짜별 안내), 신규 /daily-wage-tax·/rental-yield·/one-rep-max. 검증: check 152·tsc 0·audit 0. 배포 보류(배치5~7 누적) → NEXT-SESSION.md
 - 2026-10-04 배치8 · 홈 "다가오는 일정"(마감 D-day + .ics 캘린더 추가, 도구 링크·알림) + 연말정산·자동차세 연납·종부세·수능 대입 일정 캘린더 버튼, salary-rank/연봉 계산기 백분위 2024 귀속 공식 자료, 국민연금 2종 역할 분리·딥링크, 게임 공유 다이얼로그 접근성·AI 공유 제목·함선 이름, 로또 수령처 정정, CAGR 출처 없는 수익률 제거. 검증: check 152·salary/net mjs·범위 tsc(변경 29파일) 0·audit 0. 브라우저 확인·배포는 배치5~8 함께(메모리 여유 부족, 사용자: 개선 먼저)
+- 2026-10-04 배치9 · 신규 /card-deduction(사용자 기획 승인: 25% 문턱·한도·10~12월 신용→체크 전략·연말정산 딥링크·캘린더, yearEndTax.cardTaxSaving), 보금자리론 전세사기피해자·신용점수 규칙(hf.go.kr 원문 확인)·토큰·i18n·h1, 양도세 8.3 계약 경과조치 입력, 게임 2종 토큰, SW 선캐시 축소, 연말정산 showcase 설명 2026 귀속. 검증: check 152·범위 tsc(20파일) 0·audit 0. 배포는 5~9 함께

@@ -689,7 +689,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           </h3>
           <button
             onClick={handleDirectJoin}
-            className="w-full py-3 px-6 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
+            className="w-full py-3 px-6 bg-soft hover:bg-track text-body font-medium rounded-xl transition-all"
           >
             {t('enterPeerIdButton')}
           </button>
@@ -723,7 +723,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                 </summary>
                 <div className="flex items-center justify-center gap-2 mt-2">
                   <p className="font-mono text-sm text-fg break-all">{peerId || tCommon('loading')}</p>
-                  <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
+                  <button onClick={handleCopyPeerId} className="p-2 hover:bg-track rounded-lg">
                     {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
                   </button>
                 </div>
@@ -733,7 +733,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
           <button
             onClick={handleBackToLobby}
-            className="px-6 py-3 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
+            className="px-6 py-3 bg-soft hover:bg-track text-body font-medium rounded-xl transition-all"
           >
             {t('cancelAndBack')}
           </button>
@@ -850,7 +850,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
         <button
           onClick={handleBackToLobby}
-          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white"
+          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-fg"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('backToLobby')}
@@ -869,7 +869,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           <div className="flex items-center justify-between">
             <button
               onClick={handleBackToLobby}
-              className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2 text-sub hover:text-fg hover:bg-soft rounded-lg transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               {t('backToLobby')}
@@ -881,7 +881,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                 className={`relative p-2 rounded-lg transition-all ${
                   showChat
                     ? 'bg-primary-soft text-primary'
-                    : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    : 'text-gray-500 hover:bg-soft'
                 }`}
               >
                 <MessageCircle className="w-5 h-5" />
@@ -909,7 +909,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             <div className="flex items-center justify-between">
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'player1' && !gameState.winner
-                  ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
+                  ? 'bg-primary-soft border-2 border-primary'
                   : 'bg-soft'
               }`}>
                 <div className="relative">
@@ -939,7 +939,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
               <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 gameState.currentTurn === 'player2' && !gameState.winner
-                  ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
+                  ? 'bg-primary-soft border-2 border-primary'
                   : 'bg-soft'
               }`}>
                 <div className="relative">
@@ -1053,7 +1053,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
               </button>
               <button
                 onClick={handleBackToLobby}
-                className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
+                className="py-3 px-6 bg-soft hover:bg-track text-body font-medium rounded-xl transition-all"
               >
                 {t('backToLobby')}
               </button>
@@ -1114,7 +1114,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                   <button
                     onClick={handleSendChat}
                     disabled={!chatInput.trim() || !isConnected}
-                    className="p-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg transition-all disabled:cursor-not-allowed"
+                    className="p-2 bg-blue-500 hover:bg-blue-600 disabled:bg-track text-white rounded-lg transition-all disabled:cursor-not-allowed"
                   >
                     <Send className="w-5 h-5" />
                   </button>

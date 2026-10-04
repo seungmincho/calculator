@@ -39,7 +39,8 @@ export default function BogeumjariLoanPage() {
       '2026년 10월 1일 공시 금리 반영 (기준 4.90~5.20%, 우대 시 3.90%~, 규제지역 +0.2%p)',
       '유형별 자동 계산 (생애최초·신혼·다자녀·일반)',
       '우대금리 자동 적용 및 내역 표시',
-      '최대 대출한도 계산 (LTV 55~80%, 지역·유형별)',
+      '최대 대출한도 계산 (LTV 45~80%, 지역·유형·신용점수별)',
+      '전세사기피해자 특례 반영 (소득 무관·9억 이하·LTV 80%·한도 4억)',
       '월 상환액·총이자 계산',
       'DTI 자동 검증 (60%, 규제지역 50%)',
       '디딤돌대출 자격 비교',
@@ -83,7 +84,7 @@ export default function BogeumjariLoanPage() {
 
   const faq = [
     { q: '2026년 보금자리론 금리는 얼마인가요?', a: '2026년 10월 1일 공시 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(9월과 동일). 규제지역 소재 주택은 0.2%p가 가산됩니다(전세사기피해자 제외). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.' },
-    { q: '보금자리론 자격조건은 어떻게 되나요?', a: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, DTI 60% 이하(규제지역 50%, 생애최초·실수요자 제외)가 기본 조건입니다. 생애최초 구입자는 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.' },
+    { q: '보금자리론 자격조건은 어떻게 되나요?', a: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, DTI 60% 이하(규제지역 50%, 생애최초·실수요자 제외), NICE 신용점수 271점 이상이 기본 조건입니다. 신용점수가 271~614점이면 LTV가 10%p 차감됩니다. 생애최초 구입자는 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.' },
     { q: '보금자리론과 디딤돌대출 중 어떤 게 유리한가요?', a: '디딤돌대출은 소득 6천만원 이하(생애최초·2자녀 7천만, 신혼 8.5천만) 무주택자를 위한 상품으로 금리가 연 2.85~4.15%로 낮지만 한도가 일반 2억(생애최초 2.4억, 신혼·2자녀 3.2억)으로 제한됩니다. 보금자리론은 소득 7천만원 이하에 한도가 최대 4.2억이지만 금리가 연 4.90~5.20%(우대 시 3.90%~)입니다. 소득이 낮으면 디딤돌, 한도가 부족하면 보금자리론이 유리합니다.' },
     { q: '신혼부부 보금자리론 조건은 무엇인가요?', a: '혼인 7년 이내이거나 3개월 내 결혼 예정인 부부가 대상입니다. 소득 기준이 부부합산 8.5천만원으로 일반(7천만)보다 완화되고, 금리 우대 0.3%p가 적용됩니다. 대출한도는 최대 3.6억(일반과 동일), LTV는 70%입니다.' },
     { q: '보금자리론 대출 기간은 최대 몇 년인가요?', a: '보금자리론 대출 기간은 10년, 15년, 20년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 4.90% → 50년 5.20%). 만 40세 미만은 체증식 상환(50년 만기 제외)도 선택 가능하며, 40년은 만 40세 미만(신혼 50세 미만), 50년은 만 35세 미만(신혼 40세 미만)만 가능합니다.' },
@@ -91,6 +92,7 @@ export default function BogeumjariLoanPage() {
     { q: '생애최초 보금자리론 금리는 얼마인가요?', a: '생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(2026년 10월 30년 5.10%)가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 4.10%입니다.' },
     { q: '생애최초 보금자리론 최대 한도는?', a: '생애최초 보금자리론의 최대 대출 한도는 4억 2천만원입니다. 일반 유형(3.6억)보다 6천만원 더 높습니다. 실제 대출 가능 금액은 주택가격의 80%(LTV 80%) 이내에서 결정되며, DTI(총부채상환비율) 60% 기준도 함께 적용됩니다. 예를 들어 주택가격이 5억원이면 LTV 80% 적용 시 최대 4억원까지 가능합니다(수도권·규제지역은 LTV 70%로 3억 5천만원).' },
     { q: '생애최초와 신혼부부 둘 다 해당되면 어떻게 되나요?', a: '생애최초 조건(LTV 80%, 한도 4.2억)을 적용받으면서 신혼부부 우대금리(0.3%p)도 함께 적용받을 수 있습니다. 단, 전체 우대금리는 최대 1.0%p 한도이므로 중복 적용 시에도 1.0%p를 초과하지 않습니다.' },
+    { q: '전세사기피해자 보금자리론 조건은?', a: '전세사기피해자등 결정문 정본으로 확인되는 피해자는 소득 상한 없이 9억원 이하 주택(주거용 오피스텔 포함)을 대상으로 최대 4억원까지 받을 수 있습니다. 신규 주택은 LTV 80%, 피해주택 낙찰 시 낙찰가의 100%까지이며 DTI는 100% 이내입니다. 우대금리 1.0%p가 적용되고 규제지역 가산금리(0.2%p)와 조기상환수수료가 면제됩니다.' },
     { q: '아낌e 보금자리론과 일반 보금자리론의 차이는?', a: '아낌e 보금자리론은 비대면(온라인) 신청 전용 상품으로, u-·t-보금자리론보다 금리가 0.1%p 낮습니다. 은행 창구보다 온라인으로 신청하는 것이 금리면에서 유리합니다. 이 페이지의 금리는 아낌e 보금자리론 기준입니다.' },
     { q: '연소득이 7천만원을 넘으면 보금자리론을 받을 수 없나요?', a: '부부합산 7천만원은 일반 기준이고, 신혼부부는 8.5천만원, 자녀 1명은 9천만원, 다자녀는 1억원까지 소득 기준이 완화됩니다. 해당 기준도 넘으면 보금자리론은 신청할 수 없어 시중은행 주택담보대출 등 다른 상품을 알아봐야 합니다.' },
     { q: '체증식 상환이란 무엇인가요?', a: '초기에 납입액이 적고 시간이 지날수록 상환액이 늘어나는 방식입니다. 만 40세 미만 신청자에게 허용되며(50년 만기 제외, 공사 사전심사), 초기 소득이 낮은 사회초년생에게 유리합니다. 총 이자 부담은 원리금균등상환보다 다소 크지만 초기 부담을 줄일 수 있습니다.' },
@@ -102,10 +104,8 @@ export default function BogeumjariLoanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
 
-      <div className="min-h-screen py-8 overflow-hidden">
-        <div className="relative z-10">
-          <BogeumjariLoanCalculator />
-        </div>
+      <div className="min-h-screen py-8">
+        <BogeumjariLoanCalculator />
       </div>
 
       {/* ===== 2026년 종합 가이드 ===== */}
@@ -169,7 +169,7 @@ export default function BogeumjariLoanPage() {
                 '신청일 현재 부부 모두 무주택 (처분조건부 1주택 불가)',
               ].map((req, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm text-body">
-                  <span className="flex-shrink-0 text-blue-500 font-bold mt-0.5">✓</span>
+                  <span className="flex-shrink-0 text-primary font-bold mt-0.5" aria-hidden>✓</span>
                   <span>{req}</span>
                 </div>
               ))}
@@ -188,12 +188,12 @@ export default function BogeumjariLoanPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-blue-600 text-white">
-                    <th className="px-4 py-3 text-left rounded-tl-lg">구분</th>
+                  <tr className="bg-soft text-body">
+                    <th className="px-4 py-3 text-left">구분</th>
                     <th className="px-4 py-3 text-center">소득기준</th>
                     <th className="px-4 py-3 text-center">최대한도</th>
                     <th className="px-4 py-3 text-center">LTV</th>
-                    <th className="px-4 py-3 text-center rounded-tr-lg">금리 우대</th>
+                    <th className="px-4 py-3 text-center">금리 우대</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -209,14 +209,14 @@ export default function BogeumjariLoanPage() {
                       <td className="px-4 py-3 text-center text-body">{row.income}</td>
                       <td className="px-4 py-3 text-center font-semibold text-sub">{row.limit}</td>
                       <td className="px-4 py-3 text-center text-body">{row.ltv}</td>
-                      <td className="px-4 py-3 text-center text-green-700 dark:text-green-400 font-medium">{row.discount}</td>
+                      <td className="px-4 py-3 text-center text-primary font-medium">{row.discount}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             <p className="text-xs text-faint mt-2">
-              ※ 주택가격 6억원 이하 공통(면적 제한 없음). 기타주택 LTV 65%, 규제지역은 LTV·DTI 10%p 차감(생애최초·실수요자 제외)과 금리 0.2%p 가산. 신혼부부는 혼인 7년 이내 또는 3개월 내 결혼 예정자.
+              ※ 주택가격 6억원 이하 공통(면적 제한 없음, 전세사기피해자 9억원). 기타주택 LTV 65%, 규제지역은 LTV·DTI 10%p 차감(생애최초·전세사기피해자·실수요자 제외)과 금리 0.2%p 가산. NICE 신용점수 271~614점은 LTV 10%p 추가 차감. 신혼부부는 혼인 7년 이내 또는 3개월 내 결혼 예정자.
             </p>
           </section>
 
@@ -228,7 +228,7 @@ export default function BogeumjariLoanPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-gray-100 dark:bg-gray-800 text-body">
+                  <tr className="bg-soft text-body">
                     <th className="px-4 py-3 text-left">대출 기간</th>
                     <th className="px-4 py-3 text-center">기준금리</th>
                     <th className="px-4 py-3 text-center">신혼가구 우대 후 (0.3%p)</th>
@@ -247,7 +247,7 @@ export default function BogeumjariLoanPage() {
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
                       <td className="px-4 py-3 text-center text-body">{row.base}</td>
                       <td className="px-4 py-3 text-center text-sub">{row.mid}</td>
-                      <td className="px-4 py-3 text-center font-semibold text-green-700 dark:text-green-400">{row.max}</td>
+                      <td className="px-4 py-3 text-center font-semibold text-primary">{row.max}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -259,7 +259,7 @@ export default function BogeumjariLoanPage() {
           </section>
 
           {/* 4. 우대금리 체계 */}
-          {/* 출처: https://www.hf.go.kr/ko/sub01/sub01_01_01.do (2026-09-30 확인) — 생애최초 자체 우대금리 없음 */}
+          {/* 출처: https://www.hf.go.kr/ko/sub01/sub01_01_01.do · sub01_01_02.do (2026-10-04 확인) — 생애최초 자체 우대금리 없음, 전세사기피해자 특례 */}
           <section>
             <h2 className="text-xl font-bold text-fg mb-4">
               우대금리 체계 (최대 1.0%p 한도)
@@ -271,7 +271,7 @@ export default function BogeumjariLoanPage() {
                 { label: '다자녀가구', rate: '0.5~0.7%p', desc: '미성년 자녀 2명 0.5%p, 3명 이상 0.7%p', color: 'green' },
                 { label: '저소득청년', rate: '0.1%p', desc: '청년·소득 요건 충족 시', color: 'purple' },
                 { label: '사회적 배려층', rate: '각 0.7%p', desc: '한부모·장애인·다문화가구 (최대 2가지 중복)', color: 'orange' },
-                { label: '전세사기 피해자', rate: '1.0%p', desc: '전세사기피해지원법 상 피해자 결정 시 (한도 4억)', color: 'red' },
+                { label: '전세사기 피해자', rate: '1.0%p', desc: '피해자 결정문 확인 시 · 소득 무관, 9억원 이하 주택, 한도 4억, 규제지역 가산 면제', color: 'red' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3 bg-subtle rounded-xl p-4">
                   <div className="flex-shrink-0 bg-soft text-sub font-bold text-xs px-2 py-1 rounded-lg min-w-[60px] text-center">
@@ -294,7 +294,7 @@ export default function BogeumjariLoanPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-gray-100 dark:bg-gray-800 text-body">
+                  <tr className="bg-soft text-body">
                     <th className="px-4 py-3 text-left">구분</th>
                     <th className="px-4 py-3 text-center bg-subtle text-sub">디딤돌대출</th>
                     <th className="px-4 py-3 text-center bg-subtle text-sub">보금자리론</th>
@@ -318,8 +318,8 @@ export default function BogeumjariLoanPage() {
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 text-sm text-amber-800 dark:text-amber-300">
-              💡 <strong>선택 가이드:</strong> 연소득 6천만원 이하라면 디딤돌대출(연 2.85~4.15%)을 먼저 검토하세요.
+            <div className="mt-4 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <strong className="text-fg">선택 가이드:</strong> 연소득 6천만원 이하라면 디딤돌대출(연 2.85~4.15%)을 먼저 검토하세요.
               디딤돌로 한도가 부족하거나 주택가격이 5억을 넘는다면 보금자리론이 대안입니다.
               두 상품 모두 신청 가능하면 금리가 낮은 디딤돌이 유리합니다.
             </div>
@@ -371,13 +371,13 @@ export default function BogeumjariLoanPage() {
                 <div key={item.step} className="flex-1 relative">
                   <div className="bg-subtle rounded-xl p-4 h-full">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-6 h-6 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0">{item.step}</span>
+                      <span className="w-6 h-6 bg-soft text-sub text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0">{item.step}</span>
                       <span className="font-semibold text-sm text-fg">{item.title}</span>
                     </div>
                     <p className="text-xs text-sub">{item.desc}</p>
                   </div>
                   {i < 4 && (
-                    <div className="hidden sm:flex absolute -right-1.5 top-1/2 -translate-y-1/2 z-10 text-gray-300 dark:text-gray-600 text-lg">›</div>
+                    <div className="hidden sm:flex absolute -right-1.5 top-1/2 -translate-y-1/2 z-10 text-faint text-lg" aria-hidden>›</div>
                   )}
                 </div>
               ))}
@@ -395,12 +395,13 @@ export default function BogeumjariLoanPage() {
                 { check: '부부합산 연소득이 7천만원 이하인가? (신혼 8.5천만, 자녀 1명 9천만, 다자녀 1억)', important: true },
                 { check: '구매하려는 주택 가격이 6억원 이하인가?', important: true },
                 { check: 'DTI(월 상환액/월 소득)가 60% 이하로 예상되는가?', important: true },
+                { check: 'NICE 신용점수가 271점 이상인가? (271~614점은 LTV 10%p 차감)', important: true },
                 { check: '생애 처음 주택 구입이라면 → LTV 80%, 한도 4.2억 우대 적용', important: false },
                 { check: '혼인 7년 이내 신혼부부라면 → 소득기준 8.5천만, 금리 0.3%p 우대', important: false },
                 { check: '자녀 2명 이상이라면 → 한도 4억, 소득기준 1억, 우대 0.5%p(3명+ 0.7%p)', important: false },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className={`flex-shrink-0 mt-0.5 text-sm ${item.important ? 'text-blue-500' : 'text-green-500'}`}>
+                  <span className={`flex-shrink-0 mt-0.5 text-sm ${item.important ? 'text-primary' : 'text-muted'}`} aria-hidden>
                     {item.important ? '✓' : '★'}
                   </span>
                   <span className="text-sm text-body">{item.check}</span>
@@ -426,9 +427,9 @@ export default function BogeumjariLoanPage() {
                 { title: '기존 대출 상환', desc: '1주택자 신청 시 기존 주택 처분 조건부. 신규 주택 취득 후 3년 이내 기존 주택 처분 필수.' },
                 { title: '소득 산정 기준', desc: '부부합산 연소득은 근로소득·사업소득·기타소득 합산. 원천징수영수증 기준으로 심사.' },
               ].map((item) => (
-                <div key={item.title} className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl p-4">
-                  <div className="font-semibold text-sm text-amber-900 dark:text-amber-300 mb-1">⚠ {item.title}</div>
-                  <p className="text-xs text-amber-800 dark:text-amber-400">{item.desc}</p>
+                <div key={item.title} className="bg-subtle rounded-xl p-4">
+                  <div className="font-semibold text-sm text-fg mb-1">{item.title}</div>
+                  <p className="text-xs text-sub">{item.desc}</p>
                 </div>
               ))}
             </div>

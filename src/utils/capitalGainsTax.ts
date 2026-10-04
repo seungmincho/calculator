@@ -5,7 +5,9 @@
  * - 소득세법 제89조①3호, 시행령 제154조: 1세대 1주택 2년 보유 비과세(취득 당시 조정대상지역이면 2년 거주), 양도가액 12억 초과 고가주택 제외
  * - 시행령 제160조: 고가주택 과세 양도차익 = 양도차익 × (양도가액 − 12억) / 양도가액 (장기보유특별공제도 같은 비율)
  * - 시행령 제155조①: 일시적 2주택 — 종전주택 취득 1년 후 신규 취득, 신규 취득일부터 3년 내 종전주택 양도.
- *   2026.10.1 개정: 종전·신규 모두 조정대상지역 + 신규 2026.8.4 이후 취득 + 2026.10.1 이후 양도 → 2년 (2026.8.3 이전 계약·계약금 지급분은 3년)
+ *   2026.10.1 개정(대통령령 제36737호): 종전·신규 모두 조정대상지역 + 신규 2026.8.4 이후 취득 + 2026.10.1 이후 양도 → 2년.
+ *   경과조치(재정경제부 2026-09-29 국무회의 의결): 2026.8.3까지 신규 주택(분양권 등 권리 포함)을 취득했거나
+ *   매매계약을 체결하고 계약금을 지급한 경우 종전 3년 — 계약·계약금 둘 다 8.3까지여야 함 (newContractDate = 둘 중 늦은 날)
  * - 소득세법 제95조②, 시행령 제159조의4: 장기보유특별공제 표1 3년 6% + 연 2%p(15년 30%),
  *   표2(1세대 1주택, 보유 3년·거주 2년 이상) 보유 연 4%(최대 40%) + 거주 2~3년 8%·3년 이상 연 4%(최대 40%)
  * - 소득세법 제103조: 기본공제 연 250만원. 제104조: 기본세율 6~45%, 주택·입주권 1년 미만 70%·2년 미만 60%,
@@ -27,6 +29,7 @@ export interface CgtInput {
   houses: 1 | 2 | 3          // 양도 주택 포함 1세대 보유 주택 수 (3 = 3주택 이상)
   temp: boolean              // 일시적 2주택(이사) 주장
   newAcqDate: string         // 신규 주택 취득일
+  newContractDate?: string   // 신규 주택 매매계약 + 계약금 지급일 (모르면 '' → 취득일 기준)
   newAdjusted: boolean       // 신규 주택이 조정대상지역
   adjusted: boolean          // 양도 주택이 지금(양도 시점) 조정대상지역
   acqAdjusted: boolean       // 양도 주택이 취득 당시 조정대상지역 (거주요건)
@@ -41,6 +44,7 @@ export interface CgtResult {
   exempt: Exempt
   checks: Check[]
   tempPeriod: number         // 일시적 2주택 처분 기한(년), 해당 없으면 0
+  tempRule: TempRule | ''
   tempDeadline: string
   profit: number; exemptProfit: number; taxableProfit: number; taxableRatio: number
   lthdTable: 'none' | 'general' | 'oneHouse' | 'excluded'
@@ -92,10 +96,15 @@ export function oneHouseLthd(hold: number, res: number) {
   return { hold: h, res: r }
 }
 
-/** 일시적 2주택 처분 기한(년) */
-export function tempPeriod(i: Pick<CgtInput, 'adjusted' | 'newAdjusted' | 'newAcqDate' | 'saleDate'>) {
-  return i.adjusted && i.newAdjusted && i.newAcqDate >= '2026-08-04' && i.saleDate >= '2026-10-01' ? 2 : 3
+/** 일시적 2주택 처분 기한 규정: adjusted2 = 조정→조정 2년, contract3 = 8.3까지 계약·계약금 지급(경과조치) 3년, base3 = 기본 3년 */
+export type TempRule = 'adjusted2' | 'contract3' | 'base3'
+type TempIn = Pick<CgtInput, 'adjusted' | 'newAdjusted' | 'newAcqDate' | 'saleDate' | 'newContractDate'>
+export function tempRule(i: TempIn): TempRule {
+  if (!(i.adjusted && i.newAdjusted && i.newAcqDate >= '2026-08-04' && i.saleDate >= '2026-10-01')) return 'base3'
+  return i.newContractDate && isDate(i.newContractDate) && i.newContractDate <= '2026-08-03' ? 'contract3' : 'adjusted2'
 }
+/** 일시적 2주택 처분 기한(년) */
+export const tempPeriod = (i: TempIn) => (tempRule(i) === 'adjusted2' ? 2 : 3)
 
 export function calcCgt(i: CgtInput): CgtResult {
   const hold = fullYears(i.acqDate, i.saleDate)
@@ -105,9 +114,10 @@ export function calcCgt(i: CgtInput): CgtResult {
   const checks: Check[] = []
 
   // 일시적 2주택
-  let tempOk = false, tPeriod = 0, tDeadline = ''
+  let tempOk = false, tPeriod = 0, tDeadline = '', tRule: TempRule | '' = ''
   if (house && i.houses === 2 && i.temp && isDate(i.newAcqDate)) {
-    tPeriod = tempPeriod(i)
+    tRule = tempRule(i)
+    tPeriod = tRule === 'adjusted2' ? 2 : 3
     tDeadline = addYears(i.newAcqDate, tPeriod)
     const gap = i.newAcqDate >= addYears(i.acqDate, 1)
     const inTime = i.saleDate <= tDeadline && i.saleDate >= i.newAcqDate
@@ -170,7 +180,7 @@ export function calcCgt(i: CgtInput): CgtResult {
   const local = Math.floor(tax * 0.1)
 
   return {
-    hold, exempt, checks, tempPeriod: tPeriod, tempDeadline: tDeadline,
+    hold, exempt, checks, tempPeriod: tPeriod, tempRule: tRule, tempDeadline: tDeadline,
     profit, exemptProfit, taxableProfit, taxableRatio,
     lthdTable, lthdHoldRate, lthdResRate, lthdRate, lthd, income, basic, base,
     rate: best.rate, surcharge, shortRate, tax, local, total: tax + local,

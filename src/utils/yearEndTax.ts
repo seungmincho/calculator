@@ -314,6 +314,12 @@ export function q4Strategy(x: YetInput, q4Credit: number) {
   return { kind, gap, moved, gain }
 }
 
+/** 카드 공제로 줄어드는 세금(지방소득세 포함) — /card-deduction용. 연봉·자녀 외 다른 공제는 없다고 본 근사 */
+export function cardTaxSaving(salary: number, s: CardSpend, children = 0) {
+  const x = { ...DEFAULT_INPUT, salary, children, ...s }
+  return calc({ ...x, credit: 0, debit: 0, culture: 0, market: 0, transport: 0 }).totalTax - calc(x).totalTax
+}
+
 // 할 일 마감 (KST 날짜). 간소화 서비스는 매년 1월 15일 국세청 홈택스 오픈
 export const DEADLINE = { yearEnd: `${TAX_YEAR}-12-31`, simplified: `${TAX_YEAR + 1}-01-15` }
 

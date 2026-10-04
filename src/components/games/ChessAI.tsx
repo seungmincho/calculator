@@ -170,7 +170,7 @@ export default function ChessAI({ difficulty, onBack }: ChessAIProps) {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-fg hover:bg-soft rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
           {tHub('backToHub')}
@@ -182,14 +182,14 @@ export default function ChessAI({ difficulty, onBack }: ChessAIProps) {
           </span>
           <button
             onClick={() => setFlipped(!flipped)}
-            className="p-2 text-muted hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="p-2 text-muted hover:bg-soft rounded-lg"
             title={t('flipBoard')}
           >
             <RotateCw className="w-4 h-4" />
           </button>
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 text-muted hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="p-2 text-muted hover:bg-soft rounded-lg"
             title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
           >
             {soundEnabled ? '🔊' : '🔇'}
@@ -330,7 +330,7 @@ export default function ChessAI({ difficulty, onBack }: ChessAIProps) {
           />
           <button
             onClick={onBack}
-            className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl"
+            className="py-3 px-6 bg-soft hover:bg-track text-body font-medium rounded-xl"
           >
             {tHub('backToHub')}
           </button>

@@ -1,5 +1,5 @@
 // 보금자리론 회귀 체크: node scripts/check-bogeumjari.ts
-// 기준: hf.go.kr 상품안내(sub01_01_01/02)·금리안내(2026-10-01 공시), 금융위 10.15 FAQ, 6.27 대책
+// 기준: hf.go.kr 상품안내(sub01_01_01/02, 2026-10-04 확인)·금리안내(2026-10-01 공시), 금융위 10.15 FAQ, 6.27 대책
 import assert from 'node:assert/strict'
 import { calcBogeumjari, didimdolHint, getLtv, getIncomeLimit, PERIOD_RATES, MIN_RATE, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
 
@@ -54,6 +54,21 @@ assert.equal(run({ type: 'first', region: 'regulated', income: 69_000_000 }).dti
 
 // 전세사기피해자 한도 4억
 assert.equal(run({ price: 600_000_000, perks: ['fraud'], income: 69_000_000 }).limits.find((l) => l.key === 'cap')!.amount, 400_000_000)
+
+// 전세사기피해자 보금자리론 (hf sub01_01_02, 2026-10-04): 소득 상한 없음·9억 이하·LTV 80%·DTI 100%·한도 4억
+r = run({ perks: ['fraud'], income: 150_000_000, price: 800_000_000, region: 'regulated', owned: '1' })
+assert.deepEqual([r.eligible, r.ltv, r.dtiCap, r.maxLoan, r.surcharge], [true, 0.8, 100, 400_000_000, 0])
+assert.equal(run({ perks: ['fraud'], price: 950_000_000 }).checks.find((c) => c.label === '주택가격')!.status, 'fail')
+assert.equal(run({ price: 650_000_000 }).eligible, false) // 일반은 6억 초과 불가
+
+// NICE CB점수 (hf sub01_01_01, 2026-10-04): 271점 미만 불가, 271~614점 LTV 10%p 차감(규제지역 차감과 누적)
+assert.equal(run({ credit: 'low' }).eligible, false)
+assert.deepEqual([run({ credit: 'mid' }).ltv, run({ credit: 'mid', kind: 'other' }).ltv], [0.6, 0.55])
+assert.equal(run({ credit: 'mid', region: 'regulated', owned: '1' }).ltv, 0.5)
+assert.deepEqual([run({ credit: 'mid', type: 'first' }).ltv, run({ credit: 'mid', type: 'first', region: 'capital' }).ltv], [0.7, 0.6])
+assert.equal(run({ credit: 'mid', perks: ['fraud'] }).ltv, 0.8)
+assert.ok(run({ credit: 'mid' }).checks.some((c) => c.label === '신용점수' && c.status === 'warn'))
+assert.equal(run({ credit: 'mid' }).maxLoan, 240_000_000) // 4억 × 60%
 
 // 신혼가구·신생아 중복 불가
 assert.deepEqual(run({ type: 'newlywed', perks: ['newborn'] }).discounts.map((d) => d.label), ['신혼가구'])

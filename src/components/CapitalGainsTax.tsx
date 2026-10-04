@@ -39,12 +39,15 @@ export default function CapitalGainsTax() {
   const [houses, setHouses] = useState<1 | 2 | 3>(() => { const h = sp.get('hc'); return h === '2' ? 2 : h === '3' || h === '3plus' ? 3 : 1 })
   const [temp, setTemp] = useState(() => sp.get('tp') === '1')
   const [newAcqDate, setNewAcqDate] = useState(() => sp.get('nd') ?? '')
+  const [newContract, setNewContract] = useState(() => sp.get('nc') ?? '')
   const [newAdjusted, setNewAdjusted] = useState(() => sp.get('na') === '1')
   const [adjusted, setAdjusted] = useState(() => sp.get('ia') === '1')
   const [acqAdjusted, setAcqAdjusted] = useState(() => (sp.get('aa') !== null ? sp.get('aa') === '1' : legacy ? sp.get('ia') === '1' : true))
   const [residence, setResidence] = useState(() => sp.get('ry') ?? (legacy ? '' : '5'))
   const [live, setLive] = useState(() => sp.get('lv') !== '0')
   const [grace, setGrace] = useState(() => sp.get('gr') === '1' || sp.get('as') === '0')
+  // 8.4 이후 조정지역 새 집만 계약일이 기한(2년/3년)을 가름 — 그 외엔 입력 숨기고 무시
+  const showContract = newAdjusted && newAcqDate >= '2026-08-04'
 
   useEffect(() => {
     const q = new URLSearchParams()
@@ -54,7 +57,10 @@ export default function CapitalGainsTax() {
     if (saleDate) q.set('sd', saleDate)
     if (kind === 'house') {
       if (houses !== 1) q.set('hc', String(houses))
-      if (houses === 2 && temp) { q.set('tp', '1'); if (newAcqDate) q.set('nd', newAcqDate); if (newAdjusted) q.set('na', '1') }
+      if (houses === 2 && temp) {
+        q.set('tp', '1'); if (newAcqDate) q.set('nd', newAcqDate); if (newAdjusted) q.set('na', '1')
+        if (showContract && newContract) q.set('nc', newContract)
+      }
       if (adjusted) q.set('ia', '1')
       q.set('aa', acqAdjusted ? '1' : '0')
       if (residence) q.set('ry', residence)
@@ -62,13 +68,14 @@ export default function CapitalGainsTax() {
       if (grace) q.set('gr', '1')
     }
     window.history.replaceState(null, '', `?${q}`)
-  }, [kind, sale, acq, expense, acqDate, saleDate, houses, temp, newAcqDate, newAdjusted, adjusted, acqAdjusted, residence, live, grace])
+  }, [kind, sale, acq, expense, acqDate, saleDate, houses, temp, newAcqDate, newContract, newAdjusted, adjusted, acqAdjusted, residence, live, grace, showContract])
 
   const house = kind === 'house'
   const ready = sale > 0 && isDate(acqDate) && isDate(saleDate) && saleDate >= acqDate
   const input: CgtInput = {
     kind, sale, acq, expense, acqDate, saleDate,
     houses: house ? houses : 1, temp: house && houses === 2 && temp, newAcqDate, newAdjusted,
+    newContractDate: showContract ? newContract : '',
     adjusted: house && adjusted, acqAdjusted: house && acqAdjusted, residence: house ? Number(residence) || 0 : 0,
     grace: house && grace,
   }
@@ -190,6 +197,18 @@ export default function CapitalGainsTax() {
                       <DatePicker label={t('input.newAcqDate')} value={newAcqDate} onChange={setNewAcqDate} />
                     </div>
                     {check('cgt-na', newAdjusted, setNewAdjusted, t('input.newAdjusted'))}
+                    {showContract && (
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <p className="text-sm font-medium text-body">{t('input.newContract')}</p>
+                          {newContract && (
+                            <button type="button" onClick={() => setNewContract('')} className="text-xs text-primary font-medium hover:underline">{t('input.newContractClear')}</button>
+                          )}
+                        </div>
+                        <DatePicker label={t('input.newContract')} value={newContract} onChange={setNewContract} placeholder={t('input.newContractPlaceholder')} />
+                        <p className="text-xs text-muted mt-1">{t('input.newContractHint')}</p>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -237,6 +256,7 @@ export default function CapitalGainsTax() {
                     ))}
                   </ul>
                 )}
+                {r.tempRule && <p className="text-xs text-muted mt-2">{t(`tempRule.${r.tempRule}`)}</p>}
 
                 <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
                   {[

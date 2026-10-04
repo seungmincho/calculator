@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 12:20:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 13:22:23 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[신용카드 소득공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/card-deduction/</link>
+    <guid>https://toolhub.ai.kr/card-deduction/</guid>
+    <description><![CDATA[연봉·카드 사용액으로 소득공제액과 줄어드는 세금, 25% 문턱, 10~12월 결제 전략 계산]]></description>
+    <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[해외직구 관부가세 계산기]]></title>
     <link>https://toolhub.ai.kr/customs-duty/</link>
@@ -1880,7 +1887,7 @@
     <title><![CDATA[연말정산 계산기]]></title>
     <link>https://toolhub.ai.kr/year-end-tax/</link>
     <guid>https://toolhub.ai.kr/year-end-tax/</guid>
-    <description><![CDATA[2025년 귀속 연말정산 환급액·결정세액 자동 계산, 소득공제·세액공제 항목별 분석]]></description>
+    <description><![CDATA[2026년 귀속 연말정산 환급액·결정세액 자동 계산, 1~9월 사용액으로 미리보기와 12월 31일까지 할 일]]></description>
     <pubDate>Thu, 19 Mar 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
