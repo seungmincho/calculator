@@ -61,7 +61,7 @@ try{
     assert.equal(await total(page).count(),0)
     assert.equal(await page.locator('#youth-payment-summary').innerText(),m.payments.remaining.replace('{count}','0'))
     record(`${locale}-24-payments-exhausted`)
-    for(const received of ['25','-1','1.5','Infinity','oops','']){
+    for(const received of ['25','-1','1.5','Infinity','oops','','00','012']){
       await open({received})
       await page.locator('#youth-receivedPayments-error').waitFor()
       await page.getByText(m.emptyTitle,{exact:true}).waitFor()

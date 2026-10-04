@@ -1,5 +1,6 @@
 // Start before deployment, then deploy in another terminal while this browser remains open.
 // node scripts/check-pwa-live-update.mjs --url https://toolhub.ai.kr --from v4.31.18 --to v4.31.19 --result report.json
+// After deployment, --previous-deployment https://<old-deployment>.pages.dev bootstraps the real old assets through a browser-only proxy.
 import assert from 'node:assert/strict'
 import {mkdirSync,writeFileSync,readFileSync} from 'node:fs'
 import {resolve} from 'node:path'
@@ -7,11 +8,21 @@ import {chromium} from 'playwright'
 
 const args=process.argv.slice(2),option=key=>args[args.indexOf(key)+1]
 const origin=new URL(option('--url')).origin,from=option('--from'),to=option('--to'),report=resolve(option('--result'))
+const previousDeployment=args.includes('--previous-deployment')?new URL(option('--previous-deployment')).origin:null
 const m=JSON.parse(readFileSync(new URL('../messages/ko.json',import.meta.url))).youthRentSubsidy
 const browser=await chromium.launch({headless:true}),results=[]
 try{
   const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow'})
-  await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort())
+  let bootstrapPrevious=!!previousDeployment
+  await context.route('**/*',async route=>{
+    const url=new URL(route.request().url())
+    if(url.origin!==origin)return route.abort()
+    if(bootstrapPrevious){
+      const response=await route.fetch({url:previousDeployment+url.pathname+url.search})
+      return route.fulfill({response})
+    }
+    return route.continue()
+  })
   const page=await context.newPage()
   await page.goto(origin+'/',{waitUntil:'networkidle'})
   await page.waitForFunction(version=>!!navigator.serviceWorker.controller&&caches.keys().then(keys=>keys.includes(`toolhub-static-${version}`)),from)
@@ -22,6 +33,7 @@ try{
   assert.ok(oldKeys.includes(`toolhub-static-${from}`))
   results.push({name:'existing-production-client-and-old-policy',status:'PASS',cacheNames:oldKeys})
   console.log('READY: existing production client is controlled by '+from+'; waiting for deployment of '+to)
+  bootstrapPrevious=false
 
   let upgraded=false
   const deadline=Date.now()+5*60*1000
@@ -48,7 +60,7 @@ try{
 finally{
   await browser.close()
   mkdirSync(resolve(report,'..'),{recursive:true})
-  writeFileSync(report,JSON.stringify({at:new Date().toISOString(),origin,from,to,results},null,2))
+  writeFileSync(report,JSON.stringify({at:new Date().toISOString(),origin,from,to,previousDeployment,bootstrap:previousDeployment?'archived-deployment-browser-proxy':'live-before-deployment',results},null,2))
 }
 for(const result of results)console.log(JSON.stringify(result))
 process.exitCode=results.some(result=>result.status==='FAIL')?1:0

@@ -93,7 +93,7 @@ function validateYouth(form: YouthForm): FormErrors {
   else if (!/^\d+$/.test(form.age) || !Number.isSafeInteger(Number(form.age))) errors.age = 'invalid'
   if (!['1', '2', '3', '4', '5', '6'].includes(form.householdSize)) errors.householdSize = 'selection'
   if (!housingTypeValues.includes(form.housingType)) errors.housingType = 'selection'
-  if (!/^\d+$/.test(form.receivedPayments) || Number(form.receivedPayments) > MAX_PAYMENTS) errors.receivedPayments = 'payments'
+  if (!/^(?:0|[1-9]\d?)$/.test(form.receivedPayments) || Number(form.receivedPayments) > MAX_PAYMENTS) errors.receivedPayments = 'payments'
   for (const field of moneyFields) {
     if (form[field].trim() === '') errors[field] = 'required'
     else {
