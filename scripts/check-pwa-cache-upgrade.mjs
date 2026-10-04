@@ -27,7 +27,7 @@ try{
   const page=await context.newPage();page.setDefaultTimeout(30000)
   await page.goto(origin+'/sitemap.xml',{waitUntil:'load'})
   await page.evaluate(async()=>{
-    for(const version of ['v4.31.10','v4.31.11']){
+    for(const version of ['v4.31.12','v4.31.13']){
       await caches.open(`toolhub-static-${version}`)
       await caches.open(`toolhub-dynamic-${version}`)
     }
@@ -36,11 +36,11 @@ try{
   await page.waitForFunction(async()=>{
     const registration=await navigator.serviceWorker.getRegistration()
     const keys=await caches.keys()
-    return !!registration?.active&&keys.includes('toolhub-static-v4.31.12')&&
-      !keys.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:10|11)$/.test(key))
+    return !!registration?.active&&keys.includes('toolhub-static-v4.31.14')&&
+      !keys.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:12|13)$/.test(key))
   },undefined,{timeout:30000})
   const keys=await page.evaluate(()=>caches.keys())
-  assert.ok(keys.includes('toolhub-static-v4.31.12'))
+  assert.ok(keys.includes('toolhub-static-v4.31.14'))
   results.push({name:'previous-static-and-dynamic-caches-removed',status:'PASS',cacheNames:keys})
   await context.close()
 }catch(error){results.push({name:'pwa-upgrade',status:'FAIL',message:error.message.slice(0,450)})}

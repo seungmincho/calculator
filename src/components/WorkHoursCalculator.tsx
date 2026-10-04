@@ -131,6 +131,7 @@ export default function WorkHoursCalculator() {
   ])
 
   const [isCopied, setIsCopied] = useState(false)
+  const [shareError, setShareError] = useState(false)
   const [showSaveButton, setShowSaveButton] = useState(false)
 
   // 시급 환산
@@ -270,14 +271,29 @@ export default function WorkHoursCalculator() {
 
   const handleShare = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : ''
-    try {
-      if (navigator?.clipboard?.writeText) await navigator.clipboard.writeText(url)
-      else {
-        const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.left = '-999999px'
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
+    const copyWithSelection = () => {
+      const ta = document.createElement('textarea')
+      ta.value = url
+      ta.style.position = 'fixed'
+      ta.style.left = '-999999px'
+      document.body.appendChild(ta)
+      try {
+        ta.select()
+        return document.execCommand('copy')
+      } finally {
+        ta.remove()
       }
-      setIsCopied(true); setTimeout(() => setIsCopied(false), 2000)
-    } catch { /* noop */ }
+    }
+    let copied = false
+    try {
+      if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(url); copied = true }
+      else copied = copyWithSelection()
+    } catch {
+      try { copied = copyWithSelection() } catch { /* Clipboard permission denied. */ }
+    }
+    setShareError(!copied)
+    setIsCopied(copied)
+    if (copied) setTimeout(() => setIsCopied(false), 2000)
   }
 
   const handleSave = () => {
@@ -329,6 +345,7 @@ export default function WorkHoursCalculator() {
               )}
             </div>
           </div>
+          {shareError && <p role="alert" className="mb-3 text-sm text-red-600">{t('result.shareFailed')}</p>}
           <div className="text-3xl font-bold text-fg tabular-nums">{fmt(result.totalPay)}원</div>
           <div className="text-sm text-muted mt-1">
             {t('result.totalHours')} {fmtH(result.totalHours)}{t('result.hours')} · {result.workDayCount}{t('result.days')}

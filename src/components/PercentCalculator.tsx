@@ -71,6 +71,7 @@ export default function PercentCalculator() {
   const [q, setQ] = useState('')
   const [hit, setHit] = useState<CardId | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
+  const [copyError, setCopyError] = useState<string | null>(null)
 
   const set = (k: F) => (val: string) => setV((s) => ({ ...s, [k]: val }))
 
@@ -101,22 +102,33 @@ export default function PercentCalculator() {
   }, [v, chain, dec, ko])
 
   const copy = useCallback(async (text: string, id: string) => {
+    const copyWithSelection = () => {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.left = '-999999px'
+      document.body.appendChild(ta)
+      try {
+        ta.select()
+        return document.execCommand('copy')
+      } finally {
+        ta.remove()
+      }
+    }
+    let succeeded = false
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text)
+        succeeded = true
       } else {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
+        succeeded = copyWithSelection()
       }
-    } catch { /* 복사 실패해도 UI는 그대로 */ }
-    setCopied(id)
-    setTimeout(() => setCopied(null), 1500)
+    } catch {
+      try { succeeded = copyWithSelection() } catch { /* Clipboard permission denied. */ }
+    }
+    setCopied(succeeded ? id : null)
+    setCopyError(succeeded ? null : id)
+    if (succeeded) setTimeout(() => setCopied((current) => current === id ? null : current), 1500)
   }, [])
 
   const results = useMemo<Record<CardId, Out>>(() => {
@@ -281,11 +293,13 @@ export default function PercentCalculator() {
                 <button
                   type="button" onClick={() => copy(res.copy, id)}
                   className="shrink-0 p-2 rounded-lg text-sub hover:bg-soft transition-colors"
-                  aria-label={t('copy')} title={t('copy')}
+                  aria-label={copied === id ? t('common.copied') : t('copy')}
+                  title={copied === id ? t('common.copied') : t('copy')}
                 >
                   {copied === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
+              {copyError === id && <p role="alert" className="text-sm text-red-600">{t('copyFailed')}</p>}
               {res.sub && <div className="text-sm text-sub mt-2">{res.sub}</div>}
               {showFormula && (
                 <p className="text-xs text-muted mt-2 font-mono break-all tabular-nums">{res.formula}</p>

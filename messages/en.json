@@ -4700,6 +4700,7 @@
       "title": "Salary Result",
       "totalHours": "Total Hours",
       "hours": "hrs",
+      "shareFailed": "Could not copy the link. Check your browser clipboard permission.",
       "shareResult": "Share",
       "breakdown": "Breakdown",
       "basicPay": "Basic Pay",
@@ -9824,6 +9825,7 @@
     }
   },
   "percentCalculator": {
+    "copyFailed": "Could not copy the result. Check clipboard permission and try again.",
     "subtitle": "Discounts, increases, ratios and percentage points on one screen. Change a number and every card updates.",
     "copy": "Copy result",
     "inputHint": "Fields accept 12,000 and Korean units like 5만 or 1억 2천만. Copy gives a plain number without commas (spreadsheet-friendly).",
