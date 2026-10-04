@@ -80,9 +80,13 @@ export default function MancalaPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="mancala"
-          icon="🥜"
           name="만칼라"
           description="구덩이의 돌을 뿌려 더 많이 모으면 승리하는 전략 게임"
+          rules={[
+            '내 쪽 구덩이를 고르면 돌을 반시계 방향으로 하나씩 뿌립니다.',
+            '마지막 돌이 내 저장소에 들어가면 한 번 더, 내 쪽 빈 구덩이에 들어가면 맞은편 돌까지 가져옵니다.',
+            '한쪽 구덩이가 모두 비면 끝나고, 저장소에 돌이 많은 쪽이 승리합니다.',
+          ]}
         />
       </div>
         {/* SEO 콘텐츠 */}

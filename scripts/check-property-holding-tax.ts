@@ -1,5 +1,8 @@
 // 보유세(재산세+종부세) 회귀 체크: node scripts/check-property-holding-tax.ts
-import { propertyTax, jongbu, holdingTax, creditRate, splitAmount, progressive, JONGBU_GENERAL, JONGBU_HEAVY } from '../src/utils/propertyHoldingTax.ts'
+import {
+  propertyTax, jongbu, holdingTax, creditRate, splitAmount, progressive, JONGBU_GENERAL, JONGBU_HEAVY,
+  jongbuDates, nextBusinessDay, tempDeadlines, compareBill, type Bill,
+} from '../src/utils/propertyHoldingTax.ts'
 
 let fail = 0
 const eq = (a: unknown, b: unknown, msg: string) => { if (JSON.stringify(a) !== JSON.stringify(b)) { fail++; console.log('FAIL', msg, JSON.stringify(a), '!=', JSON.stringify(b)) } }
@@ -60,6 +63,32 @@ eq([splitAmount(2_500_000), splitAmount(3_000_000), splitAmount(4_000_000), spli
 eq(h20.schedule.july + h20.schedule.september, h20.property.total, '재산세 7·9월 합')
 const small = holdingTax({ prices: [3 * EOK], oneHouse: true, age: 0, years: 0, joint: false, share: 50, urban: false, prevTotal: 0 })
 eq(small.schedule.september, 0, '20만원 이하 7월 일괄')
+
+// ── 일정 (국세청 2025: 12/15(월) 납부, 12/12 납부유예 신청, 분납 '26.6.15) ──
+eq(jongbuDates(2025), { due: '2025-12-15', deferral: '2025-12-12', split: '2026-06-15', specialFrom: '2025-09-16', specialTo: '2025-09-30' }, '2025 종부세 일정')
+// 2026: 12/15 화요일, 납부유예 3일 전 12/12는 토요일 → 12/14(월)
+eq(jongbuDates(2026), { due: '2026-12-15', deferral: '2026-12-14', split: '2027-06-15', specialFrom: '2026-09-16', specialTo: '2026-09-30' }, '2026 종부세 일정')
+eq(jongbuDates(2029).due, '2029-12-17', '12/15 토요일이면 월요일')
+eq(nextBusinessDay('2026-10-03'), '2026-10-06', '개천절(토)·일·대체공휴일 다음')
+eq(nextBusinessDay('2026-12-15'), '2026-12-15', '영업일이면 그대로')
+
+// ── 일시적 2주택 처분기한 ──
+const td = (d: string, adj: boolean) => tempDeadlines(d, adj).map((x) => `${x.tax}:${x.years}:${x.date}`)
+eq(td('2026-10-04', false), ['jongbu:3:2029-10-04', 'capitalGains:3:2029-10-04', 'acquisition:3:2029-10-04'], '비조정 → 모두 3년')
+eq(td('2026-07-01', true), ['jongbu:3:2029-07-01', 'capitalGains:3:2029-07-01', 'acquisition:3:2029-07-01'], '2026.8.3 이전 취득 → 3년')
+eq(td('2026-09-01', true), ['jongbu:2:2028-09-01', 'capitalGains:2:2028-09-01', 'acquisition:3:2029-09-01'], '8.4 이후 취득: 종부·양도 2년, 취득세는 10.1 이후부터')
+eq(td('2026-10-04', true), ['jongbu:2:2028-10-04', 'capitalGains:2:2028-10-04', 'acquisition:2:2028-10-04'], '둘 다 조정 → 2년')
+eq(tempDeadlines('2026-10-04', true).map((x) => x.verified), [true, true, false], '취득세는 참고')
+
+// ── 고지서 대조 (h20: 종부세 1,896,000 / 농특세 379,200 / 재산세 합계) ──
+const bill = (o: Partial<Bill>): Bill => ({ jongbu: 0, nong: 0, total: 0, july: 0, september: 0, ...o })
+eq(compareBill(bill({}), h20), { rows: [], reasons: [] }, '입력 없음')
+const same = compareBill(bill({ jongbu: 1_896_000, nong: 379_200, total: 2_275_200, july: h20.schedule.july, september: h20.schedule.september + 500 }), h20)
+eq([same.rows.map((r) => r.diff), same.reasons], [[0, 0, 0, 500], []], '같음 (1,000원 이내는 끝수 차이)')
+eq(compareBill(bill({ total: 1_775_200 }), h20).reasons, ['price', 'cap', 'credit'], '고지서가 적음')
+eq(compareBill(bill({ jongbu: 2_396_000 }), h20).reasons, ['price', 'oneHouse', 'credit', 'propDeduct', 'land'], '고지서가 많음')
+eq(compareBill(bill({ july: 100_000 }), h20).reasons, ['price', 'propCap'], '재산세 고지가 적음 (과표상한)')
+eq(compareBill(bill({ jongbu: 1 }), capped).reasons, ['price', 'exclude'], '다주택 + 상한 적용됨 → 합산배제 안내, 상한 안내 없음')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-property-holding-tax: all passed')

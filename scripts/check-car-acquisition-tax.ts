@@ -1,6 +1,6 @@
 // 자동차 취득세 회귀 체크: node scripts/check-car-acquisition-tax.ts
 // 기대값: 지방세법 제12조①2호 세율, 지방세특례제한법 제17·22조의2·66·67·177조의2·180조로 손계산
-import { carAcqTax, carAcqRate, bondExempt, type CarAcqInput } from '../src/utils/carAcquisitionTax.ts'
+import { carAcqTax, carAcqRate, bondExempt, reliefAtStake, RELIEF_END, type CarAcqInput } from '../src/utils/carAcquisitionTax.ts'
 
 let fail = 0
 const eq = (name: string, got: unknown, want: unknown) => { if (got !== want) { fail++; console.log('FAIL', name, got, '!=', want) } }
@@ -40,6 +40,17 @@ eq('disabled 2500cc flag', c({ disabled: true, displacement: 2497 }).disabledBlo
 // 중복 시 큰 것 하나 (제180조): 전기차 + 2자녀 → 140만
 const both = c({ electric: true, children: 2 })
 eq('max benefit', both.benefit, 1_400_000); eq('max key', both.benefitKey, 'electric')
+
+// 감면 종료 시 늘어나는 세액 (다른 감면이 대신 들어오면 차액만)
+eq('stake ev 4000', reliefAtStake({ ...base, electric: true }, 'electric'), 1_400_000)
+eq('stake ev 1800', reliefAtStake({ ...base, electric: true, price: 18_000_000 }, 'electric'), 1_260_000)
+eq('stake ev+child2', reliefAtStake({ ...base, electric: true, children: 2 }, 'electric'), 700_000)
+eq('stake ev+disabled', reliefAtStake({ ...base, electric: true, disabled: true }, 'electric'), 0)
+eq('stake not ev', reliefAtStake(base, 'electric'), 0)
+eq('stake compact 2000', reliefAtStake({ ...base, carType: 'compact', price: 20_000_000 }, 'compact'), 750_000)
+eq('stake compact 1400', reliefAtStake({ ...base, carType: 'compact', price: 14_000_000 }, 'compact'), 560_000)
+eq('drop keeps others', carAcqTax({ ...base, electric: true, children: 2 }, 'electric').benefitKey, 'child2')
+eq('ev end', RELIEF_END.electric, '2026-12-31'); eq('compact end', RELIEF_END.compact, '2027-12-31')
 
 // 채권: 비영업 승용 1,600cc 미만 면제
 eq('bond exempt 1598', bondExempt({ ...base, displacement: 1598 }), true)

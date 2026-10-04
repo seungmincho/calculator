@@ -1,808 +1,372 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Car, Calculator, Percent, Receipt, DollarSign, AlertCircle, Share2, Check, Save } from 'lucide-react'
+import { useState, useEffect, useSyncExternalStore } from 'react'
+import Link from 'next/link'
+import { Save, Check } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/carTax'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import GuideSection from '@/components/GuideSection'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { carAcqTax, bondExempt, type Usage, type VanSeats, type MotorcycleSize } from '@/utils/carAcquisitionTax'
+import {
+  carAcqTax, bondExempt, reliefAtStake, RELIEF_END,
+  type CarType, type Usage, type VanSeats, type MotorcycleSize, type CarAcqInput,
+} from '@/utils/carAcquisitionTax'
+import { todayKST, daysBetween, ddayLabel } from '@/utils/dday'
 
-interface CarTaxResult {
-  acquisitionTax: number // 취득세 (2011년부터 등록세 통합)
-  registrationTax: number // 등록세 — 폐지(취득세 통합), 이전 기록 호환용 0
-  railroadBond: number // 도시철도채권
-  licenseRegistrationTax: number // 등록면허세
-  totalTax: number // 총 세금
-  totalCostWithTax: number // 차량가격 + 세금
-  appliedBenefits: string[] // 적용된 감면 혜택
-  rate: number // 취득세율
-  disabledBlocked: boolean // 장애인·국가유공자 감면 배기량 요건 미충족
+type FuelType = 'gasoline' | 'diesel' | 'lpg' | 'hybrid' | 'electric'
+type Region = 'seoul' | 'busan' | 'incheon' | 'gyeonggi' | 'other'
+const CAR_TYPES: readonly CarType[] = ['passenger', 'compact', 'van', 'truck', 'motorcycle']
+const FUELS: readonly FuelType[] = ['gasoline', 'diesel', 'lpg', 'hybrid', 'electric']
+const REGIONS: readonly Region[] = ['seoul', 'busan', 'incheon', 'gyeonggi', 'other']
+const MAX_PRICE = 10_000_000_000
+
+interface Form {
+  carPrice: number
+  carType: CarType
+  fuelType: FuelType
+  displacement: string
+  isNew: boolean
+  region: Region
+  usage: Usage
+  vanSeats: VanSeats
+  motorcycleSize: MotorcycleSize
+  isMultiChild: boolean
+  childCount: number
+  isDisabled: boolean
+  isVeteran: boolean
+}
+// 첫 화면 기본값 = 예시 '중형 2.0 가솔린'. URL에는 기본값과 다른 항목만 (이름은 예전 공유 링크와 같음)
+const DEF: Form = {
+  carPrice: 32_000_000, carType: 'passenger', fuelType: 'gasoline', displacement: '1999', isNew: true, region: 'seoul',
+  usage: 'personal', vanSeats: '7-10', motorcycleSize: 'small', isMultiChild: false, childCount: 0, isDisabled: false, isVeteran: false,
+}
+// 예시 — 가격대(부가세 제외)·배기량·차종만, 특정 모델 아님. 라벨 = u.presets.items 순서
+const PRESETS: Pick<Form, 'carPrice' | 'carType' | 'fuelType' | 'displacement'>[] = [
+  { carPrice: 14_000_000, carType: 'compact', fuelType: 'gasoline', displacement: '998' },
+  { carPrice: 25_000_000, carType: 'passenger', fuelType: 'gasoline', displacement: '1598' },
+  { carPrice: 32_000_000, carType: 'passenger', fuelType: 'gasoline', displacement: '1999' },
+  { carPrice: 38_000_000, carType: 'passenger', fuelType: 'hybrid', displacement: '1598' },
+  { carPrice: 45_000_000, carType: 'passenger', fuelType: 'gasoline', displacement: '2497' },
+  { carPrice: 50_000_000, carType: 'passenger', fuelType: 'electric', displacement: '' },
+]
+
+const noSub = () => () => {}
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const oneOf = <T,>(v: unknown, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
+
+/** URL 쿼리(또는 히스토리 입력값) → 폼. 없는 값은 기본값 */
+function fromQuery(sp: URLSearchParams): Form {
+  const num = (k: string) => (/^\d+$/.test(sp.get(k) ?? '') ? Number(sp.get(k)) : null)
+  const bool = (k: keyof Form) => (sp.has(k) ? sp.get(k) === 'true' : (DEF[k] as boolean))
+  return {
+    carPrice: Math.min(num('carPrice') ?? DEF.carPrice, MAX_PRICE),
+    carType: oneOf(sp.get('carType'), CAR_TYPES, DEF.carType),
+    fuelType: oneOf(sp.get('fuelType'), FUELS, DEF.fuelType),
+    displacement: sp.has('displacement') ? String(Math.min(num('displacement') ?? 0, 99_999) || '') : DEF.displacement,
+    isNew: bool('isNew'),
+    region: oneOf(sp.get('region'), REGIONS, DEF.region),
+    usage: oneOf(sp.get('usage'), ['personal', 'business'] as const, DEF.usage),
+    vanSeats: oneOf(sp.get('vanSeats'), ['7-10', '11+'] as const, DEF.vanSeats),
+    motorcycleSize: oneOf(sp.get('motorcycleSize'), ['small', 'large'] as const, DEF.motorcycleSize),
+    isMultiChild: bool('isMultiChild'),
+    childCount: Math.min(num('childCount') ?? 0, 3),
+    isDisabled: bool('isDisabled'),
+    isVeteran: bool('isVeteran'),
+  }
 }
 
-type CarType = 'passenger' | 'truck' | 'van' | 'motorcycle' | 'compact' | 'electric'
-type FuelType = 'gasoline' | 'diesel' | 'lpg' | 'electric' | 'hybrid'
+function toQuery(f: Form): string {
+  const q = new URLSearchParams()
+  for (const k of Object.keys(DEF) as (keyof Form)[]) if (f[k] !== DEF[k]) q.set(k, String(f[k]))
+  return q.toString()
+}
 
 export default function CarTaxCalculator() {
   const t = useTranslations('carTax')
-  const [carPrice, setCarPrice] = useState<string>('')
-  const [carType, setCarType] = useState<CarType>('passenger')
-  const [fuelType, setFuelType] = useState<FuelType>('gasoline')
-  const [displacement, setDisplacement] = useState<string>('')
-  const [isNew, setIsNew] = useState<boolean>(true)
-  const [region, setRegion] = useState<string>('seoul')
-  const [usage, setUsage] = useState<Usage>('personal')
-  const [vanSeats, setVanSeats] = useState<VanSeats>('7-10')
-  const [motorcycleSize, setMotorcycleSize] = useState<MotorcycleSize>('small')
-  const [isMultiChild, setIsMultiChild] = useState<boolean>(false)
-  const [childCount, setChildCount] = useState<number>(0)
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
-  const [isVeteran, setIsVeteran] = useState<boolean>(false)
-  const [result, setResult] = useState<CarTaxResult | null>(null)
-  const [isCopied, setIsCopied] = useState(false)
-  const [showSaveButton, setShowSaveButton] = useState(false)
-  
+  const sp = useSearchParams()
+  const [f, setF] = useState<Form>(() => fromQuery(sp))
+  const [saved, setSaved] = useState(false)
+  const today = useSyncExternalStore(noSub, todayKST, () => null) // KST, 서버·하이드레이션은 null (첫 렌더 결정적)
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('car-tax')
-  const router = useRouter()
-  const searchParams = useSearchParams()
-
-  const calculateCarTax = () => {
-    const price = parseFloat(carPrice)
-    const disp = parseFloat(displacement) || 0
-
-    if (!price || price <= 0) return
-
-    const ct = carType === 'electric' ? 'passenger' : carType
-    const input = {
-      price, carType: ct, usage, vanSeats, motorcycleSize,
-      electric: fuelType === 'electric', displacement: disp,
-      children: isMultiChild ? childCount : 0, disabled: isDisabled || isVeteran,
-    }
-    const tax = carAcqTax(input)
-
-    // ponytail: 도시철도채권(서울) 매입·즉시매도 부담은 기존 대략값(6% × 30%) 유지 — 매입률·할인율은 조례·시장에 따라 다름
-    const railroadBond = region === 'seoul' && carType !== 'motorcycle' && !bondExempt(input) ? price * 0.06 * 0.3 : 0
-    const licenseRegistrationTax = carType === 'motorcycle' && motorcycleSize === 'large' ? 15000 : 0
-
-    const labels: Record<string, string> = {
-      compact: '경차 감면 (최대 75만원)',
-      electric: '전기차 감면 (최대 140만원)',
-      child2: '2자녀 가정 감면 (50%)',
-      child3: '3자녀 이상 가정 감면',
-      disabled: isDisabled ? '장애인 면제' : '국가유공자 면제',
-    }
-    const appliedBenefits = tax.benefitKey ? [labels[tax.benefitKey]] : []
-
-    const totalTax = tax.tax + railroadBond + licenseRegistrationTax
-    setResult({
-      acquisitionTax: tax.tax,
-      registrationTax: 0,
-      railroadBond,
-      licenseRegistrationTax,
-      totalTax,
-      totalCostWithTax: price + totalTax,
-      appliedBenefits,
-      rate: tax.rate,
-      disabledBlocked: tax.disabledBlocked,
-    })
-    setShowSaveButton(true)
-  }
+  const set = (p: Partial<Form>) => { setF((prev) => ({ ...prev, ...p })); setSaved(false) }
 
   useEffect(() => {
-    if (carPrice) {
-      calculateCarTax()
-      updateURL({
-        carPrice: carPrice.replace(/,/g, ''),
-        carType,
-        fuelType,
-        displacement,
-        isNew: isNew.toString(),
-        region,
-        usage,
-        vanSeats,
-        motorcycleSize,
-        isMultiChild: isMultiChild.toString(),
-        childCount: childCount.toString(),
-        isDisabled: isDisabled.toString(),
-        isVeteran: isVeteran.toString()
-      })
-    }
-  }, [carPrice, carType, fuelType, displacement, isNew, region, usage, vanSeats, motorcycleSize, isMultiChild, childCount, isDisabled, isVeteran])
+    const q = toQuery(f)
+    if (q !== window.location.search.slice(1)) window.history.replaceState(null, '', `${q ? `?${q}` : window.location.pathname}${window.location.hash}`)
+  }, [f])
 
-  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
-  useEffect(() => {
-    const priceParam = searchParams.get('carPrice')
-    if (!priceParam) return // URL 파라미터가 없으면 복원하지 않음
-    
-    const typeParam = searchParams.get('carType')
-    const fuelParam = searchParams.get('fuelType')
-    const dispParam = searchParams.get('displacement')
-    const newParam = searchParams.get('isNew')
-    const regionParam = searchParams.get('region')
-    const usageParam = searchParams.get('usage')
-    const seatsParam = searchParams.get('vanSeats')
-    const sizeParam = searchParams.get('motorcycleSize')
-    const multiChildParam = searchParams.get('isMultiChild')
-    const childCountParam = searchParams.get('childCount')
-    const disabledParam = searchParams.get('isDisabled')
-    const veteranParam = searchParams.get('isVeteran')
-
-    if (priceParam && /^\d+$/.test(priceParam)) {
-      setCarPrice(new Intl.NumberFormat('ko-KR').format(Number(priceParam)))
-    }
-    if (typeParam && ['compact', 'passenger', 'van', 'truck', 'motorcycle'].includes(typeParam)) {
-      setCarType(typeParam as CarType)
-    }
-    if (fuelParam && ['gasoline', 'diesel', 'lpg', 'electric', 'hybrid'].includes(fuelParam)) {
-      setFuelType(fuelParam as FuelType)
-    }
-    if (dispParam && /^\d+$/.test(dispParam)) {
-      setDisplacement(dispParam)
-    }
-    if (newParam) {
-      setIsNew(newParam === 'true')
-    }
-    if (regionParam) {
-      setRegion(regionParam)
-    }
-    if (usageParam && ['personal', 'business'].includes(usageParam)) {
-      setUsage(usageParam as Usage)
-    }
-    if (seatsParam && ['7-10', '11+'].includes(seatsParam)) {
-      setVanSeats(seatsParam as VanSeats)
-    }
-    if (sizeParam && ['small', 'large'].includes(sizeParam)) {
-      setMotorcycleSize(sizeParam as MotorcycleSize)
-    }
-    if (multiChildParam) {
-      setIsMultiChild(multiChildParam === 'true')
-    }
-    if (childCountParam && /^\d+$/.test(childCountParam)) {
-      setChildCount(Number(childCountParam))
-    }
-    if (disabledParam) {
-      setIsDisabled(disabledParam === 'true')
-    }
-    if (veteranParam) {
-      setIsVeteran(veteranParam === 'true')
-    }
-  }, []) // 의존성 배열을 빈 배열로 변경하여 초기 로드시에만 실행
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ko-KR').format(Math.round(amount))
+  const disp = Number(f.displacement) || 0
+  const input: CarAcqInput = {
+    price: f.carPrice, carType: f.carType, usage: f.usage, vanSeats: f.vanSeats, motorcycleSize: f.motorcycleSize,
+    electric: f.fuelType === 'electric', displacement: disp,
+    children: f.isMultiChild ? f.childCount : 0, disabled: f.isDisabled || f.isVeteran,
   }
+  const tax = carAcqTax(input)
+  // ponytail: 도시철도채권(서울) 매입·즉시매도 부담은 기존 대략값(6% × 30%) 유지 — 매입률·할인율은 조례·시장에 따라 다름
+  const bond = f.region === 'seoul' && f.carType !== 'motorcycle' && !bondExempt(input) ? Math.round(f.carPrice * 0.06 * 0.3) : 0
+  const bondNote = f.carType === 'motorcycle' ? 'moto' : f.region !== 'seoul' ? 'region' : 'exempt'
+  const license = f.carType === 'motorcycle' && f.motorcycleSize === 'large' ? 15_000 : 0
+  const total = tax.tax + bond + license
+  const benefitName = tax.benefitKey ? t(`u.benefit.${tax.benefitKey === 'disabled' && !f.isDisabled ? 'veteran' : tax.benefitKey}`) : ''
+  const bondText = bond > 0 ? `${won(bond)}${t('u.won')}` : t(`u.row.bondNone.${bondNote}`)
+  const summary = [
+    `${won(f.carPrice)}${t('u.won')}`, t(`u.carType.${f.carType}`), t(`u.fuel.${f.fuelType}`),
+    ...(disp ? [`${won(disp)}cc`] : []), t(f.isNew ? 'u.new' : 'u.used'),
+  ].join(' · ')
 
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value !== '0' && value !== 'false') {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
-    })
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }
+  // 감면 일몰 안내: 전기차(2026.12.31), 비영업용 경차(2027.12.31)
+  const seasons = (['electric', 'compact'] as const).filter((k) =>
+    k === 'electric' ? input.electric && f.carType !== 'motorcycle' : f.carType === 'compact' && f.usage === 'personal')
 
-  const handleShare = async () => {
-    if (!result) return
-    
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
-
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(currentUrl)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea')
-        textArea.value = currentUrl
-        document.body.appendChild(textArea)
-        textArea.select()
-        try {
-          document.execCommand('copy')
-          setIsCopied(true)
-          setTimeout(() => setIsCopied(false), 2000)
-        } catch (fallbackErr) {
-          console.error('Fallback copy failed: ', fallbackErr)
-        }
-        document.body.removeChild(textArea)
-      }
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
-
-  const handleSaveCalculation = () => {
-    if (!result) return
-    
-    const price = parseFloat(carPrice)
-    const disp = parseFloat(displacement) || 0
-    
+  const save = () => {
     saveCalculation(
+      { ...f, displacement: disp },
       {
-        carPrice: price,
-        carType,
-        fuelType,
-        displacement: disp,
-        isNew,
-        region,
-        usage,
-        vanSeats,
-        motorcycleSize,
-        isMultiChild,
-        childCount,
-        isDisabled,
-        isVeteran
+        acquisitionTax: tax.tax, registrationTax: 0, railroadBond: bond, licenseRegistrationTax: license,
+        totalTax: total, appliedBenefits: benefitName ? [benefitName] : [],
       },
-      {
-        acquisitionTax: result.acquisitionTax,
-        registrationTax: result.registrationTax,
-        railroadBond: result.railroadBond,
-        licenseRegistrationTax: result.licenseRegistrationTax,
-        totalTax: result.totalTax,
-        appliedBenefits: result.appliedBenefits
-      }
     )
-    
-    setShowSaveButton(false)
-  }
-
-  const getCarTypeLabel = (type: CarType) => {
-    const labels = {
-      compact: '경차',
-      passenger: '승용차',
-      truck: '화물차',
-      van: '승합차',
-      motorcycle: '이륜차',
-      electric: '전기차'
-    }
-    return labels[type]
-  }
-
-  const getFuelTypeLabel = (type: FuelType) => {
-    const labels = {
-      gasoline: '휘발유',
-      diesel: '경유',
-      lpg: 'LPG',
-      electric: '전기',
-      hybrid: '하이브리드'
-    }
-    return labels[type]
+    setSaved(true)
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-8">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {t('description')}
-          </p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <CalculationHistory
           histories={histories}
           isLoading={false}
-          onLoadHistory={(historyId) => {
-            const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setCarPrice(inputs.carPrice.toString())
-              setCarType(inputs.carType || 'passenger')
-              setFuelType(inputs.fuelType || 'gasoline')
-              setDisplacement(inputs.displacement?.toString() || '')
-              setIsNew(inputs.isNew ?? true)
-              setRegion(inputs.region || 'seoul')
-              setUsage(inputs.usage || 'personal')
-              setVanSeats(inputs.vanSeats || '7-10')
-              setMotorcycleSize(inputs.motorcycleSize || 'small')
-              setIsMultiChild(inputs.isMultiChild || false)
-              setChildCount(inputs.childCount || 0)
-              setIsDisabled(inputs.isDisabled || false)
-              setIsVeteran(inputs.isVeteran || false)
-            }
+          onLoadHistory={(id) => {
+            const x = loadFromHistory(id)
+            if (x) set(fromQuery(new URLSearchParams(Object.entries(x).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]))))
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(result: Record<string, unknown>) => {
-            const totalTax = Number(result.totalTax) || 0
-            if (!totalTax) return '계산 정보 없음'
-            return `총 세금: ${formatCurrency(totalTax)}원`
+          formatResult={(r: Record<string, unknown>) => {
+            const n = Number(r.totalTax) || 0
+            return n ? t('u.history.total', { amount: won(n) }) : t('u.history.none')
           }}
         />
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* 입력 폼 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
-          <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            차량 정보 입력
-          </h2>
-
-          <div className="space-y-6">
-            {/* 차량 가격 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                차량 가격 (원)
-              </label>
-              <input
-                type="text"
-                value={carPrice}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, '')
-                  setCarPrice(value)
-                }}
-                placeholder="30000000"
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              />
-              {carPrice && (
-                <p className="text-sm text-gray-500 mt-1">
-                  {formatCurrency(parseFloat(carPrice))}원
-                </p>
-              )}
-            </div>
-
-            {/* 차종 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                차종
-              </label>
-              <select
-                value={carType}
-                onChange={(e) => setCarType(e.target.value as CarType)}
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              >
-                <option value="compact">경차</option>
-                <option value="passenger">승용차</option>
-                <option value="van">승합차</option>
-                <option value="truck">화물차</option>
-                <option value="motorcycle">이륜차</option>
-              </select>
-            </div>
-
-            {/* 용도 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                용도
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={usage === 'personal'}
-                    onChange={() => setUsage('personal')}
-                    className="mr-2"
-                  />
-                  비영업용
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={usage === 'business'}
-                    onChange={() => setUsage('business')}
-                    className="mr-2"
-                  />
-                  영업용
-                </label>
-              </div>
-            </div>
-
-            {/* 승합차 인승수 */}
-            {carType === 'van' && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  승합차 인승
-                </label>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      checked={vanSeats === '7-10'}
-                      onChange={() => setVanSeats('7-10')}
-                      className="mr-2"
-                    />
-                    7~10인승
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      checked={vanSeats === '11+'}
-                      onChange={() => setVanSeats('11+')}
-                      className="mr-2"
-                    />
-                    11인승 이상
-                  </label>
-                </div>
-              </div>
-            )}
-
-            {/* 이륜차 크기 */}
-            {carType === 'motorcycle' && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  이륜차 크기
-                </label>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      checked={motorcycleSize === 'small'}
-                      onChange={() => setMotorcycleSize('small')}
-                      className="mr-2"
-                    />
-                    125cc 이하
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      checked={motorcycleSize === 'large'}
-                      onChange={() => setMotorcycleSize('large')}
-                      className="mr-2"
-                    />
-                    125cc 초과
-                  </label>
-                </div>
-              </div>
-            )}
-
-            {/* 연료 타입 */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                연료 타입
-              </label>
-              <select
-                value={fuelType}
-                onChange={(e) => setFuelType(e.target.value as FuelType)}
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              >
-                <option value="gasoline">휘발유</option>
-                <option value="diesel">경유</option>
-                <option value="lpg">LPG</option>
-                <option value="electric">전기</option>
-                <option value="hybrid">하이브리드</option>
-              </select>
-            </div>
-
-            {/* 배기량 */}
-            {carType !== 'electric' && (
-              <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  배기량 (cc)
-                </label>
+              <label htmlFor="ct-price" className="block text-sm font-medium text-body mb-2">{t('u.price')}</label>
+              <div className="relative">
                 <input
-                  type="number"
-                  value={displacement}
-                  onChange={(e) => setDisplacement(e.target.value)}
-                  placeholder="2000"
-                  className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
+                  id="ct-price" type="text" inputMode="numeric" value={f.carPrice ? won(f.carPrice) : ''}
+                  onChange={(e) => set({ carPrice: Math.min(Number(e.target.value.replace(/[^\d]/g, '')) || 0, MAX_PRICE) })}
+                  className="ui-field w-full px-4 py-3 pr-14 text-lg tabular-nums"
                 />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{t('u.won')}</span>
               </div>
+              <p className="text-xs text-muted mt-1.5">{t('u.priceHint')}</p>
+              <div className="flex flex-wrap items-center gap-1.5 mt-3" role="group" aria-label={t('u.presets.label')}>
+                <span className="text-xs font-medium text-sub mr-0.5">{t('u.presets.label')}</span>
+                {(t.raw('u.presets.items') as string[]).map((label, i) => {
+                  const p = PRESETS[i]
+                  const on = p.carPrice === f.carPrice && p.carType === f.carType && p.fuelType === f.fuelType && p.displacement === f.displacement
+                  return (
+                    <button
+                      key={label} type="button" onClick={() => set(p)} aria-pressed={on}
+                      className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-faint mt-1.5">{t('u.presets.note')}</p>
+            </div>
+
+            <Choice label={t('u.carType.label')} options={CAR_TYPES} value={f.carType} onChange={(carType) => set({ carType })} text={(v) => t(`u.carType.${v}`)} cols="grid-cols-3" />
+            {f.carType === 'van' && (
+              <Choice label={t('u.vanSeats.label')} options={['7-10', '11+'] as const} value={f.vanSeats} onChange={(vanSeats) => set({ vanSeats })} text={(v) => t(`u.vanSeats.${v === '7-10' ? 'small' : 'large'}`)} />
             )}
+            {f.carType === 'motorcycle' && (
+              <Choice label={t('u.motoSize.label')} options={['small', 'large'] as const} value={f.motorcycleSize} onChange={(motorcycleSize) => set({ motorcycleSize })} text={(v) => t(`u.motoSize.${v}`)} />
+            )}
+            <Choice label={t('u.fuel.label')} options={FUELS} value={f.fuelType} onChange={(fuelType) => set({ fuelType })} text={(v) => t(`u.fuel.${v}`)} cols="grid-cols-3" />
 
-            {/* 신차/중고차 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                차량 상태
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={isNew}
-                    onChange={() => setIsNew(true)}
-                    className="mr-2"
-                  />
-                  신차
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={!isNew}
-                    onChange={() => setIsNew(false)}
-                    className="mr-2"
-                  />
-                  중고차
-                </label>
+              <label htmlFor="ct-cc" className="block text-sm font-medium text-body mb-2">{t('u.cc')}</label>
+              <div className="relative">
+                <input
+                  id="ct-cc" type="text" inputMode="numeric" value={f.displacement} placeholder="1999"
+                  onChange={(e) => set({ displacement: e.target.value.replace(/[^\d]/g, '').slice(0, 5) })}
+                  className="ui-field w-full px-4 py-3 pr-12 tabular-nums"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">cc</span>
               </div>
+              <p className="text-xs text-muted mt-1.5">{t('u.ccHint')}</p>
             </div>
 
-            {/* 지역 */}
+            <Choice label={t('u.usage.label')} options={['personal', 'business'] as const} value={f.usage} onChange={(usage) => set({ usage })} text={(v) => t(`u.usage.${v}`)} />
+            <Choice label={t('u.status')} options={['new', 'used'] as const} value={f.isNew ? 'new' : 'used'} onChange={(v) => set({ isNew: v === 'new' })} text={(v) => t(`u.${v}`)} />
+
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                등록 지역
-              </label>
-              <select
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-                className="w-full px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg"
-              >
-                <option value="seoul">서울특별시</option>
-                <option value="busan">부산광역시</option>
-                <option value="incheon">인천광역시</option>
-                <option value="gyeonggi">경기도</option>
-                <option value="other">기타 지역</option>
+              <label htmlFor="ct-region" className="block text-sm font-medium text-body mb-2">{t('u.region.label')}</label>
+              <select id="ct-region" value={f.region} onChange={(e) => set({ region: e.target.value as Region })} className="ui-field w-full px-4 py-3">
+                {REGIONS.map((r) => <option key={r} value={r}>{t(`u.region.${r}`)}</option>)}
               </select>
+              <p className="text-xs text-muted mt-1.5">{t('u.region.hint')}</p>
             </div>
 
-            {/* 감면 혜택 */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-fg mb-4">
-                감면 혜택 (해당사항 선택)
-              </h3>
-              
-              {/* 다자녀 가정 */}
-              <div className="mb-4">
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={isMultiChild}
-                    onChange={(e) => setIsMultiChild(e.target.checked)}
-                    className="mr-2"
-                  />
-                  다자녀 가정 혜택
-                </label>
-                {isMultiChild && (
-                  <div className="ml-6 space-y-2">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={childCount === 2}
-                        onChange={() => setChildCount(2)}
-                        className="mr-2"
-                      />
-                      2자녀 (50% 감면, 최대 70만원)
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={childCount >= 3}
-                        onChange={() => setChildCount(3)}
-                        className="mr-2"
-                      />
-                      3자녀 이상 (면제, 6인승 이하 승용은 최대 140만원)
-                    </label>
-                  </div>
-                )}
-              </div>
-
-              {/* 장애인 */}
-              <div className="mb-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={isDisabled}
-                    onChange={(e) => setIsDisabled(e.target.checked)}
-                    className="mr-2"
-                  />
-                  장애인 (취득세 면제, 승용은 2,000cc 이하)
-                </label>
-              </div>
-
-              {/* 국가유공자 */}
-              <div className="mb-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={isVeteran}
-                    onChange={(e) => setIsVeteran(e.target.checked)}
-                    className="mr-2"
-                  />
-                  국가유공자 상이 1~7급 (취득세 면제, 승용은 2,000cc 이하)
-                </label>
-              </div>
-
-              <div className="text-xs text-muted mt-2">
-                감면이 여러 개 해당하면 감면액이 가장 큰 하나만 적용됩니다 (지방세특례제한법 제180조)
-              </div>
-            </div>
+            <fieldset className="border-t border-line pt-5 space-y-3">
+              <legend className="text-sm font-semibold text-fg mb-3">{t('u.relief.title')}</legend>
+              <CheckItem label={t('u.relief.multiChild')} checked={f.isMultiChild} onChange={(v) => set({ isMultiChild: v, childCount: v && f.childCount < 2 ? 2 : f.childCount })} />
+              {f.isMultiChild && (
+                <div className="pl-6">
+                  <Choice label={t('u.relief.children')} options={[2, 3] as const} value={f.childCount >= 3 ? 3 : 2} onChange={(childCount) => set({ childCount })} text={(v) => t(`u.relief.child${v}`)} cols="grid-cols-1" />
+                </div>
+              )}
+              <CheckItem label={t('u.relief.disabled')} checked={f.isDisabled} onChange={(isDisabled) => set({ isDisabled })} />
+              <CheckItem label={t('u.relief.veteran')} checked={f.isVeteran} onChange={(isVeteran) => set({ isVeteran })} />
+              <p className="text-xs text-muted">{t('u.relief.note')}</p>
+            </fieldset>
           </div>
         </div>
 
         {/* 결과 */}
-        <div className="space-y-6">
-          {result && (
-            <>
-              {/* 주요 결과 */}
-              <div className="bg-primary rounded-2xl shadow-lg p-8 text-white" aria-live="polite">
-                <h3 className="text-xl font-bold mb-6 flex items-center">
-                  취등록세 계산 결과
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center py-2 border-b border-white/20">
-                    <span className="text-green-100">취득세 ({(result.rate * 100).toFixed(0)}%, 등록세 통합)</span>
-                    <span className="text-lg font-semibold">
-                      {formatCurrency(result.acquisitionTax)}원
-                    </span>
-                  </div>
-                  
-                  {result.railroadBond > 0 && (
-                    <div className="flex justify-between items-center py-2 border-b border-white/20">
-                      <span className="text-green-100">도시철도채권</span>
-                      <span className="text-lg font-semibold">
-                        {formatCurrency(result.railroadBond)}원
-                      </span>
-                    </div>
-                  )}
-                  
-                  {result.licenseRegistrationTax > 0 && (
-                    <div className="flex justify-between items-center py-2 border-b border-white/20">
-                      <span className="text-green-100">등록면허세</span>
-                      <span className="text-lg font-semibold">
-                        {formatCurrency(result.licenseRegistrationTax)}원
-                      </span>
-                    </div>
-                  )}
-                  
-                  <div className="flex justify-between items-center py-3 mt-4 border-t border-white/20">
-                    <span className="text-xl font-bold">총 세금</span>
-                    <span className="text-2xl font-bold text-yellow-200">
-                      {formatCurrency(result.totalTax)}원
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-green-100">차량가격 + 세금</span>
-                    <span className="text-xl font-bold">
-                      {formatCurrency(result.totalCostWithTax)}원
-                    </span>
-                  </div>
-
-                  {/* 적용된 감면 혜택 */}
-                  {result.appliedBenefits.length > 0 && (
-                    <div className="mt-4 p-3 bg-blue-500/20 rounded-lg">
-                      <h4 className="text-sm font-semibold mb-2">적용된 감면 혜택</h4>
-                      <div className="space-y-1">
-                        {result.appliedBenefits.map((benefit, index) => (
-                          <div key={index} className="text-sm text-blue-100">
-                            • {benefit}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {result.disabledBlocked && (
-                    <p className="text-sm text-white/90">장애인·국가유공자 감면은 배기량 2,000cc 이하 승용차(7~10인승 등 예외)만 받을 수 있어 반영하지 않았습니다.</p>
-                  )}
-                  <p className="text-xs text-white/80">{t('basis')}</p>
-
-                  {/* 공유/저장 버튼 */}
-                  <div className="flex space-x-2 mt-4">
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>복사됨!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>결과 공유</span>
-                        </>
-                      )}
-                    </button>
-                    
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>저장</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
+        <div className="lg:col-span-2 space-y-6">
+          {f.carPrice > 0 ? (
+            <div className="ui-card p-6 space-y-5" aria-live="polite">
+              <div>
+                <p className="text-sm text-muted">{t('u.result.label')}</p>
+                <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(total)}{t('u.won')}</p>
+                <p className="text-sm text-sub mt-1">{summary}</p>
               </div>
 
-              {/* 차량 정보 요약 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h4 className="text-lg font-bold text-fg mb-4">
-                  차량 정보 요약
-                </h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-sub">차량 가격</span>
-                    <p className="font-semibold text-fg">
-                      {formatCurrency(parseFloat(carPrice))}원
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">차종</span>
-                    <p className="font-semibold text-fg">
-                      {getCarTypeLabel(carType)}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">연료</span>
-                    <p className="font-semibold text-fg">
-                      {getFuelTypeLabel(fuelType)}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-sub">상태</span>
-                    <p className="font-semibold text-fg">
-                      {isNew ? '신차' : '중고차'}
-                    </p>
-                  </div>
-                </div>
+              <div className="divide-y divide-line border-y border-line text-sm">
+                <Row label={t('u.row.gross', { rate: Math.round(tax.rate * 100) })} value={`${won(tax.gross)}${t('u.won')}`} />
+                {tax.benefit > 0 && <Row label={t('u.row.relief', { name: benefitName })} value={`-${won(tax.benefit)}${t('u.won')}`} accent />}
+                <Row label={t('u.row.acq')} value={`${won(tax.tax)}${t('u.won')}`} strong />
+                <Row label={t('u.row.bond')} value={bondText} />
+                {license > 0 && <Row label={t('u.row.license')} value={`${won(license)}${t('u.won')}`} />}
+                <Row label={t('u.row.withPrice')} value={`${won(f.carPrice + total)}${t('u.won')}`} strong />
               </div>
 
-              {/* 환경차 혜택 안내 */}
-              {(fuelType === 'electric' || fuelType === 'hybrid') && (
-                <div className="bg-subtle border border-line rounded-2xl p-6">
-                  <div className="flex items-center mb-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
-                    <h4 className="text-lg font-semibold text-fg">
-                      환경차 세제 혜택 안내
-                    </h4>
-                  </div>
-                  <p className="text-fg">
-                    {fuelType === 'electric' ? '전기차 취득세 감면(최대 140만원, 2026.12.31 취득분까지)을 반영했습니다. 다른 감면과는 큰 것 하나만 적용됩니다.' : '하이브리드차 취득세 감면은 2024.12.31로 끝나 반영하지 않았습니다.'}
-                  </p>
-                </div>
-              )}
-            </>
-          )}
+              {tax.disabledBlocked && <p className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('u.disabledBlocked')}</p>}
+              {f.fuelType === 'hybrid' && <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('u.hybridNote')}</p>}
+              <p className="text-xs text-faint">{t('basis')}</p>
 
-          {!result && (
-            <div className="bg-subtle rounded-2xl p-8 text-center">
-              <Receipt className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-sub">
-                차량 정보를 입력하면<br />
-                취등록세 계산 결과가 표시됩니다
-              </p>
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('u.result.label'),
+                  headline: `${won(total)}${t('u.won')}`,
+                  sub: summary,
+                  rows: [
+                    { label: t('u.share.acq'), value: `${won(tax.tax)}${t('u.won')}` },
+                    { label: t('u.share.relief'), value: tax.benefit > 0 ? `-${won(tax.benefit)}${t('u.won')}` : t('u.share.none') },
+                    { label: t('u.share.bond'), value: bondText },
+                  ],
+                }}
+                text={t('u.share.text', { price: won(f.carPrice), total: won(total) })}
+                fileName="car-tax"
+              />
+              <button type="button" onClick={save} disabled={saved} className="ui-btn-soft px-4 py-2 text-sm inline-flex items-center gap-2 disabled:opacity-60">
+                {saved ? <Check className="w-4 h-4" aria-hidden /> : <Save className="w-4 h-4" aria-hidden />}
+                {t(saved ? 'u.saved' : 'u.save')}
+              </button>
             </div>
+          ) : (
+            <div className="ui-card p-6 text-center text-sub">{t('u.empty')}</div>
           )}
+
+          {f.carPrice > 0 && seasons.map((k) => {
+            const days = today ? daysBetween(today, RELIEF_END[k]) : null
+            const stake = reliefAtStake(input, k)
+            const ended = days !== null && days < 0
+            return (
+              <div key={k} className="ui-card p-6 space-y-2" role="note">
+                <div className="flex flex-wrap items-center gap-2">
+                  {days !== null && (
+                    <span className="rounded-lg bg-primary text-white px-2 py-0.5 text-xs font-bold tabular-nums">
+                      {ended ? t('u.season.endedBadge') : ddayLabel(days)}
+                    </span>
+                  )}
+                  <h2 className="font-semibold text-fg">{t(`u.season.${k}.title`)}</h2>
+                </div>
+                {stake > 0 && !ended && (
+                  <p className="text-sm text-muted">
+                    {t('u.season.stakeLabel')}
+                    <span className="block text-2xl font-bold text-primary tabular-nums mt-0.5">{won(stake)}{t('u.won')}</span>
+                  </p>
+                )}
+                <p className="text-sm text-sub">{t(`u.season.${k}.${ended ? 'ended' : stake > 0 ? 'stake' : 'noStake'}`)}</p>
+              </div>
+            )
+          })}
         </div>
       </div>
 
-
-      {/* 취등록세 가이드 */}
-      <div className="bg-subtle rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-fg mb-6">
-          취등록세 안내
-        </h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              주요 세금 종류
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• <strong>취득세</strong>: 비영업용 승용 7%(경차 4%), 승합·화물 5%, 영업용 4%, 125cc 이하 이륜 2%</li>
-              <li>• <strong>등록세</strong>: 2011년부터 취득세에 통합되어 따로 내지 않습니다</li>
-              <li>• <strong>도시철도채권</strong>: 서울시 6% (실제 부담 약 30%)</li>
-              <li>• <strong>등록면허세</strong>: 이륜차 125cc 초과 시 15,000원</li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold text-fg mb-3">
-              절세 혜택 (2026년 기준)
-            </h4>
-            <ul className="space-y-2 text-body">
-              <li>• <strong>경차</strong>: 취득세 최대 75만원 감면</li>
-              <li>• <strong>전기차</strong>: 취득세 최대 140만원 감면</li>
-              <li>• <strong>하이브리드</strong>: 2024.12.31부로 감면 종료</li>
-              <li>• <strong>다자녀</strong>: 2자녀 50%(최대 70만원), 3자녀+ 면제(최대 140만원) — 6인승 이하 승용 기준, 2027년 말까지</li>
-              <li>• <strong>장애인/국가유공자</strong>: 승용 2,000cc 이하·7~10인승 등 요건 차량 취득세 면제</li>
-            </ul>
-          </div>
+      {/* 취등록세 안내 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('u.info.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(['taxes', 'reliefs'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="font-semibold text-fg mb-3">{t(`u.info.${sec}.title`)}</h3>
+              <ul className="space-y-2 text-sm text-sub">
+                {(t.raw(`u.info.${sec}.items`) as string[][]).map(([k, v]) => (
+                  <li key={k}><span className="font-medium text-body">{k}</span> — {v}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+        <Link href="/annual-car-tax/" className="ui-btn-soft inline-block px-4 py-2 text-sm">{t('u.info.annualLink')}</Link>
       </div>
 
       <GuideSection namespace="carTax" />
+    </div>
+  )
+}
+
+function Choice<T extends string | number>({ label, options, value, onChange, text, cols = 'grid-cols-2' }: {
+  label: string; options: readonly T[]; value: T; onChange: (v: T) => void; text: (v: T) => string; cols?: string
+}) {
+  return (
+    <div role="group" aria-label={label}>
+      <p className="text-sm font-medium text-body mb-2">{label}</p>
+      <div className={`grid ${cols} gap-2`}>
+        {options.map((o) => (
+          <button
+            key={o} type="button" onClick={() => onChange(o)} aria-pressed={value === o}
+            className={`px-2 py-2 rounded-lg text-sm font-medium transition-colors ${value === o ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+          >
+            {text(o)}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function CheckItem({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[var(--primary)]" />
+      <span>{label}</span>
+    </label>
+  )
+}
+
+function Row({ label, value, strong, accent }: { label: string; value: string; strong?: boolean; accent?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-4 py-2.5">
+      <span className="text-body">{label}</span>
+      <span className={`tabular-nums text-right ${accent ? 'text-primary font-medium' : strong ? 'font-semibold text-fg' : 'text-sub'}`}>{value}</span>
     </div>
   )
 }

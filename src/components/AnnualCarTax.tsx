@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/annualCarTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import {
-  KINDS, VAN_SIZES, TRUCK_TONS, LUMP_MONTHS, LUMP_RATE, calcAnnual, calcLump, calcProrated, ageSeries, ccRate,
+  KINDS, VAN_SIZES, TRUCK_TONS, LUMP_MONTHS, LUMP_RATE, calcAnnual, calcLump, calcProrated, ageSeries, ccRate, nextLumpWindow,
   type Kind, type Use, type VanSize, type TruckTon, type CarInput,
 } from '@/utils/annualCarTax'
+import { todayKST, ddayLabel } from '@/utils/dday'
 
 const YEARS = [2026, 2027] as const
 const CC_PRESETS = [998, 1598, 1999, 2497, 3470] as const
@@ -19,7 +20,7 @@ const pick = <T,>(v: string | null, list: readonly T[], def: T, map: (s: string)
   const x = map(v)
   return list.includes(x) ? x : def
 }
-const today = () => new Date().toLocaleDateString('sv-SE') // 로컬 YYYY-MM-DD
+const noSub = () => () => {}
 
 export default function AnnualCarTax() {
   const t = useTranslations('annualCarTax')
@@ -34,12 +35,8 @@ export default function AnnualCarTax() {
   const [van, setVan] = useState<VanSize>(() => pick(sp.get('van'), VAN_SIZES, 'small'))
   const [ton, setTon] = useState<TruckTon>(() => pick(sp.get('ton'), TRUCK_TONS, 1 as TruckTon, (s) => Number(s) as TruckTon))
   const [saleDate, setSaleDate] = useState(() => sp.get('sd') ?? '')
-  const [now, setNow] = useState<{ y: number; m: number } | null>(null) // 클라이언트에서만 (하이드레이션 불일치 방지)
-  useEffect(() => {
-    const d = new Date()
-    setNow({ y: d.getFullYear(), m: d.getMonth() + 1 })
-    if (!saleDate) setSaleDate(today())
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const today = useSyncExternalStore(noSub, todayKST, () => null) // KST, 서버·하이드레이션은 null (불일치 방지)
+  const sale = saleDate || today || '' // 매도일 기본값 = 오늘
 
   useEffect(() => {
     const q = new URLSearchParams()
@@ -63,10 +60,13 @@ export default function AnnualCarTax() {
   const ageCut = r.h1.reduction > 0 || r.h2.reduction > 0
   const fullAnnual = r.base // 경감 전 연세액
   const reducedBy = fullAnnual - r.tax
-  const validDate = /^\d{4}-\d{2}-\d{2}$/.test(saleDate)
-  const before = validDate ? calcProrated(r, year, `${year}-01-01`, shiftDay(saleDate, -1)) : null
-  const after = validDate ? calcProrated(r, year, saleDate, `${year}-12-31`) : null
-  const nextLump = !now || year < now.y ? undefined : year > now.y ? 1 : LUMP_MONTHS.find((m) => m >= now.m)
+  const validDate = /^\d{4}-\d{2}-\d{2}$/.test(sale)
+  const before = validDate ? calcProrated(r, year, `${year}-01-01`, shiftDay(sale, -1)) : null
+  const after = validDate ? calcProrated(r, year, sale, `${year}-12-31`) : null
+  // 다음 연납 기간과 그때 이 차의 공제액 (기간이 내년이면 내년 차령으로 다시 계산)
+  const win = today ? nextLumpWindow(today) : null
+  const winLump = win && calcLump(win.year === year ? r : calcAnnual({ ...input, regYear: Math.min(regYear, win.year) }, win.year), win.year, win.month)
+  const [dueM, dueD] = win ? win.due.slice(5).split('-').map(Number) : [0, 0]
 
   const desc =
     kind === 'car' ? t('u.descCar', { cc: won(cc), rate: ccRate(cc, use), use: t(`u.use.${use}`) })
@@ -202,11 +202,21 @@ export default function AnnualCarTax() {
               <Row label={t('u.row.edu')} value={r.hasEdu ? `${won(r.edu)}${t('u.won')}` : t('u.row.noEdu')} strong />
             </div>
 
-            <div className="bg-primary-soft text-primary rounded-2xl p-4 text-sm">
-              <p className="font-semibold">{t('u.lumpHighlight', { year, saved: won(jan.saved), pay: won(jan.total) })}</p>
-              <p className="mt-1 text-sub">
-                {nextLump ? t('u.lumpNext', { m: nextLump, pct: lumps.find((l) => l.month === nextLump)!.pct.toFixed(2) }) : now ? t('u.lumpNextYear') : t('u.lumpWhen')}
-              </p>
+            <div className="bg-primary-soft rounded-2xl p-4 text-sm space-y-2">
+              <p className="font-semibold text-primary">{t('u.lumpHighlight', { year, saved: won(jan.saved), pay: won(jan.total) })}</p>
+              {win && winLump ? (
+                <div className="flex items-start gap-2">
+                  <span className="shrink-0 rounded-lg bg-primary text-white px-2 py-0.5 text-xs font-bold tabular-nums">{ddayLabel(win.days)}</span>
+                  <p className="text-body">
+                    {t(win.open ? 'u.window.open' : 'u.window.next', {
+                      y: win.year, m: win.month, dm: dueM, dd: dueD, saved: won(winLump.saved), pct: winLump.pct.toFixed(2),
+                    })}
+                    {dueM !== win.month && <> {t('u.window.shifted')}</>}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sub">{t('u.lumpWhen')}</p>
+              )}
             </div>
 
             <ShareResult
@@ -291,7 +301,7 @@ export default function AnnualCarTax() {
             </div>
             <div>
               <label htmlFor="act-sale" className="block text-sm font-medium text-body mb-2">{t('u.prorate.date')}</label>
-              <input id="act-sale" type="date" min={`${year}-01-01`} max={`${year}-12-31`} value={saleDate} onChange={(e) => setSaleDate(e.target.value)} className="ui-field w-full sm:w-60 px-4 py-3" />
+              <input id="act-sale" type="date" min={`${year}-01-01`} max={`${year}-12-31`} value={sale} onChange={(e) => setSaleDate(e.target.value)} className="ui-field w-full sm:w-60 px-4 py-3" />
             </div>
             {before && after && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

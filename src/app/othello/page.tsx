@@ -112,9 +112,13 @@ export default function OthelloPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="othello"
-          icon="🟢"
           name="오셀로 (리버시)"
           description="8x8 보드에서 상대 돌을 뒤집어 더 많이 차지하면 승리"
+          rules={[
+            '나는 흑(선공). 상대 돌을 내 돌 사이에 끼우는 칸에만 둘 수 있습니다.',
+            '끼운 상대 돌은 가로·세로·대각선 모두 내 색으로 뒤집힙니다.',
+            '둘 곳이 없으면 차례를 넘기고, 둘 다 못 두면 돌이 많은 쪽이 승리합니다.',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

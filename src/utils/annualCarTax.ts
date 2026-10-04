@@ -129,3 +129,26 @@ export function ageSeries(i: CarInput, year: number) {
     return { age, reduction: r.h1.reduction, total: r.total }
   })
 }
+
+const dnum = (s: string) => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d) / 86_400_000 }
+const ymd = (y: number, m: number, d: number) => new Date(Date.UTC(y, m - 1, d)).toISOString().slice(0, 10)
+
+/** 진행 중이거나 다음에 올 연납 신고납부 기간 — 제128조③ 표: 1·3·6·9월 16일~말일.
+ *  마감일이 토·일이면 다음 날로 (지방세기본법 제24조①). today = KST 'YYYY-MM-DD'.
+ *  days = 기간 중이면 마감까지, 아니면 시작까지 남은 일수.
+ *  ponytail: 공휴일 연장은 미반영 (1·3·6·9월 말일이 공휴일인 해는 드묾) */
+export function nextLumpWindow(today: string) {
+  const y = Number(today.slice(0, 4))
+  for (const year of [y, y + 1]) {
+    for (const month of LUMP_MONTHS) {
+      const last = new Date(Date.UTC(year, month, 0)).getUTCDate()
+      const wd = new Date(Date.UTC(year, month - 1, last)).getUTCDay()
+      const start = ymd(year, month, 16)
+      const due = ymd(year, month, last + (wd === 6 ? 2 : wd === 0 ? 1 : 0))
+      if (today > due) continue
+      const open = today >= start
+      return { year, month, start, due, open, days: dnum(open ? due : start) - dnum(today) }
+    }
+  }
+  throw new Error(`bad date ${today}`)
+}

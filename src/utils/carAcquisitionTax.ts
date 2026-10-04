@@ -44,7 +44,8 @@ export function carAcqRate(i: CarAcqInput): number {
   return isPassenger(i) ? 0.07 : 0.05
 }
 
-export function carAcqTax(i: CarAcqInput) {
+/** drop = 그 감면이 없다고 보고 계산 (종료 시 영향 비교용) */
+export function carAcqTax(i: CarAcqInput, drop?: Benefit) {
   const price = Math.max(0, i.price)
   const rate = carAcqRate(i)
   const gross = floor10(price * rate)
@@ -65,10 +66,16 @@ export function carAcqTax(i: CarAcqInput) {
   const disabledOk = !(i.carType === 'passenger' && i.displacement > 2000)
   if (i.disabled && disabledOk) cands.push({ key: 'disabled', amount: gross })
 
-  const best = cands.reduce<{ key: Benefit; amount: number } | null>((a, b) => (!a || b.amount > a.amount ? b : a), null)
+  const best = cands.filter((c) => c.key !== drop).reduce<{ key: Benefit; amount: number } | null>((a, b) => (!a || b.amount > a.amount ? b : a), null)
   const benefit = best?.amount ?? 0
   return { rate, gross, benefit, benefitKey: best?.key ?? null, tax: gross - benefit, disabledBlocked: i.disabled && !disabledOk }
 }
+
+/** 감면 일몰일(취득일 기준): 전기차 지특법 제66조④, 경차 제67조① */
+export const RELIEF_END = { electric: '2026-12-31', compact: '2027-12-31' } as const
+
+/** 그 감면이 끝나면 늘어나는 취득세 (다른 감면이 대신 적용되면 그만큼 덜 늘어남, 제180조) */
+export const reliefAtStake = (i: CarAcqInput, key: keyof typeof RELIEF_END) => carAcqTax(i, key).tax - carAcqTax(i).tax
 
 /** 도시철도·지역개발채권: 비영업용 승용 1,600cc 미만은 2023.3부터 매입 면제(행정안전부) */
 export function bondExempt(i: CarAcqInput): boolean {

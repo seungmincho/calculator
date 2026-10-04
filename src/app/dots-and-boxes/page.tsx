@@ -80,9 +80,13 @@ export default function DotsAndBoxesPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="dotsandboxes"
-          icon="📦"
           name="도트앤박스 (점과 상자)"
           description="점을 연결해 더 많은 상자를 완성하면 승리"
+          rules={[
+            '번갈아 이웃한 두 점 사이에 선을 하나씩 긋습니다.',
+            '상자의 네 번째 변을 그으면 그 상자를 가져가고 한 번 더 둡니다.',
+            '상자를 더 많이 가져간 쪽이 승리합니다.',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

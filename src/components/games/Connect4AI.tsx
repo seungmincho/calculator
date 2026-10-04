@@ -5,7 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/connect4'
 import '@/lib/i18n/ns/gameHub'
 import '@/lib/i18n/ns/gameSounds'
-import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, Undo2 } from 'lucide-react'
+import { ArrowLeft, Trophy, RefreshCw, TrendingUp, HelpCircle, BarChart3, Undo2 } from 'lucide-react'
 import GameConfetti from '@/components/GameConfetti'
 import GameResultShare from '@/components/GameResultShare'
 import Connect4BoardComponent, {
@@ -23,9 +23,13 @@ import GameAchievements, { AchievementToast } from '@/components/GameAchievement
 interface Connect4AIProps {
   difficulty: Difficulty
   onBack: () => void
+  /** BoardGamePage 전용 (게임 센터에서는 생략): 판 종료 알림 · 난이도 올리기 · 뒤로 버튼 문구 */
+  onResult?: (result: 'win' | 'loss' | 'draw') => void
+  onLevelUp?: () => void
+  backLabel?: string
 }
 
-export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
+export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, backLabel }: Connect4AIProps) {
   const t = useTranslations('connect4')
   const tHub = useTranslations('gameHub')
   const tSounds = useTranslations('gameSounds')
@@ -100,8 +104,9 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         })
         playLose()
       }
+      onResult?.(gameState.winner === 'draw' ? 'draw' : gameState.winner === playerColor ? 'win' : 'loss')
     }
-  }, [gameState.winner, gameState.moveHistory.length, playerColor, difficulty, recordResult, recordGameResult, playWin, playLose, playDraw])
+  }, [gameState.winner, gameState.moveHistory.length, playerColor, difficulty, recordResult, recordGameResult, playWin, playLose, playDraw, onResult])
 
   // Player move
   const handleMove = useCallback((col: number) => {
@@ -164,10 +169,10 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 min-h-11 text-sub hover:text-fg hover:bg-soft rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
-          {tHub('backToHub')}
+          {backLabel ?? tHub('backToHub')}
         </button>
         <div className="flex items-center gap-2 text-sm text-muted">
           <span>{tHub('vsComputer')}</span>
@@ -176,8 +181,9 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           </span>
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 text-muted hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="min-w-11 min-h-11 p-2 text-muted hover:bg-soft rounded-lg"
             title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+            aria-label={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
           >
             {soundEnabled ? '🔊' : '🔇'}
           </button>
@@ -253,7 +259,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           gameState.winner === playerColor
             ? 'bg-primary text-white'
             : gameState.winner === 'draw'
-            ? 'bg-primary hover:bg-blue-700 text-white'
+            ? 'bg-primary-soft text-primary'
             : 'bg-track text-body'
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
@@ -262,6 +268,41 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         </div>
       )}
       <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
+
+      {/* Game End Buttons */}
+      {gameState.winner && (
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={handleRestart}
+            className="ui-btn w-full min-h-12 py-3 px-6 text-lg"
+          >
+            <RefreshCw className="w-5 h-5" />
+            {t('playAgain')}
+          </button>
+          {onLevelUp && difficulty !== 'hard' && (
+            <button
+              onClick={onLevelUp}
+              className="ui-btn-soft flex-1 min-h-12 py-3 px-6"
+            >
+              <TrendingUp className="w-5 h-5" />
+              {tHub('levelUp')} · {getDifficultyLabel(difficulty === 'easy' ? 'normal' : 'hard')}
+            </button>
+          )}
+          <GameResultShare
+            gameName={t('title') || '사목'}
+            result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            moves={gameState.moveHistory.length}
+            url={`https://toolhub.ai.kr/connect4/?d=${difficulty}`}
+          />
+          <button
+            onClick={onBack}
+            className="flex-1 min-h-12 py-3 px-6 bg-soft hover:bg-subtle text-body font-medium rounded-xl"
+          >
+            {backLabel ?? tHub('backToHub')}
+          </button>
+        </div>
+      )}
 
       {/* Game Board */}
       <div className="bg-surface rounded-2xl shadow-lg p-4">
@@ -283,7 +324,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
           {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
             <button
               onClick={handleUndo}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-800/40 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm min-h-11 bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
             >
               <Undo2 className="w-4 h-4" />
               {tSounds('undo')}
@@ -292,53 +333,28 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         </div>
       </div>
 
-      {/* Game End Buttons */}
-      {gameState.winner && (
-        <div className="flex gap-3 flex-wrap">
-          <button
-            onClick={handleRestart}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl"
-          >
-            <RefreshCw className="w-5 h-5" />
-            {t('playAgain')}
-          </button>
-          <GameResultShare
-            gameName={t('title') || '사목'}
-            result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
-            difficulty={getDifficultyLabel(difficulty) || difficulty}
-            moves={gameState.moveHistory.length}
-            url="https://toolhub.ai.kr/connect4"
-          />
-          <button
-            onClick={onBack}
-            className="py-3 px-6 bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body font-medium rounded-xl"
-          >
-            {tHub('backToHub')}
-          </button>
-        </div>
-      )}
-
       {/* Stats */}
       <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowStats(!showStats)}
+          aria-expanded={showStats}
           className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
             {tHub('myStats') || 'My Stats'}
           </span>
-          <span>{showStats ? '−' : '+'}</span>
+          <span aria-hidden>{showStats ? '−' : '+'}</span>
         </button>
         {showStats && stats && (
           <div className="mt-4">
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-subtle rounded-xl">
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalWins}</p>
+                <p className="text-2xl font-bold text-primary tabular-nums">{stats.totalWins}</p>
                 <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
               </div>
-              <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-xl">
-                <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div className="p-3 bg-subtle rounded-xl">
+                <p className="text-2xl font-bold text-fg tabular-nums">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
                 <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
@@ -350,16 +366,16 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
             </div>
             <div className="mt-4 space-y-2 text-sm">
               <div className="flex justify-between text-sub">
-                <span>🟢 {tHub('easy')}</span>
-                <span>{stats.easy.wins}W / {stats.easy.losses}L / {stats.easy.draws}D</span>
+                <span>{tHub('easy')}</span>
+                <span>{stats.easy.wins}{tHub('wins')} {stats.easy.losses}{tHub('losses')} {stats.easy.draws}{tHub('draws')}</span>
               </div>
               <div className="flex justify-between text-sub">
-                <span>🟡 {tHub('normal')}</span>
-                <span>{stats.normal.wins}W / {stats.normal.losses}L / {stats.normal.draws}D</span>
+                <span>{tHub('normal')}</span>
+                <span>{stats.normal.wins}{tHub('wins')} {stats.normal.losses}{tHub('losses')} {stats.normal.draws}{tHub('draws')}</span>
               </div>
               <div className="flex justify-between text-sub">
-                <span>🔴 {tHub('hard')}</span>
-                <span>{stats.hard.wins}W / {stats.hard.losses}L / {stats.hard.draws}D</span>
+                <span>{tHub('hard')}</span>
+                <span>{stats.hard.wins}{tHub('wins')} {stats.hard.losses}{tHub('losses')} {stats.hard.draws}{tHub('draws')}</span>
               </div>
             </div>
           </div>
@@ -376,13 +392,14 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       <div className="bg-surface rounded-2xl shadow-lg p-6">
         <button
           onClick={() => setShowRules(!showRules)}
+          aria-expanded={showRules}
           className="w-full flex items-center justify-between text-lg font-semibold text-fg"
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
             {t('howToPlay') || 'How to Play'}
           </span>
-          <span>{showRules ? '−' : '+'}</span>
+          <span aria-hidden>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
           <div className="mt-4 text-sub space-y-2">

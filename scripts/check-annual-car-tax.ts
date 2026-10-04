@@ -1,5 +1,5 @@
 // 자동차세 회귀 체크: node scripts/check-annual-car-tax.ts
-import { calcAnnual, calcLump, calcProrated, carAge, ageReduction, ageSeries, type CarInput } from '../src/utils/annualCarTax.ts'
+import { calcAnnual, calcLump, calcProrated, carAge, ageReduction, ageSeries, nextLumpWindow, type CarInput } from '../src/utils/annualCarTax.ts'
 
 let fail = 0
 const eq = (name: string, got: unknown, want: unknown) => {
@@ -61,6 +61,17 @@ eq('pr reversed', calcProrated(ev, Y, '2026-06-01', '2026-05-01').days, 0)
 // 차령 추이: 1년차·2년차 경감 0, 12년차 50%, 13년차도 50%
 const s = ageSeries(base, Y)
 eq('series len', s.length, 13); eq('series 1', s[0].reduction, 0); eq('series 12', s[11].reduction, 0.5); eq('series 13', s[12].reduction, 0.5)
+
+// 연납 기간 (제128조③ 1·3·6·9월 16일~말일, 마감이 토·일이면 다음 날 — 지방세기본법 제24조①)
+const w = (today: string) => { const x = nextLumpWindow(today); return `${x.year}-${x.month} ${x.start}~${x.due} ${x.open ? 'open' : 'wait'} ${x.days}` }
+eq('win 10/4', w('2026-10-04'), '2027-1 2027-01-16~2027-02-01 wait 104') // 2027-01-31 일요일
+eq('win 1/5', w('2026-01-05'), '2026-1 2026-01-16~2026-02-02 wait 11') // 2026-01-31 토요일
+eq('win 1/20', w('2026-01-20'), '2026-1 2026-01-16~2026-02-02 open 13')
+eq('win 2/2 last day', w('2026-02-02'), '2026-1 2026-01-16~2026-02-02 open 0')
+eq('win 2/3', w('2026-02-03'), '2026-3 2026-03-16~2026-03-31 wait 41')
+eq('win 6/30', w('2026-06-30'), '2026-6 2026-06-16~2026-06-30 open 0')
+eq('win 9/16', w('2026-09-16'), '2026-9 2026-09-16~2026-09-30 open 14')
+eq('win 12/31', w('2026-12-31'), '2027-1 2027-01-16~2027-02-01 wait 16')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('annual-car-tax: all ok')

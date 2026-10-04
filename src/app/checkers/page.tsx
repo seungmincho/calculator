@@ -80,9 +80,13 @@ export default function CheckersPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="checkers"
-          icon="🏁"
           name="체커 (서양 장기)"
           description="8x8 보드에서 상대 말을 모두 잡거나 움직이지 못하게 하면 승리"
+          rules={[
+            '말은 대각선 앞으로 움직이고, 상대 말을 뛰어넘어 잡습니다. 잡을 수 있으면 꼭 잡아야 합니다.',
+            '반대편 끝줄에 닿은 말은 킹이 되어 뒤로도 움직입니다.',
+            '상대 말을 모두 잡거나 움직이지 못하게 하면 승리합니다.',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

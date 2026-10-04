@@ -88,9 +88,13 @@ export default function BattleshipPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="battleship"
-          icon="🚢"
           name="배틀십 (해전)"
           description="함선을 배치하고 상대 함선을 먼저 모두 침몰시키면 승리"
+          rules={[
+            '10×10 바다에 함선 5척을 가로나 세로로 배치합니다(무작위 배치 가능).',
+            '번갈아 적 바다의 칸을 골라 포격하고, 함선의 모든 칸을 맞히면 격침됩니다.',
+            '적 함선 5척을 먼저 모두 격침시키면 승리합니다.',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

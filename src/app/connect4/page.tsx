@@ -87,9 +87,13 @@ export default function Connect4Page() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="connect4"
-          icon="🔴"
           name="커넥트4 (사목)"
           description="7x6 보드에서 같은 색 디스크 4개를 먼저 연결하면 승리"
+          rules={[
+            '열을 고르면 디스크가 그 열의 맨 아래 빈칸으로 떨어집니다.',
+            '가로·세로·대각선으로 4개를 먼저 이으면 승리합니다.',
+            '판이 다 찰 때까지 승자가 없으면 무승부입니다.',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

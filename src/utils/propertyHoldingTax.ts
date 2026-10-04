@@ -15,6 +15,17 @@
 //  - 세부담 상한: (재산세 + 종부세)가 직전연도 총세액상당액의 150% 초과분은 종부세에서 뺌 (개인 공통)
 //  - 농어촌특별세 = 종부세 × 20%
 // 끝수: 지방세 10원 미만, 국세 1원 미만 버림.
+// 일정 (2026-10-04 확인)
+//  - 종부세법 제16조①: 12월 1~15일 부과·징수. 제20조·시행령 제16조: 분납 = 납부기한이 지난 날부터 6개월 이내(신청은 납부기한까지)
+//  - 제20조의2: 1세대1주택 고령자·장기보유자 납부유예 신청 = 납부기한 만료 3일 전까지
+//  - 제8조③④·제10조의2: 합산배제·1세대1주택 특례·공동명의 특례 신청 9월 16~30일
+//  - 국세기본법 제5조: 기한이 토·일·공휴일(근로자의 날 포함)이면 다음 날
+//  - 일시적 2주택 처분기한: 종부세 시행령 제4조의2 3년, 2026.10.1 개정으로 종전·신규 모두 조정대상지역 + 신규 2026.8.4 이후 취득 → 2년
+//    (2027년 6월 1일 과세기준일분부터, 2026.8.3까지 계약·계약금 지급분은 3년 — 재정경제부 2026-09-29 국무회의 의결)
+
+import { getKoreanHolidays } from './koreanHolidays.ts'
+import { addDays, addMonths, addYears, addBusinessDays } from './dday.ts'
+import { tempPeriod } from './capitalGainsTax.ts'
 
 const EOK = 100_000_000
 type Bracket = [upTo: number, rate: number]
@@ -186,4 +197,68 @@ export function holdingTax(i: HoldingInput): Holding {
     total: property.total + jb.total,
     schedule: { july, september: property.total - july, december: jb.total, split: splitAmount(jb.tax) },
   }
+}
+
+// ── 일정 ('YYYY-MM-DD' 문자열, 날짜 계산은 dday.ts) ──
+export const TAX_YEAR = 2026
+/** 국세기본법 제5조: 기한이 토·일·공휴일이면 그다음 영업일 (= 전날부터 영업일 1일 뒤) */
+export const nextBusinessDay = (s: string) => addBusinessDays(addDays(s, -1), 1, getKoreanHolidays)
+
+export interface JongbuDates { due: string; deferral: string; split: string; specialFrom: string; specialTo: string }
+/** year 귀속 종부세 일정. ponytail: 분납 기한은 법정 12/15 기준 (납부기한이 밀린 해의 하루 차이는 무시) */
+export function jongbuDates(year = TAX_YEAR): JongbuDates {
+  const due = nextBusinessDay(`${year}-12-15`)
+  return {
+    due,
+    deferral: nextBusinessDay(addDays(due, -3)),
+    split: nextBusinessDay(addMonths(`${year}-12-15`, 6)),
+    specialFrom: `${year}-09-16`,
+    specialTo: nextBusinessDay(`${year}-09-30`),
+  }
+}
+
+// ── 일시적 2주택 처분기한 (신규 주택 취득일부터 N년 되는 날까지) ──
+export type TempTax = 'jongbu' | 'capitalGains' | 'acquisition'
+export interface TempDeadline { tax: TempTax; years: number; date: string; verified: boolean }
+export function tempDeadlines(newAcq: string, bothAdjusted: boolean): TempDeadline[] {
+  const row = (tax: TempTax, years: number, verified = true) => ({ tax, years, date: addYears(newAcq, years), verified })
+  return [
+    row('jongbu', bothAdjusted && newAcq >= '2026-08-04' ? 2 : 3),
+    // 양도세는 capitalGainsTax.ts가 단일 출처 (양도일은 앞으로 = 2026.10.1 이후로 봄)
+    row('capitalGains', tempPeriod({ adjusted: bothAdjusted, newAdjusted: bothAdjusted, newAcqDate: newAcq, saleDate: '9999-12-31' })),
+    // 지방세법 시행령 제28조의5 개정(행안부 2026 지방세제 개편: 2026.10.1 이후 취득분, 8.26까지 계약분 3년) — 공포 원문 미확인 → 참고
+    row('acquisition', bothAdjusted && newAcq >= '2026-10-01' ? 2 : 3, false),
+  ]
+}
+
+// ── 고지서 대조 (새 세금 계산 없음: 고지서 금액 − 이 계산기 추정) ──
+export interface Bill { jongbu: number; nong: number; total: number; july: number; september: number }
+export type BillKey = 'jongbu' | 'nong' | 'total' | 'property'
+export interface BillRow { key: BillKey; bill: number; est: number; diff: number }
+export type BillReason = 'price' | 'cap' | 'exclude' | 'joint' | 'oneHouse' | 'credit' | 'propDeduct' | 'land' | 'propCap' | 'propExtra'
+/** 끝수 처리 차이로 보는 범위 */
+export const BILL_TOLERANCE = 1_000
+
+export function compareBill(b: Bill, h: Holding): { rows: BillRow[]; reasons: BillReason[] } {
+  const prop = b.july + b.september
+  const rows = ([
+    ['jongbu', b.jongbu, h.jongbu.tax], ['nong', b.nong, h.jongbu.nong], ['total', b.total, h.jongbu.total], ['property', prop, h.property.total],
+  ] as const).filter(([, bill]) => bill > 0).map(([key, bill, est]) => ({ key, bill, est, diff: bill - est }))
+  const jb = rows.filter((r) => r.key !== 'property')
+  const over = jb.some((r) => r.diff > BILL_TOLERANCE)
+  const under = jb.some((r) => r.diff < -BILL_TOLERANCE)
+  const p = rows.find((r) => r.key === 'property')
+  const reasons: BillReason[] = []
+  const add = (on: boolean, k: BillReason) => { if (on) reasons.push(k) }
+  add(over || under || Math.abs(p?.diff ?? 0) > BILL_TOLERANCE, 'price')
+  add(under && h.jongbu.capCut === 0, 'cap')
+  add(under && h.houses.length > 1, 'exclude')
+  add((over || under) && h.mode !== 'single', 'joint')
+  add((over && h.oneHouse) || (under && !h.oneHouse && h.houses.length === 1), 'oneHouse')
+  add((over || under) && h.oneHouse, 'credit')
+  add(over, 'propDeduct')
+  add(over, 'land')
+  add(!!p && p.diff < -BILL_TOLERANCE, 'propCap')
+  add(!!p && p.diff > BILL_TOLERANCE, 'propExtra')
+  return { rows, reasons }
 }

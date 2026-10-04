@@ -2426,6 +2426,9 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "dailyWageTax": "Daily Worker Tax Calculator",
+      "rentalYield": "Rental Yield Calculator",
+      "oneRepMax": "1RM Calculator",
       "minimumWage": "Minimum Wage Calculator",
       "customsDuty": "Overseas Purchase Duty Calculator",
       "kimjangCalculator": "Kimjang (Kimchi-Making) Calculator",
@@ -3495,6 +3498,188 @@
     }
   },
   "carTax": {
+    "u": {
+      "won": " KRW",
+      "price": "Car price",
+      "priceHint": "For a new car, enter the quote price excluding VAT (supply value) — acquisition tax is levied on the price without VAT (Enforcement Decree of the Local Tax Act, Art. 18②). For a used car, enter the actual price (or the standard value if higher).",
+      "presets": {
+        "label": "Examples",
+        "items": [
+          "Light car 14M",
+          "Compact 1.6 gasoline 25M",
+          "Midsize 2.0 gasoline 32M",
+          "Midsize 1.6 hybrid 38M",
+          "Full-size 2.5 gasoline 45M",
+          "Electric SUV 50M"
+        ],
+        "note": "Sample price ranges (excl. VAT), displacement and body type only. Not the price of any specific model."
+      },
+      "carType": {
+        "label": "Vehicle type",
+        "passenger": "Passenger",
+        "compact": "Light car",
+        "van": "Van",
+        "truck": "Truck",
+        "motorcycle": "Motorcycle"
+      },
+      "vanSeats": {
+        "label": "Van seats",
+        "small": "7–10 seats",
+        "large": "11+ seats"
+      },
+      "motoSize": {
+        "label": "Motorcycle displacement",
+        "small": "125cc or less",
+        "large": "Over 125cc"
+      },
+      "fuel": {
+        "label": "Fuel",
+        "gasoline": "Gasoline",
+        "diesel": "Diesel",
+        "lpg": "LPG",
+        "hybrid": "Hybrid",
+        "electric": "Electric"
+      },
+      "cc": "Displacement",
+      "ccHint": "Non-commercial passenger cars under 1,600cc are exempt from the urban railway bond. The disability/veteran exemption for passenger cars requires 2,000cc or less.",
+      "usage": {
+        "label": "Use",
+        "personal": "Non-commercial",
+        "business": "Commercial"
+      },
+      "status": "Condition",
+      "new": "New",
+      "used": "Used",
+      "region": {
+        "label": "Registration region",
+        "seoul": "Seoul",
+        "busan": "Busan",
+        "incheon": "Incheon",
+        "gyeonggi": "Gyeonggi",
+        "other": "Other",
+        "hint": "Only the Seoul urban railway bond is included, as an estimate. For regional development bonds elsewhere, check the local ordinance."
+      },
+      "relief": {
+        "title": "Reliefs (check if eligible)",
+        "multiChild": "Multi-child household (2+ children under 18)",
+        "children": "Number of children",
+        "child2": "2 · 50% off (up to 700,000 KRW for cars with 6 seats or fewer)",
+        "child3": "3 or more · exempt (up to 1.4M KRW for cars with 6 seats or fewer)",
+        "disabled": "Person with disability (exempt; passenger cars 2,000cc or less)",
+        "veteran": "Wounded veteran, grades 1–7 (exempt; passenger cars 2,000cc or less)",
+        "note": "If several reliefs apply, only the largest one is used (Restriction of Special Local Taxation Act, Art. 180)."
+      },
+      "result": {
+        "label": "Total registration cost"
+      },
+      "row": {
+        "gross": "Acquisition tax before relief ({rate}%)",
+        "relief": "Relief · {name}",
+        "acq": "Acquisition tax due",
+        "bond": "Urban railway bond (buy-and-sell cost)",
+        "bondNone": {
+          "moto": "Not applicable",
+          "region": "Not included outside Seoul",
+          "exempt": "Exempt"
+        },
+        "license": "Registration license tax",
+        "withPrice": "Car price + registration cost"
+      },
+      "benefit": {
+        "compact": "Light car relief (up to 750,000 KRW)",
+        "electric": "EV relief (up to 1.4M KRW)",
+        "child2": "2-child relief (50%)",
+        "child3": "3+ children relief",
+        "disabled": "Disability exemption",
+        "veteran": "Veteran exemption"
+      },
+      "disabledBlocked": "The disability/veteran exemption only covers passenger cars of 2,000cc or less (with exceptions such as 7–10 seaters), so it was not applied.",
+      "hybridNote": "The hybrid acquisition tax relief ended on December 31, 2024, so it is not applied.",
+      "share": {
+        "acq": "Acquisition tax",
+        "relief": "Relief",
+        "bond": "Bond",
+        "none": "None",
+        "text": "Car price {price} KRW, total registration cost {total} KRW"
+      },
+      "save": "Save calculation",
+      "saved": "Saved",
+      "empty": "Enter the car price to see the acquisition tax and bond cost.",
+      "history": {
+        "total": "Total tax: {amount} KRW",
+        "none": "No result"
+      },
+      "season": {
+        "endedBadge": "Ended",
+        "stakeLabel": "Relief for this car",
+        "electric": {
+          "title": "EV acquisition tax relief: acquisitions through Dec 31, 2026",
+          "stake": "Under current law (Restriction of Special Local Taxation Act, Art. 66④) the relief covers acquisitions this year only. Unless it is extended, acquiring in 2027 would cost this much more, so check your delivery and registration dates.",
+          "noStake": "Another relief (multi-child, disability, etc.) is larger, so the end of the EV relief does not raise the tax for this car.",
+          "ended": "The EV relief deadline (Dec 31, 2026) has passed. The result above still includes it, so check whether the law was extended."
+        },
+        "compact": {
+          "title": "Light car relief: acquisitions through Dec 31, 2027",
+          "stake": "Non-commercial light cars get up to 750,000 KRW off the acquisition tax (Art. 67①). Check for an extension for acquisitions from 2028.",
+          "noStake": "Another relief is larger, so the light car relief was not applied.",
+          "ended": "The light car relief deadline (Dec 31, 2027) has passed. The result above still includes it, so check whether the law was extended."
+        }
+      },
+      "info": {
+        "title": "About car registration taxes",
+        "taxes": {
+          "title": "Taxes you pay",
+          "items": [
+            [
+              "Acquisition tax",
+              "Non-commercial passenger 7% (light car 4%), van/truck 5%, commercial 4%, motorcycle 125cc or less 2% (Local Tax Act, Art. 12)"
+            ],
+            [
+              "Registration tax",
+              "Merged into the acquisition tax in 2011; not charged separately"
+            ],
+            [
+              "Local education tax",
+              "Not added to vehicle acquisition tax (Local Tax Act, Art. 150)"
+            ],
+            [
+              "Urban railway bond",
+              "When registering in Seoul you buy and immediately sell it, paying only the discount. Estimated here as price × 6% × 30%"
+            ],
+            [
+              "Registration license tax",
+              "15,000 KRW for motorcycles over 125cc"
+            ]
+          ]
+        },
+        "reliefs": {
+          "title": "Reliefs (as of October 2026)",
+          "items": [
+            [
+              "Electric vehicles",
+              "Up to 1.4M KRW, acquisitions through Dec 31, 2026 (Art. 66④)"
+            ],
+            [
+              "Light cars",
+              "Non-commercial passenger, up to 750,000 KRW, through Dec 31, 2027 (Art. 67①)"
+            ],
+            [
+              "Hybrids",
+              "Relief ended Dec 31, 2024"
+            ],
+            [
+              "Multi-child",
+              "2 children 50% (up to 700,000 KRW for 6 seats or fewer), 3+ exempt (up to 1.4M KRW), through 2027 (Art. 22-2)"
+            ],
+            [
+              "Disability / veterans",
+              "Exempt for qualifying vehicles such as passenger cars of 2,000cc or less or 7–10 seaters (Art. 17, 29)"
+            ]
+          ]
+        },
+        "annualLink": "Calculate the yearly car tax and January prepayment discount"
+      }
+    },
     "basis": "Based on the Local Tax Act Art. 12 and the Special Local Taxation Act (compact, EV, multi-child, disability reliefs) as of October 2026. Bond cost is an estimate.",
     "title": "Car Acquisition & Registration Tax Calculator",
     "description": "Calculate various taxes accurately when purchasing a car",
@@ -4927,6 +5112,7 @@
     "peerIdLabel": "Peer ID"
   },
   "gameHub": {
+    "levelUp": "Level up",
     "title": "Game Center",
     "description": "Enjoy various 1v1 games! Play online multiplayer or against the computer.",
     "selectGame": "Select Game",
@@ -5055,6 +5241,11 @@
     "closePanel": "✕ Close"
   },
   "boardGamePage": {
+    "backToModes": "Choose mode",
+    "myRecord": "My record",
+    "recordSummary": "{wins}W {losses}L {draws}D",
+    "winStreak": "{count}-game win streak",
+    "quickRules": "Quick rules",
     "selectPlayMode": "Select Play Mode",
     "vsComputer": "VS Computer",
     "vsComputerDesc": "Single player vs AI · No internet needed",
@@ -6714,6 +6905,18 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "dailyWageTax": {
+        "title": "Daily Worker Tax Calculator",
+        "description": "Withholding tax and take-home pay from a daily wage"
+      },
+      "rentalYield": {
+        "title": "Rental Yield Calculator",
+        "description": "Annual yield and monthly cash flow from price, deposit, rent and loan"
+      },
+      "oneRepMax": {
+        "title": "1RM Calculator",
+        "description": "Estimate your one-rep max and training weights from weight and reps"
+      },
       "minimumWage": {
         "title": "Minimum Wage Calculator",
         "description": "Convert the 2026–2027 minimum hourly wage to monthly/annual pay and check your wage"
@@ -38692,6 +38895,95 @@
   },
   "comprehensivePropertyTax": {
     "u": {
+      "view": {
+        "label": "View",
+        "calc": "Estimate",
+        "bill": "Check my bill"
+      },
+      "bill": {
+        "title": "Compare with your tax bill",
+        "desc": "Enter the amounts printed on your bill to see how far they are from this estimate and why they may differ. The closer your home, age and holding inputs match the bill, the more accurate the comparison.",
+        "jongbu": "Comprehensive real estate tax",
+        "nong": "Special tax for rural development",
+        "total": "Total due",
+        "july": "Property tax paid in July",
+        "september": "Property tax paid in September",
+        "where": "Find the comprehensive tax on your mailed or mobile bill or Hometax, and property tax in your Wetax payment history. Leave unknown fields blank.",
+        "empty": "Enter at least one amount from your bill to see the comparison.",
+        "more": "Your bill is KRW {amount} higher than the estimate",
+        "less": "Your bill is KRW {amount} lower than the estimate",
+        "match": "Your bill and the estimate are almost the same (within KRW 1,000)",
+        "same": "Same",
+        "col": {
+          "bill": "Bill",
+          "est": "Estimate",
+          "diff": "Difference"
+        },
+        "row": {
+          "jongbu": "Comprehensive tax",
+          "nong": "Rural special tax",
+          "total": "Total",
+          "property": "Property tax (Jul + Sep)"
+        },
+        "whyTitle": "Common reasons for a difference",
+        "why": {
+          "price": "Assessed price: the bill uses this year's price as of January 1. If you entered last year's price, or the price was corrected after an objection, the amount changes. Check it on Realty Price.",
+          "cap": "Tax burden cap: any amount above 150% of last year's property tax plus comprehensive tax is removed. Enter last year's billed total in the 'last year's holding tax' field to apply it.",
+          "exclude": "Exclusions and special rules: homes excluded as registered rentals, or covered by the temporary two-home, inherited-home or low-priced regional home rules, drop out of the home count and price total. Try entering without them.",
+          "joint": "Joint ownership: spouses each get their own bill. The estimate is the couple's combined amount, so add both bills to compare. If you applied for the one-home special rule, only one spouse is billed.",
+          "oneHouse": "One-home household test: if anyone in the household (spouse, family living with you) owns another home, the KRW 1.2B deduction and credits do not apply. If a special rule was approved, you are taxed as a one-home household. Match the checkbox to your bill.",
+          "credit": "Age and holding-period credits: age is counted as of June 1, and the holding period from acquisition to June 1. Being one bracket off changes the credit a lot.",
+          "propDeduct": "Property tax deduction: the property tax subtracted from the comprehensive tax is the amount actually levied. If your property tax came out lower than the estimate, less is subtracted and the comprehensive tax rises.",
+          "land": "Land and other items: if the bill total includes the land portion of the comprehensive tax, or you own homes not entered here, the bill will be higher.",
+          "propCap": "Property tax base cap: a home's property tax base cannot rise more than a set rate (up to 5%) over last year, so it can come out lower than the estimate (Local Tax Act Art. 110). Also check local reductions.",
+          "propExtra": "Property tax bill items: July and September bills can include taxes this calculator leaves out, such as the regional resource facility tax on buildings or property tax on land."
+        },
+        "note": "If the bill's facts (number of homes, household, assessed price) look wrong, check with Hometax or your tax office first. This comparison only shows the gap from an estimate with the same inputs; it does not mean your bill is wrong."
+      },
+      "dates": {
+        "dow": [
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat"
+        ],
+        "ymd": "{w}, {m}/{d}/{y}",
+        "due": "Comprehensive tax due {date}",
+        "dday": "D-{n}",
+        "dday0": "Due today",
+        "passed": "Past due date",
+        "notice": "Bills arrive by mail or mobile in late November (in 2025, sent from November 24). Payment runs December 1-15.",
+        "split": "Installments: if the comprehensive tax exceeds KRW 2.5M (KRW 3M including the rural special tax), apply on Hometax or at the tax office by the due date to pay part of it by {date} with no interest.",
+        "deferral": "Deferral: a one-home household aged 60+ or holding 5+ years, with prior-year salary of KRW 70M or less (comprehensive income KRW 60M or less) and a comprehensive tax over KRW 1M, can apply by {date} to defer payment until the home is sold or passed on. Collateral is required and interest-equivalent charges apply when paid.",
+        "special": "Applications for rental exclusions, one-home special rules (temporary two homes, inherited or low-priced regional homes) and the joint-ownership special rule: {from} - {to}",
+        "specialNow": "The application window for exclusions and special rules is open now: {from} - {to} (Hometax or tax office)",
+        "specialPassed": "This year's application window for exclusions and special rules ({from} - {to}) has closed. The next one is {nextFrom} - {nextTo}. If you missed it, ask your tax office whether a December return or a correction claim can reflect it.",
+        "holidayNote": "If a deadline falls on a weekend or public holiday, it moves to the next business day (Framework Act on National Taxes Art. 5)."
+      },
+      "temp": {
+        "title": "Temporary two-home sale deadlines",
+        "desc": "If you bought a new home before selling the old one, each tax gives a different deadline to sell the old home. Enter the new home's acquisition date (the earlier of final payment or registration).",
+        "date": "New home acquisition date",
+        "adjusted": "Both homes were in regulated areas when the new one was acquired",
+        "adjustedHint": "If either home is outside a regulated area, the deadline is 3 years.",
+        "empty": "Pick the acquisition date to see each tax's deadline.",
+        "tax": {
+          "jongbu": "Comprehensive real estate tax (one-home special rule)",
+          "capitalGains": "Capital gains tax (one-home exemption)",
+          "acquisition": "Acquisition tax (no surcharge)"
+        },
+        "until": "By {date} · {n} yr",
+        "ref": "Reference",
+        "note": {
+          "jongbu": "Enforcement Decree Art. 4-2. If both homes are in regulated areas and the new one was acquired on or after Aug 4, 2026, it is 2 years (from the June 1, 2027 assessment; 3 years if the contract and deposit were made by Aug 3). You must apply every Sept 16-30, and if you miss the deadline the tax saved plus interest is collected.",
+          "capitalGains": "Income Tax Act Enforcement Decree Art. 155. The new home must be bought at least 1 year after the old one, and the exemption's own conditions (2-year holding, etc.) still apply. If both are in regulated areas, acquired on or after Aug 4, 2026 and sold on or after Oct 1, it is 2 years (3 years if the contract and deposit were made by Aug 3).",
+          "acquisition": "Local Tax Act Enforcement Decree Art. 28-5. The rule is 3 years; the cut to 2 years when both homes are in regulated areas (acquisitions from Oct 1, 2026; 3 years for contracts by Aug 26) is based on the Ministry of the Interior's announcement, so confirm with Wetax or your local office. Missing the deadline triggers the surcharge difference."
+        },
+        "foot": "Each deadline is the same calendar date N years after the new home's acquisition. Conditions differ by tax law, so confirm with a tax office or tax accountant."
+      },
       "h1": "Korean Property Holding Tax Calculator 2026",
       "subtitle": "Enter the official assessed (gongsi) price of your homes to get your 2026 annual holding tax: property tax (July/September) plus comprehensive real estate tax (December). Includes one-home credits, joint-ownership comparison and price scenarios.",
       "houses": {
@@ -38742,7 +39034,7 @@
         "approx": "Property tax base caps, burden caps, the regional resource facility tax and reliefs are not modelled, so your bill may differ."
       },
       "share": {
-        "label": "Annual holding tax on a KRW {price} home",
+        "label": "Estimated holding tax this year · KRW {price} home",
         "sub": "{n} home(s) · about KRW {monthly} a month",
         "text": "KRW {price} home: annual holding tax KRW {tax}"
       },
@@ -38756,7 +39048,7 @@
         "dec": "December 1–15",
         "decWhat": "Comprehensive tax + rural special tax (NTS)",
         "none": "None",
-        "split": "Because the comprehensive tax exceeds KRW 2.5M, KRW {amount} can be paid in installments by June 15 next year (no interest). The rural special tax is split in the same ratio.",
+        "split": "Because the comprehensive tax exceeds KRW 2.5M, KRW {amount} can be paid in installments by {date} (no interest). Apply on Hometax or at the tax office by the due date; the rural special tax is split in the same ratio.",
         "note": "Property tax is billed by the local government via Wetax; the comprehensive tax by the NTS via Hometax. Whether property tax of KRW 200K or less is billed all in July depends on local ordinance."
       },
       "links": {
@@ -38939,8 +39231,20 @@
             "url": "https://www.law.go.kr/법령/종합부동산세법"
           },
           {
+            "label": "Korea Law — Enforcement Decree (temporary two homes, installments)",
+            "url": "https://www.law.go.kr/법령/종합부동산세법시행령"
+          },
+          {
+            "label": "Korea Law — Framework Act on National Taxes Art. 5 (deadlines)",
+            "url": "https://www.law.go.kr/법령/국세기본법/제5조"
+          },
+          {
             "label": "Korea Law — Local Tax Act (property tax)",
             "url": "https://www.law.go.kr/법령/지방세법"
+          },
+          {
+            "label": "Newspim — regulated-area temporary two-home period cut to 2 years (2026-09-29)",
+            "url": "https://www.newspim.com/news/view/20260929000419"
           },
           {
             "label": "Realty Price — assessed price lookup",
@@ -53874,6 +54178,11 @@
     "title": "Annual Car Tax Calculator",
     "subtitle": "Enter engine size and first registration date to get your 2026 Korean annual car tax, the June/December installments, and the January lump-sum discount.",
     "u": {
+      "window": {
+        "next": "Days until the {m}/{y} lump-sum window opens. Pay the full year between {m}/16 and {dm}/{dd} to save {saved} KRW (about {pct}%) on this car.",
+        "open": "The {m}/{y} lump-sum window is open now (closes {dm}/{dd}). Apply and pay within the window to save {saved} KRW (about {pct}%) on this car.",
+        "shifted": "The month-end falls on a weekend, so the deadline moves to the next weekday (Framework Act on Local Taxes, Art. 24)."
+      },
       "won": " KRW",
       "kind": {
         "label": "Vehicle type",

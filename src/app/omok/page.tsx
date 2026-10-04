@@ -93,9 +93,13 @@ export default function OmokPage() {
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
           gameKey="omok"
-          icon="⚫"
           name="오목"
           description="19x19 바둑판에서 5개를 먼저 연결하면 승리"
+          rules={[
+            '나는 흑(선공), AI는 백. 번갈아 교차점에 돌을 하나씩 놓습니다.',
+            '가로·세로·대각선으로 5개를 먼저 이으면 승리합니다.',
+            '흑은 삼삼·사사·장목(6목 이상) 자리에 둘 수 없습니다(렌주룰).',
+          ]}
         />
       </div>
       {/* SEO 콘텐츠 */}

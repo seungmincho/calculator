@@ -1,13 +1,18 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { Plus, Trash2, RotateCcw, ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/comprehensivePropertyTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
-import { holdingTax, type HoldingInput, JONGBU_GENERAL, JONGBU_HEAVY } from '@/utils/propertyHoldingTax'
+import DatePicker from '@/components/ui/DatePicker'
+import {
+  holdingTax, type HoldingInput, type Bill, JONGBU_GENERAL, JONGBU_HEAVY, TAX_YEAR, BILL_TOLERANCE,
+  compareBill, jongbuDates, tempDeadlines,
+} from '@/utils/propertyHoldingTax'
+import { todayKST, daysBetween, weekday, isValidDate } from '@/utils/dday'
 
 const EOK = 100_000_000
 const MAX_HOUSES = 10
@@ -28,6 +33,7 @@ const RELATED_KEYS: Record<(typeof RELATED)[number], string> = {
 }
 
 interface House { id: number; price: number }
+const noSubscribe = () => () => {}
 
 export default function ComprehensivePropertyTax() {
   const t = useTranslations('comprehensivePropertyTax')
@@ -45,6 +51,15 @@ export default function ComprehensivePropertyTax() {
   const [urban, setUrban] = useState(() => sp.get('urb') !== '0')
   const [prev, setPrev] = useState(() => Math.min(parseNum(sp.get('prev') ?? ''), MAX_PRICE))
   const [delta, setDelta] = useState(10)
+  const [view, setView] = useState<'calc' | 'bill'>(() => (sp.get('m') === 'bill' ? 'bill' : 'calc'))
+  const [bill, setBill] = useState<Bill>(() => {
+    const m = (k: string) => Math.min(parseNum(sp.get(k) ?? ''), MAX_PRICE)
+    return { jongbu: m('bj'), nong: m('bn'), total: m('bt'), july: m('b7'), september: m('b9') }
+  })
+  const [newAcq, setNewAcq] = useState(() => { const v = sp.get('nd') ?? ''; return isValidDate(v) ? v : '' })
+  const [bothAdj, setBothAdj] = useState(() => sp.get('adj') === '1')
+  // 오늘(한국 시간)은 마운트 후에만 — 정적 HTML은 날짜와 무관하게 같게
+  const today = useSyncExternalStore(noSubscribe, todayKST, () => null)
 
   useEffect(() => {
     const q = new URLSearchParams()
@@ -55,8 +70,13 @@ export default function ComprehensivePropertyTax() {
     q.set('yrs', String(years))
     if (!urban) q.set('urb', '0')
     if (prev > 0) q.set('prev', String(prev))
+    if (view === 'bill') q.set('m', 'bill')
+    for (const [k, v] of [['bj', bill.jongbu], ['bn', bill.nong], ['bt', bill.total], ['b7', bill.july], ['b9', bill.september]] as const) {
+      if (v > 0) q.set(k, String(v))
+    }
+    if (newAcq) { q.set('nd', newAcq); if (bothAdj) q.set('adj', '1') }
     window.history.replaceState(null, '', `?${q}`)
-  }, [houses, oneHouse, joint, share, age, years, urban, prev])
+  }, [houses, oneHouse, joint, share, age, years, urban, prev, view, bill, newAcq, bothAdj])
 
   const single = houses.filter((h) => h.price > 0).length === 1
   const input: HoldingInput = { prices: houses.map((h) => h.price), oneHouse, age, years, joint: single && joint, share, urban, prevTotal: prev }
@@ -79,7 +99,23 @@ export default function ComprehensivePropertyTax() {
   const reset = () => {
     setHouses([{ id: 1, price: 15 * EOK }]); setOneHouse(true); setJoint(false); setShare(50)
     setAge(55); setYears(7); setUrban(true); setPrev(0); setDelta(10)
+    setBill({ jongbu: 0, nong: 0, total: 0, july: 0, september: 0 }); setNewAcq(''); setBothAdj(false)
   }
+
+  const billCmp = compareBill(bill, r)
+  const billMain = billCmp.rows.find((x) => x.key === 'total') ?? billCmp.rows.find((x) => x.key === 'jongbu') ?? billCmp.rows[0]
+  const dates = jongbuDates(TAX_YEAR)
+  const next = jongbuDates(TAX_YEAR + 1)
+  const dow = t.raw('u.dates.dow') as string[]
+  const ymd = (s: string) => t('u.dates.ymd', { y: s.slice(0, 4), m: +s.slice(5, 7), d: +s.slice(8, 10), w: dow[weekday(s)] })
+  const dday = today ? daysBetween(today, dates.due) : null
+  const special = { from: ymd(dates.specialFrom), to: ymd(dates.specialTo) }
+  const specialText = !today || today < dates.specialFrom ? t('u.dates.special', special)
+    : today <= dates.specialTo ? t('u.dates.specialNow', special)
+      : t('u.dates.specialPassed', { ...special, nextFrom: ymd(next.specialFrom), nextTo: ymd(next.specialTo) })
+  // 종부세법 제20조의2: 1세대1주택 + 60세 이상 또는 5년 이상 보유 + 주택분 종부세 100만원 초과 (소득 요건은 문구로 안내)
+  const canDefer = r.oneHouse && r.mode !== 'jointEach' && (age >= 60 || years >= 5) && jb.tax > 1_000_000
+  const temps = newAcq ? tempDeadlines(newAcq, bothAdj) : []
 
   const seg = (on: boolean) => `min-h-11 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const check = (id: string, on: boolean, set: (v: boolean) => void, label: string, hint?: string) => (
@@ -118,8 +154,8 @@ export default function ComprehensivePropertyTax() {
   const sources = t.raw('u.sources.items') as { label: string; url: string }[]
   const faq = t.raw('u.faq.items') as { q: string; a: string }[]
   const shareRows = [
-    { label: t('u.result.property'), value: `${won(r.property.total)}${t('units.won')}` },
     { label: t('u.result.jongbu'), value: `${won(jb.tax)}${t('units.won')}` },
+    { label: t('u.result.property'), value: `${won(r.property.total)}${t('units.won')}` },
     { label: t('u.result.nong'), value: `${won(jb.nong)}${t('units.won')}` },
   ]
 
@@ -128,6 +164,10 @@ export default function ComprehensivePropertyTax() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('u.h1')}</h1>
         <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
+        <div className="grid grid-cols-2 gap-2 max-w-sm mt-4" role="group" aria-label={t('u.view.label')}>
+          <button type="button" aria-pressed={view === 'calc'} onClick={() => setView('calc')} className={seg(view === 'calc')}>{t('u.view.calc')}</button>
+          <button type="button" aria-pressed={view === 'bill'} onClick={() => setView('bill')} className={seg(view === 'bill')}>{t('u.view.bill')}</button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -201,6 +241,74 @@ export default function ComprehensivePropertyTax() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
+          {/* 고지서 대조 */}
+          {view === 'bill' && (
+            <section className="ui-card p-6 space-y-5" aria-labelledby="cpt-bill">
+              <div>
+                <h2 id="cpt-bill" className="text-lg font-semibold text-fg">{t('u.bill.title')}</h2>
+                <p className="text-sm text-muted mt-1">{t('u.bill.desc')}</p>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {(['jongbu', 'nong', 'total'] as const).map((k) => (
+                  <div key={k}>{moneyField(`cpt-b-${k}`, t(`u.bill.${k}`), bill[k], (v) => setBill((b) => ({ ...b, [k]: v })))}</div>
+                ))}
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {(['july', 'september'] as const).map((k) => (
+                  <div key={k}>{moneyField(`cpt-b-${k}`, t(`u.bill.${k}`), bill[k], (v) => setBill((b) => ({ ...b, [k]: v })))}</div>
+                ))}
+              </div>
+              <p className="text-xs text-muted">{t('u.bill.where')}</p>
+
+              <div aria-live="polite" className="space-y-4">
+                {!billMain ? (
+                  <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('u.bill.empty')}</p>
+                ) : (
+                  <>
+                    <p className="text-base font-semibold text-fg">
+                      {billMain.diff > BILL_TOLERANCE ? t('u.bill.more', { amount: won(billMain.diff) })
+                        : billMain.diff < -BILL_TOLERANCE ? t('u.bill.less', { amount: won(-billMain.diff) }) : t('u.bill.match')}
+                    </p>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[480px] text-sm">
+                        <thead>
+                          <tr className="border-b border-line text-muted">
+                            <th scope="col" className="py-2 px-2 text-left font-medium">{t('u.steps.col.item')}</th>
+                            {(['bill', 'est', 'diff'] as const).map((c) => <th key={c} scope="col" className="py-2 px-2 text-right font-medium">{t(`u.bill.col.${c}`)}</th>)}
+                          </tr>
+                        </thead>
+                        <tbody className="tabular-nums">
+                          {billCmp.rows.map((row) => {
+                            const same = Math.abs(row.diff) <= BILL_TOLERANCE
+                            return (
+                              <tr key={row.key} className="border-b border-line text-body">
+                                <th scope="row" className="py-2 px-2 text-left font-normal">{t(`u.bill.row.${row.key}`)}</th>
+                                <td className="py-2 px-2 text-right">{won(row.bill)}</td>
+                                <td className="py-2 px-2 text-right">{won(row.est)}</td>
+                                <td className={`py-2 px-2 text-right ${same ? 'text-muted' : 'font-semibold text-fg'}`}>
+                                  {same ? t('u.bill.same') : `${row.diff > 0 ? '+' : '−'}${won(Math.abs(row.diff))}`}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    {billCmp.reasons.length > 0 && (
+                      <div className="bg-subtle rounded-2xl p-5 space-y-2">
+                        <h3 className="text-sm font-semibold text-body">{t('u.bill.whyTitle')}</h3>
+                        <ul className="space-y-1.5 list-disc pl-5 text-sm text-sub marker:text-faint">
+                          {billCmp.reasons.map((k) => <li key={k}>{t(`u.bill.why.${k}`)}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              <p className="text-xs text-muted">{t('u.bill.note')}</p>
+            </section>
+          )}
+
           <section className="ui-card p-6 space-y-5" aria-labelledby="cpt-result-title">
             <div aria-live="polite">
               <h2 id="cpt-result-title" className="text-sm text-muted">{t('u.result.label')}</h2>
@@ -265,7 +373,23 @@ export default function ComprehensivePropertyTax() {
                 </li>
               ))}
             </ol>
-            {r.schedule.split > 0 && <p className="text-sm text-sub">{t('u.schedule.split', { amount: won(r.schedule.split) })}</p>}
+            <div className="bg-subtle rounded-2xl p-5 space-y-2 text-sm text-sub">
+              <p className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <span className="font-semibold text-body">{t('u.dates.due', { date: ymd(dates.due) })}</span>
+                {dday !== null && (
+                  <span className="font-semibold text-primary tabular-nums">
+                    {dday > 0 ? t('u.dates.dday', { n: dday }) : dday === 0 ? t('u.dates.dday0') : t('u.dates.passed')}
+                  </span>
+                )}
+              </p>
+              <p>{t('u.dates.notice')}</p>
+              <p>{r.schedule.split > 0
+                ? t('u.schedule.split', { amount: won(r.schedule.split), date: ymd(dates.split) })
+                : t('u.dates.split', { date: ymd(dates.split) })}</p>
+              {canDefer && <p>{t('u.dates.deferral', { date: ymd(dates.deferral) })}</p>}
+              <p>{specialText}</p>
+              <p className="text-xs text-muted">{t('u.dates.holidayNote')}</p>
+            </div>
             <p className="text-xs text-muted">{t('u.schedule.note')}</p>
             <div className="flex flex-wrap gap-2">
               {(['wetax', 'hometax'] as const).map((k) => (
@@ -444,6 +568,40 @@ export default function ComprehensivePropertyTax() {
               </p>
             </div>
             <p className="text-xs text-muted">{t('u.scenario.note')}</p>
+          </section>
+
+          {/* 일시적 2주택 처분기한 */}
+          <section className="ui-card p-6 space-y-4" aria-labelledby="cpt-temp">
+            <div>
+              <h2 id="cpt-temp" className="text-lg font-semibold text-fg">{t('u.temp.title')}</h2>
+              <p className="text-sm text-muted mt-1">{t('u.temp.desc')}</p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4 items-start">
+              <div>
+                <p className="text-sm font-medium text-body mb-2">{t('u.temp.date')}</p>
+                <DatePicker label={t('u.temp.date')} value={newAcq} onChange={(v) => setNewAcq(isValidDate(v) ? v : '')} />
+              </div>
+              <div className="sm:pt-7">{check('cpt-adj', bothAdj, setBothAdj, t('u.temp.adjusted'), t('u.temp.adjustedHint'))}</div>
+            </div>
+            {temps.length === 0 ? (
+              <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('u.temp.empty')}</p>
+            ) : (
+              <ul aria-live="polite" className="divide-y divide-line border-y border-line">
+                {temps.map((x) => (
+                  <li key={x.tax} className="py-3 space-y-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <p className="text-sm font-medium text-body">
+                        {t(`u.temp.tax.${x.tax}`)}
+                        {!x.verified && <span className="ml-2 px-2 py-0.5 rounded-md bg-soft text-xs text-sub">{t('u.temp.ref')}</span>}
+                      </p>
+                      <p className="text-base font-semibold text-fg tabular-nums">{t('u.temp.until', { date: ymd(x.date), n: x.years })}</p>
+                    </div>
+                    <p className="text-xs text-muted">{t(`u.temp.note.${x.tax}`)}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="text-xs text-muted">{t('u.temp.foot')}</p>
           </section>
         </div>
       </div>
