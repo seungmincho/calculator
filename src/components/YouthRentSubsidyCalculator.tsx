@@ -66,14 +66,40 @@ interface YouthForm {
   housingType: string
 }
 
+type FormField = keyof YouthForm
+type ValidationIssue = 'required' | 'invalid' | 'selection'
+type FormErrors = Partial<Record<FormField, ValidationIssue>>
+const moneyFields = ['ownIncome', 'parentIncome', 'asset', 'rent', 'deposit'] as const
+const housingTypeValues = ['officetel', 'oneroom', 'apartment', 'goshiwon', 'sharehouse']
+const queryKeys = ['age', 'independent', 'homeless', 'ownIncome', 'parentIncome', 'household', 'asset', 'rent', 'deposit', 'type']
+const integerInput = /^(?:\d+|\d{1,3}(?:,\d{3})+)$/
+
 function formatNumber(value: string): string {
-  const num = value.replace(/[^0-9]/g, '')
-  if (!num) return ''
-  return Number(num).toLocaleString('ko-KR')
+  if (!integerInput.test(value)) return value
+  const num = Number(value.replace(/,/g, ''))
+  return Number.isSafeInteger(num) ? num.toLocaleString('ko-KR') : value
 }
 
 function parseNumber(value: string): number {
-  return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0
+  if (!integerInput.test(value)) return NaN
+  const num = Number(value.replace(/,/g, ''))
+  return Number.isSafeInteger(num) ? num : NaN
+}
+
+function validateYouth(form: YouthForm): FormErrors {
+  const errors: FormErrors = {}
+  if (form.age.trim() === '') errors.age = 'required'
+  else if (!/^\d+$/.test(form.age) || !Number.isSafeInteger(Number(form.age))) errors.age = 'invalid'
+  if (!['1', '2', '3', '4', '5', '6'].includes(form.householdSize)) errors.householdSize = 'selection'
+  if (!housingTypeValues.includes(form.housingType)) errors.housingType = 'selection'
+  for (const field of moneyFields) {
+    if (form[field].trim() === '') errors[field] = 'required'
+    else {
+      const amount = parseNumber(form[field])
+      if (!Number.isSafeInteger(amount) || !Number.isSafeInteger(amount * 10_000)) errors[field] = 'invalid'
+    }
+  }
+  return errors
 }
 
 function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit }: YouthForm): CalcResult {
@@ -117,6 +143,7 @@ export default function YouthRentSubsidyCalculator() {
   const [housingType, setHousingType] = useState('officetel')
 
   const [result, setResult] = useState<CalcResult | null>(null)
+  const [errors, setErrors] = useState<FormErrors>({})
   const [showApplyInfo, setShowApplyInfo] = useState(false)
   const [copiedUrl, setCopiedUrl] = useState(false)
 
@@ -135,7 +162,16 @@ export default function YouthRentSubsidyCalculator() {
 
   // Calculation
   const calculate = useCallback(() => {
-    setResult(evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType }))
+    const form = { age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType }
+    const nextErrors = validateYouth(form)
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length > 0) {
+      setResult(null)
+      const firstInvalid = Object.keys(nextErrors)[0]
+      document.getElementById(`youth-${firstInvalid}`)?.focus()
+      return
+    }
+    setResult(evaluateYouth(form))
 
     updateURL({
       age,
@@ -151,6 +187,26 @@ export default function YouthRentSubsidyCalculator() {
     })
   }, [age, isIndependent, isHomeless, ownIncome, parentIncome, householdSize, asset, rent, deposit, housingType, updateURL])
 
+  const invalidateCalculation = useCallback((event: React.ChangeEvent<HTMLDivElement>) => {
+    const field = (event.target as HTMLInputElement).name as FormField
+    setResult(null)
+    if (field) setErrors(previous => {
+      if (!previous[field]) return previous
+      const next = { ...previous }
+      delete next[field]
+      return next
+    })
+    const url = new URL(window.location.href)
+    for (const key of queryKeys) url.searchParams.delete(key)
+    window.history.replaceState({}, '', url)
+  }, [])
+
+  const fieldError = (field: FormField) => errors[field] && (
+    <p id={`youth-${field}-error`} role="alert" className="text-xs text-red-600 dark:text-red-400 mt-1">
+      {t(`validation.${errors[field]}`)}
+    </p>
+  )
+
   const reset = useCallback(() => {
     setAge('25')
     setIsIndependent(true)
@@ -163,6 +219,7 @@ export default function YouthRentSubsidyCalculator() {
     setDeposit('')
     setHousingType('officetel')
     setResult(null)
+    setErrors({})
     window.history.replaceState({}, '', window.location.pathname)
   }, [])
 
@@ -180,18 +237,22 @@ export default function YouthRentSubsidyCalculator() {
   // Auto-calculate if URL params exist
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    if (![ 'age', 'independent', 'homeless', 'ownIncome', 'parentIncome', 'household', 'asset', 'rent', 'deposit', 'type' ].some(key => params.has(key))) return
+    if (!queryKeys.some(key => params.has(key))) return
     const restored: YouthForm = {
-      age: params.get('age') || '25',
+      age: params.get('age') ?? '25',
       isIndependent: params.get('independent') !== 'false',
       isHomeless: params.get('homeless') !== 'false',
-      ownIncome: formatNumber(params.get('ownIncome') || ''),
-      parentIncome: formatNumber(params.get('parentIncome') || ''),
-      householdSize: params.get('household') || '4',
-      asset: formatNumber(params.get('asset') || ''),
-      rent: formatNumber(params.get('rent') || ''),
-      deposit: formatNumber(params.get('deposit') || ''),
-      housingType: params.get('type') || 'officetel',
+      ownIncome: formatNumber(params.get('ownIncome') ?? ''),
+      parentIncome: formatNumber(params.get('parentIncome') ?? ''),
+      householdSize: params.get('household') ?? '4',
+      asset: formatNumber(params.get('asset') ?? ''),
+      rent: formatNumber(params.get('rent') ?? ''),
+      deposit: formatNumber(params.get('deposit') ?? ''),
+      housingType: params.get('type') ?? 'officetel',
+    }
+    const restoredErrors = validateYouth(restored)
+    for (const [param, field] of [['independent', 'isIndependent'], ['homeless', 'isHomeless']] as const) {
+      if (params.has(param) && !['true', 'false'].includes(params.get(param)!)) restoredErrors[field] = 'selection'
     }
     const frame = requestAnimationFrame(() => {
       setAge(restored.age)
@@ -204,7 +265,8 @@ export default function YouthRentSubsidyCalculator() {
       setRent(restored.rent)
       setDeposit(restored.deposit)
       setHousingType(restored.housingType)
-      setResult(evaluateYouth(restored))
+      setErrors(restoredErrors)
+      setResult(Object.keys(restoredErrors).length ? null : evaluateYouth(restored))
     })
     return () => cancelAnimationFrame(frame)
   }, [])
@@ -296,25 +358,31 @@ export default function YouthRentSubsidyCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Input Form */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`} onChange={invalidateCalculation}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               {t('inputTitle')}
             </h2>
 
             {/* 만 나이 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-age" className="block text-sm font-medium text-body mb-1">
                 {t('ageLabel')}
               </label>
               <input
+                id="youth-age"
+                name="age"
                 type="number"
                 min={15}
                 max={50}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
+                required
+                aria-invalid={Boolean(errors.age)}
+                aria-describedby={`youth-age-hint${errors.age ? ' youth-age-error' : ''}`}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
-              <p className="text-xs text-muted mt-1">{t('ageHint')}</p>
+              <p id="youth-age-hint" className="text-xs text-muted mt-1">{t('ageHint')}</p>
+              {fieldError('age')}
             </div>
 
             {/* 독립 거주 */}
@@ -322,9 +390,11 @@ export default function YouthRentSubsidyCalculator() {
               <label className="block text-sm font-medium text-body mb-2">
                 {t('independentLabel')}
               </label>
-              <div className="flex gap-4">
+              <div className="flex gap-4" role="group" aria-label={t('independentLabel')} aria-describedby={errors.isIndependent ? 'youth-isIndependent-error' : undefined}>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
+                    id="youth-isIndependent"
+                    name="isIndependent"
                     type="radio"
                     checked={isIndependent}
                     onChange={() => setIsIndependent(true)}
@@ -334,6 +404,7 @@ export default function YouthRentSubsidyCalculator() {
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
+                    name="isIndependent"
                     type="radio"
                     checked={!isIndependent}
                     onChange={() => setIsIndependent(false)}
@@ -342,6 +413,7 @@ export default function YouthRentSubsidyCalculator() {
                   <span className="text-sm text-body">{t('no')}</span>
                 </label>
               </div>
+              {fieldError('isIndependent')}
             </div>
 
             {/* 주택 소유 */}
@@ -349,9 +421,11 @@ export default function YouthRentSubsidyCalculator() {
               <label className="block text-sm font-medium text-body mb-2">
                 {t('homelessLabel')}
               </label>
-              <div className="flex gap-4">
+              <div className="flex gap-4" role="group" aria-label={t('homelessLabel')} aria-describedby={errors.isHomeless ? 'youth-isHomeless-error' : undefined}>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
+                    id="youth-isHomeless"
+                    name="isHomeless"
                     type="radio"
                     checked={isHomeless}
                     onChange={() => setIsHomeless(true)}
@@ -361,6 +435,7 @@ export default function YouthRentSubsidyCalculator() {
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
+                    name="isHomeless"
                     type="radio"
                     checked={!isHomeless}
                     onChange={() => setIsHomeless(false)}
@@ -369,131 +444,173 @@ export default function YouthRentSubsidyCalculator() {
                   <span className="text-sm text-body">{t('hasHome')}</span>
                 </label>
               </div>
+              {fieldError('isHomeless')}
             </div>
 
             {/* 본인 월 소득 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-ownIncome" className="block text-sm font-medium text-body mb-1">
                 {t('ownIncomeLabel')}
               </label>
               <div className="relative">
                 <input
+                  id="youth-ownIncome"
+                  name="ownIncome"
                   type="text"
                   inputMode="numeric"
                   value={ownIncome}
                   onChange={(e) => setOwnIncome(formatNumber(e.target.value))}
                   placeholder="0"
+                  required
+                  aria-invalid={Boolean(errors.ownIncome)}
+                  aria-describedby={errors.ownIncome ? 'youth-ownIncome-error' : undefined}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
+              {fieldError('ownIncome')}
             </div>
 
             {/* 원가구 가구원 수 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-householdSize" className="block text-sm font-medium text-body mb-1">
                 {t('householdSizeLabel')}
               </label>
               <select
+                id="youth-householdSize"
+                name="householdSize"
                 value={householdSize}
                 onChange={(e) => setHouseholdSize(e.target.value)}
+                aria-invalid={Boolean(errors.householdSize)}
+                aria-describedby={errors.householdSize ? 'youth-householdSize-error' : undefined}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {[1, 2, 3, 4, 5, 6].map((n) => (
                   <option key={n} value={n}>{t('householdSizeOption', { n })}</option>
                 ))}
               </select>
+              {fieldError('householdSize')}
             </div>
 
             {/* 원가구 월 소득 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-parentIncome" className="block text-sm font-medium text-body mb-1">
                 {t('parentIncomeLabel')}
               </label>
               <div className="relative">
                 <input
+                  id="youth-parentIncome"
+                  name="parentIncome"
                   type="text"
                   inputMode="numeric"
                   value={parentIncome}
                   onChange={(e) => setParentIncome(formatNumber(e.target.value))}
                   placeholder="0"
+                  required
+                  aria-invalid={Boolean(errors.parentIncome)}
+                  aria-describedby={errors.parentIncome ? 'youth-parentIncome-error' : undefined}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
+              {fieldError('parentIncome')}
             </div>
 
             {/* 본인 총 재산 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-asset" className="block text-sm font-medium text-body mb-1">
                 {t('assetLabel')}
               </label>
               <div className="relative">
                 <input
+                  id="youth-asset"
+                  name="asset"
                   type="text"
                   inputMode="numeric"
                   value={asset}
                   onChange={(e) => setAsset(formatNumber(e.target.value))}
                   placeholder="0"
+                  required
+                  aria-invalid={Boolean(errors.asset)}
+                  aria-describedby={errors.asset ? 'youth-asset-error' : undefined}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
+              {fieldError('asset')}
             </div>
 
             {/* 현재 월세 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-rent" className="block text-sm font-medium text-body mb-1">
                 {t('rentLabel')}
               </label>
               <div className="relative">
                 <input
+                  id="youth-rent"
+                  name="rent"
                   type="text"
                   inputMode="numeric"
                   value={rent}
                   onChange={(e) => setRent(formatNumber(e.target.value))}
                   placeholder="0"
+                  required
+                  aria-invalid={Boolean(errors.rent)}
+                  aria-describedby={errors.rent ? 'youth-rent-error' : undefined}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
+              {fieldError('rent')}
             </div>
 
             {/* 현재 보증금 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-deposit" className="block text-sm font-medium text-body mb-1">
                 {t('depositLabel')}
               </label>
               <div className="relative">
                 <input
+                  id="youth-deposit"
+                  name="deposit"
                   type="text"
                   inputMode="numeric"
                   value={deposit}
                   onChange={(e) => setDeposit(formatNumber(e.target.value))}
                   placeholder="0"
+                  required
+                  aria-invalid={Boolean(errors.deposit)}
+                  aria-describedby={errors.deposit ? 'youth-deposit-error' : undefined}
                   className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('manwon')}</span>
               </div>
+              {fieldError('deposit')}
             </div>
 
             {/* 주거 유형 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
+              <label htmlFor="youth-housingType" className="block text-sm font-medium text-body mb-1">
                 {t('housingTypeLabel')}
               </label>
               <select
+                id="youth-housingType"
+                name="housingType"
                 value={housingType}
                 onChange={(e) => setHousingType(e.target.value)}
+                aria-invalid={Boolean(errors.housingType)}
+                aria-describedby={errors.housingType ? 'youth-housingType-error' : undefined}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {housingTypes.map((ht) => (
                   <option key={ht.value} value={ht.value}>{ht.label}</option>
                 ))}
               </select>
+              {fieldError('housingType')}
             </div>
 
             {/* Buttons */}
+            {Object.keys(errors).length > 0 && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{t('validation.fixFields')}</p>}
             <div className="flex gap-3 pt-2">
               <button
                 onClick={calculate}

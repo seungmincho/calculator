@@ -49815,6 +49815,7 @@
     },
     "input": {
       "title": "Enter household details",
+      "invalidSharedLink": "This shared link contains invalid inputs. Check the values and calculate again.",
       "householdSize": "Household Size",
       "persons": "{count} people",
       "monthlyIncome": "Monthly Household Income",
@@ -50134,7 +50135,8 @@
       "hundred": "100% of median",
       "sizeUnit": "{n} people"
     },
-    "medianTableNote": "This is an estimate. Confirm eligibility with the official program guidance."
+    "medianTableNote": "This is an estimate. Confirm eligibility with the official program guidance.",
+    "validation": {"required":"Enter a value, including 0 if the amount is zero.","invalid":"Enter a valid whole number of 0 or more.","selection":"Choose a valid option.","fixFields":"Check the marked fields, then calculate again."}
   },
   "evSubsidy": {
     "ev": {

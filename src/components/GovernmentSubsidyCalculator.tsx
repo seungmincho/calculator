@@ -74,23 +74,44 @@ const DEFAULT_INPUT: UserInput = {
   isOver65: false,
 }
 
-function inputFromUrl(params: URLSearchParams): UserInput {
+const sharedInputKeys = ['size', 'income', 'assets', 'age', 'housing', 'rent', 'deposit', 'children', 'childCount', 'single', 'disabled', 'over65']
+
+function inputFromUrl(params: URLSearchParams): { input: UserInput; invalidFields: string[] } {
   const input = { ...DEFAULT_INPUT }
-  if (params.get('size')) input.householdSize = parseInt(params.get('size')!) || 4
-  if (params.get('income')) input.monthlyIncome = parseInt(params.get('income')!) || 200
-  if (params.get('assets')) input.totalAssets = parseInt(params.get('assets')!) || 5000
-  if (params.get('age')) input.age = parseInt(params.get('age')!) || 35
-  if (params.get('housing')) input.housingType = (params.get('housing') as HousingType) || 'monthly'
-  if (params.get('rent')) input.monthlyRent = parseInt(params.get('rent')!) || 40
-  if (params.get('deposit')) input.deposit = parseInt(params.get('deposit')!) || 3000
+  const invalidFields: string[] = []
+  const numericFields = [
+    ['size', 'householdSize'], ['income', 'monthlyIncome'], ['assets', 'totalAssets'],
+    ['age', 'age'], ['rent', 'monthlyRent'], ['deposit', 'deposit'],
+  ] as const
+  for (const [param, field] of numericFields) {
+    const raw = params.get(param)
+    if (raw === null) continue
+    const value = Number(raw)
+    const valid = /^\d+$/.test(raw) && Number.isSafeInteger(value)
+      && (field !== 'householdSize' || (value >= 1 && value <= 6))
+      && (field === 'householdSize' || field === 'age' || Number.isSafeInteger(value * 10_000))
+    if (valid) input[field] = value
+    else invalidFields.push(param)
+  }
+  const housing = params.get('housing')
+  if (housing !== null) {
+    if (['jeonse', 'monthly', 'own', 'other'].includes(housing)) input.housingType = housing as HousingType
+    else invalidFields.push('housing')
+  }
   if (params.get('children') === '1') {
     input.hasMinorChildren = true
-    input.childrenCount = parseInt(params.get('childCount')!) || 1
+    const count = params.get('childCount')
+    if (count === null) input.childrenCount = 1
+    else if (/^[1-9]\d*$/.test(count) && Number.isSafeInteger(Number(count))) input.childrenCount = Number(count)
+    else invalidFields.push('childCount')
+  }
+  for (const key of ['children', 'single', 'disabled', 'over65']) {
+    if (params.has(key) && !['', '1'].includes(params.get(key)!)) invalidFields.push(key)
   }
   if (params.get('single') === '1') input.isSingleParent = true
   if (params.get('disabled') === '1') input.isDisabled = true
   if (params.get('over65') === '1') input.isOver65 = true
-  return input
+  return { input, invalidFields }
 }
 
 // ── Number Formatting Helpers ──
@@ -547,6 +568,7 @@ export default function GovernmentSubsidyCalculator() {
   const [input, setInput] = useState<UserInput>(() => ({ ...DEFAULT_INPUT }))
 
   const [results, setResults] = useState<ProgramResult[] | null>(null)
+  const [invalidSharedLink, setInvalidSharedLink] = useState(false)
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
   const [copiedLink, setCopiedLink] = useState(false)
 
@@ -555,7 +577,7 @@ export default function GovernmentSubsidyCalculator() {
     if (typeof window === 'undefined') return
     const url = new URL(window.location.href)
     Object.entries(params).forEach(([key, value]) => {
-      if (value === false || value === '' || value === 0) {
+      if (value === false || value === '') {
         url.searchParams.delete(key)
       } else {
         url.searchParams.set(key, String(value))
@@ -568,6 +590,7 @@ export default function GovernmentSubsidyCalculator() {
   const handleCalculate = useCallback(() => {
     const r = calculatePrograms(input)
     setResults(r)
+    setInvalidSharedLink(false)
     updateURL({
       size: input.householdSize,
       income: input.monthlyIncome,
@@ -588,10 +611,11 @@ export default function GovernmentSubsidyCalculator() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (!params.has('size') && !params.has('income')) return
-    const restored = inputFromUrl(params)
+    const { input: restored, invalidFields } = inputFromUrl(params)
     const frame = requestAnimationFrame(() => {
       setInput(restored)
-      setResults(calculatePrograms(restored))
+      setInvalidSharedLink(invalidFields.length > 0)
+      setResults(invalidFields.length ? null : calculatePrograms(restored))
     })
     return () => cancelAnimationFrame(frame)
   }, [])
@@ -600,6 +624,7 @@ export default function GovernmentSubsidyCalculator() {
   const handleReset = useCallback(() => {
     setInput({ ...DEFAULT_INPUT })
     setResults(null)
+    setInvalidSharedLink(false)
     setExpandedCards(new Set())
     if (typeof window !== 'undefined') {
       window.history.replaceState({}, '', window.location.pathname)
@@ -662,6 +687,11 @@ export default function GovernmentSubsidyCalculator() {
   // ── Input update helper ──
   const updateInput = useCallback(<K extends keyof UserInput>(key: K, value: UserInput[K]) => {
     setInput(prev => ({ ...prev, [key]: value }))
+    setResults(null)
+    setInvalidSharedLink(false)
+    const url = new URL(window.location.href)
+    for (const param of sharedInputKeys) url.searchParams.delete(param)
+    window.history.replaceState({}, '', url)
   }, [])
 
   // ── Status badge ──
@@ -703,6 +733,7 @@ export default function GovernmentSubsidyCalculator() {
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
               {t('input.title')}
             </h2>
+            {invalidSharedLink && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{t('input.invalidSharedLink')}</p>}
 
             {/* 가구원수 */}
             <div>

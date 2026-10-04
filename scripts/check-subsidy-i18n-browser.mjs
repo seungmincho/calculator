@@ -38,6 +38,11 @@ async function open(context,namespace,locale){
   if(namespace==='governmentSubsidy')assert.ok(!text.includes('input.title'))
   return page
 }
+async function fillYouth(page){
+  const values=['0','0','0','20','0']
+  const inputs=page.locator('main input[inputmode="numeric"]')
+  for(let i=0;i<values.length;i++)await inputs.nth(i).fill(values[i])
+}
 try{
   for(const locale of ['ko','en'])for(const namespace of Object.keys(routes)){
     const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'})
@@ -48,8 +53,34 @@ try{
     await page.getByText(namespace==='youthRentSubsidy'?m.inputTitle:m.input.title,{exact:true}).first().waitFor()
     await page.getByText(namespace==='youthRentSubsidy'?m.emptyTitle:m.result.emptyTitle,{exact:true}).first().waitFor()
     results.push({name:`${namespace}-${locale}-direct-mobile-empty`,status:'PASS'})
+    if(namespace==='youthRentSubsidy'){
+      await page.getByRole('button',{name:m.checkButton}).click()
+      assert.equal(await page.locator('main [id^="youth-"][id$="-error"]').count(),5)
+      assert.equal(await page.getByText(m.validation.required,{exact:true}).count(),5)
+      assert.equal(await page.locator('#youth-ownIncome').getAttribute('aria-invalid'),'true')
+      assert.equal(await page.evaluate(()=>document.activeElement?.id),'youth-ownIncome')
+      await page.getByText(m.emptyTitle,{exact:true}).first().waitFor()
+      await fillYouth(page)
+    }
     await page.getByRole('button',{name:namespace==='youthRentSubsidy'?m.checkButton:m.input.calculate}).click()
     await page.getByText(namespace==='youthRentSubsidy'?m.eligible:m.result.summaryTitle,{exact:true}).first().waitFor()
+    if(namespace==='youthRentSubsidy'){
+      const url=new URL(page.url())
+      assert.equal(url.searchParams.get('ownIncome'),'0')
+      assert.equal(url.searchParams.get('asset'),'0')
+      await page.reload({waitUntil:'networkidle'})
+      await page.getByText(m.eligible,{exact:true}).first().waitFor()
+      await page.locator('#youth-rent').fill('21')
+      await page.getByText(m.emptyTitle,{exact:true}).first().waitFor()
+      assert.equal(new URL(page.url()).searchParams.has('rent'),false)
+      await page.locator('#youth-rent').fill('-1')
+      await page.getByRole('button',{name:m.checkButton}).click()
+      await page.getByText(m.validation.invalid,{exact:true}).first().waitFor()
+      await page.getByText(m.emptyTitle,{exact:true}).first().waitFor()
+      await page.locator('#youth-rent').fill('21')
+      await page.getByRole('button',{name:m.checkButton}).click()
+      await page.getByText(m.eligible,{exact:true}).first().waitFor()
+    }
     assert.doesNotMatch(await page.locator('main').innerText(),leak)
     const resultWidth=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth}))
     if(resultWidth.document>resultWidth.viewport+2){
@@ -79,7 +110,7 @@ try{
   results.push({name:'youth-language-switch-and-refresh',status:'PASS'})
 
   const ym=messages.en.youthRentSubsidy
-  await youth.locator('main input[inputmode="numeric"]').nth(3).fill('20')
+  await fillYouth(youth)
   await youth.getByRole('button',{name:ym.checkButton}).click()
   await youth.getByText(ym.eligible,{exact:true}).first().waitFor()
   await youth.getByText(ym.monthlySupport,{exact:true}).first().waitFor()
@@ -94,6 +125,20 @@ try{
   await youth.locator('main button[title="'+ym.resetButton+'"]').click()
   await youth.getByText(ym.emptyTitle,{exact:true}).first().waitFor()
   results.push({name:'youth-eligible-ineligible-reset-en',status:'PASS'})
+
+  const validYouth={age:'25',independent:'true',homeless:'true',ownIncome:'0',parentIncome:'0',household:'4',asset:'0',rent:'20',deposit:'0',type:'officetel'}
+  for(const [name,changes] of [
+    ['missing-money',{asset:undefined}],['negative-money',{rent:'-1'}],
+    ['nonfinite-money',{rent:'Infinity'}],['malformed-money',{rent:'1abc'}],
+  ]){
+    const params=new URLSearchParams({...validYouth,...changes})
+    if(changes.asset===undefined)params.delete('asset')
+    await youth.goto(origin+'/youth-rent-subsidy/?'+params,{waitUntil:'networkidle'})
+    await youth.getByText(ym.emptyTitle,{exact:true}).first().waitFor()
+    assert.equal(await youth.getByText(ym.eligible,{exact:true}).count(),0)
+    assert.ok(await youth.locator('main [id^="youth-"][id$="-error"]').count()>0)
+    results.push({name:`youth-shared-url-${name}`,status:'PASS'})
+  }
 
   await youth.goto(origin+'/',{waitUntil:'networkidle'})
   await youth.locator('#tools-grid details summary').first().click()
@@ -116,6 +161,22 @@ try{
   await youth.locator('main button[title="'+gm.input.reset+'"]').click()
   await youth.getByText(gm.result.emptyTitle,{exact:true}).first().waitFor()
   results.push({name:'government-results-details-reset-en',status:'PASS'})
+
+  const zeroGovernment='size=4&income=0&assets=0&age=35&housing=monthly&rent=0&deposit=0'
+  await youth.goto(origin+'/government-subsidy/?'+zeroGovernment,{waitUntil:'networkidle'})
+  await youth.getByText(gm.result.summaryTitle,{exact:true}).first().waitFor()
+  for(const input of await youth.locator('main input[type="text"]').all())assert.equal(await input.inputValue(),'0')
+  await youth.getByRole('button',{name:gm.input.calculate}).click()
+  assert.equal(new URL(youth.url()).searchParams.get('income'),'0')
+  assert.equal(new URL(youth.url()).searchParams.get('rent'),'0')
+  await youth.reload({waitUntil:'networkidle'})
+  await youth.getByText(gm.result.summaryTitle,{exact:true}).first().waitFor()
+  for(const input of await youth.locator('main input[type="text"]').all())assert.equal(await input.inputValue(),'0')
+  results.push({name:'government-explicit-zero-shared-url',status:'PASS'})
+  await youth.goto(origin+'/government-subsidy/?'+zeroGovernment.replace('rent=0','rent=oops'),{waitUntil:'networkidle'})
+  await youth.getByText(gm.input.invalidSharedLink,{exact:true}).waitFor()
+  await youth.getByText(gm.result.emptyTitle,{exact:true}).first().waitFor()
+  results.push({name:'government-invalid-shared-url',status:'PASS'})
   await toggleContext.close()
   assert.deepEqual(errors,[])
 }catch(error){results.push({name:'subsidy-i18n',status:'FAIL',message:error.stack?.slice(0,2200)||String(error),runtimeErrors:errors.slice(0,3)})}

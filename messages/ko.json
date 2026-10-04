@@ -49959,6 +49959,7 @@
     },
     "input": {
       "title": "가구 정보 입력",
+      "invalidSharedLink": "공유 링크의 입력값이 올바르지 않습니다. 값을 확인하고 다시 계산해 주세요.",
       "householdSize": "가구원 수",
       "persons": "{count}명",
       "monthlyIncome": "월 가구소득",
@@ -50278,7 +50279,8 @@
       "hundred": "중위소득 100%",
       "sizeUnit": "{n}명"
     },
-    "medianTableNote": "입력값에 따른 간이 판정이며 실제 자격은 공식 안내에서 확인하세요."
+    "medianTableNote": "입력값에 따른 간이 판정이며 실제 자격은 공식 안내에서 확인하세요.",
+    "validation": {"required":"값을 입력해 주세요. 0인 경우에도 0을 입력해 주세요.","invalid":"0 이상의 올바른 정수를 입력해 주세요.","selection":"올바른 항목을 선택해 주세요.","fixFields":"표시된 입력값을 확인한 뒤 다시 계산해 주세요."}
   },
   "evSubsidy": {
     "ev": {
