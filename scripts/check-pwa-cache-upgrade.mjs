@@ -1,10 +1,11 @@
 // node scripts/check-pwa-cache-upgrade.mjs --dir out --result report.json
 // node scripts/check-pwa-cache-upgrade.mjs --url https://toolhub.ai.kr --result report.json
 import assert from 'node:assert/strict'
-import {createReadStream,mkdirSync,statSync,writeFileSync} from 'node:fs'
+import {createReadStream,mkdirSync,readFileSync,statSync,writeFileSync} from 'node:fs'
 import {createServer} from 'node:http'
 import {extname,resolve,sep} from 'node:path'
 import {chromium} from 'playwright'
+const SW_VERSION=readFileSync(new URL('../public/sw.js',import.meta.url),'utf8').match(/toolhub-static-(v[\d.]+)/)[1]
 
 const args=process.argv.slice(2),option=key=>args[args.indexOf(key)+1]
 const directory=args.includes('--dir')?resolve(option('--dir')):null,report=resolve(option('--result'))
@@ -41,7 +42,7 @@ try{
       controlled:!!navigator.serviceWorker.controller,
       cacheNames:await caches.keys()
     }))
-    ready=state.active&&state.controlled&&state.cacheNames.includes('toolhub-static-v4.31.21')&&
+    ready=state.active&&state.controlled&&state.cacheNames.includes(`toolhub-static-${SW_VERSION}`)&&
       !state.cacheNames.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:16|17|18|19|20)$/.test(key))
     if(ready)break
     await new Promise(done=>setTimeout(done,200))
