@@ -117,13 +117,13 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
   const getForbiddenMessage = (reason: string): string => {
     switch (reason) {
       case 'double-three':
-        return t('doubleThreeForbidden') || '쌍삼(3-3)은 금수입니다!'
+        return t('doubleThreeForbidden')
       case 'double-four':
-        return t('doubleFourForbidden') || '쌍사(4-4)는 금수입니다!'
+        return t('doubleFourForbidden')
       case 'overline':
-        return t('overlineForbidden') || '장목(6목 이상)은 금수입니다!'
+        return t('overlineForbidden')
       default:
-        return t('forbiddenMove') || '금수입니다!'
+        return t('forbiddenMove')
     }
   }
 
@@ -196,9 +196,9 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
 
   const getWinnerMessage = () => {
     if (!gameState.winner) return ''
-    if (gameState.winner === 'draw') return t('draw') || 'Draw!'
-    if (gameState.winner === playerColor) return t('youWin') || 'You Win!'
-    return t('youLose') || 'You Lose!'
+    if (gameState.winner === 'draw') return t('draw')
+    if (gameState.winner === playerColor) return t('youWin')
+    return t('youLose')
   }
 
   const getDifficultyLabel = (diff: Difficulty) => {
@@ -253,7 +253,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
                 {tHub('you')}
               </p>
               <p className={`text-xs ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-gray-300' : 'text-muted'}`}>
-                {t('black') || 'Black'} ⚫
+                {t('black')} ⚫
               </p>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
             <div>
               <p className="font-medium text-fg">AI</p>
               <p className="text-xs text-muted">
-                {t('white') || 'White'} ⚪
+                {t('white')} ⚪
               </p>
             </div>
           </div>
@@ -308,7 +308,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
           <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
-          <p className="text-sm opacity-80">{gameState.moveHistory.length} {t('moves') || 'moves'} · {getDifficultyLabel(difficulty)}</p>
+          <p className="text-sm opacity-80">{gameState.moveHistory.length} {t('moves')} · {getDifficultyLabel(difficulty)}</p>
         </div>
       )}
 
@@ -323,7 +323,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
             className="ui-btn w-full min-h-12 py-3 px-6 text-lg"
           >
             <RefreshCw className="w-5 h-5" />
-            {t('playAgain') || 'Play Again'}
+            {t('playAgain')}
           </button>
           {onLevelUp && difficulty !== 'hard' && (
             <button
@@ -335,7 +335,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
             </button>
           )}
           <GameResultShare
-            gameName={t('title') || '오목'}
+            gameName={`${tHub('gameList.omok.name')} ${tHub('vsAI')}`}
             result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
             difficulty={getDifficultyLabel(difficulty) || difficulty}
             moves={gameState.moveHistory.length}
@@ -365,7 +365,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
       <div className="bg-surface rounded-2xl shadow-lg p-4">
         <div className="flex items-center justify-between">
           <div className="text-sm text-sub">
-            {t('moves') || 'Moves'}: {gameState.moveHistory.length}
+            {t('moves')}: {gameState.moveHistory.length}
           </div>
           {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
             <button
@@ -388,7 +388,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {tHub('myStats') || 'My Stats'}
+            {tHub('myStats')}
           </span>
           <span aria-hidden>{showStats ? '−' : '+'}</span>
         </button>
@@ -397,17 +397,17 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-primary tabular-nums">{stats.totalWins}</p>
-                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-fg tabular-nums">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
-                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
+                <p className="text-xs text-muted">{tHub('totalGames')}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
@@ -444,17 +444,17 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
-            {t('howToPlay') || 'How to Play'}
+            {t('howToPlay')}
           </span>
           <span aria-hidden>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
           <div className="mt-4 text-sub space-y-2">
-            <p>1. {t('rules.rule1') || 'Black plays first. Players take turns placing stones on the board.'}</p>
-            <p>2. {t('rules.rule2') || 'The goal is to get 5 stones in a row (horizontally, vertically, or diagonally).'}</p>
-            <p>3. {t('rules.rule3') || 'Once placed, stones cannot be moved.'}</p>
-            <p>4. {t('rules.rule4') || 'The first player to connect 5 stones wins!'}</p>
-            <p>5. {t('rules.rule5') || 'Black has forbidden moves: double-three (3-3), double-four (4-4), and overline (6+).'}</p>
+            <p>1. {t('rules.rule1')}</p>
+            <p>2. {t('rules.rule2')}</p>
+            <p>3. {t('rules.rule3')}</p>
+            <p>4. {t('rules.rule4')}</p>
+            <p>5. {t('rules.rule5')}</p>
           </div>
         )}
       </div>

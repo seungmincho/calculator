@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'CAGR 계산기 - 연평균성장률 계산, 미래가치 예측, 투자 비교 | 툴허브',
-  description: 'CAGR(연평균성장률)을 쉽게 계산합니다. 시작/종료 금액으로 수익률 계산, 미래가치 예측, 목표 달성 기간 산출. 코스피·S&P500·부동산 프리셋 비교, 연도별 성장 차트 제공.',
+  description: 'CAGR(연평균성장률)을 쉽게 계산합니다. 시작/종료 금액으로 수익률 계산, 미래가치 예측, 목표 달성 기간 산출. 예시 수익률 빠른 입력, 연도별 성장 차트 제공.',
   keywords: 'CAGR 계산기, 연평균성장률, 복리 계산기, 투자 수익률, 미래가치 계산, 복리 수익률, 투자 비교, 코스피 수익률, S&P500 수익률, 부동산 수익률',
   openGraph: {
     title: 'CAGR 계산기 - 연평균성장률 계산 | 툴허브',
-    description: 'CAGR(연평균성장률) 계산, 미래가치 예측, 투자 비교 분석. 코스피·S&P500·부동산 프리셋 제공.',
+    description: 'CAGR(연평균성장률) 계산, 미래가치 예측, 투자 비교 분석. 예시 수익률 빠른 입력.',
     url: 'https://toolhub.ai.kr/cagr-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -32,7 +32,7 @@ export default function CagrCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'CAGR 계산기',
-    description: 'CAGR(연평균성장률) 계산, 미래가치 예측, 투자 비교 분석. 코스피·S&P500·부동산 프리셋 제공.',
+    description: 'CAGR(연평균성장률) 계산, 미래가치 예측, 투자 비교 분석. 예시 수익률 빠른 입력.',
     url: 'https://toolhub.ai.kr/cagr-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -42,7 +42,7 @@ export default function CagrCalculatorPage() {
       'CAGR(연평균성장률) 계산',
       '미래가치 예측',
       '목표 달성 기간 산출',
-      '한국 자산 프리셋 (코스피, 서울아파트, S&P500)',
+      '예시 수익률(연 2~10%) 빠른 입력',
       '두 투자 비교 모드',
       '연도별 성장 차트 (Recharts)',
       '복리 주기 선택 (연/월/일)',
@@ -80,10 +80,10 @@ export default function CagrCalculatorPage() {
       },
       {
         '@type': 'Question',
-        name: '한국 주요 자산의 CAGR은 어느 정도인가요?',
+        name: '예상 수익률은 몇 %로 넣어야 하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '최근 10년 기준 코스피는 약 3.5%, 서울 아파트는 약 5.2%, S&P500은 약 10.5%, 미국 국채는 약 2.8%, 한국 정기예금은 약 2.0% 수준입니다. 다만 이는 과거 실적이며 미래 수익률을 보장하지 않습니다.',
+          text: '과거 수익률은 기간, 배당 포함 여부, 환율에 따라 크게 달라 한 숫자로 말하기 어렵습니다. 예금은 은행 고시 금리, 펀드·ETF는 운용사 공시 수익률처럼 직접 확인한 값을 넣고, 보수적·중립·낙관 세 가지로 바꿔 가며 비교해 보세요. 계산기의 예시 수익률(연 2~10%)은 빠른 입력용이며 특정 자산의 실적이 아닙니다.',
         },
       },
     ],

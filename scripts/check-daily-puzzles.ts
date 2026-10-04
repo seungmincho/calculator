@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { readDailyPuzzles } from '../src/utils/dailyPuzzles.ts'
-import { seasonalPicks } from '../src/utils/seasonalPicks.ts'
+import { seasonalPicks, upcomingDeadlines } from '../src/utils/seasonalPicks.ts'
 import { dailyNumber } from '../src/utils/crossword.ts'
 import { dayNumber, dailyAnswer as wordleAnswer } from '../src/utils/koreanWordle.ts'
 import { dailyAnswer as baseballAnswer } from '../src/utils/numberBaseball.ts'
@@ -99,8 +99,8 @@ assert.deepEqual(picks('2026-12-10'), ['csatGrade:0', 'yearEndPre:21'])
 assert.deepEqual(picks('2026-12-11'), ['yearEndPre:20', 'newYear:30'])
 assert.deepEqual(picks('2027-01-05'), ['yearEnd:54', 'newYear:5'])
 assert.deepEqual(picks('2027-01-11'), ['yearEnd:48'])
-assert.deepEqual(picks('2027-01-20'), ['carTaxPrepay:11', 'yearEnd:39'])
-assert.deepEqual(picks('2027-01-28'), ['seollal:11', 'carTaxPrepay:3'])  // 설 2027-02-07
+assert.deepEqual(picks('2027-01-20'), ['carTaxPrepay:12', 'yearEnd:39']) // 2027-01-31 일요일 → 연납 마감 2/1
+assert.deepEqual(picks('2027-01-28'), ['seollal:11', 'carTaxPrepay:4'])  // 설 2027-02-07
 assert.deepEqual(picks('2027-02-09'), ['yearEnd:19'])
 assert.deepEqual(picks('2027-05-20'), ['incomeTax:11'])
 assert.deepEqual(picks('2027-07-01'), [])
@@ -110,9 +110,20 @@ assert.equal(seasonalPicks(kst('2026-11-19'), 1).length, 1)
 // UTC로는 11-18 15:00 = KST 11-19 00:00
 assert.equal(seasonalPicks(new Date(Date.UTC(2026, 10, 18, 15)))[0].key, 'csatToday')
 
+// ── 다가오는 일정 (카드에 붙은 일정은 빼고, 카드와 합쳐 3개까지) ──
+const due = (ymd: string) => { const p = seasonalPicks(kst(ymd)); return upcomingDeadlines(kst(ymd), p).map(d => `${d.key}:${d.n}`) }
+assert.deepEqual(seasonalPicks(kst('2026-10-04'))[0].due, { key: 'csat', date: '2026-11-19' })
+assert.deepEqual(due('2026-10-04'), ['jongbu:72', 'yearEnd:88'])        // 수능은 카드에 붙음, 90일 넘는 1/15는 빠짐
+assert.deepEqual(due('2026-11-20'), ['jongbu:25'])                      // 카드 2개 + 1줄
+assert.deepEqual(due('2026-12-20'), ['simplified:26'])
+assert.deepEqual(due('2027-01-20'), [])                                 // 연납 마감은 카드에 붙음
+assert.deepEqual(due('2027-05-20'), ['carTaxLumpStart:27'])
+assert.deepEqual(due('2027-06-20'), ['carTaxLumpDue:10'])
+assert.deepEqual(upcomingDeadlines(kst('2026-12-14')).map(d => d.key), ['jongbu', 'yearEnd', 'simplified'])
+
 // 모든 규칙의 href가 실제 메뉴에 있음
 for (const d of ['2026-10-04', '2026-11-19', '2026-12-20', '2027-01-20', '2027-01-28', '2027-05-20', '2026-09-20']) {
-  for (const p of seasonalPicks(kst(d))) assert.ok(inMenu(p.href), `menuConfig에 없음: ${p.href}`)
+  for (const p of [...seasonalPicks(kst(d)), ...upcomingDeadlines(kst(d))]) assert.ok(inMenu(p.href), `menuConfig에 없음: ${p.href}`)
 }
 
 console.log('check-daily-puzzles: OK')

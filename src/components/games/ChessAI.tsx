@@ -322,7 +322,7 @@ export default function ChessAI({ difficulty, onBack }: ChessAIProps) {
             {t('playAgain')}
           </button>
           <GameResultShare
-            gameName={t('title')}
+            gameName={`${t('title')} ${tHub('vsAI')}`}
             result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
             difficulty={getDifficultyLabel(difficulty) || difficulty}
             moves={gameState.moveHistory.length}

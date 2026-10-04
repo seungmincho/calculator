@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/nationalPension'
 import { useSearchParams } from '@/hooks/useSearchParams'
@@ -104,6 +105,7 @@ export default function NationalPensionCalculator() {
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
+        <Link href="/pension-calculator/" className="inline-block mt-2 text-sm font-semibold text-primary hover:underline">{t('quickLink')}</Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

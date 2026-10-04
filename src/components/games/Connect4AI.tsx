@@ -150,9 +150,9 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
 
   const getWinnerMessage = () => {
     if (!gameState.winner) return ''
-    if (gameState.winner === 'draw') return t('draw') || 'Draw!'
-    if (gameState.winner === playerColor) return t('youWin') || 'You Win!'
-    return t('youLose') || 'You Lose!'
+    if (gameState.winner === 'draw') return t('draw')
+    if (gameState.winner === playerColor) return t('youWin')
+    return t('youLose')
   }
 
   const getDifficultyLabel = (diff: Difficulty) => {
@@ -207,7 +207,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
                 {tHub('you')}
               </p>
               <p className={`text-xs ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-red-200' : 'text-muted'}`}>
-                {t('red') || 'Red'}
+                {t('red')}
               </p>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
                 AI
               </p>
               <p className={`text-xs ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-700' : 'text-muted'}`}>
-                {t('yellow') || 'Yellow'}
+                {t('yellow')}
               </p>
             </div>
           </div>
@@ -264,7 +264,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
           <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
-          <p className="text-sm opacity-80">{gameState.moveHistory.length} {t('moves') || 'moves'} · {getDifficultyLabel(difficulty)}</p>
+          <p className="text-sm opacity-80">{gameState.moveHistory.length} {t('moves')} · {getDifficultyLabel(difficulty)}</p>
         </div>
       )}
       <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
@@ -289,7 +289,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
             </button>
           )}
           <GameResultShare
-            gameName={t('title') || '사목'}
+            gameName={`${tHub('gameList.connect4.name')} ${tHub('vsAI')}`}
             result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
             difficulty={getDifficultyLabel(difficulty) || difficulty}
             moves={gameState.moveHistory.length}
@@ -319,7 +319,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
       <div className="bg-surface rounded-2xl shadow-lg p-4">
         <div className="flex items-center justify-between">
           <div className="text-sm text-sub">
-            {t('moves') || 'Moves'}: {gameState.moveHistory.length}
+            {t('moves')}: {gameState.moveHistory.length}
           </div>
           {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
             <button
@@ -342,7 +342,7 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {tHub('myStats') || 'My Stats'}
+            {tHub('myStats')}
           </span>
           <span aria-hidden>{showStats ? '−' : '+'}</span>
         </button>
@@ -351,17 +351,17 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-primary tabular-nums">{stats.totalWins}</p>
-                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-fg tabular-nums">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
-                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
+                <p className="text-xs text-muted">{tHub('totalGames')}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
@@ -397,16 +397,16 @@ export default function Connect4AI({ difficulty, onBack, onResult, onLevelUp, ba
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
-            {t('howToPlay') || 'How to Play'}
+            {t('howToPlay')}
           </span>
           <span aria-hidden>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
           <div className="mt-4 text-sub space-y-2">
-            <p>1. {t('rules.rule1') || 'Players take turns dropping colored discs into a 7-column, 6-row grid.'}</p>
-            <p>2. {t('rules.rule2') || 'Discs fall to the lowest available space in the column.'}</p>
-            <p>3. {t('rules.rule3') || 'First player to connect 4 discs in a row (horizontally, vertically, or diagonally) wins!'}</p>
-            <p>4. {t('rules.rule4') || 'If the board fills up with no winner, the game is a draw.'}</p>
+            <p>1. {t('rules.rule1')}</p>
+            <p>2. {t('rules.rule2')}</p>
+            <p>3. {t('rules.rule3')}</p>
+            <p>4. {t('rules.rule4')}</p>
           </div>
         )}
       </div>

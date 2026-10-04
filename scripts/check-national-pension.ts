@@ -1,7 +1,7 @@
 // 국민연금 계산 회귀 체크: node scripts/check-national-pension.ts
 import {
   A_VALUE, coef, premiumRate, startAge, childCreditMonths, calcPension, shifted, crossoverAge,
-  workReduction, paybackAge, nominal, catchUpCost, calcByAge, DEPENDENT_ANNUAL, INCOME_FLOOR, INCOME_CAP, CPI_2026,
+  workReduction, paybackAge, nominal, catchUpCost, calcByAge, ageInput, DEPENDENT_ANNUAL, INCOME_FLOOR, INCOME_CAP, CPI_2026,
 } from '../src/utils/nationalPension.ts'
 
 let fail = 0
@@ -72,6 +72,9 @@ eq(byAge.ownMonths, 456, '38년')
 if (!(byAge.basic > 1_000_000 && byAge.basic < 3_000_000 * 0.5)) { fail++; console.log('FAIL 월 연금이 소득의 50% 넘음', byAge.basic) }
 eq(calcByAge(30, 3_000_000, 27, 70).ownMonths, 456, '65세 넘는 은퇴 나이는 65세까지만 납부')
 eq(calcByAge(58, 3_000_000, 57, 60).eligible, false, '3년 가입 = 수급권 없음')
+// 간편 → 상세 딥링크(b·s·y·i): /national-pension 범위(가입 18세 이후·65세 전) 안에 들어가야 같은 금액이 나옴
+eq(ageInput(30, 3_000_000, 27, 65), { birthYear: 1996, startYear: 2023, years: 38, income: 3_000_000 }, '딥링크 입력 변환')
+eq(ageInput(60, 3_000_000, 20, 65), { birthYear: 1966, startYear: 1988, years: 43, income: 3_000_000 }, '1988년 이전 가입 나이는 1988년부터')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-national-pension: all passed')

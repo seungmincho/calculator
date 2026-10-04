@@ -33,8 +33,8 @@
 | 1 | P0 | 금융 도구 42개 공식 기준 점검 — 6개 분야 + 최저임금 단일화 | 완료(배치1) |
 | 1b | P0 | 생활비 요금 공식 기준(fuel·taxi-fare·shipping·pc-electricity·installment·electricity) | 완료(배치1) |
 | 2 | P2 | 홈 "오늘의 퍼즐" 줄(일일 퍼즐 7종 완료 여부·연속 기록) + 날짜 기반 시즌 카드 | 완료(배치1) |
-| 3 | P1 | `/year-end-tax` 연말정산 미리보기 모드: 1~9월 카드 사용액 → 연간 추정, 25% 문턱까지 남은 금액, 10~12월 신용/체크 배분, IRP 12/31 마감, 공유 "13월의 월급 +N만원" (10/31까지) | 1번 C1 결과 후 |
-| 4 | P1 | 시즌 레일 확장: 마감일 D-day 칩 + "캘린더에 추가"(.ics, 라이브러리 없이) — `/annual-car-tax`·`/year-end-tax`·`/csat-dday` 재사용 (10/20까지) | 2번 후 |
+| 3 | P1 | `/year-end-tax` 연말정산 미리보기 모드: 1~9월 카드 사용액 → 연간 추정, 25% 문턱까지 남은 금액, 10~12월 신용/체크 배분, IRP 12/31 마감, 공유 "13월의 월급 +N만원" (10/31까지) | 완료(배치2, #26 미리보기 모드로 대체) |
+| 4 | P1 | 시즌 레일 확장: 마감일 D-day 칩 + "캘린더에 추가"(.ics, 라이브러리 없이) — `/annual-car-tax`·`/year-end-tax`·`/csat-dday` 재사용 (10/20까지) | 완료(배치8): 홈 "다가오는 일정"(seasonalPicks.upcomingDeadlines, 카드+줄 3개까지) + AddToCalendar(.ics, 메모에 도구 링크) — 연말정산·자동차세 연납·종부세·수능 대입 일정 |
 | 5 | P1 | 해외직구 관부가세 계산기 `/customs-duty` 신규 | 완료(배치1) |
 | 6 | P1 | 김장 계산기 `/kimjang-calculator` 신규 — 11월 aT 2026 김장비용 발표 시 단가 갱신 | 완료(배치1) |
 | 7 | P1 | 2027 최저임금 전용 `/minimum-wage` 신규 | 완료(배치4) |
@@ -44,11 +44,11 @@
 | 11 | P1 | `/greeting-generator` 크리스마스·송년회 건배사·수능 응원 + 정미년, 시즌 기본값 | 완료(배치5) |
 | 12 | P3 | 결정 도구 3종(order-picker·ladder-game·menu-roulette) SSR 복구 | 완료(배치1) |
 | 12a | P3 | 큰 Suspense 제거: SalaryCalculator.tsx:1361·HourlyWage.tsx:438·bogeumjari page.tsx:158 (+ MonthlyRentSubsidy·TaxCalculator·time-converter·chess·git-visualizer) — 원인: React 19.2가 12.8KB 넘는 완료 Suspense 경계를 `</main>` 뒤 숨김 영역으로 빼냄. 7개 Suspense 제거(+HourlyWage useState URL 읽기 → effect) | 완료(배치2) |
-| 12k | P3 | 정적 HTML에 h1 없는 페이지: /games(허브)·/pomodoro·/svg-editor·/calculation-history — games=GameHub ssr:false(닉네임 localStorage는 effect), pomodoro·history=컴포넌트에 h1 있으나 마운트 전 조기 return 추정 (tips/[id] 400개는 의도적 noindex). 점검 스크립트: `node scripts/check-static-html.cjs out` — 배포 전마다 돌릴 것 | 후보 |
-| 12l | — | /cs-hub 번역 키 노출(tools.algorithm.cta·tools.visualizer.cta·tools.quiz.cta — 분할 전부터) | 후보 |
+| 12k | P3 | 정적 HTML에 h1 없는 페이지: /games(허브)·/pomodoro·/svg-editor·/calculation-history — games=GameHub ssr:false(닉네임 localStorage는 effect), pomodoro·history=컴포넌트에 h1 있으나 마운트 전 조기 return 추정 (tips/[id] 400개는 의도적 noindex). 점검 스크립트: `node scripts/check-static-html.cjs out` — 배포 전마다 돌릴 것 | 완료(배치4) |
+| 12l | — | /cs-hub 번역 키 노출(tools.algorithm.cta·tools.visualizer.cta·tools.quiz.cta — 분할 전부터) | 완료(배치4) |
 | 12b | P3 | ToolFaq(보이는 FAQ+JSON-LD)/FaqJsonLd — 상위 39페이지, JSON-LD url 슬래시 35개 | 완료(배치5) |
 | 12c | P3 | sitemap lastmod `updatedDate?`, RSS·_redirects를 menuConfig에서 생성(누락 /running-pace 복구), RSS 최신순·description | 완료(배치1) |
-| 12d | P3 | 사실 오류: bonus FAQ 연금 상한 590만원(→ INSURANCE 참조), omok FAQ 15×15(실제 19×19), menu-roulette FAQ 프리셋 불일치, salary featureList "산재보험"(계산 안 함), salary-rank 2024 귀속 데이터 확인 | 1번 병합 후 |
+| 12d | P3 | 사실 오류: bonus FAQ 연금 상한 590만원(→ INSURANCE 참조), omok FAQ 15×15(실제 19×19), menu-roulette FAQ 프리셋 불일치, salary featureList "산재보험"(계산 안 함), salary-rank 2024 귀속 데이터 확인 | 완료(배치8): 앞 4개는 배치5에서 정정, salary-rank는 공공데이터포털 국세청 근로소득 천분위(2024 귀속, data.go.kr/data/15082063) 구간 평균→경계 보간 추정치로 교체(SalaryCalculator 공유). 연령·성별·업종 표는 여전히 비공식 '추정' |
 | 12e | P2 | ShareResult 추가: bogeumjari·work-hours·fuel·grade·gpa-calculator·bonus·installment·lunar·shipping·pc-electricity·menu-picker (+cs-hub 키), 보금자리 디딤돌 비교·다음 단계 링크, ShareResult 44px·복사 실패 처리 | 완료(배치4) |
 | 12f | P3 | RelatedTools 큐레이션(src/config/relatedTools.ts 67도구 344링크, 무작위 제거) + bogeumjari·salary-rank·omok RelatedTools | 완료(배치5) |
 | 12g | P3 | description 10개 보강, 얇은 본문 5개(omok·crossword·menu-picker·salary-rank·ladder) + 실제 동작과 다른 서술 정정 | 완료(배치5) |
@@ -66,11 +66,11 @@
 | 25 | P0 | 자녀세액공제 대상 2026~29 귀속 "2016년 이전 출생"(2026.4.21 개정, 2030~ 13세 이상) — netSalary `annualTaxEstimate`·간이세액표 자녀 집계(8~20세) 확인·정정 — netSalary가 yearEndTax childCredit 사용(결과 불변). 남은 것: 급여 계산기 '8~20세 자녀' 입력 하나가 간이세액표·연간 추정 겸용이라 2017~18년생 자녀는 연간 추정 과대(참고값) | 부분 완료(배치2) |
 | 26 | P1 | 연말정산 시즌: /year-end-tax "2026 귀속 달라진 점 + 2027 개정안" 카드, 12/31 연금저축·IRP·카드 마감 D-day, 1/15 간소화 카운트다운, 공유 이미지 — 미리보기 모드(?mode=preview)·Q4 체크카드 전략·IRP 채우기 | 완료(배치2) |
 | 27 | P1 | 자동차 취등록세 재작성(i18n·토큰·전기차 감면 D-day·예시 프리셋·공유, 가격 복원 버그) + 연납 KST D-day / 종부세 고지서 대조·납부기한·분납·일시적 2주택 | 완료(배치6) |
-| 28 | — | CarTaxCalculator·보금자리론 페이지 하드코딩 한국어·glass·light/dark 쌍 → i18n·토큰 / 양도세 일시적 2주택 계약일 입력(8.3 이전 계약 판정) / 로또 수령처(2등 지점) 확인 / 보금자리 전세사기피해자 조건·신용점수 LTV 차감 | 후보 |
+| 28 | — | CarTaxCalculator·보금자리론 페이지 하드코딩 한국어·glass·light/dark 쌍 → i18n·토큰 / 양도세 일시적 2주택 계약일 입력(8.3 이전 계약 판정) / ~~로또 수령처~~(배치8: 2·3등 농협 전국 지점, 동행복권 lt645/intro 확인) / 보금자리 전세사기피해자 조건·신용점수 LTV 차감 | 후보 |
 | 29 | P2 | 보금자리론 매월 1일 금리 갱신 예약 작업 + "지난달 대비" 배지, 시군구→규제지역 자동, ShareResult, 디딤돌 비교·DSR 연결 | 후보 |
-| 22 | — | CAGR 프리셋 수치(코스피 10년 3.5% 등) 출처 불명·낡음 → 수치 라벨 제거 | 후보 |
+| 22 | — | CAGR 프리셋 수치(코스피 10년 3.5% 등) 출처 불명·낡음 → 수치 라벨 제거 | 완료(배치8): 칩은 '연 2·3.5·5·7·10%' 예시만, page FAQ·description의 자산별 수익률 주장 삭제 |
 | 23 | — | 미사용 옛 i18n 키 정리(parentalLeave.guide·reducedHours·hourlyWage.minimumWage·healthInsurance regional/guide·nationalPension aValueDesc 등 — 옛 수치 포함), PensionCalculator glass 스타일·하드코딩 문구 | 후순위 |
-| 24 | P3 | /pension-calculator vs /national-pension 키워드 잠식 → 간이→상세 딥링크·역할 구분 | 후보 |
+| 24 | P3 | /pension-calculator vs /national-pension 키워드 잠식 → 간이→상세 딥링크·역할 구분 | 완료(배치8): pension-calculator = 간이+월 보험료(토큰·i18n·ShareResult·가이드 정적 HTML), ?b&s&y&i 딥링크·역링크, nationalPension.ageInput(1988 이전 가입 연수 과대 수정). 남은 것: 딥링크 착지 시 hydration 경고 1건(useSearchParams 설계상 허용) |
 | 14 | P2 | `ShareResult`에 카카오톡 공유 추가 — 카카오 앱 키·도메인 등록 필요(사용자 액션) | 사용자 확인 필요 |
 | 15 | P2 | 웹 푸시: `PushNotificationManager`는 붙어 있으나 `.env.local`에 VAPID·워커 URL 없음 → 운영도 비어 있으면 죽은 코드. 구현 또는 제거 | 사용자 확인 필요 |
 | 16 | P1 | 12월 이후: 근로장려금 금액 계산기 `/eitc`, "2027 달라지는 것" 허브, 아동수당 2027, 실업급여 2027, 자동차세 1월 연납 배너, 에너지바우처, 정미년 운세 카드 | 12월 |
@@ -78,8 +78,10 @@
 | 30 | P1 | 신규: /daily-wage-tax·/rental-yield·/one-rep-max (구독료 합계는 보류) | 완료(배치7) |
 | 31 | P1 | 법 개정 반영 — 근기법 제54조 휴게 생략(2026.12.10~): work-hours 휴게 경고·문구 / 고용보험 소득기준 전환(2027.1.1~): weekly-holiday-pay·hourly-wage "월 60시간 미만" 문구 + 시간단위 연차(2027.6.10) 예고, 연차 조항 번호를 개정 전후 모두 맞게 | 완료(배치7) |
 | 32 | P0 | 2028-01-01 이후 이직자부터 구직급여 기초일액이 보수일액으로(고용보험법 제45조①, 부칙 제3조) → unemploymentBenefit.ts 개편 | 2027 하반기 |
-| 33 | — | 게임 마무리: GameResultShare 닫기 버튼 aria-label·포커스 트랩, AI 대전 공유 제목이 '온라인 오목', Battleship 함선 이름 영어 | 후보 |
+| 33 | — | 게임 마무리: GameResultShare 닫기 버튼 aria-label·포커스 트랩, AI 대전 공유 제목이 '온라인 오목', Battleship 함선 이름 영어 | 완료(배치8): 다이얼로그 role·포커스 트랩·ESC·포커스 복귀, AI 공유 제목 "오목 AI 대전", 함선 이름 i18n, 죽은 `t()||'literal'` 폴백 제거. 남은 것: Battleship.tsx·ChessAI.tsx dark: 쌍 |
 | 18 | — | 기존 lint 오류(539) 범위 정해 점진 정리 | 후순위 |
+| 34 | — | 죽은 i18n 키(옛 수치 포함): pensionCalculator·salaryRank의 guide.guide/whatIs/howToUse/faq 등 — merge 스크립트 서식이 json.dumps와 달라 일괄 재작성 금지, 키 삭제 도구 필요 | 후보 |
+| 35 | — | Battleship.tsx·ChessAI.tsx dark: 색 쌍 → 토큰 | 후보 |
 
 조사 근거(2026-10-04 시즌 수요 조사): 2027 수치(최저임금 10,700원·국민연금 10%·건보 7.19% 동결·고용보험 1.0%)는 2차 출처 기준 — 반영 전 공식 고시 확인.
 
@@ -94,3 +96,4 @@
 - 2026-10-04 배치5 (a3cb5c0, 푸시됨, 배포 보류 — 사용자: 빌드는 나중에, 개선 먼저) · 상위 39페이지 보이는 FAQ·JSON-LD url·설명·본문, RelatedTools 큐레이션, 인사말 시즌(크리스마스·건배사·수능·정미년), 셔플 편향 수정(순서뽑기·사다리·가위바위보 → Fisher–Yates). 검증: check 149·tsc 0·audit 0
 - 2026-10-04 배치6 · 보드게임 7종(토큰·한 번에 시작·내 기록/연승·다시하기/난이도 올리기·?d= 공유), 자동차 취등록세 재작성·전기차 감면 D-day·연납 D-day, 종부세 고지서 대조·납부 일정·일시적 2주택. 검증: check 149·tsc 0·audit 0. 배포 보류
 - 2026-10-04 배치7 (96d0528) · 노동법 개정 반영(휴게 2026.12.10·고용보험 소득기준 2027.1.1·시간단위 연차 2027.6.10, 날짜별 안내), 신규 /daily-wage-tax·/rental-yield·/one-rep-max. 검증: check 152·tsc 0·audit 0. 배포 보류(배치5~7 누적) → NEXT-SESSION.md
+- 2026-10-04 배치8 · 홈 "다가오는 일정"(마감 D-day + .ics 캘린더 추가, 도구 링크·알림) + 연말정산·자동차세 연납·종부세·수능 대입 일정 캘린더 버튼, salary-rank/연봉 계산기 백분위 2024 귀속 공식 자료, 국민연금 2종 역할 분리·딥링크, 게임 공유 다이얼로그 접근성·AI 공유 제목·함선 이름, 로또 수령처 정정, CAGR 출처 없는 수익률 제거. 검증: check 152·salary/net mjs·범위 tsc(변경 29파일) 0·audit 0. 브라우저 확인·배포는 배치5~8 함께(메모리 여유 부족, 사용자: 개선 먼저)

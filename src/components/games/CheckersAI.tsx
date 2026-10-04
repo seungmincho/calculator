@@ -168,9 +168,9 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
 
   const getWinnerMessage = () => {
     if (!gameState.winner) return ''
-    if (gameState.winner === 'draw') return t('draw') || 'Draw!'
-    if (gameState.winner === playerColor) return t('youWin') || 'You Win!'
-    return t('youLose') || 'You Lose!'
+    if (gameState.winner === 'draw') return t('draw')
+    if (gameState.winner === playerColor) return t('youWin')
+    return t('youLose')
   }
 
   const getDifficultyLabel = (diff: Difficulty) => {
@@ -225,7 +225,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
                 {tHub('you')} ({winCount.player})
               </p>
               <p className={`text-xs ${gameState.currentTurn === playerColor && !gameState.winner ? 'text-red-200' : 'text-muted'}`}>
-                {t('red') || 'Red'}
+                {t('red')}
               </p>
             </div>
           </div>
@@ -246,7 +246,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
                 AI ({winCount.ai})
               </p>
               <p className={`text-xs ${gameState.currentTurn === aiColor && !gameState.winner ? 'text-gray-300' : 'text-muted'}`}>
-                {t('black') || 'Black'}
+                {t('black')}
               </p>
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
             </span>
           ) : gameState.mustCapture ? (
             <span className="font-semibold">
-              {t('mustCapture') || 'You must capture!'}
+              {t('mustCapture')}
             </span>
           ) : (
             isPlayerTurn ? t('yourTurn') : t('opponentTurn')
@@ -299,7 +299,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
             className="ui-btn w-full min-h-12 py-3 px-6 text-lg"
           >
             <RefreshCw className="w-5 h-5" />
-            {t('playAgain') || 'Play Again'}
+            {t('playAgain')}
           </button>
           {onLevelUp && difficulty !== 'hard' && (
             <button
@@ -311,7 +311,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
             </button>
           )}
           <GameResultShare
-            gameName={t('title') || '체커'}
+            gameName={`${tHub('gameList.checkers.name')} ${tHub('vsAI')}`}
             result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
             difficulty={getDifficultyLabel(difficulty) || difficulty}
             url={`https://toolhub.ai.kr/checkers/?d=${difficulty}`}
@@ -346,7 +346,7 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {tHub('myStats') || 'My Stats'}
+            {tHub('myStats')}
           </span>
           <span aria-hidden>{showStats ? '−' : '+'}</span>
         </button>
@@ -355,17 +355,17 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-primary tabular-nums">{stats.totalWins}</p>
-                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-fg tabular-nums">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
-                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
+                <p className="text-xs text-muted">{tHub('totalGames')}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
@@ -395,17 +395,17 @@ export default function CheckersAI({ difficulty, onBack, onResult, onLevelUp, ba
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
-            {t('howToPlay') || 'How to Play'}
+            {t('howToPlay')}
           </span>
           <span aria-hidden>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
           <div className="mt-4 text-sub space-y-2">
-            <p>1. {t('rules.rule1') || 'Red moves first. Pieces move diagonally forward.'}</p>
-            <p>2. {t('rules.rule2') || 'Capture opponent pieces by jumping over them.'}</p>
-            <p>3. {t('rules.rule3') || 'If you can capture, you must capture.'}</p>
-            <p>4. {t('rules.rule4') || 'Reach the opposite end to become a King (can move backwards).'}</p>
-            <p>5. {t('rules.rule5') || 'Win by capturing all opponent pieces or blocking all their moves.'}</p>
+            <p>1. {t('rules.rule1')}</p>
+            <p>2. {t('rules.rule2')}</p>
+            <p>3. {t('rules.rule3')}</p>
+            <p>4. {t('rules.rule4')}</p>
+            <p>5. {t('rules.rule5')}</p>
           </div>
         )}
       </div>

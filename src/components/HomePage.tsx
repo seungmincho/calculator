@@ -11,8 +11,9 @@ import { usePopularTools } from '@/hooks/useToolAnalytics'
 import SearchDialog from './SearchDialog'
 import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 import ToolIcon from './ToolIcon'
+import AddToCalendar, { useDeadlineEvent } from './AddToCalendar'
 import type { PuzzleStatus } from '@/utils/dailyPuzzles'
-import type { SeasonPick } from '@/utils/seasonalPicks'
+import type { SeasonPick, Deadline } from '@/utils/seasonalPicks'
 
 /** 카테고리별로 홈에서 바로 보여줄 도구 수 (나머지는 카테고리 허브 링크) */
 const PER_CATEGORY = 12
@@ -44,6 +45,7 @@ export default function HomePage() {
   const { popularTools, isLoading: isPopularLoading } = usePopularTools(5)
   const [puzzles, setPuzzles] = useState<Record<string, PuzzleStatus>>({})
   const [seasonPicks, setSeasonPicks] = useState<SeasonPick[]>([])
+  const [deadlines, setDeadlines] = useState<Deadline[]>([])
 
   useEffect(() => {
     // Keep the server HTML and first client render identical; storage is read after hydration.
@@ -68,7 +70,13 @@ export default function HomePage() {
       .then(m => { if (alive) setPuzzles(Object.fromEntries(m.readDailyPuzzles().map(p => [p.href, p]))) })
       .catch(() => {})
     import('@/utils/seasonalPicks')
-      .then(m => { if (alive) setSeasonPicks(m.seasonalPicks(new Date())) })
+      .then(m => {
+        if (!alive) return
+        const now = new Date()
+        const picks = m.seasonalPicks(now)
+        setSeasonPicks(picks)
+        setDeadlines(m.upcomingDeadlines(now, picks))
+      })
       .catch(() => {})
     return () => { alive = false }
   }, [])
@@ -123,24 +131,47 @@ export default function HomePage() {
     return n > 0 ? t('homePage.dailyPuzzles.keepStreak', { n }) : t('homePage.dailyPuzzles.todo')
   }
 
-  /** 시즌 카드: 데스크톱은 히어로 오른쪽 빈 칸, 모바일은 오늘의 퍼즐 아래 — 늦게 들어와도 위 콘텐츠를 밀지 않는 자리 */
-  const seasonCards = (id: string, className: string) => seasonPicks.length > 0 && (
+  const deadlineEvent = useDeadlineEvent()
+  const calendar = (d: { key: string; date: string }, href: string) =>
+    <AddToCalendar events={[deadlineEvent(d.key, d.date, href)]} file={`${d.key}-${d.date}.ics`} title={t(`homePage.deadline.${d.key}`)} />
+
+  /** 시즌 카드 + 다가오는 일정: 데스크톱은 히어로 오른쪽 빈 칸, 모바일은 오늘의 퍼즐 아래 — 늦게 들어와도 위 콘텐츠를 밀지 않는 자리.
+   *  카드·일정 합쳐 3개까지 (upcomingDeadlines) — 히어로 높이를 넘지 않게 */
+  const seasonCards = (id: string, className: string) => (seasonPicks.length > 0 || deadlines.length > 0) && (
     <aside aria-labelledby={id} className={className}>
-      <h2 id={id} className="text-sm font-semibold text-muted mb-2 px-1">{t('homePage.season.label')}</h2>
+      <h2 id={id} className="text-sm font-semibold text-muted mb-2 px-1">{t(seasonPicks.length ? 'homePage.season.label' : 'homePage.deadline.label')}</h2>
       <ul className="space-y-2">
         {seasonPicks.map(p => (
-          <li key={p.key}>
-            <Link prefetch={false} href={p.href} className="ui-card flex items-center gap-3 p-4 hover:bg-subtle transition-colors">
+          <li key={p.key} className="ui-card flex items-center pr-2 hover:bg-subtle transition-colors">
+            <Link prefetch={false} href={p.href} className="flex flex-1 min-w-0 items-center gap-3 p-4">
               <ToolIcon href={p.href} />
               <span className="flex-1 min-w-0">
                 <span className="block text-[15px] font-bold text-fg">{t(`homePage.season.${p.key}.title`, { n: p.n })}</span>
                 <span className="block text-[13px] text-muted">{t(`homePage.season.${p.key}.desc`, { n: p.n })}</span>
               </span>
-              <ChevronRight className="w-4 h-4 text-faint shrink-0" aria-hidden />
+              {!p.due && <ChevronRight className="w-4 h-4 text-faint shrink-0" aria-hidden />}
             </Link>
+            {p.due && calendar(p.due, p.href)}
           </li>
         ))}
       </ul>
+      {deadlines.length > 0 && (
+        <>
+          {seasonPicks.length > 0 && <h3 className="text-sm font-semibold text-muted mt-4 mb-1 px-1">{t('homePage.deadline.label')}</h3>}
+          <ul>
+            {deadlines.map(d => (
+              <li key={d.key + d.date} className="flex items-center">
+                <Link prefetch={false} href={d.href} className="flex flex-1 min-w-0 items-center gap-2 px-1 py-2.5 text-sm rounded-lg hover:text-primary">
+                  <span className="w-11 shrink-0 font-semibold text-primary tabular-nums">D-{d.n}</span>
+                  <span className="flex-1 min-w-0 truncate text-body">{t(`homePage.deadline.${d.key}`)}</span>
+                  <span className="shrink-0 text-faint tabular-nums">{Number(d.date.slice(5, 7))}.{Number(d.date.slice(8))}</span>
+                </Link>
+                {calendar(d, d.href)}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </aside>
   )
 

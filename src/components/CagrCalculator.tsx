@@ -20,13 +20,8 @@ interface YearlyData {
   growthRateB?: number
 }
 
-const PRESETS = [
-  { key: 'kospi', cagr: 3.5, period: 10 },
-  { key: 'seoulApt', cagr: 5.2, period: 10 },
-  { key: 'sp500', cagr: 10.5, period: 10 },
-  { key: 'usBond', cagr: 2.8, period: 10 },
-  { key: 'deposit', cagr: 2.0, period: 10 },
-]
+// 빠른 입력용 예시 수익률 (10년). 자산별 과거 수익률은 출처 확인이 안 돼 이름을 붙이지 않음
+const PRESETS = [2, 3.5, 5, 7, 10].map(cagr => ({ key: String(cagr), cagr, period: 10 }))
 
 function parseNumber(str: string): number {
   return Number(str.replace(/,/g, '')) || 0
@@ -636,9 +631,9 @@ export default function CagrCalculator() {
                   <button
                     key={preset.key}
                     onClick={() => handlePreset(preset.key)}
-                    className="px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-xs bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
                   >
-                    {t(`preset.${preset.key}`)}
+                    {t('preset.rate', { rate: preset.cagr })}
                   </button>
                 ))}
               </div>

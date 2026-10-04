@@ -9,6 +9,7 @@
 import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/yearEndTaxCalc'
 import { ChevronDown } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
@@ -57,6 +58,7 @@ const CHG_LINKS = [
 
 export default function YearEndTaxCalculator() {
   const t = useTranslations('yearEndTaxCalc')
+  const deadlineEvent = useDeadlineEvent()
   const searchParams = useSearchParams()
   const [inp, setInp] = useState<YetInput>(DEFAULT_INPUT)
   const [opt, setOpt] = useState<Record<OptKey, string>>({ pension: '', healthEmp: '', prepaid: '' })
@@ -397,6 +399,10 @@ export default function YearEndTaxCalculator() {
               <Todo title={t('yt.todo.simplified')} dday={dd(DEADLINE.simplified)} gain={null}
                 desc={t('yt.todo.simplifiedDesc', { year: TAX_YEAR + 1 })} />
             </ul>
+            <AddToCalendar className="mt-4" file={`year-end-tax-${TAX_YEAR}.ics`} events={[
+              deadlineEvent('yearEnd', DEADLINE.yearEnd, '/year-end-tax', 7),
+              deadlineEvent('simplified', DEADLINE.simplified, '/year-end-tax', 1),
+            ]} />
           </div>
 
           {/* 더 돌려받는 방법 */}

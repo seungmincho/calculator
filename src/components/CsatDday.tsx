@@ -8,6 +8,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/csatDday'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import AddToCalendar from '@/components/AddToCalendar'
 import { CSAT_EXAM_DATE, daysUntil } from '@/utils/csatGrade'
 import {
   kstParts, toMin, fmtMin, slotAt, countdown, timelineStatus, progress, cleanAnswer, isShortAnswer,
@@ -469,6 +470,11 @@ function Timeline() {
       <div className="flex flex-wrap gap-2">
         <Link href="/csat-grade/" className="ui-btn-soft px-4 py-2 text-sm">{t('timeline.linkGrade')}</Link>
         <Link href="/dday-calculator/" className="ui-btn-soft px-4 py-2 text-sm">{t('timeline.linkDday')}</Link>
+        <AddToCalendar file="csat-2027-schedule.ics" events={TIMELINE.filter((x) => !x.approx && (!today || (x.end ?? x.start) >= today)).map((x) => ({
+          uid: `csat-${x.key}-${x.start}`, date: x.start, end: x.end, alarmDays: 1,
+          title: x.until ? `${t(`timeline.items.${x.key}`)} (${when(x)})` : t(`timeline.items.${x.key}`),
+          description: 'https://toolhub.ai.kr/csat-dday/',
+        }))} />
       </div>
     </div>
   )

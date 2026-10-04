@@ -193,7 +193,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
       if (!success) {
         await leaveSupabaseRoomRef.current(initialRoom.id)
         setGamePhase('lobby')
-        showToastRef.current(t('connectionFailed') || 'Failed to connect to host', 'error')
+        showToastRef.current(t('connectionFailed'), 'error')
         if (onBackRef.current) onBackRef.current()
       }
     }
@@ -218,7 +218,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
       const success = await joinPeerRoomRef.current(joinPeerId)
       if (!success) {
         setGamePhase('lobby')
-        showToastRef.current(t('connectionFailed') || 'Failed to connect', 'error')
+        showToastRef.current(t('connectionFailed'), 'error')
       }
     }
     autoJoin()
@@ -243,7 +243,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
     if (onDisconnect) {
       onDisconnect(() => {
         if (gamePhase === 'playing' || gamePhase === 'waiting' || gamePhase === 'setup' || gamePhase === 'finished') {
-          showToast(t('opponentDisconnected') || 'Opponent has disconnected', 'error')
+          showToast(t('opponentDisconnected'), 'error')
           handleBackToLobby()
         }
       })
@@ -367,12 +367,12 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
       if (result === 'sunk') {
         showToast(
           isMyAttack
-            ? (t('youSunkShip') || 'You sunk a ship!')
-            : (t('yourShipSunk') || 'Your ship was sunk!'),
+            ? (t('youSunkShip'))
+            : (t('yourShipSunk')),
           isMyAttack ? 'success' : 'error'
         )
       } else if (result === 'hit' && isMyAttack) {
-        showToast(t('hit') || 'Hit!', 'success')
+        showToast(t('hit'), 'success')
       }
     }
   }, [gameState.lastMove, myRole, t, showToast])
@@ -457,7 +457,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
     const joined = await joinSupabaseRoom(room.id)
     if (!joined) {
-      showToast(t('roomAlreadyFull') || 'Room is already full', 'error')
+      showToast(t('roomAlreadyFull'), 'error')
       return
     }
 
@@ -470,7 +470,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
     const success = await joinPeerRoom(room.host_id)
     if (!success) {
       setGamePhase('lobby')
-      showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
+      showToast(t('connectionFailed'), 'error')
       return
     }
   }
@@ -593,7 +593,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
   // 직접 입장
   const handleDirectJoin = async () => {
-    const hostPeerId = prompt(t('enterPeerId') || 'Enter host Peer ID:')
+    const hostPeerId = prompt(t('enterPeerId'))
     if (!hostPeerId) return
 
     const name = playerName || prompt(t('enterYourName')) || t('guest')
@@ -608,7 +608,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
     const success = await joinPeerRoom(hostPeerId)
     if (!success) {
       setGamePhase('lobby')
-      showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
+      showToast(t('connectionFailed'), 'error')
     }
   }
 
@@ -632,8 +632,8 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
 
   const getWinnerMessage = () => {
     if (!gameState.winner) return ''
-    if (gameState.winner === myRole) return t('youWin') || 'You Win!'
-    return t('youLose') || 'You Lose!'
+    if (gameState.winner === myRole) return t('youWin')
+    return t('youLose')
   }
 
   // 내 공격 보드와 내 보드 가져오기
@@ -666,18 +666,18 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             className="w-full flex items-center justify-between text-left"
           >
             <h3 className="text-lg font-semibold text-fg">
-              {t('howToPlay') || 'How to Play'}
+              {t('howToPlay')}
             </h3>
             {showRules ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
           </button>
 
           {showRules && (
             <div className="mt-4 space-y-3 text-sm text-sub">
-              <p><strong>{t('rules.objective') || 'Objective'}:</strong> {t('rules.objectiveDesc') || 'Sink all enemy ships before they sink yours.'}</p>
-              <p><strong>{t('rules.setup') || 'Setup'}:</strong> {t('rules.setupDesc') || 'Place your 5 ships on the grid. Ships cannot overlap or touch.'}</p>
-              <p><strong>{t('rules.ships') || 'Ships'}:</strong> {t('rules.shipsDesc') || 'Carrier (5), Battleship (4), Cruiser (3), Submarine (3), Destroyer (2)'}</p>
-              <p><strong>{t('rules.gameplay') || 'Gameplay'}:</strong> {t('rules.gameplayDesc') || 'Take turns firing at coordinates. Hit all parts of a ship to sink it.'}</p>
-              <p><strong>{t('rules.end') || 'End'}:</strong> {t('rules.endDesc') || 'First player to sink all enemy ships wins.'}</p>
+              <p><strong>{t('rules.objective')}:</strong> {t('rules.objectiveDesc')}</p>
+              <p><strong>{t('rules.setup')}:</strong> {t('rules.setupDesc')}</p>
+              <p><strong>{t('rules.ships')}:</strong> {t('rules.shipsDesc')}</p>
+              <p><strong>{t('rules.gameplay')}:</strong> {t('rules.gameplayDesc')}</p>
+              <p><strong>{t('rules.end')}:</strong> {t('rules.endDesc')}</p>
             </div>
           )}
         </div>
@@ -685,13 +685,13 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
         {/* 직접 입장 */}
         <div className="bg-surface rounded-2xl shadow-lg p-6">
           <h3 className="text-lg font-semibold text-fg mb-4">
-            {t('directConnect') || 'Direct Connect'}
+            {t('directConnect')}
           </h3>
           <button
             onClick={handleDirectJoin}
             className="w-full py-3 px-6 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body font-medium rounded-xl transition-all"
           >
-            {t('enterPeerIdButton') || 'Enter Peer ID to Join'}
+            {t('enterPeerIdButton')}
           </button>
         </div>
       </div>
@@ -711,7 +711,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             )}
           </div>
           <h2 className="text-2xl font-bold text-fg mb-2 mt-6">
-            {isHostRef.current ? t('waitingForOpponent') : (t('connecting') || 'Connecting...')}
+            {isHostRef.current ? t('waitingForOpponent') : (t('connecting'))}
           </h2>
 
           {isHostRef.current && (
@@ -719,10 +719,10 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
               <GameInviteLink peerId={peerId} gameSlug="battleship" gameTitle={t('title')} />
               <details className="bg-soft rounded-xl p-4 mb-6">
                 <summary className="text-sm text-muted cursor-pointer select-none">
-                  Peer ID ({t('directConnect') || 'Direct Connect'})
+                  Peer ID ({t('directConnect')})
                 </summary>
                 <div className="flex items-center justify-center gap-2 mt-2">
-                  <p className="font-mono text-sm text-fg break-all">{peerId || 'Loading...'}</p>
+                  <p className="font-mono text-sm text-fg break-all">{peerId || tCommon('loading')}</p>
                   <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
                     {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
                   </button>
@@ -750,7 +750,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="bg-surface rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-fg mb-4 text-center">
-            {t('placeYourShips') || 'Place Your Ships'}
+            {t('placeYourShips')}
           </h2>
 
           {!isReady ? (
@@ -759,11 +759,11 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
               <div className="text-center mb-4">
                 {currentShip ? (
                   <p className="text-sub">
-                    {t('placing') || 'Placing'}: <strong>{currentShip.name}</strong> ({currentShip.size} {t('cells') || 'cells'})
+                    {t('placing')}: <strong>{t(`shipNames.${currentShip.id}`)}</strong> ({currentShip.size} {t('cells')})
                   </p>
                 ) : (
                   <p className="text-green-600 dark:text-green-400 font-semibold">
-                    {t('allShipsPlaced') || 'All ships placed!'}
+                    {t('allShipsPlaced')}
                   </p>
                 )}
               </div>
@@ -775,21 +775,21 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                   className="flex items-center gap-2 px-4 py-2 bg-soft text-sub rounded-lg"
                 >
                   <RotateCw className="w-4 h-4" />
-                  {horizontal ? (t('horizontal') || 'Horizontal') : (t('vertical') || 'Vertical')}
+                  {horizontal ? (t('horizontal')) : (t('vertical'))}
                 </button>
                 <button
                   onClick={handleRandomPlace}
                   className="flex items-center gap-2 px-4 py-2 bg-soft text-body rounded-lg"
                 >
                   <Shuffle className="w-4 h-4" />
-                  {t('random') || 'Random'}
+                  {t('random')}
                 </button>
                 <button
                   onClick={handleResetPlacement}
                   className="flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg"
                 >
                   <RefreshCw className="w-4 h-4" />
-                  {t('reset') || 'Reset'}
+                  {t('reset')}
                 </button>
               </div>
 
@@ -817,7 +817,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                         : 'bg-soft text-gray-500'
                     }`}
                   >
-                    {ship.name} ({ship.size})
+                    {t(`shipNames.${ship.id}`)} ({ship.size})
                   </div>
                 ))}
               </div>
@@ -829,7 +829,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                     onClick={handleConfirmPlacement}
                     className="px-8 py-3 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
                   >
-                    {t('ready') || 'Ready!'}
+                    {t('ready')}
                   </button>
                 </div>
               )}
@@ -841,8 +841,8 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
               </div>
               <p className="text-sub">
                 {opponentReady
-                  ? (t('startingGame') || 'Starting game...')
-                  : (t('waitingForOpponentSetup') || 'Waiting for opponent to place ships...')}
+                  ? (t('startingGame'))
+                  : (t('waitingForOpponentSetup'))}
               </p>
             </div>
           )}
@@ -990,7 +990,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             {/* 적 보드 (공격용) */}
             <div className="bg-surface rounded-2xl shadow-lg p-4">
               <h3 className="text-center font-semibold text-body mb-2">
-                {t('enemyWaters') || 'Enemy Waters'}
+                {t('enemyWaters')}
               </h3>
               <BattleshipBoardComponent
                 board={myAttackBoard}
@@ -1005,7 +1005,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             {/* 내 보드 */}
             <div className="bg-surface rounded-2xl shadow-lg p-4">
               <h3 className="text-center font-semibold text-body mb-2">
-                {t('yourFleet') || 'Your Fleet'}
+                {t('yourFleet')}
               </h3>
               <BattleshipBoardComponent
                 board={myBoard}
@@ -1021,7 +1021,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           {/* 함선 상태 */}
           <div className="bg-surface rounded-2xl shadow-lg p-4">
             <h4 className="text-sm font-semibold text-body mb-2">
-              {t('yourShips') || 'Your Ships'}
+              {t('yourShips')}
             </h4>
             <div className="flex gap-2 flex-wrap">
               {myShips.map(ship => (
@@ -1035,7 +1035,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                       : 'bg-soft text-sub'
                   }`}
                 >
-                  {ship.name} ({ship.size - ship.hits}/{ship.size})
+                  {t(`shipNames.${ship.id}`)} ({ship.size - ship.hits}/{ship.size})
                 </div>
               ))}
             </div>
@@ -1067,14 +1067,14 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
               <div className="p-4 border-b border-line">
                 <h3 className="font-semibold text-fg flex items-center gap-2">
-                  {t('chat') || 'Chat'}
+                  {t('chat')}
                 </h3>
               </div>
 
               <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3">
                 {chatMessages.length === 0 ? (
                   <p className="text-center text-faint text-sm py-8">
-                    {t('noChatMessages') || 'No messages yet'}
+                    {t('noChatMessages')}
                   </p>
                 ) : (
                   chatMessages.map((msg) => (
@@ -1107,7 +1107,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                         handleSendChat()
                       }
                     }}
-                    placeholder={t('typeMessage') || 'Type a message...'}
+                    placeholder={t('typeMessage')}
                     className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     maxLength={200}
                   />

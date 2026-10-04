@@ -197,8 +197,8 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
 
   const getWinnerMessage = () => {
     if (!gameState.winner) return ''
-    if (gameState.winner === playerRole) return t('youWin') || 'Victory!'
-    return t('youLose') || 'Defeat!'
+    if (gameState.winner === playerRole) return t('youWin')
+    return t('youLose')
   }
 
   const getDifficultyLabel = (diff: Difficulty) => {
@@ -233,13 +233,13 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
         {/* Ship Placement */}
         <div className="bg-surface rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-fg mb-4">
-            {t('placeYourShips') || 'Place Your Ships'}
+            {t('placeYourShips')}
           </h2>
 
           {currentShipIndex < SHIP_TYPES.length ? (
             <div className="mb-4">
               <p className="text-sub mb-2">
-                {t('placingShip') || 'Placing'}: <strong>{SHIP_TYPES[currentShipIndex].name}</strong> ({SHIP_TYPES[currentShipIndex].size} {t('cells') || 'cells'})
+                {t('placingShip')}: <strong>{t(`shipNames.${SHIP_TYPES[currentShipIndex].id}`)}</strong> ({SHIP_TYPES[currentShipIndex].size} {t('cells')})
               </p>
               <div className="flex gap-2">
                 <button
@@ -247,27 +247,27 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
                   className="flex items-center gap-2 px-4 py-2 min-h-11 bg-soft text-body rounded-lg hover:bg-subtle"
                 >
                   <RotateCw className="w-4 h-4" />
-                  {horizontal ? t('horizontal') || 'Horizontal' : t('vertical') || 'Vertical'}
+                  {horizontal ? t('horizontal') : t('vertical')}
                 </button>
                 <button
                   onClick={handleRandomPlace}
                   className="flex items-center gap-2 px-4 py-2 min-h-11 bg-soft text-body rounded-lg hover:bg-subtle"
                 >
                   <Shuffle className="w-4 h-4" />
-                  {t('randomPlace') || 'Random'}
+                  {t('randomPlace')}
                 </button>
               </div>
             </div>
           ) : (
             <div className="mb-4">
               <p className="text-primary font-medium mb-4">
-                ✓ {t('allShipsPlaced') || 'All ships placed!'}
+                ✓ {t('allShipsPlaced')}
               </p>
               <button
                 onClick={handleStartGame}
                 className="px-6 py-3 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl"
               >
-                {t('startBattle') || 'Start Battle'}
+                {t('startBattle')}
               </button>
             </div>
           )}
@@ -293,7 +293,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
                     : 'bg-soft text-muted'
                 }`}
               >
-                {ship.name} ({ship.size})
+                {t(`shipNames.${ship.id}`)} ({ship.size})
               </div>
             ))}
           </div>
@@ -372,7 +372,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
             className="ui-btn w-full min-h-12 py-3 px-6 text-lg"
           >
             <RefreshCw className="w-5 h-5" />
-            {t('playAgain') || 'Play Again'}
+            {t('playAgain')}
           </button>
           {onLevelUp && difficulty !== 'hard' && (
             <button
@@ -384,7 +384,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
             </button>
           )}
           <GameResultShare
-            gameName={t('title') || '배틀쉽'}
+            gameName={`${tHub('gameList.battleship.name')} ${tHub('vsAI')}`}
             result={gameState.winner === playerRole ? 'win' : 'loss'}
             difficulty={getDifficultyLabel(difficulty) || difficulty}
             url={`https://toolhub.ai.kr/battleship/?d=${difficulty}`}
@@ -403,7 +403,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
         {/* Enemy Board (Attack) */}
         <div className="bg-surface rounded-2xl shadow-lg p-4">
           <h3 className="text-lg font-semibold text-fg mb-2">
-            {t('enemyWaters') || 'Enemy Waters'}
+            {t('enemyWaters')}
           </h3>
           <BattleshipBoardComponent
             board={gameState.player1Attacks}
@@ -414,14 +414,14 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
             showShips={false}
           />
           <div className="mt-2 text-sm text-muted">
-            {t('shipsRemaining') || 'Ships remaining'}: {gameState.player2Ships.filter(s => !s.sunk).length}
+            {t('shipsRemaining')}: {gameState.player2Ships.filter(s => !s.sunk).length}
           </div>
         </div>
 
         {/* Your Board */}
         <div className="bg-surface rounded-2xl shadow-lg p-4">
           <h3 className="text-lg font-semibold text-fg mb-2">
-            {t('yourFleet') || 'Your Fleet'}
+            {t('yourFleet')}
           </h3>
           <BattleshipBoardComponent
             board={gameState.player1Board}
@@ -432,7 +432,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
             showShips={true}
           />
           <div className="mt-2 text-sm text-muted">
-            {t('shipsRemaining') || 'Ships remaining'}: {gameState.player1Ships.filter(s => !s.sunk).length}
+            {t('shipsRemaining')}: {gameState.player1Ships.filter(s => !s.sunk).length}
           </div>
         </div>
       </div>
@@ -446,7 +446,7 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
         >
           <span className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            {tHub('myStats') || 'My Stats'}
+            {tHub('myStats')}
           </span>
           <span aria-hidden>{showStats ? '−' : '+'}</span>
         </button>
@@ -455,17 +455,17 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-primary tabular-nums">{stats.totalWins}</p>
-                <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
+                <p className="text-xs text-muted">{tHub('wins')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-fg tabular-nums">
                   {stats.easy.losses + stats.normal.losses + stats.hard.losses}
                 </p>
-                <p className="text-xs text-muted">{tHub('losses') || 'Losses'}</p>
+                <p className="text-xs text-muted">{tHub('losses')}</p>
               </div>
               <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-sub">{stats.totalGames}</p>
-                <p className="text-xs text-muted">{tHub('totalGames') || 'Total'}</p>
+                <p className="text-xs text-muted">{tHub('totalGames')}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2 text-sm">
@@ -495,16 +495,16 @@ export default function BattleshipAI({ difficulty, onBack, onResult, onLevelUp, 
         >
           <span className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
-            {t('howToPlay') || 'How to Play'}
+            {t('howToPlay')}
           </span>
           <span aria-hidden>{showRules ? '−' : '+'}</span>
         </button>
         {showRules && (
           <div className="mt-4 text-sub space-y-2">
-            <p>1. {t('rules.rule1') || 'Place your ships on the board before battle begins.'}</p>
-            <p>2. {t('rules.rule2') || 'Take turns firing at the enemy grid.'}</p>
-            <p>3. {t('rules.rule3') || 'Red X marks a hit, gray dot marks a miss.'}</p>
-            <p>4. {t('rules.rule4') || 'Sink all enemy ships to win!'}</p>
+            <p>1. {t('rules.rule1')}</p>
+            <p>2. {t('rules.rule2')}</p>
+            <p>3. {t('rules.rule3')}</p>
+            <p>4. {t('rules.rule4')}</p>
           </div>
         )}
       </div>

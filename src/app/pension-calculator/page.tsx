@@ -1,15 +1,21 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 import PensionCalculator from '@/components/PensionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { A_VALUE } from '@/utils/nationalPension'
+
+// 간편 계산(나이·월 소득 → 예상 연금 + 월 보험료). 조기·연기·크레딧 상세는 /national-pension
+const DESC = `나이와 월 소득만 넣으면 국민연금 예상 수령액과 매달 내는 보험료(본인 ${pct(INSURANCE.pensionRate)}·회사 ${pct(INSURANCE.pensionRate)}), 소득대체율을 바로 계산합니다. ${INSURANCE.year}년 연금개혁(보험료율 ${pct(INSURANCE.pensionRateTotal)})·A값 ${A_VALUE.toLocaleString('ko-KR')}원 반영.`
 
 export const metadata: Metadata = {
   title: '국민연금 수령액 계산기 - 예상 연금액, 납부액 | 툴허브',
-  description: '국민연금 예상 수령액, 납부액, 소득대체율을 간편하게 계산하세요. 2026년 연금개혁(소득대체율 43%·보험료율 9.5%)과 A값 3,193,511원 반영, 가입 기간별 수령액 비교.',
-  keywords: '국민연금 계산기, 국민연금 수령액, 국민연금 납부액, 국민연금 예상액, 연금 계산, 노후 준비, 국민연금공단, 소득대체율',
+  description: DESC,
+  keywords: '국민연금 계산기, 국민연금 수령액, 국민연금 납부액, 국민연금 보험료, 국민연금 예상액, 연금 계산, 노후 준비, 국민연금공단, 소득대체율',
   openGraph: {
     title: '국민연금 수령액 계산기 | 툴허브',
-    description: '국민연금 예상 수령액, 납부액, 소득대체율을 간편하게 계산하세요. 2026년 연금개혁·A값 반영.',
+    description: '나이·월 소득만으로 국민연금 예상 수령액과 월 보험료(본인·회사 몫)를 바로 계산. 2026년 연금개혁·A값 반영.',
     url: 'https://toolhub.ai.kr/pension-calculator',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -19,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '국민연금 수령액 계산기 | 툴허브',
-    description: '국민연금 예상 수령액, 납부액, 소득대체율을 간편하게 계산하세요.',
+    description: '나이·월 소득만으로 국민연금 예상 수령액과 월 보험료를 바로 계산하세요.',
     images: ['https://toolhub.ai.kr/og/pension-calculator.png'],
   },
   alternates: {
@@ -32,18 +38,19 @@ export default function PensionCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '국민연금 수령액 계산기',
-    description: '국민연금 예상 수령액, 납부액, 소득대체율을 계산하는 무료 온라인 계산기',
+    description: '나이와 월 소득만으로 국민연금 예상 수령액, 월 보험료(본인·회사 몫), 소득대체율을 계산하는 무료 간편 계산기',
     url: 'https://toolhub.ai.kr/pension-calculator',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '국민연금 예상 수령액 계산',
-      '총 납부액 및 본인 부담금 계산',
+      '나이·월 소득만으로 국민연금 예상 수령액 계산',
+      '월 보험료(본인·회사 부담) 계산',
+      '총 납부액(본인 부담) 계산',
       '소득대체율 분석',
       '연금/납부 비율 계산',
-      '은퇴 나이별 수령액 비교',
+      '상세 계산기(조기·연기 수령 비교)로 입력값 이어가기',
     ],
     inLanguage: 'ko',
   }
@@ -108,8 +115,13 @@ export default function PensionCalculatorPage() {
           <h2 className="text-xl font-bold text-fg mb-4">
             국민연금 수령액 계산기란?
           </h2>
+          <p className="text-body leading-relaxed mb-4">
+            국민연금 수령액 계산기는 현재 나이, 월 소득, 가입 시작 나이, 은퇴 나이 네 가지만 넣으면 예상 국민연금 월 수령액과 매달 내는 보험료(본인·회사 몫), 총 납부액, 소득대체율을 바로 보여주는 간편 계산기입니다. 2026년 연금개혁과 2026년 적용 A값을 반영한 국민연금법 계산식(A값·B값)을 적용하며, 은퇴 나이를 바꿔 가며 수령액이 어떻게 달라지는지 빠르게 확인할 수 있습니다.
+          </p>
           <p className="text-body leading-relaxed mb-6">
-            국민연금 수령액 계산기는 현재 소득과 가입 기간을 입력하면 예상 국민연금 월 수령액, 총 납부액, 소득대체율을 자동으로 계산해주는 무료 노후 준비 도구입니다. 2026년 연금개혁과 2026년 적용 A값을 반영한 국민연금법 계산식(A값·B값)을 적용하며, 은퇴 나이별 수령액 비교와 연금/납부 수익률도 확인할 수 있어 장기적인 노후 재무 계획 수립에 도움이 됩니다.
+            조기수령·연기수령 비교, 출산·군복무 크레딧, 부양가족연금, 추납 효과까지 따져 보려면{' '}
+            <Link href="/national-pension/" className="text-primary font-semibold hover:underline">상세 국민연금 계산기</Link>
+            를 이용하세요. 계산 결과 아래 버튼을 누르면 입력한 값이 그대로 이어집니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             국민연금 수령액 늘리는 팁

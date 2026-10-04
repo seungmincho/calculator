@@ -1,5 +1,7 @@
 {
   "common": {
+    "addToCalendar": "Add to calendar",
+    "addToCalendarFor": "Add {title} to calendar (.ics)",
     "calculate": "Calculate",
     "result": "Result",
     "share": "Share",
@@ -5590,6 +5592,13 @@
     "stones": "stones"
   },
   "battleship": {
+    "shipNames": {
+      "carrier": "Carrier",
+      "battleship": "Battleship",
+      "cruiser": "Cruiser",
+      "submarine": "Submarine",
+      "destroyer": "Destroyer"
+    },
     "title": "Battleship",
     "description": "Guess enemy ship locations and sink them all! Strategic naval battle game.",
     "waitingForOpponent": "Waiting for opponent...",
@@ -23487,6 +23496,17 @@
     }
   },
   "homePage": {
+    "deadline": {
+      "label": "Coming up",
+      "eventNote": "Details on ToolHub: {url}",
+      "csat": "CSAT exam day",
+      "jongbu": "Comprehensive real estate tax due",
+      "yearEnd": "Pension savings·IRP deposit cutoff",
+      "simplified": "Year-end tax simplified service opens",
+      "carTaxLumpStart": "Annual car tax prepayment opens",
+      "carTaxLumpDue": "Annual car tax prepayment due",
+      "incomeTax": "Comprehensive income tax filing due"
+    },
     "dailyPuzzles": {
       "title": "Today's Puzzles",
       "done": "Done",
@@ -23770,6 +23790,10 @@
     }
   },
   "gameResultShare": {
+    "win": "Win",
+    "loss": "Loss",
+    "draw": "Draw",
+    "close": "Close",
     "share": "Share Result",
     "shareTitle": "Share Result",
     "copy": "Copy",
@@ -26472,14 +26496,32 @@
     }
   },
   "pensionCalculator": {
+    "amount": "{v} KRW",
+    "ageUnit": "yrs",
+    "ageValue": "age {a}",
+    "perMonth": "per month",
+    "contributionDetail": "Your monthly contribution",
+    "replacementHint": "vs. current income · {max}% for 40 years at average income",
+    "ratioValue": "{x}×",
+    "ratioNote": "assuming 20 years of payments",
+    "invalidTitle": "Please check your inputs",
+    "invalidItems": [
+      "Enter a monthly income of at least 10,000 KRW",
+      "Start age must be 18 or older and below your current age",
+      "Retirement age must be at least your current age and no more than 70"
+    ],
+    "detailTitle": "Calculate in detail, incl. early/deferred claiming",
+    "detailDesc": "Carries over your age and income to compare early/deferred claiming, childbirth and military credits, dependent pension and catch-up payments",
+    "shareLabel": "Age {age} · monthly income {income} × 10K KRW",
+    "shareText": "My estimated national pension: {v} KRW/month from age {age}",
     "capHint": "Calculated within the standard monthly income range of {min}–{max} (10,000 KRW), Jul 2026–Jun 2027",
     "startAgeNote": "from age {age}",
     "ineligible": "With less than 10 years (120 months) of contributions you receive a lump-sum refund with interest instead of an old-age pension.",
     "basis": "Basis: {year} National Pension Act (contribution rate {rate}), A value {a} KRW (Dec 2025–Nov 2026), standard monthly income {min}–{max} (10,000 KRW, Jul 2026–Jun 2027). Sources: NPS (nps.or.kr), Ministry of Health and Welfare",
     "title": "National Pension Calculator",
-    "description": "Estimate your Korean National Pension (NPS) monthly benefit, total contributions, and income replacement rate.",
+    "description": "Enter just your age and monthly income to see your estimated pension, the contribution you and your employer pay each month, and your replacement rate. Continue to the detailed calculator for early/deferred claiming and credits.",
     "currentAge": "Current Age",
-    "monthlyIncome": "Monthly Income (10,000 KRW)",
+    "monthlyIncome": "Monthly income (pre-tax)",
     "startAge": "Contribution Start Age",
     "retirementAge": "Expected Retirement Age",
     "calculate": "Calculate",
@@ -39528,7 +39570,8 @@
       "faster": "faster"
     },
     "preset": {
-      "label": "Korean Asset Presets",
+      "rate": "{rate}% / yr",
+      "label": "Example returns (10 years)",
       "kospi": "KOSPI 10yr (~3.5%)",
       "seoulApt": "Seoul Apt 10yr (~5.2%)",
       "sp500": "S&P500 10yr (~10.5%)",
@@ -43026,11 +43069,10 @@
       "claimProcess": {
         "title": "How to Claim",
         "items": [
-          "≤50,000 KRW: Collect at any lottery retailer",
-          ">50,000 ~ ≤2M KRW: Any NH Bank branch",
-          ">2M KRW: NH Bank headquarters (ID required)",
-          "1st prize: NH Bank HQ 1st floor (Jung-gu, Seoul)",
-          "Must be claimed within 1 year of the draw date"
+          "4th·5th prize (50,000 / 5,000 KRW): any Lotto 6/45 retailer",
+          "2nd·3rd prize: any NH NongHyup Bank branch (bring ID if over 2M KRW)",
+          "1st prize: NH NongHyup Bank head office (Jung-gu, Seoul; bring ID)",
+          "Claim by the deadline printed on the ticket (1 year from the payout start date); if it falls on a bank holiday, the next business day (Donghang Lottery Lotto 6/45 guide)"
         ]
       },
       "tips": {
@@ -43132,6 +43174,7 @@
     }
   },
   "nationalPension": {
+    "quickLink": "Quick estimate by age and salary (incl. monthly contribution)",
     "a11y": {
       "incomePresets": "Quick monthly income options",
       "best": "highest total"
@@ -43674,9 +43717,10 @@
     "monthlyNet": "Monthly take-home approx.",
     "monthlyNetLink": "See take-home details",
     "estimate": "Estimate",
-    "sourceLine": "NTS Statistical Yearbook, wage income percentiles ({year} income year). Values between brackets are linear-interpolated estimates.",
+    "sourceLine": "NTS wage income percentile (per-mille) data ({year} income year). NTS publishes only bracket averages, so cut-offs and values in between are interpolated estimates.",
     "caveats": [
       "Based on pre-tax gross pay excluding tax-free income",
+      "The distribution includes part-year and part-time workers, so a full-year salary may rank slightly higher than it would among full-year workers",
       "Age/gender/industry ranks use estimated distributions built from published medians/averages — for reference only",
       "No public age×gender cross-tab exists, so they are shown separately",
       "Community stats are self-reported by participants and differ from official data"
@@ -43722,7 +43766,7 @@
       "legal": "Legal/Accounting"
     },
     "dataSource": "Data Source",
-    "dataSourceDesc": "NTS Income Percentile Statistics (2023), Statistics Korea Economically Active Population Survey, MOEL Employment Survey",
+    "dataSourceDesc": "NTS wage income percentile data (2024 income year), Statistics Korea Economically Active Population Survey, MOEL Employment Survey",
     "yourSalary": "Your Salary",
     "overallRank": "Among all Korean workers",
     "top": "Top",
@@ -43735,7 +43779,7 @@
     "average": "Average",
     "distributionChart": "Korean Income Distribution",
     "workerPercent": "Worker %",
-    "chartNote": "Blue bar = Your position · Source: NTS 2023 Income Statistics",
+    "chartNote": "Blue bar = Your position · Source: NTS wage income percentiles (2024 income year)",
     "contributeTitle": "Contribute Anonymous Data",
     "contributeDesc": "Send the salary you entered anonymously to make community stats more accurate",
     "contributeBtn": "Contribute",
@@ -43762,7 +43806,7 @@
         "title": "How to Read Results",
         "items": [
           "'Top 10%' means you're in the top 10 out of 100 workers",
-          "Overall rank is based on all Korean wage earners (~20 million)",
+          "Overall rank is based on all Korean wage earners (~21 million)",
           "Age/gender/industry ranks show your position within that group",
           "Median salary is the exact middle (50th percentile) value"
         ]
@@ -43770,10 +43814,10 @@
       "dataExplain": {
         "title": "About the Data",
         "items": [
-          "NTS wage income percentiles: gross pay distribution of year-end tax filers (used for the overall rank)",
-          "Values between brackets and the distribution curve are linear-interpolated estimates from this table",
+          "NTS wage income percentile data: year-end tax filers ranked by gross pay and split into 1% brackets (0.1% within the top 1%), with totals per bracket (used for the overall rank)",
+          "NTS publishes only bracket averages, so cut-offs, values in between and the distribution curve are interpolated estimates",
           "Age/gender/industry ranks are estimated distributions built from published medians/averages",
-          "Data is based on income year 2023 (published Dec 2024). Income year 2024 statistics (published Dec 2025) are not yet reflected, so your actual rank may differ"
+          "Data is for income year 2024 (filed in 2025, posted on data.go.kr in Feb 2026). Income year 2025 data is scheduled for Feb 2027"
         ]
       },
       "tips": {
@@ -43861,15 +43905,15 @@
     "faq": {
       "q1": {
         "question": "What is the median salary in Korea?",
-        "answer": "According to the NTS, the average gross pay of wage earners for income year 2023 was 43.32M KRW (press release, Dec 19 2024). The median estimated from this tool's percentile table is about 35M KRW; the average is pulled up by high earners, so the median is more representative."
+        "answer": "Per the NTS wage income percentile data for income year 2024, the average gross pay of 21.08 million wage earners was about 44.75M KRW. The median estimated from the bracket averages is about 33.9M KRW; the average is pulled up by high earners, so the median is more representative."
       },
       "q2": {
         "question": "How much do I need to earn to be in the top 1%?",
-        "answer": "The top 1% of wage earners in Korea earn approximately 200M KRW or more. Top 5% is about 110M KRW, and top 10% is about 85M KRW."
+        "answer": "Estimated from NTS data for income year 2024, the top 1% starts at about 197M KRW in annual gross pay. Top 5% is about 116M KRW, and top 10% is about 89M KRW."
       },
       "q3": {
         "question": "How accurate is this data?",
-        "answer": "Based on official NTS tax filing statistics and Statistics Korea surveys. Interpolation between brackets is estimated. For exact percentiles, check the NTS TASIS portal."
+        "answer": "The overall rank uses the NTS wage income percentile (per-mille) data for income year 2024. NTS publishes only bracket averages, so cut-offs and values in between are interpolated estimates. Age/gender/industry ranks use estimated distributions and are for reference only. The raw data is on data.go.kr (NTS wage income percentile data)."
       }
     }
   },

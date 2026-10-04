@@ -3,6 +3,7 @@
 import { useState, useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/annualCarTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
@@ -65,6 +66,7 @@ export default function AnnualCarTax() {
   const after = validDate ? calcProrated(r, year, sale, `${year}-12-31`) : null
   // 다음 연납 기간과 그때 이 차의 공제액 (기간이 내년이면 내년 차령으로 다시 계산)
   const win = today ? nextLumpWindow(today) : null
+  const deadlineEvent = useDeadlineEvent()
   const winLump = win && calcLump(win.year === year ? r : calcAnnual({ ...input, regYear: Math.min(regYear, win.year) }, win.year), win.year, win.month)
   const [dueM, dueD] = win ? win.due.slice(5).split('-').map(Number) : [0, 0]
 
@@ -204,7 +206,7 @@ export default function AnnualCarTax() {
 
             <div className="bg-primary-soft rounded-2xl p-4 text-sm space-y-2">
               <p className="font-semibold text-primary">{t('u.lumpHighlight', { year, saved: won(jan.saved), pay: won(jan.total) })}</p>
-              {win && winLump ? (
+              {win && winLump ? (<>
                 <div className="flex items-start gap-2">
                   <span className="shrink-0 rounded-lg bg-primary text-white px-2 py-0.5 text-xs font-bold tabular-nums">{ddayLabel(win.days)}</span>
                   <p className="text-body">
@@ -214,7 +216,11 @@ export default function AnnualCarTax() {
                     {dueM !== win.month && <> {t('u.window.shifted')}</>}
                   </p>
                 </div>
-              ) : (
+                <AddToCalendar file={`car-tax-lump-${win.year}-${win.month}.ics`} events={[
+                  ...(win.open ? [] : [deadlineEvent('carTaxLumpStart', win.start, '/annual-car-tax', 1)]),
+                  deadlineEvent('carTaxLumpDue', win.due, '/annual-car-tax'),
+                ]} />
+              </>) : (
                 <p className="text-sub">{t('u.lumpWhen')}</p>
               )}
             </div>

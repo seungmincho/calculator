@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { Plus, Trash2, RotateCcw, ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/comprehensivePropertyTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
@@ -105,6 +106,7 @@ export default function ComprehensivePropertyTax() {
   const billCmp = compareBill(bill, r)
   const billMain = billCmp.rows.find((x) => x.key === 'total') ?? billCmp.rows.find((x) => x.key === 'jongbu') ?? billCmp.rows[0]
   const dates = jongbuDates(TAX_YEAR)
+  const deadlineEvent = useDeadlineEvent()
   const next = jongbuDates(TAX_YEAR + 1)
   const dow = t.raw('u.dates.dow') as string[]
   const ymd = (s: string) => t('u.dates.ymd', { y: s.slice(0, 4), m: +s.slice(5, 7), d: +s.slice(8, 10), w: dow[weekday(s)] })
@@ -389,6 +391,9 @@ export default function ComprehensivePropertyTax() {
               {canDefer && <p>{t('u.dates.deferral', { date: ymd(dates.deferral) })}</p>}
               <p>{specialText}</p>
               <p className="text-xs text-muted">{t('u.dates.holidayNote')}</p>
+              {dday !== null && dday >= 0 && (
+                <AddToCalendar className="mt-1" file={`jongbu-${dates.due}.ics`} events={[deadlineEvent('jongbu', dates.due, '/comprehensive-property-tax')]} />
+              )}
             </div>
             <p className="text-xs text-muted">{t('u.schedule.note')}</p>
             <div className="flex flex-wrap gap-2">

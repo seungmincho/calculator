@@ -183,7 +183,8 @@ export function autoTax(cc: number, regYear: number, taxYear: number, electric =
 }
 
 // ── ICS (RFC 5545) ──
-export interface IcsEvent { uid: string; date: string; title: string; description?: string; alarmDays?: number }
+/** end = 여러 날 일정의 마지막 날 (포함) */
+export interface IcsEvent { uid: string; date: string; end?: string; title: string; description?: string; alarmDays?: number }
 export const icsEscape = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
 
 /** 75옥텟 초과 줄을 접음 (UTF-8 문자 중간에서 자르지 않음) */
@@ -210,7 +211,7 @@ export function buildIcs(events: IcsEvent[], stamp: string): string {
       `UID:${e.uid}@toolhub.ai.kr`,
       `DTSTAMP:${d(stamp)}T000000Z`,
       `DTSTART;VALUE=DATE:${d(e.date)}`,
-      `DTEND;VALUE=DATE:${d(addDays(e.date, 1))}`,
+      `DTEND;VALUE=DATE:${d(addDays(e.end ?? e.date, 1))}`,
       `SUMMARY:${icsEscape(e.title)}`,
     )
     if (e.description) lines.push(`DESCRIPTION:${icsEscape(e.description)}`)
