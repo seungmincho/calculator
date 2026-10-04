@@ -1,10 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { createTranslations } from '@/lib/i18n/translationLookup'
-import koShared from '../../messages/generated/ko/shared.json'
-import enShared from '../../messages/generated/en/shared.json'
-import { useLanguage } from '@/contexts/LanguageContext'
+import { useTranslations } from '@/lib/i18n/navigation'
 import Link from 'next/link'
 import { Search, Star, ChevronRight, BarChart3 } from 'lucide-react'
 import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
@@ -17,8 +14,6 @@ import ToolIcon from './ToolIcon'
 
 /** 카테고리별로 홈에서 바로 보여줄 도구 수 (나머지는 카테고리 허브 링크) */
 const PER_CATEGORY = 12
-const koTranslations = createTranslations(koShared)
-const enTranslations = createTranslations(enShared)
 
 type Item = MenuItem & { categoryKey?: CategoryKey }
 
@@ -32,8 +27,7 @@ function SectionTitle({ children, action }: { children: React.ReactNode; action?
 }
 
 export default function HomePage() {
-  const { language } = useLanguage()
-  const t = (language === 'en' ? enTranslations : koTranslations)()
+  const t = useTranslations()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<CategoryKey | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')

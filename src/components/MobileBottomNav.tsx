@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Home, Star, Clock, Search, X } from 'lucide-react'
 import ToolIcon from './ToolIcon'
-import { useTranslations } from '@/lib/i18n/shared'
+import { useTranslations } from '@/lib/i18n/navigation'
 import { usePathname, useRouter } from 'next/navigation'
 import { getFavorites } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
@@ -65,17 +65,9 @@ export default function MobileBottomNav() {
     return result
   }, [toolMap])
 
-  const [favoriteTools, setFavoriteTools] = useState<ToolInfo[]>([])
-  const [recentTools, setRecentTools] = useState<ToolInfo[]>([])
-
-  // Load data when panel opens
-  useEffect(() => {
-    if (activePanel === 'favorites') {
-      setFavoriteTools(getFavoriteTools())
-    } else if (activePanel === 'recent') {
-      setRecentTools(getRecentToolsList())
-    }
-  }, [activePanel, getFavoriteTools, getRecentToolsList])
+  // Read storage when a panel opens, without an extra render for the same data.
+  const favoriteTools = useMemo(() => activePanel === 'favorites' ? getFavoriteTools() : [], [activePanel, getFavoriteTools])
+  const recentTools = useMemo(() => activePanel === 'recent' ? getRecentToolsList() : [], [activePanel, getRecentToolsList])
 
   // Lock body scroll when panel is open
   useEffect(() => {
@@ -109,7 +101,8 @@ export default function MobileBottomNav() {
 
   // Close panel on route change
   useEffect(() => {
-    setActivePanel(null)
+    const frame = requestAnimationFrame(() => setActivePanel(null))
+    return () => cancelAnimationFrame(frame)
   }, [pathname])
 
   const handleNavClick = useCallback(

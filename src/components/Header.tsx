@@ -3,12 +3,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import BrandMark from './BrandMark';
-import { Calculator, Menu, X, ChevronDown, Search } from 'lucide-react';
+import { Menu, X, ChevronDown, Search } from 'lucide-react';
 import ToolIcon from './ToolIcon';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import SearchDialog from './SearchDialog';
-import { useTranslations } from '@/lib/i18n/shared';
+import { useTranslations } from '@/lib/i18n/navigation';
 import { menuConfig, categoryKeys, categoryHubs, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
 
@@ -176,7 +176,7 @@ const Header = () => {
   return (<>
     <header ref={headerRef} className="bg-surface border-b border-line sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-14 gap-6">
+        <div className="flex items-center h-14 gap-2 lg:gap-6">
           <Link prefetch={false} href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
             <BrandMark />
             <span className="text-[17px] font-bold tracking-tight text-fg">{t('header.title')}</span>
@@ -304,10 +304,11 @@ const Header = () => {
                   value={mobileSearchQuery}
                   onChange={(e) => setMobileSearchQuery(e.target.value)}
                   placeholder={t('common.search')}
+                  aria-label={t('common.search')}
                   className="ui-field pl-10 pr-8 py-2.5 text-sm"
                 />
                 {mobileSearchQuery && (
-                  <button onClick={() => setMobileSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-faint">
+                  <button onClick={() => setMobileSearchQuery('')} aria-label={t('common.clear')} className="absolute right-3 top-1/2 -translate-y-1/2 text-faint">
                     <X className="w-4 h-4" />
                   </button>
                 )}
