@@ -2,6 +2,15 @@ import { Metadata } from 'next'
 import YearEndTaxCalculator from '@/components/YearEndTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import Link from 'next/link'
+
+// 항목별 상세 계산기 (연말정산 시즌 랜딩 — 이 페이지가 허브)
+const DETAILS = [
+  { href: '/card-deduction/', title: '신용카드 소득공제 계산기', desc: '총급여 25% 문턱, 10~12월 신용·체크카드 전략' },
+  { href: '/medical-tax-credit/', title: '의료비 세액공제 계산기', desc: '3% 문턱, 실손 차감, 맞벌이 누가 받을까' },
+  { href: '/rent-tax-credit/', title: '월세 세액공제 계산기', desc: '대상 체크, 돌려받는 금액, 지난 5년 경정청구' },
+  { href: '/pension-tax-credit/', title: '연금저축·IRP 세액공제 계산기', desc: '12월 31일 전 추가 납입 효과, 남은 한도' },
+]
 
 export const metadata: Metadata = {
   title: '연말정산 계산기 2027 (2026년 귀속) - 환급액 자동계산 | 툴허브',
@@ -127,6 +136,19 @@ export default function YearEndTaxPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <YearEndTaxCalculator />
+              <section className="mt-8 ui-card p-6" aria-labelledby="yet-details">
+                <h2 id="yet-details" className="text-lg font-semibold text-fg">항목별로 자세히 계산하기</h2>
+                <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {DETAILS.map((d) => (
+                    <li key={d.href}>
+                      <Link prefetch={false} href={d.href} className="block h-full rounded-2xl bg-subtle p-4 hover:bg-soft transition-colors">
+                        <span className="block font-semibold text-fg">{d.title}</span>
+                        <span className="block text-sm text-muted mt-1">{d.desc}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
               <div className="mt-8">
 
                 <RelatedTools />

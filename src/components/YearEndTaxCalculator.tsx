@@ -12,7 +12,7 @@ import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/yearEndTaxCalc'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
 import { calculateNetSalary } from '@/utils/netSalary'
@@ -160,6 +160,13 @@ export default function YearEndTaxCalculator() {
         {Array.from({ length: max - min + 1 }, (_, i) => i + min).map((n) => <option key={n} value={n}>{t('yt.people', { n })}</option>)}
       </select>
     </label>
+  )
+  // 항목별 상세 페이지 (같은 URL 키로 입력값 넘김, 0은 생략)
+  const detail = (href: string, label: string, params: Record<string, number>) => (
+    <Link prefetch={false} className="inline-flex items-center gap-1 min-h-11 text-sm font-medium text-primary hover:underline"
+      href={`${href}?${new URLSearchParams(Object.entries({ s: salary, ...params }).filter(([, v]) => v > 0).map(([k, v]) => [k, String(v)]))}`}>
+      {label}<ChevronRight className="w-4 h-4" aria-hidden="true" />
+    </Link>
   )
   const money = (k: NumKey, hint?: string) => (
     <Money label={t(`yt.in.${k}`)} value={inp[k] as number} onChange={(v) => set(k, v)} hint={hint} unit={W} />
@@ -314,6 +321,7 @@ export default function YearEndTaxCalculator() {
             {money('pensionSavings', t('yt.in.pensionSavingsHint'))}
             {money('irp', t('yt.in.irpHint'))}
             {money('insurance', t('yt.in.insuranceHint'))}
+            {detail('/pension-tax-credit/', t('yt.detail.pension'), { ps: inp.pensionSavings, irp: inp.irp })}
           </Section>
 
           <Section title={t('yt.sec.medical')} badge={`${won(cr.medical + cr.education)}${W}`}>
@@ -325,12 +333,14 @@ export default function YearEndTaxCalculator() {
             {money('eduSelf')}
             {money('eduSchool', t('yt.in.eduSchoolHint'))}
             {money('eduUniv', t('yt.in.eduUnivHint'))}
+            {detail('/medical-tax-credit/', t('yt.detail.medical'), { ms: inp.special, mg: inp.general, mp: inp.premature, mi: inp.infertility })}
           </Section>
 
           <Section title={t('yt.sec.housing')} badge={`${won(cr.rent)}${W}`}>
             {money('rent', t('yt.in.rentHint'))}
             {money('housingSub', t('yt.in.housingSubHint'))}
             {money('leaseLoan', t('yt.in.leaseLoanHint'))}
+            {detail('/rent-tax-credit/', t('yt.detail.rent'), { mr: inp.rent })}
           </Section>
 
           <Section title={t('yt.sec.etc')} badge={`${won(cr.donation + cr.hometown + cr.marriage)}${W}`}>

@@ -320,6 +320,15 @@ export function cardTaxSaving(salary: number, s: CardSpend, children = 0) {
   return calc({ ...x, credit: 0, debit: 0, culture: 0, market: 0, transport: 0 }).totalTax - calc(x).totalTax
 }
 
+/** 항목(item)을 넣었을 때 줄어드는 세금(지방소득세 포함) — 세액공제 랜딩 페이지용.
+ *  base = 연봉 등 기본 상황(카드 사용 0에서 시작). 결정세액 한도·표준세액공제(13만원) 선택이 반영돼 '실제로' 줄어드는 금액 */
+export function itemTaxSaving(base: Partial<YetInput>, item: Partial<YetInput>) {
+  const x: YetInput = { ...DEFAULT_INPUT, credit: 0, debit: 0, culture: 0, market: 0, transport: 0, ...base }
+  const before = calc(x)
+  const after = calc({ ...x, ...item })
+  return { before, after, saving: before.totalTax - after.totalTax }
+}
+
 // 할 일 마감 (KST 날짜). 간소화 서비스는 매년 1월 15일 국세청 홈택스 오픈
 export const DEADLINE = { yearEnd: `${TAX_YEAR}-12-31`, simplified: `${TAX_YEAR + 1}-01-15` }
 

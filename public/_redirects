@@ -229,6 +229,7 @@
 /meal-diary  /meal-diary/  301
 /media  /media/  301
 /median-income  /median-income/  301
+/medical-tax-credit  /medical-tax-credit/  301
 /meeting-minutes  /meeting-minutes/  301
 /memory-game  /memory-game/  301
 /memory-management  /memory-management/  301
@@ -264,6 +265,7 @@
 /pdf-tools  /pdf-tools/  301
 /penalty-roulette  /penalty-roulette/  301
 /pension-calculator  /pension-calculator/  301
+/pension-tax-credit  /pension-tax-credit/  301
 /percent-calculator  /percent-calculator/  301
 /personal-color  /personal-color/  301
 /picross  /picross/  301
@@ -284,6 +286,7 @@
 /regex-engine  /regex-engine/  301
 /regex-extractor  /regex-extractor/  301
 /rent-converter  /rent-converter/  301
+/rent-tax-credit  /rent-tax-credit/  301
 /rental-yield  /rental-yield/  301
 /resident-number  /resident-number/  301
 /resignation-letter  /resignation-letter/  301

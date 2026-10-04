@@ -2428,6 +2428,9 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "medicalTaxCredit": "Medical Expense Tax Credit",
+      "rentTaxCredit": "Monthly Rent Tax Credit",
+      "pensionTaxCredit": "Pension Savings·IRP Tax Credit",
       "cardDeduction": "Card Deduction Calculator",
       "dailyWageTax": "Daily Worker Tax Calculator",
       "rentalYield": "Rental Yield Calculator",
@@ -7133,6 +7136,18 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "medicalTaxCredit": {
+        "title": "Medical Expense Tax Credit",
+        "description": "Medical expense credit above 3% of salary, the tax you actually save, and which spouse should claim"
+      },
+      "rentTaxCredit": {
+        "title": "Monthly Rent Tax Credit",
+        "description": "Eligibility check, rent tax credit refund, and claims for missed years (up to 5)"
+      },
+      "pensionTaxCredit": {
+        "title": "Pension Savings·IRP Tax Credit",
+        "description": "How much more to put into pension savings/IRP before Dec 31 and what you get back, remaining limit and exit tax"
+      },
       "cardDeduction": {
         "title": "Card Deduction Calculator",
         "description": "Card income deduction and tax saved from salary and spending, the 25% threshold, and an Oct–Dec payment strategy"
@@ -37484,6 +37499,11 @@
   },
   "yearEndTaxCalc": {
     "yt": {
+      "detail": {
+        "pension": "Pension savings·IRP credit in detail",
+        "medical": "Medical expense credit in detail (couples)",
+        "rent": "Rent tax credit in detail (eligibility, past years)"
+      },
       "mode": {
         "label": "Calculation mode",
         "annual": "Full-year estimate",
@@ -57805,6 +57825,609 @@
         "Spending by a spouse or lineal relatives with income of 1M KRW or less can be added (not siblings)."
       ],
       "source": "Basis: Restriction of Special Taxation Act Art. 126-2 and Enforcement Decree Art. 121-2 (tax year 2026). Confirm actual amounts with Hometax's simplified year-end data, opening January 15."
+    }
+  },
+  "pensionTaxCredit": {
+    "title": "Pension Savings & IRP Tax Credit Calculator",
+    "subtitle": "For tax year {year}. See how much tax you save by adding to a pension savings account or IRP before December 31, and what tax you pay when you withdraw later.",
+    "won": " won",
+    "manUnit": "₩{m}M",
+    "salary": "Gross salary (excluding non-taxable pay)",
+    "salaryHint": "With salary income only: 16.5% if gross salary is ₩55M or less, 13.2% above that (local income tax included). With other income, the test is total income of ₩45M.",
+    "ps": "Pension savings paid this year",
+    "psHint": "What you have paid since January plus scheduled transfers through December. Pension savings (funds, insurance) count up to ₩6M.",
+    "irp": "IRP paid this year",
+    "irpHint": "Only money you paid in yourself. Severance pay moved into an IRP and employer pension contributions do not qualify.",
+    "isa": "ISA maturity transfer (optional)",
+    "isaHint": "Amount moved (or to be moved) from a matured ISA into a pension account within 60 days of maturity. In that year only, the limit rises by 10% of the transfer (up to ₩3M).",
+    "isaTo": {
+      "label": "Transferred into",
+      "ps": "Pension savings",
+      "irp": "IRP",
+      "hint": "The transfer counts as a payment that year, so it first fills the regular limit of the account it goes into. In a pension savings account the ₩6M cap still applies."
+    },
+    "result": {
+      "label": "Tax saved this year with pension savings and IRP",
+      "detail": "Eligible ₩{base} × {rate}%, within this year's tax of ₩{tax} estimated from salary alone (local income tax included).",
+      "none": "Nothing paid in yet. Each won you pay cuts tax by {rate}%, up to the tax you owe."
+    },
+    "limit": {
+      "ps": "Pension savings limit",
+      "total": "Combined limit (pension savings + IRP)",
+      "isa": "Extra limit from ISA transfer",
+      "of": "₩{usedM}M of ₩{capM}M",
+      "rate": "Credit rate (incl. local tax)",
+      "rateLow": "Gross salary ₩55M or less",
+      "rateHigh": "Gross salary over ₩55M",
+      "over": "₩{over} above the limit is not credited this year. From next year you can ask the financial company to convert it into that year's payment (Income Tax Act Enforcement Decree Art. 118-3)."
+    },
+    "topUp": {
+      "title": "If you add more by December 31",
+      "desc": "You have ₩{room} of limit left this year. Move the slider to try an amount.",
+      "slider": "Extra amount to pay in",
+      "all": "All remaining limit",
+      "gain": "+₩{gain}",
+      "result": "Paying ₩{amt} more cuts tax by another ₩{gain}, for ₩{total} in total this year. The money itself stays in your pension account.",
+      "zero": "Pick an amount to see the extra refund.",
+      "split": "Counted as ₩{ps} to pension savings + ₩{irp} to IRP (pension savings only counts up to ₩6M, the rest goes to IRP).",
+      "full": "You have used this year's limit (₩6M pension savings, ₩9M combined). Extra payments are not credited this year, but can be converted into a later year's payment.",
+      "yearEnd": "Calculate the full year-end refund with these payments"
+    },
+    "cap": {
+      "title": "Part of this won't increase your refund",
+      "body": "This year's tax from salary alone is ₩{tax} (incl. local tax), so eligible payments above ₩{useful} no longer reduce tax. In this plan, ₩{wasted} has no tax effect.",
+      "tip": "Card spending and dependant deductions lower your tax further, so this threshold drops. Leave the ineffective part out of your year-end claim: it stays an uncredited payment you can convert into a later year's payment (Decree Art. 118-3) or withdraw tax-free later with a deduction confirmation (Decree Art. 201-10)."
+    },
+    "deadline": {
+      "note": "Only money deposited by December 31, {year} counts for this year. December 31 is a stock market holiday every year and cut-off times differ by company; some move the IRP cut-off to the afternoon of the last business day. Check your provider's notice and pay in a few days early."
+    },
+    "share": {
+      "label": "Pension savings·IRP on ₩{salaryM}M salary",
+      "headline": "₩{saving} tax saved",
+      "sub": "+₩{gain} by adding ₩{amt}",
+      "subNone": "Pension account tax credit this year",
+      "text": "Salary ₩{salaryM}M, ₩{base} in pension savings·IRP → about ₩{saving} less tax"
+    },
+    "rows": {
+      "base": "Eligible payments",
+      "rate": "Credit rate",
+      "saving": "Tax saved",
+      "room": "Limit left"
+    },
+    "later": {
+      "title": "Tax when you withdraw later",
+      "desc": "Credited payments (₩{base}) and their investment gains are taxed when withdrawn: 3.3–5.5% as a pension after 55, 16.5% if you cancel early.",
+      "gain": "Cumulative return until withdrawal",
+      "caption": "Tax refunded this year vs tax paid on withdrawal",
+      "when": "Case",
+      "rate": "Rate",
+      "amount": "Amount (won)",
+      "refund": "Tax refunded this year",
+      "a70": "Pension · under 70",
+      "a80": "Pension · age 70–79",
+      "a80p": "Pension · 80+ or lifetime annuity",
+      "early": "Early cancellation (non-pension withdrawal)",
+      "loss": "Cancelling early costs ₩{tax} in other-income tax, more than the ₩{refund} refunded this year: a ₩{loss} loss. The 16.5% exit rate is higher than your credit rate, or gains and payments that had no tax effect are taxed too.",
+      "even": "Cancelling early pays back the ₩{refund} refunded this year as ₩{tax} exit tax, so you break even. Taken as a pension after 55, the tax drops to ₩{annuity} (under 70).",
+      "notes": [
+        "To receive it as a pension you must be 55+, have held the account 5 years, apply to start payments, and withdraw within the yearly limit (account value ÷ (11 − payout year) × 120%) (Decree Art. 40-2(3)).",
+        "If private pension income (credited principal and gains, excluding severance taken as a pension) is ₩15M or less a year, 3.3–5.5% is final. Above that you choose between comprehensive taxation of the full amount and 16.5% separate taxation, so spreading payouts to stay under ₩15M helps (Income Tax Act Art. 14(3)9, Art. 64-4).",
+        "Even an early withdrawal is taxed at the pension rate (3.3–5.5%) instead of 16.5% for unavoidable reasons proven within 6 months: natural disaster, death or emigration, 3+ months of medical care for you or a dependant, bankruptcy or rehabilitation (Decree Art. 20-2).",
+        "Partial withdrawals take uncredited payments out first, and those are tax-free (Decree Art. 40-3).",
+        "The lifetime annuity rate is 3.3% (was 4.4%) for pensions received from January 1, 2026. If an age rate also applies, the lower one is used (Income Tax Act Art. 129(1)5-2)."
+      ]
+    },
+    "compare": {
+      "title": "Pension savings vs IRP",
+      "item": "Item",
+      "ps": "Pension savings (fund·insurance)",
+      "irp": "IRP (individual retirement pension)",
+      "rows": [
+        [
+          "Credit limit",
+          "₩6M a year",
+          "₩9M a year combined with pension savings"
+        ],
+        [
+          "Equity share",
+          "No ratio limit",
+          "Risky assets up to 70% of the balance"
+        ],
+        [
+          "Individual stocks",
+          "Not allowed (invest via funds·ETFs)",
+          "Not allowed (invest via funds·ETFs)"
+        ],
+        [
+          "Products",
+          "Funds·ETFs (brokerage) or insurance (insurer)",
+          "Deposits, funds·ETFs, insurance contracts, etc."
+        ],
+        [
+          "Withdrawing early",
+          "Partial withdrawal allowed for any reason (credited money and gains taxed 16.5%)",
+          "Only for statutory reasons (home purchase or lease deposit without a home, 6+ months of medical care, bankruptcy or rehabilitation within 5 years, disaster, etc.); otherwise the whole account must be closed"
+        ],
+        [
+          "Pension payout",
+          "Age 55+, account held 5 years",
+          "Age 55+, account held 5 years (not required for transferred severance pay)"
+        ]
+      ],
+      "source": "Basis: Income Tax Act Art. 59-3, its Enforcement Decree Art. 40-2, Employee Retirement Benefit Security Act Enforcement Decree Arts. 18 and 26, and its Enforcement Rule Art. 10 (as of October 2026)."
+    },
+    "guide": {
+      "title": "Pension account tax credit essentials (tax year {year})",
+      "items": [
+        "Rate: 15% of payments if gross salary is ₩55M or less (total income ₩45M or less if you have other income), 12% above that. With local income tax: 16.5% and 13.2% (Income Tax Act Art. 59-3(1)).",
+        "Limit: ₩6M a year for pension savings, ₩9M combined with IRP. To use the full ₩9M, split e.g. ₩6M pension savings + ₩3M IRP, or put ₩9M into an IRP.",
+        "Payments into your own account reduce only your own tax. Dual-income couples can each claim ₩9M, and each person's rate depends on their own salary.",
+        "You can pay in up to ₩18M a year across pension accounts (ISA transfers are extra). Payments above the credit limit can be converted into a later year's payment (Decree Arts. 40-2(2), 118-3).",
+        "Moving a matured ISA into a pension account within 60 days raises that year's limit by 10% of the transfer (up to ₩3M), for up to ₩12M (Income Tax Act Art. 59-3(4), Decree Art. 118-2(3)).",
+        "Severance pay moved into an IRP and transfers from other pension accounts are not new payments and are not credited (Income Tax Act Art. 59-3(1)).",
+        "Only deposits made by December 31 count for this year. Payment records appear in Hometax's simplified year-end data the following January.",
+        "If your determined tax is zero, the credit refunds nothing. This calculator estimates tax from salary alone; if you have many card or dependant deductions, check with the year-end tax calculator."
+      ],
+      "assume": "Assumptions: salary income only, with the personal deduction and 2026 social insurance rates; no card or other deductions. Tax by salary uses the same formulas as the year-end tax calculator. Pension products can lose principal."
+    }
+  },
+  "medicalTaxCredit": {
+    "title": "Medical Expense Tax Credit Calculator",
+    "subtitle": "Korean year-end tax settlement, tax year {year} · 15% of medical costs above 3% of your gross pay comes off your tax (20% for premature infants, 30% for infertility treatment)",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Gross pay (excluding non-taxable allowances)",
+    "salaryHint": "Annual pay minus non-taxable allowances such as meal allowance. The 3% threshold is based on this amount.",
+    "expenses": {
+      "title": "Medical costs paid this year",
+      "hint": "Enter only what you paid yourself between January 1 and December 31, {year}. Costs paid before you joined or after you left your job do not count."
+    },
+    "groups": {
+      "self": {
+        "label": "Your own medical costs",
+        "hint": "No cap · 15%",
+        "short": "your own costs"
+      },
+      "family": {
+        "label": "Family aged 6 or under, 65 or over, or disabled",
+        "hint": "No cap · 15%. Aged 6 or under on January 1, {year}; 65 or over on December 31, {year} (born in {birth} or earlier); disabled; or registered for severe, rare or tuberculosis care",
+        "short": "family (6 or under, 65+, disabled)"
+      },
+      "general": {
+        "label": "Other family members (spouse, children, parents, etc.)",
+        "hint": "Capped at 7M KRW a year · 15%. For dependants, what you pay counts regardless of their age or income.",
+        "short": "other family"
+      },
+      "premature": {
+        "label": "Premature infants and congenital conditions",
+        "hint": "No cap · 20%. Treatment recognized as needed because of premature birth, or treatment of a congenital condition",
+        "short": "premature infant costs"
+      },
+      "infertility": {
+        "label": "Infertility treatment",
+        "hint": "No cap · 30%. Assisted reproduction such as IVF or IUI, plus related prescription drugs",
+        "short": "infertility treatment"
+      }
+    },
+    "insured": {
+      "toggle": "I received indemnity insurance payouts",
+      "hint": "Insurance payouts are subtracted from the medical cost they reimbursed. The simplified data service lists them per person.",
+      "label": "Insurance payout for {group}"
+    },
+    "capsNote": "Enter glasses and contact lenses up to 500,000 KRW per person a year, and postpartum care centers up to 2M KRW per birth. Leave out cosmetic surgery, health supplements, caregiver fees and hospital bills abroad.",
+    "result": {
+      "label": "Tax reduction (incl. local income tax)"
+    },
+    "status": {
+      "none": "Enter your medical costs to see the credit and how much tax it saves.",
+      "threshold": "Your medical costs do not exceed 3% of gross pay ({threshold} KRW), so there is nothing to credit.",
+      "noTax": "The credit is {credit} KRW, but your tax due is already 0, so nothing comes back. If you are a dual-income couple, check your spouse below.",
+      "standard": "The standard tax credit of 130,000 KRW beats the {credit} KRW medical credit, so the medical credit does not reduce your tax.",
+      "partial": "The credit is {credit} KRW, but your tax due is smaller, so only {saving} KRW comes off. Unused credit is not carried forward.",
+      "full": "Your tax falls by the {credit} KRW credit plus 10% local income tax."
+    },
+    "threshold": {
+      "title": "3% of gross pay threshold",
+      "of": "{spentM}M / {thresholdM}M KRW",
+      "short": "{gap} KRW to go. Medical costs up to the 3% threshold are not credited.",
+      "over": "You are {over} KRW over the threshold. Only the excess is credited.",
+      "more": "Paying another {extraM}M KRW of medical costs by December 31 would cut your tax by a further {more} KRW.",
+      "moreZero": "No tax is left to reduce, so extra medical costs would not lower your tax."
+    },
+    "table": {
+      "caption": "3% threshold deduction and creditable amount by type of medical cost",
+      "group": "Type",
+      "amount": "Costs",
+      "cut": "3% deducted",
+      "eligible": "Creditable",
+      "rate": "Rate",
+      "total": "Medical expense credit",
+      "capped": "Other family costs exceed the 7M KRW cap by {capped} KRW, and that part is not credited.",
+      "note": "By law the 3% threshold comes off other family costs first, then your own and similar costs, then premature infant costs, then infertility treatment (Income Tax Act §59-4(2)). Costs are after insurance payouts."
+    },
+    "legal": {
+      "general": "Other family (7M KRW cap)",
+      "special": "You, under 7, 65+, disabled",
+      "premature": "Premature infants",
+      "infertility": "Infertility treatment"
+    },
+    "share": {
+      "label": "Gross pay {salaryM}M KRW · medical costs {spentM}M KRW",
+      "headline": "Tax down {saving} KRW",
+      "headlineZero": "Tax reduction: 0 KRW",
+      "sub": "Medical expense credit {credit} KRW",
+      "text": "With gross pay of {salaryM}M KRW and {spentM}M KRW in medical costs, the medical expense credit is {credit} KRW and tax falls by {saving} KRW."
+    },
+    "rows": {
+      "spent": "Medical costs (after insurance)",
+      "threshold": "3% of gross pay",
+      "credit": "Medical expense credit",
+      "saving": "Tax reduction"
+    },
+    "actions": {
+      "full": "Calculate your full year-end refund"
+    },
+    "calendar": {
+      "title": "Last day to pay medical costs for this year's credit",
+      "note": "Medical costs paid by December 31 count in this year's settlement. Recalculate on ToolHub: {url}"
+    },
+    "couple": {
+      "title": "Dual-income couple: who should pay and claim?",
+      "desc": "Each person's 3% threshold comes from their own gross pay, so the lower earner has a lower threshold. But credit larger than the tax due is lost, so both people's tax has to be calculated together.",
+      "spouseSalary": "Spouse's gross pay",
+      "spouseSalaryHint": "Enter it to compare all eight splits",
+      "spouseOwn": "Spouse's own medical costs",
+      "spouseOwnHint": "What your spouse paid for their own care (after insurance)",
+      "empty": "Enter your spouse's gross pay to see who should pay your costs, your spouse's costs and family costs so that your combined tax falls the most.",
+      "best": "Splitting it this way cuts your tax by another {gain} KRW",
+      "same": "Keeping it as it is (you pay family costs) is best",
+      "moved": "moved",
+      "top": "best",
+      "assign": {
+        "mine": "Your costs {amount} KRW",
+        "spouse": "Spouse's costs {amount} KRW",
+        "family": "Family costs {amount} KRW"
+      },
+      "who": {
+        "me": "You pay",
+        "spouse": "Spouse pays"
+      },
+      "table": {
+        "caption": "Tax reduction for each person by split of medical costs",
+        "plan": "Split",
+        "me": "You",
+        "spouse": "Spouse",
+        "total": "Total"
+      },
+      "plans": {
+        "current": "As is (you pay family)",
+        "allMe": "All by you",
+        "allSpouse": "All by spouse",
+        "best": "Recommended"
+      },
+      "note": "Calculated from gross pay alone, assuming neither of you has other deductions (incl. local income tax). Card, insurance or child deductions lower the tax due and can change the result, so check each of you in the year-end tax calculator.",
+      "rules": {
+        "title": "Which medical costs can move between spouses",
+        "items": [
+          "The credit goes to the worker who actually paid (Enforcement Decree §118-5). Costs already paid cannot be moved, so use this to decide whose card or account pays for the rest of the year.",
+          "Your spouse's medical costs can be claimed by whoever paid them, whatever your spouse earns. In your settlement, however, your spouse is not 'you', so the costs fall under other family with the 7M KRW cap (no cap if your spouse is 65+ or disabled).",
+          "Children's and parents' medical costs count only if paid by the person who claims that family member as a basic deduction. If the husband claims the child and the wife pays the child's hospital bill, the wife cannot claim it.",
+          "Parents who cannot be claimed because they earn over 1M KRW a year or are under 60 still count if you support them and nobody else claims them. Siblings must live at the same registered address.",
+          "Moving a child's basic deduction also moves the 1.5M KRW personal deduction, the child tax credit and education credits. Check the full effect for each of you in the year-end tax calculator."
+        ]
+      }
+    },
+    "items": {
+      "title": "What counts as a medical expense",
+      "yes": "Yes",
+      "no": "No",
+      "cols": {
+        "item": "Item",
+        "ok": "Credit",
+        "note": "Conditions and basis"
+      },
+      "rows": [
+        {
+          "item": "Hospital, dental and Korean medicine clinic fees, inpatient care, health checkups",
+          "ok": true,
+          "note": "Diagnosis, treatment and prevention at medical institutions under the Medical Service Act (Enforcement Decree §118-5(1)1)"
+        },
+        {
+          "item": "Medicines for treatment or recuperation (incl. herbal medicine)",
+          "ok": true,
+          "note": "Pharmacy purchases count if for treatment; tonics for general health do not (§118-5(1)2, (2))"
+        },
+        {
+          "item": "Prescription glasses and contact lenses",
+          "ok": true,
+          "note": "Up to 500,000 KRW per person a year (§118-5(1)4)"
+        },
+        {
+          "item": "LASIK and other vision correction surgery",
+          "ok": true,
+          "note": "Surgery fees paid to a medical institution count (NTS help center)"
+        },
+        {
+          "item": "Hearing aids",
+          "ok": true,
+          "note": "No cap (§118-5(1)5)"
+        },
+        {
+          "item": "Assistive devices for the disabled, prescribed medical devices (purchase or rental)",
+          "ok": true,
+          "note": "Medical devices need a doctor's prescription (§118-5(1)3)"
+        },
+        {
+          "item": "Postpartum care centers",
+          "ok": true,
+          "note": "Up to 2M KRW per birth; no gross pay limit for costs paid from 2024 (§118-5(1)7)"
+        },
+        {
+          "item": "Co-payments for long-term care and disability activity support",
+          "ok": true,
+          "note": "Co-payments actually paid; activity support from 2024 (§118-5(1)6, 6-2)"
+        },
+        {
+          "item": "Infertility treatment and related prescription drugs",
+          "ok": true,
+          "note": "30% rate, no cap (Income Tax Act §59-4(2)4)"
+        },
+        {
+          "item": "Cosmetic and plastic surgery",
+          "ok": false,
+          "note": "Excluded by law (§118-5(2))"
+        },
+        {
+          "item": "Health supplements and tonics for general health",
+          "ok": false,
+          "note": "Not medicines, or for general health (§118-5(2), NTS help center)"
+        },
+        {
+          "item": "Fees paid to caregivers",
+          "ok": false,
+          "note": "Not payment for medical services (NTS help center)"
+        },
+        {
+          "item": "Hospital bills abroad",
+          "ok": false,
+          "note": "Foreign hospitals are not medical institutions under the Medical Service Act (NTS help center)"
+        },
+        {
+          "item": "Amounts refunded by indemnity insurance or the out-of-pocket ceiling scheme",
+          "ok": false,
+          "note": "Subtract what was refunded (§118-5(1), NTS)"
+        },
+        {
+          "item": "Costs paid before you joined or after you left your job",
+          "ok": false,
+          "note": "Only costs paid while employed (incl. leave) count (NTS help center)"
+        }
+      ]
+    },
+    "missing": {
+      "title": "Costs missing from the simplified data and receipts",
+      "items": [
+        "Sellers of glasses, contact lenses and hearing aids do not have to submit data (Enforcement Decree §216-3), so these may not appear. Ask the store for a receipt with the user's name and give it to your employer.",
+        "For assistive devices and medical devices, keep the purchase or rental receipt, plus the prescription for medical devices.",
+        "If a postpartum care center is missing, ask it for a receipt showing the user's name and the amount.",
+        "If hospital or pharmacy data is missing or wrong, report it to the missing medical expense center after the service opens on January 15; if it still does not appear, get a payment certificate from the hospital.",
+        "Data for parents and adult children appears only after they consent to share it on Hometax.",
+        "Insurance payouts also appear in the simplified data. If you claimed a cost and were reimbursed the next year, the credit for the year you paid must be corrected."
+      ]
+    },
+    "refund": {
+      "title": "Missed it? Claim it back within five years",
+      "items": [
+        "During the May income tax filing period, go to Hometax [Tax return] → [Comprehensive income tax] → [Earned income return] → [Regular return], load your year-end settlement and add the missing costs.",
+        "After May, use the request for correction (gyeongjeong cheonggu) in the same menu. The screen for the previous tax year usually opens around July.",
+        "The deadline is five years from the settlement tax payment date (usually March 10 of the following year) under Framework Act on National Taxes §45-2(5). Right now you can still claim back to the {old} tax year (until March 10, {until}).",
+        "Attach the receipts or the hospital's payment certificate. The tax office must reply within two months of receiving the request (§45-2(3))."
+      ]
+    },
+    "next": {
+      "title": "Other credits worth checking",
+      "yearEnd": {
+        "title": "Year-end tax calculator",
+        "desc": "Calculate your whole refund with these medical costs included"
+      },
+      "card": {
+        "title": "Credit card deduction",
+        "desc": "Medical costs paid by card also count as card spending (both apply)"
+      },
+      "rent": {
+        "title": "Monthly rent tax credit",
+        "desc": "15–17% of rent for non-homeowners earning up to 80M KRW"
+      },
+      "pension": {
+        "title": "Pension savings and IRP credit",
+        "desc": "12–15% of up to 9M KRW paid in by December 31"
+      }
+    },
+    "source": "Basis: Income Tax Act §59-4(2), Enforcement Decree §118-5, NTS help center medical expense Q&A · tax year {year} (laws in force as of October 2026)"
+  },
+  "rentTaxCredit": {
+    "title": "Monthly Rent Tax Credit Calculator",
+    "subtitle": "Tax year {year} · Check eligibility, see the tax you get back, and claim missed rent from the past five years",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Total salary (gross, per year)",
+    "salaryHint": "Annual pay excluding non-taxable allowances such as meal allowance — the total salary on your withholding receipt.",
+    "rent": "Monthly rent",
+    "rentHint": "Rent stated in the lease only, without maintenance fees.",
+    "months": "Months you paid rent in {year}",
+    "monthsOpt": "{n} months",
+    "monthsHint": "Rent paid this year: {amount} KRW. By law, contract rent is prorated per day for the days you actually lived there in the year.",
+    "check": {
+      "title": "1. Check eligibility first",
+      "desc": "Judged as of December 31, {year}. A single \"No\" means no credit.",
+      "yes": "Yes",
+      "no": "No",
+      "house": {
+        "q": "On December 31, does no one in your household own a home?",
+        "hint": "A spouse counts as the same household even with a separate address. A home owned by parents or siblings living with you also disqualifies you.",
+        "fail": "If anyone in the household owns a home on December 31, you cannot claim the credit (Restriction of Special Taxation Act §95-2(1), Enforcement Decree §95(1)). Buying a home during the year removes that whole year's rent."
+      },
+      "head": {
+        "q": "Are you the head of household, or does the head not claim housing deductions?",
+        "hint": "Household members can claim if the head does not claim rent, housing subscription savings, jeonse loan repayment or mortgage interest deductions.",
+        "fail": "A household member cannot claim if the head claims any of: rent credit, housing subscription savings, jeonse loan principal and interest, or long-term mortgage interest (RSTA §95-2(1)). The head can claim both the subscription deduction and the rent credit."
+      },
+      "home": {
+        "q": "Is the home 85㎡ or less in exclusive area, or worth 400M KRW or less (standard price)?",
+        "hint": "Either one is enough. Residential officetels and gosiwon count, dormitories do not. Non-urban towns outside the capital area allow 100㎡, and from {year} households with three or more dependent children or grandchildren allow 100㎡. Multi-household houses use the area per unit.",
+        "fail": "If both area and standard price exceed the limits, the home does not qualify (Enforcement Decree §95(2)). You can still report the rent for cash receipts and take the card income deduction instead."
+      },
+      "address": {
+        "q": "Is your resident registration at the lease address?",
+        "hint": "The lease address must match your resident registration. A fixed-date stamp is not required.",
+        "fail": "If the lease address differs from your registered address, you cannot claim (Enforcement Decree §95(2)3). The NTS also treats a missing move-in report as ineligible."
+      },
+      "contract": {
+        "q": "Is the tenant on the lease you or a dependent you claim?",
+        "hint": "A lease in your spouse's name works if the spouse is your basic dependent (income of 1M KRW or less, or salary of 5M KRW or less if wages only).",
+        "fail": "If the lease is not in your name or a basic dependent's name, you cannot claim (Enforcement Decree §95(2)4). This includes a spouse with too much income to be your dependent."
+      },
+      "salary": {
+        "q": "Is your total salary 80M KRW or less? (checked from your input)",
+        "hint": "Based on your own salary, not combined with your spouse. With other income, total comprehensive income must also be 70M KRW or less.",
+        "ok": "Total salary {salary} KRW → eligible, rate {rate}%",
+        "fail": "Total salary {salary} KRW exceeds 80M KRW, so you are not eligible (RSTA §95-2(1)). The rent cash-receipt income deduction has no income limit."
+      }
+    },
+    "result": {
+      "title": "2. What you get back",
+      "label": "Tax actually reduced by rent in {year}",
+      "notEligible": "A \"No\" in the checklist or salary above the limit means no credit. See the cash-receipt income deduction below.",
+      "noRent": "Enter rent and months to calculate.",
+      "full": "You get the full {max} KRW back (incl. local income tax).",
+      "capped": "Your tax was only {tax} KRW, so only {saving} KRW of the {max} KRW credit counts. The credit never pays out more than the tax you owe.",
+      "rate": "Credit rate",
+      "rateLow": "Salary 55M KRW or less",
+      "rateMid": "Salary over 55M up to 80M KRW",
+      "rateOver": "Salary over 80M KRW — not eligible",
+      "base": "Eligible rent",
+      "baseLimit": "Up to 10M KRW a year",
+      "baseCapped": "Only 10M KRW of the {paid} KRW paid counts",
+      "caption": "Rent tax credit breakdown",
+      "credit": "Tax credit (rate × eligible rent)",
+      "max": "Maximum incl. 10% local income tax",
+      "tax": "Tax before the rent credit (incl. local tax)",
+      "saving": "Tax actually reduced",
+      "cash": "If taken as cash-receipt deduction instead (max)",
+      "cashNote": "You cannot take both the tax credit and the cash-receipt deduction on the same rent. The cash-receipt figure assumes your card spending already passed 25% of salary, so the tax credit usually wins when you qualify.",
+      "cashBetter": "Here the cash-receipt income deduction is better or the only option. Report your rent on Hometax (housing rent report) to get cash receipts.",
+      "standard": "Claiming the rent credit gives up the 130,000 KRW standard tax credit (Income Tax Act §59-4(9)). The amount already reflects that.",
+      "assumption": "Calculated for one person with no other deductions such as cards. With many other deductions your tax is lower, and so is the real reduction. Check the full refund in the year-end tax calculator.",
+      "toYearEnd": "See full refund in the year-end tax calculator"
+    },
+    "share": {
+      "label": "Salary {salaryM}M KRW · rent {rentM}M KRW a month",
+      "headline": "Get {amountFull} KRW back",
+      "sub": "{year} rent tax credit (incl. local income tax)",
+      "subNot": "Check the eligibility conditions again",
+      "text": "With a {salaryM}M KRW salary and {rentM}M KRW monthly rent, the rent tax credit gives back {amount} KRW.",
+      "rows": {
+        "rate": "Credit rate",
+        "base": "Eligible rent",
+        "saving": "Tax reduced",
+        "past": "Past 5 years, max claim"
+      }
+    },
+    "past": {
+      "title": "3. Claim missed rent from the past five years",
+      "desc": "Years you can still claim as of {today}. If you only did year-end settlement, you can file within five years after March 10 of the following year (the settlement tax due date; Framework Act on National Taxes §45-2(5)).",
+      "year": "Tax year {year}",
+      "deadline": "Until {date}",
+      "route": {
+        "yearEnd": "Claim now in your company's year-end settlement",
+        "may": "Also possible in the May income tax return",
+        "claim": "Hometax claim for correction"
+      },
+      "months": "Months paid that year",
+      "none": "None",
+      "tier": "Salary that year",
+      "tiers": {
+        "low": "55M KRW or less",
+        "mid": "Over 55M up to {capM}M KRW",
+        "over": "Over {capM}M KRW (not eligible)"
+      },
+      "rule": "Rate {rate}% · rent limit {limitM}M KRW that year",
+      "amount": "Up to {amount} KRW",
+      "total": "Past years total (max)",
+      "totalNote": "Upper bound = that year's rate × rent within the limit (at {rent} KRW a month) × 1.1 for local tax. The real refund cannot exceed that year's determined tax, so check the determined tax on that year's withholding receipt. You must also have met the conditions (no home, registered address, etc.) that year.",
+      "unverified": "Tax years {years} are left out because their rules could not be verified.",
+      "deadlineNote": "Deadlines on a Saturday or Sunday move to the next Monday (Framework Act §5). Deadlines can differ if your employer pays tax semiannually or you left mid-year, and for a year you filed your own May return the five years start after the May deadline."
+    },
+    "rules": {
+      "caption": "Rent tax credit rules by tax year",
+      "year": "Year",
+      "rate": "Rate (≤55M / above)",
+      "cap": "Salary limit",
+      "limit": "Rent limit",
+      "home": "Home price limit",
+      "notes": [
+        "Tax year 2022: the higher rates (17%/15%) from the December 31, 2022 amendment also applied to rent paid in 2022 under Addendum Article 18.",
+        "From tax year 2023 the home standard-price limit rose from 300M to 400M KRW (Enforcement Decree amended February 28, 2023, from the 2023 tax year).",
+        "From tax year 2024 the salary limit rose from 70M to 80M KRW (comprehensive income 60M to 70M) and the rent limit from 7.5M to 10M KRW (amended December 31, 2023, for rent paid from 2024).",
+        "The higher rate needs salary of 55M KRW or less and comprehensive income of 45M KRW or less. The area rule (national housing size) and inclusion of officetels and gosiwon are the same in every year shown.",
+        "From tax year 2026: households with three or more dependent children or grandchildren may rent up to 100㎡, and a spouse registered in a different city, county or district can claim too (combined couple limit 10M KRW)."
+      ]
+    },
+    "guide": {
+      "docs": {
+        "title": "Documents, and why rent is missing from the simplified service",
+        "items": [
+          "The year-end simplified service only shows rent for public rental housing and rent paid with Hyundai, Shinhan, Samsung or KB cards. Rent sent by bank transfer to a private landlord does not appear, so you submit documents yourself.",
+          "Give your employer a resident registration copy, a copy of the lease, and proof of payment (transfer receipts, deposit slips, bank statements). List the rent on your deduction declaration form.",
+          "No fixed-date stamp or landlord consent is needed. The fixed date stopped being a requirement from tax year 2014, and landlord consent is not a legal requirement.",
+          "If the lease expired but renewed automatically and you still live there, the old lease plus transfer records are enough.",
+          "The 80M KRW salary limit is judged on the claimant's own salary, not the couple's."
+        ]
+      },
+      "claim": {
+        "title": "Missed it at year-end settlement: May return or claim for correction",
+        "items": [
+          "In May after the settlement you can add the rent in the comprehensive income tax return: Hometax [Tax returns] → [Comprehensive income tax] → [Wage income return], then choose the regular return.",
+          "After that, use [Claim for correction] in the same menu. Your employer's payment statement is prefilled; add the rent and the refund is calculated. The previous year cannot be corrected during the May filing period; the NTS call center said the 2025 tax-year correction service opens around July 2026.",
+          "The deadline is five years after the settlement tax due date (March 10 of the next year; Framework Act §45-2(5)). For example, tax year 2021 can be claimed until March 10, 2027.",
+          "The tax office must notify you of the result within two months of receiving the claim (Framework Act §45-2(3)).",
+          "The documents are the same as at year-end settlement. If you moved that year, prepare the lease and transfer records for every home."
+        ]
+      },
+      "cash": {
+        "title": "How it differs from the rent cash-receipt deduction",
+        "items": [
+          "Rent processed as cash receipts gets the 30% card income deduction like a debit card. It only applies to spending above 25% of salary and has a basic limit (3M KRW at salary of 70M or less, 2.5M above).",
+          "You cannot take both the tax credit and the cash-receipt deduction on the same rent. Rent used for the tax credit must be removed from card spending.",
+          "With 50M KRW salary and 600,000 KRW rent (7.2M a year), the tax credit is 1,346,400 KRW, while cash receipts give at most 356,400 KRW even if your cards already passed the threshold. If you qualify, the tax credit is far better.",
+          "If you fail the credit conditions (salary over 80M, home too large, a household member whose head takes housing deductions), cash receipts are the alternative. One Hometax housing rent report issues receipts automatically on each rent date for the lease period, and you can report within five years of payment."
+        ]
+      },
+      "youth": {
+        "title": "Can you combine it with the youth rent subsidy?",
+        "items": [
+          "The government youth rent subsidy (up to 200,000 KRW a month for up to 24 months) lists only local-government rent programs as non-combinable; the rent tax credit is not on that list (Gov24). The tax law also has no rule excluding subsidy recipients.",
+          "However, the law does not say whether the subsidized amount must be subtracted from eligible rent. If the subsidy is large, check with the NTS call center (126) first.",
+          "Check youth rent subsidy eligibility (ages 19–34, deposit up to 50M and rent up to 600,000 KRW, etc.) in the youth rent subsidy calculator."
+        ]
+      },
+      "changes": {
+        "title": "What changed in 2026 and proposals before the National Assembly",
+        "items": [
+          "From rent paid in 2026, if the head of household and spouse are registered in different cities, counties or districts (e.g. weekend couples), the spouse can also claim when meeting the conditions. The couple's combined limit is 10M KRW (RSTA §95-2(2), Enforcement Decree §95(5)). Family living at the spouse's address must also own no home.",
+          "Households with three or more dependent children or grandchildren may rent homes up to 100㎡ in exclusive area (Enforcement Decree §95(2)1(a), amended February 27, 2026).",
+          "The government's August 2026 tax reform proposal raises the rent limit to 12M KRW and applies 17% to young people aged 15–34 regardless of income. It is still before the National Assembly, so this calculator does not include it."
+        ]
+      }
+    },
+    "links": {
+      "title": "Calculate other deductions too",
+      "yearEnd": "Year-end tax calculator (same salary and rent)",
+      "cardDeduction": "Credit card deduction calculator",
+      "medical": "Medical expense tax credit calculator",
+      "pension": "Pension savings and IRP tax credit calculator",
+      "youthRent": "Youth rent subsidy eligibility",
+      "rentConverter": "Jeonse–monthly rent conversion"
     }
   }
 }

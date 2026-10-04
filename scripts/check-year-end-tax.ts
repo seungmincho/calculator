@@ -4,7 +4,7 @@ import {
   earnedIncomeDeduction, progressiveTax, earnedIncomeCredit, childCredit, birthCredit, cardDeduction, cardLimits,
   housingDeduction, pensionCredit, insuranceCredit, medicalCredit, educationCredit, donationCredit, hometownCredit,
   rentCredit, calc, tips, DEFAULT_INPUT, type YetInput,
-  annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate, DEADLINE, cardTaxSaving,
+  annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate, DEADLINE, cardTaxSaving, itemTaxSaving,
 } from '../src/utils/yearEndTax.ts'
 
 const M = { special: 0, general: 0, premature: 0, infertility: 0 }
@@ -169,5 +169,11 @@ assert.equal(cardTaxSaving(50_000_000, { ...S0, credit: 20_000_000 }), 185_625) 
 assert.equal(cardTaxSaving(100_000_000, { ...S0, credit: 40_000_000, debit: 10_000_000 }), 660_000) // 한도 250만 × 26.4%
 assert.equal(cardTaxSaving(50_000_000, { ...S0, credit: 10_000_000 }), 0)            // 25% 문턱 미달
 assert.equal(cardDeduction(50_000_000, { ...S0, credit: 12_500_000, debit: 7_500_000 }).total, 2_250_000) // /card-deduction 페이지 예시
+// itemTaxSaving: 연금저축 600만 × 15% × 1.1 = 99만원 (공통공제라 표준세액공제와 무관)
+assert.equal(itemTaxSaving({ salary: 50_000_000 }, { pensionSavings: 6_000_000 }).saving, 990_000)
+// 월세 50만 × 17% × 1.1 — 직장인은 보험료 소득공제 때문에 이미 특별공제 쪽이라 작은 공제도 그대로 줄어듦
+assert.equal(itemTaxSaving({ salary: 50_000_000 }, { rent: 500_000 }).saving, 93_500)
+// 결정세액 한도: 연봉 1,500만은 낼 세금이 거의 없어 월세 1,000만(공제 170만)을 넣어도 줄어드는 세금은 결정세액까지
+{ const r = itemTaxSaving({ salary: 15_000_000 }, { rent: 10_000_000 }); assert.equal(r.saving, r.before.totalTax); assert.ok(r.saving < 1_870_000) }
 
 console.log('check-year-end-tax OK')

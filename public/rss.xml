@@ -5,8 +5,29 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 13:22:23 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 14:14:25 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[의료비 세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/medical-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/medical-tax-credit/</guid>
+    <description><![CDATA[총급여 3% 문턱과 공제율별 의료비 세액공제, 실제로 줄어드는 세금과 맞벌이 몰아주기 비교]]></description>
+    <pubDate>Sun, 04 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[연금저축·IRP 세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/pension-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/pension-tax-credit/</guid>
+    <description><![CDATA[12월 31일 전 연금저축·IRP에 얼마 더 넣으면 얼마 돌려받는지, 남은 한도와 해지 시 세금까지]]></description>
+    <pubDate>Sun, 04 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[월세 세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/rent-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/rent-tax-credit/</guid>
+    <description><![CDATA[월세 세액공제 대상 체크와 돌려받는 금액, 지난 5년 놓친 월세 경정청구까지]]></description>
+    <pubDate>Sun, 04 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[신용카드 소득공제 계산기]]></title>
     <link>https://toolhub.ai.kr/card-deduction/</link>
