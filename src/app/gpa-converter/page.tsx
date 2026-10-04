@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import GpaConverter from '@/components/GpaConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import gpaConverterCalcMessages from '../../../messages/generated/ko/ns/gpaConverterCalc.json'
 
 export const metadata: Metadata = {
   title: '4.3 4.5 학점 변환기 - 4.0·백분율 환산표 | 툴허브',
@@ -41,41 +43,12 @@ export default function GpaConverterPage() {
     featureList: ['4.5·4.3·4.0 만점 상호 변환', '백분율(100점) 환산', '등급(A+~F) 표시', '등급 참고표', '결과 이미지 저장', '링크 공유'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '4.5 만점 학점을 4.3으로 어떻게 변환하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '가장 일반적인 방법은 4.5만점 학점에 4.3/4.5(≈0.9556)를 곱하는 것입니다. 예를 들어 4.5만점 3.8은 3.8×(4.3/4.5)≈3.63/4.3이 됩니다. 이 변환기는 값을 한 번 입력하면 4.5·4.3·4.0·백분율 환산값과 등급을 동시에 보여줍니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '같은 3.5라도 4.3 만점과 4.5 만점은 수준이 다른가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 다릅니다. 4.3 만점 3.5는 약 81%(B+~A0), 4.5 만점 3.5는 약 78%(B+) 수준입니다. 같은 숫자라도 만점 기준에 따라 실제 성취 수준이 다르므로 지원 시 만점 기준을 함께 표기해야 합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '해외 대학원(미국 4.0) 지원 시 학점 변환은 어떻게 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '미국식 4.0 만점으로는 대략 (내 학점 ÷ 내 만점) × 4.0으로 선형 환산할 수 있습니다. 다만 공인된 단일 기준은 없으며, 중요한 지원에는 WES 등 학력 인증 기관의 공식 환산(iGPA)을 이용하는 것이 안전합니다.',
-        },
-      },
-    ],
-  }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={gpaConverterCalcMessages.gpaConverterCalc.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

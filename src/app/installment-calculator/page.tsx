@@ -2,10 +2,11 @@ import { Metadata } from 'next'
 import InstallmentCalc from '@/components/InstallmentCalc'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '카드 할부 계산기 - 할부 수수료, 월 납부금 계산 | 툴허브',
-  description: '카드 할부 계산기 - 신용카드 할부 결제 시 월 납부금액과 수수료를 계산합니다. 무이자 할부, 납부 스케줄 제공.',
+  description: '결제 금액과 할부 개월 수만 넣으면 월 납부금과 총 할부 수수료를 계산합니다. 일반·무이자·부분무이자 할부를 고를 수 있고, 개월수별 수수료 비교표와 회차별 납부 스케줄로 일시불과 할부 중 무엇이 나은지 확인하세요.',
   keywords: '카드 할부 계산기, 할부 수수료 계산, 할부 이자 계산, installment calculator, 월 납부금',
   openGraph: { title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산', url: 'https://toolhub.ai.kr/installment-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/installment-calculator.png', width: 1200, height: 630, alt: '카드 할부 계산기' }] },
   twitter: { card: 'summary_large_image', title: '카드 할부 계산기 | 툴허브', description: '할부 수수료 및 월 납부금 계산', images: ['https://toolhub.ai.kr/og/installment-calculator.png'] },
@@ -13,26 +14,24 @@ export const metadata: Metadata = {
 }
 
 export default function InstallmentCalcPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '카드 할부 계산기', description: '할부 수수료 및 월 납부금 계산', url: 'https://toolhub.ai.kr/installment-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['할부 수수료', '월 납부금', '납부 스케줄', '무이자 계산'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '카드 할부 수수료율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '카드 할부 수수료율은 카드사와 할부 기간에 따라 다릅니다. 카드사 공시 기준 연 약 5~19.9%(예: 신한카드 5.20~19.90%)이며 개월수가 길고 신용점수가 낮을수록 높습니다. 무이자 할부 이벤트를 활용하면 수수료 없이 할부가 가능하지만, 카드사나 가맹점이 수수료를 부담하므로 무이자 할부 가능 매장이 제한될 수 있습니다.' } },
-      { '@type': 'Question', name: '무이자 할부와 유이자 할부의 차이는?', acceptedAnswer: { '@type': 'Answer', text: '무이자 할부는 카드사 이벤트로 할부 수수료가 0%인 결제 방식입니다. 유이자 할부는 결제 금액에 할부 수수료(카드사 공시 연 약 5~19.9%)가 추가됩니다. 예를 들어 120만 원을 12개월 유이자 할부(연 15%)로 결제하면 수수료가 할부잔액에 붙어 1회차 115,000원에서 마지막 회차 101,250원까지 줄어들며, 총 수수료 97,500원을 더해 1,297,500원을 내게 됩니다. 부분 무이자(일부 회차만 면제)도 있으니 조건을 확인하세요.' } },
-      { '@type': 'Question', name: '할부와 일시불 중 어떤 것이 유리한가요?', acceptedAnswer: { '@type': 'Answer', text: '일시불이 수수료가 없어 총 비용은 적지만, 목돈 지출 부담이 큽니다. 무이자 할부가 가능하면 현금 흐름 관리에 유리합니다. 유이자 할부는 수수료가 추가되므로 가급적 피하되, 긴급한 경우 단기(2~3개월) 할부가 이자 부담이 적습니다. 카드 실적 기준 달성을 위해 일시불이 유리한 경우도 있습니다.' } },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '카드 할부 계산기', description: '할부 수수료 및 월 납부금 계산', url: 'https://toolhub.ai.kr/installment-calculator/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['할부 수수료', '월 납부금', '납부 스케줄', '무이자 계산'] }
+  const faq = [
+    { q: '카드 할부 수수료율은 얼마인가요?', a: '카드 할부 수수료율은 카드사와 할부 기간에 따라 다릅니다. 카드사 공시 기준 연 약 5~19.9%(예: 신한카드 5.20~19.90%)이며 개월수가 길고 신용점수가 낮을수록 높습니다. 무이자 할부 이벤트를 활용하면 수수료 없이 할부가 가능하지만, 카드사나 가맹점이 수수료를 부담하므로 무이자 할부 가능 매장이 제한될 수 있습니다.' },
+    { q: '무이자 할부와 유이자 할부의 차이는?', a: '무이자 할부는 카드사 이벤트로 할부 수수료가 0%인 결제 방식입니다. 유이자 할부는 결제 금액에 할부 수수료(카드사 공시 연 약 5~19.9%)가 추가됩니다. 예를 들어 120만 원을 12개월 유이자 할부(연 15%)로 결제하면 수수료가 할부잔액에 붙어 1회차 115,000원에서 마지막 회차 101,250원까지 줄어들며, 총 수수료 97,500원을 더해 1,297,500원을 내게 됩니다. 부분 무이자(일부 회차만 면제)도 있으니 조건을 확인하세요.' },
+    { q: '할부와 일시불 중 어떤 것이 유리한가요?', a: '일시불이 수수료가 없어 총 비용은 적지만, 목돈 지출 부담이 큽니다. 무이자 할부가 가능하면 현금 흐름 관리에 유리합니다. 유이자 할부는 수수료가 추가되므로 가급적 피하되, 긴급한 경우 단기(2~3개월) 할부가 이자 부담이 적습니다. 카드 실적 기준 달성을 위해 일시불이 유리한 경우도 있습니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><InstallmentCalc />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <InstallmentCalc />
+            <ToolFaq items={faq} />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

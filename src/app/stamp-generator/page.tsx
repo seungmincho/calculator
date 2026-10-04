@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import StampGenerator from '@/components/StampGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '인감 도장 생성기 - 온라인 도장 만들기, 전자 서명 | 툴허브',
@@ -28,57 +29,30 @@ export const metadata: Metadata = {
 }
 
 export default function StampGeneratorPage() {
-  const jsonLd = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: '인감 도장 생성기',
-      description: '무료 온라인 인감 도장 생성기. 원형·사각·타원 도장을 한국어 이름으로 즉시 만들고 PNG로 다운로드.',
-      url: 'https://toolhub.ai.kr/stamp-generator',
-      applicationCategory: 'UtilityApplication',
-      operatingSystem: 'Any',
-      browserRequirements: 'JavaScript',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-      featureList: [
-        '원형·타원 이름 도장, 사각 직인, 법인인감(상호 고리 + 대표이사인)',
-        '전통 배치: 오른쪽 열부터 세로쓰기, ‘인’·‘지인’ 접미사',
-        '잉크 번짐·찍힘 질감 옵션',
-        '전통 붉은 인감·현대 파란·검정·커스텀 색상',
-        '명조·고딕·붓글씨 글꼴 3종',
-        '테두리 굵기·이중 테두리·투명도 조절',
-        '투명 PNG(500/1000/2000px)·SVG 다운로드, 클립보드 복사, 링크 공유',
-      ],
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '인감 도장 생성기로 만든 도장을 법적으로 사용할 수 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '이 도장 이미지는 디자인·문서 장식·개인 메모 용도로만 사용하세요. 법적 효력을 가지는 인감 도장은 반드시 인감도장 등록 절차를 거쳐야 합니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '도장에 몇 글자까지 입력할 수 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '이름·직함은 최대 10글자(접미사 제외), 법인인감 상호는 24글자까지 입력할 수 있습니다. 전통 도장처럼 오른쪽 열부터 세로로 배치되며, 글자 수에 맞춰 자동으로 칸을 나눕니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '생성한 도장 이미지를 어떤 형식으로 저장할 수 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '배경이 투명한 PNG(500·1000·2000px)와 확대해도 깨지지 않는 SVG로 저장하거나 클립보드에 복사할 수 있어 한글·워드·PPT·PDF 문서에 바로 붙여넣을 수 있습니다.',
-          },
-        },
-      ],
-    },
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '인감 도장 생성기',
+    description: '무료 온라인 인감 도장 생성기. 원형·사각·타원 도장을 한국어 이름으로 즉시 만들고 PNG로 다운로드.',
+    url: 'https://toolhub.ai.kr/stamp-generator/',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: [
+      '원형·타원 이름 도장, 사각 직인, 법인인감(상호 고리 + 대표이사인)',
+      '전통 배치: 오른쪽 열부터 세로쓰기, ‘인’·‘지인’ 접미사',
+      '잉크 번짐·찍힘 질감 옵션',
+      '전통 붉은 인감·현대 파란·검정·커스텀 색상',
+      '명조·고딕·붓글씨 글꼴 3종',
+      '테두리 굵기·이중 테두리·투명도 조절',
+      '투명 PNG(500/1000/2000px)·SVG 다운로드, 클립보드 복사, 링크 공유',
+    ],
+  }
+  const faq = [
+    { q: '인감 도장 생성기로 만든 도장을 법적으로 사용할 수 있나요?', a: '이 도장 이미지는 디자인·문서 장식·개인 메모 용도로만 사용하세요. 법적 효력을 가지는 인감 도장은 반드시 인감도장 등록 절차를 거쳐야 합니다.' },
+    { q: '도장에 몇 글자까지 입력할 수 있나요?', a: '이름·직함은 최대 10글자(접미사 제외), 법인인감 상호는 24글자까지 입력할 수 있습니다. 전통 도장처럼 오른쪽 열부터 세로로 배치되며, 글자 수에 맞춰 자동으로 칸을 나눕니다.' },
+    { q: '생성한 도장 이미지를 어떤 형식으로 저장할 수 있나요?', a: '배경이 투명한 PNG(500·1000·2000px)와 확대해도 깨지지 않는 SVG로 저장하거나 클립보드에 복사할 수 있어 한글·워드·PPT·PDF 문서에 바로 붙여넣을 수 있습니다.' },
   ]
 
   return (
@@ -91,6 +65,7 @@ export default function StampGeneratorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <StampGenerator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

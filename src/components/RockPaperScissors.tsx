@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/rockPaperScissors'
 import { RotateCcw, Trophy, Users, Swords } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { shuffle } from '@/utils/password' // Fisher–Yates (sort+random은 편향)
 
 type Hand = 'rock' | 'paper' | 'scissors'
 type GameMode = '1v1' | 'bestof' | 'tournament'
@@ -123,7 +124,7 @@ export default function RockPaperScissors() {
   }, [])
 
   const startTournament = useCallback(() => {
-    const shuffled = [...players].sort(() => Math.random() - 0.5)
+    const shuffled = shuffle(players)
     const matches: Match[] = []
     for (let i = 0; i < shuffled.length - 1; i += 2) {
       matches.push({ p1: shuffled[i], p2: shuffled[i + 1] })

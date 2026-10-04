@@ -3,27 +3,37 @@
  * 회귀 체크: node scripts/check-greetings.ts
  *
  * 문장 앞 'bk|' 같은 접두어 = 그 받는 사람에게만 쓰는 문장 (없으면 모두).
- *   b 상사·선배  c 동료  k 거래처·고객  f 친구  p 부모님·가족  t 선생님
+ *   b 상사·선배  c 동료  k 거래처·고객  f 친구  p 부모님·가족  t 선생님  s 제자·후배(수능만)
+ *   건배사(toast)는 받는 사람 대신 자리: c 회사·팀  k 거래처  f 친구·동창  p 가족 / 수능(csat): p 자녀·가족  f 친구  s 제자·후배
  * 날짜 토큰 (날짜를 모르는 서버 렌더에서는 괄호 안 값):
- *   {yr} 2026년(올해)  {ny} 2027년(새해)  {gj} '정미년 '(빈 값)  {seol}/{chu} '2월 6일부터 시작되는 '(빈 값)
+ *   {yr} 2026년(올해)  {ny} 2027년(새해)  {gj} '정미년 '(빈 값)  {zd} '붉은 양의 해'(새해)  {seol}/{chu} '2월 6일부터 시작되는 '(빈 값)
  */
-import { getKoreanHolidays } from './koreanHolidays.ts'
+import { getKoreanHolidays, csatDate } from './koreanHolidays.ts'
 
-export const SITUATIONS = ['yearEnd', 'newYear', 'seollal', 'chuseok', 'thanks', 'birthday', 'congrats', 'farewell'] as const
+export const SITUATIONS = ['yearEnd', 'newYear', 'seollal', 'chuseok', 'thanks', 'birthday', 'congrats', 'farewell', 'christmas', 'toast', 'csat'] as const
 export const RECIPIENTS = ['boss', 'colleague', 'client', 'friend', 'family', 'teacher'] as const
 export const TONES = ['formal', 'polite', 'casual'] as const
 export const LENGTHS = ['short', 'medium', 'long'] as const
 export type Situation = (typeof SITUATIONS)[number]
-export type Recipient = (typeof RECIPIENTS)[number]
+export type Recipient = (typeof RECIPIENTS)[number] | 'student'
 export type Tone = (typeof TONES)[number]
 export type Length = (typeof LENGTHS)[number]
 
+const TOAST_PLACES: readonly Recipient[] = ['colleague', 'client', 'friend', 'family']
+const CSAT_RECIPIENTS: readonly Recipient[] = ['family', 'friend', 'student']
+
+/** 상황별로 고를 수 있는 받는 사람 (첫째가 기본값). 건배사는 '자리', 수능은 수험생과의 관계 */
+export const recipientsFor = (s: Situation): readonly Recipient[] =>
+  s === 'toast' ? TOAST_PLACES : s === 'csat' ? CSAT_RECIPIENTS : RECIPIENTS
+
 /** 받는 사람을 고르면 먼저 맞춰 주는 말투 (사용자가 바꿀 수 있음) */
 export const DEFAULT_TONE: Record<Recipient, Tone> = {
-  boss: 'formal', colleague: 'polite', client: 'formal', friend: 'casual', family: 'polite', teacher: 'formal',
+  boss: 'formal', colleague: 'polite', client: 'formal', friend: 'casual', family: 'polite', teacher: 'formal', student: 'casual',
 }
+/** 수능 응원의 '가족'은 자녀·동생이라 반말이 기본 */
+export const defaultTone = (s: Situation, r: Recipient): Tone => (s === 'csat' && r === 'family' ? 'casual' : DEFAULT_TONE[r])
 
-const CODE: Record<string, Recipient> = { b: 'boss', c: 'colleague', k: 'client', f: 'friend', p: 'family', t: 'teacher' }
+const CODE: Record<string, Recipient> = { b: 'boss', c: 'colleague', k: 'client', f: 'friend', p: 'family', t: 'teacher', s: 'student' }
 
 interface Pool { open: string[]; mid: string[]; wish: string[]; close: string[] }
 
@@ -139,6 +149,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
         '{gj}새해 복 많이 받으십시오.',
         '{gj}새해를 맞아 인사드립니다.',
         '새해 첫 인사를 드립니다.',
+        '{zd}가 밝았습니다.',
         'k|새해를 맞아 감사의 마음을 담아 인사드립니다.',
       ],
       mid: [
@@ -154,6 +165,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
       wish: [
         '{ny}에는 하시는 일마다 좋은 결과가 따르기를 바랍니다.',
         '웃을 일이 많은 한 해가 되면 좋겠습니다.',
+        '{zd}에는 바라시는 일 모두 순조롭게 이루시기를 빕니다.',
         'k|{ny}에도 믿고 맡기실 수 있도록 더 꼼꼼하게 챙기겠습니다.',
         'b|{ny}에는 더 믿음직한 모습 보여 드리겠습니다.',
         'pt|새해에는 더 자주 찾아뵙겠습니다.',
@@ -170,6 +182,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
         '{gj}새해 복 많이 받으세요.',
         '{gj}새해를 맞아 인사드려요.',
         '새해 첫 인사 드려요.',
+        '{zd}가 밝았어요.',
         '새해 계획은 세우셨어요?',
       ],
       mid: [
@@ -185,6 +198,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
       wish: [
         '{ny}에는 하시는 일마다 술술 풀리면 좋겠어요.',
         '새해엔 웃을 일이 더 많았으면 해요.',
+        '{zd}에는 바라는 일 모두 이루시길 바라요.',
         'b|{ny}에는 더 믿음직한 모습 보여 드릴게요.',
         'k|{ny}에도 믿고 맡기실 수 있게 더 꼼꼼히 챙길게요.',
         'pt|새해엔 더 자주 찾아뵐게요.',
@@ -202,6 +216,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
       open: [
         '{gj}새해 복 많이 받아!',
         '새해 계획은 세웠어?',
+        '{zd}가 밝았다!',
         '새해 인사 하려고 연락했어.',
         'fc|새해 첫 인사는 너한테 먼저 하고 싶었어.',
       ],
@@ -216,6 +231,7 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
       wish: [
         '{ny}엔 하는 일마다 잘 풀렸으면 좋겠다.',
         '새해엔 덜 아프고 더 많이 웃자.',
+        '{zd}엔 바라는 거 다 이루자.',
         'f|새해엔 우리 좀 더 자주 보자.',
         'p|새해엔 집에 더 자주 갈게.',
       ],
@@ -805,6 +821,301 @@ const DATA: Record<Situation, Record<Tone, Pool>> = {
       ],
     },
   },
+
+  christmas: {
+    formal: {
+      open: [
+        '어느덧 크리스마스가 다가왔습니다.',
+        '거리마다 캐럴이 들리니 한 해가 저물어 가는 게 실감 납니다.',
+        '즐거운 성탄절을 앞두고 인사드립니다.',
+        'k|성탄절을 맞아 한 해 동안의 감사를 담아 연락드립니다.',
+      ],
+      mid: [
+        '올해도 보내 주신 따뜻한 마음 덕분에 든든한 연말을 맞고 있습니다.',
+        '바쁜 연말이지만 이맘때면 고마운 얼굴들이 먼저 떠오릅니다.',
+        'b|올 한 해 믿고 이끌어 주신 덕분에 많이 배우고 성장했습니다.',
+        'c|정신없던 한 해를 함께 버텨 주셔서 진심으로 고맙습니다.',
+        'k|올 한 해 변함없이 함께해 주셔서 감사합니다.',
+        't|이맘때면 선생님과 교실에서 보낸 연말 풍경이 생각납니다.',
+        'p|올해도 늘 걱정해 주시고 응원해 주셔서 감사합니다.',
+        'f|올해도 연락할 때마다 반갑게 받아 주어 고마웠습니다.',
+      ],
+      wish: [
+        '성탄의 기쁨처럼 남은 연말도 따뜻한 일로 가득하기를 바랍니다.',
+        '사랑하는 분들과 오붓하고 행복한 시간 되시길 빕니다.',
+        'b|{ny}에도 곁에서 성실히 돕겠습니다.',
+        'k|다가오는 {ny}에도 좋은 소식으로 찾아뵙겠습니다.',
+        'pt|이번 연말에는 꼭 찾아뵙겠습니다.',
+        'c|크리스마스만큼은 업무 알림 끄고 푹 쉬셨으면 합니다.',
+        'f|연말이 가기 전에 얼굴 한번 보면 좋겠습니다.',
+      ],
+      close: [
+        '메리 크리스마스, 즐거운 성탄절 보내십시오.',
+        '추운 날씨에 건강 유의하시고 따뜻한 성탄 보내십시오.',
+        '포근하고 평안한 크리스마스가 되기를 기원합니다.',
+        'bckt|남은 한 해도 잘 부탁드립니다.',
+      ],
+    },
+    polite: {
+      open: [
+        '어느새 크리스마스가 다가왔네요.',
+        '거리에 캐럴이 들리니 연말 기분이 물씬 나요.',
+        '즐거운 성탄절 앞두고 인사드려요.',
+        'cf|올해 크리스마스는 어떻게 보내세요?',
+      ],
+      mid: [
+        '올해도 챙겨 주신 덕분에 따뜻한 연말을 맞고 있어요.',
+        '바쁜 연말이지만 이맘때면 고마운 얼굴들이 먼저 떠올라요.',
+        'b|올 한 해 믿고 이끌어 주셔서 정말 많이 배웠어요.',
+        'c|정신없던 한 해 같이 버텨 주셔서 진짜 고마웠어요.',
+        'k|올 한 해 변함없이 함께해 주셔서 감사했어요.',
+        't|이맘때면 선생님과 교실에서 보낸 연말이 생각나요.',
+        'p|올해도 늘 걱정해 주시고 응원해 주셔서 고마워요.',
+        'f|올해도 연락할 때마다 반갑게 받아 줘서 고마웠어요.',
+      ],
+      wish: [
+        '남은 연말도 선물 같은 일만 가득했으면 좋겠어요.',
+        '좋아하는 사람들과 오붓한 시간 보내셨으면 해요.',
+        'b|{ny}에도 곁에서 열심히 도울게요.',
+        'k|{ny}에도 좋은 소식으로 찾아뵐게요.',
+        'pt|이번 연말엔 꼭 찾아뵐게요.',
+        'c|크리스마스만큼은 업무 알림 끄고 푹 쉬세요.',
+        'f|연말 가기 전에 케이크 들고 한번 만나요.',
+      ],
+      close: [
+        '따뜻하고 행복한 성탄절 보내세요.',
+        '추운데 감기 조심하시고 즐거운 크리스마스 보내세요.',
+        '산타 선물처럼 기분 좋은 일만 생기길 바라요.',
+        'bckt|남은 한 해도 잘 부탁드려요.',
+      ],
+    },
+    casual: {
+      open: [
+        '메리 크리스마스!',
+        '벌써 크리스마스네.',
+        '거리마다 캐럴 들리니까 연말 느낌 난다.',
+        'cf|크리스마스에 뭐 해?',
+      ],
+      mid: [
+        '올해도 덕분에 따뜻한 한 해였어.',
+        '이맘때면 고마운 사람들이 먼저 생각나.',
+        'f|올해도 연락할 때마다 반갑게 받아 줘서 고마웠어.',
+        'c|정신없던 한 해 같이 버텨 줘서 진짜 고마워.',
+        'p|올해도 늘 걱정해 주고 응원해 줘서 고마워.',
+        'b|올해 이것저것 알려 줘서 많이 배웠어.',
+        'k|올해도 믿고 함께해 줘서 든든했어.',
+        't|이맘때면 교실에서 보낸 연말이 떠올라.',
+      ],
+      wish: [
+        '남은 연말도 선물 같은 일만 생기면 좋겠다.',
+        '좋아하는 사람들이랑 맛있는 거 많이 먹어.',
+        'f|연말 가기 전에 케이크 들고 한번 보자.',
+        'p|이번 연말엔 꼭 집에 갈게.',
+        'c|크리스마스만큼은 일 생각 하지 말고 푹 쉬어.',
+        'bkt|내년에도 지금처럼만 지내자.',
+      ],
+      close: [
+        '따뜻한 크리스마스 보내.',
+        '감기 조심하고 행복한 성탄절 보내.',
+        '산타 선물처럼 좋은 일만 생기길 바랄게.',
+        'bcfkt|남은 한 해도 잘 부탁해.',
+      ],
+    },
+  },
+
+  // 건배사: open 운 띄우기 · mid 한 해 돌아보기 · wish 바람 · close 건배 구호(마지막 줄 '선창: … / 후창: …' 또는 삼행시)
+  toast: {
+    formal: {
+      open: [
+        '잠시 잔을 채워 주시겠습니까?',
+        '부족하지만 건배 제의를 맡게 되어 한 말씀 드리겠습니다.',
+        '{yr} 한 해 동안 정말 고생 많으셨습니다.',
+        'k|오늘 귀한 걸음 해 주셔서 감사합니다.',
+        'p|이렇게 온 가족이 한자리에 모이니 참 좋습니다.',
+        'f|오랜만에 반가운 얼굴들이 모두 모였습니다.',
+      ],
+      mid: [
+        '돌아보면 쉽지 않은 순간도 많았지만, 함께였기에 여기까지 올 수 있었습니다.',
+        '오늘만큼은 바쁜 일은 잠시 잊고 마음껏 즐기셨으면 합니다.',
+        'c|서로 바쁜 와중에도 손발을 맞춰 주신 덕분에 올해 목표를 잘 마무리했습니다.',
+        'k|올 한 해 믿고 함께해 주신 덕분에 좋은 결실을 거둘 수 있었습니다.',
+        'f|각자 바쁘게 지내면서도 이렇게 다시 모일 수 있어 참 다행입니다.',
+        'p|올해도 다들 크게 아픈 데 없이 이렇게 모일 수 있어 감사합니다.',
+      ],
+      wish: [
+        '내년에도 오늘처럼 웃는 얼굴로 다시 모이기를 바랍니다.',
+        '다가오는 {ny}에는 모두의 바람이 하나씩 이루어지길 기원합니다.',
+        'c|내년에도 지금처럼 서로 힘이 되어 주는 팀이 되면 좋겠습니다.',
+        'k|{ny}에도 좋은 동반자로 오래 함께하겠습니다.',
+        'p|내년에도 모두 건강하게 이 자리에서 다시 뵙겠습니다.',
+      ],
+      close: [
+        '모두 잔을 높이 들어 주십시오.\n선창: 우리의 내년을 위하여! / 후창: 위하여!',
+        'ck|건배사는 ‘소화제’입니다. 소통과 화합이 제일이라는 뜻입니다.\n선창: 소통과 화합이! / 후창: 제일!',
+        'ckf|건배사는 ‘마무리’로 하겠습니다. 마음먹은 대로 무엇이든 이루자는 뜻입니다.\n선창: 마음먹은 대로! / 후창: 무엇이든 이루자!',
+        'fp|건배사는 ‘변사또’입니다. 변함없는 사랑으로 또 만나자는 뜻입니다.\n선창: 변함없는 사랑으로! / 후창: 또 만나자!',
+        'cf|건배사는 ‘청바지’입니다. 청춘은 바로 지금부터라는 뜻입니다.\n선창: 청춘은! / 후창: 바로 지금부터!',
+        '‘송년회’ 삼행시로 건배하겠습니다. 운을 띄워 주십시오.\n송! 송구영신, 묵은 걱정은 오늘 모두 털어 내고\n년! 연말연시 웃을 일만 가득하길 바라며\n회! 회포 풀고 내년에도 다 함께, 위하여!',
+      ],
+    },
+    polite: {
+      open: [
+        '다들 잔 채우셨어요?',
+        '건배 제의를 맡게 돼서 짧게 한마디 할게요.',
+        '{yr} 한 해 동안 다들 정말 고생 많으셨어요.',
+        'k|오늘 바쁘신 와중에 와 주셔서 감사해요.',
+        'p|이렇게 온 가족이 한자리에 모이니까 참 좋네요.',
+        'f|오랜만에 반가운 얼굴들 다 모였네요.',
+      ],
+      mid: [
+        '돌아보면 쉽지 않은 순간도 많았는데, 함께여서 여기까지 올 수 있었어요.',
+        '오늘만큼은 바쁜 일은 잠시 잊고 마음껏 즐겼으면 해요.',
+        'c|바쁜 와중에도 서로 손발 맞춰 준 덕분에 올해 목표를 잘 마무리했어요.',
+        'k|올 한 해 믿고 함께해 주셔서 좋은 결실을 거둘 수 있었어요.',
+        'f|각자 바쁘게 지내면서도 이렇게 다시 모일 수 있어서 다행이에요.',
+        'p|올해도 다들 크게 아픈 데 없이 이렇게 모여서 고마워요.',
+      ],
+      wish: [
+        '내년에도 오늘처럼 웃는 얼굴로 다시 모였으면 좋겠어요.',
+        '{ny}에는 다들 바라는 일 하나씩은 꼭 이루면 좋겠어요.',
+        'c|내년에도 지금처럼 서로 힘이 되는 팀이었으면 해요.',
+        'k|{ny}에도 좋은 파트너로 오래 함께할게요.',
+        'p|내년에도 다들 건강하게 이 자리에서 만나요.',
+      ],
+      close: [
+        '다 같이 잔 높이 들어 주세요.\n선창: 우리의 내년을 위하여! / 후창: 위하여!',
+        'ck|건배사는 ‘소화제’예요. 소통과 화합이 제일이라는 뜻이에요.\n선창: 소통과 화합이! / 후창: 제일!',
+        'ckf|건배사는 ‘마무리’로 정했어요. 마음먹은 대로 무엇이든 이루자는 뜻이에요.\n선창: 마음먹은 대로! / 후창: 무엇이든 이루자!',
+        'fp|건배사는 ‘변사또’예요. 변함없는 사랑으로 또 만나자는 뜻이에요.\n선창: 변함없는 사랑으로! / 후창: 또 만나자!',
+        'cf|건배사는 ‘청바지’예요. 청춘은 바로 지금부터라는 뜻이에요.\n선창: 청춘은! / 후창: 바로 지금부터!',
+        '‘송년회’ 삼행시로 건배할게요. 운 좀 띄워 주세요.\n송! 송구영신, 묵은 걱정은 오늘 다 털어 내고\n년! 연말연시 웃을 일만 가득하길 바라며\n회! 회포 풀고 내년에도 다 함께, 위하여!',
+      ],
+    },
+    casual: {
+      open: [
+        '다들 잔 채웠지?',
+        '건배사 맡았으니까 짧게 한마디 할게.',
+        '{yr} 한 해 다들 진짜 고생 많았다.',
+        'c|올해 우리 팀 진짜 잘 버텼다.',
+        'k|오늘 이렇게 와 줘서 고마워.',
+        'f|오랜만에 반가운 얼굴들 다 모였네.',
+        'p|이렇게 온 가족이 다 모이니까 좋다.',
+      ],
+      mid: [
+        '돌아보면 쉽지 않은 날도 많았는데, 같이 있어서 여기까지 왔어.',
+        '오늘만큼은 바쁜 일 다 잊고 실컷 즐기자.',
+        'c|바쁜 와중에도 서로 손발 맞춰 줘서 올해 잘 마무리했어.',
+        'k|올해 믿고 맡겨 준 덕분에 결과가 좋았어.',
+        'f|각자 바쁘게 살면서도 이렇게 또 모이니까 든든하다.',
+        'p|올해도 다들 크게 아픈 데 없이 모여서 다행이야.',
+      ],
+      wish: [
+        '내년에도 오늘처럼 웃으면서 또 모이자.',
+        '{ny}엔 다들 바라는 거 하나씩은 꼭 이뤄 보자.',
+        'c|내년에도 지금처럼 서로 든든한 팀으로 가자.',
+        'k|내년에도 오래 같이 가 보자.',
+        'f|내년엔 좀 더 자주 보자.',
+        'p|내년에도 다들 건강하게 여기서 또 만나자.',
+      ],
+      close: [
+        '다 같이 잔 들어!\n선창: 우리의 내년을 위하여! / 후창: 위하여!',
+        'ck|건배사는 ‘소화제’야. 소통과 화합이 제일이라는 뜻이야.\n선창: 소통과 화합이! / 후창: 제일!',
+        'cf|건배사는 ‘청바지’야. 청춘은 바로 지금부터!\n선창: 청춘은! / 후창: 바로 지금부터!',
+        'fp|건배사는 ‘변사또’야. 변함없는 사랑으로 또 만나자는 뜻이야.\n선창: 변함없는 사랑으로! / 후창: 또 만나자!',
+        'f|건배사는 ‘오징어’야. 오래도록 징그럽게 어울리자는 뜻이야.\n선창: 오래도록! / 후창: 징그럽게 어울리자!',
+        '‘송년회’ 삼행시로 간다. 운 띄워 줘!\n송! 송구영신, 묵은 걱정은 오늘 다 털어 내고\n년! 연말연시 웃을 일만 가득하길 바라며\n회! 회포 풀고 내년에도 다 함께, 위하여!',
+      ],
+    },
+  },
+
+  csat: {
+    formal: {
+      open: [
+        '드디어 수능이 코앞으로 다가왔습니다.',
+        '수능을 앞두고 응원의 마음을 전합니다.',
+        '그동안 정말 수고 많았습니다.',
+        's|시험을 앞두고 많이 떨리고 있을 줄 압니다.',
+      ],
+      mid: [
+        '그동안 쌓아 온 노력은 결코 사라지지 않습니다.',
+        '긴장되는 것은 그만큼 열심히 준비했다는 뜻입니다.',
+        'p|늦은 밤까지 책상 앞을 지키던 모습을 늘 자랑스럽게 지켜보았습니다.',
+        'f|힘든 시간을 묵묵히 견뎌 온 모습이 정말 대단합니다.',
+        's|교실에서 끝까지 포기하지 않던 모습을 기억합니다.',
+      ],
+      wish: [
+        '시험장에서는 평소처럼 차분하게 실력을 발휘하기를 바랍니다.',
+        '아는 문제는 침착하게, 모르는 문제는 담담하게 넘기면 됩니다.',
+        'p|결과가 어떻든 가족은 늘 곁에 있겠습니다.',
+        'f|시험이 끝나면 맛있는 것 먹으며 그동안의 이야기를 나누고 싶습니다.',
+        's|시험이 끝나면 웃는 얼굴로 다시 만나기를 기다리겠습니다.',
+      ],
+      close: [
+        '좋은 결과 있기를 진심으로 응원합니다.',
+        '마지막까지 건강 잘 챙기십시오.',
+        '수능 대박을 기원합니다.',
+        'p|시험 끝나는 날, 좋아하는 음식으로 저녁 차려 두겠습니다.',
+      ],
+    },
+    polite: {
+      open: [
+        '드디어 수능이 코앞이네요.',
+        '수능 앞두고 응원 보내요.',
+        '그동안 정말 고생 많았어요.',
+        's|시험 앞두고 많이 떨리죠?',
+      ],
+      mid: [
+        '지금까지 쌓아 온 노력은 절대 어디 가지 않아요.',
+        '떨리는 건 그만큼 열심히 준비했다는 뜻이에요.',
+        'p|늦은 밤까지 책상 앞에 앉아 있던 모습, 늘 자랑스러웠어요.',
+        'f|힘든 시간 묵묵히 버텨 온 게 정말 대단해요.',
+        's|교실에서 끝까지 포기하지 않던 모습 다 기억하고 있어요.',
+      ],
+      wish: [
+        '시험장에서는 평소처럼만 하면 돼요.',
+        '아는 문제는 차분하게, 모르는 문제는 담담하게 넘겨요.',
+        'p|결과가 어떻든 가족은 늘 곁에 있을게요.',
+        'f|시험 끝나면 맛있는 거 먹으러 가요.',
+        's|시험 끝나면 웃는 얼굴로 만나요.',
+      ],
+      close: [
+        '좋은 결과 있기를 진심으로 응원해요.',
+        '마지막까지 컨디션 잘 챙기세요.',
+        '수능 대박 나세요!',
+        'p|시험 끝나는 날 좋아하는 음식 잔뜩 해 놓을게요.',
+      ],
+    },
+    casual: {
+      open: [
+        '드디어 수능이 코앞이네.',
+        '수능 앞두고 응원 보내려고 연락했어.',
+        '그동안 진짜 고생 많았어.',
+        'fs|많이 떨리지?',
+      ],
+      mid: [
+        '지금까지 쌓아 온 노력은 절대 어디 안 가.',
+        '떨리는 건 그만큼 열심히 준비했다는 뜻이야.',
+        'p|늦은 밤까지 책상 앞에 앉아 있던 모습, 정말 자랑스러웠어.',
+        'p|결과보다 지금까지 버텨 준 게 더 고맙고 대견해.',
+        'f|힘든 시간 묵묵히 버텨 온 거 진짜 대단해.',
+        's|끝까지 포기하지 않던 모습 다 기억하고 있어.',
+      ],
+      wish: [
+        '시험장에선 평소처럼만 하면 돼.',
+        '아는 문제는 차분하게, 모르는 문제는 쿨하게 넘기자.',
+        '찍는 문제까지 다 맞았으면 좋겠다.',
+        'p|결과가 어떻든 우리는 늘 네 편이야.',
+        'f|시험 끝나면 맛있는 거 먹으러 가자.',
+        's|시험 끝나면 웃는 얼굴로 보자.',
+      ],
+      close: [
+        '진심으로 응원할게.',
+        '마지막까지 컨디션 잘 챙겨.',
+        '수능 대박 나자!',
+        'p|시험 끝나는 날 좋아하는 음식 잔뜩 해 놓을게.',
+      ],
+    },
+  },
 }
 
 export const EMOJI: Record<Situation, string[]> = {
@@ -816,6 +1127,9 @@ export const EMOJI: Record<Situation, string[]> = {
   birthday: ['🎂', '🎉', '🎁'],
   congrats: ['👏', '🎉', '💐'],
   farewell: ['🙂', '🍀', '👋'],
+  christmas: ['🎄', '🎅', '🎁'],
+  toast: ['🥂', '🍻', '🎉'],
+  csat: ['💪', '🍀', '✨'],
 }
 
 // ── 간지(띠) ──
@@ -870,6 +1184,27 @@ export function dateContext(now: Date): DateCtx {
   }
 }
 
+/** 지금의 한국 날짜(0시, 로컬 Date) — 해외에서 열어도 한국 달력 기준 */
+export function kstToday(ms = Date.now()): Date {
+  const k = new Date(ms + 9 * 36e5)
+  return new Date(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate())
+}
+
+/** 시즌에 먼저 보여 줄 상황 (첫째가 URL에 상황이 없을 때의 기본값). now = kstToday() */
+export function seasonal(now: Date, ctx: DateCtx): Situation[] {
+  const today = ymd(now)
+  const md = today.slice(5)
+  const out: Situation[] =
+    md >= '12-26' ? ['newYear', 'yearEnd', 'toast']
+    : md >= '11-01' && today <= csatDate(now.getFullYear()).date ? ['csat']
+    : md >= '11-20' ? ['yearEnd', 'christmas', 'toast']
+    : md <= '01-15' ? ['newYear']
+    : []
+  if (ctx.seollal?.from) out.push('seollal')
+  if (ctx.chuseok?.from) out.push('chuseok')
+  return out
+}
+
 // ── 조합 ──
 export interface Options {
   situation: Situation
@@ -885,7 +1220,7 @@ export interface Options {
 interface Line { text: string; to: Recipient[] | null }
 
 function parse(s: string): Line {
-  const m = /^([bckfpt]+)\|(.*)$/.exec(s)
+  const m = /^([bckfpts]+)\|([\s\S]*)$/.exec(s) // 건배사는 여러 줄
   return m ? { text: m[2], to: m[1].split('').map((c) => CODE[c]) } : { text: s, to: null }
 }
 
@@ -946,6 +1281,7 @@ function fill(s: string, situation: Situation, ctx: DateCtx | null): string {
     .replace('{yr}', ctx ? `${ctx.yearEnd}년` : '올해')
     .replace('{ny}', ctx ? `${ctx.newYear}년` : '새해')
     .replace('{gj}', gjYear ? `${ganji(gjYear)}년 ` : '')
+    .replace('{zd}', ctx ? `${zodiac(ctx.newYear)}의 해` : '새해')
     .replace('{seol}', ctx?.seollal?.from ? `${ctx.seollal.from}부터 시작되는 ` : '')
     .replace('{chu}', ctx?.chuseok?.from ? `${ctx.chuseok.from}부터 시작되는 ` : '')
 }
@@ -960,7 +1296,7 @@ export function vocative(name: string, recipient: Recipient, tone: Tone): string
   const n = name.trim()
   if (!n) return ''
   const hangulEnd = /[가-힣]$/.test(n)
-  if (tone === 'casual' && recipient === 'friend' && hangulEnd && !/(님|씨)$/.test(n)) return n + (hasBatchim(n) ? '아' : '야')
+  if (tone === 'casual' && (recipient === 'friend' || recipient === 'student') && hangulEnd && !/(님|씨)$/.test(n)) return n + (hasBatchim(n) ? '아' : '야')
   if (tone !== 'casual' && ['boss', 'client', 'teacher'].includes(recipient) && hangulEnd && !/(님|씨)$/.test(n)) return n + '님'
   return n
 }
@@ -983,10 +1319,11 @@ export function render(parts: string[], o: Options, ctx: DateCtx | null, i = 0):
     const em = EMOJI[o.situation]
     p = p.map((s, k) => (k === 0 ? addEmoji(s, em[i % em.length]) : k === p.length - 1 ? addEmoji(s, em[(i + 1) % em.length]) : s))
   }
-  const voc = vocative(o.name ?? '', o.recipient, o.tone)
+  const toast = o.situation === 'toast' // 건배사는 말로 하는 것 — 이름·서명 없음
+  const voc = toast ? '' : vocative(o.name ?? '', o.recipient, o.tone)
   if (voc) p[0] = `${voc}, ${p[0]}`
   const body = p.length > 2 ? [p[0], p.slice(1, -1).join(' '), p[p.length - 1]] : p
-  const sig = signature(o.sender ?? '', o.recipient, o.tone)
+  const sig = toast ? '' : signature(o.sender ?? '', o.recipient, o.tone)
   return body.join('\n') + (sig ? `\n\n${sig}` : '')
 }
 

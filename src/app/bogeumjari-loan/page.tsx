@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import BogeumjariLoanCalculator from '@/components/BogeumjariLoanCalculator';
+import ToolFaq from '@/components/ToolFaq';
+import RelatedTools from '@/components/RelatedTools';
 
 export const metadata: Metadata = {
   title: '보금자리론 계산기 - 생애최초·신혼부부·다자녀 금리 비교 | 툴허브',
@@ -29,7 +31,7 @@ export default function BogeumjariLoanPage() {
     '@type': 'WebApplication',
     name: '보금자리론 계산기 2026',
     description: '2026년 보금자리론 대출한도·금리·월상환액 계산기 (생애최초/신혼부부/다자녀/일반)',
-    url: 'https://toolhub.ai.kr/bogeumjari-loan',
+    url: 'https://toolhub.ai.kr/bogeumjari-loan/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
@@ -79,81 +81,25 @@ export default function BogeumjariLoanPage() {
     ],
   };
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '2026년 보금자리론 금리는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 10월 1일 공시 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(9월과 동일). 규제지역 소재 주택은 0.2%p가 가산됩니다(전세사기피해자 제외). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '보금자리론 자격조건은 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, DTI 60% 이하(규제지역 50%, 생애최초·실수요자 제외)가 기본 조건입니다. 생애최초 구입자는 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '보금자리론과 디딤돌대출 중 어떤 게 유리한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '디딤돌대출은 소득 6천만원 이하(생애최초·2자녀 7천만, 신혼 8.5천만) 무주택자를 위한 상품으로 금리가 연 2.85~4.15%로 낮지만 한도가 일반 2억(생애최초 2.4억, 신혼·2자녀 3.2억)으로 제한됩니다. 보금자리론은 소득 7천만원 이하에 한도가 최대 4.2억이지만 금리가 연 4.90~5.20%(우대 시 3.90%~)입니다. 소득이 낮으면 디딤돌, 한도가 부족하면 보금자리론이 유리합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '신혼부부 보금자리론 조건은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '혼인 7년 이내이거나 3개월 내 결혼 예정인 부부가 대상입니다. 소득 기준이 부부합산 8.5천만원으로 일반(7천만)보다 완화되고, 금리 우대 0.3%p가 적용됩니다. 대출한도는 최대 3.6억(일반과 동일), LTV는 70%입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '보금자리론 대출 기간은 최대 몇 년인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '보금자리론 대출 기간은 10년, 15년, 20년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 4.90% → 50년 5.20%). 만 40세 미만은 체증식 상환(50년 만기 제외)도 선택 가능하며, 40년은 만 40세 미만(신혼 50세 미만), 50년은 만 35세 미만(신혼 40세 미만)만 가능합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '생애최초 보금자리론 자격 조건은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '생애최초 보금자리론을 받으려면 본인과 배우자 모두 과거에 주택을 소유한 이력이 없어야 합니다(세대원 전원 무주택 이력 없음). 부부합산 연소득 7천만원 이하, 주택가격 6억원 이하, DTI 60% 이하 조건도 동일하게 적용됩니다. 자격 충족 시 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 대출한도도 3.6억→4.2억으로 늘어납니다. 생애최초 자체 우대금리는 없으며, 신혼·다자녀 등 해당 우대금리는 별도로 적용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '생애최초 보금자리론 금리는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(2026년 10월 30년 5.10%)가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 4.10%입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '생애최초 보금자리론 최대 한도는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '생애최초 보금자리론의 최대 대출 한도는 4억 2천만원입니다. 일반 유형(3.6억)보다 6천만원 더 높습니다. 실제 대출 가능 금액은 주택가격의 80%(LTV 80%) 이내에서 결정되며, DTI(총부채상환비율) 60% 기준도 함께 적용됩니다. 예를 들어 주택가격이 5억원이면 LTV 80% 적용 시 최대 4억원까지 가능합니다(수도권·규제지역은 LTV 70%로 3억 5천만원).',
-        },
-      },
-    ],
-  };
+  const faq = [
+    { q: '2026년 보금자리론 금리는 얼마인가요?', a: '2026년 10월 1일 공시 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(9월과 동일). 규제지역 소재 주택은 0.2%p가 가산됩니다(전세사기피해자 제외). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.' },
+    { q: '보금자리론 자격조건은 어떻게 되나요?', a: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, DTI 60% 이하(규제지역 50%, 생애최초·실수요자 제외)가 기본 조건입니다. 생애최초 구입자는 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.' },
+    { q: '보금자리론과 디딤돌대출 중 어떤 게 유리한가요?', a: '디딤돌대출은 소득 6천만원 이하(생애최초·2자녀 7천만, 신혼 8.5천만) 무주택자를 위한 상품으로 금리가 연 2.85~4.15%로 낮지만 한도가 일반 2억(생애최초 2.4억, 신혼·2자녀 3.2억)으로 제한됩니다. 보금자리론은 소득 7천만원 이하에 한도가 최대 4.2억이지만 금리가 연 4.90~5.20%(우대 시 3.90%~)입니다. 소득이 낮으면 디딤돌, 한도가 부족하면 보금자리론이 유리합니다.' },
+    { q: '신혼부부 보금자리론 조건은 무엇인가요?', a: '혼인 7년 이내이거나 3개월 내 결혼 예정인 부부가 대상입니다. 소득 기준이 부부합산 8.5천만원으로 일반(7천만)보다 완화되고, 금리 우대 0.3%p가 적용됩니다. 대출한도는 최대 3.6억(일반과 동일), LTV는 70%입니다.' },
+    { q: '보금자리론 대출 기간은 최대 몇 년인가요?', a: '보금자리론 대출 기간은 10년, 15년, 20년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 4.90% → 50년 5.20%). 만 40세 미만은 체증식 상환(50년 만기 제외)도 선택 가능하며, 40년은 만 40세 미만(신혼 50세 미만), 50년은 만 35세 미만(신혼 40세 미만)만 가능합니다.' },
+    { q: '생애최초 보금자리론 자격 조건은?', a: '생애최초 보금자리론을 받으려면 본인과 배우자 모두 과거에 주택을 소유한 이력이 없어야 합니다(세대원 전원 무주택 이력 없음). 부부합산 연소득 7천만원 이하, 주택가격 6억원 이하, DTI 60% 이하 조건도 동일하게 적용됩니다. 자격 충족 시 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 대출한도도 3.6억→4.2억으로 늘어납니다. 생애최초 자체 우대금리는 없으며, 신혼·다자녀 등 해당 우대금리는 별도로 적용됩니다.' },
+    { q: '생애최초 보금자리론 금리는 얼마인가요?', a: '생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(2026년 10월 30년 5.10%)가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 4.10%입니다.' },
+    { q: '생애최초 보금자리론 최대 한도는?', a: '생애최초 보금자리론의 최대 대출 한도는 4억 2천만원입니다. 일반 유형(3.6억)보다 6천만원 더 높습니다. 실제 대출 가능 금액은 주택가격의 80%(LTV 80%) 이내에서 결정되며, DTI(총부채상환비율) 60% 기준도 함께 적용됩니다. 예를 들어 주택가격이 5억원이면 LTV 80% 적용 시 최대 4억원까지 가능합니다(수도권·규제지역은 LTV 70%로 3억 5천만원).' },
+    { q: '생애최초와 신혼부부 둘 다 해당되면 어떻게 되나요?', a: '생애최초 조건(LTV 80%, 한도 4.2억)을 적용받으면서 신혼부부 우대금리(0.3%p)도 함께 적용받을 수 있습니다. 단, 전체 우대금리는 최대 1.0%p 한도이므로 중복 적용 시에도 1.0%p를 초과하지 않습니다.' },
+    { q: '아낌e 보금자리론과 일반 보금자리론의 차이는?', a: '아낌e 보금자리론은 비대면(온라인) 신청 전용 상품으로, u-·t-보금자리론보다 금리가 0.1%p 낮습니다. 은행 창구보다 온라인으로 신청하는 것이 금리면에서 유리합니다. 이 페이지의 금리는 아낌e 보금자리론 기준입니다.' },
+    { q: '연소득이 7천만원을 넘으면 보금자리론을 받을 수 없나요?', a: '부부합산 7천만원은 일반 기준이고, 신혼부부는 8.5천만원, 자녀 1명은 9천만원, 다자녀는 1억원까지 소득 기준이 완화됩니다. 해당 기준도 넘으면 보금자리론은 신청할 수 없어 시중은행 주택담보대출 등 다른 상품을 알아봐야 합니다.' },
+    { q: '체증식 상환이란 무엇인가요?', a: '초기에 납입액이 적고 시간이 지날수록 상환액이 늘어나는 방식입니다. 만 40세 미만 신청자에게 허용되며(50년 만기 제외, 공사 사전심사), 초기 소득이 낮은 사회초년생에게 유리합니다. 총 이자 부담은 원리금균등상환보다 다소 크지만 초기 부담을 줄일 수 있습니다.' },
+    { q: '생애최초 보금자리론은 어떤 서류를 준비해야 하나요?', a: '일반 서류 외에 세대원 전원의 주택 소유 이력이 없음을 증명하는 확인서가 필요합니다. 주민등록등본(전 주소 포함 발급), 부동산 등기부등본(과거 소유 이력 조회용)을 한국주택금융공사에서 확인합니다. 건강보험료 납부 확인서, 소득 증빙(근로소득원천징수영수증 등), 주택매매계약서도 공통 필수 서류입니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
 
       <div className="min-h-screen py-8 overflow-hidden">
@@ -163,7 +109,7 @@ export default function BogeumjariLoanPage() {
       </div>
 
       {/* ===== 2026년 종합 가이드 ===== */}
-      <div className="bg-white dark:bg-gray-900">
+      <div>
         <div className="max-w-4xl mx-auto px-4 py-12 space-y-12">
 
           {/* 1. 핵심 수치 요약 */}
@@ -258,7 +204,7 @@ export default function BogeumjariLoanPage() {
                     { type: '다자녀 (2명)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.5%p', bg: true },
                     { type: '다자녀 (3명+)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.7%p', bg: false },
                   ].map((row) => (
-                    <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-subtle' : 'bg-white dark:bg-gray-900'}`}>
+                    <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-subtle' : 'bg-surface'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.type}</td>
                       <td className="px-4 py-3 text-center text-body">{row.income}</td>
                       <td className="px-4 py-3 text-center font-semibold text-sub">{row.limit}</td>
@@ -297,7 +243,7 @@ export default function BogeumjariLoanPage() {
                     { period: '40년', base: '5.15%', mid: '4.85%', max: '4.15%' },
                     { period: '50년', base: '5.20%', mid: '4.90%', max: '4.20%' },
                   ].map((row, i) => (
-                    <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
+                    <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-surface' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
                       <td className="px-4 py-3 text-center text-body">{row.base}</td>
                       <td className="px-4 py-3 text-center text-sub">{row.mid}</td>
@@ -363,7 +309,7 @@ export default function BogeumjariLoanPage() {
                     { label: '금리 유형', didim: '고정/혼합', bogeum: '고정금리' },
                     { label: '추천 대상', didim: '소득 낮은 경우\n한도 2억(생애최초 2.4억) 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
                   ].map((row, i) => (
-                    <tr key={row.label} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
+                    <tr key={row.label} className={`border-b border-line ${i % 2 === 0 ? 'bg-surface' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-body">{row.label}</td>
                       <td className="px-4 py-3 text-center text-body whitespace-pre-line">{row.didim}</td>
                       <td className="px-4 py-3 text-center text-body whitespace-pre-line">{row.bogeum}</td>
@@ -488,59 +434,6 @@ export default function BogeumjariLoanPage() {
             </div>
           </section>
 
-          {/* 10. FAQ */}
-          <section>
-            <h2 className="text-xl font-bold text-fg mb-4">
-              자주 묻는 질문
-            </h2>
-            <div className="space-y-3">
-              {[
-                {
-                  q: '2026년 보금자리론 금리가 왜 올랐나요?',
-                  a: '2026년 기준 아낌e 보금자리론 금리는 30년 만기 기준 5.10%(우대 적용 시 최저 4.10%)입니다. 금리는 시장 상황에 따라 매월 변동되므로, 신혼·생애최초·다자녀·저소득 등 우대금리를 최대한 활용하고 금리가 더 낮은 디딤돌대출 자격도 함께 확인하는 것이 좋습니다.',
-                },
-                {
-                  q: '생애최초와 신혼부부 둘 다 해당되면 어떻게 되나요?',
-                  a: '생애최초 조건(LTV 80%, 한도 4.2억)을 적용받으면서 신혼부부 우대금리(0.3%p)도 함께 적용받을 수 있습니다. 단, 전체 우대금리는 최대 1.0%p 한도이므로 중복 적용 시에도 1.0%p를 초과하지 않습니다.',
-                },
-                {
-                  q: '아낌e 보금자리론과 일반 보금자리론의 차이는?',
-                  a: '아낌e 보금자리론은 비대면(온라인) 신청 전용 상품으로, u-·t-보금자리론보다 금리가 0.1%p 낮습니다. 은행 창구보다 온라인으로 신청하는 것이 금리면에서 유리합니다. 위 금리표는 아낌e 보금자리론 기준입니다.',
-                },
-                {
-                  q: '연소득 7천만원 초과인데 보금자리론 방법이 없나요?',
-                  a: '보금자리론은 소득 기준 초과 시 신청할 수 없습니다. 다만 일반 은행의 주택담보대출(시중금리)을 이용하거나, 보금자리론 대상이 되는 가족(배우자 소득 조정 등)을 활용하는 방법을 검토해볼 수 있습니다. 금융전문가 상담을 권장합니다.',
-                },
-                {
-                  q: '체증식 상환이란 무엇인가요?',
-                  a: '초기에 납입액이 적고 시간이 지날수록 상환액이 늘어나는 방식입니다. 만 40세 미만 신청자에게 허용되며(50년 만기 제외, 공사 사전심사), 초기 소득이 낮은 사회초년생에게 유리합니다. 총 이자 부담은 원리금균등상환보다 다소 크지만 초기 부담을 줄일 수 있습니다.',
-                },
-                {
-                  q: '생애최초 보금자리론 자격 조건은 무엇인가요?',
-                  a: '본인과 배우자 모두 과거 주택 소유 이력이 없어야 합니다(세대원 전원 미보유). 이력 기준이므로 현재 무주택자여도 과거에 주택을 소유했다면 해당되지 않습니다. 일반 보금자리론 공통 조건(소득 7천만원 이하, 주택가격 6억원 이하, DTI 60% 이하)도 함께 충족해야 합니다.',
-                },
-                {
-                  q: '생애최초 보금자리론 금리는 일반과 얼마나 차이나나요?',
-                  a: '생애최초 유형 자체의 우대금리는 없고 기준금리(30년 5.10%)가 그대로 적용됩니다. 신혼가구 조건도 해당되면 0.3%p 우대로 4.80%, 다자녀·저소득청년 등이 겹치면 최대 1.0%p까지 낮아집니다. 핵심 혜택은 LTV 80%·한도 4.2억으로 같은 주택에서 더 많이 빌릴 수 있다는 점입니다.',
-                },
-                {
-                  q: '생애최초 보금자리론은 어떤 서류를 준비해야 하나요?',
-                  a: '일반 서류 외에 세대원 전원의 주택 소유 이력이 없음을 증명하는 확인서가 필요합니다. 주민등록등본(전 주소 포함 발급), 부동산 등기부등본(과거 소유 이력 조회용)을 한국주택금융공사에서 확인합니다. 건강보험료 납부 확인서, 소득 증빙(근로소득원천징수영수증 등), 주택매매계약서도 공통 필수 서류입니다.',
-                },
-              ].map((item, i) => (
-                <details key={i} className="group bg-subtle rounded-xl">
-                  <summary className="cursor-pointer px-5 py-4 font-medium text-sm text-fg list-none flex justify-between items-center">
-                    <span>Q. {item.q}</span>
-                    <span className="text-gray-400 group-open:rotate-180 transition-transform text-lg leading-none">›</span>
-                  </summary>
-                  <div className="px-5 pb-4 text-sm text-sub leading-relaxed border-t border-line pt-3">
-                    {item.a}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </section>
-
           {/* 출처 */}
           <div className="text-xs text-faint border-t border-line pt-6">
             <p className="mb-1 font-medium">참고 출처</p>
@@ -548,6 +441,13 @@ export default function BogeumjariLoanPage() {
             <p className="mt-1">※ 본 계산기는 참고용이며, 실제 대출 조건은 금융기관 심사 결과에 따라 다를 수 있습니다. 정확한 내용은 주택금융공사 또는 해당 금융기관에 문의하세요.</p>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4">
+        <ToolFaq items={faq} />
+      </div>
+      <div className="mt-8 pb-8">
+        <RelatedTools />
       </div>
     </>
   );

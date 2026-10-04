@@ -7,8 +7,8 @@ import '@/lib/i18n/ns/greetingGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import {
-  SITUATIONS, RECIPIENTS, TONES, LENGTHS, DEFAULT_TONE, dateContext, generate, ganji, zodiac, smsInfo,
-  type DateCtx,
+  SITUATIONS, RECIPIENTS, TONES, LENGTHS, recipientsFor, defaultTone, dateContext, kstToday, seasonal, generate, ganji, zodiac, smsInfo,
+  type DateCtx, type Situation,
 } from '@/utils/greetings'
 
 const FAV_KEY = 'greeting_favs'
@@ -110,10 +110,24 @@ export default function GreetingGenerator() {
   const t = useTranslations('greetingGenerator')
   const sp = useSearchParams()
 
-  // URL이 상태의 원본 (이름은 넣지 않음)
-  const situation = pick(sp.get('s'), SITUATIONS, 'yearEnd')
-  const recipient = pick(sp.get('r'), RECIPIENTS, 'client')
-  const tone = pick(sp.get('t'), TONES, DEFAULT_TONE[recipient])
+  // 날짜는 mount 후에 (서버 렌더 = 날짜 없는 기본 문구·기본 상황 → hydration 불일치 없음)
+  const [ctx, setCtx] = useState<DateCtx | null>(null)
+  const [season, setSeason] = useState<Situation[]>([])
+  useEffect(() => {
+    const now = kstToday()
+    const c = dateContext(now)
+    setCtx(c)
+    setSeason(seasonal(now, c))
+  }, [])
+  const situationOrder = useMemo(() => [...new Set([...season, ...SITUATIONS])], [season])
+
+  // URL이 상태의 원본 (이름은 넣지 않음). 상황이 URL에 없으면 시즌 기본값
+  const situation = pick(sp.get('s'), SITUATIONS, season[0] ?? 'yearEnd')
+  const recipients = recipientsFor(situation)
+  const customRecipients = recipients !== RECIPIENTS // 건배사 = 자리, 수능 = 수험생과의 관계
+  const recipient = pick(sp.get('r'), recipients, customRecipients ? recipients[0] : 'client')
+  const tone = pick(sp.get('t'), TONES, defaultTone(situation, recipient))
+  const isToast = situation === 'toast'
   const length = pick(sp.get('l'), LENGTHS, 'medium')
   const seed = Math.max(0, parseInt(sp.get('k') ?? '0', 10) || 0)
   const emoji = sp.get('e') === '1'
@@ -132,10 +146,6 @@ export default function GreetingGenerator() {
   const [favs, setFavs] = useState<string[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [announce, setAnnounce] = useState('')
-
-  // 날짜는 mount 후에 (서버 렌더 = 날짜 없는 기본 문구 → hydration 불일치 없음)
-  const [ctx, setCtx] = useState<DateCtx | null>(null)
-  useEffect(() => { setCtx(dateContext(new Date())) }, [])
 
   useEffect(() => {
     try {
@@ -213,10 +223,11 @@ export default function GreetingGenerator() {
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
             <h2 className="text-lg font-semibold text-fg">{t('settingsTitle')}</h2>
-            <Chips id="gg-situation" label={t('situationLabel')} options={SITUATIONS} value={situation}
+            <Chips id="gg-situation" label={t('situationLabel')} options={situationOrder} value={situation}
               onChange={(v) => setParams({ s: v })} text={(v) => t(`situations.${v}`)} />
-            <Chips id="gg-recipient" label={t('recipientLabel')} options={RECIPIENTS} value={recipient}
-              onChange={(v) => setParams({ r: v, t: DEFAULT_TONE[v] })} text={(v) => t(`recipients.${v}`)} />
+            <Chips id="gg-recipient" label={t(isToast ? 'placeLabel' : 'recipientLabel')} options={recipients} value={recipient}
+              onChange={(v) => setParams({ r: v, t: defaultTone(situation, v) })}
+              text={(v) => t(customRecipients ? `recipientsBy.${situation}.${v}` : `recipients.${v}`)} />
             <div>
               <Chips id="gg-tone" label={t('toneLabel')} options={TONES} value={tone}
                 onChange={(v) => setParams({ t: v })} text={(v) => t(`tones.${v}`)} />
@@ -225,7 +236,7 @@ export default function GreetingGenerator() {
             <Chips id="gg-length" label={t('lengthLabel')} options={LENGTHS} value={length}
               onChange={(v) => setParams({ l: v })} text={(v) => t(`lengths.${v}`)} />
 
-            <div className="space-y-4">
+            {!isToast && <div className="space-y-4">
               <div>
                 <label htmlFor="gg-name" className="block text-sm font-medium text-body mb-2">{t('nameLabel')}</label>
                 <input id="gg-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={20}
@@ -237,7 +248,7 @@ export default function GreetingGenerator() {
                   placeholder={t('senderPlaceholder')} className="ui-field px-4 py-3" />
               </div>
               <p className="text-xs text-muted">{t('nameHint')}</p>
-            </div>
+            </div>}
 
             <label htmlFor="gg-emoji" className="flex items-center gap-3 min-h-11 cursor-pointer">
               <input id="gg-emoji" type="checkbox" checked={emoji} onChange={(e) => setParams({ e: e.target.checked ? '1' : null })}
@@ -258,7 +269,12 @@ export default function GreetingGenerator() {
                 className="ui-btn inline-flex items-center gap-1.5 min-h-11 px-4 rounded-xl text-sm font-semibold">
                 <Shuffle className="w-4 h-4" aria-hidden="true" /> {t('shuffle')}
               </button>
-              <button type="button" onClick={() => copyToClipboard(window.location.href, 'link', t('linkCopied'))} className={iconBtn}>
+              <button type="button" className={iconBtn} onClick={() => {
+                // 시즌 기본값은 보는 날짜마다 달라서 상황을 링크에 고정
+                const u = new URL(window.location.href)
+                u.searchParams.set('s', situation)
+                copyToClipboard(u.toString(), 'link', t('linkCopied'))
+              }}>
                 {copiedId === 'link' ? <Check className="w-4 h-4 text-primary" aria-hidden="true" /> : <Link2 className="w-4 h-4" aria-hidden="true" />}
                 {copiedId === 'link' ? t('linkCopied') : t('copyLink')}
               </button>
@@ -295,7 +311,7 @@ export default function GreetingGenerator() {
               )
             })}
           </ol>
-          <p className="text-xs text-muted">{t('smsHint')}</p>
+          <p className="text-xs text-muted">{t(isToast ? 'toastHint' : 'smsHint')}</p>
         </div>
       </div>
 

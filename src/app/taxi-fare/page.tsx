@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import TaxiFare from '@/components/TaxiFare'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '택시비 계산기 - 심야할증·시외할증 자동 계산 | 툴허브',
@@ -26,33 +27,31 @@ export default function TaxiFarePage() {
     '@type': 'WebApplication',
     name: '택시 요금 계산기',
     description: '전국 17개 시·도 지역별 택시 요금과 심야·시외할증을 반영한 예상 택시비 계산기',
-    url: 'https://toolhub.ai.kr/taxi-fare',
+    url: 'https://toolhub.ai.kr/taxi-fare/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['17개 시·도 지역별 요금', '탑승 시각별 심야할증(20~40%)', '시외(시계외) 할증', '일반/모범/대형 비교', '17개 시·도 같은 거리 요금 비교', '교통 상황별 소요 시간 자동 추정', 'N명 더치페이 1인당 금액', '결과 이미지 저장', '링크 공유'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '택시 심야 할증은 몇 시부터 몇 %인가요?', acceptedAnswer: { '@type': 'Answer', text: '지역마다 다릅니다. 서울·인천은 22~04시이며 23~02시 40%, 나머지 시간은 20%입니다. 경기는 23~04시 30%, 부산·대구·대전·광주는 23~04시 20%에 00~02시만 30%, 울산·경남은 22~04시 20%, 세종은 22~04시 30%입니다.' } },
-      { '@type': 'Question', name: '택시 기본요금은 지역마다 다른가요?', acceptedAnswer: { '@type': 'Answer', text: '네. 2026년 10월 기준 서울·경기·인천·부산·광주는 4,800원(1.6~2km), 강원·경남 4,600원, 대구·울산·경북 4,500원, 대전·전북·전남·제주 4,300원, 세종·충북·충남은 4,000원입니다. 전남은 2026년 11~12월 4,800원(1.7km) 인상이 추진 중이고, 대전은 기본요금 인상 여부를 하반기에 결정합니다. 거리요금 단위와 기본거리도 지역별로 달라, 지역을 선택하면 해당 요율이 자동 적용됩니다.' } },
-      { '@type': 'Question', name: '시외 할증과 심야 할증이 겹치면 어떻게 되나요?', acceptedAnswer: { '@type': 'Answer', text: '택시가 행정구역(시·군) 경계를 벗어나면 지역에 따라 20~50%의 시계외 할증이 붙습니다(서울 20%, 인천·부산·울산·경남 30%, 대구·광주 35%, 전주 50%). 심야와 겹치면 합산되며, 서울은 최대 60%, 대전은 50%, 전남은 40%가 상한입니다.' } },
-      { '@type': 'Question', name: '카카오택시와 일반 택시 요금 차이는?', acceptedAnswer: { '@type': 'Answer', text: '카카오T 일반 호출은 추가 요금 없이 미터 요금만 부과됩니다. 다만 카카오T 블루(가맹택시)는 호출료 1,000~2,000원이 추가될 수 있고, 블랙은 별도 요금 체계입니다. 플랫폼에 따라 수요가 몰리는 시간대에 탄력요금이 적용될 수 있습니다.' } },
-    ],
-  }
+  const faq = [
+    { q: '택시 심야 할증은 몇 시부터 몇 %인가요?', a: '지역마다 다릅니다. 서울·인천은 22~04시이며 23~02시 40%, 나머지 시간은 20%입니다. 경기는 23~04시 30%, 부산·대구·대전·광주는 23~04시 20%에 00~02시만 30%, 울산·경남은 22~04시 20%, 세종은 22~04시 30%입니다.' },
+    { q: '택시 기본요금은 지역마다 다른가요?', a: '네. 2026년 10월 기준 서울·경기·인천·부산·광주는 4,800원(1.6~2km), 강원·경남 4,600원, 대구·울산·경북 4,500원, 대전·전북·전남·제주 4,300원, 세종·충북·충남은 4,000원입니다. 전남은 2026년 11~12월 4,800원(1.7km) 인상이 추진 중이고, 대전은 기본요금 인상 여부를 하반기에 결정합니다. 거리요금 단위와 기본거리도 지역별로 달라, 지역을 선택하면 해당 요율이 자동 적용됩니다.' },
+    { q: '시외 할증과 심야 할증이 겹치면 어떻게 되나요?', a: '택시가 행정구역(시·군) 경계를 벗어나면 지역에 따라 20~50%의 시계외 할증이 붙습니다(서울 20%, 인천·부산·울산·경남 30%, 대구·광주 35%, 전주 50%). 심야와 겹치면 합산되며, 서울은 최대 60%, 대전은 50%, 전남은 40%가 상한입니다.' },
+    { q: '카카오택시와 일반 택시 요금 차이는?', a: '카카오T 일반 호출은 추가 요금 없이 미터 요금만 부과됩니다. 다만 카카오T 블루(가맹택시)는 호출료 1,000~2,000원이 추가될 수 있고, 블랙은 별도 요금 체계입니다. 플랫폼에 따라 수요가 몰리는 시간대에 탄력요금이 적용될 수 있습니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><TaxiFare />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <TaxiFare />
+            <ToolFaq items={faq} />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

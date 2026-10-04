@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '인사말 생성기 - 연말·새해·명절 인사말 모음 | 툴허브',
-  description: '연말 인사말, 새해·신년 인사말, 설날·추석 인사말을 상황·받는 사람·말투만 골라 바로 만드세요. 거래처·상사·친구·부모님별 자연스러운 문구, 이름 자동 넣기, 복사·카드 이미지 저장까지 무료.',
-  keywords: '인사말, 연말 인사말, 새해 인사말, 신년 인사말, 설날 인사말, 추석 인사말, 거래처 인사말, 감사 인사말, 단체 문자 인사말, 연말 인사 문구, 명절 인사 문구, 퇴사 인사말, 생일 축하 문구',
+  description: '연말·새해 인사말, 크리스마스 문구, 송년회 건배사, 수능 응원 문구, 설날·추석 인사말을 상황·받는 사람·말투만 골라 바로 만드세요. 거래처·상사·친구·부모님별 문구, 이름 넣기, 복사·카드 이미지 저장까지 무료.',
+  keywords: '인사말, 연말 인사말, 새해 인사말, 신년 인사말, 설날 인사말, 추석 인사말, 거래처 인사말, 감사 인사말, 단체 문자 인사말, 연말 인사 문구, 명절 인사 문구, 퇴사 인사말, 생일 축하 문구, 크리스마스 문구, 크리스마스 인사말, 송년회 건배사, 회식 건배사, 건배사 삼행시, 수능 응원 문구, 수능 응원 메시지, 새해 인사말 2027, 정미년 인사말',
   openGraph: {
     title: '인사말 생성기 | 툴허브',
-    description: '상황·받는 사람·말투만 고르면 바로 보낼 수 있는 연말·새해·명절 인사말.',
+    description: '연말·새해·명절 인사말부터 크리스마스 문구, 송년회 건배사, 수능 응원까지 바로 만들기.',
     url: 'https://toolhub.ai.kr/greeting-generator',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -56,17 +56,18 @@ export default function GreetingGeneratorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '인사말 생성기',
-    description: '연말·새해·설날·추석·감사·생일·승진·퇴사 인사말을 받는 사람과 말투에 맞춰 만들어 주는 무료 도구.',
+    description: '연말·새해·설날·추석·크리스마스·감사·생일·승진·퇴사 인사말과 송년회 건배사, 수능 응원 문구를 받는 사람과 말투에 맞춰 만들어 주는 무료 도구.',
     url: 'https://toolhub.ai.kr/greeting-generator',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '상황 8가지 (연말·새해·설날·추석·감사·생일·승진·퇴사)',
+      '상황 11가지 (연말·새해·설날·추석·감사·생일·승진·퇴사·크리스마스·송년회 건배사·수능 응원)',
       '받는 사람 6가지 (상사·동료·거래처·친구·가족·선생님)',
       '격식·해요체·반말 말투, 길이 3단계',
-      '새해 연도·간지 자동 반영',
+      '새해 연도·간지·띠 자동 반영 (2027 정미년 붉은 양의 해)',
+      '송년회 건배사 선창·후창 구호와 삼행시',
       '받는 사람 이름·보내는 사람 자동 넣기',
       '글자 수·SMS/LMS 표시, 복사',
       '카드 이미지 저장, 링크 공유, 즐겨찾기',
@@ -107,6 +108,8 @@ export default function GreetingGeneratorPage() {
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">상황별 인사말 보내는 시기</h3>
           <ul className="list-disc list-inside space-y-2 text-body">
+            <li><strong>크리스마스·송년회 건배사:</strong> 12월 셋째 주부터. 건배사는 선창·후창을 미리 알려 주면 호응이 좋습니다.</li>
+            <li><strong>수능 응원:</strong> 시험 2~3일 전, 늦어도 전날 저녁까지 보냅니다.</li>
             <li><strong>연말 인사:</strong> 12월 중순~말. 거래처는 마지막 근무일 며칠 전이 좋습니다.</li>
             <li><strong>새해·신년 인사:</strong> 1월 1일부터 첫 주 안에 보냅니다.</li>
             <li><strong>설날·추석 인사:</strong> 연휴 시작 2~3일 전에 보내야 묻히지 않습니다.</li>

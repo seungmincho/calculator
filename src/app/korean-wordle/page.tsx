@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import KoreanWordle from '@/components/KoreanWordle'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '한글 워들 - 매일 새로운 한국어 단어 맞추기 게임 | 툴허브',
@@ -33,7 +34,7 @@ export default function KoreanWordlePage() {
     '@type': 'WebApplication',
     name: '한글 워들',
     description: '매일 자정(한국 시간) 모두에게 같은 2글자 한국어 단어를 6번 안에 맞히는 단어 게임',
-    url: 'https://toolhub.ai.kr/korean-wordle',
+    url: 'https://toolhub.ai.kr/korean-wordle/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -41,45 +42,20 @@ export default function KoreanWordlePage() {
     featureList: ['오늘의 단어 (KST 자정)', '자모 단위 힌트', '연속 기록·추측 분포 통계', '스포일러 없는 결과 공유', '무제한 연습 모드', '하드 모드', '색약 모드'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '한국어 워들 게임 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '숨겨진 2글자 단어를 6번 안에 맞히는 퍼즐입니다. 추측한 단어의 각 글자를 자모(키 입력 순서)로 나눠, 같은 자리에 있으면 초록, 단어 안 다른 자리에 있으면 노랑, 없으면 회색으로 알려줍니다. 같은 자모가 여러 번 나오면 정답에 있는 개수만큼만 색이 칠해집니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '오늘의 단어는 언제 바뀌나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '매일 한국 시간 자정에 바뀌며 모든 사람에게 같은 단어가 나옵니다. 하루 한 번 풀 수 있고, 더 하고 싶다면 연습 모드에서 2·3글자 단어를 무제한으로 풀 수 있습니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '결과를 친구와 공유하려면?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '오늘의 단어를 끝내면 "툴허브 한글 워들 #회차 4/6" 형태의 문구와 🟩🟨⬜ 격자를 복사할 수 있습니다. 정답은 드러나지 않으니 카카오톡 단톡방에 그대로 붙여넣으면 됩니다.'
-        }
-      }
-    ]
-  }
+  const faq = [
+    { q: '한국어 워들 게임 규칙은?', a: '숨겨진 2글자 단어를 6번 안에 맞히는 퍼즐입니다. 추측한 단어의 각 글자를 자모(키 입력 순서)로 나눠, 같은 자리에 있으면 초록, 단어 안 다른 자리에 있으면 노랑, 없으면 회색으로 알려줍니다. 같은 자모가 여러 번 나오면 정답에 있는 개수만큼만 색이 칠해집니다.' },
+    { q: '오늘의 단어는 언제 바뀌나요?', a: '매일 한국 시간 자정에 바뀌며 모든 사람에게 같은 단어가 나옵니다. 하루 한 번 풀 수 있고, 더 하고 싶다면 연습 모드에서 2·3글자 단어를 무제한으로 풀 수 있습니다.' },
+    { q: '결과를 친구와 공유하려면?', a: '오늘의 단어를 끝내면 "툴허브 한글 워들 #회차 4/6" 형태의 문구와 🟩🟨⬜ 격자를 복사할 수 있습니다. 정답은 드러나지 않으니 카카오톡 단톡방에 그대로 붙여넣으면 됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <KoreanWordle />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

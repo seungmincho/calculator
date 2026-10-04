@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import TextToSpeech from '@/components/TextToSpeech'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import textToSpeechMessages from '../../../messages/generated/ko/ns/textToSpeech.json'
 
 export const metadata: Metadata = {
   title: '텍스트 읽어주기 (TTS) - 긴 글 한국어 음성 | 툴허브',
@@ -13,35 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default function TextToSpeechPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'TTS(Text-to-Speech)란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'TTS(텍스트 음성 변환)는 텍스트를 사람의 음성으로 변환하는 기술입니다. 웹 브라우저의 Web Speech API를 사용하여 별도 설치 없이 브라우저에서 바로 사용할 수 있습니다. 활용 분야: ① 시각 장애인 접근성 ② 외국어 발음 확인 ③ 문서 청취(오디오북) ④ 프레젠테이션 음성 ⑤ 콘텐츠 제작. 한국어, 영어, 일본어 등 다국어를 지원하며 속도와 음높이를 조절할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '긴 글도 끊기지 않고 읽나요?',
-        acceptedAnswer: { '@type': 'Answer', text: '글을 문장 단위(최대 140자)로 나눠 차례로 읽기 때문에 Chrome에서 약 15초 넘는 음성이 끊기는 문제를 피합니다. 읽는 문장이 강조되고, 문장을 누르면 그 문장부터 다시 읽습니다.' },
-      },
-      {
-        '@type': 'Question',
-        name: 'MP3 파일로 저장할 수 있나요?',
-        acceptedAnswer: { '@type': 'Answer', text: '브라우저 음성 합성은 소리를 스피커로 바로 내보내므로 웹페이지에서 파일로 저장할 수 없습니다. 필요하면 화면 녹화(Windows Win+Alt+R, 스마트폰 화면 녹화)로 소리와 함께 녹음하세요.' },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={textToSpeechMessages.textToSpeech.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

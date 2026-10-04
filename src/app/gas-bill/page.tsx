@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import GasBill from '@/components/GasBill'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import gasBillMessages from '../../../messages/generated/ko/ns/gasBill.json'
 
 export const metadata: Metadata = {
   title: '가스 요금 계산기 - 2026 도시가스 난방비 | 툴허브',
@@ -13,20 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default function GasBillPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '가스 요금 계산기', description: '도시가스 주택용 요금·난방비 계산', url: 'https://toolhub.ai.kr/gas-bill', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['2026 도시가스 주택용 단가', '고지서 사용량(MJ·㎥) 계산', '평수·보일러 시간으로 추정', '월별 난방비', '온도 1도 절약액', '지난달·작년 비교'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '도시가스 요금은 어떻게 계산하나요?', acceptedAnswer: { '@type': 'Answer', text: '주택용 도시가스 요금은 기본요금 + 사용열량(MJ) × 단가에 부가가치세 10%를 더합니다. 서울은 2026년 9월 1일 기준 기본요금 월 1,250원, 단가 22.5268원/MJ(도매 20.8495원 + 소매 1.6773원)입니다. 주택용은 취사·난방 단가가 같고 계절별 단가 차이가 없어, 겨울 요금이 오르는 이유는 사용량 증가 때문입니다.' } },
-      { '@type': 'Question', name: '겨울철 가스비를 절약하는 방법은?', acceptedAnswer: { '@type': 'Answer', text: '보일러 설정 온도를 1도 낮추면 난방 에너지가 약 7% 줄어드는 것으로 흔히 알려져 있습니다. 서울 30평 아파트 1월 기준으로는 월 약 9천원 수준입니다(추정). 짧은 외출은 보일러를 끄기보다 온도를 2~3도만 낮추고, 창문 틈새 단열과 온수 사용 줄이기를 함께 하면 효과가 큽니다.' } },
-      { '@type': 'Question', name: '도시가스 사용량 MJ는 어떻게 확인하나요?', acceptedAnswer: { '@type': 'Answer', text: '계량기는 ㎥(부피)로 표시되고 요금은 MJ(열량)로 매깁니다. 고지서의 사용열량(MJ) = 사용량(㎥) × 보정계수 × 단위열량(약 42~43MJ/㎥)입니다. 고지서나 도시가스 앱에 MJ가 적혀 있으면 그 값을 그대로 입력하는 것이 가장 정확합니다.' } },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '가스 요금 계산기', description: '도시가스 주택용 요금·난방비 계산', url: 'https://toolhub.ai.kr/gas-bill/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['2026 도시가스 주택용 단가', '고지서 사용량(MJ·㎥) 계산', '평수·보일러 시간으로 추정', '월별 난방비', '온도 1도 절약액', '지난달·작년 비교'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={gasBillMessages.gasBill.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

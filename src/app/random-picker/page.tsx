@@ -4,6 +4,7 @@ import DecisionToolsBar from '@/components/DecisionToolsBar'
 import RandomPicker from '@/components/RandomPicker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 const TITLE = '랜덤 뽑기 - 경품 추첨기, 당첨자 뽑기, 공정성 검증 | 툴허브'
 const DESC = '명단을 붙여넣고 당첨자를 중복 없이 뽑으세요. 추첨권 가중치, 이전 당첨자 제외, 두근두근 공개 연출, 라이브 발표 모드, 시드로 누구나 결과를 재현하는 검증 링크까지. 단톡방·방송 경품 추첨용 무료 추첨기.'
@@ -48,25 +49,20 @@ export default function RandomPickerPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '랜덤 뽑기 - 경품 추첨기', description: DESC,
-    url: 'https://toolhub.ai.kr/random-picker', applicationCategory: 'UtilityApplication',
+    url: 'https://toolhub.ai.kr/random-picker/', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['명단 붙여넣기(줄바꿈·쉼표)', '중복 없는 당첨자 N명 추첨', '추첨권 가중치', '이전 당첨자 제외', '시드 기반 재현·검증 링크', '라이브 발표 모드', '당첨 공지 복사·결과 카드 이미지'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <div className="mb-6"><DecisionToolsBar current="/random-picker" /></div>
             <RandomPicker />
+            <ToolFaq items={FAQ} />
             <div className="mt-8"><RelatedTools /></div>
           </I18nWrapper>
         </div>

@@ -2,10 +2,11 @@ import { Metadata } from 'next'
 import NumberToKorean from '@/components/NumberToKorean'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '금액 한글표기 변환기 - 숫자를 한글·한자 금액으로 | 툴허브',
-  description: '숫자를 입력하면 한글 금액(삼백만원)과 한자 표기(金 參佰萬圓整)로 즉시 변환. 수표·계약서·영수증·견적서 작성용, 복사 한 번에.',
+  description: '숫자를 입력하면 계약서용 한글 금액(금 삼백만원정), 한자 갖은자(金 參佰萬圓整), 숫자+한글 혼용, 영문 표기로 바로 바꿔 줍니다. 수표·영수증·견적서에 쓸 표기를 복사 한 번에, 한글 금액을 숫자로 바꾸는 역변환도 지원.',
   keywords: '숫자 한글 변환, 금액 한글 표기, 수표 금액 한글, number to korean, 한글 숫자, 금일봉',
   openGraph: { title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/number-to-korean.png', width: 1200, height: 630, alt: '숫자 한글 변환' }] },
   twitter: { card: 'summary_large_image', title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액으로 변환', images: ['https://toolhub.ai.kr/og/number-to-korean.png'] },
@@ -13,31 +14,24 @@ export const metadata: Metadata = {
 }
 
 export default function NumberToKoreanPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '숫자 한글 변환', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 금액 변환', '한자 갖은자 금액 변환', '수표·계약서 병기 표기', '숫자+한글 혼용 표기', '한글 금액 → 숫자 역변환', '실시간 변환'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '한국어 숫자 표기 체계는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '한국어에는 두 가지 숫자 체계가 있습니다. 한자어 수사: 일(1), 이(2), 삼(3)... 날짜, 금액, 전화번호에 사용. 고유어 수사: 하나, 둘, 셋... 나이, 시간(시), 개수에 사용. 금액 표기: 만(10,000) 단위로 구분하며, 1억 2345만 6789원처럼 표기합니다. 수표, 계약서에서는 위변조 방지를 위해 \'금 일억이천삼백사십오만육천칠백팔십구원정\'처럼 한글로 표기합니다.',
-        },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '숫자 한글 변환', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 금액 변환', '한자 갖은자 금액 변환', '수표·계약서 병기 표기', '숫자+한글 혼용 표기', '한글 금액 → 숫자 역변환', '실시간 변환'] }
+  const faq = [
+    { q: '한국어 숫자 표기 체계는?', a: '한국어에는 두 가지 숫자 체계가 있습니다. 한자어 수사: 일(1), 이(2), 삼(3)... 날짜, 금액, 전화번호에 사용. 고유어 수사: 하나, 둘, 셋... 나이, 시간(시), 개수에 사용. 금액 표기: 만(10,000) 단위로 구분하며, 1억 2345만 6789원처럼 표기합니다. 수표, 계약서에서는 위변조 방지를 위해 \'금 일억이천삼백사십오만육천칠백팔십구원정\'처럼 한글로 표기합니다.' },
+    { q: '계약서에는 금액을 어떻게 적나요?', a: '숫자와 한글을 함께 적는 병기가 일반적입니다. 이 도구의 "계약서 병기" 결과처럼 "금 삼백만원정(₩3,000,000)" 형태로 쓰면 숫자를 고쳐 쓰는 위·변조를 막는 데 도움이 됩니다. 금액 앞 표기는 "금", "일금", "없음" 중에서 고를 수 있습니다.' },
+    { q: '한글로 적힌 금액을 숫자로 바꿀 수도 있나요?', a: '네. 입력 칸에 "3억 5천만"이나 "일억이천만원"처럼 한글이 섞인 금액을 넣으면 숫자로 인식해 한글·한자·영문 표기로 함께 보여 줍니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><NumberToKorean />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <NumberToKorean />
+            <ToolFaq items={faq} />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import PyeongCalculator from '@/components/PyeongCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import pyeongCalculatorMessages from '../../../messages/generated/ko/ns/pyeongCalculator.json'
 
 export const metadata: Metadata = {
   title: '평수 계산기 - 평↔제곱미터 면적 변환, 아파트 평수 | 툴허브',
@@ -13,41 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default function PyeongCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '평수 계산기', description: '평(坪)↔제곱미터(m²) 면적 변환', url: 'https://toolhub.ai.kr/pyeong-calculator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['평↔m² 실시간 변환', 'ft² 변환', '가로×세로 면적 계산', '전용률로 전용↔공급면적 환산', '인기 아파트 면적표(59㎡·84㎡ 등)', '계약면적·서비스(발코니)면적 계산', '평당가↔㎡당가 변환', '방 크기 가로×세로 환산', '결과 이미지 공유'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '1평은 몇 제곱미터(m²)인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1평은 약 3.3058㎡입니다. 정확하게는 1평 = 400/121 ㎡ ≈ 3.305785㎡입니다. 반대로 1㎡는 약 0.3025평입니다. 예를 들어 아파트 전용면적 84㎡는 약 25.4평(84 × 0.3025)이며, 공급면적(약 110~115㎡) 기준으로는 흔히 "33~35평형(34평형)"이라고 부릅니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '전용면적과 공급면적의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '전용면적은 실제 거주 공간(방, 거실, 주방, 화장실)만의 면적이고, 공급면적은 전용면적에 주거공용면적(복도, 계단, 엘리베이터)을 더한 면적입니다. 계약면적은 공급면적에 기타공용면적(주차장, 관리사무소 등)까지 포함합니다. 관행상 "○○평형"은 공급면적 기준이지만, 분양공고·실거래가의 59㎡·84㎡ 같은 타입은 전용면적 기준입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '아파트 "25평형"의 실제 면적은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '아파트 "25평형"은 공급면적 기준 약 82.5㎡(25 × 3.3)이지만, 전용면적은 보통 59~60㎡입니다. 이를 평으로 환산하면 실제 사용 면적은 약 18평 정도입니다. 2007년 7월부터 「계량에 관한 법률」에 따라 ㎡ 단위를 쓰므로, "전용면적 59㎡"가 공식 표기이며 "국민평형 25평"은 관행적 표현입니다.',
-        },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '평수 계산기', description: '평(坪)↔제곱미터(m²) 면적 변환', url: 'https://toolhub.ai.kr/pyeong-calculator/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['평↔m² 실시간 변환', 'ft² 변환', '가로×세로 면적 계산', '전용률로 전용↔공급면적 환산', '인기 아파트 면적표(59㎡·84㎡ 등)', '계약면적·서비스(발코니)면적 계산', '평당가↔㎡당가 변환', '방 크기 가로×세로 환산', '결과 이미지 공유'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={pyeongCalculatorMessages.pyeongCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><PyeongCalculator />  <div className="mt-8">

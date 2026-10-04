@@ -6690,6 +6690,7 @@
     "closeTip": "Close tip"
   },
   "relatedTools": {
+    "curated": "Often Used Together",
     "title": "Related Tools",
     "discover": "Discover Other Tools"
   },
@@ -55025,12 +55026,30 @@
     }
   },
   "greetingGenerator": {
+    "placeLabel": "Occasion",
+    "recipientsBy": {
+      "toast": {
+        "colleague": "Company / team dinner",
+        "client": "With clients",
+        "friend": "Friends / alumni",
+        "family": "Family gathering"
+      },
+      "csat": {
+        "family": "Child / family",
+        "friend": "Friend",
+        "student": "Student / junior"
+      }
+    },
+    "toastHint": "The lead line is called by the person proposing the toast, and everyone shouts the response. For the three-line poem, the group calls out each syllable and you answer one line at a time.",
     "title": "Greeting Message Generator",
     "description": "Pick the occasion, the recipient and the tone to get several ready-to-send greetings.",
     "koreanNote": "Messages are written in Korean, composed from hand-written sentences. Names you enter stay on this screen and are not added to the link.",
     "settingsTitle": "Options",
     "situationLabel": "Occasion",
     "situations": {
+      "christmas": "Christmas",
+      "toast": "Year-end toast",
+      "csat": "CSAT cheer",
       "yearEnd": "Year-end",
       "newYear": "New Year",
       "seollal": "Seollal",

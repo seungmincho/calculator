@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import PresentationTimer from '@/components/PresentationTimer'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import presentationTimerMessages from '../../../messages/generated/ko/ns/presentationTimer.json'
 
 export const metadata: Metadata = {
   title: '프레젠테이션 타이머 - 발표·회의용 카운트다운 | 툴허브',
@@ -33,7 +35,7 @@ export default function PresentationTimerPage() {
     '@type': 'WebApplication',
     name: '프레젠테이션 타이머',
     description: '발표, 회의, 세미나에 최적화된 프레젠테이션 타이머. 경고/위험 단계 색상 변화, 전체화면 모드, 알림음 지원.',
-    url: 'https://toolhub.ai.kr/presentation-timer',
+    url: 'https://toolhub.ai.kr/presentation-timer/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -51,52 +53,6 @@ export default function PresentationTimerPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '프레젠테이션 타이머란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '프레젠테이션 타이머는 발표, 회의, 세미나 등에서 시간을 관리하는 도구입니다. 남은 시간에 따라 초록→노랑→빨강으로 색상이 변하여 직관적으로 시간을 확인할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '발표자 모드(전체화면)는 어떻게 사용하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '발표자 모드 버튼이나 F 키를 누르면 남은 시간이 화면 가득 크게 표시되고, 경고 시점엔 노란색, 초과 시엔 빨간색으로 화면 전체가 바뀌어 멀리서도 한눈에 보입니다. 숫자를 누르거나 Space로 시작·정지, ESC로 나갑니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '경고 시간과 위험 시간은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '남은 시간이 경고 시점(기본: 10분 이하 발표는 2분 전, 그 이상은 3분 전)에 도달하면 노란색으로 바뀌고 알림음·진동이 울립니다. 시간이 끝나면 빨간색으로 바뀌고 초과 시간을 +로 계속 셉니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '사회자가 발표자에게 타이머 설정을 보낼 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네. 시간과 구간을 설정하면 주소에 그대로 저장됩니다. 링크 복사 버튼으로 보내면 받는 사람은 같은 설정으로 바로 시작할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '발표 중 화면이 꺼지지 않나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '타이머가 도는 동안 화면 꺼짐 방지(Wake Lock)를 요청합니다. 크롬·엣지·사파리 최신 버전에서 동작하며, 지원하지 않는 브라우저에서는 기기 화면 자동 잠금 시간을 늘려 주세요.',
-        },
-      },
-    ],
-  }
 
   return (
     <>
@@ -104,10 +60,8 @@ export default function PresentationTimerPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={presentationTimerMessages.presentationTimer.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

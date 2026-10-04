@@ -1,8 +1,10 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 import DecisionToolsBar from '@/components/DecisionToolsBar'
-import MenuRouletteClient from './MenuRouletteClient'
+import DecisionTools from '@/components/DecisionTools'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '저녁메뉴 추천 룰렛 · 돌림판 - 오늘 뭐 먹지? | 툴허브',
@@ -72,16 +74,16 @@ export default function MenuRoulettePage() {
     name: '메뉴 추천 룰렛',
     description:
       '오늘의 점심·저녁 메뉴를 룰렛으로 랜덤하게 결정하는 무료 온라인 도구. 한식, 중식, 일식, 양식, 분식 등 원하는 메뉴를 등록하고 돌려보세요.',
-    url: 'https://toolhub.ai.kr/menu-roulette',
+    url: 'https://toolhub.ai.kr/menu-roulette/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
       '메뉴 항목 자유 추가/삭제',
-      '점심메뉴 프리셋 제공',
+      '저녁·점심·한식·중식 등 10가지 메뉴 프리셋',
       '회전 애니메이션 룰렛',
-      '결과 공유 기능',
+      '결과 이미지 저장·복사, 메뉴 목록 링크 공유',
       '모바일·PC 모두 지원',
     ],
   }
@@ -97,7 +99,7 @@ export default function MenuRoulettePage() {
         '@type': 'HowToStep',
         position: 1,
         name: '메뉴 목록 확인',
-        text: '기본 제공되는 점심메뉴 프리셋(짜장면, 짬뽕, 냉면 등)을 확인하거나, 원하는 메뉴를 직접 입력해 추가하세요.',
+        text: '처음 채워진 저녁메뉴 프리셋(삼겹살, 치킨, 피자 등)을 확인하거나, 점심메뉴·한식·중식 등 다른 프리셋을 고르거나, 원하는 메뉴를 직접 입력해 추가하세요.',
       },
       {
         '@type': 'HowToStep',
@@ -109,7 +111,7 @@ export default function MenuRoulettePage() {
         '@type': 'HowToStep',
         position: 3,
         name: '룰렛 돌리기',
-        text: '화면 중앙의 룰렛 또는 "돌리기" 버튼을 클릭하면 룰렛이 회전하기 시작합니다.',
+        text: '룰렛 아래 "돌리기!" 버튼을 누르면 룰렛이 회전하기 시작합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -121,57 +123,19 @@ export default function MenuRoulettePage() {
         '@type': 'HowToStep',
         position: 5,
         name: '결과 공유',
-        text: '결과를 팀원이나 친구에게 공유하려면 링크 복사 버튼을 눌러 현재 메뉴 목록이 담긴 URL을 공유하세요.',
+        text: '주소창 링크에는 현재 메뉴 목록이 담겨 있습니다. 링크를 복사해 팀원이나 친구에게 보내면 같은 룰렛을 돌릴 수 있고, 결과는 이미지로 저장할 수도 있습니다.',
       },
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '메뉴 추천 룰렛은 무료인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '룰렛에 메뉴를 몇 개까지 추가할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '최대 12개까지 추가할 수 있습니다. 메뉴 이름을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 삭제할 수 있어요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '점심 메뉴 프리셋은 어떤 메뉴들이 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '기본 프리셋에는 짜장면, 짬뽕, 냉면, 비빔밥, 삼겹살, 라멘, 초밥, 피자가 포함되어 있습니다. "점심메뉴" 프리셋 버튼을 누르면 한 번에 불러올 수 있어요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '룰렛 결과를 친구에게 공유할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '오늘 점심 메뉴 정할 때 말고 다른 용도로도 쓸 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '물론입니다. 저녁 메뉴 결정, 디저트 선택, 카페 메뉴 고르기, 모임 장소 결정, 벌칙 정하기 등 다양한 상황에서 활용할 수 있어요.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '메뉴 추천 룰렛은 무료인가요?', a: '네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다.' },
+    { q: '룰렛에 메뉴를 몇 개까지 추가할 수 있나요?', a: '2개부터 최대 12개까지 올릴 수 있습니다. 메뉴 이름(20자 이내)을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 언제든 삭제할 수 있어요.' },
+    { q: '어떤 메뉴 프리셋이 있나요?', a: '처음에는 저녁메뉴 프리셋(삼겹살·치킨·피자·파스타·초밥·국밥·찜닭·부대찌개·마라탕·쌀국수·족발·보쌈)이 채워져 있습니다. 점심메뉴 프리셋에는 김치찌개·제육볶음·돈까스·비빔밥·냉면·라멘·짜장면·짬뽕·우동·덮밥·샐러드·김밥이 들어 있고, 한식·중식·일식·양식·분식·야식배달·카페·벌칙 프리셋도 있어요.' },
+    { q: '룰렛 결과를 친구에게 공유할 수 있나요?', a: '네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요. 결과가 나오면 "이미지"로 결과 카드를 저장하거나 "복사"로 메뉴 이름을 복사할 수도 있습니다.' },
+    { q: '오늘 뭐 먹지? 메뉴 추천과는 무엇이 다른가요?', a: '메뉴 룰렛은 내가 정한 후보 중에서 하나를 뽑는 도구이고, 오늘 뭐 먹지? 메뉴 추천은 300가지가 넘는 메뉴 중에서 상황·카테고리에 맞춰 골라 주는 도구입니다. 후보가 떠오르지 않을 때는 메뉴 추천을 먼저 써 보세요.' },
+    { q: '오늘 점심 메뉴 정할 때 말고 다른 용도로도 쓸 수 있나요?', a: '물론입니다. 저녁 메뉴 결정, 디저트 선택, 카페 메뉴 고르기, 모임 장소 결정, 벌칙 정하기 등 다양한 상황에서 활용할 수 있어요.' },
+  ]
 
   return (
     <>
@@ -183,16 +147,20 @@ export default function MenuRoulettePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
 
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <div className="mb-6"><DecisionToolsBar current="/menu-roulette" /></div>
-              <MenuRouletteClient />
+              {/* H1·부제는 /menu-picker(상황별 메뉴 추천)와 목적이 겹치지 않게 '직접 만드는 후보 룰렛'으로 */}
+              <DecisionTools
+                initialTab="roulette"
+                single
+                defaultPreset="저녁메뉴"
+                title="직접 만드는 메뉴 룰렛"
+                subtitle="먹고 싶은 후보를 직접 적거나 프리셋으로 채우고, 돌림판을 돌려 하나를 고르세요"
+              />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>
@@ -215,8 +183,16 @@ export default function MenuRoulettePage() {
             </p>
             <p className="text-body leading-relaxed">
               "오늘 뭐 먹지?"라는 질문으로 시작되는 오랜 고민을 단 몇 초 만에 해결해 드립니다.
-              짜장면·짬뽕·냉면·비빔밥·삼겹살 등 기본 프리셋을 제공하며, 자주 가는 식당이나 좋아하는 메뉴를 직접 추가해
+              저녁메뉴·점심메뉴·한식·중식·일식 등 10가지 프리셋을 제공하며, 자주 가는 식당이나 좋아하는 메뉴를 직접 추가해
               나만의 맞춤 룰렛을 만들 수 있습니다.
+            </p>
+            <p className="text-body leading-relaxed">
+              후보가 이미 머릿속에 있다면 이 룰렛이 가장 빠릅니다. 아직 무엇을 먹을지 떠오르지 않는다면 혼밥·회식·해장 같은 상황에 맞춰
+              300가지가 넘는 메뉴에서 골라 주는{' '}
+              <Link prefetch={false} href="/menu-picker/" className="text-primary hover:underline">
+                오늘 뭐 먹지? 메뉴 추천
+              </Link>
+              을 먼저 써 보세요.
             </p>
           </div>
 
@@ -314,7 +290,7 @@ export default function MenuRoulettePage() {
             <ol className="space-y-3 text-body">
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                <span><strong className="text-fg">메뉴 목록 확인:</strong> 기본 제공되는 점심메뉴 프리셋(짜장면, 짬뽕, 냉면 등)을 확인하거나, 원하는 메뉴를 직접 입력해 추가하세요.</span>
+                <span><strong className="text-fg">메뉴 목록 확인:</strong> 처음 채워진 저녁메뉴 프리셋(삼겹살, 치킨, 피자 등)을 확인하거나, 다른 프리셋을 고르거나, 원하는 메뉴를 직접 입력해 추가하세요.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
@@ -322,7 +298,7 @@ export default function MenuRoulettePage() {
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                <span><strong className="text-fg">룰렛 돌리기:</strong> 화면 중앙의 룰렛 또는 "돌리기" 버튼을 클릭하면 룰렛이 회전하기 시작합니다.</span>
+                <span><strong className="text-fg">룰렛 돌리기:</strong> 룰렛 아래 &quot;돌리기!&quot; 버튼을 누르면 룰렛이 회전하기 시작합니다.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
@@ -330,42 +306,9 @@ export default function MenuRoulettePage() {
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                <span><strong className="text-fg">결과 공유:</strong> 팀원에게 공유하려면 링크 복사 버튼을 눌러 현재 메뉴 목록이 담긴 URL을 공유하세요.</span>
+                <span><strong className="text-fg">결과 공유:</strong> 주소창 링크에 현재 메뉴 목록이 담겨 있으니 그대로 복사해 보내면 같은 룰렛을 돌릴 수 있습니다. 결과는 이미지로 저장할 수도 있어요.</span>
               </li>
             </ol>
-          </div>
-
-          {/* 자주 묻는 질문 */}
-          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
-            <h2 className="text-xl font-bold text-fg">
-              자주 묻는 질문
-            </h2>
-            <div className="space-y-5">
-              <div>
-                <h3 className="font-semibold text-fg mb-1">
-                  메뉴 추천 룰렛은 무료인가요?
-                </h3>
-                <p className="text-sub text-sm leading-relaxed">
-                  네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-fg mb-1">
-                  룰렛에 메뉴를 몇 개까지 추가할 수 있나요?
-                </h3>
-                <p className="text-sub text-sm leading-relaxed">
-                  최대 12개까지 추가할 수 있습니다. 메뉴 이름을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 언제든 삭제할 수 있어요.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-fg mb-1">
-                  룰렛 결과를 친구에게 공유할 수 있나요?
-                </h3>
-                <p className="text-sub text-sm leading-relaxed">
-                  네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요.
-                </p>
-              </div>
-            </div>
           </div>
 
         </div>

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Hangman from '@/components/Hangman'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import hangmanMessages from '../../../messages/generated/ko/ns/hangman.json'
 
 export const metadata: Metadata = {
   title: '단어 맞추기 게임 - 한글 행맨, 무료 온라인 단어 게임 | 툴허브',
@@ -33,7 +35,7 @@ export default function HangmanPage() {
     '@type': 'VideoGame',
     name: '단어 맞추기 (행맨)',
     description: '한글 단어를 추측하는 행맨 스타일 단어 게임. 자음과 모음을 선택해 숨겨진 한국어 단어를 맞추세요.',
-    url: 'https://toolhub.ai.kr/hangman',
+    url: 'https://toolhub.ai.kr/hangman/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -44,33 +46,12 @@ export default function HangmanPage() {
     featureList: ['한글 자음/모음 가상 키보드', '매일 바뀌는 오늘의 단어', '연속 기록·통계·결과 공유', '7가지 카테고리 연습 모드와 난이도', 'SVG 행맨 그림', '7번의 도전 기회', '한글 자모 분해 매칭'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '행맨 단어 맞추기 게임 규칙은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '화면에 숨겨진 한글 단어를 추측하는 게임입니다. 하단의 자음(ㄱ~ㅎ)과 모음(ㅏ~ㅣ) 버튼을 클릭해서 글자를 선택하세요. 선택한 자음이나 모음이 단어에 포함되어 있으면 해당 글자가 드러납니다. 7번 틀리면 행맨 그림이 완성되어 게임이 종료됩니다. 단어가 완성되기 전에 모든 글자를 맞추면 승리합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '한글 행맨 게임에서 자음과 모음은 어떻게 작동하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '한글은 자음(초성/종성)과 모음(중성)이 결합하여 하나의 글자를 이룹니다. 예를 들어 "가"를 선택하는 것이 아니라, "ㄱ"(자음)이나 "ㅏ"(모음)를 각각 선택합니다. 선택한 자음 또는 모음이 단어의 어떤 글자에든 포함되어 있으면 그 글자 전체가 드러납니다. 따라서 하나의 선택으로 여러 글자가 한꺼번에 공개될 수 있습니다.',
-        },
-      },
-    ],
-  }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={hangmanMessages.hangman.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

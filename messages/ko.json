@@ -6689,6 +6689,7 @@
     "closeTip": "팁 닫기"
   },
   "relatedTools": {
+    "curated": "함께 쓰면 좋은 도구",
     "title": "관련 도구",
     "discover": "다른 도구 둘러보기"
   },
@@ -55169,12 +55170,30 @@
     }
   },
   "greetingGenerator": {
+    "placeLabel": "자리",
+    "recipientsBy": {
+      "toast": {
+        "colleague": "회사·팀 회식",
+        "client": "거래처 자리",
+        "friend": "친구·동창 모임",
+        "family": "가족 모임"
+      },
+      "csat": {
+        "family": "자녀·가족",
+        "friend": "친구",
+        "student": "제자·후배"
+      }
+    },
+    "toastHint": "선창은 건배를 제의하는 사람이, 후창은 다 같이 외치는 말이에요. 삼행시는 다 같이 운을 띄우면(송!) 한 줄씩 답하면 돼요.",
     "title": "인사말 생성기",
     "description": "상황, 받는 사람, 말투만 고르면 바로 보낼 수 있는 인사말을 여러 개 만들어 드려요.",
     "koreanNote": "직접 쓴 문장을 조합해 만들어요. 입력한 이름은 이 화면에서만 쓰이고 링크에는 담기지 않아요.",
     "settingsTitle": "조건 고르기",
     "situationLabel": "상황",
     "situations": {
+      "christmas": "크리스마스",
+      "toast": "송년회 건배사",
+      "csat": "수능 응원",
       "yearEnd": "연말",
       "newYear": "새해",
       "seollal": "설날",

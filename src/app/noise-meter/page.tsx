@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import NoiseMeter from '@/components/NoiseMeter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import noiseMeterMessages from '../../../messages/generated/ko/ns/noiseMeter.json'
 
 export const metadata: Metadata = {
   title: '소음 측정기 - 데시벨(dB) 측정, 층간소음 측정 | 툴허브',
@@ -27,28 +29,13 @@ export const metadata: Metadata = {
   },
 }
 
-const faqData = [
-  {
-    question: '웹에서 소음 측정이 정확한가요?',
-    answer: '스마트폰·PC 마이크는 보정되지 않아 기기에 따라 ±5~10dB 이상 차이가 날 수 있는 추정치입니다. 소음계 값에 맞춰 보정하면 오차를 줄일 수 있지만, 법적 증거로는 인정되지 않으므로 공식 측정은 층간소음 이웃사이센터(1661-2642)나 전문 기관을 이용하세요.',
-  },
-  {
-    question: '층간소음 기준은 어떻게 되나요?',
-    answer: '공동주택 층간소음의 범위와 기준에 관한 규칙(2023년 1월 2일 시행)에 따라 직접충격소음은 1분 등가소음도 주간 39dB·야간 34dB, 최고소음도 주간 57dB·야간 52dB(1시간 3회 이상 초과 시)이고, 공기전달소음은 5분 등가소음도 주간 45dB·야간 40dB입니다. 2005년 6월 30일 이전 사업승인 공동주택은 2025년부터 2dB을 더합니다.',
-  },
-  {
-    question: '85dB 이상이 위험한 이유는?',
-    answer: '85dB 이상의 소음에 8시간 이상 지속적으로 노출되면 청력 손실 위험이 있습니다. 산업안전보건법에서도 85dB을 소음 작업 기준으로 규정하고 있으며, 100dB 이상은 15분 이상 노출에도 위험합니다.',
-  },
-]
-
 export default function NoiseMeterPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '소음 측정기',
     description: '마이크를 이용한 실시간 소음(데시벨) 측정 도구',
-    url: 'https://toolhub.ai.kr/noise-meter',
+    url: 'https://toolhub.ai.kr/noise-meter/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, Microphone access',
@@ -62,20 +49,12 @@ export default function NoiseMeterPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={noiseMeterMessages.noiseMeter.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

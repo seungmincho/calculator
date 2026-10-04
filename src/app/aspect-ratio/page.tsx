@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import AspectRatio from '@/components/AspectRatio'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import aspectRatioMessages from '../../../messages/generated/ko/ns/aspectRatio.json'
 
 export const metadata: Metadata = {
   title: '화면 비율 계산기 - 16:9·9:16·4:5 해상도 | 툴허브',
@@ -13,25 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default function AspectRatioPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['종횡비 계산', '비율+한 변으로 나머지 계산', '플랫폼 규격 프리셋', '쇼츠·릴스 세이프존', '이미지 자르기/여백 저장', '해상도 표'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '화면 비율(Aspect Ratio)이란?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '화면 비율은 가로와 세로의 비율을 나타냅니다. 주요 비율: 16:9(FHD/4K TV, 유튜브), 4:3(구형 TV, iPad), 21:9(울트라와이드 모니터), 1:1(인스타그램 정사각형), 9:16(모바일 세로, 릴스/쇼츠), 3:2(DSLR 사진). 웹 디자인에서는 CSS aspect-ratio 속성으로 요소의 비율을 유지할 수 있으며, 반응형 이미지/비디오에 필수입니다.',
-        },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['종횡비 계산', '비율+한 변으로 나머지 계산', '플랫폼 규격 프리셋', '쇼츠·릴스 세이프존', '이미지 자르기/여백 저장', '해상도 표'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={aspectRatioMessages.aspectRatio.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><AspectRatio />  <div className="mt-8">

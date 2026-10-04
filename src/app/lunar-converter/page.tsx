@@ -2,10 +2,11 @@ import { Metadata } from 'next'
 import LunarConverter from '@/components/LunarConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '음력 양력 변환기 - 음력 날짜 변환, 띠, 간지 | 툴허브',
-  description: '음력 양력 변환기 - 음력을 양력으로, 양력을 음력으로 변환합니다. 음력 생일, 제사일, 명절 날짜 확인. 띠, 간지(60갑자) 정보 제공.',
+  description: '음력↔양력 날짜를 바로 변환하고 띠·간지(60갑자)·일진까지 확인하세요. 음력 생일이나 제삿날을 넣으면 올해부터 10년 뒤까지 양력 날짜와 다음 기념일 D-day를 보여 줍니다. 1900~2050년, 윤달까지 지원합니다.',
   keywords: '음력 양력 변환, 음력 변환기, 양력 음력 변환, 음력 생일, 음력 날짜, lunar calendar converter',
   openGraph: { title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환, 띠, 간지 정보', url: 'https://toolhub.ai.kr/lunar-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/lunar-converter.png', width: 1200, height: 630, alt: '음력 양력 변환기' }] },
   twitter: { card: 'summary_large_image', title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환', images: ['https://toolhub.ai.kr/og/lunar-converter.png'] },
@@ -13,31 +14,24 @@ export const metadata: Metadata = {
 }
 
 export default function LunarConverterPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '음력 양력 변환기', description: '음력 ↔ 양력 날짜 변환, 띠, 간지(60갑자) 정보', url: 'https://toolhub.ai.kr/lunar-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['양력→음력 변환', '음력→양력 변환', '음력 생일 향후 10년 양력 날짜', '다음 음력 생일 D-day', '띠·간지·일진 정보', '윤달 지원', '한국천문연구원 역서 기준'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '음력과 양력의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '양력(태양력): 지구가 태양을 도는 주기(365.25일) 기준. 전 세계 표준 달력(그레고리력). 음력(태음태양력): 달의 위상 변화 주기(29.5일) 기준으로 한 달을 정합니다. 12달은 약 354일이므로 윤달을 두어 양력과 맞춥니다. 한국에서는 설날, 추석, 생일 등에 음력을 사용합니다. 음력 날짜는 매년 양력 날짜가 달라지므로 변환이 필요합니다.',
-        },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '음력 양력 변환기', description: '음력 ↔ 양력 날짜 변환, 띠, 간지(60갑자) 정보', url: 'https://toolhub.ai.kr/lunar-converter/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['양력→음력 변환', '음력→양력 변환', '음력 생일 향후 10년 양력 날짜', '다음 음력 생일 D-day', '띠·간지·일진 정보', '윤달 지원', '한국천문연구원 역서 기준'] }
+  const faq = [
+    { q: '음력과 양력의 차이는?', a: '양력(태양력): 지구가 태양을 도는 주기(365.25일) 기준. 전 세계 표준 달력(그레고리력). 음력(태음태양력): 달의 위상 변화 주기(29.5일) 기준으로 한 달을 정합니다. 12달은 약 354일이므로 윤달을 두어 양력과 맞춥니다. 한국에서는 설날, 추석, 생일 등에 음력을 사용합니다. 음력 날짜는 매년 양력 날짜가 달라지므로 변환이 필요합니다.' },
+    { q: '음력 생일은 올해 양력으로 며칠인가요?', a: '해마다 다릅니다. 음력 날짜를 입력하면 올해부터 10년 뒤까지 해당 날짜의 양력 날짜와, 다음 생일까지 남은 날(D-day)을 한 번에 보여 줍니다. 제삿날처럼 매년 챙기는 음력 날짜도 같은 방법으로 확인하세요.' },
+    { q: '몇 년도까지 변환할 수 있나요?', a: '1900년부터 2050년까지 변환할 수 있으며, 한국천문연구원 역서를 기준으로 합니다. 윤달이 있는 해에는 윤달 여부를 선택해 변환합니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><LunarConverter />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <LunarConverter />
+            <ToolFaq items={faq} />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
         {/* SEO 콘텐츠 */}

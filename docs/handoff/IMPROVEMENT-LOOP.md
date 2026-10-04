@@ -40,17 +40,17 @@
 | 8 | P1 | 연휴·연차 플래너 `/holiday-planner` 신규 | 완료(배치1) |
 | 9 | P1 | 건강검진 대상 조회 `/health-checkup` 신규 | 완료(배치1) |
 | 10 | P1 | 2027 4대보험 요율 토글 + `/four-insurance` 신규 + `/salary-table?year=2027` — 공식 고시 후 (12/1까지) | 확정 대기 |
-| 11 | P1 | `/greeting-generator` 2027 정미년 연말·신년 문구 (12/1까지) | 후보 |
+| 11 | P1 | `/greeting-generator` 크리스마스·송년회 건배사·수능 응원 + 정미년, 시즌 기본값 | 완료(배치5) |
 | 12 | P3 | 결정 도구 3종(order-picker·ladder-game·menu-roulette) SSR 복구 | 완료(배치1) |
 | 12a | P3 | 큰 Suspense 제거: SalaryCalculator.tsx:1361·HourlyWage.tsx:438·bogeumjari page.tsx:158 (+ MonthlyRentSubsidy·TaxCalculator·time-converter·chess·git-visualizer) — 원인: React 19.2가 12.8KB 넘는 완료 Suspense 경계를 `</main>` 뒤 숨김 영역으로 빼냄. 7개 Suspense 제거(+HourlyWage useState URL 읽기 → effect) | 완료(배치2) |
 | 12k | P3 | 정적 HTML에 h1 없는 페이지: /games(허브)·/pomodoro·/svg-editor·/calculation-history — games=GameHub ssr:false(닉네임 localStorage는 effect), pomodoro·history=컴포넌트에 h1 있으나 마운트 전 조기 return 추정 (tips/[id] 400개는 의도적 noindex). 점검 스크립트: `node scripts/check-static-html.cjs out` — 배포 전마다 돌릴 것 | 후보 |
 | 12l | — | /cs-hub 번역 키 노출(tools.algorithm.cta·tools.visualizer.cta·tools.quiz.cta — 분할 전부터) | 후보 |
-| 12b | P3 | 보이는 FAQ 공용 서버 컴포넌트 `ToolFaq.tsx`(JSON-LD + `<details>`) → 39개 page.tsx 교체, JSON-LD url 끝 슬래시 통일(35개 불일치) | 1번 병합 후 |
+| 12b | P3 | ToolFaq(보이는 FAQ+JSON-LD)/FaqJsonLd — 상위 39페이지, JSON-LD url 슬래시 35개 | 완료(배치5) |
 | 12c | P3 | sitemap lastmod `updatedDate?`, RSS·_redirects를 menuConfig에서 생성(누락 /running-pace 복구), RSS 최신순·description | 완료(배치1) |
 | 12d | P3 | 사실 오류: bonus FAQ 연금 상한 590만원(→ INSURANCE 참조), omok FAQ 15×15(실제 19×19), menu-roulette FAQ 프리셋 불일치, salary featureList "산재보험"(계산 안 함), salary-rank 2024 귀속 데이터 확인 | 1번 병합 후 |
 | 12e | P2 | ShareResult 추가: bogeumjari·work-hours·fuel·grade·gpa-calculator·bonus·installment·lunar·shipping·pc-electricity·menu-picker (+cs-hub 키), 보금자리 디딤돌 비교·다음 단계 링크, ShareResult 44px·복사 실패 처리 | 완료(배치4) |
-| 12f | P3 | 내부 링크: bogeumjari·salary-rank·omok에 RelatedTools, bogeumjari 본문→dsr·취득세·복비·상환표·전세대출, RelatedTools 교차 카테고리 무작위 추천 개선 | 후보 |
-| 12g | P3 | description 80자 미만 10개 보강(number-to-korean·order-picker·ladder·fuel·keyboard·work-hours·gpa-calculator·installment·crossword·lunar), 얇은 본문(omok·ladder·crossword·salary-rank·menu-picker·bonus) | 후보 |
+| 12f | P3 | RelatedTools 큐레이션(src/config/relatedTools.ts 67도구 344링크, 무작위 제거) + bogeumjari·salary-rank·omok RelatedTools | 완료(배치5) |
+| 12g | P3 | description 10개 보강, 얇은 본문 5개(omok·crossword·menu-picker·salary-rank·ladder) + 실제 동작과 다른 서술 정정 | 완료(배치5) |
 | 12h | — | (사용자) 네이버 서치어드바이저 sitemap.xml·rss.xml 제출 | 사용자 액션 |
 | 13 | P4 | **번역 legacy 청크 2.3MB(전송 681KB)** 가 도구 페이지 대부분의 초기 로드에 포함 → 느린 4G에서 9~11초 조작 불가. `generate-scoped-messages.mjs`로 전 네임스페이스 생성 + `src/lib/i18n.ts` import 330곳을 네임스페이스 모듈로 codemod — 레지스트리 방식(`registerMessages` + 네임스페이스별 side-effect import). 검증: 정적 HTML 358페이지 키 노출 증가 0, 브라우저 30페이지 hydration 후 노출 0. 초기 JS(gzip) 숫자한글 254KB·택시 257KB | 완료(배치3) |
 | 13a | P4 | 완료: Link prefetch 끄기(ToolsShowcase·RelatedTools·Footer·DecisionToolsBar·ladder page — 스크롤 시 최대 2.8MB 비압축 HTML), `public/_headers` `/_next/static/*` immutable, 모든 페이지의 supabase-js 제거(toolAnalytics → fetch) | 완료(배치1) |
@@ -86,3 +86,4 @@
 - 2026-10-04 배치2 · Suspense 7곳 제거(React 19.2 12.8KB 경계 숨김 — 연봉·시급·보금자리·세금 등), 결정 도구 9종 SSR, 사다리 공유 버그, 연말정산 미리보기, 월세지원금→청년월세 301, CLAUDE.md 템플릿 Suspense 제거, scripts/check-static-html.cjs. 검증: check 147·tsc 0·브라우저(연말정산·연봉/시급 공유·동전·5명 사다리) 배포 713f6873 (SW v4.32.1). 빌드: 사전 tsc 통과 후 SKIP_BUILD_TYPECHECK=1 (빌드 중 타입검사 ~5GB로 감시가 종료시킴)
 - 2026-10-04 배치3 · 번역 레지스트리 분할(legacy 2.3MB 제거, 345파일 ns import, scripts/i18n-namespaces.cjs --apply/--audit, CLAUDE.md 템플릿·체크리스트). 검증: messages:check·tsc 0·check 147·정적 키 노출 diff 0·브라우저 30페이지. 배포 c3989d24 (SW v4.32.2). 운영 초기 JS 전송: 숫자한글 257KB·택시 260KB(이전 1p JS 957KB·958KB)
 - 2026-10-04 배치4 · 공유 11종(보금자리·성과급·할부·근무시간·유류비·택배·PC전기·성적·학점·음력·메뉴), /minimum-wage 신규, 음력 변환기 첫 렌더 결정적, h1 4페이지, useGameAchievements 마운트 후 로드, en/shared 지연, ShareResult 44px·복사 폴백, cs-hub 키. 검증: check 148·tsc 0·audit 0
+- 2026-10-04 배치5 · 상위 39페이지 보이는 FAQ·JSON-LD url·설명·본문, RelatedTools 큐레이션, 인사말 시즌(크리스마스·건배사·수능·정미년), 셔플 편향 수정(순서뽑기·사다리·가위바위보 → Fisher–Yates). 검증: check 149·tsc 0·audit 0

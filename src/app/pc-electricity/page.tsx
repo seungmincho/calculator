@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import PcElectricityCalculator from '@/components/PcElectricityCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '컴퓨터 소비전력 계산기 - PC 전기세·월 전기요금 | 툴허브',
@@ -25,29 +26,18 @@ export default function PcElectricityPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['CPU/GPU 모델별 소비전력 프리셋', '누진제 한계비용(가구 사용량 반영)', '하계 누진구간', 'GPU 교체 절감액 비교', '게이밍/작업/대기 시간 분배', '공유 링크'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '게이밍 PC 한 달 전기세는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '게이밍 PC(CPU 125W + GPU 300W 등 합계 약 510W, 80 PLUS 골드 파워)로 하루 5시간 게임을 30일 하면 약 74kWh를 씁니다. 누진제 때문에 추가 요금은 집의 기존 사용량에 따라 다릅니다. 월 300kWh 쓰는 가구는 약 19,000원, 월 400kWh 가구는 3단계 구간으로 넘어가 약 33,000원이 늘어납니다(기후환경·연료비조정요금, 부가세, 전력기금 포함).',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '게이밍 PC 한 달 전기세는 얼마인가요?', a: '게이밍 PC(CPU 125W + GPU 300W 등 합계 약 510W, 80 PLUS 골드 파워)로 하루 5시간 게임을 30일 하면 약 74kWh를 씁니다. 누진제 때문에 추가 요금은 집의 기존 사용량에 따라 다릅니다. 월 300kWh 쓰는 가구는 약 19,000원, 월 400kWh 가구는 3단계 구간으로 넘어가 약 33,000원이 늘어납니다(기후환경·연료비조정요금, 부가세, 전력기금 포함).' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PcElectricityCalculator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

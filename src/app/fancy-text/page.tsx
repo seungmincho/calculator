@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import FancyText from '@/components/FancyText'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import fancyTextMessages from '../../../messages/generated/ko/ns/fancyText.json'
 
 export const metadata: Metadata = {
   title: '텍스트 꾸미기 - 인스타·카톡 닉네임 특수문자 | 툴허브',
@@ -37,7 +39,7 @@ export default function FancyTextPage() {
     name: '텍스트 꾸미기',
     description:
       '영문 유니코드 글꼴 30종, 한글 꾸미기, 닉네임 테두리를 실시간 미리보기하고 한 번에 복사하는 무료 도구',
-    url: 'https://toolhub.ai.kr/fancy-text',
+    url: 'https://toolhub.ai.kr/fancy-text/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -61,52 +63,6 @@ export default function FancyTextPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '텍스트 꾸미기란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '유니코드 수학 기호 블록(U+1D400~U+1D7FF)의 특수 문자를 활용해 영문 텍스트를 볼드, 이탤릭, 스크립트, 프랙처, 이중선 등 다양한 시각적 스타일로 변환하는 도구입니다. SNS 프로필, 닉네임, 게시물에 개성 있는 텍스트를 만들 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '한글도 변환되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '볼드·필기체 같은 글꼴 스타일은 유니코드에 영문·숫자만 있어서 한글은 그대로 남습니다(도구가 어떤 글자가 안 바뀌었는지 카드마다 표시). 대신 한글 탭의 자음 분리·초성·초성 동그라미·글자 사이 하트, 그리고 테두리 탭의 ꧁ ꧂ 같은 닉네임 장식은 한글에도 그대로 적용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '변환된 텍스트를 SNS에 그대로 사용할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네. 클립보드에 복사된 유니코드 텍스트는 인스타그램, X(트위터), 페이스북, 유튜브 등 대부분의 SNS에 붙여넣기해 바로 사용 가능합니다. 단, 일부 플랫폼은 특수 유니코드 사용을 제한할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '취소선, 밑줄은 어떻게 적용되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '취소선(U+0336)과 밑줄(U+0332)은 유니코드 결합 문자(Combining Character)입니다. 각 글자 뒤에 결합 문자가 붙어 시각적으로 줄이 그어진 것처럼 표시됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '모든 기기에서 동일하게 보이나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '폰트 지원 여부에 따라 기기마다 렌더링이 다를 수 있습니다. 수학 기호 유니코드를 지원하지 않는 폰트에서는 빈 사각형(두부)으로 표시될 수 있습니다.',
-        },
-      },
-    ],
-  }
 
   return (
     <>
@@ -114,10 +70,8 @@ export default function FancyTextPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={fancyTextMessages.fancyText.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

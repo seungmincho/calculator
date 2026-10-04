@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import BonusCalculator from '@/components/BonusCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
+import bonusMessages from '../../../messages/generated/ko/ns/bonusCalculator.json'
 // RelatedTools auto-detects current path from URL
 
 export const metadata: Metadata = {
@@ -35,7 +37,7 @@ export default function BonusCalculatorPage() {
       '@type': 'WebApplication',
       name: '성과급 계산기',
       description: '성과급·인센티브 세후 실수령액 계산, PS/PI/경영성과급 비율별 시뮬레이션, 세금 분석',
-      url: 'https://toolhub.ai.kr/bonus-calculator',
+      url: 'https://toolhub.ai.kr/bonus-calculator/',
       applicationCategory: 'FinanceApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',
@@ -47,44 +49,6 @@ export default function BonusCalculatorPage() {
         '과세구간 변동 분석',
         '절세 팁 가이드',
         '결과 이미지·링크 공유',
-      ]
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '성과급에도 4대보험이 부과되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '성과급도 근로소득이라 소득세가 붙지만, 지급월에 바로 떼는 4대보험은 보통 고용보험(0.9%)뿐입니다. 건강보험은 다음 해 4월 보수총액 정산 때 부과되고, 국민연금은 기준소득월액(상한 월 659만원, 2026.7~2027.6)이 연중 고정이라 더 떼지 않습니다.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: '성과급 세율이 월급보다 높은 이유는?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '성과급 자체의 세율이 높은 것이 아니라, 성과급이 추가되면 연간 총소득이 증가하여 더 높은 과세구간에 진입하기 때문입니다. 한국의 소득세는 6~45% 누진세율입니다.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: '성과급을 퇴직연금에 넣으면 얼마나 절세되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'IRP는 연금저축과 합쳐 연 900만원까지 세액공제를 받습니다(납입 한도는 연금저축 합산 연 1,800만원). 총급여 5,500만원 이하 16.5%, 초과 13.2%이므로 900만원을 넣으면 최대 148.5만원을 돌려받습니다.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: '성과급과 상여금의 차이는?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '상여금은 연봉에 포함된 금액을 특정 월에 나눠 지급하는 것(총액 불변)이고, 성과급은 연봉 외에 추가로 지급되는 금액입니다. 세금 계산 방식은 동일합니다.'
-          }
-        }
       ]
     },
     {
@@ -107,6 +71,8 @@ export default function BonusCalculatorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <BonusCalculator />
+              {/* 가이드(접힘) 안 FAQ와 같은 문구 — 접힌 가이드는 정적 HTML에 없어서 여기서 보이게 출력 */}
+              <ToolFaq items={bonusMessages.bonusCalculator.guide.faq.items} />
               <RelatedTools />
             </I18nWrapper>
         </div>

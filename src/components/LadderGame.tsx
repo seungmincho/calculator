@@ -9,6 +9,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/ladder'
 import GuideSection from '@/components/GuideSection'
+import { shuffle } from '@/utils/password' // Fisher–Yates (sort+random은 편향)
 
 interface LadderLine {
   fromIndex: number
@@ -257,7 +258,7 @@ export default function LadderGame() {
 
   // ── Position assignment helpers ──────────────────────────────────
   const autoAssign = useCallback(() => {
-    const shuffled = [...Array(participants.length).keys()].sort(() => Math.random() - 0.5)
+    const shuffled = shuffle([...Array(participants.length).keys()])
     setColAssignments(shuffled)
     setSelectedParticipant(null)
   }, [participants.length])

@@ -3,11 +3,12 @@ import DecisionToolsBar from '@/components/DecisionToolsBar'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import OrderPickerClient from './OrderPickerClient'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '순서정하기 게임 - 랜덤 순서 뽑기, 발표·회식 순서 | 툴허브',
   description:
-    '이름만 입력하면 랜덤으로 순서 결정. 발표 순서, 회식 자리, 게임 차례를 공정하게 뽑고 결과를 링크로 공유하세요.',
+    '참가자 이름만 넣고 뽑기를 누르면 랜덤으로 순서가 정해집니다. 1위부터 카드가 한 장씩 뒤집히며 공개되고, 결과는 복사해 단톡방에 바로 붙여 넣을 수 있어요. 발표 순서·청소 당번·게임 차례 정하기에 무료로.',
   keywords: [
     '순서정하기 게임',
     '순서 정하기 게임',
@@ -69,7 +70,7 @@ export default function OrderPickerPage() {
     name: '순서정하기 게임',
     description:
       '참가자 이름을 입력하면 랜덤으로 순서를 뽑아주는 무료 온라인 순서정하기 게임. 발표 순서, 회식 자리, 게임 순서 등에 활용.',
-    url: 'https://toolhub.ai.kr/order-picker',
+    url: 'https://toolhub.ai.kr/order-picker/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -94,19 +95,19 @@ export default function OrderPickerPage() {
         '@type': 'HowToStep',
         position: 1,
         name: '참가자 입력',
-        text: '순서를 정할 참가자 이름을 한 명씩 입력하거나, 쉼표로 구분하여 한번에 붙여넣기 합니다.',
+        text: '순서를 정할 참가자 이름을 입력 칸에 한 명씩 추가합니다.',
       },
       {
         '@type': 'HowToStep',
         position: 2,
         name: '순서 뽑기 실행',
-        text: '"순서 뽑기" 버튼을 클릭하면 참가자들의 순서가 랜덤으로 섞입니다.',
+        text: '"뽑기!" 버튼을 누르면 참가자들의 순서가 랜덤으로 섞입니다.',
       },
       {
         '@type': 'HowToStep',
         position: 3,
         name: '카드 공개',
-        text: '카드를 한 장씩 클릭하여 순서를 하나씩 공개하거나, "전체 공개" 버튼으로 한 번에 확인합니다.',
+        text: '1위부터 카드가 한 장씩 자동으로 공개됩니다. 기다리지 않으려면 "전체 공개" 버튼으로 한 번에 확인합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -123,52 +124,13 @@ export default function OrderPickerPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '순서정하기 게임은 정말 무작위인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 브라우저의 Math.random()을 기반으로 피셔-예이츠(Fisher-Yates) 알고리즘을 사용하여 완전히 무작위로 순서를 섞습니다. 매번 다른 결과가 나오며 특정 참가자를 유리하게 하는 조작은 없습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '참가자를 몇 명까지 입력할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '제한 없이 입력할 수 있습니다. 다만 실용적으로는 2명부터 30명 내외까지 사용하기 적합합니다. 참가자가 많을수록 카드 공개 방식으로 천천히 순서를 밝히는 재미가 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '결과를 저장하거나 공유할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '순서가 공개되면 복사 버튼으로 결과를 클립보드에 복사할 수 있습니다. 카카오톡, 슬랙 등 메신저에 바로 붙여넣기하여 공유할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '순서정하기와 사다리타기의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '순서뽑기는 전체 참가자의 순서를 한 번에 랜덤으로 배정합니다. 사다리타기는 각 참가자가 특정 "결과"(예: 벌칙, 역할)에 1:1로 매핑됩니다. 단순히 발표나 진행 순서를 정할 때는 순서뽑기가, 역할이나 결과를 배정할 때는 사다리타기가 더 적합합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '모바일에서도 사용할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 스마트폰과 태블릿 등 모든 기기에서 사용 가능합니다. 터치 조작에 최적화되어 있으며 별도 앱 설치 없이 브라우저에서 바로 이용할 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '순서정하기 게임은 정말 무작위인가요?', a: '네. 뽑기를 누를 때마다 브라우저의 난수로 참가자 순서를 새로 섞습니다. 계산이 모두 내 브라우저 안에서 이루어지고 서버로 전송되지 않으므로, 누군가 결과를 미리 정해 두거나 바꿀 수 없습니다.' },
+    { q: '참가자를 몇 명까지 입력할 수 있나요?', a: '최소 2명부터 인원 제한 없이 추가할 수 있습니다(이름은 20자까지). 결과 카드는 0.5초 간격으로 한 장씩 공개되므로, 인원이 많을 때는 "전체 공개" 버튼으로 한 번에 볼 수 있습니다.' },
+    { q: '결과를 저장하거나 공유할 수 있나요?', a: '카드가 모두 공개되면 "결과 복사" 버튼으로 "1위: 이름" 형식의 목록을 복사해 카카오톡·슬랙 등에 붙여 넣을 수 있습니다. 주소창 링크에는 참가자 명단이 담겨 있어, 링크를 보내면 같은 명단으로 바로 뽑을 수 있습니다.' },
+    { q: '순서정하기와 사다리타기의 차이는 무엇인가요?', a: '순서뽑기는 전체 참가자의 순서를 한 번에 랜덤으로 배정합니다. 사다리타기는 각 참가자가 특정 "결과"(예: 벌칙, 역할)에 1:1로 매핑됩니다. 단순히 발표나 진행 순서를 정할 때는 순서뽑기가, 역할이나 결과를 배정할 때는 사다리타기가 더 적합합니다.' },
+    { q: '로그인 없이 무료로 사용할 수 있나요?', a: '네, 완전 무료이며 회원가입이나 로그인이 필요하지 않습니다. 스마트폰·태블릿·PC 브라우저에서 앱 설치 없이 바로 쓸 수 있습니다.' },
+  ]
 
   return (
     <>
@@ -180,10 +142,6 @@ export default function OrderPickerPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
 
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,6 +151,7 @@ export default function OrderPickerPage() {
               <OrderPickerClient />
             </I18nWrapper>
 
+          <ToolFaq items={faq} />
           <div className="mt-8">
             <RelatedTools />
           </div>
@@ -214,8 +173,8 @@ export default function OrderPickerPage() {
               브라우저에서 바로 사용할 수 있어 앱 설치가 필요 없고, 스마트폰·태블릿·PC 모두에서 작동합니다.
             </p>
             <p className="text-body leading-relaxed mb-3">
-              피셔-예이츠(Fisher-Yates) 셔플 알고리즘을 사용하여 매번 완전히 공정한 무작위 순서를 보장합니다.
-              카드를 한 장씩 뒤집는 방식으로 순서를 공개하기 때문에, 오프라인 모임에서도 긴장감 있게 진행할 수 있습니다.
+              뽑기를 누를 때마다 브라우저 안에서 순서를 무작위로 섞고, 1위부터 카드를 한 장씩 뒤집어 공개합니다.
+              결과가 하나씩 드러나기 때문에 오프라인 모임에서도 긴장감 있게 진행할 수 있습니다.
             </p>
             <p className="text-body leading-relaxed">
               순서정하기, 순서 뽑기, 랜덤 순서 정하기 등 다양한 이름으로 불리지만, 모두 같은 기능입니다.
@@ -268,15 +227,15 @@ export default function OrderPickerPage() {
             <ol className="space-y-3 text-body">
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">1</span>
-                <span>참가자 이름을 입력 칸에 한 명씩 추가합니다. 이름이 없으면 "참가자 1, 2, 3..." 형태로 기본값이 제공됩니다.</span>
+                <span>참가자 이름을 입력 칸에 한 명씩 추가합니다. 처음에 들어 있는 &quot;참가자 1~4&quot;는 지우고 실제 이름으로 바꾸세요.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">2</span>
-                <span>"순서 뽑기" 버튼을 클릭하면 참가자들의 순서가 랜덤으로 섞입니다.</span>
+                <span>&quot;뽑기!&quot; 버튼을 누르면 참가자들의 순서가 랜덤으로 섞입니다.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">3</span>
-                <span>뒤집힌 카드를 한 장씩 클릭하면 순서가 하나씩 공개됩니다. "전체 공개" 버튼으로 한 번에 모두 볼 수도 있습니다.</span>
+                <span>1위부터 카드가 한 장씩 자동으로 뒤집히며 순서가 공개됩니다. &quot;전체 공개&quot; 버튼으로 한 번에 모두 볼 수도 있습니다.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">4</span>
@@ -287,39 +246,6 @@ export default function OrderPickerPage() {
                 <span>다시 뽑고 싶다면 초기화 버튼을 눌러 처음부터 진행합니다. 참가자 목록은 유지됩니다.</span>
               </li>
             </ol>
-          </div>
-
-          {/* 자주 묻는 질문 */}
-          <div>
-            <h2 className="text-xl font-bold text-fg mb-3">
-              자주 묻는 질문
-            </h2>
-            <div className="space-y-4">
-              <div className="border-l-4 border-blue-400 pl-4">
-                <p className="font-semibold text-fg mb-1">
-                  Q. 순서정하기와 사다리타기는 어떻게 다른가요?
-                </p>
-                <p className="text-body text-sm leading-relaxed">
-                  순서뽑기는 "누가 몇 번째인지" 진행 순서를 정할 때 사용합니다. 사다리타기는 참가자와 특정 결과(벌칙, 역할, 자리 등)를 1:1로 매칭할 때 더 적합합니다. 단순한 순서 결정은 순서뽑기가, 역할 배정은 사다리타기가 알맞습니다.
-                </p>
-              </div>
-              <div className="border-l-4 border-blue-400 pl-4">
-                <p className="font-semibold text-fg mb-1">
-                  Q. 결과가 진짜 랜덤인가요, 조작되는 건 아닌가요?
-                </p>
-                <p className="text-body text-sm leading-relaxed">
-                  완전히 무작위입니다. 브라우저 내장 난수 생성기(Math.random)와 피셔-예이츠 셔플 알고리즘을 사용하며, 서버와 통신하지 않으므로 외부 조작이 불가능합니다. 매 시행마다 독립적인 결과가 나옵니다.
-                </p>
-              </div>
-              <div className="border-l-4 border-blue-400 pl-4">
-                <p className="font-semibold text-fg mb-1">
-                  Q. 로그인 없이 무료로 사용할 수 있나요?
-                </p>
-                <p className="text-body text-sm leading-relaxed">
-                  네, 완전 무료이며 회원가입이나 로그인이 필요하지 않습니다. 브라우저에서 바로 사용하고 결과를 공유할 수 있습니다.
-                </p>
-              </div>
-            </div>
           </div>
 
         </div>

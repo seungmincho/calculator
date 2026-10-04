@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import HourlyWage from '@/components/HourlyWage'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import hourlyWageMessages from '../../../messages/generated/ko/ns/hourlyWage.json'
 
 export const metadata: Metadata = {
   title: '시급 계산기 - 시급, 일급, 월급, 연봉 변환 | 툴허브',
@@ -13,37 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default function HourlyWagePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '시급 계산기', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시급·일급·주급·월급·연봉 상호 변환', '주휴수당 포함/제외', '2026 최저시급 위반 확인', '연장·야간·휴일 가산 일당 계산', '세후 실수령액'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '2026년 최저시급은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 최저시급은 시간당 10,320원입니다. 주 40시간 근무 기준 월 환산액은 2,156,880원(주휴수당 포함, 월 209시간)이며, 연봉으로 환산하면 약 25,882,560원입니다. 최저임금은 정규직, 비정규직, 아르바이트 등 모든 근로자에게 동일하게 적용됩니다. 2027년 1월 1일부터는 시간당 10,700원(월 2,236,300원)으로 3.7% 오릅니다(고용노동부 2026.8.5 고시).',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '시급을 월급으로 변환하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '월급 = 시급 × 월 소정근로시간이며, 월 소정근로시간 = (주 소정근로시간 + 주휴시간) × 365 ÷ 7 ÷ 12입니다. 주 40시간이면 (40 + 8) × 4.345 ≈ 209시간, 주 20시간이면 (20 + 4) × 4.345 ≈ 104시간입니다. 주 4주로 곱하면 한 달 약 0.345주분이 빠져 월급이 적게 계산됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '주휴수당은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '주휴수당은 1주 15시간 이상 근무하고 소정근로일을 개근한 근로자에게 지급됩니다. 계산법은 (1주 소정근로시간 / 40) × 8 × 시급입니다. 예를 들어 주 40시간 근무 시 8시간분의 시급이 추가되며, 주 20시간 근무 시 4시간분이 추가됩니다.',
-        },
-      },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '시급 계산기', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시급·일급·주급·월급·연봉 상호 변환', '주휴수당 포함/제외', '2026 최저시급 위반 확인', '연장·야간·휴일 가산 일당 계산', '세후 실수령액'] }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -59,7 +31,8 @@ export default function HourlyWagePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={hourlyWageMessages.hourlyWage.u.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

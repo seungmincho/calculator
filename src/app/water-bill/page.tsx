@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import WaterBillCalculator from '@/components/WaterBillCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '수도요금 계산기 2026 - 서울·부산 수도세 | 툴허브',
@@ -13,24 +14,20 @@ export const metadata: Metadata = {
 }
 
 export default function WaterBillPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '수도요금 계산기', description: '2026년 서울·부산 가정용 수도요금(상수도·하수도·물이용부담금) 계산', url: 'https://toolhub.ai.kr/water-bill', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['서울·부산 2026 요금', '고지서 단가 직접 입력', '같은 인원 평균 가구 비교', '절약 팁별 절감액', '결과 이미지 공유'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '2026년 서울 수도요금은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '서울 가정용은 누진제 없이 상수도 1㎥당 580원, 하수도 1㎥당 480원(2026년 1월부터), 물이용부담금 1㎥당 170원이며 계량기 15mm 기본요금은 월 1,080원입니다. 4인 가구가 월 24㎥를 쓰면 약 30,600원입니다.' } },
-      { '@type': 'Question', name: '수도요금에 부가세가 붙나요?', acceptedAnswer: { '@type': 'Answer', text: '아니요. 수돗물과 하수도 사용료는 부가가치세 면세입니다. 고지서 금액은 기본요금, 상수도 사용요금, 하수도 사용료, 물이용부담금의 합계입니다.' } },
-      { '@type': 'Question', name: '4인 가족 평균 수도 사용량은 어느 정도인가요?', acceptedAnswer: { '@type': 'Answer', text: '서울시와 부산시는 요금 안내에서 1인당 월 약 6㎥를 기준으로 삼습니다. 4인 가구라면 월 약 24㎥입니다.' } },
-    ],
-  }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '수도요금 계산기', description: '2026년 서울·부산 가정용 수도요금(상수도·하수도·물이용부담금) 계산', url: 'https://toolhub.ai.kr/water-bill/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['서울·부산 2026 요금', '고지서 단가 직접 입력', '같은 인원 평균 가구 비교', '절약 팁별 절감액', '결과 이미지 공유'] }
+  const faq = [
+    { q: '2026년 서울 수도요금은 얼마인가요?', a: '서울 가정용은 누진제 없이 상수도 1㎥당 580원, 하수도 1㎥당 480원(2026년 1월부터), 물이용부담금 1㎥당 170원이며 계량기 15mm 기본요금은 월 1,080원입니다. 4인 가구가 월 24㎥를 쓰면 약 30,600원입니다.' },
+    { q: '수도요금에 부가세가 붙나요?', a: '아니요. 수돗물과 하수도 사용료는 부가가치세 면세입니다. 고지서 금액은 기본요금, 상수도 사용요금, 하수도 사용료, 물이용부담금의 합계입니다.' },
+    { q: '4인 가족 평균 수도 사용량은 어느 정도인가요?', a: '서울시와 부산시는 요금 안내에서 1인당 월 약 6㎥를 기준으로 삼습니다. 4인 가구라면 월 약 24㎥입니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <WaterBillCalculator />
+            <ToolFaq items={faq} />
             <div className="mt-8">
               <RelatedTools />
             </div>

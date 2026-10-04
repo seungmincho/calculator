@@ -15,6 +15,7 @@ import {
   Download,
 } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { shuffle } from '@/utils/password' // Fisher–Yates (sort+random은 편향)
 
 interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
@@ -393,7 +394,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
     await new Promise(r => setTimeout(r, 400))
 
-    const shuffled = [...orderItems].sort(() => Math.random() - 0.5)
+    const shuffled = shuffle(orderItems)
     setOrderResult(shuffled)
     setIsShuffling(false)
     setIsRevealing(true)

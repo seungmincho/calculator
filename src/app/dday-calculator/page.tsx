@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import DdayCalculator from '@/components/DdayCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import ddayCalculatorMessages from '../../../messages/generated/ko/ns/ddayCalculator.json'
 
 export const metadata: Metadata = {
   title: '디데이 계산기 - D-Day·100일 기념일 계산 | 툴허브',
@@ -33,7 +35,7 @@ export default function DdayCalculatorPage() {
     '@type': 'WebApplication',
     name: '디데이 계산기',
     description: 'D-Day 카운트다운·저장·공유, 100일·주년 기념일, 날짜 차이, 날짜 더하기/빼기 도구',
-    url: 'https://toolhub.ai.kr/dday-calculator',
+    url: 'https://toolhub.ai.kr/dday-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -55,36 +57,6 @@ export default function DdayCalculatorPage() {
       '결과 이미지·링크 공유'
     ]
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'D-Day는 당일을 포함하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '목표 당일이 D-Day(D-0)이고, 오늘부터 남은 날 수를 D-N, 지난 날 수를 D+N으로 표기합니다. 예를 들어 시험이 3일 후면 D-3입니다. 반면 연애 기념일은 사귄 첫날을 1일로 세는 경우가 많아, 기념일 탭에서 시작일 포함 여부를 선택할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '영업일 계산이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '영업일 계산은 주말(토·일)과 공휴일을 제외한 근무일만 계산하는 방식입니다. 예를 들어 "서류 접수 후 5영업일 이내 처리"라면 주말과 공휴일을 빼고 5일을 세면 됩니다. 접수일은 빼고 세므로, 금요일에 접수하면 공휴일이 없을 때 다음 주 금요일이 5영업일째입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '한국의 법정 공휴일은 몇 일인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년부터 노동절(5월 1일)과 제헌절(7월 17일)이 공휴일에 추가되어 연간 약 17~18일입니다. 신정, 설날(3일), 삼일절, 노동절, 어린이날, 부처님오신날, 현충일, 제헌절, 광복절, 추석(3일), 개천절, 한글날, 성탄절이 있고 선거일도 공휴일입니다. 신정·현충일을 뺀 공휴일이 주말(설·추석은 일요일)이나 다른 공휴일과 겹치면 대체공휴일이 생깁니다.',
-        },
-      },
-    ],
-  }
 
   return (
     <>
@@ -92,10 +64,8 @@ export default function DdayCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
+      <FaqJsonLd items={ddayCalculatorMessages.ddayCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

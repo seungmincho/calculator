@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SalaryCalculator from '@/components/SalaryCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '연봉 실수령액 계산기 | 툴허브 - 2026년 기준 정확한 계산',
@@ -52,7 +53,7 @@ export default function SalaryCalculatorPage() {
     name: '연봉 실수령액 계산기',
     alternateName: '툴허브 연봉계산기',
     description: '2026년 기준 4대보험, 소득세를 제외한 정확한 연봉 실수령액을 계산하는 무료 온라인 도구',
-    url: 'https://toolhub.ai.kr/salary-calculator',
+    url: 'https://toolhub.ai.kr/salary-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
@@ -81,52 +82,13 @@ export default function SalaryCalculatorPage() {
     isAccessibleForFree: true,
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '연봉 3000만원의 실수령액은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '연봉 3000만원의 월 실수령액은 약 224만원입니다. 4대보험(국민연금, 건강보험, 고용보험, 장기요양보험)과 소득세, 지방소득세를 공제한 금액입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '4대보험 계산은 어떻게 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '4대보험은 국민연금(4.75%), 건강보험(3.595%), 장기요양보험(건강보험의 13.14%), 고용보험(0.9%)으로 구성됩니다. 월급에서 각 비율을 적용하여 계산합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '연봉과 월급의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '연봉은 1년간 받는 총 급여액이고, 월급은 연봉을 12개월로 나눈 세전 월 급여입니다. 실수령액은 4대보험과 소득세를 공제한 후 실제 받는 금액입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '비과세 소득이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '비과세 소득은 식대(월 20만원), 자가운전보조금(월 20만원) 등 세금이 부과되지 않는 소득입니다. 비과세 소득이 있으면 실수령액이 증가합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '2026년 최저임금은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 최저임금은 시간당 10,320원이며, 주 40시간 기준 월 환산액은 2,156,880원(월 209시간)입니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '연봉 3000만원의 실수령액은 얼마인가요?', a: '연봉 3000만원의 월 실수령액은 약 224만원입니다. 4대보험(국민연금, 건강보험, 고용보험, 장기요양보험)과 소득세, 지방소득세를 공제한 금액입니다.' },
+    { q: '4대보험 계산은 어떻게 하나요?', a: '4대보험은 국민연금(4.75%), 건강보험(3.595%), 장기요양보험(건강보험의 13.14%), 고용보험(0.9%)으로 구성됩니다. 월급에서 각 비율을 적용하여 계산합니다.' },
+    { q: '연봉과 월급의 차이는 무엇인가요?', a: '연봉은 1년간 받는 총 급여액이고, 월급은 연봉을 12개월로 나눈 세전 월 급여입니다. 실수령액은 4대보험과 소득세를 공제한 후 실제 받는 금액입니다.' },
+    { q: '비과세 소득이란 무엇인가요?', a: '비과세 소득은 식대(월 20만원), 자가운전보조금(월 20만원) 등 세금이 부과되지 않는 소득입니다. 비과세 소득이 있으면 실수령액이 증가합니다.' },
+    { q: '2026년 최저임금은 얼마인가요?', a: '2026년 최저임금은 시간당 10,320원이며, 주 40시간 기준 월 환산액은 2,156,880원(월 209시간)입니다.' },
+  ]
 
   const howToJsonLd = {
     '@context': 'https://schema.org',
@@ -148,10 +110,6 @@ export default function SalaryCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
@@ -159,6 +117,9 @@ export default function SalaryCalculatorPage() {
           <div className="relative z-10">
             <SalaryCalculator />
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ToolFaq items={faq} />
         </div>
         <div className="mt-8">
 
