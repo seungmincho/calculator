@@ -59,6 +59,9 @@ export default function ComprehensivePropertyTax() {
   })
   const [newAcq, setNewAcq] = useState(() => { const v = sp.get('nd') ?? ''; return isValidDate(v) ? v : '' })
   const [bothAdj, setBothAdj] = useState(() => sp.get('adj') === '1')
+  const [contract, setContract] = useState(() => { const v = sp.get('nc') ?? ''; return isValidDate(v) ? v : '' })
+  // 계약일 경과조치는 둘 다 조정대상지역 + 2026.8.4 이후 취득일 때만 의미 있음
+  const askContract = bothAdj && newAcq >= '2026-08-04'
   // 오늘(한국 시간)은 마운트 후에만 — 정적 HTML은 날짜와 무관하게 같게
   const today = useSyncExternalStore(noSubscribe, todayKST, () => null)
 
@@ -75,9 +78,9 @@ export default function ComprehensivePropertyTax() {
     for (const [k, v] of [['bj', bill.jongbu], ['bn', bill.nong], ['bt', bill.total], ['b7', bill.july], ['b9', bill.september]] as const) {
       if (v > 0) q.set(k, String(v))
     }
-    if (newAcq) { q.set('nd', newAcq); if (bothAdj) q.set('adj', '1') }
+    if (newAcq) { q.set('nd', newAcq); if (bothAdj) q.set('adj', '1'); if (askContract && contract) q.set('nc', contract) }
     window.history.replaceState(null, '', `?${q}`)
-  }, [houses, oneHouse, joint, share, age, years, urban, prev, view, bill, newAcq, bothAdj])
+  }, [houses, oneHouse, joint, share, age, years, urban, prev, view, bill, newAcq, bothAdj, contract]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const single = houses.filter((h) => h.price > 0).length === 1
   const input: HoldingInput = { prices: houses.map((h) => h.price), oneHouse, age, years, joint: single && joint, share, urban, prevTotal: prev }
@@ -100,7 +103,7 @@ export default function ComprehensivePropertyTax() {
   const reset = () => {
     setHouses([{ id: 1, price: 15 * EOK }]); setOneHouse(true); setJoint(false); setShare(50)
     setAge(55); setYears(7); setUrban(true); setPrev(0); setDelta(10)
-    setBill({ jongbu: 0, nong: 0, total: 0, july: 0, september: 0 }); setNewAcq(''); setBothAdj(false)
+    setBill({ jongbu: 0, nong: 0, total: 0, july: 0, september: 0 }); setNewAcq(''); setBothAdj(false); setContract('')
   }
 
   const billCmp = compareBill(bill, r)
@@ -117,7 +120,7 @@ export default function ComprehensivePropertyTax() {
       : t('u.dates.specialPassed', { ...special, nextFrom: ymd(next.specialFrom), nextTo: ymd(next.specialTo) })
   // 종부세법 제20조의2: 1세대1주택 + 60세 이상 또는 5년 이상 보유 + 주택분 종부세 100만원 초과 (소득 요건은 문구로 안내)
   const canDefer = r.oneHouse && r.mode !== 'jointEach' && (age >= 60 || years >= 5) && jb.tax > 1_000_000
-  const temps = newAcq ? tempDeadlines(newAcq, bothAdj) : []
+  const temps = newAcq ? tempDeadlines(newAcq, bothAdj, askContract ? contract : '') : []
 
   const seg = (on: boolean) => `min-h-11 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const check = (id: string, on: boolean, set: (v: boolean) => void, label: string, hint?: string) => (
@@ -587,6 +590,13 @@ export default function ComprehensivePropertyTax() {
                 <DatePicker label={t('u.temp.date')} value={newAcq} onChange={(v) => setNewAcq(isValidDate(v) ? v : '')} />
               </div>
               <div className="sm:pt-7">{check('cpt-adj', bothAdj, setBothAdj, t('u.temp.adjusted'), t('u.temp.adjustedHint'))}</div>
+              {askContract && (
+                <div>
+                  <p className="text-sm font-medium text-body mb-2">{t('u.temp.contract')}</p>
+                  <DatePicker label={t('u.temp.contract')} value={contract} onChange={(v) => setContract(isValidDate(v) ? v : '')} />
+                  <p className="text-xs text-muted mt-1.5">{t('u.temp.contractHint')}</p>
+                </div>
+              )}
             </div>
             {temps.length === 0 ? (
               <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('u.temp.empty')}</p>

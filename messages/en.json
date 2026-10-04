@@ -37512,6 +37512,7 @@
         "rowSpend": "Annual card spending (projected)"
       },
       "todo": {
+        "cardLink": "Card deduction in detail",
         "title": "Before December 31",
         "desc": "These can't be changed once the year ends. Amounts are the extra refund (incl. local tax) based on your inputs.",
         "pension": "Pension savings / IRP",
@@ -39261,6 +39262,8 @@
         "holidayNote": "If a deadline falls on a weekend or public holiday, it moves to the next business day (Framework Act on National Taxes Art. 5)."
       },
       "temp": {
+        "contract": "New home contract date (deposit paid)",
+        "contractHint": "The later of the contract date and deposit payment date. By Aug 3, 2026 the comprehensive real estate tax and capital gains tax keep 3 years (transitional rule); acquisition tax keeps 3 years for contracts by Aug 26. Leave blank if unsure.",
         "title": "Temporary two-home sale deadlines",
         "desc": "If you bought a new home before selling the old one, each tax gives a different deadline to sell the old home. Enter the new home's acquisition date (the earlier of final payment or registration).",
         "date": "New home acquisition date",

@@ -82,7 +82,7 @@
 | 18 | — | 기존 lint 오류(539) 범위 정해 점진 정리 | 후순위 |
 | 34 | — | 죽은 i18n 키(옛 수치 포함): pensionCalculator·salaryRank의 guide.guide/whatIs/howToUse/faq 등 — merge 스크립트 서식이 json.dumps와 달라 일괄 재작성 금지, 키 삭제 도구 필요 | 후보 |
 | 35 | — | Battleship.tsx·ChessAI.tsx dark: 색 쌍 → 토큰 | 완료(배치9, 상태색 red·amber·green만 남김) |
-| 36 | P0 | 종부세 일시적 2주택도 계약일 경과조치 — propertyHoldingTax.tempDeadlines(newAcq, bothAdjusted, contract?) + ComprehensivePropertyTax 입력 (2027.6.1 과세기준일분부터, 양도세 tempRule 재사용) | 후보 |
+| 36 | P0 | 종부세 일시적 2주택도 계약일 경과조치 — propertyHoldingTax.tempDeadlines(newAcq, bothAdjusted, contract?) + ComprehensivePropertyTax 입력 (2027.6.1 과세기준일분부터, 양도세 tempRule 재사용) | 완료(배치10): ?nc= 계약일, 종부세·양도세 8.3·취득세 8.26 |
 | 37 | P1 | 연말정산 시즌 롱테일 랜딩 추가 후보: 의료비 세액공제·월세 세액공제·연금저축 세액공제(yearEndTax 함수 재사용, /card-deduction 방식) — 사용자 기획 확인 후 | 후보 |
 
 조사 근거(2026-10-04 시즌 수요 조사): 2027 수치(최저임금 10,700원·국민연금 10%·건보 7.19% 동결·고용보험 1.0%)는 2차 출처 기준 — 반영 전 공식 고시 확인.
@@ -100,3 +100,4 @@
 - 2026-10-04 배치7 (96d0528) · 노동법 개정 반영(휴게 2026.12.10·고용보험 소득기준 2027.1.1·시간단위 연차 2027.6.10, 날짜별 안내), 신규 /daily-wage-tax·/rental-yield·/one-rep-max. 검증: check 152·tsc 0·audit 0. 배포 보류(배치5~7 누적) → NEXT-SESSION.md
 - 2026-10-04 배치8 · 홈 "다가오는 일정"(마감 D-day + .ics 캘린더 추가, 도구 링크·알림) + 연말정산·자동차세 연납·종부세·수능 대입 일정 캘린더 버튼, salary-rank/연봉 계산기 백분위 2024 귀속 공식 자료, 국민연금 2종 역할 분리·딥링크, 게임 공유 다이얼로그 접근성·AI 공유 제목·함선 이름, 로또 수령처 정정, CAGR 출처 없는 수익률 제거. 검증: check 152·salary/net mjs·범위 tsc(변경 29파일) 0·audit 0. 브라우저 확인·배포는 배치5~8 함께(메모리 여유 부족, 사용자: 개선 먼저)
 - 2026-10-04 배치9 · 신규 /card-deduction(사용자 기획 승인: 25% 문턱·한도·10~12월 신용→체크 전략·연말정산 딥링크·캘린더, yearEndTax.cardTaxSaving), 보금자리론 전세사기피해자·신용점수 규칙(hf.go.kr 원문 확인)·토큰·i18n·h1, 양도세 8.3 계약 경과조치 입력, 게임 2종 토큰, SW 선캐시 축소, 연말정산 showcase 설명 2026 귀속. 검증: check 152·범위 tsc(20파일) 0·audit 0. 배포는 5~9 함께
+- 2026-10-04 배치10 · 종부세 일시적 2주택 계약일 경과조치(입력·check 4건), 연말정산 계산기 → /card-deduction 입력값 그대로 넘기는 링크. 검증: property-holding check·범위 tsc 0·audit 0

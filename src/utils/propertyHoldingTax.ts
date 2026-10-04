@@ -220,14 +220,16 @@ export function jongbuDates(year = TAX_YEAR): JongbuDates {
 // ── 일시적 2주택 처분기한 (신규 주택 취득일부터 N년 되는 날까지) ──
 export type TempTax = 'jongbu' | 'capitalGains' | 'acquisition'
 export interface TempDeadline { tax: TempTax; years: number; date: string; verified: boolean }
-export function tempDeadlines(newAcq: string, bothAdjusted: boolean): TempDeadline[] {
+/** contract = 신규 주택 매매계약·계약금 지급일 중 늦은 날 (모르면 ''). 경과조치: 종부세·양도세 8.3까지, 취득세 8.26까지 계약분은 3년 */
+export function tempDeadlines(newAcq: string, bothAdjusted: boolean, contract = ''): TempDeadline[] {
   const row = (tax: TempTax, years: number, verified = true) => ({ tax, years, date: addYears(newAcq, years), verified })
+  const signedBy = (cut: string) => !!contract && contract <= cut
   return [
-    row('jongbu', bothAdjusted && newAcq >= '2026-08-04' ? 2 : 3),
+    row('jongbu', bothAdjusted && newAcq >= '2026-08-04' && !signedBy('2026-08-03') ? 2 : 3),
     // 양도세는 capitalGainsTax.ts가 단일 출처 (양도일은 앞으로 = 2026.10.1 이후로 봄)
-    row('capitalGains', tempPeriod({ adjusted: bothAdjusted, newAdjusted: bothAdjusted, newAcqDate: newAcq, saleDate: '9999-12-31' })),
+    row('capitalGains', tempPeriod({ adjusted: bothAdjusted, newAdjusted: bothAdjusted, newAcqDate: newAcq, saleDate: '9999-12-31', newContractDate: contract })),
     // 지방세법 시행령 제28조의5 개정(행안부 2026 지방세제 개편: 2026.10.1 이후 취득분, 8.26까지 계약분 3년) — 공포 원문 미확인 → 참고
-    row('acquisition', bothAdjusted && newAcq >= '2026-10-01' ? 2 : 3, false),
+    row('acquisition', bothAdjusted && newAcq >= '2026-10-01' && !signedBy('2026-08-26') ? 2 : 3, false),
   ]
 }
 

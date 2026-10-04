@@ -9,6 +9,7 @@
 import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import Link from 'next/link'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/yearEndTaxCalc'
 import { ChevronDown } from 'lucide-react'
@@ -399,10 +400,17 @@ export default function YearEndTaxCalculator() {
               <Todo title={t('yt.todo.simplified')} dday={dd(DEADLINE.simplified)} gain={null}
                 desc={t('yt.todo.simplifiedDesc', { year: TAX_YEAR + 1 })} />
             </ul>
-            <AddToCalendar className="mt-4" file={`year-end-tax-${TAX_YEAR}.ics`} events={[
-              deadlineEvent('yearEnd', DEADLINE.yearEnd, '/year-end-tax', 7),
-              deadlineEvent('simplified', DEADLINE.simplified, '/year-end-tax', 1),
-            ]} />
+            <div className="mt-4 flex flex-wrap gap-2">
+              <AddToCalendar file={`year-end-tax-${TAX_YEAR}.ics`} events={[
+                deadlineEvent('yearEnd', DEADLINE.yearEnd, '/year-end-tax', 7),
+                deadlineEvent('simplified', DEADLINE.simplified, '/year-end-tax', 1),
+              ]} />
+              {/* 카드 공제만 자세히 (같은 URL 키: s·ch·cc·dc·tr·mk·cu) */}
+              <Link prefetch={false} className="ui-btn-soft inline-flex items-center min-h-11 px-4 py-2 text-sm" href={`/card-deduction/?${new URLSearchParams({
+                s: String(salary), ...(inp.children ? { ch: String(Math.min(2, inp.children)) } : {}), ...(pv ? {} : { p: 'y' }),
+                ...Object.fromEntries(CARD_KEYS.filter((k) => (pv ? ytd : inp)[k]).map((k) => [CODE[k], String((pv ? ytd : inp)[k])])),
+              })}`}>{t('yt.todo.cardLink')}</Link>
+            </div>
           </div>
 
           {/* 더 돌려받는 방법 */}

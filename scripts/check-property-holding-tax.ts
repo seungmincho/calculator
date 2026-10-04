@@ -79,6 +79,12 @@ eq(td('2026-07-01', true), ['jongbu:3:2029-07-01', 'capitalGains:3:2029-07-01', 
 eq(td('2026-09-01', true), ['jongbu:2:2028-09-01', 'capitalGains:2:2028-09-01', 'acquisition:3:2029-09-01'], '8.4 이후 취득: 종부·양도 2년, 취득세는 10.1 이후부터')
 eq(td('2026-10-04', true), ['jongbu:2:2028-10-04', 'capitalGains:2:2028-10-04', 'acquisition:2:2028-10-04'], '둘 다 조정 → 2년')
 eq(tempDeadlines('2026-10-04', true).map((x) => x.verified), [true, true, false], '취득세는 참고')
+// 계약일 경과조치: 8.3까지 계약·계약금 → 종부세·양도세 3년, 취득세는 8.26까지 계약분 3년
+const tc = (d: string, c: string) => tempDeadlines(d, true, c).map((x) => `${x.tax}:${x.years}`)
+eq(tc('2026-10-04', '2026-08-03'), ['jongbu:3', 'capitalGains:3', 'acquisition:3'], '8.3 계약')
+eq(tc('2026-10-04', '2026-08-20'), ['jongbu:2', 'capitalGains:2', 'acquisition:3'], '8.20 계약 — 취득세만 3년')
+eq(tc('2026-10-04', '2026-09-01'), ['jongbu:2', 'capitalGains:2', 'acquisition:2'], '9.1 계약')
+eq(tc('2026-10-04', ''), ['jongbu:2', 'capitalGains:2', 'acquisition:2'], '계약일 모름 = 취득일 기준')
 
 // ── 고지서 대조 (h20: 종부세 1,896,000 / 농특세 379,200 / 재산세 합계) ──
 const bill = (o: Partial<Bill>): Bill => ({ jongbu: 0, nong: 0, total: 0, july: 0, september: 0, ...o })
