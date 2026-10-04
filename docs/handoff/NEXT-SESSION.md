@@ -1,4 +1,10 @@
-# NEXT-SESSION (2026-10-02 밤 — 로컬 커밋만, 사용자가 직접 배포)
+# NEXT-SESSION (2026-10-04 — Claude 인수인계)
+
+최신 상태는 [2026-10-04 Claude 인수인계](2026-10-04-claude.md)를 먼저 읽는다. 제품 커밋 `54a9999`는 main에 푸시·운영 배포됐고 PWA는 `v4.31.21`이다. 종료 문서 커밋은 이후에 추가된다. 다음 개발 범위는 사용자가 지정한다.
+
+아래는 보존된 과거 기록이다. 당시의 미배포 상태·작업 후보·승인 범위를 현재 상태로 해석하지 않는다.
+
+# 과거 기록 (2026-10-02 밤 — 당시 로컬 커밋만)
 
 ## 2026-10-02 밤 — 연속 배치 2 (미배포, 로컬 커밋)
 - 고도화: pyeong-calculator, car-loan-calculator, inheritance-gift-tax(개정안 2024·2025 무산 → 현행법), comprehensive-property-tax(종부세+재산세 보유세, 과세표준 공식 버그), qr-generator, image-resizer, barcode-generator, password-generator(모듈로 편향), + 마무리 배치 electricity-calculator·image-converter·pdf-tools·timer
