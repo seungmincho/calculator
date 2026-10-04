@@ -1,8 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
-const DecisionTools = dynamic(() => import('@/components/DecisionTools'), { ssr: false })
+import DecisionTools from '@/components/DecisionTools'
 
 export default function MenuRouletteClient() {
   return <DecisionTools initialTab="roulette" single defaultPreset="저녁메뉴" />

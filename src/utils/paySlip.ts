@@ -6,7 +6,7 @@
  *       소득세법 시행령 제17조의2(식대 월 20만원)·제12조3호(자가운전보조금 월 20만원), 소득세법 제12조3호러목(출산·보육수당 월 20만원),
  *       소득세 = 근로소득 간이세액표(wageTaxTable.ts), 최저임금 2026 시간급 10,320원(월 209시간 2,156,880원), 4대보험 요율은 insuranceRates.ts
  */
-import { MIN_WAGE_2026 } from './workHours.ts'
+import { MIN_WAGE_2026 } from './minimumWage.ts'
 import { monthlyDeduction } from './weeklyHolidayPay.ts'
 import { withholding33 } from './salesCommission.ts'
 import { wageTax } from './wageTaxTable.ts'

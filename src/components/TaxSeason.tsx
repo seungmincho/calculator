@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import {
@@ -26,6 +26,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset } from '@/lib/glass'
+import { nextFiling } from '@/utils/freelancerTax'
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -106,10 +107,11 @@ const RELATED_TOOLS = [
 export default function TaxSeason() {
   const t = useTranslations('taxSeason')
 
-  // Deadline: May 31 of current year. If past, use next year.
+  // 다음 신고 기한: 5월 31일, 토·일·공휴일이면 다음 영업일 (국세기본법 §5)
   const now = new Date()
-  const year = now.getMonth() >= 5 ? now.getFullYear() + 1 : now.getFullYear()
-  const deadline = new Date(year, 4, 31, 23, 59, 59)
+  const filing = useMemo(() => nextFiling(new Date()), [])
+  const deadline = useMemo(() => { const d = new Date(filing.deadline); d.setHours(23, 59, 59); return d }, [filing])
+  const year = filing.deadline.getFullYear()
   const countdown = useCountdown(deadline)
 
   const isPast = deadline.getTime() <= now.getTime()
@@ -122,7 +124,7 @@ export default function TaxSeason() {
       <section className="text-center space-y-6">
         <div className="inline-flex items-center gap-2 bg-soft text-sub px-4 py-1.5 rounded-full text-sm font-medium">
           <Calendar className="w-4 h-4" />
-          {t('hero.badge')}
+          {t('hero.badge', { year, taxYear: filing.taxYear })}
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-bold text-fg leading-tight">
@@ -139,7 +141,7 @@ export default function TaxSeason() {
           ) : (
             <>
               <p className="text-sm font-medium text-orange-600 dark:text-orange-400 mb-3">
-                {t('hero.deadlineLabel')}
+                {t('hero.deadlineLabel', { month: filing.deadline.getMonth() + 1, day: filing.deadline.getDate() })}
               </p>
               <div className="grid grid-cols-4 gap-3">
                 {[
@@ -451,7 +453,7 @@ export default function TaxSeason() {
       <section id="step1" className="space-y-5">
         <div>
           <h2 className="text-2xl font-bold text-fg">
-            {t('timeline.title')}
+            {t('timeline.title', { year, taxYear: filing.taxYear })}
           </h2>
           <p className="text-muted mt-1 text-sm">
             {t('timeline.subtitle')}

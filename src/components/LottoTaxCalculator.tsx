@@ -9,7 +9,7 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 
 const THRESHOLD = 300_000_000 // 3억원
-const TAX_FREE_LIMIT = 50_000 // 5만원
+const TAX_FREE_LIMIT = 2_000_000 // 건별 200만원 이하 과세최저한 (소득세법 §84 2호, 2023.1.1 지급분~)
 
 interface TaxResult {
   totalPrize: number
@@ -343,7 +343,7 @@ export default function LottoTaxCalculator() {
           ) : (
             <>
               {/* Main result card */}
-              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
+              <div className={`${glassCard} ${glassInset} overflow-hidden`} aria-live="polite">
                 <div className="bg-primary px-6 py-3">
                   <h2 className="text-white font-semibold">{t('result')}</h2>
                 </div>
@@ -477,6 +477,7 @@ export default function LottoTaxCalculator() {
                       </div>
                     </>
                   )}
+                  <p className="text-xs text-muted">{t('basis')}</p>
                 </div>
               </div>
             </>

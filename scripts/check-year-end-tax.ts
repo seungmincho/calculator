@@ -62,6 +62,9 @@ assert.equal(educationCredit(5_000_000, 5_000_000, 12_000_000, 1), 2_550_000)
 assert.equal(donationCredit(2_000_000, 37_750_000), 300_000)
 assert.equal(donationCredit(15_000_000, 37_750_000), 1_897_500) // 근로소득금액 30% 한도 11,325,000
 assert.deepEqual([100_000, 200_000, 300_000].map(hometownCredit), [90_909, 130_909, 145_909])
+// 조특법 §58① 현행: 20만 초과분은 2천만까지 15% 단일 ('1천만 초과 30%' 구간 없음)
+assert.equal(hometownCredit(20_000_000), 90_909 + 40_000 + 2_970_000)
+assert.equal(hometownCredit(30_000_000), hometownCredit(20_000_000)) // 연 2천만 한도
 assert.equal(rentCredit(50_000_000, 12_000_000), 1_700_000)
 assert.equal(rentCredit(80_000_000, 12_000_000), 1_500_000)
 assert.equal(rentCredit(80_000_001, 12_000_000), 0)

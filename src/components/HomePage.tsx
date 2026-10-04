@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n/navigation'
 import Link from 'next/link'
-import { Search, Star, ChevronRight, BarChart3 } from 'lucide-react'
+import { Search, Star, ChevronRight, BarChart3, Check } from 'lucide-react'
 import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
@@ -11,16 +11,23 @@ import { usePopularTools } from '@/hooks/useToolAnalytics'
 import SearchDialog from './SearchDialog'
 import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 import ToolIcon from './ToolIcon'
+import type { PuzzleStatus } from '@/utils/dailyPuzzles'
+import type { SeasonPick } from '@/utils/seasonalPicks'
 
 /** 카테고리별로 홈에서 바로 보여줄 도구 수 (나머지는 카테고리 허브 링크) */
 const PER_CATEGORY = 12
 
+/** 오늘의 퍼즐: 서버 HTML엔 목록만, 완료·연속 상태는 마운트 후 dailyPuzzles.ts(지연 로드)로 채움 */
+const DAILY_PUZZLES = ['/crossword', '/hangman', '/korean-wordle', '/picross', '/minesweeper', '/number-baseball', '/typing-test']
+
 type Item = MenuItem & { categoryKey?: CategoryKey }
 
-function SectionTitle({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
+const findItem = (href: string) => categoryKeys.flatMap(k => menuConfig[k].items).find(i => i.href === href)
+
+function SectionTitle({ children, action, id }: { children: React.ReactNode; action?: React.ReactNode; id?: string }) {
   return (
     <div className="flex items-end justify-between mb-3 px-1">
-      <h2 className="text-xl font-bold text-fg">{children}</h2>
+      <h2 id={id} className="text-xl font-bold text-fg">{children}</h2>
       {action}
     </div>
   )
@@ -35,6 +42,8 @@ export default function HomePage() {
   const [recentlyViewedItems, setRecentlyViewedItems] = useState<Item[]>([])
   const [isDashboardOpen, setIsDashboardOpen] = useState(false)
   const { popularTools, isLoading: isPopularLoading } = usePopularTools(5)
+  const [puzzles, setPuzzles] = useState<Record<string, PuzzleStatus>>({})
+  const [seasonPicks, setSeasonPicks] = useState<SeasonPick[]>([])
 
   useEffect(() => {
     // Keep the server HTML and first client render identical; storage is read after hydration.
@@ -50,6 +59,18 @@ export default function HomePage() {
       setRecentlyViewedItems(items)
     })
     return () => cancelAnimationFrame(frame)
+  }, [])
+
+  useEffect(() => {
+    // 단어 은행·공휴일 데이터는 홈 첫 번들에 넣지 않음. 날짜도 방문 시점(KST) 기준이라 클라이언트에서만 계산
+    let alive = true
+    import('@/utils/dailyPuzzles')
+      .then(m => { if (alive) setPuzzles(Object.fromEntries(m.readDailyPuzzles().map(p => [p.href, p]))) })
+      .catch(() => {})
+    import('@/utils/seasonalPicks')
+      .then(m => { if (alive) setSeasonPicks(m.seasonalPicks(new Date())) })
+      .catch(() => {})
+    return () => { alive = false }
   }, [])
 
   const totalTools = useMemo(() => categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.length, 0), [])
@@ -93,6 +114,36 @@ export default function HomePage() {
     [],
   )
 
+  const puzzleItems = useMemo(() => DAILY_PUZZLES.map(findItem).filter((i): i is MenuItem => !!i), [])
+
+  const puzzleStatus = (s?: PuzzleStatus) => {
+    if (!s) return ' ' // 상태 줄 높이 유지 (CLS 방지)
+    const n = s.streak ?? 0
+    if (s.doneToday) return n > 1 ? t('homePage.dailyPuzzles.doneStreak', { n }) : t('homePage.dailyPuzzles.done')
+    return n > 0 ? t('homePage.dailyPuzzles.keepStreak', { n }) : t('homePage.dailyPuzzles.todo')
+  }
+
+  /** 시즌 카드: 데스크톱은 히어로 오른쪽 빈 칸, 모바일은 오늘의 퍼즐 아래 — 늦게 들어와도 위 콘텐츠를 밀지 않는 자리 */
+  const seasonCards = (id: string, className: string) => seasonPicks.length > 0 && (
+    <aside aria-labelledby={id} className={className}>
+      <h2 id={id} className="text-sm font-semibold text-muted mb-2 px-1">{t('homePage.season.label')}</h2>
+      <ul className="space-y-2">
+        {seasonPicks.map(p => (
+          <li key={p.key}>
+            <Link prefetch={false} href={p.href} className="ui-card flex items-center gap-3 p-4 hover:bg-subtle transition-colors">
+              <ToolIcon href={p.href} />
+              <span className="flex-1 min-w-0">
+                <span className="block text-[15px] font-bold text-fg">{t(`homePage.season.${p.key}.title`, { n: p.n })}</span>
+                <span className="block text-[13px] text-muted">{t(`homePage.season.${p.key}.desc`, { n: p.n })}</span>
+              </span>
+              <ChevronRight className="w-4 h-4 text-faint shrink-0" aria-hidden />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+
   /** 목록 한 줄: 아이콘 + 이름 + 설명 */
   const ToolRow = ({ item }: { item: MenuItem }) => {
     const isFav = favorites.includes(item.href)
@@ -128,32 +179,35 @@ export default function HomePage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* ===== HERO ===== */}
-      <section className="pt-14 pb-12 md:pt-20 md:pb-16">
-        <p className="text-sm font-semibold text-primary mb-3">{totalTools}+ {t('homePage.hero.totalTools')}</p>
-        <h1 className="text-3xl md:text-[44px] font-bold leading-tight tracking-tight text-fg mb-3">
-          {t('homePage.hero.title')}
-        </h1>
-        <p className="text-base md:text-lg text-muted mb-8 max-w-2xl">{t('homePage.hero.subtitle')}</p>
+      <section className="pt-14 pb-12 md:pt-20 md:pb-16 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12 lg:items-center">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-primary mb-3">{totalTools}+ {t('homePage.hero.totalTools')}</p>
+          <h1 className="text-3xl md:text-[44px] font-bold leading-tight tracking-tight text-fg mb-3">
+            {t('homePage.hero.title')}
+          </h1>
+          <p className="text-base md:text-lg text-muted mb-8 max-w-2xl">{t('homePage.hero.subtitle')}</p>
 
-        <button
-          onClick={() => setIsSearchOpen(true)}
-          className="w-full max-w-2xl flex items-center gap-3 px-5 h-14 bg-soft rounded-2xl text-left hover:bg-track/60 transition-colors"
-        >
-          <Search className="w-5 h-5 text-muted shrink-0" />
-          <span className="flex-1 text-base text-faint">{t('homePage.hero.searchPlaceholder')}</span>
-          <kbd className="hidden sm:inline px-2 py-0.5 text-xs font-sans text-muted bg-surface border border-line rounded-md">Ctrl K</kbd>
-        </button>
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="w-full max-w-2xl flex items-center gap-3 px-5 h-14 bg-soft rounded-2xl text-left hover:bg-track/60 transition-colors"
+          >
+            <Search className="w-5 h-5 text-muted shrink-0" />
+            <span className="flex-1 text-base text-faint">{t('homePage.hero.searchPlaceholder')}</span>
+            <kbd className="hidden sm:inline px-2 py-0.5 text-xs font-sans text-muted bg-surface border border-line rounded-md">Ctrl K</kbd>
+          </button>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-sm">
-          {popular.map(tool => (
-            <Link prefetch={false} key={tool.href} href={tool.href} className="text-sub hover:text-primary transition-colors">
-              {t(tool.labelKey)}
-            </Link>
-          ))}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-sm">
+            {popular.map(tool => (
+              <Link prefetch={false} key={tool.href} href={tool.href} className="text-sub hover:text-primary transition-colors">
+                {t(tool.labelKey)}
+              </Link>
+            ))}
+          </div>
         </div>
+        {seasonCards('season-hero', 'hidden lg:block')}
       </section>
 
-      {/* ===== 인기 / 최근 / 즐겨찾기 ===== */}
+      {/* ===== 인기 / 최근 / 즐겨찾기 / 오늘의 퍼즐 (퍼즐: 데스크톱은 맨 위 한 줄, 모바일은 즐겨찾기 다음) ===== */}
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 mb-14">
         <section className="min-w-0 lg:col-span-2">
           <SectionTitle
@@ -195,6 +249,34 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        <section aria-labelledby="daily-puzzles-title" className="min-w-0 lg:order-first lg:col-span-3">
+          <SectionTitle id="daily-puzzles-title">{t('homePage.dailyPuzzles.title')}</SectionTitle>
+          <ul className="ui-card p-1.5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7">
+            {puzzleItems.map(item => {
+              const s = puzzles[item.href]
+              return (
+                <li key={item.href} className="min-w-0">
+                  <Link prefetch={false}
+                    href={item.href}
+                    className="flex items-center gap-2.5 lg:flex-col lg:items-start lg:gap-2 min-h-11 px-2.5 py-2.5 rounded-xl hover:bg-subtle transition-colors"
+                  >
+                    <ToolIcon href={item.href} size="sm" />
+                    <span className="block min-w-0 max-w-full">
+                      <span className="block text-sm font-semibold text-fg truncate">{t(item.labelKey)}</span>{' '}
+                      <span className={`flex items-center gap-1 h-4 text-xs leading-4 whitespace-nowrap overflow-hidden ${s?.doneToday ? 'font-semibold text-primary' : 'text-muted'}`}>
+                        {s?.doneToday && <Check className="w-3.5 h-3.5 shrink-0" strokeWidth={2.5} aria-hidden />}
+                        {puzzleStatus(s)}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+
+        {seasonCards('season-mobile', 'lg:hidden')}
       </div>
 
       {/* ===== ALL TOOLS ===== */}

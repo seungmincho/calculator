@@ -6,192 +6,18 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
+import {
+  type LoanType, type Owned, type HouseKind, type Region, type CheckStatus,
+  REGIONS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPE_INFO,
+  getIncomeLimit, calcBogeumjari, annuity, fmtKRW, rateFor,
+} from '@/utils/bogeumjari';
 
-type LoanType = 'general' | 'first' | 'newlywed' | 'multichild';
-type Owned = '0' | '1' | '2';
-type HouseKind = 'apt' | 'other';
 type Method = 'annuity' | 'principal';
 
-// 2026년 9월 기준 아낌e 보금자리론 기준금리 (주금공 9월 동결 발표: 10년 4.90 ~ 50년 5.20, 우대 최대 1.0%p → 최저 3.90)
-// 실제 금리는 매월 변동 — 한국주택금융공사(hf.go.kr) 확인. 25년은 공식 만기가 아니라 20·30년 사이값.
-const PERIOD_RATES: Record<string, number> = {
-  '10': 4.90,
-  '15': 5.00,
-  '20': 5.05,
-  '25': 5.08,
-  '30': 5.10,
-  '40': 5.15,
-  '50': 5.20,
-};
-const RATE_FLOOR = 3.90;
-const DISCOUNT_CAP = 1.0;
-
-// 소득 기준 (부부합산 연간) — 기본 7천만, 신혼(7년내) 8.5천만, 미성년 자녀 1명 9천만, 2명 이상 1억
-// 출처: https://www.hf.go.kr/ko/sub01/sub01_01_01.do (2026-09-30 확인)
-function getIncomeLimit(type: LoanType, children: number): number {
-  let limit = 70_000_000;
-  if (children === 1) limit = 90_000_000;
-  else if (children >= 2) limit = 100_000_000;
-  if (type === 'newlywed') limit = Math.max(limit, 85_000_000);
-  if (type === 'multichild') limit = Math.max(limit, 100_000_000);
-  return limit;
-}
-
-// 최대 대출한도 — 기본 3.6억, 생애최초 4.2억, 다자녀 4억 (출처 동일)
-const MAX_LOAN: Record<LoanType, number> = {
-  general: 360_000_000,
-  first: 420_000_000,
-  newlywed: 360_000_000,
-  multichild: 400_000_000,
-};
-
-// LTV: 아파트 70%, 기타주택 65% (https://www.hf.go.kr/ko/sub01/sub01_01_01.do), 생애최초 80%(특례구입자금보증 이용 시)
-// ponytail: 규제지역 -10%p 차감은 실수요자 예외가 많아 미반영 — 안내 문구로만 표시
-function getLtv(type: LoanType, kind: HouseKind): number {
-  if (type === 'first') return 0.80;
-  return kind === 'apt' ? 0.70 : 0.65;
-}
-
-const HOUSE_PRICE_LIMIT = 600_000_000; // 6억원 (전국 균일)
-const DTI_LIMIT = 60; // 60%
-
-// 우대금리 (최대 1.0%p) — 출처: https://www.hf.go.kr/ko/sub01/sub01_01_01.do (2026-09-30 확인)
-// 신혼가구 0.3, 다자녀 2자녀 0.5 / 3자녀+ 0.7 은 입력값에서 자동 적용. 생애최초 자체 우대금리는 공식 목록에 없음.
-// 신혼가구와 신생아출산가구는 중복 불가.
-const PERKS: { id: string; label: string; rate: number; desc: string }[] = [
-  { id: 'newborn', label: '신생아출산가구', rate: 0.2, desc: '신혼가구 우대와 중복 불가' },
-  { id: 'youth', label: '저소득청년', rate: 0.1, desc: '청년·소득 요건 충족 시' },
-  { id: 'single', label: '한부모가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'disabled', label: '장애인가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'multicultural', label: '다문화가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'green', label: '녹색건축물', rate: 0.1, desc: '인증 주택 구입 시' },
-  { id: 'unsold', label: '미분양주택', rate: 0.2, desc: '미분양관리지역 미분양주택' },
-  { id: 'fraud', label: '전세사기피해자', rate: 1.0, desc: '피해자 결정 시' },
-];
-
-const LOAN_TYPE_INFO: Record<LoanType, { label: string; sublabel: string; benefit: string }> = {
-  first: { label: '생애최초', sublabel: '처음 집 구입', benefit: 'LTV 80% · 한도 4.2억' },
-  newlywed: { label: '신혼부부', sublabel: '혼인 7년 이내', benefit: '소득 8.5천만 · 우대 0.3%p' },
-  multichild: { label: '다자녀', sublabel: '미성년 자녀 2명 이상', benefit: '한도 4억 · 우대 0.5~0.7%p' },
-  general: { label: '일반', sublabel: '기본 조건', benefit: 'LTV 70% · 한도 3.6억' },
-};
-
 const METHOD_LABEL: Record<Method, string> = { annuity: '원리금균등', principal: '원금균등' };
+const REGION_LABEL: Record<Region, string> = { local: '지방', capital: '수도권 (규제지역 외)', regulated: '규제지역' };
 
-export interface BogeumjariInput {
-  income: number;
-  price: number;
-  type: LoanType;
-  children: number;
-  period: string;
-  age: number;
-  owned: Owned;
-  kind: HouseKind;
-  debtMonthly: number; // 기존 대출 월 원리금
-  want: number; // 희망 대출액 (0 = 최대)
-  perks: string[];
-}
-
-type CheckStatus = 'pass' | 'warn' | 'fail';
-interface CheckItem { label: string; status: CheckStatus; detail: string }
-
-const annuity = (loan: number, annualRate: number, months: number) => {
-  const r = annualRate / 100 / 12;
-  return r === 0 ? loan / months : (loan * r) / (1 - Math.pow(1 + r, -months));
-};
-
-const fmtKRW = (n: number) => {
-  const v = Math.round(n);
-  let eok = Math.floor(v / 100_000_000);
-  let man = Math.round((v % 100_000_000) / 10_000);
-  if (man === 10_000) { eok += 1; man = 0; }
-  if (eok > 0) return man > 0 ? `${eok}억 ${man.toLocaleString()}만원` : `${eok}억원`;
-  if (man > 0) return `${man.toLocaleString()}만원`;
-  return `${v.toLocaleString()}원`;
-};
 const fmtWon = (n: number) => `${Math.round(n).toLocaleString()}원`;
-
-export function calcBogeumjari(i: BogeumjariInput) {
-  const months = parseInt(i.period) * 12;
-  const incomeLimit = getIncomeLimit(i.type, i.children);
-  const isNewlywed = i.type === 'newlywed';
-
-  // ── 우대금리 ──
-  const discounts: { label: string; rate: number }[] = [];
-  if (isNewlywed) discounts.push({ label: '신혼가구', rate: 0.3 });
-  if (i.children >= 3) discounts.push({ label: '다자녀(3자녀 이상)', rate: 0.7 });
-  else if (i.children === 2) discounts.push({ label: '다자녀(2자녀)', rate: 0.5 });
-  for (const p of PERKS) {
-    if (!i.perks.includes(p.id)) continue;
-    if (p.id === 'newborn' && isNewlywed) continue; // 신혼가구와 중복 불가 (0.3 > 0.2)
-    discounts.push({ label: p.label, rate: p.rate });
-  }
-  const discountSum = discounts.reduce((s, d) => s + d.rate, 0);
-  const totalDiscount = Math.min(discountSum, DISCOUNT_CAP);
-  const baseRate = PERIOD_RATES[i.period] ?? PERIOD_RATES['30'];
-  const rate = Math.max(Number((baseRate - totalDiscount).toFixed(2)), RATE_FLOOR);
-
-  // ── 한도: LTV / 상품 상한 / DTI 중 가장 작은 값 ──
-  const ltv = getLtv(i.type, i.kind);
-  const ltvLimit = Math.floor(i.price * ltv);
-  const capLimit = MAX_LOAN[i.type];
-  // DTI = (신규 원리금 + 기존 대출 원리금) / 연소득 ≤ 60%. 신규 대출은 원리금균등 기준으로 역산.
-  // ponytail: 원금균등 선택 시에도 원리금균등으로 역산 — 실제 심사는 첫해 상환액 기준일 수 있음
-  const monthlyBudget = (i.income / 12) * (DTI_LIMIT / 100) - i.debtMonthly;
-  const dtiLimit = monthlyBudget > 0 ? Math.floor(monthlyBudget / annuity(1, rate, months)) : 0;
-  const limits = [
-    { key: 'ltv' as const, label: `LTV ${Math.round(ltv * 100)}% (주택가격 기준)`, amount: ltvLimit },
-    { key: 'cap' as const, label: `${LOAN_TYPE_INFO[i.type].label} 상품 상한`, amount: capLimit },
-    { key: 'dti' as const, label: `DTI ${DTI_LIMIT}% (소득 기준)`, amount: dtiLimit },
-  ];
-  const binding = limits.reduce((a, b) => (b.amount < a.amount ? b : a));
-  const maxLoan = Math.max(0, Math.floor(binding.amount / 10_000) * 10_000);
-  const loan = i.want > 0 ? Math.min(i.want, maxLoan) : maxLoan;
-  const monthly = Math.round(annuity(loan, rate, months));
-  const dti = i.income > 0 ? ((monthly + i.debtMonthly) * 12 / i.income) * 100 : 0;
-
-  // ── 자격 체크리스트 ──
-  const checks: CheckItem[] = [];
-  checks.push(i.income <= incomeLimit
-    ? { label: '소득', status: 'pass', detail: `연 ${fmtKRW(i.income)} ≤ 기준 ${fmtKRW(incomeLimit)}` }
-    : { label: '소득', status: 'fail', detail: `연 ${fmtKRW(i.income)} — 기준 ${fmtKRW(incomeLimit)} 초과` });
-  checks.push(i.price <= HOUSE_PRICE_LIMIT
-    ? { label: '주택가격', status: 'pass', detail: `${fmtKRW(i.price)} ≤ 6억원` }
-    : { label: '주택가격', status: 'fail', detail: `${fmtKRW(i.price)} — 6억원 초과 주택은 대상 아님` });
-  if (i.owned === '2') checks.push({ label: '주택 보유', status: 'fail', detail: '2주택 이상 보유 시 신청 불가 (무주택 또는 1주택만)' });
-  else if (i.owned === '1' && i.type === 'first') checks.push({ label: '주택 보유', status: 'fail', detail: '생애최초는 부부 모두 과거 주택 소유 이력이 없어야 함' });
-  else if (i.owned === '1') checks.push({ label: '주택 보유', status: 'warn', detail: '1주택자는 기존 주택 처분 조건부 (처분 기한은 공사 확인)' });
-  else checks.push({ label: '주택 보유', status: 'pass', detail: i.type === 'first' ? '무주택 · 과거 소유 이력 없음 (본인 확인)' : '무주택' });
-  if (i.type === 'multichild' && i.children < 2) checks.push({ label: '유형 요건', status: 'fail', detail: '다자녀 유형은 미성년 자녀 2명 이상' });
-  else if (i.type === 'newlywed') checks.push({ label: '유형 요건', status: 'warn', detail: '혼인신고일 7년 이내인지 확인' });
-  const p = i.period;
-  if (p === '40' || p === '50') {
-    const ok = p === '40' ? i.age < 40 || (isNewlywed && i.age < 50) : i.age < 35 || (isNewlywed && i.age < 40);
-    const rule = p === '40' ? '만 40세 미만 (신혼가구 만 50세 미만)' : '만 35세 미만 (신혼가구 만 40세 미만)';
-    checks.push(ok
-      ? { label: `만기 ${p}년`, status: 'pass', detail: `만 ${i.age}세 — ${rule}` }
-      : { label: `만기 ${p}년`, status: 'fail', detail: `만 ${i.age}세 — ${rule} 조건 미충족, 더 짧은 만기 선택` });
-  }
-  checks.push(monthlyBudget > 0
-    ? { label: '상환능력(DTI)', status: 'pass', detail: `DTI ${dti.toFixed(1)}% ≤ ${DTI_LIMIT}%` }
-    : { label: '상환능력(DTI)', status: 'fail', detail: `기존 대출 상환액만으로 DTI ${DTI_LIMIT}% 초과` });
-
-  const eligible = !checks.some((c) => c.status === 'fail') && loan > 0;
-
-  // ── 상환방식 비교 ──
-  const r = rate / 100 / 12;
-  const principalFirst = loan / months + loan * r;
-  const principalLast = loan / months + (loan / months) * r;
-  const methods = {
-    annuity: { first: monthly, last: monthly, interest: monthly * months - loan },
-    principal: { first: Math.round(principalFirst), last: Math.round(principalLast), interest: Math.round(loan * r * (months + 1) / 2) },
-  };
-
-  return {
-    eligible, checks, incomeLimit, discounts, discountSum, totalDiscount, baseRate, rate,
-    ltv, limits, binding, maxLoan, loan, monthly, dti, methods, months,
-  };
-}
 
 function yearlySchedule(loan: number, rate: number, months: number, method: Method) {
   const r = rate / 100 / 12;
@@ -216,7 +42,7 @@ const withCommas = (s: string) => { const d = s.replace(/[^0-9]/g, ''); return d
 
 const DEFAULTS = {
   income: '60,000,000', price: '400,000,000', type: 'first' as LoanType, children: '0', period: '30',
-  age: '35', owned: '0' as Owned, kind: 'apt' as HouseKind, debt: '', want: '', method: 'annuity' as Method,
+  age: '35', owned: '0' as Owned, kind: 'apt' as HouseKind, region: 'capital' as Region, debt: '', want: '', method: 'annuity' as Method,
 };
 
 const STATUS_TEXT: Record<CheckStatus, { label: string; cls: string }> = {
@@ -234,6 +60,7 @@ export default function BogeumjariLoanCalculator() {
   const [age, setAge] = useState(DEFAULTS.age);
   const [owned, setOwned] = useState<Owned>(DEFAULTS.owned);
   const [kind, setKind] = useState<HouseKind>(DEFAULTS.kind);
+  const [region, setRegion] = useState<Region>(DEFAULTS.region);
   const [debt, setDebt] = useState(DEFAULTS.debt);
   const [want, setWant] = useState(DEFAULTS.want);
   const [method, setMethod] = useState<Method>(DEFAULTS.method);
@@ -253,9 +80,9 @@ export default function BogeumjariLoanCalculator() {
     if (!incomeNum || !priceNum) return null;
     return calcBogeumjari({
       income: incomeNum, price: priceNum, type: loanType, children: childNum, period,
-      age: parseInt(age) || 0, owned, kind, debtMonthly: digits(debt), want: digits(want), perks,
+      age: parseInt(age) || 0, owned, kind, region, debtMonthly: digits(debt), want: digits(want), perks,
     });
-  }, [incomeNum, priceNum, loanType, childNum, period, age, owned, kind, debt, want, perks]);
+  }, [incomeNum, priceNum, loanType, childNum, period, age, owned, kind, region, debt, want, perks]);
 
   useEffect(() => { setShowSaveButton(!!result); }, [result]);
 
@@ -269,6 +96,7 @@ export default function BogeumjariLoanCalculator() {
     const a = get('age'); if (a && /^\d{1,3}$/.test(a)) setAge(a);
     const o = get('owned'); if (o && ['0', '1', '2'].includes(o)) setOwned(o as Owned);
     const k = get('kind'); if (k === 'apt' || k === 'other') setKind(k);
+    const rg = get('region'); if (rg && (REGIONS as string[]).includes(rg)) setRegion(rg as Region);
     const m = get('method'); if (m === 'annuity' || m === 'principal') setMethod(m);
     const pk = get('perks'); if (pk !== null) setPerks(pk.split(',').filter((id) => PERKS.some((x) => x.id === id)));
   }, []);
@@ -282,13 +110,13 @@ export default function BogeumjariLoanCalculator() {
   useEffect(() => {
     if (!urlLoaded) return;
     const params = new URLSearchParams({
-      income: String(incomeNum), price: String(priceNum), type: loanType, children, period, age, owned, kind, method,
+      income: String(incomeNum), price: String(priceNum), type: loanType, children, period, age, owned, kind, region, method,
     });
     if (digits(debt)) params.set('debt', String(digits(debt)));
     if (digits(want)) params.set('want', String(digits(want)));
     if (perks.length) params.set('perks', perks.join(','));
     window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`);
-  }, [urlLoaded, incomeNum, priceNum, loanType, children, period, age, owned, kind, method, debt, want, perks]);
+  }, [urlLoaded, incomeNum, priceNum, loanType, children, period, age, owned, kind, region, method, debt, want, perks]);
 
   const flash = (what: 'result' | 'link') => { setCopied(what); setTimeout(() => setCopied(null), 2000); };
 
@@ -307,11 +135,11 @@ export default function BogeumjariLoanCalculator() {
     const fails = result.checks.filter((c) => c.status === 'fail');
     const lines = [
       '보금자리론 계산 결과',
-      `유형: ${LOAN_TYPE_INFO[loanType].label} · ${period}년 · ${METHOD_LABEL[method]}`,
+      `유형: ${LOAN_TYPE_INFO[loanType].label} · ${REGION_LABEL[region]} · ${period}년 · ${METHOD_LABEL[method]}`,
       result.eligible ? '자격: 충족' : `자격: 미충족 — ${fails.map((f) => f.detail).join(' / ')}`,
       `최대 한도: ${fmtKRW(result.maxLoan)} (${result.binding.label} 기준)`,
       `대출금: ${fmtKRW(result.loan)}`,
-      `적용 금리: ${result.rate.toFixed(2)}% (기준 ${result.baseRate.toFixed(2)}% - 우대 ${result.totalDiscount.toFixed(1)}%p)`,
+      `적용 금리: ${result.rate.toFixed(2)}% (기준 ${result.baseRate.toFixed(2)}% - 우대 ${result.totalDiscount.toFixed(1)}%p${result.surcharge ? ` + 규제지역 ${result.surcharge.toFixed(1)}%p` : ''}, ${RATE_BASIS.label} 공시)`,
       `월 상환액: ${fmtWon(result.methods[method].first)}${method === 'principal' ? ' (첫 달)' : ''}`,
       `총 이자: ${fmtKRW(result.methods[method].interest)}`,
       window.location.href,
@@ -339,7 +167,7 @@ export default function BogeumjariLoanCalculator() {
   const handleSave = () => {
     if (!result) return;
     saveCalculation(
-      { income, children, price, loanType, period, age, owned, kind, debt, want, method, perks: perks.join(',') },
+      { income, children, price, loanType, period, age, owned, kind, region, debt, want, method, perks: perks.join(',') },
       { maxLoanAmount: result.maxLoan, interestRate: result.rate, monthlyPayment: result.monthly, eligible: result.eligible },
     );
     setShowSaveButton(false);
@@ -367,7 +195,7 @@ export default function BogeumjariLoanCalculator() {
   const periodComparison = useMemo(() => {
     if (!result || result.loan <= 0) return [];
     return Object.entries(PERIOD_RATES).map(([p, base]) => {
-      const rt = Math.max(Number((base - result.totalDiscount).toFixed(2)), RATE_FLOOR);
+      const rt = rateFor(base, result.totalDiscount, result.surcharge);
       const mo = parseInt(p) * 12;
       const mp = Math.round(annuity(result.loan, rt, mo));
       return { period: p, rate: rt, monthly: mp, interest: mp * mo - result.loan };
@@ -386,10 +214,13 @@ export default function BogeumjariLoanCalculator() {
       <div>
         <div className="flex items-center gap-3 mb-1">
           <h1 className="text-2xl font-bold text-fg">LH 보금자리론 계산기</h1>
-          <span className="text-xs font-semibold bg-soft text-sub px-2 py-0.5 rounded-full">2026년 9월 기준</span>
+          <span className="text-xs font-semibold bg-soft text-sub px-2 py-0.5 rounded-full">{RATE_BASIS.label} 금리 기준</span>
         </div>
         <p className="text-sm text-muted">
-          자격·대출한도·우대금리 적용 금리·월 상환액을 한 번에 확인하세요 (기준금리 4.90~5.20%, 우대 최대 1.0%p, 최저 3.90%)
+          자격·대출한도·우대금리 적용 금리·월 상환액을 한 번에 확인하세요 (기준금리 {Math.min(...Object.values(PERIOD_RATES)).toFixed(2)}~{Math.max(...Object.values(PERIOD_RATES)).toFixed(2)}%, 우대 최대 {DISCOUNT_CAP.toFixed(1)}%p, 최저 {MIN_RATE.toFixed(2)}%)
+        </p>
+        <p className="text-xs text-muted mt-1">
+          금리 출처: <a href={RATE_BASIS.url} target="_blank" rel="noopener noreferrer" className="underline">한국주택금융공사 금리안내</a> ({RATE_BASIS.date} 공시, 아낌e 보금자리론 · 매월 변동)
         </p>
       </div>
 
@@ -462,7 +293,23 @@ export default function BogeumjariLoanCalculator() {
                     </button>
                   ))}
                 </div>
-                {loanType === 'first' && <p className={hint}>생애최초는 LTV 80% 적용</p>}
+                {loanType === 'first' && <p className={hint}>생애최초는 LTV 80% (수도권·규제지역 70%) 적용</p>}
+              </div>
+
+              <div className="sm:col-span-2" role="group" aria-labelledby="bg-region-label" aria-describedby="bg-region-hint">
+                <span id="bg-region-label" className={label}>주택 소재지</span>
+                <div className="grid grid-cols-3 gap-2">
+                  {REGIONS.map((v) => (
+                    <button key={v} type="button" onClick={() => setRegion(v)} aria-pressed={region === v}
+                      className={`px-2 py-3 rounded-xl border text-sm transition-colors ${region === v ? 'border-primary bg-primary-soft text-primary font-semibold' : 'border-line text-body hover:bg-subtle'}`}>
+                      {REGION_LABEL[v]}
+                    </button>
+                  ))}
+                </div>
+                <p id="bg-region-hint" className={hint}>
+                  규제지역: 서울 전역 + 경기 과천·광명·성남·수원(영통·장안·팔달)·안양 동안·용인(수지·기흥)·의왕·하남·화성 동탄·구리 (2026.7.1 기준).
+                  규제지역은 금리 0.2%p 가산, LTV·DTI 10%p 차감(생애최초·무주택 연소득 7천만원 이하 실수요자는 미차감)
+                </p>
               </div>
 
               <div>
@@ -548,7 +395,7 @@ export default function BogeumjariLoanCalculator() {
               })}
             </div>
             <p className="text-xs text-muted mt-3">
-              우대금리는 합산 최대 1.0%p, 적용 후 최저 3.90%. 세부 요건은{' '}
+              우대금리는 합산 최대 {DISCOUNT_CAP.toFixed(1)}%p, 적용 후 최저 {MIN_RATE.toFixed(2)}% (규제지역은 0.2%p 가산). 세부 요건은{' '}
               <a href="https://www.hf.go.kr/ko/sub01/sub01_01_01.do" target="_blank" rel="noopener noreferrer" className="underline">한국주택금융공사 상품 안내</a>에서 확인하세요.
             </p>
           </div>
@@ -583,7 +430,7 @@ export default function BogeumjariLoanCalculator() {
                 </div>
               )}
 
-              <div>
+              <div aria-live="polite">
                 <div className="text-sm text-muted">최대 대출한도</div>
                 <div className="text-3xl font-bold text-fg tabular-nums">{fmtKRW(result.maxLoan)}</div>
                 <div className="text-xs text-muted mt-1">{result.binding.label}에서 결정</div>
@@ -630,8 +477,11 @@ export default function BogeumjariLoanCalculator() {
                 {result.discountSum > DISCOUNT_CAP && (
                   <div className="flex justify-between text-muted text-xs"><span>우대 상한 적용</span><span>최대 −{DISCOUNT_CAP.toFixed(1)}%p</span></div>
                 )}
-                {result.baseRate - result.totalDiscount < RATE_FLOOR && (
-                  <div className="flex justify-between text-muted text-xs"><span>최저금리 적용</span><span>{RATE_FLOOR.toFixed(2)}%</span></div>
+                {result.surcharge > 0 && (
+                  <div className="flex justify-between text-sub">
+                    <span>규제지역 가산</span>
+                    <span className="tabular-nums">+{result.surcharge.toFixed(1)}%p</span>
+                  </div>
                 )}
                 <div className="border-t border-line pt-1.5 mt-1 flex justify-between font-semibold text-fg">
                   <span>최종 적용금리</span>
@@ -646,7 +496,7 @@ export default function BogeumjariLoanCalculator() {
                 </div>
                 <div className="bg-subtle rounded-lg p-3">
                   <div className="text-muted text-xs mb-0.5">DTI (기존 대출 포함)</div>
-                  <div className={`font-semibold tabular-nums ${result.dti > DTI_LIMIT ? STATUS_TEXT.fail.cls : 'text-fg'}`}>{result.dti.toFixed(1)}%</div>
+                  <div className={`font-semibold tabular-nums ${result.dti > result.dtiCap ? STATUS_TEXT.fail.cls : 'text-fg'}`}>{result.dti.toFixed(1)}%</div>
                 </div>
               </div>
 
@@ -664,7 +514,7 @@ export default function BogeumjariLoanCalculator() {
               </div>
 
               <p className="text-xs text-muted">
-                신용점수 271점 이상 등 심사 조건과 규제지역(LTV·DTI 10%p 차감) 여부에 따라 실제 한도·금리는 달라질 수 있습니다.
+                신용점수 271점 이상(614점 이하·소득 추정 시 LTV 10%p 차감) 등 심사 조건과 담보 평가액에 따라 실제 한도·금리는 달라질 수 있습니다.
               </p>
             </div>
           )}
@@ -845,8 +695,8 @@ export default function BogeumjariLoanCalculator() {
         <h2 className="text-lg font-semibold text-fg mb-4">2026년 보금자리론 유형별 핵심 조건</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { type: '일반', items: ['소득 7천만원 이하 (자녀 1명 9천만)', '한도 최대 3.6억', 'LTV 70% (기타주택 65%)', '유형 우대 없음'] },
-            { type: '생애최초', items: ['소득 7천만원 이하', '한도 최대 4.2억', 'LTV 80%', '부부 모두 주택 소유 이력 없음'] },
+            { type: '일반', items: ['소득 7천만원 이하 (자녀 1명 9천만)', '한도 최대 3.6억', 'LTV 70% (기타주택 65%, 규제지역 −10%p)', '유형 우대 없음'] },
+            { type: '생애최초', items: ['소득 7천만원 이하', '한도 최대 4.2억', 'LTV 80% (수도권·규제지역 70%)', '부부 모두 주택 소유 이력 없음'] },
             { type: '신혼부부', items: ['소득 8.5천만원 이하', '한도 최대 3.6억', '혼인 7년 이내', '금리 우대 0.3%p'] },
             { type: '다자녀', items: ['소득 1억원 이하', '한도 최대 4억', '미성년 자녀 2명 이상', '우대 0.5%p (3명+ 0.7%p)'] },
           ].map((g) => (
@@ -859,7 +709,7 @@ export default function BogeumjariLoanCalculator() {
           ))}
         </div>
         <p className="text-xs text-muted mt-4">
-          주택가격 6억원 이하, 무주택 또는 1주택(처분 조건) 공통. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.
+          주택가격 6억원 이하, 무주택 또는 1주택(3년 내 처분 조건) 공통. 규제지역 주택은 금리 0.2%p 가산, 수도권·규제지역은 6개월 내 전입 의무. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.
         </p>
       </div>
 

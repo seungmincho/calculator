@@ -7,9 +7,10 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import ShareResult from '@/components/ShareResult'
 import { addDays, addMonths, isValidDate, todayKST } from '@/utils/dday'
+import { minWageOn } from '@/utils/minimumWage'
 import {
-  DAILY_CAP, BENEFIT_DAYS, PERIODS, WAITING_DAYS, benefitDays, daysIn3Months, avgDailyWage,
-  dailyBenefit, dailyFloor, earlyBonus, lastEligiblePaidDay, schedule,
+  BENEFIT_DAYS, PERIODS, WAITING_DAYS, benefitDays, daysIn3Months, avgDailyWage,
+  dailyBenefit, dailyCap, dailyFloor, earlyBonus, lastEligiblePaidDay, schedule,
   type AgeGroup, type InsurancePeriod,
 } from '@/utils/unemploymentBenefit'
 
@@ -87,12 +88,12 @@ export default function UnemploymentBenefit() {
     const days3m = daysIn3Months(leaveDate)
     const monthly = mode === 'year' ? amount / 12 : amount
     const avgDaily = mode === 'day' ? amount : avgDailyWage(monthly, leaveDate)
-    const d = dailyBenefit(avgDaily, hours)
+    const d = dailyBenefit(avgDaily, hours, leaveDate)
     const days = benefitDays(age, period)
     const apply = addDays(leaveDate, 1)
     const start = addDays(apply, WAITING_DAYS)
     return {
-      days3m, avgDaily, ...d, days, total: d.daily * days, per4w: d.daily * 28,
+      days3m, avgDaily, ...d, cap: dailyCap(leaveDate), minWage: minWageOn(leaveDate), days, total: d.daily * days, per4w: d.daily * 28,
       apply, start, end: addDays(start, days - 1), expire: addMonths(apply, 12),
       sched: schedule(apply, days, d.daily),
     }
@@ -220,10 +221,10 @@ export default function UnemploymentBenefit() {
           {/* 핵심 결과 */}
           <div className="ui-card p-6">
             <p className="text-sm text-muted">{t('u.result.totalLabel', { days: r.days })}</p>
-            <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}</p>
+            <p className="text-3xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(r.total)}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
               {[
-                { k: 'daily', v: won(r.daily), s: r.applied === 'none' ? t('u.result.dailySub') : t(`u.result.applied.${r.applied}`) },
+                { k: 'daily', v: won(r.daily), s: r.applied === 'none' ? t('u.result.dailySub') : t(`u.result.applied.${r.applied}`, { cap: won(r.cap) }) },
                 { k: 'days', v: t('u.daysN', { n: r.days }), s: t('u.result.daysSub', { m: (r.days / 30).toFixed(1) }) },
                 { k: 'per4w', v: won(r.per4w), s: t('u.result.per4wSub') },
               ].map((c) => (
@@ -234,6 +235,11 @@ export default function UnemploymentBenefit() {
                 </div>
               ))}
             </div>
+            {r.floor > r.cap && (
+              <p className="text-xs text-muted mt-3">
+                {t('u.result.floorOverCap', { year: leaveDate.slice(0, 4), wage: won(r.minWage), floor: won(r.floor), cap: won(r.cap) })}
+              </p>
+            )}
 
             <details className="mt-5">
               <summary className="text-sm font-medium text-body cursor-pointer">{t('u.basis.title')}</summary>
@@ -241,8 +247,8 @@ export default function UnemploymentBenefit() {
                 {[
                   [t('u.basis.avgDaily'), mode === 'day' ? won(r.avgDaily) : t('u.basis.avgDailyCalc', { total: won((mode === 'year' ? amount / 12 : amount) * 3), days: r.days3m, v: won(r.avgDaily) })],
                   [t('u.basis.raw'), won(r.raw)],
-                  [t('u.basis.cap'), won(DAILY_CAP)],
-                  [t('u.basis.floor', { h: hours }), won(r.floor)],
+                  [t('u.basis.cap', { year: leaveDate.slice(0, 4) }), won(r.cap)],
+                  [t('u.basis.floor', { h: hours, wage: won(r.minWage) }), won(r.floor)],
                   [t('u.basis.daily'), won(r.daily)],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4 border-b border-line pb-2">

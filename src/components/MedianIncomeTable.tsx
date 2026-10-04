@@ -4,14 +4,11 @@ import React, { useState } from 'react';
 import { Users, TrendingUp, Info, ChevronRight, Calculator, Building2, Heart, GraduationCap, Home, Stethoscope, Wallet, Baby, Briefcase, AlertCircle } from 'lucide-react';
 import GuideSection from '@/components/GuideSection';
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
+import { useTranslations } from '@/lib/i18n';
+import { MEDIAN_INCOME, MEDIAN_YEARS, yearInForce } from '@/utils/medianIncome';
 
-// 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구]
-const medianIncomeData: Record<string, number[]> = {
-  '2023': [2077892, 3456155, 4434816, 5400964, 6330688, 7227981],
-  '2024': [2228445, 3682609, 4714657, 5729913, 6695735, 7618369],
-  '2025': [2392013, 3932658, 5025353, 6097773, 7108192, 8064805],
-  '2026': [2564238, 4199292, 5359036, 6494738, 7556719, 8555952],
-};
+// 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구] — 고시 출처는 utils/medianIncome.ts
+const medianIncomeData = MEDIAN_INCOME;
 
 // 비율별 정부 지원사업
 // 카테고리별 색상 (라이트/다크 모드 최적화)
@@ -50,7 +47,7 @@ const welfareProgramsByPercentage: Record<number, WelfareProgram[]> = {
   ],
   50: [
     { name: '교육급여', description: '기초생활보장 교육급여 지원', icon: <GraduationCap className="w-4 h-4" />, category: 'basic' },
-    { name: '기초생활수급자', description: '차상위계층 포함', icon: <Users className="w-4 h-4" />, category: 'basic' },
+    { name: '차상위계층', description: '수급자가 아닌 소득인정액 중위 50% 이하 (기초생활보장법 시행령 제3조)', icon: <Users className="w-4 h-4" />, category: 'basic' },
     { name: '국민취업제도', description: '취업지원서비스 제공', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
     { name: '서울형 안심소득', description: '서울시 안심소득 지원', icon: <Wallet className="w-4 h-4" />, category: 'local' },
     { name: '인천형 생계급여', description: '인천시 자체 생계급여', icon: <Building2 className="w-4 h-4" />, category: 'local' },
@@ -58,8 +55,7 @@ const welfareProgramsByPercentage: Record<number, WelfareProgram[]> = {
   ],
   60: [
     { name: '한부모가족 급여', description: '한부모, 조손가족 급여 지원', icon: <Baby className="w-4 h-4" />, category: 'family' },
-    { name: '취성패', description: '취업성공패키지 지원', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
-    { name: '국민취업제도', description: '취업지원서비스 제공', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
+    { name: '국민취업지원제도 I유형', description: '구직촉진수당 (구직자취업촉진법 시행령 제3조)', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
     { name: '청년 월세 지원', description: '청년 월세 특별지원', icon: <Home className="w-4 h-4" />, category: 'family' },
   ],
   65: [
@@ -81,7 +77,6 @@ const welfareProgramsByPercentage: Record<number, WelfareProgram[]> = {
     { name: '기타 복지사업', description: '중위소득 85% 기준 복지사업', icon: <Users className="w-4 h-4" />, category: 'other' },
   ],
   100: [
-    { name: '중장년 취성패', description: '중장년 취업성공패키지', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
     { name: '재난적 의료비', description: '재난적 의료비 지원', icon: <Stethoscope className="w-4 h-4" />, category: 'basic' },
     { name: '서울형 긴급복지', description: '서울시 긴급복지 지원', icon: <Building2 className="w-4 h-4" />, category: 'local' },
     { name: '경기형 긴급복지', description: '경기도 긴급복지 지원', icon: <Building2 className="w-4 h-4" />, category: 'local' },
@@ -114,14 +109,14 @@ const percentages = [32, 40, 48, 50, 60, 65, 70, 72, 75, 80, 85, 100, 120, 150, 
 const householdLabels = ['1인 가구', '2인 가구', '3인 가구', '4인 가구', '5인 가구', '6인 가구'];
 
 // 사용 가능한 연도 목록
-const availableYears = ['2026', '2025', '2024', '2023'] as const;
-type YearType = typeof availableYears[number];
+const availableYears = MEDIAN_YEARS;
+type YearType = string;
 
-// 기본재산액 (지역별, 2025년 기준)
+// 기본재산액 (보건복지부 고시 제2025-204호 별표3, 2026.1.1 시행)
 const basicPropertyAmount: Record<string, number> = {
   '서울': 99000000,
   '경기': 80000000,
-  '광역시': 77000000,
+  '광역·세종·창원': 77000000,
   '그 외': 53000000,
 };
 
@@ -139,6 +134,7 @@ interface IncomeEligibilityCheckerProps {
 }
 
 const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEligibilityCheckerProps) => {
+  const t = useTranslations('medianIncome');
   const [householdSize, setHouseholdSize] = useState<number>(1);
   const [region, setRegion] = useState<string>('서울');
   const [monthlyIncome, setMonthlyIncome] = useState<string>('');
@@ -200,7 +196,8 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
   // 수급자격 판정
   const determineEligibility = () => {
     const result = calculateIncomeRecognition();
-    const baseIncome = medianIncomeData['2025'][householdSize - 1];
+    const year = yearInForce();
+    const baseIncome = medianIncomeData[year][householdSize - 1];
 
     const eligibility = {
       생계급여: result.totalIncomeRecognition <= baseIncome * 0.32,
@@ -216,7 +213,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
       교육급여: baseIncome * 0.50,
     };
 
-    return { ...result, eligibility, thresholds, baseIncome };
+    return { ...result, eligibility, thresholds, baseIncome, year };
   };
 
   const result = showResult ? determineEligibility() : null;
@@ -373,10 +370,11 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           </div>
 
           {/* 결과 섹션 */}
-          <div className="space-y-4">
+          <div className="space-y-4" aria-live="polite">
             {result ? (
               <>
                 <h3 className="font-semibold text-fg">판정 결과</h3>
+                <p className="text-xs text-muted">{t('checkerYear', { year: result.year })}</p>
 
                 {/* 소득인정액 계산 결과 */}
                 <div className="bg-subtle rounded-lg p-4 space-y-3">
@@ -436,6 +434,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                       <ul className="list-disc list-inside space-y-1 text-amber-700 dark:text-amber-400">
                         <li>이 결과는 간이 판정으로, 실제 수급 여부와 다를 수 있습니다.</li>
                         <li>부양의무자 기준, 근로능력 유무 등은 별도 심사합니다.</li>
+                        {(t.raw('checkerNotes') as string[]).map((note) => <li key={note}>{note}</li>)}
                         <li>정확한 판정은 주민센터에 문의하세요.</li>
                       </ul>
                     </div>
@@ -486,7 +485,9 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
 };
 
 const MedianIncomeTable = () => {
-  const [selectedYear, setSelectedYear] = useState<YearType>('2025');
+  const t = useTranslations('medianIncome');
+  const currentYear = yearInForce();
+  const [selectedYear, setSelectedYear] = useState<YearType>(currentYear);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [customPercentage, setCustomPercentage] = useState<string>('');
 
@@ -499,6 +500,7 @@ const MedianIncomeTable = () => {
   };
 
   const baseData = medianIncomeData[selectedYear];
+  const cmpYears = availableYears.slice(0, 4).reverse(); // 최근 4개 연도, 오름차순
 
   // 사용자 정의 비율 계산
   const customPercentageNum = parseFloat(customPercentage) || 0;
@@ -526,6 +528,7 @@ const MedianIncomeTable = () => {
               <button
                 key={year}
                 onClick={() => setSelectedYear(year)}
+                aria-pressed={selectedYear === year}
                 className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-base sm:text-lg transition-all duration-200 ${
                   selectedYear === year
                     ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
@@ -561,6 +564,10 @@ const MedianIncomeTable = () => {
               </div>
             ))}
           </div>
+          {Number(selectedYear) > Number(currentYear) && (
+            <p className="mt-4 text-sm rounded-xl p-3 bg-subtle text-sub">{t('upcoming', { year: selectedYear, current: currentYear })}</p>
+          )}
+          <p className="mt-3 text-xs text-muted">{t('source')}</p>
         </div>
 
         {/* 사용자 정의 비율 계산기 */}
@@ -917,7 +924,7 @@ const MedianIncomeTable = () => {
               <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h2 className="text-xl font-bold text-fg">
-              연도별 기준 중위소득 100% 비교 (2023~2026)
+              연도별 기준 중위소득 100% 비교 ({cmpYears[0]}~{cmpYears[cmpYears.length - 1]})
             </h2>
           </div>
 
@@ -926,31 +933,29 @@ const MedianIncomeTable = () => {
               <thead className="bg-subtle">
                 <tr>
                   <th className="px-3 py-3 text-left text-sm font-semibold text-fg">가구</th>
-                  <th className="px-3 py-3 text-right text-sm font-semibold text-fg">2023년</th>
-                  <th className="px-3 py-3 text-right text-sm font-semibold text-fg">2024년</th>
-                  <th className="px-3 py-3 text-right text-sm font-semibold text-fg">2025년</th>
-                  <th className="px-3 py-3 text-right text-sm font-semibold text-fg">2026년</th>
+                  {cmpYears.map((y) => (
+                    <th key={y} className="px-3 py-3 text-right text-sm font-semibold text-fg">{y}년</th>
+                  ))}
                   <th className="px-3 py-3 text-right text-sm font-semibold text-fg">
-                    <span className="hidden sm:inline">4년간 증가율</span>
+                    <span className="hidden sm:inline">{cmpYears[0]}→{cmpYears[cmpYears.length - 1]} 증가율</span>
                     <span className="sm:hidden">증가율</span>
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {householdLabels.map((label, index) => {
-                  const amount2023 = medianIncomeData['2023'][index];
-                  const amount2024 = medianIncomeData['2024'][index];
-                  const amount2025 = medianIncomeData['2025'][index];
-                  const amount2026 = medianIncomeData['2026'][index];
-                  const totalIncreaseRate = ((amount2026 - amount2023) / amount2023 * 100).toFixed(1);
+                  const first = medianIncomeData[cmpYears[0]][index];
+                  const last = medianIncomeData[cmpYears[cmpYears.length - 1]][index];
+                  const totalIncreaseRate = ((last - first) / first * 100).toFixed(1);
 
                   return (
                     <tr key={label} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
                       <td className="px-3 py-3 font-medium text-fg whitespace-nowrap">{label}</td>
-                      <td className="px-3 py-3 text-right text-muted text-sm">{formatCurrency(amount2023)}</td>
-                      <td className="px-3 py-3 text-right text-sub text-sm">{formatCurrency(amount2024)}</td>
-                      <td className="px-3 py-3 text-right text-body text-sm font-medium">{formatCurrency(amount2025)}</td>
-                      <td className="px-3 py-3 text-right text-blue-600 dark:text-blue-400 text-sm font-semibold">{formatCurrency(amount2026)}</td>
+                      {cmpYears.map((y) => (
+                        <td key={y} className={`px-3 py-3 text-right text-sm ${y === currentYear ? 'text-primary font-semibold' : 'text-body'}`}>
+                          {formatCurrency(medianIncomeData[y][index])}
+                        </td>
+                      ))}
                       <td className="px-3 py-3 text-right">
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-soft text-sub">
                           +{totalIncreaseRate}%

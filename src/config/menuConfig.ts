@@ -12,6 +12,7 @@ export interface MenuItem {
   modes?: GameMode[]; // 게임 지원 모드 (games 카테고리만 사용)
   isNew?: boolean; // 하위호환용 (addedDate 우선)
   addedDate?: string; // 'YYYY-MM-DD' 형식, 30일 이내면 NEW 표시
+  updatedDate?: string; // 'YYYY-MM-DD' 마지막 고도화일 → sitemap lastmod·RSS pubDate
   subcategory?: string; // 서브카테고리 번역 키
 }
 
@@ -121,6 +122,9 @@ export const menuConfig: MenuConfig = {
       { href: '/ev-subsidy', labelKey: 'footer.links.evSubsidy', descriptionKey: 'toolsShowcase.tools.evSubsidy.description', icon: '🔋', addedDate: '2026-03-29', subcategory: 'subcategory.livingCost' },
       { href: '/child-benefit', labelKey: 'footer.links.childBenefit', descriptionKey: 'toolsShowcase.tools.childBenefit.description', icon: '👶', addedDate: '2026-03-29', subcategory: 'subcategory.others' },
       { href: '/jeonse-checklist', labelKey: 'footer.links.jeonseChecklist', descriptionKey: 'toolsShowcase.tools.jeonseChecklist.description', icon: '🔍', addedDate: '2026-03-29', subcategory: 'subcategory.realEstate' },
+      { href: '/customs-duty', labelKey: 'footer.links.customsDuty', descriptionKey: 'toolsShowcase.tools.customsDuty.description', icon: '📦', addedDate: '2026-10-04', subcategory: 'subcategory.tax' },
+      { href: '/kimjang-calculator', labelKey: 'footer.links.kimjangCalculator', descriptionKey: 'toolsShowcase.tools.kimjangCalculator.description', icon: '🥬', addedDate: '2026-10-04', subcategory: 'subcategory.livingCost' },
+      { href: '/holiday-planner', labelKey: 'footer.links.holidayPlanner', descriptionKey: 'toolsShowcase.tools.holidayPlanner.description', icon: '🗓️', addedDate: '2026-10-04', subcategory: 'subcategory.salaryWork' },
     ],
   },
   tools: {
@@ -292,6 +296,7 @@ export const menuConfig: MenuConfig = {
       { href: '/personal-color', labelKey: 'footer.links.personalColor', descriptionKey: 'toolsShowcase.tools.personalColor.description', icon: '🎨', addedDate: '2026-03-21' },
       { href: '/ovulation-calculator', labelKey: 'footer.links.ovulationCalculator', descriptionKey: 'toolsShowcase.tools.ovulationCalculator.description', icon: '🌸', addedDate: '2026-03-21' },
       { href: '/enneagram', labelKey: 'footer.links.enneagram', descriptionKey: 'toolsShowcase.tools.enneagram.description', icon: '🔯', addedDate: '2026-03-21' },
+      { href: '/health-checkup', labelKey: 'footer.links.healthCheckup', descriptionKey: 'toolsShowcase.tools.healthCheckup.description', icon: '🩺', addedDate: '2026-10-04' },
     ],
   },
   games: {

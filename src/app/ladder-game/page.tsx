@@ -145,43 +145,43 @@ export default function LadderGamePage() {
             하나만 고르거나, 팀을 나누거나, 순서를 정해야 할 때는 아래 전용 도구를 쓰면 더 빠릅니다.
           </p>
           <div className="grid sm:grid-cols-2 gap-3 mb-8">
-            <Link href="/roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/roulette" size="sm" />
               <span><span className="block font-semibold text-fg">돌림판</span><span className="block text-sm text-sub mt-0.5">회전 룰렛으로 하나를 선택. 점심 메뉴, 벌칙 등에 적합.</span></span>
             </Link>
-            <Link href="/order-picker" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/order-picker" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/order-picker" size="sm" />
               <span><span className="block font-semibold text-fg">순서 정하기</span><span className="block text-sm text-sub mt-0.5">전체 참가자 순서를 한 번에 결정. 카드 공개 애니메이션.</span></span>
             </Link>
-            <Link href="/coin-flip" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/coin-flip" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/coin-flip" size="sm" />
               <span><span className="block font-semibold text-fg">동전 던지기</span><span className="block text-sm text-sub mt-0.5">3D 회전 애니메이션. 통계, 연속기록, N판 M선승제.</span></span>
             </Link>
-            <Link href="/dice-roller" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/dice-roller" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/dice-roller" size="sm" />
               <span><span className="block font-semibold text-fg">주사위</span><span className="block text-sm text-sub mt-0.5">D4~D20, 최대 10개 동시. 보정값, TRPG 지원.</span></span>
             </Link>
-            <Link href="/team-divider" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/team-divider" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/team-divider" size="sm" />
               <span><span className="block font-semibold text-fg">팀 나누기</span><span className="block text-sm text-sub mt-0.5">랜덤/캡틴 드래프트. 운동, 조별과제, 회식 팀 분배.</span></span>
             </Link>
-            <Link href="/lottery-draw" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/lottery-draw" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/lottery-draw" size="sm" />
               <span><span className="block font-semibold text-fg">제비뽑기</span><span className="block text-sm text-sub mt-0.5">당첨/꽝 비율 설정. 한 장씩 뽑기, 커스텀 상품.</span></span>
             </Link>
-            <Link href="/yes-no" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/yes-no" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/yes-no" size="sm" />
               <span><span className="block font-semibold text-fg">Yes or No</span><span className="block text-sm text-sub mt-0.5">7단계 답변, 확률 조정 가능.</span></span>
             </Link>
-            <Link href="/rock-paper-scissors" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/rock-paper-scissors" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/rock-paper-scissors" size="sm" />
               <span><span className="block font-semibold text-fg">가위바위보</span><span className="block text-sm text-sub mt-0.5">1:1, N판 M선승, 토너먼트. 전적 통계.</span></span>
             </Link>
-            <Link href="/random-number" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/random-number" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/random-number" size="sm" />
               <span><span className="block font-semibold text-fg">숫자 뽑기</span><span className="block text-sm text-sub mt-0.5">범위·개수 설정, 중복 제거, 슬롯머신 애니메이션.</span></span>
             </Link>
-            <Link href="/penalty-roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
+            <Link prefetch={false} href="/penalty-roulette" className="flex items-start gap-3 rounded-xl p-4 border border-line hover:bg-subtle transition-colors">
               <ToolIcon href="/penalty-roulette" size="sm" />
               <span><span className="block font-semibold text-fg">벌칙 룰렛</span><span className="block text-sm text-sub mt-0.5">회식/MT/커플 프리셋. 커스텀 벌칙 추가 가능.</span></span>
             </Link>

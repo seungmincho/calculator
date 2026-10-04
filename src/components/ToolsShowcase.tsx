@@ -84,7 +84,7 @@ export default function ToolsShowcase() {
       return <div key={item.href} className="flex items-center gap-3 px-3 py-3 rounded-xl bg-subtle">{body}</div>
     }
     return (
-      <Link key={item.href} href={item.href} className="group relative flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors">
+      <Link prefetch={false} key={item.href} href={item.href} className="group relative flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors">
         {body}
         {renderFavoriteButton(item.href)}
       </Link>
@@ -205,7 +205,7 @@ export default function ToolsShowcase() {
       </div>
 
       <div className="text-center mt-12 flex flex-col items-center gap-3">
-        <Link
+        <Link prefetch={false}
           href="/tips"
           className="ui-btn-soft px-5 py-2.5 text-sm"
         >

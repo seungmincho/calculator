@@ -10,6 +10,8 @@ import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
+import { calc as yearEndCalc, DEFAULT_INPUT as YEAR_END_DEFAULT } from '@/utils/yearEndTax'
+import { calcCgt, ymd } from '@/utils/capitalGainsTax'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -128,44 +130,15 @@ const TaxCalculatorContent = () => {
     'capital-gains': '양도소득세'
   };
 
-  // 소득세 계산 (2025년 기준)
+  // 근로소득세 (2026년 귀속 연말정산 방식: 근로소득공제·인적공제·4대보험 공제 → 6~45% → 근로소득세액공제,
+  // 의료비·교육비 15% 세액공제와 표준세액공제 13만원 중 유리한 쪽). 계산은 yearEndTax.ts 재사용
   const calculateIncomeTax = (income: number, deps: number, medical: number, education: number) => {
-    // 기본공제: 본인 + 부양가족 × 150만원
-    const basicDeduction = (1 + deps) * 1500000;
-    
-    // 인적공제 추가 (경로우대, 장애인 등은 간소화)
-    const personalDeduction = basicDeduction;
-    
-    // 특별공제 (의료비, 교육비)
-    const medicalDeduction = Math.max(0, medical - income * 0.03); // 소득의 3% 초과분
-    const educationDeduction = Math.min(education, 3000000); // 연 300만원 한도
-    const specialDeduction = medicalDeduction + educationDeduction;
-    
-    // 표준공제 vs 특별공제 중 유리한 것
-    const itemizedDeduction = Math.max(600000, specialDeduction); // 표준공제 60만원
-    
-    // 과세표준
-    const taxableIncome = Math.max(0, income - personalDeduction - itemizedDeduction);
-    
-    // 소득세 계산
-    let incomeTax = 0;
-    if (taxableIncome <= 14000000) {
-      incomeTax = taxableIncome * 0.06;
-    } else if (taxableIncome <= 50000000) {
-      incomeTax = 840000 + (taxableIncome - 14000000) * 0.15;
-    } else if (taxableIncome <= 88000000) {
-      incomeTax = 6240000 + (taxableIncome - 50000000) * 0.24;
-    } else if (taxableIncome <= 150000000) {
-      incomeTax = 15360000 + (taxableIncome - 88000000) * 0.35;
-    } else if (taxableIncome <= 300000000) {
-      incomeTax = 37060000 + (taxableIncome - 150000000) * 0.38;
-    } else if (taxableIncome <= 500000000) {
-      incomeTax = 94060000 + (taxableIncome - 300000000) * 0.40;
-    } else {
-      incomeTax = 174060000 + (taxableIncome - 500000000) * 0.42;
-    }
-    
-    const localIncomeTax = incomeTax * 0.1; // 지방소득세
+    const y = yearEndCalc({
+      ...YEAR_END_DEFAULT, salary: income, others: deps,
+      credit: 0, debit: 0, transport: 0, general: medical, eduSchool: education,
+    });
+    const incomeTax = y.determined;
+    const localIncomeTax = y.localTax;
     
     // 4대보험 (간소화)
     const nationalPension = Math.min(income, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate;
@@ -205,40 +178,21 @@ const TaxCalculatorContent = () => {
     };
   };
 
-  // 양도소득세 계산 (간소화)
+  // 주택 양도소득세 (capitalGainsTax.ts 재사용, 오늘 양도·비조정지역 가정)
+  // general = 1세대 1주택 실거주(거주 = 보유), luxury = 1세대 1주택 거주 안 함, multiple = 2주택 이상
   const calculateCapitalGainsTax = (sellPrice: number, buyPrice: number, years: number, type: string) => {
-    const capitalGain = sellPrice - buyPrice;
-    
-    if (capitalGain <= 0) {
-      return {
-        type: 'capital-gains' as TaxType,
-        totalTax: 0,
-        netAmount: sellPrice,
-        breakdown: { capitalGainsTax: 0, localTax: 0 }
-      };
-    }
-    
-    // 장기보유특별공제 (간소화)
-    const longTermDeduction = years >= 3 ? capitalGain * Math.min((years - 2) * 0.1, 0.3) : 0;
-    const taxableGain = capitalGain - longTermDeduction;
-    
-    // 양도소득세율 (간소화)
-    let taxRate = 0.22; // 기본세율
-    if (type === 'luxury') taxRate = 0.55; // 고급주택
-    if (type === 'multiple') taxRate = 0.33; // 다주택자
-    
-    const capitalGainsTax = taxableGain * taxRate;
-    const localTax = capitalGainsTax * 0.1;
-    const totalTax = capitalGainsTax + localTax;
-    
+    const today = new Date();
+    const acq = new Date(today.getFullYear() - years, today.getMonth(), today.getDate());
+    const r = calcCgt({
+      kind: 'house', sale: sellPrice, acq: buyPrice, expense: 0, acqDate: ymd(acq), saleDate: ymd(today),
+      houses: type === 'multiple' ? 2 : 1, temp: false, newAcqDate: '', newAdjusted: false,
+      adjusted: false, acqAdjusted: false, residence: type === 'general' ? years : 0, grace: false,
+    });
     return {
       type: 'capital-gains' as TaxType,
-      totalTax,
-      netAmount: sellPrice - totalTax,
-      breakdown: {
-        capitalGainsTax,
-        localTax
-      }
+      totalTax: r.total,
+      netAmount: sellPrice - r.total,
+      breakdown: { capitalGainsTax: r.tax, localTax: r.local }
     };
   };
 
@@ -474,12 +428,14 @@ const TaxCalculatorContent = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                연간 소득
+              <label htmlFor="tc-income" className="block text-sm font-medium text-body mb-2">
+                연간 총급여 (근로소득, 비과세 제외)
               </label>
               <div className="relative">
                 <input
+                  id="tc-income"
                   type="text"
+                  inputMode="numeric"
                   value={annualIncome}
                   onChange={(e) => handleNumberInput(e.target.value, setAnnualIncome, 'income')}
                   placeholder="예: 50,000,000"
@@ -642,10 +598,11 @@ const TaxCalculatorContent = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-body mb-2">
-                  부동산 유형
+                <label htmlFor="tc-property" className="block text-sm font-medium text-body mb-2">
+                  주택 보유 상황
                 </label>
                 <select
+                  id="tc-property"
                   value={propertyType}
                   onChange={(e) => {
                     const value = e.target.value as 'general' | 'luxury' | 'multiple';
@@ -654,9 +611,9 @@ const TaxCalculatorContent = () => {
                   }}
                   className={`${glassInput} px-4 py-3`}
                 >
-                  <option value="general">일반주택</option>
-                  <option value="luxury">고급주택</option>
-                  <option value="multiple">다주택자</option>
+                  <option value="general">1세대 1주택 (실거주)</option>
+                  <option value="luxury">1세대 1주택 (거주 안 함)</option>
+                  <option value="multiple">2주택 이상 (비조정지역)</option>
                 </select>
               </div>
             </div>
@@ -723,9 +680,9 @@ const TaxCalculatorContent = () => {
             <ul className="text-sm text-sub space-y-1">
               {activeTab === 'income' && (
                 <>
-                  <li>• 2025년 소득세법 기준</li>
-                  <li>• 기본공제: 본인+부양가족×150만원</li>
-                  <li>• 표준공제 60만원 vs 특별공제 중 선택</li>
+                  <li>• 2026년 귀속 근로소득 연말정산 기준 (소득세법 §47·§55·§59)</li>
+                  <li>• 근로소득공제 → 기본공제(본인+부양가족×150만원)·4대보험 → 세율 6~45% → 근로소득세액공제</li>
+                  <li>• 의료비(총급여 3% 초과분)·교육비 15% 세액공제 vs 표준세액공제 13만원 중 유리한 쪽</li>
                 </>
               )}
               {activeTab === 'vat' && (
@@ -737,9 +694,9 @@ const TaxCalculatorContent = () => {
               )}
               {activeTab === 'capital-gains' && (
                 <>
-                  <li>• 2025년 양도소득세법 기준</li>
-                  <li>• 장기보유특별공제 적용</li>
-                  <li>• 부동산 유형별 차등세율</li>
+                  <li>• 2026년 소득세법 기준 주택 양도 (오늘 양도·비조정지역 가정)</li>
+                  <li>• 1세대 1주택 2년 보유 비과세, 양도가 12억 초과분만 과세 · 장기보유특별공제 · 기본공제 250만원</li>
+                  <li>• 세율 6~45% (2년 미만 보유 60~70%). 조정지역 중과·일시적 2주택은 양도소득세 계산기에서</li>
                 </>
               )}
             </ul>
@@ -751,7 +708,7 @@ const TaxCalculatorContent = () => {
           <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
-            <div className="space-y-6">
+            <div className="space-y-6" aria-live="polite">
               <div className="text-center p-6 bg-primary rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">
                   {activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'}

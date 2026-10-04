@@ -1,7 +1,7 @@
 // 국민연금 계산 회귀 체크: node scripts/check-national-pension.ts
 import {
   A_VALUE, coef, premiumRate, startAge, childCreditMonths, calcPension, shifted, crossoverAge,
-  workReduction, paybackAge, nominal, catchUpCost,
+  workReduction, paybackAge, nominal, catchUpCost, calcByAge, DEPENDENT_ANNUAL, INCOME_FLOOR, INCOME_CAP, CPI_2026,
 } from '../src/utils/nationalPension.ts'
 
 let fail = 0
@@ -60,6 +60,18 @@ eq([2_000_000 - 1, 2_000_000, 3_500_000, 6_000_000].map((x) => workReduction(1_0
 
 eq(paybackAge(50_490_000, 1_000_000, 65), 69.2, '손익분기 나이')
 eq(nominal(1_000_000, 2026, 2040, 0.02), 1_319_479, '명목 환산')
+
+// 공식 수치 (2026-10-04 확인): A값 2025.12~2026.11·부양가족연금 2026 = 국민연금공단, 상·하한 2026.7~ = 정책브리핑, 물가 2.1% = 복지부
+eq([A_VALUE, DEPENDENT_ANNUAL.spouse, DEPENDENT_ANNUAL.child, DEPENDENT_ANNUAL.parent], [3_193_511, 306_630, 204_360, 204_360], 'A값·부양가족연금')
+eq([INCOME_FLOOR, INCOME_CAP, CPI_2026], [410_000, 6_590_000, 0.021], '기준소득월액 상·하한·물가')
+
+// /pension-calculator 나이 입력: 30세·2023년(27세) 가입·65세 은퇴 = 2023~2060 38년 (60~65세 임의계속가입)
+const byAge = calcByAge(30, 3_000_000, 27, 65)
+eq(byAge.basic, calcPension({ birthYear: 1996, startYear: 2023, years: 38, income: 3_000_000 }).basic, '나이 → 연도 변환')
+eq(byAge.ownMonths, 456, '38년')
+if (!(byAge.basic > 1_000_000 && byAge.basic < 3_000_000 * 0.5)) { fail++; console.log('FAIL 월 연금이 소득의 50% 넘음', byAge.basic) }
+eq(calcByAge(30, 3_000_000, 27, 70).ownMonths, 456, '65세 넘는 은퇴 나이는 65세까지만 납부')
+eq(calcByAge(58, 3_000_000, 57, 60).eligible, false, '3년 가입 = 수급권 없음')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-national-pension: all passed')

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { MIN_WAGE_2026, calcPay, shiftMinutes } from '@/utils/workHours'
+import { MIN_WAGE_2027 } from '@/utils/minimumWage'
 import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
 import ShareResult from '@/components/ShareResult'
@@ -303,7 +304,7 @@ function HourlyWageInner() {
                     <span>{t('minWage.mine', { wage: won(r.hourly) })}</span>
                     <span>{t('minWage.monthlyMin', { hours: r.monthlyHours, amount: won(MIN_WAGE_2026 * r.monthlyHours) })}</span>
                   </div>
-                  <p className={`text-sm font-medium ${isAbove ? 'text-body' : 'text-red-600'}`}>
+                  <p className={`text-sm font-medium ${isAbove ? 'text-body' : 'text-red-600'}`} aria-live="polite">
                     {isAbove
                       ? t('minWage.above', { diff: won(r.hourly - MIN_WAGE_2026) })
                       : t('minWage.below', { diff: won(MIN_WAGE_2026 - r.hourly) })}
@@ -311,6 +312,10 @@ function HourlyWageInner() {
                   {!isAbove && !holiday && (inputType === 'monthly' || inputType === 'yearly') && (
                     <p className="text-xs text-muted">{t('minWage.holidayNote')}</p>
                   )}
+                  <p className="text-xs text-muted">
+                    {t('minWage.next', { wage: won(MIN_WAGE_2027), hours: r.monthlyHours, amount: won(MIN_WAGE_2027 * r.monthlyHours) })}
+                    {isAbove && Math.round(r.hourly) < MIN_WAGE_2027 && ` ${t('minWage.nextBelow', { diff: won(MIN_WAGE_2027 - r.hourly) })}`}
+                  </p>
                   <p className="text-xs text-muted">
                     {t('avgCompare', { percent: Math.round((r.yearly / AVG_ANNUAL_SALARY_KR) * 100) })}
                   </p>

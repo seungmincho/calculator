@@ -1,5 +1,6 @@
 // 연말정산(근로소득) 2026년 귀속 → 2027년 1~2월 정산. 회귀 체크: node scripts/check-year-end-tax.ts
-// 금액 단위: 원(정수). 근거 조문은 각 함수 주석. 기준일 2026-10-01 (2025.12 개정 소득세법·조특법 반영).
+// 금액 단위: 원(정수). 근거 조문은 각 함수 주석. 기준일 2026-10-04 (2025.12·2026.4.21 개정 소득세법, 2025.12 개정 조특법 반영).
+// 미반영: 2026 세제개편안(2026.8.3 발표, 국회 심의 중 — 기본공제 소득요건 300만, 대중교통 추가공제 폐지, 출산·혼인공제 재정전환 등)
 import { INSURANCE, PENSION_ANNUAL_CAP } from './insuranceRates.ts'
 
 export const TAX_YEAR = 2026
@@ -44,7 +45,8 @@ export function earnedIncomeCredit(tax: number, salary: number): number {
   return Math.floor(Math.min(c, cap))
 }
 
-// ── 소득세법 §59의2 자녀세액공제 (8세 이상 기본공제 자녀) + 출산·입양(첫째 30, 둘째 50, 셋째 이상 70) ──
+// ── 소득세법 §59의2 자녀세액공제 + 출산·입양(첫째 30, 둘째 50, 셋째 이상 70).
+//    대상 연령(2026.4.21 개정 부칙 §2): 2026 귀속 9세 이상이되 2017년생 제외 → 2016년 이전 출생 기본공제 자녀 ──
 export const childCredit = (n: number) => (n <= 0 ? 0 : n === 1 ? 250_000 : 550_000 + (n - 2) * 400_000)
 export const birthCredit = (order: number) => [0, 300_000, 500_000, 700_000][Math.min(3, Math.max(0, order))]
 
@@ -134,13 +136,14 @@ export function donationCredit(amount: number, earnedIncome: number) {
   return Math.floor(Math.min(a, 10_000_000) * 0.15 + Math.max(0, a - 10_000_000) * 0.3)
 }
 
-// ── 조특법 §58 고향사랑기부금 (연 2,000만 한도): 10만 이하 100/110, 10만 초과~20만 40% (2026 기부분~), 초과 15%(1천만 초과 30%) ──
+// ── 조특법 §58① (2025.12.23 개정, 2026 기부분~) 고향사랑기부금 연 2,000만 한도: 10만 이하 100/110, 10만 초과~20만 40%,
+//    20만 초과 15% (특별재난지역 기부 30%는 미반영. 현행 조문에 '1천만 초과 30%' 구간 없음) ──
 export function hometownCredit(amount: number) {
   const a = Math.min(amount, 20_000_000)
   const t1 = Math.min(a, 100_000)
   const t2 = Math.min(Math.max(a - 100_000, 0), 100_000)
   const rest = Math.max(a - 200_000, 0)
-  return Math.floor(t1 * 100 / 110 + t2 * 0.4 + Math.min(rest, 10_000_000) * 0.15 + Math.max(rest - 10_000_000, 0) * 0.3)
+  return Math.floor(t1 * 100 / 110 + t2 * 0.4 + rest * 0.15)
 }
 
 // ── 조특법 §95의2 월세: 총급여 8천만 이하 무주택, 연 1,000만 한도, 5,500만 이하 17% / 초과 15% ──
@@ -170,7 +173,7 @@ export interface YetInput extends CardSpend, Medical {
   salary: number
   spouse: boolean
   children: number        // 기본공제 자녀 (나이 무관)
-  kidsUnder8: number      // 그중 8세 미만 (자녀세액공제 제외)
+  kidsUnder8: number      // 그중 자녀세액공제 제외 자녀 (2026 귀속: 2017년 이후 출생). 필드명은 URL 호환용
   others: number          // 부모 등 기타 부양가족
   elderly: number         // 70세 이상 (경로우대 +100만)
   disabled: number        // 장애인 (+200만)

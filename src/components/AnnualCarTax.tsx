@@ -57,7 +57,7 @@ export default function AnnualCarTax() {
   const r = calcAnnual(input, year)
   const lumps = LUMP_MONTHS.map((m) => calcLump(r, year, m))
   const jan = lumps[0]
-  const series = kind === 'car' ? ageSeries(input, year) : []
+  const series = r.ageApplies ? ageSeries(input, year) : []
   const curAge = r.h2.age
   const ageCut = r.h1.reduction > 0 || r.h2.reduction > 0
   const fullAnnual = r.base // 경감 전 연세액
@@ -189,14 +189,14 @@ export default function AnnualCarTax() {
                 <div key={h} className="bg-subtle rounded-2xl p-4">
                   <p className="text-sm text-muted">{t(`u.${h}`)}</p>
                   <p className="text-xl font-bold text-fg tabular-nums mt-1">{won(r[h].total)}{t('u.won')}</p>
-                  {kind === 'car' && <p className="text-xs text-muted mt-0.5">{t('u.ageOf', { age: r[h].age, pct: Math.round(r[h].reduction * 100) })}</p>}
+                  {r.ageApplies && <p className="text-xs text-muted mt-0.5">{t('u.ageOf', { age: r[h].age, pct: Math.round(r[h].reduction * 100) })}</p>}
                 </div>
               ))}
             </div>
 
             <div className="divide-y divide-line border-y border-line text-sm">
               <Row label={t('u.row.base')} value={`${won(fullAnnual)}${t('u.won')}`} />
-              {kind === 'car' && <Row label={t('u.row.age', { age: curAge })} value={ageCut ? `-${won(reducedBy)}${t('u.won')}` : t('u.row.noAge')} />}
+              {r.ageApplies && <Row label={t('u.row.age', { age: curAge })} value={ageCut ? `-${won(reducedBy)}${t('u.won')}` : t('u.row.noAge')} />}
               <Row label={t('u.row.tax')} value={`${won(r.tax)}${t('u.won')}`} strong />
               <Row label={t('u.row.edu')} value={r.hasEdu ? `${won(r.edu)}${t('u.won')}` : t('u.row.noEdu')} strong />
             </div>

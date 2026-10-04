@@ -57,10 +57,10 @@ export const EXCESS_FROM = 40_000_000         // 단순경비율 초과율 적�
 
 export type Method = 'simple' | 'standard' | 'book'
 
-/** prev = 직전연도 수입 (0 = 올해 신규) */
+/** prev = 직전연도 수입 (0 = 올해 신규). 시행령 §143④: 신규 또는 직전 3,600만 미만이면서 당해 수입도 7,500만(§208⑤2호다목) 미만 */
 export function eligibleMethod(revenue: number, prev: number): 'simple' | 'standard' {
-  if (prev <= 0) return revenue < NEW_BIZ_LIMIT ? 'simple' : 'standard'
-  return prev < SIMPLE_PREV_LIMIT ? 'simple' : 'standard'
+  if (revenue >= NEW_BIZ_LIMIT) return 'standard'
+  return prev <= 0 || prev < SIMPLE_PREV_LIMIT ? 'simple' : 'standard'
 }
 
 export const isDoubleEntry = (prev: number) => prev >= DOUBLE_ENTRY_LIMIT
@@ -80,11 +80,12 @@ export function standardIncome(revenue: number, major: number, ind: Industry, do
   return { income: Math.min(raw, cap), capped: raw > cap, cap }
 }
 
-/** 노란우산공제 소득공제 한도 (조특법 §86의3, 2025.1.1 이후) — 사업소득금액 기준 */
+/** 노란우산공제 소득공제 한도 (조특법 §86의3①, 2025.3.14 개정 — 2025년 납부분부터) — 사업소득금액 기준 */
 export const yellowUmbrellaLimit = (bizIncome: number) =>
-  bizIncome <= 40_000_000 ? 6_000_000 : bizIncome <= 100_000_000 ? 4_000_000 : 2_000_000
+  bizIncome <= 40_000_000 ? 6_000_000 : bizIncome <= 60_000_000 ? 5_000_000 : bizIncome <= 100_000_000 ? 4_000_000 : 2_000_000
 
-/** 자녀세액공제 (소득세법 §59의2, 2025~): 8세 이상 자녀 1명 25만, 2명 55만, 3명째부터 +40만 */
+/** 자녀세액공제 (소득세법 §59의2, 2025~): 1명 25만, 2명 55만, 3명째부터 +40만.
+ *  대상 연령: 2025 귀속 8세 이상, 2026~2029 귀속 2016년 이전 출생(부칙 2026.4.21 §2 — 2017년생 제외), 2030~ 13세 이상 */
 export const childCredit = (n: number) => (n <= 0 ? 0 : n === 1 ? 250_000 : 550_000 + (n - 2) * 400_000)
 
 export const STANDARD_CREDIT = 70_000 // 표준세액공제 (근로소득 없는 종합소득자, §59의4⑨)

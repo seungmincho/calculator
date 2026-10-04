@@ -31,9 +31,16 @@ eq([stressRatio('variable', 0, 30), stressRatio('fixed', 0, 30), stressRatio('mi
 const M: NewLoanSpec = { kind: 'mortgage', rate: 4, years: 30, method: 'equalPayment', rateType: 'variable', fixedYears: 5, region: 'capital' }
 // 수도권 3.0%, 5년 혼합 2.4%, 5년 주기 1.2% (뱅크몰 30년 만기 예시), 지방 0.75%
 eq([stressAdd(M), stressAdd({ ...M, rateType: 'mixed' }), stressAdd({ ...M, rateType: 'periodic' }), stressAdd({ ...M, rateType: 'fixed' })], [3, 2.4, 1.2, 0], '수도권 가산')
-eq([stressAdd({ ...M, region: 'local' }), stressAdd({ ...M, region: 'local', rateType: 'mixed' })], [0.75, 0.6], '지방 가산')
+// 지방은 2단계 비율 (은행연합회 공시 2026.6.30): 5년 혼합 0.45%p, 5년 주기 0.23%p(0.225)
+eq([stressAdd({ ...M, region: 'local' }), stressAdd({ ...M, region: 'local', rateType: 'mixed' }), stressAdd({ ...M, region: 'local', rateType: 'periodic' })], [0.75, 0.45, 0.225], '지방 가산')
+// 고정비중 70% 이상 미적용, 50~70% 구간 (공시표: 수도권 1.20%/지방 0.15%)
+eq([stressRatio('mixed', 21, 30), stressRatio('periodic', 21, 30), stressRatio('mixed', 15, 30, 'local')], [0, 0, 0.2], '70% 이상 미적용·지방 50~70%')
+eq([stressAdd({ ...M, rateType: 'mixed', fixedYears: 15 }), stressAdd({ ...M, rateType: 'mixed', fixedYears: 15, region: 'local' })], [1.2, 0.15], '15년 혼합 수도권·지방')
+eq(stressRatio('periodic', 3, 30), 1, '변동주기 5년 미만 = 변동형')
 const C: NewLoanSpec = { ...M, kind: 'credit', rate: 5 }
 eq([stressAdd(C, 90_000_000), stressAdd(C, 110_000_000), stressAdd({ ...C, rateType: 'fixed' }, 110_000_000)], [0, 1.5, 0], '신용대출 1억 초과만')
+// 신용대출 고정형: 만기 5년 이상 미적용, 3~5년 60%(0.9%p), 3년 미만 1.5%p (은행연합회 공시)
+eq([stressAdd({ ...C, rateType: 'fixed', years: 4 }, 110_000_000), stressAdd({ ...C, rateType: 'fixed', years: 2 }, 110_000_000)], [0.9, 1.5], '신용 고정 만기별')
 
 // 역산: 월 100만원 여력(연소득 3천만 × 40%) · 30년 원리금균등 → 4% 2억946만, 7% 1억5,031만 (뱅크몰 예시)
 eq(maxNewLoan(30_000_000, 40, [], M, false), 209_460_000, '역산 4%')

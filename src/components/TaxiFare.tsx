@@ -6,7 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Link as LinkIcon, Check, Download } from 'lucide-react'
 import {
-  REGION_RATES, PREMIUM, REGION_GROUPS, REGION_KEYS, TAXI_TYPES,
+  REGION_RATES, REGION_GROUPS, REGION_KEYS, TAXI_TYPES,
   getSchedule, nightRateFor, computeFare, estimateMinutes, perPerson,
   type RegionKey, type TaxiType, type Traffic,
 } from '@/utils/taxiFare'
@@ -70,6 +70,7 @@ export default function TaxiFare() {
   const timeNum = Math.max(0, parseFloat(time) || 0)
 
   const schedule = useMemo(() => getSchedule(region, taxiType), [region, taxiType])
+  const premiumRate = useMemo(() => getSchedule(region, 'deluxe'), [region])
   const activeNightRate = nightRateFor(hour, schedule)
 
   const fare = useMemo(
@@ -496,6 +497,9 @@ export default function TaxiFare() {
                 <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{won} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
                 <p className="text-body">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{won}</p>
                 <p className="text-body">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{won}</p>
+                {regionRate.longFrom != null && regionRate.longFare != null && (
+                  <p className="text-body">{t('fareInfo.long', { km: regionRate.longFrom / 1000, m: regionRate.unitDist, fare: regionRate.longFare })}</p>
+                )}
               </div>
               <div className="bg-surface rounded-xl p-4 space-y-1">
                 <p className="font-semibold text-fg mb-1">{t('fareInfo.surchargeTitle')}</p>
@@ -504,7 +508,7 @@ export default function TaxiFare() {
                   {regionRate.deepStart != null && ` (${hh(regionRate.deepStart)}~${hh(regionRate.deepEnd)}${t('hourUnit')} ${Math.round(regionRate.deepRate * 100)}%)`}
                 </p>
                 <p className="text-body">{t('fareInfo.outOfCity')}: {Math.round(regionRate.outRate * 100)}%</p>
-                <p className="text-body">{t('fareInfo.premium')}: {PREMIUM.base.toLocaleString()}{won} ({(PREMIUM.baseDist / 1000).toFixed(1)}km)</p>
+                <p className="text-body">{t('fareInfo.premium')}: {premiumRate.base.toLocaleString()}{won} ({(premiumRate.baseDist / 1000).toFixed(1)}km)</p>
               </div>
             </div>
             <p className="text-xs text-muted mt-3">{t('fareInfo.sourceNote')}</p>

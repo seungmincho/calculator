@@ -9,8 +9,8 @@
  * - 제63조②·제62조: 조기 1년당 6%(월 0.5%) 감액, 연기 1개월당 0.6%(1년 7.2%) 가산 — 둘 다 부양가족연금 제외
  * - 제18조: 군복무 크레딧 최대 12개월(2026 이후 전역자), B = A/2 / 제19조: 출산 크레딧 자녀 1·2명 12개월씩, 셋째부터 18개월, B = A
  * - 제63조의2(2025.12.16 개정, 2026.6.17 시행): 초과소득월액(소득 − A) 200만원 이상부터 감액, 노령연금액의 1/2 한도
- * - 제52조 부양가족연금 기본 연 15만/10만원 → 물가 반영 2026년 배우자 연 306,630원, 자녀·부모 연 204,360원 (언론 보도, 공단 고시 원문 확인 필요)
- * A값 2026년 적용 3,193,511원(보건복지부 2026.1 국민연금심의위 의결 보도).
+ * - 제52조 부양가족연금 2026.1~12: 배우자 연 306,630원, 자녀·부모 연 204,360원 — 국민연금공단 https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do
+ * A값 3,193,511원(2025.12~2026.11 적용, 같은 공단 페이지). 기준소득월액 41만~659만원(2026.7~2027.6, korea.kr 2026.1.12)
  */
 import { INSURANCE } from './insuranceRates.ts'
 
@@ -144,6 +144,16 @@ export function calcPension(p: PensionInput): PensionResult {
     startAge: age, pensionYear: p.birthYear + age, periods,
     paidTotal, paidSelf: p.employee === false ? paidTotal : Math.round(paidTotal / 2),
   }
+}
+
+/** 나이 기준 간이 입력(/pension-calculator) → calcPension. 60세 이후 납부는 임의계속가입(최대 65세, 제13조)으로 본다 */
+export function calcByAge(currentAge: number, income: number, joinAge: number, retireAge: number): PensionResult {
+  return calcPension({
+    birthYear: YEAR - currentAge,
+    startYear: YEAR - (currentAge - joinAge),
+    years: Math.max(0, Math.min(retireAge, 65) - joinAge),
+    income,
+  })
 }
 
 /** 조기(shift<0)·연기(shift>0) 수령 월액. 부양가족연금은 가감 없이 더함 */

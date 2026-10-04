@@ -9,22 +9,22 @@ import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { carAcqTax, bondExempt, type Usage, type VanSeats, type MotorcycleSize } from '@/utils/carAcquisitionTax'
 
 interface CarTaxResult {
-  acquisitionTax: number // 취득세
-  registrationTax: number // 등록세  
+  acquisitionTax: number // 취득세 (2011년부터 등록세 통합)
+  registrationTax: number // 등록세 — 폐지(취득세 통합), 이전 기록 호환용 0
   railroadBond: number // 도시철도채권
   licenseRegistrationTax: number // 등록면허세
   totalTax: number // 총 세금
   totalCostWithTax: number // 차량가격 + 세금
   appliedBenefits: string[] // 적용된 감면 혜택
+  rate: number // 취득세율
+  disabledBlocked: boolean // 장애인·국가유공자 감면 배기량 요건 미충족
 }
 
 type CarType = 'passenger' | 'truck' | 'van' | 'motorcycle' | 'compact' | 'electric'
 type FuelType = 'gasoline' | 'diesel' | 'lpg' | 'electric' | 'hybrid'
-type Usage = 'personal' | 'business' // 비영업용/영업용
-type VanSeats = '7-10' | '11+' // 승합차 인승
-type MotorcycleSize = 'small' | 'large' // 125cc 이하/초과
 
 export default function CarTaxCalculator() {
   const t = useTranslations('carTax')
@@ -55,138 +55,40 @@ export default function CarTaxCalculator() {
 
     if (!price || price <= 0) return
 
-    let acquisitionTaxRate = 0.02 // 기본 취득세 2%
-    let registrationTaxRate = 0 // 등록세
-    let railroadBondRate = 0 // 도시철도채권
-    let licenseRegistrationTax = 0 // 등록면허세
-    const appliedBenefits: string[] = []
-
-    // 차종별, 용도별 세율 적용
-    if (carType === 'compact') {
-      // 경차
-      acquisitionTaxRate = 0.02
-      registrationTaxRate = 0
-    } else if (carType === 'passenger') {
-      // 승용차
-      if (usage === 'personal') {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0.05
-      } else {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0.02
-      }
-    } else if (carType === 'van') {
-      // 승합차
-      if (usage === 'personal') {
-        if (vanSeats === '7-10') {
-          acquisitionTaxRate = 0.02
-          registrationTaxRate = 0.05
-        } else {
-          acquisitionTaxRate = 0.02
-          registrationTaxRate = 0.03
-        }
-      } else {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0.02
-      }
-    } else if (carType === 'truck') {
-      // 화물차
-      if (usage === 'personal') {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0.03
-      } else {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0.02
-      }
-    } else if (carType === 'motorcycle') {
-      // 이륜차
-      if (motorcycleSize === 'small') {
-        acquisitionTaxRate = 0.02
-        registrationTaxRate = 0
-        licenseRegistrationTax = 0
-      } else {
-        if (usage === 'personal') {
-          acquisitionTaxRate = 0.02
-          registrationTaxRate = 0.03
-          licenseRegistrationTax = 15000
-        } else {
-          acquisitionTaxRate = 0.02
-          registrationTaxRate = 0.02
-          licenseRegistrationTax = 15000
-        }
-      }
+    const ct = carType === 'electric' ? 'passenger' : carType
+    const input = {
+      price, carType: ct, usage, vanSeats, motorcycleSize,
+      electric: fuelType === 'electric', displacement: disp,
+      children: isMultiChild ? childCount : 0, disabled: isDisabled || isVeteran,
     }
+    const tax = carAcqTax(input)
 
-    // 도시철도채권 (서울시 기준 6%, 실제 부담은 약 30%)
-    if (region === 'seoul' && carType !== 'motorcycle') {
-      railroadBondRate = 0.06 * 0.3 // 할인율 적용
+    // ponytail: 도시철도채권(서울) 매입·즉시매도 부담은 기존 대략값(6% × 30%) 유지 — 매입률·할인율은 조례·시장에 따라 다름
+    const railroadBond = region === 'seoul' && carType !== 'motorcycle' && !bondExempt(input) ? price * 0.06 * 0.3 : 0
+    const licenseRegistrationTax = carType === 'motorcycle' && motorcycleSize === 'large' ? 15000 : 0
+
+    const labels: Record<string, string> = {
+      compact: '경차 감면 (최대 75만원)',
+      electric: '전기차 감면 (최대 140만원)',
+      child2: '2자녀 가정 감면 (50%)',
+      child3: '3자녀 이상 가정 감면',
+      disabled: isDisabled ? '장애인 면제' : '국가유공자 면제',
     }
+    const appliedBenefits = tax.benefitKey ? [labels[tax.benefitKey]] : []
 
-    // 감면 혜택 계산
-    let acquisitionTaxBenefit = 0
-    let registrationTaxBenefit = 0
-
-    // 1. 경차 혜택 (최대 75만원)
-    if (carType === 'compact') {
-      const compactBenefit = Math.min(price * 0.05, 750000) // 5% 또는 최대 75만원
-      acquisitionTaxBenefit = Math.max(acquisitionTaxBenefit, compactBenefit)
-      appliedBenefits.push('경차 감면')
-    }
-
-    // 2. 전기차 혜택 (최대 140만원, 이륜차 제외)
-    if (fuelType === 'electric' && carType !== 'motorcycle') {
-      const electricBenefit = Math.min(price * 0.07, 1400000) // 7% 또는 최대 140만원
-      acquisitionTaxBenefit = Math.max(acquisitionTaxBenefit, electricBenefit)
-      appliedBenefits.push('전기차 감면')
-    }
-
-    // 3. 다자녀 혜택 (전기차와 중복 불가)
-    if (isMultiChild && childCount >= 2 && !appliedBenefits.includes('전기차 감면')) {
-      if (childCount === 2) {
-        // 2자녀: 50% 감면 최대 70만원
-        const multiChildBenefit = Math.min(price * acquisitionTaxRate * 0.5, 700000)
-        acquisitionTaxBenefit = Math.max(acquisitionTaxBenefit, multiChildBenefit)
-        appliedBenefits.push('2자녀 가정 감면')
-      } else if (childCount >= 3) {
-        // 3자녀 이상: 100% 감면 최대 140만원
-        const multiChildBenefit = Math.min(price * acquisitionTaxRate, 1400000)
-        acquisitionTaxBenefit = Math.max(acquisitionTaxBenefit, multiChildBenefit)
-        appliedBenefits.push('3자녀 이상 가정 감면')
-      }
-    }
-
-    // 4. 장애인/국가유공자 혜택 (100% 면제)
-    if (isDisabled || isVeteran) {
-      acquisitionTaxBenefit = price * acquisitionTaxRate
-      registrationTaxBenefit = price * registrationTaxRate
-      appliedBenefits.push(isDisabled ? '장애인 면제' : '국가유공자 면제')
-    }
-
-    // 세금 계산
-    const baseAcquisitionTax = price * acquisitionTaxRate
-    const baseRegistrationTax = price * registrationTaxRate
-    const railroadBond = price * railroadBondRate
-
-    const acquisitionTax = Math.max(0, baseAcquisitionTax - acquisitionTaxBenefit)
-    const registrationTax = Math.max(0, baseRegistrationTax - registrationTaxBenefit)
-
-    const totalTax = acquisitionTax + registrationTax + railroadBond + licenseRegistrationTax
-    const totalCostWithTax = price + totalTax
-
-    const calculationResult = {
-      acquisitionTax,
-      registrationTax,
+    const totalTax = tax.tax + railroadBond + licenseRegistrationTax
+    setResult({
+      acquisitionTax: tax.tax,
+      registrationTax: 0,
       railroadBond,
       licenseRegistrationTax,
       totalTax,
-      totalCostWithTax,
-      appliedBenefits
-    }
-
-    setResult(calculationResult)
+      totalCostWithTax: price + totalTax,
+      appliedBenefits,
+      rate: tax.rate,
+      disabledBlocked: tax.disabledBlocked,
+    })
     setShowSaveButton(true)
-
-    // 계산 기록은 저장 버튼을 눌렀을 때만 저장하도록 제거
   }
 
   useEffect(() => {
@@ -663,7 +565,7 @@ export default function CarTaxCalculator() {
                         onChange={() => setChildCount(3)}
                         className="mr-2"
                       />
-                      3자녀 이상 (100% 감면, 최대 140만원)
+                      3자녀 이상 (면제, 6인승 이하 승용은 최대 140만원)
                     </label>
                   </div>
                 )}
@@ -678,7 +580,7 @@ export default function CarTaxCalculator() {
                     onChange={(e) => setIsDisabled(e.target.checked)}
                     className="mr-2"
                   />
-                  장애인 (취득세/등록세 100% 면제)
+                  장애인 (취득세 면제, 승용은 2,000cc 이하)
                 </label>
               </div>
 
@@ -691,12 +593,12 @@ export default function CarTaxCalculator() {
                     onChange={(e) => setIsVeteran(e.target.checked)}
                     className="mr-2"
                   />
-                  국가유공자 1~3급 (취득세/등록세 100% 면제)
+                  국가유공자 상이 1~7급 (취득세 면제, 승용은 2,000cc 이하)
                 </label>
               </div>
 
               <div className="text-xs text-muted mt-2">
-                전기차 혜택과 다자녀 혜택은 중복 적용되지 않습니다
+                감면이 여러 개 해당하면 감면액이 가장 큰 하나만 적용됩니다 (지방세특례제한법 제180조)
               </div>
             </div>
           </div>
@@ -707,23 +609,16 @@ export default function CarTaxCalculator() {
           {result && (
             <>
               {/* 주요 결과 */}
-              <div className="bg-primary rounded-2xl shadow-lg p-8 text-white">
+              <div className="bg-primary rounded-2xl shadow-lg p-8 text-white" aria-live="polite">
                 <h3 className="text-xl font-bold mb-6 flex items-center">
                   취등록세 계산 결과
                 </h3>
                 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-2 border-b border-white/20">
-                    <span className="text-green-100">취득세</span>
+                    <span className="text-green-100">취득세 ({(result.rate * 100).toFixed(0)}%, 등록세 통합)</span>
                     <span className="text-lg font-semibold">
                       {formatCurrency(result.acquisitionTax)}원
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-2 border-b border-white/20">
-                    <span className="text-green-100">등록세</span>
-                    <span className="text-lg font-semibold">
-                      {formatCurrency(result.registrationTax)}원
                     </span>
                   </div>
                   
@@ -772,6 +667,10 @@ export default function CarTaxCalculator() {
                       </div>
                     </div>
                   )}
+                  {result.disabledBlocked && (
+                    <p className="text-sm text-white/90">장애인·국가유공자 감면은 배기량 2,000cc 이하 승용차(7~10인승 등 예외)만 받을 수 있어 반영하지 않았습니다.</p>
+                  )}
+                  <p className="text-xs text-white/80">{t('basis')}</p>
 
                   {/* 공유/저장 버튼 */}
                   <div className="flex space-x-2 mt-4">
@@ -844,11 +743,11 @@ export default function CarTaxCalculator() {
                   <div className="flex items-center mb-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
                     <h4 className="text-lg font-semibold text-fg">
-                      환경차 세제 혜택 적용
+                      환경차 세제 혜택 안내
                     </h4>
                   </div>
                   <p className="text-fg">
-                    {fuelType === 'electric' ? '전기차' : '하이브리드차'}로 취득세·등록세 50% 감면이 적용되었습니다.
+                    {fuelType === 'electric' ? '전기차 취득세 감면(최대 140만원, 2026.12.31 취득분까지)을 반영했습니다. 다른 감면과는 큰 것 하나만 적용됩니다.' : '하이브리드차 취득세 감면은 2024.12.31로 끝나 반영하지 않았습니다.'}
                   </p>
                 </div>
               )}
@@ -880,8 +779,8 @@ export default function CarTaxCalculator() {
               주요 세금 종류
             </h4>
             <ul className="space-y-2 text-body">
-              <li>• <strong>취득세</strong>: 모든 차량 2%</li>
-              <li>• <strong>등록세</strong>: 비영업용 승용차 5%, 화물차 3% 등</li>
+              <li>• <strong>취득세</strong>: 비영업용 승용 7%(경차 4%), 승합·화물 5%, 영업용 4%, 125cc 이하 이륜 2%</li>
+              <li>• <strong>등록세</strong>: 2011년부터 취득세에 통합되어 따로 내지 않습니다</li>
               <li>• <strong>도시철도채권</strong>: 서울시 6% (실제 부담 약 30%)</li>
               <li>• <strong>등록면허세</strong>: 이륜차 125cc 초과 시 15,000원</li>
             </ul>
@@ -894,9 +793,9 @@ export default function CarTaxCalculator() {
             <ul className="space-y-2 text-body">
               <li>• <strong>경차</strong>: 취득세 최대 75만원 감면</li>
               <li>• <strong>전기차</strong>: 취득세 최대 140만원 감면</li>
-              <li>• <strong>하이브리드</strong>: ❌ 2024.12.31부로 감면 종료</li>
-              <li>• <strong>다자녀</strong>: 2자녀 50%(최대 70만원), 3자녀+ 100%(최대 140만원)</li>
-              <li>• <strong>장애인/국가유공자</strong>: 취득세·등록세 100% 면제</li>
+              <li>• <strong>하이브리드</strong>: 2024.12.31부로 감면 종료</li>
+              <li>• <strong>다자녀</strong>: 2자녀 50%(최대 70만원), 3자녀+ 면제(최대 140만원) — 6인승 이하 승용 기준, 2027년 말까지</li>
+              <li>• <strong>장애인/국가유공자</strong>: 승용 2,000cc 이하·7~10인승 등 요건 차량 취득세 면제</li>
             </ul>
           </div>
         </div>

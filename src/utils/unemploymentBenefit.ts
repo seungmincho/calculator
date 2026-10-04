@@ -1,19 +1,26 @@
 /** 실업급여(구직급여) 계산 순수 로직. 검증: node scripts/check-unemployment-benefit.ts */
-import { MIN_WAGE_2026 } from './workHours.ts'
+import { MIN_WAGE_2026, minWageOn } from './minimumWage.ts'
 import { addDays, addMonths, daysBetween, weekday } from './dday.ts'
 import { getKoreanHolidays } from './koreanHolidays.ts'
 
-// 2026.1.1 이후 이직자 기준.
-// 상한: 고용보험법 시행령 제68조 — 1일 66,000 → 68,100원 (2026.1.1 시행)
-// 하한: 고용보험법 제46조 — 최저기초일액(최저임금 × 1일 소정근로시간) × 80%
-//       = 10,320 × 0.8 × 8h = 66,048원. 2023.12.1부터 단시간 근로자는 실제 소정근로시간으로 계산(4시간 간주 폐지).
+// 이직일(마지막 근무일) 기준. 날짜를 안 주면 2026년 이직으로 본다.
+// 상한: 고용보험법 시행령 제68조 — 기초일액 상한 113,500원 × 60% = 1일 68,100원 (2026.1.1 시행).
+//       2025.12.31 이전 이직자는 종전 66,000원 (시행령 부칙<대통령령 제35934호> 제4조).
+// 하한: 고용보험법 제45조④·제46조 — 이직일 당시 최저임금 × 1일 소정근로시간 × 80%
+//       = 2026년 10,320 × 0.8 × 8h = 66,048원. 2023.12.1부터 단시간 근로자는 실제 소정근로시간으로 계산(4시간 간주 폐지).
+//       제46조②: 하한액이 상한액보다 커도 하한액을 지급 → 2027년 이직(최저임금 10,700원)은 하한 68,480원 > 상한 68,100원.
 export const DAILY_CAP = 68_100
+const DAILY_CAP_BEFORE_2026 = 66_000
 export const BENEFIT_RATE = 0.6
 export const FLOOR_RATE = 0.8
 export const WAITING_DAYS = 7
 
-/** 1일 하한액 = 최저임금 × 80% × 1일 소정근로시간(최대 8) */
-export const dailyFloor = (hours = 8) => Math.floor(MIN_WAGE_2026 * FLOOR_RATE * Math.min(Math.max(hours, 1), 8))
+/** 이직일 기준 1일 상한액 */
+export const dailyCap = (leaveDate?: string) => (leaveDate && leaveDate < '2026-01-01' ? DAILY_CAP_BEFORE_2026 : DAILY_CAP)
+
+/** 1일 하한액 = 이직일 당시 최저임금 × 80% × 1일 소정근로시간(최대 8) */
+export const dailyFloor = (hours = 8, leaveDate?: string) =>
+  Math.floor((leaveDate ? minWageOn(leaveDate) : MIN_WAGE_2026) * FLOOR_RATE * Math.min(Math.max(hours, 1), 8))
 
 export type AgeGroup = 'under50' | 'over50'
 export type InsurancePeriod = 'under1' | '1to3' | '3to5' | '5to10' | 'over10'
@@ -38,11 +45,13 @@ export const avgDailyWage = (monthly: number, leaveDate: string) => Math.floor((
 
 export interface Daily { daily: number; raw: number; floor: number; applied: 'cap' | 'floor' | 'none' }
 
-export function dailyBenefit(avgDaily: number, hours = 8): Daily {
+export function dailyBenefit(avgDaily: number, hours = 8, leaveDate?: string): Daily {
   const raw = Math.floor(avgDaily * BENEFIT_RATE)
-  const floor = dailyFloor(hours)
-  if (raw > DAILY_CAP) return { daily: DAILY_CAP, raw, floor, applied: 'cap' }
-  if (raw < floor) return { daily: floor, raw, floor, applied: 'floor' }
+  const floor = dailyFloor(hours, leaveDate)
+  const cap = dailyCap(leaveDate)
+  // 제46조②: 상한 적용 후에도 하한보다 낮으면 하한
+  if (raw > cap && cap >= floor) return { daily: cap, raw, floor, applied: 'cap' }
+  if (raw < floor || raw > cap) return { daily: floor, raw, floor, applied: 'floor' }
   return { daily: raw, raw, floor, applied: 'none' }
 }
 

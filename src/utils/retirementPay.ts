@@ -125,7 +125,7 @@ export function calcRetirement(x: RetirementInput) {
   const daysToEligible = eligible ? 0 : serviceDays(x.end, oneYearEnd)
   const taxYears = taxServiceYears(x.start, x.end)
   const tax = retirementTax(pay, taxYears)
-  // IRP 이전 후 연금수령: 연금소득세 = 이연퇴직소득세 × 70%(실수령 10년차까지) / 60%(11~20년차) / 50%(20년 초과, 2026.1.1~) (소득세법 제129조 ①5호)
+  // IRP 이전 후 연금수령: 연금소득세 = 이연퇴직소득세 × 70%(실수령 10년차까지) / 60%(11~20년차) / 50%(20년 초과, 2026.1.1~) (소득세법 제129조 ①5호의3)
   const irpAt = (k: number) => floor10(tax.tax * k) + floor10(tax.localTax * k)
   const irp70 = irpAt(0.7), irp60 = irpAt(0.6), irp50 = irpAt(0.5)
   return {

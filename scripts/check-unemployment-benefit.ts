@@ -1,8 +1,9 @@
 // 실업급여 회귀 체크: node scripts/check-unemployment-benefit.ts
 import {
-  DAILY_CAP, dailyFloor, benefitDays, daysIn3Months, avgDailyWage, dailyBenefit,
+  DAILY_CAP, dailyCap, dailyFloor, benefitDays, daysIn3Months, avgDailyWage, dailyBenefit,
   earlyBonus, lastEligiblePaidDay, schedule, nextBusinessDay,
 } from '../src/utils/unemploymentBenefit.ts'
+import { MIN_WAGE_2026, MIN_WAGE_2027, minWageFor, minWageOn } from '../src/utils/minimumWage.ts'
 
 let fail = 0
 const eq = (a: unknown, b: unknown, msg: string) => {
@@ -24,6 +25,24 @@ eq(dailyBenefit(110_080).applied, 'none', '110,080×0.6=66,048 → 하한 그대
 eq(dailyBenefit(110_079), { daily: 66048, raw: 66047, floor: 66048, applied: 'floor' }, '하한 미달')
 eq(dailyBenefit(50_000, 4), { daily: 33024, raw: 30000, floor: 33024, applied: 'floor' }, '단시간 4h 하한')
 eq(dailyBenefit(200_000, 4).daily, 68100, '단시간도 상한 동일')
+
+// 최저임금 단일 출처 (minimumWage.ts) — 고용노동부 고시
+eq([minWageFor(2025), minWageFor(2026), minWageFor(2027)], [10030, 10320, 10700], '최저임금 2025·2026·2027')
+eq(MIN_WAGE_2026 * 209, 2_156_880, '2026 월 환산 209시간')
+eq(MIN_WAGE_2027 * 209, 2_236_300, '2027 월 환산 209시간 (2026.8.5 고시)')
+eq(minWageOn('2027-01-01'), 10700, '2027.1.1 시행')
+
+// 이직일별 상·하한 (시행령 제68조·부칙 제4조, 법 제45조④ 이직일 당시 최저임금)
+eq(dailyCap('2025-12-31'), 66000, '2025 이직 상한 66,000 (종전)')
+eq(dailyCap('2026-01-01'), 68100, '2026 이직 상한 68,100')
+eq(dailyFloor(8, '2025-12-31'), 64192, '2025 이직 하한 10,030×0.8×8')
+eq(dailyFloor(8, '2026-06-30'), 66048, '2026 이직 하한')
+eq(dailyFloor(8, '2027-01-04'), 68480, '2027 이직 하한 10,700×0.8×8')
+eq(dailyBenefit(200_000, 8, '2025-12-31'), { daily: 66000, raw: 120000, floor: 64192, applied: 'cap' }, '2025 이직 상한')
+// 법 제46조②: 하한 > 상한이면 고소득자도 하한 지급 (2027 이직, 상한 개정 전)
+eq(dailyBenefit(200_000, 8, '2027-01-04'), { daily: 68480, raw: 120000, floor: 68480, applied: 'floor' }, '2027 하한 > 상한 → 하한')
+eq(dailyBenefit(113_700, 8, '2027-01-04').daily, 68480, '상한~하한 사이 raw → 하한')
+eq(dailyBenefit(150_000, 4, '2027-01-04'), { daily: 68100, raw: 90000, floor: 34240, applied: 'cap' }, '2027 단시간 4h는 상한 그대로')
 
 // 소정급여일수 표 (고용보험법 별표 1)
 eq(['under1', '1to3', '3to5', '5to10', 'over10'].map((p) => benefitDays('under50', p as never)), [120, 150, 180, 210, 240], '50세 미만')

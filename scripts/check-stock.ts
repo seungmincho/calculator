@@ -2,9 +2,17 @@
 import assert from 'node:assert/strict'
 import {
   trade, breakeven, targetSell, averagePrice, sharesToTarget, usTax, usTrade, tickUp, sellTaxRate,
+  SELL_TAX, US_TAX_RATE, US_DEDUCTION,
 } from '../src/utils/stock.ts'
 
 // 2026 매도세율: 코스피 0.05%+농특 0.15%, 코스닥 0.20%, 코넥스 0.10%, ETF 면제
+// 근거: 증권거래세법 시행령 제5조(대통령령 제36001호, 2025.12.31 개정·2026.1.1 시행), 농어촌특별세법 제5조①5호
+assert.deepEqual(SELL_TAX.kospi, { tx: 0.0005, farm: 0.0015 })
+assert.deepEqual(SELL_TAX.kosdaq, { tx: 0.002, farm: 0 })
+assert.deepEqual(SELL_TAX.konex, { tx: 0.001, farm: 0 })
+// 해외주식 양도세: 소득세법 제104조①12호 20%(+지방세 10%) · 제103조 기본공제 250만
+assert.equal(US_TAX_RATE, 0.2)
+assert.equal(US_DEDUCTION, 2_500_000)
 assert.equal(+sellTaxRate('kospi').toFixed(6), 0.002)
 assert.equal(sellTaxRate('kosdaq'), 0.002)
 assert.equal(sellTaxRate('konex'), 0.001)

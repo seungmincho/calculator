@@ -31,7 +31,7 @@ export const JONGBU_FMV = 0.6
 export const CAP_RATE = 1.5
 export const DEDUCT_GENERAL = 9 * EOK
 export const DEDUCT_ONE = 12 * EOK
-export const SPLIT_JONGBU = 3_000_000 // 종부세 분납 기준 (300만원 초과, 2025년~)
+export const SPLIT_JONGBU = 2_500_000 // 종부세법 제20조·시행령 제16조: 본세 250만원 초과분(500만원 초과 시 50%) 분납 (농특세 포함 300만원 초과와 같음)
 export const PROP_JULY_ONLY = 200_000 // 재산세 20만원 이하 → 7월 한 번에 (조례)
 
 export function progressive(base: number, table: Bracket[]): number {
@@ -145,7 +145,7 @@ const sumJ = (a: Jongbu, b: Jongbu): Jongbu => {
   return r
 }
 
-/** 종부세 분납 가능액 (6개월 뒤 납부 가능분) */
+/** 종부세 본세 분납 가능액 (6개월 뒤 납부 가능분). 농특세도 같은 비율로 나눠 낸다 */
 export function splitAmount(tax: number): number {
   if (tax <= SPLIT_JONGBU) return 0
   return tax <= 2 * SPLIT_JONGBU ? tax - SPLIT_JONGBU : Math.floor(tax / 2)

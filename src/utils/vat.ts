@@ -147,7 +147,7 @@ export function simpleReturn(i: SimpleInput): ReturnResult {
   const cardCredit = Math.min(Math.floor(pos(i.cardSales) * CARD_RATE), CARD_LIMIT)
   const eFilingCredit = i.eFiling ? E_FILING_CREDIT : 0
   const exempt = sales < SIMPLE_EXEMPT
-  // 간이과세자는 공제세액이 납부세액을 넘어도 환급 없음 (법 제63조⑤)
+  // 간이과세자는 공제세액이 납부세액을 넘어도 환급 없음 (법 제63조⑥)
   const payable = exempt ? 0 : Math.max(0, outputTax - inputTax - cardCredit - eFilingCredit)
   return { outputTax, inputTax, cardCredit, eFilingCredit, payable, exempt, overThreshold: sales >= SIMPLE_THRESHOLD }
 }

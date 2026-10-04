@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { recordToolClick, getPopularTools } from '@/utils/toolAnalytics'
+import { recordToolClick, getPopularTools, isAnalyticsConfigured } from '@/utils/toolAnalytics'
 import { recordToolUsage } from '@/utils/recentTools'
-import { isSupabaseConfigured } from '@/utils/webrtc/supabaseClient'
 import { menuConfig, categoryKeys, type MenuItem } from '@/config/menuConfig'
 
 export interface PopularToolItem extends MenuItem {
@@ -35,7 +34,7 @@ export const useTrackToolVisit = () => {
 
 export const usePopularTools = (limit: number = 5): UsePopularToolsReturn => {
   const [popularTools, setPopularTools] = useState<PopularToolItem[]>([])
-  const [isConfigured] = useState(() => isSupabaseConfigured())
+  const [isConfigured] = useState(() => isAnalyticsConfigured())
   const [isLoading, setIsLoading] = useState(isConfigured)
 
   useEffect(() => {

@@ -68,7 +68,7 @@ export default function RelatedTools() {
   if (sameCategoryTools.length === 0 && crossCategoryTools.length === 0) return null
 
   const renderToolCard = (item: MenuItem) => (
-    <Link
+    <Link prefetch={false}
       key={item.href}
       href={item.href}
       className={`flex items-center gap-3 p-3 ${glassCard} hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all group`}

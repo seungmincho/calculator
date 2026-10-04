@@ -1,10 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import dynamic from 'next/dynamic'
 import DecisionToolsBar from '@/components/DecisionToolsBar'
-
-const LadderGame = dynamic(() => import('@/components/LadderGame'), { ssr: false })
+import LadderGame from '@/components/LadderGame'
 
 /** 예전 ?tool= 탭 링크 → 각 도구의 전용 페이지 */
 const LEGACY_TOOL_URLS: Record<string, string> = {

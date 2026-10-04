@@ -5,6 +5,8 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, Info, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { A_VALUE, INCOME_CAP, INCOME_FLOOR, YEAR, calcByAge } from '@/utils/nationalPension'
 
 interface PensionResult {
   monthlyPension: number
@@ -17,12 +19,9 @@ interface PensionResult {
   replacementRate: number
   contributionYears: number
   contributionMonths: number
+  eligible: boolean
+  startAge: number
 }
-
-const A_VALUE = 2_860_000 // 2024년 기준 전체 가입자 평균 소득 (원)
-const UPPER_INCOME_LIMIT = 6_170_000 // 2024년 상한 기준소득월액 (원)
-const CONTRIBUTION_RATE = 0.09
-const EMPLOYEE_RATE = 0.045
 
 function formatWon(amount: number): string {
   if (amount >= 100_000_000) {
@@ -60,54 +59,25 @@ function calculatePension(
   }
 
   const monthlyIncomeWon = monthlyIncomeManwon * 10_000
-  // 상한액 적용
-  const cappedIncome = Math.min(monthlyIncomeWon, UPPER_INCOME_LIMIT)
-
-  const totalMonths = (retirementAge - startAge) * 12
-  const contributionYears = retirementAge - startAge
-  const contributionMonths = totalMonths % 12
-
-  // 기본연금액 간이 계산
-  // 기본연금액 = 1.2 × (A + B) × (가입월수 / 480)
-  // B값 = 가입자 본인 평균 기준소득월액 (현재 소득으로 대체)
-  const bValue = cappedIncome
-  const baseFormula = 1.2 * (A_VALUE + bValue) * (totalMonths / 480)
-
-  // 20년 초과 가산 (초과 12개월마다 5%)
-  const extraMonths = Math.max(0, totalMonths - 240)
-  const extraBonus = baseFormula * 0.05 * (extraMonths / 12)
-
-  const monthlyPension = Math.round(baseFormula + extraBonus)
-  const annualPension = monthlyPension * 12
-
-  const monthlyEmployeeContribution = Math.round(cappedIncome * EMPLOYEE_RATE)
-  const monthlyEmployerContribution = Math.round(cappedIncome * EMPLOYEE_RATE)
-  const totalMonthlyContribution = Math.round(cappedIncome * CONTRIBUTION_RATE)
-  const totalEmployeeContribution = monthlyEmployeeContribution * totalMonths
-
-  // 연금/납부 비율: 예상 수령 기간을 20년(240개월)으로 가정
-  const expectedReceiveMonths = 240
-  const totalExpectedPension = monthlyPension * expectedReceiveMonths
-  const pensionRatio = totalEmployeeContribution > 0
-    ? (totalExpectedPension / totalEmployeeContribution)
-    : 0
-
-  // 소득대체율 (월 연금 / 월 소득)
-  const replacementRate = monthlyIncomeWon > 0
-    ? (monthlyPension / monthlyIncomeWon) * 100
-    : 0
+  // 국민연금법 2026 (계수·A값·상하한·보험료율 인상) — 계산은 utils/nationalPension.ts 공용
+  const r = calcByAge(currentAge, monthlyIncomeWon, startAge, retirementAge)
+  const monthlyPension = r.basic
+  const monthlyEmployeeContribution = Math.round(r.B * INSURANCE.pensionRate)
 
   return {
     monthlyPension,
-    annualPension,
-    totalEmployeeContribution,
-    totalMonthlyContribution,
+    annualPension: monthlyPension * 12,
+    totalEmployeeContribution: r.paidSelf,
+    totalMonthlyContribution: monthlyEmployeeContribution * 2,
     monthlyEmployeeContribution,
-    monthlyEmployerContribution,
-    pensionRatio,
-    replacementRate,
-    contributionYears,
-    contributionMonths,
+    monthlyEmployerContribution: monthlyEmployeeContribution,
+    // 연금/납부 비율: 예상 수령 기간 20년(240개월) 가정
+    pensionRatio: r.paidSelf > 0 ? (monthlyPension * 240) / r.paidSelf : 0,
+    replacementRate: (monthlyPension / monthlyIncomeWon) * 100,
+    contributionYears: r.ownMonths / 12,
+    contributionMonths: 0,
+    eligible: r.eligible,
+    startAge: r.startAge,
   }
 }
 
@@ -259,14 +229,14 @@ export default function PensionCalculator() {
                 <input
                   type="number"
                   min={1}
-                  max={617}
+                  max={INCOME_CAP / 10_000}
                   value={monthlyIncome}
                   onChange={e => setMonthlyIncome(Number(e.target.value))}
                   className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 <span className="text-sm text-muted whitespace-nowrap">{t('manwonUnit')}</span>
               </div>
-              <p className="text-xs text-faint mt-1">상한: 617만원</p>
+              <p className="text-xs text-faint mt-1">{t('capHint', { min: INCOME_FLOOR / 10_000, max: INCOME_CAP / 10_000 })}</p>
             </div>
 
             {/* 가입 시작 나이 */}
@@ -333,10 +303,11 @@ export default function PensionCalculator() {
           {hasCalculated && result ? (
             <>
               {/* 메인 결과 카드 */}
-              <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary rounded-xl shadow-lg p-6 text-white" aria-live="polite">
                 <p className="text-blue-100 text-sm font-medium mb-2">{t('resultTitle')}</p>
                 <p className="text-4xl font-bold mb-1">{formatWon(result.monthlyPension)}</p>
-                <p className="text-blue-200 text-sm">{t('monthlyPension')}</p>
+                <p className="text-blue-200 text-sm">{t('monthlyPension')} · {t('startAgeNote', { age: result.startAge })}</p>
+                {!result.eligible && <p className="text-blue-100 text-sm mt-2">{t('ineligible')}</p>}
                 <div className="mt-4 pt-4 border-t border-blue-500 flex items-center gap-2">
                   <span className="text-blue-100 text-sm">{t('annualPension')}:</span>
                   <span className="text-white font-semibold">{formatWon(result.annualPension)}</span>
@@ -363,13 +334,13 @@ export default function PensionCalculator() {
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('employeeContribution')}</span>
+                    <span className="text-sm text-sub">{t('employeeContribution', { rate: pct(INSURANCE.pensionRate) })}</span>
                     <span className="font-semibold text-fg">
                       {formatWonExact(result.monthlyEmployeeContribution)}/월
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-sub">{t('employerContribution')}</span>
+                    <span className="text-sm text-sub">{t('employerContribution', { rate: pct(INSURANCE.pensionRate) })}</span>
                     <span className="font-semibold text-muted">
                       {formatWonExact(result.monthlyEmployerContribution)}/월
                     </span>
@@ -451,6 +422,9 @@ export default function PensionCalculator() {
         <div>
           <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">{t('noticeTitle')}</p>
           <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">{t('notice')}</p>
+          <p className="text-xs text-sub mt-2">
+            {t('basis', { year: YEAR, a: A_VALUE.toLocaleString('ko-KR'), rate: pct(INSURANCE.pensionRateTotal), min: INCOME_FLOOR / 10_000, max: INCOME_CAP / 10_000 })}
+          </p>
         </div>
       </div>
 

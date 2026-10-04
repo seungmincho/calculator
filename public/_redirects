@@ -127,6 +127,7 @@
 /css-gradient  /css-gradient/  301
 /css-unit-converter  /css-unit-converter/  301
 /curl-builder  /curl-builder/  301
+/customs-duty  /customs-duty/  301
 /dday-calculator  /dday-calculator/  301
 /decision-tree  /decision-tree/  301
 /dev-cheatsheet  /dev-cheatsheet/  301
@@ -169,7 +170,9 @@
 /hangman  /hangman/  301
 /hash-generator  /hash-generator/  301
 /health  /health/  301
+/health-checkup  /health-checkup/  301
 /health-insurance  /health-insurance/  301
+/holiday-planner  /holiday-planner/  301
 /hourly-wage  /hourly-wage/  301
 /housing-subscription  /housing-subscription/  301
 /html-entity-converter  /html-entity-converter/  301
@@ -198,6 +201,7 @@
 /jwt-decoder  /jwt-decoder/  301
 /kanban-board  /kanban-board/  301
 /keyboard-converter  /keyboard-converter/  301
+/kimjang-calculator  /kimjang-calculator/  301
 /kmeans-clustering  /kmeans-clustering/  301
 /korean-syllable  /korean-syllable/  301
 /korean-wordle  /korean-wordle/  301
@@ -281,6 +285,7 @@
 /rock-paper-scissors  /rock-paper-scissors/  301
 /roman-numeral  /roman-numeral/  301
 /roulette  /roulette/  301
+/running-pace  /running-pace/  301
 /salary-calculator  /salary-calculator/  301
 /salary-comparison  /salary-comparison/  301
 /salary-rank  /salary-rank/  301

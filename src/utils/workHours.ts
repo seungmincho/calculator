@@ -1,8 +1,7 @@
 /** 근무시간·수당 계산 (WorkHoursCalculator). 검증: node scripts/check-work-hours.ts */
 
-// 2026년 최저임금 시간급 10,320원 (고용노동부 고시, 2025-08-05)
-// https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144
-export const MIN_WAGE_2026 = 10320
+// 최저임금은 minimumWage.ts 단일 출처 (2026년 시간급 10,320원)
+export { MIN_WAGE_2026 } from './minimumWage.ts'
 /** 월 환산 주 수 = 365 / 7 / 12 ≈ 4.345 */
 export const WEEKS_PER_MONTH = 365 / 7 / 12
 

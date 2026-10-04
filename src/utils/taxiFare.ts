@@ -22,29 +22,38 @@ export interface RegionRate {
   nightRate: number   // 일반 심야할증율
   deepRate: number    // 최고 심야할증율
   outRate: number     // 시계외 할증율
+  longFrom?: number   // 장거리 요율 시작 거리 (m). 이후 거리요금 단위당 longFare 원 (제주 20km~, 전남 9km~)
+  longFare?: number
+  comboCap?: number   // 심야+시계외 중복 할증 상한 (전남 40%, 대전 50%)
+  premium?: Partial<Omit<RegionRate, 'premium'>> // 모범·대형이 전국 기본(PREMIUM)과 다른 지역
 }
 
-// 2026년 9월 기준 시도별 중형택시 요율 (지자체별 변동 가능 — 실제 요율은 관할 시·도 확인)
-// 검증: 서울 4,800/1.6km(2023.2~) · 대구 4,500/1.7km/125m(2025.1~) · 제주 4,300/2km(2024.7~) · 전남 4,300/2km
-// 예정: 전남 22개 시군 4,800/1.7km(2026.11~12 시행 추진), 대구 5,200~5,600(2027 초 용역안)
+// 2026-10-04 기준 시도별 중형택시 요율. 도 지역은 시·군마다 달라 도청 소재지·대표 시 값 (실제 요율은 관할 시·군 확인)
+// 출처(지자체 고시·보도자료): 서울 news.seoul.go.kr/traffic/archives/1659 · 경기(고양) goyang.go.kr · 인천 incheon.go.kr/traffic/TR010201
+//   부산 busan.go.kr/nbtnewsBU/1565618(2023.6.1) · 대구 뉴스룸 aid=269959(2025.2.22) · 대전 daejeon.go.kr menuSeq=3308 + 2026.3.16 할증 개편
+//   광주 gwangju.go.kr seq=20841(2025.10.22) · 울산 ulsan.go.kr(2025.3.10) · 세종 보도자료(2024.8.1, 기본거리 1.5km는 2022 보도자료)
+//   강원(원주 2024.8.5) · 충남(천안, transport.chungnam.go.kr 2025.7 표) · 전북(전주 2023.8.1) · 전남(여수·나주 2023.11.1)
+//   경북(구미, 128m) · 경남(창원 2026.7.1) · 제주 jeju.go.kr/traffic/bus/taxifee.htm(2024.7.1)
+// 미확인(기존 값 유지): 충북 기본거리·단위·심야, 대구 시간요금·중복할증 상한, 충남 심야 시간대, 경북·강원·제주 시계외
+// 예정: 전남 4,800/1.7km(2026.11~12 확정 예정), 대전 기본요금 하반기 결정, 충북 4,500~4,800 검토
 export const REGION_RATES: Record<RegionKey, RegionRate> = {
   seoul:     { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.2 },
-  gyeonggi:  { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.2 },
-  incheon:   { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.3 },
-  busan:     { base: 4800, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3 },
-  daegu:     { base: 4500, baseDist: 1700, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  daejeon:   { base: 4300, baseDist: 1800, unitDist: 133, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.3 },
-  gwangju:   { base: 4300, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  ulsan:     { base: 4300, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  sejong:    { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gangwon:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
+  gyeonggi:  { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.2, premium: { unitDist: 144, timeUnit: 35, outRate: 0 } },
+  incheon:   { base: 4800, baseDist: 1600, unitDist: 135, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.3 },
+  busan:     { base: 4800, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3, premium: { base: 7500, unitDist: 140, timeUnit: 33 } },
+  daegu:     { base: 4500, baseDist: 1700, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.35 },
+  daejeon:   { base: 4300, baseDist: 1800, unitDist: 132, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3, comboCap: 0.5 },
+  gwangju:   { base: 4800, baseDist: 1700, unitDist: 132, unitFare: 100, timeUnit: 32, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.35, premium: { base: 5400, baseDist: 1700, unitDist: 149 } },
+  ulsan:     { base: 4500, baseDist: 2000, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.3 },
+  sejong:    { base: 4000, baseDist: 1500, unitDist: 97, unitFare: 100, timeUnit: 29, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.3 },
+  gangwon:   { base: 4600, baseDist: 2000, unitDist: 131, unitFare: 100, timeUnit: 31, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.2 },
   chungbuk:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  chungnam:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeonbuk:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeonnam:   { base: 4300, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gyeongbuk: { base: 4500, baseDist: 1700, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gyeongnam: { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeju:      { base: 4300, baseDist: 2000, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
+  chungnam:  { base: 4000, baseDist: 1400, unitDist: 110, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.32 },
+  jeonbuk:   { base: 4300, baseDist: 2000, unitDist: 134, unitFare: 100, timeUnit: 32, timeFare: 100, nightStart: 0, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.5 },
+  jeonnam:   { base: 4300, baseDist: 2000, unitDist: 130, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 0, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.35, longFrom: 9000, longFare: 140, comboCap: 0.4 },
+  gyeongbuk: { base: 4500, baseDist: 1700, unitDist: 128, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
+  gyeongnam: { base: 4600, baseDist: 2000, unitDist: 128, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.3 },
+  jeju:      { base: 4300, baseDist: 2000, unitDist: 126, unitFare: 100, timeUnit: 31, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2, longFrom: 20000, longFare: 120 },
 }
 
 // 모범/대형 택시 프리미엄 요율 (전국 유사 — 지역별 세부 요율은 관할 확인)
@@ -70,10 +79,13 @@ export const estimateMinutes = (km: number, traffic: Traffic) =>
 export function getSchedule(region: RegionKey, type: TaxiType): RegionRate {
   const r = REGION_RATES[region]
   if (type === 'regular') return r
-  const sched: RegionRate = { ...r, ...PREMIUM }
-  // 모범택시는 심야할증 없음
-  if (type === 'deluxe') Object.assign(sched, { nightRate: 0, deepRate: 0, deepStart: null, deepEnd: null })
-  return sched
+  // 모범·대형: 중형과 같은 심야 시간대에 20% 단일 할증, 시계외 20% (서울·인천·경기·광주 고시)
+  return {
+    ...r, ...PREMIUM,
+    deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2,
+    longFrom: undefined, longFare: undefined, comboCap: undefined,
+    ...r.premium,
+  }
 }
 
 const inWindow = (start: number, end: number, h: number) =>
@@ -103,12 +115,15 @@ export function computeFare(distanceKm: number, timeMin: number, hour: number, r
   const s = getSchedule(region, type)
   const km = Math.max(0, distanceKm)
   const extraDist = Math.max(0, km * 1000 - s.baseDist)
-  const distanceFare = Math.floor(extraDist / s.unitDist) * s.unitFare
+  const units = Math.floor(extraDist / s.unitDist)
+  // ponytail: 장거리 요율은 거리요금에만 적용 (전남은 9km 초과 시간요금도 140원 — 저속 구간 비중이 작아 생략)
+  const longUnits = s.longFrom != null && s.longFare != null ? Math.max(0, units - Math.floor(Math.max(0, s.longFrom - s.baseDist) / s.unitDist)) : 0
+  const distanceFare = units * s.unitFare + longUnits * ((s.longFare ?? s.unitFare) - s.unitFare)
   const slowSec = Math.max(0, timeMin * 60 - (km / CRUISE_KMH) * 3600)
   const timeFare = Math.floor(slowSec / s.timeUnit) * s.timeFare
   const metered = s.base + distanceFare + timeFare
   const nightRate = nightRateFor(hour, s)
-  const outRate = outOfCity ? s.outRate : 0
+  const outRate = outOfCity ? (s.comboCap != null ? Math.max(0, Math.min(s.outRate, s.comboCap - nightRate)) : s.outRate) : 0
   const nightSurcharge = Math.floor(metered * nightRate)
   const outSurcharge = Math.floor(metered * outRate)
   const total = metered + nightSurcharge + outSurcharge

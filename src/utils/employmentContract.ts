@@ -5,7 +5,8 @@
  *       제55조·제18조③(주휴, 주 15h 미만 제외), 제69조(18세 미만 1일 7h·1주 35h, 합의 시 +1h/+5h),
  *       최저임금 2026 시간급 10,320원(월 209시간 환산 2,156,880원)
  */
-import { shiftMinutes, requiredBreak, MIN_WAGE_2026 } from './workHours.ts'
+import { shiftMinutes, requiredBreak } from './workHours.ts'
+import { MIN_WAGE_2026 } from './minimumWage.ts'
 import { holidayHoursFor, monthlyHoursFor, WEEKS_PER_MONTH } from './weeklyHolidayPay.ts'
 
 export { MIN_WAGE_2026 }

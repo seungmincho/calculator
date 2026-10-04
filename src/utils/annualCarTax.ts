@@ -56,7 +56,7 @@ export function carAge(year: number, regYear: number, regMonth: number, half: 1 
   return regMonth <= 6 || half === 2 ? d + 1 : d
 }
 
-/** 차령 경감률: 3년차부터 매년 5%, 최대 50% (제127조 ③) — 배기량 기준 승용만 */
+/** 차령 경감률: 3년차부터 매년 5%, 최대 50% (제127조 ①2호) — 배기량 기준 비영업용 승용만 */
 export const ageReduction = (age: number) => (age >= 3 ? Math.min(0.5, 0.05 * (age - 2)) : 0)
 
 export interface Half {
@@ -82,7 +82,7 @@ export interface TaxResult {
 export function calcAnnual(i: CarInput, year: number): TaxResult {
   const base = baseAnnual(i)
   const hasEdu = i.use === 'private' && (i.kind === 'car' || i.kind === 'ev')
-  const ageApplies = i.kind === 'car'
+  const ageApplies = i.kind === 'car' && i.use === 'private' // 제127조①2호: 비영업용 승용만
   const half = (h: 1 | 2): Half => {
     const age = Math.max(0, carAge(year, i.regYear, i.regMonth, h))
     const reduction = ageApplies ? ageReduction(age) : 0
@@ -97,12 +97,12 @@ export function calcAnnual(i: CarInput, year: number): TaxResult {
 
 const overlap = (a1: number, a2: number, b1: number, b2: number) => Math.max(0, Math.min(a2, b2) - Math.max(a1, b1) + 1)
 
-/** 연납 (제128조 ③): 신청 월 다음 달 1일~12/31 기간 세액(일할)에 5% 공제 */
+/** 연납 (제128조③ 계산식, 시행령 제125조): 1·3월 = 연세액 × 납부기한 다음 날~12/31 일수/연간 일수 × 5%,
+ *  6월 = 제2기분 세액 × 5%, 9월 = 제2기분 세액 × 10/1~12/31 일수/184 × 5% */
 export function calcLump(r: TaxResult, year: number, month: LumpMonth) {
   const Y = daysInYear(year)
-  const h1End = dayOfYear(year, 6, 30)
-  const from = dayOfYear(year, month + 1, 1)
-  const deduction = (r.h1.annual * overlap(from, Y, 1, h1End) + r.h2.annual * overlap(from, Y, h1End + 1, Y)) / Y * LUMP_RATE
+  const rest = Y - dayOfYear(year, month + 1, 1) + 1
+  const deduction = (month === 6 ? r.h2.tax : month === 9 ? r.h2.tax * rest / 184 : r.tax * rest / Y) * LUMP_RATE
   const tax = floor10(r.tax - deduction)
   const edu = r.hasEdu ? floor10(tax * EDU_RATE) : 0
   const total = tax + edu

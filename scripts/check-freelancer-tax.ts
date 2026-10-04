@@ -43,10 +43,22 @@ assert.equal(eligibleMethod(50_000_000, 35_999_999), 'simple')
 assert.equal(eligibleMethod(50_000_000, 36_000_000), 'standard')
 assert.equal(eligibleMethod(74_999_999, 0), 'simple')
 assert.equal(eligibleMethod(75_000_000, 0), 'standard')
+// 시행령 §143④: 직전 3,600만 미만이어도 당해 수입 7,500만 이상이면 단순경비율 대상 아님
+assert.equal(eligibleMethod(75_000_000, 30_000_000), 'standard')
 
-// ── 공제 한도 ──
+// ── 2025 귀속 경비율 고시(국세청고시 제2026-14호) 원문 값 ──
+assert.deepEqual(INDUSTRIES.map((x) => [x.code, x.simple, x.excess, x.standard]), [
+  ['940909', 64.1, 49.7, 17.4], ['940926', 64.4, 50.2, 20.9], ['940100', 58.7, 42.2, 7.2],
+  ['940903', 61.7, 46.4, 15.4], ['940306', 64.1, 49.7, 12.1], ['940500', 70.9, 59.3, 16.2],
+  ['940600', 58.4, 41.8, 7.6], ['940918', 79.4, 71.2, 19.8], ['940302', 29.0, 10.6, 5.9],
+])
+
+// ── 공제 한도: 노란우산 (조특법 §86의3①, 2025.3.14 개정 4구간) ──
 assert.equal(yellowUmbrellaLimit(40_000_000), 6_000_000)
-assert.equal(yellowUmbrellaLimit(40_000_001), 4_000_000)
+assert.equal(yellowUmbrellaLimit(40_000_001), 5_000_000)
+assert.equal(yellowUmbrellaLimit(60_000_000), 5_000_000)
+assert.equal(yellowUmbrellaLimit(60_000_001), 4_000_000)
+assert.equal(yellowUmbrellaLimit(100_000_000), 4_000_000)
 assert.equal(yellowUmbrellaLimit(100_000_001), 2_000_000)
 assert.deepEqual([0, 1, 2, 3].map(childCredit), [0, 250_000, 550_000, 950_000])
 

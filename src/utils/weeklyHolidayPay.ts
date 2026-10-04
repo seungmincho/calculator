@@ -6,7 +6,8 @@
  * 주휴시간 = min(주 소정근로, 40) / 40 × 8. 소정근로는 하루 8시간 이내분만 (초과분은 연장근로).
  * 월 환산 = (주 근로 + 주휴) × 365/7/12 를 정수 반올림 (주 40시간 → 209시간, 최저임금 고시 월 환산과 동일)
  */
-import { MIN_WAGE_2026, WEEKS_PER_MONTH } from './workHours.ts'
+import { WEEKS_PER_MONTH } from './workHours.ts'
+import { MIN_WAGE_2026 } from './minimumWage.ts'
 import { INSURANCE } from './insuranceRates.ts'
 import { withholding33 } from './salesCommission.ts'
 

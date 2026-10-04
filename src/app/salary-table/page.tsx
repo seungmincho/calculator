@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 }
 
 const FAQ = [
-  { q: '이 표의 계산 기준은 무엇인가요?', a: `부양가족 1인(본인), 월 비과세 식대 20만원, ${YEAR}년 4대보험 요율(국민연금 ${pct(INSURANCE.pensionRate)}, 건강보험 ${pct(INSURANCE.healthRate)}, 장기요양 건강보험료의 ${pct(INSURANCE.longTermCareRate)}, 고용보험 ${pct(INSURANCE.employmentRate)})과 소득세 누진세율·근로소득세액공제를 적용했습니다. 부양가족이 늘면 실수령액은 표보다 많아집니다.` },
+  { q: '이 표의 계산 기준은 무엇인가요?', a: `부양가족 1인(본인), 월 비과세 식대 20만원, ${YEAR}년 4대보험 요율(국민연금 ${pct(INSURANCE.pensionRate)}, 건강보험 ${pct(INSURANCE.healthRate)}, 장기요양 건강보험료의 ${pct(INSURANCE.longTermCareRate)}, 고용보험 ${pct(INSURANCE.employmentRate)})과 국세청 근로소득 간이세액표(2026.2.27 개정)를 적용했습니다. 부양가족이 늘면 실수령액은 표보다 많아집니다.` },
   { q: '회사에서 받는 월급과 왜 조금 다른가요?', a: '이 표의 소득세는 회사가 실제로 쓰는 국세청 근로소득 간이세액표(2026.2.27 개정) 기준이라 급여명세서와 거의 같습니다. 비과세 항목(식대 20만원 기준)·부양가족 수가 다르거나 성과급이 있는 달, 4대보험 보수월액이 전년도 기준인 경우 조금 달라질 수 있고, 연간 세금은 연말정산에서 확정됩니다.' },
-  { q: '연봉이 오르면 실수령액도 같은 비율로 오르나요?', a: '아닙니다. 소득세가 누진세율(6~45%)이라 연봉이 높을수록 공제율이 올라갑니다. 연봉 3,000만원은 약 10%, 5,000만원은 약 16%, 1억원은 약 25%가 공제됩니다. 국민연금은 월 소득 659만원(연 7,908만원)까지만 부과되어 그 이상은 공제율 증가가 완만해집니다.' },
+  { q: '연봉이 오르면 실수령액도 같은 비율로 오르나요?', a: '아닙니다. 소득세가 누진세율(6~45%)이라 연봉이 높을수록 공제율이 올라갑니다. 연봉 3,000만원은 약 10%, 5,000만원은 약 14%, 1억원은 약 22%가 공제됩니다. 국민연금은 월 소득 659만원(연 7,908만원)까지만 부과되어 그 이상은 공제율 증가가 완만해집니다.' },
   { q: '월급(세전)으로 검색하려면 어떻게 하나요?', a: '세전 월급에 12를 곱한 연봉 행을 보면 됩니다. 예: 세전 월급 300만원 = 연봉 3,600만원. 상여금이 별도면 연봉 계산기에 연 총액을 입력하세요.' },
 ]
 
@@ -55,7 +55,7 @@ export default function SalaryTablePage() {
           <header className="space-y-3">
             <h1 className="text-3xl font-bold text-fg">연봉 실수령액 표 <span className="text-blue-600 dark:text-blue-400">{YEAR}</span></h1>
             <p className="text-body leading-relaxed max-w-3xl">
-              연봉 2,000만원부터 2억원까지 구간별 월 실수령액입니다. {YEAR}년 4대보험 요율과 소득세 누진세율, 근로소득세액공제를 반영했으며
+              연봉 2,000만원부터 2억원까지 구간별 월 실수령액입니다. {YEAR}년 4대보험 요율과 국세청 근로소득 간이세액표를 반영했으며
               기준은 <strong>부양가족 1인(본인)·월 비과세 20만원</strong>입니다. 연봉을 클릭하면 부양가족·비과세를 바꿔 다시 계산할 수 있습니다.
             </p>
             <ul className="flex flex-wrap gap-2 text-sm">
@@ -106,7 +106,7 @@ export default function SalaryTablePage() {
             <h2 className="text-lg font-semibold text-fg">계산 기준 ({YEAR}년)</h2>
             <ul className="text-sm text-body space-y-1.5 list-disc pl-5">
               <li>국민연금 {pct(INSURANCE.pensionRate)} (기준소득월액 상한 {manwon(INSURANCE.pensionMonthlyCap)}) · 건강보험 {pct(INSURANCE.healthRate)} · 장기요양 건강보험료의 {pct(INSURANCE.longTermCareRate)} · 고용보험 {pct(INSURANCE.employmentRate)}</li>
-              <li>소득세: 근로소득공제 → 인적공제(1인 150만원) → 누진세율 6~45% → 근로소득세액공제(총급여별 한도) → 지방소득세 10%</li>
+              <li>소득세: 국세청 근로소득 간이세액표(2026.2.27 개정, 공제대상가족 1인) → 지방소득세 10%</li>
               <li>비과세 식대 월 {won(BASE.nonTaxableMonthly)} 제외 후 보험료·세금 산정. 연말정산 특별공제(보험료·의료비·카드 등)는 미반영</li>
               <li>표의 월 금액은 연간 합계 ÷ 12. 실제 급여명세서의 원천징수액과는 차이가 있을 수 있음</li>
             </ul>

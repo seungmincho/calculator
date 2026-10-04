@@ -33,20 +33,23 @@ eq('1600', calcAnnual({ ...base, cc: 1598, regYear: 2026 }, Y).tax, 1598 * 140)
 eq('ev', calcAnnual({ ...base, kind: 'ev', regYear: 2015 }, Y).total, 130_000)
 // 영업용 승용 2,000cc 19원, 교육세 없음
 eq('biz car', calcAnnual({ ...base, use: 'business', regYear: 2026 }, Y).total, 1999 * 19 - 1999 * 19 % 20)
+// 차령 경감은 비영업용 승용만 (지방세법 제127조①2호) — 영업용 10년차도 경감 없음
+eq('biz car no age cut', calcAnnual({ ...base, use: 'business', regYear: 2017 }, Y).total, 1999 * 19 - 1999 * 19 % 20)
 // 승합·화물 정액, 교육세 없음
 eq('van small', calcAnnual({ ...base, kind: 'van' }, Y).total, 65_000)
 eq('truck 1t', calcAnnual({ ...base, kind: 'truck' }, Y).total, 28_500)
 
-// 연납: 1월 = 334/365×5% ≈ 4.58%, 6월 = 184/365×5% 해당 2기분만
+// 연납 (지방세법 제128조③ 계산식): 1월 = 연세액 × 334/365 × 5%, 6월 = 제2기분 × 5%, 9월 = 제2기분 × 92/184 × 5%
 const ev = calcAnnual({ ...base, kind: 'ev' }, Y)
 const jan = calcLump(ev, Y, 1)
 eq('ev jan tax', jan.tax, 95_420) // 100,000 - 4,575.3 → 95,420
 eq('ev jan edu', jan.edu, 28_620)
 eq('ev jan pct ~4.58', Math.round(jan.pct * 10) / 10, 4.6)
+eq('ev mar tax', calcLump(ev, Y, 3).tax, 96_230) // 100,000 - 100,000×275/365×5%(3,767.1) → 96,232.9
 const jun = calcLump(ev, Y, 6)
-eq('ev jun tax', jun.tax, 97_470) // 100,000 - 2,520.5
+eq('ev jun tax', jun.tax, 97_500) // 100,000 - 50,000×5%
 const sep = calcLump(ev, Y, 9)
-eq('ev sep tax', sep.tax, 98_730) // 100,000 - 1,260.3
+eq('ev sep tax', sep.tax, 98_750) // 100,000 - 50,000×92/184×5%
 if (!(jan.saved > calcLump(ev, Y, 3).saved && calcLump(ev, Y, 3).saved > jun.saved && jun.saved > sep.saved)) { fail++; console.log('FAIL lump order') }
 
 // 일할: 전기차 2026-01-01~2026-06-30 (181일) → 100,000×181/365 = 49,589 → 49,580

@@ -1,5 +1,6 @@
 // 건강보험료 계산 회귀 체크: node scripts/check-health-insurance.ts
-import { workplace, extraIncome, propertyScore, regional, dependent, afterRetirement } from '../src/utils/healthInsurance.ts'
+import { HI, workplace, extraIncome, propertyScore, regional, dependent, afterRetirement } from '../src/utils/healthInsurance.ts'
+import { INSURANCE } from '../src/utils/insuranceRates.ts'
 
 let fail = 0
 const eq = (a: unknown, b: unknown, msg: string) => { if (JSON.stringify(a) !== JSON.stringify(b)) { fail++; console.log('FAIL', msg, JSON.stringify(a), '!=', JSON.stringify(b)) } }
@@ -48,6 +49,12 @@ eq(dependent({ ...base, relation: 'sibling' }).relation, false, '형제자매 �
 
 // 퇴직 후: 평균 보수 400만, 과표 2억
 eq(afterRetirement(4_000_000, { propertyTaxBase: 200_000_000 }), { continued: 162_690, withWage: 267_730, withoutWage: 127_840 }, '퇴직 후 비교')
+
+// 공식 수치 (2026-10-04 확인): NHIS 2026 요율·점수당 금액, 복지부 고시 제2025-222호 상·하한, 국민연금 상·하한 2026.7~
+eq([INSURANCE.healthRateTotal, INSURANCE.healthRate, INSURANCE.longTermCareRate, INSURANCE.employmentRate], [0.0719, 0.03595, 0.1314, 0.009], '건강·장기요양·고용 요율')
+eq(Math.abs(INSURANCE.healthRateTotal * INSURANCE.longTermCareRate - 0.009448) < 1e-5, true, '장기요양 0.9448% (소득 대비)')
+eq([INSURANCE.pensionRateTotal, INSURANCE.pensionRate, INSURANCE.pensionMonthlyCap, INSURANCE.pensionMonthlyFloor], [0.095, 0.0475, 6_590_000, 410_000], '국민연금 요율·상하한')
+eq([HI.premiumCap, HI.premiumFloor, HI.incomePremiumCap, HI.pointValue], [9_183_480, 20_160, 4_591_740, 211.5], '건보 상·하한·점수당 금액')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-health-insurance: all passed')

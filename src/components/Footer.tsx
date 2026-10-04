@@ -20,7 +20,7 @@ const Footer = () => {
         {/* Top section: Logo + Description */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
           <div className="max-w-sm">
-            <Link href="/" className="flex items-center space-x-2 mb-3 group">
+            <Link prefetch={false} href="/" className="flex items-center space-x-2 mb-3 group">
               <BrandMark />
               <span className="text-[17px] font-bold tracking-tight text-fg">{t('footer.title')}</span>
             </Link>
@@ -43,7 +43,7 @@ const Footer = () => {
                 <ul className="space-y-2">
                   {topItems.map((item) => (
                     <li key={item.href}>
-                      <Link
+                      <Link prefetch={false}
                         href={item.href}
                         className="text-sm text-sub hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200"
                       >
@@ -63,16 +63,16 @@ const Footer = () => {
             {t('footer.copyright')}
           </p>
           <div className="flex items-center gap-4 text-sm text-muted">
-            <Link href="/tips" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link prefetch={false} href="/tips" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('navigation.financialTips')}
             </Link>
-            <Link href="/games" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link prefetch={false} href="/games" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.links.gameHub')}
             </Link>
-            <Link href={`/inquiry${pathname && pathname !== '/' ? `?from=${encodeURIComponent(pathname)}` : ''}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link prefetch={false} href={`/inquiry${pathname && pathname !== '/' ? `?from=${encodeURIComponent(pathname)}` : ''}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.inquiry')}
             </Link>
-            <Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link prefetch={false} href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.privacy')}
             </Link>
           </div>

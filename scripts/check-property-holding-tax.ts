@@ -53,8 +53,9 @@ eq(j30.total, j30.property.total + Math.min(j30.jointEach!.total, j30.jointSpeci
 const capped = holdingTax({ prices: [15 * EOK, 15 * EOK], oneHouse: false, age: 0, years: 0, joint: false, share: 50, urban: true, prevTotal: 6_000_000 })
 eq(capped.property.main + capped.jongbu.tax, 9_000_000, '세부담 상한 150%')
 
-// 분납 (300만 초과): 400만 → 100만, 600만 → 300만, 1,000만 → 500만
-eq([splitAmount(3_000_000), splitAmount(4_000_000), splitAmount(6_000_000), splitAmount(10_000_000)], [0, 1_000_000, 3_000_000, 5_000_000], '분납')
+// 분납 (종부세법 제20조·시행령 제16조: 본세 250만 초과~500만 이하는 250만 초과분, 500만 초과는 50%)
+eq([splitAmount(2_500_000), splitAmount(3_000_000), splitAmount(4_000_000), splitAmount(5_000_000), splitAmount(6_000_000), splitAmount(10_000_000)],
+  [0, 500_000, 1_500_000, 2_500_000, 3_000_000, 5_000_000], '분납')
 // 재산세 7월·9월 반반, 20만원 이하는 7월 한 번에
 eq(h20.schedule.july + h20.schedule.september, h20.property.total, '재산세 7·9월 합')
 const small = holdingTax({ prices: [3 * EOK], oneHouse: true, age: 0, years: 0, joint: false, share: 50, urban: false, prevTotal: 0 })

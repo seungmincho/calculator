@@ -5,11 +5,15 @@
 // - 스트레스 DSR 3단계(2025.7.1~): 기본 스트레스 금리 1.5%, 신용대출은 잔액 1억 초과 시에만 부과
 //   (금융위 2025.5.20 「3단계 스트레스 DSR 시행방안」)
 // - 수도권·규제지역 주담대 스트레스 금리 하한 1.5% → 3.0% (2025.10.16~, 10.15 「대출수요 관리 강화 방안」)
-// - 지방 주담대 0.75%(2단계 수준) 유지 — 2026.12.31까지 (금융위 2026.6월 연장 발표, 이후 값은 확인 필요)
+// - 지방(서울·경기·인천·규제지역 외) 주담대 0.75%(2단계 수준) — 2026.12.31까지 (은행연합회 스트레스금리 공시 2026.6.30)
 // - 기존 대출은 실행 당시 스트레스 금리로 원리금을 계산(소급 없음) — 이 도구는 입력 금리 그대로 계산
-// - 혼합·주기형 반영비율(3단계): 혼합형 고정기간/만기 30% 미만 80%, 30~50% 60%, 그 이상 40%
-//   주기형 변동주기/만기 30% 미만 40%, 30~50% 30%, 그 이상 20%
-//   ※ 50% 이상 구간의 세부 경계(50~70%, 70% 이상)는 확인 필요 — 보수적으로 마지막 비율 유지
+// - 혼합·주기형 반영비율 (은행연합회 스트레스금리 공시 2026.6.30, 적용 2026.7.1~12.31
+//   https://portal.kfb.or.kr/compare/stress_loan.php) — 고정기간(변동주기)/만기 비중별
+//   수도권·규제지역(3단계): 혼합형 30% 미만 80% · 30~50% 60% · 50~70% 40% · 70% 이상 미적용
+//                          주기형 30% 미만 40% · 30~50% 30% · 50~70% 20% · 70% 이상 미적용
+//   지방(2단계 비율, ~2026.12.31): 혼합형 60·40·20·0%, 주기형 30·20·10·0%
+//   변동형 = 고정기간(변동주기) 5년 미만
+// - 신용대출(잔액 1억 초과 시만): 만기 5년 이상 고정 미적용, 3~5년 고정 60%, 그 외 100%
 //   ※ 신용대출의 혼합·주기형 반영비율은 확인 필요 → 신용대출은 변동/고정만 지원
 //
 // 원리금 산정(DSR 산식 가정)
@@ -81,16 +85,18 @@ export function annualFactor(l: Omit<Loan, 'amount'>): number {
 
 export const annualRepay = (l: Loan) => (l.amount > 0 ? l.amount * annualFactor(l) : 0)
 
+/** 혼합형(고정기간)·주기형(변동주기) 반영비율 — 비중 30% 미만 / 30~50% / 50~70% / 70% 이상 */
+const MIXED_RATIOS: Record<Region, number[]> = { capital: [0.8, 0.6, 0.4, 0], local: [0.6, 0.4, 0.2, 0] }
+const PERIODIC_RATIOS: Record<Region, number[]> = { capital: [0.4, 0.3, 0.2, 0], local: [0.3, 0.2, 0.1, 0] }
+
 /** 혼합형(고정기간)·주기형(변동주기) 스트레스 금리 반영비율 */
-export function stressRatio(rateType: RateType, fixedYears: number, termYears: number): number {
+export function stressRatio(rateType: RateType, fixedYears: number, termYears: number, region: Region = 'capital'): number {
   if (rateType === 'variable') return 1
   if (rateType === 'fixed') return 0
+  if (fixedYears < 5) return 1 // 고정기간(변동주기) 5년 미만 = 변동형
   const share = termYears > 0 ? fixedYears / termYears : 1
-  if (rateType === 'mixed') {
-    if (fixedYears < 5) return 1 // 고정기간 5년 미만 혼합형은 변동형과 동일 취급(확인 필요)
-    return share < 0.3 ? 0.8 : share < 0.5 ? 0.6 : 0.4
-  }
-  return share < 0.3 ? 0.4 : share < 0.5 ? 0.3 : 0.2
+  const i = share < 0.3 ? 0 : share < 0.5 ? 1 : share < 0.7 ? 2 : 3
+  return (rateType === 'mixed' ? MIXED_RATIOS : PERIODIC_RATIOS)[region][i]
 }
 
 export interface NewLoanSpec {
@@ -107,10 +113,11 @@ export interface NewLoanSpec {
 export function stressAdd(s: NewLoanSpec, creditTotal = 0): number {
   if (s.kind === 'credit') {
     if (creditTotal <= CREDIT_STRESS_OVER) return 0
-    return STRESS.base * (s.rateType === 'fixed' ? 0 : 1)
+    const ratio = s.rateType !== 'fixed' ? 1 : s.years >= 5 ? 0 : s.years >= 3 ? 0.6 : 1
+    return +(STRESS.base * ratio).toFixed(4)
   }
   const base = s.region === 'capital' ? STRESS.capitalMortgage : STRESS.localMortgage
-  return +(base * stressRatio(s.rateType, s.fixedYears, s.years)).toFixed(4)
+  return +(base * stressRatio(s.rateType, s.fixedYears, s.years, s.region)).toFixed(4)
 }
 
 const asLoan = (s: NewLoanSpec, amount: number, add: number): Loan => ({

@@ -457,10 +457,10 @@ export default function WorkHoursCalculator() {
           <div className="ui-card p-6 space-y-5">
             {/* 시급 */}
             <div>
-              <label className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>
+              <label htmlFor="wh-hourly-wage" className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <input type="number" inputMode="numeric" value={hourlyWage} onChange={e => setHourlyWage(e.target.value)}
+                  <input id="wh-hourly-wage" type="number" inputMode="numeric" value={hourlyWage} onChange={e => setHourlyWage(e.target.value)}
                     className="ui-field w-full pl-3 pr-8 py-2.5 text-sm" />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">원</span>
                 </div>
@@ -468,7 +468,12 @@ export default function WorkHoursCalculator() {
                   {t('input.useMinWage')}
                 </button>
               </div>
-              <p className="text-xs text-muted mt-1">{t('input.hourlyWageNote')}</p>
+              <p className="text-xs text-muted mt-1">
+                {t('input.hourlyWageNote')}{' '}
+                <a href="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  {t('input.minWageSource')}
+                </a>
+              </p>
             </div>
 
             {/* 옵션 */}

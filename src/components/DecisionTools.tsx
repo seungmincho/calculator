@@ -75,28 +75,13 @@ interface Confetti {
 export default function DecisionTools({ initialTab = 'roulette', single = false, defaultPreset, title, subtitle }: DecisionToolsProps) {
   const searchParams = useSearchParams()
 
-  // -- shared participants state --
-  const getInitialRouletteItems = () => {
-    const param = searchParams?.get('roulette')
-    if (param) {
-      const items = param.split(',').map(s => s.trim()).filter(Boolean)
-      if (items.length >= 2) return items.slice(0, 12)
-    }
-    return defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS
-  }
-  const getInitialOrderItems = () => {
-    const param = searchParams?.get('order')
-    if (param) {
-      const items = param.split(',').map(s => s.trim()).filter(Boolean)
-      if (items.length >= 2) return items
-    }
-    return DEFAULT_PARTICIPANTS
-  }
-
   const [activeTab, setActiveTab] = useState<'roulette' | 'order'>(initialTab)
 
   // ─── Roulette state ───────────────────────────────────────────────────────
-  const [rouletteItems, setRouletteItems] = useState<string[]>(getInitialRouletteItems)
+  // 초기값은 결정적 기본값(정적 HTML = 첫 클라이언트 렌더). 공유 링크 파라미터는 마운트 후 적용.
+  const [rouletteItems, setRouletteItems] = useState<string[]>(() =>
+    defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS
+  )
   const [canvasSize, setCanvasSize] = useState(300)
   const [newRouletteItem, setNewRouletteItem] = useState('')
   const [isSpinning, setIsSpinning] = useState(false)
@@ -116,13 +101,25 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   const confettiRafRef = useRef<number | null>(null)
 
   // ─── Order Picker state ──────────────────────────────────────────────────
-  const [orderItems, setOrderItems] = useState<string[]>(getInitialOrderItems)
+  const [orderItems, setOrderItems] = useState<string[]>(DEFAULT_PARTICIPANTS)
   const [newOrderItem, setNewOrderItem] = useState('')
   const [orderResult, setOrderResult] = useState<string[]>([])
   const [revealedCount, setRevealedCount] = useState(0)
   const [isShuffling, setIsShuffling] = useState(false)
   const [orderCopied, setOrderCopied] = useState(false)
   const [isRevealing, setIsRevealing] = useState(false)
+
+  // ─── URL restore (마운트 1회) ─────────────────────────────────────────────
+  // 아래 URL sync 효과보다 먼저 선언해야 함(효과는 선언 순서대로 실행 → sync가 URL을 기본값으로 덮기 전에 읽음).
+  // 렌더 시점의 searchParams 클로저를 쓰므로 StrictMode 이중 실행에도 원래 URL 값 유지.
+  useEffect(() => {
+    const parse = (key: string) => (searchParams.get(key) ?? '').split(',').map(s => s.trim()).filter(Boolean)
+    const r = parse('roulette')
+    if (r.length >= 2) setRouletteItems(r.slice(0, 12))
+    const o = parse('order')
+    if (o.length >= 2) setOrderItems(o)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // ─── URL sync ─────────────────────────────────────────────────────────────
   useEffect(() => {

@@ -91,6 +91,9 @@ eq(run({ revenue: 90_000_000, prev: 40_000_000, method: 'standard' }).penalty, 0
 
 // ── 8. 공제 한도·하한 ──
 eq(run({ yellow: 9_000_000 }).yellow, 6_000_000, '노란우산 600만 한도')
+// 조특법 §86의3① (2025.3.14 개정): 사업소득금액 4천만~6천만 구간 500만
+eq(run({ revenue: 90_000_000, method: 'book', bookExpense: 40_000_000, yellow: 9_000_000 }).yellow, 5_000_000, '노란우산 5천만 → 500만')
+eq(run({ revenue: 90_000_000, method: 'book', bookExpense: 20_000_000, yellow: 9_000_000 }).yellow, 4_000_000, '노란우산 7천만 → 400만')
 eq(run({ persons: 10 }).taxBase, 0, '공제 > 소득 → 과표 0')
 eq(run({ persons: 10 }).refund, 990_000, '세액 0 → 기납부 전액 환급')
 eq(run({ children: 2 }).cr.child, 550_000, '자녀 2명 55만')

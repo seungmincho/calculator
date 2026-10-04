@@ -456,12 +456,12 @@
       "subtitle": "From new employees to executives! A complete guide to mastering everything about salary calculation. We'll tell you all the secrets to increase your take-home pay, from 4 major insurances to year-end tax settlement!",
       "features": {
         "accurate": {
-          "title": "Latest 2025 Tax Law",
+          "title": "Latest 2026 Tax Law",
           "description": "Accurate calculation based on National Tax Service official data, reflecting 4 major insurance premiums, income tax rates, and various deductions in real-time!",
           "points": {
             "0": {
               "title": "Accurate 4 major insurance premiums",
-              "content": "Health insurance 3.545%, National pension 4.5%, Employment insurance 0.9% accurately reflected"
+              "content": "Health insurance 3.595%, National pension 4.75%, Employment insurance 0.9% (2026 rates) accurately reflected"
             },
             "1": {
               "title": "6-tier progressive tax rate",
@@ -550,12 +550,12 @@
       }
     },
     "calculation": {
-      "basis": "Calculation Basis (2025)",
+      "basis": "Calculation Basis (2026 rates, checked Oct 2026 · Sources: NHIS, NPS, NTS withholding table)",
       "points": {
         "0": "Work income deduction: Progressive deduction applied according to total salary",
-        "1": "4 major insurances: Health insurance 3.545%, National pension 4.5% (cap 80.52 million KRW), Employment insurance 0.9%",
-        "2": "Long-term care insurance: 12.27% of health insurance premium",
-        "3": "Income tax progressive rate: 6%~45% (7 brackets)",
+        "1": "4 major insurances: Health insurance 3.595%, National pension 4.75% (monthly income cap 6.59M KRW), Employment insurance 0.9%",
+        "2": "Long-term care insurance: 13.14% of health insurance premium (0.9448% of income, 2026)",
+        "3": "Income tax progressive rate: 6%~45% (8 brackets)",
         "4": "Work income tax credit and child tax credit reflected",
         "5": "Refund possible with additional deductions during year-end tax settlement"
       }
@@ -578,7 +578,7 @@
           "title": "Health Insurance",
           "description": "National Health Insurance that reduces the burden of medical expenses due to illness or injury",
           "details": {
-            "0": "3.545% of income (employee standard)",
+            "0": "3.595% of income (employee share, 2026)",
             "1": "Significant reduction in medical expense copayments",
             "2": "Health check-ups, vaccinations, and health management services"
           }
@@ -587,7 +587,7 @@
           "title": "Long-term Care Insurance",
           "description": "Provides long-term care benefits for those with mobility difficulties due to aging or geriatric diseases",
           "details": {
-            "0": "12.27% of health insurance premium (separate payment)",
+            "0": "13.14% of health insurance premium (2026, collected together with health insurance)",
             "1": "For those 65+ or under 65 with geriatric diseases",
             "2": "Home care, facility care, and special cash benefits"
           }
@@ -599,9 +599,9 @@
           "title": "National Pension",
           "description": "A public pension system for old-age income security, the core of stable retirement preparation",
           "details": {
-            "0": "4.5% of income (cap: 6.71 million KRW/month)",
+            "0": "4.75% of income (cap: 6.59M KRW/month, from Jul 2026)",
             "1": "Old-age pension, survivor's pension, disability pension",
-            "2": "Full old-age pension for 20+ years of enrollment"
+            "2": "Old-age pension with 10+ years of enrollment"
           }
         },
         "employment": {
@@ -617,7 +617,7 @@
     },
     "taxBracket": {
       "title": "Complete Analysis of Income Tax Progressive Rates",
-      "description": "Learn about the 7-tier progressive income tax rates for 2025 and check the tax rate for your salary bracket.",
+      "description": "Learn about the 8-tier progressive income tax rates for 2026 and check the tax rate for your salary bracket.",
       "headers": {
         "bracket": "Taxable Income",
         "rate": "Tax Rate",
@@ -631,7 +631,7 @@
           "description": "Higher tax rates don't apply to your entire income, only to income in that bracket!"
         },
         "example": {
-          "title": "Tax Calculation Example for 50 Million KRW Salary",
+          "title": "Tax Calculation Example for a 50 Million KRW Tax Base",
           "details": {
             "0": "Up to 14 million: 14 million × 6% = 840,000 KRW",
             "1": "14-50 million: 36 million × 15% = 5.4 million KRW",
@@ -648,15 +648,15 @@
         "title": "Maximize Income Deductions",
         "creditCard": {
           "title": "Credit Card Usage Amount",
-          "description": "15-30% deduction on amounts exceeding 25% of annual income (limit: 3 million KRW)"
+          "description": "15-40% deduction on spending above 25% of total salary (base limit: 3M KRW for salary up to 70M, 2.5M above)"
         },
         "housing": {
           "title": "Housing Subscription Savings",
-          "description": "40% income deduction up to 2.4 million KRW annually (960,000 KRW tax saving)"
+          "description": "40% income deduction on up to 3M KRW paid annually (max 1.2M KRW; salary up to 70M, homeless household head)"
         },
         "childcare": {
           "title": "Personal Pension Savings",
-          "description": "13.2% income deduction up to 720,000 KRW annually"
+          "description": "Only for accounts opened before 2001: 40% of payments deducted from income (limit 720,000 KRW/year)"
         }
       },
       "taxCredit": {
@@ -671,7 +671,7 @@
         },
         "donation": {
           "title": "Donation Tax Credit",
-          "description": "100% credit up to 30,000 KRW, 15-30% for excess amounts"
+          "description": "Political donations: 100/110 credit up to 100,000 KRW; other donations 15% (30% above 10M KRW)"
         }
       },
       "pension": {
@@ -727,8 +727,8 @@
         "taxSavingProducts": {
           "title": "Active Use of Tax-Saving Products",
           "details": {
-            "0": "Pension savings: 16.5% deduction up to 6 million KRW annually",
-            "1": "Housing subscription: 40% deduction up to 2.4 million KRW annually",
+            "0": "Pension savings: 13.2-16.5% tax credit up to 6 million KRW annually",
+            "1": "Housing subscription: 40% income deduction up to 3 million KRW annually",
             "2": "Small business support: Higher deduction rate than credit cards",
             "3": "Donations: 100% for political donations up to 100,000 KRW"
           }
@@ -935,7 +935,7 @@
       "taxHint": {
         "normal": "Income tax 14% + local income tax 1.4%. Applies to most bank deposits and savings.",
         "pref": "Income tax 9% + rural special tax 0.5%. Applies to legacy tax-preferred accounts.",
-        "coop": "Co-op deposits (Nonghyup, Suhyup, Shinhyup, MG) up to KRW 30M: income tax exempt, only 1.4% rural special tax (associate members earning over KRW 70M pay 5% from 2026).",
+        "coop": "Co-op deposits (Nonghyup, Suhyup, forestry co-ops, Shinhyup, MG) up to KRW 30M per person: income tax exempt, only 1.4% rural special tax. For deposits opened from 2026, the exemption applies only to members of agricultural, fisheries and forestry co-ops or people with total salary up to KRW 70M (other income up to KRW 60M); others pay 5% on deposits opened in 2026 and 9% on deposits opened from 2027.",
         "free": "Tax-free savings (KRW 50M limit), Youth Future Savings, Youth Leap Account, etc. No tax."
       },
       "res": {
@@ -1002,8 +1002,8 @@
       "policy": {
         "title": "2026 policy products (confirmed)",
         "items": [
-          "Youth Future Savings: launched June 2026. Ages 19-34, personal income up to KRW 60M and household up to 200% of median income. Up to KRW 500k/month, 3-year term, government match 6% (standard) or 12% (preferred), tax-free interest.",
-          "Youth Leap Account: new sign-ups closed in December 2025. Existing holders keep the match and tax exemption until their 5-year maturity.",
+          "Youth Future Savings: launched 22 Jun 2026; second enrollment window 7-16 Oct 2026 (FSC, 16 Sep). Ages 19-34 (military service excluded), household income up to 200% of median (250% for dual earners). Up to KRW 500k/month, 3-year term, tax-free interest. The government match of 6% (standard) or 12% (preferred: SME employees, new hires, etc.) requires total salary up to KRW 60M (other income KRW 48M); up to KRW 75M (KRW 63M) gets the tax exemption only.",
+          "Youth Leap Account: new sign-ups ended 31 Dec 2025 (RSTA Art. 91-22). Existing holders keep the match and tax exemption until their 5-year maturity, and keep what they have received if they switch to Youth Future Savings (special early termination).",
           "Tax-free comprehensive savings: available until end of 2028, KRW 50M principal limit across all institutions. From 2026, new applicants aged 65+ must be basic pension recipients (disabled persons, independence patriots, basic livelihood recipients etc. remain eligible).",
           "Government matching contributions are not included in the interest here; they are added separately at maturity."
         ]
@@ -1012,7 +1012,7 @@
         "title": "Tax on interest",
         "items": [
           "Standard 15.4% = income tax 14% (Income Tax Act Art. 129) + local income tax 1.4%, withheld by the bank.",
-          "Co-op deposits (up to KRW 30M): income tax exempt, 1.4% rural special tax. Exemption kept through 2028 for total salary up to KRW 70M; higher-income associate members pay 5% separate tax in 2026-2028 and 9% from 2029.",
+          "Co-op deposits (up to KRW 30M per person): deposits opened through 2025 are income tax exempt (1.4% rural special tax only). For deposits opened in 2026-2028, only members of agricultural, fisheries and forestry co-ops and people with total salary up to KRW 70M (other income up to KRW 60M) stay exempt (5% for 2029, 9% from 2030); everyone else (higher-income associate members, Shinhyup/MG members, etc.) pays 5% separate tax on deposits opened in 2026 and 9% from 2027 (RSTA Art. 89-3).",
           "Preferential 9.5% = income tax 9% + rural special tax 0.5%; new general tax-preferred accounts are no longer offered.",
           "Interest and dividends above KRW 20M a year are subject to comprehensive financial income taxation."
         ]
@@ -1120,7 +1120,7 @@
           },
           {
             "q": "How much tax on co-op (Nonghyup, Shinhyup) deposits?",
-            "a": "Up to KRW 30M per member, income tax is exempt and only 1.4% rural special tax applies. From 2026, associate members with total salary above KRW 70M pay a 5% separate tax (Art. 89-3)."
+            "a": "Up to KRW 30M per person, interest is income tax exempt and only 1.4% rural special tax applies. For deposits opened from 2026, the exemption (through 2028 sign-ups) requires membership of an agricultural, fisheries or forestry co-op or total salary up to KRW 70M (other income KRW 60M); others pay 5% on 2026 deposits and 9% from 2027 (RSTA Art. 89-3)."
           }
         ]
       }
@@ -1344,7 +1344,7 @@
           },
           {
             "q": "When must severance be paid?",
-            "a": "Within 14 days of retirement, extendable by mutual agreement in special cases (Art. 9(1)). Late payment accrues 20% annual interest (Labor Standards Act Art. 37), and non-payment is punishable by up to 3 years in prison or a 30 million KRW fine (Art. 44). You can file a petition with the Ministry of Employment and Labor."
+            "a": "Within 14 days of retirement, extendable by mutual agreement in special cases (Employee Retirement Benefit Security Act Art. 9(1)). Late payment accrues 20% annual interest (Labor Standards Act Art. 37), and non-payment is punishable by up to 5 years in prison or a 50 million KRW fine (Employee Retirement Benefit Security Act Art. 43, effective 18 Sep 2026; up to 3 years or 30 million KRW for earlier violations). You can file a petition with the Ministry of Employment and Labor."
           },
           {
             "q": "Is the retirement date my last working day?",
@@ -1418,7 +1418,7 @@
         "title": "Pro Tips",
         "items": [
           "Income tax uses progressive rates (6%–45%), so maximize deductions like personal exemptions and pension contributions.",
-          "Contributing ₩6M to pension savings and ₩3M to IRP yields up to ₩1.65M in tax credits annually.",
+          "Contributing ₩6M to pension savings and ₩3M to IRP yields up to ₩1.485M in tax credits (16.5% incl. local tax for total salary ≤ ₩55M).",
           "Business owners should manage tax invoices carefully to utilize input VAT credits.",
           "A single-household homeowner holding a property for 2+ years may be exempt from capital gains tax.",
           "For complex tax situations, consult a certified tax accountant for legal optimization."
@@ -1433,7 +1433,7 @@
           },
           {
             "q": "General vs simplified VAT taxpayers?",
-            "a": "Businesses over ₩48M annual revenue are general taxpayers (10% VAT). Below are simplified taxpayers (1–4% by industry) with limited input VAT credit."
+            "a": "Individual businesses with prior-year sales (incl. VAT) under ₩104M are simplified taxpayers (sales × industry value-added rate 15–40% × 10%, i.e. 1.5–4% of sales); others are general taxpayers (10%). Simplified taxpayers with annual sales under ₩48M are exempt from payment, but input VAT credit is limited to 0.5% of purchases."
           },
           {
             "q": "Capital gains tax exemption conditions?",
@@ -1559,7 +1559,7 @@
         "legal": "Scrivener & registration fees",
         "other": "Moving and other",
         "reliefApplied": "{name} relief of ₩{amount} applied (incl. education tax)",
-        "heavyWarn": "Heavy multi-home rate of {rate}% applies. A temporary 2nd home (selling the old one within 3 years) gets the normal rate.",
+        "heavyWarn": "Heavy multi-home rate of {rate}% applies. A temporary 2nd home (selling the old one within 3 years, or 2 years if both are in adjustment areas for acquisitions from 2026-10-01) gets the normal rate.",
         "reliefPriceBlocked": "Homes over ₩1.2B are not eligible for first-time or childbirth relief."
       },
       "share": {
@@ -2426,6 +2426,10 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "customsDuty": "Overseas Purchase Duty Calculator",
+      "kimjangCalculator": "Kimjang (Kimchi-Making) Calculator",
+      "holidayPlanner": "Holiday & Leave Planner",
+      "healthCheckup": "Health Checkup Eligibility",
       "greetingGenerator": "Greeting Message Generator",
       "csatDday": "CSAT D-day & Timetable",
       "salaryCalculator": "Salary Calculator",
@@ -3490,6 +3494,7 @@
     }
   },
   "carTax": {
+    "basis": "Based on the Local Tax Act Art. 12 and the Special Local Taxation Act (compact, EV, multi-child, disability reliefs) as of October 2026. Bond cost is an estimate.",
     "title": "Car Acquisition & Registration Tax Calculator",
     "description": "Calculate various taxes accurately when purchasing a car",
     "input": {
@@ -3569,7 +3574,7 @@
       "ecoCarBenefitHybrid": "50% reduction in acquisition & registration tax applied for hybrid vehicle.",
       "whatIs": {
         "title": "What is the Car Tax Calculator?",
-        "description": "This tool accurately calculates all taxes incurred when purchasing a vehicle, including acquisition tax, registration tax, bond purchase, and stamp duty by vehicle type, purpose, and region. It automatically applies eco-vehicle discounts and multi-child family benefits."
+        "description": "This tool accurately calculates all taxes incurred when purchasing a vehicle, including acquisition tax (registration tax was merged into it in 2011), bond purchase and registration license tax by vehicle type, purpose, and region. It automatically applies eco-vehicle discounts and multi-child family benefits."
       },
       "howToUse": {
         "title": "How to Use",
@@ -3578,14 +3583,14 @@
           "Select vehicle type (sedan/compact/van/truck/motorcycle/EV), fuel type, and purpose (personal/commercial).",
           "Select the registration region. Bond purchase rates vary by region.",
           "Check applicable discount categories (multi-child family, disabled, veteran) to reflect tax benefits.",
-          "Click calculate to see itemized amounts and total cost."
+          "Results update as you type, showing acquisition tax, bonds, license tax and the total cost."
         ]
       },
       "usageTips": {
         "title": "Tips",
         "items": [
           "Compact cars (1,000cc or less) qualify for acquisition tax discounts.",
-          "EVs get up to 1.4M KRW acquisition tax reduction through Dec 31, 2026 (1.0M from 2027); apply within 60 days.",
+          "EVs get up to 1.4M KRW acquisition tax reduction through Dec 31, 2026 (the cap from 2027 depends on a bill still under review); apply within 60 days.",
           "Multi-child families (3+ children under 18) may qualify for tax exemption.",
           "Used car taxes may be based on standard assessed value rather than actual price."
         ]
@@ -3599,7 +3604,7 @@
           },
           {
             "q": "What are EV tax benefits?",
-            "a": "Through Dec 31, 2026, EVs get up to 1.4M KRW reduction in acquisition tax (1.0M from 2027). The hybrid reduction ended in 2024."
+            "a": "Through Dec 31, 2026, EVs get up to 1.4M KRW reduction in acquisition tax (Special Local Taxation Act Art. 66(4)); the cap from 2027 may change under a government bill pending in the National Assembly. The hybrid reduction ended in 2024."
           },
           {
             "q": "What is bond purchase?",
@@ -3630,9 +3635,9 @@
       "tips": {
         "title": "Tips",
         "items": [
-          "First-time buyers get LTV up to 80% vs 70% for general type.",
-          "Newlywed type offers 0.3%p rate discount. Check if you married within 7 years.",
-          "Online-only (Akkim-e) version offers 0.1-0.2%p additional rate discount."
+          "First-time buyers get LTV up to 80% (70% for homes in the capital area or regulated zones) and a higher limit of KRW 420M vs 360M for the general type.",
+          "Newlywed type offers a 0.3%p rate discount. Check if your marriage was registered within the last 7 years.",
+          "Akkim-e Bogeumjari (online e-contract) is 0.1%p cheaper than u-Bogeumjari and t-Bogeumjari. Homes in regulated zones carry a 0.2%p surcharge."
         ]
       },
       "faq": {
@@ -3640,33 +3645,40 @@
         "items": [
           {
             "q": "What are the eligibility requirements?",
-            "a": "Combined household income under 70M KRW, property under 600M KRW, and homeownership restrictions apply."
+            "a": "Combined household income up to KRW 70M (newlyweds 85M, one minor child 90M, two or more 100M), home price up to KRW 600M, no home or one home to be sold within 3 years, and a credit score of 271 or higher."
           },
           {
             "q": "What's the interest rate?",
-            "a": "As of 2026, Akkim-e Bogeumjari rates are approximately 4.05-4.35% annually. Type-specific discounts apply additionally."
+            "a": "Per the October 1, 2026 notice, Akkim-e Bogeumjari rates are 4.90% (10-year) to 5.20% (50-year). Discounts add up to 1.0%p at most, and homes in regulated zones carry a 0.2%p surcharge. Rates change monthly, so check the HF rate page."
           },
           {
             "q": "How does it differ from Didimddol Loan?",
-            "a": "Didimddol has stricter income requirements but lower rates (2-3%). Bogeumjari has broader eligibility and higher loan limits. Compare both for your situation."
+            "a": "Didimddol requires income up to KRW 60M (first-time buyers and two-child families 70M, newlyweds 85M) and a home up to KRW 500M (newlyweds/two children 600M), but its rate is lower at 2.85-4.15%. Its limit is KRW 200M (first-time 240M, newlyweds/two children 320M). Bogeumjari has broader income criteria and a limit of up to KRW 420M."
           },
           {
             "q": "What are the eligibility requirements for first-time buyer (생애최초) type?",
-            "a": "Both you and your spouse must have no history of owning property. Even if you're currently a non-homeowner, any past ownership disqualifies you. If either spouse has ever owned property, you must apply under the general type."
+            "a": "On the application date both spouses must own no home, and neither you nor your spouse may have ever owned a home. Even if you own no home now, any past ownership means you must apply under the general type."
           },
           {
             "q": "What is the interest rate for first-time buyer Bogeumjari Loan?",
-            "a": "As of 2026, the first-time buyer type receives a 0.2%p rate discount on top of the base rate. For a 30-year term, the rate is approximately 4.05%. Combined with the newlywed discount (0.3%p), it can go as low as 3.75%."
+            "a": "There is no first-time-buyer rate discount; the same base rate applies (5.10% for 30 years as of October 2026). Applicable discounts such as newlywed (0.3%p), multi-child (0.5-0.7%p) or low-income youth (0.1%p) can lower it by up to 1.0%p, to 4.10% for 30 years. Homes in regulated zones add 0.2%p."
           },
           {
             "q": "What is the maximum loan amount for first-time buyer Bogeumjari Loan?",
-            "a": "The maximum loan limit for first-time buyers is 420 million KRW. LTV is also expanded to 80% (vs 70% for general), allowing more borrowing against the same property. For a 500M KRW property, up to 400M KRW (500M × 80%) is possible."
+            "a": "Up to KRW 420M. LTV is 80%, but 70% for homes in the capital area (Seoul, Incheon, Gyeonggi) or regulated zones. For a KRW 500M home that means up to 400M outside the capital area and 350M inside it, subject also to DTI 60%."
           }
         ]
       }
     }
   },
   "medianIncome": {
+    "source": "Source: Ministry of Health and Welfare notice on standard median income and livelihood/medical benefit thresholds — No. 2025-135 for 2026, No. 2026-157 for 2027 (issued 29 Jul 2026). Each year's values apply from 1 January.",
+    "upcoming": "The {year} standard median income applies from 1 January {year}. Applications and reviews now use the {current} values.",
+    "checkerYear": "Assessed with the {year} standard median income (applies from 1 January each year).",
+    "checkerNotes": [
+      "A home you live in and rental deposits are actually converted as residential assets (1.04% a month, within regional limits). Entering them as general assets (4.17% a month) can overstate recognized income (MOHW notice No. 2019-188).",
+      "Cars are converted at 100% a month here. Passenger cars under 2,000cc that are 10+ years old or worth under KRW 5M use the general-asset rate (4.17% a month) instead (MOHW notice No. 2025-204, Annex 2)."
+    ],
     "title": "Median Income Reference",
     "description": "Check standard median income by household size and government welfare program eligibility thresholds",
     "guide": {
@@ -3678,9 +3690,9 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Select the year (2023-2026) to view median income data.",
+          "Select the year (2023-2027). The year currently in force is selected by default.",
           "Review median income by household size (1-6 persons).",
-          "Check amounts at various percentage thresholds (32%-100%).",
+          "Check amounts at various percentage thresholds (32%-300%).",
           "See which government welfare programs each threshold qualifies for."
         ]
       },
@@ -3697,7 +3709,11 @@
         "items": [
           {
             "q": "What is the 2026 median income?",
-            "a": "For 1-person households approximately 2.56M KRW/month, 4-person households approximately 6.49M KRW/month. About 6.4% increase from the previous year."
+            "a": "KRW 2,564,238 a month for 1-person households and KRW 6,494,738 for 4-person households, up 6.51% year on year for 4 persons (MOHW notice No. 2025-135)."
+          },
+          {
+            "q": "What is the 2027 median income?",
+            "a": "KRW 6,929,885 for 4 persons (+6.70%) and KRW 2,736,042 for 1 person, decided by the Central Living Security Committee on 28 Jul 2026 and applied from 1 Jan 2027 (MOHW notice No. 2026-157). The livelihood benefit threshold (32%) is KRW 2,217,563 for 4 persons and KRW 875,533 for 1 person."
           },
           {
             "q": "How is recognized income calculated?",
@@ -3705,7 +3721,7 @@
           },
           {
             "q": "What benefits are available at 100% median income?",
-            "a": "National Employment Support System, youth rent subsidy, and child tax credit may apply. Each program has additional requirements beyond income."
+            "a": "Each program sets its own threshold. For example, the youth monthly rent support requires the parents' household income to be at or below 100% of median income. Some programs, like the child tax credit, use total household income (under KRW 70M) instead of median income, so check each program's notice."
           }
         ]
       }
@@ -4649,6 +4665,7 @@
       "conversion": "Wage Converter"
     },
     "input": {
+      "minWageSource": "Source: MOEL minimum wage notice",
       "useMinWage": "Min. wage",
       "autoBreak": "Apply legal minimum break",
       "autoBreakNote": "30 min for 4h, 1h for 8h of work (Labor Standards Act Art. 54)",
@@ -4661,7 +4678,7 @@
       "weeklyScheduleNote": "Tap a day to toggle it. If the end time is earlier than the start, it counts as ending the next day. Check 'Holiday' for work on a weekly rest day or public holiday.",
       "title": "Work Information",
       "hourlyWage": "Hourly Wage (KRW)",
-      "hourlyWageNote": "2026 Minimum Wage: 10,320 KRW",
+      "hourlyWageNote": "2026 Minimum Wage: 10,320 KRW (10,700 KRW from 2027-01-01)",
       "weeklyHours": "Weekly Standard Hours",
       "weeklyHoursNote": "Generally 40 hours (5 days × 8 hours)",
       "workSchedule": "Work Schedule",
@@ -4728,7 +4745,7 @@
       "insuranceTitle": "Social Insurance Deductions (Monthly)",
       "nationalPension": "National Pension (4.75%)",
       "healthInsurance": "Health Insurance (3.545%)",
-      "longTermCare": "Long-term Care (0.46%)",
+      "longTermCare": "Long-term Care (13.14% of health insurance)",
       "employmentInsurance": "Employment Insurance (0.9%)",
       "totalDeduction": "Total Deductions",
       "netMonthly": "Estimated Take-home",
@@ -6344,15 +6361,15 @@
       },
       "whatIs": {
         "title": "What is the Fuel Cost Calculator?",
-        "description": "An expense calculation tool for accurately computing fuel costs and depreciation for business vehicles. Enter the vehicle type (sedan / SUV / truck), fuel type (gasoline / diesel / LPG / electric), fuel efficiency, and mileage, and it calculates the deductible business expense based on your business-use ratio. Useful for accurately claiming vehicle-related expenses on personal income tax returns and corporate tax filings."
+        "description": "A settlement tool that calculates fuel costs for business trips as distance ÷ fuel efficiency × fuel price. Pick a vehicle class (compact to truck) and fuel (gasoline, premium gasoline, diesel, LPG), choose a region and trip date to apply that day's OPINET average price, and it shows the settlement amount after your company's adjustment factor, plus reference depreciation and running cost. The driving log collects tolls and parking for a monthly statement."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select the vehicle type and fuel type.",
-          "2. Enter fuel efficiency (km/L) and monthly mileage (km).",
-          "3. Enter the fuel price (₩/L) and the business-use percentage (%).",
-          "4. Monthly and annual fuel costs, along with the deductible business amount, are calculated automatically."
+          "1. Select the vehicle class and fuel type, or enter fuel efficiency (km/L) yourself.",
+          "2. Choose a region and trip date to apply that day's OPINET average price (editable).",
+          "3. Enter the distance and one-way/round trip, and set the adjustment factor if your company uses one.",
+          "4. The settlement amount and formula are shown. Copy the statement or add it to the driving log to track monthly totals."
         ]
       },
       "faq": {
@@ -6360,15 +6377,15 @@
         "items": [
           {
             "q": "What vehicle expenses can be claimed as business expenses?",
-            "a": "Self-employed individuals can claim fuel costs, insurance premiums, depreciation, and repair costs in proportion to their business-use ratio. Keeping a mileage log makes it easier to substantiate the deduction."
+            "a": "For corporations and sole proprietors required to keep double-entry books, related costs of a business passenger car (fuel, insurance, repairs, vehicle tax, tolls, depreciation, etc.) are deductible in proportion to the business-use ratio shown in the operation log. Without a log, only up to 15 million KRW of related costs per year is recognized (Corporate Tax Act Enforcement Decree Art. 50-2, Income Tax Act Enforcement Decree Art. 78-3)."
           },
           {
-            "q": "Does it support electric vehicles?",
-            "a": "Yes. For electric vehicles, the calculation is based on energy consumption (kWh/100km) and electricity rates (₩/kWh), equivalent to fuel costs."
+            "q": "Can I calculate an electric vehicle?",
+            "a": "The fuel list covers gasoline, premium gasoline, diesel and LPG only. For an EV, enter efficiency in km/kWh as the custom efficiency and the charging price (KRW/kWh) as the fuel price; the same formula (distance ÷ efficiency × price) applies."
           },
           {
             "q": "How is depreciation calculated?",
-            "a": "Annual depreciation is calculated by dividing the vehicle's acquisition cost by its useful life (e.g., 5 years for passenger cars, 4 years for trucks), then applying the business-use ratio."
+            "a": "Business passenger cars are depreciated straight-line over 5 years, and depreciation above 8 million KRW per year in the business-use amount is carried forward (Corporate Tax Act Enforcement Decree Art. 50-2). Vehicles that are not business passenger cars, such as light cars, vans with 9+ seats and trucks, follow the general depreciation rules. The per-km depreciation in this calculator is a reference value by vehicle class, not the tax depreciation amount."
           }
         ]
       },
@@ -6419,7 +6436,7 @@
             },
             "2": {
               "title": "Limit Management",
-              "content": "Expense processing within monthly and annual limit standards"
+              "content": "Depreciation cap of 8 million KRW per year; 15 million KRW per year cap on related costs without an operation log"
             }
           }
         },
@@ -6450,20 +6467,20 @@
         "title": "Personal Vehicle Business Use",
         "description": "Expense processing method when using personally owned vehicles for business",
         "details": {
-          "0": "Actual expense reimbursement possible within monthly limit of 200,000 KRW",
+          "0": "A self-driving allowance (a flat amount paid under company rules instead of actual travel costs) is tax-free up to 200,000 KRW per month (Income Tax Act Enforcement Decree Art. 12)",
           "1": "Driving log preparation and receipt storage required",
           "2": "Clear recording of business purpose and mileage",
-          "3": "Only actual costs like fuel, tolls, parking fees recognized"
+          "3": "If actual fuel and toll costs for the same trips are reimbursed separately, the self-driving allowance is not tax-free"
         }
       },
       "companyCar": {
         "title": "Corporate Vehicle Operation",
         "description": "Operating cost processing standards for company-owned vehicles",
         "details": {
-          "0": "All operating costs including fuel, repairs, insurance recognized as deductible",
-          "1": "Personal use portion taxed as salary (monthly limit 120,000 KRW)",
-          "2": "Distinguish business/personal use management with driving logs",
-          "3": "Depreciation calculated according to useful life"
+          "0": "Business-only auto insurance is required; only the business-use share of related costs (fuel, insurance, repairs, depreciation, etc.) is deductible",
+          "1": "Costs for non-business use are not deductible and are treated as a bonus (or similar) to the user",
+          "2": "Without a vehicle operation log, business use is recognized only up to 15 million KRW of related costs per year",
+          "3": "Business passenger car depreciation: straight-line over 5 years, capped at 8 million KRW per year (excess carried forward) — Corporate Tax Act Enforcement Decree Art. 50-2"
         }
       }
     },
@@ -6638,6 +6655,22 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "customsDuty": {
+        "title": "Overseas Purchase Duty Calculator",
+        "description": "Duty-free limits, customs duty and VAT in KRW for direct purchases"
+      },
+      "kimjangCalculator": {
+        "title": "Kimjang Calculator",
+        "description": "Seasoning amounts and total cost from the number of napa cabbages"
+      },
+      "holidayPlanner": {
+        "title": "Holiday & Leave Planner",
+        "description": "Find the longest breaks for the fewest leave days"
+      },
+      "healthCheckup": {
+        "title": "Health Checkup Eligibility",
+        "description": "Check this year's national health and cancer screening by birth year"
+      },
       "greetingGenerator": {
         "title": "Greeting Message Generator",
         "description": "Year-end, New Year, holiday and thank-you messages by occasion and tone"
@@ -11755,9 +11788,9 @@
         "title": "Rate Structure",
         "items": [
           "Korean residential electricity uses progressive pricing tiers",
-          "Summer (Jul-Aug) and winter (Dec-Feb) have adjusted tier ranges",
+          "In summer (Jul-Aug) the tiers widen to 300/450 kWh; in summer and winter (Dec-Feb), usage above 1,000 kWh is charged the super-user rate",
           "Bill consists of base fee + usage fee + climate fee + fuel adjustment",
-          "VAT (10%) and Electric Industry Fund (3.7%) are added"
+          "VAT (10%) and Electric Industry Fund (2.7%) are added"
         ]
       },
       "whatIs": {
@@ -11768,7 +11801,7 @@
         "title": "Tips to Reduce Your Electricity Bill",
         "items": [
           "Know your progressive tiers (Tier 1: ≤200 kWh, Tier 2: ≤400 kWh). If you're near a tier boundary, cutting usage slightly can save a disproportionately large amount.",
-          "Summer (Jul–Aug) and winter (Dec–Feb) seasons have adjusted tier limits. Track your usage separately during these months to avoid unexpected jumps.",
+          "In summer (Jul–Aug) the tiers widen to 300/450 kWh. Winter (Dec–Feb) keeps the normal tiers, but usage above 1,000 kWh is charged the super-user rate, so check your usage in those months.",
           "Combine air conditioning with a fan or circulator, adjust your refrigerator temperature, and eliminate standby power to save 10–30 kWh per month.",
           "Installing a small rooftop solar panel reduces your net usage, potentially dropping you into a lower progressive tier for significant savings."
         ]
@@ -15491,6 +15524,10 @@
             "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144"
           },
           {
+            "label": "MOEL — 2027 minimum wage notice (KRW 10,700/h, 5 Aug 2026)",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744"
+          },
+          {
             "label": "Minimum Wage Commission",
             "url": "https://www.minimumwage.go.kr"
           },
@@ -15528,6 +15565,8 @@
     "holidayUnder15": "No weekly holiday pay under 15 hours per week.",
     "holidayExcluded": "Calculated without weekly holiday pay.",
     "minWage": {
+      "next": "From 1 Jan 2027 the minimum wage is {wage} KRW/h (+3.7%) — minimum monthly pay for these hours {amount} KRW ({hours} h).",
+      "nextBelow": "Your current wage is {diff} KRW/h below the 2027 rate and must be raised next year.",
       "title": "2026 minimum wage {wage} KRW",
       "mine": "Your wage {wage} KRW",
       "monthlyMin": "Minimum monthly {amount} KRW ({hours} h)",
@@ -17018,7 +17057,8 @@
       "note": "Actual fare may vary with real-time traffic, route and stop time. Use as a reference only."
     },
     "fareInfo": {
-      "title": "Fare Basis (Sep 2026)",
+      "long": "Long distance: {fare} KRW per {m} m beyond {km} km",
+      "title": "Fare Basis (Oct 2026)",
       "base": "Base fare",
       "distance": "Distance",
       "time": "Time",
@@ -17028,7 +17068,7 @@
       "night": "Night surcharge",
       "outOfCity": "Out-of-city",
       "premium": "Deluxe·Jumbo base",
-      "sourceNote": "As of Sep 2026 · rates may change by local government. Verify with your city/taxi association."
+      "sourceNote": "Based on each city/province notice as of 2026-10-04 (provinces use a representative city's rates) · Rates can differ by city/county; verify with your local government or taxi association."
     },
     "comparison": {
       "title": "Fare Comparison by Taxi Type",
@@ -17042,16 +17082,16 @@
         "title": "Calculation Method",
         "items": [
           "Total = base fare + distance fare + time fare + surcharge",
-          "Distance fare: excess over base distance charged per unit (e.g. Seoul 131m = ₩100)",
+          "Distance fare: excess over base distance charged per unit (e.g. Seoul 131m = ₩100). Jeju (₩120 beyond 20 km) and Jeonnam (₩140 beyond 9 km) have long-distance rates",
           "Time fare: added per time unit (e.g. 30 s) when moving slower than about 15 km/h. This calculator treats the time beyond an average 30 km/h trip as slow driving.",
-          "Night surcharge: 20–40% during each region's late-night window (Seoul 40% at 23:00–02:00)",
-          "Out-of-city surcharge: 20–30% when crossing boundaries; up to 60% combined with night"
+          "Night surcharge: 20–40% during each region's late-night window (Seoul/Incheon 40% at 23:00–02:00; Busan, Daegu, Daejeon, Gwangju, Gangwon 30% at 00:00–02:00)",
+          "Out-of-city surcharge: 20–50% by region when crossing boundaries. Combined with night it is added, with caps in some regions (Seoul 60%, Daejeon 50%, Jeonnam 40%)"
         ]
       },
       "tips": {
         "title": "Notes",
         "items": [
-          "Deluxe taxis have a higher ₩7,000 (3km) base but no night surcharge.",
+          "Deluxe/jumbo taxis have a higher base fare (Seoul ₩7,000 for 3 km) and a 20% night surcharge (Seoul 22:00–04:00).",
           "Base fare, base distance and surcharge hours differ by region (auto-applied on selection).",
           "App-hailed taxis (Kakao T Blue/Black) may add a call fee.",
           "Highway tolls are the passenger's responsibility and not included above.",
@@ -17077,15 +17117,15 @@
         "items": [
           {
             "q": "When does the night surcharge start and how much is it?",
-            "a": "It varies by region. Seoul and Incheon run 22:00–04:00 with 40% at 23:00–02:00 and 20% otherwise. Gyeonggi is 30% at 23:00–04:00, Busan 20–30% at 23:00–04:00, Daejeon 20% at 23:00–04:00, and so on."
+            "a": "It varies by region. Seoul and Incheon run 22:00–04:00 with 40% at 23:00–02:00 and 20% otherwise. Gyeonggi is 30% at 23:00–04:00; Busan, Daegu, Daejeon and Gwangju are 20% at 23:00–04:00 with 30% at 00:00–02:00; Ulsan and Gyeongnam are 20% at 22:00–04:00; Sejong is 30% at 22:00–04:00."
           },
           {
             "q": "Is the base fare different by region?",
-            "a": "Yes. As of Sep 2026, Seoul/Gyeonggi/Incheon/Busan are ₩4,800 (1.6–2km), Daegu/Gyeongbuk ₩4,500, Daejeon/Gwangju/Ulsan/Jeonnam/Jeju ₩4,300, and most other regions around ₩4,000. Distance units and base distance also differ; selecting a region applies its rates automatically."
+            "a": "Yes. As of Oct 2026, Seoul/Gyeonggi/Incheon/Busan/Gwangju are ₩4,800 (1.6–2km), Gangwon/Gyeongnam ₩4,600, Daegu/Ulsan/Gyeongbuk ₩4,500, Daejeon/Jeonbuk/Jeonnam/Jeju ₩4,300, and Sejong/Chungbuk/Chungnam ₩4,000. Jeonnam plans ₩4,800 (1.7km) in Nov–Dec 2026, and Daejeon decides on a base-fare increase in the second half. Distance units and base distance also differ; selecting a region applies its rates automatically."
           },
           {
             "q": "How is the out-of-city surcharge applied?",
-            "a": "When a taxi crosses a city/county boundary, a 20–30% out-of-city surcharge applies. Combined with the late-night surcharge it can reach up to 60% in Seoul."
+            "a": "When a taxi crosses a city/county boundary, a 20–50% out-of-city surcharge applies depending on the region (Seoul 20%; Incheon, Busan, Ulsan, Gyeongnam 30%; Daegu, Gwangju 35%; Jeonju 50%). Combined with the night surcharge it is added, capped at 60% in Seoul, 50% in Daejeon and 40% in Jeonnam."
           },
           {
             "q": "Are app taxis like Kakao Taxi priced the same?",
@@ -17093,7 +17133,7 @@
           },
           {
             "q": "Can the estimate differ from the actual fare?",
-            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on Sep 2026 rates."
+            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on Oct 2026 rates."
           }
         ]
       }
@@ -17102,7 +17142,7 @@
   "installmentCalc": {
     "copyLink": "Copy link",
     "copied": "Copied",
-    "rateHint": "Typically 10-20% per year depending on the card issuer and your credit. Check your card app.",
+    "rateHint": "Issuers disclose installment fee rates of roughly 5-19.9% per year depending on term and credit (e.g. Shinhan Card 5.20-19.90%, checked 2026-10). Check your card app.",
     "plan": {
       "title": "Plan",
       "normal": "Standard",
@@ -17160,9 +17200,9 @@
         "title": "Typical Interest Rates",
         "items": [
           "2-3 months: most interest-free promotions",
-          "Standard installment fees: about 10-20% per year by issuer and credit",
+          "Standard installment fees: about 5-19.9% per year by issuer, term and credit (issuer disclosures; below the 20% legal maximum)",
           "Longer terms often carry higher rates",
-          "Check the exact rate in your card app or issuer website"
+          "Check the exact rate in your card app, the issuer website or the Credit Finance Association disclosures"
         ]
       },
       "tips": {
@@ -17176,15 +17216,15 @@
       },
       "whatIs": {
         "title": "What is the Card Installment Calculator?",
-        "description": "The card installment calculator helps you understand the true cost of credit card installment payments by showing the monthly payment amount, total installment fees, and effective annual interest rate before you commit to a purchase. Comparing interest-free and interest-bearing installments — or installments vs. paying in full — helps you make smarter spending decisions."
+        "description": "The card installment calculator shows the monthly payment, total installment fees and fees as a share of the principal before you commit to a purchase. Compare interest-free, partially interest-free and regular installments, or installments vs. paying in full."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter the purchase amount and the number of installment months (2–36).",
-          "2. Enter the installment fee rate (monthly rate or annual rate) from your card issuer.",
-          "3. View the monthly payment, total fees, and actual total cost.",
-          "4. Compare interest-free and interest-bearing options to choose the most cost-effective payment method."
+          "1. Enter the purchase amount and the number of installment months.",
+          "2. Enter your issuer's installment fee rate (annual %) and choose standard, interest-free or partially interest-free.",
+          "3. View each payment, total fees and the total amount paid.",
+          "4. Use the term comparison table to compare interest-free and fee-bearing options."
         ]
       },
       "faq": {
@@ -17192,11 +17232,11 @@
         "items": [
           {
             "q": "Is interest-free installment truly free?",
-            "a": "For the consumer, yes. The card company shares the cost with the merchant, so you pay no fee. However, some promotions may have minimum purchase conditions."
+            "a": "For the consumer, yes. The card issuer or the merchant pays the installment fee. Promotions may have amount or term conditions, and partially interest-free plans waive only some installments."
           },
           {
             "q": "How do I find my card's installment fee rate?",
-            "a": "Check your card issuer's website or app under 'Installment fee rate' or 'Interest rate.' Typical rates range from about 1–2% per month."
+            "a": "Check the 'installment fee rate' menu in your issuer's website or app, or the Credit Finance Association disclosures. Disclosed ranges are generally about 5-19.9% per year (about 0.4-1.7% per month), higher for longer terms and lower credit scores."
           },
           {
             "q": "What is the difference between installment and cash advance?",
@@ -17823,6 +17863,23 @@
     }
   },
   "shippingCalc": {
+    "sizeRule": "The fare is set by the higher of the weight step and the size step (sum of three sides), per Korea Post and CJ Logistics rate tables. Carriers that don't publish size steps are priced by weight only.",
+    "faq": {
+      "items": [
+        {
+          "q": "Is the fare based on weight or size?",
+          "a": "Domestic Korean parcels are charged at the higher of the weight step and the size step (L+W+H). For example, a 2 kg Korea Post registered parcel with a 110 cm size sum pays the 100–120 cm step (6,000 KRW). Volumetric weight (÷6000), as used for air freight, is not applied."
+        },
+        {
+          "q": "How much is the Jeju Island surcharge?",
+          "a": "It varies by carrier. In this calculator, personal shipments to Jeju cost about 2,000–3,000 KRW extra and remote islands about 4,000–5,000 KRW. Korea Post charges no surcharge from the mainland to Jeju or islands; delivery just takes longer (only next-day delivery from Jeju to the mainland costs more)."
+        },
+        {
+          "q": "What's the difference between convenience store and standard courier?",
+          "a": "Convenience store delivery (at CU, GS25, etc.) requires you to drop off the package yourself but can offer lower rates for small parcels compared to standard door-to-door pickup."
+        }
+      ]
+    },
     "boxSize": "Box size",
     "boxPreset": "Post box #{n}",
     "girth": "Sum of 3 sides",
@@ -17887,20 +17944,20 @@
       "calculation": {
         "title": "Calculation Basis",
         "items": [
-          "Greater of actual weight vs volume weight (W×H×D÷6000) applies",
-          "Package rejected if girth (W+H+D) exceeds carrier limit",
-          "Surcharges apply for Jeju Island and remote islands",
-          "Same-zone shipping (same city/province) is ~1,000 KRW cheaper"
+          "The higher of the weight step and the size step (sum of three sides) applies (not volumetric weight ÷6000)",
+          "Parcels exceeding the size limit (L+W+H) are not accepted",
+          "Extra charges for Jeju and remote islands vary by carrier (Korea Post charges none from the mainland to Jeju)",
+          "Same-region shipping is about 1,000 KRW cheaper"
         ]
       },
       "tips": {
         "title": "Saving Tips",
         "items": [
-          "CU Economy / GS25 Half-Price (CVS pickup) offer the lowest rates for ≤5kg",
-          "Korea Post regular parcel (counter) is cheapest when tracking is not needed",
-          "Reduce box size to cut volume weight (W×H×D÷6000)",
-          "Jeju surcharges vary widely between carriers — compare before sending",
-          "Korea Post accepts up to 30kg — more generous than other carriers"
+          "CU/GS25 half-price delivery (store to store): cheapest for up to 5 kg",
+          "Korea Post regular parcel (counter): cheapest when tracking isn't needed",
+          "Shrinking the box by one size step (sum of three sides) can lower the fare",
+          "Jeju surcharges differ by several thousand won between carriers",
+          "Korea Post accepts up to 30 kg (more generous than other carriers)"
         ]
       },
       "guide": {
@@ -23125,6 +23182,56 @@
     }
   },
   "homePage": {
+    "dailyPuzzles": {
+      "title": "Today's Puzzles",
+      "done": "Done",
+      "doneStreak": "Done · {n} days",
+      "keepStreak": "{n}-day streak",
+      "todo": "Play today"
+    },
+    "season": {
+      "label": "Right about now",
+      "chuseok": {
+        "title": "Chuseok greetings",
+        "desc": "Holiday messages for family, friends and clients, ready to copy"
+      },
+      "seollal": {
+        "title": "Lunar New Year greetings",
+        "desc": "New Year wishes and holiday messages, ready to copy"
+      },
+      "csatDday": {
+        "title": "CSAT D-{n}",
+        "desc": "Exam timetable and what-to-bring checklist"
+      },
+      "csatToday": {
+        "title": "CSAT is today",
+        "desc": "Which period is it now, plus an answer sheet for self-grading"
+      },
+      "csatGrade": {
+        "title": "CSAT grade cutoffs",
+        "desc": "Estimate your grade and percentile from raw scores"
+      },
+      "incomeTax": {
+        "title": "Income tax filing ends D-{n}",
+        "desc": "Freelancers with 3.3% withheld: estimate your refund"
+      },
+      "carTaxPrepay": {
+        "title": "Car tax prepayment D-{n}",
+        "desc": "See how much you save by paying the year up front in January"
+      },
+      "yearEndPre": {
+        "title": "Year-end tax refund preview",
+        "desc": "Deductions to claim before Dec 31 and your expected refund"
+      },
+      "yearEnd": {
+        "title": "Year-end tax season",
+        "desc": "Refund or extra payment? Find out before your payslip does"
+      },
+      "newYear": {
+        "title": "Year-end & New Year greetings",
+        "desc": "Messages for clients, friends and family, ready to copy"
+      }
+    },
     "hero": {
       "title": "All the tools you need, in one place",
       "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 240+ free online tools",
@@ -23530,11 +23637,11 @@
         ]
       },
       "standard": {
-        "title": "2025 Deduction Standards",
+        "title": "2026 Deduction Standards (Sources: NHIS, NPS, NTS)",
         "items": [
-          "National Pension: 4.75% (income cap: 6.59M KRW/month)",
-          "Health Insurance: 3.545%",
-          "Long-term Care: 12.95% of Health Insurance",
+          "National Pension: 4.75% (income cap: 6.59M KRW/month, from Jul 2026)",
+          "Health Insurance: 3.595%",
+          "Long-term Care: 13.14% of Health Insurance",
           "Employment Insurance: 0.9%",
           "Income Tax: 6-45% progressive rates",
           "Local Income Tax: 10% of Income Tax"
@@ -23888,7 +23995,7 @@
         "gift": {
           "title": "Gift tax: the essentials",
           "items": [
-            "Gift deductions (10-year total): spouse 600M; parents/grandparents → adult child/grandchild 50M (minor 20M); child → parent 50M; other relatives (blood relatives within 6th degree, in-laws within 4th) 10M; none otherwise.",
+            "Gift deductions (10-year total): spouse 600M; parents/grandparents → adult child/grandchild 50M (minor 20M); child → parent 50M; other relatives (blood relatives within 4th degree, in-laws within 3rd, for gifts from 2025-03-14) 10M; none otherwise.",
             "The limit is per receiver: gifts from father, mother and grandfather share one 50M limit per 10 years.",
             "Gifts from the same giver (a parent/grandparent and their spouse count as one) within 10 years are added together for the rate, and gift tax already paid is credited.",
             "Marriage/childbirth deduction: from 2024-01-01, an extra 100M for gifts from parents/grandparents within 2 years before/after marriage registration or within 2 years of a child's birth/adoption. Lifetime 100M combined, so up to 150M with the basic deduction.",
@@ -24176,13 +24283,13 @@
         "method": "Expense method",
         "eligible": "You qualify for: {method}",
         "doubleEntry": "double-entry bookkeeping required",
-        "notEligible": "With previous-year income of {limitWon} KRW or more, the simple rate is not allowed. Shown for comparison only.",
+        "notEligible": "With previous-year income of {limitWon} KRW or more, or current-year income of 75M KRW or more, the simple rate is not allowed. Shown for comparison only.",
         "major": "Major expenses (documented purchases, rent, wages)",
         "majorHint": "Only amounts backed by tax invoices, card slips, etc. count.",
         "book": "Actual expenses from your books",
         "bookHint": "Total expenses in your simplified ledger. Regional health insurance premiums can be included.",
         "persons": "Basic deduction persons",
-        "children": "Children aged 8–20",
+        "children": "Children born 2016 or earlier (age ≤ 20)",
         "personsHint": "Including yourself. Spouse with ≤1M KRW income, children ≤20, parents ≥60, etc.",
         "pension": "National pension paid (yearly)",
         "pensionHint": "Fully deductible when paid as a regional subscriber",
@@ -24296,7 +24403,7 @@
         "rates": {
           "title": "Simple rate · Standard rate · Books",
           "items": [
-            "Personal services (940xxx) use the simple rate if last year's income was under 36M KRW, otherwise the standard rate. New businesses use the simple rate while this year's income is under 75M KRW.",
+            "Personal services (940xxx) use the simple rate if last year's income was under 36M KRW and this year's income is under 75M KRW; otherwise the standard rate. New businesses use the simple rate while this year's income is under 75M KRW.",
             "Simple rate: income × rate counts as expenses; income above 40M uses a lower excess rate.",
             "Standard rate: documented major expenses + income × standard rate, capped at 2.8× the simple-rate income (3.4× for double-entry filers).",
             "Books (simplified ledger): real expenses count. With last year's income of 48M KRW or more, filing without books incurs a penalty."
@@ -24307,8 +24414,8 @@
           "items": [
             "Basic deduction: 1.5M KRW per person including yourself.",
             "Pension deduction: all national pension paid as a regional subscriber.",
-            "Yellow Umbrella: up to 6M (business income ≤40M), 4M (≤100M), 2M (>100M) from 2025 contributions.",
-            "Tax credits: 70K standard credit if you have no wage income; children 8–20: 250K for one, 550K for two, +400K each from the third.",
+            "Yellow Umbrella: up to 6M (business income ≤40M), 5M (≤60M), 4M (≤100M), 2M (>100M) from 2025 contributions.",
+            "Tax credits: 70K standard credit if you have no wage income; child credit for dependent children born 2016 or earlier (tax year 2026, 2017-born excluded): 250K for one, 550K for two, +400K each from the third.",
             "Regional health insurance is not an income deduction; it is an expense when filing with books."
           ]
         },
@@ -24321,7 +24428,7 @@
             "Late filing adds a 20% non-filing penalty plus late-payment interest."
           ]
         },
-        "sources": "Sources: Income Tax Act Arts. 55, 129, 59-2, 59-4, 81-5; Enforcement Decree Arts. 143, 145; Restriction of Special Taxation Act Art. 86-3; NTS 2025 standard/simple expense rate notice (Hometax business code lookup)."
+        "sources": "Sources: Income Tax Act Arts. 55, 129, 59-2 (amended 2026-04-21), 59-4, 81-5; Enforcement Decree Arts. 143, 145, 208; Restriction of Special Taxation Act Art. 86-3 (amended 2025-03-14); NTS Notice 2026-14 (expense rates for tax year 2025)."
       },
       "disclaimer": "Estimate for reference only. Other income (wages, misc.), other credits, interim prepayment and separate local tax credits are not included. Confirm via Hometax or a tax accountant."
     },
@@ -26060,6 +26167,10 @@
     }
   },
   "pensionCalculator": {
+    "capHint": "Calculated within the standard monthly income range of {min}–{max} (10,000 KRW), Jul 2026–Jun 2027",
+    "startAgeNote": "from age {age}",
+    "ineligible": "With less than 10 years (120 months) of contributions you receive a lump-sum refund with interest instead of an old-age pension.",
+    "basis": "Basis: {year} National Pension Act (contribution rate {rate}), A value {a} KRW (Dec 2025–Nov 2026), standard monthly income {min}–{max} (10,000 KRW, Jul 2026–Jun 2027). Sources: NPS (nps.or.kr), Ministry of Health and Welfare",
     "title": "National Pension Calculator",
     "description": "Estimate your Korean National Pension (NPS) monthly benefit, total contributions, and income replacement rate.",
     "currentAge": "Current Age",
@@ -26074,8 +26185,8 @@
     "pensionRatio": "Pension / Contribution Ratio",
     "replacementRate": "Income Replacement Rate",
     "contributionYears": "Contribution Period",
-    "employeeContribution": "Employee Share (4.5%)",
-    "employerContribution": "Employer Share (4.5%)",
+    "employeeContribution": "Employee Share ({rate})",
+    "employerContribution": "Employer Share ({rate})",
     "totalMonthlyContribution": "Total Monthly Contribution",
     "annualPension": "Annual Benefit",
     "yearsLabel": "yr",
@@ -26083,27 +26194,27 @@
     "wonUnit": "KRW",
     "manwonUnit": "10K KRW",
     "noticeTitle": "Disclaimer",
-    "notice": "This calculator provides estimates based on 2024 Korean NPS guidelines. Actual benefits may vary based on contribution history, credits, and other factors.",
+    "notice": "Present-value estimate assuming your current income stays the same, applying contribution-year coefficients (43% replacement rate from 2026) and the scheduled rate increase (13% by 2033). Contributions after 60 are assumed as voluntary continued coverage (up to 65). Actual benefits depend on income revaluation, contribution history and credits — check NPS for your exact amount.",
     "guide": {
       "title": "Understanding Korean NPS",
       "formula": {
         "title": "Pension Calculation Formula",
         "items": [
-          "Basic Pension = 1.2 × (A + B) × (contribution months / 480)",
-          "A value = average income of all subscribers in the 3 years before pension eligibility (~2.86M KRW in 2024)",
-          "B value = average standard monthly income during your contribution period",
-          "5% additional payment for every 12 months beyond 20 years of contributions",
-          "This calculator assumes your current income remains constant throughout"
+          "Basic pension = coefficient × (A + B) × (1 + 5% per year beyond 20 years). The coefficient depends on the contribution year; periods from 2026 use 1.29 (43% replacement rate for 40 years)",
+          "A value = average monthly income of all subscribers over the 3 years before receipt (3,193,511 KRW, applied Dec 2025–Nov 2026)",
+          "B value = your average standard monthly income (cap 6.59M, floor 410K KRW, Jul 2026–Jun 2027)",
+          "With 10–20 years of coverage you get 50% of the basic pension plus 5% per year beyond 10 years; under 10 years you receive a lump-sum refund",
+          "This calculator assumes your current income stays constant and excludes dependent pension"
         ]
       },
       "contribution": {
         "title": "Contribution Rate Guide",
         "items": [
-          "Total contribution rate: 9% of income",
-          "Employee share: 4.5%",
-          "Employer share: 4.5%",
-          "Self-employed pay the full 9%",
-          "2024 upper income limit: 6.17M KRW per month"
+          "Total contribution rate: 9.5% of income in 2026 (rising 0.5%p a year to 13% in 2033 under the pension reform)",
+          "Employee share: 4.75%",
+          "Employer share: 4.75%",
+          "Regional and voluntary subscribers pay the full 9.5%",
+          "Standard monthly income cap 6.59M / floor 410K KRW (Jul 2026–Jun 2027; 6.37M / 400K in Jan–Jun 2026)"
         ]
       },
       "tips": {
@@ -28542,11 +28653,12 @@
         "unlikely": "Under 180 insured days or quitting for personal reasons is generally not eligible. If you had a justified reason, choose that option and check the items. Amounts below assume eligibility."
       },
       "result": {
+        "floorOverCap": "For leaving in {year}, the minimum based on that year's minimum wage ({wage}) is {floor}, above the current cap of {cap}, so the minimum is paid regardless of wage (Employment Insurance Act Art. 46(2)). This may change if the cap (Enforcement Decree Art. 68) is amended.",
         "totalLabel": "Estimated total ({days} days)",
         "daily": "Daily benefit",
         "dailySub": "60% of average wage",
         "applied": {
-          "cap": "Capped (60% exceeds 68,100 KRW)",
+          "cap": "Capped (60% exceeds {cap})",
           "floor": "Minimum applied (80% of minimum wage)"
         },
         "days": "Benefit days",
@@ -28559,8 +28671,8 @@
         "avgDaily": "Average daily wage",
         "avgDailyCalc": "{total} ÷ {days} days = {v}",
         "raw": "× 60%",
-        "cap": "Daily cap (2026)",
-        "floor": "Daily minimum ({h} h)",
+        "cap": "Daily cap (leaving in {year})",
+        "floor": "Daily minimum ({h} h × minimum wage {wage} × 80%)",
         "daily": "Daily benefit applied",
         "note": "If the average wage is below the ordinary wage, the ordinary wage is used. Rounding may cause small differences."
       },
@@ -29022,7 +29134,7 @@
     "input": {
       "title": "Work Information",
       "hourlyWage": "Hourly Wage",
-      "hourlyWageHint": "2026 minimum wage: ₩10,320",
+      "hourlyWageHint": "2026 minimum wage: ₩10,320 (₩10,700 from 2027-01-01)",
       "workDays": "Working Days per Week",
       "daysUnit": " days",
       "dailyHours": "Daily Working Hours",
@@ -33388,7 +33500,7 @@
       "acqAdjusted": "Was in an adjusted area when bought",
       "acqAdjustedHint": "Bought in an adjusted area after 2017-08-03 → 2 years of residence required",
       "live": "I still live here (used in simulation)",
-      "graceNote": "The multi-home surcharge is back from 2026-05-10. Exception: contract signed by 2026-05-09 and sale closed within 4 months (Gangnam, Seocho, Songpa, Yongsan) or 6 months (areas designated after 2025-10-16).",
+      "graceNote": "The multi-home surcharge is back from 2026-05-10. Exception: contract signed by 2026-05-09 and sale closed within 4 months (Gangnam, Seocho, Songpa, Yongsan) or 6 months (areas designated after 2025-10-16). In land-permit zones the permit must have been applied for by 2026-05-09; if the contract was signed on or after 05-10, the sale must close by 2026-09-09 (11-09 in newly designated areas).",
       "grace": "Covered by the pre-5/9 contract rule"
     },
     "verdict": {
@@ -33516,7 +33628,7 @@
         },
         {
           "q": "Is the multi-home surcharge applied now?",
-          "a": "Yes. The deferral ended on 2026-05-09, so from 05-10 adjusted-area sales get +20%p (2 houses) or +30%p (3+) and no long-term deduction. Contracts signed by 05-09 and closed within 4 or 6 months are excepted. The 2026 reform bill proposes temporary relief for 2027–2028 but has not passed."
+          "a": "Yes. The deferral ended on 2026-05-09, so from 05-10 adjusted-area sales get +20%p (2 houses) or +30%p (3+) and no long-term deduction. Contracts signed by 05-09 and closed within 4 or 6 months (in land-permit zones: permit applied for by 05-09) are excepted. The 2026 reform bill proposes temporary relief for 2027–2028 but has not passed."
         },
         {
           "q": "Which expenses count?",
@@ -34353,7 +34465,7 @@
     },
     "tariff": {
       "tierRange": "Tiers: up to {a} kWh 120 KRW · up to {b} kWh 214.6 KRW · above 307.3 KRW (base 910 / 1,600 / 7,300 KRW)",
-      "extras": "Includes climate charge 9 KRW and fuel adjustment 5 KRW per kWh, 10% VAT, 2.7% power industry fund",
+      "extras": "Includes climate charge 9 KRW and fuel adjustment 5 KRW per kWh (Q4 2026), 10% VAT, 2.7% power industry fund · KEPCO residential low-voltage tariff (effective 2023-11-09), checked 2026-10-04",
       "title": "Electricity Rate",
       "progressive": "KEPCO residential tiers",
       "custom": "Custom Rate",
@@ -35074,7 +35186,7 @@
           "items": [
             "Homes are counted per household including the one being bought; pre-sale rights acquired after 2020-08-12 and residential officetels count.",
             "Adjustment areas: 2 homes 8%, 3+ 12%. Elsewhere: up to 2 homes 1–3%, 3 homes 8%, 4+ 12%. Corporations: 12%.",
-            "Temporary two homes: sell the old home within 3 years and the 1–3% rate applies; otherwise the difference plus penalties is collected.",
+            "Temporary two homes: sell the old home within 3 years (2 years if both homes are in adjustment areas — for acquisitions from 2026-10-01; 3 years if the contract and deposit were made by 2026-08-26) and the 1–3% rate applies; otherwise the difference plus penalties is collected.",
             "Homes assessed at ₩100M or less (outside redevelopment zones) are excluded from the surcharge.",
             "Contracts signed (with proven deposit) before an area was designated are treated as non-adjustment."
           ]
@@ -35121,7 +35233,7 @@
           },
           {
             "q": "Do temporary two-home owners pay 8%?",
-            "a": "No. If the old home is sold within 3 years, the 1–3% rate applies; otherwise the difference and penalties are collected."
+            "a": "No. If the old home is sold within 3 years (2 years if both homes are in adjustment areas — for acquisitions from 2026-10-01; 3 years if the contract and deposit were made by 2026-08-26), the 1–3% rate applies; otherwise the difference and penalties are collected."
           },
           {
             "q": "How much is first-home relief?",
@@ -35177,7 +35289,7 @@
             "url": "https://www.molit.go.kr"
           }
         ],
-        "asOf": "As of October 2026. First-home base cap ₩{limit}; adjustment areas through the 2026-07-01 designation."
+        "asOf": "As of October 2026. First-home base cap ₩{limit}; adjustment areas through the 2026-07-01 designation; temporary two-home period per the 2026-10-01 decree amendment."
       },
       "links": {
         "dsr-calculator": "DSR calculator",
@@ -35536,7 +35648,7 @@
     "rt": {
       "title": "Limit by rate type",
       "note": "Hybrid and periodic loans carry only part of the add-on, depending on how much of the term is fixed — now {fy}y of {years}y. Fixed-rate loans have no add-on. Tap a card to switch.",
-      "noteCredit": "When credit balances exceed KRW 100M, variable-rate loans get +1.5%p; fixed-rate loans get none."
+      "noteCredit": "When credit balances exceed KRW 100M, variable-rate loans get +1.5%p. Fixed-rate loans get none with a term of 5+ years and +0.9%p with a 3-5 year term."
     },
     "inc": {
       "title": "Loan limit by income",
@@ -35585,27 +35697,27 @@
     },
     "sources": {
       "title": "Sources",
-      "asOf": "Checked 2026-10-02. The calculator is updated when rules change.",
+      "asOf": "Checked 2026-10-04. The calculator is updated when rules change.",
       "items": [
         {
           "label": "FSC — Stage 3 stress DSR plan (2025-05-20)",
           "url": "https://www.fsc.go.kr/no010101/84617"
         },
         {
+          "label": "KFB — stress rate disclosure (published 2026-06-30, applies Jul 1-Dec 31)",
+          "url": "https://portal.kfb.or.kr/compare/stress_loan.php"
+        },
+        {
+          "label": "FSC — June 27 household debt measures",
+          "url": "https://www.fsc.go.kr/no010101/84824"
+        },
+        {
+          "label": "FSC — Oct 15 housing market measures FAQ",
+          "url": "https://www.fsc.go.kr/po020201/85466"
+        },
+        {
           "label": "KFB consumer portal — stress rate overview",
           "url": "https://portal.kfb.or.kr/compare/stress_loan_overview.php"
-        },
-        {
-          "label": "KB Think — June 27 household debt measures",
-          "url": "https://kbthink.com/loan-guide/627-regulation.html"
-        },
-        {
-          "label": "KB Think — Oct 15 real estate measures",
-          "url": "https://kbthink.com/realestate/basics/10-15-measures.html"
-        },
-        {
-          "label": "KB Think — regional mortgage stress DSR extension (2026-07)",
-          "url": "https://kbthink.com/realestate/issue/hosing-260701.html"
         }
       ]
     },
@@ -35732,7 +35844,7 @@
           "DSR is tested at a higher \"stress\" rate to reflect future rate rises. You still pay your contracted rate — only the limit shrinks.",
           "Stage 3 (from 2025-07-01): a base 1.5%p on virtually all household loans at banks and non-banks. Credit loans get it only when credit balances exceed KRW 100M.",
           "Mortgages in the capital area / regulated zones: floor raised to 3.0%p by the Oct 15 measures (from 2025-10-16). Regional mortgages: 0.75%p (grace through 2026-12-31).",
-          "Hybrid loans count 80% of the add-on if the fixed period is under 30% of the term, 60% if 30–50%. Periodic loans: 40% under 30%, 30% for 30–50%. Fixed-rate: none. E.g. a 30-year capital-area loan: variable 3.0%p, 5-year hybrid 2.4%p, 5-year periodic 1.2%p.",
+          "Hybrid loans count 80% of the add-on if the fixed period is under 30% of the term, 60% for 30-50%, 40% for 50-70%, and none at 70% or more. Periodic loans: 40%, 30%, 20%, none. Regional mortgages use the stage-2 ratios (hybrid 60/40/20%, periodic 30/20/10%). E.g. a 30-year capital-area loan: variable 3.0%p, 5-year hybrid 2.4%p, 5-year periodic 1.2%p.",
           "Not retroactive: when you apply for a new loan, existing loans are counted with the stress rate that applied when they were made."
         ]
       },
@@ -36445,7 +36557,7 @@
         "method": "Expense method",
         "eligible": "Applies to you: {method}",
         "doubleEntry": "Double-entry bookkeeping required (estimated filing uses half the standard rate)",
-        "notEligible": "With previous-year revenue of ₩{limitWon} or more (personal services), the simple rate is not available. Shown for comparison only.",
+        "notEligible": "With previous-year revenue of ₩{limitWon} or more (personal services), or current-year revenue of ₩75M or more, the simple rate is not available. Shown for comparison only.",
         "major": "Major expenses (documented purchases, rent, wages)",
         "majorHint": "Only amounts backed by tax invoices, invoices or card slips count.",
         "book": "Expenses in your books",
@@ -36601,7 +36713,7 @@
         "income": {
           "title": "Key points by income type",
           "items": [
-            "Business: personal services use the simple rate if previous-year revenue was under ₩36M (new businesses: under ₩75M this year); otherwise the standard rate or books.",
+            "Business: personal services use the simple rate if previous-year revenue was under ₩36M (or new) and this year's revenue is under ₩75M; otherwise the standard rate or books.",
             "Employment: year-end settlement tax counts as already paid. Adding other income can push you into a higher bracket, so a balance due is common.",
             "Other income: lecture/manuscript fees get 60% deemed expenses, and 20% (22% incl. local) of the rest is withheld — 8.8% of the payment.",
             "Interest/dividends: up to ₩20M in total is taxed at 14%; only the excess is taxed at basic rates (comparative taxation)."
@@ -36612,7 +36724,7 @@
           "items": [
             "Basic deduction ₩1.5M per person, plus ₩1M for aged 70+ and ₩2M for disabled",
             "National pension contributions are fully deductible. Regional health insurance is not an income deduction but a business expense when filing with books.",
-            "Yellow Umbrella: up to ₩6M if business income ≤ ₩40M, ₩4M if ≤ ₩100M, ₩2M above",
+            "Yellow Umbrella: up to ₩6M if business income ≤ ₩40M, ₩5M if ≤ ₩60M, ₩4M if ≤ ₩100M, ₩2M above (from 2025 contributions)",
             "Pension accounts: pension savings up to ₩6M, with IRP up to ₩9M, credited at 15% or 12%",
             "Child tax credit (from tax year 2025): children aged 8+ — 1 child ₩250K, 2 children ₩550K, ₩400K for each from the third",
             "Standard credit: ₩70K without employment income; ₩130K for employees who claim no special deductions"
@@ -36794,12 +36906,12 @@
         "spouse": "Spouse deduction",
         "spouseHint": "Spouse income ≤ 1M KRW (or salary ≤ 5M KRW)",
         "children": "Children",
-        "kidsUnder8": "Of which under 8",
+        "kidsUnder8": "Of which born 2017 or later",
         "others": "Other dependents",
         "elderly": "Aged 70+",
         "disabled": "Disabled",
         "birth": "Birth/adoption this year",
-        "familyHint": "1.5M KRW per person · 70+ +1M · disabled +2M. Child credit only for age 8+",
+        "familyHint": "1.5M KRW per person · 70+ +1M · disabled +2M. Child credit only for children born 2016 or earlier (tax year 2026; 2017-born excluded due to the child allowance expansion)",
         "credit": "Credit card",
         "debit": "Debit card / cash receipt",
         "debitHint": "30% rate (twice credit card)",
@@ -36822,7 +36934,7 @@
         "premature": "Premature/congenital (20%)",
         "eduSelf": "Education — self",
         "eduSchool": "Education — K-12 children",
-        "eduSchoolHint": "3M KRW per child",
+        "eduSchoolHint": "3M KRW per child. From 2026, arts/sports academy fees for 1st–2nd graders are included",
         "eduUniv": "Education — college children",
         "eduUnivHint": "9M KRW per child",
         "rent": "Annual rent",
@@ -36838,7 +36950,7 @@
         "marriage": "Marriage credit",
         "marriageHint": "Married 2024–2026, 500K KRW each (once)",
         "sme": "SME employee reduction",
-        "smeHint": "90% income tax cut for youth etc., up to 2M KRW/yr",
+        "smeHint": "90% income tax cut for youth (70% for 60+, disabled, career-break), up to 2M KRW/yr",
         "pension": "National pension paid",
         "healthEmp": "Health, care & employment insurance",
         "autoHint": "Leave blank to use 2026 rates"
@@ -36943,10 +37055,11 @@
           "Foreigners' flat 19% rate and previous-employer income are not included",
           "Mortgage interest, political funds, ESOP/venture investments and donation carry-forwards excluded",
           "Child education limits use children × per-child cap; SME reduction assumes a full eligible year",
-          "The withholding estimate is approximate — check your payslip or withholding receipt"
+          "The withholding estimate is approximate — check your payslip or withholding receipt",
+          "The 2026 tax reform proposal (Aug 2026, pending in the National Assembly: dependent income limit 3M KRW, end of the extra transit deduction, birth/marriage credits moved to direct support, etc.) is not reflected"
         ]
       },
-      "sources": "Basis: Income Tax Act §47, §55, §59–59-4; Restriction of Special Taxation Act §30, 58, 87, 92, 95-2, 126-2 (as amended Dec 2025, as of 2026-10-01). 2026 insurance rates."
+      "sources": "Basis: Income Tax Act §47, §55, §59–59-4 (amended 2025-12-23 and 2026-04-21); Restriction of Special Taxation Act §30, 58, 87, 92, 95-2, 126-2 (amended 2025-12-23). Current law as of 2026-10-04 (law.go.kr). 2026 insurance rates."
     },
     "title": "Year-End Tax Settlement Calculator",
     "description": "Automatically calculate your 2025 tax year (2026 filing) year-end settlement refund",
@@ -38467,7 +38580,7 @@
         "dec": "December 1–15",
         "decWhat": "Comprehensive tax + rural special tax (NTS)",
         "none": "None",
-        "split": "Because the comprehensive tax exceeds KRW 3M, KRW {amount} can be paid in installments by June 15 next year (no interest).",
+        "split": "Because the comprehensive tax exceeds KRW 2.5M, KRW {amount} can be paid in installments by June 15 next year (no interest). The rural special tax is split in the same ratio.",
         "note": "Property tax is billed by the local government via Wetax; the comprehensive tax by the NTS via Hometax. Whether property tax of KRW 200K or less is billed all in July depends on local ordinance."
       },
       "links": {
@@ -38582,7 +38695,7 @@
             "Property tax already paid on the same base is subtracted (double-taxation offset).",
             "One-home credits: age 60 20%, 65 30%, 70 40%; holding 5 yrs 20%, 10 yrs 40%, 15 yrs 50%; combined max 80%.",
             "Burden cap: if this year's property + comprehensive tax exceeds 150% of last year's, the excess is removed from the comprehensive tax.",
-            "Paid December 1–15. Above KRW 3M, part can be paid in installments within six months."
+            "Paid December 1–15. Above KRW 2.5M (about KRW 3M including the rural special tax), the excess over 2.5M (up to half above 5M) can be paid within six months."
           ]
         },
         "tips": {
@@ -38605,7 +38718,7 @@
         "items": [
           {
             "q": "When is the comprehensive tax billed and due?",
-            "a": "The NTS bills in late November and payment is due December 1–15. You can check and pay on Hometax; above KRW 3M part can be paid by June 15 next year."
+            "a": "The NTS bills in late November and payment is due December 1–15. You can check and pay on Hometax; above KRW 2.5M (about 3M with the rural special tax) part can be paid by June 15 next year."
           },
           {
             "q": "Does a one-home owner with a KRW 1.2B assessed price pay comprehensive tax?",
@@ -40649,10 +40762,10 @@
   },
   "taxSeason": {
     "hero": {
-      "badge": "May 2025 Global Income Tax Season",
+      "badge": "May {year} global income tax filing (tax year {taxYear})",
       "title": "May Global Income Tax Filing Guide",
       "subtitle": "From who must file to tax rates and saving strategies — prepare for your May tax filing with this complete guide.",
-      "deadlineLabel": "Until May 31 filing deadline",
+      "deadlineLabel": "Until the filing deadline ({month}/{day})",
       "deadlinePast": "This year's filing period has ended. Check back in May next year.",
       "deadlineNote": "Diligent filing confirmation subjects: until June 30",
       "days": "Days",
@@ -40718,7 +40831,7 @@
       }
     },
     "taxRates": {
-      "title": "2025 Global Income Tax Rate Table",
+      "title": "Global income tax rates (tax year 2023 onward, Income Tax Act §55)",
       "subtitle": "Progressive 8-bracket rates apply to your taxable income (gross income minus all deductions).",
       "colRange": "Taxable Income Bracket",
       "colRate": "Rate",
@@ -40731,8 +40844,8 @@
       "title": "6 Tax-Saving Strategies",
       "subtitle": "Review these items before filing — they can legally reduce your tax bill.",
       "t1": {
-        "title": "Maximize Pension Savings & IRP Deductions",
-        "desc": "Combine pension savings fund (up to 6M KRW/yr) and IRP (up to 3M more) for a maximum 9M KRW tax credit at 16.5% rate."
+        "title": "Maximize pension savings & IRP tax credits",
+        "desc": "Pension savings (up to ₩6M/yr) and IRP together are credited up to ₩9M/yr: 16.5% if comprehensive income ≤ ₩45M, otherwise 13.2% (incl. local tax), up to ₩1.485M."
       },
       "t2": {
         "title": "Document All Business Expenses",
@@ -40744,7 +40857,7 @@
       },
       "t4": {
         "title": "Yellow Umbrella Deduction for SMEs",
-        "desc": "Small business owners can deduct Yellow Umbrella (노란우산) contributions (up to 5M KRW) from income — a powerful tax reducer."
+        "desc": "Yellow Umbrella (노란우산) contributions are deductible up to ₩6M (business income ≤ ₩40M), ₩5M (≤ ₩60M), ₩4M (≤ ₩100M) or ₩2M (above)."
       },
       "t5": {
         "title": "Keep Financial Income Under 20M KRW",
@@ -40756,7 +40869,7 @@
       }
     },
     "timeline": {
-      "title": "2025 Tax Filing Schedule",
+      "title": "{year} filing schedule (tax year {taxYear})",
       "subtitle": "Know the key deadlines and file on time to avoid penalties.",
       "e1": {
         "date": "May 1",
@@ -40770,8 +40883,8 @@
       },
       "e3": {
         "date": "May 31",
-        "title": "Installment Payment 1st Due",
-        "desc": "If tax owed exceeds 10M KRW, pay 50% by this date. The remaining 50% can be paid by June 30."
+        "title": "Request installment payment",
+        "desc": "If tax owed exceeds ₩10M, you can request installments when filing: the amount over ₩10M if the tax is ≤ ₩20M, or up to 50% if it is over ₩20M (Income Tax Act §77, Decree §140)."
       },
       "e4": {
         "date": "June 30",
@@ -40779,9 +40892,9 @@
         "desc": "High-revenue business owners must file with a CPA verification letter by June 30."
       },
       "e5": {
-        "date": "June 30",
-        "title": "Installment Payment 2nd Due",
-        "desc": "Remaining 50% installment payment deadline. No interest is charged on approved installments."
+        "date": "July 31",
+        "title": "Installment due",
+        "desc": "Installments are due within 2 months after the payment deadline (July 31 in general, August 31 for confirmed-filing businesses). No penalty if paid on time."
       },
       "penaltyLabel": "Warning:",
       "penaltyDesc": "Missing the deadline incurs a 20% non-filing penalty (40% for fraudulent non-filing) plus a daily late payment surcharge of 0.022%. Always file on time."
@@ -42344,6 +42457,7 @@
     }
   },
   "lottoTax": {
+    "basis": "Basis: Income Tax Act §84 (no tax on prizes ≤ ₩2M per ticket, paid from 2023), §129 (20% withholding, 30% on the portion above ₩300M) + 10% local income tax. Current law as of 2026.",
     "title": "Lottery Prize Tax Calculator",
     "description": "Calculate taxes on lottery winnings and see your actual take-home amount",
     "prizeAmount": "Prize Amount",
@@ -42368,13 +42482,13 @@
     "netPrize": "Take-home Amount",
     "effectiveRate": "Effective Tax Rate",
     "incomeTax": "Income Tax",
-    "localTax": "Local Tax",
+    "localTax": "Local Income Tax",
     "taxRate22": "22% (Income 20% + Local 2%)",
     "taxRate33": "33% (Income 30% + Local 3%)",
     "threshold": "300M KRW",
     "belowThreshold": "≤300M bracket",
     "aboveThreshold": ">300M bracket",
-    "noTax": "Tax-free (≤50,000 KRW)",
+    "noTax": "Tax-free (≤ ₩2M per ticket)",
     "taxFree": "Tax-free",
     "quickAmounts": "Quick Input",
     "rankPresets": "Average Prize by Lotto Rank",
@@ -42397,11 +42511,11 @@
       "taxStructure": {
         "title": "Tax Structure",
         "items": [
-          "≤50,000 KRW: Tax-free",
-          ">50,000 ~ ≤300M KRW: 22% (Income Tax 20% + Local Tax 2%)",
-          ">300M KRW: 33% (Income Tax 30% + Local Tax 3%)",
-          "Winnings are classified as 'other income' and withheld at source",
-          "No separate income tax filing is required (separate taxation)"
+          "≤ ₩2M per ticket: tax-free (minimum taxable amount, paid from 2023, Income Tax Act §84)",
+          "> ₩2M up to ₩300M: 22% on the whole prize (income tax 20% + local tax 2%)",
+          "Portion above ₩300M: 33% (income tax 30% + local tax 3%)",
+          "Winnings are classified as 'other income' and withheld at payment (Income Tax Act §129)",
+          "Lottery winnings are taxed separately, so no comprehensive income tax filing is required (Income Tax Act §14(3)8)"
         ]
       },
       "claimProcess": {
@@ -43154,7 +43268,7 @@
           "NTS wage income percentiles: gross pay distribution of year-end tax filers (used for the overall rank)",
           "Values between brackets and the distribution curve are linear-interpolated estimates from this table",
           "Age/gender/industry ranks are estimated distributions built from published medians/averages",
-          "Data is based on the 2023 income year (published 2024), updated annually"
+          "Data is based on income year 2023 (published Dec 2024). Income year 2024 statistics (published Dec 2025) are not yet reflected, so your actual rank may differ"
         ]
       },
       "tips": {
@@ -43242,7 +43356,7 @@
     "faq": {
       "q1": {
         "question": "What is the median salary in Korea?",
-        "answer": "As of 2023, the median gross salary of Korean workers is approximately 35M KRW. The average is about 42M KRW, but this is skewed upward by high earners, making the median more representative."
+        "answer": "According to the NTS, the average gross pay of wage earners for income year 2023 was 43.32M KRW (press release, Dec 19 2024). The median estimated from this tool's percentile table is about 35M KRW; the average is pulled up by high earners, so the median is more representative."
       },
       "q2": {
         "question": "How much do I need to earn to be in the top 1%?",
@@ -43753,7 +43867,7 @@
         "items": [
           "Contribute your bonus to an IRP (Individual Retirement Pension) for up to 9M KRW tax credit",
           "Combined with pension savings, up to 9M KRW annual tax credit (16.5% if salary ≤55M KRW)",
-          "Spreading bonus payments across months can lower your marginal tax rate",
+          "Splitting a bonus within the same year leaves annual tax unchanged; only a different tax year can lower the marginal rate",
           "Maximize non-taxable benefits like meal allowances (200K KRW/month)",
           "Don't miss additional deductions at year-end (medical, education, donations, etc.)"
         ]
@@ -43763,7 +43877,7 @@
         "items": [
           {
             "q": "Are social insurance contributions applied to bonuses?",
-            "a": "In the bonus month only employment insurance (0.9%) and income tax are withheld. National pension uses a fixed monthly base, and health insurance on the bonus is charged at next April's settlement. The 2026 pension monthly cap is 6.59M KRW."
+            "a": "In the bonus month only employment insurance (0.9%) and income tax are withheld. National pension uses a fixed monthly base, and health insurance on the bonus is charged at next April's settlement. The pension monthly income cap is 6.59M KRW from Jul 2026 to Jun 2027 (6.37M in Jan-Jun 2026)."
           },
           {
             "q": "Why does the tax rate on bonuses seem higher than regular salary?",
@@ -43771,7 +43885,7 @@
           },
           {
             "q": "How much can I save by putting my bonus into a retirement pension?",
-            "a": "You can contribute up to 9M KRW annually to an IRP, with a 16.5% tax credit (salary ≤55M KRW) or 13.2% (>55M KRW). A full 9M KRW contribution saves up to 1.485M KRW in taxes."
+            "a": "An IRP, combined with pension savings, earns a tax credit on up to 9M KRW a year (the contribution limit is 18M KRW combined). The credit is 16.5% for salary up to 55M KRW and 13.2% above, so a 9M KRW contribution returns up to 1.485M KRW."
           },
           {
             "q": "Why do withholding taxes differ from actual taxes?",
@@ -50582,7 +50696,7 @@
       "depositInsurance": "Jeonse deposit insurance eligibility confirmed",
       "depositInsuranceDesc": "Check HUG/SGI/HF deposit insurance eligibility (most important!)",
       "moveInReport": "Planned to register residence + get confirmation date",
-      "moveInReportDesc": "Same-day registration + confirmation date = opposing power secured",
+      "moveInReportDesc": "Register residence on move-in day (opposing power starts 00:00 the next day) + confirmation date (priority repayment)",
       "priorityDeposit": "Priority deposit repayment plan",
       "priorityDepositDesc": "Check small deposit priority limits (varies by region)"
     },
@@ -50635,9 +50749,9 @@
       "tips": {
         "title": "Useful Tips",
         "items": [
-          "Deposit insurance (HUG) eligibility is the most important safety measure",
+          "Deposit insurance (HUG) eligibility is the most important safety measure. HUG's return guarantee requires the deposit plus senior claims to be within 90% of the home price",
           "Jeonse-to-sale ratio over 80% indicates high underwater risk",
-          "Register residence and get confirmation date on move-in day for opposing power",
+          "Opposing power starts at 00:00 the day after you take possession and register your residence. Add a clause that no mortgage will be set on the balance-payment day, and register plus get the confirmation date on move-in day",
           "Re-check the registry on contract signing day (same-day changes possible)",
           "Direct private deals without licensed agents require extra caution"
         ]
@@ -50647,7 +50761,7 @@
         "items": [
           {
             "q": "Is deposit insurance mandatory?",
-            "a": "Not legally required, but strongly recommended. If the landlord fails to return the deposit, the insurer pays instead. Choose from HUG, SGI, or HF."
+            "a": "Not legally required, but strongly recommended. If the landlord fails to return the deposit, the guarantor pays instead. Choose from HUG, SGI, or HF; HUG's return guarantee requires the deposit plus senior claims to be within 90% of the home price."
           },
           {
             "q": "What is underwater jeonse?",
@@ -50655,7 +50769,7 @@
           },
           {
             "q": "What's the difference between residence registration and confirmation date?",
-            "a": "Residence registration reports your address to the government. Confirmation date is an official date stamp on your lease. Both must be done on move-in day to secure opposing power and priority repayment rights."
+            "a": "Residence registration (plus taking possession) gives you opposing power, effective from 00:00 the next day. The confirmation date is an official date stamp on your lease; together with opposing power it gives priority repayment ahead of junior creditors at auction. Get both on move-in day."
           }
         ]
       }
@@ -53584,7 +53698,7 @@
         "truck": "Truck"
       },
       "kindHint": {
-        "car": "Gasoline, diesel, LPG and hybrid cars. Taxed per cc, with age reductions from year 3.",
+        "car": "Gasoline, diesel, LPG and hybrid cars. Taxed per cc, with age reductions from year 3 for non-commercial cars (none for commercial).",
         "ev": "Electric, hydrogen and solar passenger cars pay a flat rate regardless of size. No age reduction.",
         "van": "11-15 seat vans are taxed at the small general bus flat rate.",
         "truck": "Flat rate by payload. 1-ton trucks fall under 'up to 1 ton'."
@@ -53651,7 +53765,7 @@
         "pct": "Discount",
         "split": "June + December",
         "month": "Lump sum in month {m}",
-        "note": "Deduction = tax for the period from the next month to December (pro rata by day) × 5%. Education tax shrinks with it. May differ from your bill by tens of won."
+        "note": "Deduction (Local Tax Act Art. 128(3)): January/March = annual tax × days from the day after the deadline to Dec 31 ÷ 365 × 5%; June = 2nd-half tax × 5%; September = 2nd-half tax × remaining days ÷ 184 × 5%. Education tax shrinks with it. May differ from your bill by tens of won."
       },
       "schedule": {
         "title": "Payment schedule",
@@ -53666,11 +53780,11 @@
           ],
           [
             "Jun 16-30",
-            "1st-half regular payment (Jan-Jun) · lump sum (~2.52%)"
+            "1st-half regular payment (Jan-Jun) · lump sum (~2.5%)"
           ],
           [
             "Sep 16-30",
-            "Lump-sum application (~1.26%)"
+            "Lump-sum application (~1.25%)"
           ],
           [
             "Dec 16-31",
@@ -53697,7 +53811,7 @@
         "total": "Annual tax (KRW)",
         "ageN": "Year {n}",
         "ageMax": "Year 13+",
-        "note": "5% per year from year 3, capped at 50% from year 12 (Local Tax Act Art. 127(3))."
+        "note": "5% per year from year 3, capped at 50% from year 12 (Local Tax Act Art. 127(1)(2), non-commercial passenger cars)."
       },
       "disclaimer": "Estimate based on the Local Tax Act. Exemptions for disabled persons, veterans, etc., trucks over 10 tons, special vehicles and express/charter buses are not included. Check your Wetax bill for the exact amount."
     },
@@ -53783,7 +53897,7 @@
           "Age counts from the first registration date, not the model year.",
           "Registered Jan-Jun: tax year − registration year + 1.",
           "Registered Jul-Dec: June installment uses the year difference, December adds 1.",
-          "5% from year 3, +5% each year, up to 50% from year 12. Applies only to cc-based passenger cars."
+          "5% from year 3, +5% each year, up to 50% from year 12. Applies only to cc-based non-commercial passenger cars (not commercial, EV, van or truck)."
         ]
       },
       "refund": {
@@ -53809,7 +53923,7 @@
         "items": [
           {
             "q": "What is the 2026 lump-sum discount?",
-            "a": "The rate is 5%, applied only to the period after the payment month, so January saves about 4.58% of the annual tax, March ~3.77%, June ~2.52% and September ~1.26%. Education tax falls too."
+            "a": "The rate is 5%, applied only to the remaining period (June and September cover the 2nd half only), so January saves about 4.58% of the annual tax, March ~3.77%, June ~2.5% and September ~1.25%. Education tax falls too."
           },
           {
             "q": "How do I apply for lump-sum payment?",
@@ -53829,7 +53943,7 @@
           },
           {
             "q": "How is vehicle age calculated?",
-            "a": "From the first registration date. Jan-Jun registrations: tax year − registration year + 1. Jul-Dec: June uses the difference, December adds 1. 5% off from year 3, up to 50% from year 12."
+            "a": "From the first registration date. Jan-Jun registrations: tax year − registration year + 1. Jul-Dec: June uses the difference, December adds 1. Non-commercial passenger cars get 5% off from year 3, up to 50% from year 12."
           },
           {
             "q": "Are company cars taxed as commercial?",
@@ -54858,6 +54972,1142 @@
             "a": "With Korean bulk-texting services, SMS carries up to 90 bytes (about 45 Korean characters); longer messages become LMS. Emoji often prevent sending as SMS too. LMS may cost more, so choose Short when texting many people."
           }
         ]
+      }
+    }
+  },
+  "kimjangCalculator": {
+    "title": "Kimjang Calculator",
+    "subtitle": "Enter the number of napa cabbages or the weight of pre-salted cabbage to get seasoning amounts, total cost and a shopping list.",
+    "items": {
+      "cabbage": "Napa cabbage",
+      "salt": "Coarse sea salt",
+      "saltedCabbage": "Pre-salted cabbage",
+      "radish": "Korean radish",
+      "chili": "Red pepper flakes",
+      "garlic": "Peeled garlic",
+      "ginger": "Ginger",
+      "greenOnion": "Green onion",
+      "chives": "Scallion (jjokpa)",
+      "onion": "Onion",
+      "mustard": "Mustard greens (gat)",
+      "dropwort": "Water dropwort",
+      "pear": "Korean pear",
+      "shrimpSauce": "Salted shrimp",
+      "fishSauce": "Anchovy fish sauce",
+      "riceFlour": "Glutinous rice flour (for paste)",
+      "sugar": "Sugar (or plum syrup)",
+      "oyster": "Oysters",
+      "shrimp": "Fresh shrimp"
+    },
+    "units": {
+      "head": " heads",
+      "ea": " pcs",
+      "kg": "kg",
+      "g": "g",
+      "per": {
+        "head": "KRW/head",
+        "ea": "KRW/pc",
+        "kg": "KRW/kg"
+      },
+      "perBox": "KRW/{kg}kg box"
+    },
+    "u": {
+      "won": " KRW",
+      "basis": {
+        "label": "Calculate by",
+        "head": "Number of cabbages",
+        "kg": "Pre-salted weight"
+      },
+      "heads": "Number of napa cabbages",
+      "headOpt": "{n} heads",
+      "headsHint": "One head is about 2.2kg once salted → about {kg}kg of salted cabbage (estimate)",
+      "kg": "Pre-salted cabbage weight",
+      "kgOpt": "{n}kg",
+      "kgHint": "About {n} heads of cabbage. A 20kg box usually holds 8–10 heads (estimate).",
+      "family": {
+        "label": "Recommend by household size",
+        "opt": "{n} people",
+        "rec": "About {heads} heads for {n} people. Based on aT's 20 heads for a family of four, so adjust to how much kimchi you eat.",
+        "apply": "Use {heads} heads"
+      },
+      "method": {
+        "label": "Salting",
+        "self": "Salt it yourself",
+        "buy": "Buy pre-salted",
+        "hint": {
+          "self": "Buy fresh cabbage and coarse salt and salt it at home. Salting, rinsing and draining takes about a day.",
+          "buy": "Buy salted, rinsed cabbage by the box and season it the day it arrives."
+        }
+      },
+      "taste": {
+        "label": "Taste",
+        "basic": "Standard",
+        "salty": "More jeotgal",
+        "mild": "Less spicy",
+        "hint": {
+          "basic": "Standard aT quantities.",
+          "salty": "Salted shrimp and fish sauce × 1.3.",
+          "mild": "Red pepper flakes × 0.7."
+        }
+      },
+      "optional": {
+        "label": "Ingredients to include",
+        "hint": "Tap to add or remove. Oysters and fresh shrimp are best only in kimchi you will eat soon."
+      },
+      "what": {
+        "head": "{n} heads of cabbage",
+        "kg": "{kg}kg pre-salted cabbage (~{n} heads)"
+      },
+      "resultLabel": "Kimjang cost for {what}",
+      "resultSub": "About {man} × 10,000 KRW · {count} ingredients · {method} · {taste}",
+      "compare": {
+        "cheaper": "Under the same conditions, \"{method}\" is about {diff} KRW cheaper. Your own labor and time are not included.",
+        "same": "Both methods cost about the same."
+      },
+      "yield": {
+        "label": "Expected kimchi (estimate)",
+        "value": "About {kg}kg",
+        "note": "Salted cabbage ~{salted}kg + seasoning ~{sauce}kg. Some water drains while mixing, so the actual amount is a bit less."
+      },
+      "share": {
+        "sub": "About {man} × 10,000 KRW · {method}",
+        "text": "Kimjang cost for {what}: about {man} × 10,000 KRW, with every ingredient amount"
+      },
+      "table": {
+        "title": "Amounts and cost by ingredient",
+        "hint": "Type today's price into a unit price field and the total updates instantly.",
+        "price": "Unit price",
+        "priceAria": "Unit price of {item}",
+        "total": "Total",
+        "reset": "Reset prices",
+        "refBadge": "Est.",
+        "boxes": "about {n} boxes of 20kg",
+        "atNote": "Default prices come from aT (Korea Agro-Fisheries & Food Trade Corp.)'s kimjang cost survey of Nov 21, 2024, the latest with published per-item amounts (family of four, 20 heads, 14 items, 204,315 KRW). The Nov 17, 2025 survey total was {total} KRW without a per-item breakdown.",
+        "refNote": "Items marked 'Est.' are not official survey values. Rice flour and sugar amounts follow the Nongsaro (RDA) kimchi recipe ratio; prices of pre-salted cabbage, rice flour, sugar, oysters and shrimp are rough market estimates, so replace them with your local prices."
+      },
+      "disclaimer": "Actual prices vary widely by region, market and promotions. Amounts scale the standard recipe linearly by the number of heads; adjust to your family recipe."
+    },
+    "list": {
+      "title": "Shopping checklist",
+      "desc": "Checked items are saved on this device. Counts and weights are rounded up.",
+      "progress": "{done}/{total} in the cart",
+      "copy": "Copy list",
+      "copied": "Copied",
+      "clear": "Uncheck all",
+      "header": "Kimjang shopping ({what})",
+      "footer": "Estimated cost about {man} × 10,000 KRW · ToolHub Kimjang Calculator",
+      "note": "Paste the copied list into a notes app or your family chat."
+    },
+    "guide": {
+      "title": "Kimjang guide",
+      "salting": {
+        "title": "Salting the cabbage",
+        "items": [
+          "The Nongsaro (Rural Development Administration) recipe dips the cabbage in about 15% brine, sprinkles coarse salt between the leaves near the stems and salts it for about 8 hours.",
+          "Time depends on cabbage size and room temperature. It is ready when the stem bends without snapping.",
+          "Flip the cabbages top to bottom once halfway through for even salting.",
+          "Rinse two or three times in cold water, then drain cut side down until well drained.",
+          "aT's survey assumes about 6kg of coarse salt to salt 20 heads."
+        ]
+      },
+      "paste": {
+        "title": "Making rice paste",
+        "items": [
+          "The Nongsaro recipe mixes glutinous rice flour and water 1:9 and cooks it while stirring so it doesn't scorch.",
+          "Use about 425g of paste per 5kg of salted cabbage. For 20 heads (~44kg salted), that is about 370g of rice flour and 3.4L of water.",
+          "Let the paste cool completely before mixing; hot paste can make kimchi sour faster.",
+          "Soaking the red pepper flakes in the paste and fish sauce for about 30 minutes gives a better color and an evenly clinging seasoning."
+        ]
+      },
+      "storage": {
+        "title": "Storage",
+        "items": [
+          "Pack kimchi tightly to push out air and cover the top with outer leaves or plastic wrap.",
+          "Fill containers only about 80% so juices and gas from fermentation don't overflow.",
+          "Kimchi-fridge storage modes are usually set to a low temperature around 0°C. In a regular fridge, use the back of a shelf where temperature is most stable.",
+          "Leave kimchi you will eat soon at room temperature for about a day before refrigerating; refrigerate long-keeping kimchi right away."
+        ]
+      },
+      "timing": {
+        "title": "When to make kimjang",
+        "items": [
+          "The Korea Meteorological Administration considers it kimjang time when the daily mean temperature stays at or below 4°C and the daily low at or below 0°C.",
+          "Seoul, Gyeonggi, western Gangwon: mid to late November",
+          "East and west coasts and southern regions: late November to mid December",
+          "South coast: after late December",
+          "Warming has pushed the ideal date later. In Seoul it moved from about Nov 25 (1920–1950 average) to about Nov 29 (1981–2010 average).",
+          "Government and retailer discounts often concentrate from mid November. Check aT's kimjang cost survey published in November before shopping."
+        ]
+      },
+      "tips": {
+        "title": "Tips to avoid failure",
+        "items": [
+          "Pick cabbages that feel heavy with a full yellow heart, and radishes that are firm and smooth.",
+          "Mix two or three heads first, taste, then adjust with fish sauce or salt.",
+          "Under-salted cabbage turns bland and watery; over-salted cabbage gets tough and salty.",
+          "Oysters and fresh shrimp speed up fermentation and soften kimchi, so leave them out of long-keeping batches.",
+          "If you buy pre-salted cabbage, make the seasoning the day before so you can mix as soon as it arrives."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much does kimjang for 20 heads of cabbage cost?",
+            "a": "aT's survey of Nov 17, 2025 put kimjang for a family of four (20 heads) at 201,151 KRW, 5.6% lower than a year earlier. This calculator uses the Nov 21, 2024 aT survey (204,315 KRW), the latest with per-item values, as default prices, and you can edit any price to match today's market."
+          },
+          {
+            "q": "How many heads are in a 20kg box of pre-salted cabbage?",
+            "a": "It depends on region and cabbage size, but a 20kg box usually holds 8–10 heads. This calculator assumes about 2.2kg per salted head (about 9 heads per 20kg)."
+          },
+          {
+            "q": "How many heads should a family of four make?",
+            "a": "aT's kimjang survey uses 20 heads for a family of four, about 5 heads per person. Adjust to how much kimchi you eat and how much storage you have."
+          },
+          {
+            "q": "Is salting it yourself cheaper than buying pre-salted cabbage?",
+            "a": "Counting only cabbage and salt, salting it yourself is usually cheaper, but salting, rinsing and draining take a day and need large tubs and lots of water. The result panel compares both methods side by side."
+          },
+          {
+            "q": "What brine strength and time should I use?",
+            "a": "The Nongsaro (RDA) recipe dips cabbage in about 15% brine and sprinkles coarse salt between the stems, then salts it for about 8 hours. Checking that the stem bends without snapping is more reliable than the clock."
+          },
+          {
+            "q": "When is the best time to make kimjang?",
+            "a": "The Korea Meteorological Administration considers it time when the daily mean temperature stays at or below 4°C and the low at or below 0°C. That is usually mid to late November in Seoul and Gyeonggi, late November to mid December in the south, and after late December on the south coast."
+          },
+          {
+            "q": "How much rice paste do I need?",
+            "a": "The Nongsaro recipe cooks glutinous rice flour and water at 1:9 and uses about 425g of paste per 5kg of salted cabbage. For 20 heads (~44kg salted), you need about 370g of rice flour."
+          },
+          {
+            "q": "How much kimchi do 20 heads make?",
+            "a": "Add the seasoning weight to the salted cabbage weight for a rough figure. For 20 heads, about 44kg of salted cabbage plus about 23kg of seasoning comes to around 67kg, but some water drains while mixing, so the actual amount is a bit less."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "aT 2025 kimjang cost survey (Nov 17, 2025, 201,151 KRW) — Food Today",
+            "url": "https://www.foodtoday.or.kr/news/article.html?no=200149"
+          },
+          {
+            "label": "aT per-item kimjang quantities and costs (Nov 21, 2024, 204,315 KRW) — Daum News",
+            "url": "https://v.daum.net/v/20241124082146934"
+          },
+          {
+            "label": "KAMIS agricultural price information — today's kimjang ingredient prices",
+            "url": "https://www.kamis.or.kr"
+          },
+          {
+            "label": "Nongsaro (RDA) napa cabbage kimchi — brine strength, salting time, rice paste ratio",
+            "url": "https://www.nongsaro.go.kr/portal/ps/psb/psby/vodPlay.ps?mvpNo=17"
+          },
+          {
+            "label": "8–10 heads per 20kg box of Goesan salted cabbage — Seoul Shinmun",
+            "url": "https://m.go.seoul.co.kr/news/2020/11/16/20201116019002"
+          },
+          {
+            "label": "2025 supermarket prices for 20kg pre-salted cabbage, 27,800–59,990 KRW — Newsis",
+            "url": "https://mobile.newsis.com/view/NISX20251022_0003372297"
+          },
+          {
+            "label": "Regional kimjang timing and KMA criteria — WeatherI",
+            "url": "https://weatheri.co.kr/board/board03_read.php?id=268"
+          }
+        ],
+        "asOf": "Checked Oct 4, 2026. Default prices will be updated when aT publishes its 2026 kimjang survey."
+      },
+      "links": {
+        "dutch-pay": "Split the kimjang bill (Dutch pay)",
+        "budget-calculator": "Plan this month's budget",
+        "discount-calculator": "Kimjang-season discount calculator"
+      }
+    }
+  },
+  "healthCheckup": {
+    "title": "National Health Checkup Eligibility",
+    "subtitle": "Pick a birth year to see whether you are due for Korea's national health checkup and cancer screenings this year, and which tests you get. Check your parents' too.",
+    "disclaimer": "For reference only. Actual eligibility and test items can differ with insurance changes, past checkups and questionnaire answers, so confirm with the NHIS eligibility lookup (1577-1000). Ask a doctor about your results.",
+    "in": {
+      "birth": "Birth year",
+      "birthOpt": "Born {y} (age {age})",
+      "birthHint": "Checkup age is 'checkup year − birth year', regardless of birthday.",
+      "sex": "Sex",
+      "sexF": "Female",
+      "sexM": "Male",
+      "member": "Health insurance type",
+      "memberOpt": {
+        "office": "Employee (office)",
+        "field": "Employee (non-office)",
+        "head": "Self-employed head",
+        "member": "Household member",
+        "dependent": "Dependent",
+        "aid": "Medical aid"
+      },
+      "memberHint": {
+        "office": "Office workers get checked every 2 years, matching the parity of their birth year.",
+        "field": "Production, field or sales workers get checked every year, regardless of birth year.",
+        "head": "Heads of self-employed households get checked every 2 years at any age.",
+        "member": "Household members of self-employed subscribers get checked every 2 years from age 20.",
+        "dependent": "Dependents of employees get checked every 2 years from age 20.",
+        "aid": "Ages 20-64 get the general checkup; 66+ get the medical-aid life-transition checkup every 2 years."
+      },
+      "year": "Year",
+      "yearOpt": "{y}",
+      "yearNote": "Reference: 2027 applies the current (2026) rules as-is and may change.",
+      "risk": "Check if it applies (optional)",
+      "smoker": "I currently smoke and have 30+ pack-years",
+      "smokerHint": "30 pack-years = 1 pack a day for 30 years or 2 packs for 15. Used only for lung cancer screening (ages 54-74).",
+      "liver": "Diagnosed with cirrhosis or hepatitis B/C",
+      "liverHint": "Used only for liver cancer screening (high-risk, age 40+, every 6 months).",
+      "privacy": "Smoking and liver answers are not included in the share link."
+    },
+    "res": {
+      "label": "{year} · born {by} (age {age})",
+      "yes": "You're due for a {year} checkup",
+      "cancerOnly": "Only cancer screening is due in {year}",
+      "no": "Not due in {year}",
+      "biennial": "You're due for the general checkup, held every 2 years. Next turn: {next}.",
+      "field": "Non-office workers are checked every year. You're due again in {next}.",
+      "aidTransition": "You're due for the medical-aid life-transition checkup (66+, every 2 years). Next turn: {next}.",
+      "parity": "Even-year births are checked in even years, odd-year births in odd years. Next general checkup for those born in {by}: {next}.",
+      "under20": "Household members, dependents and medical-aid recipients are covered from the year they turn 20. First general checkup: {next}.",
+      "cancerOnlyNote": "Cancer screenings you can still get this year: {list}",
+      "generalTitle": "General checkup",
+      "common": "Standard tests",
+      "commonD": "Questionnaire, body measurements, vision, hearing, blood pressure, chest X-ray, blood (anemia, fasting glucose, liver and kidney function), urine, dental",
+      "aidCommon": "Standard tests (life-transition)",
+      "aidCommonD": "Exam and counseling, height, weight, waist, BMI, vision, hearing",
+      "cancerTitle": "National cancer screening",
+      "noCancer": "No cancer screening applies this year."
+    },
+    "dl": {
+      "label": "Deadline",
+      "date": "Dec 31, {year}",
+      "notYet": "Opens Jan 1",
+      "over": "Closed",
+      "rush": "Bookings pile up in December. If you need an endoscopy, book now.",
+      "period": "The checkup window runs from January 1 to December 31."
+    },
+    "cycle": {
+      "1y": "Yearly",
+      "2y": "Every 2 years",
+      "6m": "Every 6 months"
+    },
+    "copay": {
+      "free": "Free",
+      "ten": "10% copay (free for the bottom 50% by premium)"
+    },
+    "ex": {
+      "range": "Once between ages {lo}-{hi}, if you haven't had it yet",
+      "refTag": "Reference",
+      "lipid": {
+        "name": "Dyslipidemia (cholesterol, triglycerides)",
+        "d": "Men from 24, women from 40, every 4 years",
+        "short": "Lipids"
+      },
+      "hepB": {
+        "name": "Hepatitis B test",
+        "d": "Once at 40 (carriers and immune excluded)",
+        "short": "Hepatitis B"
+      },
+      "hepC": {
+        "name": "Hepatitis C antibody test",
+        "d": "Once at 56; confirmatory test covered if positive",
+        "short": "Hepatitis C"
+      },
+      "pft": {
+        "name": "Lung function test",
+        "d": "Ages 56 and 66 (new in 2026, early COPD detection)",
+        "short": "Lung function"
+      },
+      "bone": {
+        "name": "Bone density test",
+        "d": "Women at 54, 60 and 66",
+        "short": "Bone density"
+      },
+      "cognitive": {
+        "name": "Cognitive impairment test",
+        "d": "Every 2 years from 66",
+        "short": "Cognition"
+      },
+      "depression": {
+        "name": "Mental health (depression)",
+        "d": "Every 2 years at ages 20-34",
+        "short": "Depression"
+      },
+      "psychosis": {
+        "name": "Early psychosis screening",
+        "d": "Every 2 years at ages 20-34",
+        "short": "Early psychosis"
+      },
+      "lifestyle": {
+        "name": "Lifestyle assessment",
+        "d": "Ages 40, 50, 60, 70 (smoking, drinking, exercise, diet, weight)",
+        "short": "Lifestyle"
+      },
+      "physical": {
+        "name": "Senior physical function test",
+        "d": "Ages 66, 70, 80 (fall risk, etc.)",
+        "short": "Physical function"
+      },
+      "plaque": {
+        "name": "Dental plaque test",
+        "d": "Added to the dental exam at 40",
+        "short": "Dental plaque"
+      }
+    },
+    "ca": {
+      "stomach": {
+        "name": "Stomach",
+        "d": "Age 40+ · gastroscopy"
+      },
+      "colon": {
+        "name": "Colorectal",
+        "d": "Age 50+ · fecal occult blood test, colonoscopy if positive"
+      },
+      "liver": {
+        "name": "Liver",
+        "d": "High-risk age 40+ · liver ultrasound + blood test (AFP)"
+      },
+      "breast": {
+        "name": "Breast",
+        "d": "Women 40+ · mammography"
+      },
+      "cervix": {
+        "name": "Cervical",
+        "d": "Women 20+ · Pap smear"
+      },
+      "lung": {
+        "name": "Lung",
+        "d": "High-risk smokers aged 54-74 · low-dose chest CT"
+      },
+      "lungHint": "At ages 54-74, current smokers with 30+ pack-years can also get lung cancer screening (low-dose CT). Smoking history is taken from a general checkup questionnaire in the past 2 years.",
+      "liverHint": "With cirrhosis or hepatitis B/C, liver cancer screening (every 6 months) also applies.",
+      "fieldNote": "Reference: for non-office workers we assume 2-year cancer screenings (stomach, breast, cervical, lung) still follow birth-year parity. Confirm with the NHIS lookup."
+    },
+    "share": {
+      "label": "Born {by} · {year} national checkup",
+      "headline": {
+        "yes": "Checkup due",
+        "cancerOnly": "Cancer screening only",
+        "no": "Not due this year"
+      },
+      "sub": "{c} cancer screenings · {e} age-specific tests",
+      "general": "General checkup",
+      "generalYes": "Due · free",
+      "generalNext": "Next turn {next}",
+      "cancer": "Cancer",
+      "none": "None",
+      "extra": "Extra tests",
+      "deadline": "Deadline",
+      "text": {
+        "yes": "People born in {by} are due for the {year} national health checkup ({c} cancer screenings). Deadline Dec 31! Check your parents' birth years too.",
+        "cancerOnly": "People born in {by} can get {c} cancer screenings in {year}; the general checkup is in {next}. Check your family too.",
+        "no": "The next national checkup for people born in {by} is {next}. See whether your parents are due this year."
+      }
+    },
+    "plan": {
+      "title": "Schedule and if you miss it",
+      "period": "Checkup window",
+      "periodV": "Jan 1 - Dec 31, {year}",
+      "confirm": "Confirmatory test (if flagged)",
+      "confirmV": "By Mar 31, {y}",
+      "missed": "If you miss it",
+      "missedV": "Apply as a 'previous-year non-attendee' in {y}",
+      "next": "Next general checkup",
+      "nextV": "{next}",
+      "fine": "Employers must have employees take the checkup. If they don't, the employer can be fined KRW 100,000-300,000 per worker depending on repeat violations (Occupational Safety and Health Act). Watch for your company's notice.",
+      "linkTarget": "Check eligibility at NHIS",
+      "linkClinic": "Find a checkup clinic",
+      "linkMissed": "Previous-year non-attendee request",
+      "phone": "Eligibility lookup and requests are on the NHIS website or app (login required) or at 1577-1000."
+    },
+    "ms": {
+      "title": "Age-specific tests in {year} at a glance",
+      "desc": "Tap a birth year to see that result. Try your parents' ages too.",
+      "birth": "Birth year",
+      "items": "Tests at this age",
+      "birthCell": "Born {y} (age {age})",
+      "pick": "Born {y} (age {age}): show results",
+      "note": "All ages in the table are even, so these birth years are due for the general checkup that year. Age = checkup year − birth year.",
+      "rows": [
+        {
+          "age": 20,
+          "items": "Mental health (depression, early psychosis) every 2 years begins; cervical cancer screening begins (women)"
+        },
+        {
+          "age": 24,
+          "items": "Dyslipidemia test begins (men, every 4 years)"
+        },
+        {
+          "age": 40,
+          "items": "Hepatitis B, lifestyle assessment, dental plaque; dyslipidemia begins (women); stomach and breast (women) cancer screening begins"
+        },
+        {
+          "age": 50,
+          "items": "Colorectal cancer screening begins (yearly); lifestyle assessment"
+        },
+        {
+          "age": 54,
+          "items": "Bone density (women); lung cancer screening age begins (high-risk smokers)"
+        },
+        {
+          "age": 56,
+          "items": "Hepatitis C antibody test; lung function test"
+        },
+        {
+          "age": 60,
+          "items": "Bone density (women); lifestyle assessment"
+        },
+        {
+          "age": 66,
+          "items": "Lung function, bone density (women), senior physical function; cognitive test begins (every 2 years)"
+        },
+        {
+          "age": 70,
+          "items": "Lifestyle assessment; senior physical function"
+        },
+        {
+          "age": 80,
+          "items": "Senior physical function"
+        }
+      ]
+    },
+    "guide": {
+      "title": "Health checkup guide",
+      "prep": {
+        "title": "Before the checkup",
+        "items": [
+          "Fast from 9 p.m. the night before. Glucose and liver numbers come out accurate, and you can have a gastroscopy.",
+          "Bring ID. If you lost the notice, print a confirmation from 'Checkup eligibility' on the NHIS website.",
+          "Tell the clinic about daily medication such as blood-pressure, diabetes or anticoagulant drugs when you book.",
+          "For the colorectal (stool) test, pick up a sample kit in advance or ask the clinic how to submit it.",
+          "Book the cervical test outside your period."
+        ]
+      },
+      "missed": {
+        "title": "If you missed the window",
+        "items": [
+          "National checkups can only be taken from January 1 to December 31 of your eligible year.",
+          "The following year you can be added via the NHIS 'previous-year non-attendee' request (1577-1000).",
+          "If you were flagged for high blood pressure, diabetes and the like, the confirmatory test is available until March 31 of the next year.",
+          "December gets crowded, so book in October or November."
+        ]
+      },
+      "company": {
+        "title": "Company checkup vs. national checkup",
+        "items": [
+          "For employees, the national general checkup also counts as the statutory workers' general health exam. The checkup your company arranges is usually this one.",
+          "Office workers take it every 2 years, non-office workers every year. If the employer doesn't arrange it, it can be fined KRW 100,000-300,000 per worker.",
+          "If your company pays for a comprehensive checkup, ask the clinic whether the national items are included and billed to NHIS.",
+          "Dependents (family members) book a clinic themselves, independent of the company."
+        ]
+      },
+      "tips": {
+        "title": "Booking tips",
+        "items": [
+          "Use NHIS 'Find a checkup clinic' to search nearby clinics by checkup type.",
+          "Taking the general checkup and cancer screenings at one clinic on the same day gets it all done at once.",
+          "The bottom 50% by premium and medical-aid recipients pay nothing for cancer screening. Colorectal and cervical screening are free for everyone.",
+          "Results arrive by mail or under 'Checkup results' on the NHIS website."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Who is due for the 2026 health checkup?",
+            "a": "2026 is an even year, so people born in even years such as 1976 or 1986 are due for the general checkup. Household members and dependents must be 20 or older (born 2006 or earlier), and non-office employees are due every year regardless of birth year. Confirm on the NHIS website or app."
+          },
+          {
+            "q": "Is checkup age the international (birthday-based) age?",
+            "a": "No. It is 'checkup year − birth year', regardless of birthday. For example, 56 in 2026 means born in 1970, and the age-56 items (hepatitis C antibody, lung function) are given within that year."
+          },
+          {
+            "q": "At what age does national cancer screening start?",
+            "a": "Stomach: 40+ every 2 years (gastroscopy). Colorectal: 50+ yearly (fecal occult blood test). Breast: women 40+ every 2 years. Cervical: women 20+ every 2 years. Liver: high-risk 40+ every 6 months. Lung: current smokers aged 54-74 with 30+ pack-years every 2 years."
+          },
+          {
+            "q": "How much does the checkup cost?",
+            "a": "The general checkup is free (fully paid by NHIS). Cancer screening has a 10% copay, but colorectal and cervical are free, and the bottom 50% by premium and medical-aid recipients get all cancer screenings free."
+          },
+          {
+            "q": "What if I can't go by December 31?",
+            "a": "That year's window closes, but the following year you can be added through the NHIS 'previous-year non-attendee' request. Employers are obliged to have employees checked and can be fined if they don't."
+          },
+          {
+            "q": "Is the company checkup different from the national checkup?",
+            "a": "For employees, the general checkup is both the national checkup and the statutory workers' general health exam. Office workers take it every 2 years, non-office workers every year. Ask the clinic whether a company-paid comprehensive checkup includes the national items."
+          },
+          {
+            "q": "Are there new tests in 2026?",
+            "a": "From 2026, people aged 56 and 66 get a lung function test (early COPD detection). Since 2025, a hepatitis C antibody test at 56, mental health screening every 2 years at 20-34 (depression and early psychosis), and a bone density test for women at 60 were added."
+          },
+          {
+            "q": "Can I get a colonoscopy through the national checkup?",
+            "a": "Currently people 50+ take a yearly fecal occult blood test and get a colonoscopy if it is positive (free). The government aims to introduce colonoscopy every 10 years for ages 45-74 by 2028, but it is not final yet."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "NHIS — General checkup",
+            "url": "https://www.nhis.or.kr/nhis/healthin/wbhaca04500m01.do"
+          },
+          {
+            "label": "NHIS — Cancer screening",
+            "url": "https://www.nhis.or.kr/nhis/healthin/wbhaca04600m01.do"
+          },
+          {
+            "label": "NHIS — Medical-aid life-transition checkup",
+            "url": "https://www.nhis.or.kr/nhis/healthin/wbhaca04700m01.do"
+          },
+          {
+            "label": "Health Checkup Standards (MOHW Notice 2026-6)",
+            "url": "https://www.nhis.or.kr/lm/lmxsrv/law/lawFullContent.do?SEQ=80"
+          },
+          {
+            "label": "Cancer Screening Standards (MOHW Notice 2025-220)",
+            "url": "https://www.nhis.or.kr/lm/lmxsrv/law/lawFullContent.do?SEQ=82"
+          },
+          {
+            "label": "National Cancer Information Center — screening eligibility",
+            "url": "https://www.cancer.go.kr/lay1/S1T553C554/contents.do"
+          },
+          {
+            "label": "MOHW — Lung function test added (2025-09-18)",
+            "url": "https://mohw.go.kr/board.es?act=view&bid=0027&list_no=1487450&mid=a10503010200"
+          },
+          {
+            "label": "Korea.kr — Hepatitis C test added (2025-01-21)",
+            "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148938848"
+          },
+          {
+            "label": "Korea.kr — Colonoscopy plan (2026-02-25)",
+            "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148959950"
+          },
+          {
+            "label": "MOEL — Fines for skipped worker health exams",
+            "url": "https://www.moel.go.kr/minwon/fastcounsel/fastcounselView.do?inetDcssMngId=202211221306259571000"
+          }
+        ],
+        "asOf": "Based on the Health Checkup Standards (effective 2026-01-07) and Cancer Screening Standards (effective 2026-01-01), checked 2026-10-04"
+      },
+      "links": {
+        "blood-pressure": "Blood pressure",
+        "blood-sugar": "Blood sugar",
+        "bmi-calculator": "BMI calculator",
+        "health-insurance": "Health insurance premium",
+        "age-calculator": "Age calculator"
+      }
+    }
+  },
+  "holidayPlanner": {
+    "title": "Holiday & Leave Planner",
+    "subtitle": "Finds where to place your annual leave between Korean public holidays to get the longest breaks. Based on a Mon–Fri work week.",
+    "u": {
+      "year": "Year",
+      "yearOpt": "{y}",
+      "leave": "Leave days to use",
+      "leaveValue": "{n} days",
+      "less": "One less leave day",
+      "more": "One more leave day",
+      "leaveHint": "Pick how many annual leave days you can spend (1–15).",
+      "mode": "Plan style",
+      "modes": {
+        "total": "Most days off",
+        "long": "Longest break first"
+      },
+      "modeHint": {
+        "total": "Spreads your leave to get the most days off in total. On a tie, longer breaks win.",
+        "long": "Builds the single longest break first, then uses the rest for as many days off as possible."
+      },
+      "skipPast": "Skip dates that have already passed",
+      "workType": "Assumes a Mon–Fri week with Korean public holidays (including substitute holidays) off. Public holidays are paid holidays at workplaces with 5+ employees."
+    },
+    "summary": {
+      "label": "{k} leave days in {year}",
+      "headline": "{n} days off in total",
+      "sub": "{count} breaks · longest {longest} days · {ratio} days off per leave day",
+      "empty": "No breaks can be made with leave in the remaining period. Try another year.",
+      "unused": "{n} leave days are left over because there is no break to attach them to.",
+      "note": "Break length counts every day from the first to the last day of each break you build with leave, including weekends and holidays."
+    },
+    "plan": {
+      "leaveDays": "Leave: {list}",
+      "days": "{n} days",
+      "leaveN": "{n} leave",
+      "weekend": "Long weekend"
+    },
+    "ics": {
+      "button": "Add to calendar (.ics)",
+      "summary": "Annual leave · {label} {days}-day break",
+      "desc": "Break {range}. ToolHub Holiday & Leave Planner {url}",
+      "calName": "{year} leave plan"
+    },
+    "share": {
+      "label": "{k} leave days in {year}",
+      "sub": "{count} breaks · up to {longest} days in a row",
+      "row": "{days} days ({leave} leave)",
+      "text": "In {year}, {k} leave days can get you {n} days off. Try it with your own leave."
+    },
+    "recs": {
+      "title": "Best days to take leave in {year}",
+      "desc": "Breaks that include a weekday holiday, ranked by days off per leave day. Only options within your leave budget are shown.",
+      "inPlan": "In plan",
+      "deal": "{leave} leave → {days} days",
+      "ratio": "{x} days per leave",
+      "longer": "With {leave} leave days ({list}) it stretches to {range}, {days} days.",
+      "empty": "No breaks to recommend. Change the year or turn off skipping past dates."
+    },
+    "cal": {
+      "title": "{year} calendar",
+      "desc": "Solid blue = suggested leave, light blue = break period. A dot under a red date marks a public holiday.",
+      "leave": "Suggested leave",
+      "inBreak": "Break period",
+      "holiday": "Public holiday",
+      "weekend": "Weekend",
+      "workday": "Workday",
+      "listTitle": "{n} public holidays in {year}"
+    },
+    "stats": {
+      "redDays": "Red days (incl. Sundays)",
+      "offDays": "Days off (Mon–Fri week)",
+      "weekdayHolidays": "Weekday holidays",
+      "onWeekend": "Holidays on weekends",
+      "substitutes": "Substitute holidays",
+      "longWeekends": "3+ day breaks",
+      "days": "{n} days",
+      "times": "{n} times",
+      "note": "Red days are official public holidays including Sundays. 3+ day breaks are runs of days off without any leave."
+    },
+    "fmt": {
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "months": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "date": "{mon} {d} ({w})",
+      "dateY": "{mon} {d}, {y} ({w})",
+      "short": "{m}/{d} ({w})"
+    },
+    "holiday": {
+      "newYear": "New Year's Day",
+      "seollalEve": "Seollal holiday",
+      "seollal": "Seollal",
+      "seollalAfter": "Seollal holiday",
+      "marchFirst": "Independence Movement Day",
+      "laborDay": "Labor Day",
+      "childrensDay": "Children's Day",
+      "buddhasBirthday": "Buddha's Birthday",
+      "memorialDay": "Memorial Day",
+      "constitutionDay": "Constitution Day",
+      "liberationDay": "Liberation Day",
+      "chuseokEve": "Chuseok holiday",
+      "chuseok": "Chuseok",
+      "chuseokAfter": "Chuseok holiday",
+      "nationalFoundation": "National Foundation Day",
+      "hangeulDay": "Hangeul Day",
+      "christmas": "Christmas",
+      "election": "Election Day",
+      "tempHoliday": "Temporary holiday",
+      "substituteHoliday": "Substitute holiday"
+    },
+    "guide": {
+      "title": "Guide to bridging holidays",
+      "tips": {
+        "title": "How to bridge holidays",
+        "items": [
+          "Fill the 'bridge' weekday between a holiday and a weekend first. One leave day turns it into a 4–5 day break.",
+          "A Tuesday or Thursday holiday becomes a 4-day break with just Monday or Friday off.",
+          "Seollal and Chuseok are the most competitive. Request leave before your team's vacation schedule fills up.",
+          "Most holidays that fall on a Saturday get a substitute Monday (except New Year's Day and Memorial Day).",
+          "For a long trip, stack leave where holidays cluster (early May, early October) for the best days-per-leave ratio."
+        ]
+      },
+      "substitute": {
+        "title": "Substitute holiday rules",
+        "items": [
+          "If the Seollal or Chuseok holidays overlap a Sunday or another holiday, the first weekday after them is a substitute holiday. Saturdays do not count.",
+          "Independence Movement Day, Constitution Day, Liberation Day, National Foundation Day, Hangeul Day, Buddha's Birthday, Children's Day, Christmas and Labor Day get the next weekday off if they fall on a weekend or another holiday.",
+          "New Year's Day, Memorial Day and election days have no substitute holiday.",
+          "Labor Day and Constitution Day became public holidays with substitute rules after the April 2026 amendment."
+        ]
+      },
+      "promotion": {
+        "title": "Leave-use promotion system",
+        "items": [
+          "Six months before your leave expires, the employer may notify you of unused days and ask you to schedule them (Labor Standards Act Art. 61).",
+          "If you do not reply with dates within 10 days, the employer can set the dates up to two months before expiry.",
+          "If this process is followed and you still do not use the leave, you may not be paid for it. Plan early instead of saving it all for December.",
+          "Check how many leave days you have and what they are worth with the annual leave calculator."
+        ],
+        "link": "Calculate leave days and pay"
+      },
+      "method": {
+        "title": "How recommendations work",
+        "items": [
+          "It finds every run of weekends and holidays, then tries filling the weekdays between them with leave or extending each run by a day or more.",
+          "'Most days off' picks the non-overlapping breaks with the largest total length within your leave budget.",
+          "'Best days' ranks breaks by days off per leave day and also shows a longer option for the same period.",
+          "Half days, company-specific days off and anniversaries are not included. If your company has extra days off, you get even more."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How many public holidays are there in 2027?",
+            "a": "According to the 2027 calendar published by the Korea AeroSpace Administration, there are 72 public holidays including Sundays. A Mon–Fri worker gets 119 days off, and there are 10 breaks of 3+ days without any leave."
+          },
+          {
+            "q": "When should I take leave in 2027?",
+            "a": "For Chuseok, take Sep 13 (Mon) and Sep 17 (Fri) to get 9 days off from Sep 11 to 19. For Seollal, 3 days (Feb 10–12) give 9 days (Feb 6–14). In May, one day on May 4 gives May 1–5, and in October, Oct 5–8 gives 10 days (Oct 2–11)."
+          },
+          {
+            "q": "How is a break counted?",
+            "a": "From the first to the last day of the break you build with leave, including weekends and holidays. Taking Friday off before a Saturday–Monday holiday weekend makes a 4-day break. The total is the sum of all breaks in the plan."
+          },
+          {
+            "q": "Do small companies also close on public holidays?",
+            "a": "Since 2022, public and substitute holidays are paid holidays at workplaces with 5 or more employees (Labor Standards Act Art. 55). Smaller workplaces follow their own rules. Labor Day (May 1) is a paid holiday for all employees."
+          },
+          {
+            "q": "Can my employer refuse the dates I ask for?",
+            "a": "Leave should be granted when the employee requests it. The employer may change the timing only if it would seriously disrupt business (Labor Standards Act Art. 60(5)). Request peak-season leave early."
+          },
+          {
+            "q": "How do I use the .ics file?",
+            "a": "'Add to calendar' saves an .ics file with each suggested leave day as an all-day event. Import it in Google Calendar settings, or open the file on your phone to add it to your calendar."
+          },
+          {
+            "q": "Are temporary holidays included?",
+            "a": "Yes, once the government designates one. No temporary holiday has been designated for 2027 yet; if one is, recommendations may change."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Korea AeroSpace Administration, 2027 calendar data (Jun 29, 2026)",
+            "url": "https://www.kasa.go.kr"
+          },
+          {
+            "label": "Korea Astronomy and Space Science Institute (calendar data)",
+            "url": "https://astro.kasi.re.kr"
+          },
+          {
+            "label": "Regulations on Public Holidays of Government Offices (law.go.kr)",
+            "url": "https://www.law.go.kr/법령/관공서의공휴일에관한규정"
+          },
+          {
+            "label": "Labor Standards Act Art. 55, 60, 61 (law.go.kr)",
+            "url": "https://www.law.go.kr/법령/근로기준법"
+          }
+        ],
+        "asOf": "As of Oct 4, 2026 · includes the April 2026 holiday amendment (Labor Day, Constitution Day)"
+      },
+      "links": {
+        "annual-leave": "Annual leave calculator",
+        "dday-calculator": "D-Day calculator",
+        "weekly-holiday-pay": "Weekly holiday pay",
+        "work-hours-calculator": "Work hours calculator"
+      }
+    }
+  },
+  "customsDuty": {
+    "title": "Overseas Purchase Duty Calculator",
+    "subtitle": "Check Korea's duty-free limit ($200 from the US, $150 elsewhere) and estimate customs duty, VAT and your total cost in KRW. As of October 2026.",
+    "u": {
+      "won": " KRW",
+      "origin": {
+        "label": "Shipped from",
+        "us": "USA",
+        "other": "Other country",
+        "hint": "Based on where the parcel ships from. A US forwarding address counts as the USA."
+      },
+      "item": {
+        "label": "Item type",
+        "optRate": "{name} ({rate}%)",
+        "customRate": "Custom duty rate",
+        "opt": {
+          "clothes": "Clothing, underwear, socks",
+          "shoes": "Shoes, sneakers",
+          "bag": "Bags, wallets",
+          "cosmetics": "Cosmetics",
+          "perfume": "Perfume",
+          "watch": "Watches",
+          "luxury": "Luxury bag/watch (over KRW 2M each)",
+          "it": "Laptop, tablet, phone, camera",
+          "supplement": "Dietary supplements",
+          "toy": "Toys, figures",
+          "sports": "Sports & golf equipment",
+          "furniture": "Furniture, lighting, kitchenware",
+          "book": "Books",
+          "custom": "Custom rate"
+        },
+        "hint": {
+          "clothes": "Clothing, underwear and socks carry a 13% basic duty rate. Accessories like hats and gloves are 8%, so use a custom rate.",
+          "shoes": "Shoes carry a 13% basic duty rate.",
+          "bag": "Regular bags and wallets are 8%. If one item exceeds KRW 2M, pick 'Luxury bag/watch'.",
+          "cosmetics": "Regular cosmetics are 8%. Functional cosmetics (sunscreen, whitening, anti-wrinkle) can't use list clearance, so switch to formal import declaration.",
+          "perfume": "Perfume carries 8% duty. The individual consumption tax on perfume has been abolished.",
+          "watch": "Regular watches are 8%. If one item exceeds KRW 2M, pick 'Luxury bag/watch'.",
+          "luxury": "If customs value plus duty exceeds KRW 2M per item, the excess also gets a 20% individual consumption tax plus education tax (30% of that tax). Calculated per item.",
+          "it": "0% duty under the WTO Information Technology Agreement, so you pay only 10% VAT. Electronics brought in under the personal-use radio certification exemption (1 unit) can't use list clearance, so the limit is $150 even from the US.",
+          "supplement": "Supplements are excluded from list clearance, so the limit is $150 even from the US. Up to 6 bottles in total count as personal use.",
+          "toy": "Toys, figures and blocks are 8%.",
+          "sports": "Balls, rackets, golf clubs and similar equipment are 8%. Sportswear and sneakers use clothing/shoes (13%).",
+          "furniture": "Furniture, lighting and kitchenware are 8% per the Korea Customs Service estimator.",
+          "book": "Books carry 0% duty, so only VAT applies when taxed.",
+          "custom": "Look up the rate in the Korea Customs Service estimator or UNI-PASS tariff classification."
+        }
+      },
+      "fta": {
+        "label": "Apply FTA rate (0% duty)",
+        "hint": "Goods made in the US or EU can get 0% duty with proof of origin (a purchase receipt works up to $1,000). It depends on where the item was made, not where you bought it."
+      },
+      "clearance": {
+        "label": "Clearance type",
+        "list": "List clearance",
+        "general": "Import declaration",
+        "hint": {
+          "list": "Clothing, shoes, bags and regular cosmetics clear with the courier's manifest only. Duty-free up to $200 from the US and $150 from elsewhere.",
+          "general": "Supplements, medicine, food, functional cosmetics and electronics (radio certification exemption, 1 unit) need an import declaration and are duty-free only up to $150, even from the US."
+        }
+      },
+      "cur": {
+        "label": "Payment currency",
+        "USD": "USD",
+        "EUR": "EUR",
+        "JPY": "JPY",
+        "CNY": "CNY",
+        "GBP": "GBP",
+        "KRW": "KRW"
+      },
+      "price": "Item price (total)",
+      "local": "Local tax & domestic shipping",
+      "localHint": "Money paid inside the shipping country, such as US sales tax or shipping from the store to your forwarder. It counts toward the duty-free limit.",
+      "ship": "International shipping",
+      "shipHint": "Shipping from abroad to Korea. It is excluded from the duty-free test when shown separately on your receipt, but included in the tax base once taxed.",
+      "other": "Other order from the same seller on the same day (optional)",
+      "otherHint": "Even if shipped separately, orders from the same seller on the same purchase date are added together (combined taxation). Enter its item price plus local costs.",
+      "rate": {
+        "label": "Exchange rate ({unit} = ? KRW)",
+        "usdLabel": "USD rate (1 USD = ? KRW, for the duty-free limit)",
+        "usdHint": "The duty-free limit is in US dollars, so your payment is converted to USD for the test.",
+        "market": "Market rate · updated {time} (open.er-api.com)",
+        "fallback": "Korea Customs taxation rate checked on {date} (reference). It changes weekly.",
+        "manual": "Using the rate you entered.",
+        "reset": "Back to automatic rate",
+        "hint": "Actual tax uses the Korea Customs Service taxation rate for the week of the import declaration (previous week's average, announced weekly), so it may differ slightly.",
+        "official": "See official taxation rates"
+      },
+      "res": {
+        "exempt": "Duty-free · {way}",
+        "taxed": "Taxable · {way}",
+        "label": "Estimated duty + VAT",
+        "remain": "Assessed value ${goods} / limit ${limit} — you can spend ${remain} more duty-free.",
+        "remainFx": "Assessed value ${goods} / limit ${limit} — you can spend ${remain} (about {fx} {cur}) more duty-free.",
+        "over": "Assessed value ${goods} exceeds the ${limit} limit by ${over}. Tax applies to the whole amount including international shipping, not just the excess.",
+        "limitTick": "Limit ${limit}"
+      },
+      "row": {
+        "goods": "Assessed value (item price)",
+        "value": "Customs value (item price + international shipping)",
+        "none": "-",
+        "duty": "Customs duty ({rate}%)",
+        "excise": "Individual consumption tax (20% over KRW 2M)",
+        "edu": "Education tax (30% of consumption tax)",
+        "vat": "VAT (10%)",
+        "waived": "{amount} KRW → 0 KRW (under 10,000)",
+        "total": "Total tax",
+        "paid": "Payment (in KRW)",
+        "totalKrw": "Total cost incl. tax"
+      },
+      "warn": {
+        "combined": "Combined taxation applies. This order alone is ${own}, within the limit, but together with the same-seller, same-day order it totals ${goods}, over the ${limit} limit, so both are taxed. The tax above covers both orders.",
+        "ship": "If international shipping isn't listed separately on your receipt, it may be added to the assessed value and push you over the ${limit} limit. Check that your receipt itemizes shipping.",
+        "min": "Reference: taxes under KRW 10,000 are not collected (Customs Act Art. 40). This calculator applies the threshold to each tax (duty, VAT) separately.",
+        "usGeneral": "Even from the US, the duty-free limit for import-declaration items is $150.",
+        "luxury": "The consumption tax is assessed per item. If you bought several, calculate them one at a time."
+      },
+      "share": {
+        "labelExempt": "Expected duty-free",
+        "labelTaxed": "Estimated duty + VAT",
+        "textExempt": "My overseas order is ${goods}, within the ${limit} limit, so duty + VAT is 0 KRW",
+        "textTaxed": "My overseas order is ${goods}, estimated duty + VAT {tax} KRW"
+      },
+      "limits": {
+        "title": "Duty-free limits at a glance",
+        "current": "(current selection)",
+        "rows": [
+          [
+            "From the US · list clearance items",
+            "$200"
+          ],
+          [
+            "Other countries · list clearance items",
+            "$150"
+          ],
+          [
+            "Import declaration items (incl. US)",
+            "$150"
+          ]
+        ],
+        "formula": [
+          "Assessed value = item price + local tax + domestic shipping (international shipping and insurance excluded when itemized)",
+          "At or under the limit, duty and VAT are both waived; one cent over and the whole amount is taxed",
+          "Customs value = (item price + international shipping) × customs taxation rate",
+          "Duty = customs value × duty rate, VAT = (customs value + duty) × 10%",
+          "Alcohol and tobacco are taxed even within the limit (liquor tax, tobacco tax) and are not covered here"
+        ]
+      },
+      "disclaimer": "This is an estimate. Actual tax depends on customs classification, valuation and the taxation rate. Confirm exact rates with the Korea Customs Service call center (125)."
+    },
+    "guide": {
+      "title": "Overseas shopping taxes: the essentials",
+      "clearance": {
+        "title": "List clearance vs import declaration",
+        "items": [
+          "List clearance: clothing, shoes, bags and regular cosmetics for personal use clear with the courier's manifest. No tax up to $200 from the US or $150 from elsewhere.",
+          "Import declaration: supplements, medicine, herbal medicine, food, functional cosmetics and electronics brought in under the personal-use radio certification exemption (1 unit) are excluded from list clearance. The limit is $150 even from the US.",
+          "The assessed value includes local taxes such as US sales tax and domestic shipping; international shipping to Korea is excluded when itemized on the receipt.",
+          "Up to 6 bottles of supplements in total count as personal use. More may require separate approval."
+        ]
+      },
+      "combined": {
+        "title": "How to avoid combined taxation",
+        "items": [
+          "Items bought from the same overseas seller on the same day and imported separately, or one waybill (B/L, AWB) split into several clearances, are added together.",
+          "Since November 17, 2022, the 'same arrival date' rule no longer applies. Different sellers or purchase dates are assessed separately even if they arrive the same day.",
+          "So splitting an over-limit cart into several same-day payments to the same seller does not help.",
+          "Even with different purchase dates, customs can later collect tax if it judges the imports to be repeated, split or for resale."
+        ]
+      },
+      "refund": {
+        "title": "Do I get the tax back if I return it?",
+        "items": [
+          "If a personal-use item with an accepted import declaration is returned abroad unused within 6 months, the duty you paid can be refunded (Customs Act Art. 106-2).",
+          "It must be exported via a bonded area or with customs confirmation, so ask customs (call 125) or your forwarder about the procedure before returning.",
+          "Keep the shipping proof and refund record, and ask about refunds of VAT and other taxes when you apply.",
+          "Items that entered duty-free have no tax to refund."
+        ]
+      },
+      "tips": {
+        "title": "Black Friday & Singles' Day checklist",
+        "items": [
+          "Get a Personal Customs Clearance Code free on UNI-PASS. From 2026 it is valid for one year and must be renewed within 30 days before or after expiry.",
+          "Near the limit, recheck the price after coupons and the exchange rate. One cent over taxes the whole amount.",
+          "Using a forwarder in a state without sales tax (Delaware, Oregon, etc.) removes local tax from the assessed value.",
+          "Around Singles' Day (Nov 11) and Black Friday (Nov 27), volume surges and clearance may take longer than usual.",
+          "Your card statement may differ slightly from this calculator because of the card company's rate and overseas fees."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is Korea's duty-free limit for overseas purchases?",
+            "a": "Personal-use items with an item price of $150 or less are exempt from duty and VAT. List-clearance items shipped from the US are duty-free up to $200 under the Korea-US FTA rule. Import-declaration items such as supplements, medicine and electronics use $150 even from the US."
+          },
+          {
+            "q": "Does shipping count toward the limit?",
+            "a": "Local sales tax and shipping within the origin country count; international shipping and insurance to Korea are excluded when clearly itemized. Once taxed, though, international shipping is added to the taxable value."
+          },
+          {
+            "q": "If I go slightly over, is only the excess taxed?",
+            "a": "No. Over the limit, duty and VAT apply to the full customs value, item price plus international shipping, with no deduction. For example, $230 shoes from the US with $18 shipping are taxed on the full $248."
+          },
+          {
+            "q": "How are duty and VAT calculated?",
+            "a": "Customs value = (item price + international shipping) × the customs taxation rate. Duty = customs value × the item's rate (13% clothing/shoes, 8% bags/cosmetics/watches, 0% laptops/phones, etc.), and VAT is 10% of customs value plus duty. Taxes under KRW 10,000 are not collected."
+          },
+          {
+            "q": "When does combined taxation apply?",
+            "a": "When items bought from the same overseas seller on the same day are imported separately, or one waybill is split into several clearances. Since November 17, 2022, different sellers or purchase dates are not combined even if they arrive the same day."
+          },
+          {
+            "q": "Can I get the duty back if I return the item?",
+            "a": "Yes. If a personal-use item with an accepted import declaration is shipped back abroad unused within 6 months, the duty can be refunded (Customs Act Art. 106-2). A bonded-area or customs confirmation step is required, so contact customs before returning."
+          },
+          {
+            "q": "Which exchange rate is used?",
+            "a": "The weekly taxation rate set by the Korea Customs Service, an average of the previous week's base rates, so it can differ from your card rate. This calculator defaults to the market rate and lets you enter your own."
+          },
+          {
+            "q": "Do I need a Personal Customs Clearance Code?",
+            "a": "Yes. It identifies the recipient instead of a resident registration number and is issued on UNI-PASS. From 2026 it is valid for one year and must be renewed within 30 days before or after expiry."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Korea Customs Service: overseas purchase tax estimator (limits, item rates)",
+            "url": "https://www.customs.go.kr/kcs/ad/tax/BuyTaxCalculation.do"
+          },
+          {
+            "label": "Enforcement Rules of the Customs Act, Art. 45 (small-value exemption)",
+            "url": "https://www.law.go.kr/법령/관세법시행규칙/제45조"
+          },
+          {
+            "label": "Notice on express cargo import clearance, Art. 9 & Annex 1 (list clearance)",
+            "url": "https://www.law.go.kr/행정규칙/특송물품수입통관사무처리에관한고시"
+          },
+          {
+            "label": "Notice on import clearance, Art. 68 (combined taxation)",
+            "url": "https://www.law.go.kr/행정규칙/수입통관사무처리에관한고시"
+          },
+          {
+            "label": "Customs Act Art. 18, 30, 40, 106-2 (rate, value, minimum, refund)",
+            "url": "https://www.law.go.kr/법령/관세법"
+          },
+          {
+            "label": "Individual Consumption Tax Decree Art. 4 (luxury watch/bag threshold)",
+            "url": "https://www.law.go.kr/법령/개별소비세법시행령/제4조"
+          },
+          {
+            "label": "Korea Customs Service: no combined taxation for same arrival date (Nov 2022)",
+            "url": "https://www.customs.go.kr/kcs/na/ntt/selectNttInfo.do?mi=2891&nttSn=10069842"
+          },
+          {
+            "label": "Korea Customs Service: annual renewal of clearance codes from 2026",
+            "url": "https://www.customs.go.kr/kcs/na/ntt/selectNttInfo.do?mi=2891&bbsId=1362&nttSn=10142854"
+          }
+        ],
+        "asOf": "As of October 4, 2026 · Customs Act Enforcement Rules (in force 2026-07-31), express cargo notice (2026-09-29), KCS estimator rates"
+      },
+      "links": {
+        "exchange-calculator": "Exchange Rate Calculator",
+        "discount-calculator": "Discount Calculator",
+        "vat-calculator": "VAT Calculator"
       }
     }
   }

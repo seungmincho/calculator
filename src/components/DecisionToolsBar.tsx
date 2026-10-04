@@ -10,7 +10,7 @@ export default function DecisionToolsBar({ current }: { current: string }) {
           const active = d.href === current
           return (
             <li key={d.href}>
-              <Link
+              <Link prefetch={false}
                 href={d.href}
                 aria-current={active ? 'page' : undefined}
                 className={`block px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${

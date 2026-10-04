@@ -111,7 +111,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
       entries.push({
         url: `https://toolhub.ai.kr${item.href}/`,
-        lastModified: item.addedDate || today,
+        lastModified: item.updatedDate || item.addedDate || today,
         changeFrequency: frequencyOverrides[item.href] || defaults.changeFrequency,
         priority: priorityOverrides[item.href] ?? defaults.priority,
       })

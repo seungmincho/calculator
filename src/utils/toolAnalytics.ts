@@ -1,4 +1,13 @@
-import { getSupabase, isSupabaseConfigured } from '@/utils/webrtc/supabaseClient'
+// supabase-js(전송 ~43KB)를 모든 페이지에 싣지 않도록 PostgREST를 fetch로 직접 호출
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+export const isAnalyticsConfigured = (): boolean => !!(SUPABASE_URL && SUPABASE_KEY)
+
+const rest = (path: string, init?: RequestInit) => fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  ...init,
+  headers: { apikey: SUPABASE_KEY!, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', ...init?.headers },
+})
 
 const TOOL_CLICKS_TABLE = 'tool_clicks'
 const SESSION_KEY = 'toolhub_tracked_tools'
@@ -33,53 +42,24 @@ export const recordToolClick = async (toolHref: string): Promise<void> => {
 
   markToolTracked(toolHref)
 
-  if (!isSupabaseConfigured()) return
-  const supabase = getSupabase()
-  if (!supabase) return
-
+  if (!isAnalyticsConfigured()) return
   try {
-    await supabase.from(TOOL_CLICKS_TABLE).insert({ tool_href: toolHref })
+    await rest(TOOL_CLICKS_TABLE, { method: 'POST', keepalive: true, headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ tool_href: toolHref }) })
   } catch (e) {
     console.error('Failed to record tool click:', e)
   }
 }
 
-export const getAllPopularTools = async (): Promise<PopularTool[]> => {
-  if (!isSupabaseConfigured()) return []
-  const supabase = getSupabase()
-  if (!supabase) return []
-
-  try {
-    const { data, error } = await supabase
-      .from('popular_tools')
-      .select('tool_href, click_count')
-      .order('click_count', { ascending: false })
-      .limit(500)
-
-    if (error) throw error
-    return (data as PopularTool[]) || []
-  } catch (e) {
-    console.error('Failed to fetch all popular tools:', e)
-    return []
-  }
-}
-
 export const getPopularTools = async (limit: number = 5): Promise<PopularTool[]> => {
-  if (!isSupabaseConfigured()) return []
-  const supabase = getSupabase()
-  if (!supabase) return []
-
+  if (!isAnalyticsConfigured()) return []
   try {
-    const { data, error } = await supabase
-      .from('popular_tools')
-      .select('tool_href, click_count')
-      .order('click_count', { ascending: false })
-      .limit(limit)
-
-    if (error) throw error
-    return (data as PopularTool[]) || []
+    const res = await rest(`popular_tools?select=tool_href,click_count&order=click_count.desc&limit=${limit}`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    return (await res.json()) as PopularTool[]
   } catch (e) {
     console.error('Failed to fetch popular tools:', e)
     return []
   }
 }
+
+export const getAllPopularTools = (): Promise<PopularTool[]> => getPopularTools(500)

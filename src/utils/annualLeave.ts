@@ -121,8 +121,8 @@ export function timeline(basis: 'joinDate' | 'fiscalYear', join: string, ref: st
 }
 
 // ── 연차수당 ────────────────────────────────────────────
-/** 2026년 최저시급 (고용노동부 고시 2025-8-5) */
-export const MIN_WAGE_2026 = 10320
+/** 2026년 최저시급 — minimumWage.ts 단일 출처 */
+export { MIN_WAGE_2026 } from './minimumWage.ts'
 /** 1일 통상임금. 월급은 월 소정근로시간(주40h·주휴 포함 209h)으로 시급 환산 */
 export type WageMode = 'monthly' | 'hourly' | 'daily'
 export function dailyWage(mode: WageMode, amount: number, dailyHours = 8, monthlyHours = 209): number {
