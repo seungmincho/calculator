@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { getFavorites } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
+import { lockPageScroll } from '@/utils/scrollLock'
 
 interface ToolInfo {
   href: string
@@ -71,14 +72,8 @@ export default function MobileBottomNav() {
 
   // Lock body scroll when panel is open
   useEffect(() => {
-    if (activePanel) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    if (!activePanel) return
+    return lockPageScroll()
   }, [activePanel])
 
   // Close panel on outside click
@@ -201,7 +196,7 @@ export default function MobileBottomNav() {
               </button>
             </div>
             {/* Content */}
-            <div className="overflow-y-auto flex-1 overscroll-contain">
+            <div className="overflow-y-auto flex-1 overscroll-contain" data-scroll-lock-scrollable>
               {items.length === 0 ? (
                 <div className="px-4 py-12 text-center text-muted text-sm">
                   {emptyMessage}

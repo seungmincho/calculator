@@ -11,6 +11,7 @@ import SearchDialog from './SearchDialog';
 import { useTranslations } from '@/lib/i18n/navigation';
 import { menuConfig, categoryKeys, categoryHubs, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
+import { lockPageScroll } from '@/utils/scrollLock';
 
 const MAX_RECENT_DISPLAY = 4; // 최근 사용 표시 최대 개수
 
@@ -116,36 +117,9 @@ const Header = () => {
 
   // 모바일 메뉴 열릴 때 배경 스크롤 방지
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      // 메뉴 열릴 때: body 스크롤 막기
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${window.scrollY}px`;
-      document.body.style.width = '100%';
-    } else {
-      // 메뉴 닫힐 때: body 스크롤 복원
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    }
-
-    return () => {
-      // 컴포넌트 언마운트 시 스크롤 복원
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    };
-  }, [isMobileMenuOpen]);
+    if (!isMobileMenuOpen) return
+    return lockPageScroll()
+  }, [isMobileMenuOpen])
 
   // 글로벌 검색 단축키 (Ctrl+K / Cmd+K)
   useEffect(() => {
@@ -294,7 +268,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-3 border-t border-line max-h-[calc(100vh-4rem)] overflow-y-auto glass-scrollbar">
+          <div className="absolute inset-x-0 top-full lg:hidden px-4 py-3 bg-surface border-b border-line shadow-xl max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain glass-scrollbar" data-scroll-lock-scrollable>
             <div className="pb-3">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />

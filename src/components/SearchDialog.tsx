@@ -8,6 +8,7 @@ import { useTranslations } from '@/lib/i18n/navigation'
 import { useRouter } from 'next/navigation'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 import { recordToolUsage } from '@/utils/recentTools'
+import { lockPageScroll } from '@/utils/scrollLock'
 
 interface SearchItem {
   href: string
@@ -30,6 +31,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const unlockRef = useRef<(() => void) | null>(null)
 
   // Build searchable items from menuConfig
   const allItems: SearchItem[] = useMemo(() => {
@@ -107,10 +109,22 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   )
 
   const closeDialog = useCallback(() => {
+    unlockRef.current?.()
+    unlockRef.current = null
     setQuery('')
     setSelectedIndex(0)
     onClose()
   }, [onClose])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const unlock = lockPageScroll()
+    unlockRef.current = unlock
+    return () => {
+      if (unlockRef.current === unlock) unlockRef.current = null
+      unlock()
+    }
+  }, [isOpen])
 
   // Focus input when dialog opens
   useEffect(() => {
@@ -247,6 +261,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           ref={listRef}
           id="search-listbox"
           className="max-h-[50vh] overflow-y-auto overscroll-contain"
+          data-scroll-lock-scrollable
           role="listbox"
         >
           {showSuggested ? (
