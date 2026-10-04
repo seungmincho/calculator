@@ -55,11 +55,11 @@ const welfareProgramsByPercentage: Record<number, WelfareProgram[]> = {
     { name: '대구형 생계급여', description: '대구시 자체 생계급여', icon: <Building2 className="w-4 h-4" />, category: 'local' },
   ],
   60: [
-    { name: '한부모가족 급여', description: '한부모, 조손가족 급여 지원', icon: <Baby className="w-4 h-4" />, category: 'family' },
     { name: '국민취업지원제도 I유형', description: '구직촉진수당 (구직자취업촉진법 시행령 제3조)', icon: <Briefcase className="w-4 h-4" />, category: 'employment' },
     { name: '청년 월세 지원', description: '청년 월세 특별지원', icon: <Home className="w-4 h-4" />, category: 'family' },
   ],
   65: [
+    { name: '한부모가족 급여', description: '한부모, 조손가족 아동양육비 등 (2026년 63%→65% 확대)', icon: <Baby className="w-4 h-4" />, category: 'family' },
     { name: '청소년한부모 급여', description: '청소년 한부모 급여 지원', icon: <Baby className="w-4 h-4" />, category: 'family' },
   ],
   70: [

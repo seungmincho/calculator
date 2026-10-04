@@ -19,17 +19,7 @@ import {
 } from 'recharts'
 import GuideSection from '@/components/GuideSection'
 
-// ── 2026 수당 기준 상수 ──────────────────────────────────────────────────────
-const PARENT_PAY_AGE0 = 1_000_000       // 부모급여 만 0세 (월)
-const PARENT_PAY_AGE1 = 500_000         // 부모급여 만 1세 (월)
-const CHILD_ALLOWANCE = 100_000         // 아동수당 만 0~8세 (월)
-const CHILDCARE_DAYCARE_AGE0 = 514_000  // 만 0세 보육료 (월)
-const CHILDCARE_DAYCARE_AGE1 = 452_000  // 만 1세 보육료 (월)
-const CHILDCARE_ALLOWANCE_AGE0 = 200_000  // 양육수당 만 0세 (월)
-const CHILDCARE_ALLOWANCE_AGE1 = 150_000  // 양육수당 만 1세 (월)
-const CHILDCARE_ALLOWANCE_AGE2_5 = 100_000 // 양육수당 만 2~5세 (월)
-const WELCOME_GRANT = 2_000_000          // 첫만남이용권 (출생 1회)
-const WELCOME_GRANT_TWINS = 4_000_000    // 쌍둥이 첫만남이용권
+import { calcBenefits, timeline, cumulative, type BenefitBreakdown } from '@/utils/childBenefit'
 
 interface ChildEntry {
   id: string
@@ -38,95 +28,15 @@ interface ChildEntry {
   usesDaycare: boolean
 }
 
-interface BenefitBreakdown {
-  parentPay: number        // 부모급여 (현금)
-  childAllowance: number   // 아동수당
-  childcareAllowance: number // 양육수당
-  daycareSubsidy: number   // 보육료 바우처 (참고용)
-  total: number
-  ageYears: number
-  ageMonths: number
-  ageLabel: string
-}
-
 function getAgeInMonths(birthYear: number, birthMonth: number): number {
   const now = new Date()
   const birth = new Date(birthYear, birthMonth - 1, 1)
   return (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth())
 }
 
-function calcBenefits(ageInMonths: number, usesDaycare: boolean): BenefitBreakdown {
-  const ageYears = Math.floor(ageInMonths / 12)
-  const remainMonths = ageInMonths % 12
-  const ageLabel = `만 ${ageYears}세 ${remainMonths}개월`
-
-  let parentPay = 0
-  let childcareAllowance = 0
-  let daycareSubsidy = 0
-  let childAllowance = 0
-
-  if (ageInMonths < 12) {
-    // 만 0세
-    if (usesDaycare) {
-      daycareSubsidy = CHILDCARE_DAYCARE_AGE0
-      parentPay = Math.max(0, PARENT_PAY_AGE0 - CHILDCARE_DAYCARE_AGE0)
-    } else {
-      parentPay = PARENT_PAY_AGE0
-      childcareAllowance = 0 // 부모급여 받으면 양육수당 별도 없음
-    }
-  } else if (ageInMonths < 24) {
-    // 만 1세
-    if (usesDaycare) {
-      daycareSubsidy = CHILDCARE_DAYCARE_AGE1
-      parentPay = Math.max(0, PARENT_PAY_AGE1 - CHILDCARE_DAYCARE_AGE1)
-    } else {
-      parentPay = PARENT_PAY_AGE1
-      childcareAllowance = 0 // 부모급여 받으면 양육수당 별도 없음
-    }
-  } else if (ageInMonths < 72) {
-    // 만 2세~5세
-    if (usesDaycare) {
-      daycareSubsidy = CHILDCARE_DAYCARE_AGE1 // 보육료 바우처 (참고)
-    } else {
-      childcareAllowance = CHILDCARE_ALLOWANCE_AGE2_5
-    }
-  }
-  // 만 6세 이상은 부모급여/양육수당 없음
-
-  // 아동수당: 만 0~8세 (96개월 미만)
-  if (ageInMonths < 96) {
-    childAllowance = CHILD_ALLOWANCE
-  }
-
-  const total = parentPay + childAllowance + childcareAllowance
-
-  return {
-    parentPay,
-    childAllowance,
-    childcareAllowance,
-    daycareSubsidy,
-    total,
-    ageYears,
-    ageMonths: remainMonths,
-    ageLabel,
-  }
-}
-
-function buildTimelineData() {
-  // 가정: 어린이집 미이용 기준 연령별 월 수령액
-  const rows = []
-  for (let ageYears = 0; ageYears <= 8; ageYears++) {
-    const ageInMonths = ageYears * 12
-    const b = calcBenefits(ageInMonths, false)
-    rows.push({
-      age: `${ageYears}세`,
-      부모급여: b.parentPay,
-      아동수당: b.childAllowance,
-      양육수당: b.childcareAllowance,
-      월합계: b.total,
-    })
-  }
-  return rows
+/** 차트용: 올해 태어난 아이의 연령별 월 수령액 (아동수당 연령 확대 일정 반영) */
+function buildTimelineData(year: number) {
+  return timeline(year).map((r) => ({ age: `${r.age}세`, 부모급여: r.parentPay, 아동수당: r.childAllowance, 양육수당: r.childcareAllowance, 월합계: r.total }))
 }
 
 function formatKRW(amount: number): string {
@@ -140,14 +50,6 @@ function formatKRW(amount: number): string {
   return `${amount.toLocaleString()}원`
 }
 
-function calcCumulative(usesDaycare: boolean): number {
-  let total = WELCOME_GRANT
-  for (let m = 0; m < 96; m++) {
-    const b = calcBenefits(m, usesDaycare)
-    total += b.total
-  }
-  return total
-}
 
 const COLORS = {
   parentPay: '#6366f1',
@@ -216,16 +118,17 @@ export default function ChildBenefitCalculator() {
       if (!c.birthYear || !c.birthMonth) return null
       const ageInMonths = getAgeInMonths(Number(c.birthYear), Number(c.birthMonth))
       if (ageInMonths < 0) return null
-      return calcBenefits(ageInMonths, c.usesDaycare)
+      return calcBenefits(ageInMonths, c.usesDaycare, new Date().getFullYear())
     }).filter((r): r is BenefitBreakdown => r !== null)
   }, [calculated, children])
 
   const monthlyTotal = useMemo(() => results.reduce((s, r) => s + r.total, 0), [results])
   const yearlyTotal = useMemo(() => monthlyTotal * 12, [monthlyTotal])
 
-  const timelineData = useMemo(() => buildTimelineData(), [])
+  const thisYear = new Date().getFullYear()
+  const timelineData = useMemo(() => buildTimelineData(thisYear), [thisYear])
 
-  const cumulativeNoDay = useMemo(() => calcCumulative(false), [])
+  const cumulativeNoDay = useMemo(() => cumulative(thisYear, false), [thisYear])
 
   const applyMethods = useMemo(() => {
     try {

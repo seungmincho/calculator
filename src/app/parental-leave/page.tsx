@@ -48,7 +48,6 @@ export default function ParentalLeavePage() {
       '결과 이미지 공유',
       '육아기 근로시간 단축 급여 계산',
       '사후지급금 폐지 안내',
-      '소득대체율 분석',
       'URL 공유 기능',
     ],
   }
@@ -100,7 +99,7 @@ export default function ParentalLeavePage() {
     step: [
       { '@type': 'HowToStep', name: '통상임금 입력', text: '월 통상임금(세전)을 입력합니다. 급여명세서에서 확인할 수 있습니다.' },
       { '@type': 'HowToStep', name: '휴직 조건 설정', text: '누가 쓰는지(부부/한 명/한부모), 시작일, 기간, 사용 순서, 자녀 생년월일을 입력합니다.' },
-      { '@type': 'HowToStep', name: '급여 확인', text: '월별 급여 상세(상한액 적용), 총 수령액, 소득대체율을 확인합니다.' },
+      { '@type': 'HowToStep', name: '급여 확인', text: '월별 지급표(상한·하한 적용), 총 수령액, 순서별 비교와 근로시간 단축 비교를 확인합니다.' },
     ],
   }
 

@@ -532,7 +532,7 @@ const TaxCalculatorContent = () => {
                 className={`${glassInput} px-4 py-3`}
               >
                 <option value="10">10% (일반세율)</option>
-                <option value="0">0% (면세)</option>
+                <option value="0">0% (영세율·면세)</option>
               </select>
             </div>
           </div>

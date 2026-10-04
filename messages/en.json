@@ -1413,24 +1413,24 @@
       "title": "Tax Calculator Guide",
       "whatIs": {
         "title": "What is the Tax Calculator?",
-        "description": "An all-in-one Korean tax calculator for income tax, VAT, and capital gains tax. It applies the latest NTS rates and deductions so you can accurately estimate your tax liability and identify tax-saving opportunities."
+        "description": "An all-in-one Korean tax calculator for income tax, VAT, and capital gains tax. It applies NTS rates and basic deductions so you can see your tax and after-tax amount at a glance."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
           "1. Select the type of tax: income tax, VAT, or capital gains tax.",
           "2. Enter your income amount and applicable deductions.",
-          "3. Click 'Calculate' to see the tax amount, local income tax, and effective tax rate.",
-          "4. Review deduction breakdowns and tax-saving tips to plan your strategy."
+          "3. Results update as you type, with a line-by-line breakdown and a composition chart.",
+          "4. Share a link to the result or save it to your calculation history."
         ]
       },
       "tips": {
         "title": "Pro Tips",
         "items": [
-          "Income tax uses progressive rates (6%–45%), so maximize deductions like personal exemptions and pension contributions.",
+          "Income tax uses progressive rates (6%–45%), so make full use of income deductions such as personal exemptions and tax credits such as pension savings and medical expenses.",
           "Contributing ₩6M to pension savings and ₩3M to IRP yields up to ₩1.485M in tax credits (16.5% incl. local tax for total salary ≤ ₩55M).",
           "Business owners should manage tax invoices carefully to utilize input VAT credits.",
-          "A single-household homeowner holding a property for 2+ years may be exempt from capital gains tax.",
+          "A single-household owner who holds a home for 2+ years (plus 2 years of residence if it was in an adjusted area when acquired) pays no capital gains tax on a sale price up to ₩1.2B.",
           "For complex tax situations, consult a certified tax accountant for legal optimization."
         ]
       },
@@ -1447,11 +1447,11 @@
           },
           {
             "q": "Capital gains tax exemption conditions?",
-            "a": "A single-household owner holding (and in designated areas, residing in) a home for 2+ years qualifies for exemption. Luxury homes (over ₩1.2B) are taxed on the excess."
+            "a": "A single-household owner who has held a home for 2+ years qualifies for exemption; if the home was in an adjusted area when acquired, 2+ years of residence is also required. Luxury homes (sale price over ₩1.2B) are taxed on the excess."
           },
           {
             "q": "Do I need to file local income tax separately?",
-            "a": "No. Local income tax (10% of income tax) is automatically calculated and collected with your income tax return."
+            "a": "Local income tax is 10% of income tax. Employers withhold it through payroll and year-end settlement, but if you file a comprehensive income tax return you must also file and pay local income tax to the local government. After filing on Hometax you can continue to Wetax to file and pay it."
           }
         ]
       }
@@ -1492,7 +1492,7 @@
       "region": {
         "label": "Location",
         "seoul": "Seoul (all 25 districts, adjusted area)",
-        "gyeonggiAdj": "Gyeonggi adjusted areas (Gwacheon, Gwangmyeong, Seongnam, Suwon, Anyang Dongan, Yongin Suji/Giheung, Uiwang, Hanam, Hwaseong Dongtan, Guri)",
+        "gyeonggiAdj": "Gyeonggi adjusted areas (Gwacheon, Gwangmyeong, Seongnam, Suwon Yeongtong/Jangan/Paldal, Anyang Dongan, Yongin Suji/Giheung, Uiwang, Hanam, Hwaseong Dongtan, Guri)",
         "metroCity": "Busan, Daegu, Incheon and other metropolitan cities",
         "other": "Elsewhere (incl. rest of Gyeonggi)",
         "isAdj": "Adjusted area — heavy tax from the 2nd home (as of 2026-07-01)",
@@ -1514,7 +1514,7 @@
         "firstSmall": "First-time (small home / depopulating area)",
         "birth": "Childbirth household",
         "firstHint": "You and your spouse never owned a home, price ≤ ₩1.2B — up to ₩2M",
-        "firstSmallHint": "≤60㎡ small home (≤₩600M capital area, ≤₩300M elsewhere) or depopulating area — up to ₩3M",
+        "firstSmallHint": "≤60㎡ non-apartment small home (multi-family, row house, etc.; ≤₩600M capital area, ≤₩300M elsewhere) or home in a depopulating area — up to ₩3M",
         "birthHint": "Child born 2024–2028, bought from 1 year before to 5 years after birth, ≤₩1.2B single home — up to ₩5M"
       },
       "loan": {
@@ -1621,7 +1621,7 @@
         "items": [
           {
             "q": "How much extra does buying a home cost beyond the price?",
-            "a": "For a single home of 85㎡ or less, roughly 2–3% of the price. A ₩500M Seoul apartment costs about ₩5.5M in taxes, up to ₩2M brokerage (+₩200K VAT) and about ₩1.1M for bonds, stamp duty and scrivener — around ₩9M; a ₩700M home about ₩17M. Over 85㎡ adds 0.2% rural tax, and heavy multi-home rates of 8–12% raise it a lot."
+            "a": "For a single home of 85㎡ or less, about 2% of the price up to ₩600M and about 4% above ₩900M. A ₩500M Seoul apartment costs about ₩5.5M in taxes, up to ₩2M brokerage (+₩200K VAT) and about ₩1.1M for bonds, stamp duty and scrivener — around ₩9M; a ₩700M home about ₩17M. Over 85㎡ adds 0.2% rural tax, and heavy multi-home rates of 8–12% raise it a lot."
           },
           {
             "q": "What are the 2026 acquisition tax rates for homes?",
@@ -33726,7 +33726,7 @@
       ],
       "notes": [
         "Basis: Rules on Housing Supply, Art. 28 (ratios since the 2023-04-01 reform). The announcement is final.",
-        "Since 2025-10-16 (10·15 measures), all of Seoul and 12 Gyeonggi areas (Gwacheon, Gwangmyeong, Seongnam Bundang/Sujeong/Jungwon, Suwon Yeongtong/Jangan/Paldal, Anyang Dongan, Yongin Suji, Uiwang, Hanam) are regulated areas. Designations can change.",
+        "Since 2025-10-16 (10·15 measures), all of Seoul and 12 Gyeonggi areas (Gwacheon, Gwangmyeong, Seongnam Bundang/Sujeong/Jungwon, Suwon Yeongtong/Jangan/Paldal, Anyang Dongan, Yongin Suji, Uiwang, Hanam) are regulated areas, and Hwaseong Dongtan, Yongin Giheung and Guri were added on 2026-07-01. Designations can change.",
         "In regulated areas, the capital region and metro cities, 75%+ of lottery units go to homeless applicants first.",
         "If you lose in the point pool, you are automatically entered into the lottery pool of the same complex."
       ]
@@ -33775,7 +33775,7 @@
           },
           {
             "q": "How do parents count as dependents?",
-            "a": "You must be head of household and share the resident registry with them for 3+ consecutive years. If either parent owns a home, both are excluded. Health insurance usage records may be required to prove actual residence."
+            "a": "You must be head of household and share the resident registry with them for 3+ consecutive years. If either parent owns a home, both are excluded. Since 2025, health insurance usage records (3 years for parents, 1 year for children aged 30+) must be submitted to prove actual residence. An April 2026 proposal would raise the same-registry requirement for unmarried children aged 30+ from 1 to 3 years — check the announcement."
           },
           {
             "q": "Does my spouse's account count?",
@@ -35682,7 +35682,7 @@
         "first": "First-time home buyer",
         "firstHint": "Neither spouse ever owned a home, price ≤ ₩1.2B — up to ₩2M",
         "firstSmall": "First-time (small home / depopulating area)",
-        "firstSmallHint": "≤60㎡ small home (≤₩600M capital area, ≤₩300M elsewhere) or depopulating area — up to ₩3M",
+        "firstSmallHint": "≤60㎡ non-apartment small home (multi-family, row house, etc.; ≤₩600M capital area, ≤₩300M elsewhere) or home in a depopulating area — up to ₩3M",
         "birth": "Childbirth household",
         "birthHint": "Child born 2024–2028, bought 1 year before to 5 years after birth, ≤ ₩1.2B single home — up to ₩5M"
       },
@@ -43476,7 +43476,7 @@
       },
       "q3": {
         "question": "Can I share my winnings with family?",
-        "answer": "Yes, but gift tax applies. Spouses can receive up to 600M KRW tax-free, adult children up to 50M KRW. Amounts beyond these thresholds are subject to 10-50% gift tax."
+        "answer": "Yes, but gift tax may apply. Spouses can receive up to 600M KRW and adult children up to 50M KRW (20M KRW for minors) per 10 years without gift tax through the gift deduction; amounts beyond these are taxed at 10-50%."
       }
     }
   },
@@ -51409,10 +51409,10 @@
       "parentPaySub": "For age 0 (2026 standard)",
       "childAllowance": "Child Allowance",
       "childAllowanceAmount": "₩100,000/month",
-      "childAllowanceSub": "All children aged 0–8",
+      "childAllowanceSub": "Under 9 in 2026, expanding to under 13 by 2030",
       "welcomeGrant": "First Meeting Voucher",
-      "welcomeGrantAmount": "₩2,000,000",
-      "welcomeGrantSub": "One-time voucher at birth"
+      "welcomeGrantAmount": "₩2–3M",
+      "welcomeGrantSub": "₩2M for a first child, ₩3M from the second"
     },
     "inputTitle": "Enter Child Information",
     "childLabel": "Child {n}",
@@ -51446,33 +51446,33 @@
     ],
     "placeholder": "Enter child information and click Calculate",
     "timelineTitle": "Age-Based Benefit Timeline",
-    "timelineSub": "Monthly benefits from birth to age 8 (home care, no daycare)",
-    "cumulativeTitle": "Estimated Total Benefits from Birth to Age 8 (incl. Welcome Voucher)",
-    "cumulativeSub": "Estimated cumulative total for home care (no daycare)",
+    "timelineSub": "Home care (no daycare): monthly amounts by age for a child born this year (child allowance age rises 1 year per year)",
+    "cumulativeTitle": "Cumulative total to age 12 for a child born this year (incl. 2M KRW first-meeting voucher for a first child)",
+    "cumulativeSub": "Estimated cumulative amount with home care — from the second child the voucher is 1M KRW more",
     "guide": {
       "title": "Guide",
       "whatIs": {
         "title": "What are Parent Pay & Child Allowance?",
-        "description": "Cash benefits provided by the Korean government to families raising children. Includes Parent Pay (₩1M/month for age 0, ₩500K/month for age 1), Child Allowance (₩100K/month for ages 0-8), and Childcare Allowance (for home care). A ₩2M First Meeting Voucher is also available at birth."
+        "description": "Cash benefits provided by the Korean government to families raising children. Includes Parent Pay (₩1M/month for age 0, ₩500K/month for age 1), Child Allowance (₩100K/month for ages 0-8 in 2026, plus ₩5K-20K outside the capital region and in depopulating areas), and Childcare Allowance (for home care). A First Meeting Voucher (₩2M for a first child, ₩3M from the second) is also given at birth."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Enter your child's date of birth or age",
+          "Select your child's birth year and month",
           "Add more children with the 'Add Child' button",
           "Select daycare attendance (childcare allowance vs daycare fee)",
           "Click 'Calculate Benefits' to see monthly and yearly amounts",
-          "Check the age timeline for total benefits from birth to age 8"
+          "Check the age timeline for what a child born this year receives up to age 12 (child allowance expansion schedule applied)"
         ]
       },
       "tips": {
         "title": "Useful Tips",
         "items": [
-          "Parent Pay and Childcare Allowance cannot be received together (difference only)",
+          "While receiving Parent Pay (ages 0-1) you do not get a separate Childcare Allowance. With daycare, only Parent Pay minus the daycare fee is paid in cash",
           "Child Allowance is universal — all families qualify regardless of income",
           "Use the 'Happy Birth One-Stop Service' at birth registration for convenient batch application",
           "Daycare attendees get fee support instead of childcare allowance",
-          "First Meeting Voucher must be used within 1 year of birth"
+          "The First Meeting Voucher must be used within 2 years of birth (children born from 2024)"
         ]
       },
       "faq": {
@@ -51488,7 +51488,7 @@
           },
           {
             "q": "How long does child allowance last?",
-            "a": "Until the month before the child turns 8 (96 months), paid monthly."
+            "a": "From 2026, until the month before the child turns 9 (108 months), paid monthly. The age limit rises by one year each year to under 13 by 2030."
           }
         ]
       }
@@ -53340,7 +53340,7 @@
             "Social insurance: the company reports loss of coverage as of the day after your last day. Check regional health insurance or voluntary continued coverage.",
             "Year-end tax settlement: done mid-year on leaving; claim missed deductions in the May income tax filing.",
             "Get a certificate of employment, withholding receipt and retirement income withholding receipt.",
-            "If eligible for unemployment benefits, check the separation reason and apply on Work24 within 12 months after leaving."
+            "If eligible for unemployment benefits, check the separation reason and apply on Work24 right away — benefits can only be paid within 12 months from the day after you leave, even if days remain."
           ]
         },
         {
@@ -53953,7 +53953,7 @@
           },
           {
             "q": "Can I send it before my lease ends?",
-            "a": "Yes. Before expiry, combine a non-renewal notice with a demand to return the deposit on the end date. A tenant's notice must arrive by 2 months before expiry; a landlord's between 6 and 2 months before (Housing Lease Protection Act Art. 6). If you must move out without the deposit, apply for a lease registration order first."
+            "a": "Yes. Before expiry, combine a non-renewal notice with a demand to return the deposit on the end date. A tenant's notice must arrive by 2 months before expiry; a landlord's between 6 and 2 months before (Housing Lease Protection Act Art. 6). If you must move out without the deposit, apply for a lease registration order and move only after the registration is recorded."
           },
           {
             "q": "How much does it cost?",
@@ -54099,7 +54099,7 @@
       "bStart": "Break from",
       "bEnd": "Break to"
     },
-    "breakHint": "Leave the break fields empty if there is no break. At least 30 min per 4 hours and 1 hour per 8 hours of work.",
+    "breakHint": "Leave the break fields empty if there is no break. A 4-hour workday needs at least a 30-minute break, an 8-hour workday at least 1 hour.",
     "holiday": "Weekly paid holiday",
     "summary": {
       "weekly": "Hours per week",
@@ -54181,7 +54181,7 @@
     },
     "guide": {
       "title": "Employment contract essentials",
-      "intro": "Every Korean employer — including those hiring part-timers, trainees or short-term staff — must issue a written employment contract to the employee. This generator follows the Ministry of Employment and Labor's standard form and flags minimum wage, break and working-hour violations as you type.",
+      "intro": "Every Korean employer — including those hiring part-timers, trainees or short-term staff (except businesses employing only cohabiting relatives) — must issue a written employment contract to the employee. This generator follows the Ministry of Employment and Labor's standard form and flags minimum wage, break and working-hour violations as you type.",
       "sections": [
         {
           "title": "Required terms (LSA Art. 17)",
@@ -54418,7 +54418,7 @@
     },
     "chart": {
       "title": "Fee by amount ({deal})",
-      "desc": "Per-party fee at the max rate, incl. VAT. It jumps at the 900M, 1.2B and 1.5B brackets.",
+      "desc": "Per-party fee at the max rate, incl. VAT. For homes it jumps where the rate bracket changes (sale: 900M, 1.2B, 1.5B; lease: 600M, 1.2B, 1.5B).",
       "x": "Amount",
       "fee": "Brokerage fee",
       "now": "Now"
@@ -54448,7 +54448,7 @@
         "items": [
           "Brokers must explain the property and hand over a confirmation statement with the contract (Licensed Real Estate Agents Act Art. 25).",
           "The statement lists the fee, expenses and how they were calculated — compare them with this result.",
-          "Charging more than the legal cap is prohibited (Art. 33(1)4), punishable by up to 1 year in prison or a 10M KRW fine."
+          "Charging more than the legal cap is prohibited (Art. 33(1)3), punishable by up to 1 year in prison or a 10M KRW fine."
         ]
       },
       "receipt": {
@@ -55615,7 +55615,7 @@
             "The tenant may request renewal 6 to 2 months before the end (once, for 2 years).",
             "Renewal increases are capped at 5%, and no further increase within a year.",
             "Without notice the lease renews automatically; the tenant may then terminate with 3 months' notice.",
-            "If the deposit isn't returned, apply for a lease registration order before moving out."
+            "If the deposit isn't returned, apply for a lease registration order and move out only after the registration appears on the property register; that keeps your opposability and priority."
           ]
         }
       ],

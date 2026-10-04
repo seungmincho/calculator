@@ -487,7 +487,7 @@ function Paper({ v, stamps }: { v: V; stamps: Record<string, string> }) {
                 : `월급에 유급 주휴수당을 포함함 (주휴 포함 월 ${w.monthlyHours}시간 기준)`}
             </div>
           )}
-          {premium && <div>- {part ? '소정근로시간을 초과한 근로' : '연장·야간·휴일근로'}에 대하여 통상임금의 50%를 가산하여 지급함</div>}
+          {premium && <div>- {part ? '소정근로시간을 초과한 근로(기간제법 제6조)와 야간·휴일근로(근로기준법 제56조)' : '연장·야간·휴일근로'}에 대하여 통상임금의 50%를 가산하여 지급함</div>}
           <div>- 임금지급일 : 매월 {v.payDay}일 (휴일의 경우에는 전일 지급), 지급방법 : {v.payMethod === 'transfer' ? '근로자 명의 예금통장에 입금' : '근로자에게 직접 지급'}</div>
         </>
       ),
