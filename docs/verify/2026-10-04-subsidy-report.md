@@ -58,3 +58,7 @@
 회차 URL이 `00`, `012`인 경우 숫자 변환은 되지만 실제 선택 옵션 문자열과 달라질 수 있어 정규 표기 `0`~`24`만 허용하도록 후속 보완했다. 기존 링크에서 회차가 누락되면 0으로 복원하는 호환 동작은 유지한다. 최종 서비스 워커는 `v4.31.20`이다. 최종 빌드·로컬 검증 후 별도 보완 커밋으로 배포하고 운영 검증을 다시 실행한다.
 
 최종 빌드(타입 검사·정적 페이지·RSC 경로 보정 포함), 변경 파일 lint, 번역 생성 일치 검사를 통과했다. 로컬 정책 검증 20/20(잘못된 회차 8종 포함)과 PWA v4.31.20 캐시 검증 1/1을 통과했다. 최종 운영 원본 결과는 `final-production-policy.json`, `final-production-regression.json`, `final-production-pwa.json`, `final-pwa-replay.json`에 저장한다.
+
+최종 앱 보완은 `684d6e2`로 커밋·푸시했고 운영 배포 `https://72e03dc2.salary-calculator-d6q.pages.dev`에서 정책 20/20, 지원금 회귀 18/18, 이전 캐시 제거 1/1, 실제 이전 배포 자산을 이용한 v4.31.18 → v4.31.20 갱신 재현 3/3을 통과했다. 최종 운영 검증은 총 42/42 PASS다.
+
+PWA 검증의 첫 운영 실행에서는 `networkidle` 대기가 시간 초과됐다. `load` 이후 실제 서비스 워커 상태와 캐시 목록을 기다리도록 고쳤다. 또한 설치된 Playwright의 `waitForFunction`은 비동기 조건이 반환한 Promise를 참으로 처리해 조건을 반복 확인하지 않으므로, `page.evaluate` 결과를 `await`하는 명시적 반복 확인으로 보완했다. 실제 활성화·제어·구 캐시 제거 조건을 모두 확인한 뒤 PASS로 판정한다. 실패 원본은 `final-production-pwa-navigation-timeout.json`, `final-production-pwa-predicate-failure.json`에 보존했다. 이 후속 수정은 검증 스크립트와 기록만 변경하며 앱 산출물·PWA 버전은 유지한다.

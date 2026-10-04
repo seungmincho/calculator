@@ -24,9 +24,20 @@ try{
     return route.continue()
   })
   const page=await context.newPage()
-  await page.goto(origin+'/',{waitUntil:'networkidle'})
-  await page.waitForFunction(version=>!!navigator.serviceWorker.controller&&caches.keys().then(keys=>keys.includes(`toolhub-static-${version}`)),from)
-  await page.goto(origin+'/youth-rent-subsidy/',{waitUntil:'networkidle'})
+  await page.goto(origin+'/',{waitUntil:'load'})
+  let initialized=false
+  const initializationDeadline=Date.now()+30000
+  while(Date.now()<initializationDeadline){
+    initialized=await page.evaluate(async version=>{
+      const registration=await navigator.serviceWorker.getRegistration()
+      return registration?.active?.state==='activated'&&!!navigator.serviceWorker.controller&&
+        (await caches.keys()).includes(`toolhub-static-${version}`)
+    },from)
+    if(initialized)break
+    await new Promise(done=>setTimeout(done,200))
+  }
+  assert.ok(initialized,'Previous service worker did not activate before the deadline')
+  await page.goto(origin+'/youth-rent-subsidy/',{waitUntil:'load'})
   const oldText=await page.locator('main').innerText()
   assert.ok(oldText.includes('12개월'),'Old production page must show the prior 12-month policy')
   const oldKeys=await page.evaluate(()=>caches.keys())
@@ -48,7 +59,7 @@ try{
   assert.ok(cacheNames.every(key=>!key.startsWith('toolhub-')||key.endsWith(to)))
   results.push({name:'live-controller-upgrade-removes-old-caches',status:'PASS',cacheNames})
 
-  await page.reload({waitUntil:'networkidle'})
+  await page.reload({waitUntil:'load'})
   await page.getByRole('heading',{level:1,name:m.title}).waitFor()
   await page.getByRole('heading',{name:m.policy.closedTitle}).waitFor()
   assert.ok((await page.locator('main').innerText()).includes(m.hero.months))

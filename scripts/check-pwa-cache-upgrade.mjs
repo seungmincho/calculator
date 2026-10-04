@@ -32,15 +32,22 @@ try{
       await caches.open(`toolhub-dynamic-${version}`)
     }
   })
-  await page.goto(origin+'/',{waitUntil:'networkidle'})
-  await page.waitForFunction(async()=>{
-    const registration=await navigator.serviceWorker.getRegistration()
-    const keys=await caches.keys()
-    return !!registration?.active&&keys.includes('toolhub-static-v4.31.20')&&
-      !keys.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:16|17|18|19)$/.test(key))
-  },undefined,{timeout:30000})
-  const keys=await page.evaluate(()=>caches.keys())
-  assert.ok(keys.includes('toolhub-static-v4.31.20'))
+  await page.goto(origin+'/',{waitUntil:'load'})
+  let state,ready=false
+  const deadline=Date.now()+30000
+  while(Date.now()<deadline){
+    state=await page.evaluate(async()=>({
+      active:(await navigator.serviceWorker.getRegistration())?.active?.state==='activated',
+      controlled:!!navigator.serviceWorker.controller,
+      cacheNames:await caches.keys()
+    }))
+    ready=state.active&&state.controlled&&state.cacheNames.includes('toolhub-static-v4.31.20')&&
+      !state.cacheNames.some(key=>/toolhub-(?:static|dynamic)-v4\.31\.(?:16|17|18|19)$/.test(key))
+    if(ready)break
+    await new Promise(done=>setTimeout(done,200))
+  }
+  assert.ok(ready,`Service worker activation or cache cleanup did not finish: ${JSON.stringify(state)}`)
+  const keys=state.cacheNames
   results.push({name:'previous-static-and-dynamic-caches-removed',status:'PASS',cacheNames:keys})
   await context.close()
 }catch(error){results.push({name:'pwa-upgrade',status:'FAIL',message:error.message.slice(0,450)})}
